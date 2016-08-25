@@ -27,6 +27,21 @@
                value(#{brand},#{name},#{price},#{image},#{investAmount},#{tenPercentOffInvestAmount},#{twentyPercentOffInvestAmount},
                         #{thirtyPercentOffInvestAmount},#{introduce},#{createdBy},#{createdTime},#{updatedBy},#{updatedTime})
     </insert>
+
+    <update id="update" parameterType="LuxuryPrizeModel">
+        update luxury_prize set brand=#{brand},
+                name = #{name},
+                price = #{price},
+                image = #{image},
+                invest_amount = #{investAmount},
+                ten_percent_off_invest_amount = #{tenPercentOffInvestAmount},
+                twenty_percent_off_invest_amount = #{twentyPercentOffInvestAmount},
+                thirty_percent_off_invest_amount = #{thirtyPercentOffInvestAmount},
+                introduce = #{introduce},
+                updated_by = #{updatedBy},
+                updated_time = #{updatedTime}
+        where id = #{id}
+    </update>
     
     <select id="findById" parameterType="long" resultMap="luxuryPrizeResultMap">
         select * from luxury_prize where id = #{id}

@@ -13,7 +13,7 @@ public class LuxuryPrizeModel implements Serializable{
 
     private String name;
 
-    private long price;
+    private String price;
 
     private String image;
 
@@ -59,13 +59,6 @@ public class LuxuryPrizeModel implements Serializable{
         this.name = name;
     }
 
-    public long getPrice() {
-        return price;
-    }
-
-    public void setPrice(long price) {
-        this.price = price;
-    }
 
     public String getImage() {
         return image;
@@ -145,5 +138,13 @@ public class LuxuryPrizeModel implements Serializable{
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

@@ -9,9 +9,11 @@ import com.tuotiansudai.activity.repository.model.UserLuxuryPrizeModel;
 import com.tuotiansudai.console.activity.dto.LuxuryPrizeDto;
 import com.tuotiansudai.console.activity.dto.UserLuxuryPrizeDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
@@ -64,5 +66,28 @@ public class LuxuryPrizeService {
             });
         }
         return items;
+    }
+
+    public LuxuryPrizeDto obtainLuxuryPrizeDto(long luxuryPrizeId){
+        LuxuryPrizeModel luxuryPrizeModel = luxuryPrizeMapper.findById(luxuryPrizeId);
+        return new LuxuryPrizeDto(luxuryPrizeModel);
+
+    }
+    public void editLuxuryPrize(LuxuryPrizeDto luxuryPrizeDto,String loginName){
+        long luxuryPrizeId = luxuryPrizeDto.getLuxuryPrizeId();
+        LuxuryPrizeModel luxuryPrizeModel = luxuryPrizeMapper.findById(luxuryPrizeId);
+        luxuryPrizeModel.setBrand(luxuryPrizeDto.getBrand());
+        luxuryPrizeModel.setUpdatedTime(new Date());
+        luxuryPrizeModel.setInvestAmount(AmountConverter.convertStringToCent(luxuryPrizeDto.getInvestAmount()));
+        luxuryPrizeModel.setUpdatedBy(loginName);
+        luxuryPrizeModel.setImage(luxuryPrizeDto.getImage());
+        luxuryPrizeModel.setIntroduce(luxuryPrizeDto.getIntroduce());
+        luxuryPrizeModel.setName(luxuryPrizeDto.getName());
+        luxuryPrizeModel.setPrice(luxuryPrizeDto.getPrice());
+        luxuryPrizeModel.setTenPercentOffInvestAmount(AmountConverter.convertStringToCent(luxuryPrizeDto.getTenPercentOffInvestAmount()));
+        luxuryPrizeModel.setTwentyPercentOffInvestAmount(AmountConverter.convertStringToCent(luxuryPrizeDto.getTwentyPercentOffInvestAmount()));
+        luxuryPrizeModel.setThirtyPercentOffInvestAmount(AmountConverter.convertStringToCent(luxuryPrizeDto.getThirtyPercentOffInvestAmount()));
+        luxuryPrizeMapper.update(luxuryPrizeModel);
+
     }
 }

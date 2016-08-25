@@ -4,17 +4,17 @@ import com.tuotiansudai.console.activity.dto.LuxuryPrizeDto;
 import com.tuotiansudai.console.activity.dto.UserLuxuryPrizeDto;
 import com.tuotiansudai.console.activity.service.LuxuryPrizeService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/activity-manage")
+@RequestMapping(value = "/activity-console/activity-manage/luxury")
 public class LuxuryPrizeController {
     @Autowired
     private LuxuryPrizeService luxuryPrizeService;
@@ -43,11 +43,22 @@ public class LuxuryPrizeController {
         mv.addObject("luxuryPrize",baseDto);
         return mv;
     }
-//
-//    @RequestMapping(value = "/{luxuryPrizeID}/edit")
-//    public ModelAndView editLuxuryPrize(@RequestParam long luxuryPrizeId){
-//
-//    }
+
+    @RequestMapping(value = "/{luxuryPrizeId}/edit",method = RequestMethod.GET)
+    public ModelAndView editLuxuryPrize(@PathVariable long luxuryPrizeId){
+        ModelAndView mv = new ModelAndView("/luxury-prize-edit");
+        mv.addObject("dto",luxuryPrizeService.obtainLuxuryPrizeDto(luxuryPrizeId));
+        return mv;
+    }
+
+    @RequestMapping(value="/edit",method = RequestMethod.POST)
+    public ModelAndView editLuxuryPrize(@ModelAttribute LuxuryPrizeDto luxuryPrizeDto){
+        String loginName = LoginUserInfo.getLoginName();
+        ModelAndView mv = new ModelAndView();
+        luxuryPrizeService.editLuxuryPrize(luxuryPrizeDto,loginName);
+        return mv;
+    }
+
 
 
 

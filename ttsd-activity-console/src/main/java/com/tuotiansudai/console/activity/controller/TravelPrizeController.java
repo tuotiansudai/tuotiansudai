@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Date;
 
 @Controller
-@RequestMapping(path = "/activity-manage/travel")
+@RequestMapping(path = "/activity-console/activity-manage/travel")
 public class TravelPrizeController {
 
     @Autowired
@@ -39,4 +39,6 @@ public class TravelPrizeController {
         BaseDto<BasePaginationDataDto> dto = travelPrizeService.getTravelPrize();
         return new ModelAndView("/travel-prize-list", "data", dto);
     }
+
+
 }

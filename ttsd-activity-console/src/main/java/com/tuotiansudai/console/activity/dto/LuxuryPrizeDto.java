@@ -7,32 +7,37 @@ import java.io.Serializable;
 
 public class LuxuryPrizeDto implements Serializable{
     private static final long serialVersionUID = -8102560580155869158L;
-    private long id;
+    private long luxuryPrizeId;
     private String brand;
     private String name;
     private String price;
     private String image;
     private String introduce;
     private String investAmount;
-
+    private String tenPercentOffInvestAmount;
+    private String twentyPercentOffInvestAmount;
+    private String thirtyPercentOffInvestAmount;
     public LuxuryPrizeDto(){}
 
     public LuxuryPrizeDto(LuxuryPrizeModel luxuryPrizeModel){
-        this.id = luxuryPrizeModel.getId();
+        this.luxuryPrizeId = luxuryPrizeModel.getId();
         this.brand = luxuryPrizeModel.getBrand();
         this.name = luxuryPrizeModel.getName();
-        this.price = AmountConverter.convertCentToString(luxuryPrizeModel.getPrice());
+        this.price = luxuryPrizeModel.getPrice();
         this.image = luxuryPrizeModel.getImage();
         this.introduce = luxuryPrizeModel.getIntroduce();
         this.investAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getInvestAmount());
+        this.tenPercentOffInvestAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getTenPercentOffInvestAmount());
+        this.twentyPercentOffInvestAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getTwentyPercentOffInvestAmount());
+        this.thirtyPercentOffInvestAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getThirtyPercentOffInvestAmount());
     }
 
-    public long getId() {
-        return id;
+    public long getLuxuryPrizeId() {
+        return luxuryPrizeId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setLuxuryPrizeId(long luxuryPrizeId) {
+        this.luxuryPrizeId = luxuryPrizeId;
     }
 
     public String getBrand() {
@@ -81,5 +86,29 @@ public class LuxuryPrizeDto implements Serializable{
 
     public void setInvestAmount(String investAmount) {
         this.investAmount = investAmount;
+    }
+
+    public String getTenPercentOffInvestAmount() {
+        return tenPercentOffInvestAmount;
+    }
+
+    public void setTenPercentOffInvestAmount(String tenPercentOffInvestAmount) {
+        this.tenPercentOffInvestAmount = tenPercentOffInvestAmount;
+    }
+
+    public String getTwentyPercentOffInvestAmount() {
+        return twentyPercentOffInvestAmount;
+    }
+
+    public void setTwentyPercentOffInvestAmount(String twentyPercentOffInvestAmount) {
+        this.twentyPercentOffInvestAmount = twentyPercentOffInvestAmount;
+    }
+
+    public String getThirtyPercentOffInvestAmount() {
+        return thirtyPercentOffInvestAmount;
+    }
+
+    public void setThirtyPercentOffInvestAmount(String thirtyPercentOffInvestAmount) {
+        this.thirtyPercentOffInvestAmount = thirtyPercentOffInvestAmount;
     }
 }
