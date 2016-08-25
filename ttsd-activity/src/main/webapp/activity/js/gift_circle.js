@@ -29,10 +29,10 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
                     type: 'POST',
                     dataType: 'json'
                 })
-                .done(function(res) {
-                    console.log(res);
-                    if (res.data.returnCode == 0) {
-                        var item = res.data.lotteryPrize;
+                .done(function(data) {
+                    console.log(data);
+                    if (data.returnCode == 0) {
+                        var item = data.lotteryPrize;
                         switch (item) {
                             case 'INTEREST_COUPON_2':
                                 rotateFn(0, 56, '0.2加息券');
@@ -53,10 +53,10 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
                                 rotateFn(4, 337, '青花瓷杯子');
                                 break;
                         }
-                    } else if (res.data.returnCode == 2) {
-                        $('#tipList').html(tpl('tipListTpl', {tiptext:res.data.message})).show().find('.tip-dom').show();
+                    } else if (data.returnCode == 2) {
+                        $('#tipList').html(tpl('tipListTpl', {tiptext:data.message})).show().find('.tip-dom').show();
                     } else {
-                        $('#tipList').html(tpl('tipListTpl', {tiptext:res.data.message})).show().find('.tip-dom').show();
+                        $('#tipList').html(tpl('tipListTpl', {tiptext:data.message})).show().find('.tip-dom').show();
                     }
                 })
                 .fail(function() {
@@ -124,7 +124,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
     };
     var GiftRecord=function (){
         $.ajax({
-            url: '/activity/lottery-all-record',
+            url: '/activity/lottery-record-list',
             type: 'POST',
             dataType: 'json'
         })

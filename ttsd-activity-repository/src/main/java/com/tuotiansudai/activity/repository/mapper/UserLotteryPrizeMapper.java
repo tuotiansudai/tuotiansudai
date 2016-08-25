@@ -28,5 +28,6 @@ public interface UserLotteryPrizeMapper {
                                        @Param(value = "startTime") Date startTime,
                                        @Param(value = "endTime") Date endTime);
 
-    List<UserLotteryPrizeView> findLotteryPrizeByMobile(@Param(value = "mobile") String mobile);
+    List<UserLotteryPrizeView> findLotteryPrizeByMobileAndPrize(@Param(value = "mobile") String mobile,
+                                                        @Param("lotteryPrizes") List<LotteryPrize> lotteryPrizes);
 }

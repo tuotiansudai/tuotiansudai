@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="lottery-detail">
-            <h3>我的抽奖机会：${userInfo.lotteryTime}次</h3>
+            <h3>我的抽奖机会：${drawTime}次</h3>
             <ul class="gift-record">
                 <li class="active">中奖纪录</li>
                 <li>我的奖品</li>
