@@ -2,6 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.service.ExportService;
+import com.tuotiansudai.console.service.InvestAchievementService;
 import com.tuotiansudai.console.service.UserServiceConsole;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
@@ -74,6 +75,15 @@ public class ExportController {
 
     @Autowired
     private UserBillService userBillService;
+
+    @Autowired
+    private FeedbackService feedbackService;
+
+    @Autowired
+    private InvestAchievementService investAchievementService;
+
+    @Autowired
+    private ReferrerManageService referrerManageService;
 
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public void exportCoupons(HttpServletResponse response) throws IOException {
@@ -297,6 +307,50 @@ public class ExportController {
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.AccountBalance, accountBalanceData, response.getOutputStream());
     }
 
+    @RequestMapping(value = "/feedback", method = RequestMethod.GET)
+    public void exportFeedBack(@RequestParam(value = "mobile", required = false) String mobile,
+                               @RequestParam(value = "source", required = false) Source source,
+                               @RequestParam(value = "type", required = false) FeedbackType type,
+                               @RequestParam(value = "status", required = false) ProcessStatus status,
+                               @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                               @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime, HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.Feedback.getDescription());
+        int index = 1;
+        int pageSize = Integer.MAX_VALUE;
+        BasePaginationDataDto<FeedbackModel> feedbackModels = feedbackService.getFeedbackPagination(mobile, source, type, status, startTime, endTime, index, pageSize);
+        List<List<String>> feedbackData = exportService.buildFeedBack(feedbackModels.getRecords());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.Feedback, feedbackData, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/invest-achievement", method = RequestMethod.GET)
+    public void exportInvestAchievement(@RequestParam(value = "mobile", required = false) String mobile, HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.InvestAchievementHeader.getDescription());
+        int index = 1;
+        int pageSize = Integer.MAX_VALUE;
+        List<LoanAchievementView> loanAchievementViews = investAchievementService.findInvestAchievement(index, pageSize, mobile);
+        List<List<String>> investAchievementData = exportService.buildInvestAchievement(loanAchievementViews);
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InvestAchievementHeader, investAchievementData, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/referrer", method = RequestMethod.GET)
+    public void exportReferrer(@RequestParam(value = "referrerMobile", required = false) String referrerMobile,
+                               @RequestParam(value = "investMobile", required = false) String investMobile,
+                               @RequestParam(value = "investStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date investStartTime,
+                               @RequestParam(value = "investEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date investEndTime,
+                               @RequestParam(value = "level", required = false) Integer level,
+                               @RequestParam(value = "rewardStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date rewardStartTime,
+                               @RequestParam(value = "rewardEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date rewardEndTime,
+                               @RequestParam(value = "role", required = false) Role role,
+                               @RequestParam(value = "source", required = false) Source source, HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.ConsoleReferrerManageCsvHeader.getDescription());
+        int index = 1;
+        int pageSize = Integer.MAX_VALUE;
+        DateTime investDateTime = new DateTime(investEndTime);
+        DateTime rewardDateTime = new DateTime(rewardEndTime);
+        List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerMobile, investMobile, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : null, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : null, role, source, index, pageSize);
+        List<List<String>> referrerManageData = exportService.buildReferrer(referrerManageViews);
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleReferrerManageCsvHeader, referrerManageData, response.getOutputStream());
+    }
 
     private void fillExportResponse(HttpServletResponse httpServletResponse, String csvHeader) {
         httpServletResponse.setCharacterEncoding("UTF-8");
@@ -309,5 +363,4 @@ public class ExportController {
         }
         httpServletResponse.setContentType("application/csv");
     }
-
 }

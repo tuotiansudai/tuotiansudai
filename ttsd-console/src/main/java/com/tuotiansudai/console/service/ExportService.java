@@ -4,6 +4,9 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
+import com.tuotiansudai.repository.model.FeedbackModel;
+import com.tuotiansudai.repository.model.LoanAchievementView;
+import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.repository.model.UserBillPaginationView;
 
 import java.util.List;
@@ -44,5 +47,11 @@ public interface ExportService {
 
     List<List<String>> buildUserFunds(List<UserBillPaginationView> records);
 
-    List<List<String>> buildAccountBalance(List<UserItemDataDto> dataDtos);
+    List<List<String>> buildAccountBalance(List<UserItemDataDto> records);
+
+    List<List<String>> buildFeedBack(List<FeedbackModel> records);
+
+    List<List<String>> buildInvestAchievement(List<LoanAchievementView> records);
+
+    List<List<String>> buildReferrer(List<ReferrerManageView> records);
 }

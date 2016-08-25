@@ -471,4 +471,79 @@ public class ExportServiceImpl implements ExportService {
         }
         return rows;
     }
+
+    @Override
+    public List<List<String>> buildFeedBack(List<FeedbackModel> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (FeedbackModel record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(String.valueOf(record.getId()));
+            row.add(record.getLoginName());
+            row.add(record.getContact());
+            row.add(record.getSource().name());
+            row.add(record.getType().getDesc());
+            row.add(record.getContent());
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(record.getStatus().getDesc());
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildInvestAchievement(List<LoanAchievementView> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (LoanAchievementView record : records) {
+
+            List<String> row = Lists.newArrayList();
+            row.add(record.getName());
+            row.add(record.getLoanStatus().getDescription());
+            row.add(String.valueOf(record.getPeriods()));
+            row.add(AmountConverter.convertCentToString(record.getLoanAmount()));
+            if (record.getMaxAmountLoginName() != null) {
+                row.add(record.getMaxAmountLoginName() + "/" + AmountConverter.convertCentToString(record.getMaxAmount()));
+            } else {
+                row.add("/");
+            }
+            if (record.getFirstInvestLoginName() != null) {
+                row.add(record.getFirstInvestLoginName() + "/" + AmountConverter.convertCentToString(record.getFirstInvestAmount()));
+            } else {
+                row.add("/");
+            }
+            if (record.getLastInvestLoginName() != null) {
+                row.add(record.getLastInvestLoginName() + "/" + AmountConverter.convertCentToString(record.getLastInvestAmount()));
+            } else {
+                row.add("/");
+            }
+            row.add(record.getRaisingCompleteTime() != null ? new DateTime(record.getRaisingCompleteTime()).toString("yyyy-MM-dd HH:mm:ss") : "");
+            row.add(record.getFirstInvestDuration());
+            row.add(record.getCompleteInvestDuration());
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildReferrer(List<ReferrerManageView> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (ReferrerManageView record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(record.getLoanName());
+            row.add(String.valueOf(record.getPeriods()));
+            row.add(record.getInvestMobile());
+            row.add(record.getInvestName());
+            row.add(String.valueOf(new BigDecimal(record.getInvestAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            row.add(new DateTime(record.getInvestTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(record.getSource().name());
+            row.add(record.getReferrerMobile());
+            row.add(record.getReferrerName());
+            row.add(record.getRole() == Role.STAFF ? "是" : "否");
+            row.add(String.valueOf(record.getLevel()));
+            row.add(String.valueOf(new BigDecimal(record.getRewardAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            row.add(record.getStatus() == ReferrerRewardStatus.SUCCESS ? "已入账" : "入账失败");
+            row.add(new DateTime(record.getRewardTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            rows.add(row);
+        }
+        return rows;
+    }
 }
