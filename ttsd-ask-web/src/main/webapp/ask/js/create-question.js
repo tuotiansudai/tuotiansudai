@@ -245,6 +245,7 @@ if($questionDetailTag.length) {
         var $this=$(this),
             value=$.trim($this.text());
         var answerId=$this.parent().find('.answerId').data('id');
+
         $.ajax({
             url:'/answer/'+answerId+'/favor',
             type:'POST'
@@ -254,6 +255,10 @@ if($questionDetailTag.length) {
                 $this.text(value-0+1);
             }
         });
+    });
+
+    $('.agree-ok-no',$questionDetailTag).on('click',function() {
+        comm.popWindow('','<span class="clearfix">需要登陆才能点赞哦～ </span><a href="/login" class="btn-normal to-login">去登录</a>',{ width:'400px'});
     });
 }
 
