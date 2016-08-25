@@ -16,7 +16,7 @@ public interface LuxuryPrizeMapper {
 
     LuxuryPrizeModel findByPrizeId(long id);
 
-    List<LuxuryPrizeModel> findAllLuxuryPrize();
+    List<LuxuryPrizeModel> findAll();
 
 
 }

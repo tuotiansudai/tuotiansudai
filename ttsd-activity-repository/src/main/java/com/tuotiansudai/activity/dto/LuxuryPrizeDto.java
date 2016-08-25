@@ -7,8 +7,6 @@ import java.io.Serializable;
 
 public class LuxuryPrizeDto implements Serializable {
 
-    private static final long serialVersionUID = -8102560580155869158L;
-
     private long id;
 
     private String brand;
@@ -21,7 +19,13 @@ public class LuxuryPrizeDto implements Serializable {
 
     private String introduce;
 
-    private String investAmount;
+    private long tenPercentOffInvestAmount;
+
+    private long twentyPercentOffInvestAmount;
+
+    private long thirtyPercentOffInvestAmount;
+
+    private long investAmount;
 
     public LuxuryPrizeDto(LuxuryPrizeModel luxuryPrizeModel) {
         this.id = luxuryPrizeModel.getId();
@@ -30,7 +34,10 @@ public class LuxuryPrizeDto implements Serializable {
         this.price = AmountConverter.convertCentToString(luxuryPrizeModel.getPrice());
         this.image = luxuryPrizeModel.getImage();
         this.introduce = luxuryPrizeModel.getIntroduce();
-        this.investAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getInvestAmount());
+        this.thirtyPercentOffInvestAmount = luxuryPrizeModel.getThirtyPercentOffInvestAmount();
+        this.twentyPercentOffInvestAmount = luxuryPrizeModel.getTwentyPercentOffInvestAmount();
+        this.tenPercentOffInvestAmount = luxuryPrizeModel.getTenPercentOffInvestAmount();
+        this.investAmount = luxuryPrizeModel.getInvestAmount();
     }
 
     public long getId() {
@@ -57,7 +64,19 @@ public class LuxuryPrizeDto implements Serializable {
         return introduce;
     }
 
-    public String getInvestAmount() {
+    public long getInvestAmount() {
         return investAmount;
+    }
+
+    public long getTenPercentOffInvestAmount() {
+        return tenPercentOffInvestAmount;
+    }
+
+    public long getTwentyPercentOffInvestAmount() {
+        return twentyPercentOffInvestAmount;
+    }
+
+    public long getThirtyPercentOffInvestAmount() {
+        return thirtyPercentOffInvestAmount;
     }
 }

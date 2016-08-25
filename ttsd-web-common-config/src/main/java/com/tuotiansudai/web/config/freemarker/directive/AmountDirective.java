@@ -1,13 +1,14 @@
-package com.tuotiansudai.web.freemarker.directive;
+package com.tuotiansudai.web.config.freemarker.directive;
 
 import freemarker.core.Environment;
 import freemarker.template.*;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.util.Map;
 
-public class PercentFractionDirective implements TemplateDirectiveModel {
+public class AmountDirective implements TemplateDirectiveModel {
 
     @Override
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
@@ -18,28 +19,33 @@ public class PercentFractionDirective implements TemplateDirectiveModel {
             throw new TemplateModelException("This directive doesn't allow loop variables.");
         }
         if (body != null) {
-            body.render(new PercentFractionFilterWriter(env.getOut()));
+            body.render(new AmountFilterWriter(env.getOut()));
         } else {
             throw new RuntimeException("missing body");
         }
     }
 
-    private static class PercentFractionFilterWriter extends Writer {
-
+    private static class AmountFilterWriter extends Writer {
         private final Writer out;
 
-        PercentFractionFilterWriter(Writer out) {
+        private static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
+
+        private static final BigDecimal TEN_THOUSANDS = new BigDecimal(1000000);
+
+        AmountFilterWriter (Writer out) {
             this.out = out;
         }
 
         @Override
         public void write(char[] cbuf, int off, int len) throws IOException {
-            if (new String(cbuf, off, len).contains(".")) {
-                String percent = new String(cbuf, off, len).split("\\.")[1].replaceAll("0+?$", "");
-                out.write(!percent.equals("") ? "." + percent : percent);
+            BigDecimal amount = new BigDecimal(new String(cbuf, off, len));
+            String returnAmount;
+            if (amount.compareTo(TEN_THOUSANDS) != -1){
+                returnAmount = amount.divide(TEN_THOUSANDS, 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "")+" 万";
             } else {
-                out.write("");
+                returnAmount = amount.divide(ONE_HUNDRED, 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "");
             }
+            out.write(returnAmount);
         }
 
         @Override
