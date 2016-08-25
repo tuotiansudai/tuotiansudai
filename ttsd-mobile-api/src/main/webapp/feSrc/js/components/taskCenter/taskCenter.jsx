@@ -234,14 +234,15 @@ class taskCenter extends React.Component {
             if (!this.myScroll) {
                 this.refs.mainConWrap.style.height=document.documentElement.clientHeight +'px';
                 // this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight) + 'px';
-                this.myScroll = new IScroll(this.refs.mainConWrap,{ 
-                    probeType: 3, 
+                this.myScroll = new IScroll(this.refs.mainConWrap,{
+                    probeType: 3,
                     mouseWheel: true,
                     hScrollbar:false,
-                    vScrollbar:false,
+                    vScrollbar:true,
                     momentum:false,
                     useTransition:false,
-                    bounce:false
+                    bounce:false,
+                    useTransform:true
 
                 });
                 this.myScroll.on('scroll',function() {
@@ -260,14 +261,14 @@ class taskCenter extends React.Component {
                               isFixedMenu: true,
                               menuTop:topH
                             });
-                    
+
                     }
                     else {
                         this.setState({
                           isFixedMenu: false,
                           menuTop:''
                         });
-                       
+
                     }
                 }.bind(this));
 

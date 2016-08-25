@@ -49,17 +49,18 @@
             // position:absolute;
             border-radius: 5px;
             border: 1px solid #ff5959;
-            height: 50px;  /*px*/
-            width:302px;
+            height: 60px;  /*px*/
+            width:315px;
             margin: 0px auto;
-            margin-top: -35px; /*px*/
+            margin-top: -45px; /*px*/
         }
         .MenuBox ul .MenuBoxItemNormal {
             float: left;
             display: block;
+            cursor: pointer;
             width: 50%;
             height:100%;
-            line-height: 50px;  /*px*/
+            line-height: 60px;  /*px*/
             text-align: center;
             color: #ff5959;
             background-color: #0f3d70;
