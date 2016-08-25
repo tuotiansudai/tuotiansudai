@@ -26,8 +26,10 @@ public class ActivityModel implements Serializable {
     private String shareTitle;
     private String shareContent;
     private String shareUrl;
+    private Long seq;
+    private boolean longTerm;
 
-    public ActivityModel(){
+    public ActivityModel() {
 
     }
 
@@ -38,11 +40,14 @@ public class ActivityModel implements Serializable {
         this.description = activityDto.getDescription();
         this.webPictureUrl = activityDto.getWebPictureUrl();
         this.appPictureUrl = activityDto.getAppPictureUrl();
+        this.activatedTime = activityDto.getActivatedTime();
         this.expiredTime = activityDto.getExpiredTime();
         this.source = activityDto.getSource();
         this.shareTitle = activityDto.getShareTitle();
         this.shareContent = activityDto.getShareContent();
         this.shareUrl = activityDto.getShareUrl();
+        this.seq = activityDto.getSeq();
+        this.longTerm = activityDto.getLongTerm().equals("longTerm");
     }
 
     public Long getId() {
@@ -195,5 +200,21 @@ public class ActivityModel implements Serializable {
 
     public void setShareUrl(String shareUrl) {
         this.shareUrl = shareUrl;
+    }
+
+    public Long getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Long seq) {
+        this.seq = seq;
+    }
+
+    public boolean isLongTerm() {
+        return longTerm;
+    }
+
+    public void setLongTerm(boolean longTerm) {
+        this.longTerm = longTerm;
     }
 }
