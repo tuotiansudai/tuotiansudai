@@ -74,7 +74,7 @@ public class ProductShowItemDto {
             productTypeNames.add(productType.getName());
         }
         String productTypeString = Joiner.on(",").join(productTypeNames);
-        return MessageFormat.format("投资满{0}元即可使用;\n{1}产品可用;\n有效期限:{2}天;", exchangeCouponView.getInvestLowerLimit(),
+        return MessageFormat.format("投资满{0}元即可使用;\n{1}产品可用;\n有效期限:{2}天;", exchangeCouponView.getInvestLowerLimit()/100,
                 productTypeString, exchangeCouponView.getDeadline());
     }
 

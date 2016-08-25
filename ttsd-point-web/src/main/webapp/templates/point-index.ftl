@@ -154,7 +154,7 @@
                                 </p>
                             </#if>
                             <p class="convert-btn">
-                                <span class="name-text">${virtualProduct.name}</span>
+                                <span class="name-text">${virtualProduct.pictureDescription!"0"}</span>
                                 <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
                                 <a class="fl" href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail"><span
                                         class="fl get-btn">立即兑换</span></a>

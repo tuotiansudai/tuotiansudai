@@ -85,7 +85,13 @@
 					<div class="order-name">
                         <p class="name-text">${productShowItem.name!}</p>
 
-                        <p>${productShowItem.description}</p>
+						<#if productShowItem.itemType.name() == 'PHYSICAL' || productShowItem.itemType.name() == 'VIRTUAL'>
+                            <p>${productShowItem.description}</p>
+						<#else>
+							<#list productShowItem.description?split("\n") as str>
+                                <p>${str}</p>
+							</#list>
+						</#if>
 					</div>
 					<div class="order-price">
 						<p class="title-text">商品价格</p>

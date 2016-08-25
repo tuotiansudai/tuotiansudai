@@ -39,9 +39,10 @@
         <intercept-url pattern="/robots.txt" access="permitAll()"/>
 
         <!--menus-->
-        <intercept-url pattern="/point-shop/order/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/point-shop/task/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/point-shop/bill/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/point-shop/order/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/point-shop/task/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/point-shop/bill/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/point-shop/signIn/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
 
         <intercept-url pattern="/point-shop/**" access="permitAll()"/>
 
