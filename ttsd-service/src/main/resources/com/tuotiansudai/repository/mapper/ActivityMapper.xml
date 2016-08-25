@@ -120,4 +120,27 @@
         </if>
     </select>
 
+    <select id="findActivity" resultMap="activityResultMap" parameterType="map">
+        SELECT * FROM `aa`.`activity`
+        <where>
+            <if test="beginExpiredTime != null">
+                AND expired_time &gt;= #{beginExpiredTime}
+            </if>
+            <if test="endExpiredTime != null">
+                AND expired_time &lt;= #{endExpiredTime}
+            </if>
+            <if test="activityStatus!=null">
+                AND status = #{activityStatus}
+            </if>
+            <if test="source != null">
+                AND source like CONCAT('%', #{source}, '%')
+            </if>
+            <if test="beginExpiredTime != null">
+                OR long_term = TRUE
+            </if>
+        </where>
+        order by seq ASC ,updated_time DESC
+        LIMIT #{index}, #{pageSize}
+    </select>
+
 </mapper>

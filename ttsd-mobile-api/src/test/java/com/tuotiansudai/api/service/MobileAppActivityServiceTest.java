@@ -2,7 +2,9 @@ package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.ActivityCenterDataDto;
+import com.tuotiansudai.api.dto.v1_0.ActivityCenterRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ActivityCenterResponseDto;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.service.v1_0.MobileAppActivityService;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.ActivityMapper;
@@ -160,8 +162,12 @@ public class MobileAppActivityServiceTest {
     @Test
     public void testGetAppActivityCenterResponseData() {
         prepareData();
-
-        ActivityCenterResponseDto activityCenterResponseDto = mobileAppActivityService.getAppActivityCenterResponseData("testUser", Source.IOS, 1, 4);
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("testUser");
+        baseParam.setPlatform(Source.IOS.toString());
+        ActivityCenterRequestDto requestDto = new ActivityCenterRequestDto();
+        requestDto.setBaseParam(baseParam);
+        ActivityCenterResponseDto activityCenterResponseDto = mobileAppActivityService.getAppActivityCenterResponseData(requestDto);
         assertEquals(6, activityCenterResponseDto.getTotalCount().longValue());
         assertEquals(1, activityCenterResponseDto.getIndex().intValue());
         assertEquals(4, activityCenterResponseDto.getPageSize().intValue());
