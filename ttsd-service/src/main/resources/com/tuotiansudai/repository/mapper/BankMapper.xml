@@ -7,16 +7,16 @@
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
     <resultMap id="bankResultMap" type="BankModel">
-        <id column="id" property="id"></id>
-        <result column="name" property="name"></result>
-        <result column="bank_code" property="bankCode"></result>
-        <result column="image_url" property="imageUrl"></result>
-        <result column="single_amount" property="singleAmount"></result>
-        <result column="single_day_amount" property="singleDayAmount"></result>
-        <result column="created_by" property="createdBy"></result>
-        <result column="created_time" property="createdTime"></result>
-        <result column="updated_by" property="updatedBy"></result>
-        <result column="updated_time" property="updatedTime"></result>
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="bank_code" property="bankCode"/>
+        <result column="image_url" property="imageUrl"/>
+        <result column="single_amount" property="singleAmount"/>
+        <result column="single_day_amount" property="singleDayAmount"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_by" property="updatedBy"/>
+        <result column="updated_time" property="updatedTime"/>
     </resultMap>
 
     <select id="findById" parameterType="map" resultMap="bankResultMap">

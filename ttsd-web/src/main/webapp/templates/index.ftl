@@ -1,6 +1,5 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.full_screen}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" keywords="拓天速贷,互联网金融平台,P2P理财,拓天借贷,网络理财" description="拓天速贷是基于互联网的金融信息服务平台,由拓天伟业(北京)资产管理有限公司旗下的拓天伟业(北京)金融信息服务有限公司运营.">
-
 <div class="home-page-container">
     <div class="banner-box" id="bannerBox">
         <div class="banner-img-list bd">
@@ -192,7 +191,7 @@
                                                     <#if (loan.newbieInterestCouponRate > 0) >
                                                         +<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
                                                         <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
-                                                    </#if>%
+                                                    </#if>%+3%
                                                 </i>
                                                 <span>新手加息券</span>
                                             </dd>
@@ -307,15 +306,17 @@
                                         <dl>
                                             <dt>预期年化收益</dt>
                                             <dd>
-                                                <em class="active"><@percentInteger>${loan.baseRate}</@percentInteger></em>
-                                                <i><@percentFraction>${loan.baseRate}</@percentFraction>
+                                                <em class="active"><@percentInteger>${loan.baseRate}</@percentInteger>
+                                                    <@percentFraction>${loan.baseRate}</@percentFraction>
                                                     <#if (loan.extraRate > 0)>
                                                         ~ <@percentInteger>${loan.baseRate + (loan.extraRate * 100)}</@percentInteger><@percentFraction>${loan.extraRate * 100}</@percentFraction>
                                                     </#if>
                                                     <#if (loan.activityRate > 0) >
                                                         +<@percentInteger>${loan.activityRate}</@percentInteger>
                                                         <@percentFraction>${loan.activityRate}</@percentFraction>
-                                                    </#if>%
+                                                    </#if>
+                                                </em>
+                                                <i>%
                                                 </i>
                                             </dd>
                                         </dl>
