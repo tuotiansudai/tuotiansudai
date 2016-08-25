@@ -23,48 +23,51 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
     $pointer.on('click', function(event) {
         event.preventDefault();
 
-            if (bRotate) return;
-            $.ajax({
-                    url: '/activity/draw-lottery',
-                    type: 'POST',
-                    dataType: 'json'
-                })
-                .done(function(res) {
-                    console.log(res);
-                    if (res.data.returnCode == 0) {
-                        var item = res.data.lotteryPrize;
-                        switch (item) {
-                            case 'INTEREST_COUPON_2':
-                                rotateFn(0, 56, '0.2加息券');
-                                break;
-                            case 'LUXURY':
-                                rotateFn(0, 56, '奢侈品大奖');
-                                break;
-                            case 'RED_ENVELOPE_100':
-                                rotateFn(1, 120, '100元现金红包');
-                                break;
-                            case 'INTEREST_COUPON_5':
-                                rotateFn(2, 200, '0.5加息券');
-                                break;
-                            case 'RED_ENVELOPE_50':
-                                rotateFn(3, 260, '50元现金红包');
-                                break;
-                            case 'PORCELAIN_CUP':
-                                rotateFn(4, 337, '青花瓷杯子');
-                                break;
-                        }
-                    } else if (res.data.returnCode == 2) {
-                        $('#tipList').html(tpl('tipListTpl', {tiptext:res.data.message})).show().find('.tip-dom').show();
-                    } else {
-                        $('#tipList').html(tpl('tipListTpl', {tiptext:res.data.message})).show().find('.tip-dom').show();
-                    }
-                })
-                .fail(function() {
-                    layer.msg('请求失败');
-                });
+        if (bRotate) return;
+        $.ajax({
+            url: '/activity/draw-lottery',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(res) {
+            console.log(res);
+            if (res.data.returnCode == 0) {
+                var item = res.data.lotteryPrize;
+                switch (item.name) {
+                    case 'PORCELAIN_CUP':
+                        rotateFn(0, 337, '青花瓷杯子',res.data.returnCode,item.type);
+                        break;
+                    case 'INTEREST_COUPON_2':
+                        rotateFn(1, 56, '0.2加息券',res.data.returnCode,item.type);
+                        break;
+                    case 'LUXURY':
+                        rotateFn(2, 116, '奢侈品大奖',res.data.returnCode,item.type);
+                        break;
+                    case 'RED_ENVELOPE_100':
+                        rotateFn(3, 160, '100元现金红包',res.data.returnCode,item.type);
+                        break;
+                    case 'INTEREST_COUPON_5':
+                        rotateFn(4, 230, '0.5加息券',res.data.returnCode,item.type);
+                        break;
+                    case 'RED_ENVELOPE_50':
+                        rotateFn(5, 260, '50元现金红包',res.data.returnCode,item.type);
+                        break;
+                    case 'MANGO_CARD_100':
+                        rotateFn(6, 347, '100元芒果卡',res.data.returnCode,item.type);
+                        break;
+                }
+            } else if (res.data.returnCode == 2) {
+                $('#tipList').html(tpl('tipListTpl', {tiptext:res.data.message,istype:'nologin'})).show().find('.tip-dom').show();
+            } else {
+                $('#tipList').html(tpl('tipListTpl', {tiptext:res.data.message,istype:'notimes'})).show().find('.tip-dom').show();
+            }
+        })
+        .fail(function() {
+            layer.msg('请求失败');
+        });
     });
 
-    function rotateFn(awards, angles, txt) {
+    function rotateFn(awards, angles, txt,type) {
         bRotate = !bRotate;
         $('#rotate').stopRotate();
         $('#rotate').rotate({
@@ -72,8 +75,9 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
             animateTo: angles + 1800,
             duration: 8000,
             callback: function() {
-                $('#tipList').html(tpl('tipListTpl', {tiptext:'恭喜你抽中了'+txt})).show().find('.tip-dom').show();
+                $('#tipList').html(tpl('tipListTpl', {tiptext:'恭喜你抽中了'+txt,istype:type})).show().find('.tip-dom').show();
                 bRotate = !bRotate;
+                $('#lotteryTime').text()>1?$('#lotteryTime').text(function(index,num){return parseInt(num)-1}):$('#lotteryTime').text('0');
             }
         })
     }

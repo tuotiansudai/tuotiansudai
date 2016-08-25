@@ -1,4 +1,4 @@
-<div class="leader-container <#if prizeType='travel'>tour-theme</#if>" id="awardCom"><!--旅游主题class替换为tour-theme-->
+<div class="leader-container tour-theme<#if prizeType='travel'>tour-theme</#if>" id="awardCom"><!--旅游主题class替换为tour-theme-->
     <div class="leader-list">
         <div class="lottery-circle">
             <h3>我的抽奖机会：1次</h3>
@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="lottery-detail">
-            <h3>我的抽奖机会：${userInfo.lotteryTime}次</h3>
+            <h3>我的抽奖机会：<span id="lotteryTime">${userInfo.lotteryTime}</span>次</h3>
             <ul class="gift-record">
                 <li class="active">中奖纪录</li>
                 <li>我的奖品</li>
@@ -86,12 +86,34 @@
     <div class="tip-dom">
         <div class="close-btn go-close"></div>
         <div class="text-tip">
+        {{if istype=='real' || istype=='virtual'}}
             <p>恭喜您！</p>
+        {{else}}
             <p>{{tiptext}}！</p>
+        {{/if}}
+        {{if istype=='real'}}
             <p class="des-text">拓天客服将会在7个工作日内联系您发放奖品</p>
+        {{else if istype=='virtual'}}
+            <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
+        {{else if istype=='nologin'}}
+            <p class="des-text">请登录后再来抽奖吧！</p>
+        {{else if istype=='notimes'}}
+            <p class="des-text">赢取机会后再来抽奖吧！</p>
+        {{else}}
+        {{/if}}
         </div>
         <div class="btn-list">
-            <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            {{if istype=='real'}}
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            {{else if istype=='virtual'}}
+                <a href="/" class="go-on">去查看</a>
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            {{else if istype=='nologin'}}
+                <a href="/" class="go-on">去登录</a>
+            {{else if istype=='notimes'}}
+                <a href="javascript:void(0)" class="go-on go-close">知道了</a>
+            {{else}}
+            {{/if}}
         </div>
     </div>
     </script>
