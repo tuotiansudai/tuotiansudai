@@ -42,7 +42,6 @@ CREATE TABLE `user_luxury_prize` (
 CREATE TABLE `travel_prize` (
   `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name`          VARCHAR(100)    NOT NULL,
-  `description`   VARCHAR(100),
   `price`         VARCHAR(100)    NOT NULL,
   `image`         VARCHAR(255)    NOT NULL,
   `invest_amount` BIGINT UNSIGNED NOT NULL,

@@ -2,7 +2,7 @@ package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.service.TravelPrizeService;
+import com.tuotiansudai.activity.service.AutumnPrizeService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
@@ -22,14 +22,14 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "/activity/autumn/travel")
-public class TravelPrizeController {
+@RequestMapping(path = "/activity/autumn")
+public class AutumnPrizeController {
 
     @Value(value = "${activity.autumn.invest.channel}")
     private String activityAutumnInvestChannelKey;
 
     @Autowired
-    private TravelPrizeService travelPrizeService;
+    private AutumnPrizeService autumnPrizeService;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -41,15 +41,15 @@ public class TravelPrizeController {
     private BindBankCardService bindBankCardService;
 
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(path = "/travel", method = RequestMethod.GET)
     public ModelAndView travelPrize() {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/autumn-travel", "responsive", true);
         modelAndView.addObject("today", new Date());
-        modelAndView.addObject("amount", AmountConverter.convertCentToString(travelPrizeService.getTodayTravelInvestAmount(loginName)));
-        modelAndView.addObject("travelPrize", travelPrizeService.getTravelPrizeItems());
-        modelAndView.addObject("userTravelPrize", travelPrizeService.getTravelAwardItems(loginName));
-        modelAndView.addObject("myTravelPrize", travelPrizeService.getMyTravelAwardItems(LoginUserInfo.getMobile()));
+        modelAndView.addObject("amount", AmountConverter.convertCentToString(autumnPrizeService.getTodayInvestAmount(loginName, "travel")));
+        modelAndView.addObject("travelPrize", autumnPrizeService.getTravelPrizeItems());
+        modelAndView.addObject("userTravelPrize", autumnPrizeService.getTravelAwardItems(loginName));
+        modelAndView.addObject("myTravelPrize", autumnPrizeService.getMyTravelAwardItems(LoginUserInfo.getMobile()));
         List<Integer> steps = Lists.newArrayList(1, 0, 0, 0, 0);
         modelAndView.addObject("steps", steps);
         if (Strings.isNullOrEmpty(loginName)) {
@@ -71,14 +71,23 @@ public class TravelPrizeController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/{id:^\\d+$}/detail", method = RequestMethod.GET)
+    @RequestMapping(path = "/luxury", method = RequestMethod.GET)
+    public ModelAndView luxuryPrize() {
+        String loginName = LoginUserInfo.getLoginName();
+        ModelAndView modelAndView = new ModelAndView("/activities/autumn-luxury", "responsive", true);
+        modelAndView.addObject("today", new Date());
+        modelAndView.addObject("amount", AmountConverter.convertCentToString(autumnPrizeService.getTodayInvestAmount(loginName, "luxury")));
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/travel/{id:^\\d+$}/detail", method = RequestMethod.GET)
     public ModelAndView travelPrizeDetail() {
         ModelAndView modelAndView = new ModelAndView("/activities/autumn-tour-detail", "responsive", true);
 
         return modelAndView;
     }
 
-    @RequestMapping(path = "/invest", method = RequestMethod.GET)
+    @RequestMapping(path = "/travel/invest", method = RequestMethod.GET)
     public ModelAndView travelInvest(HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         String referer = request.getHeader(HttpHeaders.REFERER);
@@ -87,6 +96,19 @@ public class TravelPrizeController {
         }
 
         redisWrapperClient.hset(this.activityAutumnInvestChannelKey, loginName, "travel", 3600 * 24 * 60);
+
+        return new ModelAndView("redirect:/loan-list");
+    }
+
+    @RequestMapping(path = "/luxury/invest", method = RequestMethod.GET)
+    public ModelAndView luxuryInvest(HttpServletRequest request) {
+        String loginName = LoginUserInfo.getLoginName();
+        String referer = request.getHeader(HttpHeaders.REFERER);
+        if (Strings.isNullOrEmpty(loginName)) {
+            return new ModelAndView(MessageFormat.format("redirect:/login?redirect={0}", referer));
+        }
+
+        redisWrapperClient.hset(this.activityAutumnInvestChannelKey, loginName, "luxury", 3600 * 24 * 60);
 
         return new ModelAndView("redirect:/loan-list");
     }

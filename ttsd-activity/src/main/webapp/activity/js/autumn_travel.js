@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'layerWrapper', 'commonFun'], function ($, _, layer) {
+require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'circle'], function ($, _, layer) {
 
     var $awardRecordsFrame = $('#awardRecordsFrame');
     var $slideBody = $('table tbody', $awardRecordsFrame);

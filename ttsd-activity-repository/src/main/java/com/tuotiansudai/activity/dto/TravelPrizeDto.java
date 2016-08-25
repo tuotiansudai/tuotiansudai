@@ -12,20 +12,17 @@ public class TravelPrizeDto implements Serializable {
 
     private String name;
 
-    private String description;
-
     private String price;
 
     private String image;
 
-    private List<String> introduce;
+    private String introduce;
 
     private String investAmount;
 
     public TravelPrizeDto(TravelPrizeModel model) {
         this.id = model.getId();
         this.name = model.getName();
-        this.description = model.getDescription();
         this.price = model.getPrice();
         this.image = model.getImage();
         this.introduce = model.getIntroduce();
@@ -40,10 +37,6 @@ public class TravelPrizeDto implements Serializable {
         return name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public String getPrice() {
         return price;
     }
@@ -52,7 +45,7 @@ public class TravelPrizeDto implements Serializable {
         return image;
     }
 
-    public List<String> getIntroduce() {
+    public String getIntroduce() {
         return introduce;
     }
 

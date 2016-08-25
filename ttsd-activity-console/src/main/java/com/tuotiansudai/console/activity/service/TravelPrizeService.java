@@ -8,7 +8,7 @@ import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import com.tuotiansudai.activity.dto.TravelPrizeDto;
 import com.tuotiansudai.console.activity.dto.TravelPrizeRequestDto;
-import com.tuotiansudai.activity.dto.UserTravelPrizePaginationItemDto;
+import com.tuotiansudai.activity.dto.UserPrizePaginationItemDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.util.PaginationUtil;
@@ -30,14 +30,14 @@ public class TravelPrizeService {
     public BaseDto<BasePaginationDataDto> getTravelAwardItems(String mobile, Date startTime, Date endTime, int index, int pageSize) {
         long count = userTravelPrizeMapper.countByPagination(mobile, startTime, endTime);
         List<UserTravelPrizeModel> models = userTravelPrizeMapper.findByPagination(mobile, startTime, endTime, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        List<UserTravelPrizePaginationItemDto> items = Lists.transform(models, new Function<UserTravelPrizeModel, UserTravelPrizePaginationItemDto>() {
+        List<UserPrizePaginationItemDto> items = Lists.transform(models, new Function<UserTravelPrizeModel, UserPrizePaginationItemDto>() {
             @Override
-            public UserTravelPrizePaginationItemDto apply(UserTravelPrizeModel input) {
-                return new UserTravelPrizePaginationItemDto(input);
+            public UserPrizePaginationItemDto apply(UserTravelPrizeModel input) {
+                return new UserPrizePaginationItemDto(input);
             }
         });
 
-        BasePaginationDataDto<UserTravelPrizePaginationItemDto> dataDto = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
+        BasePaginationDataDto<UserPrizePaginationItemDto> dataDto = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
         dataDto.setStatus(true);
         return new BaseDto<BasePaginationDataDto>(dataDto);
     }
@@ -66,10 +66,9 @@ public class TravelPrizeService {
     public void update(String loginName, TravelPrizeRequestDto dto) {
         TravelPrizeModel model = travelPrizeMapper.findById(dto.getId());
         model.setName(dto.getName());
-        model.setDescription(dto.getDescription());
         model.setPrice(dto.getPrice());
         model.setImage(dto.getImage());
-//        model.setIntroduce(dto.getIntroduce());
+        model.setIntroduce(dto.getIntroduce());
         model.setUpdatedBy(loginName);
         model.setUpdatedTime(new Date());
         travelPrizeMapper.update(model);
