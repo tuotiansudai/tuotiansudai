@@ -18,5 +18,7 @@ public interface LuxuryPrizeMapper {
 
     List<LuxuryPrizeModel> findAll();
 
+    void update(LuxuryPrizeModel luxuryPrizeModel);
+
 
 }

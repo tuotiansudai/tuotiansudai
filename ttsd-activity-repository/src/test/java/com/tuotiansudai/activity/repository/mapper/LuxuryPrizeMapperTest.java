@@ -35,11 +35,43 @@ public class LuxuryPrizeMapperTest extends BaseMapperTest{
 
     }
 
+    @Test
+    public void shouldUpdateLuxuryPrizeIsSuccess(){
+        LuxuryPrizeModel luxuryPrizeModel = fakeLuxuryPrizeModel();
+        luxuryPrizeMapper.create(luxuryPrizeModel);
+
+        LuxuryPrizeModel luxuryPrizeModel1 = luxuryPrizeMapper.findById(luxuryPrizeModel.getId());
+        luxuryPrizeModel1.setBrand("brand1");
+        luxuryPrizeModel1.setName("name1");
+        luxuryPrizeModel1.setPrice("price1");
+        luxuryPrizeModel1.setImage("image1");
+        luxuryPrizeModel1.setInvestAmount(20001l);
+        luxuryPrizeModel1.setTenPercentOffInvestAmount(30001l);
+        luxuryPrizeModel1.setTwentyPercentOffInvestAmount(40001l);
+        luxuryPrizeModel1.setThirtyPercentOffInvestAmount(50001l);
+        luxuryPrizeModel1.setIntroduce("introduce1");
+        luxuryPrizeModel1.setCreatedBy("createdBy1");
+        luxuryPrizeModel1.setCreatedTime(new Date());
+        luxuryPrizeModel1.setUpdatedBy("updatedBy1");
+        luxuryPrizeModel1.setUpdatedTime(new Date());
+
+        luxuryPrizeMapper.update(luxuryPrizeModel1);
+        LuxuryPrizeModel luxuryPrizeModelReturn = luxuryPrizeMapper.findById(luxuryPrizeModel1.getId());
+
+        assertEquals(luxuryPrizeModel1.getBrand(),luxuryPrizeModelReturn.getBrand());
+
+        assertEquals(luxuryPrizeModel1.getBrand(),luxuryPrizeModelReturn.getBrand());
+        assertEquals(luxuryPrizeModel1.getName(),luxuryPrizeModelReturn.getName());
+        assertEquals(luxuryPrizeModel1.getPrice(),luxuryPrizeModelReturn.getPrice());
+        assertEquals(luxuryPrizeModel1.getImage(),luxuryPrizeModelReturn.getImage());
+
+    }
+
     private LuxuryPrizeModel fakeLuxuryPrizeModel(){
         LuxuryPrizeModel luxuryPrizeModel = new LuxuryPrizeModel();
         luxuryPrizeModel.setBrand("brand");
         luxuryPrizeModel.setName("name");
-        luxuryPrizeModel.setPrice(1000l);
+        luxuryPrizeModel.setPrice("price");
         luxuryPrizeModel.setImage("image");
         luxuryPrizeModel.setInvestAmount(2000l);
         luxuryPrizeModel.setTenPercentOffInvestAmount(3000l);

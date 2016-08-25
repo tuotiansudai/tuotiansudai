@@ -20,8 +20,8 @@
     </resultMap>
 
     <insert id="create" parameterType="LuxuryPrizeModel" useGeneratedKeys="true" keyProperty="id">
-        insert into travel_prize(name,description,price,image,invest_amount,introduce,created_by,created_time,updated_by,updated_time)
-               value(#{name},#{description},#{price},#{image},#{investAmount},#{introduce},#{createdBy},#{createdTime},#{updatedBy},#{updatedTime})
+        insert into travel_prize(name,price,image,invest_amount,introduce,created_by,created_time,updated_by,updated_time)
+               value(#{name},#{price},#{image},#{investAmount},#{introduce},#{createdBy},#{createdTime},#{updatedBy},#{updatedTime})
     </insert>
     
     <select id="findById" parameterType="long" resultMap="travelPrizeResultMap">
@@ -35,7 +35,6 @@
     <update id="update" parameterType="TravelPrizeModel">
         update travel_prize set
         `name` = #{name},
-        `description` = #{description},
         `price` = #{price},
         `image` = #{image},
         `invest_amount` = #{investAmount},

@@ -71,6 +71,7 @@ public class TravelPrizeService {
         model.setIntroduce(dto.getIntroduce());
         model.setUpdatedBy(loginName);
         model.setUpdatedTime(new Date());
+        model.setIntroduce(dto.getIntroduce());
         travelPrizeMapper.update(model);
     }
 }

@@ -1,7 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'spring-boot'
-
 buildscript {
     repositories {
         jcenter()
@@ -13,15 +12,15 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
     }
 }
-
 repositories {
     jcenter()
     maven { url "http://repo.spring.io/snapshot" }
     maven { url "http://repo.spring.io/milestone" }
     maven { url "http://central.maven.org/maven2/" }
 }
-
 dependencies {
+    def springSecurityVersion = '4.1.1.RELEASE'
+
     compile(project(":ttsd-user-service")) {
         exclude module: 'ttsd-dependency'
     };
@@ -39,6 +38,9 @@ dependencies {
     };
 
     compile project(':ttsd-util'),
+            "org.springframework.security:spring-security-config:$springSecurityVersion",
+            "org.springframework.security:spring-security-taglibs:$springSecurityVersion",
+            'org.springframework.boot:spring-boot-starter-mail',
             "org.springframework.boot:spring-boot-starter-web",
             "org.springframework.boot:spring-boot-configuration-processor",
             "org.springframework.boot:spring-boot-starter-jdbc",
@@ -50,11 +52,8 @@ dependencies {
             'mysql:mysql-connector-java:5.1.39',
             'com.zaxxer:HikariCP:2.4.7',
             'com.google.guava:guava:19.0',
+            'joda-time:joda-time:2.8.1',
             'com.squareup.okhttp:okhttp:2.7.5'
-
-
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-
-
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }

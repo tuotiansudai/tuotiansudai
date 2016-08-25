@@ -42,14 +42,18 @@ public class TravelPrizeController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/travel-prize/{id:^\\d+$}")
-    public ModelAndView getTravelPrize(@PathVariable long id) {
-        return new ModelAndView("/travel-prize", "data", travelPrizeService.getTravelPrize(id));
-    }
-
-    @RequestMapping(path = "/travel-prize", method = RequestMethod.POST)
+    @RequestMapping(path = "/edit", method = RequestMethod.POST)
     public ModelAndView update(@Valid @ModelAttribute TravelPrizeRequestDto dto) {
         travelPrizeService.update(LoginUserInfo.getLoginName(), dto);
         return new ModelAndView("redirect:/activity-console/activity-manage/travel/travel-prize-list");
     }
+
+    @RequestMapping(value = "/{travelPrizeId:^\\d+$}/edit",method = RequestMethod.GET)
+    public ModelAndView editTravelPrize(@PathVariable long travelPrizeId){
+        ModelAndView mv = new ModelAndView("/travel-prize-edit");
+        mv.addObject("dto", travelPrizeService.getTravelPrize(travelPrizeId));
+        return mv;
+    }
+
+
 }

@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="activityCenter" title="活动中心管理">
+<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="activityCenter" title="奢侈品更新">
 
 <div class="col-md-10">
     <div class="panel panel-default">
@@ -32,7 +32,7 @@
                     <td><img src="${item.image}"></td>
                     <td><a href="" target="_blank">查看</a></td>
                     <td>投资满${item.investAmount}</td>
-                    <td><a href="/activity-console/activity-manage/travel/${item.id?c}/edit">更新</a></td>
+                    <td><a href="/activity-console/activity-manage/luxury/${item.id?c}/edit">更新</a></td>
                 </tr>
                 <#else>
                 <tr>

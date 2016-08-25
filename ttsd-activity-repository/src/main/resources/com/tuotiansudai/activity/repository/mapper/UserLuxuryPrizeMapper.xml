@@ -11,14 +11,15 @@
         <result property="prizeId" column="prize_id"/>
         <result property="prize" column="prize"/>
         <result property="loginName" column="login_name"/>
+        <result property="userName" column="user_name"/>
         <result property="mobile" column="mobile"/>
         <result property="investAmount" column="invest_amount"/>
         <result property="createdTime" column="created_time"/>
     </resultMap>
 
     <insert id="create" parameterType="UserLuxuryPrizeModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_luxury_prize(prize_id,prize,login_name,mobile,invest_amount,created_time)
-               value(#{prizeId},#{prize},#{loginName},#{mobile},#{investAmount},#{createdTime})
+        insert into user_luxury_prize(prize_id,prize,login_name,user_name,mobile,invest_amount,created_time)
+               value(#{prizeId},#{prize},#{loginName},#{userName},#{mobile},#{investAmount},#{createdTime})
     </insert>
     
     <select id="findById" parameterType="long" resultMap="userLuxuryPrizeResultMap">

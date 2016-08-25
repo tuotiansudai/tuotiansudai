@@ -1,28 +1,17 @@
 package com.tuotiansudai.console.activity.dto;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.validation.constraints.Pattern;
-import java.io.Serializable;
-
-public class TravelPrizeRequestDto implements Serializable {
+public class TravelPrizeRequestDto {
 
     private long id;
 
-    @NotEmpty
     private String name;
 
-    @NotEmpty
     private String price;
 
-    @NotEmpty
     private String image;
 
-    @NotEmpty
     private String introduce;
 
-    @NotEmpty
-    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String investAmount;
 
     public long getId() {
