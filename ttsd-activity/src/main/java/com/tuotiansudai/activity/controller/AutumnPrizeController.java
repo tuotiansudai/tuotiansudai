@@ -46,7 +46,7 @@ public class AutumnPrizeController {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/autumn-travel", "responsive", true);
         modelAndView.addObject("today", new Date());
-        modelAndView.addObject("amount", AmountConverter.convertCentToString(autumnPrizeService.getTodayTravelInvestAmount(loginName)));
+        modelAndView.addObject("amount", AmountConverter.convertCentToString(autumnPrizeService.getTodayInvestAmount(loginName, "travel")));
         modelAndView.addObject("travelPrize", autumnPrizeService.getTravelPrizeItems());
         modelAndView.addObject("userTravelPrize", autumnPrizeService.getTravelAwardItems(loginName));
         modelAndView.addObject("myTravelPrize", autumnPrizeService.getMyTravelAwardItems(LoginUserInfo.getMobile()));
@@ -68,6 +68,15 @@ public class AutumnPrizeController {
            steps.set(2, 2);
         }
 
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/luxury", method = RequestMethod.GET)
+    public ModelAndView luxuryPrize() {
+        String loginName = LoginUserInfo.getLoginName();
+        ModelAndView modelAndView = new ModelAndView("/activities/autumn-luxury", "responsive", true);
+        modelAndView.addObject("today", new Date());
+        modelAndView.addObject("amount", AmountConverter.convertCentToString(autumnPrizeService.getTodayInvestAmount(loginName, "luxury")));
         return modelAndView;
     }
 

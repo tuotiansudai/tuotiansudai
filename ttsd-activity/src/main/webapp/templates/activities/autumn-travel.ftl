@@ -212,34 +212,14 @@
                 <span class="mobile">
                     <a href="/referrer/refer-list" class="btn-normal">立即邀请好友赢抽奖机会</a>
                 </span>
-
             </div>
         </div>
 
-        <div class="lottery-draw">
-            <div class="fr"></div>
-            <div class="lottery-right fr">
-                <div class="award-box chance-number">我的抽奖机会：1次</div>
-                <div class="award-box chance-list">
-                    <ul class="award-category">
-                        <li class="active"><span>中奖记录</span></li>
-                        <li><span>我的奖品</span></li>
-                    </ul>
-                    <dl class="award-list">
-                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                        <dd>恭喜130****7149抽中了新马泰七日游</dd>
-                    </dl>
-                </div>
-            </div>
+        <div class="lottery-draw fl">
+            <#assign prizeType = 'travel'/>
+            <#include "gift-circle.ftl"/>
         </div>
+
     </div>
 
     <div class="bg-box activity-rule">

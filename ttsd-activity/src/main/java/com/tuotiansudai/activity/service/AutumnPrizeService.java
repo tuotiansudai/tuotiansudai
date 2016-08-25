@@ -42,9 +42,16 @@ public class AutumnPrizeService {
     @Value(value = "activity.autumn.luxury.invest")
     private String activityAutumnLuxuryInvestKey;
 
-    public long getTodayTravelInvestAmount(String loginName) {
+    public long getTodayInvestAmount(String loginName, String type) {
         String secondKey = MessageFormat.format("{0}:{1}", loginName, new DateTime().toString("yyyy-MM-dd"));
-        String invests = redisWrapperClient.hget(this.activityAutumnTravelInvestKey, secondKey);
+        String invests = null;
+        if ("travel".equalsIgnoreCase(type)) {
+            invests = redisWrapperClient.hget(this.activityAutumnTravelInvestKey, secondKey);
+        }
+        if ("luxury".equalsIgnoreCase(type)) {
+            invests = redisWrapperClient.hget(this.activityAutumnLuxuryInvestKey, secondKey);
+        }
+
         long amount = 0;
         if (Strings.isNullOrEmpty(invests)) {
             return amount;

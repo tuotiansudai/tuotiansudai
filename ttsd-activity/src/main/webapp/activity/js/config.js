@@ -33,7 +33,8 @@ var require = {
         'fancybox':staticServer+'/activity/js/libs/jquery.fancybox.min',
         'count_down': staticServer+'/activity/js/count_down',
         'placeholder':staticServer+'/activity/js/libs/jquery.enplaceholder',
-        'superslide': staticServer+'/activity/js/libs/jquery.SuperSlide.2.1.1'
+        'superslide': staticServer+'/activity/js/libs/jquery.SuperSlide.2.1.1',
+        'circle': staticServer+'/activity/js/gift_circle',
     },
     'waitSeconds':0,
     'shim': {
@@ -54,7 +55,8 @@ var require = {
         'rotate':['jquery'],
         'fancybox':['jquery'],
         'placeholder': ['jquery'],
-        'superslide': ['jquery']
+        'superslide': ['jquery'],
+        'circle':['jquery']
     },
     config: {
         text: {
