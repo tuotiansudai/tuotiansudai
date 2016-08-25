@@ -14,14 +14,14 @@ public interface UserLuxuryPrizeMapper {
 
     UserLuxuryPrizeModel findById(long id);
 
-    List<UserLuxuryPrizeModel> getUserLuxuryPrizeList(@Param(value = "mobile") String mobile,
-                                              @Param(value = "startTime") Date startTime,
-                                              @Param(value = "endTime") Date endTime,
-                                              @Param(value = "index") Integer index,
-                                              @Param(value = "pageSize") Integer pageSize);
+    List<UserLuxuryPrizeModel> findByPagination(@Param(value = "mobile") String mobile,
+                                                @Param(value = "startTime") Date startTime,
+                                                @Param(value = "endTime") Date endTime,
+                                                @Param(value = "index") Integer index,
+                                                @Param(value = "pageSize") Integer pageSize);
 
-    long getCountUserLuxuryPrize(@Param(value = "mobile") String mobile,
-                                                      @Param(value = "startTime") Date startTime,
-                                                      @Param(value = "endTime") Date endTime);
+    long countByPagination(@Param(value = "mobile") String mobile,
+                           @Param(value = "startTime") Date startTime,
+                           @Param(value = "endTime") Date endTime);
 
 }

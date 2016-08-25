@@ -26,8 +26,9 @@
         select * from user_luxury_prize where id = #{id}
     </select>
 
-    <select id="getUserLuxuryPrizeList" parameterType="map" resultMap="userLuxuryPrizeResultMap">
-        select * from user_luxury_prize
+    <select id="findByPagination" parameterType="map" resultMap="userLuxuryPrizeResultMap">
+        select *
+        from user_luxury_prize
         <where>
           <if test="mobile !=null and mobile !='' ">
               and mobile = #{mobile}
@@ -40,11 +41,14 @@
           </if>
         </where>
         order by created_time desc, id desc
-        limit #{index}, #{pageSize}
+        <if test="index != null and pageSize != null">
+            limit #{index}, #{pageSize}
+        </if>
     </select>
 
-    <select id="getCountUserLuxuryPrize" parameterType="map" resultType="long">
-        select count(1) from user_luxury_prize
+    <select id="countByPagination" parameterType="map" resultType="long">
+        select count(1)
+        from user_luxury_prize
         <where>
             <if test="mobile !=null and mobile !='' ">
                 and mobile = #{mobile}

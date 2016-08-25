@@ -43,7 +43,7 @@ public class UserLuxuryPrizeMapperTest extends BaseMapperTest{
         UserLuxuryPrizeModel userLuxuryPrizeModel2 = fakeUserLuxuryPrizeModel(luxuryPrizeModel);
         userLuxuryPrizeMapper.create(userLuxuryPrizeModel1);
         userLuxuryPrizeMapper.create(userLuxuryPrizeModel2);
-        List<UserLuxuryPrizeModel> userLuxuryPrizeModels = userLuxuryPrizeMapper.getUserLuxuryPrizeList(userLuxuryPrizeModel1.getMobile(), null, null, 0, 10);
+        List<UserLuxuryPrizeModel> userLuxuryPrizeModels = userLuxuryPrizeMapper.findByPagination(userLuxuryPrizeModel1.getMobile(), null, null, 0, 10);
         assertEquals(2,userLuxuryPrizeModels.size());
         assertEquals(userLuxuryPrizeModels.get(1).getId(), userLuxuryPrizeModel1.getId());
         assertEquals(userLuxuryPrizeModels.get(1).getMobile(), userLuxuryPrizeModel1.getMobile());
@@ -59,7 +59,7 @@ public class UserLuxuryPrizeMapperTest extends BaseMapperTest{
         luxuryPrizeMapper.create(luxuryPrizeModel);
         UserLuxuryPrizeModel userLuxuryPrizeModel1 = fakeUserLuxuryPrizeModel(luxuryPrizeModel);
         userLuxuryPrizeMapper.create(userLuxuryPrizeModel1);
-        List<UserLuxuryPrizeModel> userLuxuryPrizeModels = userLuxuryPrizeMapper.getUserLuxuryPrizeList(userLuxuryPrizeModel1.getMobile(),new DateTime(2016,7,30,0,0,0).toDate(),new DateTime(2016,7,30,0,0,0).toDate(),0,10);
+        List<UserLuxuryPrizeModel> userLuxuryPrizeModels = userLuxuryPrizeMapper.findByPagination(userLuxuryPrizeModel1.getMobile(),new DateTime(2016,7,30,0,0,0).toDate(),new DateTime(2016,7,30,0,0,0).toDate(),0,10);
         assertEquals(1,userLuxuryPrizeModels.size());
         assertEquals(userLuxuryPrizeModels.get(0).getId(), userLuxuryPrizeModel1.getId());
         assertEquals(userLuxuryPrizeModels.get(0).getMobile(), userLuxuryPrizeModel1.getMobile());
