@@ -6,14 +6,14 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
-    <resultMap id="travelPrizeResultMap" type="travelPrizeModel">
+    <resultMap id="travelPrizeResultMap" type="TravelPrizeModel">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="description" column="description"/>
         <result property="price" column="price"/>
         <result property="image" column="image"/>
         <result property="investAmount" column="invest_amount"/>
-        <result property="introduce" column="introduce"/>
+        <result property="introduce" column="introduce" typeHandler="com.tuotiansudai.activity.repository.mybatis.StringListTypeHandler"/>
         <result property="createdBy" column="created_by"/>
         <result property="createdTime" column="created_time"/>
         <result property="updatedBy" column="updated_by"/>
@@ -22,12 +22,27 @@
 
     <insert id="create" parameterType="LuxuryPrizeModel" useGeneratedKeys="true" keyProperty="id">
         insert into travel_prize(name,description,price,image,invest_amount,introduce,created_by,created_time,updated_by,updated_time)
-               value(#{name},#{description},#{price},#{image},#{investAmount},#{introduce},#{createdBy},#{createdTime},#{updatedBy},#{updatedTime})
+               value(#{name},#{description},#{price},#{image},#{investAmount},#{introduce, typeHandler=com.tuotiansudai.activity.repository.mybatis.StringListTypeHandler},#{createdBy},#{createdTime},#{updatedBy},#{updatedTime})
     </insert>
     
     <select id="findById" parameterType="long" resultMap="travelPrizeResultMap">
         select * from travel_prize where id = #{id}
     </select>
 
+    <select id="findAll" resultMap="travelPrizeResultMap">
+        select * from travel_prize
+    </select>
 
+    <update id="update" parameterType="TravelPrizeModel">
+        update travel_prize set
+        `name` = #{name},
+        `description` = #{description},
+        `price` = #{price},
+        `image` = #{image},
+        `invest_amount` = #{investAmount},
+        `introduce` = #{introduce, typeHandler=com.tuotiansudai.activity.repository.mybatis.StringListTypeHandler},
+        `updated_by` = #{updatedBy},
+        `updated_time` = #{updatedTime}
+        where id = #{id}
+    </update>
 </mapper>

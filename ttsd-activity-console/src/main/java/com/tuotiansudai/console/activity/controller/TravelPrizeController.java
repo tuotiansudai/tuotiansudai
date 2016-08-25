@@ -1,23 +1,31 @@
 package com.tuotiansudai.console.activity.controller;
 
+import com.tuotiansudai.console.activity.dto.TravelPrizeRequestDto;
 import com.tuotiansudai.console.activity.service.TravelPrizeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.Date;
 
 @Controller
-@RequestMapping(path = "/activity-manage/travel")
+@RequestMapping(path = "/activity-console/activity-manage/travel")
 public class TravelPrizeController {
 
     @Autowired
     private TravelPrizeService travelPrizeService;
+
+    @RequestMapping(path = "/travel-prize-list")
+    public ModelAndView getTravelPrizeList() {
+        BaseDto<BasePaginationDataDto> dto = travelPrizeService.getTravelPrizeItems();
+        return new ModelAndView("/travel-prize-list", "data", dto);
+    }
 
     @RequestMapping(path = "/user-travel-list")
     public ModelAndView getAwardItems(@RequestParam(value = "mobile", defaultValue = "", required = false) String mobile,
@@ -32,5 +40,16 @@ public class TravelPrizeController {
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
         return modelAndView;
+    }
+
+    @RequestMapping(path = "/travel-prize/{id:^\\d+$}")
+    public ModelAndView getTravelPrize(@PathVariable long id) {
+        return new ModelAndView("/travel-prize", "data", travelPrizeService.getTravelPrize(id));
+    }
+
+    @RequestMapping(path = "/travel-prize", method = RequestMethod.POST)
+    public ModelAndView update(@Valid @ModelAttribute TravelPrizeRequestDto dto) {
+        travelPrizeService.update(LoginUserInfo.getLoginName(), dto);
+        return new ModelAndView("redirect:/activity-console/activity-manage/travel/travel-prize-list");
     }
 }

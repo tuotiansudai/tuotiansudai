@@ -1,13 +1,10 @@
 package com.tuotiansudai.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class SmsDataDto extends BaseDataDto {
 
     private boolean isRestricted;
 
-    @JsonProperty(value = "isRestricted")
-    public boolean isRestricted() {
+    public boolean getIsRestricted() {
         return isRestricted;
     }
 

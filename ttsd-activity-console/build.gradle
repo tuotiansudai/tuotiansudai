@@ -46,6 +46,7 @@ dependencies {
             "org.springframework.boot:spring-boot-starter-security",
             "org.springframework.boot:spring-boot-starter-redis",
             "org.springframework.boot:spring-boot-starter-freemarker",
+            "org.springframework.security:spring-security-taglibs:4.1.1.RELEASE",
             "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1",
             'mysql:mysql-connector-java:5.1.39',
             'com.zaxxer:HikariCP:2.4.7',
