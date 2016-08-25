@@ -57,5 +57,4 @@ public class RegisterAccountController {
         baseDto.setData(dataDto);
         return baseDto;
     }
-
 }
