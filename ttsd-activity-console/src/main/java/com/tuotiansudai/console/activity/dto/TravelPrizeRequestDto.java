@@ -13,13 +13,13 @@ public class TravelPrizeRequestDto implements Serializable {
     private String name;
 
     @NotEmpty
-    private String description;
-
-    @NotEmpty
     private String price;
 
     @NotEmpty
     private String image;
+
+    @NotEmpty
+    private String introduce;
 
     @NotEmpty
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
@@ -41,14 +41,6 @@ public class TravelPrizeRequestDto implements Serializable {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getPrice() {
         return price;
     }
@@ -63,6 +55,14 @@ public class TravelPrizeRequestDto implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
     }
 
     public String getInvestAmount() {

@@ -34,12 +34,11 @@ public class TravelPrizeMapperTest extends BaseMapperTest{
 
     private TravelPrizeModel fakeTravelPrizeModel(){
         TravelPrizeModel travelPrizeModel = new TravelPrizeModel();
-        travelPrizeModel.setDescription("brand");
         travelPrizeModel.setName("name");
         travelPrizeModel.setPrice("1000");
         travelPrizeModel.setImage("image");
         travelPrizeModel.setInvestAmount(2000l);
-        travelPrizeModel.setIntroduce(Lists.newArrayList("introduce"));
+        travelPrizeModel.setIntroduce("introduce");
         travelPrizeModel.setCreatedBy("createdBy");
         travelPrizeModel.setCreatedTime(new Date());
         travelPrizeModel.setUpdatedBy("updatedBy");

@@ -3,19 +3,19 @@ package com.tuotiansudai.activity.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserLuxuryPrizeModel implements Serializable{
-
-    private static final long serialVersionUID = 7365763763324921833L;
+public class UserLuxuryPrizeModel implements Serializable {
 
     private long id;
 
     private long prizeId;
 
-    private long prize;
+    private String prize;
 
     private String loginName;
 
     private String mobile;
+
+    private String userName;
 
     private long investAmount;
 
@@ -37,6 +37,14 @@ public class UserLuxuryPrizeModel implements Serializable{
         this.prizeId = prizeId;
     }
 
+    public String getPrize() {
+        return prize;
+    }
+
+    public void setPrize(String prize) {
+        this.prize = prize;
+    }
+
     public String getLoginName() {
         return loginName;
     }
@@ -53,6 +61,14 @@ public class UserLuxuryPrizeModel implements Serializable{
         this.mobile = mobile;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public long getInvestAmount() {
         return investAmount;
     }
@@ -67,13 +83,5 @@ public class UserLuxuryPrizeModel implements Serializable{
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
-    }
-
-    public long getPrize() {
-        return prize;
-    }
-
-    public void setPrize(long prize) {
-        this.prize = prize;
     }
 }

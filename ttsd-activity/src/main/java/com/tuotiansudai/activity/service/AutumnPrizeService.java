@@ -4,7 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.dto.TravelPrizeDto;
-import com.tuotiansudai.activity.dto.UserTravelPrizePaginationItemDto;
+import com.tuotiansudai.activity.dto.UserPrizePaginationItemDto;
 import com.tuotiansudai.activity.repository.mapper.TravelPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.UserTravelPrizeMapper;
 import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
@@ -22,7 +22,7 @@ import java.text.MessageFormat;
 import java.util.List;
 
 @Service
-public class TravelPrizeService {
+public class AutumnPrizeService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -76,26 +76,26 @@ public class TravelPrizeService {
         });
     }
 
-    public List<UserTravelPrizePaginationItemDto> getTravelAwardItems(final String loginName) {
+    public List<UserPrizePaginationItemDto> getTravelAwardItems(final String loginName) {
         List<UserTravelPrizeModel> models = userTravelPrizeMapper.findByPagination(null, null, null, null, null);
 
-        return Lists.transform(models, new Function<UserTravelPrizeModel, UserTravelPrizePaginationItemDto>() {
+        return Lists.transform(models, new Function<UserTravelPrizeModel, UserPrizePaginationItemDto>() {
             @Override
-            public UserTravelPrizePaginationItemDto apply(UserTravelPrizeModel input) {
+            public UserPrizePaginationItemDto apply(UserTravelPrizeModel input) {
                 if (!input.getLoginName().equalsIgnoreCase(loginName)) {
                     input.setMobile(MobileEncoder.encode(input.getMobile()));
                 }
-                return new UserTravelPrizePaginationItemDto(input);
+                return new UserPrizePaginationItemDto(input);
             }
         });
     }
 
-    public List<UserTravelPrizePaginationItemDto> getMyTravelAwardItems(final String mobile) {
+    public List<UserPrizePaginationItemDto> getMyTravelAwardItems(final String mobile) {
         List<UserTravelPrizeModel> models = userTravelPrizeMapper.findByPagination(mobile, null, null, null, null);
-        return Lists.transform(models, new Function<UserTravelPrizeModel, UserTravelPrizePaginationItemDto>() {
+        return Lists.transform(models, new Function<UserTravelPrizeModel, UserPrizePaginationItemDto>() {
             @Override
-            public UserTravelPrizePaginationItemDto apply(UserTravelPrizeModel input) {
-                return new UserTravelPrizePaginationItemDto(input);
+            public UserPrizePaginationItemDto apply(UserTravelPrizeModel input) {
+                return new UserPrizePaginationItemDto(input);
             }
         });
     }

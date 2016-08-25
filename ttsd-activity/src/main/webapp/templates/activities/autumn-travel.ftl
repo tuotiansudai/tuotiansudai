@@ -37,7 +37,7 @@
                         <div class="pk-title">投资满${prize.investAmount}元即可获得</div>
                         <div class="img-info">
                             <img src="${staticServer}/activity/images/autumn-tour/p01.png">
-                            <span class="kind-text">${prize.name}${prize.description}</span>
+                            <span class="kind-text">${prize.name}</span>
                             <div class="kind-bottom">
                                 <span class="fl">价值<em>${prize.price}</em>元</span>
                                 <a href="/activity/autumn/travel/invest" class="fr btn-normal">立即投资</a>
