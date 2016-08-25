@@ -226,7 +226,7 @@ $width:700px;
         width:340px;
         background:#6150a9;
         border-top: none;
-        height: 350px;
+        height: 310px;
         overflow: hidden;
         @media (max-width:$width) {
           width:100%;
@@ -235,7 +235,7 @@ $width:700px;
           float:left;
           display:none;
           width:276px;
-          height:480px;
+          height:300px;
           @media (max-width:$width) {
             width:100%;
           }
@@ -244,7 +244,6 @@ $width:700px;
           }
           &.user-record{
             padding:10px 30px;
-            height: 330px;
             @media (max-width:$width) {
               padding:10px 0;
             }
@@ -258,7 +257,6 @@ $width:700px;
           }
           &.own-record{
             padding:10px 30px;
-            height: 330px;
             overflow:hidden;
             overflow-y:scroll;
             @media (max-width:$width) {

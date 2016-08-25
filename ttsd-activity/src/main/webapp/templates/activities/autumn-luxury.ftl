@@ -239,26 +239,26 @@
             <div class="step-list">
                 <h5>活动期间，新用户在平台完成注册、实名认证、绑卡、充值、投资均可获得一次抽奖机会。</h5>
                 <ul class="step-icon">
-                    <li class="finished">
+                    <li class="<#if userInfo.registerStatus == 'UNFINISHED'>active<#elseif userInfo.registerStatus == 'COMPLETE'>finished</#if>">
                         <div class="icon user-icon"></div>
                         <div class="icon-text">去注册</div>
                     </li>
-                    <li class="active">
+                    <li class="<#if userInfo.certificationStatus == 'UNFINISHED'>active<#elseif userInfo.certificationStatus == 'COMPLETE'>finished</#if>">
                         <div class="icon vali-icon"></div>
                         <div class="icon-text">去认证</div>
                         <div class="step-icon"></div>
                     </li>
-                    <li class="active">
+                    <li class="<#if userInfo.bindCardStatus == 'UNFINISHED'>active<#elseif userInfo.bindCardStatus == 'COMPLETE'>finished</#if>">
                         <div class="icon card-icon"></div>
                         <div class="icon-text">绑卡</div>
                         <div class="step-icon"></div>
                     </li>
-                    <li class="active">
+                    <li class="<#if userInfo.rechargeStatus == 'UNFINISHED'>active<#elseif userInfo.rechargeStatus == 'COMPLETE'>finished</#if>">
                         <div class="icon money-icon"></div>
                         <div class="icon-text">充值</div>
                         <div class="step-icon"></div>
                     </li>
-                    <li class="active">
+                    <li class="<#if userInfo.investStatus == 'UNFINISHED'>active<#elseif userInfo.investStatus == 'COMPLETE'>finished</#if>">
                         <div class="icon loan-icon"></div>
                         <div class="icon-text">投资</div>
                         <div class="step-icon"></div>

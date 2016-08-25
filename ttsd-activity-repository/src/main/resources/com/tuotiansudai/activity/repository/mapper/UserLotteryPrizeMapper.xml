@@ -22,13 +22,13 @@
     </resultMap>
 
     <insert id="create" parameterType="userLotteryPrizeModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `activity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`prize`,`lottery_time`)
+        INSERT INTO `edxactivity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`prize`,`lottery_time`)
         VALUES(#{id},#{mobile},#{login_name},#{prize},#{lotteryTime});
 
     </insert>
 
     <update id="update" parameterType="userLotteryPrizeModel">
-        UPDATE `activity`.`user_lottery_prize`
+        UPDATE `edxactivity`.`user_lottery_prize`
         SET
         `id` = #{id},
         `mobile` = #{mobile},
@@ -39,7 +39,7 @@
     </update>
 
     <select id="findUserLotteryPrizeViews" parameterType="map" resultMap="userLotteryPrizeView">
-        select p.lottery_time,p.mobile,a.user_name,p.prize from `activity`.`user_lottery_prize` p join aa.account a on p.login_name = a.login_name
+        select p.lottery_time,p.mobile,a.user_name,p.prize from `edxactivity`.`user_lottery_prize` p join aa.account a on p.login_name = a.login_name
         <where>
             <if test="mobile !=null and mobile !='' ">
                 and p.mobile like '${mobile}%'
@@ -59,7 +59,7 @@
     </select>
 
     <select id="findUserLotteryPrizeCountViews" parameterType="map" resultType="int">
-        select count(1) from `activity`.`user_lottery_prize` p
+        select count(1) from `edxactivity`.`user_lottery_prize` p
         <where>
             <if test="mobile !=null and mobile !='' ">
                 and p.mobile like '${mobile}%'
@@ -74,6 +74,16 @@
                 <![CDATA[ and p.lottery_time <= #{endTime} ]]>
             </if>
         </where>
+    </select>
+
+    <select id="findLotteryPrizeByMobile" parameterType="map" resultMap="userLotteryPrizeView">
+        select lottery_time,mobile,prize from `edxactivity`.`user_lottery_prize`
+        <where>
+            <if test="mobile !=null and mobile !='' ">
+                and mobile = '${mobile}'
+            </if>
+        </where>
+        order by lottery_time DESC
     </select>
 
 </mapper>

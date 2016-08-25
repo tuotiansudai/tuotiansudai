@@ -1,5 +1,5 @@
 BEGIN;
-CREATE TABLE `activity`.`user_lottery_prize` (
+CREATE TABLE `edxactivity`.`user_lottery_prize` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `mobile` VARCHAR(18) NOT NULL,
   `login_name` VARCHAR(25) NOT NULL,

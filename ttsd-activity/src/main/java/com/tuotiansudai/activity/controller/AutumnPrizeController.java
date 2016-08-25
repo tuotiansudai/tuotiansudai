@@ -3,6 +3,7 @@ package com.tuotiansudai.activity.controller;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.service.AutumnPrizeService;
+import com.tuotiansudai.activity.service.LotteryActivityService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
@@ -39,6 +40,9 @@ public class AutumnPrizeController {
 
     @Autowired
     private BindBankCardService bindBankCardService;
+
+    @Autowired
+    private LotteryActivityService lotteryActivityService;
 
 
     @RequestMapping(path = "/travel", method = RequestMethod.GET)
@@ -77,6 +81,7 @@ public class AutumnPrizeController {
         ModelAndView modelAndView = new ModelAndView("/activities/autumn-luxury", "responsive", true);
         modelAndView.addObject("today", new Date());
         modelAndView.addObject("amount", AmountConverter.convertCentToString(autumnPrizeService.getTodayInvestAmount(loginName, "luxury")));
+        modelAndView.addObject("userInfo",lotteryActivityService.findUserLotteryByLoginName("18888376666"));
         return modelAndView;
     }
 

@@ -22,7 +22,7 @@ public class UserLotteryDto extends BaseDataDto {
 
     public UserLotteryDto(int lotteryTime,ActivityTaskStatus activityTaskStatus) {
         this.lotteryTime = lotteryTime;
-        this.rechargeStatus = activityTaskStatus;
+        this.registerStatus = activityTaskStatus;
         this.certificationStatus = activityTaskStatus;
         this.bindCardStatus = activityTaskStatus;
         this.rechargeStatus = activityTaskStatus;
@@ -49,7 +49,9 @@ public class UserLotteryDto extends BaseDataDto {
         return certificationStatus;
     }
 
-    public void setCertificationStatus(ActivityTaskStatus certificationStatus) { this.certificationStatus = certificationStatus; }
+    public void setCertificationStatus(ActivityTaskStatus certificationStatus) {
+        this.certificationStatus = certificationStatus;
+    }
 
     public ActivityTaskStatus getBindCardStatus() {
         return bindCardStatus;

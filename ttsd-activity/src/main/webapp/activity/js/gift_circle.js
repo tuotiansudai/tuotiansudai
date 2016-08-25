@@ -22,51 +22,61 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
     //td click
     $pointer.on('click', function(event) {
         event.preventDefault();
-        var $self = $(this),
-            isLogin = $self.attr('data-islogin');
-        if (isLogin != 'true') {
-            $('#tipList').show();
-            $('#noLogin').show();
-        } else {
+
             if (bRotate) return;
             $.ajax({
-                    url: '/activity/draw-tiandou',
+                    url: '/activity/draw-lottery',
                     type: 'POST',
                     dataType: 'json'
                 })
                 .done(function(res) {
+                    console.log(res);
                     if (res.data.returnCode == 0) {
-                        var item = res.data.tianDouPrize;
+                        var item = res.data.lotteryPrize;
                         switch (item) {
-                            case 'Cash20':
-                                rotateFn(0, 56, '20元现金');
+                            case 'INTEREST_COUPON_2':
+                                rotateFn(0, 56, '0.2加息券');
                                 break;
-                            case 'Iphone6s':
-                                rotateFn(1, 120, 'iPhone 6s Plus');
+                            case 'LUXURY':
+                                rotateFn(0, 56, '奢侈品大奖');
                                 break;
-                            case 'JingDong300':
-                                rotateFn(2, 200, '300元京东购物卡');
+                            case 'RED_ENVELOPE_100':
+                                rotateFn(1, 120, '100元现金红包');
                                 break;
-                            case 'InterestCoupon5':
-                                rotateFn(3, 260, '0.5%加息券');
+                            case 'INTEREST_COUPON_5':
+                                rotateFn(2, 200, '0.5加息券');
                                 break;
-                            case 'MacBook':
-                                rotateFn(4, 337, 'MacBook Air');
+                            case 'RED_ENVELOPE_50':
+                                rotateFn(3, 260, '50元现金红包');
+                                break;
+                            case 'PORCELAIN_CUP':
+                                rotateFn(4, 337, '青花瓷杯子');
                                 break;
                         }
-                    } else if (res.data.returnCode == 1) {
-                        $('#tipList').show();
-                        $('#TDnoUse').show();
+                    } else if (res.data.returnCode == 2) {
+                        $('#tipList').html(tpl('tipListTpl', {tiptext:res.data.message})).show().find('.tip-dom').show();
                     } else {
-                        $('#tipList').show();
-                        $('#noLogin').show();
+                        $('#tipList').html(tpl('tipListTpl', {tiptext:res.data.message})).show().find('.tip-dom').show();
                     }
                 })
                 .fail(function() {
                     layer.msg('请求失败');
                 });
-        }
     });
+
+    function rotateFn(awards, angles, txt) {
+        bRotate = !bRotate;
+        $('#rotate').stopRotate();
+        $('#rotate').rotate({
+            angle: 0,
+            animateTo: angles + 1800,
+            duration: 8000,
+            callback: function() {
+                $('#tipList').html(tpl('tipListTpl', {tiptext:'恭喜你抽中了'+txt})).show().find('.tip-dom').show();
+                bRotate = !bRotate;
+            }
+        })
+    }
     //close btn
     $('body').on('click', '.go-close', function(event) {
         event.preventDefault();
@@ -77,51 +87,21 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         $tipDom.hide();
     });
 
-    function rotateFn(awards, angles, txt) {
-        bRotateTd = !bRotateTd;
-        $('#rotateTd').stopRotate();
-        $('#rotateTd').rotate({
-            angle: 0,
-            animateTo: angles + 1800,
-            duration: 8000,
-            callback: function() {
-                $('#tipList').show();
-                PcDataGet();
-                switch (awards) {
-                    case 0:
-                        $('#twentyRMB').show();
-                        break;
-                    case 1:
-                        $('#iphone6s').show();
-                        break;
-                    case 2:
-                        $('#jdCard').show();
-                        break;
-                    case 3:
-                        $('#jiaxi').show();
-                        break;
-                    case 4:
-                        $('#macbookAir').show();
-                        break;
-                }
-                bRotateTd = !bRotateTd;
-            }
-        })
-    }
+
     //scroll award record list
     var scrollTimer;
-    $(".scroll-record").hover(function() {
+    $(".user-record").hover(function() {
         clearInterval(scrollTimer);
     }, function() {
         scrollTimer = setInterval(function() {
-            scrollNews($(".scroll-record"));
+            scrollNews($("#recordList"));
         }, 2000);
     }).trigger("mouseout");
 
     function scrollNews(obj) {
         var $self = obj.find("ul.user-record");
         var lineHeight = $self.find("li:first").height();
-        if ($self.find('li').length > 15) {
+        if ($self.find('li').length > 10) {
             $self.animate({
                 "margin-top": -lineHeight + "px"
             }, 600, function() {
@@ -132,42 +112,35 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         }
     }
 
-    function rankList(){
+    var rankList=function (){
         $.ajax({
             url: '/activity/getTianDouTop15',
             type: 'POST',
             dataType: 'json'
         })
         .done(function(data) {
-            var list={rank:data};
-            $('#rankList').html(tpl('rankListTpl', list));
+            $('#rankList').html(tpl('rankListTpl', data));
         });
-    }
-    function GiftRecord(){
+    };
+    var GiftRecord=function (){
         $.ajax({
-            url: '/activity/getTianDouPrizeList',
+            url: '/activity/lottery-all-record',
             type: 'POST',
             dataType: 'json'
         })
         .done(function(data) {
-            $('#GiftRecord').html(tpl('GiftRecordTpl', data));
+            $('#GiftRecord').html(tpl('GiftRecordTpl', {record:data}));
         });
-    }
+    }();
     
-    function MyGift(){
+    var MyGift=function (){
         $.ajax({
-            url: '/activity/getMyTianDouPrize',
+            url: '/activity/lottery-record-list',
             type: 'POST',
             dataType: 'json'
         })
         .done(function(data) {
-            var list={tdmygift:data};
-            $('#MyGift').html(tpl('MyGiftTpl', list));
+            $('#MyGift').html(tpl('MyGiftTpl', {gift:data}));
         });
-    }
-    function PcDataGet(){
-        rankList();
-        GiftRecord();
-        MyGift();
-    }
+    }();
 });
