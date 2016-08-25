@@ -175,11 +175,11 @@ if($questionDetailTag.length) {
         $toAnswerBox.toggle();
     });
 
-    $formAnswer.find('input.captcha').on('blur',function() {
+    $formAnswer.find('input.captcha').on('keyup', function () {
         $(this).checkFrom();
     });
 
-    $formAnswer.find('textarea.answer').on('blur',function() {
+    $formAnswer.find('textarea.answer').on('keyup', function () {
         $(this).checkFrom();
     });
 
@@ -277,7 +277,7 @@ if($createQuestion.length) {
         $(this).checkFrom();
     });
 
-    $captcha.on('blur',function() {
+    $captcha.on('keyup', function () {
         $(this).checkFrom();
     });
 

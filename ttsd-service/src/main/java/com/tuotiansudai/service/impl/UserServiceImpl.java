@@ -14,17 +14,13 @@ import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.PrepareUserMapper;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.MyAuthenticationManager;
-import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
+import com.tuotiansudai.util.RandomStringGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -96,10 +92,7 @@ public class UserServiceImpl implements UserService {
 
     public static String SHA = "SHA";
 
-    @Autowired
-    private IdGenerator idGenerator;
-
-    private final static String LOGIN_NAME = "user-{0}";
+    private final static int LOGIN_NAME_LENGTH = 8;
 
     @Override
     public String getMobile(String loginName) {
@@ -136,12 +129,21 @@ public class UserServiceImpl implements UserService {
             loginName = dto.getLoginName();
             loginNameIsExist = this.loginNameIsExist(loginName);
         } else {
-            loginName = MessageFormat.format(LOGIN_NAME, String.valueOf(idGenerator.generate()));
+            int count = 0;
+            loginName = RandomStringGenerator.generate(LOGIN_NAME_LENGTH);
+            while (loginNameIsExist(loginName)) {
+                loginName = RandomStringGenerator.generate(LOGIN_NAME_LENGTH);
+                ++count;
+                if (count > 20) {
+                    logger.debug(MessageFormat.format("[UserServiceImpl][registerUser] generate loginName failed! mobile:{0}", dto.getMobile()));
+                    return false;
+                }
+            }
             dto.setLoginName(loginName);
         }
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
         PrepareUserModel prepareUserModel = prepareUserMapper.findByMobile(dto.getMobile());
-        if(prepareUserModel != null){
+        if (prepareUserModel != null) {
             dto.setReferrer(prepareUserModel.getReferrerMobile());
         }
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameOrMobileIsExist(dto.getReferrer());
