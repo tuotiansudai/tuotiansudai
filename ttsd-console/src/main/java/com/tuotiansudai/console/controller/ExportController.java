@@ -69,6 +69,12 @@ public class ExportController {
     @Autowired
     RechargeService rechargeService;
 
+    @Autowired
+    WithdrawService withdrawService;
+
+    @Autowired
+    private UserBillService userBillService;
+
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public void exportCoupons(HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.CouponHeader.getDescription());
@@ -249,6 +255,48 @@ public class ExportController {
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleRecharge, rechargeData, response.getOutputStream());
 
     }
+
+    @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
+    public void exportWithdraw(@RequestParam(value = "withdrawId", required = false) String withdrawId,
+                               @RequestParam(value = "mobile", required = false) String mobile,
+                               @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
+                               @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                               @RequestParam(value = "status", required = false) WithdrawStatus status,
+                               @RequestParam(value = "source", required = false) Source source, HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.ConsoleWithdraw.getDescription());
+        int index = 1;
+        int pageSize = Integer.MAX_VALUE;
+        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = withdrawService.findWithdrawPagination(withdrawId, mobile, status, source, index, pageSize, startTime, endTime);
+        List<List<String>> withdrawData = exportService.buildWithdraw(baseDto.getData().getRecords());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleWithdraw, withdrawData, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/user-funds", method = RequestMethod.GET)
+    public void exportUserFunds(@RequestParam(value = "userBillBusinessType", required = false) UserBillBusinessType userBillBusinessType,
+                                @RequestParam(value = "userBillOperationType", required = false) UserBillOperationType userBillOperationType,
+                                @RequestParam(value = "mobile", required = false) String mobile,
+                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
+                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime, HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.ConsoleUserFundsCsvHeader.getDescription());
+        int index = 1;
+        int pageSize = Integer.MAX_VALUE;
+        List<UserBillPaginationView> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, mobile, startTime, endTime, index, pageSize);
+        List<List<String>> userFundsData = exportService.buildUserFunds(userBillModels);
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUserFundsCsvHeader, userFundsData, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/account-balance", method = RequestMethod.GET)
+    public void exportAccountBalance(@RequestParam(value = "mobile", required = false) String mobile,
+                                     @RequestParam(value = "balanceMin", required = false) String balanceMin,
+                                     @RequestParam(value = "balanceMax", required = false) String balanceMax, HttpServletResponse response) throws IOException {
+        fillExportResponse(response, CsvHeaderType.AccountBalance.getDescription());
+        int index = 1;
+        int pageSize = Integer.MAX_VALUE;
+        List<UserItemDataDto> dataDtos = userServiceConsole.findUsersAccountBalance(mobile, balanceMin, balanceMax, index, pageSize);
+        List<List<String>> accountBalanceData = exportService.buildAccountBalance(dataDtos);
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.AccountBalance, accountBalanceData, response.getOutputStream());
+    }
+
 
     private void fillExportResponse(HttpServletResponse httpServletResponse, String csvHeader) {
         httpServletResponse.setCharacterEncoding("UTF-8");

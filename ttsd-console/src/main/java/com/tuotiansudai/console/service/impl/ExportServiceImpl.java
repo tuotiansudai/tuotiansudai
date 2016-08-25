@@ -407,4 +407,68 @@ public class ExportServiceImpl implements ExportService {
         }
         return rows;
     }
+
+    @Override
+    public List<List<String>> buildWithdraw(List<WithdrawPaginationItemDataDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (WithdrawPaginationItemDataDto record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(new BigDecimal(record.getWithdrawId()).toString());
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(new DateTime(record.getApplyNotifyTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(new DateTime(record.getNotifyTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(record.getLoginName());
+            row.add(record.isStaff() ? "是" : "否");
+            row.add(record.getUserName());
+            row.add(record.getMobile());
+            row.add(record.getAmount());
+            row.add(record.getFee());
+            row.add(record.getBankCard());
+            row.add(record.getStatus());
+            row.add(record.getSource().name());
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildUserFunds(List<UserBillPaginationView> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (UserBillPaginationView record : records) {
+            List<String> row = Lists.newArrayList();
+            DateTime dateTime = new DateTime(record.getCreatedTime());
+            row.add(dateTime.toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(String.valueOf(record.getId()));
+            row.add(record.getLoginName());
+            row.add(record.isStaff() ? "是" : "否");
+            row.add(record.getUserName());
+            row.add(record.getMobile());
+            row.add(record.getOperationType().getDescription());
+            row.add(record.getBusinessType().getDescription());
+            row.add(String.valueOf(new BigDecimal(record.getAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            row.add(String.valueOf(new BigDecimal(record.getBalance()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            row.add(String.valueOf(new BigDecimal(record.getFreeze()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildAccountBalance(List<UserItemDataDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (UserItemDataDto record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(record.getLoginName());
+            row.add(record.isStaff() ? "是" : "否");
+            row.add(record.getUserName());
+            row.add(record.getMobile());
+            row.add(record.getBirthday() != null ? record.getBirthday() : "");
+            row.add(record.getProvince() != null ? record.getProvince() : "");
+            row.add(record.getCity() != null ? record.getCity() : "");
+            row.add(record.getLastBillTime() != null ? new DateTime(record.getLastBillTime()).toString("yyyy-MM-dd HH:mm:ss") : "");
+            row.add(record.getBalance());
+            rows.add(row);
+        }
+        return rows;
+    }
 }

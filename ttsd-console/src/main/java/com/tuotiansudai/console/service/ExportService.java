@@ -4,6 +4,7 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
+import com.tuotiansudai.repository.model.UserBillPaginationView;
 
 import java.util.List;
 
@@ -38,4 +39,10 @@ public interface ExportService {
     List<List<String>> buildInvests(List<InvestPaginationItemDataDto> records);
 
     List<List<String>> buildRecharge(List<RechargePaginationItemDataDto> records);
+
+    List<List<String>> buildWithdraw(List<WithdrawPaginationItemDataDto> records);
+
+    List<List<String>> buildUserFunds(List<UserBillPaginationView> records);
+
+    List<List<String>> buildAccountBalance(List<UserItemDataDto> dataDtos);
 }
