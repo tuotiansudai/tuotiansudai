@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -111,6 +112,21 @@ public class InvestServiceImpl implements InvestService {
 
     @Value(value = "${web.newbie.invest.limit}")
     private int newbieInvestLimit;
+
+    @Value(value = "${activity.autumn.invest.channel}")
+    private String activityAutumnInvestChannelKey;
+
+    @Value(value = "activity.autumn.travel.invest")
+    private String activityAutumnTravelInvestKey;
+
+    @Value(value = "activity.autumn.luxury.invest")
+    private String activityAutumnLuxuryInvestKey;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
+    private Date activityAutumnStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.endTime}\")}")
+    private Date activityAutumnEndTime;
 
     @Override
     @Transactional
@@ -482,6 +498,32 @@ public class InvestServiceImpl implements InvestService {
         investMapper.update(investModel);
 
         this.investAchievementService.awardAchievement(investModel);
+
+        this.calculateActivityAutumnInvest(investModel);
+    }
+
+    private void calculateActivityAutumnInvest(InvestModel investModel) {
+        try {
+            if (investModel.getCreatedTime().before(this.activityAutumnStartTime) || investModel.getCreatedTime().after(this.activityAutumnEndTime)) {
+                return;
+            }
+            String channel = redisWrapperClient.hget(this.activityAutumnInvestChannelKey, investModel.getLoginName());
+            String secondKey = MessageFormat.format("{0}:{1}", investModel.getLoginName(), new DateTime(investModel.getCreatedTime()).toString("yyyy-MM-dd"));
+
+            if (!Strings.isNullOrEmpty(channel) && channel.equalsIgnoreCase("travel")) {
+                String investList = redisWrapperClient.hget(this.activityAutumnTravelInvestKey, secondKey);
+                investList = Strings.isNullOrEmpty(investList) ? String.valueOf(investModel.getId()) : MessageFormat.format("{0}|{1}", investList, String.valueOf(investModel.getId()));
+                redisWrapperClient.hset(this.activityAutumnTravelInvestKey, secondKey, investList, 3600 * 24 * 60);
+            }
+
+            if (!Strings.isNullOrEmpty(channel) && channel.equalsIgnoreCase("luxury")) {
+                String investList = redisWrapperClient.hget(this.activityAutumnLuxuryInvestKey, secondKey);
+                investList = Strings.isNullOrEmpty(investList) ? String.valueOf(investModel.getId()) : MessageFormat.format("{0}|{1}", investList, String.valueOf(investModel.getId()));
+                redisWrapperClient.hset(this.activityAutumnLuxuryInvestKey, secondKey, investList, 3600 * 24 * 60);
+            }
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
     }
 
     /**

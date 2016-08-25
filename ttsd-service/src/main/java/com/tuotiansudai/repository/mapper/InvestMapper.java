@@ -238,4 +238,6 @@ public interface InvestMapper {
     int findCountSuccessByLoginNameAndProductTypes(@Param(value = "loginName") String loginName,
                                                    @Param("productTypeList") List<ProductType> productTypeList);
 
+    List<InvestModel> findByIds(@Param("ids") List<Long> ids);
+
 }

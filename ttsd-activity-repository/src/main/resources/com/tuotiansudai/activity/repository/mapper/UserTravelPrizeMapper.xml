@@ -57,6 +57,9 @@
             </if>
         </where>
         order by id desc
-        limit #{index}, #{pageSize}
+        <if test="index != null and pageSize != null">
+            limit #{index}, #{pageSize}
+        </if>
+
     </select>
 </mapper>

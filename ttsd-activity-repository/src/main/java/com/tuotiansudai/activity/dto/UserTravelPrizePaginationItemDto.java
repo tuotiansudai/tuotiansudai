@@ -1,4 +1,4 @@
-package com.tuotiansudai.console.activity.dto;
+package com.tuotiansudai.activity.dto;
 
 import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import com.tuotiansudai.util.AmountConverter;

@@ -755,4 +755,19 @@
         </if>
     </select>
 
+    <select id="findByIds" parameterType="map" resultMap="investResultMap">
+        select *
+        from invest
+        where
+        <if test="ids != null and ids.size() != 0">
+            id in
+            <foreach collection="ids" item="investId" open="(" separator="," close=")">
+                #{investId}
+            </foreach>
+        </if>
+        <if test="ids == null or ids.size() == 0">
+            1=2
+        </if>
+    </select>
+
 </mapper>

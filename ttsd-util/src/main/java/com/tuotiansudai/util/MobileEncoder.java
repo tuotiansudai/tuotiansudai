@@ -1,6 +1,4 @@
-package com.tuotiansudai.ask.utils;
-
-import com.google.common.base.Strings;
+package com.tuotiansudai.util;
 
 import java.util.regex.Pattern;
 
@@ -9,7 +7,7 @@ public class MobileEncoder {
     private static Pattern pattern = Pattern.compile("^(\\d){11}$");
 
     public static String encode(String mobile) {
-        if (Strings.isNullOrEmpty(mobile) || mobile.length() != 11 || !pattern.matcher(mobile).matches()) {
+        if (mobile == null || mobile.length() != 11 || !pattern.matcher(mobile).matches()) {
             return mobile;
         }
 
