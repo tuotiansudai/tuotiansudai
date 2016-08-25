@@ -3,9 +3,7 @@ package com.tuotiansudai.activity.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserLuxuryPrizeModel implements Serializable{
-
-    private static final long serialVersionUID = 7365763763324921833L;
+public class UserLuxuryPrizeModel implements Serializable {
 
     private long id;
 

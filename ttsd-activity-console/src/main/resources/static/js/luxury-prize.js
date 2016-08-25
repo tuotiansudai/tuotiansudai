@@ -20,7 +20,6 @@ require(['jquery', 'Validform', 'bootstrap','jquery-ui', 'csrf'], function ($, _
             var formData = new FormData();
             formData.append('upfile', file);
             $.ajax({
-                //todo 暂时写死服务路径 上线需要修改为nginx
                 url: '/ueditor?action=uploadimage',
                 type: 'POST',
                 data: formData,

@@ -12,15 +12,13 @@ public class TravelPrizeModel implements Serializable{
 
     private String name;
 
-    private String description;
-
     private String price;
 
     private String image;
 
     private long investAmount;
 
-    private List<String> introduce;
+    private String introduce;
 
     private String createdBy;
 
@@ -44,14 +42,6 @@ public class TravelPrizeModel implements Serializable{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getPrice() {
@@ -78,11 +68,11 @@ public class TravelPrizeModel implements Serializable{
         this.investAmount = investAmount;
     }
 
-    public List<String> getIntroduce() {
+    public String getIntroduce() {
         return introduce;
     }
 
-    public void setIntroduce(List<String> introduce) {
+    public void setIntroduce(String introduce) {
         this.introduce = introduce;
     }
 

@@ -1,15 +1,17 @@
 package com.tuotiansudai.console.activity.controller;
 
+import com.tuotiansudai.console.activity.dto.TravelPrizeRequestDto;
 import com.tuotiansudai.console.activity.service.TravelPrizeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.Date;
 
 @Controller
@@ -18,6 +20,12 @@ public class TravelPrizeController {
 
     @Autowired
     private TravelPrizeService travelPrizeService;
+
+    @RequestMapping(path = "/travel-prize-list")
+    public ModelAndView getTravelPrizeList() {
+        BaseDto<BasePaginationDataDto> dto = travelPrizeService.getTravelPrizeItems();
+        return new ModelAndView("/travel-prize-list", "data", dto);
+    }
 
     @RequestMapping(path = "/user-travel-list")
     public ModelAndView getAwardItems(@RequestParam(value = "mobile", defaultValue = "", required = false) String mobile,
@@ -34,10 +42,17 @@ public class TravelPrizeController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/travel-list")
-    public ModelAndView getTravelPrize() {
-        BaseDto<BasePaginationDataDto> dto = travelPrizeService.getTravelPrize();
-        return new ModelAndView("/travel-prize-list", "data", dto);
+    @RequestMapping(path = "/edit", method = RequestMethod.POST)
+    public ModelAndView update(@Valid @ModelAttribute TravelPrizeRequestDto dto) {
+        travelPrizeService.update(LoginUserInfo.getLoginName(), dto);
+        return new ModelAndView("redirect:/activity-console/activity-manage/travel/travel-prize-list");
+    }
+
+    @RequestMapping(value = "/{travelPrizeId:^\\d+$}/edit",method = RequestMethod.GET)
+    public ModelAndView editTravelPrize(@PathVariable long travelPrizeId){
+        ModelAndView mv = new ModelAndView("/travel-prize-edit");
+        mv.addObject("dto", travelPrizeService.getTravelPrize(travelPrizeId));
+        return mv;
     }
 
 

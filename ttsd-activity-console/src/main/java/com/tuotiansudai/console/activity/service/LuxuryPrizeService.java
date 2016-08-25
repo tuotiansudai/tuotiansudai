@@ -2,12 +2,14 @@ package com.tuotiansudai.console.activity.service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.dto.LuxuryPrizeDto;
+import com.tuotiansudai.activity.dto.UserPrizePaginationItemDto;
 import com.tuotiansudai.activity.repository.mapper.LuxuryPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLuxuryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLuxuryPrizeModel;
-import com.tuotiansudai.console.activity.dto.LuxuryPrizeDto;
-import com.tuotiansudai.console.activity.dto.UserLuxuryPrizeDto;
+import com.tuotiansudai.console.activity.dto.LuxuryPrizeRequestDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
@@ -26,7 +28,7 @@ public class LuxuryPrizeService {
     @Autowired
     private LuxuryPrizeMapper luxuryPrizeMapper;
 
-    public BasePaginationDataDto<UserLuxuryPrizeDto> obtainUserLuxuryPrizeList(String mobile, Date startTime, Date endTime, Integer index, Integer pageSize) {
+    public BaseDto<BasePaginationDataDto> obtainUserLuxuryPrizeList(String mobile, Date startTime, Date endTime, Integer index, Integer pageSize) {
         if (startTime != null) {
             startTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         }
@@ -37,25 +39,26 @@ public class LuxuryPrizeService {
         long count = userLuxuryPrizeMapper.getCountUserLuxuryPrize(mobile, startTime, endTime);
         int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
         index = index > totalPages ? totalPages : index;
-        List<UserLuxuryPrizeDto> items = Lists.newArrayList();
-        List<UserLuxuryPrizeModel> userLuxuryPrizeModels = userLuxuryPrizeMapper.getUserLuxuryPrizeList(mobile, startTime, endTime, index, pageSize);
+        List<UserPrizePaginationItemDto> items = Lists.newArrayList();
+        List<UserLuxuryPrizeModel> userLuxuryPrizeModels = userLuxuryPrizeMapper.getUserLuxuryPrizeList(mobile, startTime, endTime, (index-1) * pageSize, pageSize);
         if (count > 0) {
-            items = Lists.transform(userLuxuryPrizeModels, new Function<UserLuxuryPrizeModel, UserLuxuryPrizeDto>() {
+            items = Lists.transform(userLuxuryPrizeModels, new Function<UserLuxuryPrizeModel, UserPrizePaginationItemDto>() {
                 @Override
-                public UserLuxuryPrizeDto apply(UserLuxuryPrizeModel input) {
-                    LuxuryPrizeModel luxuryPrizeModel = luxuryPrizeMapper.findByPrizeId(input.getPrizeId());
-                    return new UserLuxuryPrizeDto(input);
+                public UserPrizePaginationItemDto apply(UserLuxuryPrizeModel input) {
+                    return new UserPrizePaginationItemDto(input);
                 }
             });
         }
 
         BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, pageSize, count, items);
         basePaginationDataDto.setStatus(true);
-        return basePaginationDataDto;
+        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<BasePaginationDataDto>();
+        baseDto.setData(basePaginationDataDto);
+        return baseDto;
     }
 
-    public List<LuxuryPrizeDto> obtainLuxuryPrizeList() {
-        List<LuxuryPrizeModel> luxuryPrizeModels = luxuryPrizeMapper.findAllLuxuryPrize();
+    public BaseDto<BasePaginationDataDto> obtainLuxuryPrizeList() {
+        List<LuxuryPrizeModel> luxuryPrizeModels = luxuryPrizeMapper.findAll();
         List<LuxuryPrizeDto> items = Lists.newArrayList();
         if (!CollectionUtils.isEmpty(luxuryPrizeModels)) {
             items = Lists.transform(luxuryPrizeModels, new Function<LuxuryPrizeModel, LuxuryPrizeDto>() {
@@ -65,7 +68,11 @@ public class LuxuryPrizeService {
                 }
             });
         }
-        return items;
+        BasePaginationDataDto<LuxuryPrizeDto> dataDto = new BasePaginationDataDto<>(1, 10, 3, items);
+
+        dataDto.setStatus(true);
+        return new BaseDto<BasePaginationDataDto>(dataDto);
+
     }
 
     public LuxuryPrizeDto obtainLuxuryPrizeDto(long luxuryPrizeId){
@@ -73,7 +80,7 @@ public class LuxuryPrizeService {
         return new LuxuryPrizeDto(luxuryPrizeModel);
 
     }
-    public void editLuxuryPrize(LuxuryPrizeDto luxuryPrizeDto,String loginName){
+    public void editLuxuryPrize(LuxuryPrizeRequestDto luxuryPrizeDto,String loginName){
         long luxuryPrizeId = luxuryPrizeDto.getLuxuryPrizeId();
         LuxuryPrizeModel luxuryPrizeModel = luxuryPrizeMapper.findById(luxuryPrizeId);
         luxuryPrizeModel.setBrand(luxuryPrizeDto.getBrand());

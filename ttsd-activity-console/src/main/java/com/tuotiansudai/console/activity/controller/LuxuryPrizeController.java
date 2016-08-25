@@ -1,8 +1,10 @@
 package com.tuotiansudai.console.activity.controller;
 
-import com.tuotiansudai.console.activity.dto.LuxuryPrizeDto;
-import com.tuotiansudai.console.activity.dto.UserLuxuryPrizeDto;
+import com.tuotiansudai.activity.dto.LuxuryPrizeDto;
+import com.tuotiansudai.activity.dto.UserPrizePaginationItemDto;
+import com.tuotiansudai.console.activity.dto.LuxuryPrizeRequestDto;
 import com.tuotiansudai.console.activity.service.LuxuryPrizeService;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
@@ -19,15 +22,15 @@ public class LuxuryPrizeController {
     @Autowired
     private LuxuryPrizeService luxuryPrizeService;
 
-    @RequestMapping(value = "/user-luxury-prize-list")
+    @RequestMapping(value = "/user-luxury-list")
     public ModelAndView userLuxuryPrizeList(@RequestParam(value = "mobile", required = false) String mobile,
                                         @RequestParam(value = "startTime", required = false) Date startTime,
                                         @RequestParam(value = "endTime", required = false) Date endTime,
                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        ModelAndView mv = new ModelAndView("/test1");
-        BasePaginationDataDto<UserLuxuryPrizeDto> baseDto = luxuryPrizeService.obtainUserLuxuryPrizeList(mobile, startTime, endTime, index, pageSize);
-        mv.addObject("userLuxuryPrize", baseDto);
+        ModelAndView mv = new ModelAndView("/user-luxury-list");
+        BaseDto<BasePaginationDataDto> baseDto = luxuryPrizeService.obtainUserLuxuryPrizeList(mobile, startTime, endTime, index, pageSize);
+        mv.addObject("data", baseDto);
         mv.addObject("index", index);
         mv.addObject("pageSize", pageSize);
         mv.addObject("startTime", startTime);
@@ -38,9 +41,9 @@ public class LuxuryPrizeController {
 
     @RequestMapping(value = "/luxury-prize-list")
     public ModelAndView luxuryPrizeList(){
-        ModelAndView mv = new ModelAndView("/test2");
-        List<LuxuryPrizeDto> baseDto = luxuryPrizeService.obtainLuxuryPrizeList();
-        mv.addObject("luxuryPrize",baseDto);
+        ModelAndView mv = new ModelAndView("/luxury-prize-list");
+        BaseDto<BasePaginationDataDto> dto = luxuryPrizeService.obtainLuxuryPrizeList();
+        mv.addObject("data",dto);
         return mv;
     }
 
@@ -52,10 +55,10 @@ public class LuxuryPrizeController {
     }
 
     @RequestMapping(value="/edit",method = RequestMethod.POST)
-    public ModelAndView editLuxuryPrize(@ModelAttribute LuxuryPrizeDto luxuryPrizeDto){
+    public ModelAndView editLuxuryPrize(@Valid @ModelAttribute LuxuryPrizeRequestDto luxuryPrizeRequestDto){
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView mv = new ModelAndView();
-        luxuryPrizeService.editLuxuryPrize(luxuryPrizeDto,loginName);
+        luxuryPrizeService.editLuxuryPrize(luxuryPrizeRequestDto,loginName);
         return mv;
     }
 

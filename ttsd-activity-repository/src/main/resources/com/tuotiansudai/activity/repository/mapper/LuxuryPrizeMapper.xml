@@ -51,7 +51,7 @@
         select * from luxury_prize where prize_id = #{id}
     </select>
 
-    <select id="findALLLuxuryPrize" resultMap="luxuryPrizeResultMap">
+    <select id="findAll" resultMap="luxuryPrizeResultMap">
         select * from luxury_prize
     </select>
 
