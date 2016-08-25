@@ -44,11 +44,12 @@ public class ActivitiesController {
         String token = httpServletRequest.getHeader("token");
         if (!StringUtils.isEmpty(token)) {
             token = token.replace("app-token:", "");
-            String tokenLoginName = token.substring(0, token.indexOf(":"));
-            AccountModel accountModel = accountService.findByLoginName(tokenLoginName);
-            modelAndView.addObject("noAccount", null == accountModel);
+            loginName = token.substring(0, token.indexOf(":"));
+        } else {
+            loginName = LoginUserInfo.getLoginName();
         }
-
+        AccountModel accountModel = accountService.findByLoginName(loginName);
+        modelAndView.addObject("noAccount", null == accountModel);
         return modelAndView;
     }
 
