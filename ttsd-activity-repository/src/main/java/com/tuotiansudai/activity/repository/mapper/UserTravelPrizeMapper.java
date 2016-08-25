@@ -17,8 +17,8 @@ public interface UserTravelPrizeMapper {
     List<UserTravelPrizeModel> findByPagination(@Param("mobile") String mobile,
                                                 @Param("startTime") Date startTime,
                                                 @Param("endTime") Date endTime,
-                                                @Param("index") int index,
-                                                @Param("pageSize") int pageSize);
+                                                @Param("index") Integer index,
+                                                @Param("pageSize") Integer pageSize);
 
     long countByPagination(@Param("mobile") String mobile,
                            @Param("startTime") Date startTime,
