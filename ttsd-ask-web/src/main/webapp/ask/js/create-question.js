@@ -258,7 +258,7 @@ if($questionDetailTag.length) {
     });
 
     $('.agree-ok-no',$questionDetailTag).on('click',function() {
-        comm.popWindow('','<span class="clearfix">需要登陆才能点赞哦～ </span><a href="/login" class="btn-normal to-login">去登录</a>',{ width:'400px'});
+        comm.popWindow('','<span class="clearfix">需要登录才能点赞哦～ </span><a href="https://tuotiansudai.com/login" class="btn-normal to-login">去登录</a>',{ width:'400px'});
     });
 }
 
