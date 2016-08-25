@@ -100,6 +100,7 @@ public class TransferServiceTest {
         loanDto.setRecheckTime(new DateTime().minusDays(10).toDate());
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(LoanStatus.REPAYING);
+        loanModel.setPeriods(5);
         loanMapper.create(loanModel);
         return loanModel;
     }
@@ -208,13 +209,26 @@ public class TransferServiceTest {
         TransferApplicationModel transferApplicationModel = createTransferApplicationModel(loanId, investId, TransferStatus.TRANSFERRING);
         TransferApplicationDetailDto  transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(transferApplicationModel.getId(), "testuser",6);
 
-        assertThat(transferApplicationDetailDto.getDueDate(), is(strToDate("2016-04-29 23:59:59")));
         assertThat(transferApplicationDetailDto.getNextRefundDate(), is(strToDate("2016-03-29 23:59:59")));
         assertThat(transferApplicationDetailDto.getTransferAmount(), is("900.00"));
         assertThat(transferApplicationDetailDto.getExpecedInterest(), is("3.60"));
         assertThat(transferApplicationDetailDto.getInvestAmount(), is("1000.00"));
         assertThat(transferApplicationDetailDto.getExpecedInterest(), is("3.60"));
         assertThat(transferApplicationDetailDto.getNextExpecedInterest(), is("0.90"));
+        assertThat(transferApplicationDetailDto.getBalance(), is("10.00"));
+    }
+
+    @Test
+    public void shouldGetTransferApplicationLastPeriodIsOk(){
+        createLoanByUserId("testuser", loanId);
+        createInvests("testuser", loanId, investId);
+        createInvestRepay(investId);
+        TransferApplicationModel transferApplicationModel = createTransferApplicationModel(loanId, investId, TransferStatus.TRANSFERRING);
+        transferApplicationModel.setPeriod(5);
+        transferApplicationMapper.update(transferApplicationModel);
+        TransferApplicationDetailDto  transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(transferApplicationModel.getId(), "testuser",6);
+
+        assertThat(transferApplicationDetailDto.getNextExpecedInterest(), is("100.90"));
         assertThat(transferApplicationDetailDto.getBalance(), is("10.00"));
     }
 
