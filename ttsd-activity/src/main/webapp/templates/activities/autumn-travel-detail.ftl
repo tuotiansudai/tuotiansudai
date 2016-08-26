@@ -4,11 +4,9 @@
     body {
         background: #ebfbff;
     }
-    .autumn-travel-detail {
-
-        height: 2000px; }
     .autumn-travel-detail img {
-        width: 100%; }
+        width: 100%;
+    }
 </style>
 <div class="page-width autumn-travel-detail">
     <img src="${staticServer}/activity/images/autumn-tour/bar-app.jpg">
