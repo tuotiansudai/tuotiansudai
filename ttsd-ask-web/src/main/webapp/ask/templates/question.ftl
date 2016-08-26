@@ -66,7 +66,13 @@
                     <dd>${bestAnswer.answer}</dd>
                     <dd class="date-time-answer"><span>${bestAnswer.mobile}</span>
                         <span class="datetime">${bestAnswer.createdTime?string("yyyy年MM月dd日 HH:mm")}</span>
-                        <span class="agree-ok ${bestAnswer.favored?string("active", "")} fr">${bestAnswer.favorite}</span>
+                        <@global.isAnonymous>
+                            <span class="agree-ok-no ${bestAnswer.favored?string("active", "")} fr">${bestAnswer.favorite}</span>
+                        </@global.isAnonymous>
+                        <@global.isNotAnonymous>
+                            <span class="agree-ok ${bestAnswer.favored?string("active", "")} fr">${bestAnswer.favorite}</span>
+                        </@global.isNotAnonymous>
+
                         <input type="hidden" data-id="${bestAnswer.id?string.computer}" class="answerId">
                     </dd>
                 </dl>
@@ -89,7 +95,12 @@
                         <dd>${answer.answer}</dd>
                         <dd class="date-time-answer"><span>${answer.mobile}</span>
                             <span class="datetime">${answer.createdTime?string("yyyy年MM月dd日 HH:mm")}</span>
-                            <span class="agree-ok ${answer.favored?string("active", "")} fr">${answer.favorite}</span>
+                            <@global.isAnonymous>
+                            <span class="agree-ok-no ${answer.favored?string("active", "")} fr">${answer.favorite}</span>
+                            </@global.isAnonymous>
+                            <@global.isNotAnonymous>
+                                <span class="agree-ok ${answer.favored?string("active", "")} fr">${answer.favorite}</span>
+                            </@global.isNotAnonymous>
                             <#if isQuestionOwner && !(bestAnswer??)>
                                 <span class="btn fr mark-this-answer">采纳此条信息</span>
                             </#if>
