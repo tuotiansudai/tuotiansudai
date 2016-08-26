@@ -11,7 +11,7 @@
     </div>
 
     <div class="table-responsive">
-        <form action="/activity-manage/user-time-list" method="get" class="form-inline query-build" id="lotteryTimeForm">
+        <form action="/activity-console/activity-manage/user-time-list" method="get" class="form-inline query-build" id="lotteryTimeForm">
 
             <div class="form-group">
                 <div class="form-group">

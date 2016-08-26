@@ -11,7 +11,7 @@
     </div>
 
     <div class="table-responsive">
-        <form action="/activity-manage/user-prize-list" method="get" class="form-inline query-build" id ="prizeFrom">
+        <form action="/activity-console/activity-manage/user-prize-list" method="get" class="form-inline query-build" id ="prizeFrom">
                 <div class="form-group">
                     <label>用户手机号</label>
                     <input id="login-name" name="mobile" id="mobile" class="form-control" value="${mobile!}"/>
