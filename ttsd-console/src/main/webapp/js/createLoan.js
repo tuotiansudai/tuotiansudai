@@ -307,7 +307,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 }
                 if ($('#extra:checked').length > 0) {
                     if ($('.extraSource:checked').length <= 0) {
-                        showErrorMessage("加息渠道必须选择");
+                        showErrorMessage("投资奖励渠道必须选择");
                         return false;
                     }
                 }
@@ -348,7 +348,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             $('#extraSource .extraSource').each(function () {
                 $(this).prop('checked')==true?extraSource.push($(this).val()):false;
             });
-            return extraSource;
+            return extraSource.join(",");
         }
 
         //提交表单
@@ -444,7 +444,6 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "extraRateIds": getExtraRateIds(),
                         "extraSource": getExtraSource(),
 
-                        "extraSource": $('.extraSource'),
                         "declaration": $('.jq-loan-declaration').val(),
 
                         "loanerUserName": $('.jq-loaner-user-name').val(),

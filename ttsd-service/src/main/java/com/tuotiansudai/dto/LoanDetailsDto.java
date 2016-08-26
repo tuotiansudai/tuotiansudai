@@ -7,12 +7,12 @@ import java.util.List;
 public class LoanDetailsDto {
     private long loanId;
     private String declaration;
-    private List<Source> extraSource;
+    private String extraSource;
 
     public LoanDetailsDto() {
     }
 
-    public LoanDetailsDto(long loanId, String declaration, List<Source> extraSource) {
+    public LoanDetailsDto(long loanId, String declaration, String extraSource) {
         this.loanId = loanId;
         this.declaration = declaration;
         this.extraSource = extraSource;
@@ -34,11 +34,11 @@ public class LoanDetailsDto {
         this.declaration = declaration;
     }
 
-    public List<Source> getExtraSource() {
+    public String getExtraSource() {
         return extraSource;
     }
 
-    public void setExtraSource(List<Source> extraSource) {
+    public void setExtraSource(String extraSource) {
         this.extraSource = extraSource;
     }
 }

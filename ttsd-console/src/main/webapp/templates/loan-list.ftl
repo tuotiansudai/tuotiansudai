@@ -54,7 +54,7 @@
                 <th>代理人</th>
                 <th>借款金额(元)</th>
                 <th>年化/活动(利率)</th>
-                <th>阶梯加息</th>
+                <th>投资奖励</th>
                 <th>项目状态</th>
                 <th>发起时间</th>
                 <th>投资/还款记录</th>
@@ -98,7 +98,7 @@
                                     </#list>
                                 </tbody>
                             </table>
-                            <span class="ladderInvest" style="display: block;">是</span>
+                            <span class="ladderInvest" style="display: block;">${loanListDto.extraSource!}</span>
                         <#else>
                             -
                         </#if>

@@ -9,7 +9,7 @@ public class LoanDetailsModel implements Serializable {
     private long id;
     private long loanId;
     private String declaration;
-    private List<Source> extraSource;
+    private String extraSource;
 
     public LoanDetailsModel() {
     }
@@ -23,14 +23,6 @@ public class LoanDetailsModel implements Serializable {
         this.loanId = loanDetailsDto.getLoanId();
         this.declaration = loanDetailsDto.getDeclaration();
         this.extraSource = loanDetailsDto.getExtraSource();
-    }
-
-    public List<Source> getExtraSource() {
-        return extraSource;
-    }
-
-    public void setExtraSource(List<Source> extraSource) {
-        this.extraSource = extraSource;
     }
 
     public long getId() {
@@ -55,5 +47,13 @@ public class LoanDetailsModel implements Serializable {
 
     public void setDeclaration(String declaration) {
         this.declaration = declaration;
+    }
+
+    public String getExtraSource() {
+        return extraSource;
+    }
+
+    public void setExtraSource(String extraSource) {
+        this.extraSource = extraSource;
     }
 }
