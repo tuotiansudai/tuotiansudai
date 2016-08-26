@@ -37,7 +37,7 @@
                 and created_time >= #{startTime}
             </if>
             <if test="endTime != null">
-                and created_time &lt;= #{startTime}
+                and created_time &lt;= #{endTime}
             </if>
         </where>
     </select>
@@ -53,7 +53,7 @@
                 and created_time >= #{startTime}
             </if>
             <if test="endTime != null">
-                and created_time &lt;= #{startTime}
+                and created_time &lt;= #{endTime}
             </if>
         </where>
         order by id desc

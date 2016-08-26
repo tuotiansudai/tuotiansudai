@@ -130,4 +130,8 @@ require(['jquery', 'Validform', 'bootstrap','jquery-ui', 'csrf'], function ($, _
             currentErrorObj.focus();
         }
     });
+    $('.luxury-cancel').on('click',function(event){
+        event.preventDefault();
+        location.href = '/activity-console/activity-manage/luxury/user-luxury-list';
+    });
 });
