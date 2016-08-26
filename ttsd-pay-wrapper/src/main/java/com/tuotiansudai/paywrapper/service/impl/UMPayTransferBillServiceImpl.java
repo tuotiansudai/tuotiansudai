@@ -32,17 +32,11 @@ public class UMPayTransferBillServiceImpl implements UMPayTransferBillService {
     @Autowired
     private PaySyncClient paySyncClient;
 
-    @Autowired
-    private UserMapper userMapper;
 
     @Override
     public List<List<String>> getTransferBill(String loginName, Date startDate, Date endDate) {
         List<List<String>> data = Lists.newArrayList();
-        UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
-        if (userModel == null) {
-            return data;
-        }
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel == null) {
             return data;
         }
