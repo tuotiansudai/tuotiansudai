@@ -17,7 +17,10 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +53,9 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
     @Autowired
     private CouponMapper couponMapper;
 
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
     private final static String RED_ENVELOPE_TEMPLATE = "{0}元现金红包";
 
     private final static String NEWBIE_COUPON_TEMPLATE = "{0}元新手体验金";
@@ -79,7 +85,14 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             int maxPeriods = investRepayModels == null?0:investRepayModels.size();
             InvestRepayModel lastedInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), maxPeriods);
             userInvestRepayResponseDataDto.setLastRepayDate(lastedInvestRepayModel == null ? "" : sdf.format(lastedInvestRepayModel.getRepayDate()));
+            List<TransferApplicationModel> transferApplicationModels;
             for (InvestRepayModel investRepayModel : investRepayModels) {
+                if(investRepayModel.isTransferred()){
+                    transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.SUCCESS));
+                    if(CollectionUtils.isNotEmpty(transferApplicationModels) && transferApplicationModels.get(0).getPeriod() != investRepayModel.getPeriod()){
+                        continue;
+                    }
+                }
                 CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(),investRepayModel.getPeriod());
                 long expectedInterest = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee();
                 long actualInterest = investRepayModel.getRepayAmount();
@@ -88,6 +101,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                     actualInterest += couponRepayModel.getRepayAmount();
                 }
                 InvestRepayDataDto investRepayDataDto = new InvestRepayDataDto();
+                investRepayDataDto.setIsTransferred(String.valueOf(investRepayModel.isTransferred()));
                 investRepayDataDto.setPeriod(investRepayModel.getPeriod());
                 investRepayDataDto.setRepayDate(sdf.format(investRepayModel.getRepayDate()));
                 investRepayDataDto.setActualRepayDate(investRepayModel.getActualRepayDate() == null ? "" : sdf.format(investRepayModel.getActualRepayDate()));

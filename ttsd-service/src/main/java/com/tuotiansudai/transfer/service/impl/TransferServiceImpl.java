@@ -272,7 +272,7 @@ public class TransferServiceImpl implements TransferService {
             nextExpectedInterest += investRepayMapper.findByInvestIdAndPeriod(investId,transferApplicationModel.getPeriod()).getCorpus();
         }
         transferApplicationDetailDto.setNextExpecedInterest(AmountConverter.convertCentToString(nextExpectedInterest));
-
+        transferApplicationDetailDto.setActivityRate(loanModel.getActivityRate()  * 100);
         return transferApplicationDetailDto;
     }
 }
