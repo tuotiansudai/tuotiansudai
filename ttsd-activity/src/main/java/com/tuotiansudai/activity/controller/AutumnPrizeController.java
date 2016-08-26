@@ -89,7 +89,7 @@ public class AutumnPrizeController {
 
     @RequestMapping(path = "/travel/{id:^\\d+$}/detail", method = RequestMethod.GET)
     public ModelAndView travelPrizeDetail() {
-        ModelAndView modelAndView = new ModelAndView("/activities/autumn-tour-detail", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/autumn-travel-detail", "responsive", true);
 
         return modelAndView;
     }
