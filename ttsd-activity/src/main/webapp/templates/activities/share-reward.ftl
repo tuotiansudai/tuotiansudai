@@ -30,9 +30,12 @@
             <div class="example-case-detail"></div>
         </div>
         <div class="share-recommend">
+            <h1>PC</h1>
             <#if noAccount?? && noAccount>
+                <h1>BUTTON1</h1>
                 <a href="/register/account">立即推荐</a>
             <#else>
+                <h1>BUTTON2</h1>
                 <a href="/referrer/refer-list">立即推荐</a>
             </#if>
         </div>
@@ -59,19 +62,28 @@
         <div class="reward-info-title"></div>
         <div class="share-example"></div>
         <div class="share-recommend">
+            <h1>PHONE</h1>
             <#if isAppSource?? && !isAppSource>
+                <h1>NOT APP</h1>
                 <#if noAccount?? && noAccount>
+                    <h1>BUTTON3</h1>
                     <a href="/register/account">立即推荐</a>
                 <#else>
+                    <h1>BUTTON4</h1>
                     <a href="/referrer/refer-list">立即推荐</a>
                 </#if>
             <#else>
+                <h1>IS APP</h1>
                 <#if isLogin?? && !isLogin>
+                    <h1>BUTTON5</h1>
                     <a href="/login?redirect=/referrer/refer-list">立即推荐</a>
                 <#else>
+                    <h1>APP LOGIN</h1>
                     <#if noAccount?? && noAccount>
+                        <h1>BUTTON6</h1>
                         <a href="/registeraccount">立即推荐</a>
                     <#else>
+                        <h1>BUTTON7</h1>
                         <a href="/referrer/refer-list"
                            onclick="cnzzPush.trackClick('201APP分享','推荐奖励落地页','立即推荐')">立即推荐</a>
                     </#if>
