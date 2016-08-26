@@ -1,6 +1,6 @@
 <div class="nav-container">
     <div class="nav">
-        <a href="${applicationContext}/" class="logo"></a> 
+        <a href="${webServer}${applicationContext}/" class="logo"></a>
         <i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>
 
     <#if activeNav??>
