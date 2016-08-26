@@ -96,22 +96,23 @@ public class LotteryActivityService {
 
     public DrawLotteryResultDto drawLotteryPrize(String mobile,String drawType){
         logger.debug(mobile + " is drawing the lottery prize.");
+        mobile = "18888376666";
         DrawLotteryResultDto drawLotteryResultDto = new DrawLotteryResultDto();
 
-        if (StringUtils.isEmpty(mobile)) {
-            logger.error("User not login. can't draw prize.");
-            drawLotteryResultDto.setMessage("您还未登陆，请登陆后再来抽奖吧！");
-            drawLotteryResultDto.setReturnCode(2);
-            return drawLotteryResultDto;
-        }
-
-        int drawTime = getDrawPrizeTime(mobile);
-        if(drawTime == 0){
-            logger.debug(mobile + "is no chance. draw time:" + drawTime);
-            drawLotteryResultDto.setMessage("您暂无抽奖机会，赢取机会后再来抽奖吧！");
-            drawLotteryResultDto.setReturnCode(1);
-            return drawLotteryResultDto;
-        }
+//        if (StringUtils.isEmpty(mobile)) {
+//            logger.error("User not login. can't draw prize.");
+//            drawLotteryResultDto.setMessage("您还未登陆，请登陆后再来抽奖吧！");
+//            drawLotteryResultDto.setReturnCode(2);
+//            return drawLotteryResultDto;
+//        }
+//
+//        int drawTime = getDrawPrizeTime(mobile);
+//        if(drawTime == 0){
+//            logger.debug(mobile + "is no chance. draw time:" + drawTime);
+//            drawLotteryResultDto.setMessage("您暂无抽奖机会，赢取机会后再来抽奖吧！");
+//            drawLotteryResultDto.setReturnCode(1);
+//            return drawLotteryResultDto;
+//        }
 
         UserModel userModel = userMapper.findByMobile(mobile);
         userMapper.lockByLoginName(userModel.getLoginName());
@@ -123,6 +124,7 @@ public class LotteryActivityService {
 
         userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), lotteryPrize, DateTime.now().toDate()));
         drawLotteryResultDto.setReturnCode(0);
+        drawLotteryResultDto.setLotteryPrize(lotteryPrize);
         return drawLotteryResultDto;
     }
 

@@ -182,25 +182,25 @@
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>${title}</title>
-    <link href="/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+    <link href="/activity-console/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
     <!-- link bootstrap css -->
-    <link href="/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/style/libs/bootstrap-datepicker.css" rel="stylesheet">
-    <link href="/style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
-    <link href="/style/libs/bootstrap-select.css" rel="stylesheet" type="text/css" charset="utf-8"/>
-    <link href="/style/libs/jquery-ui/jquery-ui-1.11.4.min.css" rel="stylesheet" charset="utf-8"/>
-    <link href="/style/index.css" rel="stylesheet">
-    <link href="/style/libs/jquery.pageflip.css" rel="stylesheet">
-    <link href="/style/libs/fileinput.css" rel="stylesheet"/><!--上传图片插件-->
+    <link href="/activity-console/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/activity-console/style/libs/bootstrap-datepicker.css" rel="stylesheet">
+    <link href="/activity-console/style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="/activity-console/style/libs/bootstrap-select.css" rel="stylesheet" type="text/css" charset="utf-8"/>
+    <link href="/activity-console/style/libs/jquery-ui/jquery-ui-1.11.4.min.css" rel="stylesheet" charset="utf-8"/>
+    <link href="/activity-console/style/index.css" rel="stylesheet">
+    <link href="/activity-console/style/libs/jquery.pageflip.css" rel="stylesheet">
+    <link href="/activity-console/style/libs/fileinput.css" rel="stylesheet"/><!--上传图片插件-->
     <#if pageCss?? && pageCss != "">
-        <link rel="stylesheet" type="text/css" href="${applicationContext}/style/dest/${pageCss}" charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="${applicationContext}/activity-console/style/dest/${pageCss}" charset="utf-8"/>
     </#if>
 
     <!-- link bootstrap js -->
     <#if pageJavascript?? && pageJavascript != "">
-        <script src="/js/libs/config.js"></script>
-        <script src="/js/libs/require-2.1.20.min.js" defer="defer" async="async"
-                data-main="${applicationContext}/js/${pageJavascript}"></script>
+        <script src="/activity-console/js/libs/config.js"></script>
+        <script src="/activity-console/js/libs/require-2.1.20.min.js" defer="defer" async="async"
+                data-main="${applicationContext}/activity-console/js/${pageJavascript}"></script>
     </#if>
 </head>
 
@@ -210,7 +210,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a href="/" class="navbar-brand">
-                <img src="/images/logo.png" alt="" />
+                <img src="/activity-console/images/logo.png" alt="" />
             </a>
         </div>
         <div class="collapse navbar-collapse">
@@ -276,12 +276,7 @@
     </div>
 </div>
 <!-- main end -->
-<script type="text/javascript" charset="utf-8">
-    document.getElementById("logout-link").addEventListener('click', function (event) {
-        event.preventDefault();
-        document.getElementById("logout-form").submit();
-    });
-</script>
+
 </body>
 </html>
 </#macro>

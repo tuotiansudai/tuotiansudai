@@ -23,7 +23,7 @@
 
     <insert id="create" parameterType="userLotteryPrizeModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `edxactivity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`prize`,`lottery_time`)
-        VALUES(#{id},#{mobile},#{login_name},#{prize},#{lotteryTime});
+        VALUES(#{id},#{mobile},#{loginName},#{prize},#{lotteryTime});
 
     </insert>
 

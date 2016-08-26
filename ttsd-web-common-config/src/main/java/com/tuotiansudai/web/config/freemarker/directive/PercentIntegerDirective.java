@@ -1,4 +1,4 @@
-package com.tuotiansudai.activity.freemarker.directive;
+package com.tuotiansudai.web.config.freemarker.directive;
 
 import freemarker.core.Environment;
 import freemarker.template.*;
@@ -7,8 +7,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
-public class PercentFractionDirective implements TemplateDirectiveModel {
-
+public class PercentIntegerDirective implements TemplateDirectiveModel {
     @Override
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
         if (!params.isEmpty()) {
@@ -18,28 +17,24 @@ public class PercentFractionDirective implements TemplateDirectiveModel {
             throw new TemplateModelException("This directive doesn't allow loop variables.");
         }
         if (body != null) {
-            body.render(new PercentFractionFilterWriter(env.getOut()));
+            body.render(new PercentIntegerFilterWriter(env.getOut()));
         } else {
             throw new RuntimeException("missing body");
         }
     }
 
-    private static class PercentFractionFilterWriter extends Writer {
+    private static class PercentIntegerFilterWriter extends Writer {
 
         private final Writer out;
 
-        PercentFractionFilterWriter(Writer out) {
+        PercentIntegerFilterWriter (Writer out) {
             this.out = out;
         }
 
         @Override
         public void write(char[] cbuf, int off, int len) throws IOException {
-            if (new String(cbuf, off, len).contains(".")) {
-                String percent = new String(cbuf, off, len).split("\\.")[1].replaceAll("0+?$", "");
-                out.write(!percent.equals("") ? "." + percent : percent);
-            } else {
-                out.write("");
-            }
+            String percent = new String(cbuf, off, len).split("\\.")[0];
+            out.write(percent);
         }
 
         @Override

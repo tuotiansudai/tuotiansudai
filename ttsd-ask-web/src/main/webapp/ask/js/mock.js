@@ -11,6 +11,6 @@ var app = express();
 // });
 
 
-app.listen(8889, function() {
-	console.log('mock server listening on port 8889!');
+app.listen(8889, function () {
+    console.log('mock server listening on port 8889!');
 });

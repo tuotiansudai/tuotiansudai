@@ -18,7 +18,7 @@ public class TravelPrizeDto implements Serializable {
 
     private String introduce;
 
-    private String investAmount;
+    private long investAmount;
 
     public TravelPrizeDto(TravelPrizeModel model) {
         this.id = model.getId();
@@ -26,7 +26,7 @@ public class TravelPrizeDto implements Serializable {
         this.price = model.getPrice();
         this.image = model.getImage();
         this.introduce = model.getIntroduce();
-        this.investAmount = AmountConverter.convertCentToString(model.getInvestAmount());
+        this.investAmount = model.getInvestAmount();
     }
 
     public long getId() {
@@ -49,7 +49,7 @@ public class TravelPrizeDto implements Serializable {
         return introduce;
     }
 
-    public String getInvestAmount() {
+    public long getInvestAmount() {
         return investAmount;
     }
 }

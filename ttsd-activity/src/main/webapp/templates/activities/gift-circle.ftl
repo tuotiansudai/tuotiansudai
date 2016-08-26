@@ -2,7 +2,7 @@
     <input type="hidden" value="${prizeType}" id="themeType"/>
     <div class="leader-list">
         <div class="lottery-circle">
-            <h3>我的抽奖机会：1次</h3>
+            <h3>我的抽奖机会：${drawTime}次</h3>
             <div class="circle-shade">
                 <div class="pointer-img" id="pointer" data-islogin="true">
                     <img src="${staticServer}/activity/images/sign/actor/circle/pointer.png" alt="pointer" width="100%"/>
@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="lottery-detail">
-            <h3>我的抽奖机会：<span id="lotteryTime">1</span>次</h3>
+            <h3>我的抽奖机会：<span id="lotteryTime">${drawTime}</span>次</h3>
             <ul class="gift-record">
                 <li class="active">中奖纪录</li>
                 <li>我的奖品</li>

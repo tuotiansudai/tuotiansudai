@@ -23,7 +23,7 @@
         <div class="time-axis clearfix">
             <span class="fl date">${today?string('yyyy-MM-dd')}</span>
             <@global.isNotAnonymous>
-                <span class="fr">我的投资额：${amount}元<em class="note">［仅累计本日参与本活动的投资金额］</em></span>
+                <span class="fr">我的投资额：${myInvestAmount}元<em class="note">［仅累计本日参与本活动的投资金额］</em></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
                 <a href="/login" class="fr btn-normal">立即登录</a>
@@ -34,7 +34,7 @@
             <div class="swiper-wrapper" id="sliderBox">
                 <#list travelPrize as prize>
                     <div class="prize-box swiper-slide <#if prize_index == 2>active</#if>">
-                        <div class="pk-title">投资满${prize.investAmount}元即可获得</div>
+                        <div class="pk-title">投资满<@amount>${prize.investAmount?string.computer}</@amount>元即可获得</div>
                         <div class="img-info">
                             <img src="${staticServer}/activity/images/autumn-tour/p01.png">
                             <span class="kind-text">${prize.name}</span>
@@ -94,7 +94,6 @@
                         </tr>
                         </thead>
                         <tbody>
-
                             <#list myTravelPrize as item>
                             <tr>
                                 <td>${item.mobile}</td>
