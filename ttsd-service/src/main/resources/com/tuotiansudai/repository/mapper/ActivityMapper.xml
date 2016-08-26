@@ -135,8 +135,8 @@
             <if test="source != null">
                 AND source like CONCAT('%', #{source}, '%')
             </if>
-            <if test="beginExpiredTime != null">
-                OR long_term = TRUE
+            <if test="longTerm != null">
+                OR long_term = #{longTerm}
             </if>
         </where>
         order by seq ASC ,updated_time DESC

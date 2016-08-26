@@ -32,6 +32,7 @@ public interface ActivityMapper {
                                      @Param(value = "activityStatus") ActivityStatus activityStatus,
                                      @Param(value = "beginExpiredTime") Date beginExpiredTime,
                                      @Param(value = "endExpiredTime") Date endExpiredTime,
+                                     @Param(value = "longTerm") Boolean longTerm,
                                      @Param(value = "index") int index,
                                      @Param(value = "pageSize") int pageSize);
 

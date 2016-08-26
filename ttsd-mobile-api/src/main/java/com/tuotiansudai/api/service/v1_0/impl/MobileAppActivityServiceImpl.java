@@ -24,7 +24,6 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
     @Autowired
     ActivityMapper activityMapper;
 
-    @Autowired
     @Value("${web.server}")
     private String domainName;
 
@@ -44,10 +43,10 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
         } else {
             switch (activityType) {
                 case CURRENT:
-                    activityModels = activityMapper.findActivity(source, ActivityStatus.APPROVED, new Date(), null, (index - 1) * pageSize, pageSize);
+                    activityModels = activityMapper.findActivity(source, ActivityStatus.APPROVED, new Date(), null, true, (index - 1) * pageSize, pageSize);
                     break;
                 case PREVIOUS:
-                    activityModels = activityMapper.findActivity(source, ActivityStatus.APPROVED, null, new Date(), (index - 1) * pageSize, pageSize);
+                    activityModels = activityMapper.findActivity(source, ActivityStatus.APPROVED, null, new Date(), false, (index - 1) * pageSize, pageSize);
                     break;
             }
         }
