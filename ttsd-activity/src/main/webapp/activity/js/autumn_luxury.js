@@ -17,7 +17,7 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension', 'circle'
         }, function() {
             scrollTimer = setInterval(function() {
                 scrollNews($("#rewardList"));
-            }, 2000);
+            }, 1000);
         }).trigger("mouseout");
 
         function scrollNews(obj) {
@@ -26,7 +26,7 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension', 'circle'
             if ($self.find('tr').length > 5) {
                 $self.animate({
                     "margin-top": -lineHeight + "px"
-                }, 600, function() {
+                }, 'fast', function() {
                     $self.css({
                         "margin-top": "0px"
                     }).find("tr:first").appendTo($self);
