@@ -1,18 +1,18 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="luxury-prize.js" headLab="activity-manage" sideLab="" title="旅游+奢侈品活动管理">
+<@global.main pageCss="" pageJavascript="user-luxury-list.js" headLab="activity-manage" sideLab="travelLuxuryActivity" title="旅游+奢侈品活动管理">
 
 <div class="col-md-10">
     <div class="panel panel-default">
         <div class="panel-body">
-            <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/travel/user-travel-list" role="button">旅游奖品获奖记录</a>
+            <a class="btn btn-default" href="/activity-console/activity-manage/travel/user-travel-list" role="button">旅游奖品获奖记录</a>
             <a class="btn btn-default" href="/activity-console/activity-manage/travel/travel-prize-list" role="button">旅游奖品更新</a>
-            <a class="btn btn-default" href="#" role="button">奢侈品获奖记录</a>
-            <a class="btn btn-default" href="#" role="button">奢侈品更新</a>
+            <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/luxury/user-luxury-list" role="button">奢侈品获奖记录</a>
+            <a class="btn btn-default" href="/activity-console/activity-manage/luxury/luxury-prize-list" role="button">奢侈品更新</a>
         </div>
     </div>
 
-    <form action="/activity-console/activity-manage/travel/user-luxury-list" class="form-inline query-build" method="get">
+    <form action="/activity-console/activity-manage/luxury/user-luxury-list" class="form-inline query-build" method="get">
         <div class="form-group">
             <label for="mobile">手机号</label>
             <input type="text" id="mobile" name="mobile" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${mobile!}">

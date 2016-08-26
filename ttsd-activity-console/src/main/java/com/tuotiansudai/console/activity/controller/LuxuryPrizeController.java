@@ -1,20 +1,18 @@
 package com.tuotiansudai.console.activity.controller;
 
-import com.tuotiansudai.activity.dto.LuxuryPrizeDto;
-import com.tuotiansudai.activity.dto.UserPrizePaginationItemDto;
 import com.tuotiansudai.console.activity.dto.LuxuryPrizeRequestDto;
 import com.tuotiansudai.console.activity.service.LuxuryPrizeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/activity-console/activity-manage/luxury")
@@ -24,8 +22,8 @@ public class LuxuryPrizeController {
 
     @RequestMapping(value = "/user-luxury-list")
     public ModelAndView userLuxuryPrizeList(@RequestParam(value = "mobile", required = false) String mobile,
-                                        @RequestParam(value = "startTime", required = false) Date startTime,
-                                        @RequestParam(value = "endTime", required = false) Date endTime,
+                                            @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                            @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         ModelAndView mv = new ModelAndView("/user-luxury-list");
@@ -57,9 +55,8 @@ public class LuxuryPrizeController {
     @RequestMapping(value="/edit",method = RequestMethod.POST)
     public ModelAndView editLuxuryPrize(@Valid @ModelAttribute LuxuryPrizeRequestDto luxuryPrizeRequestDto){
         String loginName = LoginUserInfo.getLoginName();
-        ModelAndView mv = new ModelAndView();
         luxuryPrizeService.editLuxuryPrize(luxuryPrizeRequestDto,loginName);
-        return mv;
+        return new ModelAndView("redirect:/activity-console/activity-manage/luxury/luxury-prize-list");
     }
 
 

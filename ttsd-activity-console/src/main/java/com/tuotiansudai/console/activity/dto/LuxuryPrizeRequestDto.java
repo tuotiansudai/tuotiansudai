@@ -27,21 +27,6 @@ public class LuxuryPrizeRequestDto implements Serializable {
 
     private String thirtyPercentOffInvestAmount;
 
-    public LuxuryPrizeRequestDto(LuxuryPrizeModel luxuryPrizeModel) {
-        this.luxuryPrizeId = luxuryPrizeModel.getId();
-        this.brand = luxuryPrizeModel.getBrand();
-        this.name = luxuryPrizeModel.getName();
-        this.price = luxuryPrizeModel.getPrice();
-        this.image = luxuryPrizeModel.getImage();
-        this.introduce = luxuryPrizeModel.getIntroduce();
-        this.investAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getInvestAmount());
-        this.tenPercentOffInvestAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getTenPercentOffInvestAmount());
-        this.twentyPercentOffInvestAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getTwentyPercentOffInvestAmount());
-        this.thirtyPercentOffInvestAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getThirtyPercentOffInvestAmount());
-    }
-
-    public LuxuryPrizeRequestDto(){}
-
     public long getLuxuryPrizeId() {
         return luxuryPrizeId;
     }
@@ -80,5 +65,45 @@ public class LuxuryPrizeRequestDto implements Serializable {
 
     public String getThirtyPercentOffInvestAmount() {
         return thirtyPercentOffInvestAmount;
+    }
+
+    public void setLuxuryPrizeId(long luxuryPrizeId) {
+        this.luxuryPrizeId = luxuryPrizeId;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
+
+    public void setInvestAmount(String investAmount) {
+        this.investAmount = investAmount;
+    }
+
+    public void setTenPercentOffInvestAmount(String tenPercentOffInvestAmount) {
+        this.tenPercentOffInvestAmount = tenPercentOffInvestAmount;
+    }
+
+    public void setTwentyPercentOffInvestAmount(String twentyPercentOffInvestAmount) {
+        this.twentyPercentOffInvestAmount = twentyPercentOffInvestAmount;
+    }
+
+    public void setThirtyPercentOffInvestAmount(String thirtyPercentOffInvestAmount) {
+        this.thirtyPercentOffInvestAmount = thirtyPercentOffInvestAmount;
     }
 }
