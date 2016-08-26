@@ -62,6 +62,16 @@ public class LotteryActivityService {
         if(userModel == null){
             return lotteryTime;
         }
+
+        if(userModel.getRegisterTime().before(activityAutumnEndTime) && userModel.getRegisterTime().after(activityAutumnStartTime)){
+            lotteryTime ++;
+        }
+
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        if(accountModel != null && accountModel.getRegisterTime().before(activityAutumnEndTime) && accountModel.getRegisterTime().after(activityAutumnStartTime)){
+            lotteryTime ++;
+        }
+
         List<ReferrerRelationModel> referrerRelationModels = referrerRelationMapper.findByReferrerLoginNameAndLevel(userModel.getLoginName(), 1);
         for(ReferrerRelationModel referrerRelationModel : referrerRelationModels){
             UserModel referrerUserModel = userMapper.findByLoginName(referrerRelationModel.getLoginName());
@@ -71,15 +81,6 @@ public class LotteryActivityService {
                     lotteryTime ++;
                 }
             }
-        }
-
-        if(userModel.getRegisterTime().before(activityAutumnEndTime) && userModel.getRegisterTime().after(activityAutumnStartTime)){
-            lotteryTime ++;
-        }
-
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        if(accountModel != null && accountModel.getRegisterTime().before(activityAutumnEndTime) && accountModel.getRegisterTime().after(activityAutumnStartTime)){
-            lotteryTime ++;
         }
 
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
