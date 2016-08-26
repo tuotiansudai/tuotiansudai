@@ -77,7 +77,11 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">奖品获奖资格: </label>
                 <div class="col-sm-4">
-                    投资满<input type="text" name="investAmount" value="<#if dto??>${dto.investAmount!}</#if>" class="form-control luxuryInvestAmount" placeholder="" datatype="*" errormsg="奖品获奖资格不能为空">元
+                    <div class="input-group">
+                        <div class="input-group-addon">投资满</div>
+                        <input type="text" name="investAmount" value="<#if dto??>${dto.investAmount!}</#if>"  class="form-control luxuryInvestAmount" placeholder="" datatype="*" errormsg="奖品获奖资格不能为空">
+                        <div class="input-group-addon">元</div>
+                    </div>
                 </div>
                 <div class="col-sm-7">
                 </div>
@@ -85,7 +89,11 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">7折券获奖资格: </label>
                 <div class="col-sm-4">
-                    投资满<input type="text" name="thirtyPercentOffInvestAmount" value="<#if dto??>${dto.thirtyPercentOffInvestAmount!}</#if>" class="form-control luxury-thirtyPercentOffInvestAmount" placeholder="" datatype="*" errormsg="7折券获奖资格不能为空">元
+                    <div class="input-group">
+                        <div class="input-group-addon">投资满</div>
+                        <input type="text" name="thirtyPercentOffInvestAmount" value="<#if dto??>${dto.thirtyPercentOffInvestAmount!}</#if>"  class="form-control luxury-thirtyPercentOffInvestAmount" placeholder="" datatype="*" errormsg="7折券获奖资格不能为空">
+                        <div class="input-group-addon">元</div>
+                    </div>
                 </div>
                 <div class="col-sm-7">
                 </div>
@@ -93,7 +101,11 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">8折券获奖资格: </label>
                 <div class="col-sm-4">
-                    投资满<input type="text" name="twentyPercentOffInvestAmount" value="<#if dto??>${dto.twentyPercentOffInvestAmount!}</#if>" class="form-control luxury-twentyPercentOffInvestAmount" placeholder="" datatype="*" errormsg="8折券获奖资格不能为空">元
+                    <div class="input-group">
+                        <div class="input-group-addon">投资满</div>
+                        <input type="text" name="twentyPercentOffInvestAmount" value="<#if dto??>${dto.twentyPercentOffInvestAmount!}</#if>"  class="form-control luxury-twentyPercentOffInvestAmount" placeholder="" datatype="*" errormsg="8折券获奖资格不能为空">
+                        <div class="input-group-addon">元</div>
+                    </div>
                 </div>
                 <div class="col-sm-7">
                 </div>
@@ -101,7 +113,11 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">9折券获奖资格: </label>
                 <div class="col-sm-4">
-                    投资满<input type="text" name="tenPercentOffInvestAmount" value="<#if dto??>${dto.tenPercentOffInvestAmount!}</#if>"  class="form-control luxury-tenPercentOffInvestAmount" placeholder="" datatype="*" errormsg="9折券获奖资格不能为空">元
+                    <div class="input-group">
+                        <div class="input-group-addon">投资满</div>
+                            <input type="text" name="tenPercentOffInvestAmount" value="<#if dto??>${dto.tenPercentOffInvestAmount!}</#if>"  class="form-control luxury-tenPercentOffInvestAmount" placeholder="" datatype="*" errormsg="9折券获奖资格不能为空">
+                        <div class="input-group-addon">元</div>
+                    </div>
                 </div>
                 <div class="col-sm-7">
                 </div>

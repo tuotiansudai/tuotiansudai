@@ -36,11 +36,11 @@ public class LuxuryPrizeService {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
 
-        long count = userLuxuryPrizeMapper.getCountUserLuxuryPrize(mobile, startTime, endTime);
+        long count = userLuxuryPrizeMapper.countByPagination(mobile, startTime, endTime);
         int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
         index = index > totalPages ? totalPages : index;
         List<UserPrizePaginationItemDto> items = Lists.newArrayList();
-        List<UserLuxuryPrizeModel> userLuxuryPrizeModels = userLuxuryPrizeMapper.getUserLuxuryPrizeList(mobile, startTime, endTime, (index-1) * pageSize, pageSize);
+        List<UserLuxuryPrizeModel> userLuxuryPrizeModels = userLuxuryPrizeMapper.findByPagination(mobile, startTime, endTime, (index-1) * pageSize, pageSize);
         if (count > 0) {
             items = Lists.transform(userLuxuryPrizeModels, new Function<UserLuxuryPrizeModel, UserPrizePaginationItemDto>() {
                 @Override
@@ -50,7 +50,7 @@ public class LuxuryPrizeService {
             });
         }
 
-        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, pageSize, count, items);
+        BasePaginationDataDto<UserPrizePaginationItemDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, items);
         basePaginationDataDto.setStatus(true);
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<BasePaginationDataDto>();
         baseDto.setData(basePaginationDataDto);
@@ -80,20 +80,20 @@ public class LuxuryPrizeService {
         return new LuxuryPrizeDto(luxuryPrizeModel);
 
     }
-    public void editLuxuryPrize(LuxuryPrizeRequestDto luxuryPrizeDto,String loginName){
-        long luxuryPrizeId = luxuryPrizeDto.getLuxuryPrizeId();
+    public void editLuxuryPrize(LuxuryPrizeRequestDto luxuryPrizeRequestDto,String loginName){
+        long luxuryPrizeId = luxuryPrizeRequestDto.getLuxuryPrizeId();
         LuxuryPrizeModel luxuryPrizeModel = luxuryPrizeMapper.findById(luxuryPrizeId);
-        luxuryPrizeModel.setBrand(luxuryPrizeDto.getBrand());
+        luxuryPrizeModel.setBrand(luxuryPrizeRequestDto.getBrand());
         luxuryPrizeModel.setUpdatedTime(new Date());
-        luxuryPrizeModel.setInvestAmount(AmountConverter.convertStringToCent(luxuryPrizeDto.getInvestAmount()));
+        luxuryPrizeModel.setInvestAmount(AmountConverter.convertStringToCent(luxuryPrizeRequestDto.getInvestAmount()));
         luxuryPrizeModel.setUpdatedBy(loginName);
-        luxuryPrizeModel.setImage(luxuryPrizeDto.getImage());
-        luxuryPrizeModel.setIntroduce(luxuryPrizeDto.getIntroduce());
-        luxuryPrizeModel.setName(luxuryPrizeDto.getName());
-        luxuryPrizeModel.setPrice(luxuryPrizeDto.getPrice());
-        luxuryPrizeModel.setTenPercentOffInvestAmount(AmountConverter.convertStringToCent(luxuryPrizeDto.getTenPercentOffInvestAmount()));
-        luxuryPrizeModel.setTwentyPercentOffInvestAmount(AmountConverter.convertStringToCent(luxuryPrizeDto.getTwentyPercentOffInvestAmount()));
-        luxuryPrizeModel.setThirtyPercentOffInvestAmount(AmountConverter.convertStringToCent(luxuryPrizeDto.getThirtyPercentOffInvestAmount()));
+        luxuryPrizeModel.setImage(luxuryPrizeRequestDto.getImage());
+        luxuryPrizeModel.setIntroduce(luxuryPrizeRequestDto.getIntroduce());
+        luxuryPrizeModel.setName(luxuryPrizeRequestDto.getName());
+        luxuryPrizeModel.setPrice(luxuryPrizeRequestDto.getPrice());
+        luxuryPrizeModel.setTenPercentOffInvestAmount(AmountConverter.convertStringToCent(luxuryPrizeRequestDto.getTenPercentOffInvestAmount()));
+        luxuryPrizeModel.setTwentyPercentOffInvestAmount(AmountConverter.convertStringToCent(luxuryPrizeRequestDto.getTwentyPercentOffInvestAmount()));
+        luxuryPrizeModel.setThirtyPercentOffInvestAmount(AmountConverter.convertStringToCent(luxuryPrizeRequestDto.getThirtyPercentOffInvestAmount()));
         luxuryPrizeMapper.update(luxuryPrizeModel);
 
     }

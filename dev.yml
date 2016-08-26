@@ -30,6 +30,14 @@ console:
     - "redis-server"
     - "static-server"
     - "sign-in"
+activity-console:
+  image: "leoshi/ttsd-tomcat8-java7:UTC8"
+  ports:
+    - "20018:8080"
+  volumes:
+    - ./ttsd-activity-console/war:/webapps
+  links:
+    - "redis-server"
 pay-wrapper:
   image: "leoshi/ttsd-tomcat8-java7:UTC8"
   ports:

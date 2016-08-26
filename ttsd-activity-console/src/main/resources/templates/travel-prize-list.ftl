@@ -1,14 +1,14 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="activityCenter" title="活动中心管理">
+<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="travelLuxuryActivity" title="旅游+奢侈品活动管理">
 
 <div class="col-md-10">
     <div class="panel panel-default">
         <div class="panel-body">
             <a class="btn btn-default" href="/activity-console/activity-manage/travel/user-travel-list" role="button">旅游奖品获奖记录</a>
             <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/travel/travel-prize-list" role="button">旅游奖品更新</a>
-            <a class="btn btn-default" href="#" role="button">奢侈品获奖记录</a>
-            <a class="btn btn-default" href="#" role="button">奢侈品更新</a>
+            <a class="btn btn-default" href="/activity-console/activity-manage/luxury/user-luxury-list" role="button">奢侈品获奖记录</a>
+            <a class="btn btn-default" href="/activity-console/activity-manage/luxury/luxury-prize-list" role="button">奢侈品更新</a>
         </div>
     </div>
 
@@ -19,7 +19,6 @@
                 <th>奖品名称</th>
                 <th>奖品价值（元）</th>
                 <th>奖品图片</th>
-                <th>奖品介绍</th>
                 <th>获奖资格</th>
                 <th>操作</th>
             </tr>
@@ -30,8 +29,7 @@
                     <td>${item.name}</td>
                     <td>${item.price}</td>
                     <td><img src="${item.image}"></td>
-                    <td><a href="" target="_blank">查看</a></td>
-                    <td>投资满${item.investAmount}</td>
+                    <td>投资满${item.investAmount/100}</td>
                     <td><a href="/activity-console/activity-manage/travel/${item.id?c}/edit">更新</a></td>
                 </tr>
                 <#else>

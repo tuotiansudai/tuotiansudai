@@ -130,4 +130,9 @@ require(['jquery', 'Validform', 'bootstrap','jquery-ui', 'csrf'], function ($, _
             currentErrorObj.focus();
         }
     });
+
+    $('.travel-cancel').on('click',function(event){
+        event.preventDefault();
+        location.href = '/activity-console/activity-manage/travel/user-travel-list';
+    });
 });
