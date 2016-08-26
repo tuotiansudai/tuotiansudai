@@ -43,7 +43,7 @@
 
         <button type="button" class="btn btn-sm btn-primary search">查询</button>
     </form>
-    <div class="table-responsive">
+    <div class="table-responsive" style="overflow: visible">
         <table class="table table-bordered table-hover " id="tabFormData">
             <thead>
             <tr>
@@ -78,13 +78,13 @@
                     <td class="td">${loanListDto.loanAmount/100}</td>
                     <td>${loanListDto.basicRate}/${loanListDto.activityRate}</td>
 
-                    <td class="ladder-table">
+                    <td class="ladder-table-activity">
                         <#if (loanListDto.extraLoanRateModels?size>0)>
-                            <table class="table table-bordered tip-table">
+                            <table class="table table-bordered tip-activity">
                                 <thead>
                                 <tr>
                                     <th>投资金额范围(元)</th>
-                                    <th>加息比例(%)</th>
+                                    <th>投资奖励比例(%)</th>
                                 </tr>
                                 </thead>
                                 <tbody>

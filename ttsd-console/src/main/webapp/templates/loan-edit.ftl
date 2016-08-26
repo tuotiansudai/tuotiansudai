@@ -245,7 +245,7 @@
             <#if extraLoanRates?? && extraLoanRates?size gt 0>
                 <div class="form-group extra-rate">
                         <#list extraLoanRates as extraLoanRate>
-                            <input type="text" class="extra-rate-id" value="${(extraLoanRate.extraRateRuleId)?string('0')}">
+                            <input type="hidden" class="extra-rate-id" value="${(extraLoanRate.extraRateRuleId)?string('0')}">
                         </#list>
                     <label class="col-sm-2 control-label"></label>
 
@@ -274,7 +274,7 @@
                 <div class="form-group extra-source">
                     <label class="col-sm-2 control-label">投资奖励来源:</label>
                     <#if  loanInfo?? && loanInfo.extraSource?? && extraLoanRates?? && extraLoanRates?size gt 0>
-                        <input type="text" class="extraSource" value="${loanInfo.extraSource}">
+                        <input type="hidden" class="extraSource" value="${loanInfo.extraSource}">
                     </#if>
 
                     <div class="col-sm-4" id="extraSource">
@@ -316,9 +316,6 @@
                 </div>
 
             </#if>
-
-
-
 
         <h3><span>借款人基本信息</span></h3>
         <hr class="top-line">

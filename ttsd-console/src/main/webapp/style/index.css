@@ -634,6 +634,25 @@ td.td {
 .ladder-table:hover .tip-table {
     display: block;
 }
+.ladder-table-activity{
+    position: relative;
+}
+.ladder-table-activity .tip-activity {
+    position: absolute;
+    width: 290px;
+    height: auto;
+    top: 0;
+    left: -290px;
+    z-index: 99;
+    display: none;
+    background: #fff;
+    margin-bottom: 0;
+    max-width:none;
+}
+
+.ladder-table-activity:hover .tip-activity {
+    display: block;
+}
 .thumbPictureImage{
     display: inline-block;
     margin-left: 106px;
