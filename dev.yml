@@ -119,16 +119,23 @@ static-server:
     - ./scripts/docker/ttsd-test-nginx.conf:/etc/nginx/conf.d/default.conf
   ports:
     - "20020:80"
-nginx-server:
+nginx-server_web:
   image: "nginx"
   volumes:
-    - ./scripts/docker/ttsd-test-nginx-rewrite.conf:/etc/nginx/conf.d/default.conf
+    - ./scripts/docker/ttsd-web-nginx-rewrite.conf:/etc/nginx/conf.d/default.conf
   ports:
     - "20008:6002"
   links:
     - "activity"
     - "web"
     - "ask"
+nginx-server_console:
+  image: "nginx"
+  volumes:
+    - ./scripts/docker/ttsd-console-nginx-rewrite.conf:/etc/nginx/conf.d/default.conf
+  ports:
+    - "30008:6003"
+  links:
     - "console"
     - "activity-console"
 ask:
