@@ -353,4 +353,29 @@
                   margin-top: 10px;
                   cursor: pointer; }
 
+.error-tip {
+  float: left;
+  width: 300px;
+  padding: 20px 0;
+  text-align: center;
+  display: none; }
+  .error-tip h3 {
+    font-size: 20px;
+    text-align: center;
+    color: #ff9c1b;
+    background: url("/point/images/error-tip.png") no-repeat 30% 50%; }
+  .error-tip p {
+    font-size: 14px;
+    color: #4c4c4c;
+    padding: 0 20px; }
+  .error-tip .go-to {
+    display: inline-block;
+    width: 160px;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+    background: #178fe6;
+    line-height: 40px;
+    text-decoration: none; }
+
 /*# sourceMappingURL=point_index.css.map */

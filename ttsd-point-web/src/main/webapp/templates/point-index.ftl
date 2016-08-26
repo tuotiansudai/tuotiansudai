@@ -146,6 +146,7 @@
                 <#list virtualProducts as virtualProduct>
                     <#if virtualProduct_index < 2>
                         <li class="big-gift">
+                            <a href="">
                             <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
                             <#if virtualProduct.itemType.name() == 'RED_ENVELOPE'>
                                 <p class="mater-img bag-bg">
@@ -173,6 +174,7 @@
                                    href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail"><span
                                         class="fl get-btn">立即兑换</span></a>
                             </p>
+                            </a>
                         </li>
                     <#else>
                         <li>
@@ -256,4 +258,10 @@
         </div>
     </div>
 </div>
+<div class="error-tip" id="errorTip"></div>
+<script type="text/html" id="errorTipTpl">
+    <h3>温馨提示</h3>
+    <p>{{message}}</p>
+    <a href="/register/account?redirect=/point-shop" class="go-to">去认证</a>
+</script>
 </@global.main>

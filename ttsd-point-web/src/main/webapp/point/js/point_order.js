@@ -50,7 +50,9 @@ require(['jquery', 'layerWrapper','template', 'jquery.validate', 'jquery.ajax.ex
 				.done(function(data) {
 					console.log(data);
 					if (data.data.status) {
-						location.href = '/point-shop/bill';
+						layer.msg('兑换成功！3秒后自动跳转到兑换记录页面。', function(){
+						  location.href = '/point-shop/record';
+						}); 
 					} else {
 						errorTip(data.data);
 					}
@@ -139,7 +141,7 @@ require(['jquery', 'layerWrapper','template', 'jquery.validate', 'jquery.ajax.ex
 		});
 
 
-		$('.close-layer').on('click', function(event) {
+		$('body').on('click', '.close-layer',function(event) {
 			event.preventDefault();
 			layer.closeAll();
 		});
