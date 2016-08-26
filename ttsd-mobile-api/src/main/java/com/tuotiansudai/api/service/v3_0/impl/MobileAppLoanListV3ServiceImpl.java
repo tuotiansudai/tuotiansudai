@@ -19,6 +19,7 @@ import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.text.DecimalFormat;
@@ -27,7 +28,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Service {
+@Service
+public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Service {
 
     static Logger logger = Logger.getLogger(MobileAppLoanListV3ServiceImpl.class);
 
@@ -167,7 +169,7 @@ class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Service {
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
 
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
-            loanResponseDataDto.setExtraSource(loan.getExtraSource());
+            loanResponseDataDto.setExtraSource(loanDetailsModel.getExtraSource());
 
             loanDtoList.add(loanResponseDataDto);
         }
