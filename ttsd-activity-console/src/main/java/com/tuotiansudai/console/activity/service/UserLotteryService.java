@@ -15,6 +15,7 @@ import com.tuotiansudai.repository.model.ReferrerRelationModel;
 import com.tuotiansudai.repository.model.UserModel;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -45,9 +46,11 @@ public class UserLotteryService{
     @Autowired
     private RechargeMapper rechargeMapper;
 
-    private Date startTime = DateTime.parse("2016-01-01").toDate();
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
+    private Date activityAutumnStartTime;
 
-    private Date endTime = DateTime.parse("2016-12-01").toDate();
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.endTime}\")}")
+    private Date activityAutumnEndTime;
 
     public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile,Integer index,Integer pageSize) {
         List<UserModel> userModels = userMapper.findUserModelByMobile(mobile,index, pageSize);
@@ -86,25 +89,25 @@ public class UserLotteryService{
         List<ReferrerRelationModel> referrerRelationModels = referrerRelationMapper.findByReferrerLoginNameAndLevel(userModel.getLoginName(), 1);
         for(ReferrerRelationModel referrerRelationModel : referrerRelationModels){
             UserModel referrerUserModel = userMapper.findByLoginName(referrerRelationModel.getLoginName());
-            if(referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)){
+            if(referrerUserModel.getRegisterTime().before(activityAutumnEndTime) && referrerUserModel.getRegisterTime().after(activityAutumnStartTime)){
                 lotteryTime ++;
-                if(investMapper.countInvestorInvestPagination(referrerUserModel.getLoginName(),null,startTime,endTime) > 0){
+                if(investMapper.countInvestorInvestPagination(referrerUserModel.getLoginName(),null,activityAutumnStartTime,activityAutumnEndTime) > 0){
                     lotteryTime ++;
                 }
             }
         }
 
-        if(userModel.getRegisterTime().before(endTime) && userModel.getRegisterTime().after(startTime)){
+        if(userModel.getRegisterTime().before(activityAutumnEndTime) && userModel.getRegisterTime().after(activityAutumnStartTime)){
             lotteryTime ++;
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        if(accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)){
+        if(accountModel != null && accountModel.getRegisterTime().before(activityAutumnEndTime) && accountModel.getRegisterTime().after(activityAutumnStartTime)){
             lotteryTime ++;
         }
 
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
-        if(bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)){
+        if(bankCardModel != null && bankCardModel.getCreatedTime().before(activityAutumnEndTime) && bankCardModel.getCreatedTime().after(activityAutumnStartTime)){
             lotteryTime ++;
         }
 
@@ -112,7 +115,7 @@ public class UserLotteryService{
             lotteryTime ++;
         }
 
-        if(investMapper.countInvestorInvestPagination(userModel.getLoginName(), null, startTime, endTime) > 0){
+        if(investMapper.countInvestorInvestPagination(userModel.getLoginName(), null, activityAutumnStartTime, activityAutumnEndTime) > 0){
             lotteryTime ++;
         }
 

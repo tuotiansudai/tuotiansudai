@@ -4,8 +4,6 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
     $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
     $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
     $('#timeRestBtn').click(function () {
-        alert(1);
-        $("#mobile").val("");
         location.href = "/activity-manage/user-lottery-list";
     });
     $('#prizeRestBtn').click(function () {
