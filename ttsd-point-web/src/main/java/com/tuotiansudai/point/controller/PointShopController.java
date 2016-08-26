@@ -75,10 +75,13 @@ public class PointShopController {
         String loginName = LoginUserInfo.getLoginName();
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto baseDataDto = signInService.signIn(loginName);
-        baseDataDto.setStatus(true);
-        baseDto.setData(baseDataDto);
-        baseDto.setSuccess(true);
-        return baseDto;
+        if (null != baseDataDto) {
+            baseDataDto.setStatus(true);
+            baseDto.setData(baseDataDto);
+            return baseDto;
+        } else {
+            return new BaseDto<>(new BaseDataDto(false, "您还未实名认证，不可以获得积分。请先去实名认证再来签到领积分吧!"));
+        }
     }
 
     @RequestMapping(value = "/{id}/{itemType}/detail", method = RequestMethod.GET)
