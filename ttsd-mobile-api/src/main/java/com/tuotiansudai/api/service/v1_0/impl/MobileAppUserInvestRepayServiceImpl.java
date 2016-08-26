@@ -18,6 +18,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,9 +85,11 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             int maxPeriods = investRepayModels == null?0:investRepayModels.size();
             InvestRepayModel lastedInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), maxPeriods);
             userInvestRepayResponseDataDto.setLastRepayDate(lastedInvestRepayModel == null ? "" : sdf.format(lastedInvestRepayModel.getRepayDate()));
+            List<TransferApplicationModel> transferApplicationModels;
             for (InvestRepayModel investRepayModel : investRepayModels) {
                 if(investRepayModel.isTransferred()){
-                    if(CollectionUtils.isEmpty(transferApplicationMapper.findByTransferInvestId(investRepayModel.getInvestId(),Lists.newArrayList(TransferStatus.SUCCESS)))){
+                    transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.SUCCESS));
+                    if(CollectionUtils.isNotEmpty(transferApplicationModels) && transferApplicationModels.get(0).getPeriod() != investRepayModel.getPeriod()){
                         continue;
                     }
                 }
