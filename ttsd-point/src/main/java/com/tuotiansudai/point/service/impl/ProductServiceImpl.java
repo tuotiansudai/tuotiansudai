@@ -3,7 +3,6 @@ package com.tuotiansudai.point.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
@@ -341,7 +340,7 @@ public class ProductServiceImpl implements ProductService {
     public synchronized BaseDto<BaseDataDto> buyProduct(String loginName, long id, ItemType itemType, int amount, Long addressId) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (null == accountModel) {
-            return new BaseDto<>(new BaseDataDto(false, "该账户不存在"));
+            return new BaseDto<>(new BaseDataDto(false, "该账户未实名认证，不能购买商品"));
         }
 
         ProductShowItemDto productShowItemDto = findProductShowItemDto(id, itemType);
