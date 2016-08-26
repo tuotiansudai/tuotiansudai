@@ -5,7 +5,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
@@ -28,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -210,7 +208,7 @@ public class RepayServiceImpl implements RepayService {
                     }
                 }
 
-                if(RepayStatus.COMPLETE.equals(investRepayModel.getStatus())){
+                if (RepayStatus.COMPLETE.equals(investRepayModel.getStatus())) {
                     investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(repayAmount));
                     investRepayDataItemDto.setActualFee(AmountConverter.convertCentToString(actualFee));
                 }
@@ -265,6 +263,6 @@ public class RepayServiceImpl implements RepayService {
     }
 
     private static String covertRate(String rate){
-        return rate.indexOf(".00") != -1 ? rate.replaceAll("\\.00","") : String.valueOf(Double.parseDouble(rate));
+        return rate.indexOf(".00") != -1 ? rate.replaceAll("\\.00", "") : String.valueOf(Double.parseDouble(rate));
     }
 }
