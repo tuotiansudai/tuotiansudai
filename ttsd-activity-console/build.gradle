@@ -19,8 +19,6 @@ repositories {
     maven { url "http://central.maven.org/maven2/" }
 }
 dependencies {
-    def springSecurityVersion = '4.1.1.RELEASE'
-
     compile(project(":ttsd-user-service")) {
         exclude module: 'ttsd-dependency'
     };
@@ -38,8 +36,6 @@ dependencies {
     };
 
     compile project(':ttsd-util'),
-            "org.springframework.security:spring-security-config:$springSecurityVersion",
-            "org.springframework.security:spring-security-taglibs:$springSecurityVersion",
             'org.springframework.boot:spring-boot-starter-mail',
             "org.springframework.boot:spring-boot-starter-web",
             "org.springframework.boot:spring-boot-configuration-processor",

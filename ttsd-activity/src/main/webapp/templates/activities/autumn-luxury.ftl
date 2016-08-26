@@ -34,7 +34,7 @@
                         </div>
                     </@global.isNotAnonymous>
                     <@global.isAnonymous>
-                        <a class="login-btn" href="/login">立即登录</a>
+                        <a class="login-btn" href="/login?login?redirect=/activity/autumn/travel">立即登录</a>
                     </@global.isAnonymous>
                 </div>
             </div>
@@ -50,7 +50,14 @@
                                 <p class="des-text">${prize.name}</p>
                                 <p class="price-text"><span>${prize.price}元</span><span class="bite-text">价值</span></p>
                                 <p class="intro-text"><span>投资满<@amount>${prize.investAmount?string.computer}</@amount>元即可获得</span></p>
-                                <p class="btn-text"><a href="/activity/autumn/luxury/invest">立即投资</a></p>
+                                <p class="btn-text">
+                                    <@global.isAnonymous>
+                                        <a href="/login?redirect=/activity/autumn/luxury" class="autumn-luxury-invest-channel">立即投资</a>
+                                    </@global.isAnonymous>
+                                    <@global.isNotAnonymous>
+                                        <a href="/loan-list" class="autumn-luxury-invest-channel">立即投资</a>
+                                    </@global.isNotAnonymous>
+                                </p>
                             </div>
                             <div class="coupon-list">
                                 <div class="coupon-item">
@@ -164,7 +171,12 @@
                 </div>
             </div>
             <div class="btn-item">
-                <a href="/activity/autumn/luxury/invest">立即投资领奖</a>
+                <@global.isAnonymous>
+                    <a href="/login?redirect=/activity/autumn/luxury">立即投资领奖</a>
+                </@global.isAnonymous>
+                <@global.isNotAnonymous>
+                    <a href="/loan-list" class="autumn-luxury-invest-channel">立即投资领奖</a>
+                </@global.isNotAnonymous>
             </div>
         </div>
         <div class="luxury-item clearfix">

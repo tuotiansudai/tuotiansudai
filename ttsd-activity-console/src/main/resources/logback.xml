@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration >
+    <contextName>activity-console</contextName>
+
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <appender name="ROLLIN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/var/log/tomcat/activity-console.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>activity-console.log.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%5p] [%d{yyyy-MM-dd HH:mm:ss.SSS zzz}] %c{1}:%L %X{requestId} %X{userId} - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoder 默认配置为PatternLayoutEncoder -->
+        <encoder>
+            <pattern>[%5p] [%d{yyyy-MM-dd HH:mm:ss.SSS zzz}] %c{1}:%L %X{requestId} %X{userId} - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ROLLIN"/>
+    </root>
+
+    <logger name="com.tuotiansudai" level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ROLLIN"/>
+    </logger>
+</configuration>

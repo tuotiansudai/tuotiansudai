@@ -19,13 +19,13 @@ public class LuxuryPrizeDto implements Serializable {
 
     private String introduce;
 
-    private String investAmount;
+    private long investAmount;
 
-    private String tenPercentOffInvestAmount;
+    private long tenPercentOffInvestAmount;
 
-    private String twentyPercentOffInvestAmount;
+    private long twentyPercentOffInvestAmount;
 
-    private String thirtyPercentOffInvestAmount;
+    private long thirtyPercentOffInvestAmount;
 
     public LuxuryPrizeDto(LuxuryPrizeModel luxuryPrizeModel) {
         this.luxuryPrizeId = luxuryPrizeModel.getId();
@@ -34,10 +34,10 @@ public class LuxuryPrizeDto implements Serializable {
         this.price = luxuryPrizeModel.getPrice();
         this.image = luxuryPrizeModel.getImage();
         this.introduce = luxuryPrizeModel.getIntroduce();
-        this.investAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getInvestAmount());
-        this.tenPercentOffInvestAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getTenPercentOffInvestAmount());
-        this.twentyPercentOffInvestAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getTwentyPercentOffInvestAmount());
-        this.thirtyPercentOffInvestAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getThirtyPercentOffInvestAmount());
+        this.investAmount = luxuryPrizeModel.getInvestAmount();
+        this.tenPercentOffInvestAmount = luxuryPrizeModel.getTenPercentOffInvestAmount();
+        this.twentyPercentOffInvestAmount = luxuryPrizeModel.getTwentyPercentOffInvestAmount();
+        this.thirtyPercentOffInvestAmount = luxuryPrizeModel.getThirtyPercentOffInvestAmount();
     }
 
     public long getLuxuryPrizeId() {
@@ -64,19 +64,19 @@ public class LuxuryPrizeDto implements Serializable {
         return introduce;
     }
 
-    public String getInvestAmount() {
+    public long getInvestAmount() {
         return investAmount;
     }
 
-    public String getTenPercentOffInvestAmount() {
+    public long getTenPercentOffInvestAmount() {
         return tenPercentOffInvestAmount;
     }
 
-    public String getTwentyPercentOffInvestAmount() {
+    public long getTwentyPercentOffInvestAmount() {
         return twentyPercentOffInvestAmount;
     }
 
-    public String getThirtyPercentOffInvestAmount() {
+    public long getThirtyPercentOffInvestAmount() {
         return thirtyPercentOffInvestAmount;
     }
 }
