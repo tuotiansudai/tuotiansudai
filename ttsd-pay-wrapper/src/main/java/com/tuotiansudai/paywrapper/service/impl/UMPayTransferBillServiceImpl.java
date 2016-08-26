@@ -8,7 +8,9 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.TranseqSearchRe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TranseqSearchResponseModel;
 import com.tuotiansudai.paywrapper.service.UMPayTransferBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,10 +32,17 @@ public class UMPayTransferBillServiceImpl implements UMPayTransferBillService {
     @Autowired
     private PaySyncClient paySyncClient;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public List<List<String>> getTransferBill(String loginName, Date startDate, Date endDate) {
         List<List<String>> data = Lists.newArrayList();
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
+        if (userModel == null) {
+            return data;
+        }
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
         if (accountModel == null) {
             return data;
         }
