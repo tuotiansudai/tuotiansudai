@@ -5,12 +5,12 @@
 
     <div class="error-tip-container tl">
         <div class="error-info">
-            <img src="${staticServer}/pointsystem/images/icons/error-tip-500.png" class="fl error"/>
+            <img src="${staticServer}/point/images/icons/error-tip-500.png" class="fl error"/>
 
             <p>
                 <span class="sorry">很抱歉，此页面正在维护中！</span>
-                <span class="jump-tip">10秒后将跳转到首页</span>
-                <a href="/">返回上一步</a> ｜<a href="/">拓天速贷首页</a>
+                <span class="jump-tip"><i>10</i>秒后将跳转到首页</span>
+                <a href="javascript:void(0)" onclick="javascript:history.back(-1);">返回上一步</a> ｜<a href="/">拓天速贷首页</a>
             </p>
         </div>
         <div class="bRadiusBox clearfix clear-blank-m pad-m">
