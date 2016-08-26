@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -87,11 +88,13 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             userInvestRepayResponseDataDto.setLastRepayDate(lastedInvestRepayModel == null ? "" : sdf.format(lastedInvestRepayModel.getRepayDate()));
             List<TransferApplicationModel> transferApplicationModels;
             for (InvestRepayModel investRepayModel : investRepayModels) {
+                Date repayDate = investRepayModel.getActualRepayDate();
                 if(investRepayModel.isTransferred()){
                     transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.SUCCESS));
                     if(CollectionUtils.isNotEmpty(transferApplicationModels) && transferApplicationModels.get(0).getPeriod() != investRepayModel.getPeriod()){
                         continue;
                     }
+                    repayDate = transferApplicationModels.get(0).getTransferTime();
                 }
                 CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(),investRepayModel.getPeriod());
                 long expectedInterest = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee();
@@ -104,7 +107,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 investRepayDataDto.setIsTransferred(String.valueOf(investRepayModel.isTransferred()));
                 investRepayDataDto.setPeriod(investRepayModel.getPeriod());
                 investRepayDataDto.setRepayDate(sdf.format(investRepayModel.getRepayDate()));
-                investRepayDataDto.setActualRepayDate(investRepayModel.getActualRepayDate() == null ? "" : sdf.format(investRepayModel.getActualRepayDate()));
+                investRepayDataDto.setActualRepayDate(repayDate == null ? "" : sdf.format(repayDate));
                 investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
                 investRepayDataDto.setActualInterest(AmountConverter.convertCentToString(actualInterest));
                 investRepayDataDto.setStatus(investRepayModel.getStatus().name());
