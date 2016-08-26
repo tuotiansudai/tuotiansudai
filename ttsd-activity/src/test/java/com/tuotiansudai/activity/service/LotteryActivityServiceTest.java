@@ -3,6 +3,7 @@ package com.tuotiansudai.activity.service;
 
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.ReferrerRelationModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.apache.commons.lang.time.DateUtils;
@@ -33,15 +34,20 @@ public class LotteryActivityServiceTest {
 
     public void shouldGetDrawPrizeTimeIsOk(){
         String loginName = "testDrawPrize";
-        String refferrerName = "testRefferrerName";
+        String referrerName = "testReferrerName";
         Date activityAutumnStartTime = DateUtils.addMonths(DateTime.now().toDate(),-1);
         Date activityAutumnEndTime = DateUtils.addMonths(DateTime.now().toDate(),1);
         ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnStartTime" ,activityAutumnStartTime);
-        ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnEndTime" ,activityAutumnEndTime);
+        ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnEndTime", activityAutumnEndTime);
         getFakeUser(loginName);
-        getFakeUser(refferrerName);
+        getFakeUser(referrerName);
     }
 
+
+    private ReferrerRelationModel getRefferrer(String referrerName,String loginName){
+        ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
+        return referrerRelationModel;
+    }
 
     private UserModel getFakeUser(String loginName) {
         UserModel fakeUser = new UserModel();
