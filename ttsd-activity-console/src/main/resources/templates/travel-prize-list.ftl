@@ -19,7 +19,6 @@
                 <th>奖品名称</th>
                 <th>奖品价值（元）</th>
                 <th>奖品图片</th>
-                <th>奖品介绍</th>
                 <th>获奖资格</th>
                 <th>操作</th>
             </tr>
@@ -30,7 +29,6 @@
                     <td>${item.name}</td>
                     <td>${item.price}</td>
                     <td><img src="${item.image}"></td>
-                    <td><a href="" target="_blank">查看</a></td>
                     <td>投资满${item.investAmount/100}</td>
                     <td><a href="/activity-console/activity-manage/travel/${item.id?c}/edit">更新</a></td>
                 </tr>
