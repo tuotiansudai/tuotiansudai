@@ -50,7 +50,7 @@ public class LuxuryPrizeService {
             });
         }
 
-        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, pageSize, count, items);
+        BasePaginationDataDto<UserPrizePaginationItemDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, items);
         basePaginationDataDto.setStatus(true);
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<BasePaginationDataDto>();
         baseDto.setData(basePaginationDataDto);

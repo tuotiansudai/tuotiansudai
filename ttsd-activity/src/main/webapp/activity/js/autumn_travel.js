@@ -145,11 +145,19 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'circle'], functio
             }, 2000);
         }).trigger("mouseout");
     }
+
     $awardCategory.find('li').on('click', function () {
         var $this = $(this),
             num = $this.index();
         $this.addClass('active').siblings('li').removeClass('active');
         $('.switchContent', $awardRecordsFrame).eq(num).show().siblings('.switchContent').hide();
 
-    })
+    });
+
+    $("a.autumn-travel-invest-channel").click(function () {
+        $.ajax({
+            url: '/activity/autumn/travel/invest',
+            type: 'POST'
+        });
+    });
 });

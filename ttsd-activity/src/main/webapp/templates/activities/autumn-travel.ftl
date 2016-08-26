@@ -26,7 +26,7 @@
                 <span class="fr">我的投资额：${myInvestAmount}元<em class="note">［仅累计本日参与本活动的投资金额］</em></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
-                <a href="/login" class="fr btn-normal">立即登录</a>
+                <a href="/login?login?redirect=/activity/autumn/travel" class="fr btn-normal">立即登录</a>
             </@global.isAnonymous>
         </div>
 
@@ -40,7 +40,12 @@
                             <span class="kind-text">${prize.name}</span>
                             <div class="kind-bottom">
                                 <span class="fl">价值<em>${prize.price}</em>元</span>
-                                <a href="/activity/autumn/travel/invest" class="fr btn-normal">立即投资</a>
+                                <@global.isAnonymous>
+                                    <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+                                </@global.isAnonymous>
+                                <@global.isNotAnonymous>
+                                    <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+                                </@global.isNotAnonymous>
                             </div>
                         </div>
                     </div>
@@ -123,7 +128,12 @@
         </div>
 
         <div class="tc customized-button">
-            <a href="/activity/autumn/travel/invest" class="btn-normal">立即投资领奖</a>
+            <@global.isAnonymous>
+                <a href="/login?redirect=/activity/autumn/travel" class="btn-normal autumn-travel-invest-channel">立即投资领奖</a>
+            </@global.isAnonymous>
+            <@global.isNotAnonymous>
+                <a href="/loan-list" class="btn-normal autumn-travel-invest-channel">立即投资领奖</a>
+            </@global.isNotAnonymous>
         </div>
     </div>
 
