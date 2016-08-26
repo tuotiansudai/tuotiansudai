@@ -25,14 +25,20 @@ public class LotteryActivityController {
 
     @ResponseBody
     @RequestMapping(value = "/draw-lottery", method = RequestMethod.POST)
-    public DrawLotteryResultDto drawLotteryPrize() {
-        return lotteryActivityService.drawLotteryPrize(LoginUserInfo.getMobile(),"");
+    public DrawLotteryResultDto drawLotteryPrize(String activityType) {
+        return lotteryActivityService.drawLotteryPrize(LoginUserInfo.getMobile(),activityType);
     }
 
     @ResponseBody
     @RequestMapping(value = "/lottery-record-list", method = RequestMethod.POST)
-    public List<UserLotteryPrizeView> getLotteryRecord(String activityType) {
+    public List<UserLotteryPrizeView> getLotteryRecordByLoginName(String activityType) {
         return lotteryActivityService.findDrawLotteryPrizeRecordByMobile(LoginUserInfo.getMobile(), activityType);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/lottery-all-list", method = RequestMethod.POST)
+    public List<UserLotteryPrizeView> getLotteryRecordByAll(String activityType) {
+        return lotteryActivityService.findDrawLotteryPrizeRecordByMobile(null,activityType);
     }
 
 }

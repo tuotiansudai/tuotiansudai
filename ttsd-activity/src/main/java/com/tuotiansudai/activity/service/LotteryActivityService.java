@@ -11,6 +11,7 @@ import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.LotteryActivityService;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -49,6 +50,9 @@ public class LotteryActivityService {
 
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
+
+    @Autowired
+    private CouponAssignmentService couponAssignmentService;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -109,7 +113,6 @@ public class LotteryActivityService {
             logger.debug(mobile + "is no chance. draw time:" + drawTime);
             drawLotteryResultDto.setMessage("您暂无抽奖机会，赢取机会后再来抽奖吧！");
             drawLotteryResultDto.setReturnCode(1);
-            drawLotteryResultDto.setStatus(false);
             return drawLotteryResultDto;
         }
 
@@ -117,15 +120,27 @@ public class LotteryActivityService {
         userMapper.lockByLoginName(userModel.getLoginName());
 
         LotteryPrize lotteryPrize = getDrawPrize(drawType);
-        UserLotteryPrizeModel userLotteryPrizeModel = new UserLotteryPrizeModel();
-        userLotteryPrizeModel.setMobile(mobile);
-        userLotteryPrizeModel.setLoginName(userModel.getLoginName());
-        userLotteryPrizeModel.setLotteryTime(DateTime.now().toDate());
-        userLotteryPrizeModel.setPrize(lotteryPrize);
-        userLotteryPrizeMapper.create(userLotteryPrizeModel);
+        if(lotteryPrize.getType().equals("virtual")){
+            couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
+        }
+
+        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile,userModel.getLoginName(),lotteryPrize,DateTime.now().toDate()));
         drawLotteryResultDto.setReturnCode(0);
-        drawLotteryResultDto.setStatus(true);
         return drawLotteryResultDto;
+    }
+
+    private long getCouponId(LotteryPrize lotteryPrize){
+        switch (lotteryPrize){
+            case RED_ENVELOPE_100 :
+                return 305;
+            case RED_ENVELOPE_50 :
+                return 306;
+            case INTEREST_COUPON_5 :
+                return 307;
+            case INTEREST_COUPON_2 :
+                return 308;
+        }
+        return 0l;
     }
 
     private LotteryPrize getDrawPrize(String drawType){
@@ -150,8 +165,11 @@ public class LotteryActivityService {
         if(Strings.isNullOrEmpty(mobile)){
             return Lists.newArrayList();
         }
+        return findDrawLotteryPrizeRecord(mobile,activityType);
+    }
 
-        List<LotteryPrize> lotteryPrizes = activityType.equals("travel") ? Lists.newArrayList(LotteryPrize.PORCELAIN_CUP,LotteryPrize.LUXURY) : Lists.newArrayList(LotteryPrize.TOURISM,LotteryPrize.MANGO_CARD_100);
+    public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile,String activityType){
+        List<LotteryPrize> lotteryPrizes = activityType.equals("travel") ? Lists.newArrayList(LotteryPrize.TOURISM,LotteryPrize.MANGO_CARD_100) : Lists.newArrayList(LotteryPrize.PORCELAIN_CUP,LotteryPrize.LUXURY);
 
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, lotteryPrizes);
         for(UserLotteryPrizeView view : userLotteryPrizeViews){
