@@ -5,8 +5,8 @@
 <div class="col-md-10">
     <div class="panel panel-default">
         <div class="panel-body">
-            <a class="btn btn-default " href="/activity-manage/user-time-list" role="button">抽奖机会统计</a>
-            <a class="btn btn-default btn-primary" href="/activity-manage/user-prize-list" role="button">抽奖记录</a>
+            <a class="btn btn-default " href="/activity-console/activity-manage/user-time-list" role="button">抽奖机会统计</a>
+            <a class="btn btn-default btn-primary" href="/activity-console/activity-manage/user-prize-list" role="button">抽奖记录</a>
         </div>
     </div>
 

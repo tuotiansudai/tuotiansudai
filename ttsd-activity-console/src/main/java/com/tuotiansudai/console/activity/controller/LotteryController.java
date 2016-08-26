@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping("/activity-manage")
+@RequestMapping("/activity-console/activity-manage")
 public class LotteryController {
     static Logger logger = Logger.getLogger(LotteryController.class);
 
