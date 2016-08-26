@@ -242,13 +242,51 @@
                 </div>
             </div>
 
-                <div class="form-group extra-rate hidden">
-                    <#if extraLoanRates?? && extraLoanRates?size gt 0>
+            <#if extraLoanRates?? && extraLoanRates?size gt 0>
+                <div class="form-group extra-rate">
                         <#list extraLoanRates as extraLoanRate>
-                            <input type="text" class="extra-rate-id"
-                                   value="${(extraLoanRate.extraRateRuleId)?string('0')}">
+                            <input type="text" class="extra-rate-id" value="${(extraLoanRate.extraRateRuleId)?string('0')}">
                         </#list>
+                    <label class="col-sm-2 control-label"></label>
+
+                    <div class="col-sm-4">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>投资金额范围（元）</th>
+                                <th>投资奖励比例（%）</th>
+                            </tr>
+                            </thead>
+                            <tbody class="extra-rate-rule">
+                                <#list extraLoanRates as extraLoanRate>
+                                <tr>
+                                    <td>${(extraLoanRate.minInvestAmount/100)?string('0')}
+                                        ≤投资额<#if extraLoanRate.maxInvestAmount gt 0>
+                                            <${(extraLoanRate.maxInvestAmount/100)?string('0')}</#if></td>
+                                    <td>${extraLoanRate.rate * 100}</td>
+                                </tr>
+                                </#list>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="form-group extra-source">
+                    <label class="col-sm-2 control-label">投资奖励来源:</label>
+                    <#if  loanInfo?? && loanInfo.extraSource?? && extraLoanRates?? && extraLoanRates?size gt 0>
+                        <input type="text" class="extraSource" value="${loanInfo.extraSource}">
                     </#if>
+
+                    <div class="col-sm-4" id="extraSource">
+                        <#list sources as source>
+                            <label>
+                            <input type="checkbox" name="extraSource" class="extraSource" value="${source.name()}" <#if loanInfo?? && loanInfo.extraSource?? && extraLoanRates?? && extraLoanRates?size gt 0 && loanInfo.extraSource?contains(source.name())>checked="checked"</#if>">${source.name()}
+                            </label>
+                        </#list>
+                    </div>
+                </div>
+            <#else>
+                <div class="form-group extra-rate hidden">
                     <label class="col-sm-2 control-label"></label>
 
                     <div class="col-sm-4">
@@ -264,23 +302,20 @@
                         </table>
                     </div>
                 </div>
-        </div>
 
-            <div class="form-group extra-source hidden">
-                <label class="col-sm-2 control-label">投资奖励来源:</label>
-                <#if  loanInfo?? && loanInfo.extraSource?? && extraLoanRates?? && extraLoanRates?size gt 0>
-                    <input type="text" class="extraSource" value="${loanInfo.extraSource}">
-                </#if>
+                <div class="form-group extra-source hidden">
+                    <label class="col-sm-2 control-label">投资奖励来源:</label>
 
-                <div class="col-sm-4" id="extraSource">
-                    <#list sources as source>
-                        <label>
-                        <input type="checkbox" name="extraSource" class="extraSource" value="${source.name()}" <#if loanInfo?? && loanInfo.extraSource?? && extraLoanRates?? && extraLoanRates?size gt 0 && loanInfo.extraSource?contains(source.name())>checked="checked"</#if>">${source.name()}
-                        </label>
-                    </#list>
+                    <div class="col-sm-4" id="extraSource">
+                        <#list sources as source>
+                            <label>
+                                <input type="checkbox" name="extraSource"  class="extraSource" value="${source.name()}">${source.name()}
+                            </label>
+                        </#list>
+                    </div>
                 </div>
-            </div>
 
+            </#if>
 
 
 
