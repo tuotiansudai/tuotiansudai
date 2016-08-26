@@ -1,18 +1,12 @@
 package com.tuotiansudai.util;
 
-
-
-import com.sun.deploy.util.StringUtils;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class ExportCsvUtil {
 
@@ -23,7 +17,7 @@ public class ExportCsvUtil {
             csvFileOutputStream.write(header);
             csvFileOutputStream.newLine();
             for (List<String> dataList : data) {
-                csvFileOutputStream.write(StringUtils.join(dataList, ","));
+                csvFileOutputStream.write(join(dataList, ","));
                 csvFileOutputStream.newLine();
             }
         } catch (Exception e) {
@@ -62,5 +56,17 @@ public class ExportCsvUtil {
             dtoStrings.add(fieldString);
         }
         return dtoStrings;
+    }
+
+    public static String join(Collection var0, String var1) {
+        StringBuilder var2 = new StringBuilder();
+
+        for(Iterator var3 = var0.iterator(); var3.hasNext(); var2.append((String)var3.next())) {
+            if(var2.length() != 0) {
+                var2.append(var1);
+            }
+        }
+
+        return var2.toString();
     }
 }
