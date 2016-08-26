@@ -3,16 +3,12 @@ package com.tuotiansudai.activity.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.dto.ActivityTaskStatus;
 import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.dto.LotteryPrize;
-import com.tuotiansudai.activity.dto.UserLotteryDto;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
-import com.tuotiansudai.activity.service.LotteryActivityService;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
@@ -124,7 +120,7 @@ public class LotteryActivityService {
             couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
         }
 
-        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile,userModel.getLoginName(),lotteryPrize,DateTime.now().toDate()));
+        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), lotteryPrize, DateTime.now().toDate()));
         drawLotteryResultDto.setReturnCode(0);
         return drawLotteryResultDto;
     }
