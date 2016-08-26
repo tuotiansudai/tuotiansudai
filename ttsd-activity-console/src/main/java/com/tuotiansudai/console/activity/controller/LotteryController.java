@@ -32,7 +32,7 @@ public class LotteryController {
     @Autowired
     private UserLotteryService userLotteryService;
 
-    @RequestMapping(value = "/user-lottery-list", method = RequestMethod.GET)
+    @RequestMapping(value = "/user-time-list", method = RequestMethod.GET)
     public ModelAndView userLotteryList(@RequestParam(name = "mobile",required = false) String mobile,
                                         @RequestParam(value = "index",defaultValue = "1",required = false) int index,
                                         @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize,
@@ -60,7 +60,7 @@ public class LotteryController {
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserDrawTimeList.getHeader(), data, response.getOutputStream());
             return null;
         }else{
-            ModelAndView modelAndView = new ModelAndView("/activity-lottery-list");
+            ModelAndView modelAndView = new ModelAndView("/activity-time-list");
             int lotteryCount = userLotteryService.findUserLotteryTimeCountViews(mobile);
             modelAndView.addObject("lotteryCount", lotteryCount);
             modelAndView.addObject("lotteryList",userLotteryService.findUserLotteryTimeViews(mobile, (index - 1) * pageSize, pageSize));
@@ -72,9 +72,6 @@ public class LotteryController {
             modelAndView.addObject("hasPreviousPage", hasPreviousPage);
             modelAndView.addObject("hasNextPage", hasNextPage);
             modelAndView.addObject("mobile",mobile);
-            modelAndView.addObject("selectPrize","");
-            modelAndView.addObject("prizeIsDisplay","none");
-            modelAndView.addObject("lotteryPrizes",Lists.newArrayList(LotteryPrize.values()));
             return modelAndView;
         }
     }
@@ -112,7 +109,7 @@ public class LotteryController {
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPrizeList.getHeader(), data, response.getOutputStream());
             return null;
         }else{
-            ModelAndView modelAndView = new ModelAndView("/activity-lottery-list");
+            ModelAndView modelAndView = new ModelAndView("/activity-prize-list");
             int lotteryCount = userLotteryService.findUserLotteryPrizeCountViews(mobile,selectPrize,startTime,endTime);
             modelAndView.addObject("lotteryCount", lotteryCount);
             modelAndView.addObject("prizeList",userLotteryService.findUserLotteryPrizeViews(mobile,selectPrize,startTime,endTime, (index - 1) * pageSize, pageSize));
@@ -126,7 +123,6 @@ public class LotteryController {
             modelAndView.addObject("mobile",mobile);
             modelAndView.addObject("lotteryPrizes",Lists.newArrayList(LotteryPrize.values()));
             modelAndView.addObject("selectPrize",selectPrize == null ? "" : selectPrize);
-            modelAndView.addObject("timeIsDisplay","none");
             modelAndView.addObject("startTime",startTime);
             modelAndView.addObject("endTime",endTime);
             return modelAndView;
