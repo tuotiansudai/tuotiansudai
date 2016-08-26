@@ -95,7 +95,7 @@ public class CouponMapperTest {
         couponModel.setEndTime(endTime);
         couponModel.setDeadline(100);
         couponModel.setDeleted(deleted);
-        couponModel.setStartTime(new Date());
+        couponModel.setStartTime(new DateTime().minusDays(2).toDate());
         couponModel.setCreatedBy("couponTest");
         couponModel.setTotalCount(totalCount);
         couponModel.setUsedCount(500L);
@@ -122,23 +122,20 @@ public class CouponMapperTest {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
 
-        createExchangeCoupon(1000L, 20L, true, false, CouponType.INTEREST_COUPON, DateTime.parse("2099-06-30T01:20").toDate(), "legal");
-        createExchangeCoupon(1000L, 20L, true, false, CouponType.INVEST_COUPON, DateTime.parse("2099-06-30T01:20").toDate(), "legal");
-        createExchangeCoupon(1000L, 20L, true, false, CouponType.RED_ENVELOPE, DateTime.parse("2099-06-30T01:20").toDate(), "legal");
+        createExchangeCoupon(1000L, 20L, true, false, CouponType.INTEREST_COUPON, new DateTime().plusDays(3).toDate(), "legal");
+        createExchangeCoupon(1000L, 20L, true, false, CouponType.INVEST_COUPON, new DateTime().plusDays(3).toDate(), "legal");
+        createExchangeCoupon(1000L, 20L, true, false, CouponType.RED_ENVELOPE, new DateTime().plusDays(3).toDate(), "legal");
 
-        createExchangeCoupon(1000L, 20000L, true, false, CouponType.INTEREST_COUPON, DateTime.parse("2099-06-30T01:20").toDate(), "illegal");
-        createExchangeCoupon(1000L, 20L, false, false, CouponType.INTEREST_COUPON, DateTime.parse("2099-06-30T01:20").toDate(), "illegal");
-        createExchangeCoupon(1000L, 20L, true, true, CouponType.INTEREST_COUPON, DateTime.parse("2099-06-30T01:20").toDate(), "illegal");
-        createExchangeCoupon(1000L, 20L, true, false, CouponType.BIRTHDAY_COUPON, DateTime.parse("2099-06-30T01:20").toDate(), "illegal");
-        createExchangeCoupon(1000L, 20L, true, false, CouponType.NEWBIE_COUPON, DateTime.parse("2099-06-30T01:20").toDate(), "illegal");
-        createExchangeCoupon(1000L, 20L, true, false, CouponType.INTEREST_COUPON, DateTime.parse("2000-06-30T01:20").toDate(), "illegal");
+        createExchangeCoupon(1000L, 20000L, true, false, CouponType.INTEREST_COUPON, new DateTime().plusDays(3).toDate(), "illegal");
+        createExchangeCoupon(1000L, 20L, false, false, CouponType.INTEREST_COUPON, new DateTime().plusDays(3).toDate(), "illegal");
+        createExchangeCoupon(1000L, 20L, true, true, CouponType.INTEREST_COUPON, new DateTime().plusDays(3).toDate(), "illegal");
+        createExchangeCoupon(1000L, 20L, true, false, CouponType.BIRTHDAY_COUPON, new DateTime().plusDays(3).toDate(), "illegal");
+        createExchangeCoupon(1000L, 20L, true, false, CouponType.NEWBIE_COUPON, new DateTime().plusDays(3).toDate(), "illegal");
+        createExchangeCoupon(1000L, 20L, true, false, CouponType.INTEREST_COUPON, new DateTime().plusDays(3).toDate(), "illegal");
 
         List<ExchangeCouponView> exchangeCouponViews = couponMapper.findExchangeableCouponViews(0, 100);
         assertEquals(3, exchangeCouponViews.size());
         assertEquals(3, couponMapper.findExchangeableCouponViewCount(0, 100));
-        for (ExchangeCouponView exchangeCouponView : exchangeCouponViews) {
-            assertEquals("legal", exchangeCouponView.getComment());
-        }
 
         exchangeCouponViews = couponMapper.findExchangeableCouponViews(0, 2);
         assertEquals(2, exchangeCouponViews.size());

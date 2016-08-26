@@ -40,15 +40,13 @@ public class ProductMapperTest {
 
         productMapper.create(productModel);
 
-        List<ProductModel> productModelList = productMapper.findExchangeableProductsList(GoodsType.VIRTUAL, 0, 10);
+        List<ProductModel> productModelList = productMapper.findAllProducts(GoodsType.VIRTUAL, 0, 10);
 
         assertThat(productModelList.size(), is(1));
 
-        long productCount = productMapper.findExchangeableProductsCount(GoodsType.VIRTUAL);
+        long productCount = productMapper.findAllProductsCount(GoodsType.VIRTUAL);
 
         assertThat(productCount, is(1L));
-
-        ProductModel productModel1 = productMapper.findById(productModel.getId());
 
     }
 

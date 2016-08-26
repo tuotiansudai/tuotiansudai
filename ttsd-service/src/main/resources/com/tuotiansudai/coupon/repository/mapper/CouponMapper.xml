@@ -287,7 +287,7 @@
         product
         ON
         coupon.id = product.coupon_id
-        ORDER BY `created_time` desc, `id` desc
+        ORDER BY `seq` asc, `updated_time` desc
         <if test="index != null and pageSize != null">
             LIMIT #{index}, #{pageSize}
         </if>
@@ -310,7 +310,6 @@
         product
         ON
         coupon.id = product.coupon_id
-        coupon.id = coupon_exchange.coupon_id
     </select>
 
     <select id="findExchangeableCouponViewById" parameterType="java.lang.Long" resultMap="exchangeCouponViewResultMap">
