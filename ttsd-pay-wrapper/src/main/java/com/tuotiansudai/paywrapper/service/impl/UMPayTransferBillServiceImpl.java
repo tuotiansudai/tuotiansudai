@@ -32,11 +32,12 @@ public class UMPayTransferBillServiceImpl implements UMPayTransferBillService {
 
     @Override
     public List<List<String>> getTransferBill(String loginName, Date startDate, Date endDate) {
+        List<List<String>> data = Lists.newArrayList();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-
+        if (accountModel == null) {
+            return data;
+        }
         try {
-            List<List<String>> data = Lists.newArrayList();
-
             int pageNum = 1;
             int totalNum = 0;
             do {
@@ -54,6 +55,6 @@ public class UMPayTransferBillServiceImpl implements UMPayTransferBillService {
         } catch (PayException | ParseException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        return Lists.newArrayList();
+        return data;
     }
 }
