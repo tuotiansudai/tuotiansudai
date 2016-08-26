@@ -11,7 +11,9 @@ $width:700px;
   }
   &.tour-theme{
     background:none;
+    margin:30px 0 0 0;
     .leader-list{
+      padding:40px 0 0 0;
       .lottery-circle{
         h3{
           background:#e6fbff;
@@ -352,6 +354,9 @@ $width:700px;
         &.des-text{
           font-size:12px;
           color:#fff;
+        }
+        &.login-text{
+          margin-top:10px;
         }
       }
     }

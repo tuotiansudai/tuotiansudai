@@ -29,7 +29,7 @@ public class LotteryActivityController {
     @ResponseBody
     @RequestMapping(value = "/lottery-record-list", method = RequestMethod.POST)
     public List<UserLotteryPrizeView> getLotteryRecordByLoginName(String activityType) {
-        return lotteryActivityService.findDrawLotteryPrizeRecordByMobile("18888376666", activityType);
+        return lotteryActivityService.findDrawLotteryPrizeRecordByMobile(LoginUserInfo.getMobile(), activityType);
     }
 
     @ResponseBody

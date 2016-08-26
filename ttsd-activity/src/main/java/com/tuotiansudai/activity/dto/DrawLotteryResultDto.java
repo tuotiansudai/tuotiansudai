@@ -7,7 +7,9 @@ public class DrawLotteryResultDto extends BaseDataDto {
 
     private int returnCode;
 
-    private LotteryPrize lotteryPrize;
+    private String prize;
+
+    private String prizeType;
 
     public int getReturnCode() {
         return returnCode;
@@ -17,11 +19,19 @@ public class DrawLotteryResultDto extends BaseDataDto {
         this.returnCode = returnCode;
     }
 
-    public LotteryPrize getLotteryPrize() {
-        return lotteryPrize;
+    public String getPrize() {
+        return prize;
     }
 
-    public void setLotteryPrize(LotteryPrize lotteryPrize) {
-        this.lotteryPrize = lotteryPrize;
+    public void setPrize(String prize) {
+        this.prize = prize;
+    }
+
+    public String getPrizeType() {
+        return prizeType;
+    }
+
+    public void setPrizeType(String prizeType) {
+        this.prizeType = prizeType;
     }
 }

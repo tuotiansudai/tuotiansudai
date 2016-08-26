@@ -37,6 +37,10 @@ dependencies {
         exclude module: 'ttsd-dependency'
     };
 
+    compile(project(":ttsd-service")) {
+        exclude module: 'ttsd-dependency'
+    };
+
     compile project(':ttsd-util'),
             "org.springframework.security:spring-security-config:$springSecurityVersion",
             "org.springframework.security:spring-security-taglibs:$springSecurityVersion",

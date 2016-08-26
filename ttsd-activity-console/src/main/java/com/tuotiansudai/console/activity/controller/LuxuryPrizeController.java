@@ -29,28 +29,28 @@ public class LuxuryPrizeController {
                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         ModelAndView mv = new ModelAndView("/user-luxury-list");
-        BaseDto<BasePaginationDataDto> baseDto = luxuryPrizeService.obtainUserLuxuryPrizeList(mobile, startTime, endTime, index, pageSize);
-        mv.addObject("data", baseDto);
-        mv.addObject("index", index);
-        mv.addObject("pageSize", pageSize);
-        mv.addObject("startTime", startTime);
-        mv.addObject("endTime", endTime);
-        mv.addObject("mobile", mobile);
+//        BaseDto<BasePaginationDataDto> baseDto = luxuryPrizeService.obtainUserLuxuryPrizeList(mobile, startTime, endTime, index, pageSize);
+//        mv.addObject("data", baseDto);
+//        mv.addObject("index", index);
+//        mv.addObject("pageSize", pageSize);
+//        mv.addObject("startTime", startTime);
+//        mv.addObject("endTime", endTime);
+//        mv.addObject("mobile", mobile);
         return mv;
     }
 
     @RequestMapping(value = "/luxury-prize-list")
     public ModelAndView luxuryPrizeList(){
         ModelAndView mv = new ModelAndView("/luxury-prize-list");
-        BaseDto<BasePaginationDataDto> dto = luxuryPrizeService.obtainLuxuryPrizeList();
-        mv.addObject("data",dto);
+//        BaseDto<BasePaginationDataDto> dto = luxuryPrizeService.obtainLuxuryPrizeList();
+//        mv.addObject("data",dto);
         return mv;
     }
 
     @RequestMapping(value = "/{luxuryPrizeId}/edit",method = RequestMethod.GET)
     public ModelAndView editLuxuryPrize(@PathVariable long luxuryPrizeId){
         ModelAndView mv = new ModelAndView("/luxury-prize-edit");
-        mv.addObject("dto",luxuryPrizeService.obtainLuxuryPrizeDto(luxuryPrizeId));
+//        mv.addObject("dto",luxuryPrizeService.obtainLuxuryPrizeDto(luxuryPrizeId));
         return mv;
     }
 
@@ -58,7 +58,7 @@ public class LuxuryPrizeController {
     public ModelAndView editLuxuryPrize(@Valid @ModelAttribute LuxuryPrizeRequestDto luxuryPrizeRequestDto){
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView mv = new ModelAndView();
-        luxuryPrizeService.editLuxuryPrize(luxuryPrizeRequestDto,loginName);
+//        luxuryPrizeService.editLuxuryPrize(luxuryPrizeRequestDto,loginName);
         return mv;
     }
 

@@ -42,6 +42,9 @@ public class UserLotteryService{
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
 
+    @Autowired
+    private RechargeMapper rechargeMapper;
+
     private Date startTime = DateTime.parse("2016-01-01").toDate();
 
     private Date endTime = DateTime.parse("2016-12-01").toDate();
@@ -102,6 +105,10 @@ public class UserLotteryService{
 
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
         if(bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)){
+            lotteryTime ++;
+        }
+
+        if(rechargeMapper.findSumSuccessRechargeByLoginName(userModel.getLoginName()) > 0){
             lotteryTime ++;
         }
 

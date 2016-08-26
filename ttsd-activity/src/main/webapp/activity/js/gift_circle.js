@@ -33,30 +33,28 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
             }
         })
         .done(function(data) {
-                console.log(data);
             if (data.returnCode == 0) {
-                var item = data.lotteryPrize;
-                switch (item.name) {
+                switch (data.prize) {
                     case 'PORCELAIN_CUP':
-                        rotateFn(0, 337, '青花瓷杯子',data.returnCode,item.type);
+                        rotateFn(0, 337, '青花瓷杯子',data.prizeType);
                         break;
                     case 'INTEREST_COUPON_2':
-                        rotateFn(1, 56, '0.2加息券',data.returnCode,item.type);
+                        rotateFn(1, 56, '0.2加息券',data.prizeType);
                         break;
                     case 'LUXURY':
-                        rotateFn(2, 116, '奢侈品大奖',data.returnCode,item.type);
+                        rotateFn(2, 116, '奢侈品大奖',data.prizeType);
                         break;
                     case 'RED_ENVELOPE_100':
-                        rotateFn(3, 160, '100元现金红包',data.returnCode,item.type);
+                        rotateFn(3, 160, '100元现金红包',data.prizeType);
                         break;
                     case 'INTEREST_COUPON_5':
-                        rotateFn(4, 230, '0.5加息券',data.returnCode,item.type);
+                        rotateFn(4, 230, '0.5加息券',data.prizeType);
                         break;
                     case 'RED_ENVELOPE_50':
-                        rotateFn(5, 260, '50元现金红包',data.returnCode,item.type);
+                        rotateFn(5, 300, '50元现金红包',data.prizeType);
                         break;
                     case 'MANGO_CARD_100':
-                        rotateFn(6, 347, '100元芒果卡',data.returnCode,item.type);
+                        rotateFn(6, 347, '100元芒果卡',data.prizeType);
                         break;
                 }
             } else if (data.returnCode == 2) {
@@ -80,7 +78,11 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
             callback: function() {
                 $('#tipList').html(tpl('tipListTpl', {tiptext:'恭喜你抽中了'+txt,istype:type})).show().find('.tip-dom').show();
                 bRotate = !bRotate;
-                $('#lotteryTime').text()>1?$('#lotteryTime').text(function(index,num){return parseInt(num)-1}):$('#lotteryTime').text('0');
+                $('.lottery-time').each(function(index,el){
+                    $(this).text()>1?$(this).text(function(index,num){return parseInt(num)-1}):$(this).text('0');
+                });
+                GiftRecord();
+                MyGift();
             }
         })
     }
@@ -119,7 +121,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         }
     }
 
-    var GiftRecord=function (){
+    function GiftRecord (){
         $.ajax({
             url: '/activity/lottery-all-list',
             type: 'POST',
@@ -131,9 +133,9 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         .done(function(data) {
             $('#GiftRecord').html(tpl('GiftRecordTpl', {record:data}));
         });
-    }();
-    
-    var MyGift=function (){
+    };
+
+    function MyGift(){
         $.ajax({
             url: '/activity/lottery-record-list',
             type: 'POST',
@@ -145,5 +147,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         .done(function(data) {
             $('#MyGift').html(tpl('MyGiftTpl', {gift:data}));
         });
-    }();
+    };
+    GiftRecord ();
+    MyGift();
 });
