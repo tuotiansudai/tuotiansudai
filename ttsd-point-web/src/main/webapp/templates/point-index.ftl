@@ -7,6 +7,7 @@
             <#if isLogin>
                 <div class="user-info">
                     <h3>我的积分</h3>
+
                     <p>${userPoint}</p>
                     <#if isSignIn>
                         <p><span class="already">已签到</span></p>
@@ -30,36 +31,42 @@
             <ul class="other-list">
                 <li class="right-line">
                     <p><span>做任务赚积分</span></p>
+
                     <p><a href="/point-shop/task">去做任务</a></p>
                 </li>
                 <li>
                     <p><span>投资赚积分</span></p>
+
                     <p><a href="${webServer}/loan-list">去投资</a></p>
                 </li>
             </ul>
             <#if isLogin>
-            <div class="user-trade">
-                <a href="/point-shop/record">兑换记录></a> | <a href="/point-shop/bill">积分明细></a>
-            </div>
+                <div class="user-trade">
+                    <a href="/point-shop/record">兑换记录></a> | <a href="/point-shop/bill">积分明细></a>
+                </div>
             </#if>
             <div class="sign-layer" id="signLayer">
                 <div class="sign-layer-list">
                     <div class="sign-top">
                         <div class="close-btn" id="closeSign"></div>
                         <p class="sign-text">签到成功，领取5积分！</p>
+
                         <p class="tomorrow-text">明日可领10积分</p>
+
                         <p class="img-beans">
                             <img src="${staticServer}/point/images/sign-beans.png"/>
                             <span class="add-dou">
                                 +5
                             </span>
                         </p>
+
                         <p class="intro-text">连续签到，积分翻倍送，最多每天可领<span>80</span>积分！</p>
                     </div>
                     <div class="sign-bottom">
                         <ul>
                             <li>
                                 <p class="day-name">第1天</p>
+
                                 <p class="day-beans">
                                     <span>5</span>
                                     <i class="bean-img"></i>
@@ -67,6 +74,7 @@
                             </li>
                             <li>
                                 <p class="day-name">第2天</p>
+
                                 <p class="day-beans">
                                     <span>10</span>
                                     <i class="bean-img"></i>
@@ -74,6 +82,7 @@
                             </li>
                             <li>
                                 <p class="day-name">第3天</p>
+
                                 <p class="day-beans">
                                     <span>20</span>
                                     <i class="bean-img"></i>
@@ -81,6 +90,7 @@
                             </li>
                             <li>
                                 <p class="day-name">第4天</p>
+
                                 <p class="day-beans">
                                     <span>40</span>
                                     <i class="bean-img"></i>
@@ -88,6 +98,7 @@
                             </li>
                             <li>
                                 <p class="day-name">第5天</p>
+
                                 <p class="day-beans">
                                     <span>80</span>
                                     <i class="bean-img"></i>
@@ -95,6 +106,7 @@
                             </li>
                             <li>
                                 <p class="day-name">第6天</p>
+
                                 <p class="day-beans">
                                     <span>80</span>
                                     <i class="bean-img"></i>
@@ -102,6 +114,7 @@
                             </li>
                             <li>
                                 <p class="day-name">第7天</p>
+
                                 <p class="day-beans">
                                     <span>80</span>
                                     <i class="bean-img"></i>
@@ -109,6 +122,7 @@
                             </li>
                             <li class="last-day">
                                 <p class="day-name">第N天</p>
+
                                 <p class="day-beans">
                                     <span>...</span>
                                 </p>
@@ -131,7 +145,6 @@
             <ul class="material-list">
                 <#list virtualProducts as virtualProduct>
                     <#if virtualProduct_index < 2>
-                        <#if virtualProduct.leftCount != 0>
                         <li class="big-gift">
                             <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
                             <#if virtualProduct.itemType.name() == 'RED_ENVELOPE'>
@@ -156,13 +169,12 @@
                             <p class="convert-btn">
                                 <span class="name-text">${virtualProduct.pictureDescription!"0"}</span>
                                 <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
-                                <a class="fl" href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail"><span
+                                <a class="fl"
+                                   href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail"><span
                                         class="fl get-btn">立即兑换</span></a>
                             </p>
                         </li>
-                        </#if>
                     <#else>
-                        <#if virtualProduct.leftCount != 0>
                         <li>
                             <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
                             <#if virtualProduct.itemType == 'RED_ENVELOPE'>
@@ -187,11 +199,11 @@
                             <p class="convert-btn">
                                 <span class="name-text">${virtualProduct.name}</span>
                                 <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
-                                <a class="fl" href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail"><span
+                                <a class="fl"
+                                   href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail"><span
                                         class="fl get-btn">立即兑换</span></a>
                             </p>
                         </li>
-                        </#if>
                     </#if>
                 </#list>
             </ul>
@@ -209,9 +221,9 @@
             <ul class="material-list">
                 <#list physicalProducts as physicalProduct>
                     <#if physicalProduct_index < 2>
-                        <#if physicalProduct.leftCount != 0>
                         <li class="big-gift">
                             <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
+
                             <p class="mater-img picture-item">
                                 <img src="/${physicalProduct.imageUrl}" width="160" height="100"/>
                             </p>
@@ -223,9 +235,7 @@
                                         class="get-btn">立即兑换</span></a>
                             </p>
                         </li>
-                        </#if>
                     <#else>
-                        <#if physicalProduct.leftCount != 0>
                         <li>
                             <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
 
@@ -240,7 +250,6 @@
                                         class="get-btn">立即兑换</span></a>
                             </p>
                         </li>
-                        </#if>
                     </#if>
                 </#list>
             </ul>

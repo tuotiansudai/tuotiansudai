@@ -261,7 +261,13 @@ public class ProductServiceImpl implements ProductService {
             default:
                 break;
         }
-        return productShowItemDtos;
+        List<ProductShowItemDto> filteredProductShowItemDtos = new ArrayList<>();
+        for(ProductShowItemDto productShowItemDto : productShowItemDtos) {
+            if(productShowItemDto.getLeftCount() != 0) {
+                filteredProductShowItemDtos.add(productShowItemDto);
+            }
+        }
+        return filteredProductShowItemDtos;
     }
 
     @Override
