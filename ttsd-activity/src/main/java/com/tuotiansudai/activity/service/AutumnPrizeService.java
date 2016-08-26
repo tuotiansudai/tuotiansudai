@@ -3,11 +3,16 @@ package com.tuotiansudai.activity.service;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.dto.LuxuryPrizeDto;
 import com.tuotiansudai.activity.dto.TravelPrizeDto;
 import com.tuotiansudai.activity.dto.UserPrizePaginationItemDto;
+import com.tuotiansudai.activity.repository.mapper.LuxuryPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.TravelPrizeMapper;
+import com.tuotiansudai.activity.repository.mapper.UserLuxuryPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.UserTravelPrizeMapper;
+import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
 import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
+import com.tuotiansudai.activity.repository.model.UserLuxuryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -31,7 +36,13 @@ public class AutumnPrizeService {
     private TravelPrizeMapper travelPrizeMapper;
 
     @Autowired
+    private LuxuryPrizeMapper luxuryPrizeMapper;
+
+    @Autowired
     private UserTravelPrizeMapper userTravelPrizeMapper;
+
+    @Autowired
+    private UserLuxuryPrizeMapper userLuxuryPrizeMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -83,12 +94,34 @@ public class AutumnPrizeService {
         });
     }
 
+    public List<LuxuryPrizeDto> getLuxuryPrizeItems() {
+        List<LuxuryPrizeModel> models = luxuryPrizeMapper.findAll();
+        return Lists.transform(models, new Function<LuxuryPrizeModel, LuxuryPrizeDto>() {
+            @Override
+            public LuxuryPrizeDto apply(LuxuryPrizeModel input) {
+                return new LuxuryPrizeDto(input);
+            }
+        });
+    }
+
     public List<UserPrizePaginationItemDto> getTravelAwardItems(final String loginName) {
         List<UserTravelPrizeModel> models = userTravelPrizeMapper.findByPagination(null, null, null, null, null);
-
         return Lists.transform(models, new Function<UserTravelPrizeModel, UserPrizePaginationItemDto>() {
             @Override
             public UserPrizePaginationItemDto apply(UserTravelPrizeModel input) {
+                if (!input.getLoginName().equalsIgnoreCase(loginName)) {
+                    input.setMobile(MobileEncoder.encode(input.getMobile()));
+                }
+                return new UserPrizePaginationItemDto(input);
+            }
+        });
+    }
+
+    public List<UserPrizePaginationItemDto> getLuxuryAwardItems(final String loginName) {
+        List<UserLuxuryPrizeModel> models = userLuxuryPrizeMapper.findByPagination(null, null, null, null, null);
+        return Lists.transform(models, new Function<UserLuxuryPrizeModel, UserPrizePaginationItemDto>() {
+            @Override
+            public UserPrizePaginationItemDto apply(UserLuxuryPrizeModel input) {
                 if (!input.getLoginName().equalsIgnoreCase(loginName)) {
                     input.setMobile(MobileEncoder.encode(input.getMobile()));
                 }
@@ -102,6 +135,16 @@ public class AutumnPrizeService {
         return Lists.transform(models, new Function<UserTravelPrizeModel, UserPrizePaginationItemDto>() {
             @Override
             public UserPrizePaginationItemDto apply(UserTravelPrizeModel input) {
+                return new UserPrizePaginationItemDto(input);
+            }
+        });
+    }
+
+    public List<UserPrizePaginationItemDto> getMyLuxuryAwardItems(final String mobile) {
+        List<UserLuxuryPrizeModel> models = userLuxuryPrizeMapper.findByPagination(mobile, null, null, null, null);
+        return Lists.transform(models, new Function<UserLuxuryPrizeModel, UserPrizePaginationItemDto>() {
+            @Override
+            public UserPrizePaginationItemDto apply(UserLuxuryPrizeModel input) {
                 return new UserPrizePaginationItemDto(input);
             }
         });

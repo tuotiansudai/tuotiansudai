@@ -25,196 +25,131 @@
                 <div class="bg-item">
                     <div class="date-time">
                         <i class="time-icon"></i>
-                        <span>2015-08-09</span>
+                        <span>${today?string('yyyy-MM-dd')}</span>
                     </div>
-                    <div class="account-text">
-                        <span class="user-text">我的投资：<strong>30030.00元</strong></span>
-                        <span class="user-tip">(仅累计本日参与本活动的投资金额)</span>
-                    </div>
-                    <a class="login-btn" href="/login">立即登录</a>
+                    <@global.isNotAnonymous>
+                        <div class="account-text">
+                            <span class="user-text">我的投资：<strong>${myInvestAmount}元</strong></span>
+                            <span class="user-tip">(仅累计本日参与本活动的投资金额)</span>
+                        </div>
+                    </@global.isNotAnonymous>
+                    <@global.isAnonymous>
+                        <a class="login-btn" href="/login">立即登录</a>
+                    </@global.isAnonymous>
                 </div>
             </div>
             <div class="product-item">
                 <ul class="product-list clearfix">
-                    <li>
-                        <div class="product-img">
-                            <img src="http://dummyimage.com/310x210/1c4868/ffffff.gif&text=香奈儿CHANL" width="100%">
-                        </div>
-                        <div class="product-info">
-                            <p class="name-text">香奈儿CHANL</p>
-                            <p class="des-text">J12 MIRRO 腕表</p>
-                            <p class="price-text"><span>2000元</span><span class="bite-text">价值</span></p>
-                            <p class="intro-text"><span>投资满50万元即可获得</span></p>
-                            <p class="btn-text"><a href="#">立即投资</a></p>
-                        </div>
-                        <div class="coupon-list">
-                            <div class="coupon-item">
-                                <div class="info-text">
-                                    <span class="coupon-name">J12 MIRRO 腕表</span>
-                                    <span class="count-number">7折券</span>
-                                    <i class="top-circle"></i>
-                                    <i class="bottom-circle"></i>
+                    <#list luxuryPrize as prize>
+                        <li>
+                            <div class="product-img">
+                                <img src="${prize.image}" width="100%">
+                            </div>
+                            <div class="product-info">
+                                <p class="name-text">${prize.brand}</p>
+                                <p class="des-text">${prize.name}</p>
+                                <p class="price-text"><span>${prize.price}元</span><span class="bite-text">价值</span></p>
+                                <p class="intro-text"><span>投资满<@amount>${prize.investAmount?string.computer}</@amount>元即可获得</span></p>
+                                <p class="btn-text"><a href="/activity/autumn/luxury/invest">立即投资</a></p>
+                            </div>
+                            <div class="coupon-list">
+                                <div class="coupon-item">
+                                    <div class="info-text">
+                                        <span class="coupon-name">${prize.name}</span>
+                                        <span class="count-number">7折券</span>
+                                        <i class="top-circle"></i>
+                                        <i class="bottom-circle"></i>
+                                    </div>
+                                    <div class="tip-text">
+                                        投资满<@amount>${prize.thirtyPercentOffInvestAmount?string.computer}</@amount>元即可获得
+                                    </div>
                                 </div>
-                                <div class="tip-text">
-                                    投资满40万元即可获得
+                                <div class="coupon-item">
+                                    <div class="info-text">
+                                        <span class="coupon-name">${prize.name}</span>
+                                        <span class="count-number">8折券</span>
+                                        <i class="top-circle"></i>
+                                        <i class="bottom-circle"></i>
+                                    </div>
+                                    <div class="tip-text">
+                                        投资满<@amount>${prize.twentyPercentOffInvestAmount?string.computer}</@amount>元即可获得
+                                    </div>
+                                </div>
+                                <div class="coupon-item">
+                                    <div class="info-text">
+                                        <span class="coupon-name">${prize.name}</span>
+                                        <span class="count-number">9折券</span>
+                                        <i class="top-circle"></i>
+                                        <i class="bottom-circle"></i>
+                                    </div>
+                                    <div class="tip-text">
+                                        投资满<@amount>${prize.tenPercentOffInvestAmount?string.computer}</@amount>元即可获得
+                                    </div>
                                 </div>
                             </div>
-                            <div class="coupon-item">
-                                <div class="info-text">
-                                    <span class="coupon-name">J12 MIRRO 腕表</span>
-                                    <span class="count-number">7折券</span>
-                                    <i class="top-circle"></i>
-                                    <i class="bottom-circle"></i>
-                                </div>
-                                <div class="tip-text">
-                                    投资满40万元即可获得
-                                </div>
-                            </div>
-                            <div class="coupon-item">
-                                <div class="info-text">
-                                    <span class="coupon-name">J12 MIRRO 腕表</span>
-                                    <span class="count-number">7折券</span>
-                                    <i class="top-circle"></i>
-                                    <i class="bottom-circle"></i>
-                                </div>
-                                <div class="tip-text">
-                                    投资满40万元即可获得
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="product-img">
-                            <img src="http://dummyimage.com/310x210/1c4868/ffffff.gif&text=香奈儿CHANL" width="100%">
-                        </div>
-                        <div class="product-info">
-                            <p class="name-text">香奈儿CHANL</p>
-                            <p class="des-text">J12 MIRRO 腕表</p>
-                            <p class="price-text"><span>2000元</span><span class="bite-text">价值</span></p>
-                            <p class="intro-text"><span>投资满50万元即可获得</span></p>
-                            <p class="btn-text"><a href="#">立即投资</a></p>
-                        </div>
-                        <div class="coupon-list">
-                            <div class="coupon-item">
-                                <div class="info-text">
-                                    <span class="coupon-name">J12 MIRRO 腕表</span>
-                                    <span class="count-number">7折券</span>
-                                    <i class="top-circle"></i>
-                                    <i class="bottom-circle"></i>
-                                </div>
-                                <div class="tip-text">
-                                    投资满40万元即可获得
-                                </div>
-                            </div>
-                            <div class="coupon-item">
-                                <div class="info-text">
-                                    <span class="coupon-name">J12 MIRRO 腕表</span>
-                                    <span class="count-number">7折券</span>
-                                    <i class="top-circle"></i>
-                                    <i class="bottom-circle"></i>
-                                </div>
-                                <div class="tip-text">
-                                    投资满40万元即可获得
-                                </div>
-                            </div>
-                            <div class="coupon-item">
-                                <div class="info-text">
-                                    <span class="coupon-name">J12 MIRRO 腕表</span>
-                                    <span class="count-number">7折券</span>
-                                    <i class="top-circle"></i>
-                                    <i class="bottom-circle"></i>
-                                </div>
-                                <div class="tip-text">
-                                    投资满40万元即可获得
-                                </div>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                    </#list>
                 </ul>
-                <div class="line-item">
-                </div>
+                <div class="line-item"></div>
             </div>
             <div class="winer-record">
                 <div class="record-list">
                     <h3>
                         <span class="active">获奖名单</span>
-                        <span>我的获奖记录</span>
+                        <@global.isNotAnonymous>
+                            <span>我的获奖记录</span>
+                        </@global.isNotAnonymous>
                     </h3>
                     <div class="record-item">
                         <div class="record-data active" id="rewardList">
                             <table>
                                 <thead>
-                                    <tr>
-                                        <th>用户</th>
-                                        <th>投资金额(元)</th>
-                                        <th>奖品</th>
-                                        <th>获奖时间</th>
-                                    </tr>
+                                <tr>
+                                    <th>用户</th>
+                                    <th>投资金额(元)</th>
+                                    <th>奖品</th>
+                                    <th>获奖时间</th>
+                                </tr>
                                 </thead>
                                 <tbody class="user-list">
+                                    <#list userLuxuryPrize as item>
                                     <tr>
-                                        <td>130****7149</td>
-                                        <td>100000.00</td>
-                                        <td>奢侈品名</td>
-                                        <td>2016-09-02</td>
+                                        <td>${item.mobile}</td>
+                                        <td>${item.investAmount}</td>
+                                        <td>${item.prize}</td>
+                                        <td>${item.createdTime?string('yyyy-MM-dd')}</td>
                                     </tr>
+                                    <#else>
                                     <tr>
-                                        <td>130****7149</td>
-                                        <td>100000.00</td>
-                                        <td>奢侈品名</td>
-                                        <td>2016-09-02</td>
+                                        <td colspan="4">暂无数据</td>
                                     </tr>
-                                    <tr>
-                                        <td>130****7149</td>
-                                        <td>100000.00</td>
-                                        <td>奢侈品名</td>
-                                        <td>2016-09-02</td>
-                                    </tr>
-                                    <tr>
-                                        <td>130****7149</td>
-                                        <td>100000.00</td>
-                                        <td>奢侈品名</td>
-                                        <td>2016-09-02</td>
-                                    </tr>
-                                    <tr>
-                                        <td>130****7149</td>
-                                        <td>100000.00</td>
-                                        <td>奢侈品名</td>
-                                        <td>2016-09-02</td>
-                                    </tr>
-
+                                    </#list>
                                 </tbody>
                             </table>
                         </div>
                         <div class="record-data">
                             <table>
                                 <thead>
-                                    <tr>
-                                        <th>用户</th>
-                                        <th>投资金额(元)</th>
-                                        <th>奖品</th>
-                                        <th>获奖时间</th>
-                                    </tr>
+                                <tr>
+                                    <th>用户</th>
+                                    <th>投资金额(元)</th>
+                                    <th>奖品</th>
+                                    <th>获奖时间</th>
+                                </tr>
                                 </thead>
                                 <tbody>
+                                    <#list myLuxuryPrize as item>
                                     <tr>
-                                        <td>130****7149</td>
-                                        <td>100000.00</td>
-                                        <td>奢侈品名称mirro</td>
-                                        <td>2016-09-02</td>
+                                        <td>${item.mobile}</td>
+                                        <td>${item.investAmount}</td>
+                                        <td>${item.prize}</td>
+                                        <td>${item.createdTime?string('yyyy-MM-dd')}</td>
                                     </tr>
+                                    <#else>
                                     <tr>
-                                        <td>130****7149</td>
-                                        <td>100000.00</td>
-                                        <td>奢侈品名称mirro</td>
-                                        <td>2016-09-02</td>
+                                        <td colspan="4">暂无数据</td>
                                     </tr>
-                                    <tr>
-                                        <td>130****7149</td>
-                                        <td>100000.00</td>
-                                        <td>奢侈品名称mirro</td>
-                                        <td>2016-09-02</td>
-                                    </tr>
+                                    </#list>
                                 </tbody>
                             </table>
                         </div>
@@ -229,7 +164,7 @@
                 </div>
             </div>
             <div class="btn-item">
-                <a href="#">立即投资领奖</a>
+                <a href="/activity/autumn/luxury/invest">立即投资领奖</a>
             </div>
         </div>
         <div class="luxury-item clearfix">
@@ -239,28 +174,47 @@
             <div class="step-list">
                 <h5>活动期间，新用户在平台完成注册、实名认证、绑卡、充值、投资均可获得一次抽奖机会。</h5>
                 <ul class="step-icon">
-                    <li class="<#if userInfo.registerStatus == 'UNFINISHED'>active<#elseif userInfo.registerStatus == 'COMPLETE'>finished</#if>">
+                    <li class="<#if steps[0] == 1>active</#if><#if steps[0] == 2>finished</#if>">
                         <div class="icon user-icon"></div>
-                        <div class="icon-text">去注册</div>
+                        <#if steps[0] == 1>
+                            <div class="icon-text"><a href="/register/user">去注册</a></div></#if>
+                        <#if steps[0] == 2>
+                            <div class="icon-text">已注册</div></#if>
                     </li>
-                    <li class="<#if userInfo.certificationStatus == 'UNFINISHED'>active<#elseif userInfo.certificationStatus == 'COMPLETE'>finished</#if>">
+                    <li class="<#if steps[1] == 1>active</#if><#if steps[1] == 2>finished</#if>">
                         <div class="icon vali-icon"></div>
-                        <div class="icon-text">去认证</div>
+                        <#if steps[1] == 0>
+                            <div class="icon-text">认证</div></#if>
+                        <#if steps[1] == 1>
+                            <div class="icon-text"><a href="/register/account">去认证</a></div></#if>
+                        <#if steps[1] == 2>
+                            <div class="icon-text">已认证</div></#if>
                         <div class="step-icon"></div>
                     </li>
-                    <li class="<#if userInfo.bindCardStatus == 'UNFINISHED'>active<#elseif userInfo.bindCardStatus == 'COMPLETE'>finished</#if>">
+                    <li class="<#if steps[2] == 1>active</#if><#if steps[2] == 2>finished</#if>">
                         <div class="icon card-icon"></div>
-                        <div class="icon-text">绑卡</div>
+                        <#if steps[2] == 0>
+                            <div class="icon-text">绑卡</div></#if>
+                        <#if steps[2] == 1>
+                            <div class="icon-text"><a href="/bind-card">去绑卡</a></div></#if>
+                        <#if steps[2] == 2>
+                            <div class="icon-text">已绑卡</div></#if>
                         <div class="step-icon"></div>
                     </li>
-                    <li class="<#if userInfo.rechargeStatus == 'UNFINISHED'>active<#elseif userInfo.rechargeStatus == 'COMPLETE'>finished</#if>">
+                    <li class="<#if steps[3] == 1>active</#if>">
                         <div class="icon money-icon"></div>
-                        <div class="icon-text">充值</div>
+                        <#if steps[3] == 0>
+                            <div class="icon-text">充值</div></#if>
+                        <#if steps[3] == 1>
+                            <div class="icon-text"><a href="/recharge">去充值</a></div></#if>
                         <div class="step-icon"></div>
                     </li>
-                    <li class="<#if userInfo.investStatus == 'UNFINISHED'>active<#elseif userInfo.investStatus == 'COMPLETE'>finished</#if>">
+                    <li class="<#if steps[4] == 1>active</#if>">
                         <div class="icon loan-icon"></div>
-                        <div class="icon-text">投资</div>
+                        <#if steps[4] == 0>
+                            <div class="icon-text">投资</div></#if>
+                        <#if steps[4] == 1>
+                            <div class="icon-text"><a href="/activity/autumn/luxury/invest">去投资</a></div></#if>
                         <div class="step-icon"></div>
                     </li>
                 </ul>

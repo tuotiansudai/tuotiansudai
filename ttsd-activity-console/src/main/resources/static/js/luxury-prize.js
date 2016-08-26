@@ -1,13 +1,13 @@
 require(['jquery', 'Validform', 'bootstrap','jquery-ui', 'csrf'], function ($, _) {
-    var $travelForm = $('.travel-form'),
-        $submitBtn = $('.travel-confirm'), //提交按钮
+    var $luxuryForm = $('.luxury-form'),
+        $submitBtn = $('.luxury-confirm'), //提交按钮
         boolFlag = false, //校验布尔变量值
         currentErrorObj = null,
         $errorDom = $('.form-error'); //错误提示节点
 
     var _URL = window.URL || window.webkitURL;
 
-    $('.travelImage,.travelIntroduceImage').on('change', function () {
+    $('.luxuryImage,.luxuryIntroduceImage').on('change', function () {
         var $self = $(this),
             imageWidth,
             imageHeight;
@@ -28,14 +28,14 @@ require(['jquery', 'Validform', 'bootstrap','jquery-ui', 'csrf'], function ($, _
                 processData: false
             }).done(function (data) {
                 if (data.state) {
-                    if ($self.hasClass('travelImage')) {
-                        $('.travelImageUrl').val(data.title);
+                    if ($self.hasClass('luxuryImage')) {
+                        $('.luxuryImageUrl').val(data.title);
                         $('.image').html('');
                         $('.image').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
 
                     }
-                    if ($self.hasClass('travelIntroduceImage')) {
-                        $('.travelIntroduceUrl').val(data.title);
+                    if ($self.hasClass('luxuryIntroduceImage')) {
+                        $('.luxuryIntroduceUrl').val(data.title);
                         $('.imageIntroduce').html('');
                         $('.imageIntroduce').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
 
@@ -44,15 +44,15 @@ require(['jquery', 'Validform', 'bootstrap','jquery-ui', 'csrf'], function ($, _
                 }
             });
         }).fail(function (message) {
-            if ($self.hasClass('travelImage')) {
+            if ($self.hasClass('luxuryImage')) {
                 $('.image').html('');
-                $('.travelImageUrl').val('');
-                showErrorMessage(message, $('.travelImageUrl', $travelForm));
+                $('.luxuryImageUrl').val('');
+                showErrorMessage(message, $('.luxuryImageUrl', $luxuryForm));
             }
-            if ($self.hasClass('travelIntroduceImage')) {
+            if ($self.hasClass('luxuryIntroduceImage')) {
                 $('.imageIntroduce').html('');
-                $('.travelIntroduceUrl').val('');
-                showErrorMessage(message, $('.travelIntroduceUrl', $travelForm));
+                $('.luxuryIntroduceUrl').val('');
+                showErrorMessage(message, $('.luxuryIntroduceUrl', $luxuryForm));
             }
 
         });
@@ -79,8 +79,8 @@ require(['jquery', 'Validform', 'bootstrap','jquery-ui', 'csrf'], function ($, _
 
     };
     //表单校验初始化参数
-    $travelForm.Validform({
-        btnSubmit: '.travel-confirm',
+    $luxuryForm.Validform({
+        btnSubmit: '.luxury-confirm',
         tipSweep: true, //表单提交时触发显示
         focusOnError: false,
         ignoreHidden: true,
@@ -90,10 +90,10 @@ require(['jquery', 'Validform', 'bootstrap','jquery-ui', 'csrf'], function ($, _
                 showErrorMessage(msg, o.obj);
             }
         },
-        beforeCheck: function ($travelForm) {
+        beforeCheck: function ($luxuryForm) {
             $errorDom.html('');
         },
-        callback: function ($travelForm) {
+        callback: function ($luxuryForm) {
             boolFlag = true;
             return false;
         }
@@ -103,7 +103,7 @@ require(['jquery', 'Validform', 'bootstrap','jquery-ui', 'csrf'], function ($, _
         var $self = $(this);
         if (boolFlag) {
             $self.attr('disabled', 'disabled');
-            $travelForm[0].submit();
+            $luxuryForm[0].submit();
         }
     });
 

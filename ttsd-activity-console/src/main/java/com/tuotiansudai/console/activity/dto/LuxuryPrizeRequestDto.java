@@ -1,11 +1,11 @@
-package com.tuotiansudai.activity.dto;
+package com.tuotiansudai.console.activity.dto;
 
 import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
 
-public class LuxuryPrizeDto implements Serializable {
+public class LuxuryPrizeRequestDto implements Serializable {
 
     private long luxuryPrizeId;
 
@@ -27,7 +27,7 @@ public class LuxuryPrizeDto implements Serializable {
 
     private String thirtyPercentOffInvestAmount;
 
-    public LuxuryPrizeDto(LuxuryPrizeModel luxuryPrizeModel) {
+    public LuxuryPrizeRequestDto(LuxuryPrizeModel luxuryPrizeModel) {
         this.luxuryPrizeId = luxuryPrizeModel.getId();
         this.brand = luxuryPrizeModel.getBrand();
         this.name = luxuryPrizeModel.getName();
@@ -39,6 +39,8 @@ public class LuxuryPrizeDto implements Serializable {
         this.twentyPercentOffInvestAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getTwentyPercentOffInvestAmount());
         this.thirtyPercentOffInvestAmount = AmountConverter.convertCentToString(luxuryPrizeModel.getThirtyPercentOffInvestAmount());
     }
+
+    public LuxuryPrizeRequestDto(){}
 
     public long getLuxuryPrizeId() {
         return luxuryPrizeId;

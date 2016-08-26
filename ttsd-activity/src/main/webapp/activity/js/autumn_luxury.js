@@ -33,5 +33,14 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension', 'circle'
                 })
             }
         }
+
+        $('.record-list h3 span').on('click', function(event) {
+            var $self = $(this),
+                $item=$self.parent('h3').siblings('.record-item'),
+                index = $self.index();
+            $self.addClass('active').siblings('span').removeClass('active');
+            $item.find('.record-data:eq(' + index + ')').addClass('active')
+                .siblings('.record-data').removeClass('active');
+        });
     });
 });

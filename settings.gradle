@@ -19,9 +19,7 @@ include "ttsd-service",
         'ttsd-client',
         'ttsd-dependency',
         'ttsd-spring-extension',
-        'ttsd-activity-console'
-
-include 'ttsd-activity-repository'
-
-include 'ttsd-util'
+        'ttsd-activity-console',
+        'ttsd-activity-repository',
+        'ttsd-util'
 

@@ -23,7 +23,7 @@
 
     <insert id="create" parameterType="userLotteryPrizeModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `edxactivity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`prize`,`lottery_time`)
-        VALUES(#{id},#{mobile},#{login_name},#{prize},#{lotteryTime});
+        VALUES(#{id},#{mobile},#{loginName},#{prize},#{lotteryTime});
 
     </insert>
 
@@ -76,11 +76,18 @@
         </where>
     </select>
 
-    <select id="findLotteryPrizeByMobile" parameterType="map" resultMap="userLotteryPrizeView">
+    <select id="findLotteryPrizeByMobileAndPrize" parameterType="map" resultMap="userLotteryPrizeView">
         select lottery_time,mobile,prize from `edxactivity`.`user_lottery_prize`
         <where>
             <if test="mobile !=null and mobile !='' ">
                 and mobile = '${mobile}'
+            </if>
+
+            <if test="lotteryPrizes != null ">
+                and prize NOT IN
+                <foreach collection="lotteryPrizes" item="prize" open="(" separator="," close=")">
+                    #{prize}
+                </foreach>
             </if>
         </where>
         order by lottery_time DESC

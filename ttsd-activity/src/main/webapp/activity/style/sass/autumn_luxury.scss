@@ -41,6 +41,14 @@ $width:700px;
     }
     &.detail-wp{
       width:1000px;
+      .detail-img{
+        float:left;
+        width:100%;
+      }
+      .detail-btn{
+        float:left;
+        width:100%;
+      }
     }
     .left-bg{
       width:200px;

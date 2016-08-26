@@ -50,29 +50,33 @@ public class AutumnPrizeController {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/autumn-travel", "responsive", true);
         modelAndView.addObject("today", new Date());
-        modelAndView.addObject("amount", AmountConverter.convertCentToString(autumnPrizeService.getTodayInvestAmount(loginName, "travel")));
+        modelAndView.addObject("myInvestAmount", AmountConverter.convertCentToString(autumnPrizeService.getTodayInvestAmount(loginName, "travel")));
         modelAndView.addObject("travelPrize", autumnPrizeService.getTravelPrizeItems());
         modelAndView.addObject("userTravelPrize", autumnPrizeService.getTravelAwardItems(loginName));
         modelAndView.addObject("myTravelPrize", autumnPrizeService.getMyTravelAwardItems(LoginUserInfo.getMobile()));
+        modelAndView.addObject("drawTime",lotteryActivityService.getDrawPrizeTime(LoginUserInfo.getMobile()));
+        modelAndView.addObject("steps", generateSteps(loginName));
+        return modelAndView;
+    }
+
+    private List<Integer> generateSteps(String loginName) {
         List<Integer> steps = Lists.newArrayList(1, 0, 0, 0, 0);
-        modelAndView.addObject("steps", steps);
         if (Strings.isNullOrEmpty(loginName)) {
-            return modelAndView;
+            return steps;
         }
         steps.set(0, 2);
         if (accountService.findByLoginName(loginName) == null) {
             steps.set(1, 1);
-            return modelAndView;
+            return steps;
         }
         steps.set(1, 2);
         steps.set(2, 1);
         steps.set(3, 1);
         steps.set(4, 1);
         if (bindBankCardService.getPassedBankCard(loginName) != null) {
-           steps.set(2, 2);
+            steps.set(2, 2);
         }
-
-        return modelAndView;
+        return steps;
     }
 
     @RequestMapping(path = "/luxury", method = RequestMethod.GET)
@@ -80,8 +84,12 @@ public class AutumnPrizeController {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/autumn-luxury", "responsive", true);
         modelAndView.addObject("today", new Date());
-        modelAndView.addObject("amount", AmountConverter.convertCentToString(autumnPrizeService.getTodayInvestAmount(loginName, "luxury")));
-        modelAndView.addObject("userInfo",lotteryActivityService.findUserLotteryByLoginName("18888376666"));
+        modelAndView.addObject("myInvestAmount", AmountConverter.convertCentToString(autumnPrizeService.getTodayInvestAmount(loginName, "luxury")));
+        modelAndView.addObject("luxuryPrize", autumnPrizeService.getLuxuryPrizeItems());
+        modelAndView.addObject("userLuxuryPrize", autumnPrizeService.getLuxuryAwardItems(loginName));
+        modelAndView.addObject("myLuxuryPrize", autumnPrizeService.getMyLuxuryAwardItems(LoginUserInfo.getMobile()));
+        modelAndView.addObject("steps", generateSteps(loginName));
+        modelAndView.addObject("drawTime",lotteryActivityService.getDrawPrizeTime(LoginUserInfo.getMobile()));
         return modelAndView;
     }
 

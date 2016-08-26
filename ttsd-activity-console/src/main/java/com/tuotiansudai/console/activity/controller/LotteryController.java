@@ -6,6 +6,7 @@ import com.tuotiansudai.activity.dto.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;
 import com.tuotiansudai.console.activity.service.UserLotteryService;
+import com.tuotiansudai.console.activity.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,6 @@ public class LotteryController {
     @Autowired
     private UserLotteryService userLotteryService;
 
-//    UserLotteryList("用户手机号,姓名,可用抽奖机会,已用抽奖机会","抽奖机会统计"),
-//    UserPrizeList("中奖时间,获奖用户手机号,姓名,奖品","用户奖品统计");
-
     @RequestMapping(value = "/user-lottery-list", method = RequestMethod.GET)
     public ModelAndView userLotteryList(@RequestParam(name = "mobile",required = false) String mobile,
                                         @RequestParam(value = "index",defaultValue = "1",required = false) int index,
@@ -43,7 +41,7 @@ public class LotteryController {
         if (export != null && !export.equals("")) {
             response.setCharacterEncoding("UTF-8");
             try {
-                response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("抽奖机会统计.csv", "UTF-8"));
+                response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.UserDrawTimeList.getDescription(), "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
@@ -59,7 +57,7 @@ public class LotteryController {
                 data.add(dataModel);
             }
 
-            ExportCsvUtil.createCsvOutputStream("用户手机号,姓名,可用抽奖机会,已用抽奖机会", data, response.getOutputStream());
+            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserDrawTimeList.getHeader(), data, response.getOutputStream());
             return null;
         }else{
             ModelAndView modelAndView = new ModelAndView("/activity-lottery-list");
@@ -95,7 +93,7 @@ public class LotteryController {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             response.setCharacterEncoding("UTF-8");
             try {
-                response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("用户奖品统计.csv", "UTF-8"));
+                response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.UserPrizeList.getDescription(), "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
@@ -111,7 +109,7 @@ public class LotteryController {
                 data.add(dataModel);
             }
 
-            ExportCsvUtil.createCsvOutputStream("中奖时间,获奖用户手机号,姓名,奖品", data, response.getOutputStream());
+            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPrizeList.getHeader(), data, response.getOutputStream());
             return null;
         }else{
             ModelAndView modelAndView = new ModelAndView("/activity-lottery-list");

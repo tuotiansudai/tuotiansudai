@@ -11,22 +11,24 @@
         <result property="prizeId" column="prize_id"/>
         <result property="prize" column="prize"/>
         <result property="loginName" column="login_name"/>
+        <result property="userName" column="user_name"/>
         <result property="mobile" column="mobile"/>
         <result property="investAmount" column="invest_amount"/>
         <result property="createdTime" column="created_time"/>
     </resultMap>
 
     <insert id="create" parameterType="UserLuxuryPrizeModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_luxury_prize(prize_id,prize,login_name,mobile,invest_amount,created_time)
-               value(#{prizeId},#{prize},#{loginName},#{mobile},#{investAmount},#{createdTime})
+        insert into user_luxury_prize(prize_id,prize,login_name,user_name,mobile,invest_amount,created_time)
+               value(#{prizeId},#{prize},#{loginName},#{userName},#{mobile},#{investAmount},#{createdTime})
     </insert>
     
     <select id="findById" parameterType="long" resultMap="userLuxuryPrizeResultMap">
         select * from user_luxury_prize where id = #{id}
     </select>
 
-    <select id="getUserLuxuryPrizeList" parameterType="map" resultMap="userLuxuryPrizeResultMap">
-        select * from user_luxury_prize
+    <select id="findByPagination" parameterType="map" resultMap="userLuxuryPrizeResultMap">
+        select *
+        from user_luxury_prize
         <where>
           <if test="mobile !=null and mobile !='' ">
               and mobile = #{mobile}
@@ -39,11 +41,14 @@
           </if>
         </where>
         order by created_time desc, id desc
-        limit #{index}, #{pageSize}
+        <if test="index != null and pageSize != null">
+            limit #{index}, #{pageSize}
+        </if>
     </select>
 
-    <select id="getCountUserLuxuryPrize" parameterType="map" resultType="long">
-        select count(1) from user_luxury_prize
+    <select id="countByPagination" parameterType="map" resultType="long">
+        select count(1)
+        from user_luxury_prize
         <where>
             <if test="mobile !=null and mobile !='' ">
                 and mobile = #{mobile}

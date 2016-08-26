@@ -27,39 +27,42 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         $.ajax({
             url: '/activity/draw-lottery',
             type: 'POST',
-            dataType: 'json'
+            dataType: 'json',
+            data:{
+                activityType:$('#themeType').val()
+            }
         })
-        .done(function(res) {
-            console.log(res);
-            if (res.data.returnCode == 0) {
-                var item = res.data.lotteryPrize;
+        .done(function(data) {
+                console.log(data);
+            if (data.returnCode == 0) {
+                var item = data.lotteryPrize;
                 switch (item.name) {
                     case 'PORCELAIN_CUP':
-                        rotateFn(0, 337, '青花瓷杯子',res.data.returnCode,item.type);
+                        rotateFn(0, 337, '青花瓷杯子',data.returnCode,item.type);
                         break;
                     case 'INTEREST_COUPON_2':
-                        rotateFn(1, 56, '0.2加息券',res.data.returnCode,item.type);
+                        rotateFn(1, 56, '0.2加息券',data.returnCode,item.type);
                         break;
                     case 'LUXURY':
-                        rotateFn(2, 116, '奢侈品大奖',res.data.returnCode,item.type);
+                        rotateFn(2, 116, '奢侈品大奖',data.returnCode,item.type);
                         break;
                     case 'RED_ENVELOPE_100':
-                        rotateFn(3, 160, '100元现金红包',res.data.returnCode,item.type);
+                        rotateFn(3, 160, '100元现金红包',data.returnCode,item.type);
                         break;
                     case 'INTEREST_COUPON_5':
-                        rotateFn(4, 230, '0.5加息券',res.data.returnCode,item.type);
+                        rotateFn(4, 230, '0.5加息券',data.returnCode,item.type);
                         break;
                     case 'RED_ENVELOPE_50':
-                        rotateFn(5, 260, '50元现金红包',res.data.returnCode,item.type);
+                        rotateFn(5, 260, '50元现金红包',data.returnCode,item.type);
                         break;
                     case 'MANGO_CARD_100':
-                        rotateFn(6, 347, '100元芒果卡',res.data.returnCode,item.type);
+                        rotateFn(6, 347, '100元芒果卡',data.returnCode,item.type);
                         break;
                 }
-            } else if (res.data.returnCode == 2) {
-                $('#tipList').html(tpl('tipListTpl', {tiptext:res.data.message,istype:'nologin'})).show().find('.tip-dom').show();
+            } else if (data.returnCode == 2) {
+                $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'nologin'})).show().find('.tip-dom').show();
             } else {
-                $('#tipList').html(tpl('tipListTpl', {tiptext:res.data.message,istype:'notimes'})).show().find('.tip-dom').show();
+                $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'notimes'})).show().find('.tip-dom').show();
             }
         })
         .fail(function() {
@@ -116,21 +119,14 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         }
     }
 
-    var rankList=function (){
-        $.ajax({
-            url: '/activity/getTianDouTop15',
-            type: 'POST',
-            dataType: 'json'
-        })
-        .done(function(data) {
-            $('#rankList').html(tpl('rankListTpl', data));
-        });
-    };
     var GiftRecord=function (){
         $.ajax({
-            url: '/activity/lottery-all-record',
+            url: '/activity/lottery-all-list',
             type: 'POST',
-            dataType: 'json'
+            dataType: 'json',
+            data:{
+                activityType:$('#themeType').val()
+            }
         })
         .done(function(data) {
             $('#GiftRecord').html(tpl('GiftRecordTpl', {record:data}));
@@ -141,7 +137,10 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         $.ajax({
             url: '/activity/lottery-record-list',
             type: 'POST',
-            dataType: 'json'
+            dataType: 'json',
+            data:{
+                activityType:$('#themeType').val()
+            }
         })
         .done(function(data) {
             $('#MyGift').html(tpl('MyGiftTpl', {gift:data}));
