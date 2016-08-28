@@ -62,4 +62,9 @@
         </where>
     </select>
 
+    <select id="findMobileAndCreatedTime" resultMap="userLuxuryPrizeResultMap">
+        SELECT * FROM user_luxury_prize WHERE mobile = #{mobile}  AND DATE_FORMAT(created_time, '%Y-%m-%d') = DATE_FORMAT(#{createdTime}, '%Y-%m-%d')
+    </select>
+
+
 </mapper>

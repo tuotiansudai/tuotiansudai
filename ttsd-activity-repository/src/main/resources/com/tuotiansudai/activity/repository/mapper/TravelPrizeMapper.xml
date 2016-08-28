@@ -29,7 +29,7 @@
     </select>
 
     <select id="findAll" resultMap="travelPrizeResultMap">
-        select * from travel_prize
+        select * from travel_prize ORDER BY invest_amount DESC
     </select>
 
     <update id="update" parameterType="TravelPrizeModel">

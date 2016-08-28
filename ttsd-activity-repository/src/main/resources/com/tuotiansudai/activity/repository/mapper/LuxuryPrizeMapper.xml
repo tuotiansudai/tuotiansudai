@@ -52,7 +52,7 @@
     </select>
 
     <select id="findAll" resultMap="luxuryPrizeResultMap">
-        select * from luxury_prize order by id
+        select * from luxury_prize order by invest_amount desc
     </select>
 
 </mapper>
