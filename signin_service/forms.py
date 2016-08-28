@@ -28,5 +28,5 @@ class SourceForm(wtforms.Form):
 class RefreshTokenForm(SourceForm):
 
     def validate_source(self, field):
-        if field.data not in ('IOS', 'ANDROID'):
-            raise ValidationError('Name must be less than 50 characters')
+        if field.data.upper() not in ('IOS', 'ANDROID'):
+            raise ValidationError('Source must be either IOS or ANDROID')

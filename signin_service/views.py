@@ -59,9 +59,8 @@ def get_session(session_id):
 def refresh_session(session_id):
     form = RefreshTokenForm(request.form)
     if form.validate():
-        user_info = service.SessionManager().refresh(session_id)
-        if user_info:
-            return success(user_info)
+        new_session_id = service.SessionManager().refresh(session_id)
+        return get_session(new_session_id)
     return fail({'message': form.errors})
 
 

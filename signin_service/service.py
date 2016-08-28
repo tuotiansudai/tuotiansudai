@@ -6,6 +6,7 @@ import redis
 from models import User, LoginLog, db
 import settings
 
+
 pool = redis.ConnectionPool(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 CAPTCHA_FORMAT = "CAPTCHA:LOGIN:{0}"
 TOKEN_FORMAT = "TOKEN:{0}"
@@ -52,7 +53,7 @@ class SessionManager(object):
             new_token = TOKEN_FORMAT.format(new_token_id)
             self.connection.setex(new_token, data, settings.MOBILE_TOKEN_EXPIRED_SECONDS)
             self.connection.delete(old_token)
-            return {'token': new_token_id, 'user_info': json.loads(data)}
+            return new_token_id
 
 
 class UsernamePasswordError(Exception):
