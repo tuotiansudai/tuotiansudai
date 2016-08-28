@@ -22,8 +22,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:dispatcher-servlet.xml", "classpath:applicationContext.xml", "classpath:spring-security.xml"})
-@WebAppConfiguration
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class LotteryActivityServiceTest {
 

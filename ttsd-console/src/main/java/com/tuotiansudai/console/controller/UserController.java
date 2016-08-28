@@ -225,7 +225,7 @@ public class UserController {
                 dataModel.add(userItemDataDto.getCity());
                 data.add(dataModel);
             }
-            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers.getHeader(), data, response.getOutputStream());
+            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, data, response.getOutputStream());
             return null;
         } else {
             BaseDto<BasePaginationDataDto> baseDto = userServiceConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, index, pageSize);

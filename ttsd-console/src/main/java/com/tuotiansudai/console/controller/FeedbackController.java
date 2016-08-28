@@ -69,7 +69,7 @@ public class FeedbackController {
                 dataModel.add(feedbackModelList.get(i).getStatus().getDesc());
                 data.add(dataModel);
             }
-            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.Feedback.getHeader(), data, response.getOutputStream());
+            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.Feedback, data, response.getOutputStream());
             return null;
         } else {
             BasePaginationDataDto<FeedbackModel> feedbackModelPaginationData = feedbackService.getFeedbackPagination(mobile, source, type, status, startTime, endTime, index, pageSize);

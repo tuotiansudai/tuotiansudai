@@ -76,7 +76,7 @@ public class ReferrerManageController {
                 dataModel.add(new DateTime(referrerManageView.getRewardTime()).toString("yyyy-MM-dd HH:mm:ss"));
                 data.add(dataModel);
             }
-            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleReferrerManageCsvHeader.getHeader(), data, response.getOutputStream());
+            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleReferrerManageCsvHeader, data, response.getOutputStream());
             return null;
         } else {
             ModelAndView modelAndView = new ModelAndView("/referrer-manage");

@@ -77,7 +77,7 @@ public class RechargeController {
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getChannel());
                 data.add(dataModel);
             }
-            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleRecharge.getHeader(), data, response.getOutputStream());
+            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleRecharge, data, response.getOutputStream());
             return null;
         } else {
             ModelAndView modelAndView = new ModelAndView("/recharge");

@@ -74,7 +74,7 @@ public class WithdrawController {
                 dataModel.add(withdrawPaginationItemDataDtos.get(i).getSource().name());
                 data.add(dataModel);
             }
-            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleWithdraw.getHeader(), data, response.getOutputStream());
+            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleWithdraw, data, response.getOutputStream());
             return null;
         } else {
             ModelAndView modelAndView = new ModelAndView("/withdraw");

@@ -136,7 +136,7 @@ public class BusinessIntelligenceController {
             dataModel.add(new DateTime(items.get(i).getLastInvestTime()).toString("yyyy-MM-dd HH:mm:ss"));
             data.add(dataModel);
         }
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BIInvestViscosity.getHeader(), data, response.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BIInvestViscosity, data, response.getOutputStream());
     }
 
     @ResponseBody

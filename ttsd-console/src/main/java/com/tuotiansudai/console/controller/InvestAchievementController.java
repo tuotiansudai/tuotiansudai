@@ -72,7 +72,7 @@ public class InvestAchievementController {
                 dataModel.add(loanAchievementView.getCompleteInvestDuration());
                 data.add(dataModel);
             }
-            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InvestAchievementHeader.getHeader(), data, response.getOutputStream());
+            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InvestAchievementHeader, data, response.getOutputStream());
             return null;
         } else {
             List<LoanAchievementView> loanAchievementViews = investAchievementService.findInvestAchievement(index, pageSize, mobile);

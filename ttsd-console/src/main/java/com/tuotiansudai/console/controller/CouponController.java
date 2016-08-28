@@ -135,7 +135,7 @@ public class CouponController {
             dataModel.add(exchangeCodes.get(i));
             data.add(dataModel);
         }
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ExchangeCodeCsv.getHeader(), data, response.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ExchangeCodeCsv, data, response.getOutputStream());
         return null;
     }
 

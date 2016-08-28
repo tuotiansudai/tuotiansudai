@@ -9,7 +9,6 @@ import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.LoanRepayService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.SystemBillService;
@@ -75,7 +74,7 @@ public class ExportController {
         int pageSize = Integer.MAX_VALUE;
         List<CouponDto> records = couponService.findNewbieAndInvestCoupons(index, pageSize);
         List<List<String>> coupons = exportService.buildCoupons(records);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponHeader.getHeader(), coupons, response.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponHeader, coupons, response.getOutputStream());
     }
 
     @RequestMapping(value = "/interest-coupons", method = RequestMethod.GET)
@@ -91,7 +90,7 @@ public class ExportController {
         int pageSize = Integer.MAX_VALUE;
         List<CouponDto> records = couponService.findInterestCoupons(index, pageSize);
         List<List<String>> interestCoupons = exportService.buildInterestCoupons(records);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InterestCouponsHeader.getHeader(), interestCoupons, response.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InterestCouponsHeader, interestCoupons, response.getOutputStream());
     }
 
     @RequestMapping(value = "/red-envelopes", method = RequestMethod.GET)
@@ -107,7 +106,7 @@ public class ExportController {
         int pageSize = Integer.MAX_VALUE;
         List<CouponDto> records = couponService.findRedEnvelopeCoupons(index, pageSize);
         List<List<String>> redEnvelopeCoupons = exportService.buildRedEnvelopeCoupons(records);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.RedEnvelopesHeader.getHeader(), redEnvelopeCoupons, response.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.RedEnvelopesHeader, redEnvelopeCoupons, response.getOutputStream());
     }
 
     @RequestMapping(value = "/birthday-coupons", method = RequestMethod.GET)
@@ -123,7 +122,7 @@ public class ExportController {
         int pageSize = Integer.MAX_VALUE;
         List<CouponDto> records = couponService.findBirthdayCoupons(index, pageSize);
         List<List<String>> birthdayCoupons = exportService.buildBirthdayCoupons(records);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BirthdayCouponsHeader.getHeader(), birthdayCoupons, response.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BirthdayCouponsHeader, birthdayCoupons, response.getOutputStream());
     }
 
     @RequestMapping(value = "/point-prize", method = RequestMethod.GET)
@@ -137,7 +136,7 @@ public class ExportController {
         response.setContentType("application/csv");
         List<PointPrizeWinnerViewDto> records = userPointPrizeMapper.findAllPointPrizeGroupPrize();
         List<List<String>> pointPrize = exportService.buildPointPrize(records);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.PointPrizeHeader.getHeader(), pointPrize, response.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.PointPrizeHeader, pointPrize, response.getOutputStream());
     }
 
     @RequestMapping(value = "/user-point", method = RequestMethod.GET)
@@ -153,7 +152,7 @@ public class ExportController {
         httpServletResponse.setContentType("application/csv");
         List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, null, null);
         List<List<String>> csvData = exportService.buildUserPointToCsvData(accountItemDataDtoList);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPointHeader.getHeader(), csvData, httpServletResponse.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.UserPointHeader, csvData, httpServletResponse.getOutputStream());
 
     }
 
@@ -169,7 +168,7 @@ public class ExportController {
         List<ExchangeCouponDto> exchangeCouponDtos = couponService.findCouponExchanges(1, Integer.MAX_VALUE);
 
         List<List<String>> csvData = exportService.buildCouponExchangeCsvData(exchangeCouponDtos);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponExchangeHeader.getHeader(), csvData, httpServletResponse.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponExchangeHeader, csvData, httpServletResponse.getOutputStream());
 
     }
 
@@ -195,7 +194,7 @@ public class ExportController {
                 Integer.MAX_VALUE);
 
         List<List<String>> csvData = exportService.buildSystemBillCsvData(baseDto.getData().getRecords());
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.SystemBillHeader.getHeader(), csvData, httpServletResponse.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.SystemBillHeader, csvData, httpServletResponse.getOutputStream());
 
     }
 
@@ -217,7 +216,7 @@ public class ExportController {
         httpServletResponse.setContentType("application/csv");
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, 1, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildTransferListCsvData(basePaginationDataDto.getRecords());
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.TransferListHeader.getHeader(), csvData, httpServletResponse.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.TransferListHeader, csvData, httpServletResponse.getOutputStream());
     }
 
     @RequestMapping(value = "/loan-repay", method = RequestMethod.GET)
@@ -239,7 +238,7 @@ public class ExportController {
                 loanId, loginName, startTime, endTime, repayStatus);
 
         List<List<String>> csvData = exportService.buildLoanRepayCsvData(baseDto.getData().getRecords());
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.LoanRepayHeader.getHeader(), csvData, httpServletResponse.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.LoanRepayHeader, csvData, httpServletResponse.getOutputStream());
 
     }
 
@@ -262,7 +261,7 @@ public class ExportController {
                 endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
                 index, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildConsoleLoanList(loanListDtos);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleLoanList.getHeader(), csvData, httpServletResponse.getOutputStream());
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleLoanList, csvData, httpServletResponse.getOutputStream());
 
     }
 
