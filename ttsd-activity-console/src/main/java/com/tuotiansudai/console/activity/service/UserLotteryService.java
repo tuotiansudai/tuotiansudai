@@ -108,11 +108,11 @@ public class UserLotteryService{
             lotteryTime ++;
         }
 
-        if(rechargeMapper.findSumSuccessRechargeByLoginName(userModel.getLoginName()) > 0){
+        if(rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, activityAutumnStartTime, activityAutumnEndTime) > 0){
             lotteryTime ++;
         }
 
-        if(investMapper.countInvestorInvestPagination(userModel.getLoginName(), null, activityAutumnStartTime, activityAutumnEndTime) > 0){
+        if(investMapper.countInvestorSuccessInvestByInvestTime(userModel.getLoginName(), activityAutumnStartTime, activityAutumnEndTime) > 0){
             lotteryTime ++;
         }
 
