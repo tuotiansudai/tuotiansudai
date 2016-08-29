@@ -203,7 +203,7 @@
                                     <span class="name-text">${virtualProduct.name}</span>
                                     <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
                                     <a class="fl"
-                                       href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/1"><span
+                                       href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/1"><span
                                             class="fl get-btn">立即兑换</span></a>
                                 </p>
                             </a>
