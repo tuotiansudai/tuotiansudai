@@ -6,9 +6,7 @@ LEFT JOIN loan l ON i.loan_id = l.id
 SET point = TRUNCATE(point*duration/365, 0)
 WHERE pb.business_type = 'INVEST';
 
-UPDATE account,
-(SELECT SUM(point) AS sumpoint, login_name AS login_name FROM point_bill GROUP BY login_name) AS point_bill
-SET account.point = IF(point_bill.sumpoint<0, 0, point_bill.sumpoint)
-WHERE account.login_name = point_bill.login_name;
+UPDATE account
+ SET point = (SELECT IF(SUM(point)<0, 0, SUM(point)) FROM point_bill WHERE point_bill.login_name = account.login_name);
 
 COMMIT ;
