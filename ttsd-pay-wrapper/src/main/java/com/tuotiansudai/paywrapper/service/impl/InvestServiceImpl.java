@@ -28,10 +28,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestAchievementService;
 import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
@@ -97,6 +94,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private JobManager jobManager;
@@ -504,22 +504,42 @@ public class InvestServiceImpl implements InvestService {
 
     private void calculateActivityAutumnInvest(InvestModel investModel) {
         try {
+            String mobile = userMapper.findByLoginName(investModel.getLoginName()).getMobile();
+            String userName = accountMapper.findByLoginName(investModel.getLoginName()).getUserName();
             if (investModel.getCreatedTime().before(this.activityAutumnStartTime) || investModel.getCreatedTime().after(this.activityAutumnEndTime)) {
                 return;
             }
             String channel = redisWrapperClient.hget(this.activityAutumnInvestChannelKey, investModel.getLoginName());
-            String secondKey = MessageFormat.format("{0}:{1}", investModel.getLoginName(), new DateTime(investModel.getCreatedTime()).toString("yyyy-MM-dd"));
-
+            String secondKey = MessageFormat.format("{0}:{1}:{2}:{3}", investModel.getLoginName(),
+                    mobile,
+                    userName,
+                    new DateTime(investModel.getCreatedTime()).toString("yyyy-MM-dd"));
             if (!Strings.isNullOrEmpty(channel) && channel.equalsIgnoreCase("travel")) {
-                String investList = redisWrapperClient.hget(this.activityAutumnTravelInvestKey, secondKey);
-                investList = Strings.isNullOrEmpty(investList) ? String.valueOf(investModel.getId()) : MessageFormat.format("{0}|{1}", investList, String.valueOf(investModel.getId()));
-                redisWrapperClient.hset(this.activityAutumnTravelInvestKey, secondKey, investList, 3600 * 24 * 60);
+                String investDetail = redisWrapperClient.hget(this.activityAutumnTravelInvestKey, secondKey);
+                long sumInvestAmount;
+                String investList;
+                if (!Strings.isNullOrEmpty(investDetail)) {
+                    sumInvestAmount = Long.parseLong(investDetail.split("\\|")[0]) + investModel.getAmount();
+                    investList = investDetail.split("\\|")[1];
+                    investDetail = MessageFormat.format("{0}|{1}", String.valueOf(sumInvestAmount), MessageFormat.format("{0},{1}", investList, String.valueOf(investModel.getId())));
+                } else {
+                    investDetail = MessageFormat.format("{0}|{1}", String.valueOf(investModel.getAmount()), String.valueOf(investModel.getId()));
+                }
+                redisWrapperClient.hset(this.activityAutumnTravelInvestKey, secondKey, investDetail, 3600 * 24 * 60);
             }
 
             if (!Strings.isNullOrEmpty(channel) && channel.equalsIgnoreCase("luxury")) {
-                String investList = redisWrapperClient.hget(this.activityAutumnLuxuryInvestKey, secondKey);
-                investList = Strings.isNullOrEmpty(investList) ? String.valueOf(investModel.getId()) : MessageFormat.format("{0}|{1}", investList, String.valueOf(investModel.getId()));
-                redisWrapperClient.hset(this.activityAutumnLuxuryInvestKey, secondKey, investList, 3600 * 24 * 60);
+                String investDetail = redisWrapperClient.hget(this.activityAutumnLuxuryInvestKey, secondKey);
+                long sumInvestAmount;
+                String investList;
+                if (!Strings.isNullOrEmpty(investDetail)) {
+                    sumInvestAmount = Long.parseLong(investDetail.split("\\|")[0]) + investModel.getAmount();
+                    investList = investDetail.split("\\|")[1];
+                    investDetail = MessageFormat.format("{0}|{1}", String.valueOf(sumInvestAmount), MessageFormat.format("{0},{1}", investList, String.valueOf(investModel.getId())));
+                } else {
+                    investDetail = MessageFormat.format("{0}|{1}", String.valueOf(investModel.getAmount()), String.valueOf(investModel.getId()));
+                }
+                redisWrapperClient.hset(this.activityAutumnLuxuryInvestKey, secondKey, investDetail, 3600 * 24 * 60);
             }
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);

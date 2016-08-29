@@ -84,4 +84,16 @@ public class UserLuxuryPrizeModel implements Serializable {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+    public UserLuxuryPrizeModel() {
+    }
+
+    public UserLuxuryPrizeModel(long prizeId, String prize, String loginName, String mobile, String userName, long investAmount) {
+        this.prizeId = prizeId;
+        this.prize = prize;
+        this.loginName = loginName;
+        this.mobile = mobile;
+        this.userName = userName;
+        this.investAmount = investAmount;
+    }
 }

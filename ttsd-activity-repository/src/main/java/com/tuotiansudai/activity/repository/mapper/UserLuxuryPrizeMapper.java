@@ -24,4 +24,7 @@ public interface UserLuxuryPrizeMapper {
                            @Param(value = "startTime") Date startTime,
                            @Param(value = "endTime") Date endTime);
 
+    List<UserLuxuryPrizeModel> findMobileAndCreatedTime(@Param(value = "mobile") String mobile,
+                                                        @Param(value = "createdTime") Date createdTime);
+
 }
