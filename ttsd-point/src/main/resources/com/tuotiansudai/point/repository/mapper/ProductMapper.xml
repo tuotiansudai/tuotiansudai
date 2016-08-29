@@ -79,7 +79,7 @@
         <if test="type != null">
             AND p.type = #{type}
         </if>
-        ORDER BY seq DESC, updated_time DESC
+        ORDER BY seq ASC, updated_time DESC
         limit #{index}, #{pageSize}
     </select>
 
@@ -99,7 +99,7 @@
                 AND p.type = #{type}
             </if>
         </where>
-        ORDER BY seq DESC, updated_time DESC
+        ORDER BY seq ASC, updated_time DESC
         limit #{index}, #{pageSize}
     </select>
 
