@@ -48,7 +48,7 @@
                 <ul class="pagination pull-left">
                     <li>
                         <#if hasPreviousPage >
-                        <a href="/activity-manage/user-time-list?mobile=${mobile!}&index=${index-1}&pageSize=${pageSize}">
+                        <a href="/activity-console/activity-manage/user-time-list?mobile=${mobile!}&index=${index-1}&pageSize=${pageSize}">
                         <#else>
                         <a href="#">
                         </#if>

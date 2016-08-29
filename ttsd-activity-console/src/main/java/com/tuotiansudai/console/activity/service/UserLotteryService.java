@@ -88,7 +88,7 @@ public class UserLotteryService{
             UserModel referrerUserModel = userMapper.findByLoginName(referrerRelationModel.getLoginName());
             if(referrerUserModel.getRegisterTime().before(activityAutumnEndTime) && referrerUserModel.getRegisterTime().after(activityAutumnStartTime)){
                 lotteryTime ++;
-                if(investMapper.countInvestorInvestPagination(referrerUserModel.getLoginName(), LoanStatus.RAISING,activityAutumnStartTime,activityAutumnEndTime) > 0){
+                if(investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(),activityAutumnStartTime,activityAutumnEndTime) > 0){
                     lotteryTime ++;
                 }
             }
@@ -108,11 +108,11 @@ public class UserLotteryService{
             lotteryTime ++;
         }
 
-        if(rechargeMapper.findSumSuccessRechargeByLoginName(userModel.getLoginName()) > 0){
+        if(rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, activityAutumnStartTime, activityAutumnEndTime) > 0){
             lotteryTime ++;
         }
 
-        if(investMapper.countInvestorInvestPagination(userModel.getLoginName(), null, activityAutumnStartTime, activityAutumnEndTime) > 0){
+        if(investMapper.countInvestorSuccessInvestByInvestTime(userModel.getLoginName(), activityAutumnStartTime, activityAutumnEndTime) > 0){
             lotteryTime ++;
         }
 

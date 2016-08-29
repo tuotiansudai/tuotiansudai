@@ -88,7 +88,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="record-box switchContent">
+                <div class="record-box switchContent" style="display: none;">
                     <table class="table">
                         <thead>
                         <tr>

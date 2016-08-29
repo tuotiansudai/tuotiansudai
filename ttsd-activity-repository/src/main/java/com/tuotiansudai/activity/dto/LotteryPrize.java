@@ -7,8 +7,8 @@ public enum LotteryPrize {
     PORCELAIN_CUP("青花瓷杯子","real"),
     RED_ENVELOPE_100("100元现金红包","virtual"),
     RED_ENVELOPE_50("50元现金红包","virtual"),
-    INTEREST_COUPON_5("0.5加息券","virtual"),
-    INTEREST_COUPON_2("0.2加息券","virtual");
+    INTEREST_COUPON_5("0.5%加息券","virtual"),
+    INTEREST_COUPON_2("0.2%加息券","virtual");
 
     String description;
     String type;

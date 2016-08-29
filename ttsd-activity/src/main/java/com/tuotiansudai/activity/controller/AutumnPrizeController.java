@@ -55,7 +55,7 @@ public class AutumnPrizeController {
         modelAndView.addObject("travelPrize", autumnPrizeService.getTravelPrizeItems());
         modelAndView.addObject("userTravelPrize", autumnPrizeService.getTravelAwardItems(loginName));
         modelAndView.addObject("myTravelPrize", autumnPrizeService.getMyTravelAwardItems(LoginUserInfo.getMobile()));
-        modelAndView.addObject("drawTime",10);
+        modelAndView.addObject("drawTime",lotteryActivityService.getDrawPrizeTime(LoginUserInfo.getMobile()));
         modelAndView.addObject("steps", generateSteps(loginName));
         return modelAndView;
     }
