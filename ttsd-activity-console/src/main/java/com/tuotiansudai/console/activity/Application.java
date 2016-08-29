@@ -8,7 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.tuotiansudai.console.activity", "com.tuotiansudai.cache", "com.tuotiansudai.client"})
-@PropertySource("classpath:ttsd-env.properties")
+@PropertySource(value = {"classpath:ttsd-env.properties","classpath:ttsd-biz.properties"})
 public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

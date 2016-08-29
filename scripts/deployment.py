@@ -26,7 +26,7 @@ class Deployment(object):
     def compile(self):
         print "Compiling..."
         sh(
-            '{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk war'.format(
+            '{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity war'.format(
                 self._gradle))
 
     def build_and_unzip_worker(self):

@@ -4,6 +4,7 @@ body {
   background: #a1e9f8 url("/activity/images/autumn-tour/bg-yun.png") center 775px no-repeat;
   overflow-x: hidden;
 }
+
 .main-frame {
   width: 100%;
   margin: 0 auto;
@@ -114,6 +115,7 @@ body {
   &.steps-box {
     .steps-list {
       margin-left:60px;
+      margin-bottom:20px;
       li {
         width:137px;
         height:60px;
@@ -171,7 +173,7 @@ body {
         }
         &.to-finish {
           border-color: #ed702c;
-          s {
+          s{
             border-left: 30px solid #ed702c;
             &.arrow-left {
               right: -58px;
@@ -187,6 +189,10 @@ body {
           em {
             background: #ed702c;
             color: #fff;
+            a{
+              color:#fff;
+              text-decoration:none;
+            }
           }
         }
         &.finished {

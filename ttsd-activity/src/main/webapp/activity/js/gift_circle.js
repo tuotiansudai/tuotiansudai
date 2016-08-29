@@ -22,51 +22,70 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
     //td click
     $pointer.on('click', function(event) {
         event.preventDefault();
-        var $self = $(this),
-            isLogin = $self.attr('data-islogin');
-        if (isLogin != 'true') {
-            $('#tipList').show();
-            $('#noLogin').show();
-        } else {
-            if (bRotate) return;
-            $.ajax({
-                    url: '/activity/draw-tiandou',
-                    type: 'POST',
-                    dataType: 'json'
-                })
-                .done(function(res) {
-                    if (res.data.returnCode == 0) {
-                        var item = res.data.tianDouPrize;
-                        switch (item) {
-                            case 'Cash20':
-                                rotateFn(0, 56, '20元现金');
-                                break;
-                            case 'Iphone6s':
-                                rotateFn(1, 120, 'iPhone 6s Plus');
-                                break;
-                            case 'JingDong300':
-                                rotateFn(2, 200, '300元京东购物卡');
-                                break;
-                            case 'InterestCoupon5':
-                                rotateFn(3, 260, '0.5%加息券');
-                                break;
-                            case 'MacBook':
-                                rotateFn(4, 337, 'MacBook Air');
-                                break;
-                        }
-                    } else if (res.data.returnCode == 1) {
-                        $('#tipList').show();
-                        $('#TDnoUse').show();
-                    } else {
-                        $('#tipList').show();
-                        $('#noLogin').show();
-                    }
-                })
-                .fail(function() {
-                    layer.msg('请求失败');
-                });
-        }
+
+        if (bRotate) return;
+        $.ajax({
+            url: '/activity/draw-lottery',
+            type: 'POST',
+            dataType: 'json',
+            data:{
+                activityType:$('#themeType').val()
+            }
+        })
+        .done(function(data) {
+            if (data.returnCode == 0) {
+                switch (data.prize) {
+                    case 'PORCELAIN_CUP':
+                        rotateFn(0, 337, '青花瓷杯子',data.prizeType);
+                        break;
+                    case 'INTEREST_COUPON_2':
+                        rotateFn(1, 56, '0.2加息券',data.prizeType);
+                        break;
+                    case 'LUXURY':
+                        rotateFn(2, 116, '奢侈品大奖',data.prizeType);
+                        break;
+                    case 'RED_ENVELOPE_100':
+                        rotateFn(3, 160, '100元现金红包',data.prizeType);
+                        break;
+                    case 'INTEREST_COUPON_5':
+                        rotateFn(4, 230, '0.5加息券',data.prizeType);
+                        break;
+                    case 'RED_ENVELOPE_50':
+                        rotateFn(5, 300, '50元现金红包',data.prizeType);
+                        break;
+                    case 'MANGO_CARD_100':
+                        rotateFn(6, 347, '100元芒果卡',data.prizeType);
+                        break;
+                }
+            } else if (data.returnCode == 2) {
+                $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'nologin'})).show().find('.tip-dom').show();
+            } else {
+                $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'notimes'})).show().find('.tip-dom').show();
+            }
+        })
+        .fail(function() {
+            layer.msg('请求失败');
+        });
     });
+
+    function rotateFn(awards, angles, txt,type) {
+        bRotate = !bRotate;
+        $('#rotate').stopRotate();
+        $('#rotate').rotate({
+            angle: 0,
+            animateTo: angles + 1800,
+            duration: 8000,
+            callback: function() {
+                $('#tipList').html(tpl('tipListTpl', {tiptext:'恭喜你抽中了'+txt,istype:type})).show().find('.tip-dom').show();
+                bRotate = !bRotate;
+                $('.lottery-time').each(function(index,el){
+                    $(this).text()>1?$(this).text(function(index,num){return parseInt(num)-1}):$(this).text('0');
+                });
+                GiftRecord();
+                MyGift();
+            }
+        })
+    }
     //close btn
     $('body').on('click', '.go-close', function(event) {
         event.preventDefault();
@@ -77,51 +96,21 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         $tipDom.hide();
     });
 
-    function rotateFn(awards, angles, txt) {
-        bRotateTd = !bRotateTd;
-        $('#rotateTd').stopRotate();
-        $('#rotateTd').rotate({
-            angle: 0,
-            animateTo: angles + 1800,
-            duration: 8000,
-            callback: function() {
-                $('#tipList').show();
-                PcDataGet();
-                switch (awards) {
-                    case 0:
-                        $('#twentyRMB').show();
-                        break;
-                    case 1:
-                        $('#iphone6s').show();
-                        break;
-                    case 2:
-                        $('#jdCard').show();
-                        break;
-                    case 3:
-                        $('#jiaxi').show();
-                        break;
-                    case 4:
-                        $('#macbookAir').show();
-                        break;
-                }
-                bRotateTd = !bRotateTd;
-            }
-        })
-    }
+
     //scroll award record list
     var scrollTimer;
-    $(".scroll-record").hover(function() {
+    $(".user-record").hover(function() {
         clearInterval(scrollTimer);
     }, function() {
         scrollTimer = setInterval(function() {
-            scrollNews($(".scroll-record"));
+            scrollNews($("#recordList"));
         }, 2000);
     }).trigger("mouseout");
 
     function scrollNews(obj) {
         var $self = obj.find("ul.user-record");
         var lineHeight = $self.find("li:first").height();
-        if ($self.find('li').length > 15) {
+        if ($self.find('li').length > 10) {
             $self.animate({
                 "margin-top": -lineHeight + "px"
             }, 600, function() {
@@ -132,42 +121,33 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         }
     }
 
-    function rankList(){
+    function GiftRecord (){
         $.ajax({
-            url: '/activity/getTianDouTop15',
+            url: '/activity/lottery-all-list',
             type: 'POST',
-            dataType: 'json'
+            dataType: 'json',
+            data:{
+                activityType:$('#themeType').val()
+            }
         })
         .done(function(data) {
-            var list={rank:data};
-            $('#rankList').html(tpl('rankListTpl', list));
+            $('#GiftRecord').html(tpl('GiftRecordTpl', {record:data}));
         });
-    }
-    function GiftRecord(){
-        $.ajax({
-            url: '/activity/getTianDouPrizeList',
-            type: 'POST',
-            dataType: 'json'
-        })
-        .done(function(data) {
-            $('#GiftRecord').html(tpl('GiftRecordTpl', data));
-        });
-    }
-    
+    };
+
     function MyGift(){
         $.ajax({
-            url: '/activity/getMyTianDouPrize',
+            url: '/activity/lottery-record-list',
             type: 'POST',
-            dataType: 'json'
+            dataType: 'json',
+            data:{
+                activityType:$('#themeType').val()
+            }
         })
         .done(function(data) {
-            var list={tdmygift:data};
-            $('#MyGift').html(tpl('MyGiftTpl', list));
+            $('#MyGift').html(tpl('MyGiftTpl', {gift:data}));
         });
-    }
-    function PcDataGet(){
-        rankList();
-        GiftRecord();
-        MyGift();
-    }
+    };
+    GiftRecord ();
+    MyGift();
 });

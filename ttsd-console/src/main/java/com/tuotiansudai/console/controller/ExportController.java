@@ -9,7 +9,6 @@ import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.LoanRepayService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.SystemBillService;
