@@ -55,7 +55,6 @@ public class LotteryActivityServiceTest {
     @Autowired
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
-
     @Test
     public void shouldGetDrawPrizeTimeIsOk(){
         String loginName = "testDrawPrize";

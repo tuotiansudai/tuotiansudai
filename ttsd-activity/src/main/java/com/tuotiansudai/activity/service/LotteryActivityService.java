@@ -97,7 +97,7 @@ public class LotteryActivityService {
         }
 
         long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(),null,null,null);
-        if(lotteryTime > 0 && lotteryTime >= userTime){
+        if(lotteryTime > 0){
             lotteryTime -= userTime;
         }
         return lotteryTime;

@@ -39,7 +39,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
                         rotateFn(0, 337, '青花瓷杯子',data.prizeType);
                         break;
                     case 'INTEREST_COUPON_2':
-                        rotateFn(1, 56, '0.2加息券',data.prizeType);
+                        rotateFn(1, 56, '0.2%加息券',data.prizeType);
                         break;
                     case 'LUXURY':
                         rotateFn(2, 116, '奢侈品大奖',data.prizeType);
@@ -48,7 +48,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
                         rotateFn(3, 160, '100元现金红包',data.prizeType);
                         break;
                     case 'INTEREST_COUPON_5':
-                        rotateFn(4, 230, '0.5加息券',data.prizeType);
+                        rotateFn(4, 230, '0.5%加息券',data.prizeType);
                         break;
                     case 'RED_ENVELOPE_50':
                         rotateFn(5, 300, '50元现金红包',data.prizeType);

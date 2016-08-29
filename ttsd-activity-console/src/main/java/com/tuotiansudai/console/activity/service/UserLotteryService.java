@@ -56,8 +56,8 @@ public class UserLotteryService{
             @Override
             public UserLotteryTimeView apply(UserModel input) {
                 UserLotteryTimeView model = new UserLotteryTimeView(input.getMobile(),input.getLoginName());
-                model.setUnUseCount(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(input.getMobile(),null,null,null));
-                model.setUseCount(findLotteryTime(model.getMobile()) - model.getUseCount());
+                model.setUseCount(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(input.getMobile(), null, null, null));
+                model.setUnUseCount((findLotteryTime(model.getMobile()) - model.getUseCount()));
                 return model;
             }
         });
