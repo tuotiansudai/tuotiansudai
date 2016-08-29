@@ -96,8 +96,9 @@ public class LotteryActivityService {
             lotteryTime ++;
         }
 
-        if(lotteryTime > 0){
-            lotteryTime -= userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(),null,null,null);
+        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(),null,null,null);
+        if(lotteryTime > 0 && lotteryTime >= userTime){
+            lotteryTime -= userTime;
         }
         return lotteryTime;
     }
@@ -114,7 +115,7 @@ public class LotteryActivityService {
         }
 
         int drawTime = getDrawPrizeTime(mobile);
-        if(drawTime == 0){
+        if(drawTime <= 0){
             logger.debug(mobile + "is no chance. draw time:" + drawTime);
             drawLotteryResultDto.setMessage("您暂无抽奖机会，赢取机会后再来抽奖吧！");
             drawLotteryResultDto.setReturnCode(1);
