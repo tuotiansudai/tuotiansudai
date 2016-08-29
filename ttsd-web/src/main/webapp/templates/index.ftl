@@ -302,6 +302,14 @@
                                 <div class="loan-info-frame fl">
                                     <div class="loan-top">
                                         <span class="l-title fl">${loan.name}</span>
+                                        <#if loan.extraSource??>
+                                            <#if loan.extraSource?contains(",")>web and mobile
+                                            <#elseif loan.extraSource?contains("WEB")>WEB
+                                            <#elseif loan.extraSource?contains("MOBILE")>mobile
+                                            <#else>wussss
+                                            </#if>
+                                        <#else>
+                                        </#if>
                                     </div>
                                     <div class="loan-info-dl">
                                         <dl>
