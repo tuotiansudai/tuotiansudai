@@ -11,6 +11,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
@@ -44,6 +45,9 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -153,6 +157,13 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
                 loanResponseDataDto.setExtraRates(fillExtraRate(extraLoanRateModels));
             }
+
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+            if(loanDetailsModel != null)
+            {
+                loanResponseDataDto.setExtraSource(loanDetailsModel.getExtraSource());
+            }
+
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
             if(ProductType.EXPERIENCE == loan.getProductType()){
