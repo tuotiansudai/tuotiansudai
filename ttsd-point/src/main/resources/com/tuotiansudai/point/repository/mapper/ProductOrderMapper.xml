@@ -95,6 +95,7 @@
                 p.name AS name
                 FROM product_order po
                 JOIN product p ON po.product_id = p.id
+                WHERE p.type != 'COUPON'
             UNION ALL
               SELECT po.id AS id,
                 po.product_id AS product_id,
@@ -111,6 +112,7 @@
                  END AS name
                 FROM product_order po
                 JOIN coupon p ON po.product_id = p.id
+                WHERE p.user_group = 'EXCHANGER'
         ) pr
         WHERE pr.created_by = #{loginName}
         ORDER BY pr.created_time DESC
@@ -129,6 +131,7 @@
             p.name AS name
             FROM product_order po
             JOIN product p ON po.product_id = p.id
+            WHERE p.type != 'COUPON'
         UNION ALL
           SELECT po.id AS id,
             po.product_id AS product_id,
@@ -145,6 +148,7 @@
               END AS name
             FROM product_order po
             JOIN coupon p ON po.product_id = p.id
+            WHERE p.user_group = 'EXCHANGER'
         ) pr
           WHERE pr.created_by = #{loginName}
     </select>
