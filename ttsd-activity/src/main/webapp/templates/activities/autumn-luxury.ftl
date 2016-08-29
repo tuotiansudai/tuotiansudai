@@ -226,13 +226,19 @@
                         <#if steps[4] == 0>
                             <div class="icon-text">投资</div></#if>
                         <#if steps[4] == 1>
-                            <div class="icon-text"><a href="/activity/autumn/luxury/invest">去投资</a></div></#if>
+                            <@global.isAnonymous>
+                                <a href="/login?redirect=/activity/autumn/luxury" class="icon-text autumn-luxury-invest-channel">去投资</a>
+                            </@global.isAnonymous>
+                            <@global.isNotAnonymous>
+                                <a href="/loan-list" class="icon-text autumn-luxury-invest-channel">去投资</a>
+                            </@global.isNotAnonymous>
+                        </#if>
                         <div class="step-icon"></div>
                     </li>
                 </ul>
                 <p>活动期间，每推荐一名好友注册也可获得一次抽奖机会；好友投资，还可再得一次抽奖机会。邀请越多机会越多。</p>
                 <p>
-                    <a href="#" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                    <a href="/referrer/refer-list" class="btn-invite">立即邀请好友赢抽奖机会</a>
                 </p>
             </div>
             <div class="phone-step">
