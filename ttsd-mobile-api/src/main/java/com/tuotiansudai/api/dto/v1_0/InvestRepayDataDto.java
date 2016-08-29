@@ -8,7 +8,7 @@ public class InvestRepayDataDto extends BaseResponseDataDto {
     private String expectedInterest;
     private String actualInterest;
     private String status;
-    private String isTransferred;
+    private boolean isTransferred;
 
     public int getPeriod() {
         return period;
@@ -58,11 +58,11 @@ public class InvestRepayDataDto extends BaseResponseDataDto {
         this.status = status;
     }
 
-    public String getIsTransferred() {
+    public boolean isTransferred() {
         return isTransferred;
     }
 
-    public void setIsTransferred(String isTransferred) {
+    public void setIsTransferred(boolean isTransferred) {
         this.isTransferred = isTransferred;
     }
 }

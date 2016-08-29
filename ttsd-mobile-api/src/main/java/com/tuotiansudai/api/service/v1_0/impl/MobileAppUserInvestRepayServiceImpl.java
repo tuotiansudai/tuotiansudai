@@ -104,7 +104,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                     actualInterest += couponRepayModel.getRepayAmount();
                 }
                 InvestRepayDataDto investRepayDataDto = new InvestRepayDataDto();
-                investRepayDataDto.setIsTransferred(String.valueOf(investRepayModel.isTransferred()));
+                investRepayDataDto.setIsTransferred(investRepayModel.isTransferred());
                 investRepayDataDto.setPeriod(investRepayModel.getPeriod());
                 investRepayDataDto.setRepayDate(sdf.format(investRepayModel.getRepayDate()));
                 investRepayDataDto.setActualRepayDate(repayDate == null ? "" : sdf.format(repayDate));
