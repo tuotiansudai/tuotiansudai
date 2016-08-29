@@ -89,14 +89,7 @@
                     <div class="loan-info-frame fl">
                         <div class="loan-top">
                             <span class="l-title fl">${loanItem.name}
-                                <#if loanItem.extraSource??>
-                                    <#if loanItem.extraSource?contains(",")>web and mobile
-                                    <#elseif loanItem.extraSource?contains("WEB")><i class="new-tip">WEB</i>
-                                    <#elseif loanItem.extraSource?contains("MOBILE")>mobile
-                                    <#else>
-                                    </#if>
-                                <#else>
-                                </#if>
+
                                 <#if loanItem.productType == 'EXPERIENCE'><i
                                     class="new-tip">仅限使用体验金投资</i></#if></span>
                             <span class="l-way fr">${loanItem.type.getName()}</span>
@@ -122,7 +115,9 @@
                                                 +<@percentInteger>${loanItem.activityRate}</@percentInteger><@percentFraction>${loanItem.activityRate}</@percentFraction>
                                             </#if>%
                                         </i>
-                                        <i class="fa fa-mobile"></i>
+                                        <#if loanItem.extraSource?? && loanItem.extraSource == "MOBILE">
+                                            <i class="fa fa-mobile"></i>
+                                        </#if>
                                     </#if>
 
                                 </dd>

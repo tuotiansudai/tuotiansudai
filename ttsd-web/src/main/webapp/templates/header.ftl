@@ -9,7 +9,7 @@
         <span class="fl service-time">客服电话：400-169-1188<time>（服务时间：9:00－20:00）</time></span>
         <ul class="fr">
             <li class="header-membership">
-                <a href="/membership">会员中心</a>
+                <a href="/point-shop">dfdf</a>
             </li>
             <li class="header-activity-center">
                 <a href="/activity-center">活动中心</a>
