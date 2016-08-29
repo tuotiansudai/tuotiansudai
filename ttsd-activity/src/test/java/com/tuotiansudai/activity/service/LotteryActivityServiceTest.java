@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,8 +74,16 @@ public class LotteryActivityServiceTest {
         assertEquals(time,6);
     }
 
-    @Test
+    @Ignore
     public void shouldFindDrawLotteryPrizeRecordByMobileIsOk(){
+        UserModel userModel = getFakeUser("testDrawPrize", "15510001234");
+        getUserLotteryPrizeModel(userModel.getLoginName(), userModel.getMobile(), "testName");
+        List<UserLotteryPrizeView> userLotteryPrizeViews = lotteryActivityService.findDrawLotteryPrizeRecordByMobile(userModel.getMobile(), "");
+        assertEquals(userLotteryPrizeViews.size(),2);
+    }
+
+    @Test
+    public void shouldFindDrawLotteryPrizeRecordIsOk(){
         UserModel userModel = getFakeUser("testDrawPrize","15510001234");
         getUserLotteryPrizeModel(userModel.getLoginName(), userModel.getMobile(), "testName");
         List<UserLotteryPrizeView> userLotteryPrizeViews = lotteryActivityService.findDrawLotteryPrizeRecordByMobile(userModel.getMobile(), "");
