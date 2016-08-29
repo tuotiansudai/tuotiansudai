@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +33,7 @@ public class LotteryActivityServiceTest {
     private ReferrerRelationMapper referrerRelationMapper;
     @Autowired
     private IdGenerator idGenerator;
-
+    @Test
     public void shouldGetDrawPrizeTimeIsOk(){
         String loginName = "testDrawPrize";
         String referrerName = "testReferrerName";
