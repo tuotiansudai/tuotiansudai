@@ -5,7 +5,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
@@ -27,6 +26,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -72,9 +72,9 @@ public class RepayServiceImpl implements RepayService {
 
     private final static String INVEST_COUPON_MESSAGE = "您使用了{0}元体验券";
 
-    private final static String INTEREST_COUPON_MESSAGE = "您使用了{0}加息券";
+    private final static String INTEREST_COUPON_MESSAGE = "您使用了{0}%加息券";
 
-    private final static String BIRTHDAY_COUPON_MESSAGE = "您使用了生日月福利";
+    private final static String BIRTHDAY_COUPON_MESSAGE = "您已享受生日福利";
 
     private final static Map<String,String> membershipMessage = new HashMap(){{
         put("0","平台收取收益和奖励的10%作为服务费");
@@ -191,14 +191,12 @@ public class RepayServiceImpl implements RepayService {
                 CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayDataItemDto.getInvestId(), investRepayDataItemDto.getPeriod());
                 if(couponRepayModel != null){
                     couponExpectedInterest = couponRepayModel.getExpectedInterest();
-                    investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest));
-                    investRepayDataItemDto.setExpectedFee(AmountConverter.convertCentToString(expectedFee + couponRepayModel.getExpectedFee()));
+                    expectedFee += couponRepayModel.getExpectedFee();
                     expectedAmount += (couponExpectedInterest - couponRepayModel.getExpectedFee());
                     investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(expectedAmount));
                     if (RepayStatus.COMPLETE.equals(investRepayModel.getStatus())) {
                         repayAmount += couponRepayModel.getRepayAmount();
-                        investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(repayAmount));
-                        investRepayDataItemDto.setActualFee(AmountConverter.convertCentToString(actualFee + couponRepayModel.getActualFee()));
+                        actualFee += couponRepayModel.getActualFee();
                     }
                 }
 
@@ -207,9 +205,16 @@ public class RepayServiceImpl implements RepayService {
                     if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
                         repayAmount += investExtraRateModel.getRepayAmount();
                         investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest + investExtraRateModel.getExpectedInterest()));
-                        investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(repayAmount));
                     }
                 }
+
+                if (RepayStatus.COMPLETE.equals(investRepayModel.getStatus())) {
+                    investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(repayAmount));
+                    investRepayDataItemDto.setActualFee(AmountConverter.convertCentToString(actualFee));
+                }
+
+                investRepayDataItemDto.setExpectedFee(AmountConverter.convertCentToString(expectedFee));
+                investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest));
                 sumActualInterest += repayAmount;
                 if(!investRepayModel.getStatus().equals(RepayStatus.COMPLETE)){
                     sumExpectedInterest += expectedAmount;
@@ -232,7 +237,7 @@ public class RepayServiceImpl implements RepayService {
                     dataDto.setCouponMessage(MessageFormat.format(INVEST_COUPON_MESSAGE,AmountConverter.convertCentToString(couponModel.getAmount())));
                     break;
                 case INTEREST_COUPON:
-                    dataDto.setCouponMessage(MessageFormat.format(INTEREST_COUPON_MESSAGE,String.valueOf(couponModel.getRate() * 100)));
+                    dataDto.setCouponMessage(MessageFormat.format(INTEREST_COUPON_MESSAGE,covertRate(String.format("%.2f",couponModel.getRate() * 100))));
                     break;
                 case BIRTHDAY_COUPON:
                     dataDto.setCouponMessage(BIRTHDAY_COUPON_MESSAGE);
@@ -255,5 +260,9 @@ public class RepayServiceImpl implements RepayService {
             dataDto.setLevelMessage(membershipMessage.get(String.valueOf(0)));
         }
         return baseDto;
+    }
+
+    private static String covertRate(String rate){
+        return rate.indexOf(".00") != -1 ? rate.replaceAll("\\.00", "") : String.valueOf(Double.parseDouble(rate));
     }
 }

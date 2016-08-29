@@ -3,13 +3,13 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.UserServiceConsole;
 import com.tuotiansudai.dto.UserItemDataDto;
-import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,6 +37,9 @@ public class AccountBalanceController {
                                        @RequestParam(value = "balanceMax", required = false) String balanceMax,
                                        @RequestParam(value = "export", required = false) String export,
                                        HttpServletResponse response) throws IOException {
+        if (StringUtils.isEmpty(balanceMax)) {
+            balanceMax = String.valueOf(Long.MAX_VALUE);
+        }
         if (export != null && !export.equals("")) {
             response.setCharacterEncoding("UTF-8");
             try {
