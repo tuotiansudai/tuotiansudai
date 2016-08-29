@@ -96,6 +96,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                     //登录 && 投资过标 && 没投资过体验标外的任何标 = 登录 && 只投资过体验标
                     loanModel = raisingLoanModels.get(0);
                 } else {
+                    //登录 && 投资过其它标
                     loanModel = raisingLoanModels.get(raisingLoanModels.size() - 1);
                 }
             } else {
@@ -168,8 +169,10 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             }
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
 
-            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
-            loanResponseDataDto.setExtraSource(loanDetailsModel.getExtraSource());
+            if (ProductType.EXPERIENCE != loan.getProductType()) {
+                LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+                loanResponseDataDto.setExtraSource(loanDetailsModel.getExtraSource());
+            }
 
             loanDtoList.add(loanResponseDataDto);
         }

@@ -3,7 +3,6 @@ package com.tuotiansudai.repository.model;
 import com.tuotiansudai.dto.LoanDetailsDto;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class LoanDetailsModel implements Serializable {
     private long id;
@@ -14,9 +13,10 @@ public class LoanDetailsModel implements Serializable {
     public LoanDetailsModel() {
     }
 
-    public LoanDetailsModel(long loanId, String declaration) {
+    public LoanDetailsModel(long loanId, String declaration, String extraSource) {
         this.loanId = loanId;
         this.declaration = declaration;
+        this.extraSource = extraSource;
     }
 
     public LoanDetailsModel(LoanDetailsDto loanDetailsDto) {

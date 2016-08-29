@@ -113,6 +113,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
         investModel.setStatus(InvestStatus.SUCCESS);
         return investModel;
     }
+
     private UserModel getUserModelTest(String loginName) {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName(loginName);
