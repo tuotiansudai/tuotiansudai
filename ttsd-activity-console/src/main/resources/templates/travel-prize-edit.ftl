@@ -71,7 +71,7 @@
                 <div class="col-sm-4">
                     <div class="input-group">
                         <div class="input-group-addon">投资满</div>
-                        <input type="text" name="investAmount" value="<#if dto??>${dto.investAmount!}</#if>"  class="form-control travelInvestAmount" placeholder="" datatype="*" errormsg="获奖资格不能为空">
+                        <input type="text" name="investAmount" value="<#if dto??>${(dto.investAmount/100)?c!}</#if>"  class="form-control travelInvestAmount" placeholder="" datatype="*" errormsg="获奖资格不能为空">
                         <div class="input-group-addon">元</div>
                     </div>
                 </div>

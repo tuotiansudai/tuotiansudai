@@ -113,7 +113,7 @@ public class AutumnPrizeController {
     @RequestMapping(path = "/luxury/invest", method = RequestMethod.POST)
     public void luxuryInvest() {
         String loginName = LoginUserInfo.getLoginName();
-        if (Strings.isNullOrEmpty(loginName)) {
+        if (!Strings.isNullOrEmpty(loginName)) {
             redisWrapperClient.hset(this.activityAutumnInvestChannelKey, loginName, "luxury", 3600 * 24 * 60);
         }
     }
