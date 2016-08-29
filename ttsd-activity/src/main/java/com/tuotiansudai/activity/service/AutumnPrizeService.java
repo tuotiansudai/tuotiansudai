@@ -78,7 +78,7 @@ public class AutumnPrizeService {
             return amount;
         }
 
-        List<String> ids = Lists.newArrayList(invests.split("\\|"));
+        List<String> ids = Lists.newArrayList(invests.split(","));
 
         List<InvestModel> investModels = investMapper.findByIds(Lists.transform(ids, new Function<String, Long>() {
             @Override
