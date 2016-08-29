@@ -26,7 +26,7 @@
                 <span class="fr">我的投资额：${myInvestAmount}元<em class="note">［仅累计本日参与本活动的投资金额］</em></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
-                <a href="/login?login?redirect=/activity/autumn/travel" class="fr btn-normal">立即登录</a>
+                <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal">立即登录</a>
             </@global.isAnonymous>
         </div>
 

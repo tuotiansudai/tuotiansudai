@@ -34,7 +34,7 @@
                         </div>
                     </@global.isNotAnonymous>
                     <@global.isAnonymous>
-                        <a class="login-btn" href="/login?login?redirect=/activity/autumn/travel">立即登录</a>
+                        <a class="login-btn" href="/login?redirect=/activity/autumn/travel">立即登录</a>
                     </@global.isAnonymous>
                 </div>
             </div>
