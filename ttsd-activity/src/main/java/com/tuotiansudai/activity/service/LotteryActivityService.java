@@ -77,7 +77,7 @@ public class LotteryActivityService {
             UserModel referrerUserModel = userMapper.findByLoginName(referrerRelationModel.getLoginName());
             if(referrerUserModel.getRegisterTime().before(activityAutumnEndTime) && referrerUserModel.getRegisterTime().after(activityAutumnStartTime)){
                 lotteryTime ++;
-                if(investMapper.countInvestorInvestPagination(referrerUserModel.getLoginName(), LoanStatus.RAISING,activityAutumnStartTime,activityAutumnEndTime) > 0){
+                if(investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(),activityAutumnStartTime, activityAutumnEndTime) > 0){
                     lotteryTime ++;
                 }
             }

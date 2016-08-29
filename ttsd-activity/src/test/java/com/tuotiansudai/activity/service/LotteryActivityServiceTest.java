@@ -1,6 +1,8 @@
 package com.tuotiansudai.activity.service;
 
 
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
@@ -18,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static sun.nio.cs.Surrogate.is;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -33,20 +37,35 @@ public class LotteryActivityServiceTest {
     private ReferrerRelationMapper referrerRelationMapper;
     @Autowired
     private IdGenerator idGenerator;
+    @Autowired
+    private InvestMapper investMapper;
+    @Autowired
+    private LoanMapper loanMapper;
+
     @Test
     public void shouldGetDrawPrizeTimeIsOk(){
         String loginName = "testDrawPrize";
         String referrerName = "testReferrerName";
+        String mobile = "15510001234";
+        String referrerMobile = "15510001235";
         Date activityAutumnStartTime = DateUtils.addMonths(DateTime.now().toDate(),-1);
         Date activityAutumnEndTime = DateUtils.addMonths(DateTime.now().toDate(), 1);
         ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnStartTime", activityAutumnStartTime);
         ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnEndTime", activityAutumnEndTime);
-        UserModel userModel = getFakeUser(referrerName);
-        getFakeUser(loginName);
+        UserModel userModel = getFakeUser(referrerName,referrerMobile);
+        getFakeUser(loginName,mobile);
         getReferrer(referrerName, loginName);
-        getFakeLoan(loginName, referrerName);
+        LoanModel loanModel = getFakeLoan(loginName, referrerName);
+        getFakeInvestModel(loanModel.getId(),loginName);
         int time = lotteryActivityService.getDrawPrizeTime(userModel.getMobile());
-        assertTrue(time == 2);
+        assertEquals(time,3);
+    }
+
+    private InvestModel getFakeInvestModel(long loanId,String loginName) {
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1000000L, loginName, DateTime.now().toDate(), Source.WEB, null, 0.1);
+        model.setStatus(InvestStatus.SUCCESS);
+        investMapper.create(model);
+        return model;
     }
 
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName) {
@@ -67,6 +86,8 @@ public class LotteryActivityServiceTest {
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         fakeLoanModel.setCreatedTime(new Date());
+        fakeLoanModel.setProductType(ProductType._180);
+        loanMapper.create(fakeLoanModel);
         return fakeLoanModel;
     }
 
@@ -79,12 +100,12 @@ public class LotteryActivityServiceTest {
         return referrerRelationModel;
     }
 
-    private UserModel getFakeUser(String loginName) {
+    private UserModel getFakeUser(String loginName,String mobile) {
         UserModel fakeUser = new UserModel();
         fakeUser.setLoginName(loginName);
         fakeUser.setPassword("password");
         fakeUser.setEmail("fakeUsr@tuotiansudai.com");
-        fakeUser.setMobile("11900000000");
+        fakeUser.setMobile(mobile);
         fakeUser.setRegisterTime(new Date());
         fakeUser.setStatus(UserStatus.ACTIVE);
         fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
