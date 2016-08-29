@@ -197,6 +197,14 @@ def only_sign_in():
     fab_command("signin")
 
 
+@task
+def only_point():
+    """
+    Deploy worker component to PROD from CI
+    """
+    fab_command("point")
+
+
 def generate_git_log_file():
     from paver.shell import sh
 
