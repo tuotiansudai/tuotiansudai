@@ -19,7 +19,8 @@ env.roledefs = {
     'cms': ['wuhan'],
     'activity': ['sanya'],
     'signin' : ['xian'],
-    'ask' : ['taiyuan']
+    'ask' : ['taiyuan'],
+    'point' : ['kunming']
 }
 
 
@@ -169,6 +170,7 @@ def deploy_sign_in():
     upload_project(local_dir='./ttsd-sign-in/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
 
+
 @roles('point')
 @parallel
 def deploy_point():
@@ -176,6 +178,7 @@ def deploy_point():
     sudo('rm -rf /opt/tomcat/webapps/ROOT')
     upload_project(local_dir='./ttsd-point-web/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
+
 
 def deploy_all():
     execute(deploy_static)
@@ -327,11 +330,13 @@ def remove_sign_in_logs():
     remove_tomcat_logs()
     remove_nginx_logs()
 
+
 @roles('point')
 @parallel
 def remove_point_logs():
     remove_tomcat_logs()
     remove_nginx_logs()
+
 
 def remove_old_logs():
     """
@@ -418,6 +423,7 @@ def restart_logstash_service_for_sign_in():
     """
     run("service logstash restart")
 
+
 @roles('point')
 @parallel
 def restart_logstash_service_for_point():
@@ -425,6 +431,7 @@ def restart_logstash_service_for_point():
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
     run("service logstash restart")
+
 
 def restart_logstash(service):
     """
