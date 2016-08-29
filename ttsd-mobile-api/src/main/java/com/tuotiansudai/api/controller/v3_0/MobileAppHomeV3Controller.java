@@ -1,6 +1,5 @@
 package com.tuotiansudai.api.controller.v3_0;
 
-import com.tuotiansudai.api.controller.v2_0.MobileAppBaseController;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
 import org.springframework.beans.factory.annotation.Autowired;
