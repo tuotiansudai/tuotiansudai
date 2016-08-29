@@ -37,9 +37,9 @@
                         {{else if $value.prize=='RED_ENVELOPE_50'}}
                             50元现金红包
                         {{else if $value.prize=='INTEREST_COUPON_5'}}
-                            0.5加息券
+                            0.5%加息券
                         {{else if $value.prize=='INTEREST_COUPON_2'}}
-                            0.2加息券
+                            0.2%加息券
                         {{/if}}
                         .</li>
                     {{/each}}
@@ -65,9 +65,9 @@
                             {{else if $value.prize=='RED_ENVELOPE_50'}}
                                 50元现金红包
                             {{else if $value.prize=='INTEREST_COUPON_5'}}
-                                0.5加息券
+                                0.5%加息券
                             {{else if $value.prize=='INTEREST_COUPON_2'}}
-                                0.2加息券
+                                0.2%加息券
                             {{/if}}
                         </span>
                         <span class="award-time">{{$value.lotteryTime}}</span>

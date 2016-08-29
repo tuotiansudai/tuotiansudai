@@ -76,7 +76,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
             animateTo: angles + 1800,
             duration: 8000,
             callback: function() {
-                $('#tipList').html(tpl('tipListTpl', {tiptext:'恭喜你抽中了'+txt,istype:type})).show().find('.tip-dom').show();
+                $('#tipList').html(tpl('tipListTpl', {tiptext:'抽中了'+txt,istype:type})).show().find('.tip-dom').show();
                 bRotate = !bRotate;
                 $('.lottery-time').each(function(index,el){
                     $(this).text()>1?$(this).text(function(index,num){return parseInt(num)-1}):$(this).text('0');
