@@ -1,6 +1,30 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.assurance}" activeNav="" activeLeftNav="" title="安全保障">
+<@global.main pageCss="${css.full_screen}" pageJavascript="${js.assurance}" activeNav="" activeLeftNav="" title="安全保障">
+<style type="text/css">
+    .header-container {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 102;
+        display: block;
+    }
+    .nav-container {
+        position: absolute;
+        top: 30px;
+        z-index: 100;
+        display: block;
+    }
+    .footer-container {
+        display: none;
+    }
+    @media screen and (max-width: 700px) {
+        .header-container,.nav-container {
+            display: none;
+        }
+    }
+</style>
 
+<a href="/" class="back-home">返回首页</a>
 <div class="assurance-container" id="assuranceEffect">
     <div class="section box-benift">
         <div class="section-title">
