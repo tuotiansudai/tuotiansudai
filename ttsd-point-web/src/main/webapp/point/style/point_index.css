@@ -116,6 +116,9 @@
       width: 1000px;
       margin: 0 auto;
       position: relative; }
+      .main-frame .global-member-store .wp .no-product {
+        text-align: center;
+        font-size: 20px; }
     .main-frame .global-member-store .store-top {
       float: left;
       width: 100%;

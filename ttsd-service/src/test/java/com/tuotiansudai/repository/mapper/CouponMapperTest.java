@@ -118,31 +118,6 @@ public class CouponMapperTest {
     }
 
     @Test
-    public void testFindExchangeableCouponViewsAndFindExchangeableCouponViewCount() throws Exception {
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
-
-        createExchangeCoupon(1000L, 20L, true, false, CouponType.INTEREST_COUPON, new DateTime().plusDays(3).toDate(), "legal");
-        createExchangeCoupon(1000L, 20L, true, false, CouponType.INVEST_COUPON, new DateTime().plusDays(3).toDate(), "legal");
-        createExchangeCoupon(1000L, 20L, true, false, CouponType.RED_ENVELOPE, new DateTime().plusDays(3).toDate(), "legal");
-
-        createExchangeCoupon(1000L, 20000L, true, false, CouponType.INTEREST_COUPON, new DateTime().plusDays(3).toDate(), "illegal");
-        createExchangeCoupon(1000L, 20L, false, false, CouponType.INTEREST_COUPON, new DateTime().plusDays(3).toDate(), "illegal");
-        createExchangeCoupon(1000L, 20L, true, true, CouponType.INTEREST_COUPON, new DateTime().plusDays(3).toDate(), "illegal");
-        createExchangeCoupon(1000L, 20L, true, false, CouponType.BIRTHDAY_COUPON, new DateTime().plusDays(3).toDate(), "illegal");
-        createExchangeCoupon(1000L, 20L, true, false, CouponType.NEWBIE_COUPON, new DateTime().plusDays(3).toDate(), "illegal");
-        createExchangeCoupon(1000L, 20L, true, false, CouponType.INTEREST_COUPON, new DateTime().plusDays(3).toDate(), "illegal");
-
-        List<ExchangeCouponView> exchangeCouponViews = couponMapper.findExchangeableCouponViews(0, 100);
-        assertEquals(3, exchangeCouponViews.size());
-        assertEquals(3, couponMapper.findExchangeableCouponViewCount(0, 100));
-
-        exchangeCouponViews = couponMapper.findExchangeableCouponViews(0, 2);
-        assertEquals(2, exchangeCouponViews.size());
-        assertEquals(3, couponMapper.findExchangeableCouponViewCount(0, 2));
-    }
-
-    @Test
     public void testFindExchangeableCouponViewById() throws Exception {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);

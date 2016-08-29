@@ -142,6 +142,7 @@
     </div>
     <div class="store-material">
         <div class="wp clearfix">
+            <#if (virtualProducts?size > 0)>
             <ul class="material-list">
                 <#list virtualProducts as virtualProduct>
                     <#if virtualProduct_index < 2>
@@ -211,6 +212,9 @@
                     </#if>
                 </#list>
             </ul>
+            <#else>
+                <p class="no-product">商品即将上线，敬请期待！</p>
+            </#if>
         </div>
     </div>
     <div class="store-title">
@@ -222,6 +226,7 @@
     </div>
     <div class="store-material">
         <div class="wp clearfix">
+            <#if (physicalProducts?size > 0)>
             <ul class="material-list">
                 <#list physicalProducts as physicalProduct>
                     <#if physicalProduct_index < 2>
@@ -261,6 +266,9 @@
                     </#if>
                 </#list>
             </ul>
+            <#else>
+                <p class="no-product">商品即将上线，敬请期待！</p>
+            </#if>
         </div>
     </div>
 </div>
