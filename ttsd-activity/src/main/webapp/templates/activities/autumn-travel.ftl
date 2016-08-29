@@ -203,7 +203,12 @@
                         <em>
                             <#if steps[4] == 0>投资</#if>
                             <#if steps[4] == 1>
-                                <a href="/activity/autumn/travel/invest">去投资 >></a>
+                                <@global.isAnonymous>
+                                    <a href="/login?redirect=/activity/autumn/travel" class="autumn-travel-invest-channel">去投资 >></a>
+                                </@global.isAnonymous>
+                                <@global.isNotAnonymous>
+                                    <a href="/loan-list" class="autumn-travel-invest-channel">去投资 >></a>
+                                </@global.isNotAnonymous>
                             </#if>
                         </em>
                         <s class="arrow-left"></s>
