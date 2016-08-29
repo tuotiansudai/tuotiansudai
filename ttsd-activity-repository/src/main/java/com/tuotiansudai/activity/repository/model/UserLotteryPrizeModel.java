@@ -13,15 +13,19 @@ public class UserLotteryPrizeModel implements Serializable {
 
     private String loginName;
 
+    private String userName;
+
     private LotteryPrize prize;
 
     private Date lotteryTime;
 
+
     public UserLotteryPrizeModel() {}
 
-    public UserLotteryPrizeModel(String mobile, String loginName, LotteryPrize prize, Date lotteryTime) {
+    public UserLotteryPrizeModel(String mobile, String loginName,String userName, LotteryPrize prize, Date lotteryTime) {
         this.mobile = mobile;
         this.loginName = loginName;
+        this.userName = userName;
         this.prize = prize;
         this.lotteryTime = lotteryTime;
     }
@@ -64,5 +68,13 @@ public class UserLotteryPrizeModel implements Serializable {
 
     public void setLotteryTime(Date lotteryTime) {
         this.lotteryTime = lotteryTime;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

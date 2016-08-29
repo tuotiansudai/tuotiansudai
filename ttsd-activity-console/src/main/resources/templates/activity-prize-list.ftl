@@ -49,7 +49,6 @@
                 </div>
             <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
         </form>
-        <div class="table-responsive">
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr>
@@ -73,9 +72,6 @@
                 </tbody>
 
             </table>
-        </div>
-
-        <div class="row" style="margin-left: 8px">
             <!-- pagination  -->
             <nav class="pagination-control">
                 <div><span class="bordern">总共${lotteryCount}条,每页显示${pageSize}条</span></div>
@@ -102,7 +98,6 @@
                 </ul>
             </nav>
         </div>
-    </div>
 </div>
 <!-- content area end -->
 </@global.main>

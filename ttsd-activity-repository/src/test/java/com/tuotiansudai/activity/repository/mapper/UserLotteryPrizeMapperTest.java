@@ -1,7 +1,6 @@
 package com.tuotiansudai.activity.repository.mapper;
 
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.dto.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
@@ -26,13 +25,15 @@ public class UserLotteryPrizeMapperTest extends BaseMapperTest{
         userLotteryPrizeMapper.create(getUserLotteryPrizeModel("testUserLotteryPrize", "12312341113", LotteryPrize.INTEREST_COUPON_2));
     }
 
+    @Test
     public void shouldFindLotteryPrizeByMobileAndPrizeIsOk(){
         String mobile = "12312341113";
         userLotteryPrizeMapper.create(getUserLotteryPrizeModel("testUserLotteryPrize", mobile, LotteryPrize.INTEREST_COUPON_2));
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, Lists.newArrayList(LotteryPrize.INTEREST_COUPON_2));
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile,null);
         assertTrue(CollectionUtils.isNotEmpty(userLotteryPrizeViews));
     }
 
+    @Test
     public void shouldFindUserLotteryPrizeViewsIsOk(){
         String mobile = "12312341113";
         userLotteryPrizeMapper.create(getUserLotteryPrizeModel("testUserLotteryPrize", mobile, LotteryPrize.INTEREST_COUPON_2));
@@ -40,10 +41,8 @@ public class UserLotteryPrizeMapperTest extends BaseMapperTest{
         assertTrue(CollectionUtils.isNotEmpty(userLotteryPrizeViews));
     }
 
-
-
     public UserLotteryPrizeModel getUserLotteryPrizeModel(String loginName,String mobile,LotteryPrize lotteryPrize){
-        return new UserLotteryPrizeModel(mobile,loginName,lotteryPrize, DateTime.now().toDate());
+        return new UserLotteryPrizeModel(mobile,loginName,null,lotteryPrize, DateTime.now().toDate());
     }
 
 
