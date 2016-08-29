@@ -127,6 +127,16 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Transactional
     @Override
+    public void exchangeInactive(String loginName, long couponId, String ip) {
+        CouponModel couponModel = couponMapper.findById(couponId);
+        couponModel.setActive(false);
+        couponModel.setActivatedBy(loginName);
+        couponModel.setActivatedTime(new Date());
+        couponMapper.updateCoupon(couponModel);
+    }
+
+    @Transactional
+    @Override
     public void active(String loginName, long couponId, String ip) {
         CouponModel couponModel = couponMapper.findById(couponId);
         if (couponModel.isActive()) {

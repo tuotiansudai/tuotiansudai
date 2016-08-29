@@ -90,8 +90,8 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function (response) {
                     if (response.data.status) {
-                        $signText.html("签到成功，领取" + response.data.signInPoint + "财豆！");
-                        $tomorrowText.html("明日可领" + response.data.nextSignInPoint + "财豆");
+                        $signText.html("签到成功，领取" + response.data.signInPoint + "积分！");
+                        $tomorrowText.html("明日可领" + response.data.nextSignInPoint + "积分");
                         $signBtn.addClass("no-click").html("今日已签到");
                         $addDou.html("+" + response.data.signInPoint);
                         $signTip.fadeIn('fast', function () {
@@ -182,7 +182,7 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                                     item.businessType = '投资奖励';
                                     break;
                                 case 'EXCHANGE':
-                                    item.businessType = '财豆兑换';
+                                    item.businessType = '积分兑换';
                                     break;
                                 case 'LOTTERY':
                                     item.businessType = '抽奖';
@@ -251,8 +251,8 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                                     } else if (!data.status && data.message == 'point insufficient') {
                                         layer.open({
                                             title: '温馨提示',
-                                            content: '您的财豆不足，赚取足够多的财豆后再来兑换吧！',
-                                            btn: ['赚取财豆', '取消'],
+                                            content: '您的积分不足，赚取足够多的积分后再来兑换吧！',
+                                            btn: ['赚取积分', '取消'],
                                             yes:function(index,layero){
                                                 location.href='/point';
                                             }

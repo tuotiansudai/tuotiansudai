@@ -36,6 +36,11 @@
         <result column="comment" property="comment"/>
     </resultMap>
 
+    <resultMap id="exchangeCouponViewResultMap" type="ExchangeCouponView" extends="couponResultMap">
+        <result column="exchange_point" property="exchangePoint"/>
+        <result column="seq" property="seq"/>
+    </resultMap>
+
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
         insert into coupon (amount, rate, birthday_benefit, multiple, start_time, end_time, used_count, total_count,
         active,
@@ -136,6 +141,7 @@
         GROUP BY t.coupon_id) temp
         ON c.id = temp.coupon_id
         where c.coupon_type = 'RED_ENVELOPE'
+        and c.user_group != 'EXCHANGER'
         ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
     </select>
@@ -217,7 +223,7 @@
           coupon c
           JOIN coupon_exchange e
             ON c.`id` = e.`coupon_id`
-        ORDER BY c.active, c.created_time desc
+        ORDER BY e.seq asc
         LIMIT #{index},#{pageSize}
     </select>
 
@@ -263,5 +269,61 @@
         issued_count = issued_count + 1
         WHERE id = #{id}
     </update>
+
+    <select id="findExchangeableCouponViews" resultMap="exchangeCouponViewResultMap">
+        SELECT
+        coupon.*, product.points as exchange_point, product.seq as seq
+        FROM
+        (SELECT * FROM `coupon`
+        WHERE
+        `total_count` > `issued_count` AND
+        `active` is TRUE AND
+        `deleted` is FALSE AND
+        `coupon_type` IN ('INVEST_COUPON','INTEREST_COUPON', 'RED_ENVELOPE') AND
+        now() between `start_time` and `end_time` AND EXISTS
+        (SELECT 1 FROM product WHERE `coupon`.`id` = `product`.`coupon_id`)
+        ) coupon
+        JOIN
+        product
+        ON
+        coupon.id = product.coupon_id
+        ORDER BY `seq` asc, `updated_time` desc
+        <if test="index != null and pageSize != null">
+            LIMIT #{index}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="findExchangeableCouponViewCount" resultType="int">
+        SELECT
+        COUNT(1)
+        FROM
+        (SELECT * FROM `coupon`
+        WHERE
+        `total_count` > `issued_count` AND
+        `active` is TRUE AND
+        `deleted` is FALSE AND
+        `coupon_type` IN ('INVEST_COUPON','INTEREST_COUPON', 'RED_ENVELOPE') AND
+        now() between `start_time` and `end_time` AND EXISTS
+        (SELECT 1 FROM product WHERE `coupon`.`id` = `product`.`coupon_id`)
+        ) coupon
+        JOIN
+        product
+        ON
+        coupon.id = product.coupon_id
+    </select>
+
+    <select id="findExchangeableCouponViewById" parameterType="java.lang.Long" resultMap="exchangeCouponViewResultMap">
+        SELECT
+        coupon.*, coupon_exchange.exchange_point, coupon_exchange.seq
+        FROM
+        (SELECT * FROM `coupon`
+        WHERE
+        id = #{id}
+        ) coupon
+        JOIN
+        coupon_exchange
+        ON
+        coupon.id = coupon_exchange.coupon_id
+    </select>
 
 </mapper>

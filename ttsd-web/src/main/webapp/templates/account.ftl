@@ -20,7 +20,7 @@
                 <#else >
                     <li class="fl sign-top"><span class="btn-sign will-sign" data-url="/point/sign-in" id="signBtn">签到</span></li>
                 </#if>
-                <li class="fl beans-number">可用财豆:<span id="MyAvailablePoint">${myPoint?string.computer}</span></li>
+                <li class="fl beans-number">可用积分:<span id="MyAvailablePoint">${myPoint?string.computer}</span></li>
                 <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
                 <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
             </ul>
@@ -226,9 +226,9 @@
         <div class="sign-layer-list">
             <div class="sign-top">
                 <div class="close-btn" id="closeSign"></div>
-                <p class="sign-text">签到成功，领取5财豆！</p>
+                <p class="sign-text">签到成功，领取5积分！</p>
 
-                <p class="tomorrow-text">明日可领10财豆</p>
+                <p class="tomorrow-text">明日可领10积分</p>
 
                 <p class="img-beans">
                     <img src="${staticServer}/images/sign/sign-beans.png"/>
@@ -237,7 +237,7 @@
 					</span>
                 </p>
 
-                <p class="intro-text">连续签到，财豆翻倍送，最多每天可领<span>80</span>财豆！</p>
+                <p class="intro-text">连续签到，积分翻倍送，最多每天可领<span>80</span>积分！</p>
             </div>
             <div class="sign-bottom">
                 <ul>
