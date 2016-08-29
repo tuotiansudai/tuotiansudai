@@ -3,7 +3,7 @@
  * @xuqiang  
  * @2016-07-11
  */
-require(['jquery', 'jquery.ajax.extension'], function ($) {
+require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function ($,layer,tpl) {
 	$(function() {
 		var $signBtn = $('#signBtn'),
 			$signTip = $('#signLayer'),
@@ -33,6 +33,14 @@ require(['jquery', 'jquery.ajax.extension'], function ($) {
 							'bottom': '50px',
 							'opacity': '0'
 						}, 800);
+					});
+				}else{
+					$('#errorTip').html(tpl('errorTipTpl', response.data));
+					layer.open({
+						type: 1,
+						title: false,
+						area: ['300px', '180px'],
+						content: $('#errorTip')
 					});
 				}
 			})
