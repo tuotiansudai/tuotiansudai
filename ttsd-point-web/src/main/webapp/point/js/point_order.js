@@ -50,9 +50,11 @@ require(['jquery', 'layerWrapper','template', 'jquery.validate', 'jquery.ajax.ex
 				.done(function(data) {
 					console.log(data);
 					if (data.data.status) {
-						layer.msg('兑换成功！3秒后自动跳转到兑换记录页面。', function(){
-						  location.href = '/point-shop/record';
-						}); 
+						layer.msg('兑换成功！3秒后自动跳转到兑换记录页面。');
+						setTimeout(function(){
+							location.href = '/point-shop/record';
+						},3000)
+
 					} else {
 						errorTip(data.data);
 					}

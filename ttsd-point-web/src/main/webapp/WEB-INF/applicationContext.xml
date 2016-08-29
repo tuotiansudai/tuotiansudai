@@ -30,8 +30,8 @@
         <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="minimumIdle" value="${web.aa.minimumIdle}"/>
-        <property name="maximumPoolSize" value="${web.aa.maximumPoolSize}"/>
+        <property name="minimumIdle" value="${point.aa.minimumIdle}"/>
+        <property name="maximumPoolSize" value="${point.aa.maximumPoolSize}"/>
         <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
         <property name="dataSourceProperties">
             <props>
@@ -85,7 +85,7 @@
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${web.jedis.pool.maxTotal}"/>
+        <property name="maxTotal" value="${point.jedis.pool.maxTotal}"/>
         <property name="maxWaitMillis" value="${common.jedis.pool.maxWaitMillis}"/>
     </bean>
 
