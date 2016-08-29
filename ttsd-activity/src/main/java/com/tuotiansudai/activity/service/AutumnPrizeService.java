@@ -15,7 +15,9 @@ import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLuxuryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.MobileEncoder;
 import org.joda.time.DateTime;
@@ -53,8 +55,16 @@ public class AutumnPrizeService {
     @Value(value = "activity.autumn.luxury.invest")
     private String activityAutumnLuxuryInvestKey;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
     public long getTodayInvestAmount(String loginName, String type) {
-        String secondKey = MessageFormat.format("{0}:{1}", loginName, new DateTime().toString("yyyy-MM-dd"));
+        String mobile = userMapper.findByLoginName(loginName) != null?userMapper.findByLoginName(loginName).getMobile():"";
+        String userName = accountMapper.findByLoginName(loginName) !=null?accountMapper.findByLoginName(loginName).getUserName():"";
+        String secondKey = MessageFormat.format("{0}:{1}:{2}:{3}", loginName,mobile,userName, new DateTime().toString("yyyy-MM-dd"));
         String invests = null;
         if ("travel".equalsIgnoreCase(type)) {
             invests = redisWrapperClient.hget(this.activityAutumnTravelInvestKey, secondKey);
