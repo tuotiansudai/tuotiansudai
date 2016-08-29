@@ -64,13 +64,13 @@ require(['jquery', 'Validform', 'bootstrap','jquery-ui', 'csrf'], function ($, _
             img = new Image();
         img.src = _URL.createObjectURL(file);
         img.onload = function () {
-            if (this.width != width) {
-                defer.reject('图片长宽应为' + width);
+            if (this.width != width && width != undefined) {
+                defer.reject('图片宽度应为' + width);
                 return;
 
             }
-            if (this.height != height) {
-                defer.reject('图片长宽应为' + height);
+            if (this.height != height && height != undefined) {
+                defer.reject('图片高度应为' + height);
                 return;
             }
             defer.resolve(file);
