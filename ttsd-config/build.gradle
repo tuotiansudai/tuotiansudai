@@ -28,6 +28,10 @@ buildscript {
 
 processResources.outputs.upToDateWhen { false }
 
+dependencies {
+    compile 'mysql:mysql-connector-java:5.1.39'
+}
+
 /**
  * parameter: configPath
  * example: gradle ttsd-web:war -PconfigPath=/workspace/new_version_config/ttsd-config
@@ -71,7 +75,7 @@ processResources {
  * dbhost default value: ttsd-env.properties common.jdbc.host
  * dbport default value: ttsd-env.properties common.jdbc.port
  * database default value: aa
- * example: gradle -Pdbhost=192.168.33.10 -Pdbport=3306 -Pdatabase=aa ttsd-service:flywayMigrate
+ * example: gradle -Pdbhost=192.168.33.10 -Pdbport=3306 -Pdatabase=aa ttsd-config:flywayMigrate
  *
  */
 flyway {
@@ -210,6 +214,27 @@ task flywayAsk(type: FlywayMigrateTask) {
     extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxask?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("ask.jdbc.username")
     extension.password = properties.getProperty("ask.jdbc.password")
+}
+
+task flywayActivity(type: FlywayMigrateTask) {
+    def properties = getEnvProperties()
+    def defaultHost = properties.getProperty("common.jdbc.host")
+    def defaultPort = properties.getProperty("common.jdbc.port")
+    extension = new FlywayExtension()
+    if (project.hasProperty('dbhost')) {
+        defaultHost = dbhost;
+    }
+    if (project.hasProperty('dbport')) {
+        defaultPort = dbport;
+    }
+    extension.outOfOrder = true
+    extension.validateOnMigrate = false
+    extension.locations = ["filesystem:db_migration/edxactivity"]
+    extension.schemas = ["edxactivity"]
+
+    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxactivity?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.user = properties.getProperty("activity.jdbc.username")
+    extension.password = properties.getProperty("activity.jdbc.password")
 }
 
 def getEnvProperties() {

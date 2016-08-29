@@ -1,0 +1,84 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'spring-boot'
+
+buildscript {
+    repositories {
+        jcenter()
+        maven { url "http://repo.spring.io/snapshot" }
+        maven { url "http://repo.spring.io/milestone" }
+        maven { url "http://central.maven.org/maven2/" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
+    }
+}
+
+repositories {
+    jcenter()
+    maven { url "http://repo.spring.io/snapshot" }
+    maven { url "http://repo.spring.io/milestone" }
+    maven { url "http://central.maven.org/maven2/" }
+}
+
+dependencies {
+    compile(project(":ttsd-user-service")) {
+        exclude module: 'ttsd-dependency'
+    };
+
+    compile(project(":ttsd-spring-extension")) {
+        exclude module: 'ttsd-dependency'
+    };
+
+    compile(project(":ttsd-web-common-config")) {
+        exclude module: 'ttsd-dependency'
+    };
+
+    compile(project(":ttsd-activity-repository")) {
+        exclude module: 'ttsd-dependency'
+    };
+
+    compile(project(":ttsd-service")) {
+        exclude module: 'ttsd-dependency'
+    };
+
+    compile project(':ttsd-util'),
+            'org.springframework.boot:spring-boot-starter-mail',
+            "org.springframework.boot:spring-boot-starter-web",
+            "org.springframework.boot:spring-boot-configuration-processor",
+            "org.springframework.boot:spring-boot-starter-jdbc",
+            "org.springframework.boot:spring-boot-starter-security",
+            "org.springframework.boot:spring-boot-starter-redis",
+            "org.springframework.boot:spring-boot-starter-freemarker",
+            "org.springframework.security:spring-security-taglibs:4.1.1.RELEASE",
+            "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1",
+            'mysql:mysql-connector-java:5.1.39',
+            'com.zaxxer:HikariCP:2.4.7',
+            'com.google.guava:guava:19.0',
+            'joda-time:joda-time:2.8.1',
+            'com.squareup.okhttp:okhttp:2.7.5'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
+/**
+ * parameter: configPath
+ * example: gradle ttsd-web:war -PconfigPath=/workspace/new_version_config/ttsd-activity-console
+ */
+processResources {
+    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
+    def outerConfigPath = '/workspace/new_version_config/ttsd-activity-console'
+    if (project.hasProperty("configPath") && new File(configPath).isDirectory()) {
+        innerConfigPath = configPath
+    } else if (new File(outerConfigPath).isDirectory()) {
+        innerConfigPath = outerConfigPath
+    }
+    from("${innerConfigPath}") {
+        into '/'
+    }
+}
+
+war {
+    archiveName "ROOT.war"
+    destinationDir = file("war")
+}

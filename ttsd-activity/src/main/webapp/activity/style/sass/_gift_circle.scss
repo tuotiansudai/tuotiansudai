@@ -1,0 +1,381 @@
+$width:700px;
+
+.leader-container{
+  float:left;
+  width:100%;
+  margin:30px 0;
+  background:#2e2161;
+  @media (max-width:$width) {
+    margin-top:10px;
+    margin-bottom:0;
+  }
+  &.tour-theme{
+    background:none;
+    margin:30px 0 0 0;
+    .leader-list{
+      padding:40px 0 0 0;
+      .lottery-circle{
+        h3{
+          background:#e6fbff;
+          color:#146566;
+          width: 60%;
+          margin:10% 20%;
+          border:1px solid #009289;
+          border-radius: 10px;
+          box-sizing:border-box;
+        }
+        .circle-shade{
+          background: url("/activity/images/sign/actor/circle/tour-bg.png") no-repeat center;
+          background-size:100%;
+          .rotate-btn{
+            .tour-img{
+              display:block;
+            }
+            .luxury-img{
+              display:none;
+            }
+          }
+        }
+      }
+      .lottery-detail{
+        float:left;
+        width:340px;
+        height:520px;
+        margin-top:30px;
+        @media (max-width:$width) {
+          width:100%;
+          height:auto;
+        }
+        h3{
+          background:#e6fbff;
+          color:#146566;
+          border:1px solid #009289;
+          border-radius: 20px;
+          box-sizing:border-box;
+        }
+        .gift-record{
+          background:#71cfcf;
+          border-bottom:1px solid #009289;
+          border-radius: 20px 20px 0 0;
+          overflow:hidden;
+          li{
+            background:#71cfcf;
+            color:#3f8f89;
+            &.active{
+              color:#ed702c;
+              background:#e6fbff;
+              border-radius: 20px 20px 0 0;
+              box-sizing: border-box;
+            }
+          }
+        }
+        .record-list{
+          background:#e6fbff;
+          .record-model{
+            &.user-record{
+              li{
+                color:#ed702c;
+              }
+            }
+            &.own-record{
+              li{
+                span{
+                  color:#ed702c;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .leader-list{
+    float:left;
+    width:100%;
+    padding:40px 0;
+    @media (max-width:$width) {
+      padding:0;
+    }
+    .lottery-circle{
+      float:left;
+      width:630px;
+      @media (max-width:$width) {
+        width:100%;
+        margin-top:30px;
+      }
+      h3{
+        float:left;
+        width:100%;
+        height:40px;
+        line-height:40px;
+        text-align:center;
+        color:#e6d647;
+        font-size:16px;
+        margin-bottom:20px;
+        @media (min-width:$width+1) {
+          display:none;
+        }
+      }
+      .circle-shade{
+        float:left;
+        width: 550px;
+        height: 550px;
+        margin:0 0 40px 40px;
+        position: relative;
+        background: url("/activity/images/sign/actor/circle/luxury-bg.png") no-repeat center;
+        @media (max-width:$width) {
+          width: 250px;
+          height: 250px;
+          margin: 0 auto;
+          background-size: 100%;
+          position: relative;
+          left: 50%;
+          margin-left: -125px;
+        }
+        .pointer-img{
+          width: 130px;
+          height: 190px;
+          cursor:pointer;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          margin-left: -65px;
+          margin-top: -125px;
+          z-index: 8;
+          @media (max-width:$width) {
+            width: 50px;
+            height: 100px;
+            margin-top:-50px;
+            margin-left: -25px;
+          }
+        }
+        .rotate-btn{
+          width: 452px;
+          height: 451px;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          margin-top:-225px;
+          margin-left:-226px;
+          @media (max-width:$width) {
+            width: 210px;
+            height: 210px;
+            background-size: 100%;
+            margin-top:-105px;
+            margin-left: -105px;
+          }
+          .tour-img{
+            display:none;
+          }
+          .luxury-img{
+            display:block;
+          }
+        }
+      }
+    }
+    .lottery-detail{
+      float:left;
+      width:340px;
+      height:520px;
+      margin-top:30px;
+      @media (max-width:$width) {
+        width:100%;
+        height:auto;
+      }
+      h3{
+        float:left;
+        width:100%;
+        background:#6150a9;
+        height:60px;
+        line-height:60px;
+        text-align:center;
+        color:#e6d647;
+        font-size:20px;
+        margin-bottom:20px;
+        @media (max-width:$width) {
+          display:none;
+        }
+      }
+      .gift-record{
+        float:left;
+        width:100%;
+        li{
+          float:left;
+          width:171px;
+          font-size:16px;
+          text-align:center;
+          background:#372876;
+          height:40px;
+          color:#ccc;
+          line-height:40px;
+          cursor:pointer;
+          @media (max-width:$width) {
+            width:50%;
+          }
+          &.active{
+            width:169px;
+            color:#fff;
+            background:#6150a9;
+            border-bottom:none;
+            @media (max-width:$width) {
+              width:50%;
+            }
+          }
+        }
+      }
+      .record-list{
+        float:left;
+        width:340px;
+        background:#6150a9;
+        border-top: none;
+        height: 310px;
+        overflow: hidden;
+        @media (max-width:$width) {
+          width:100%;
+        }
+        .record-model{
+          float:left;
+          display:none;
+          width:276px;
+          height:300px;
+          @media (max-width:$width) {
+            width:100%;
+          }
+          &.active{
+            display:block;
+          }
+          &.user-record{
+            padding:10px 30px;
+            @media (max-width:$width) {
+              padding:10px 0;
+            }
+            li{
+              float:left;
+              width:100%;
+              font-size:14px;
+              color:#fff;
+              line-height:30px;
+            }
+          }
+          &.own-record{
+            padding:10px 30px;
+            overflow:hidden;
+            overflow-y:scroll;
+            @media (max-width:$width) {
+              padding:10px 0;
+            }
+            li{
+              float:left;
+              width:100%;
+              &.empty-text{
+                text-align:center;
+                line-height:480px;
+              }
+              span{
+                float:left;
+                font-size:13px;
+                color:#fff;
+                line-height:30px;
+                &.award-name{
+                  width:120px;
+                }
+                &.award-time{
+                  width:135px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.tip-list{
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:url("/activity/images/sign/actor/circle/tip-bg.png") repeat;
+  z-index:88;
+  display:none;
+  &.tour-theme{
+    .tip-dom{
+      background:url("/activity/images/sign/actor/circle/tour-tip.png") no-repeat center;
+      background-size:100%;
+      .close-btn{
+        background:url("/activity/images/sign/actor/circle/close-tour.png") no-repeat center;
+        background-size:100%;
+      }
+      .btn-list{
+        a{
+          background:url("/activity/images/sign/actor/circle/tour-btn.png") no-repeat center;
+          background-size: 100%;
+        }
+      }
+    }
+  }
+  .tip-dom{
+    width:400px;
+    height:300px;
+    position: fixed;
+    top:50%;
+    left:50%;
+    margin-top:-150px;
+    margin-left:-200px;
+    background:url("/activity/images/sign/actor/circle/luxury-tip.png") no-repeat center;
+    background-size:100%;
+    z-index:999;
+    display:none;
+    .close-btn{
+      position: absolute;
+      top:0;
+      right:25px;
+      width:25px;
+      height:60px;
+      background:url("/activity/images/sign/actor/circle/close-luxury.png") no-repeat center;
+      background-size:100%;
+      cursor:pointer;
+    }
+    .text-tip{
+      float:left;
+      width:300px;
+      height:125px;
+      margin-top: 80px;
+      margin-left: 80px;
+      p{
+        float:left;
+        width:100%;
+        margin-bottom:0;
+        text-align:center;
+        color:#fff778;
+        font-size:16px;
+        line-height:30px;
+        &.des-text{
+          font-size:12px;
+          color:#fff;
+        }
+        &.login-text{
+          margin-top:10px;
+        }
+      }
+    }
+    .btn-list{
+      float:left;
+      width:100%;
+      text-align:center;
+      a{
+        display:inline-block;
+        width:150px;
+        height:40px;
+        line-height:40px;
+        color:#fff;
+        font-size:12px;
+        text-align:center;
+        background:url("/activity/images/sign/actor/circle/luxury-btn.png") no-repeat center;
+        background-size: 100%;
+        margin:0 10px;
+      }
+    }
+  }
+}
