@@ -327,6 +327,7 @@
                                                 </em>
                                                 <i>%
                                                 </i>
+                                                <i class="fa fa-mobile"></i>
                                             </dd>
                                         </dl>
 

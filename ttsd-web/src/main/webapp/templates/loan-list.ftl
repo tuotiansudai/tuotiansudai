@@ -122,6 +122,7 @@
                                                 +<@percentInteger>${loanItem.activityRate}</@percentInteger><@percentFraction>${loanItem.activityRate}</@percentFraction>
                                             </#if>%
                                         </i>
+                                        <i class="fa fa-mobile"></i>
                                     </#if>
 
                                 </dd>

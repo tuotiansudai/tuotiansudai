@@ -19,6 +19,10 @@
                     <#if extraLoanRates??>
                         <div class="fl orange extra-rate" id="extra-rate">投资奖励+${extraLoanRates.minExtraRate}%~${extraLoanRates.maxExtraRate}%<i class="fa fa-question-circle" aria-hidden="true"></i>
                         </div>
+                        <div class="fl orange extra-rate">
+                            <i class="fa fa-mobile"></i>
+                            APP专享
+                        </div>
                         <script>
                             var __extraRate = [
                                 <#list extraLoanRates.items as extraLoanRate>
