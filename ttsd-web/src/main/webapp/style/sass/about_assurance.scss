@@ -1,0 +1,82 @@
+.full-screen {
+	width:100%;
+}
+.assurance-container {
+	.quick-top-link {
+		height: 118px;
+    	padding-top: 14px;
+    	overflow: hidden;
+		li {
+			width:33%;
+			height:115px;
+			float: left;
+			display: block;
+			text-align: center;
+    		padding-top: 65px;
+    		font-size:16px;
+    		a {
+    			color: #cccccc;	
+    		}
+			&.guide {
+				background: url('/images/sign/assure/icon-newer.png') center top no-repeat;
+			}
+			&.risk {
+				background: url('/images/sign/assure/icon-risk.png') center top no-repeat;
+			}
+			&.assure {
+				background: url('/images/sign/assure/icon-assure.png') center top no-repeat;
+				&.active {
+					background-image:url('/images/sign/assure/icon-assure-active.png');
+					a {
+						color: #ff8b00;
+					}
+				}
+			}
+			
+		}
+	}
+	.main-banner {
+		background:#6dbb7c;
+		img {
+			width:100%;
+		}
+	}
+	.fund-safety-box {
+		.safe-title {
+			text-align: center;
+			font-size:18px;
+			dt {
+				font-size:30px;
+			}
+		}
+		.safe-info-list {
+			font-size:14px;
+			color: #4c4c4c;
+			dl {
+				width:265px;
+				float: left;
+				&:nth-child(2) {
+					margin-left:100px;
+					margin-right:100px;
+				}
+				dt {
+				height:138px;
+				text-align: center;
+				em {
+				}
+				&.list01 {
+					background:url('/images/sign/assure/safe-01.png') no-repeat center top;
+
+				}
+				&.list02 {
+						background:url('/images/sign/assure/safe-02.png') no-repeat center top;
+				}
+				&.list03 {
+						background:url('/images/sign/assure/safe-03.png') no-repeat center top;
+				}
+			}
+
+			}
+		}
+	}
+}
