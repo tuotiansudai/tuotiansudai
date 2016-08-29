@@ -10,6 +10,7 @@
         <id column="id" property="id"></id>
         <result column="mobile" property="mobile"></result>
         <result column="login_name" property="loginName"></result>
+        <result column="user_name" property="userName"></result>
         <result column="prize" property="prize"></result>
         <result column="lottery_time" property="lotteryTime"></result>
     </resultMap>
@@ -22,8 +23,8 @@
     </resultMap>
 
     <insert id="create" parameterType="userLotteryPrizeModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `edxactivity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`prize`,`lottery_time`)
-        VALUES(#{id},#{mobile},#{loginName},#{prize},#{lotteryTime});
+        INSERT INTO `edxactivity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`user_name`,`prize`,`lottery_time`)
+        VALUES(#{id},#{mobile},#{loginName},#{userName},#{prize},#{lotteryTime});
 
     </insert>
 
@@ -33,13 +34,14 @@
         `id` = #{id},
         `mobile` = #{mobile},
         `login_name` = #{login_name},
+        `user_name` = #{user_name},
         `prize` = #{prize},
         `lottery_time` = #{lotteryTime}
         WHERE `id` = #{id}
     </update>
 
     <select id="findUserLotteryPrizeViews" parameterType="map" resultMap="userLotteryPrizeView">
-        select p.lottery_time,p.mobile,a.user_name,p.prize from `edxactivity`.`user_lottery_prize` p join aa.account a on p.login_name = a.login_name
+        select p.lottery_time,p.mobile,p.user_name,p.prize from `edxactivity`.`user_lottery_prize` p
         <where>
             <if test="mobile !=null and mobile !='' ">
                 and p.mobile like '${mobile}%'

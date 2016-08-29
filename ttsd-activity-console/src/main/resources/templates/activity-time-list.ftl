@@ -13,15 +13,12 @@
     <div class="table-responsive">
         <form action="/activity-console/activity-manage/user-time-list" method="get" class="form-inline query-build" id="lotteryTimeForm">
 
-            <div class="form-group">
                 <div class="form-group">
                     <label>用户手机号</label>
                     <input id="login-name" name="mobile" id="mobile" class="form-control" value="${mobile!}"/>
                 </div>
-            </div>
             <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
         </form>
-        <div class="table-responsive">
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr>
@@ -43,18 +40,15 @@
                         </#list>
                     </#if>
                 </tbody>
-
             </table>
-        </div>
 
-        <div class="row" style="margin-left: 8px">
             <!-- pagination  -->
             <nav class="pagination-control">
                 <div><span class="bordern">总共${lotteryCount}条,每页显示${pageSize}条</span></div>
                 <ul class="pagination pull-left">
                     <li>
                         <#if hasPreviousPage >
-                        <a href="g/activity-manage/user-time-list?mobile=${mobile!}&index=${index-1}&pageSize=${pageSize}">
+                        <a href="/activity-manage/user-time-list?mobile=${mobile!}&index=${index-1}&pageSize=${pageSize}">
                         <#else>
                         <a href="#">
                         </#if>
@@ -75,7 +69,6 @@
             </nav>
 
         </div>
-    </div>
 </div>
 <!-- content area end -->
 </@global.main>

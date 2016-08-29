@@ -9,10 +9,7 @@ import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;
 import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.ReferrerRelationModel;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -91,7 +88,7 @@ public class UserLotteryService{
             UserModel referrerUserModel = userMapper.findByLoginName(referrerRelationModel.getLoginName());
             if(referrerUserModel.getRegisterTime().before(activityAutumnEndTime) && referrerUserModel.getRegisterTime().after(activityAutumnStartTime)){
                 lotteryTime ++;
-                if(investMapper.countInvestorInvestPagination(referrerUserModel.getLoginName(),null,activityAutumnStartTime,activityAutumnEndTime) > 0){
+                if(investMapper.countInvestorInvestPagination(referrerUserModel.getLoginName(), LoanStatus.RAISING,activityAutumnStartTime,activityAutumnEndTime) > 0){
                     lotteryTime ++;
                 }
             }

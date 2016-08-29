@@ -10,10 +10,7 @@ import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.ReferrerRelationModel;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -80,7 +77,7 @@ public class LotteryActivityService {
             UserModel referrerUserModel = userMapper.findByLoginName(referrerRelationModel.getLoginName());
             if(referrerUserModel.getRegisterTime().before(activityAutumnEndTime) && referrerUserModel.getRegisterTime().after(activityAutumnStartTime)){
                 lotteryTime ++;
-                if(investMapper.countInvestorInvestPagination(referrerUserModel.getLoginName(),null,activityAutumnStartTime,activityAutumnEndTime) > 0){
+                if(investMapper.countInvestorInvestPagination(referrerUserModel.getLoginName(), LoanStatus.RAISING,activityAutumnStartTime,activityAutumnEndTime) > 0){
                     lotteryTime ++;
                 }
             }
@@ -125,6 +122,13 @@ public class LotteryActivityService {
         }
 
         UserModel userModel = userMapper.findByMobile(mobile);
+        if(userModel == null){
+            logger.debug(mobile + "is no chance. draw time:" + drawTime);
+            drawLotteryResultDto.setMessage("该用户不存在！");
+            drawLotteryResultDto.setReturnCode(1);
+            return drawLotteryResultDto;
+        }
+
         userMapper.lockByLoginName(userModel.getLoginName());
 
         LotteryPrize lotteryPrize = getDrawPrize(drawType);
@@ -132,7 +136,8 @@ public class LotteryActivityService {
             couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
         }
 
-        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), lotteryPrize, DateTime.now().toDate()));
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(),accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate()));
         drawLotteryResultDto.setReturnCode(0);
         drawLotteryResultDto.setPrizeType(lotteryPrize.getType());
         drawLotteryResultDto.setPrize(lotteryPrize.name());
