@@ -12,27 +12,72 @@
             <img src="${staticServer}/images/sign/assure/assure-bar.jpg" alt="拓天速贷，安全保障">
         </div>
     </div>
-
+    <div class="fund-safety-box bg-white clearfix">
     <div class="page-width">
-        <div class="fund-safety-box">
         <dl class="safe-title clearfix">
-            <dt>资金安全</dt>
+            <dt class="column-title-ac"><i></i>资金安全<i></i></dt>
             <dd>为保障投资者的资金安全，拓天速贷采用多管齐下的资金管理措施。</dd>
         </dl>
         <div class="safe-info-list">
-        <dl class="list01">
-            <dt><em>第三方资金托管</em></dt>
+        <dl>
+            <dt class="list01"><em>第三方<br/>资金托管</em></dt>
             <dd>拓天速贷接入了联动优势的资金托管系统，联动优势为拓天建立专门账户，对所有资金进行监管。拓天只撮合投资项目，不经手资金。</dd>
         </dl>
-        <dl class="list02">
-            <dt><em>严密风控</em></dt>
+        <dl>
+            <dt class="list02"><em>严密风控</em></dt>
             <dd>拓天速贷拥有一套专业而成熟的风控体系，严格审核每笔项目的借款申请，从源头上确保用户资金安全。</dd>
         </dl>
-        <dl class="list03">
-            <dt><em>同卡同出</em></dt>
+        <dl>
+            <dt class="list03"><em>同卡同出</em></dt>
             <dd>您在拓天速贷开通银行卡快捷支付，充值和提现的银行卡必须是同一张银行卡，即使账户丢失、手机丢失，您的钱也不会被盗走。</dd>
         </dl>
         </div>
+        </div>
+    </div>
+
+    <div class="page-width trade-risk-box">
+        <dl>
+            <dt class="column-title-ac">交易风险控制</dt>
+            <dd>
+                <b>评估抵押物</b>
+                <p>拓天速贷对于每笔借款都要求借款人提供优质的房产抵押或者车辆抵押，并会对抵押物的价值进行评估。</p>
+            </dd>
+            <dd>
+                <b>审核借款人</b>
+                <p>拓天速贷要求借款人提交身份证、户口本、抵押物权力证明等资质证明；还会通过家访、征信、银行流水等了解借款人的偿还能力。</p>
+            </dd>
+            <dd>
+                <b>评估贷款项目</b>
+                <p>评估完相关信息后，对于符合规定的借款人，拓天速贷会对借款的项目进行审核与评估，包括借款用途、借款时长、还款方式等。</p>
+            </dd>
+            <dd>
+                <b>办理法律手续</b>
+                <p>对于每笔借款，拓天速贷都会要求借款人办理登记或公证，公证的内容包括：借款合同公证、委托抵押公证、委托买卖公证、强制执行公证、房产他项权利证登记等</p>
+            </dd>
+        </dl>
+
+     </div>
+
+    <div class="private-safety-box bg-white clearfix">
+        <div class="page-width">
+            <dl class="safe-title clearfix">
+                <dt class="column-title-ac"><i></i>隐私安全<i></i></dt>
+                <dd>拓天速贷有严格的用户信息操作规范，从流程上确保用户隐私不会被泄露。</dd>
+                <dd>拓天速贷遵守国家相关法律法规，对用户的隐私信息进行严格的保护，不会在没有合法依据的情况下将用户的个人隐
+                    私及账户隐私以任何形式透露给第三方。</dd>
+            </dl>
+         </div>
+    </div>
+
+    <div class="page-width data-info-safety">
+        <div class="column-title-ac"></div>
+        <div class="axis-center"></div>
+        <div class="square-box-info">
+            <i class="triangle"></i>
+            <dl>
+                <dt>网络安全</dt>
+                <dd>使用高端软硬件防火墙技术</dd>
+            </dl>
         </div>
     </div>
 </div>

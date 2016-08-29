@@ -1,6 +1,14 @@
 .full-screen {
 	width:100%;
 }
+.bg-white {
+  background: #fff;
+}
+.column-title-ac {
+  font-size:30px;
+  font-weight: bold;
+  text-align: center;
+}
 .assurance-container {
 	.quick-top-link {
 		height: 118px;
@@ -42,9 +50,12 @@
 		}
 	}
 	.fund-safety-box {
+	  padding-top:35px;
+	  padding-bottom:35px;
 		.safe-title {
 			text-align: center;
 			font-size:18px;
+		  	padding-bottom:20px;
 			dt {
 				font-size:30px;
 			}
@@ -60,23 +71,69 @@
 					margin-right:100px;
 				}
 				dt {
-				height:138px;
-				text-align: center;
-				em {
-				}
+				  height: 123px;
+				  text-align: center;
+				  width: 25%;
+				  margin: 0 auto;
+				  display: table-cell;
+				  vertical-align: middle;
+				  font-size:18px;
 				&.list01 {
 					background:url('/images/sign/assure/safe-01.png') no-repeat center top;
-
+				  color: #db6558;
 				}
 				&.list02 {
 						background:url('/images/sign/assure/safe-02.png') no-repeat center top;
+				  color: #3776cb;
 				}
 				&.list03 {
 						background:url('/images/sign/assure/safe-03.png') no-repeat center top;
+				  color: #6dbb7c;
 				}
 			}
+			  dd {
+				padding-top:20px;
+			  }
 
 			}
 		}
 	}
+
+  .trade-risk-box {
+	text-align: center;
+	padding-top:30px;
+	dd {
+	  padding:10px 20px;
+	  background: #fff;
+	  border:1px dotted #6dbb7c;
+	  border-radius: 10px;
+	  width:80%;
+	  height:auto;
+	  overflow: auto;
+	  margin: 30px auto;
+	  color: #6dbb7c;
+	  b {
+		font-size: 20px;
+	  }
+	  p {
+		text-align: left;
+		color: currentColor;
+		font-size: 16px;
+	  }
+	  &:hover {
+		background:#6dbb7c ;
+		color: #fff;
+	  }
+	}
+  }
+  .private-safety-box {
+	padding:40px 20px;
+	dd {
+	  background: url("/images/sign/assure/icon-dot.png") no-repeat left 10px;
+	  padding-left: 35px;
+	  font-size: 18px;
+	  color: #4c4c4c;
+	  margin-bottom: 20px;
+	}
+  }
 }
