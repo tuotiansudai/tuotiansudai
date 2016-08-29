@@ -24,17 +24,16 @@
     {"title":"首页", "url":"/","category":"16顶部导航"},
     {"title":"我要投资", "url":"/loan-list","category":"17顶部导航"},
     {"title":"我的账户", "url":"/account", "category":"18顶部导航","leftNavs":[
-        {"title":"账户总览", "url":"/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"我的投资", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
-        {"title":"债权转让", "url":"/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
-        {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
-        {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"消息中心", "url":"/message/user-messages", "role":"'USER'"},
-        {"title":"我的财豆", "url":"/point", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"自动投标", "url":"/auto-invest", "role":"'USER', 'INVESTOR'"},
-        {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
+    {"title":"账户总览", "url":"/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
+    {"title":"我的投资", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
+    {"title":"债权转让", "url":"/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
+    {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
+    {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
+    {"title":"消息中心", "url":"/message/user-messages", "role":"'USER'"},
+    {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
+    {"title":"自动投标", "url":"/auto-invest", "role":"'USER', 'INVESTOR'"},
+    {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
+    {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
     {"title":"问答", "url":"${askServer}","category":""},
     {"title":"新手指引", "url":"/about/guide","category":"19顶部导航"},
@@ -52,9 +51,11 @@
     ]/>
 
     <#local membershipMenus=[
-        {"title":"会员中心", "url":"/membership","category":""},
+        {"title":"我的会员", "url":"/membership","category":""},
         {"title":"成长体系", "url":"/membership/structure","category":""},
-        {"title":"会员特权", "url":"/membership/privilege","category":""}
+        {"title":"会员特权", "url":"/membership/privilege","category":""},
+        {"title":"积分商城", "url":"/point-shop","category":""},
+        {"title":"积分任务", "url":"/point-shop/task","category":""}
     ]/>
 <!DOCTYPE html>
 <html lang="en">
@@ -128,7 +129,13 @@
 </div>
 
 <#if !isAppSource>
-    <#include "../footer.ftl" />
+    <#switch site>
+        <#case "membership">
+            <#include "../membership-footer.ftl"/>
+            <#break>
+        <#default>
+            <#include "../footer.ftl" />
+    </#switch>
 </#if>
 
 <script type="text/javascript" charset="utf-8">
@@ -224,10 +231,11 @@
     };
 
     phoneLoadFun();
-
-    document.getElementById('getMore').onclick=function(){
-        var obj = document. getElementById('getMore');
-        toggleClass(obj,"active");
+    if(window.$('getMore')){
+        document.getElementById('getMore').onclick=function(){
+            var obj = document. getElementById('getMore');
+            toggleClass(obj,"active");
+        }
     }
 
     function hasClass(obj, cls) {

@@ -68,6 +68,15 @@ activity:
   links:
     - "redis-server"
     - "static-server"
+point:
+  image: "leoshi/ttsd-tomcat8-java7:UTC8"
+  ports:
+    - "20018:8080"
+  volumes:
+    - ./ttsd-point-web/war:/webapps
+  links:
+    - "redis-server"
+    - "static-server"
 redis-server:
   image: "grokzen/redis-cluster"
   ports:

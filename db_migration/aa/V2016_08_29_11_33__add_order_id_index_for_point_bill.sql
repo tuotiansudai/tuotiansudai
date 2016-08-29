@@ -1,0 +1,1 @@
+ALTER TABLE `point_bill` ADD INDEX INDEX_POINT_BILL_ORDER_ID (`order_id`);

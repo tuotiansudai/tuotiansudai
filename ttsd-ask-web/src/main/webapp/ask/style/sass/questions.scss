@@ -17,7 +17,7 @@
   }
 }
 
-.agree-ok {
+.agree-ok,.agree-ok-no {
   @include border-color(#e5e5e5);
   padding: 8px 20px 8px 40px;
   padding-right: 20px!important;
@@ -456,8 +456,13 @@
   }
 }
   p {
-      padding:10px;
+      padding:20px;
       padding-bottom:0px;
+    text-align: center;
+    .to-login {
+      clear: both;
+      margin-top: 20px;
+    }
   }
 }
 

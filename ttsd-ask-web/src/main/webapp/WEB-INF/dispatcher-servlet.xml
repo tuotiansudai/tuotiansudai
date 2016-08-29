@@ -39,6 +39,7 @@
     <context:component-scan base-package="com.tuotiansudai.web.ask"/>
 
     <mvc:resources mapping="/ask/dist/**" location="/ask/dist/"/>
+    <mvc:resources mapping="/robots.txt" location="/robots.txt"/>
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
@@ -49,6 +50,7 @@
                 <entry key="webServer" value="${web.server}"/>
                 <entry key="askServer" value="${ask.server}"/>
                 <entry key="staticServer" value="${ask.static.server}"/>
+                <entry key="pointServer" value="${point.server}"/>
                 <entry key="myQuestions">
                     <bean class="com.tuotiansudai.web.ask.freemarker.directive.MyQuestionsDirective"/>
                 </entry>

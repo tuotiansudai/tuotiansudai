@@ -37,7 +37,6 @@
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
         <logout logout-url="/logout" success-handler-ref="mySimpleUrlLogoutSuccessHandler"/>
         <csrf disabled="true"/>
-        <session-management session-fixation-protection="newSession"/>
     </http>
 
     <authentication-manager alias="authenticationManager">

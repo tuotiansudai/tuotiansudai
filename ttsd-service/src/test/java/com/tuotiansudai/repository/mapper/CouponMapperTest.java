@@ -1,12 +1,16 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
@@ -31,22 +36,8 @@ public class CouponMapperTest {
     @Autowired
     private UserMapper userMapper;
 
-
-    @Test
-    public void shouldCreateCouponIsSuccess(){
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
-
-        CouponModel couponModel = fakeCouponModel();
-        couponMapper.create(couponModel);
-
-        CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
-        assertNotNull(couponModel1.getId());
-        assertEquals(1000L,couponModel1.getAmount());
-        assertEquals(false,couponModel1.isActive());
-        assertNotNull(couponModel1.getStartTime());
-        assertThat(couponModel.getProductTypes().size(), is(3));
-    }
+    @Autowired
+    private CouponExchangeMapper couponExchangeMapper;
 
     private CouponModel fakeCouponModel(){
         CouponModel couponModel = new CouponModel();
@@ -77,5 +68,67 @@ public class CouponMapperTest {
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;
+    }
+
+    @Test
+    public void shouldCreateCouponIsSuccess() {
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+
+        CouponModel couponModel = fakeCouponModel();
+        couponMapper.create(couponModel);
+
+        CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
+        assertNotNull(couponModel1.getId());
+        assertEquals(1000L, couponModel1.getAmount());
+        assertEquals(false, couponModel1.isActive());
+        assertNotNull(couponModel1.getStartTime());
+        assertThat(couponModel.getProductTypes().size(), is(3));
+    }
+
+    private ExchangeCouponView createExchangeCoupon(long totalCount, long issuedCount, boolean active, boolean deleted, CouponType couponType, Date endTime, String comment) {
+        CouponModel couponModel = new CouponModel();
+        couponModel.setAmount(1000L);
+        couponModel.setActivatedBy("couponTest");
+        couponModel.setActive(active);
+        couponModel.setCreatedTime(new Date());
+        couponModel.setEndTime(endTime);
+        couponModel.setDeadline(100);
+        couponModel.setDeleted(deleted);
+        couponModel.setStartTime(new DateTime().minusDays(2).toDate());
+        couponModel.setCreatedBy("couponTest");
+        couponModel.setTotalCount(totalCount);
+        couponModel.setUsedCount(500L);
+        couponModel.setIssuedCount(issuedCount);
+        couponModel.setInvestLowerLimit(10000L);
+        couponModel.setCouponType(couponType);
+        couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180));
+        couponModel.setCouponSource("couponSource");
+        couponModel.setComment(comment);
+
+        couponMapper.create(couponModel);
+
+        CouponExchangeModel couponExchangeModel = new CouponExchangeModel();
+        couponExchangeModel.setCouponId(couponModel.getId());
+        couponExchangeModel.setExchangePoint(1000);
+        couponExchangeModel.setSeq(1);
+        couponExchangeMapper.create(couponExchangeModel);
+
+        return new ExchangeCouponView(couponModel, couponExchangeModel.getExchangePoint(), couponExchangeModel.getSeq());
+    }
+
+    @Test
+    public void testFindExchangeableCouponViewById() throws Exception {
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+
+        ExchangeCouponView exchangeCouponView = createExchangeCoupon(1000L, 20L, true, false, CouponType.INTEREST_COUPON, DateTime.parse("2099-06-30T01:20").toDate(), "legal");
+        createExchangeCoupon(3000L, 20L, true, false, CouponType.INVEST_COUPON, DateTime.parse("2099-06-30T01:20").toDate(), "legal");
+        createExchangeCoupon(4000L, 20L, true, false, CouponType.RED_ENVELOPE, DateTime.parse("2099-06-30T01:20").toDate(), "legal");
+
+        ExchangeCouponView findExchangeCouponView = couponMapper.findExchangeableCouponViewById(exchangeCouponView.getId());
+        assertEquals(exchangeCouponView.getCouponType(), findExchangeCouponView.getCouponType());
+        assertEquals(exchangeCouponView.getComment(), findExchangeCouponView.getComment());
+        assertEquals(exchangeCouponView.getTotalCount(), findExchangeCouponView.getTotalCount());
     }
 }
