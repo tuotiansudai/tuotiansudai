@@ -629,7 +629,7 @@
             </h3>
             <div class="loan-list-index">
                 <ul class="loan-box-inner loan-btn">
-        <#list transferApplications as item>
+                    <#list transferApplications as item>
                     <li data-url="/transfer/${item.transferApplicationId}" class="clearfix">
                         <div class="loan-info-frame fl">
                             <div class="loan-top">
@@ -669,15 +669,15 @@
                         <div class="loan-process ">
                             <span class="deadline"> 截止时间：${item.deadLine?string("yyyy-MM-dd")}</span>
                             <div class="rest-amount">
-                                    <#if item.transferStatus=='TRANSFERRING'>
-                                        <button class="btn-invest btn-normal">马上投资</button>
-                                    <#else>
-                                        <button class="btn-invest btn-normal" disabled>已转让</button>
-                                    </#if>
+                                <#if item.transferStatus=='TRANSFERRING'>
+                                    <button class="btn-invest btn-normal">马上投资</button>
+                                <#else>
+                                    <button class="btn-invest btn-normal" disabled>已转让</button>
+                                </#if>
                             </div>
                         </div>
                     </li>
-            </#list>
+                    </#list>
                 </ul>
             </div>
         </div>
@@ -775,7 +775,7 @@
                             <td><label for="po3">13%</label></td>
                         </tr>
                     </table>
-            </div>
+                </div>
             </div>
             <dl class="book-dl clearfix">
                 <dt>预计投资金额</dt>
@@ -798,7 +798,6 @@
                     5、每笔预约在通知投资后失效。<br/>
 
                 </dd>
-
             </dl>
         </form>
     </div>

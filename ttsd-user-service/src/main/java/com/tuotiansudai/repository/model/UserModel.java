@@ -174,4 +174,12 @@ public class UserModel implements Serializable {
     public void setSignInCount(int signInCount) {
         this.signInCount = signInCount;
     }
+
+    @Override
+    public UserModel clone() throws CloneNotSupportedException {
+        UserModel clone = (UserModel) super.clone();
+        clone.registerTime = this.registerTime != null ? (Date) this.registerTime.clone() : null;
+        clone.lastModifiedTime = this.lastModifiedTime != null ? (Date) this.lastModifiedTime.clone() : null;
+        return clone;
+    }
 }

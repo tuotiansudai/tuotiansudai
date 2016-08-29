@@ -47,7 +47,7 @@ public class MyLoginUrlAuthenticationEntryPoint extends LoginUrlAuthenticationEn
 
     @Override
     protected String determineUrlToUseForThisRequest(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
-        String requestURI = request.getRequestURI();
+        String requestURI = request.getRequestURL().toString();
         String loginFormUrl = super.determineUrlToUseForThisRequest(request, response, exception);
         return MessageFormat.format("{0}?redirect={1}", loginFormUrl, requestURI);
     }

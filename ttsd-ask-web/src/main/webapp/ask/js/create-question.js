@@ -175,11 +175,11 @@ if($questionDetailTag.length) {
         $toAnswerBox.toggle();
     });
 
-    $formAnswer.find('input.captcha').on('keyup',function() {
+    $formAnswer.find('input.captcha').on('keyup', function () {
         $(this).checkFrom();
     });
 
-    $formAnswer.find('textarea.answer').on('keyup',function() {
+    $formAnswer.find('textarea.answer').on('keyup', function () {
         $(this).checkFrom();
     });
 
@@ -245,6 +245,7 @@ if($questionDetailTag.length) {
         var $this=$(this),
             value=$.trim($this.text());
         var answerId=$this.parent().find('.answerId').data('id');
+
         $.ajax({
             url:'/answer/'+answerId+'/favor',
             type:'POST'
@@ -254,6 +255,10 @@ if($questionDetailTag.length) {
                 $this.text(value-0+1);
             }
         });
+    });
+
+    $('.agree-ok-no',$questionDetailTag).on('click',function() {
+        comm.popWindow('','<span class="clearfix">需要登录才能点赞哦～ </span><a href="https://tuotiansudai.com/login" class="btn-normal to-login">去登录</a>',{ width:'400px'});
     });
 }
 
@@ -277,7 +282,7 @@ if($createQuestion.length) {
         $(this).checkFrom();
     });
 
-    $captcha.on('keyup',function() {
+    $captcha.on('keyup', function () {
         $(this).checkFrom();
     });
 
