@@ -36,7 +36,7 @@
                     <div class="prize-box swiper-slide <#if prize_index == 2>active</#if>">
                         <div class="pk-title">投资满<@amount>${prize.investAmount?string.computer}</@amount>元即可获得</div>
                         <div class="img-info">
-                            <img src="${staticServer}/activity/images/autumn-tour/p01.png">
+                            <a href="/activity/autumn/travel/${prize.id?string.computer}/detail"><img src="${prize.image}"></a>
                             <span class="kind-text">${prize.name}</span>
                             <div class="kind-bottom">
                                 <span class="fl">价值<em>${prize.price}</em>元</span>

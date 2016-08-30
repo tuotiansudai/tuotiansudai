@@ -10,7 +10,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">奖品品牌: </label>
                 <div class="col-sm-4">
-                    <input type="hidden" name="luxuryPrizeId" class="luxuryPrizeId" value="<#if dto??>${dto.luxuryPrizeId?c!}</#if>">
+                    <input type="hidden" name="luxuryPrizeId" class="luxuryPrizeId" value="<#if dto??>${dto.id?c!}</#if>">
                     <input type="text" name="brand" class="form-control luxury-brand" value="<#if dto??>${dto.brand!}</#if>" placeholder="" datatype="*" errormsg="奖品品牌不能为空">
                 </div>
                 <div class="col-sm-7">

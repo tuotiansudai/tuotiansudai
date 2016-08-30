@@ -43,7 +43,7 @@
                     <#list luxuryPrize as prize>
                         <li>
                             <div class="product-img">
-                                <img src="${prize.image}" width="100%">
+                                <a href="/activity/autumn/luxury/${prize.id?string.computer}/detail"><img src="${prize.image}" width="100%"><a>
                             </div>
                             <div class="product-info">
                                 <p class="name-text">${prize.brand}</p>

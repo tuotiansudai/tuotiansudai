@@ -5,7 +5,7 @@
         <div class="left-bg"></div>
         <div class="right-bg"></div>
         <div class="detail-img">
-        	<img src="http://dummyimage.com/1000x2400/4d494d/686a82.gif&text=奖品图片" width="100%">
+        	<img src="${introduce}" width="100%">
         </div>
         <div class="detail-btn">
         	<a href=""></a>

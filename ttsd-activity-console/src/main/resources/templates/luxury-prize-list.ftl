@@ -30,7 +30,7 @@
                     <td>${item.price}</td>
                     <td><img src="${item.image}"></td>
                     <td>投资满${(item.investAmount/100)?c}</td>
-                    <td><a href="/activity-console/activity-manage/luxury/${item.luxuryPrizeId?c}/edit">更新</a></td>
+                    <td><a href="/activity-console/activity-manage/luxury/${item.id?c}/edit">更新</a></td>
                 </tr>
                 <#else>
                 <tr>
