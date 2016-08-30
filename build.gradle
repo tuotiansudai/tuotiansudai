@@ -11,6 +11,9 @@ subprojects {
     repositories {
         jcenter()
         mavenCentral()
+        maven { url "http://repo.spring.io/snapshot" }
+        maven { url "http://repo.spring.io/milestone" }
+        maven { url "http://central.maven.org/maven2/" }
     }
 
     dependencies {
