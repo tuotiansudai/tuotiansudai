@@ -69,9 +69,10 @@
          </div>
     </div>
 
-    <div class="page-width data-info-safety">
-        <div class="column-title-ac"></div>
-        <div class="axis-center"></div>
+    <div class="page-width ">
+        <div class="column-title-ac">数据与信息安全</div>
+        <div class="data-info-safety">
+
         <div class="square-box-info">
             <i class="triangle"></i>
             <dl>
@@ -79,8 +80,35 @@
                 <dd>使用高端软硬件防火墙技术</dd>
             </dl>
         </div>
+
+            <div class="square-box-info">
+                <i class="triangle"></i>
+                <dl>
+                    <dt>加密技术</dt>
+                    <dd>采用256位实时数据传输加密技术</dd>
+                </dl>
+            </div>
+
+            <div class="square-box-info">
+                <i class="triangle"></i>
+                <dl>
+                    <dt>容灾备份</dt>
+                    <dd>同城和异地均建立灾备设备，避免用户信息丢失</dd>
+                </dl>
+            </div>
+
+            <div class="square-box-info">
+                <i class="triangle"></i>
+                <dl>
+                    <dt>内控流程</dt>
+                    <dd>建立了完善的内部权限审核流程</dd>
+                </dl>
+            </div>
+            <div class="axis-center"></div>
     </div>
 </div>
 
+<div class="">
 
+</div>
 </@global.main>

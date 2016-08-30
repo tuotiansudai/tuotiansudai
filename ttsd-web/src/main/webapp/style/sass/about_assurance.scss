@@ -136,4 +136,62 @@
 	  margin-bottom: 20px;
 	}
   }
+  .data-info-safety {
+	height: 595px;
+	padding-top: 30px;
+	position: relative;
+	.axis-center {
+	  background: url("/images/sign/assure/order.png") no-repeat center top;
+	  width:102px;
+	  height: 458px;
+	  position: absolute;
+	  left: 45%;
+	  top: 15px;
+	}
+	.square-box-info {
+	  border: 1px dashed #6dbb7c;
+	  background: #fff;
+	  border-radius: 15px;
+	  position: absolute;
+	  padding: 10px;
+	  width: 35%;
+	  font-size:16px;
+	  dt {
+		font-size:20px;
+		font-weight: bold;
+	  }
+	  .triangle {
+		width:20px;
+		height: 20px;
+		background: url("/images/sign/assure/arrow-right.png") no-repeat center top;
+		position: absolute;
+		right: -15px;
+		top: 35px;
+	  }
+	  &:nth-child(1) {
+		left: 60px;
+		top:24px;
+	  }
+	  &:nth-child(2) {
+		right: 60px;
+		top: 138px;
+		.triangle {
+		  left: -16px;
+		  background: url("/images/sign/assure/arrow-left.png") no-repeat center top;
+		}
+	  }
+	  &:nth-child(3) {
+		left: 60px;
+		top:265px;
+	  }
+	  &:nth-child(4) {
+		right: 60px;
+		top:380px;
+		.triangle {
+		  left: -16px;
+		  background: url("/images/sign/assure/arrow-left.png") no-repeat center top;
+		}
+	  }
+	}
+  }
 }
