@@ -92,11 +92,13 @@ public class OssUploadController {
             try {
                 response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
                 JSONObject jsonObject = uploadFile(request);
+                logger.debug("jsonObject===" + jsonObject);
                 response.getWriter().print(jsonObject);
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             } finally {
                 try {
+                    logger.debug("finally===ossUploadController");
                     response.getWriter().close();
                 } catch (IOException e) {
                     logger.error(e.getLocalizedMessage(), e);
@@ -106,6 +108,7 @@ public class OssUploadController {
     }
 
     private JSONObject uploadFile(HttpServletRequest request) {
+        logger.debug("uploadFile=====in=====");
         if (!ServletFileUpload.isMultipartContent(request)) {
             return buildUploadFileResult("未包含文件上传域", "", "", "");
         }
@@ -114,6 +117,7 @@ public class OssUploadController {
         String originalName = dfi.getOriginalFilename().substring(dfi.getOriginalFilename().lastIndexOf(System.getProperty("file.separator")) + 1);
         String fileExtName = FilenameUtils.getExtension(originalName);
         String rootPath = request.getSession().getServletContext().getRealPath("/");
+        logger.debug("uploadFile=====in=====rootPath:"+rootPath +" fileExtName:" + fileExtName+" rootPath:" +rootPath);
         try {
             String url = request.getRequestURL().toString();
             String absoluteUrl = ossWrapperClient.upload(fileExtName, dfi.getInputStream(), rootPath, url.substring(0,url.lastIndexOf("/")+1), false);
@@ -121,6 +125,7 @@ public class OssUploadController {
                 absoluteUrl = absoluteUrl.substring(absoluteUrl.indexOf("upload"), absoluteUrl.length());
             }
             String relativeUrl = absoluteUrl.substring(absoluteUrl.indexOf("/"), absoluteUrl.length());
+            logger.debug("uploadFile=====in=====relativeUrl:"+relativeUrl);
             return buildUploadFileResult("SUCCESS", originalName, relativeUrl, absoluteUrl);
         } catch (Exception e) {
             return buildUploadFileResult(e.getMessage(), "", "", "");
@@ -128,6 +133,7 @@ public class OssUploadController {
     }
 
     private JSONObject buildUploadFileResult(String state, String originalName, String url, String title) {
+        logger.debug("buildUploadFileResult=====in=====");
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("original", originalName);
         jsonObject.put("url", url);
