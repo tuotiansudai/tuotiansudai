@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -24,8 +24,6 @@ import static junit.framework.TestCase.assertEquals;
 @WebAppConfiguration
 @Transactional
 public class AccountServiceTest {
-
-
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -117,6 +115,14 @@ public class AccountServiceTest {
         assertEquals(freeze, 1000L);
     }
 
+    @Test
+    public void testGetUserPointByLoginName() throws Exception {
+        createUserModelTest("test");
+        AccountModel accountModel = createAccountModel("test", 0);
+        long point = accountService.getUserPointByLoginName("test");
+        assertEquals(accountModel.getPoint(), point);
+    }
+
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus) {
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(idGenerator.generate());
@@ -182,6 +188,7 @@ public class AccountServiceTest {
         AccountModel accountModel = new AccountModel(loginName, "userName", "identityNumber", "payUserId", "payAccountId", new Date());
         accountModel.setBalance(balance);
         accountModel.setFreeze(1000L);
+        accountModel.setPoint(10000L);
         accountMapper.create(accountModel);
         return accountModel;
     }

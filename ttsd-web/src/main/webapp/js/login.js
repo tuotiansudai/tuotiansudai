@@ -75,7 +75,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
                     },
                     success: function (data) {
                         if (data.status) {
-                            window.location.href = _.difference(data.roles, ['USER']).length > 0 ? loginFormElement.data('redirect-url') : "/register/account";
+                            window.location.href = loginFormElement.data('redirect-url');
                         } else {
                             refreshCaptcha();
                             loginSubmitElement.removeClass('loading');

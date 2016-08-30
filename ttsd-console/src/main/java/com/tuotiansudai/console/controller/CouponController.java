@@ -291,6 +291,9 @@ public class CouponController {
         return baseDto;
     }
 
+
+
+
     @RequestMapping(value = "/coupon/user-group/{userGroup}/estimate", method = RequestMethod.GET)
     @ResponseBody
     public long findEstimatedCount(@PathVariable UserGroup userGroup) {
@@ -505,65 +508,6 @@ public class CouponController {
         return list;
     }
 
-    @RequestMapping(value = "/coupon-exchange", method = RequestMethod.GET)
-    public ModelAndView couponExchange() {
-        ModelAndView modelAndView = new ModelAndView("/coupon-exchange");
-        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-        modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON));
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/coupon-exchange/{id:^\\d+$}/edit", method = RequestMethod.GET)
-    public ModelAndView edit(@PathVariable long id) {
-        CouponModel couponModel = couponService.findCouponById(id);
-        CouponExchangeModel couponExchangeModel = couponService.findCouponExchangeByCouponId(id);
-        ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(couponModel);
-        exchangeCouponDto.setExchangePoint(couponExchangeModel.getExchangePoint());
-        ModelAndView modelAndView = new ModelAndView("/coupon-exchange-edit");
-        modelAndView.addObject("exchangeCouponDto", exchangeCouponDto);
-        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-        modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON));
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/coupon-exchange", method = RequestMethod.POST)
-    @ResponseBody
-    public ModelAndView createCouponExchange(@Valid @ModelAttribute ExchangeCouponDto exchangeCouponDto, RedirectAttributes redirectAttributes) {
-
-        String loginName = LoginUserInfo.getLoginName();
-        ModelAndView modelAndView = new ModelAndView();
-        Long id = exchangeCouponDto.getId();
-        try {
-            if (id != null) {
-                couponService.editCoupon(loginName, exchangeCouponDto);
-            } else {
-                couponService.createCoupon(loginName, exchangeCouponDto);
-            }
-            modelAndView.setViewName("redirect:/activity-manage/coupon-exchange-manage");
-        } catch (CreateCouponException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/coupon-exchange-manage", method = RequestMethod.GET)
-    public ModelAndView couponExchangeManage(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                             @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-
-        ModelAndView modelAndView = new ModelAndView("/coupon-exchanges");
-        List<ExchangeCouponDto> exchangeCouponDtos = couponService.findCouponExchanges(index, pageSize);
-        modelAndView.addObject("exchangeCoupons", exchangeCouponDtos);
-        modelAndView.addObject("index", index);
-        modelAndView.addObject("pageSize", pageSize);
-        int exchangeCouponCount = couponService.findCouponExchangeCount();
-        modelAndView.addObject("exchangeCouponCount", exchangeCouponCount);
-        long totalPages = exchangeCouponCount / pageSize + (exchangeCouponCount % pageSize > 0 || exchangeCouponCount == 0 ? 1 : 0);
-        boolean hasPreviousPage = index > 1 && index <= totalPages;
-        boolean hasNextPage = index < totalPages;
-        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
-        modelAndView.addObject("hasNextPage", hasNextPage);
-        return modelAndView;
-    }
 
     @RequestMapping(value = "/point-prize", method = RequestMethod.GET)
     public ModelAndView pointPrize() {

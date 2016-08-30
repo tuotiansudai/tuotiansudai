@@ -1,7 +1,7 @@
 apply plugin: 'war'
 
 dependencies {
-    compile project(':ttsd-service'),
+    compile project(':ttsd-user-service'),
             project(':ttsd-point'),
             fileTree(dir: 'libs', include: '**/*.jar'),
             'org.springframework.data:spring-data-redis:1.7.1.RELEASE',

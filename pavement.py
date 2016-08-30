@@ -189,6 +189,22 @@ def only_worker():
     fab_command("worker")
 
 
+@task
+def only_sign_in():
+    """
+    Deploy worker component to PROD from CI
+    """
+    fab_command("signin")
+
+
+@task
+def only_point():
+    """
+    Deploy worker component to PROD from CI
+    """
+    fab_command("point")
+
+
 def generate_git_log_file():
     from paver.shell import sh
 
@@ -275,6 +291,10 @@ def jcversion():
     versioning_min_files('ttsd-activity/src/main/webapp/activity/js/dest/*.min.js')
     versioning_min_files('ttsd-activity/src/main/webapp/activity/style/dest/*.min.css')
     replace_min_files_in_config_js_file('ttsd-activity/src/main/webapp/activity/js/dest/')
+
+    versioning_min_files('ttsd-point-web/src/main/webapp/point/js/dest/*.min.js')
+    versioning_min_files('ttsd-point-web/src/main/webapp/point/style/dest/*.min.css')
+    replace_min_files_in_config_js_file('ttsd-point-web/src/main/webapp/point/js/dest/')
 
     versioning_webpack_files('ttsd-mobile-api/')
     versioning_webpack_files('ttsd-ask-web/')
