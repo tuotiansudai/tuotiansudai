@@ -2,6 +2,7 @@ package com.tuotiansudai.ask.service;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.ask.dto.*;
@@ -11,6 +12,7 @@ import com.tuotiansudai.ask.repository.model.AnswerModel;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
+import com.tuotiansudai.ask.utils.FakeMobileUtil;
 import com.tuotiansudai.ask.utils.MobileEncoder;
 import com.tuotiansudai.ask.utils.PaginationUtil;
 import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
@@ -69,7 +71,11 @@ public class QuestionService {
         }
         dataDto.setAdditionSensitiveValid(true);
 
+        UserModel userModel = userMapper.findByLoginName(loginName);
+
         QuestionModel questionModel = new QuestionModel(loginName,
+                userModel.getMobile(),
+                FakeMobileUtil.generateFakeMobile(userModel.getMobile()),
                 SensitiveWordsFilter.replace(questionRequestDto.getQuestion()),
                 SensitiveWordsFilter.replace(questionRequestDto.getAddition()),
                 questionRequestDto.getTags());
@@ -107,9 +113,8 @@ public class QuestionService {
             return null;
         }
 
-        String mobile = userMapper.findByLoginName(questionModel.getLoginName()).getMobile();
         return new QuestionDto(questionModel,
-                questionModel.getLoginName().equalsIgnoreCase(loginName) ? mobile : MobileEncoder.encode(mobile));
+                questionModel.getLoginName().equalsIgnoreCase(loginName) ? questionModel.getMobile() : MobileEncoder.encode(Strings.isNullOrEmpty(questionModel.getFakeMobile()) ? questionModel.getMobile() : questionModel.getFakeMobile()));
     }
 
     public BaseDto<BasePaginationDataDto> findAllQuestions(String loginName, int index, int pageSize) {
@@ -189,9 +194,9 @@ public class QuestionService {
         List<QuestionDto> items = Lists.transform(questionModels, new Function<QuestionModel, QuestionDto>() {
             @Override
             public QuestionDto apply(QuestionModel input) {
-                String mobile = userMapper.findByLoginName(input.getLoginName()).getMobile();
                 return new QuestionDto(input,
-                        isEncodeMobile && !input.getLoginName().equalsIgnoreCase(loginName) ? MobileEncoder.encode(mobile) : mobile);
+                        isEncodeMobile && !input.getLoginName().equalsIgnoreCase(loginName) ?
+                                (MobileEncoder.encode(Strings.isNullOrEmpty(input.getFakeMobile()) ? input.getMobile() : input.getFakeMobile())) : input.getMobile());
             }
         });
 
