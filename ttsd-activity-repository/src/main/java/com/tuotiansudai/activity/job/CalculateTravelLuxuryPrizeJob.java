@@ -67,7 +67,7 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
             return;
         }
         logger.debug("[Calculate travel  prize begin...]");
-//        calculateTravelPrize();
+        calculateTravelPrize();
         logger.debug("[Calculate travel  prize end...]");
 
 
