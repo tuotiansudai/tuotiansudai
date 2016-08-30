@@ -302,6 +302,7 @@
                                 <div class="loan-info-frame fl">
                                     <div class="loan-top">
                                         <span class="l-title fl">${loan.name}</span>
+
                                     </div>
                                     <div class="loan-info-dl">
                                         <dl>
@@ -319,6 +320,9 @@
                                                 </em>
                                                 <i>%
                                                 </i>
+                                                <#if loan.extraSource?? && loan.extraSource == "MOBILE" >
+                                                   <i class="fa fa-mobile"></i>
+                                                </#if>
                                             </dd>
                                         </dl>
 
