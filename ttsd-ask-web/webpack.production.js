@@ -43,7 +43,7 @@ module.exports = {
 			jQuery: "jquery",
 			"window.jQuery": "jquery"
 		}),
-		new ExtractTextPlugin('main.css'),
+		new ExtractTextPlugin('main.[hash:8].min.css'),
 		new webpack.DefinePlugin({
 			'process.env': {
 				'NODE_ENV': '"production"'

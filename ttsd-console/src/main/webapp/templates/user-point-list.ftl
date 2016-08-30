@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="user-point-list.js" headLab="point-manage" sideLab="userPointList" title="用户财豆查询">
+<@global.main pageCss="" pageJavascript="user-point-list.js" headLab="point-manage" sideLab="userPointList" title="用户积分查询">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -29,8 +29,8 @@
                 <th>用户名</th>
                 <th>真实姓名</th>
                 <th>手机号</th>
-                <th>可用财豆</th>
-                <th>累计财豆</th>
+                <th>可用积分</th>
+                <th>累计积分</th>
                 <th>明细记录</th>
             </tr>
             </thead>
