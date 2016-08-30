@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.point.repository.mapper.UserAddressMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="userAddressResultMap" type="UserAddressModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="contact" property="contact"/>
+        <result column="mobile" property="mobile"/>
+        <result column="address" property="address"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="UserAddressModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user_address (`login_name`, `contact`, `mobile`, `address`, `created_by`, `created_time`)
+        VALUE(#{loginName}, #{contact},  #{mobile},  #{address},  #{createdBy},  #{createdTime})
+    </insert>
+
+    <select id="findByLoginName" parameterType="map" resultMap="userAddressResultMap">
+        SELECT * FROM user_address WHERE login_name = #{loginName};
+    </select>
+
+    <update id="update" parameterType="UserAddressModel">
+        UPDATE `aa`.`user_address`
+        SET contact = #{contact},
+        mobile = #{mobile},
+        address = #{address}
+        WHERE login_name = #{loginName}
+        AND id = #{id}
+    </update>
+
+    <select id="findByLoginNameAndId" resultMap="userAddressResultMap">
+        SELECT *FROM `aa`.`user_address`
+        WHERE id = #{id}
+        AND login_name = #{loginName}
+    </select>
+
+</mapper>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.point.repository.mapper.ProductOrderMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="productOrderResultMap" type="ProductOrderModel">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="points" property="points"/>
+        <result column="num" property="num"/>
+        <result column="total_points" property="totalPoints"/>
+        <result column="contact" property="contact"/>
+        <result column="mobile" property="mobile"/>
+        <result column="address" property="address"/>
+        <result column="consignment" property="consignment"/>
+        <result column="consignment_time" property="consignmentTime"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <resultMap id="productOrderExchangeResultMap" type="ProductOrderViewDto">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="points" property="points"/>
+        <result column="num" property="num"/>
+        <result column="total_points" property="totalPoints"/>
+        <result column="name" property="name"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="ProductOrderModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO product_order (`product_id`, `points`, `num`, `total_points`, `contact`,
+        `mobile`, `address`, `consignment`, `consignment_time`, `created_by`, `created_time`)
+        VALUE(#{productId}, #{points}, #{num}, #{totalPoints}, #{contact}, #{mobile}, #{address},
+        #{consignment}, #{consignmentTime}, #{createdBy}, #{createdTime})
+    </insert>
+
+    <update id="update" parameterType="ProductOrderModel">
+        UPDATE product_order
+        SET `consignment` = #{consignment},
+        `consignment_time` = #{consignmentTime}
+        WHERE `id` = #{id}
+    </update>
+
+    <update id="batchConsignment" parameterType="long">
+        UPDATE product_order
+         SET `consignment` = 1,
+        `consignment_time` = now()
+        where `consignment` = 0
+        and `product_id` = #{productId}
+    </update>
+
+    <select id="findById" parameterType="long" resultMap="productOrderResultMap">
+        SELECT * FROM product_order WHERE id = #{id};
+    </select>
+
+    <select id="findProductOrderCount" resultType="long">
+        SELECT COUNT(id) FROM product_order p
+        <where>
+            <if test="productId != null">
+                AND p.product_id = #{productId}
+            </if>
+            <if test="createdBy != null">
+                AND p.created_by = #{createdBy}
+            </if>
+        </where>
+    </select>
+
+    <select id="findProductOrderList" resultMap="productOrderResultMap">
+        SELECT * FROM product_order p
+        <where>
+            <if test="productId != null">
+                AND p.product_id = #{productId}
+            </if>
+            <if test="createdBy != null">
+                AND p.created_by = #{createdBy}
+            </if>
+        </where>
+        ORDER BY created_time DESC
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findProductOrderListByLoginName" parameterType="map" resultMap="productOrderExchangeResultMap">
+        SELECT po.id AS id,
+        po.product_id AS product_id,
+        po.points AS points,
+        po.num AS num,
+        po.total_points AS total_points,
+        po.created_time AS created_time,
+        po.created_by AS created_by,
+        p.name AS name
+        FROM product_order po
+        JOIN product p ON po.product_id = p.id
+        WHERE po.created_by = #{loginName}
+        ORDER BY po.created_time DESC
+        LIMIT #{index}, #{pageSize}
+    </select>
+
+    <select id="findProductOrderListByLoginNameCount" resultType="long">
+        SELECT COUNT(1)
+        FROM product_order po
+        JOIN product p ON po.product_id = p.id
+        WHERE po.created_by = #{loginName}
+    </select>
+</mapper>

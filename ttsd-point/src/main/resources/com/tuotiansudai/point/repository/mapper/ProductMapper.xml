@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.point.repository.mapper.ProductMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="productResultMap" type="ProductModel">
+        <id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="coupon_id" property="couponId"/>
+        <result column="name" property="name"/>
+        <result column="seq" property="seq"/>
+        <result column="image_url" property="imageUrl"/>
+        <result column="description" property="description"/>
+        <result column="total_count" property="totalCount"/>
+        <result column="used_count" property="usedCount"/>
+        <result column="points" property="points"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="active" property="active"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="active_by" property="activeBy"/>
+        <result column="active_time" property="activeTime"/>
+        <result column="updated_by" property="updatedBy"/>
+        <result column="updated_time" property="updatedTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="ProductModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO product(`type`,`coupon_id`, `name`, `seq`, `image_url`, `description`, `total_count`, `used_count`, `points`, `start_time`, `end_time`, `active`, `created_by`, `created_time`, `active_by`, `active_time`, `updated_by`, `updated_time`)
+        VALUE(#{type}, #{couponId}, #{name}, #{seq}, #{imageUrl}, #{description}, #{totalCount}, #{usedCount}, #{points}, #{startTime}, #{endTime}, #{active}, #{createdBy}, #{createdTime}, #{activeBy}, #{activeTime}, #{updatedBy}, #{updatedTime})
+    </insert>
+
+    <update id="update" parameterType="ProductModel">
+        UPDATE product
+        SET `type` = #{type},
+        `name` = #{name},
+        `seq` = #{seq},
+        `image_url` = #{imageUrl},
+        `description` = #{description},
+        `total_count` = #{totalCount},
+        `used_count` = #{usedCount},
+        `points` = #{points},
+        `start_time` = #{startTime},
+        `end_time` = #{endTime} ,
+        `active` = #{active},
+        `active_by` = #{activeBy},
+        `active_time` = #{activeTime},
+        `updated_by` = #{updatedBy},
+        `updated_time` = #{updatedTime}
+        WHERE `id` = #{id}
+    </update>
+
+    <select id="findById" parameterType="map" resultMap="productResultMap">
+        SELECT * FROM product WHERE id = #{id};
+    </select>
+
+    <select id="findExchangeableProductsCount" resultType="long">
+        SELECT COUNT(id) FROM product p
+        WHERE p.active = 1
+        <![CDATA[
+        AND p.end_time >= now()
+        AND p.start_time <= now()
+        ]]>
+        <if test="type != null">
+            AND p.type = #{type}
+        </if>
+    </select>
+
+    <select id="findExchangeableProductsList" resultMap="productResultMap">
+        SELECT * FROM product p
+        WHERE p.active = 1
+        <![CDATA[
+        AND p.end_time >= now()
+        AND p.start_time <= now()
+        ]]>
+        <if test="type != null">
+            AND p.type = #{type}
+        </if>
+        ORDER BY seq ASC, updated_time DESC
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findAllProductsCount" resultType="long">
+        SELECT COUNT(id) FROM product p
+        <where>
+            <if test="type != null">
+                AND p.type = #{type}
+            </if>
+        </where>
+    </select>
+
+    <select id="findAllProducts" resultMap="productResultMap">
+        SELECT * FROM product p
+        <where>
+            <if test="type != null">
+                AND p.type = #{type}
+            </if>
+        </where>
+        ORDER BY seq ASC, updated_time DESC
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findByCouponId" resultMap="productResultMap">
+        SELECT * FROM `aa`.`product` WHERE coupon_id = #{couponId}
+    </select>
+
+</mapper>
