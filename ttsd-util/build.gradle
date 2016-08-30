@@ -13,6 +13,8 @@ sourceSets {
 }
 
 dependencies {
+    compile 'com.google.guava:guava:19.0',
+            fileTree(dir: 'libs', include: '**/*.jar')
 }
 
 processResources.outputs.upToDateWhen { false }

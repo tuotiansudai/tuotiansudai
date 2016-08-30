@@ -15,7 +15,7 @@
         </beans:property>
     </beans:bean>
 
-    <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
+    <beans:bean id="captchaHelper" class="com.tuotiansudai.spring.security.CaptchaHelper"/>
 
     <http auto-config="true" use-expressions="true">
         <headers>

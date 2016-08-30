@@ -18,6 +18,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.MyAuthenticationManager;
+import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import com.tuotiansudai.util.RandomStringGenerator;
@@ -68,7 +69,7 @@ public class UserServiceImpl implements UserService {
     private AuditLogService auditLogService;
 
     @Autowired
-    private MyAuthenticationManager myAuthenticationManager;
+    private MyAuthenticationUtil myAuthenticationUtil;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -84,6 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PrepareUserMapper prepareUserMapper;
+
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
 
@@ -189,10 +191,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
+    public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto, Source source) {
         dto.setMobile(userMapper.findByLoginName(dto.getLoginName()).getMobile());
         BaseDto<PayDataDto> baseDto = payWrapperClient.register(dto);
-        myAuthenticationManager.createAuthentication(dto.getLoginName());
+        myAuthenticationUtil.createAuthentication(dto.getLoginName(), source);
 
         return baseDto;
     }

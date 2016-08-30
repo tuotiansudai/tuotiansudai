@@ -27,7 +27,7 @@
         </beans:property>
     </beans:bean>
 
-    <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
+    <beans:bean id="captchaHelper" class="com.tuotiansudai.spring.security.CaptchaHelper"/>
 
     <beans:bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
 

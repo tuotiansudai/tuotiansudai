@@ -1,8 +1,10 @@
 package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ImpersonateService;
 import com.tuotiansudai.spring.MyAuthenticationManager;
+import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,7 @@ public class ImpersonateServiceImpl implements ImpersonateService {
     private static Logger logger = Logger.getLogger(ImpersonateServiceImpl.class);
 
     @Autowired
-    private MyAuthenticationManager myAuthenticationManager;
+    private MyAuthenticationUtil myAuthenticationUtil;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -29,7 +31,7 @@ public class ImpersonateServiceImpl implements ImpersonateService {
 
         if (StringUtils.isNotEmpty(loginName)) {
             logger.info("impersonate login, securityCode: " + securityCode + ", user login name: " + loginName);
-            myAuthenticationManager.createAuthentication(loginName);
+            myAuthenticationUtil.createAuthentication(loginName, Source.WEB);
             redisWrapperClient.del(IMPERSONATE_SECURITY_KEY + securityCode);
             return true;
         } else {

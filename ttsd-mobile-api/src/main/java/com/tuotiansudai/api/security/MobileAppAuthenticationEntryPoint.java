@@ -2,6 +2,7 @@ package com.tuotiansudai.api.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.LoginResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,8 @@ import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 
 public class MobileAppAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
     static Logger log = Logger.getLogger(MobileAppAuthenticationEntryPoint.class);
-    @Autowired
-    private MobileAppTokenProvider mobileAppTokenProvider;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -27,7 +27,9 @@ public class MobileAppAuthenticationEntryPoint implements AuthenticationEntryPoi
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         log.debug(MessageFormat.format("[Authentication Entry Point] uri: {0} body: {1}", request.getRequestURI(), new BufferedRequestWrapper(request).getInputStreamString()));
 
-        BaseResponseDto dto = mobileAppTokenProvider.generateResponseDto(ReturnMessage.UNAUTHORIZED);
+        LoginResponseDataDto loginResponseDataDto = new LoginResponseDataDto();
+        BaseResponseDto<LoginResponseDataDto> dto = new BaseResponseDto<>(ReturnMessage.UNAUTHORIZED);
+        dto.setData(loginResponseDataDto);
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         PrintWriter out = response.getWriter();

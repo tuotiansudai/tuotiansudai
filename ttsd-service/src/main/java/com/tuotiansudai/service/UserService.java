@@ -3,6 +3,7 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.repository.model.UserView;
@@ -23,7 +24,7 @@ public interface UserService {
 
     boolean loginNameOrMobileIsExist(String loginNameOrMobile);
 
-    BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto);
+    BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto, Source source);
 
     /**
      * 修改用户密码

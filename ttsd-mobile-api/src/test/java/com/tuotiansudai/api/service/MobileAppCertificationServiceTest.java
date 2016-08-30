@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import org.junit.Test;
@@ -45,7 +46,7 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
         baseDto.setData(payDataDto);
         payDataDto.setStatus(true);
 
-        when(userService.registerAccount(any(RegisterAccountDto.class))).thenReturn(baseDto);
+        when(userService.registerAccount(any(RegisterAccountDto.class), any(Source.class))).thenReturn(baseDto);
 
         BaseResponseDto<CertificationResponseDataDto> baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
@@ -67,7 +68,7 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
         payDataDto.setStatus(false);
 
         when(accountMapper.findByLoginName(anyString())).thenReturn(null);
-        when(userService.registerAccount(any(RegisterAccountDto.class))).thenReturn(baseDto);
+        when(userService.registerAccount(any(RegisterAccountDto.class), any(Source.class))).thenReturn(baseDto);
         when(accountService.isIdentityNumberExist(anyString())).thenReturn(false);
         BaseResponseDto<CertificationResponseDataDto> baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
         assertEquals("0001",baseResponseDto.getCode());

@@ -27,7 +27,7 @@
         </beans:property>
     </beans:bean>
 
-    <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
+    <beans:bean id="captchaHelper" class="com.tuotiansudai.spring.security.CaptchaHelper"/>
 
     <beans:bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
 
@@ -35,7 +35,7 @@
         <beans:constructor-arg ref="webExpressionVoter"/>
     </beans:bean>
 
-    <beans:bean id="myLoginUrlAuthenticationEntryPoint" class="com.tuotiansudai.spring.MyLoginUrlAuthenticationEntryPoint">
+    <beans:bean id="myLoginUrlAuthenticationEntryPoint" class="com.tuotiansudai.spring.security.MyLoginUrlAuthenticationEntryPoint">
         <beans:constructor-arg name="loginFormUrl" value="/login"/>
     </beans:bean>
 

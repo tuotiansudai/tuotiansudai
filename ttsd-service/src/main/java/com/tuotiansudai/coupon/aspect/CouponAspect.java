@@ -6,6 +6,7 @@ import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SignInDto;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -44,11 +45,11 @@ public class CouponAspect {
     public void registerUserPointcut() {
     }
 
-    @Pointcut("execution(* com.tuotiansudai.client.SignInClient.sendSignIn(..))")
+    @Pointcut("execution(* *..MySimpleUrlAuthenticationSuccessHandler.onAuthenticationSuccess(..))")
     public void loginSuccessPointcut() {
     }
 
-    @Pointcut("execution(* *..MobileAppTokenProvider.refreshToken(..))")
+    @Pointcut("execution(* *..MyAuthenticationUtil.refreshTokenProcess(..))")
     public void refreshTokenPointcut() {
     }
 
@@ -66,15 +67,11 @@ public class CouponAspect {
         }
     }
 
-    @AfterReturning(value = "loginSuccessPointcut()", returning = "returnValue")
-    public void afterReturningUserLogin(JoinPoint joinPoint, LoginDto returnValue) {
+    @AfterReturning(value = "loginSuccessPointcut()")
+    public void afterReturningUserLogin(JoinPoint joinPoint) {
         logger.info("assign coupon after user login");
         try {
-            if(returnValue.getStatus()) {
-                SignInDto signInDto = (SignInDto) joinPoint.getArgs()[1];
-                String loginName = signInDto.getUsername();
-                couponAssignmentService.assignUserCoupon(loginName, userGroups);
-            }
+            couponAssignmentService.assignUserCoupon(LoginUserInfo.getLoginName(), userGroups);
         } catch (Exception e) {
             logger.error("assign coupon after user login is failed ", e);
         }
@@ -85,7 +82,7 @@ public class CouponAspect {
         logger.info("assign coupon after refresh token success");
         try {
             String loginName = (String) joinPoint.getArgs()[0];
-            couponAssignmentService.assignUserCoupon(loginName, userGroups);
+            couponAssignmentService.assignUserCoupon(LoginUserInfo.getLoginName(), userGroups);
         } catch (Exception e) {
             logger.error("assign coupon after refresh token is failed", e);
         }

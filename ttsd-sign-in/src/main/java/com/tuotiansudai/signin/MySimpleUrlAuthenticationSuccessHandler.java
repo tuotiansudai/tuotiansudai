@@ -45,6 +45,7 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
         Source source = (StringUtils.isEmpty(strSource)) ? Source.MOBILE : Source.valueOf(strSource.toUpperCase());
         loginLogService.generateLoginLog(loginName, source, RequestIPParser.parse(request), request.getParameter("deviceId"), true);
 
+        request.changeSessionId();
         LoginDto loginDto = new LoginDto();
         loginDto.setStatus(true);
         loginDto.setNewSessionId(request.getSession().getId());

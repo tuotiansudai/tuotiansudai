@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -49,7 +50,7 @@ public class RegisterAccountController {
     public BaseDto<PayDataDto> registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto) {
         if (IdentityNumberValidator.validateIdentity(registerAccountDto.getIdentityNumber())) {
             registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
-            return this.userService.registerAccount(registerAccountDto);
+            return this.userService.registerAccount(registerAccountDto, Source.WEB);
         }
 
         BaseDto<PayDataDto> baseDto = new BaseDto<>();

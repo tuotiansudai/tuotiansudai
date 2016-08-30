@@ -3,7 +3,7 @@ package com.tuotiansudai.aspect;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.repository.model.Environment;
+import com.tuotiansudai.dto.Environment;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -21,7 +21,7 @@ public class EnvironmentAspect {
     private String fakeCaptcha;
 
 
-    @Around(value = "execution(public boolean com.tuotiansudai.util.CaptchaHelper.captchaVerify(..))")
+    @Around(value = "execution(public boolean com.tuotiansudai.spring.security.CaptchaHelper.captchaVerify(..))")
     public Object aroundCaptchaVerify(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         if (Environment.SMOKE == environment) {
             return true;

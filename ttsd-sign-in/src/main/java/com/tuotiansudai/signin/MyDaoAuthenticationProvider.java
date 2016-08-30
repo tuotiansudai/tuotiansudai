@@ -4,7 +4,7 @@ import com.tuotiansudai.exception.CaptchaNotMatchException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.util.CaptchaHelper;
+import com.tuotiansudai.spring.security.CaptchaHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +50,13 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         if (enableCaptchaVerify) {
             String captcha = httpServletRequest.getParameter("captcha");
-            String deviceId = StringUtils.isEmpty(httpServletRequest.getParameter("j_deviceId"))?httpServletRequest.getParameter("deviceId"):httpServletRequest.getParameter("j_deviceId");
-            if(StringUtils.isNotEmpty(captcha)) {
+            String deviceId = StringUtils.isEmpty(httpServletRequest.getParameter("j_deviceId")) ? httpServletRequest.getParameter("deviceId") : httpServletRequest.getParameter("j_deviceId");
+            if (StringUtils.isNotEmpty(captcha)) {
                 boolean result;
                 if (StringUtils.isNotEmpty(deviceId)) {
-                    result = this.captchaHelper.captchaVerify(CaptchaHelper.BASIC_CAPTCHA, captcha, deviceId);
+                    result = this.captchaHelper.captchaVerify(captcha, deviceId, null);
                 } else {
-                    result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha);
+                    result = this.captchaHelper.captchaVerify(captcha, deviceId, null);
                 }
                 if (!result) {
                     logger.debug("Authentication failed: captcha does not match actual value");

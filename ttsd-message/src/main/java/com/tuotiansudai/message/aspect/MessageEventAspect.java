@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import org.apache.log4j.Logger;
@@ -224,9 +225,7 @@ public class MessageEventAspect {
 
     @AfterReturning(value = "loginSuccessPointcut()")
     public void afterReturningUserLogin(JoinPoint joinPoint) {
-        HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
-        String username = Strings.isNullOrEmpty(request.getParameter("username")) ? request.getParameter("j_username") : request.getParameter("username");
-        String loginName = userMapper.findByLoginNameOrMobile(username).getLoginName();
+        String loginName = LoginUserInfo.getLoginName();
         logger.info(MessageFormat.format("[Message Event Aspect] after login success({0}) pointcut start", loginName));
         try {
             userMessageEventGenerator.generateCouponExpiredAlertEvent(loginName);

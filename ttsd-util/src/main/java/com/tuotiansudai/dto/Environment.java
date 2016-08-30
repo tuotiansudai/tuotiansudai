@@ -1,4 +1,4 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.dto;
 
 public enum Environment {
     DEV,
@@ -8,6 +8,6 @@ public enum Environment {
     PRODUCTION;
 
     public static boolean isProduction(Environment environment){
-        return environment.equals(Environment.PRODUCTION);
+        return Environment.PRODUCTION == environment;
     }
 }

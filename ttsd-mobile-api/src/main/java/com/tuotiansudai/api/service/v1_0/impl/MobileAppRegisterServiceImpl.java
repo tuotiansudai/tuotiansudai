@@ -2,7 +2,6 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.security.MobileAppTokenProvider;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.api.service.v1_0.MobileAppRegisterService;
 import com.tuotiansudai.dto.BaseDto;
@@ -10,8 +9,10 @@ import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
     private MobileAppChannelService mobileAppChannelService;
 
     @Autowired
-    private MobileAppTokenProvider mobileAppTokenProvider;
+    private MyAuthenticationUtil myAuthenticationUtil;
 
     @Override
     public BaseResponseDto sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp) {
@@ -94,10 +95,10 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         } catch (ReferrerRelationException e) {
             return new BaseResponseDto(ReturnMessage.REFERRER_IS_NOT_EXIST.getCode(), e.getMessage());
         }
-        BaseResponseDto baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
+        BaseResponseDto<RegisterResponseDataDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
         RegisterResponseDataDto registerDataDto = new RegisterResponseDataDto();
         registerDataDto.setPhoneNum(registerRequestDto.getPhoneNum());
-        registerDataDto.setToken(mobileAppTokenProvider.refreshToken(dto.getLoginName()));
+        registerDataDto.setToken(myAuthenticationUtil.createAuthentication(dto.getLoginName(), Source.valueOf(registerRequestDto.getBaseParam().getPhoneNum())));
         baseResponseDto.setData(registerDataDto);
         return baseResponseDto;
     }

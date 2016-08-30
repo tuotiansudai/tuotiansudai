@@ -6,7 +6,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.SmsFatalNotifyDto;
 import com.tuotiansudai.job.InvestCallbackJob;
 import com.tuotiansudai.job.InvestTransferCallbackJob;
-import com.tuotiansudai.repository.model.Environment;
+import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.scheduler.repository.mapper.ExecutionLogMapper;
 import com.tuotiansudai.scheduler.repository.model.ExecuteStatus;
 import com.tuotiansudai.scheduler.repository.model.ExecutionLogModel;

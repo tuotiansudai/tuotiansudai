@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyAuthenticationManager {
 
-    @Autowired
     private UserDetailsService userDetailsService;
 
     public void createAuthentication(String username) {

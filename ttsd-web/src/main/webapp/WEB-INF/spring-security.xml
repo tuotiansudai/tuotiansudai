@@ -23,7 +23,7 @@
         </beans:property>
     </beans:bean>
 
-    <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
+    <beans:bean id="captchaHelper" class="com.tuotiansudai.spring.security.CaptchaHelper"/>
 
     <beans:bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
 
@@ -31,13 +31,32 @@
         <beans:constructor-arg ref="webExpressionVoter"/>
     </beans:bean>
 
-    <beans:bean id="myLoginUrlAuthenticationEntryPoint" class="com.tuotiansudai.spring.MyLoginUrlAuthenticationEntryPoint">
+    <beans:bean id="myLoginUrlAuthenticationEntryPoint" class="com.tuotiansudai.spring.security.MyLoginUrlAuthenticationEntryPoint">
         <beans:constructor-arg name="loginFormUrl" value="/login"/>
     </beans:bean>
 
-    <http auto-config="true" use-expressions="true" access-decision-manager-ref="affirmativeBased" entry-point-ref="myLoginUrlAuthenticationEntryPoint">
+    <beans:bean id="mySimpleUrlAuthenticationSuccessHandler" class="com.tuotiansudai.spring.security.MySimpleUrlAuthenticationSuccessHandler"/>
+    <beans:bean id="mySimpleUrlAuthenticationFailureHandler" class="com.tuotiansudai.spring.security.MySimpleUrlAuthenticationFailureHandler"/>
+    <beans:bean id="mySimpleUrlLogoutSuccessHandler" class="com.tuotiansudai.spring.security.MySimpleUrlLogoutSuccessHandler"/>
+    <beans:bean id="myWebAuthenticationDetailsSource" class="com.tuotiansudai.spring.security.MyWebAuthenticationDetailsSource"/>
+    <beans:bean id="myPreAuthenticatedProcessingFilter" class="com.tuotiansudai.spring.security.MyPreAuthenticatedProcessingFilter"/>
+    <beans:bean id="myAuthenticationProvider" class="com.tuotiansudai.spring.security.MyAuthenticationProvider"/>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider ref="myAuthenticationProvider"/>
+    </authentication-manager>
+
+    <http auto-config="true" use-expressions="true" access-decision-manager-ref="affirmativeBased" authentication-manager-ref="authenticationManager"
+          entry-point-ref="myLoginUrlAuthenticationEntryPoint">
         <access-denied-handler ref="myAccessDeniedHandler"/>
-        <form-login login-page="/login"/>
+        <form-login login-page="/login"
+                    authentication-details-source-ref="myWebAuthenticationDetailsSource"
+                    authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
+                    authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
+
+        <logout logout-url="/logout" success-handler-ref="mySimpleUrlLogoutSuccessHandler"/>
+
+        <custom-filter ref="myPreAuthenticatedProcessingFilter" position="PRE_AUTH_FILTER"/>
 
         <!--DO NOT MODIFY THE BELLOW CONFIG ANYTIME!-->
         <intercept-url pattern="/html/**" access="permitAll()"/>
@@ -50,9 +69,8 @@
         <intercept-url pattern="/favicon.ico" access="permitAll()"/>
 
 
-        <intercept-url pattern="/login/sign-in" access="isAnonymous()"/>
-        <intercept-url pattern="/login/sign-out" access="not isAnonymous()"/>
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
+        <intercept-url pattern="/logout/" access="not isAnonymous()"/>
 
         <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
@@ -104,10 +122,6 @@
     <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.spring.CsrfSecurityRequestMatcher">
         <beans:property name="excludedUrls">
             <beans:list>
-                <beans:value>/activity/rank-list</beans:value>
-                <beans:value>/activity/hero-ranking</beans:value>
-                <beans:value>/login/sign-in</beans:value>
-                <beans:value>/login/sign-out</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>

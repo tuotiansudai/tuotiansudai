@@ -6,7 +6,7 @@
 		   http://www.springframework.org/schema/security
 		   http://www.springframework.org/schema/security/spring-security-4.1.xsd">
 
-    <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
+    <beans:bean id="captchaHelper" class="com.tuotiansudai.spring.security.CaptchaHelper"/>
     <beans:bean id="loginLogService" class="com.tuotiansudai.signin.LoginLogService"/>
 
     <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.signin.MyDaoAuthenticationProvider">
@@ -17,9 +17,6 @@
             <beans:bean class="org.springframework.security.authentication.dao.ReflectionSaltSource">
                 <beans:property name="userPropertyToUse" value="salt"/>
             </beans:bean>
-        </beans:property>
-        <beans:property name="userDetailsService">
-            <beans:bean class="com.tuotiansudai.spring.MyUserDetailsService"/>
         </beans:property>
         <beans:property name="enableCaptchaVerify" value="true"/>
     </beans:bean>
@@ -32,7 +29,7 @@
         <headers>
             <frame-options policy="SAMEORIGIN"/>
         </headers>
-        <form-login login-processing-url="/loginHandler"
+        <form-login  login-processing-url="/loginHandler"
                     authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
         <logout logout-url="/logout" success-handler-ref="mySimpleUrlLogoutSuccessHandler"/>

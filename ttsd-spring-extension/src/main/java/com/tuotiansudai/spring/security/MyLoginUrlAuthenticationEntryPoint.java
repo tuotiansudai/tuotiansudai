@@ -1,4 +1,4 @@
-package com.tuotiansudai.spring;
+package com.tuotiansudai.spring.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;

@@ -61,8 +61,6 @@ public class SignInClient extends BaseClient {
 
     private final static String SIGN_IN_URL = "/loginHandler";
 
-    private final static String SIGN_OUT_URL = "/logout";
-
     private final static String REQUEST_ID = "requestId";
 
     private final static String ANONYMOUS = "anonymous";
@@ -84,11 +82,6 @@ public class SignInClient extends BaseClient {
 
         RequestBody requestBody = formEncodingBuilder.build();
         return this.send(oldSessionId, SIGN_IN_URL, requestBody);
-    }
-
-    public LoginDto sendSignOut(String oldSessionId) {
-        RequestBody requestBody = new FormEncodingBuilder().add("Cookie", "SESSION=" + oldSessionId).build();
-        return send(oldSessionId, SIGN_OUT_URL, requestBody);
     }
 
     private LoginDto send(String oldSessionId, String requestPath, RequestBody requestBody) {
