@@ -63,14 +63,14 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
         if (currentDate.before(this.activityAutumnStartTime) || currentDate.after(this.activityAutumnEndTime)) {
             return;
         }
-        logger.debug("[Calculate travel  prize begin...]");
+        logger.debug("[calculate travel  prize begin...]");
         calculateTravelPrize();
-        logger.debug("[Calculate travel  prize end...]");
+        logger.debug("[calculate travel  prize end...]");
 
 
-        logger.debug("[Calculate travel  luxury begin...]");
+        logger.debug("[calculate travel  luxury begin...]");
         calculateLuxuryPrize();
-        logger.debug("[Calculate travel  luxury end...]");
+        logger.debug("[calculate travel  luxury end...]");
 
 
     }
@@ -117,7 +117,7 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
     }
 
     private void calculateLuxuryPrize() {
-        DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
+     DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
         Set luxuryKeySet = redisWrapperClient.hkeys(activityAutumnLuxuryInvestKey);
         List<LuxuryPrizeModel> luxuryPrizeModels = luxuryPrizeMapper.findAll();
 
