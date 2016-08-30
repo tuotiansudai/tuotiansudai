@@ -7,10 +7,10 @@
             <div class="title-task clearfix">
                 <span class="active">新手任务</span>
             </div>
-            <!-- <div class="notice-tip">
+           <div class="notice-tip">
                 任务提醒：快去完成绑定银行卡任务，领取200财豆奖励吧！
                 <i class="fr fa fa-chevron-up"></i>
-            </div> -->
+            </div>
             <div class="task-frame clearfix" id="taskFrame">
                 <#list newbiePointTasks as newbiePointTask>
                     <div class="task-box">
@@ -38,7 +38,7 @@
                 <#list advancedPointTasks as advancePointTask>
                     <div class="border-box <#if advancePointTask.description??>two-col<#else>one-col</#if>">
                         <dl class="fl">
-                            <dt>${advancePointTask.title} <span class="color-key">奖励${advancePointTask.point?string.computer}积分</span></dt>
+                            <dt>${advancePointTask.title?replace('.00','')} <span class="color-key">奖励${advancePointTask.point?string.computer}积分</span></dt>
                             <#if advancePointTask.description??>
                                 <dd>${advancePointTask.description}</dd>
                             </#if>
@@ -57,7 +57,7 @@
                 <#list completedAdvancedPointTasks as completedAdvancePointTask>
                     <div class="border-box one-col">
                         <dl class="fl">
-                            <dt>${completedAdvancePointTask.title} <span class="color-key">奖励${completedAdvancePointTask.point?string.computer}积分</span></dt>
+                            <dt>${completedAdvancePointTask.title?replace('.00','')} <span class="color-key">奖励${completedAdvancePointTask.point?string.computer}积分</span></dt>
                         </dl>
                         <button class="fr btn-normal" disabled>已完成</button>
                     </div>
