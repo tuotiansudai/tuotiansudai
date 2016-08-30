@@ -117,7 +117,7 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
     }
 
     private void calculateLuxuryPrize() {
- a'd        DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
+        DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
         Set luxuryKeySet = redisWrapperClient.hkeys(activityAutumnLuxuryInvestKey);
         List<LuxuryPrizeModel> luxuryPrizeModels = luxuryPrizeMapper.findAll();
 
