@@ -26,7 +26,7 @@
 
     <insert id="create" parameterType="AnswerModel" useGeneratedKeys="true" keyProperty="id">
         insert into answer (login_name, mobile, fake_mobile, question_id, answer, best_answer, adopted_time, favored_by, approved_by, approved_time, rejected_by, rejected_time, status, created_time)
-        value(#{loginName}, #{questionId}, #{answer}, #{bestAnswer}, #{adoptedTime}, #{favoredBy, typeHandler=com.tuotiansudai.ask.repository.mybatis.StringListTypeHandler}, #{approvedBy}, #{approvedTime}, #{rejectedBy}, #{rejectedTime}, #{status}, now())
+        value(#{loginName}, #{mobile}, #{fakeMobile}, #{questionId}, #{answer}, #{bestAnswer}, #{adoptedTime}, #{favoredBy, typeHandler=com.tuotiansudai.ask.repository.mybatis.StringListTypeHandler}, #{approvedBy}, #{approvedTime}, #{rejectedBy}, #{rejectedTime}, #{status}, now())
     </insert>
 
     <update id="update" parameterType="AnswerModel">
