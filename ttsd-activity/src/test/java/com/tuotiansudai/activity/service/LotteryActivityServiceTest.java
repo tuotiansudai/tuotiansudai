@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional()
+@Transactional(value = "activityTransactionManager")
 public class LotteryActivityServiceTest {
 
     @Autowired
@@ -95,7 +95,7 @@ public class LotteryActivityServiceTest {
 
     @Test
     public void shouldFindDrawLotteryPrizeRecordByMobileIsOk(){
-        UserModel userModel = getFakeUser("testDrawPrize", "12345678900");
+        UserModel userModel = getFakeUser("testDrawPrize43123", "12345678900");
         getUserLotteryPrizeModel(userModel.getLoginName(), userModel.getMobile(), "testName");
         List<UserLotteryPrizeView> userLotteryPrizeViews = lotteryActivityService.findDrawLotteryPrizeRecordByMobile(userModel.getMobile(), "");
         assertTrue(CollectionUtils.isNotEmpty(userLotteryPrizeViews));
@@ -105,7 +105,7 @@ public class LotteryActivityServiceTest {
 
     @Test
     public void shouldFindDrawLotteryPrizeRecordIsOk(){
-        UserModel userModel = getFakeUser("testDrawPrize", "12345678900");
+        UserModel userModel = getFakeUser("testDrawPrize1234", "12345678900");
         getUserLotteryPrizeModel(userModel.getLoginName(), userModel.getMobile(), "testName");
         List<UserLotteryPrizeView> userLotteryPrizeViews = lotteryActivityService.findDrawLotteryPrizeRecord(userModel.getMobile(), "");
         assertTrue(CollectionUtils.isNotEmpty(userLotteryPrizeViews));
