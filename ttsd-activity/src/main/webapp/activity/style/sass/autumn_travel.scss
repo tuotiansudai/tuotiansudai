@@ -442,14 +442,6 @@ body {
     -moz-transition: All 0.4s ease-in-out;
     -o-transition: All 0.4s ease-in-out;
   }
-  //*:hover {
-  //  transform: scale(1.2);
-  //  -webkit-transform: scale(1.2);
-  //  -moz-transform: scale(1.2);
-  //  -o-transform: scale(1.2);
-  //  -ms-transform: scale(1.2);
-  //}
-
   body {
     background: #a3e2ee;
   }
@@ -478,7 +470,8 @@ body {
       }
     }
     .bg-box {
-      padding:10px;
+      padding:0px;
+      box-sizing: border-box;
     }
     .title-normal-box {
       text-align: left;
@@ -531,6 +524,7 @@ body {
       width:100%;
       height: 270px;
       padding-top: 40px;
+      padding-bottom: 40px;
       overflow: hidden;
       .swiper-wrapper {
         width:310%;
@@ -588,7 +582,7 @@ body {
         }
         .img-info {
           .kind-text {
-            top: 83px;
+            top: 128px;
           }
           .kind-bottom {
             font-size: 12px;
@@ -625,9 +619,15 @@ body {
         th {
           font-size:14px;
           padding: 5px 0 5px 6px;
+          &.hideCol {
+            display: none;
+          }
         }
         td {
           font-size: 11px;
+            &.hideCol {
+              display: none;
+            }
         }
       }
     }
@@ -652,6 +652,7 @@ body {
     }
     .activity-rule {
       font-size:11px;
+      padding:10px;
       b {
         font-size:12px;
         padding:10px 0;

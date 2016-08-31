@@ -7,9 +7,27 @@
     .autumn-travel-detail img {
         width: 100%;
     }
+    .btn-normal {
+        margin-top:40px;
+        border-bottom:4px solid #c75f28;
+        font-size:22px;
+        border-radius: 0;
+        letter-spacing: 0;
+        font-weight: bold;
+        padding: 9px 50px;
+    }
 </style>
 <div class="page-width autumn-travel-detail">
     <img src="${introduce}">
+
+    <div class="tc">
+        <@global.isAnonymous>
+            <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+        </@global.isAnonymous>
+        <@global.isNotAnonymous>
+            <a href="/loan-list" class="btn-normal">立即投资</a>
+        </@global.isNotAnonymous>
+    </div>
 </div>
 </@global.main>
 

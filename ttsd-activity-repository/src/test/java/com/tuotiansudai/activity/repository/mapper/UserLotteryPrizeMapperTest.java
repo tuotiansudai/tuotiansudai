@@ -41,7 +41,7 @@ public class UserLotteryPrizeMapperTest extends BaseMapperTest{
         assertTrue(CollectionUtils.isNotEmpty(userLotteryPrizeViews));
     }
 
-    public UserLotteryPrizeModel getUserLotteryPrizeModel(String loginName,String mobile,LotteryPrize lotteryPrize){
+    private UserLotteryPrizeModel getUserLotteryPrizeModel(String loginName,String mobile,LotteryPrize lotteryPrize){
         return new UserLotteryPrizeModel(mobile,loginName,null,lotteryPrize, DateTime.now().toDate());
     }
 
