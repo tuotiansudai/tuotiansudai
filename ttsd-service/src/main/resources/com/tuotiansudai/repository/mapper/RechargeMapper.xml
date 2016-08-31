@@ -5,22 +5,22 @@
 <mapper namespace="com.tuotiansudai.repository.mapper.RechargeMapper">
 
     <resultMap id="rechargeResultMap" type="RechargeModel">
-        <id column="id" property="id"></id>
-        <result column="login_name" property="loginName"></result>
-        <result column="amount" property="amount"></result>
-        <result column="bank_code" property="bankCode"></result>
-        <result column="status" property="status"></result>
-        <result column="source" property="source"></result>
-        <result column="channel" property="channel"></result>
-        <result column="fast_pay" property="fastPay"></result>
-        <result column="public_pay" property="publicPay"></result>
-        <result column="created_time" property="createdTime"></result>
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="amount" property="amount"/>
+        <result column="bank_code" property="bankCode"/>
+        <result column="status" property="status"/>
+        <result column="source" property="source"/>
+        <result column="channel" property="channel"/>
+        <result column="fast_pay" property="fastPay"/>
+        <result column="public_pay" property="publicPay"/>
+        <result column="created_time" property="createdTime"/>
     </resultMap>
 
     <resultMap id="rechargeResultView" type="RechargePaginationView" extends="rechargeResultMap">
-        <result column="user_name" property="userName"></result>
-        <result column="mobile" property="mobile"></result>
-        <result column="is_staff" property="isStaff"></result>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="is_staff" property="isStaff"/>
     </resultMap>
 
 

@@ -4,18 +4,21 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppTransferApplicationService;
-
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.InvestRepayModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
@@ -57,10 +60,6 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private AccountMapper accountMapper;
     @Autowired
     private InvestRepayMapper investRepayMapper;
-    @Autowired
-    private InvestService investService;
-    @Autowired
-    private LoanRepayMapper loanRepayMapper;
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
     @Value(value = "${pay.interest.fee}")
@@ -211,7 +210,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId());
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(requestDto.getBaseParam().getUserId());
         double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
-        transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels,investFeeRate)));
+        transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
 
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
