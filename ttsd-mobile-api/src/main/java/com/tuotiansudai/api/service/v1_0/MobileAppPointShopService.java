@@ -7,5 +7,6 @@ public interface MobileAppPointShopService {
 
     BaseResponseDto updateUserAddress(String loginName,String contract,String mobile,String address);
 
+    BaseResponseDto findUserAddressResponseDto(String loginName);
 
 }

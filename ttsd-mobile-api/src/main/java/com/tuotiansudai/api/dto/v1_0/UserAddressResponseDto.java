@@ -1,6 +1,8 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import com.tuotiansudai.point.repository.model.UserAddressModel;
+
 public class UserAddressResponseDto extends BaseResponseDataDto{
 
     private String contract;
@@ -11,6 +13,12 @@ public class UserAddressResponseDto extends BaseResponseDataDto{
         this.contract = contract;
         this.mobile = mobile;
         this.address = address;
+    }
+
+    public UserAddressResponseDto(UserAddressModel userAddressModel){
+        this.contract = userAddressModel.getContact();
+        this.mobile = userAddressModel.getMobile();
+        this.address = userAddressModel.getAddress();
     }
 
     public String getContract() {
