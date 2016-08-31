@@ -1,4 +1,4 @@
-require(['jquery'], function ($) {
+require(['jquery', 'jquery.ajax.extension'], function ($) {
 
     $("a.autumn-travel-invest-channel").click(function () {
         $.ajax({

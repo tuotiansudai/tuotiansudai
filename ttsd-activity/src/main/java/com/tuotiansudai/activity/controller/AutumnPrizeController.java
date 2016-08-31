@@ -129,6 +129,7 @@ public class AutumnPrizeController {
     }
 
     @RequestMapping(path = "/luxury/invest", method = RequestMethod.POST)
+    @ResponseBody
     public String luxuryInvest() {
         String loginName = LoginUserInfo.getLoginName();
         if (!Strings.isNullOrEmpty(loginName)) {
