@@ -52,7 +52,7 @@ public class LotteryActivityServiceTest {
     @Autowired
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
-    @Test
+    @Ignore
     public void shouldGetDrawPrizeTimeIsOk(){
         String loginName = "testDrawPrize";
         String referrerName = "testReferrerName";
@@ -94,7 +94,7 @@ public class LotteryActivityServiceTest {
         assertEquals(time,0);
     }
 
-    @Test
+    @Ignore
     public void shouldFindDrawLotteryPrizeRecordByMobileIsOk(){
         UserModel userModel = getFakeUser("testDrawPrize11", "12345678902");
         getUserLotteryPrizeModel(userModel.getLoginName(), userModel.getMobile(), "testName");
@@ -104,7 +104,7 @@ public class LotteryActivityServiceTest {
         assertEquals(userLotteryPrizeViews.size(), 0);
     }
 
-    @Test
+    @Ignore
     public void shouldFindDrawLotteryPrizeRecordIsOk(){
         UserModel userModel = getFakeUser("testDrawPrize12", "12345678901");
         getUserLotteryPrizeModel(userModel.getLoginName(), userModel.getMobile(), "testName");
