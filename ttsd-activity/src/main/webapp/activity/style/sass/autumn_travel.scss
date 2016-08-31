@@ -268,13 +268,16 @@ body {
         padding: 5px 20px;
       }
       .img-info {
-        margin:20px;
+        margin:18px;
         border:2px solid #fff;
         position: relative;
-        img { width: 100%; }
+        img {
+          width: 100%;
+          height:160px;
+        }
         .kind-text {
           position: absolute;
-          top: 120px;
+          top: 128px;
           height: 32px;
           background: rgba(0,0,0,0.2);
           width: 100%;
@@ -299,6 +302,9 @@ body {
           em {
             font-size: 20px;
           }
+        }
+        &:hover {
+          box-shadow: 0 0 20px rgba(0,0,0,0.3);
         }
       }
     }
