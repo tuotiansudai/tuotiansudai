@@ -11,6 +11,7 @@ import com.tuotiansudai.console.activity.dto.TravelPrizeRequestDto;
 import com.tuotiansudai.activity.dto.UserPrizePaginationItemDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,6 +73,7 @@ public class TravelPrizeService {
         model.setUpdatedBy(loginName);
         model.setUpdatedTime(new Date());
         model.setIntroduce(dto.getIntroduce());
+        model.setInvestAmount(AmountConverter.convertStringToCent(dto.getInvestAmount()));
         travelPrizeMapper.update(model);
     }
 }

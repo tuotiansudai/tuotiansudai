@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface CouponService {
 
-    void createCoupon(String loginName,ExchangeCouponDto exchangeCouponDto) throws CreateCouponException;
+    ExchangeCouponDto createCoupon(String loginName,ExchangeCouponDto exchangeCouponDto) throws CreateCouponException;
 
     void editCoupon(String loginName,ExchangeCouponDto exchangeCouponDto) throws CreateCouponException;
 

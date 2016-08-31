@@ -1,7 +1,7 @@
 apply plugin: 'war'
 
 dependencies {
-    compile project(':ttsd-service'),
+    compile project(':ttsd-user-service'),
             project(':ttsd-point'),
             project(':ttsd-web-common-config'),
             fileTree(dir: 'libs', include: '**/*.jar')

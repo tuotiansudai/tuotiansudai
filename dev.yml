@@ -33,7 +33,7 @@ console:
 activity-console:
   image: "leoshi/ttsd-tomcat8-java7:UTC8"
   ports:
-    - "20018:8080"
+    - "20019:8080"
   volumes:
     - ./ttsd-activity-console/war:/webapps
   links:
@@ -73,6 +73,15 @@ activity:
     - "20007:8080"
   volumes:
     - ./ttsd-activity/war:/webapps
+  links:
+    - "redis-server"
+    - "static-server"
+point:
+  image: "leoshi/ttsd-tomcat8-java7:UTC8"
+  ports:
+    - "20018:8080"
+  volumes:
+    - ./ttsd-point-web/war:/webapps
   links:
     - "redis-server"
     - "static-server"
@@ -129,6 +138,7 @@ nginx-server_web:
     - "activity"
     - "web"
     - "ask"
+    - "point"
 nginx-server_console:
   image: "nginx"
   volumes:

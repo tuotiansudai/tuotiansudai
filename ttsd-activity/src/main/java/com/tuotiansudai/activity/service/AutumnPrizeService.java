@@ -20,6 +20,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.MobileEncoder;
+import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,20 +78,10 @@ public class AutumnPrizeService {
         if (Strings.isNullOrEmpty(invests)) {
             return amount;
         }
-
-        List<String> ids = Lists.newArrayList(invests.split("\\|"));
-
-        List<InvestModel> investModels = investMapper.findByIds(Lists.transform(ids, new Function<String, Long>() {
-            @Override
-            public Long apply(String input) {
-                return Long.parseLong(input);
-            }
-        }));
-
-        for (InvestModel investModel : investModels) {
-            amount += investModel.getAmount();
+        List<String> investDetail = Lists.newArrayList(invests.split("\\|"));
+        if(CollectionUtils.isNotEmpty(investDetail) && investDetail.size() >= 1){
+            return Long.parseLong(investDetail.get(0));
         }
-
         return amount;
     }
 

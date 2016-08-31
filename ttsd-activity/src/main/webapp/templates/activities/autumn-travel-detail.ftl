@@ -9,7 +9,7 @@
     }
 </style>
 <div class="page-width autumn-travel-detail">
-    <img src="${staticServer}/activity/images/autumn-tour/bar-app.jpg">
+    <img src="${introduce}">
 </div>
 </@global.main>
 
