@@ -24,6 +24,9 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
     private String investTime;
     private String recheckTime;
     private String lastRepayDate;
+    private String unPaidRepay;
+    private String membershipLevel;
+    private List<String> usedCoupons;
     private List<InvestRepayDataDto> investRepays;
 
 
@@ -163,5 +166,29 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
 
     public void setInvestRepays(List<InvestRepayDataDto> investRepays) {
         this.investRepays = investRepays;
+    }
+
+    public String getUnPaidRepay() {
+        return unPaidRepay;
+    }
+
+    public void setUnPaidRepay(String unPaidRepay) {
+        this.unPaidRepay = unPaidRepay;
+    }
+
+    public String getMembershipLevel() {
+        return membershipLevel;
+    }
+
+    public void setMembershipLevel(String membershipLevel) {
+        this.membershipLevel = membershipLevel;
+    }
+
+    public List<String> getUsedCoupons() {
+        return usedCoupons;
+    }
+
+    public void setUsedCoupons(List<String> usedCoupons) {
+        this.usedCoupons = usedCoupons;
     }
 }

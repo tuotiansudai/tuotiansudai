@@ -2899,12 +2899,19 @@ h5 {
           top: 30px;
           display: none;
           z-index: 999; }
+      .header-container .header ul li.header-membership {
+        padding-right: 19px;
+        background: #333 url("/activity/images/icons/top-icon.png") no-repeat 100% 50%; }
+      .header-container .header ul li.membership-store {
+        padding-left: 19px;
+        background: #333 url("/activity/images/icons/icon-shop.png") no-repeat 2px 50%; }
+        .header-container .header ul li.membership-store a {
+          padding-left: 0;
+          color: #FC4A52;
+          font-size: 11px; }
       .header-container .header ul li a {
         padding-left: 8px;
         color: #fff; }
-  .header-container .header-membership {
-    padding-right: 19px;
-    background: #333 url("/activity/images/icons/top-icon.png") no-repeat 100% 50%; }
 
 .footer-container {
   width: 100%;

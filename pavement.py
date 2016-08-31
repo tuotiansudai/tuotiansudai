@@ -212,6 +212,8 @@ def generate_git_log_file():
     sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/style | awk \'{print $3,$4}\' >> git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-activity/src/main/webapp/activity/js | awk \'{print $3,$4}\' >> git_version.log')
     sh('/usr/bin/git ls-tree -r HEAD ttsd-activity/src/main/webapp/activity/style | awk \'{print $3,$4}\' >> git_version.log')
+    sh('/usr/bin/git ls-tree -r HEAD ttsd-point-web/src/main/webapp/point/js | awk \'{print $3,$4}\' >> git_version.log')
+    sh('/usr/bin/git ls-tree -r HEAD ttsd-point-web/src/main/webapp/point/style | awk \'{print $3,$4}\' >> git_version.log')
 
 
 def versioning_min_files(path):
