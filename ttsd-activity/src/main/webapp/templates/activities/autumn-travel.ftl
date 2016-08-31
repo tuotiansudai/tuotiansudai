@@ -33,7 +33,7 @@
         <div class="prize-kind clearfix swiper-container">
             <div class="swiper-wrapper" id="sliderBox">
                 <#list travelPrize as prize>
-                    <div class="prize-box swiper-slide <#if prize_index == 2>active</#if>">
+                    <div class="prize-box swiper-slide <#if prize_index == 1>active</#if>">
                         <div class="pk-title">投资满<@amount>${prize.investAmount?string.computer}</@amount>元即可获得</div>
                         <div class="img-info">
                             <a href="/activity/autumn/travel/${prize.id?string.computer}/detail"><img src="${prize.image}"></a>
