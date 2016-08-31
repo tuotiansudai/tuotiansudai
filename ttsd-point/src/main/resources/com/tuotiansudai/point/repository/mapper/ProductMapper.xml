@@ -107,4 +107,17 @@
         SELECT * FROM `aa`.`product` WHERE coupon_id = #{couponId}
     </select>
 
+    <select id="findAllProductsByGoodsType" resultMap="productResultMap">
+        SELECT * FROM product p
+        <where>
+            <if test="goodsTypes != null ">
+                and type IN
+                <foreach collection="goodsTypes" item="goodsType" open="(" separator="," close=")">
+                    #{goodsType}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY seq ASC, updated_time DESC
+        limit #{index}, #{pageSize}
+    </select>
 </mapper>

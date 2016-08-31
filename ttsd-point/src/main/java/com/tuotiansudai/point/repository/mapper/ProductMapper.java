@@ -30,4 +30,9 @@ public interface ProductMapper {
     ProductModel findById(@Param(value = "id") long id);
 
     ProductModel findByCouponId(@Param(value = "couponId") long couponId);
+
+    List<ProductModel> findExchangeableProductsList(@Param(value = "goodsTypes") List<GoodsType> goodsTypes,
+                                                    @Param(value = "index") int index,
+                                                    @Param(value = "pageSize") int pageSize);
+
 }

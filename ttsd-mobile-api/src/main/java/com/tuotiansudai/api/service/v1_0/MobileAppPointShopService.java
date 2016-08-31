@@ -1,12 +1,18 @@
 package com.tuotiansudai.api.service.v1_0;
 
 
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.UserAddressRequestDto;
 
 public interface MobileAppPointShopService {
 
-    BaseResponseDto updateUserAddress(String loginName,String contract,String mobile,String address);
+    BaseResponseDto updateUserAddress(UserAddressRequestDto userAddressRequestDto);
 
-    BaseResponseDto findUserAddressResponseDto(String loginName);
+    BaseResponseDto findUserAddressResponseDto(BaseParamDto baseParamDto);
+
+    BaseResponseDto findUserPointsOrders(BaseParamDto baseParamDto);
+
+    BaseResponseDto findPointHome(BaseParamDto baseParamDto);
 
 }
