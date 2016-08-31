@@ -59,8 +59,9 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        Date currentDate = new Date();
-        if (currentDate.before(this.activityAutumnStartTime) || currentDate.after(this.activityAutumnEndTime)) {
+        Date yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay().toDate();
+
+        if (yesterday.before(this.activityAutumnStartTime) || yesterday.after(this.activityAutumnEndTime)) {
             return;
         }
         logger.debug("[calculate travel  prize begin...]");
