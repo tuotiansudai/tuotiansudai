@@ -22,7 +22,7 @@
 
     <div class="tc">
         <@global.isAnonymous>
-            <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+            <a href="/login?redirect=/activity/autumn/travel" class="btn-normal autumn-travel-invest-channel">立即投资</a>
         </@global.isAnonymous>
         <@global.isNotAnonymous>
             <a href="/loan-list" class="btn-normal">立即投资</a>
