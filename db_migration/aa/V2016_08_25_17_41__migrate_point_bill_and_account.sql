@@ -1,8 +1,8 @@
 BEGIN ;
 
 UPDATE point_bill pb
-LEFT JOIN invest i ON pb.order_id = i.id
-LEFT JOIN loan l ON i.loan_id = l.id
+JOIN invest i ON pb.order_id = i.id
+JOIN loan l ON i.loan_id = l.id
 SET point = TRUNCATE(point*duration/365, 0)
 WHERE pb.business_type = 'INVEST';
 
