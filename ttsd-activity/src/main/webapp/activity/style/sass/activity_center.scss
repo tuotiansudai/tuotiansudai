@@ -19,67 +19,100 @@
       vertical-align: top;
     }
   }
+  .ac-item{
+    margin-bottom:25px;
+    span{
+      float:left;
+      width:120px;
+      height:35px;
+      color:#ff752a;
+      line-height:35px;
+      background:#fff;
+      cursor:pointer;
+      text-align:center;
+      border:1px solid #ff752a;
+      &.active{
+        color:#fff;
+        background:#ff752a;
+      }
+    }
+  }
   .activity-container {
-
-    .activity-box {
-      height:198px;
+    .actor-list{
+      float:left;
       width:100%;
-      border:1px solid #e6e6e6;
-      position: relative;
-      margin-bottom: 10px;
-      .activity-img {
-        width:689px;
+      display:none;
+      &.active{
+        display:block;
+      }
+      .activity-box {
         height:198px;
-        position: absolute;
-        left: 0;
-        top:0;
-        overflow: hidden;
-        .img-inner {
-          height:100%;
-          img {
+        width:100%;
+        border:1px solid #e6e6e6;
+        position: relative;
+        margin-bottom: 10px;
+        .activity-img {
+          width:689px;
+          height:198px;
+          position: absolute;
+          left: 0;
+          top:0;
+          overflow: hidden;
+          .img-inner {
             height:100%;
-            margin-left: -165px;
+            img {
+              height:100%;
+              margin-left: -165px;
+            }
           }
         }
-      }
-      .icon-going {
-        position: absolute;
-        right:20px;
-        top:-2px;
-        background: url("/activity/images/sign/activityCenter/going.png") left top no-repeat;
-        width:49px;
-        height:52px;
-      }
-      .activity-title {
-        position: absolute;
-        width:309px;
-        right:0;
-        top:50px;
-        text-align: center;
-        font-size: 18px;
-        color: #4c4c4c;
-      }
-      .button-pos {
-        position: absolute;
-        right: 80px;
-        top: 122px;
-        .btn {
-          border-radius: 0;
-          background: #fff;
-          border:1px solid #bfbfbf;
-          color: #808080;
+        .icon-going {
+          position: absolute;
+          right:20px;
+          top:-2px;
+          background: url("/activity/images/sign/activityCenter/going.png") left top no-repeat;
+          width:49px;
+          height:52px;
         }
-      }
-      &:hover {
-        border:1px solid #ff752a;
-        -moz-box-shadow:1px 1px 10px #ccc;
-        -webkit-box-shadow:1px 1px 10px #ccc;
-        box-shadow:1px 1px 10px #ccc;
-        cursor: pointer;
-        .button-pos .btn {
-          background: #ff752a;
+        .icon-finished {
+          position: absolute;
+          right:20px;
+          top:-2px;
+          background: url("/activity/images/sign/activityCenter/finished.png") left top no-repeat;
+          width:49px;
+          height:52px;
+        }
+        .activity-title {
+          position: absolute;
+          width:309px;
+          right:0;
+          top:50px;
+          text-align: center;
+          font-size: 18px;
+          color: #4c4c4c;
+        }
+        .button-pos {
+          position: absolute;
+          right: 80px;
+          top: 122px;
+          .btn {
+            border-radius: 0;
+            background: #fff;
+            border:1px solid #bfbfbf;
+            color: #808080;
+          }
+        }
+        &:hover {
           border:1px solid #ff752a;
-          color: #fff;
+          -moz-box-shadow:1px 1px 10px #ccc;
+          -webkit-box-shadow:1px 1px 10px #ccc;
+          box-shadow:1px 1px 10px #ccc;
+          cursor: pointer;
+          .button-pos .btn {
+            background: #ff752a;
+            border:1px solid #ff752a;
+            color: #fff;
+          }
         }
       }
     }
