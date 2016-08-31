@@ -1,8 +1,17 @@
 require(['jquery'],function($){
 	$(function() {
+        var $taskFrame=$('#taskFrame');
 		var $taskBox=$('#taskFrame').find('.task-box'),
 			$taskStatusMenu=$('#taskStatusMenu'),
 			$buttonMore=$('.button-more');
+
+        if($taskFrame.find('a[disabled="disabled"]').length==4) {
+            var $tip=$('.notice-tip');
+            $tip.find('em').text('任务提醒：新手任务已完成,快去完成进阶任务吧！');
+            $taskBox.toggle();
+            $tip.find('i').addClass('fa-chevron-down').removeClass('fa-chevron-up');
+
+        }
 
 			
 		$('.notice-tip').on('click',function() {
