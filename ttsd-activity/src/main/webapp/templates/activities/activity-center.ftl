@@ -20,40 +20,29 @@
                     </div>
                     <i class="icon-going"><span class="hide">进行中</span></i>
                     <span class="activity-title">${activityItem.description}</span>
-                <span class="button-pos">
-                    <a class="btn" href="${activityItem.webActivityUrl}">查看详情</a>
-                    <i class="fa fa-angle-right hide"></i>
-                </span>
+                    <span class="button-pos">
+                        <a class="btn" href="${activityItem.webActivityUrl}">查看详情</a>
+                        <i class="fa fa-angle-right hide"></i>
+                    </span>
                 </div>
             </#list>
         </div>
         <div class="actor-list">
-            <div class="activity-box">
-                <div class="activity-img">
-                    <div class="img-inner">
-                        <img src="http://dummyimage.com/689x198/4d494d/686a82.gif&text=placeholder+image" alt="placeholder+image">
+            <#list data as activityItem>
+                <div class="activity-box">
+                    <div class="activity-img">
+                        <div class="img-inner">
+                            <img src="${activityItem.webPictureUrl}" alt="${activityItem.description}">
+                        </div>
                     </div>
+                    <i class="icon-finished"><span class="hide">已结束</span></i>
+                    <span class="activity-title">${activityItem.description}</span>
+                    <span class="button-pos">
+                        <a class="btn" href="${activityItem.webActivityUrl}">查看详情</a>
+                        <i class="fa fa-angle-right hide"></i>
+                    </span>
                 </div>
-                <i class="icon-finished"><span class="hide">进行中</span></i>
-                <span class="activity-title">sdfsdfsdf</span>
-                <span class="button-pos">
-                    <a class="btn" href="/">查看详情</a>
-                    <i class="fa fa-angle-right hide"></i>
-                </span>
-            </div>
-            <div class="activity-box">
-                <div class="activity-img">
-                    <div class="img-inner">
-                        <img src="http://dummyimage.com/689x198/4d494d/686a82.gif&text=placeholder+image" alt="placeholder+image">
-                    </div>
-                </div>
-                <i class="icon-finished"><span class="hide">进行中</span></i>
-                <span class="activity-title">sdfsdfsdf</span>
-                <span class="button-pos">
-                    <a class="btn" href="/">查看详情</a>
-                    <i class="fa fa-angle-right hide"></i>
-                </span>
-            </div>
+            </#list>
         </div>
     </div>
 
