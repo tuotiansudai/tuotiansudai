@@ -120,19 +120,21 @@ public class AutumnPrizeController {
 
     @RequestMapping(path = "/travel/invest", method = RequestMethod.POST)
     @ResponseBody
-    public void travelInvest() {
+    public String travelInvest() {
         String loginName = LoginUserInfo.getLoginName();
         if (!Strings.isNullOrEmpty(loginName)) {
             redisWrapperClient.hset(this.activityAutumnInvestChannelKey, loginName, "travel", 3600 * 24 * 60);
         }
+        return "travel";
     }
 
     @RequestMapping(path = "/luxury/invest", method = RequestMethod.POST)
-    public void luxuryInvest() {
+    public String luxuryInvest() {
         String loginName = LoginUserInfo.getLoginName();
         if (!Strings.isNullOrEmpty(loginName)) {
             redisWrapperClient.hset(this.activityAutumnInvestChannelKey, loginName, "luxury", 3600 * 24 * 60);
         }
+        return "luxury";
     }
 
     @RequestMapping(path = "/luxury/{id:^\\d+$}/detail", method = RequestMethod.GET)
