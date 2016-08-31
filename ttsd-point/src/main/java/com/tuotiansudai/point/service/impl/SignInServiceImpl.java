@@ -7,6 +7,7 @@ import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.SignInService;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.log4j.Logger;
@@ -31,10 +32,16 @@ public class SignInServiceImpl implements SignInService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private AccountMapper accountMapper;
 
     @Override
     @Transactional
     public SignInPointDto signIn(String loginName) {
+        if(null == accountMapper.findByLoginName(loginName)) {
+            return null;
+        }
+
         DateTime today = new DateTime().withTimeAtStartOfDay();
 
         SignInPointDto signInPointDto = new SignInPointDto(SignInPoint.FIRST_SIGN_IN.getTimes(), today.toDate(), SignInPoint.FIRST_SIGN_IN.getPoint(),SignInPoint.SECOND_SIGN_IN.getPoint());
