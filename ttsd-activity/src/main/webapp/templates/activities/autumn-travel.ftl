@@ -44,7 +44,11 @@
                                     <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
+                                    <#if !isAppSource>
+                                    <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel" target="_blank">立即投资</a>
+                                    <#else>
                                     <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+                                    </#if>
                                 </@global.isNotAnonymous>
                             </div>
                         </div>

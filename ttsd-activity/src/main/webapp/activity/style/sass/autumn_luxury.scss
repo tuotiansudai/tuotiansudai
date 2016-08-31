@@ -355,6 +355,9 @@ $width:700px;
                       background:#372876;
                       line-height: 20px;
                       display: inline-block;
+                      strong{
+                        color:#FC4A52;
+                      }
                       @media (max-width: $width) {
                         padding:0 5px;
                       }
@@ -459,6 +462,7 @@ $width:700px;
                   background:#fff;
                   span{
                     color:#FC4A52;
+                    font-weight:bold;
                   }
                   @media (max-width: $width) {
                     width:50%;
