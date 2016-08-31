@@ -34,12 +34,12 @@
             <div class="swiper-wrapper" id="sliderBox">
                 <#list travelPrize as prize>
                     <div class="prize-box swiper-slide <#if prize_index == 1>active</#if>">
-                        <div class="pk-title">投资满<@amount>${prize.investAmount?string.computer}</@amount>元即可获得</div>
+                        <div class="pk-title">投资满<span><@amount>${prize.investAmount?string.computer}</@amount></span>元即可获得</div>
                         <div class="img-info">
                             <a href="/activity/autumn/travel/${prize.id?string.computer}/detail"><img src="${prize.image}"></a>
                             <span class="kind-text">${prize.name}</span>
                             <div class="kind-bottom">
-                                <span class="fl">价值<em>${prize.price}</em>元</span>
+                                <span class="fl">商品价格<em>${prize.price}</em>元</span>
                                 <@global.isAnonymous>
                                     <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
                                 </@global.isAnonymous>

@@ -108,7 +108,6 @@
             {{if istype=='real'}}
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             {{else if istype=='virtual'}}
-                <a href="/my-treasure" class="go-on">去查看</a>
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             {{else if istype=='nologin'}}
                 <a href="/login?redirect=/activity/autumn/${prizeType}" class="go-on">去登录</a>

@@ -431,6 +431,10 @@ $width:700px;
                       @media (max-width: $width) {
                         font-size:12px;
                         margin-left:0;
+                        width: 100px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
                       }
                     }
                     &.count-number{
@@ -453,6 +457,9 @@ $width:700px;
                   color:#191748;
                   line-height:50px;
                   background:#fff;
+                  span{
+                    color:#FC4A52;
+                  }
                   @media (max-width: $width) {
                     width:50%;
                     font-size:12px;
@@ -524,16 +531,16 @@ $width:700px;
               overflow:hidden;
               display:none;
               @media (max-width: $width) {
-                height:120px;
+                height:180px;
               }
               &.active{
                 display:block;
               }
-              table>.mobile-hide{
-                display:none;
-              }
               table>thead>tr>th{
                 background:#e6d647;
+                &.mobile-hide{
+                  display:none;
+                }
                 @media (max-width: $width) {
                   font-size:12px;
                   padding:0;
@@ -543,6 +550,9 @@ $width:700px;
               table>tbody>tr>td{
                 color:#fff;
                 line-height:30px;
+                &.mobile-hide{
+                  display:none;
+                }
                 &.name-text{
                   width: 200px;
                   text-overflow: ellipsis;

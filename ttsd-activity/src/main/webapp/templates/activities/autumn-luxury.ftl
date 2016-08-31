@@ -51,15 +51,20 @@
                                 <div class="product-info">
                                     <p class="name-text">${prize.brand}</p>
                                     <p class="des-text">${prize.name}</p>
-                                    <p class="price-text"><span>${prize.price}元</span><span class="bite-text">价值</span></p>
+                                    <p class="price-text"><span>${prize.price}元</span><span class="bite-text">商品价格</span></p>
                                     <p class="intro-text"><span>投资满<@amount>${prize.investAmount?string.computer}</@amount>元即可获得</span></p>
                                     <p class="btn-text">
                                         <@global.isAnonymous>
                                             <a href="/login?redirect=/activity/autumn/luxury" class="autumn-luxury-invest-channel">立即投资</a>
                                         </@global.isAnonymous>
                                         <@global.isNotAnonymous>
-                                            <a href="/loan-list" class="autumn-luxury-invest-channel">立即投资</a>
+                                            <#if !isAppSource>
+                                            <a href="/loan-list" class="autumn-luxury-invest-channel" target="_blank">立即投资</a>
+                                            <#else>
+                                            <a href="javascript:void(0)" class="autumn-luxury-invest-channel">立即投资</a>
+                                            </#if>
                                         </@global.isNotAnonymous>
+
                                     </p>
                                 </div>
                             </div>
@@ -72,7 +77,7 @@
                                         <i class="bottom-circle"></i>
                                     </div>
                                     <div class="tip-text">
-                                        投资满<@amount>${prize.thirtyPercentOffInvestAmount?string.computer}</@amount>元即可获得
+                                        投资满<span><@amount>${prize.thirtyPercentOffInvestAmount?string.computer}</@amount></span>元即可获得
                                     </div>
                                 </div>
                                 <div class="coupon-item">
@@ -83,7 +88,7 @@
                                         <i class="bottom-circle"></i>
                                     </div>
                                     <div class="tip-text">
-                                        投资满<@amount>${prize.twentyPercentOffInvestAmount?string.computer}</@amount>元即可获得
+                                        投资满<span><@amount>${prize.twentyPercentOffInvestAmount?string.computer}</@amount></span>元即可获得
                                     </div>
                                 </div>
                                 <div class="coupon-item">
@@ -94,7 +99,7 @@
                                         <i class="bottom-circle"></i>
                                     </div>
                                     <div class="tip-text">
-                                        投资满<@amount>${prize.tenPercentOffInvestAmount?string.computer}</@amount>元即可获得
+                                        投资满<span><@amount>${prize.tenPercentOffInvestAmount?string.computer}</@amount></span>元即可获得
                                     </div>
                                 </div>
                             </div>
@@ -242,7 +247,12 @@
                 </ul>
                 <p>活动期间，每推荐一名好友注册也可获得一次抽奖机会；好友投资，还可再得一次抽奖机会。邀请越多机会越多。</p>
                 <p>
-                    <a href="/referrer/refer-list" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                    <@global.isAnonymous>
+                        <a href="/login?redirect=/activity/autumn/luxury" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                    </@global.isAnonymous>
+                    <@global.isNotAnonymous>
+                        <a href="/referrer/refer-list" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                    </@global.isNotAnonymous>
                 </p>
             </div>
             <div class="phone-step">
@@ -250,7 +260,12 @@
                     <img src="${staticServer}/activity/images/sign/actor/luxury/intro-img.png" width="90%">
                 </p>
                 <p>
-                    <a href="#" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                    <@global.isAnonymous>
+                        <a href="/login?redirect=/activity/autumn/luxury" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                    </@global.isAnonymous>
+                    <@global.isNotAnonymous>
+                        <a href="/referrer/refer-list" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                    </@global.isNotAnonymous>
                 </p>
             </div>
             <#assign prizeType = 'luxury'/>
