@@ -36,7 +36,12 @@
                     <div class="prize-box swiper-slide <#if prize_index == 1>active</#if>">
                         <div class="pk-title">投资满<span><@amount>${prize.investAmount?string.computer}</@amount></span>元即可获得</div>
                         <div class="img-info">
-                            <a href="/activity/autumn/travel/${prize.id?string.computer}/detail"><img src="${prize.image}"></a>
+                        <#if !isAppSource>
+                            <a href="/activity/autumn/travel/${prize.id?string.computer}/detail" target="_blank">
+                        <#else>
+                        <a href="javascript:void(0)">
+                        </#if>
+                            <img src="${prize.image}"></a>
                             <span class="kind-text">${prize.name}</span>
                             <div class="kind-bottom">
                                 <span class="fl">商品价格<em>${prize.price}</em>元</span>
@@ -44,11 +49,7 @@
                                     <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
-                                    <#if !isAppSource>
-                                    <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel" target="_blank">立即投资</a>
-                                    <#else>
                                     <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
-                                    </#if>
                                 </@global.isNotAnonymous>
                             </div>
                         </div>

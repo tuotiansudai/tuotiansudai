@@ -44,7 +44,11 @@
                         <li>
                             <div class="picture-item">
                                 <div class="product-img">
-                                    <a href="/activity/autumn/luxury/${prize.id?string.computer}/detail">
+                                <#if !isAppSource>
+                                    <a href="/activity/autumn/luxury/${prize.id?string.computer}/detail" target="_blank">
+                                <#else>
+                                <a href="javascript:void(0)">
+                                </#if>
                                         <img src="${prize.image}" width="100%">
                                     </a>
                                 </div>
@@ -58,11 +62,7 @@
                                             <a href="/login?redirect=/activity/autumn/luxury" class="autumn-luxury-invest-channel">立即投资</a>
                                         </@global.isAnonymous>
                                         <@global.isNotAnonymous>
-                                            <#if !isAppSource>
-                                            <a href="/loan-list" class="autumn-luxury-invest-channel" target="_blank">立即投资</a>
-                                            <#else>
-                                            <a href="javascript:void(0)" class="autumn-luxury-invest-channel">立即投资</a>
-                                            </#if>
+                                            <a href="/loan-list" class="autumn-luxury-invest-channel">立即投资</a>
                                         </@global.isNotAnonymous>
 
                                     </p>
