@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.autumn_travel}" pageJavascript="${js.autumn_travel}" activeNav="" activeLeftNav="" title="活动中心_投资活动_拓天速贷" keywords="拓天活动中心,拓天活动,拓天投资列表,拓天速贷" description="拓天速贷活动中心为投资用户提供投资大奖,投资奖励,收益翻倍等福利,让您在赚钱的同时体验更多的投资乐趣.">
+<@global.main pageCss="${css.autumn_travel}" pageJavascript="${js.autumn_travel}" activeNav="" activeLeftNav="" title="拓荒计划_旅游活动_拓天速贷" keywords="拓荒计划,免费旅游,旅游活动投资,拓天速贷" description="拓天速贷金秋拓荒计划,多条旅游线路免费玩,你旅游我买单,邀请好友注册也可获得免费旅游大奖.">
 <div class="tour-slide">
 </div>
 <div class="autumn-tour-frame" id="pageone">
@@ -33,7 +33,7 @@
         <div class="prize-kind clearfix swiper-container">
             <div class="swiper-wrapper" id="sliderBox">
                 <#list travelPrize as prize>
-                    <div class="prize-box swiper-slide <#if prize_index == 2>active</#if>">
+                    <div class="prize-box swiper-slide <#if prize_index == 1>active</#if>">
                         <div class="pk-title">投资满<@amount>${prize.investAmount?string.computer}</@amount>元即可获得</div>
                         <div class="img-info">
                             <a href="/activity/autumn/travel/${prize.id?string.computer}/detail"><img src="${prize.image}"></a>

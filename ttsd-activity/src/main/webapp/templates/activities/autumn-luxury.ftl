@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.autumn_luxury}" pageJavascript="${js.autumn_luxury}" activeNav="" activeLeftNav="" title="拓天奢侈品_拓天活动_拓天速贷" keywords="拓天速贷,拓天排行榜,拓天天豆,投资拓天,霸道总裁" description="拓天速贷二期活动,投资送天豆,参与抽大奖,拓天速贷霸道总裁送您钱,车,房.">
+<@global.main pageCss="${css.autumn_luxury}" pageJavascript="${js.autumn_luxury}" activeNav="" activeLeftNav="" title="拓天奢品_奢品活动_拓天速贷" keywords="拓天大奖,大奖活动,投资活动,拓天速贷" description="拓天速贷奢华投资活动,海量奢品拓手可得,拓天大奖活动让您左手投资赚收益,右手白拿奢侈品.">
 <div class="luxury-list-container">
     <div class="luxury-top-item">
         <img src="${staticServer}/activity/images/sign/actor/luxury/top-banner.png" width="100%" class="pc-item">
@@ -42,24 +42,26 @@
                 <ul class="product-list clearfix">
                     <#list luxuryPrize as prize>
                         <li>
-                            <div class="product-img">
-                                <a href="/activity/autumn/luxury/${prize.id?string.computer}/detail">
-                                    <img src="${prize.image}" width="100%">
-                                </a>
-                            </div>
-                            <div class="product-info">
-                                <p class="name-text">${prize.brand}</p>
-                                <p class="des-text">${prize.name}</p>
-                                <p class="price-text"><span>${prize.price}元</span><span class="bite-text">价值</span></p>
-                                <p class="intro-text"><span>投资满<@amount>${prize.investAmount?string.computer}</@amount>元即可获得</span></p>
-                                <p class="btn-text">
-                                    <@global.isAnonymous>
-                                        <a href="/login?redirect=/activity/autumn/luxury" class="autumn-luxury-invest-channel">立即投资</a>
-                                    </@global.isAnonymous>
-                                    <@global.isNotAnonymous>
-                                        <a href="/loan-list" class="autumn-luxury-invest-channel">立即投资</a>
-                                    </@global.isNotAnonymous>
-                                </p>
+                            <div class="picture-item">
+                                <div class="product-img">
+                                    <a href="/activity/autumn/luxury/${prize.id?string.computer}/detail">
+                                        <img src="${prize.image}" width="100%">
+                                    </a>
+                                </div>
+                                <div class="product-info">
+                                    <p class="name-text">${prize.brand}</p>
+                                    <p class="des-text">${prize.name}</p>
+                                    <p class="price-text"><span>${prize.price}元</span><span class="bite-text">价值</span></p>
+                                    <p class="intro-text"><span>投资满<@amount>${prize.investAmount?string.computer}</@amount>元即可获得</span></p>
+                                    <p class="btn-text">
+                                        <@global.isAnonymous>
+                                            <a href="/login?redirect=/activity/autumn/luxury" class="autumn-luxury-invest-channel">立即投资</a>
+                                        </@global.isAnonymous>
+                                        <@global.isNotAnonymous>
+                                            <a href="/loan-list" class="autumn-luxury-invest-channel">立即投资</a>
+                                        </@global.isNotAnonymous>
+                                    </p>
+                                </div>
                             </div>
                             <div class="coupon-list">
                                 <div class="coupon-item">
@@ -125,7 +127,7 @@
                                     <tr>
                                         <td>${item.mobile}</td>
                                         <td>${item.investAmount}</td>
-                                        <td>${item.prize}</td>
+                                        <td class="name-text" title="${item.prize}">${item.prize}</td>
                                         <td>${item.createdTime?string('yyyy-MM-dd')}</td>
                                     </tr>
                                     <#else>
@@ -151,7 +153,7 @@
                                     <tr>
                                         <td>${item.mobile}</td>
                                         <td>${item.investAmount}</td>
-                                        <td>${item.prize}</td>
+                                        <td class="name-text" title="${item.prize}">${item.prize}</td>
                                         <td>${item.createdTime?string('yyyy-MM-dd')}</td>
                                     </tr>
                                     <#else>
