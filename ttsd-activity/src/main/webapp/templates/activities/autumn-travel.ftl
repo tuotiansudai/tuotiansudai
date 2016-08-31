@@ -67,7 +67,7 @@
                         <thead>
                         <tr>
                             <th>用户</th>
-                            <th>投资金额(元)</th>
+                            <th class="hideCol">投资金额(元)</th>
                             <th>奖品</th>
                             <th>获奖时间</th>
                         </tr>
@@ -76,7 +76,7 @@
                             <#list userTravelPrize as item>
                             <tr>
                                 <td>${item.mobile}</td>
-                                <td>${item.investAmount}</td>
+                                <td class="hideCol">${item.investAmount}</td>
                                 <td>${item.prize}</td>
                                 <td>${item.createdTime?string('yyyy-MM-dd')}</td>
                             </tr>
@@ -93,7 +93,7 @@
                         <thead>
                         <tr>
                             <th>用户</th>
-                            <th>投资金额(元)</th>
+                            <th class="hideCol">投资金额(元)</th>
                             <th>奖品</th>
                             <th>获奖时间</th>
                         </tr>
@@ -102,7 +102,7 @@
                             <#list myTravelPrize as item>
                             <tr>
                                 <td>${item.mobile}</td>
-                                <td>${item.investAmount}</td>
+                                <td class="hideCol">${item.investAmount}</td>
                                 <td>${item.prize}</td>
                                 <td>${item.createdTime?string('yyyy-MM-dd')}</td>
                             </tr>
