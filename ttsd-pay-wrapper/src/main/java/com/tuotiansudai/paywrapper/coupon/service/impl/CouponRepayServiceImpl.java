@@ -238,7 +238,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         logger.error(e.getLocalizedMessage(), e);
                     }
                 }
-
             }
         }
     }

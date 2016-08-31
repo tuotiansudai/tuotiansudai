@@ -8,13 +8,12 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.InvestRepayDataItemDto;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LatestInvestView;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.InvestRepayService;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +31,6 @@ public class InvestRepayServiceImpl implements InvestRepayService{
 
     @Autowired
     private CouponMapper couponMapper;
-
-    @Autowired
-    private LoanMapper loanMapper;
 
     @Override
     public long findByLoginNameAndTimeAndSuccessInvestRepay(String loginName,Date startTime,Date endTime) {

@@ -238,9 +238,11 @@ public interface InvestMapper {
     int findCountSuccessByLoginNameAndProductTypes(@Param(value = "loginName") String loginName,
                                                    @Param("productTypeList") List<ProductType> productTypeList);
 
+    long countInvestorSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
+                                               @Param(value = "startTime") Date startTime,
+                                               @Param(value = "endTime") Date endTime);
     int findCountExperienceLoanByLoginName(@Param(value = "loginName") String loginName);
 
-    int findCountNewbieExceptExperienceLoanByLoginName(@Param(value = "loginName") String loginName);
 
 
 

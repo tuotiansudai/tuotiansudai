@@ -1,18 +1,16 @@
 apply plugin: 'war'
+apply from: 'db_migration.gradle'
 
 dependencies {
     compile project(':ttsd-web-common-config'),
             project(':ttsd-service'),
             project(':ttsd-point'),
+            project(':ttsd-activity-repository'),
             fileTree(dir: 'libs', include: '**/*.jar'),
-            'org.springframework.data:spring-data-redis:1.7.1.RELEASE',
-            'org.springframework.session:spring-session:1.2.1.RELEASE',
             'org.apache.poi:poi:3.13'
-
 
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0',
             'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
-
 }
 
 war {

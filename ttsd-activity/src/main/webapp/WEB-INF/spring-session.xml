@@ -21,7 +21,6 @@
         </property>
     </bean>
 
-    <!--<bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"/>-->
     <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
           p:hostName="${common.redis.host}"
           p:port="${common.redis.port}"
