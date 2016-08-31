@@ -1,6 +1,6 @@
 task newActivitySql << {
     def rootPath = parent.getProjectDir().getPath()
-    def migrationFolder = "$rootPath/db_migration/activity"
+    def migrationFolder = "$rootPath/db_migration/edxactivity"
     def console = System.console()
     if (console) {
         def fileName = console.readLine('\n> Please enter your new SQL script name: ')

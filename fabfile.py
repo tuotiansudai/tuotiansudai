@@ -26,29 +26,31 @@ env.roledefs = {
 
 def migrate():
     local('/opt/gradle/latest/bin/gradle clean')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=aa ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=ump_operations ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=sms_operations ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=job_worker ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=edxask ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=aa ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=ump_operations ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=sms_operations ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=job_worker ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxask ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxactivity ttsd-config:flywayMigrate')
 
 
 def mk_war():
     local('/usr/local/bin/paver jcversion')
-    local('/opt/gradle/latest/bin/gradle ttsd-web:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-activity:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-pay-wrapper:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-console:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-mobile-api:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-sms-wrapper:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-sign-in:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-point-web:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-ask-web:war -PconfigPath=/workspace/v2config/default/')
+    local('/opt/gradle/latest/bin/gradle ttsd-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-activity:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-pay-wrapper:war -PconfigPath=/workspace/v2config/default/ttsd-config/ -PpayConfigPath=/workspace/v2config/default/ttsd-pay-wrapper/')
+    local('/opt/gradle/latest/bin/gradle ttsd-console:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-activity-console:war -PconfigPath=/workspace/v2config/default/ttsd-config/ -PactivityConsoleConfigPath=/workspace/v2config/default/ttsd-activity-console/')
+    local('/opt/gradle/latest/bin/gradle ttsd-mobile-api:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-sms-wrapper:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-sign-in:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-point-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-ask-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
 
 def mk_worker_zip():
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  distZip -PconfigPath=/workspace/v2config/default/')
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=invest distZip -PconfigPath=/workspace/v2config/default/')
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=jpush distZip -PconfigPath=/workspace/v2config/default/')
+    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=invest distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=jpush distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
 
 
 def mk_static_zip():
