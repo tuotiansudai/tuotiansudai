@@ -9,46 +9,59 @@
   font-weight: bold;
   text-align: center;
 }
+.quick-top-link {
+  height: 118px;
+  padding-top: 14px;
+  overflow: hidden;
+  li {
+	width:33%;
+	height:115px;
+	float: left;
+	display: block;
+	text-align: center;
+	padding-top: 65px;
+	font-size:16px;
+	a {
+	  color: #cccccc;
+	}
+	&.guide {
+	  background: url('/images/sign/assure/icon-newer.png') center top no-repeat;
+	  //&.active {
+		//background-image:url('/images/sign/assure/icon-newer-active.png');
+		//a {
+		//  color: #ff8b00;
+		//}
+	  //}
+	}
+	&.risk {
+	  background: url('/images/sign/assure/icon-risk.png') center top no-repeat;
+	  &.active {
+		background-image:url('/images/sign/assure/icon-risk-active.png');
+		a {
+		  color: #ff8b00;
+		}
+	  }
+	}
+	&.assure {
+	  background: url('/images/sign/assure/icon-assure.png') center top no-repeat;
+	  &.active {
+		background-image:url('/images/sign/assure/icon-assure-active.png');
+		a {
+		  color: #ff8b00;
+		}
+	  }
+	}
+
+  }
+}
+
 .assurance-container {
-	.quick-top-link {
-		height: 118px;
-    	padding-top: 14px;
-    	overflow: hidden;
-		li {
-			width:33%;
-			height:115px;
-			float: left;
-			display: block;
-			text-align: center;
-    		padding-top: 65px;
-    		font-size:16px;
-    		a {
-    			color: #cccccc;	
-    		}
-			&.guide {
-				background: url('/images/sign/assure/icon-newer.png') center top no-repeat;
-			}
-			&.risk {
-				background: url('/images/sign/assure/icon-risk.png') center top no-repeat;
-			}
-			&.assure {
-				background: url('/images/sign/assure/icon-assure.png') center top no-repeat;
-				&.active {
-					background-image:url('/images/sign/assure/icon-assure-active.png');
-					a {
-						color: #ff8b00;
-					}
-				}
-			}
-			
-		}
+  .main-banner {
+	background:#6dbb7c;
+	img {
+	  width:100%;
 	}
-	.main-banner {
-		background:#6dbb7c;
-		img {
-			width:100%;
-		}
-	}
+  }
 	.fund-safety-box {
 	  padding-top:35px;
 	  padding-bottom:35px;
@@ -137,7 +150,7 @@
 	}
   }
   .data-info-safety {
-	height: 595px;
+	height: 500px;
 	padding-top: 30px;
 	position: relative;
 	.axis-center {
@@ -192,6 +205,15 @@
 		  background: url("/images/sign/assure/arrow-left.png") no-repeat center top;
 		}
 	  }
+	}
+  }
+}
+
+.risk-flow-container {
+  .main-banner {
+	background:#3776cb;
+	img {
+	  width:100%;
 	}
   }
 }
