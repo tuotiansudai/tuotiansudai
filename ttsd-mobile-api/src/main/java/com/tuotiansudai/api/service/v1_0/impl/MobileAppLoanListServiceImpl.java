@@ -161,7 +161,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
             if(loanDetailsModel != null)
             {
-                loanResponseDataDto.setExtraSource(loanDetailsModel.getExtraSource());
+                loanResponseDataDto.setExtraSource("WEB".equals(loanDetailsModel.getExtraSource())?loanDetailsModel.getExtraSource():"");
             }
 
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
