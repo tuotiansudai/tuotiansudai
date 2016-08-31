@@ -79,7 +79,7 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
         DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
         Set travelKeySet = redisWrapperClient.hkeys(activityAutumnTravelInvestKey);
         List<TravelPrizeModel> travelPrizeModels = travelPrizeMapper.findAll();
-
+        logger.debug("[calculate travel] date:" + yesterday.toString());
         for (Object travelKey : travelKeySet) {
             String[] travelInvest = String.valueOf(travelKey).split(":");
             if (travelInvest.length < 4) {
@@ -103,7 +103,7 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
             for (TravelPrizeModel travelPrizeModel : travelPrizeModels) {
                 if (sumInvestAmount >= travelPrizeModel.getInvestAmount()) {
                     List<UserTravelPrizeModel> userTravels = userTravelPrizeMapper.findMobileAndCreatedTime(mobile, yesterday.toDate());
-                    if(CollectionUtils.isEmpty(userTravels)){
+                    if (CollectionUtils.isEmpty(userTravels)) {
                         UserTravelPrizeModel userTravelPrizeModel = new UserTravelPrizeModel(travelPrizeModel.getId(), travelPrizeModel.getName(), loginName, mobile, userName, sumInvestAmount);
                         userTravelPrizeModel.setCreatedTime(yesterday.toDate());
                         userTravelPrizeMapper.create(userTravelPrizeModel);
@@ -117,9 +117,10 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
     }
 
     private void calculateLuxuryPrize() {
-     DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
+        DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
         Set luxuryKeySet = redisWrapperClient.hkeys(activityAutumnLuxuryInvestKey);
         List<LuxuryPrizeModel> luxuryPrizeModels = luxuryPrizeMapper.findAll();
+        logger.debug("[calculate luxury] date:" + yesterday.toString());
 
         for (Object luxuryKey : luxuryKeySet) {
             String[] luxuryInvest = String.valueOf(luxuryKey).split(":");
@@ -142,9 +143,9 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
             long sumInvestAmount = Long.parseLong(luxuryValue.split("\\|")[0]);
 
             List<UserLuxuryPrizeModel> userLuxury = userLuxuryPrizeMapper.findMobileAndCreatedTime(mobile, yesterday.toDate());
-            if(CollectionUtils.isEmpty(userLuxury)){
+            if (CollectionUtils.isEmpty(userLuxury)) {
                 String prizeName = getLuxuryPrizeName(luxuryPrizeModels, sumInvestAmount);
-                if(StringUtils.isNotEmpty(prizeName)){
+                if (StringUtils.isNotEmpty(prizeName)) {
                     long luxuryPrizeId = Long.parseLong(prizeName.split("\\|")[0]);
                     UserLuxuryPrizeModel userLuxuryPrizeModel = new UserLuxuryPrizeModel(luxuryPrizeId, prizeName.split("\\|")[1], loginName, mobile, userName, sumInvestAmount);
                     userLuxuryPrizeModel.setCreatedTime(yesterday.toDate());
@@ -158,22 +159,22 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
     }
 
     private String getLuxuryPrizeName(List<LuxuryPrizeModel> luxuryPrizeModels, long investAmount) {
-        Map<Long,String> luxuryPrizeTreeMap = Maps.newTreeMap(new Comparator<Long>() {
+        Map<Long, String> luxuryPrizeTreeMap = Maps.newTreeMap(new Comparator<Long>() {
             @Override
             public int compare(Long o1, Long o2) {
                 return o2.compareTo(o1);
             }
         });
 
-        for(LuxuryPrizeModel luxuryPrizeModel:luxuryPrizeModels){
-            luxuryPrizeTreeMap.put(luxuryPrizeModel.getInvestAmount(),MessageFormat.format("{0}|{1}",luxuryPrizeModel.getId(),luxuryPrizeModel.getBrand()+luxuryPrizeModel.getName()));
-            luxuryPrizeTreeMap.put(luxuryPrizeModel.getThirtyPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(),luxuryPrizeModel.getBrand()+luxuryPrizeModel.getName(), "7折券"));
-            luxuryPrizeTreeMap.put(luxuryPrizeModel.getTwentyPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(),luxuryPrizeModel.getBrand()+luxuryPrizeModel.getName(), "8折券"));
-            luxuryPrizeTreeMap.put(luxuryPrizeModel.getTenPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(),luxuryPrizeModel.getBrand()+luxuryPrizeModel.getName(), "9折券"));
+        for (LuxuryPrizeModel luxuryPrizeModel : luxuryPrizeModels) {
+            luxuryPrizeTreeMap.put(luxuryPrizeModel.getInvestAmount(), MessageFormat.format("{0}|{1}", luxuryPrizeModel.getId(), luxuryPrizeModel.getBrand() + luxuryPrizeModel.getName()));
+            luxuryPrizeTreeMap.put(luxuryPrizeModel.getThirtyPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(), luxuryPrizeModel.getBrand() + luxuryPrizeModel.getName(), "7折券"));
+            luxuryPrizeTreeMap.put(luxuryPrizeModel.getTwentyPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(), luxuryPrizeModel.getBrand() + luxuryPrizeModel.getName(), "8折券"));
+            luxuryPrizeTreeMap.put(luxuryPrizeModel.getTenPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(), luxuryPrizeModel.getBrand() + luxuryPrizeModel.getName(), "9折券"));
         }
 
         for (Map.Entry<Long, String> luxuryEntry : luxuryPrizeTreeMap.entrySet()) {
-            if (investAmount >= luxuryEntry.getKey() ) {
+            if (investAmount >= luxuryEntry.getKey()) {
                 return luxuryEntry.getValue();
             }
         }
