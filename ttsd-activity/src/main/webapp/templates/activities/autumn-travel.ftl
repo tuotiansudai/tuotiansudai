@@ -36,16 +36,12 @@
                     <div class="prize-box swiper-slide <#if prize_index == 1>active</#if>">
                         <div class="pk-title">投资满<span><@amount>${prize.investAmount?string.computer}</@amount></span>元即可获得</div>
                         <div class="img-info">
-<<<<<<< HEAD
                         <#if !isAppSource>
                             <a href="/activity/autumn/travel/${prize.id?string.computer}/detail" target="_blank">
                         <#else>
                         <a href="javascript:void(0)">
                         </#if>
                             <img src="${prize.image}"></a>
-=======
-                            <a href="/activity/autumn/travel/${prize.id?string.computer}/detail" target="_blank"><img src="${prize.image}"></a>
->>>>>>> f584f8aad40c18d67872a88691093adb1a5e02ae
                             <span class="kind-text">${prize.name}</span>
                             <div class="kind-bottom">
                                 <span class="fl">商品价格<em>${prize.price}</em>元</span>
