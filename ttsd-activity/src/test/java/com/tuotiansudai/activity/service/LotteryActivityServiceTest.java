@@ -12,6 +12,7 @@ import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +96,7 @@ public class LotteryActivityServiceTest {
 
     @Test
     public void shouldFindDrawLotteryPrizeRecordByMobileIsOk(){
-        UserModel userModel = getFakeUser("testDrawPrize43123", "12345678900");
+        UserModel userModel = getFakeUser("testDrawPrize11", "12345678902");
         getUserLotteryPrizeModel(userModel.getLoginName(), userModel.getMobile(), "testName");
         List<UserLotteryPrizeView> userLotteryPrizeViews = lotteryActivityService.findDrawLotteryPrizeRecordByMobile(userModel.getMobile(), "");
         assertTrue(CollectionUtils.isNotEmpty(userLotteryPrizeViews));
@@ -105,7 +106,7 @@ public class LotteryActivityServiceTest {
 
     @Test
     public void shouldFindDrawLotteryPrizeRecordIsOk(){
-        UserModel userModel = getFakeUser("testDrawPrize1234", "12345678900");
+        UserModel userModel = getFakeUser("testDrawPrize12", "12345678901");
         getUserLotteryPrizeModel(userModel.getLoginName(), userModel.getMobile(), "testName");
         List<UserLotteryPrizeView> userLotteryPrizeViews = lotteryActivityService.findDrawLotteryPrizeRecord(userModel.getMobile(), "");
         assertTrue(CollectionUtils.isNotEmpty(userLotteryPrizeViews));
@@ -122,7 +123,7 @@ public class LotteryActivityServiceTest {
         assertEquals(drawLotteryResultDto.getMessage(), "您还未登陆，请登陆后再来抽奖吧！");
     }
 
-    public UserLotteryPrizeModel getUserLotteryPrizeModel(String loginName,String mobile,String userName){
+    private UserLotteryPrizeModel getUserLotteryPrizeModel(String loginName,String mobile,String userName){
         UserLotteryPrizeModel userLotteryPrizeModel = new UserLotteryPrizeModel();
         userLotteryPrizeModel.setPrize(LotteryPrize.INTEREST_COUPON_2);
         userLotteryPrizeModel.setLotteryTime(DateTime.now().toDate());
@@ -133,7 +134,7 @@ public class LotteryActivityServiceTest {
         return userLotteryPrizeModel;
     }
 
-    public RechargeModel getRechargeModel(String loginName){
+    private RechargeModel getRechargeModel(String loginName){
         RechargeModel model = new RechargeModel();
         model.setId(idGenerator.generate());
         model.setLoginName(loginName);
