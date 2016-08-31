@@ -56,7 +56,7 @@
                                     <p class="name-text">${prize.brand}</p>
                                     <p class="des-text">${prize.name}</p>
                                     <p class="price-text"><span>${prize.price}元</span><span class="bite-text">商品价格</span></p>
-                                    <p class="intro-text"><span>投资满<@amount>${prize.investAmount?string.computer}</@amount>元即可获得</span></p>
+                                    <p class="intro-text"><span>投资满<strong><@amount>${prize.investAmount?string.computer}</@amount></strong>元可获得</span></p>
                                     <p class="btn-text">
                                         <@global.isAnonymous>
                                             <a href="/login?redirect=/activity/autumn/luxury" class="autumn-luxury-invest-channel">立即投资</a>
@@ -77,7 +77,7 @@
                                         <i class="bottom-circle"></i>
                                     </div>
                                     <div class="tip-text">
-                                        投资满<span><@amount>${prize.thirtyPercentOffInvestAmount?string.computer}</@amount></span>元即可获得
+                                        投资满<span><@amount>${prize.thirtyPercentOffInvestAmount?string.computer}</@amount></span>元可获得
                                     </div>
                                 </div>
                                 <div class="coupon-item">
@@ -88,7 +88,7 @@
                                         <i class="bottom-circle"></i>
                                     </div>
                                     <div class="tip-text">
-                                        投资满<span><@amount>${prize.twentyPercentOffInvestAmount?string.computer}</@amount></span>元即可获得
+                                        投资满<span><@amount>${prize.twentyPercentOffInvestAmount?string.computer}</@amount></span>元可获得
                                     </div>
                                 </div>
                                 <div class="coupon-item">
@@ -99,7 +99,7 @@
                                         <i class="bottom-circle"></i>
                                     </div>
                                     <div class="tip-text">
-                                        投资满<span><@amount>${prize.tenPercentOffInvestAmount?string.computer}</@amount></span>元即可获得
+                                        投资满<span><@amount>${prize.tenPercentOffInvestAmount?string.computer}</@amount></span>元可获得
                                     </div>
                                 </div>
                             </div>
@@ -148,7 +148,7 @@
                                 <thead>
                                 <tr>
                                     <th>用户</th>
-                                    <th>投资金额(元)</th>
+                                    <th class="mobile-hide">投资金额(元)</th>
                                     <th>奖品</th>
                                     <th>获奖时间</th>
                                 </tr>
@@ -157,7 +157,7 @@
                                     <#list myLuxuryPrize as item>
                                     <tr>
                                         <td>${item.mobile}</td>
-                                        <td>${item.investAmount}</td>
+                                        <td class="mobile-hide">${item.investAmount}</td>
                                         <td class="name-text" title="${item.prize}">${item.prize}</td>
                                         <td>${item.createdTime?string('yyyy-MM-dd')}</td>
                                     </tr>
