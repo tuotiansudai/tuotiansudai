@@ -547,6 +547,9 @@ $width:700px;
                   overflow: hidden;
                   white-space: nowrap;
                   display: inline-block;
+                  @media (max-width: $width) {
+                    width:120px;
+                  }
                 }
                 @media (max-width: $width) {
                   font-size:12px;
