@@ -55,6 +55,19 @@
               @extend .sprite-global-app-pc-top;
             }
           }
+          &.header-membership {
+            padding-right: 19px;
+            background: #333 url("/activity/images/icons/top-icon.png") no-repeat 100% 50%;
+          }
+          &.membership-store {
+            padding-left: 19px;
+            background: #333 url("/activity/images/icons/icon-shop.png") no-repeat 2px 50%;
+            a{
+              padding-left:0;
+              color:#FC4A52;
+              font-size:11px;
+            }
+          }
           a {
             padding-left: 8px;
             color: #fff;
@@ -62,10 +75,7 @@
         }
       }
   }
-  .header-membership {
-    padding-right: 19px;
-    background: #333 url("/activity/images/icons/top-icon.png") no-repeat 100% 50%;
-  }
+
 }
 
 .footer-container {
