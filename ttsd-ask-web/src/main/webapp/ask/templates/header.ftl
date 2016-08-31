@@ -9,7 +9,7 @@
         <span class="fl service-time">客服电话：400-169-1188<time>（服务时间：9:00－20:00）</time></span>
         <ul class="fr">
             <li class="membership-store">
-                <a href="/point-shop" target="_blank">积分商城</a>
+                <a href="https://tuotiansudai.com/point-shop" target="_blank">积分商城</a>
             </li>
             <li class="header-membership">
                 <a href="${webServer}/membership">会员中心</a>
