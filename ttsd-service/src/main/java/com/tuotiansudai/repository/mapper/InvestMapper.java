@@ -47,9 +47,9 @@ public interface InvestMapper {
      * @param loginName
      * @return
      */
-    List<InvestModel> findByLoginName(@Param(value = "loginName") String loginName,
-                                      @Param(value = "index") Integer index,
-                                      @Param(value = "pageSize") Integer pageSize);
+    List<InvestModel> findPaginationByLoginName(@Param(value = "loginName") String loginName,
+                                                @Param(value = "index") Integer index,
+                                                @Param(value = "pageSize") Integer pageSize);
 
     long findCountByLoginName(@Param(value = "loginName") String loginName);
 
@@ -237,5 +237,11 @@ public interface InvestMapper {
 
     int findCountSuccessByLoginNameAndProductTypes(@Param(value = "loginName") String loginName,
                                                    @Param("productTypeList") List<ProductType> productTypeList);
+
+    int findCountExperienceLoanByLoginName(@Param(value = "loginName") String loginName);
+
+    int findCountNewbieExceptExperienceLoanByLoginName(@Param(value = "loginName") String loginName);
+
+
 
 }
