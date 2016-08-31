@@ -69,7 +69,6 @@
                 <#if isLogin?? && !isLogin>
                     <a href="/login?redirect=/referrer/refer-list">立即推荐</a>
                 <#else>
-                    <h1>APP LOGIN</h1>
                     <#if noAccount?? && noAccount>
                         <a href="/registeraccount">立即推荐</a>
                     <#else>
