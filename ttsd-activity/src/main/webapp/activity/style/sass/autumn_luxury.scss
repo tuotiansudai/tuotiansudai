@@ -523,10 +523,13 @@ $width:700px;
               overflow:hidden;
               display:none;
               @media (max-width: $width) {
-                height:180px;
+                height:120px;
               }
               &.active{
                 display:block;
+              }
+              table>.mobile-hide{
+                display:none;
               }
               table>thead>tr>th{
                 background:#e6d647;

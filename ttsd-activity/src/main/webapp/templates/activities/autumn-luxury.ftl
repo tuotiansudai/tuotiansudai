@@ -117,7 +117,7 @@
                                 <thead>
                                 <tr>
                                     <th>用户</th>
-                                    <th>投资金额(元)</th>
+                                    <th class="mobile-hide">投资金额(元)</th>
                                     <th>奖品</th>
                                     <th>获奖时间</th>
                                 </tr>
@@ -126,7 +126,7 @@
                                     <#list userLuxuryPrize as item>
                                     <tr>
                                         <td>${item.mobile}</td>
-                                        <td>${item.investAmount}</td>
+                                        <td class="mobile-hide">${item.investAmount}</td>
                                         <td class="name-text" title="${item.prize}">${item.prize}</td>
                                         <td>${item.createdTime?string('yyyy-MM-dd')}</td>
                                     </tr>
