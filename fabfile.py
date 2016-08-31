@@ -99,6 +99,7 @@ def deploy_sms():
 @roles('console')
 def deploy_console():
     upload_project(local_dir='./ttsd-console/war/ROOT.war', remote_dir='/workspace/console')
+    upload_project(local_dir='./ttsd-activity-console/war/ROOT.war', remote_dir='/workspace/activity-console')
     with cd('/workspace'):
         sudo('/usr/local/bin/docker-compose -f console.yml -p ttsd stop')
         sudo('/usr/local/bin/docker-compose -f console.yml -p ttsd rm -f')
