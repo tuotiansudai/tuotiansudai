@@ -30,6 +30,47 @@
             </@global.isAnonymous>
         </div>
 
+
+        <div class="prize-kind clearfix swiper-container">
+            <div class="swiper-wrapper" id="sliderBox">
+                <div class="prize-box swiper-slide ">
+                    <div class="pk-title">投资满0.21元即可获得</div>
+                    <div class="img-info">
+                        <a href="/activity/autumn/travel/1/detail"><img src="http://ci1.tuotiansudai.com:6002/activity/autumn/upload/20160831/94571472612592922.jpg"></a>
+                        <span class="kind-text">五台山三日游</span>
+                        <div class="kind-bottom">
+                            <span class="fl">价值<em>818</em>元</span>
+                            <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="prize-box swiper-slide ">
+                    <div class="pk-title">投资满0.05元即可获得</div>
+                    <div class="img-info">
+                        <a href="/activity/autumn/travel/3/detail"><img src="http://ci1.tuotiansudai.com:6002/activity/autumn/upload/20160830/84311472547231144.jpg"></a>
+                        <span class="kind-text">韩国游轮七日游</span>
+                        <div class="kind-bottom">
+                            <span class="fl">价值<em>1680</em>元</span>
+                            <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="prize-box swiper-slide active">
+                    <div class="pk-title">投资满0.04元即可获得</div>
+                    <div class="img-info">
+                        <a href="/activity/autumn/travel/2/detail"><img src="http://ci1.tuotiansudai.com:6002/activity/autumn/upload/20160831/21121472612650036.jpg"></a>
+                        <span class="kind-text">壶口瀑布三日游</span>
+                        <div class="kind-bottom">
+                            <span class="fl">价值<em>1398</em>元</span>
+                            <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-shadow"></div>
+            </div>
+        </div>
+
+
         <div class="prize-kind clearfix swiper-container">
             <div class="swiper-wrapper" id="sliderBox">
                 <#list travelPrize as prize>
