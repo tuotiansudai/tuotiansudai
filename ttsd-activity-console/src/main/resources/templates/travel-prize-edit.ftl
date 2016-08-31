@@ -39,10 +39,10 @@
                 </div>
 
                 <div class="col-sm-4 travelImage">
-                    <input type="file" name="imageFile" imageWidth="288" imageHeight="160"/>
+                    <input type="file" name="imageFile" imageWidth="280" imageHeight="160"/>
                 </div>
                 <div class="col-sm-4 text-danger">
-                    (图片大小为:288px * 160)
+                    (图片大小为:280px * 160)
                 </div>
             </div>
             <div class="form-group">

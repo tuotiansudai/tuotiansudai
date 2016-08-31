@@ -167,10 +167,10 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
         });
 
         for (LuxuryPrizeModel luxuryPrizeModel : luxuryPrizeModels) {
-            luxuryPrizeTreeMap.put(luxuryPrizeModel.getInvestAmount(), MessageFormat.format("{0}|{1}", luxuryPrizeModel.getId(), luxuryPrizeModel.getBrand() + luxuryPrizeModel.getName()));
-            luxuryPrizeTreeMap.put(luxuryPrizeModel.getThirtyPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(), luxuryPrizeModel.getBrand() + luxuryPrizeModel.getName(), "7折券"));
-            luxuryPrizeTreeMap.put(luxuryPrizeModel.getTwentyPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(), luxuryPrizeModel.getBrand() + luxuryPrizeModel.getName(), "8折券"));
-            luxuryPrizeTreeMap.put(luxuryPrizeModel.getTenPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(), luxuryPrizeModel.getBrand() + luxuryPrizeModel.getName(), "9折券"));
+            luxuryPrizeTreeMap.put(luxuryPrizeModel.getInvestAmount(), MessageFormat.format("{0}|{1}", luxuryPrizeModel.getId(), luxuryPrizeModel.getName()));
+            luxuryPrizeTreeMap.put(luxuryPrizeModel.getThirtyPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(), luxuryPrizeModel.getName(), "7折券"));
+            luxuryPrizeTreeMap.put(luxuryPrizeModel.getTwentyPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(), luxuryPrizeModel.getName(), "8折券"));
+            luxuryPrizeTreeMap.put(luxuryPrizeModel.getTenPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(), luxuryPrizeModel.getName(), "9折券"));
         }
 
         for (Map.Entry<Long, String> luxuryEntry : luxuryPrizeTreeMap.entrySet()) {
