@@ -1,6 +1,5 @@
 package com.tuotiansudai.activity.repository.mapper;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import org.junit.Test;
@@ -55,6 +54,7 @@ public class UserTravelPrizeMapperTest extends BaseMapperTest{
         userTravelPrizeModel.setLoginName("loginName");
         userTravelPrizeModel.setMobile("mobile");
         userTravelPrizeModel.setPrize("prize");
+        userTravelPrizeModel.setUserName("userName");
         userTravelPrizeModel.setCreatedTime(new Date());
 
         return userTravelPrizeModel;
