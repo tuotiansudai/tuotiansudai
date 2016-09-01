@@ -2,6 +2,7 @@ package com.tuotiansudai.api.controller.v1_0;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.api.dto.v1_0.UmPayFrontService;
+import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.AmountConverter;
@@ -88,10 +89,9 @@ public class MobileAppCallBackController {
         String investId = "";
         String withdrawAmount = "";
         if (UmPayFrontService.CUST_WITHDRAWALS.getServiceName().equals(service)) {
-            WithdrawModel withdrawModel = withdrawService.findById(Long.parseLong(orderId));
-            BankCardModel bankCardModel = bindBankCardService.getPassedBankCardById(withdrawModel.getBankCardId());
-            bankName = BankCardUtil.getBankName(bankCardModel.getBankCode());
-            cardNumber = bankCardModel.getCardNumber();
+            WithdrawModel withdrawModel = withdrawService.findById(Long.parseLong(orderId.trim()));
+            bankName = BankCardUtil.getBankName(withdrawModel.getBankCard().getBankCode());
+            cardNumber = withdrawModel.getBankCard().getCardNumber();
             withdrawAmount = AmountConverter.convertCentToString(withdrawModel.getAmount());
             message = "提现成功";
             href = MessageFormat.format("tuotian://withdraw/{0}",callBackStatus);
