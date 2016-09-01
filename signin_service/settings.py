@@ -10,3 +10,10 @@ LOGIN_FAILED_EXPIRED_SECONDS = 60 * 30
 
 # SQLALCHEMY_DATABASE_URI = "mysql://root:@192.168.1.249/aa?charset=utf8"
 SQLALCHEMY_DATABASE_URI = "mysql://root:@192.168.33.10/aa?charset=utf8"
+
+
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SETTING_LOCAL_DIR = os.path.join(BASE_DIR, "settings_local.py")
+if os.path.exists(SETTING_LOCAL_DIR):
+    execfile(SETTING_LOCAL_DIR)
