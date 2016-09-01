@@ -1,7 +1,6 @@
 package com.tuotiansudai.signin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;

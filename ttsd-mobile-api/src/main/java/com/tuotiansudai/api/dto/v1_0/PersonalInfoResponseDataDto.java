@@ -17,6 +17,11 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private String email;
     private String districtCode;
     private boolean autoInvest;
+    private String bankName;
+
+    private boolean isNewbieEnable;
+
+    private boolean isExperienceEnable;
 
 
     public boolean getCertificationFlag() {
@@ -136,5 +141,29 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
 
     public void setAutoInvest(boolean autoInvest) {
         this.autoInvest = autoInvest;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public boolean isExperienceEnable() {
+        return isExperienceEnable;
+    }
+
+    public void setIsExperienceEnable(boolean isExperienceEnable) {
+        this.isExperienceEnable = isExperienceEnable;
+    }
+
+    public boolean isNewbieEnable() {
+        return isNewbieEnable;
+    }
+
+    public void setIsNewbieEnable(boolean isNewbieEnable) {
+        this.isNewbieEnable = isNewbieEnable;
     }
 }

@@ -3,7 +3,6 @@ package com.tuotiansudai.ask.repository.mybatis;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.ask.repository.model.Tag;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 

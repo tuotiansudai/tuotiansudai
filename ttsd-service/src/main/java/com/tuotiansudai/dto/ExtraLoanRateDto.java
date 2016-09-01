@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Doubles;
 import com.tuotiansudai.repository.model.ExtraLoanRateModel;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

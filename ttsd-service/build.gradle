@@ -13,21 +13,16 @@ sourceSets {
 }
 
 dependencies {
-    def springSecurityVersion = '4.0.2.RELEASE'
-
-    compile project(":ttsd-membership"),
+    compile project(':ttsd-dependency'),
             project(":ttsd-config"),
-            project(":ttsd-spring-extension"),
-            project(":ttsd-user-service"),
             project(":ttsd-client"),
-            fileTree(dir: 'libs', include: '**/*.jar'),
-            "org.springframework.security:spring-security-config:$springSecurityVersion",
-            "org.springframework.security:spring-security-taglibs:$springSecurityVersion"
-
+            project(":ttsd-user-service"),
+            project(":ttsd-spring-extension"),
+            project(":ttsd-membership"),
+            project(":ttsd-util"),
+            fileTree(dir: 'libs', include: '**/*.jar')
 
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
-
-    compile fileTree(dir: 'libs', include: '**/*.jar')
 }
 
 processResources.outputs.upToDateWhen { false }
