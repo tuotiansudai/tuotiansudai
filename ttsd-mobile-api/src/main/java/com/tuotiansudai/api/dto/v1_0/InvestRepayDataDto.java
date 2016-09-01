@@ -1,5 +1,10 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import com.tuotiansudai.repository.model.InvestRepayModel;
+import com.tuotiansudai.util.AmountConverter;
+
+import java.text.SimpleDateFormat;
+
 public class InvestRepayDataDto extends BaseResponseDataDto {
 
     private int period;
@@ -9,6 +14,24 @@ public class InvestRepayDataDto extends BaseResponseDataDto {
     private String actualInterest;
     private String status;
     private boolean isTransferred;
+
+    public InvestRepayDataDto() {
+    }
+
+    public InvestRepayDataDto(InvestRepayModel investRepayModel) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        this.period = investRepayModel.getPeriod();
+        this.repayDate = simpleDateFormat.format(investRepayModel.getRepayDate());
+        if (null != investRepayModel.getActualRepayDate()) {
+            this.actualRepayDate = simpleDateFormat.format(investRepayModel.getActualRepayDate());
+        } else {
+            this.actualRepayDate = "";
+        }
+        this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getExpectedInterest());
+        this.actualInterest = AmountConverter.convertCentToString(investRepayModel.getActualInterest());
+        this.status = investRepayModel.getStatus().getDescription();
+        this.isTransferred = investRepayModel.isTransferred();
+    }
 
     public int getPeriod() {
         return period;
