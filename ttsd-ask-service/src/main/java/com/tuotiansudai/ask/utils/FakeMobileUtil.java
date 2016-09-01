@@ -41,7 +41,7 @@ public class FakeMobileUtil {
 
     public static String generateFakeMobile(String mobile) {
         if (FAKE_MOBILES.contains(mobile)) {
-            return  CARRIERS.get((int) (Math.random() * FAKE_MOBILES.size())) + RandomStringUtils.random(8);
+            return  CARRIERS.get((int) (Math.random() * CARRIERS.size())) + RandomStringUtils.randomNumeric(8);
         }
 
         return null;

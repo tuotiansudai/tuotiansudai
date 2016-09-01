@@ -16,7 +16,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
@@ -33,9 +32,6 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
 
     @Autowired
     private InvestService investService;
-
-    @Autowired
-    private LoanService loanService;
 
     @Autowired
     private InvestMapper investMapper;
@@ -154,7 +150,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
     }
 
     private boolean isTransferApplicationTransferable(UserInvestListRequestDto requestDto) {
-        return org.apache.commons.collections.CollectionUtils.isNotEmpty(requestDto.getTransferStatus())
+        return CollectionUtils.isNotEmpty(requestDto.getTransferStatus())
                 && requestDto.getTransferStatus().size() == 1 && requestDto.getTransferStatus().contains(TransferStatus.TRANSFERABLE);
     }
 

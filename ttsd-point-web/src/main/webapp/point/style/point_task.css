@@ -66,13 +66,11 @@
                 background: #edf1f5;
                 display: inline-block;
                 line-height: 26px;
-                padding-right: 30px;
+                padding-right: 25px;
                 margin-bottom: 10px; }
                 .main-frame .global-member-task .wp .choi-beans-list .task-frame .task-box .step-content dd.reward span {
                   color: #fc4a52;
-                  background: url("/point/images/icon-dou.png") no-repeat right center;
-                  display: inline-block;
-                  padding-right: 32px; }
+                  display: inline-block; }
               .main-frame .global-member-task .wp .choi-beans-list .task-frame .task-box .step-content dd a.btn-normal {
                 border: 1px solid #fc4a52;
                 border-radius: 0;

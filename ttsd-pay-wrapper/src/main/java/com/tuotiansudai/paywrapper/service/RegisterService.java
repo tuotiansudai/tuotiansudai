@@ -6,5 +6,4 @@ import com.tuotiansudai.dto.RegisterAccountDto;
 public interface RegisterService {
 
     BaseDto register(RegisterAccountDto dto);
-
 }
