@@ -58,7 +58,7 @@ public class BaseCouponResponseDataDto {
         this.userCouponId = String.valueOf(userCouponModel.getId());
         this.type = couponModel.getCouponType();
         this.name = couponModel.getCouponType().getName();
-        this.amount = AmountConverter.convertCentToString(couponModel.getAmount()).replaceAll(".00","");
+        this.amount = AmountConverter.convertCentToString(couponModel.getAmount()).replaceAll("\\.00","");
         this.startDate = userCouponModel.getStartTime();
         this.endDate = userCouponModel.getEndTime();
         this.investLowerLimit = AmountConverter.convertCentToString(couponModel.getInvestLowerLimit());
