@@ -97,5 +97,9 @@ public class WithdrawServiceImpl implements WithdrawService {
         return withdrawMapper.findWithdrawCount(withdrawId, mobile, status, source, startTime, endTime);
     }
 
+    @Override
+    public WithdrawModel findById(long id){
+        return withdrawMapper.findById(id);
+    }
 
 }

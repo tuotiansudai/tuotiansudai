@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.RechargeDto;
+import com.tuotiansudai.repository.model.RechargeModel;
 import com.tuotiansudai.repository.model.RechargeSource;
 import com.tuotiansudai.repository.model.RechargeStatus;
 
@@ -37,4 +38,6 @@ public interface RechargeService {
     long sumSuccessRechargeAmount(String loginName);
 
     List<String> findAllChannel();
+
+    RechargeModel findRechargeById(long id);
 }

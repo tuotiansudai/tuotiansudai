@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.repository.model.WithdrawStatus;
 
 import java.util.Date;
@@ -45,4 +46,6 @@ public interface WithdrawService {
                           Source source,
                           Date startTime,
                           Date endTime);
+
+    WithdrawModel findById(long id);
 }

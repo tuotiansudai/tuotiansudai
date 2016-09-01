@@ -77,4 +77,9 @@ public class RechargeServiceImpl implements RechargeService {
                                       Date endTime) {
         return rechargeMapper.findSumRechargeAmount(rechargeId, mobile, source, status, channel, null, startTime, endTime);
     }
+
+    @Override
+    public RechargeModel findRechargeById(long id){
+        return rechargeMapper.findById(id);
+    }
 }
