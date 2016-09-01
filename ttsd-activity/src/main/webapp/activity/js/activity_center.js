@@ -1,3 +1,8 @@
+/**
+ * name: [活动中心]
+ * time: 2016-09-01
+ * Author: xuqiang
+ */
 require(['jquery'], function($) {
 	$(function() {
 		var $filterBtn=$('.ac-item span');
