@@ -4,6 +4,13 @@
 .bg-white {
   background: #fff;
 }
+.pad-box {
+  padding:20px 0 50px 0;
+}
+.page-width {
+  height:auto;
+  overflow: auto;
+}
 .column-title-ac {
   font-size:30px;
   font-weight: bold;
@@ -55,6 +62,9 @@
   }
 }
 
+.rectangle-box {
+
+}
 .square-box-info {
   border: 1px dashed #6dbb7c;
   background: #fff;
@@ -98,6 +108,21 @@
 	  left: -16px;
 	  background: url("/images/sign/assure/arrow-left.png") no-repeat center top;
 	}
+  }
+}
+.rectangle-box {
+  border:1px solid #3776cb;
+  padding:10px;
+  width:355px;
+  color: #4c4c4c;
+  font-size:16px;
+  border-radius:20px;
+  background: #fff;
+  margin-left:20px;
+  margin-right:20px;
+  dt {
+	font-size:24px;
+	font-weight: bold;
   }
 }
 .assurance-container {
@@ -265,6 +290,9 @@
 	padding-bottom:60px;
 	padding-top: 30px;
 	height: 500px;
+	&.hack {
+	  height:auto;
+	}
 	.page-width {
 	  position: relative;
 	  .ellipse-shape {
@@ -474,6 +502,41 @@
 			border: 9px solid transparent;
 			border-right: 9px solid #fff;
 			left: -8px;
+		  }
+		}
+	  }
+	}
+  }
+
+  .post-lending-box {
+	position: relative;
+	height:245px;
+	.line-top-bar {
+	  height: 30px;
+	  background: url("/images/sign/assure/line-top.png") center top no-repeat;
+
+	}
+	.lending-steps {
+	  width: 87%;
+	  margin: 10px auto;
+	  dl {
+		float: left;
+		width: 208px;
+		margin-left: 36px;
+		margin-right: 20px;
+		border: 1px dashed #3776cb;
+		padding: 10px;
+		color: #3776cb;
+		position: relative;
+		dt {
+		  font-size:18px;
+		  em {
+			width:25px;
+			height: 15px;
+			background: url("/images/sign/assure/arrow-top.png") no-repeat;
+			position: absolute;
+			left:45%;
+			top:-10px;
 		  }
 		}
 	  }

@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.assurance}" activeNav="" activeLeftNav="" title="安全保障">
+<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.assurance}" activeNav="" activeLeftNav="" title="风控流程">
 
 <div class="risk-flow-container">
     <ul class="quick-top-link page-width">
@@ -108,7 +108,7 @@
     </div>
 </div>
 
-    <div class="bg-white project-examination-box clearfix">
+    <div class="bg-white project-examination-box hack clearfix">
         <div class="page-width">
             <div class="column-title-ac"><i></i>项目终审<i></i> </div>
             <div class="project-examine-last">
@@ -129,6 +129,55 @@
 
      </div>
 
-    <div class="page-width margin-top25">
+    <div class="page-width margin-top25 pad-box">
+        <div class="column-title-ac clearfix">权证放款</div>
+        <div class="pad-m">
+            <dl class="rectangle-box  fl">
+                <dt>抵押公证</dt>
+                <dd>风控部办理相应抵押公证手续， 与客户签订借款协议</dd>
+            </dl>
+
+            <dl class="rectangle-box fr">
+                <dt>募集资金</dt>
+                <dd>客户在拓天速贷开户并上传资料，运营部指导客户填写相应借款标信息并批准项目上线，募集资金</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="bg-white post-lending-box pad-box clearfix">
+        <div class="page-width">
+            <div class="column-title-ac"><i></i>贷后管理<i></i> </div>
+            <div class="line-top-bar"></div>
+            <div class="lending-steps">
+                <dl>
+                    <dt><em></em>贷后回访</dt>
+                    <dd>风控部定期回访客户，了解客户业务以及资金情况</dd>
+                </dl>
+                <dl>
+                    <dt><em></em>回款提示</dt>
+                    <dd>财务部定期提醒客户交投资人收益，到期回本金</dd>
+                </dl>
+                <dl>
+                    <dt><em></em>催收转单</dt>
+                    <dd>客户如出现逾期，催收部门负责催收，银行咨询部负责转单给银行</dd>
+                </dl>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="page-width margin-top25 pad-box">
+        <div class="column-title-ac clearfix">结案与后期维护</div>
+        <div class="pad-m">
+            <dl class="rectangle-box  fl">
+                <dt>结案报告</dt>
+                <dd>客户将资金还款后，业务部、风控部撰写结案报告</dd>
+            </dl>
+
+            <dl class="rectangle-box fr">
+                <dt>客户维护</dt>
+                <dd>运营部定期客户关系维持，了解客户需求</dd>
+            </dl>
+        </div>
     </div>
 </@global.main>
