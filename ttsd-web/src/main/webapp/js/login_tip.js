@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jquery.form','logintip'], function ($, _) {
+define(['jquery', 'underscore', 'layerWrapper','jquery.ajax.extension', 'jquery.validate', 'jquery.form'], function ($, _ , layer) {
 
         var loginFormElement = $('.form-login'),
             loginSubmitElement = $('.login-submit', loginFormElement),
@@ -112,5 +112,13 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
                 loginSubmitElement.focus();
                 submitLoginForm();
             }
-        })
+        });
+
+        layer.open({
+		  type: 1,
+		  title: false,
+		  closeBtn: 0,
+		  area:['750px','410px'],
+		  content: $('#loginTip') 
+		});
 });
