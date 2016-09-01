@@ -6,6 +6,12 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ExportService;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+
+import com.tuotiansudai.dto.LoanListDto;
+import com.tuotiansudai.dto.LoanRepayDataItemDto;
+import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.point.dto.ProductOrderDto;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -542,6 +548,24 @@ public class ExportServiceImpl implements ExportService {
             row.add(String.valueOf(new BigDecimal(record.getRewardAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
             row.add(record.getStatus() == ReferrerRewardStatus.SUCCESS ? "已入账" : "入账失败");
             row.add(new DateTime(record.getRewardTime()).toString("yyyy-MM-dd HH:mm:ss"));
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildProductOrderList(List<ProductOrderDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (ProductOrderDto record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(record.getLoginName());
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(String.valueOf(record.getNum()));
+            row.add(record.getContact());
+            row.add(record.getMobile());
+            row.add(record.getAddress());
+            String consignment = record.isConsignment() ? "已发货" : "未发货";
+            row.add(consignment);
+            row.add(new DateTime(record.getConsignmentTime()).toString("yyyy-MM-dd HH:mm:ss"));
             rows.add(row);
         }
         return rows;

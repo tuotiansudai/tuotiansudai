@@ -24,8 +24,10 @@
     </resultMap>
 
     <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">
-        insert into account (login_name, user_name, identity_number, pay_user_id, pay_account_id, balance, freeze, register_time, membership_point)
-        value(#{loginName}, #{userName}, #{identityNumber}, #{payUserId}, #{payAccountId}, #{balance}, #{freeze}, #{registerTime}, #{membershipPoint})
+        insert into account (login_name, user_name, identity_number, pay_user_id, pay_account_id, balance, freeze,
+        point, register_time, membership_point)
+        value(#{loginName}, #{userName}, #{identityNumber}, #{payUserId}, #{payAccountId}, #{balance}, #{freeze},
+        #{point}, #{registerTime}, #{membershipPoint})
     </insert>
 
     <select id="findByLoginName" parameterType="string" resultMap="accountResultMap">

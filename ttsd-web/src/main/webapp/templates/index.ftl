@@ -1,6 +1,5 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.full_screen}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" keywords="拓天速贷,互联网金融平台,P2P理财,拓天借贷,网络理财" description="拓天速贷是基于互联网的金融信息服务平台,由拓天伟业(北京)资产管理有限公司旗下的拓天伟业(北京)金融信息服务有限公司运营.">
-
 <div class="home-page-container">
     <div class="banner-box" id="bannerBox">
         <div class="banner-img-list bd">
@@ -290,7 +289,7 @@
 
                 <div class="web-book-box" data-url="/loan/1">
                     <span class="book-info">预约后当有相应项目我们会及时通知您。</span>
-                    <a class="btn-invest btn-normal <@global.isAnonymous>not-anonymous</@global.isAnonymous> <@global.role hasRole="'USER','INVESTOR'">is-user</@global.role>">
+                    <a class="btn-invest btn-normal <@global.isAnonymous>not-anonymous</@global.isAnonymous> <@global.role hasRole="'INVESTOR'">is-user</@global.role>">
                         我要预约
                     </a>
                 </div>
@@ -630,7 +629,7 @@
             </h3>
             <div class="loan-list-index">
                 <ul class="loan-box-inner loan-btn">
-        <#list transferApplications as item>
+                    <#list transferApplications as item>
                     <li data-url="/transfer/${item.transferApplicationId}" class="clearfix">
                         <div class="loan-info-frame fl">
                             <div class="loan-top">
@@ -670,15 +669,15 @@
                         <div class="loan-process ">
                             <span class="deadline"> 截止时间：${item.deadLine?string("yyyy-MM-dd")}</span>
                             <div class="rest-amount">
-                                    <#if item.transferStatus=='TRANSFERRING'>
-                                        <button class="btn-invest btn-normal">马上投资</button>
-                                    <#else>
-                                        <button class="btn-invest btn-normal" disabled>已转让</button>
-                                    </#if>
+                                <#if item.transferStatus=='TRANSFERRING'>
+                                    <button class="btn-invest btn-normal">马上投资</button>
+                                <#else>
+                                    <button class="btn-invest btn-normal" disabled>已转让</button>
+                                </#if>
                             </div>
                         </div>
                     </li>
-            </#list>
+                    </#list>
                 </ul>
             </div>
         </div>
@@ -776,7 +775,7 @@
                             <td><label for="po3">13%</label></td>
                         </tr>
                     </table>
-            </div>
+                </div>
             </div>
             <dl class="book-dl clearfix">
                 <dt>预计投资金额</dt>
@@ -799,7 +798,6 @@
                     5、每笔预约在通知投资后失效。<br/>
 
                 </dd>
-
             </dl>
         </form>
     </div>

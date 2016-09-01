@@ -19,41 +19,45 @@ env.roledefs = {
     'cms': ['wuhan'],
     'activity': ['sanya'],
     'signin' : ['xian'],
-    'ask' : ['taiyuan']
+    'ask' : ['taiyuan'],
+    'point' : ['kunming']
 }
 
 
 def migrate():
     local('/opt/gradle/latest/bin/gradle clean')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=aa ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=ump_operations ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=sms_operations ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=job_worker ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=edxask ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=aa ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=ump_operations ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=sms_operations ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=job_worker ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxask ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxactivity ttsd-config:flywayMigrate')
 
 
 def mk_war():
     local('/usr/local/bin/paver jcversion')
-    local('/opt/gradle/latest/bin/gradle ttsd-web:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-activity:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-pay-wrapper:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-console:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-mobile-api:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-sms-wrapper:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-sign-in:war -PconfigPath=/workspace/v2config/default/')
-    local('/opt/gradle/latest/bin/gradle ttsd-ask-web:war -PconfigPath=/workspace/v2config/default/')
-
+    local('/opt/gradle/latest/bin/gradle ttsd-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-activity:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-pay-wrapper:war -PconfigPath=/workspace/v2config/default/ttsd-config/ -PpayConfigPath=/workspace/v2config/default/ttsd-pay-wrapper/')
+    local('/opt/gradle/latest/bin/gradle ttsd-console:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-activity-console:war -PconfigPath=/workspace/v2config/default/ttsd-config/ -PactivityConsoleConfigPath=/workspace/v2config/default/ttsd-activity-console/')
+    local('/opt/gradle/latest/bin/gradle ttsd-mobile-api:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-sms-wrapper:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-sign-in:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-point-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-ask-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
 
 def mk_worker_zip():
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  distZip -PconfigPath=/workspace/v2config/default/')
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=invest distZip -PconfigPath=/workspace/v2config/default/')
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=jpush distZip -PconfigPath=/workspace/v2config/default/')
+    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=invest distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=jpush distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
 
 
 def mk_static_zip():
     local('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/ robots.txt')
     local('cd ./ttsd-mobile-api/src/main/webapp && zip -r static_api.zip api/')
     local('cd ./ttsd-activity/src/main/webapp && zip -r static_activity.zip activity/')
+    local('cd ./ttsd-point-web/src/main/webapp && zip -r static_point.zip point/')
     local('cd ./ttsd-ask-web/src/main/webapp && zip -r static_ask.zip ask/')
 
 def build():
@@ -73,12 +77,14 @@ def deploy_static():
     upload_project(local_dir='./ttsd-web/src/main/webapp/static.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_api.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-activity/src/main/webapp/static_activity.zip', remote_dir='/workspace')
+    upload_project(local_dir='./ttsd-point-web/src/main/webapp/static_point.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-ask-web/src/main/webapp/static_ask.zip', remote_dir='/workspace')
     with cd('/workspace'):
         sudo('rm -rf static/')
         sudo('unzip static.zip -d static')
         sudo('unzip static_api.zip -d static')
         sudo('unzip static_activity.zip -d static')
+        sudo('unzip static_point.zip -d static')
         sudo('unzip static_ask.zip -d static')
         sudo('service nginx restart')
 
@@ -95,6 +101,7 @@ def deploy_sms():
 @roles('console')
 def deploy_console():
     upload_project(local_dir='./ttsd-console/war/ROOT.war', remote_dir='/workspace/console')
+    upload_project(local_dir='./ttsd-activity-console/war/ROOT.war', remote_dir='/workspace/activity-console')
     with cd('/workspace'):
         sudo('/usr/local/bin/docker-compose -f console.yml -p ttsd stop')
         sudo('/usr/local/bin/docker-compose -f console.yml -p ttsd rm -f')
@@ -167,6 +174,15 @@ def deploy_sign_in():
     sudo('service tomcat start')
 
 
+@roles('point')
+@parallel
+def deploy_point():
+    sudo('service tomcat stop')
+    sudo('rm -rf /opt/tomcat/webapps/ROOT')
+    upload_project(local_dir='./ttsd-point-web/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
+    sudo('service tomcat start')
+
+
 def deploy_all():
     execute(deploy_static)
     execute(deploy_sign_in)
@@ -177,8 +193,8 @@ def deploy_all():
     execute(deploy_api)
     execute(deploy_web)
     execute(deploy_activity)
+    execute(deploy_point)
     execute(deploy_ask)
-
 
 def pre_deploy():
     compile()
@@ -237,6 +253,11 @@ def pay():
 def signin():
     pre_deploy()
     execute(deploy_sign_in)
+
+def point():
+    pre_deploy()
+    execute(deploy_point)
+    execute(deploy_static)
 
 
 def get_30days_before(date_format="%Y-%m-%d"):
@@ -313,6 +334,13 @@ def remove_sign_in_logs():
     remove_nginx_logs()
 
 
+@roles('point')
+@parallel
+def remove_point_logs():
+    remove_tomcat_logs()
+    remove_nginx_logs()
+
+
 def remove_old_logs():
     """
     Remove logs which was generated 30 days ago
@@ -324,6 +352,7 @@ def remove_old_logs():
     execute(remove_worker_logs)
     execute(remove_static_logs)
     execute(remove_sign_in_logs)
+    execute(remove_point_logs)
 
 
 @roles('pay')
@@ -398,6 +427,15 @@ def restart_logstash_service_for_sign_in():
     run("service logstash restart")
 
 
+@roles('point')
+@parallel
+def restart_logstash_service_for_point():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
+
+
 def restart_logstash(service):
     """
     Usage: fab restart_logstash:web
@@ -409,6 +447,7 @@ def restart_logstash(service):
     func = {'web': restart_logstash_service_for_portal, 'api': restart_logstash_service_for_api,
            'pay': restart_logstash_service_for_pay, 'worker': restart_logstash_service_for_worker,
            'cms': restart_logstash_service_for_cms, 'activity': restart_logstash_service_for_activity,
+           'point': restart_logstash_service_for_point,
            'signin': restart_logstash_service_for_sign_in, 'ask': restart_logstash_service_for_ask}.get(service)
     execute(func)
 

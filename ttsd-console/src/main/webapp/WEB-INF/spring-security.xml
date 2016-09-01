@@ -4,7 +4,7 @@
              xsi:schemaLocation="http://www.springframework.org/schema/beans
 		   http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
 		   http://www.springframework.org/schema/security
-		   http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+		   http://www.springframework.org/schema/security/spring-security-4.1.xsd">
 
     <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.spring.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/403"/>
@@ -36,6 +36,7 @@
         <intercept-url pattern="/bi/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
         <intercept-url pattern="/project-manage/loan" access="hasAnyAuthority('ADMIN', 'OPERATOR')"/>
         <intercept-url pattern="/project-manage/*" access="hasAnyAuthority('ADMIN', 'OPERATOR', 'OPERATOR_ADMIN')"/>
+        <intercept-url pattern="/product-manage/*" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN')"/>
         <intercept-url pattern="/activity-manage/*" access="hasAnyAuthority('ADMIN', 'OPERATOR', 'CUSTOMER_SERVICE', 'OPERATOR_ADMIN')"/>
         <intercept-url pattern="/user-manage/account/*/search" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
         <intercept-url pattern="/user-manage/user/*/search" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>

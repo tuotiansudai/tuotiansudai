@@ -9,12 +9,22 @@ public class ExchangeCouponDto extends CouponDto implements Serializable{
 
     private Long exchangePoint;
 
+    private Integer seq;
+
     public Long getExchangePoint() {
         return exchangePoint;
     }
 
     public void setExchangePoint(Long exchangePoint) {
         this.exchangePoint = exchangePoint;
+    }
+
+    public Integer getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Integer seq) {
+        this.seq = seq;
     }
 
     public ExchangeCouponDto() {

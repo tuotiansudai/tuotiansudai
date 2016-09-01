@@ -6,5 +6,7 @@ public interface CouponActivationService {
 
     void inactive(String loginNameLoginName, long couponId, String ip);
 
+    void exchangeInactive(String loginNameLoginName, long couponId, String ip);
+
     void sendSms(long couponId);
 }

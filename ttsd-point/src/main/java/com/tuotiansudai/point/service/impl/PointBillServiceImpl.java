@@ -8,12 +8,8 @@ import com.tuotiansudai.dto.AccountItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
-import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
-import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
-import com.tuotiansudai.point.repository.model.PointTaskModel;
-import com.tuotiansudai.point.repository.model.UserPointTaskModel;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -63,6 +59,15 @@ public class PointBillServiceImpl implements PointBillService {
 
     @Override
     @Transactional
+    public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note) {
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        accountModel.setPoint(accountModel.getPoint() + point);
+        pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
+        accountMapper.update(accountModel);
+    }
+
+    @Override
+    @Transactional
     public void createTaskPointBill(String loginName, long pointTaskId, long point, String note) {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         accountModel.setPoint(accountModel.getPoint() + point);
@@ -72,10 +77,10 @@ public class PointBillServiceImpl implements PointBillService {
 
     @Override
     public BasePaginationDataDto<PointBillPaginationItemDataDto> getPointBillPagination(String loginName,
-                                                                                 int index,
-                                                                                 int pageSize,
-                                                                                 Date startTime,
-                                                                                 Date endTime,
+                                                                                        int index,
+                                                                                        int pageSize,
+                                                                                        Date startTime,
+                                                                                        Date endTime,
                                                                                         List<PointBusinessType> businessTypes) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
@@ -158,6 +163,7 @@ public class PointBillServiceImpl implements PointBillService {
                         double rate = new BigDecimal(couponModel.getRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_UP).doubleValue();
                         return MessageFormat.format("{0}% {1}", String.valueOf(rate), couponModel.getCouponType().getName());
                     case INVEST_COUPON:
+                    case RED_ENVELOPE:
                         return MessageFormat.format("{0}元 {1}", AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
                     default:
                         return null;

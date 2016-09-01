@@ -6,6 +6,14 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v1_0.UserInvestRepayRequestDto;
 import com.tuotiansudai.api.dto.v1_0.UserInvestRepayResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppUserInvestRepayServiceImpl;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -25,6 +33,8 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -53,6 +63,18 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
     @Mock
     private LoanService loanService;
 
+    @Mock
+    private CouponRepayMapper couponRepayMapper;
+
+    @Mock
+    private MembershipMapper membershipMapper;
+
+    @Mock
+    private UserCouponMapper userCouponMapper;
+
+    @Mock
+    private CouponMapper couponMapper;
+
     @Test
     public void shouldUserInvestRepayOnePeriodCompleteIsOk(){
         LoanModel loanModel = createLoanModel();
@@ -80,7 +102,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         assertEquals("90", responseDto.getData().getDuration());
         assertEquals("_90", responseDto.getData().getProductNewType());
         assertEquals("50.00", responseDto.getData().getInvestAmount());
-        assertEquals("0.30", responseDto.getData().getExpectedInterest());
+        assertEquals("50.30", responseDto.getData().getExpectedInterest());
         assertEquals("0.10", responseDto.getData().getActualInterest());
         assertEquals(3, responseDto.getData().getInvestRepays().size());
     }
@@ -112,7 +134,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         assertEquals("90", responseDto.getData().getDuration());
         assertEquals("_90", responseDto.getData().getProductNewType());
         assertEquals("50.00", responseDto.getData().getInvestAmount());
-        assertEquals("0.30", responseDto.getData().getExpectedInterest());
+        assertEquals("50.30", responseDto.getData().getExpectedInterest());
         assertEquals("0.20", responseDto.getData().getActualInterest());
         assertEquals(3, responseDto.getData().getInvestRepays().size());
     }
@@ -129,10 +151,24 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         investRepayModels.add(investRepayModel1);
         investRepayModels.add(investRepayModel2);
         investRepayModels.add(investRepayModel3);
+        List memberships = Lists.newArrayList();
+        MembershipModel membershipModel = new MembershipModel();
+        membershipModel.setFee(0);
+        membershipModel.setExperience(0);
+        membershipModel.setLevel(1);
+        memberships.add(membershipModel);
+        CouponRepayModel couponRepayModel = new CouponRepayModel();
+        List userCoupon = Lists.newArrayList();
+        UserCouponModel userCouponModel = new UserCouponModel();
+        userCoupon.add(userCouponModel);
 
         when(investService.findById(anyLong())).thenReturn(investModel);
         when(loanService.findLoanById(anyLong())).thenReturn(loanModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
+        when(couponRepayMapper.findCouponRepayByInvestIdAndPeriod(anyLong(), anyInt())).thenReturn(couponRepayModel);
+        when(membershipMapper.findAllMembership()).thenReturn(memberships);
+        when(userCouponMapper.findByInvestId(anyLong())).thenReturn(userCoupon);
+        when(couponMapper.findById(anyLong())).thenReturn(new CouponModel());
 
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
@@ -145,7 +181,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         assertEquals("90", responseDto.getData().getDuration());
         assertEquals("_90", responseDto.getData().getProductNewType());
         assertEquals("50.00", responseDto.getData().getInvestAmount());
-        assertEquals("0.30", responseDto.getData().getExpectedInterest());
+        assertEquals("50.30", responseDto.getData().getExpectedInterest());
         assertEquals("0.30", responseDto.getData().getActualInterest());
         assertEquals(3, responseDto.getData().getInvestRepays().size());
     }

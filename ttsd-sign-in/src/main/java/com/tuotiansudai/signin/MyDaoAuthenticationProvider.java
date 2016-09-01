@@ -54,7 +54,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
             if(StringUtils.isNotEmpty(captcha)) {
                 boolean result;
                 if (StringUtils.isNotEmpty(deviceId)) {
-                    result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha, deviceId);
+                    result = this.captchaHelper.captchaVerify(CaptchaHelper.BASIC_CAPTCHA, captcha, deviceId);
                 } else {
                     result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha);
                 }

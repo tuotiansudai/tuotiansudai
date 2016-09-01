@@ -9,15 +9,17 @@ import com.tuotiansudai.api.service.v1_0.MobileAppPersonalInfoService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.DistrictUtil;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.util.BankCardUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoService {
@@ -30,6 +32,12 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private InvestMapper investMapper;
+
+    @Autowired
+    private LoanMapper loanMapper;
 
     @Override
     public BaseResponseDto getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto) {
@@ -80,13 +88,27 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             personalInfoDataDto.setBankId(bankCard.getBankCode());
             personalInfoDataDto.setIsFastPayment(bankCard.isFastPayOn());
             personalInfoDataDto.setFastPaymentEnable(BankCardUtil.canEnableFastPay(bankCard.getBankCode()));
+            personalInfoDataDto.setBankName(BankCardUtil.getBankName(bankCard.getBankCode()));
         } else {
             personalInfoDataDto.setIsBoundBankCard(false);
             personalInfoDataDto.setBankCardNo("");
             personalInfoDataDto.setBankId("");
             personalInfoDataDto.setIsFastPayment(false);
             personalInfoDataDto.setFastPaymentEnable(false);
+            personalInfoDataDto.setBankName("");
         }
+        if(investMapper.findCountExperienceLoanByLoginName(user.getLoginName()) > 0){
+            personalInfoDataDto.setIsExperienceEnable(false);
+        }else{
+            personalInfoDataDto.setIsExperienceEnable(true);
+        }
+
+        if(investMapper.sumSuccessInvestCountByLoginName(user.getLoginName()) > 0){
+            personalInfoDataDto.setIsNewbieEnable(false);
+        }else{
+            personalInfoDataDto.setIsNewbieEnable(true);
+        }
+
         return personalInfoDataDto;
     }
 }

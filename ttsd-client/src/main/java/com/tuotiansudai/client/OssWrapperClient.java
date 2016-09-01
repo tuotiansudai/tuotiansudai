@@ -73,6 +73,7 @@ public class OssWrapperClient {
             throw new Exception("不允许的文件格式");
         }
         String newFileName = generateRandomFileName(suffix);
+        logger.debug("[OSS UPLOAD] newFileName:" + newFileName);
         return uploadFileBlur(newFileName, inputStream, rootPath, address, waterImage);
     }
 
@@ -113,22 +114,24 @@ public class OssWrapperClient {
             String filePath = sitePath + fileName;
             if ("DEV".equalsIgnoreCase(environment)) {
                 String savefile = mkdir(rootPath + sitePath) + fileName;
+                logger.debug(MessageFormat.format("{0}|{1}","[OSS UPLOAD] filePath:",filePath));
                 FileOutputStream out = new FileOutputStream(new File(savefile));
                 BufferedOutputStream output = new BufferedOutputStream(out);
                 Streams.copy(in, output, true);
                 return address + filePath;
             } else {
+                logger.debug(MessageFormat.format("{0}|{1}","[OSS UPLOAD] filePath:",filePath));
                 OSSClient client = getOSSClient();
                 client.putObject(bucketName, fileName, in, objectMeta);
                 return filePath;
             }
         } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
+            logger.error(MessageFormat.format("{0}|{1}", "[OSS UPLOAD]", e.getLocalizedMessage()), e);
         } finally {
             try {
                 in.close();
             } catch (IOException e) {
-                logger.error(e.getLocalizedMessage(), e);
+                logger.error(MessageFormat.format("{0}|{1}","[OSS UPLOAD]",e.getLocalizedMessage()), e);
             }
         }
         return null;

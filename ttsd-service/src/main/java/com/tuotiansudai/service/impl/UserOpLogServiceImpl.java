@@ -28,11 +28,11 @@ public class UserOpLogServiceImpl implements UserOpLogService {
 
     @Override
     public BasePaginationDataDto<UserOpLogView> getUserOpLogPaginationData(String mobile,
-                                                                     UserOpType opType,
-                                                                     Date startTime,
-                                                                     Date endTime,
-                                                                     int index,
-                                                                     int pageSize) {
+                                                                           UserOpType opType,
+                                                                           Date startTime,
+                                                                           Date endTime,
+                                                                           int index,
+                                                                           int pageSize) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
