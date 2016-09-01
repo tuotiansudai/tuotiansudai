@@ -108,6 +108,7 @@ public class MobileAppActivityServiceTest {
     private ActivityModel createActivityModel(long id, UserModel userModel, String description, Date activatedTime, List<Source> source) {
         ActivityModel activityModel = new ActivityModel();
         activityModel.setId(id);
+        activityModel.setSeq(10L);
         activityModel.setTitle(description);
         activityModel.setWebActivityUrl("testWebActivityUrl");
         activityModel.setAppActivityUrl("testAppActivityUrl");
