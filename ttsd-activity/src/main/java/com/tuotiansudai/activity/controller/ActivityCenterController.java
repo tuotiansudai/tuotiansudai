@@ -22,11 +22,10 @@ public class ActivityCenterController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getAllOperatingActivities() {
         ModelAndView modelAndView = new ModelAndView("/activities/activity-center");
-
         String loginName = LoginUserInfo.getLoginName();
         List<ActivityDto> activityDtos = activityService.getAllActiveActivities(loginName, Source.WEB);
         modelAndView.addObject("data", activityDtos);
-        modelAndView.addObject("responsive",true);
+        modelAndView.addObject("responsive", true);
         return modelAndView;
     }
 }
