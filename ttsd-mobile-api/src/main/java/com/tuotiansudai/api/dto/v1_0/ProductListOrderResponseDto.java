@@ -7,7 +7,7 @@ public class ProductListOrderResponseDto extends BaseResponseDataDto{
     private Integer index;
     private Integer pageSize;
     private Integer totalCount;
-    private List<ProductOrderResponseDto> productOrderResponseDtoList;
+    private List<ProductOrderResponseDto> orders;
 
     public Integer getIndex() {
         return index;
@@ -33,11 +33,11 @@ public class ProductListOrderResponseDto extends BaseResponseDataDto{
         this.totalCount = totalCount;
     }
 
-    public List<ProductOrderResponseDto> getProductOrderResponseDtoList() {
-        return productOrderResponseDtoList;
+    public List<ProductOrderResponseDto> getOrders() {
+        return orders;
     }
 
-    public void setProductOrderResponseDtoList(List<ProductOrderResponseDto> productOrderResponseDtoList) {
-        this.productOrderResponseDtoList = productOrderResponseDtoList;
+    public void setOrders(List<ProductOrderResponseDto> orders) {
+        this.orders = orders;
     }
 }

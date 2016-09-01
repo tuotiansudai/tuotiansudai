@@ -9,6 +9,8 @@ import com.tuotiansudai.api.service.v1_0.MobileAppPointShopService;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
+import com.tuotiansudai.point.repository.model.GoodsType;
+import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
 import com.tuotiansudai.point.repository.model.UserAddressModel;
 import org.apache.commons.collections.CollectionUtils;
@@ -64,7 +66,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService{
             return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
         index = (baseParamDto.getIndex() - 1) * pageSize;
-        List<ProductOrderViewDto> productOrderListByLoginName = productOrderMapper.findProductOrderListByLoginName(baseParamDto.getBaseParam().getUserId(), index, 10);
+        List<ProductOrderViewDto> productOrderListByLoginName = productOrderMapper.findProductOrderListByLoginName(baseParamDto.getBaseParam().getUserId(), index, pageSize);
         ProductListOrderResponseDto  productListOrderResponseDto = new ProductListOrderResponseDto();
         if(CollectionUtils.isNotEmpty(productOrderListByLoginName)){
             Iterator<ProductOrderResponseDto> transform = Iterators.transform(productOrderListByLoginName.iterator(), new Function<ProductOrderViewDto, ProductOrderResponseDto>() {
@@ -73,7 +75,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService{
                     return new ProductOrderResponseDto(input);
                 }
             });
-            productListOrderResponseDto.setProductOrderResponseDtoList(Lists.newArrayList(transform));
+            productListOrderResponseDto.setOrders(Lists.newArrayList(transform));
             productListOrderResponseDto.setIndex(baseParamDto.getIndex());
             productListOrderResponseDto.setPageSize(baseParamDto.getPageSize());
             productListOrderResponseDto.setTotalCount((int)productOrderMapper.findProductOrderListByLoginNameCount(baseParamDto.getBaseParam().getUserId()));
@@ -86,7 +88,8 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService{
 
     @Override
     public BaseResponseDto findPointHome(BaseParamDto baseParamDto){
-        productMapper.findAllProducts();
+        List<ProductModel> virtualProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON, GoodsType.VIRTUAL), 0, 4);
+        List<ProductModel> physicalsProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.PHYSICAL), 0, 4);
 
         ProductListResponseDto productListResponseDto = new ProductListResponseDto();
         BaseResponseDto baseResponseDto = new BaseResponseDto();
