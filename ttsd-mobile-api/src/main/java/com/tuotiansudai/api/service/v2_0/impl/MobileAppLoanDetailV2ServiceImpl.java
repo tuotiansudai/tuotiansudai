@@ -15,7 +15,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -118,7 +118,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setRepayUnit(loanModel.getType().getLoanPeriodUnit().getDesc());
         dataDto.setRatePercent(decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100));
         dataDto.setLoanMoney(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-
+        dataDto.setActivityType(loanModel.getActivityType());
         if (loanModel.getStatus().equals(LoanStatus.PREHEAT)) {
             dataDto.setLoanStatus(LoanStatus.RAISING.name().toLowerCase());
             dataDto.setLoanStatusDesc(LoanStatus.RAISING.getMessage());

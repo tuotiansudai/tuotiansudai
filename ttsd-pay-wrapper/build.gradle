@@ -17,8 +17,8 @@ war {
     destinationDir = file("war")
     def outerConfigPath = '/workspace/new_version_config/ttsd-pay-wrapper/'
 
-    if (project.hasProperty("configPath") && new File(configPath).isDirectory()) {
-        outerConfigPath = configPath
+    if (project.hasProperty("payConfigPath") && new File(payConfigPath).isDirectory()) {
+        outerConfigPath = payConfigPath
     }
     from("${outerConfigPath}/SignVerProp.properties") {
         into 'WEB-INF/classes/'

@@ -79,8 +79,6 @@ public class AppShareController {
         return modelAndView;
     }
 
-
-
     @RequestMapping(value = "/success",method = RequestMethod.GET)
     public ModelAndView getSuccessPage(@RequestParam(value = "referrerMobile") String referrerMobile,
                                         @RequestParam(value = "mobile",required = false) String mobile) {
@@ -113,9 +111,5 @@ public class AppShareController {
         }
 
         return "/activities/share-app-android";
-
     }
-
-
-
 }

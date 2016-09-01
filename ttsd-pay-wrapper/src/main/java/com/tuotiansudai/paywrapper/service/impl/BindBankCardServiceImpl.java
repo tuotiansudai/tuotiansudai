@@ -21,7 +21,6 @@ import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.BankCardUtil;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +46,6 @@ public class BindBankCardServiceImpl implements BindBankCardService {
 
     @Autowired
     private BankCardMapper bankCardMapper;
-
-    @Autowired
-    private SystemBillService systemBillService;
 
     @Override
     public BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto) {
