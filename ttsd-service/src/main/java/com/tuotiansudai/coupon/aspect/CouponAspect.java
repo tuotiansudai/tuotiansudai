@@ -3,7 +3,6 @@ package com.tuotiansudai.coupon.aspect;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SignInDto;

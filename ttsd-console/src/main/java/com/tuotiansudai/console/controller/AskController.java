@@ -1,12 +1,12 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.ask.dto.BaseDataDto;
-import com.tuotiansudai.ask.dto.BaseDto;
-import com.tuotiansudai.ask.dto.BasePaginationDataDto;
 import com.tuotiansudai.ask.repository.model.AnswerStatus;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.QuestionService;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

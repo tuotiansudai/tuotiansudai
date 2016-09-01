@@ -1,22 +1,14 @@
 package com.tuotiansudai.util;
 
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class ExportCsvUtil {
-
-    static Logger logger = Logger.getLogger(ExportCsvUtil.class);
 
     public static void createCsvOutputStream(CsvHeaderType csvHeaderType, List<List<String>> data, OutputStream outputStream) {
         BufferedWriter csvFileOutputStream = null;
@@ -25,7 +17,7 @@ public class ExportCsvUtil {
             csvFileOutputStream.write(csvHeaderType.getHeader());
             csvFileOutputStream.newLine();
             for (List<String> dataList : data) {
-                csvFileOutputStream.write(StringUtils.join(dataList, ","));
+                csvFileOutputStream.write(join(dataList, ","));
                 csvFileOutputStream.newLine();
             }
         } catch (Exception e) {
@@ -51,7 +43,7 @@ public class ExportCsvUtil {
             try {
                 fieldObject = field.get(t);
             } catch (IllegalAccessException e) {
-                logger.error("T:" + t.getClass().getName() + ", field:" + field.getName() + "\n" + e.getMessage());
+                e.printStackTrace();
             }
             String fieldString;
             if (null == fieldObject) {
@@ -64,5 +56,17 @@ public class ExportCsvUtil {
             dtoStrings.add(fieldString);
         }
         return dtoStrings;
+    }
+
+    public static String join(Collection var0, String var1) {
+        StringBuilder var2 = new StringBuilder();
+
+        for(Iterator var3 = var0.iterator(); var3.hasNext(); var2.append((String)var3.next())) {
+            if(var2.length() != 0) {
+                var2.append(var1);
+            }
+        }
+
+        return var2.toString();
     }
 }

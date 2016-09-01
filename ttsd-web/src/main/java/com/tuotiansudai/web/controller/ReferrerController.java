@@ -3,8 +3,6 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.model.ReferrerManageView;
-import com.tuotiansudai.repository.model.ReferrerRelationView;
 import com.tuotiansudai.service.ReferrerManageService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;

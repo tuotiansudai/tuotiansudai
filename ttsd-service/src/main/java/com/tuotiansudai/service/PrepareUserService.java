@@ -6,7 +6,6 @@ import com.tuotiansudai.dto.PrepareRegisterRequestDto;
 import com.tuotiansudai.dto.PrepareUserDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.repository.model.PrepareUserModel;
-import com.tuotiansudai.repository.model.UserModel;
 
 import java.util.Date;
 import java.util.List;

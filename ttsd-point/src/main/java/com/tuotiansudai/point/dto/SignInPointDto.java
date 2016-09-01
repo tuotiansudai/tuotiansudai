@@ -2,7 +2,6 @@ package com.tuotiansudai.point.dto;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.point.repository.model.PointBillModel;
-import com.tuotiansudai.repository.model.UserModel;
 
 import java.io.Serializable;
 import java.util.Date;

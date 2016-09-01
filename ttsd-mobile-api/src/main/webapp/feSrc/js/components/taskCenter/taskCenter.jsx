@@ -6,10 +6,9 @@ import IScroll from 'iscroll/build/iscroll-probe';
 import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
 import Immutable from 'seamless-immutable';
-import taskBanner from './task_banner.png';
+import taskBanner from './task_banner1.png';
 import taskLineLeft from './task_line_left.png';
 import taskLineRight from './task_line_right.png';
-import taskBean from './task_bean.png';
 
 const pageSize = 10;
 const MenuData = {
@@ -65,7 +64,6 @@ class NewbieTaskGroup extends React.Component {
                             <div className="TaskItemLine"></div>
                             <div className="TaskRewardGroup">
                                 <div className="TaskReward">奖励{option.point}</div>
-                                <img className="TaskBeanImg" src={taskBean} />
                             </div>
                         </div>
                         <ButtonStatus stocked={option.completed} description={option.description} value={option.number} location={option.url} />
@@ -103,7 +101,6 @@ class AdvanceTaskGroup extends React.Component {
                         <div className="TaskAdvanceRewardGroup">
                             <div className="TaskAdvanceItemTitle">{option.title}</div>
                             <div className="TaskAdvanceReward">奖励{option.point}</div>
-                            <img className="TaskAdvanceBeanImg" src={taskBean}/>
                         </div>
                         <div className="TaskAdvanceItemDes" dangerouslySetInnerHTML={{__html: option.description}} data-hyb="xxx" aria-ybs="true"></div>
                     </div>

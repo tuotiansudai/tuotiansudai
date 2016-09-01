@@ -39,6 +39,10 @@
         select * from coupon_repay where user_coupon_id = #{userCouponId} and period = #{period}
     </select>
 
+    <select id="findCouponRepayByInvestIdAndPeriod" resultMap="couponRepayResultMap" parameterType="map">
+        select * from coupon_repay where invest_id = #{investId} and period = #{period}
+    </select>
+
     <update id="update" parameterType="CouponRepayModel">
         update coupon_repay set
         login_name = #{loginName},
