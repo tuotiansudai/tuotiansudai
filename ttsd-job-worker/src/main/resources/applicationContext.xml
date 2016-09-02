@@ -65,11 +65,11 @@
     </bean>
     <bean id="activityHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxactivity?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="${common.jdbc.username}"/>
-        <property name="password" value="${common.jdbc.password}"/>
-        <property name="minimumIdle" value="${worker.job_worker.minimumIdle}"/>
-        <property name="maximumPoolSize" value="${worker.job_worker.maximumPoolSize}"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${activity.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="${activity.jdbc.username}"/>
+        <property name="password" value="${activity.jdbc.password}"/>
+        <property name="minimumIdle" value="${worker.edxactivity.minimumIdle}"/>
+        <property name="maximumPoolSize" value="${worker.edxactivity.maximumPoolSize}"/>
         <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
         <property name="dataSourceProperties">
             <props>

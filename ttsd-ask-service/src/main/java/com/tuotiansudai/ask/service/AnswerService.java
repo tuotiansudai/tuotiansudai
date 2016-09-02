@@ -2,23 +2,28 @@ package com.tuotiansudai.ask.service;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.ask.dto.*;
+import com.tuotiansudai.ask.dto.AnswerDto;
+import com.tuotiansudai.ask.dto.AnswerRequestDto;
+import com.tuotiansudai.ask.dto.AnswerResultDataDto;
+import com.tuotiansudai.ask.dto.QuestionDto;
 import com.tuotiansudai.ask.repository.mapper.AnswerMapper;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.AnswerModel;
 import com.tuotiansudai.ask.repository.model.AnswerStatus;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
-import com.tuotiansudai.util.MobileEncoder;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.util.PaginationUtil;
+import com.tuotiansudai.ask.utils.FakeMobileUtil;
 import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.MobileEncoder;
+import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -74,7 +79,10 @@ public class AnswerService {
         }
         answerResultDataDto.setAnswerSensitiveValid(true);
 
+        UserModel userModel = userMapper.findByLoginName(loginName);
         AnswerModel answerModel = new AnswerModel(loginName,
+                userModel.getMobile(),
+                FakeMobileUtil.generateFakeMobile(userModel.getMobile()),
                 questionId,
                 SensitiveWordsFilter.replace(answerRequestDto.getAnswer()));
         answerMapper.create(answerModel);
@@ -114,9 +122,8 @@ public class AnswerService {
             return null;
         }
 
-        String mobile = userMapper.findByLoginName(bestAnswerModel.getLoginName()).getMobile();
         return new AnswerDto(bestAnswerModel,
-                bestAnswerModel.getLoginName().equalsIgnoreCase(loginName) ? mobile : MobileEncoder.encode(mobile),
+                bestAnswerModel.getLoginName().equalsIgnoreCase(loginName) ? bestAnswerModel.getMobile() : MobileEncoder.encode(Strings.isNullOrEmpty(bestAnswerModel.getFakeMobile()) ? bestAnswerModel.getMobile() : bestAnswerModel.getFakeMobile()),
                 bestAnswerModel.getFavoredBy() != null && bestAnswerModel.getFavoredBy().contains(loginName),
                 null);
     }
@@ -225,9 +232,8 @@ public class AnswerService {
             public AnswerDto apply(AnswerModel input) {
                 QuestionModel questionModel = questionMapper.findById(input.getQuestionId());
                 QuestionDto questionDto = new QuestionDto(questionModel, userMapper.findByLoginName(questionModel.getLoginName()).getMobile());
-                String mobile = userMapper.findByLoginName(input.getLoginName()).getMobile();
                 return new AnswerDto(input,
-                        isEncodeMobile ? MobileEncoder.encode(mobile) : mobile,
+                        isEncodeMobile ? MobileEncoder.encode(Strings.isNullOrEmpty(input.getFakeMobile()) ? input.getMobile() : input.getFakeMobile()) : input.getMobile(),
                         input.getFavoredBy() != null && input.getFavoredBy().contains(loginName),
                         questionDto);
             }
