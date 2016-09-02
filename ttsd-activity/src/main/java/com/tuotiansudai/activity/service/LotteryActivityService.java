@@ -103,9 +103,15 @@ public class LotteryActivityService {
         return lotteryTime;
     }
 
-    public DrawLotteryResultDto drawLotteryPrize(String mobile,String drawType){
+    public DrawLotteryResultDto drawLotteryPrize(String mobile,LotteryPrize drawType){
         logger.debug(mobile + " is drawing the lottery prize.");
         DrawLotteryResultDto drawLotteryResultDto = new DrawLotteryResultDto();
+        Date nowDate = DateTime.now().toDate();
+        if(!nowDate.before(activityAutumnEndTime) || !nowDate.after(activityAutumnStartTime)){
+            drawLotteryResultDto.setMessage("不在活动时间范围内！");
+            drawLotteryResultDto.setReturnCode(3);
+            return drawLotteryResultDto;
+        }
 
         if (StringUtils.isEmpty(mobile)) {
             logger.error("User not login. can't draw prize.");
@@ -159,12 +165,12 @@ public class LotteryActivityService {
         return 0l;
     }
 
-    private LotteryPrize getDrawPrize(String drawType){
+    private LotteryPrize getDrawPrize(LotteryPrize drawType){
         int random = (int) (Math.random() * 100000000);
         int mod = random % 200;
-        if(drawType.toUpperCase().equals(LotteryPrize.TOURISM) && mod == 0){
+        if(drawType.equals(LotteryPrize.TOURISM) && mod == 0){
             return LotteryPrize.MANGO_CARD_100;
-        } else if (drawType.toUpperCase().equals(LotteryPrize.LUXURY) && mod == 0){
+        } else if (drawType.equals(LotteryPrize.LUXURY) && mod == 0){
             return LotteryPrize.PORCELAIN_CUP;
         } else if (mod >= 1 && mod <= 40){ // 1/5
             return LotteryPrize.RED_ENVELOPE_100;
@@ -177,15 +183,15 @@ public class LotteryActivityService {
         }
     }
 
-    public List<UserLotteryPrizeView> findDrawLotteryPrizeRecordByMobile(String mobile,String activityType){
+    public List<UserLotteryPrizeView> findDrawLotteryPrizeRecordByMobile(String mobile,LotteryPrize activityType){
         if(Strings.isNullOrEmpty(mobile)){
             return Lists.newArrayList();
         }
         return findDrawLotteryPrizeRecord(mobile,activityType);
     }
 
-    public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile,String activityType){
-        List<LotteryPrize> lotteryPrizes = activityType.equals("travel") ? Lists.newArrayList(LotteryPrize.TOURISM,LotteryPrize.MANGO_CARD_100) : Lists.newArrayList(LotteryPrize.PORCELAIN_CUP,LotteryPrize.LUXURY);
+    public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile,LotteryPrize activityType){
+        List<LotteryPrize> lotteryPrizes = activityType.equals(LotteryPrize.TOURISM) ? Lists.newArrayList(LotteryPrize.TOURISM,LotteryPrize.MANGO_CARD_100) : Lists.newArrayList(LotteryPrize.PORCELAIN_CUP,LotteryPrize.LUXURY);
 
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, lotteryPrizes);
         for(UserLotteryPrizeView view : userLotteryPrizeViews){

@@ -5,8 +5,11 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
+import com.tuotiansudai.activity.dto.LotteryPrize;
 import com.tuotiansudai.activity.dto.LuxuryPrizeDto;
 import com.tuotiansudai.activity.dto.TravelPrizeDto;
+import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.AutumnPrizeService;
 import com.tuotiansudai.activity.service.LotteryActivityService;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -50,7 +53,6 @@ public class AutumnPrizeController {
 
     @Autowired
     private LotteryActivityService lotteryActivityService;
-
 
     @RequestMapping(path = "/travel", method = RequestMethod.GET)
     public ModelAndView travelPrize() {
@@ -154,5 +156,41 @@ public class AutumnPrizeController {
         }
 
         return new ModelAndView("/error/404");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/travel-draw", method = RequestMethod.POST)
+    public DrawLotteryResultDto travelDrawPrize() {
+        return lotteryActivityService.drawLotteryPrize(LoginUserInfo.getMobile(),LotteryPrize.TOURISM);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/luxury-draw", method = RequestMethod.POST)
+    public DrawLotteryResultDto luxuryDrawPrize() {
+        return lotteryActivityService.drawLotteryPrize(LoginUserInfo.getMobile(),LotteryPrize.LUXURY);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/travel-user-list", method = RequestMethod.GET)
+    public List<UserLotteryPrizeView> getTravelRecordByLoginName() {
+        return lotteryActivityService.findDrawLotteryPrizeRecordByMobile("18210195947", LotteryPrize.TOURISM);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/travel-all-list", method = RequestMethod.GET)
+    public List<UserLotteryPrizeView> getTravelRecordByAll() {
+        return lotteryActivityService.findDrawLotteryPrizeRecord(null, LotteryPrize.TOURISM);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/luxury-user-list", method = RequestMethod.GET)
+    public List<UserLotteryPrizeView> getLuxuryRecordByLoginName() {
+        return lotteryActivityService.findDrawLotteryPrizeRecordByMobile("18210195947", LotteryPrize.LUXURY);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/luxury-all-list", method = RequestMethod.GET)
+    public List<UserLotteryPrizeView> getLuxuryRecordByAll() {
+        return lotteryActivityService.findDrawLotteryPrizeRecord(null, LotteryPrize.LUXURY);
     }
 }

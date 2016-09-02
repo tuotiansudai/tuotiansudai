@@ -23,14 +23,16 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
     $pointer.on('click', function(event) {
         event.preventDefault();
 
+        var url = '/activity/autumn/travel-draw';
+        if($('#themeType').val() == 'travel'){
+            url = '/activity/autumn/luxury-draw';
+        }
+
         if (bRotate) return;
         $.ajax({
-            url: '/activity/draw-lottery',
+            url: url,
             type: 'POST',
-            dataType: 'json',
-            data:{
-                activityType:$('#themeType').val()
-            }
+            dataType: 'json'
         })
         .done(function(data) {
             if (data.returnCode == 0) {
@@ -59,6 +61,8 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
                 }
             } else if (data.returnCode == 2) {
                 $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'nologin'})).show().find('.tip-dom').show();
+            } else if(data.returnCode == 3){
+                $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'timeout'})).show().find('.tip-dom').show();
             } else {
                 $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'notimes'})).show().find('.tip-dom').show();
             }
@@ -122,13 +126,14 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
     }
 
     function GiftRecord (){
+        var url = '/activity/autumn/luxury-all-list';
+        if($('#themeType').val() == 'travel'){
+            url = '/activity/autumn/travel-all-list';
+        }
         $.ajax({
-            url: '/activity/lottery-all-list',
-            type: 'POST',
-            dataType: 'json',
-            data:{
-                activityType:$('#themeType').val()
-            }
+            url: url,
+            type: 'GET',
+            dataType: 'json'
         })
         .done(function(data) {
             $('#GiftRecord').html(tpl('GiftRecordTpl', {record:data}));
@@ -136,13 +141,14 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
     };
 
     function MyGift(){
+        var url = '/activity/autumn/luxury-user-list';
+        if($('#themeType').val() == 'travel'){
+            url = '/activity/autumn/travel-user-list';
+        }
         $.ajax({
-            url: '/activity/lottery-record-list',
-            type: 'POST',
-            dataType: 'json',
-            data:{
-                activityType:$('#themeType').val()
-            }
+            url: url,
+            type: 'GET',
+            dataType: 'json'
         })
         .done(function(data) {
             $('#MyGift').html(tpl('MyGiftTpl', {gift:data}));
