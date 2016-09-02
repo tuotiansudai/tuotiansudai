@@ -556,6 +556,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                         dataType: 'json',
                         url: '/no-password-invest',
                         beforeSubmit: function () {
+                            console.log($ticketList.find('input[type="radio"]'));
                             $investSubmit.addClass("loading");
                         },
                         success: function (response) {
