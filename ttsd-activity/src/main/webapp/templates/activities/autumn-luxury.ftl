@@ -1,5 +1,9 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.autumn_luxury}" pageJavascript="${js.autumn_luxury}" activeNav="" activeLeftNav="" title="拓天奢品_奢品活动_拓天速贷" keywords="拓天大奖,大奖活动,投资活动,拓天速贷" description="拓天速贷奢华投资活动,海量奢品拓手可得,拓天大奖活动让您左手投资赚收益,右手白拿奢侈品.">
+<@global.isNotAnonymous>
+<div style="display: none" class="login-name" data-login-name='<@global.security.authentication property="principal.username" />'></div>
+<div style="display: none" class="mobile" data-mobile='<@global.security.authentication property="principal.mobile" />'></div>
+</@global.isNotAnonymous>
 <div class="luxury-list-container">
     <div class="luxury-top-item">
         <img src="${staticServer}/activity/images/sign/actor/luxury/top-banner.png" width="100%" class="pc-item">
@@ -44,13 +48,13 @@
                         <li>
                             <div class="picture-item">
                                 <div class="product-img">
-                                <#if !isAppSource>
+                                    <#if !isAppSource>
                                     <a href="/activity/autumn/luxury/${prize.id?string.computer}/detail" target="_blank">
-                                <#else>
-                                <a href="javascript:void(0)">
-                                </#if>
-                                        <img src="${prize.image}" width="100%">
-                                    </a>
+                                    <#else>
+                                    <a href="javascript:void(0)">
+                                    </#if>
+                                    <img src="${prize.image}" width="100%">
+                                </a>
                                 </div>
                                 <div class="product-info">
                                     <p class="name-text">${prize.brand}</p>
