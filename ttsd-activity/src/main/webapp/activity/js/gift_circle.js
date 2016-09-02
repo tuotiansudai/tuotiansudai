@@ -132,7 +132,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         }
         $.ajax({
             url: url,
-            type: 'GET',
+            type: 'POST',
             dataType: 'json'
         })
         .done(function(data) {
@@ -147,7 +147,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         }
         $.ajax({
             url: url,
-            type: 'GET',
+            type: 'POST',
             dataType: 'json'
         })
         .done(function(data) {
