@@ -2,23 +2,27 @@ package com.tuotiansudai.ask.service;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.ask.dto.*;
+import com.tuotiansudai.ask.dto.QuestionDto;
+import com.tuotiansudai.ask.dto.QuestionRequestDto;
+import com.tuotiansudai.ask.dto.QuestionResultDataDto;
 import com.tuotiansudai.ask.repository.mapper.AnswerMapper;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.AnswerModel;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
-import com.tuotiansudai.util.MobileEncoder;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.util.PaginationUtil;
+import com.tuotiansudai.ask.utils.FakeMobileUtil;
 import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.MobileEncoder;
+import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,7 +75,11 @@ public class QuestionService {
         }
         dataDto.setAdditionSensitiveValid(true);
 
+        UserModel userModel = userMapper.findByLoginName(loginName);
+
         QuestionModel questionModel = new QuestionModel(loginName,
+                userModel.getMobile(),
+                FakeMobileUtil.generateFakeMobile(userModel.getMobile()),
                 SensitiveWordsFilter.replace(questionRequestDto.getQuestion()),
                 SensitiveWordsFilter.replace(questionRequestDto.getAddition()),
                 questionRequestDto.getTags());
@@ -109,9 +117,8 @@ public class QuestionService {
             return null;
         }
 
-        String mobile = userMapper.findByLoginName(questionModel.getLoginName()).getMobile();
         return new QuestionDto(questionModel,
-                questionModel.getLoginName().equalsIgnoreCase(loginName) ? mobile : MobileEncoder.encode(mobile));
+                questionModel.getLoginName().equalsIgnoreCase(loginName) ? questionModel.getMobile() : MobileEncoder.encode(Strings.isNullOrEmpty(questionModel.getFakeMobile()) ? questionModel.getMobile() : questionModel.getFakeMobile()));
     }
 
     public BaseDto<BasePaginationDataDto> findAllQuestions(String loginName, int index, int pageSize) {
@@ -191,9 +198,9 @@ public class QuestionService {
         List<QuestionDto> items = Lists.transform(questionModels, new Function<QuestionModel, QuestionDto>() {
             @Override
             public QuestionDto apply(QuestionModel input) {
-                String mobile = userMapper.findByLoginName(input.getLoginName()).getMobile();
                 return new QuestionDto(input,
-                        isEncodeMobile && !input.getLoginName().equalsIgnoreCase(loginName) ? MobileEncoder.encode(mobile) : mobile);
+                        isEncodeMobile && !input.getLoginName().equalsIgnoreCase(loginName) ?
+                                (MobileEncoder.encode(Strings.isNullOrEmpty(input.getFakeMobile()) ? input.getMobile() : input.getFakeMobile())) : input.getMobile());
             }
         });
 
