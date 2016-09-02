@@ -135,7 +135,7 @@ public class BookingLoanServiceImpl implements BookingLoanService {
     public List<BookingLoanSumAmountView> findBookingLoanSumAmountByProductType(ProductType productType, Date bookingTimeStartTime,
                                                                    Date bookingTimeEndTime, String mobile,
                                                                    Date noticeTimeStartTime, Date noticeTimeEndTime,
-                                                                   Source source){
+                                                                   Source source, Boolean status){
         if (bookingTimeStartTime != null) {
             bookingTimeStartTime = new DateTime(bookingTimeStartTime).withTimeAtStartOfDay().toDate();
         }
@@ -150,7 +150,7 @@ public class BookingLoanServiceImpl implements BookingLoanService {
             noticeTimeEndTime = new DateTime(noticeTimeEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
 
-        List<BookingLoanSumAmountView>  bookingLoanSumAmountViewList = bookingLoanMapper.findBookingLoanSumAmountByProductType(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source);
+        List<BookingLoanSumAmountView>  bookingLoanSumAmountViewList = bookingLoanMapper.findBookingLoanSumAmountByProductType(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status);
 
         Iterator<BookingLoanSumAmountView> transform = Iterators.transform(bookingLoanSumAmountViewList.iterator(), new Function<BookingLoanSumAmountView, BookingLoanSumAmountView>() {
             @Override

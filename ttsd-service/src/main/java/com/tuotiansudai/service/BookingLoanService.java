@@ -30,5 +30,5 @@ public interface BookingLoanService {
     List<BookingLoanSumAmountView> findBookingLoanSumAmountByProductType(ProductType productType, Date bookingTimeStartTime,
                                                                          Date bookingTimeEndTime, String mobile,
                                                                          Date noticeTimeStartTime, Date noticeTimeEndTime,
-                                                                         Source source);
+                                                                         Source source,Boolean status);
 }

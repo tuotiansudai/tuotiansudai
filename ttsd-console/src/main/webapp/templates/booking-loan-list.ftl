@@ -118,15 +118,18 @@
             </tr>
             </thead>
             <tbody>
-                <tr cols=9>
-                    <#if bookingLoanSumList??><b>预约统计:
+                <tr cols=9><b>
+                    <#if bookingLoanSumList?? && (bookingLoanSumList?size > 0)>预约统计:
                         <#list bookingLoanSumList as bookingLoanSum>
                                 <#if "_90" == bookingLoanSum.productType>90天项目<span style="color:#F00">${bookingLoanSum.sumAmount!}</span>元
                                 <#elseif "_180" == bookingLoanSum.productType>180天项目<span style="color:#F00">${bookingLoanSum.sumAmount!}</span>元
                                 <#elseif "_360" == bookingLoanSum.productType>360天项目<span style="color:#F00">${bookingLoanSum.sumAmount!}</span>元
                                 </#if>
                         </#list>
-                    </#if></b>
+                    <#else>
+                        预约统计:90天项目<span style="color:#F00">0.00</span>元 180天项目<span style="color:#F00">0.00</span>元 360天项目<span style="color:#F00">0.00</span>元
+                    </#if>
+                    </b>
                 </tr>
                 <#if bookingLoan?? && bookingLoan.records??>
                     <#list bookingLoan.records as record>

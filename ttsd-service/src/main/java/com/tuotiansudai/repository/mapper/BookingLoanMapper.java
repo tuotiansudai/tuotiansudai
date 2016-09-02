@@ -38,7 +38,8 @@ public interface BookingLoanMapper {
                                                                          @Param(value = "mobile") String mobile,
                                                                          @Param(value = "noticeTimeStartTime") Date noticeTimeStartTime,
                                                                          @Param(value = "noticeTimeEndTime") Date noticeTimeEndTime,
-                                                                         @Param(value = "source") Source source);
+                                                                         @Param(value = "source") Source source,
+                                                                         @Param(value = "status") Boolean status);
 
     long findCountBookingLoanList(@Param(value = "productType") ProductType productType,
                                   @Param(value = "bookingTimeStartTime") Date bookingTimeStartTime,

@@ -73,38 +73,40 @@
             </if>
             order by status,booking_time
             limit #{index}, #{pageSize}
-
         </where>
-
     </select>
 
     <select id="findBookingLoanSumAmountByProductType" parameterType="map" resultMap="bookingLoanSumAccountMap">
         SELECT product_type AS product_type, IFNULL(SUM(amount),0) AS sum_amount FROM booking_loan bl
-        WHERE status = 0
-        <if test="productType != null">
-            and bl.product_type = #{productType}
-        </if>
-        <if test="bookingTimeStartTime != null">
-            and bl.booking_time &gt;= #{bookingTimeStartTime}
-        </if>
-        <if test="bookingTimeEndTime != null">
-            and bl.booking_time &lt;= #{bookingTimeEndTime}
-        </if>
-        <if test="mobile !=null and mobile != ''">
-            and bl.mobile = #{mobile}
-        </if>
-        <if test="noticeTimeStartTime != null">
-            and bl.notice_time &gt;= #{noticeTimeStartTime}
-        </if>
-        <if test="noticeTimeEndTime != null">
-            and bl.notice_time &lt;= #{noticeTimeEndTime}
-        </if>
-        <if test="source != null">
-            and bl.source = #{source}
-        </if>
+        <where>
+          1 = 1
+            <if test="productType != null">
+                and bl.product_type = #{productType}
+            </if>
+            <if test="bookingTimeStartTime != null">
+                and bl.booking_time &gt;= #{bookingTimeStartTime}
+            </if>
+            <if test="bookingTimeEndTime != null">
+                and bl.booking_time &lt;= #{bookingTimeEndTime}
+            </if>
+            <if test="mobile !=null and mobile != ''">
+                and bl.mobile = #{mobile}
+            </if>
+            <if test="noticeTimeStartTime != null">
+                and bl.notice_time &gt;= #{noticeTimeStartTime}
+            </if>
+            <if test="noticeTimeEndTime != null">
+                and bl.notice_time &lt;= #{noticeTimeEndTime}
+            </if>
+            <if test="source != null">
+                and bl.source = #{source}
+            </if>
+            <if test="status != null">
+                and bl.status = #{status}
+            </if>
+        </where>
         GROUP BY product_type
     </select>
-
 
     <select id="findCountBookingLoanList" parameterType="map" resultType="long">
         SELECT count(1) from booking_loan bl
