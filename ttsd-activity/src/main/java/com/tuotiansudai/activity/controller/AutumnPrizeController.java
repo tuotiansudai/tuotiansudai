@@ -173,7 +173,7 @@ public class AutumnPrizeController {
     @ResponseBody
     @RequestMapping(value = "/travel-user-list", method = RequestMethod.GET)
     public List<UserLotteryPrizeView> getTravelRecordByLoginName() {
-        return lotteryActivityService.findDrawLotteryPrizeRecordByMobile("18210195947", LotteryPrize.TOURISM);
+        return lotteryActivityService.findDrawLotteryPrizeRecordByMobile(LoginUserInfo.getMobile(), LotteryPrize.TOURISM);
     }
 
     @ResponseBody
@@ -185,7 +185,7 @@ public class AutumnPrizeController {
     @ResponseBody
     @RequestMapping(value = "/luxury-user-list", method = RequestMethod.GET)
     public List<UserLotteryPrizeView> getLuxuryRecordByLoginName() {
-        return lotteryActivityService.findDrawLotteryPrizeRecordByMobile("18210195947", LotteryPrize.LUXURY);
+        return lotteryActivityService.findDrawLotteryPrizeRecordByMobile(LoginUserInfo.getMobile(), LotteryPrize.LUXURY);
     }
 
     @ResponseBody
