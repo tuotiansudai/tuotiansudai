@@ -142,11 +142,11 @@
     }
     .activity-container {
       padding:10px;
-      .activity-box {
+      .actor-list .activity-box {
         border-width: 0;
         overflow: hidden;
         background: #fff;
-        height:235px;
+        height:250px;
         margin-bottom: 10px;
         .activity-title {
           position: absolute;
@@ -161,11 +161,19 @@
           z-index: 5;
 
         }
+        .time {
+          right: auto;
+          left: 10px;
+          width: auto;
+          top: 29px;
+          z-index: 5;
+          font-size: 11px;
+        }
         .activity-img {
-          height:145px;
+          height:150px;
           overflow: hidden;
           position: absolute;
-          top: 28px;
+          top: 41px;
           width: calc(100% - 20px);
           margin: 10px;
           .img-inner {
