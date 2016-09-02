@@ -95,8 +95,12 @@
 
         <intercept-url pattern="/activity/draw-tiandou" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/activity/point-lottery" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/activity/autumn/travel-draw" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/activity/autumn/luxury-draw" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+
+        <intercept-url pattern="/activity/autumn/travel-draw" access="permitAll()"/>
+        <intercept-url pattern="/activity/autumn/luxury-draw" access="permitAll()"/>
+        <intercept-url pattern="/activity/autumn/travel/invest" access="permitAll()"/>
+        <intercept-url pattern="/activity/autumn/luxury/invest" access="permitAll()"/>
+
 
 
         <intercept-url pattern="/**" access="permitAll()"/>
