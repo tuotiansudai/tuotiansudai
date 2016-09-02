@@ -27,10 +27,10 @@ public class AnswerMapperTest extends BaseMapperTest {
 
     @Test
     public void shouldCreateAnswer() throws Exception {
-        QuestionModel questionModel = new QuestionModel("asker", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel = new QuestionModel("asker", "mobile", "fakeMobile", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
         questionMapper.create(questionModel);
 
-        AnswerModel answerModel = new AnswerModel("answerer", questionModel.getId(), "answer");
+        AnswerModel answerModel = new AnswerModel("answerer", "mobile", "fakeMobile", questionModel.getId(), "answer");
         answerMapper.create(answerModel);
 
         List<AnswerModel> savedAnswers = answerMapper.findByLoginName("answerer", 0, 1);
@@ -40,10 +40,10 @@ public class AnswerMapperTest extends BaseMapperTest {
 
     @Test
     public void shouldUpdateAnswer() throws Exception {
-        QuestionModel questionModel = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel = new QuestionModel("ask", "mobile", "fakeMobile", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
         questionMapper.create(questionModel);
 
-        AnswerModel answerModel = new AnswerModel("answerer", questionModel.getId(), "answer");
+        AnswerModel answerModel = new AnswerModel("answerer", "mobile", "fakeMobile", questionModel.getId(), "answer");
         answerMapper.create(answerModel);
 
         answerModel.setBestAnswer(true);

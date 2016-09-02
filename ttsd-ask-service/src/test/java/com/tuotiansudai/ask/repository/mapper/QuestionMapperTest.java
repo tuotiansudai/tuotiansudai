@@ -24,7 +24,7 @@ public class QuestionMapperTest extends BaseMapperTest {
 
     @Test
     public void shouldCreateQuestion() throws Exception {
-        QuestionModel questionModel = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel = new QuestionModel("ask", "mobile", "fakeMobile", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
 
         questionMapper.create(questionModel);
 
@@ -36,7 +36,7 @@ public class QuestionMapperTest extends BaseMapperTest {
 
     @Test
     public void shouldUpdateQuestion() throws Exception {
-        QuestionModel questionModel = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel = new QuestionModel("ask", "mobile", "fakeMobile", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
 
         questionMapper.create(questionModel);
 
@@ -65,7 +65,7 @@ public class QuestionMapperTest extends BaseMapperTest {
     public void shouldFindAllQuestions() throws Exception {
         long count = questionMapper.countAllQuestions("ask");
 
-        QuestionModel questionModel = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel = new QuestionModel("ask", "mobile", "fakeMobile", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
 
         questionMapper.create(questionModel);
 
@@ -77,7 +77,7 @@ public class QuestionMapperTest extends BaseMapperTest {
     public void shouldFindAllUnresolvedQuestions() throws Exception {
         long count = questionMapper.countAllUnresolvedQuestions("ask");
 
-        QuestionModel questionModel = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel = new QuestionModel("ask", "mobile", "fakeMobile", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
         questionMapper.create(questionModel);
 
         assertThat(questionMapper.findAllUnresolvedQuestions("ask", 0, 1).get(0).getId(), is(questionModel.getId()));
@@ -86,9 +86,9 @@ public class QuestionMapperTest extends BaseMapperTest {
 
     @Test
     public void shouldFindAllHotQuestions() throws Exception {
-        QuestionModel questionModel1 = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel1 = new QuestionModel("ask", "mobile", "fakeMobile", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
         questionModel1.setLastAnsweredTime(new DateTime().minusDays(1).toDate());
-        QuestionModel questionModel2 = new QuestionModel("ask", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
+        QuestionModel questionModel2 = new QuestionModel("ask", "mobile", "fakeMobile", "question", "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
         questionModel2.setLastAnsweredTime(new DateTime().minusDays(2).toDate());
         questionMapper.create(questionModel1);
         questionMapper.create(questionModel2);
