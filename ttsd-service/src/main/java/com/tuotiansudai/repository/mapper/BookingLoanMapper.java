@@ -2,6 +2,7 @@ package com.tuotiansudai.repository.mapper;
 
 
 import com.tuotiansudai.repository.model.BookingLoanModel;
+import com.tuotiansudai.repository.model.BookingLoanSumAmountView;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.ibatis.annotations.Param;
@@ -30,6 +31,14 @@ public interface BookingLoanMapper {
                                                @Param(value = "status") Boolean status,
                                                @Param(value = "index") Integer index,
                                                @Param(value = "pageSize") Integer pageSize);
+
+    List<BookingLoanSumAmountView> findBookingLoanSumAmountByProductType(@Param(value = "productType") ProductType productType,
+                                                                         @Param(value = "bookingTimeStartTime") Date bookingTimeStartTime,
+                                                                         @Param(value = "bookingTimeEndTime") Date bookingTimeEndTime,
+                                                                         @Param(value = "mobile") String mobile,
+                                                                         @Param(value = "noticeTimeStartTime") Date noticeTimeStartTime,
+                                                                         @Param(value = "noticeTimeEndTime") Date noticeTimeEndTime,
+                                                                         @Param(value = "source") Source source);
 
     long findCountBookingLoanList(@Param(value = "productType") ProductType productType,
                                   @Param(value = "bookingTimeStartTime") Date bookingTimeStartTime,

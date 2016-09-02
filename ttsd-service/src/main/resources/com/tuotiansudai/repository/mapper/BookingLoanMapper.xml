@@ -19,6 +19,11 @@
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
+    <resultMap id="bookingLoanSumAccountMap" type="BookingLoanSumAmountView">
+        <result column="product_type" property="productType"/>
+        <result column="sum_amount" property="sumAmount"/>
+    </resultMap>
+
     <insert id="create" parameterType="BookingLoanModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`booking_loan`
         (mobile,source,booking_time,product_type,amount,notice_time,status,create_time,update_time)
@@ -72,6 +77,34 @@
         </where>
 
     </select>
+
+    <select id="findBookingLoanSumAmountByProductType" parameterType="map" resultMap="bookingLoanSumAccountMap">
+        SELECT product_type AS product_type, IFNULL(SUM(amount),0) AS sum_amount FROM booking_loan bl
+        WHERE status = 0
+        <if test="productType != null">
+            and bl.product_type = #{productType}
+        </if>
+        <if test="bookingTimeStartTime != null">
+            and bl.booking_time &gt;= #{bookingTimeStartTime}
+        </if>
+        <if test="bookingTimeEndTime != null">
+            and bl.booking_time &lt;= #{bookingTimeEndTime}
+        </if>
+        <if test="mobile !=null and mobile != ''">
+            and bl.mobile = #{mobile}
+        </if>
+        <if test="noticeTimeStartTime != null">
+            and bl.notice_time &gt;= #{noticeTimeStartTime}
+        </if>
+        <if test="noticeTimeEndTime != null">
+            and bl.notice_time &lt;= #{noticeTimeEndTime}
+        </if>
+        <if test="source != null">
+            and bl.source = #{source}
+        </if>
+        GROUP BY product_type
+    </select>
+
 
     <select id="findCountBookingLoanList" parameterType="map" resultType="long">
         SELECT count(1) from booking_loan bl

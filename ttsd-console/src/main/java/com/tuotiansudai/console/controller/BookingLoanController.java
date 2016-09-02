@@ -43,6 +43,7 @@ public class BookingLoanController {
         ModelAndView mv = new ModelAndView("/booking-loan-list");
         mv.addObject("bookingLoan", bookingLoanService.bookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, index, pageSize));
         mv.addObject("productType", productType);
+        mv.addObject("bookingLoanSumList", bookingLoanService.findBookingLoanSumAmountByProductType(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source));
         mv.addObject("productTypeList", Lists.newArrayList(ProductType._180, ProductType._90, ProductType._360));
         mv.addObject("bookingTimeStartTime", bookingTimeStartTime);
         mv.addObject("bookingTimeEndTime", bookingTimeEndTime);

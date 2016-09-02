@@ -3,6 +3,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.BookingLoanPaginationItemDataDto;
+import com.tuotiansudai.repository.model.BookingLoanSumAmountView;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.Source;
 
@@ -25,4 +26,9 @@ public interface BookingLoanService {
                                                    Boolean status);
 
     void noticeBookingLoan(long bookingLoanId);
+
+    List<BookingLoanSumAmountView> findBookingLoanSumAmountByProductType(ProductType productType, Date bookingTimeStartTime,
+                                                                         Date bookingTimeEndTime, String mobile,
+                                                                         Date noticeTimeStartTime, Date noticeTimeEndTime,
+                                                                         Source source);
 }
