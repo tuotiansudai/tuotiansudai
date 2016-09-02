@@ -23,9 +23,9 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
     $pointer.on('click', function(event) {
         event.preventDefault();
 
-        var url = '/activity/autumn/travel-draw';
+        var url = '/activity/autumn/luxury-draw';
         if($('#themeType').val() == 'travel'){
-            url = '/activity/autumn/luxury-draw';
+            url = '/activity/autumn/travel-draw';
         }
 
         if (bRotate) return;
