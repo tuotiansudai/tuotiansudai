@@ -12,6 +12,7 @@ import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
@@ -96,21 +97,24 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private UserCouponService userCouponService;
+
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
-        checkInvestAmount(investDto);
-
+        investDto.setNoPassword(false);
+        this.checkInvestAvailable(investDto);
         return payWrapperClient.invest(investDto);
     }
 
     @Override
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(true);
-        this.checkInvestAmount(investDto);
+        this.checkInvestAvailable(investDto);
         return payWrapperClient.noPasswordInvest(investDto);
     }
 
-    private void checkInvestAmount(InvestDto investDto) throws InvestException {
+    private void checkInvestAvailable(InvestDto investDto) throws InvestException {
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
 
@@ -174,6 +178,11 @@ public class InvestServiceImpl implements InvestService {
         // 不满足单用户投资限额
         if (investAmount > userInvestMaxAmount - userInvestAmount) {
             throw new InvestException(InvestExceptionType.MORE_THAN_MAX_INVEST_AMOUNT);
+        }
+
+        UserCouponDto maxBenefitUserCoupon = userCouponService.getMaxBenefitUserCoupon(investDto.getLoginName(), loanId, investAmount);
+        if (maxBenefitUserCoupon == null && CollectionUtils.isEmpty(investDto.getUserCouponIds())) {
+            throw new InvestException(InvestExceptionType.NONE_COUPON_SELECTED);
         }
 
         // 验证优惠券是否可用
