@@ -95,6 +95,8 @@
 
         <intercept-url pattern="/activity/draw-tiandou" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/activity/point-lottery" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/activity/autumn/travel-draw" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/activity/autumn/luxury-draw" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
 
         <intercept-url pattern="/**" access="permitAll()"/>
@@ -107,6 +109,8 @@
             <beans:list>
                 <beans:value>/activity/rank-list</beans:value>
                 <beans:value>/activity/hero-ranking</beans:value>
+                <beans:value>/activity/autumn/travel-draw</beans:value>
+                <beans:value>/activity/autumn/luxury-draw</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>
