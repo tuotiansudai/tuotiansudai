@@ -548,6 +548,7 @@ public class ExportServiceImpl implements ExportService {
             row.add(String.valueOf(new BigDecimal(record.getRewardAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
             row.add(record.getStatus() == ReferrerRewardStatus.SUCCESS ? "已入账" : "入账失败");
             row.add(new DateTime(record.getRewardTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            rows.add(row);
         }
         return rows;
     }
