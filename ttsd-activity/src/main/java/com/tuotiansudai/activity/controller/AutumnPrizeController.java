@@ -120,7 +120,7 @@ public class AutumnPrizeController {
     @RequestMapping(path = "/travel/invest", method = RequestMethod.POST)
     @ResponseBody
     public String travelInvest(@RequestParam(value = "loginName", required = false) String loginName) {
-        loginName = LoginUserInfo.getLoginName() == null ? LoginUserInfo.getLoginName() : loginName;
+        loginName = LoginUserInfo.getLoginName() != null ? LoginUserInfo.getLoginName() : loginName;
         if (!Strings.isNullOrEmpty(loginName)) {
             redisWrapperClient.hset(this.activityAutumnInvestChannelKey, loginName, "travel", 3600 * 24 * 60);
         }
@@ -130,7 +130,7 @@ public class AutumnPrizeController {
     @RequestMapping(path = "/luxury/invest", method = RequestMethod.POST)
     @ResponseBody
     public String luxuryInvest(@RequestParam(value = "loginName", required = false) String loginName) {
-        loginName = LoginUserInfo.getLoginName() == null ? LoginUserInfo.getLoginName() : loginName;
+        loginName = LoginUserInfo.getLoginName() != null ? LoginUserInfo.getLoginName() : loginName;
         if (!Strings.isNullOrEmpty(loginName)) {
             redisWrapperClient.hset(this.activityAutumnInvestChannelKey, loginName, "luxury", 3600 * 24 * 60);
         }
