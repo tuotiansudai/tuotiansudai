@@ -101,9 +101,6 @@
         {{else if istype=='notimes'}}
             <p class="login-text">您暂无抽奖机会啦~</p>
             <p class="des-text">赢取机会后再来抽奖吧！</p>
-        {{else if istype=='timeout'}}
-            <p class="login-text">不在活动时间内~</p>
-            <p class="des-text">不在活动时间内！</p>
         {{else}}
         {{/if}}
         </div>

@@ -61,8 +61,6 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
                 }
             } else if (data.returnCode == 2) {
                 $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'nologin'})).show().find('.tip-dom').show();
-            } else if(data.returnCode == 3){
-                $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'timeout'})).show().find('.tip-dom').show();
             } else {
                 $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'notimes'})).show().find('.tip-dom').show();
             }

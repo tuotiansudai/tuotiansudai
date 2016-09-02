@@ -106,12 +106,6 @@ public class LotteryActivityService {
     public DrawLotteryResultDto drawLotteryPrize(String mobile,LotteryPrize drawType){
         logger.debug(mobile + " is drawing the lottery prize.");
         DrawLotteryResultDto drawLotteryResultDto = new DrawLotteryResultDto();
-        Date nowDate = DateTime.now().toDate();
-        if(!nowDate.before(activityAutumnEndTime) || !nowDate.after(activityAutumnStartTime)){
-            drawLotteryResultDto.setMessage("不在活动时间范围内！");
-            drawLotteryResultDto.setReturnCode(3);
-            return drawLotteryResultDto;
-        }
 
         if (StringUtils.isEmpty(mobile)) {
             logger.error("User not login. can't draw prize.");
