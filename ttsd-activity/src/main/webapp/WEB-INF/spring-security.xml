@@ -107,6 +107,10 @@
             <beans:list>
                 <beans:value>/activity/rank-list</beans:value>
                 <beans:value>/activity/hero-ranking</beans:value>
+                <beans:value>/activity/autumn/travel-user-list</beans:value>
+                <beans:value>/activity/autumn/travel-all-list</beans:value>
+                <beans:value>/activity/autumn/luxury-user-list</beans:value>
+                <beans:value>/activity/autumn/luxury-all-list</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>
