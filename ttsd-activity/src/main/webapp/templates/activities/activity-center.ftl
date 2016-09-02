@@ -12,7 +12,7 @@
     <div class="activity-container clearfix">
         <div class="actor-list active">
             <#list data as activityItem>
-                <#if activityItem.longTerm || activityItem.expiredTime?date gt .now?date >
+                <#if activityItem.longTerm=='longTerm' || activityItem.expiredTime?date gte .now?date>
                     <div class="activity-box">
                         <div class="activity-img">
                             <div class="img-inner">
@@ -20,7 +20,15 @@
                             </div>
                         </div>
                         <i class="icon-going"><span class="hide">进行中</span></i>
+
                         <span class="activity-title">${activityItem.description}</span>
+                        <span class="time">
+                        <#if activityItem.longTerm =='longTerm'>
+                            长期活动
+                        <#else>
+                        ${(activityItem.activatedTime?string('yyyy-MM-dd'))!} - ${(activityItem.expiredTime?string('yyyy-MM-dd'))!}
+                        </#if>
+                        </span>
                     <span class="button-pos">
                         <a class="btn" href="${activityItem.webActivityUrl}">查看详情</a>
                         <i class="fa fa-angle-right hide"></i>
@@ -31,7 +39,7 @@
         </div>
         <div class="actor-list">
             <#list data as activityItem>
-                <#if !activityItem.longTerm && activityItem.expiredTime?date lt .now?date>
+                <#if activityItem.longTerm=='notLongTerm' && activityItem.expiredTime?date lt .now?date>
                     <div class="activity-box">
                         <div class="activity-img">
                             <div class="img-inner">
@@ -40,6 +48,9 @@
                         </div>
                         <i class="icon-finished"><span class="hide">已结束</span></i>
                         <span class="activity-title">${activityItem.description}</span>
+                        <span class="time">
+                            ${(activityItem.activatedTime?string('yyyy-MM-dd'))!} - ${(activityItem.expiredTime?string('yyyy-MM-dd'))!}
+                        </span>
                     <span class="button-pos">
                         <a class="btn" href="${activityItem.webActivityUrl}">查看详情</a>
                         <i class="fa fa-angle-right hide"></i>
