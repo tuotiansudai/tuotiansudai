@@ -62,7 +62,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
 
     });
 
-    $('.down-load').click(function () {
+    $('.down-load').on('click',function () {
         location.href = "/export/invests?" + $('form').serialize();
     });
 
