@@ -125,9 +125,13 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             userInvestRepayResponseDataDto.setUnPaidRepay(AmountConverter.convertCentToString(unPaidTotalRepay));
             userInvestRepayResponseDataDto.setInvestRepays(investRepayList);
             List<MembershipModel> membershipModels =  membershipMapper.findAllMembership();
+            int level = 0;
             for(MembershipModel membershipModel:membershipModels){
-                userInvestRepayResponseDataDto.setMembershipLevel(investModel.getInvestFeeRate() == membershipModel.getFee()?String.valueOf(membershipModel.getLevel()):"0");
+                if(investModel.getInvestFeeRate() == membershipModel.getFee()){
+                    level = membershipModel.getLevel();
+                }
             }
+            userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(level));
             List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModel.getId());
 
             List<String> usedCoupons = Lists.transform(userCouponModels, new Function<UserCouponModel, String>() {
