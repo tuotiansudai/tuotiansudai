@@ -181,7 +181,7 @@ public class InvestServiceImpl implements InvestService {
         }
 
         UserCouponDto maxBenefitUserCoupon = userCouponService.getMaxBenefitUserCoupon(investDto.getLoginName(), loanId, investAmount);
-        if (maxBenefitUserCoupon == null && CollectionUtils.isEmpty(investDto.getUserCouponIds())) {
+        if (maxBenefitUserCoupon != null && CollectionUtils.isEmpty(investDto.getUserCouponIds())) {
             throw new InvestException(InvestExceptionType.NONE_COUPON_SELECTED);
         }
 
