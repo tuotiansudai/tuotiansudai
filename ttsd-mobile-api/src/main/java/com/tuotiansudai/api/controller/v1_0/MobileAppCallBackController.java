@@ -2,7 +2,6 @@ package com.tuotiansudai.api.controller.v1_0;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.api.dto.v1_0.UmPayFrontService;
-import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.AmountConverter;
@@ -95,7 +94,6 @@ public class MobileAppCallBackController {
             withdrawAmount = AmountConverter.convertCentToString(withdrawModel.getAmount());
             message = "提现成功";
             href = MessageFormat.format("tuotian://withdraw/{0}",callBackStatus);
-
         } else if (UmPayFrontService.MER_RECHARGE_PERSON.getServiceName().equals(service)) {
             RechargeModel rechargeModel = rechargeService.findRechargeById(Long.parseLong(orderId));
             bankName = BankCardUtil.getBankName(rechargeModel.getBankCode());
@@ -104,7 +102,6 @@ public class MobileAppCallBackController {
             message = "充值成功";
             href = MessageFormat.format("tuotian://recharge/{0}",callBackStatus);
         } else if (UmPayFrontService.PROJECT_TRANSFER_INVEST.getServiceName().equals(service)) {
-
             InvestModel investModel = investService.findById(Long.parseLong(orderId));
             LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
             investAmount = AmountConverter.convertCentToString(investModel.getAmount());
@@ -112,22 +109,18 @@ public class MobileAppCallBackController {
             investId = String.valueOf(loanModel.getId());
             message = "投资成功";
             href = MessageFormat.format("tuotian://invest/{0}",callBackStatus);
-
         } else if (UmPayFrontService.PTP_MER_BIND_AGREEMENT.getServiceName().equals(service)) {
             message = "签约成功";
             href = MessageFormat.format("tuotian://sign/{0}",callBackStatus);
-
         } else if (UmPayFrontService.PTP_MER_BIND_CARD.getServiceName().equals(service)) {
             BankCardModel bankCardModel =  bindBankCardService.getPassedBankCardById(Long.parseLong(orderId));
             cardNumber = bankCardModel.getCardNumber();
             bankName = BankCardUtil.getBankName(bankCardModel.getBankCode());
             message = "绑卡成功";
             href = MessageFormat.format("tuotian://bindcard/{0}",callBackStatus);
-
         } else if (UmPayFrontService.PTP_MER_REPLACE_CARD.getServiceName().equals(service)) {
             message = "换卡成功";
             href = MessageFormat.format("tuotian://changecard/{0}",callBackStatus);
-
         } else if (UmPayFrontService.PTP_MER_NO_PASSWORD_INVEST.getServiceName().equals(service)) {
             message = "开通无密投资成功";
             href = MessageFormat.format("tuotian://nopasswordinvest/{0}",callBackStatus);
