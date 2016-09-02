@@ -143,7 +143,8 @@ public class JobInitPlugin implements SchedulerPlugin {
     private void calculateTravelLuxuryPrize() {
         try {
             jobManager.newJob(JobType.CalculateTravelLuxuryPrize, CalculateTravelLuxuryPrizeJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 5 0 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0/5 * * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
+//                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 5 0 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.CalculateTravelLuxuryPrize.name(), JobType.CalculateTravelLuxuryPrize.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
