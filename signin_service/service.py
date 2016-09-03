@@ -90,7 +90,8 @@ class LoginManager(object):
         new_token_id = self.session_manager.set(user_info, self.form.token.data, self.form.source.data)
         return new_token_id, user_info
 
-    def _increase_failed_times(self, login_failed_times_key):
+    def _increase_failed_times(self):
+        login_failed_times_key = LOGIN_FAILED_TIMES_FORMAT.format(self.form.username.data)
         self.connection.incr(login_failed_times_key)
         self.connection.expire(login_failed_times_key, settings.LOGIN_FAILED_EXPIRED_SECONDS)
 
@@ -110,29 +111,38 @@ class LoginManager(object):
             raise UsernamePasswordError()
         return info
 
-    def _finish_login(self, is_success, message=None, user_info=None, token=None, save_log=True):
+    def _fail_login(self, message, save_log=True):
         if save_log:
-            self._save_log(is_success)
+            self._save_log(False)
+        self._increase_failed_times()
+        return self._render(False, message=message)
+
+    def _success_login(self, user_info, token):
+        self._save_log(True)
+        return self._render(True, user_info=user_info, token=token)
+
+    @staticmethod
+    def _render(is_success, message=None, user_info=None, token=None):
         return {'result': is_success, 'message': message, 'user_info': user_info, 'token': token}
 
     def login(self):
         try:
             token_id, user_info = self._normal_login()
-            return self._finish_login(True, user_info=user_info, token=token_id)
+            return self._success_login(user_info, token_id)
         except UsernamePasswordError:
-            return self._finish_login(False, message='用户名或密码错误')
+            return self._fail_login(message='用户名或密码错误')
         except UserNotExistedError:
-            return self._finish_login(False, message='用户名或密码错误', save_log=False)
+            return self._fail_login(message='用户名或密码错误', save_log=False)
         except UserBannedError:
-            return self._finish_login(False, message='用户已被禁用')
+            return self._fail_login(message='用户已被禁用')
 
     def no_password_login(self):
         try:
             user = self._load_user()
             token_id, user_info = self._success(user)
-            return self._finish_login(True, user_info=user_info, token=token_id)
+            return self._success_login(user_info, token_id)
         except UserNotExistedError:
-            return self._finish_login(False, message='用户不存在', save_log=False)
+            return self._fail_login('用户不存在', save_log=False)
 
     def _save_log(self, is_success):
         login_log = LoginLog(login_name=self.form.username.data, source=self.form.source.data, ip=self.ip_address,

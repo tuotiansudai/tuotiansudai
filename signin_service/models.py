@@ -1,5 +1,5 @@
 import datetime
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from sqlalchemy.ext.declarative import declared_attr
 

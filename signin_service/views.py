@@ -10,13 +10,13 @@ sign_in = Blueprint('sign_in', __name__)
 def success(data):
     ret = {'result': True}
     ret.update(data)
-    return jsonify(ret)
+    return jsonify(ret), 200
 
 
 def fail(data={}):
     ret = {'result': False}
     ret.update(data)
-    return jsonify(ret)
+    return jsonify(ret), 400
 
 
 @sign_in.route("/login/", methods=['POST'])
@@ -25,7 +25,7 @@ def login():
     if form.validate():
         manager = service.LoginManager(form, request.headers.get('x-forwarded-for'))
         result = manager.login()
-        return jsonify(result)
+        return success(result) if result['result'] else fail(result)
     return fail({'message': form.errors})
 
 
@@ -35,7 +35,7 @@ def login_without_password():
     if form.validate():
         manager = service.LoginManager(form, request.headers.get('x-forwarded-for'))
         result = manager.no_password_login()
-        return jsonify(result)
+        return success(result) if result['result'] else fail(result)
     return fail({'message': form.errors})
 
 
