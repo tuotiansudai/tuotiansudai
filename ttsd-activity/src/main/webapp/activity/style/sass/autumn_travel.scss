@@ -446,6 +446,24 @@ body {
   body {
     background: #a3e2ee;
   }
+  .lottery-draw {
+    float: none;
+  }
+  .leader-container {
+    float: none;
+    &.tour-theme .leader-list {
+      padding:0;
+      width: 100%;
+      .lottery-circle {
+        margin-top:0;
+        h3 {
+          float: none;
+          margin: 0 auto 30px auto;
+        }
+      }
+    }
+  }
+
   .tour-slide  {
     height: 188px;
     background: url("/activity/images/autumn-tour/bar-app.jpg") center top no-repeat;
