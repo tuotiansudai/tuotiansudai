@@ -68,6 +68,8 @@ public class LoanDetailDto extends BaseDataDto {
 
     private String declaration;
 
+    private String extraSource;
+
     public LoanDetailDto(LoanModel loanModel, LoanDetailsModel loanDetails, long investedAmount, List<LoanTitleModel> loanTitleModels, List<LoanTitleRelationModel> loanTitleRelationModels, InvestorDto investorDto) {
         this.id = loanModel.getId();
         this.name = loanModel.getName();
@@ -91,6 +93,7 @@ public class LoanDetailDto extends BaseDataDto {
         this.raisingPeriod = new Period(new DateTime(), new DateTime(loanModel.getFundraisingEndTime()), PeriodType.dayTime());
         this.investor = investorDto;
         this.declaration = loanDetails == null ? null : loanDetails.getDeclaration();
+        this.extraSource = loanDetails == null ? null :loanDetails.getExtraSource();
     }
 
     public long getId() {
@@ -219,5 +222,13 @@ public class LoanDetailDto extends BaseDataDto {
 
     public String getDeclaration() {
         return declaration;
+    }
+
+    public String getExtraSource() {
+        return extraSource;
+    }
+
+    public void setExtraSource(String extraSource) {
+        this.extraSource = extraSource;
     }
 }

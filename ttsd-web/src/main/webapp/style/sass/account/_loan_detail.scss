@@ -4,6 +4,9 @@ $gray2: #999;
 $orange: #ee7b2f;
 $orange2: #f1a03f;
 $red: #eb4a3e;
+.layui-layer-tips .layui-layer-content{
+  width:235px;
+}
 /* loan detail */
 .loan-detail-content {
   color: #8c8c8c;
@@ -53,6 +56,9 @@ $red: #eb4a3e;
         padding-left: 1em;
         .fa {
           font-size: 16px;
+          &.fa-mobile{
+            font-size:20px;
+          }
         }
       }
       .loan-info {
