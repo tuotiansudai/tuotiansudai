@@ -1,7 +1,6 @@
 package com.tuotiansudai.console.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
@@ -15,14 +14,11 @@ import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
-import com.tuotiansudai.util.CsvHeaderType;
-import com.tuotiansudai.util.ExportCsvUtil;
 import com.tuotiansudai.util.RequestIPParser;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,9 +29,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -75,7 +68,7 @@ public class UserController {
     private String webServer;
 
     @RequestMapping(value = "/user/{loginName}", method = RequestMethod.GET)
-    public ModelAndView editUser(@PathVariable String loginName, Model model) throws Exception{
+    public ModelAndView editUser(@PathVariable String loginName, Model model) throws Exception {
         String taskId = OperationType.USER + "-" + loginName;
         ModelAndView modelAndView = new ModelAndView("/user-edit");
         if (!redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
@@ -87,7 +80,7 @@ public class UserController {
             }
             return modelAndView;
         } else {
-            OperationTask<EditUserDto> task = (OperationTask<EditUserDto>)redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+            OperationTask<EditUserDto> task = (OperationTask<EditUserDto>) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             String description = task.getDescription();
             String afterUpdate = description.split(" =></br> ")[1];
             ObjectMapper objectMapper = new ObjectMapper();
@@ -181,74 +174,27 @@ public class UserController {
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                     RoleStage roleStage, String referrerMobile, String channel, @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                     @RequestParam(value = "source", required = false) Source source,
-                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                    @RequestParam(value = "export", required = false) String export,
-                                    HttpServletResponse response) throws IOException {
-        if (export != null && !export.equals("")) {
-            response.setCharacterEncoding("UTF-8");
-            try {
-                response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("用户管理.csv", "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            response.setContentType("application/csv");
-            int count = userMapperConsole.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel);
-            BaseDto<BasePaginationDataDto> baseDto = userServiceConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, 1, count);
-            List<List<String>> data = Lists.newArrayList();
-            List<UserItemDataDto> userItemDataDtos = baseDto.getData().getRecords();
-            for (UserItemDataDto userItemDataDto : userItemDataDtos) {
-                List<String> dataModel = Lists.newArrayList();
-                dataModel.add(userItemDataDto.getLoginName());
-                dataModel.add(userItemDataDto.isBankCard() ? "是" : "否");
-                dataModel.add(userItemDataDto.getUserName());
-                dataModel.add(userItemDataDto.getMobile());
-                dataModel.add(userItemDataDto.getEmail());
-                dataModel.add(userItemDataDto.getReferrerMobile());
-                dataModel.add(userItemDataDto.isReferrerStaff() ? "是" : "否");
-                dataModel.add(userItemDataDto.getSource() != null ? userItemDataDto.getSource().name() : "");
-                dataModel.add(userItemDataDto.getChannel());
-                dataModel.add(new DateTime(userItemDataDto.getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
-                dataModel.add("1".equals(userItemDataDto.getAutoInvestStatus()) ? "是" : "否");
-
-                List<UserRoleModel> userRoleModels = userItemDataDto.getUserRoles();
-                List<String> userRole = Lists.transform(userRoleModels, new Function<UserRoleModel, String>() {
-                    @Override
-                    public String apply(UserRoleModel input) {
-                        return input.getRole().getDescription();
-                    }
-                });
-
-                dataModel.add(StringUtils.join(userRole, ";"));
-                dataModel.add(userItemDataDto.getStatus() == UserStatus.ACTIVE ? "正常" : "禁用");
-                dataModel.add(userItemDataDto.getBirthday());
-                dataModel.add(userItemDataDto.getProvince());
-                dataModel.add(userItemDataDto.getCity());
-                data.add(dataModel);
-            }
-            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, data, response.getOutputStream());
-            return null;
-        } else {
-            BaseDto<BasePaginationDataDto> baseDto = userServiceConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, index, pageSize);
-            ModelAndView mv = new ModelAndView("/user-list");
-            mv.addObject("baseDto", baseDto);
-            mv.addObject("loginName", loginName);
-            mv.addObject("email", email);
-            mv.addObject("mobile", mobile);
-            mv.addObject("beginTime", beginTime);
-            mv.addObject("endTime", endTime);
-            mv.addObject("roleStage", roleStage);
-            mv.addObject("referrerMobile", referrerMobile);
-            mv.addObject("channel", channel);
-            mv.addObject("source", source);
-            mv.addObject("pageIndex", index);
-            mv.addObject("pageSize", pageSize);
-            List<RoleStage> roleStageList = Lists.newArrayList(RoleStage.values());
-            List<String> channelList = userService.findAllUserChannels();
-            mv.addObject("roleStageList", roleStageList);
-            mv.addObject("channelList", channelList);
-            mv.addObject("sourceList", Source.values());
-            return mv;
-        }
+                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = userServiceConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, index, pageSize);
+        ModelAndView mv = new ModelAndView("/user-list");
+        mv.addObject("baseDto", baseDto);
+        mv.addObject("loginName", loginName);
+        mv.addObject("email", email);
+        mv.addObject("mobile", mobile);
+        mv.addObject("beginTime", beginTime);
+        mv.addObject("endTime", endTime);
+        mv.addObject("roleStage", roleStage);
+        mv.addObject("referrerMobile", referrerMobile);
+        mv.addObject("channel", channel);
+        mv.addObject("source", source);
+        mv.addObject("pageIndex", index);
+        mv.addObject("pageSize", pageSize);
+        List<RoleStage> roleStageList = Lists.newArrayList(RoleStage.values());
+        List<String> channelList = userService.findAllUserChannels();
+        mv.addObject("roleStageList", roleStageList);
+        mv.addObject("channelList", channelList);
+        mv.addObject("sourceList", Source.values());
+        return mv;
     }
 
     @RequestMapping(value = "/user/{loginName}/disable", method = RequestMethod.POST)

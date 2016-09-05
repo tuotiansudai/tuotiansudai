@@ -1,4 +1,4 @@
-require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jquery-ui'], function ($) {
+require(['jquery', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepicker', 'jquery-ui'], function ($) {
     $(function () {
 
         //$('#RewardDate .date,#investDate .date').datetimepicker({
@@ -53,7 +53,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
             }
         });
 
-        $('.search').on('click',function(){
+        $('.search').on('click', function () {
             //var formData=$('form').serialize()+'&currentPageNo=1&pageSize=10';
             //window.location.href='/referrerManage?'+formData;
 
@@ -74,7 +74,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
             window.location.href = '/user-manage/referrer?referrerMobile=' + referrerMobile + '&investMobile=' + investMobile + '&investStartTime=' + investStartTime + '&investEndTime=' + investEndTime + '&level=' + level + '&rewardStartTime=' + rewardStartTime + '&rewardEndTime=' + rewardEndTime + '&role=' + role + '&source=' + source + '&index=1&pageSize=10';
         });
 
-        $('.down-load').on('click',function(){
+        $('.down-load').on('click', function () {
             var referrerMobile = $('.referrerMobile').val();
             var investMobile = $('.investMobile').val();
             var investStartTime = $('.investStartTime').val();
@@ -84,7 +84,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
             var rewardEndTime = $('.rewardEndTime').val();
             var role = $('.role').val();
             var source = $('.source').val();
-            window.location.href = '/user-manage/referrer?referrerMobile=' + referrerMobile + '&investMobile=' + investMobile + '&investStartTime=' + investStartTime + '&investEndTime=' + investEndTime + '&level=' + level + '&rewardStartTime=' + rewardStartTime + '&rewardEndTime=' + rewardEndTime + '&role=' + role + '&source=' + source + '&export=csv';
+            window.location.href = '/export/referrer?referrerMobile=' + referrerMobile + '&investMobile=' + investMobile + '&investStartTime=' + investStartTime + '&investEndTime=' + investEndTime + '&level=' + level + '&rewardStartTime=' + rewardStartTime + '&rewardEndTime=' + rewardEndTime + '&role=' + role + '&source=' + source;
         });
     });
 })
