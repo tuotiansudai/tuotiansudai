@@ -43,56 +43,28 @@ public class FeedbackController {
                                        @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                        @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                       @RequestParam(value = "export", required = false) String export,
-                                       HttpServletResponse response) throws IOException {
-        if (export != null && !export.equals("")) {
-            response.setCharacterEncoding("UTF-8");
-            try {
-                response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("意见反馈.csv", "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            response.setContentType("application/csv");
-            BasePaginationDataDto<FeedbackModel> feedbackModel = feedbackService.getFeedbackPagination(mobile, source, type, status, startTime, endTime, 1, Integer.MAX_VALUE);
-            List<List<String>> data = Lists.newArrayList();
-            List<FeedbackModel> feedbackModelList = feedbackModel.getRecords();
-            for (int i = 0; i < feedbackModelList.size(); i++) {
-                List<String> dataModel = Lists.newArrayList();
-                dataModel.add(String.valueOf(feedbackModelList.get(i).getId()));
-                dataModel.add(feedbackModelList.get(i).getLoginName());
-                dataModel.add(feedbackModelList.get(i).getContact());
-                dataModel.add(feedbackModelList.get(i).getSource().name());
-                dataModel.add(feedbackModelList.get(i).getType().getDesc());
-                dataModel.add(feedbackModelList.get(i).getContent());
-                dataModel.add(new DateTime(feedbackModelList.get(i).getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
-                dataModel.add(feedbackModelList.get(i).getStatus().getDesc());
-                data.add(dataModel);
-            }
-            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.Feedback, data, response.getOutputStream());
-            return null;
-        } else {
-            BasePaginationDataDto<FeedbackModel> feedbackModelPaginationData = feedbackService.getFeedbackPagination(mobile, source, type, status, startTime, endTime, index, pageSize);
-            ModelAndView mv = new ModelAndView("feedback-list");
-            mv.addObject("mobile", mobile);
-            mv.addObject("source", source);
-            mv.addObject("type", type);
-            mv.addObject("status", status);
-            mv.addObject("startTime", startTime);
-            mv.addObject("endTime", endTime);
+                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        BasePaginationDataDto<FeedbackModel> feedbackModelPaginationData = feedbackService.getFeedbackPagination(mobile, source, type, status, startTime, endTime, index, pageSize);
+        ModelAndView mv = new ModelAndView("feedback-list");
+        mv.addObject("mobile", mobile);
+        mv.addObject("source", source);
+        mv.addObject("type", type);
+        mv.addObject("status", status);
+        mv.addObject("startTime", startTime);
+        mv.addObject("endTime", endTime);
 
-            mv.addObject("sourceList", Source.values());
-            mv.addObject("typeList", FeedbackType.values());
-            mv.addObject("statusList", ProcessStatus.values());
+        mv.addObject("sourceList", Source.values());
+        mv.addObject("typeList", FeedbackType.values());
+        mv.addObject("statusList", ProcessStatus.values());
 
-            mv.addObject("feedbackCount", feedbackModelPaginationData.getCount());
-            mv.addObject("feedbackList", feedbackModelPaginationData.getRecords());
-            mv.addObject("index", index);
-            mv.addObject("pageSize", pageSize);
-            mv.addObject("hasNextPage", feedbackModelPaginationData.isHasNextPage());
-            mv.addObject("hasPreviousPage", feedbackModelPaginationData.isHasPreviousPage());
-            return mv;
-        }
+        mv.addObject("feedbackCount", feedbackModelPaginationData.getCount());
+        mv.addObject("feedbackList", feedbackModelPaginationData.getRecords());
+        mv.addObject("index", index);
+        mv.addObject("pageSize", pageSize);
+        mv.addObject("hasNextPage", feedbackModelPaginationData.isHasNextPage());
+        mv.addObject("hasPreviousPage", feedbackModelPaginationData.isHasPreviousPage());
+        return mv;
+
     }
 
     @ResponseBody
@@ -107,9 +79,8 @@ public class FeedbackController {
     public BaseDto<BaseDataDto> updateRemark(long feedbackId, String remark) {
         FeedbackModel feedbackModel = feedbackService.findById(feedbackId);
         BaseDataDto dataDto = new BaseDataDto();
-        if(feedbackModel != null)
-        {
-            feedbackModel.setRemark(StringUtils.isEmpty(feedbackModel.getRemark())?remark:feedbackModel.getRemark() + "|" + remark);
+        if (feedbackModel != null) {
+            feedbackModel.setRemark(StringUtils.isEmpty(feedbackModel.getRemark()) ? remark : feedbackModel.getRemark() + "|" + remark);
             feedbackService.updateRemark(feedbackModel);
         }
         dataDto.setStatus(true);
