@@ -2,6 +2,7 @@ package com.tuotiansudai.api.controller.v1_0;
 
 import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.ProductDetailRequestDto;
 import com.tuotiansudai.api.dto.v1_0.UserAddressRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,16 @@ public class MobileAppPointShopController extends MobileAppBaseController{
         return mobileAppPointShopService.findPointHome(baseParamDto);
     }
 
+    @RequestMapping(value = "/get/product-detail",method = RequestMethod.POST)
+    public BaseResponseDto getProductDetail(@RequestBody ProductDetailRequestDto productDetailRequestDto){
+        productDetailRequestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointShopService.findProductDetail(productDetailRequestDto);
+    }
+
+    @RequestMapping(value = "/product-exchange",method = RequestMethod.POST)
+    public BaseResponseDto productExchange(@RequestBody ProductDetailRequestDto productDetailRequestDto){
+        productDetailRequestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointShopService.productExchange(productDetailRequestDto);
+    }
 
 }
