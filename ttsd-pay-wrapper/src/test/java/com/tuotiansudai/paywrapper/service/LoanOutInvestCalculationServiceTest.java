@@ -61,6 +61,9 @@ public class LoanOutInvestCalculationServiceTest {
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
 
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
 
     @Test
     @Transactional
@@ -68,6 +71,9 @@ public class LoanOutInvestCalculationServiceTest {
         UserModel userModel = createFakeUser("buildbox", "13666666666");
         LoanModel loanModel = fakeLoanModel(userModel);
         loanMapper.create(loanModel);
+        LoanDetailsModel loanDetailsModel = fakeLoanLoanDetailsModel(loanModel);
+        loanDetailsMapper.create(loanDetailsModel);
+
         List<ExtraLoanRateModel> extraLoanRateModels = fakeExtraLoanRate(loanModel);
         extraLoanRateMapper.create(extraLoanRateModels);
 
@@ -175,5 +181,15 @@ public class LoanOutInvestCalculationServiceTest {
         level3.setMaxInvestAmount(0);
         extraLoanRateModels.add(level3);
         return extraLoanRateModels;
+    }
+
+    private LoanDetailsModel fakeLoanLoanDetailsModel(LoanModel loanModel) {
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
+        long id = idGenerator.generate();
+        loanDetailsModel.setId(id);
+        loanDetailsModel.setLoanId(loanModel.getId());
+        loanDetailsModel.setDeclaration("材料声明");
+        loanDetailsModel.setExtraSource("WEB,MOBILE");
+       return loanDetailsModel;
     }
 }
