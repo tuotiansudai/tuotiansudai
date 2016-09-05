@@ -11,6 +11,7 @@ import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
@@ -153,6 +154,9 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 }
             }
             int periods = investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId()).size();
+            InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
+            boolean isTransferred = investModel.getTransferInvestId() != null ? true : false;
+            TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investRepayModel.getInvestId());
             repayCalendarDateResponseDtoList.add(new RepayCalendarDateResponseDto(loanMapper.findById(investMapper.findById(investRepayModel.getInvestId()).getLoanId()).getName(),
                     AmountConverter.convertCentToString(repayActualInterest),
                     AmountConverter.convertCentToString(repayExpectedInterest),
@@ -160,8 +164,8 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                     String.valueOf(periods),
                     investRepayModel.getStatus().name(),
                     String.valueOf(investRepayModel.getInvestId()),
-                    false,
-                    null));
+                    isTransferred,
+                    transferApplicationModel != null ? String.valueOf(transferApplicationModel.getId()) : ""));
         }
 
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestIdAndTransferTime(repayCalendarRequestDto.getBaseParam().getUserId(), null, null, repayCalendarRequestDto.getDate());
