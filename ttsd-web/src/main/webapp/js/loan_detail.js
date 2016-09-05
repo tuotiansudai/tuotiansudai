@@ -313,11 +313,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 contentType: 'application/json; charset=UTF-8'
             }).done(function(maxBenefitUserCouponId) {
                 $ticketList.find('input[type="radio"]:checked').prop('checked', false);
+                console.log("calculate max coupon init");
                 if (!isNaN(parseInt(maxBenefitUserCouponId))) {
                     var maxBenefitUserCoupon = $("#" + maxBenefitUserCouponId);
                     var couponTitle = $.trim($ticketList.find('li[data-user-coupon-id="' + maxBenefitUserCouponId +'"]').find(".ticket-info .ticket-title").text());
                     $useExperienceTicket.find('span').text(couponTitle);
                     maxBenefitUserCoupon.prop('checked', true);
+                    console.log("calculate max coupon finished");
                 } else {
                     if (!$useExperienceTicket.hasClass("disabled")) {
                         $useExperienceTicket.find('span').text('请选择优惠券');
@@ -556,6 +558,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                         dataType: 'json',
                         url: '/no-password-invest',
                         beforeSubmit: function () {
+                            console.log("invest start");
                             $investSubmit.addClass("loading");
                         },
                         success: function (response) {

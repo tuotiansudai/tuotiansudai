@@ -98,9 +98,9 @@ public class LotteryActivityServiceTest {
     public void shouldFindDrawLotteryPrizeRecordByMobileIsOk(){
         UserModel userModel = getFakeUser("testDrawPrize11", "12345678902");
         getUserLotteryPrizeModel(userModel.getLoginName(), userModel.getMobile(), "testName");
-        List<UserLotteryPrizeView> userLotteryPrizeViews = lotteryActivityService.findDrawLotteryPrizeRecordByMobile(userModel.getMobile(), "");
+        List<UserLotteryPrizeView> userLotteryPrizeViews = lotteryActivityService.findDrawLotteryPrizeRecordByMobile(userModel.getMobile(), null);
         assertTrue(CollectionUtils.isNotEmpty(userLotteryPrizeViews));
-        userLotteryPrizeViews = lotteryActivityService.findDrawLotteryPrizeRecordByMobile("", "");
+        userLotteryPrizeViews = lotteryActivityService.findDrawLotteryPrizeRecordByMobile("", null);
         assertEquals(userLotteryPrizeViews.size(), 0);
     }
 
@@ -108,7 +108,7 @@ public class LotteryActivityServiceTest {
     public void shouldFindDrawLotteryPrizeRecordIsOk(){
         UserModel userModel = getFakeUser("testDrawPrize12", "12345678901");
         getUserLotteryPrizeModel(userModel.getLoginName(), userModel.getMobile(), "testName");
-        List<UserLotteryPrizeView> userLotteryPrizeViews = lotteryActivityService.findDrawLotteryPrizeRecord(userModel.getMobile(), "");
+        List<UserLotteryPrizeView> userLotteryPrizeViews = lotteryActivityService.findDrawLotteryPrizeRecord(userModel.getMobile(), null);
         assertTrue(CollectionUtils.isNotEmpty(userLotteryPrizeViews));
     }
 
@@ -118,7 +118,7 @@ public class LotteryActivityServiceTest {
         Date activityAutumnEndTime = DateUtils.addMonths(DateTime.now().toDate(), 1);
         ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnStartTime", activityAutumnStartTime);
         ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnEndTime", activityAutumnEndTime);
-        DrawLotteryResultDto drawLotteryResultDto = lotteryActivityService.drawLotteryPrize("", "");
+        DrawLotteryResultDto drawLotteryResultDto = lotteryActivityService.drawLotteryPrize("", null);
         assertTrue(!drawLotteryResultDto.getStatus());
         assertEquals(drawLotteryResultDto.getMessage(), "您还未登陆，请登陆后再来抽奖吧！");
     }
