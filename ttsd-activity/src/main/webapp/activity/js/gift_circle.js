@@ -22,15 +22,18 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
     //td click
     $pointer.on('click', function(event) {
         event.preventDefault();
+        var $mobile = $('div.mobile');
+        var mobile = $mobile ? $mobile.data('mobile') : '';
+        var url = '/activity/autumn/luxury-draw?mobile='+mobile;
+        if($('#themeType').val() == 'travel'){
+            url = '/activity/autumn/travel-draw?mobile='+mobile;
+        }
 
         if (bRotate) return;
         $.ajax({
-            url: '/activity/draw-lottery',
+            url: url,
             type: 'POST',
-            dataType: 'json',
-            data:{
-                activityType:$('#themeType').val()
-            }
+            dataType: 'json'
         })
         .done(function(data) {
             if (data.returnCode == 0) {
@@ -59,6 +62,8 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
                 }
             } else if (data.returnCode == 2) {
                 $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'nologin'})).show().find('.tip-dom').show();
+            } else if(data.returnCode == 3){
+                $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'timeout'})).show().find('.tip-dom').show();
             } else {
                 $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'notimes'})).show().find('.tip-dom').show();
             }
@@ -122,32 +127,36 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
     }
 
     function GiftRecord (){
+        var url = '/activity/autumn/luxury-all-list';
+        if($('#themeType').val() == 'travel'){
+            url = '/activity/autumn/travel-all-list';
+        }
         $.ajax({
-            url: '/activity/lottery-all-list',
-            type: 'POST',
-            dataType: 'json',
-            data:{
-                activityType:$('#themeType').val()
-            }
+            url: url,
+            type: 'GET',
+            dataType: 'json'
         })
         .done(function(data) {
             $('#GiftRecord').html(tpl('GiftRecordTpl', {record:data}));
         });
-    };
+    }
 
     function MyGift(){
+        var $mobile = $('div.mobile');
+        var mobile = $mobile ? $mobile.data('mobile') : '';
+        var url = '/activity/autumn/luxury-user-list?mobile='+mobile;
+        if($('#themeType').val() == 'travel'){
+            url = '/activity/autumn/travel-user-list?mobile='+mobile;
+        }
         $.ajax({
-            url: '/activity/lottery-record-list',
-            type: 'POST',
-            dataType: 'json',
-            data:{
-                activityType:$('#themeType').val()
-            }
+            url: url,
+            type: 'GET',
+            dataType: 'json'
         })
         .done(function(data) {
             $('#MyGift').html(tpl('MyGiftTpl', {gift:data}));
         });
-    };
+    }
     GiftRecord ();
     MyGift();
 });
