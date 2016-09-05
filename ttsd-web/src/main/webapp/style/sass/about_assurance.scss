@@ -604,8 +604,10 @@
 	}
   }
   .section-box-two {
+	overflow: hidden;
 	dl {
 	  margin-left: 80px;
+
 	  dt {
 		position: relative;
 		color: #333333;
@@ -623,6 +625,7 @@
 	  }
 	  dd {
 		padding-left:80px;
+		color: #808080;
 		&.img-load {
 		  padding-left:70px;
 		  padding-top:10px;
@@ -668,13 +671,94 @@
 		}
 		&.high-profit {
 		  height:345px;
+		  background: url("/images/sign/assure/bg-wen.png") center center no-repeat;
+		  position: relative;
 			.high-box {
 			  border:1px solid #db6558;
 			  border-radius:10px;
-
+			  width:255px;
+			  padding:10px;
+			  box-sizing: border-box;
+			  font-size:16px;
+			  text-align: center;
+			  background: #fff;
+			  position: relative;
+			  color: #666666;
+			  &:nth-child(1) {
+				position: absolute;
+				top: 30px;
+				left: 0px;
+			  }
+			  &:nth-child(2) {
+				position: absolute;
+				top: 30px;
+				right: 0px;
+			  }
+			  &:nth-child(3) {
+				position: absolute;
+				top: 230px;
+				left: 0px;
+			  }
+			  &:nth-child(4) {
+				position: absolute;
+				top: 230px;
+				right: 0px;
+			  }
 			  span {
 				display: block;
-				//border-bottom:
+				&.line-align {
+				  background:#db6558;
+				  background:-webkit-linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  background:-moz-linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  background:linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  background:-o-linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  height:1px;
+				}
+				&.line-valign {
+				  background:#db6558;
+				  background:-webkit-linear-gradient(to bottom, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  background:-moz-linear-gradient(to bottom, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  background:linear-gradient(to bottom, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  background:-o-linear-gradient(to bottom, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+				  width:1px;
+				}
+			  }
+				&.square-normal {
+				  span {
+					&.line-align {
+					  position: absolute;
+					  top:50%;
+					  width:100%;
+					}
+					&.line-valign {
+					  position: absolute;
+					  left:50%;
+					  height:100%;
+					  top:0;
+					}
+				 }
+				}
+			  &:hover {
+				background: #db6558;
+				color: #fff;
+				span {
+				  &.line-align {
+					background:#db6558;
+					background:-webkit-linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					background:-moz-linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					background:linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					background:-o-linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					height:1px;
+				  }
+				  &.line-valign {
+					background:#db6558;
+					background:-webkit-linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					background:-moz-linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					background:-o-linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+					width:1px;
+				  }
+				}
 			  }
 			}
 
