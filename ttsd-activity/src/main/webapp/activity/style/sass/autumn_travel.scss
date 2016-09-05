@@ -721,6 +721,24 @@ body {
 
 @media (max-width: 390px) {
   .autumn-tour-frame {
+
+    .vertical-line {
+      display: none;
+      width: 8px;
+      height: 40px;
+      background-size: 100%;
+      &:nth-child(1) {
+        left: 30px;
+        top: 209px;
+        display: block;
+      }
+      &:nth-child(2) {
+        right: 30px;
+        top: 209px;
+        display: block;
+      }
+    }
+
     .prize-kind {
 
       .prize-box {
@@ -760,8 +778,27 @@ body {
   }
 }
 
+
 @media (max-width: 330px) {
   .autumn-tour-frame {
+
+    .vertical-line {
+      display: none;
+      width: 8px;
+      height: 40px;
+      background-size: 100%;
+      &:nth-child(1) {
+        left: 30px;
+        top: 265px;
+        display: block;
+      }
+      &:nth-child(2) {
+        right: 30px;
+        top: 265px;
+        display: block;
+      }
+    }
+
     .prize-kind {
 
       .prize-box {
