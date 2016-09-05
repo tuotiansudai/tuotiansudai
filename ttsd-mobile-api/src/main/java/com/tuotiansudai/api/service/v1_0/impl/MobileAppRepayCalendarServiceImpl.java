@@ -158,7 +158,10 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                     AmountConverter.convertCentToString(repayExpectedInterest),
                     investRepayModel.getActualRepayDate() != null && investRepayModel.getCorpus() > 0 ? String.valueOf(periods) : String.valueOf(investRepayModel.getPeriod()),
                     String.valueOf(periods),
-                    investRepayModel.getStatus().name()));
+                    investRepayModel.getStatus().name(),
+                    String.valueOf(investRepayModel.getInvestId()),
+                    false,
+                    null));
         }
 
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestIdAndTransferTime(repayCalendarRequestDto.getBaseParam().getUserId(), null, null, repayCalendarRequestDto.getDate());
@@ -170,7 +173,10 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                     AmountConverter.convertCentToString(repayExpectedInterest),
                     String.valueOf(periods),
                     String.valueOf(periods),
-                    RepayStatus.COMPLETE.name()));
+                    RepayStatus.COMPLETE.name(),
+                    String.valueOf(transferApplicationModel.getInvestId()),
+                    true,
+                    String.valueOf(transferApplicationModel.getId())));
         }
 
         RepayCalendarDateListResponseDto repayCalendarDateListResponseDto = new RepayCalendarDateListResponseDto();
