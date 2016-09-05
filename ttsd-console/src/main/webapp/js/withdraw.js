@@ -33,7 +33,7 @@ require(['jquery', 'jquery-ui',
         });
 
         $('.down-load').click(function () {
-            location.href = "/finance-manage/withdraw?"+$('form').serialize()+"&export=csv";
+            location.href = "/export/withdraw?" + $('form').serialize();
         });
     });
 });

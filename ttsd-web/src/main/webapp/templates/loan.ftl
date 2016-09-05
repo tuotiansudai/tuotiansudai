@@ -6,43 +6,53 @@
         <div class="loan-model bg-w">
             <div class="news-share bg-w">
                 <h2 class="hd clearfix title-block <#if loan.activityType == 'NEWBIE'>new</#if>">
-                    <div class="fl title">${loan.name}</div>
-                    <#if extraLoanRates??>
-                        <div class="fl orange extra-rate" id="extra-rate">投资加息+${extraLoanRates.minExtraRate}%~${extraLoanRates.maxExtraRate}%<i class="fa fa-question-circle" aria-hidden="true"></i>
+                    <div class="fl title">${loan.name}
+
+                    </div>
+                    <#if loan.extraSource?? && loan.extraSource == "MOBILE">
+                        <div class="fl orange extra-rate">
+                            <i class="fa fa-mobile"></i>
+                            APP专享
                         </div>
-                        <script>
-                            var __extraRate = [
-                                <#list extraLoanRates.items as extraLoanRate>
-                                    {
-                                        minInvestAmount: ${extraLoanRate.amountLower},
-                                        maxInvestAmount: ${extraLoanRate.amountUpper},
-                                        rate: ${extraLoanRate.rate}
-                                    }<#if extraLoanRate_has_next>,</#if>
-                                </#list>];
+                    <#else>
+                        <#if extraLoanRates??>
+                            <div class="fl orange extra-rate" id="extra-rate">投资奖励+${extraLoanRates.minExtraRate}%~${extraLoanRates.maxExtraRate}%<i class="fa fa-question-circle" aria-hidden="true"></i>
+                            </div>
+
+                            <script>
+                                var __extraRate = [
+                                    <#list extraLoanRates.items as extraLoanRate>
+                                        {
+                                            minInvestAmount: ${extraLoanRate.amountLower},
+                                            maxInvestAmount: ${extraLoanRate.amountUpper},
+                                            rate: ${extraLoanRate.rate}
+                                        }<#if extraLoanRate_has_next>,</#if>
+                                    </#list>];
+                            </script>
+                        </#if>
+                        <script type="text/template" id="extra-rate-popup-tpl">
+                            <div class="extra-rate-popup" id="extra-rate-popup">
+                                <div class="header clearfix">
+                                    <div class="td fl">投资金额</div>
+                                    <div class="td fl">加息</div>
+                                </div>
+                                <% _.each(__extraRate, function(value){
+                                var text;
+                                if(value.maxInvestAmount!=0) {
+                                text =' < '+ value.maxInvestAmount;
+                                }
+                                else {
+                                text='';
+                                }
+                                %>
+                                <div class="clearfix">
+                                    <div class="td fl"><%= value.minInvestAmount %>元 ≤ 投资额 <%=text %></div>
+                                    <div class="td fl"><%= value.rate %>%</div>
+                                </div>
+                                <% }) %>
+                            </div>
                         </script>
                     </#if>
-                    <script type="text/template" id="extra-rate-popup-tpl">
-                        <div class="extra-rate-popup" id="extra-rate-popup">
-                            <div class="header clearfix">
-                                <div class="td fl">投资金额</div>
-                                <div class="td fl">加息</div>
-                            </div>
-                            <% _.each(__extraRate, function(value){
-                            var text;
-                            if(value.maxInvestAmount!=0) {
-                                text =' < '+ value.maxInvestAmount;
-                            }
-                            else {
-                                text='';
-                            }
-                            %>
-                            <div class="clearfix">
-                                <div class="td fl"><%= value.minInvestAmount %>元 ≤ 投资额 <%=text %></div>
-                                <div class="td fl"><%= value.rate %>%</div>
-                            </div>
-                            <% }) %>
-                        </div>
-                    </script>
                     <span class="fr boilerplate"><a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a></span>
                 </h2>
                 <div class="container-block loan-info">

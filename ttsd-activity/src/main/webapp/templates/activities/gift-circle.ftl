@@ -16,7 +16,7 @@
         <div class="lottery-detail">
             <h3>我的抽奖机会：<span class="lottery-time">${drawTime}</span>次</h3>
             <ul class="gift-record">
-                <li class="active">中奖纪录</li>
+                <li class="active">中奖记录</li>
                 <li>我的奖品</li>
             </ul>
             <div class="record-list" id="recordList">
@@ -101,6 +101,9 @@
         {{else if istype=='notimes'}}
             <p class="login-text">您暂无抽奖机会啦~</p>
             <p class="des-text">赢取机会后再来抽奖吧！</p>
+        {{else if istype=='timeout'}}
+            <p class="login-text">不在活动时间内~</p>
+            <p class="des-text">不在活动时间内！</p>
         {{else}}
         {{/if}}
         </div>

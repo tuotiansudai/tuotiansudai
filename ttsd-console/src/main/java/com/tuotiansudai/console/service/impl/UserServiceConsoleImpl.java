@@ -37,18 +37,18 @@ public class UserServiceConsoleImpl implements UserServiceConsole {
 
 
     @Override
-    public BaseDto<BasePaginationDataDto> findAllUser(String loginName,
-                                                      String email,
-                                                      String mobile,
-                                                      Date beginTime,
-                                                      Date endTime,
-                                                      Source source,
-                                                      RoleStage roleStage,
-                                                      String referrerMobile,
-                                                      String channel,
-                                                      Integer index,
-                                                      Integer pageSize) {
-        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
+    public BaseDto<BasePaginationDataDto<UserItemDataDto>> findAllUser(String loginName,
+                                                                       String email,
+                                                                       String mobile,
+                                                                       Date beginTime,
+                                                                       Date endTime,
+                                                                       Source source,
+                                                                       RoleStage roleStage,
+                                                                       String referrerMobile,
+                                                                       String channel,
+                                                                       Integer index,
+                                                                       Integer pageSize) {
+        BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = new BaseDto<>();
         List<UserView> userViews = userMapperConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, (index - 1) * pageSize, pageSize);
         List<UserItemDataDto> userItems = Lists.newArrayList();
         for (UserView userView : userViews) {

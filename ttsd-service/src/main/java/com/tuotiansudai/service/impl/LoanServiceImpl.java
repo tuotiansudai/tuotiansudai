@@ -432,6 +432,7 @@ public class LoanServiceImpl implements LoanService {
         } else {
             return null;
         }
+        createLoanDto.setExtraSource(loanDetailsModel != null?loanDetailsModel.getExtraSource():"");
         return createLoanDto;
     }
 
@@ -664,6 +665,8 @@ public class LoanServiceImpl implements LoanService {
             if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
                 loanListDto.setExtraLoanRateModels(fillExtraLoanRate(extraLoanRateModels));
             }
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
+            loanListDto.setExtraSource(loanDetailsModel != null?loanDetailsModel.getExtraSource():"");
             loanListDtos.add(loanListDto);
         }
         return loanListDtos;
@@ -734,8 +737,14 @@ public class LoanServiceImpl implements LoanService {
                 }
                 loanItemDto.setDuration(loanModel.getDuration());
                 double rate = extraLoanRateMapper.findMaxRateByLoanId(loanModel.getId());
+                String extraSource = "";
+                LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
+                if(loanDetailsModel != null){
+                    extraSource = loanDetailsModel.getExtraSource();
+                }
                 if (rate > 0) {
                     loanItemDto.setExtraRate(rate * 100);
+                    loanItemDto.setExtraSource(extraSource);
                 }
                 return loanItemDto;
             }

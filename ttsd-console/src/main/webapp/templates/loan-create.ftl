@@ -195,10 +195,10 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label">阶梯加息: </label>
+                <label class="col-sm-2 control-label">投资奖励: </label>
 
                 <div class="col-sm-4 checkbox">
-                    <label for="extra"><input type="checkbox" id="extra">选中后此标的采用阶梯式加息</label>
+                    <label for="extra"><input type="checkbox" id="extra" >选中后此标的采用投资奖励</label>
                 </div>
             </div>
 
@@ -210,12 +210,24 @@
                         <thead>
                         <tr>
                             <th>投资金额范围（元）</th>
-                            <th>加息比例（%）</th>
+                            <th>投资奖励比例（%）</th>
                         </tr>
                         </thead>
                         <tbody class="extra-rate-rule">
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <div class="form-group extra-source hidden">
+                <label class="col-sm-2 control-label">投资奖励来源:</label>
+
+                <div class="col-sm-4" id="extraSource">
+                    <#list sources as source>
+                        <label>
+                            <input type="checkbox" name="extraSource"  class="extraSource" value="${source.name()}">${source.name()}
+                        </label>
+                    </#list>
                 </div>
             </div>
         </div>

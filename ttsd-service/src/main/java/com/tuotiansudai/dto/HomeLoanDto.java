@@ -44,7 +44,9 @@ public class HomeLoanDto {
 
     private double extraRate;
 
-    public HomeLoanDto(CouponModel newbieInterestCouponModel, LoanModel loan, long investAmount, List<LoanRepayModel> loanRepayModels, double extraRate) {
+    private String extraSource;
+
+    public HomeLoanDto(CouponModel newbieInterestCouponModel, LoanModel loan, long investAmount, List<LoanRepayModel> loanRepayModels, double extraRate, String extraSource) {
         this.id = loan.getId();
         this.name = loan.getName();
         this.productType = loan.getProductType();
@@ -71,6 +73,7 @@ public class HomeLoanDto {
         }
         if (extraRate != 0) {
             this.extraRate = extraRate;
+            this.extraSource = extraSource;
         }
     }
 
@@ -148,5 +151,13 @@ public class HomeLoanDto {
 
     public void setExtraRate(double extraRate) {
         this.extraRate = extraRate;
+    }
+
+    public String getExtraSource() {
+        return extraSource;
+    }
+
+    public void setExtraSource(String extraSource) {
+        this.extraSource = extraSource;
     }
 }

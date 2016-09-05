@@ -10,6 +10,10 @@ public class AnswerModel implements Serializable {
 
     private String loginName;
 
+    private String mobile;
+
+    private String fakeMobile;
+
     private long questionId;
 
     private String answer;
@@ -35,8 +39,10 @@ public class AnswerModel implements Serializable {
     public AnswerModel() {
     }
 
-    public AnswerModel(String loginName, long questionId, String answer) {
+    public AnswerModel(String loginName, String mobile, String fakeMobile, long questionId, String answer) {
         this.loginName = loginName;
+        this.mobile = mobile;
+        this.fakeMobile = fakeMobile;
         this.questionId = questionId;
         this.answer = answer;
         this.status = AnswerStatus.UNAPPROVED;
@@ -56,6 +62,22 @@ public class AnswerModel implements Serializable {
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getFakeMobile() {
+        return fakeMobile;
+    }
+
+    public void setFakeMobile(String fakeMobile) {
+        this.fakeMobile = fakeMobile;
     }
 
     public long getQuestionId() {
