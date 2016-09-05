@@ -33,7 +33,7 @@ require(['jquery', 'jquery-ui',
         });
 
         $('.down-load').click(function () {
-            location.href = "/finance-manage/recharge?"+$('form').serialize()+"&export=csv";
+            location.href = "/export/recharge?"+$('form').serialize();
         });
     });
 });

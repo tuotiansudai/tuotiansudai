@@ -76,16 +76,25 @@
               @extend .sprite-global-app-pc-top;
             }
           }
+          &.header-membership {
+            padding-right: 19px;
+            background: #333 url("/images/icons/top-icon.png") no-repeat 100% 50%;
+          }
+          &.membership-store {
+            padding-left: 19px;
+            background: #333 url("/images/membership/icon-shop.png") no-repeat 2px 50%;
+            a{
+              padding-left:0;
+              color:#FC4A52;
+              font-size:11px;
+            }
+          }
           a {
             padding-left: 8px;
             color: #fff;
           }
         }
       }
-  }
-  .header-membership {
-    padding-right: 19px;
-    background: #333 url("/images/icons/top-icon.png") no-repeat 100% 50%;
   }
 }
 
@@ -328,6 +337,75 @@
   }
 }
 
+.store-footer{
+  float:left;
+  width:100%;
+  background:#ebebeb;
+  .wp{
+    width:1000px;
+    margin:0 auto;
+    position: relative;
+  }
+  .footer-list{
+    padding:40px 0;
+    dl{
+      float:left;
+      &.list-normal{
+        width:155px;
+      }
+      &.list-contact{
+        width:420px;
+      }
+      dt{
+        float:left;
+        width:100%;
+        font-size:18px;
+        color:#4c4c4c;
+      }
+      dd{
+        float:left;
+        width:100%;
+        line-height:30px;
+        a{
+          font-size:14px;
+          color:#808080;
+          span{
+            font-size:20px;
+            color:#fc4a52;
+            line-height:19px;
+          }
+        }
+      }
+    }
+    .images-app{
+      float:right;
+      width:100px;
+      .img-app-download{
+        float:left;
+        width:100px;
+        height:100px;
+        background-image: url(/images/compress/global_20160523.png);
+        background-position: -308px -100px;
+        -webkit-background-size: 408px 290px;
+        -moz-background-size: 408px 290px;
+        background-size: 408px 290px;
+      }
+      p{
+        float:left;
+        width:100%;
+        margin-bottom:0;
+      }
+    }
+  }
+  .copyright-info{
+    border-top:1px solid #ccc;
+    line-height:60px;
+    text-align:center;
+    font-size:16px;
+    color:#808080;
+  }
+}
+
 @media screen and (max-width: 700px) {
   .header-container {
     padding-left:10px;
@@ -336,6 +414,9 @@
       display: block;
     }
     .header-membership, .header-activity-center {
+      display: none;
+    }
+    .membership-store {
       display: none;
     }
     .header {

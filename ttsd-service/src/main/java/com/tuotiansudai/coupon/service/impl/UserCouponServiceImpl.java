@@ -147,7 +147,7 @@ public class UserCouponServiceImpl implements UserCouponService {
                 boolean isShared = couponModel.isShared();
                 boolean unused = InvestStatus.SUCCESS != userCouponModel.getStatus()
                         && userCouponModel.getEndTime().after(new Date())
-                        && (userCouponModel.getUsedTime() == null || new DateTime(userCouponModel.getUsedTime()).plusSeconds(couponLockSeconds).isAfter(new DateTime()));
+                        && (userCouponModel.getUsedTime() == null || new DateTime(userCouponModel.getUsedTime()).plusSeconds(couponLockSeconds).isBefore(new DateTime()));
                 boolean productTypeEnable = couponModel.getProductTypes().contains(loanModel.getProductType());
                 boolean isGreatThanInvestLowerLimit = couponModel.getInvestLowerLimit() <= amount;
                 return !isShared && unused && productTypeEnable && isGreatThanInvestLowerLimit;

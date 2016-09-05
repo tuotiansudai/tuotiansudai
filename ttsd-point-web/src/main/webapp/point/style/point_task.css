@@ -1,0 +1,122 @@
+.main-frame {
+  width: 100%;
+  margin: 0; }
+  .main-frame .global-member-task {
+    float: left;
+    width: 100%; }
+    .main-frame .global-member-task .wp {
+      width: 1000px;
+      margin: 0 auto;
+      position: relative; }
+      .main-frame .global-member-task .wp .choi-beans-list {
+        float: left;
+        width: 900px;
+        padding: 30px 50px;
+        background: #fff; }
+        .main-frame .global-member-task .wp .choi-beans-list .title-task {
+          border-bottom: 1px solid #e7eaee; }
+          .main-frame .global-member-task .wp .choi-beans-list .title-task span {
+            font-size: 16px;
+            display: inline-block;
+            padding: 2px 16px;
+            float: left;
+            cursor: pointer; }
+            .main-frame .global-member-task .wp .choi-beans-list .title-task span.active {
+              background: #e7eaee; }
+        .main-frame .global-member-task .wp .choi-beans-list .notice-tip {
+          border: 1px solid #e7eaee;
+          padding: 10px;
+          margin-top: 10px;
+          color: #ff7200;
+          font-size: 14px;
+          padding: 4px 10px;
+          position: relative;
+          cursor: pointer; }
+          .main-frame .global-member-task .wp .choi-beans-list .notice-tip i {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            color: #666; }
+        .main-frame .global-member-task .wp .choi-beans-list .task-frame {
+          margin-bottom: 20px; }
+          .main-frame .global-member-task .wp .choi-beans-list .task-frame .task-box {
+            float: left;
+            width: 360px;
+            height: 190px;
+            padding: 10px;
+            margin: 10px 25px 0 0;
+            position: relative;
+            border: 1px solid #e7eaee; }
+            .main-frame .global-member-task .wp .choi-beans-list .task-frame .task-box .serial-number {
+              color: #cccccc;
+              font-size: 50px;
+              position: absolute;
+              top: -15px;
+              left: 10px; }
+            .main-frame .global-member-task .wp .choi-beans-list .task-frame .task-box .step-content {
+              line-height: 39px;
+              font-size: 16px;
+              position: absolute;
+              left: 76px;
+              top: 10px; }
+              .main-frame .global-member-task .wp .choi-beans-list .task-frame .task-box .step-content dt {
+                font-weight: bold;
+                color: #000; }
+              .main-frame .global-member-task .wp .choi-beans-list .task-frame .task-box .step-content dd.reward {
+                background: #edf1f5;
+                display: inline-block;
+                line-height: 26px;
+                padding-right: 25px;
+                margin-bottom: 10px; }
+                .main-frame .global-member-task .wp .choi-beans-list .task-frame .task-box .step-content dd.reward span {
+                  color: #fc4a52;
+                  display: inline-block; }
+              .main-frame .global-member-task .wp .choi-beans-list .task-frame .task-box .step-content dd a.btn-normal {
+                border: 1px solid #fc4a52;
+                border-radius: 0;
+                background: #fc4a52; }
+                .main-frame .global-member-task .wp .choi-beans-list .task-frame .task-box .step-content dd a.btn-normal:hover {
+                  background: #fa7278; }
+        .main-frame .global-member-task .wp .choi-beans-list .task-status {
+          float: left;
+          width: 100%;
+          display: none; }
+          .main-frame .global-member-task .wp .choi-beans-list .task-status.active {
+            display: block; }
+          .main-frame .global-member-task .wp .choi-beans-list .task-status .border-box {
+            height: auto;
+            overflow: auto;
+            margin-top: 10px;
+            border: 1px solid #e7eaee;
+            padding: 10px 20px; }
+            .main-frame .global-member-task .wp .choi-beans-list .task-status .border-box:nth-of-type(n+5) {
+              display: none; }
+            .main-frame .global-member-task .wp .choi-beans-list .task-status .border-box.one-col {
+              line-height: 36px; }
+            .main-frame .global-member-task .wp .choi-beans-list .task-status .border-box.two-col {
+              padding-top: 9px;
+              line-height: 20px;
+              padding-bottom: 7px; }
+            .main-frame .global-member-task .wp .choi-beans-list .task-status .border-box dl .color-key {
+              color: #fc4a52; }
+            .main-frame .global-member-task .wp .choi-beans-list .task-status .border-box dl dt {
+              font-size: 16px;
+              font-weight: bold; }
+          .main-frame .global-member-task .wp .choi-beans-list .task-status a.btn-normal {
+            border: 1px solid #fc4a52;
+            border-radius: 0;
+            background: #fc4a52; }
+            .main-frame .global-member-task .wp .choi-beans-list .task-status a.btn-normal:hover {
+              background: #fa7278; }
+          .main-frame .global-member-task .wp .choi-beans-list .task-status .button-more {
+            margin-top: 30px; }
+            .main-frame .global-member-task .wp .choi-beans-list .task-status .button-more a {
+              background: #e7eaee;
+              display: inline-block;
+              font-size: 16px;
+              color: #4c4c4c;
+              padding: 7px 14px 7px 14px; }
+              .main-frame .global-member-task .wp .choi-beans-list .task-status .button-more a i {
+                font-size: 19px; }
+
+/*# sourceMappingURL=point_task.css.map */

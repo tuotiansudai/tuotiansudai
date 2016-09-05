@@ -39,8 +39,8 @@ public class RechargeServiceImpl implements RechargeService {
     }
 
     @Override
-    public BaseDto<BasePaginationDataDto> findRechargePagination(String rechargeId, String mobile, RechargeSource source,
-                                                                 RechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime) {
+    public BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> findRechargePagination(String rechargeId, String mobile, RechargeSource source,
+                                                                                                RechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime) {
         if (index < 1) {
             index = 1;
         }
@@ -48,7 +48,7 @@ public class RechargeServiceImpl implements RechargeService {
             pageSize = 10;
         }
 
-        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
+        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = new BaseDto<>();
         List<RechargePaginationItemDataDto> rechargePaginationItemDataDtos = Lists.newArrayList();
 
         int count = rechargeMapper.findRechargeCount(rechargeId, mobile, source, status, channel, startTime, endTime);

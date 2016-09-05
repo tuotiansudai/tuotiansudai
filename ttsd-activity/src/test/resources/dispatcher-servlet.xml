@@ -40,21 +40,21 @@
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
-        <property name="javascriptLocation" value="/activity${web.js.path}"/>
-        <property name="cssLocation" value="/activity${web.css.path}"/>
+        <property name="javascriptLocation" value="${activity.js.path}"/>
+        <property name="cssLocation" value="${activity.css.path}"/>
         <property name="sourceMap">
             <map>
                 <entry key="webServer" value="${web.server}"/>
                 <entry key="askServer" value="${ask.server}"/>
-                <entry key="staticServer" value="${web.static.server}"/>
+                <entry key="staticServer" value="${activity.static.server}"/>
                 <entry key="percentFraction">
-                    <bean class="com.tuotiansudai.activity.freemarker.directive.PercentFractionDirective"/>
+                    <bean class="com.tuotiansudai.web.config.freemarker.directive.PercentFractionDirective"/>
                 </entry>
                 <entry key="percentInteger">
-                    <bean class="com.tuotiansudai.activity.freemarker.directive.PercentIntegerDirective"/>
+                    <bean class="com.tuotiansudai.web.config.freemarker.directive.PercentIntegerDirective"/>
                 </entry>
                 <entry key="amount">
-                    <bean class="com.tuotiansudai.activity.freemarker.directive.AmountDirective"/>
+                    <bean class="com.tuotiansudai.web.config.freemarker.directive.AmountDirective"/>
                 </entry>
             </map>
         </property>

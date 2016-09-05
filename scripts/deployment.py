@@ -26,7 +26,7 @@ class Deployment(object):
     def compile(self):
         print "Compiling..."
         sh(
-            '{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk war'.format(
+            '{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity war'.format(
                 self._gradle))
 
     def build_and_unzip_worker(self):
@@ -47,6 +47,7 @@ class Deployment(object):
             sh('{0} ttsd-console:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
             sh('{0} ttsd-mobile-api:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
             sh('{0} ttsd-sms-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{0} ttsd-point-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
         self.build_and_unzip_worker()
 
     def mk_static_package(self):
@@ -65,8 +66,11 @@ class Deployment(object):
 
         sh('cd ./ttsd-activity/src/main/webapp && zip -r static_activity.zip activity/')
         sh('mv ./ttsd-activity/src/main/webapp/static_activity.zip  ./ttsd-web/build/')
-
         sh('cd ./ttsd-web/build && unzip static_activity.zip -d static')
+
+        sh('cd ./ttsd-point-web/src/main/webapp && zip -r static_point.zip point/')
+        sh('mv ./ttsd-point-web/src/main/webapp/static_point.zip  ./ttsd-web/build/')
+        sh('cd ./ttsd-web/build && unzip static_point.zip -d static')
 
     def init_docker(self):
         print "Initialing docker..."

@@ -1,9 +1,9 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.message.dto.MessageDto;
 import com.tuotiansudai.message.repository.model.MessageChannel;
 import com.tuotiansudai.message.repository.model.MessageStatus;

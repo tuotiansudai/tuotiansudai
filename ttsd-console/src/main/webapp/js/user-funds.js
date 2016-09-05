@@ -1,7 +1,4 @@
-/**
- * Created by CBJ on 2015/11/2.
- */
-require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker','jquery-ui'], function ($) {
+require(['jquery', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepicker', 'jquery-ui'], function ($) {
     $(function () {
 
         $('#investDateBegin,#investDateEnd').datetimepicker({
@@ -44,22 +41,17 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker','jque
             window.location.href = "/finance-manage/user-funds";
         });
 
-        $('.search').click(function() {
+        $('.search').click(function () {
             var mobile = $('.jq-loginName').val();
             var startTime = $('.jq-startTime').val();
             var endTime = $('.jq-endTime').val();
             var operationType = $('.operationType').val();
             var businessType = $('.businessType').val();
-            window.location.href = "/finance-manage/user-funds?mobile="+mobile+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&index=1&pageSize=10";
+            window.location.href = "/finance-manage/user-funds?mobile=" + mobile + "&startTime=" + startTime + "&endTime=" + endTime + "&userBillOperationType=" + operationType + "&userBillBusinessType=" + businessType + "&index=1&pageSize=10";
         });
 
-        $('.down-load').click(function(){
-            var mobile = $('.jq-loginName').val();
-            var startTime = $('.jq-startTime').val();
-            var endTime = $('.jq-endTime').val();
-            var operationType = $('.operationType').val();
-            var businessType = $('.businessType').val();
-            window.location.href = "/finance-manage/user-funds?mobile="+mobile+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&export=csv";
+        $('.down-load').click(function () {
+            location.href = "/export/user-funds?" + $('form').serialize();
         });
     });
 })

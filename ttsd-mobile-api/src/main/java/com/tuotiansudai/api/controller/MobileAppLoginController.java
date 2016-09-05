@@ -7,7 +7,6 @@ import com.tuotiansudai.api.dto.v1_0.LoginResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.security.MobileAppTokenProvider;
 import com.tuotiansudai.client.SignInClient;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.dto.SignInDto;
 import com.tuotiansudai.repository.model.Source;

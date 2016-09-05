@@ -11,10 +11,10 @@ public interface UserOpLogService {
     void create(UserOpLogModel model);
 
     BasePaginationDataDto<UserOpLogView> getUserOpLogPaginationData(String mobile,
-                                                                     UserOpType opType,
-                                                                     Date startTime,
-                                                                     Date endTime,
-                                                                     int index,
-                                                                     int pageSize);
+                                                                    UserOpType opType,
+                                                                    Date startTime,
+                                                                    Date endTime,
+                                                                    int index,
+                                                                    int pageSize);
 }
 

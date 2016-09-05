@@ -6,10 +6,8 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.ServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
 public class HttpClientUtil {
 		
@@ -33,12 +31,10 @@ public class HttpClientUtil {
 			}
 			return new String(get.getResponseBody(), charset);
 
-		} catch (HttpException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return null ;
 	}
 	
@@ -75,16 +71,5 @@ public class HttpClientUtil {
 		
 		return SUCCESS ;
 	}
-	
-	public static String requestParametersToString(ServletRequest request) {
-		StringBuffer sb = new StringBuffer();
-		Map map = request.getParameterMap();
-		for (Object str : map.keySet()) {
-			sb.append(str);
-			sb.append(":");
-			sb.append(request.getParameter(str.toString()));
-			sb.append("  ");
-		}
-		return sb.toString();
-	}
+
 }

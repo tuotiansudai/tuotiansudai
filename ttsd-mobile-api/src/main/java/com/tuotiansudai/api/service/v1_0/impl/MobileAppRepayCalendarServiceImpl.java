@@ -127,7 +127,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
-            if(RepayStatus.COMPLETE == investRepayModel.getStatus() && investRepayModel.getActualRepayDate() != null && investRepayModel.getActualRepayDate().before(new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())){
+            if (RepayStatus.COMPLETE == investRepayModel.getStatus() && investRepayModel.getActualRepayDate() != null && investRepayModel.getActualRepayDate().before(new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())) {
                 continue;
             }
 
@@ -251,7 +251,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
-            if(RepayStatus.COMPLETE == couponRepayModel.getStatus() && couponRepayModel.getActualRepayDate() != null && couponRepayModel.getActualRepayDate().before(new DateTime(couponRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())){
+            if (RepayStatus.COMPLETE == couponRepayModel.getStatus() && couponRepayModel.getActualRepayDate() != null && couponRepayModel.getActualRepayDate().before(new DateTime(couponRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())) {
                 continue;
             }
 
@@ -284,7 +284,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
-            if(RepayStatus.COMPLETE == investRepayModel.getStatus() && investRepayModel.getActualRepayDate() != null && investRepayModel.getActualRepayDate().before(new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())){
+            if (RepayStatus.COMPLETE == investRepayModel.getStatus() && investRepayModel.getActualRepayDate() != null && investRepayModel.getActualRepayDate().before(new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())) {
                 continue;
             }
 

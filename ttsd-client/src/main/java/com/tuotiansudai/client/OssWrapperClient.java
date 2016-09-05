@@ -10,10 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageTypeSpecifier;
-import javax.imageio.ImageWriter;
+import javax.imageio.*;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
@@ -73,6 +70,7 @@ public class OssWrapperClient {
             throw new Exception("不允许的文件格式");
         }
         String newFileName = generateRandomFileName(suffix);
+        logger.debug("[OSS UPLOAD] newFileName:" + newFileName);
         return uploadFileBlur(newFileName, inputStream, rootPath, address, waterImage);
     }
 
@@ -113,22 +111,24 @@ public class OssWrapperClient {
             String filePath = sitePath + fileName;
             if ("DEV".equalsIgnoreCase(environment)) {
                 String savefile = mkdir(rootPath + sitePath) + fileName;
+                logger.debug(MessageFormat.format("{0}|{1}","[OSS UPLOAD] filePath:",filePath));
                 FileOutputStream out = new FileOutputStream(new File(savefile));
                 BufferedOutputStream output = new BufferedOutputStream(out);
                 Streams.copy(in, output, true);
                 return address + filePath;
             } else {
+                logger.debug(MessageFormat.format("{0}|{1}","[OSS UPLOAD] filePath:",filePath));
                 OSSClient client = getOSSClient();
                 client.putObject(bucketName, fileName, in, objectMeta);
                 return filePath;
             }
         } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
+            logger.error(MessageFormat.format("{0}|{1}", "[OSS UPLOAD]", e.getLocalizedMessage()), e);
         } finally {
             try {
                 in.close();
             } catch (IOException e) {
-                logger.error(e.getLocalizedMessage(), e);
+                logger.error(MessageFormat.format("{0}|{1}","[OSS UPLOAD]",e.getLocalizedMessage()), e);
             }
         }
         return null;
@@ -168,8 +168,14 @@ public class OssWrapperClient {
                 imageWriter.write(null, new IIOImage(image, null, data), jpegParams);
                 imageWriter.dispose();
             } else {
-                graphics.dispose();
-                ImageIO.write(image, "jpg", swapStream);
+                ImageWriter imageWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
+                ios = ImageIO.createImageOutputStream(swapStream);
+                imageWriter.setOutput(ios);
+                JPEGImageWriteParam jpegParams = (JPEGImageWriteParam) imageWriter.getDefaultWriteParam();
+                jpegParams.setCompressionMode(JPEGImageWriteParam.MODE_EXPLICIT);
+                jpegParams.setCompressionQuality(1.0f);
+                imageWriter.write(null, new IIOImage(image, null, null), jpegParams);
+                imageWriter.dispose();
             }
         } catch (Exception e) {
             logger.error("upload oss fail");

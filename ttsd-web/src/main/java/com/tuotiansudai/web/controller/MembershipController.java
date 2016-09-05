@@ -11,7 +11,6 @@ import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.MembershipExperienceBillService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.service.AccountService;
@@ -100,6 +99,8 @@ public class MembershipController {
     public ModelAndView privilege() {
         return new ModelAndView("/membership-privilege");
     }
+
+
 
 
     @ResponseBody
