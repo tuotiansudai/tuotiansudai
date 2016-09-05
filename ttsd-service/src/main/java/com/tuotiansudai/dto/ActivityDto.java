@@ -17,7 +17,7 @@ public class ActivityDto {
     private String description;
     private String webPictureUrl;
     private String appPictureUrl;
-    private String longTerm;
+    private boolean longTerm;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date activatedTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -45,7 +45,7 @@ public class ActivityDto {
         this.description = activityModel.getDescription();
         this.webPictureUrl = activityModel.getWebPictureUrl();
         this.appPictureUrl = activityModel.getAppPictureUrl();
-        this.longTerm = activityModel.isLongTerm() ? "longTerm" : "notLongTerm";
+        this.longTerm = activityModel.isLongTerm();
         this.activatedTime = activityModel.getActivatedTime();
         this.expiredTime = activityModel.getExpiredTime();
         this.source = activityModel.getSource();
@@ -124,11 +124,11 @@ public class ActivityDto {
         this.appPictureUrl = appPictureUrl;
     }
 
-    public String getLongTerm() {
+    public boolean getLongTerm() {
         return longTerm;
     }
 
-    public void setLongTerm(String longTerm) {
+    public void setLongTerm(boolean longTerm) {
         this.longTerm = longTerm;
     }
 

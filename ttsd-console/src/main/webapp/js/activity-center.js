@@ -126,6 +126,26 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                     showErrorMessage('活动介绍最多15个中文字符', $('.activity-description', $activityCenterForm));
                     return false;
                 }
+                //if($('input:radio[name="longTerm"]:checked').val() == 'notLongTerm'){
+                //    if($('.activatedTime').val() == ''){
+                //        showErrorMessage('活动起期不能为空', $('.activatedTime', $activityCenterForm));
+                //        return false;
+                //    }
+                //    if($('.expiredTime').val() == ''){
+                //        showErrorMessage('活动止期不能为空', $('.expiredTime', $activityCenterForm));
+                //        return false;
+                //    }
+                //}
+                if($('#notLongTerm').attr("checked")){
+                        if($('.activatedTime').val() == ''){
+                            showErrorMessage('活动起期不能为空', $('.activatedTime', $activityCenterForm));
+                            return false;
+                        }
+                        if($('.expiredTime').val() == ''){
+                            showErrorMessage('活动止期不能为空', $('.expiredTime', $activityCenterForm));
+                            return false;
+                        }
+                }
 
 
             },
