@@ -648,6 +648,9 @@
                     i {
                       font-size: 16px;
                       color: #ff7200;
+                      &.fa-mobile{
+                        font-size:20px;
+                      }
                     }
                   }
                 }

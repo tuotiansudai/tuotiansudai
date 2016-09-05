@@ -10,6 +10,10 @@ public class QuestionModel implements Serializable {
 
     private String loginName;
 
+    private String mobile;
+
+    private String fakeMobile;
+
     private String question;
 
     private String addition;
@@ -35,8 +39,10 @@ public class QuestionModel implements Serializable {
     public QuestionModel() {
     }
 
-    public QuestionModel(String loginName, String question, String addition, List<Tag> tags) {
+    public QuestionModel(String loginName, String mobile, String fakeMobile, String question, String addition, List<Tag> tags) {
         this.loginName = loginName;
+        this.mobile = mobile;
+        this.fakeMobile = fakeMobile;
         this.question = question;
         this.addition = addition;
         this.status = QuestionStatus.UNAPPROVED;
@@ -57,6 +63,22 @@ public class QuestionModel implements Serializable {
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getFakeMobile() {
+        return fakeMobile;
+    }
+
+    public void setFakeMobile(String fakeMobile) {
+        this.fakeMobile = fakeMobile;
     }
 
     public String getQuestion() {

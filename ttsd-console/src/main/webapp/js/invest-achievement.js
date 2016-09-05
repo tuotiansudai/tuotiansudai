@@ -23,7 +23,7 @@ require(['jquery', 'jquery-ui', 'moment'], function ($) {
         });
 
         $('.down-load').click(function () {
-            location.href = "/activity-manage/invest-achievement?"+$('form').serialize()+"&export=csv";
+            location.href = "/export/invest-achievement?" + $('form').serialize();
         });
 
     });

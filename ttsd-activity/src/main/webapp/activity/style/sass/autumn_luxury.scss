@@ -543,7 +543,9 @@ $width:700px;
               table>thead>tr>th{
                 background:#e6d647;
                 &.mobile-hide{
-                  display:none;
+                  @media (max-width: $width) {
+                    display:none;
+                  }
                 }
                 @media (max-width: $width) {
                   font-size:12px;
@@ -555,7 +557,9 @@ $width:700px;
                 color:#fff;
                 line-height:30px;
                 &.mobile-hide{
-                  display:none;
+                  @media (max-width: $width) {
+                    display:none;
+                  }
                 }
                 &.name-text{
                   width: 200px;
