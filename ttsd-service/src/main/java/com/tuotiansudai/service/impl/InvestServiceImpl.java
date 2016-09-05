@@ -98,6 +98,9 @@ public class InvestServiceImpl implements InvestService {
     private UserMapper userMapper;
 
     @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
     private UserCouponService userCouponService;
 
     @Override
@@ -213,8 +216,16 @@ public class InvestServiceImpl implements InvestService {
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double investFeeRate = membershipModel != null ? membershipModel.getFee() : defaultFee;
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-        long extraRateInterest = getExtraRate(loanId, amount, loanModel.getDuration());
-        long extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanId);
+
+        long extraRateInterest = 0;
+        long extraRateFee = 0;
+        if(loanDetailsModel.getExtraSource().contains(Source.WEB.name())){
+            extraRateInterest = getExtraRate(loanId, amount, loanModel.getDuration());
+            extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        }
+
         return (expectedInterest - expectedFee) + (extraRateInterest - extraRateFee);
     }
 
