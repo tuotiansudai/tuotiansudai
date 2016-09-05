@@ -16,12 +16,14 @@ import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class MobileAppUserInvestRepayV3ServiceImpl implements MobileAppUserInvestRepayV3Service {
 
     static Logger logger = Logger.getLogger(MobileAppUserInvestRepayV3ServiceImpl.class);
