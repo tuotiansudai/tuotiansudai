@@ -171,7 +171,7 @@ public class ExportController {
             logger.error(e.getLocalizedMessage(), e);
         }
         httpServletResponse.setContentType("application/csv");
-        List<ExchangeCouponDto> exchangeCouponDtos = couponService.findCouponExchanges(1, Integer.MAX_VALUE);
+        List<ExchangeCouponDto> exchangeCouponDtos = productService.findCouponExchanges(1, Integer.MAX_VALUE);
 
         List<List<String>> csvData = exportService.buildCouponExchangeCsvData(exchangeCouponDtos);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponExchangeHeader, csvData, httpServletResponse.getOutputStream());

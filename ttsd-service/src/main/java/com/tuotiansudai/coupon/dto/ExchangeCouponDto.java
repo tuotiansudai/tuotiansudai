@@ -11,6 +11,8 @@ public class ExchangeCouponDto extends CouponDto implements Serializable{
 
     private Integer seq;
 
+    private String imageUrl;
+
     public Long getExchangePoint() {
         return exchangePoint;
     }
@@ -25,6 +27,14 @@ public class ExchangeCouponDto extends CouponDto implements Serializable{
 
     public void setSeq(Integer seq) {
         this.seq = seq;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public ExchangeCouponDto() {

@@ -8,6 +8,8 @@ public class ExchangeCouponView extends CouponModel {
 
     private Integer seq;
 
+    private String imageUrl;
+
     public ExchangeCouponView() {
         super();
     }
@@ -36,5 +38,13 @@ public class ExchangeCouponView extends CouponModel {
 
     public void setSeq(Integer seq) {
         this.seq = seq;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
