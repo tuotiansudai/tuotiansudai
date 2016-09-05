@@ -173,7 +173,7 @@ public class OssWrapperClient {
                 imageWriter.setOutput(ios);
                 JPEGImageWriteParam jpegParams = (JPEGImageWriteParam) imageWriter.getDefaultWriteParam();
                 jpegParams.setCompressionMode(JPEGImageWriteParam.MODE_EXPLICIT);
-                jpegParams.setCompressionQuality(0.955f);
+                jpegParams.setCompressionQuality(1.0f);
                 imageWriter.write(null, new IIOImage(image, null, null), jpegParams);
                 imageWriter.dispose();
             }
