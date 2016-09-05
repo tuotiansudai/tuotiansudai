@@ -35,7 +35,9 @@
         <dl class="box-02">
             <dt><span>02</span>高收益＋稳定</dt>
             <dd>资金、隐私、数据三方面全面保护！</dd>
-            <dd class="img"><img src="${staticServer}/images/sign/assure/load.jpg"></dd>
+            <dd class="high-profit">
+
+            </dd>
         </dl>
     </div>
 </div>

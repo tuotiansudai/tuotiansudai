@@ -627,7 +627,49 @@
 		  padding-left:70px;
 		  padding-top:10px;
 		  position: relative;
+		  .arrow-rise {
+			position: absolute;
+			top: 33px;
+			left: 200px;
+			width:294px;
+			height:294px;
+			background: url("/images/sign/assure/arrow-rise.png") no-repeat;
+		  }
+		}
+		&.high-profit {
+		  height:345px;
+		  background: url("/images/sign/assure/arrow-rise.png") no-repeat;
+		  -webkit-animation: rise 3s infinite linear;
+		  animation: rise 3s infinite linear;
+		}
 
+		@-webkit-keyframes rise {
+		  0% {
+			-webkit-transform:scale(0.1,0.1);
+			-moz-transform:scale(0.1,0.1);
+		  }
+		  50% {
+			-webkit-transform:scale(0.5,0.5);
+			-moz-transform:scale(0.5,0.5);
+		  }
+		  100% {
+			-webkit-transform:scale(1,1);
+			-moz-transform:scale(1,1);
+		  }
+		}
+		@keyframes rise {
+		  0% {
+			-webkit-transform:scale(0.1,0.1);
+			-moz-transform:scale(0.1,0.1);
+		  }
+		  50% {
+			-webkit-transform:scale(0.5,0.5);
+			-moz-transform:scale(0.5,0.5);
+		  }
+		  100% {
+			-webkit-transform:scale(1,1);
+			-moz-transform:scale(1,1);
+		  }
 		}
 	  }
 	}
