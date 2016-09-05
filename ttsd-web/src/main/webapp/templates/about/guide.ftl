@@ -36,7 +36,23 @@
             <dt><span>02</span>高收益＋稳定</dt>
             <dd>资金、隐私、数据三方面全面保护！</dd>
             <dd class="high-profit">
-
+                <div class="high-box">
+                    <span>评估抵押物 &emsp;&emsp;&emsp; 审核借款人</span>
+                    <span>评估贷款项目 &emsp;&emsp;&emsp; 办理法律手续</span>
+                </div>
+                <div class="high-box">
+                    <span>第三方资金托管</span>
+                    <span>专业而成熟的风控体系</span>
+                    <span>同卡进出，避免异常操作</span>
+                </div>
+                <div class="high-box">
+                    <span>严格的用户信息操作规范</span>
+                    <span>严格遵守国家相关法律法规</span>
+                </div>
+                <div class="high-box">
+                    <span>网络安全 &emsp;&emsp;&emsp; 加密技术</span>
+                    <span>容灾备份 &emsp;&emsp;&emsp; 内控流程</span>
+                </div>
             </dd>
         </dl>
     </div>
