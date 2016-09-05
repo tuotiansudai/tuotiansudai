@@ -1,3 +1,4 @@
+/* common css*/
 .full-screen {
 	width:100%;
 }
@@ -15,6 +16,16 @@
   font-size:30px;
   font-weight: bold;
   text-align: center;
+  i {
+	width: 8px;
+	height: 8px;
+	border-radius: 4px;
+	background: #808080;
+	display: inline-block;
+	margin-left: 20px;
+	margin-right: 20px;
+	vertical-align: middle;
+  }
 }
 .quick-top-link {
   height: 118px;
@@ -33,12 +44,12 @@
 	}
 	&.guide {
 	  background: url('/images/sign/assure/icon-newer.png') center top no-repeat;
-	  //&.active {
-		//background-image:url('/images/sign/assure/icon-newer-active.png');
-		//a {
-		//  color: #ff8b00;
-		//}
-	  //}
+	  &.active {
+		background-image:url('/images/sign/assure/icon-newer-active.png');
+		a {
+		  color: #ff8b00;
+		}
+	  }
 	}
 	&.risk {
 	  background: url('/images/sign/assure/icon-risk.png') center top no-repeat;
@@ -62,9 +73,6 @@
   }
 }
 
-.rectangle-box {
-
-}
 .square-box-info {
   border: 1px dashed #6dbb7c;
   background: #fff;
@@ -124,7 +132,13 @@
 	font-size:24px;
 	font-weight: bold;
   }
+  &:hover {
+	background: #3776cb;
+	color: #fff;
+  }
 }
+
+//安全保障
 .assurance-container {
   .main-banner {
 	background:#6dbb7c;
@@ -279,6 +293,7 @@
   }
 }
 
+//风控流程
 .risk-flow-container {
   .main-banner {
 	background:#3776cb;
@@ -295,9 +310,10 @@
 	}
 	.page-width {
 	  position: relative;
+	  height: 100%;
 	  .ellipse-shape {
 		position: absolute;
-		width: 100%;
+		width: 99%;
 		height: 209px;
 		border-radius: 100px;
 		border: 2px solid #3776cb;
@@ -339,7 +355,18 @@
 			border-radius: 8px;
 			padding:6px 12px;
 		  }
+		  &.active {
+			  dt {
+				color: #ff8b00;
+				em {
+				  background:#ff8b00 ;
+				}
+			  }
+			dd {
+			  border:1px solid #ff8b00;
+			}
 
+		  }
 		}
 	}
 	.project-examine-last {
@@ -359,6 +386,11 @@
 			  border-radius: 103px;
 			  background: #3776cb;
 			  margin: 20px auto;
+			  &:hover {
+				-moz-transform:scale(1.2);
+				-webkit-transform:scale(1.2);
+				-o-transform:scale(1.2);
+			  }
 			}
 		  }
 		  dd {
@@ -369,6 +401,7 @@
 			margin-left: 112px;
 			margin-right:112px;
 		  }
+
 		}
 	}
   }
@@ -528,6 +561,7 @@
 		padding: 10px;
 		color: #3776cb;
 		position: relative;
+		border-radius: 10px;
 		dt {
 		  font-size:18px;
 		  em {
@@ -538,6 +572,60 @@
 			left:45%;
 			top:-10px;
 		  }
+		}
+	  }
+	}
+  }
+}
+
+//新手指引
+.new-guide-container {
+  .line {
+	width:100%;
+	height:1px;
+	background:#db6558;
+	background:-webkit-linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+	background:-moz-linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+	background:linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+	background:-o-linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
+	margin-top:30px;
+	margin-bottom: 30px;
+  }
+  .main-banner {
+	background:#e95b56;
+	img {
+	  width:100%;
+	}
+  }
+  .section-box-one {
+	p {
+	  margin-top:10px;
+	  font-size: 16px;
+	}
+  }
+  .section-box-two {
+	dl {
+	  margin-left: 80px;
+	  dt {
+		position: relative;
+		color: #333333;
+		font-size: 20px;
+		padding-left: 80px;
+		span {
+		  position: absolute;
+		  font-size: 80px;
+		  font-weight: bold;
+		  color: #b2b2b2;
+		  display: inline-block;
+		  left: -10px;
+		  top: -40px;
+		}
+	  }
+	  dd {
+		padding-left:80px;
+		&.img {
+		  padding-left:70px;
+		  padding-top:10px;
 		}
 	  }
 	}

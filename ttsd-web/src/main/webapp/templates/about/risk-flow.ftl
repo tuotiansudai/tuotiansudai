@@ -1,7 +1,7 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.about_assurance}" pageJavascript="${js.assurance}" activeNav="" activeLeftNav="" title="风控流程">
 
-<div class="risk-flow-container">
+<div class="risk-flow-container" id="riskFlow">
     <ul class="quick-top-link page-width">
         <li class="guide"><a href="/about/guide">新手指引</a></li>
         <li class="risk active"><a href="/about/risk-flow">风控流程</a></li>
@@ -16,27 +16,28 @@
     <div class="page-width">
         <div class="column-title-ac"><i></i>项目预审<i></i> </div>
         <div class="project-info-list">
-        <dl>
-            <dt><em>1</em> 接单咨询</dt>
-            <dd>客户交房产证或车本、机动车登记证复印件，身份证复印件，业务部电话咨询客户情况</dd>
-        </dl>
-            <dl>
+            <dl class="active" data-num="1">
+                <dt><em>1</em> 接单咨询</dt>
+                <dd>客户交房产证或车本、机动车登记证复印件，身份证复印件，业务部电话咨询客户情况</dd>
+            </dl>
+            <dl data-num="2">
                 <dt><em>2</em> 电话询值</dt>
                 <dd>风控部电话咨询评估公司、房产或车辆中介，询问房产或车辆价值，出具电话询值单</dd>
             </dl>
-            <dl>
+            <dl data-num="3">
                 <dt><em>3</em> 司法核档</dt>
                 <dd>客户交房产证或车本、机动车登记证复印件，身份证复印件，业务部电话咨询客户情况</dd>
             </dl>
-            <dl>
+
+            <dl class="fr" data-num="6">
                 <dt><em>6</em> 风控预审</dt>
                 <dd>风控部出具预审表给业务部门，确认可以继续跟单</dd>
             </dl>
-            <dl>
+            <dl class="fr" data-num="5">
                 <dt><em>5</em> 建委核档</dt>
                 <dd>风控部到房屋所在地建委审核房屋档案或机动车辆管理所审核车辆档案，确定抵押物无其他在先他项权利</dd>
             </dl>
-            <dl>
+            <dl class="fr" data-num="4">
                 <dt><em>4</em> 转单意见</dt>
                 <dd>银行咨询部出具转单意见，确定客户第二还款来源</dd>
             </dl>
