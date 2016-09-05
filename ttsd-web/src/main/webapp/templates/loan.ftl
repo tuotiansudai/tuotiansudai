@@ -25,7 +25,7 @@
                         <div class="extra-rate-popup" id="extra-rate-popup">
                             <div class="header clearfix">
                                 <div class="td fl">投资金额</div>
-                                <div class="td fl">加息</div>
+                                <div class="td fl">投资奖励</div>
                             </div>
                             <% _.each(__extraRate, function(value){
                             var text;
