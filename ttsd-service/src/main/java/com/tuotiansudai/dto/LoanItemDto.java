@@ -43,6 +43,8 @@ public class LoanItemDto {
 
     private double extraRate;
 
+    private String extraSource;
+
     public long getId() {
         return id;
     }
@@ -177,5 +179,13 @@ public class LoanItemDto {
 
     public void setExtraRate(double extraRate) {
         this.extraRate = extraRate;
+    }
+
+    public String getExtraSource() {
+        return extraSource;
+    }
+
+    public void setExtraSource(String extraSource) {
+        this.extraSource = extraSource;
     }
 }

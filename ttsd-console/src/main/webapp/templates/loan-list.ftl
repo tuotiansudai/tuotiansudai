@@ -43,7 +43,7 @@
 
         <button type="button" class="btn btn-sm btn-primary search">查询</button>
     </form>
-    <div class="table-responsive">
+    <div class="table-responsive" style="overflow: visible">
         <table class="table table-bordered table-hover " id="tabFormData">
             <thead>
             <tr>
@@ -54,7 +54,7 @@
                 <th>代理人</th>
                 <th>借款金额(元)</th>
                 <th>年化/活动(利率)</th>
-                <th>阶梯加息</th>
+                <th>投资奖励</th>
                 <th>项目状态</th>
                 <th>发起时间</th>
                 <th>投资/还款记录</th>
@@ -78,13 +78,13 @@
                     <td class="td">${loanListDto.loanAmount/100}</td>
                     <td>${loanListDto.basicRate}/${loanListDto.activityRate}</td>
 
-                    <td class="ladder-table">
+                    <td class="ladder-table-activity">
                         <#if (loanListDto.extraLoanRateModels?size>0)>
-                            <table class="table table-bordered tip-table">
+                            <table class="table table-bordered tip-activity">
                                 <thead>
                                 <tr>
                                     <th>投资金额范围(元)</th>
-                                    <th>加息比例(%)</th>
+                                    <th>投资奖励比例(%)</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -98,7 +98,7 @@
                                     </#list>
                                 </tbody>
                             </table>
-                            <span class="ladderInvest" style="display: block;">是</span>
+                            <span class="ladderInvest" style="display: block;">${loanListDto.extraSource!}</span>
                         <#else>
                             -
                         </#if>

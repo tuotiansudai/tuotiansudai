@@ -23,6 +23,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
     var viewport = commonFun.browserRedirect();
 
+    $('.extra-rate .fa-mobile').on('mouseover', function(event) {
+        event.preventDefault();
+        var $self=$(this);
+        layer.tips('APP投资该项目享受最高0.8%年化收益奖励', $self, {
+            tips: 3
+        });
+    });
     function showInputErrorTips(message) {
         layer.tips('<i class="fa fa-times-circle"></i>' + message, '.text-input-amount', {
             tips: [1, '#ff7200'],

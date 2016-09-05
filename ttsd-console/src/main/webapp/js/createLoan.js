@@ -305,6 +305,12 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     showErrorMessage('最大投资金额不得大于预计出借金额', $('.jq-max-pay', curform));
                     return false;
                 }
+                if ($('#extra:checked').length > 0) {
+                    if ($('.extraSource:checked').length <= 0) {
+                        showErrorMessage("投资奖励渠道必须选择");
+                        return false;
+                    }
+                }
             },
             callback: function (form) {
                 formFlag = true;
@@ -335,6 +341,14 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 extraRateIds.push($(this).val());
             });
             return extraRateIds;
+        }
+
+        function getExtraSource() {
+            var extraSource = [];
+            $('#extraSource .extraSource').each(function () {
+                $(this).prop('checked')==true?extraSource.push($(this).val()):false;
+            });
+            return extraSource.join(",");
         }
 
         //提交表单
@@ -381,6 +395,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "loanAmount": $('.jq-pay').val(),
                         "loanTitles": uploadFile,
                         "extraRateIds": getExtraRateIds(),
+                        "extraSource": getExtraSource(),
 
                         "declaration": $('.jq-loan-declaration').val(),
 
@@ -427,6 +442,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "loanAmount": $('.jq-pay').val(),
                         "loanTitles": uploadFile,
                         "extraRateIds": getExtraRateIds(),
+                        "extraSource": getExtraSource(),
 
                         "declaration": $('.jq-loan-declaration').val(),
 
@@ -475,9 +491,13 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
 
         function uncheckedExtraRate() {
             $('.extra-rate').addClass('hidden');
+            $('.extra-source').addClass('hidden');
             $('.extra-rate-rule').html('');
             $('.extra-rate-id').remove();
             $('#extra').prop('checked', false);
+            $('.extraSource').each(function() {
+                this.checked = false;
+            });
         }
 
         function checkedExtraRate() {
@@ -501,6 +521,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         if (res.data.status) {
                             $('.extra-rate-id').remove();
                             $('.extra-rate').removeClass('hidden');
+                            $('.extra-source').removeClass('hidden');
                             var $extraRateRule = $('.extra-rate-rule');
                             $extraRateRule.html('');
                             var extraLoanRateRuleModels = res.data.extraLoanRateRuleModels;
