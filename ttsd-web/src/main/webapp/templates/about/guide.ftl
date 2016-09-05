@@ -24,7 +24,10 @@
         <dl>
             <dt><span>01</span>高收益＋稳定</dt>
             <dd>可选择不同期限产品，预期年化收益最高可达<em>13%</em></dd>
-            <dd class="img"><img src="${staticServer}/images/sign/assure/load.jpg"></dd>
+            <dd class="img-load">
+                <div class="arrow-rise"></div>
+                <img src="${staticServer}/images/sign/assure/load.jpg">
+            </dd>
         </dl>
 
         <div class="line"></div>

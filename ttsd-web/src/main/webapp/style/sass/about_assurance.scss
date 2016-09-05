@@ -623,9 +623,11 @@
 	  }
 	  dd {
 		padding-left:80px;
-		&.img {
+		&.img-load {
 		  padding-left:70px;
 		  padding-top:10px;
+		  position: relative;
+
 		}
 	  }
 	}
