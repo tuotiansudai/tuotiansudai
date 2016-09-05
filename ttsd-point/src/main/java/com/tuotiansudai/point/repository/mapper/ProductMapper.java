@@ -35,4 +35,6 @@ public interface ProductMapper {
                                                     @Param(value = "index") int index,
                                                     @Param(value = "pageSize") int pageSize);
 
+    ProductModel lockById(@Param(value = "id") long id);
+
 }

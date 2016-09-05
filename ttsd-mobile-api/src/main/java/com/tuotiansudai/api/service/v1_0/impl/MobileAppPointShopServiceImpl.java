@@ -184,12 +184,13 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             return new BaseResponseDto<>(ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode(), ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getMsg());
         }
 
-
         List<UserAddressModel> userAddressModels = userAddressMapper.findByLoginName(productDetailRequestDto.getBaseParam().getUserId());
         if (CollectionUtils.isEmpty(userAddressModels)) {
             logger.error(MessageFormat.format("Insufficient points (userId = {0},myPoints = {1},productPoints = {2})", productDetailRequestDto.getBaseParam().getUserId(), accountModel.getPoint(), points));
             return new BaseResponseDto<>(ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getCode(), ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getMsg());
         }
+
+        productMapper.lockById(productModel.getId());
 
         UserAddressModel userAddressModel = userAddressModels.get(0);
         ProductOrderModel productOrderModel = new ProductOrderModel(productModel.getId(), productModel.getPoints(), productDetailRequestDto.getNum(), points, userAddressModel.getContact(), userAddressModel.getMobile(), userAddressModel.getAddress(), false, null, productDetailRequestDto.getBaseParam().getUserId());

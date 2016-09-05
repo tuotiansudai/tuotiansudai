@@ -120,4 +120,8 @@
         ORDER BY seq ASC, updated_time DESC
         limit #{index}, #{pageSize}
     </select>
+
+    <select id="lockById" parameterType="long" resultMap="productResultMap">
+        select * from product where id = #{id} for update
+    </select>
 </mapper>
