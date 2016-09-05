@@ -43,9 +43,12 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension', 'circle'
                 .siblings('.record-data').removeClass('active');
         });
 
+        var $loginName = $('div.login-name');
+        var loginName = $loginName ? $loginName.data('login-name') : '';
+
         $("a.autumn-luxury-invest-channel").click(function () {
             $.ajax({
-                url: '/activity/autumn/luxury/invest',
+                url: '/activity/autumn/luxury/invest?loginName=' + loginName,
                 type: 'POST'
             });
         });

@@ -5,8 +5,11 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
+import com.tuotiansudai.activity.dto.LotteryPrize;
 import com.tuotiansudai.activity.dto.LuxuryPrizeDto;
 import com.tuotiansudai.activity.dto.TravelPrizeDto;
+import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.AutumnPrizeService;
 import com.tuotiansudai.activity.service.LotteryActivityService;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -18,10 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +51,6 @@ public class AutumnPrizeController {
     @Autowired
     private LotteryActivityService lotteryActivityService;
 
-
     @RequestMapping(path = "/travel", method = RequestMethod.GET)
     public ModelAndView travelPrize() {
         String loginName = LoginUserInfo.getLoginName();
@@ -61,7 +60,7 @@ public class AutumnPrizeController {
         modelAndView.addObject("travelPrize", autumnPrizeService.getTravelPrizeItems());
         modelAndView.addObject("userTravelPrize", autumnPrizeService.getTravelAwardItems(loginName));
         modelAndView.addObject("myTravelPrize", autumnPrizeService.getMyTravelAwardItems(LoginUserInfo.getMobile()));
-        modelAndView.addObject("drawTime",lotteryActivityService.getDrawPrizeTime(LoginUserInfo.getMobile()));
+        modelAndView.addObject("drawTime", lotteryActivityService.getDrawPrizeTime(LoginUserInfo.getMobile()));
         modelAndView.addObject("steps", generateSteps(loginName));
         return modelAndView;
     }
@@ -96,7 +95,7 @@ public class AutumnPrizeController {
         modelAndView.addObject("userLuxuryPrize", autumnPrizeService.getLuxuryAwardItems(loginName));
         modelAndView.addObject("myLuxuryPrize", autumnPrizeService.getMyLuxuryAwardItems(LoginUserInfo.getMobile()));
         modelAndView.addObject("steps", generateSteps(loginName));
-        modelAndView.addObject("drawTime",lotteryActivityService.getDrawPrizeTime(LoginUserInfo.getMobile()));
+        modelAndView.addObject("drawTime", lotteryActivityService.getDrawPrizeTime(LoginUserInfo.getMobile()));
         return modelAndView;
     }
 
@@ -120,8 +119,8 @@ public class AutumnPrizeController {
 
     @RequestMapping(path = "/travel/invest", method = RequestMethod.POST)
     @ResponseBody
-    public String travelInvest() {
-        String loginName = LoginUserInfo.getLoginName();
+    public String travelInvest(@RequestParam(value = "loginName", required = false) String loginName) {
+        loginName = LoginUserInfo.getLoginName() != null ? LoginUserInfo.getLoginName() : loginName;
         if (!Strings.isNullOrEmpty(loginName)) {
             redisWrapperClient.hset(this.activityAutumnInvestChannelKey, loginName, "travel", 3600 * 24 * 60);
         }
@@ -130,8 +129,8 @@ public class AutumnPrizeController {
 
     @RequestMapping(path = "/luxury/invest", method = RequestMethod.POST)
     @ResponseBody
-    public String luxuryInvest() {
-        String loginName = LoginUserInfo.getLoginName();
+    public String luxuryInvest(@RequestParam(value = "loginName", required = false) String loginName) {
+        loginName = LoginUserInfo.getLoginName() != null ? LoginUserInfo.getLoginName() : loginName;
         if (!Strings.isNullOrEmpty(loginName)) {
             redisWrapperClient.hset(this.activityAutumnInvestChannelKey, loginName, "luxury", 3600 * 24 * 60);
         }
@@ -154,5 +153,41 @@ public class AutumnPrizeController {
         }
 
         return new ModelAndView("/error/404");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/travel-draw", method = RequestMethod.POST)
+    public DrawLotteryResultDto travelDrawPrize(@RequestParam(value = "mobile", required = false) String mobile) {
+        return lotteryActivityService.drawLotteryPrize(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile() , LotteryPrize.TOURISM);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/luxury-draw", method = RequestMethod.POST)
+    public DrawLotteryResultDto luxuryDrawPrize(@RequestParam(value = "mobile", required = false) String mobile) {
+        return lotteryActivityService.drawLotteryPrize(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile(), LotteryPrize.LUXURY);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/travel-user-list", method = RequestMethod.GET)
+    public List<UserLotteryPrizeView> getTravelRecordByLoginName(@RequestParam(value = "mobile", required = false) String mobile) {
+        return lotteryActivityService.findDrawLotteryPrizeRecordByMobile(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile(), LotteryPrize.TOURISM);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/travel-all-list", method = RequestMethod.GET)
+    public List<UserLotteryPrizeView> getTravelRecordByAll() {
+        return lotteryActivityService.findDrawLotteryPrizeRecord(null, LotteryPrize.TOURISM);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/luxury-user-list", method = RequestMethod.GET)
+    public List<UserLotteryPrizeView> getLuxuryRecordByLoginName(@RequestParam(value = "mobile", required = false) String mobile) {
+        return lotteryActivityService.findDrawLotteryPrizeRecordByMobile(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile(), LotteryPrize.LUXURY);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/luxury-all-list", method = RequestMethod.GET)
+    public List<UserLotteryPrizeView> getLuxuryRecordByAll() {
+        return lotteryActivityService.findDrawLotteryPrizeRecord(null, LotteryPrize.LUXURY);
     }
 }
