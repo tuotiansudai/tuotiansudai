@@ -234,7 +234,7 @@
 	}
   }
   .private-safety-box {
-	padding:40px 20px;
+	//padding:40px 20px;
 	dd {
 	  background: url("/images/sign/assure/icon-dot.png") no-repeat left 10px;
 	  padding-left: 35px;
@@ -327,7 +327,7 @@
 		height: 209px;
 		border-radius: 100px;
 		border: 2px solid #3776cb;
-		top: 104px;
+		top: 110px;
 		z-index: 10;
 	  }
 	}
@@ -653,6 +653,8 @@
 			background: url("/images/sign/assure/arrow-rise.png") no-repeat;
 			-webkit-animation: rise 3s infinite linear;
 			animation: rise 3s infinite linear;
+			-webkit-transform-origin:40px 200px;
+			-moz-transform-origin:40px 200px;
 		  }
 		  @-webkit-keyframes rise {
 			0% {
@@ -1014,6 +1016,8 @@
 			width: 50%;
 			height: 90px;
 			background-size: contain;
+			-webkit-transform-origin:20px 120px;
+			-moz-transform-origin:20px 120px;
 		  }
 		}
 	  }
@@ -1197,6 +1201,54 @@
 		font-size: 12px;
 	  }
 	}
+	.private-safety-box {
+	  dd {
+		font-size: 12px;
+		margin-bottom: 10px;
+	  }
+	}
+	.data-info-safety {
+	  .axis-center {
+		width: 50px;
+		height: 278px;
+		left: 43%;
+		top: 15px;
+		background-size: contain;
+	  }
+	  .square-box-info {
+		font-size:11px;
+		width: 40%;
+		z-index: 20;
+		padding: 5px!important;
+		border-radius: 5px;
+		.triangle {
+		  top: 15px;
+		}
+		dt {
+		  font-size:12px;
+		}
+		&:nth-child(1) {
+		  left: 0px;
+		  top: 10px;
+		}
+		&:nth-child(2) {
+		  right: 0px;
+		  top: 68px;
+		  left:auto;
+		}
+		&:nth-child(3) {
+		  left: 0px;
+		  top: 135px;
+		}
+		&:nth-child(4) {
+		  right: 0px;
+		  top: 200px;
+		  left:auto;
+		}
+
+	  }
+	}
+
   }
 
   .bottom-open {

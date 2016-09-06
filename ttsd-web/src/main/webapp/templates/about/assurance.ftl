@@ -58,7 +58,7 @@
 
      </div>
 
-    <div class="private-safety-box bg-white clearfix">
+    <div class="private-safety-box bg-white clearfix pad-box">
         <div class="page-width">
             <dl class="safe-title clearfix">
                 <dt class="column-title-ac"><i></i>隐私安全<i></i></dt>
