@@ -12,7 +12,7 @@
             <img src="${staticServer}/images/sign/assure/assure-bar.jpg" alt="拓天速贷，安全保障">
         </div>
     </div>
-    <div class="fund-safety-box bg-white clearfix">
+    <div class="fund-safety-box bg-white clearfix pad-box">
     <div class="page-width">
         <dl class="safe-title clearfix">
             <dt class="column-title-ac"><i></i>资金安全<i></i></dt>
@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    <div class="page-width trade-risk-box">
+    <div class="page-width trade-risk-box pad-box">
         <dl>
             <dt class="column-title-ac">交易风险控制</dt>
             <dd>
@@ -108,7 +108,15 @@
     </div>
 </div>
 
-<div class="">
-
-</div>
+    <div class="bottom-close" style="display: none;"></div>
+    <div class="bottom-open">
+        <div class="page-width">
+            <div class="ren"></div>
+            <a href="#" class="btn-normal">立即领取</a>
+            <div class="to-close fr">
+                <i class="fa fa-angle-left"></i>
+                <span>收<br/>起</span>
+            </div>
+        </div>
+    </div>
 </@global.main>

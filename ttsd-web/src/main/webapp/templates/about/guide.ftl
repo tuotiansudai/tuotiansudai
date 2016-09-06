@@ -1,7 +1,7 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.newguide}" activeNav="新手指引" activeLeftNav="" title="新手指引_拓天新手理财_拓天速贷" keywords="拓天速贷,新手理财,新手投资,小额理财,拓天速贷888红包" description="拓天速贷是中国P2P金融信息服务平台,为广大理财、投资、贷款的用户,提供多元化的投资选择和优质的综合理财服务,拓天速贷投资理财的用户可通过新手专区领取现金888元大奖,进行散标投资获得稳定收益.">
+<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.assurance}" activeNav="新手指引" activeLeftNav="" title="新手指引_拓天新手理财_拓天速贷" keywords="拓天速贷,新手理财,新手投资,小额理财,拓天速贷888红包" description="拓天速贷是中国P2P金融信息服务平台,为广大理财、投资、贷款的用户,提供多元化的投资选择和优质的综合理财服务,拓天速贷投资理财的用户可通过新手专区领取现金888元大奖,进行散标投资获得稳定收益.">
 
-<div class="new-guide-container">
+<div class="new-guide-container" id="pageGuide">
     <ul class="quick-top-link page-width">
         <li class="guide active"><a href="/about/guide">新手指引</a></li>
         <li class="risk "><a href="/about/risk-flow">风控流程</a></li>
@@ -71,7 +71,7 @@
                 <img src="${staticServer}/images/sign/assure/benefit01.png">
             </dd>
          </dl>
-
+        <div class="line hack"></div>
         <dl class="box-04 fr">
             <dt><span>04</span>优质产品＋资金周转灵活</dt>
             <dd>抵押债权，相对安全的债权模式； <br/>
@@ -81,6 +81,83 @@
             </dd>
         </dl>
 
+    </div>
+
+    <div class="section-box-three bg-white clearfix pad-box">
+        <div class="page-width">
+            <div class="column-title-ac"><i></i>产品介绍<i></i> </div>
+            <div class="sub-title-one">
+                <div class="line-align"></div>
+                <div class="title-word"><i class="fl"></i>抵押标<i class="fr"></i></div>
+            </div>
+            <p>每笔抵押贷都有超额的房产或车辆作为抵押物，风控严谨，变现力强，适用于有资金需求的小微企业、个体以及有出借需求的个人及家庭。</p>
+            <ul class="mortgage-list">
+                <li><span>新手专享30天项目 <br/>
+                    预计年化收益10%</span></li>
+                <li><span>90天短期项目<br/>
+                    预计年化收益11%</span></li>
+                <li><span>180天中期项目<br/>
+                    预计年化收益12%</span></li>
+                <li><span>360天长期项目<br/>
+                    预计年化收益13%</span></li>
+            </ul>
+    <div class="tc">
+        <a href="#" class="btn-guide">立刻投资</a>
+    </div>
+            <div class="sub-title-two">
+                <div class="line-align"></div>
+                <div class="title-word"><i class="fl"></i>债权转让<i class="fr"></i></div>
+            </div>
+
+            <div class="creditor-right-info">
+                <img src="${staticServer}/images/sign/assure/creditor-right.png" class="fl">
+                <p>抵押贷债权持有者因资金流动性需求，将持有的债权项目挂出并转让，并承担一定比例的折让金。一对一转让，不可拆分。周期为5天，5天未有购买的将流标。5 天内如有回款则债权无法申请转让，当前为逾期状态债权也不能申请转让。
+
+                </p>
+                <div class="tc">
+                    <a href="#" class="btn-guide">购买债权</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-box-four clearfix pad-box page-width">
+        <div class="column-title-ac"><i></i>如何投资<i></i> </div>
+        <img src="${staticServer}/images/sign/assure/steps.jpg" alt="风控流程">
+        <div class="tc">
+            <a href="#" class="btn-guide">注册投资</a>
+        </div>
+    </div>
+
+    <div class="section-box-five bg-white clearfix pad-box">
+        <div class="page-width">
+            <div class="column-title-ac"><i></i>关注拓天<i></i> </div>
+            <div class="code-ma tc">
+                <span>
+                    <img src="${staticServer}/images/sign/assure/weixin-img.png"> <br/>
+                    拓天速贷微信订阅号
+                </span>
+                <span>
+                    <img src="${staticServer}/images/sign/assure/app-img.png"> <br/>
+                    下载拓天速贷APP
+                </span>
+
+
+            </div>
+            </div>
+
+        </div>
+
+    <div class="bottom-close" style="display: none;"></div>
+    <div class="bottom-open">
+        <div class="page-width">
+            <div class="ren"></div>
+            <a href="#" class="btn-normal">立即领取</a>
+            <div class="to-close fr">
+                <i class="fa fa-angle-left"></i>
+                <span>收<br/>起</span>
+            </div>
+        </div>
     </div>
 </div>
 </@global.main>

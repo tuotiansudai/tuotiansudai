@@ -16,6 +16,7 @@
   font-size:30px;
   font-weight: bold;
   text-align: center;
+  margin-bottom:10px;
   i {
 	width: 8px;
 	height: 8px;
@@ -37,10 +38,11 @@
 	float: left;
 	display: block;
 	text-align: center;
-	padding-top: 65px;
 	font-size:16px;
 	a {
 	  color: #cccccc;
+	  padding-top: 65px;
+	  display: inline-block;
 	}
 	&.guide {
 	  background: url('/images/sign/assure/icon-newer.png') center top no-repeat;
@@ -138,6 +140,20 @@
   }
 }
 
+.btn-guide {
+  background: #db6558;
+  padding: 3px 60px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 24px;
+  border-bottom: 4px solid #cc4b3d;
+  display: inline-block;
+  &:hover {
+	background: #e6402e;
+	color: #fff;
+  }
+}
+
 //安全保障
 .assurance-container {
   .main-banner {
@@ -147,15 +163,10 @@
 	}
   }
 	.fund-safety-box {
-	  padding-top:35px;
-	  padding-bottom:35px;
 		.safe-title {
 			text-align: center;
 			font-size:18px;
 		  	padding-bottom:20px;
-			dt {
-				font-size:30px;
-			}
 		}
 		.safe-info-list {
 			font-size:14px;
@@ -198,7 +209,6 @@
 
   .trade-risk-box {
 	text-align: center;
-	padding-top:30px;
 	dd {
 	  padding:10px 20px;
 	  background: #fff;
@@ -590,7 +600,11 @@
 	background:-o-linear-gradient(to right, rgba(219,101,88,0), rgba(219,101,88,1),rgba(219,101,88,0));
 	margin-top:30px;
 	margin-bottom: 30px;
+	&.hack {
+	  display: none;
+	}
   }
+
   .main-banner {
 	background:#e95b56;
 	img {
@@ -763,7 +777,429 @@
 			}
 
 		}
+
+	  }
+	  &.box-03 {
+		 dd {
+		   &.benefit-img {
+			 padding-top:53px;
+		   }
+		 }
+	   }
+	  &.box-04 {
+		dd {
+		  &.benefit-img {
+			padding-top:30px;
+		  }
+		}
 	  }
 	}
+  }
+
+  .section-box-three {
+	.sub-title-one,.sub-title-two {
+	  position: relative;
+	  width:100%;
+	  height: 30px;
+	  margin-top: 20px;
+	  .line-align {
+		width: 100%;
+		height:1px;
+		background: #db6558;
+		position: absolute;
+		top:10px;
+	  }
+	  .title-word {
+		position: absolute;
+		height:40px;
+		background: #ffffff;
+		width:140px;
+		position: absolute;
+		left:150px;
+		top:-16px;
+		font-size:28px;
+		color: #db6558;
+		text-align: center;
+		i {
+		  width:4px;
+		  height:4px;
+		  border-radius: 2px;
+		  background: #db6558;
+		  display: inline-block;
+		  vertical-align: middle;
+		  margin-top: 25px;
+
+		}
+	  }
+	}
+	.sub-title-two {
+	  margin-top:40px;
+	  .title-word {
+		left:700px;
+		width:160px;
+	  }
+	}
+	.mortgage-list {
+	  margin-bottom:50px;
+	  li {
+		display: inline-block;
+		width:148px;
+		height: 148px;
+		border-radius: 74px;
+		background: #db6558;
+		color: #fff;
+		text-align: center;
+		font-size:16px;
+		margin-left: 45px;
+		margin-right: 45px;
+		span {
+		  display: inline-block;
+		  padding-top:40px;
+		}
+	  }
+	}
+	.creditor-right-info {
+	  img {
+		margin-right:60px;
+	  }
+	  .btn-guide {
+		margin-top:30px;
+	  }
+	}
+  }
+
+  .section-box-four {
+	img {
+	  margin-bottom:30px;
+	}
+  }
+  .section-box-five {
+	.code-ma {
+	  color: #4c4c4c;
+	  font-size: 20px;
+	  span {
+		display: inline-block;
+		margin:20px 60px;
+		font-weight: bold;
+		img {
+		  border: 1px solid #e6e6e6;
+		  margin-bottom:20px;
+		}
+
+	  }
+	}
+  }
+}
+
+//底部
+.bottom-close,.bottom-open {
+  height:138px;
+  position: fixed;
+  bottom:0px;
+  background: rgba(0,0,0,0.25) ;
+  left:0;
+  width:100%;
+  z-index: 100;
+}
+.bottom-close {
+  width:200px;
+  background: url("/images/sign/assure/bottom-close.png") no-repeat;
+  cursor: pointer;
+}
+.bottom-open {
+  .page-width {
+	position: relative;
+	top: -41px;
+	.ren {
+	  background: url("/images/sign/assure/bottom-ren.png") left 0px no-repeat;
+	  width: 649px;
+	  height: 207px;
+	  display: inline-block;
+	  vertical-align: middle;
+	  background-size: 100%;
+	}
+	.btn-normal {
+	  margin-top: 40px;
+	  margin-left: 30px;
+	  display: inline-block;
+	}
+	.to-close {
+	  height: 80%;
+	  width: 40px;
+	  border-right: 1px solid #fff;
+	  padding-right: 10px;
+	  display: inline-block;
+	  color: #fff;
+	  display: inline-block;
+	  margin-top: 90px;
+	  cursor: pointer;
+	  i {
+		display: inline-block;
+		font-size: 20px;
+	  }
+	  span {
+		display: inline-block;
+		vertical-align: middle;
+		padding-left:6px;
+	  }
+	}
+  }
+}
+
+@media screen and (max-width: 700px) {
+  * {
+	box-sizing: border-box;
+  }
+  .btn-guide {
+	padding: 3px 25px;
+	font-size: 12px;
+	margin-top: 10px!important;
+  }
+  .pad-box {
+	padding: 10px 0 10px 0;
+  }
+  .page-width {
+	padding:10px;
+  }
+ .quick-top-link {
+   display: none;
+ }
+  .column-title-ac {
+	font-size:15px;
+  }
+  .column-title-ac i {
+	width: 4px;
+	height: 4px;
+	margin-right:10px;
+	margin-left:10px;
+  }
+  //新手指引
+  .new-guide-container {
+	.line {
+	  margin-top:15px;
+	  margin-bottom: 15px;
+	  &.hack {
+		display: block;
+		margin-bottom: 25px;
+	  }
+	}
+	.section-box-one p {
+	  font-size:12px;
+	  margin-bottom:0;
+	}
+	.section-box-two dl {
+
+	  margin-left:10px;
+	  dt {
+		font-size:12px;
+		padding-left:40px;
+		span {
+		  top: -23px;
+		  font-size:40px;
+		  font-weight: normal;
+		}
+	  }
+	  dd {
+		padding-left:40px;
+		font-size:10px;
+		&.img-load {
+		  padding-left:0;
+		  img {
+			width:100%;
+		  }
+		  .arrow-rise {
+			position: absolute;
+			top: 15px;
+			left: 56px;
+			width: 50%;
+			height: 90px;
+			background-size: contain;
+		  }
+		}
+	  }
+	}
+
+	.section-box-two dl dd.high-profit {
+	  background: none;
+	  padding-left:0;
+	  margin-top:20px;
+	  .high-box {
+		position: relative!important;
+		left: auto!important;
+		right: auto!important;
+		top:auto!important;
+		width:80%;
+		font-size:12px;
+		margin: 10px auto;
+		background: #db6558;
+		color: #fff;
+		span {
+		  &.line-align {
+			background:#db6558;
+			background:-webkit-linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			background:-moz-linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			background:linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			background:-o-linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			height:1px;
+		  }
+		  &.line-valign {
+			background:#db6558;
+			background:-webkit-linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			background:-moz-linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			background:-o-linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1),rgba(255,255,255,0));
+			width:1px;
+		  }
+		}
+	  }
+	}
+	.section-box-two dl {
+	  &.box-03 {
+		&.fl {
+		  float: none;
+		}
+
+	  }
+	  &.box-04 {
+		&.fr {
+		  float: none;
+		}
+	  }
+	  dd.benefit-img {
+		padding-top: 20px!important;
+		padding-left: 0;
+		text-align: center;
+		padding-bottom: 20px;
+		img {
+		  width:60%;
+		}
+	  }
+	}
+
+	.section-box-three {
+	  .sub-title-one {
+		.title-word {
+		  width: 90px;
+		  left: 50px;
+		  top: -16px;
+		  font-size: 14px;
+		  text-align: center;
+		  vertical-align: middle;
+		  line-height: 50px;
+		}
+	  }
+	  .sub-title-two {
+		margin-top:20px;
+		.title-word {
+		  top: -16px;
+		  font-size: 14px;
+		  text-align: center;
+		  vertical-align: middle;
+		  line-height: 50px;
+		  left: auto;
+		  width: 100px;
+		  right: 30px;
+		}
+	  }
+	  .mortgage-list {
+		text-align: center;
+		margin-bottom:20px;
+		li {
+		  display: inline-block;
+		  width: 110px;
+		  height: 110px;
+		  text-align: center;
+		  font-size: 11px;
+		  margin: 10px;
+		  span {
+			padding-top:25px;
+		  }
+		}
+	  }
+	  .creditor-right-info img {
+		width: 70%;
+		display: block;
+		float: none;
+		margin-right: 0;
+		margin: 0 auto 20px auto;
+		.btn-guide {
+		  margin-top:10px;
+		}
+	  }
+	}
+	.section-box-four img {
+	  width:100%;
+	}
+	.section-box-five .code-ma {
+	  font-size: 12px;
+	  span {
+		margin:0;
+		width: 45%;
+		img {
+		  width:90%;
+		}
+	  }
+
+	}
+  }
+
+  //安全保障
+  .assurance-container {
+	.fund-safety-box {
+		.safe-title {
+		  font-size: 11px;
+		}
+	  .safe-info-list {
+		font-size:12px;
+		dl {
+		  clear:both;
+		  height:auto;
+		  overflow: auto;
+		  width:100%;
+		  float: none;
+		  margin-left: 0!important;
+		  margin-right:0!important;
+		  dt {
+			width: 29%;
+			font-size: 13px;
+			float: left;
+			background-size: 100%;
+			em {
+			  margin-top: 20px;
+			  display: inline-block;
+			}
+			&.list01,
+			&.list02,
+			&.list03{
+			  background-size: 100%;
+			}
+			&.list02 em,
+			&.list03 em{
+			  margin-top: 30px;
+			}
+		  }
+		  dd {
+			padding-top: 0px;
+			margin-left: 20px;
+			float: left;
+			width: 65%;
+		  }
+		}
+	  }
+	}
+	.trade-risk-box dd {
+	  margin: 10px auto;
+	  width:100%;
+	  b {
+		font-size:15px;
+	  }
+	  p {
+		font-size: 12px;
+	  }
+	}
+  }
+
+  .bottom-open {
+	display: none;
   }
 }

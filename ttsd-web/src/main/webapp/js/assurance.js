@@ -16,4 +16,15 @@ require(['jquery'], function($) {
             $projectList.find('dl[data-num="'+next+'"]').addClass('active').siblings('dl').removeClass('active');
         },3000);
     }
+
+    var $bottomClose= $('.bottom-close'),
+        $bottomOpen=$('.bottom-open');
+    $('.to-close').on('click',function() {
+        $bottomClose.show();
+        $bottomOpen.hide();
+    });
+    $bottomClose.on('click',function() {
+        $bottomClose.hide();
+        $bottomOpen.show();
+    });
 });

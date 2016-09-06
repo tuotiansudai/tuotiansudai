@@ -181,4 +181,15 @@
             </dl>
         </div>
     </div>
+    <div class="bottom-close" style="display: none;"></div>
+    <div class="bottom-open">
+        <div class="page-width">
+            <div class="ren"></div>
+            <a href="#" class="btn-normal">立即领取</a>
+            <div class="to-close fr">
+                <i class="fa fa-angle-left"></i>
+                <span>收<br/>起</span>
+            </div>
+        </div>
+    </div>
 </@global.main>
