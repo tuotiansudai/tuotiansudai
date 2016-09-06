@@ -107,7 +107,8 @@ public class ContractServiceImpl implements ContractService {
         if (dataModel.isEmpty()) {
             return "";
         }
-        String content
+        String content = getContract("contract", dataModel).replace("&nbsp;", "&#160;");
+        return content;
     }
 
     @Override
