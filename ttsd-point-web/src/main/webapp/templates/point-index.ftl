@@ -149,7 +149,7 @@
                         <li class="big-gift">
                             <a href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail">
                                 <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
-                                <p><img src="http://localhost:9080/${virtualProduct.imageUrl}" width="160" height="100"></p>
+                                <p><img src="/${virtualProduct.imageUrl}" width="160" height="100"></p>
                                 <p class="convert-btn">
                                     <span class="name-text">${virtualProduct.name!"0"}</span>
                                     <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
@@ -163,7 +163,7 @@
                         <li>
                             <a href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail">
                                 <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
-                                <p><img src="http://localhost:9080/${virtualProduct.imageUrl}" width="160" height="100"></p>
+                                <p><img src="/${virtualProduct.imageUrl}" width="160" height="100"></p>
                                 <p class="convert-btn">
                                     <span class="name-text">${virtualProduct.name}</span>
                                     <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>

@@ -10,7 +10,7 @@
 			<div class="detail-info">
 				<div class="detail-left">
 					<p class="mater-img picture-item">
-						<img src="http://localhost:9080/${productShowItem.imageUrl}" width="300" height="244"/>
+						<img src="/${productShowItem.imageUrl}" width="300" height="244"/>
 					</p>
 				</div>
 				<div class="detail-right">
