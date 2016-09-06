@@ -23,7 +23,7 @@
 
                         <span class="activity-title">${activityItem.description}</span>
                         <span class="time">
-                        <#if activityItem.longTerm>
+                        <#if activityItem.longTerm == 'longTerm'>
                             长期活动
                         <#elseif activityItem.activatedTime??&&activityItem.expiredTime??>
                         ${(activityItem.activatedTime?string('yyyy-MM-dd'))!} - ${(activityItem.expiredTime?string('yyyy-MM-dd'))!}

@@ -109,21 +109,21 @@
         LIMIT #{index}, #{pageSize}
     </select>
 
-    <select id="findMobileActiveActivities" resultType="java.lang.Integer">
-        SELECT count(1) FROM `aa`.`activity`
+    <select id="findMobileActiveActivities" resultMap="activityResultMap">
+        SELECT * FROM `aa`.`activity`
         WHERE
-        (expired_time > now() or long_term = true)
-        status = 'APPROVED'
+        (expired_time > now() or long_term = true) and status = 'APPROVED'
         <if test="source != null">
             AND source like CONCAT('%', #{source}, '%')
         </if>
+        order by seq ASC ,updated_time DESC
+        LIMIT #{index}, #{pageSize}
     </select>
 
     <select id="countMobileActiveActivities" resultType="java.lang.Integer">
         SELECT count(1) FROM `aa`.`activity`
         WHERE
-        (expired_time > now() or long_term = true)
-        status = 'APPROVED'
+        (expired_time > now() or long_term = true) and status = 'APPROVED'
         <if test="source != null">
             AND source like CONCAT('%', #{source}, '%')
         </if>
