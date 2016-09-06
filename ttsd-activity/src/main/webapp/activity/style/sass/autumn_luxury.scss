@@ -18,7 +18,7 @@ $width:700px;
 }
 
 .luxury-list-container {
-  background: url("/activity/images/sign/actor/luxury/bg.png") repeat center;
+  background: #100f33 url("/activity/images/sign/actor/luxury/bg.png") repeat center;
   @media (max-width: $width) {
     background-size:100%;
   }
@@ -543,7 +543,9 @@ $width:700px;
               table>thead>tr>th{
                 background:#e6d647;
                 &.mobile-hide{
-                  display:none;
+                  @media (max-width: $width) {
+                    display:none;
+                  }
                 }
                 @media (max-width: $width) {
                   font-size:12px;
@@ -555,7 +557,9 @@ $width:700px;
                 color:#fff;
                 line-height:30px;
                 &.mobile-hide{
-                  display:none;
+                  @media (max-width: $width) {
+                    display:none;
+                  }
                 }
                 &.name-text{
                   width: 200px;

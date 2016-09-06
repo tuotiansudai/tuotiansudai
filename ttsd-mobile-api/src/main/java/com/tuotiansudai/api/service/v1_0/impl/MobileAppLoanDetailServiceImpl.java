@@ -199,6 +199,11 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             loanDetailResponseDataDto.setExtraRates(fillExtraLoanRateDto(extraLoanRateModels));
         }
 
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+        if(loanDetailsModel != null){
+            loanDetailResponseDataDto.setExtraSource("WEB".equals(loanDetailsModel.getExtraSource())?loanDetailsModel.getExtraSource():"");
+        }
+
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
         if(ProductType.EXPERIENCE == loan.getProductType()){

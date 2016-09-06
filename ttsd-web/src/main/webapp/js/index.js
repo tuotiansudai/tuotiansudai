@@ -9,7 +9,14 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
             $bannerImg = $imgScroll.find('li'),
             screenWid, picWid, leftWid, adTimer = null,
             n = 0;
-
+    
+    $('.loan-info-dl .fa-mobile').on('mouseover', function(event) {
+        event.preventDefault();
+        var $self=$(this);
+        layer.tips('APP投资该项目享受最高0.8%年化收益奖励', $self, {
+            tips: 1
+        });
+    });
     var $bookInvestForm = $('.book-invest-form'),
             $projectTransfer=$('.project-transfer-frame');
 

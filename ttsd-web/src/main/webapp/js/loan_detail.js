@@ -23,6 +23,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
     var viewport = commonFun.browserRedirect();
 
+    $('.extra-rate .fa-mobile').on('mouseover', function(event) {
+        event.preventDefault();
+        var $self=$(this);
+        layer.tips('APP投资该项目享受最高0.8%年化收益奖励', $self, {
+            tips: 3
+        });
+    });
     function showInputErrorTips(message) {
         layer.tips('<i class="fa fa-times-circle"></i>' + message, '.text-input-amount', {
             tips: [1, '#ff7200'],
@@ -313,11 +320,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 contentType: 'application/json; charset=UTF-8'
             }).done(function(maxBenefitUserCouponId) {
                 $ticketList.find('input[type="radio"]:checked').prop('checked', false);
+                console.log("calculate max coupon init");
                 if (!isNaN(parseInt(maxBenefitUserCouponId))) {
                     var maxBenefitUserCoupon = $("#" + maxBenefitUserCouponId);
                     var couponTitle = $.trim($ticketList.find('li[data-user-coupon-id="' + maxBenefitUserCouponId +'"]').find(".ticket-info .ticket-title").text());
                     $useExperienceTicket.find('span').text(couponTitle);
                     maxBenefitUserCoupon.prop('checked', true);
+                    console.log("calculate max coupon finished");
                 } else {
                     if (!$useExperienceTicket.hasClass("disabled")) {
                         $useExperienceTicket.find('span').text('请选择优惠券');
@@ -562,6 +571,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                         dataType: 'json',
                         url: '/no-password-invest',
                         beforeSubmit: function () {
+                            console.log("invest start");
                             $investSubmit.addClass("loading");
                         },
                         success: function (response) {

@@ -26,6 +26,9 @@
     border-radius: 4px;
   }
 }
+.layui-layer-tips .layui-layer-content{
+  width:235px;
+}
 body{
   .demo-class{
     .layui-layer-btn {
@@ -1254,6 +1257,9 @@ body{
               i {
                 font-size: 16px;
                 color: #ff7200;
+                &.fa-mobile{
+                  font-size:20px;
+                }
               }
               span{
                 font-size: 12px;
