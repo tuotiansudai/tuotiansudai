@@ -78,7 +78,7 @@
     <div class="main-advantage page-width">
         <dl>
             <dd>
-                <a href="/about/assurance?aid=1" onclick="cnzzPush.trackClick('28首页','安全保障模块','1')" target="_blank">
+                <a href="/about/guide" onclick="cnzzPush.trackClick('28首页','安全保障模块','1')" target="_blank">
                     <div class="icon-hover img-icon-off-1"></div>
                     <span class="clearfix">
                          <b class="clearfix">稳健收益 较低门槛</b>
@@ -87,16 +87,16 @@
                 </a>
             </dd>
             <dd>
-                <a href="/about/assurance?aid=2" onclick="cnzzPush.trackClick('29首页','安全保障模块','2')" target="_blank">
+                <a href="/about/risk-flow" onclick="cnzzPush.trackClick('29首页','安全保障模块','2')" target="_blank">
                     <div class="icon-hover img-icon-off-2"></div>
                     <span class="clearfix">
-                        <b class="clearfix">三方托管 放心投资</b>
-                        第三方资金托管，第三方支付
+                        <b class="clearfix">六重风控 审核严谨</b>
+                       22道审核手续，项目安全透明无死角
                     </span>
                 </a>
             </dd>
             <dd>
-                <a href="/about/assurance?aid=3" onclick="cnzzPush.trackClick('30首页','安全保障模块','3')" target="_blank">
+                <a href="/about/assurance" onclick="cnzzPush.trackClick('30首页','安全保障模块','3')" target="_blank">
                     <div class="icon-hover img-icon-off-3"></div>
                     <span class="clearfix">
                         <b class="clearfix">实力雄厚 安全保障</b>
