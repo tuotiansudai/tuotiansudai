@@ -102,7 +102,7 @@
                     预计年化收益13%</span></li>
             </ul>
     <div class="tc">
-        <a href="#" class="btn-guide">立刻投资</a>
+        <a href="/loan-list" class="btn-guide">立刻投资</a>
     </div>
             <div class="sub-title-two">
                 <div class="line-align"></div>
@@ -115,7 +115,7 @@
 
                 </p>
                 <div class="tc">
-                    <a href="#" class="btn-guide">购买债权</a>
+                    <a href="/transfer-list" class="btn-guide">购买债权</a>
                 </div>
             </div>
         </div>
@@ -125,7 +125,7 @@
         <div class="column-title-ac"><i></i>如何投资<i></i> </div>
         <img src="${staticServer}/images/sign/assure/steps.jpg" alt="风控流程">
         <div class="tc">
-            <a href="#" class="btn-guide">注册投资</a>
+            <a href="/register/user" class="btn-guide">注册投资</a>
         </div>
     </div>
 
@@ -152,7 +152,7 @@
     <div class="bottom-open">
         <div class="page-width">
             <div class="ren"></div>
-            <a href="#" class="btn-normal">立即领取</a>
+            <a href="/activity/landing-page" class="btn-normal">立即领取</a>
             <div class="to-close fr">
                 <i class="fa fa-angle-left"></i>
                 <span>收<br/>起</span>

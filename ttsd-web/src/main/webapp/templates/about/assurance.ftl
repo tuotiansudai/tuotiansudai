@@ -69,7 +69,7 @@
          </div>
     </div>
 
-    <div class="page-width margin-top25">
+    <div class="page-width pad-box">
         <div class="column-title-ac">数据与信息安全</div>
         <div class="data-info-safety">
 
@@ -112,7 +112,7 @@
     <div class="bottom-open">
         <div class="page-width">
             <div class="ren"></div>
-            <a href="#" class="btn-normal">立即领取</a>
+            <a href="/activity/landing-page" class="btn-normal">立即领取</a>
             <div class="to-close fr">
                 <i class="fa fa-angle-left"></i>
                 <span>收<br/>起</span>

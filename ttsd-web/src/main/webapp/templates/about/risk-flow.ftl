@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="project-examination-box bg-white clearfix">
-    <div class="page-width">
+    <div class="page-width clearfix">
         <div class="column-title-ac"><i></i>项目预审<i></i> </div>
         <div class="project-info-list">
             <dl class="active" data-num="1">
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <div class="page-width margin-top25">
+    <div class="page-width pad-box clearfix">
         <div class="column-title-ac">项目二审</div>
         <div class="project-examine-two">
             <div class="square-box-info">
@@ -110,7 +110,7 @@
 </div>
 
     <div class="bg-white project-examination-box hack clearfix">
-        <div class="page-width">
+        <div class="page-width clearfix">
             <div class="column-title-ac"><i></i>项目终审<i></i> </div>
             <div class="project-examine-last">
                 <dl>
@@ -130,7 +130,7 @@
 
      </div>
 
-    <div class="page-width margin-top25 pad-box">
+    <div class="page-width clearfix pad-box">
         <div class="column-title-ac clearfix">权证放款</div>
         <div class="pad-m">
             <dl class="rectangle-box  fl">
@@ -146,7 +146,7 @@
     </div>
 
     <div class="bg-white post-lending-box pad-box clearfix">
-        <div class="page-width">
+        <div class="page-width clearfix">
             <div class="column-title-ac"><i></i>贷后管理<i></i> </div>
             <div class="line-top-bar"></div>
             <div class="lending-steps">
@@ -167,7 +167,7 @@
 
     </div>
 
-    <div class="page-width margin-top25 pad-box">
+    <div class="page-width clearfix pad-box">
         <div class="column-title-ac clearfix">结案与后期维护</div>
         <div class="pad-m">
             <dl class="rectangle-box  fl">
@@ -183,9 +183,9 @@
     </div>
     <div class="bottom-close" style="display: none;"></div>
     <div class="bottom-open">
-        <div class="page-width">
+        <div class="page-width clearfix">
             <div class="ren"></div>
-            <a href="#" class="btn-normal">立即领取</a>
+            <a href="/activity/landing-page" class="btn-normal">立即领取</a>
             <div class="to-close fr">
                 <i class="fa fa-angle-left"></i>
                 <span>收<br/>起</span>

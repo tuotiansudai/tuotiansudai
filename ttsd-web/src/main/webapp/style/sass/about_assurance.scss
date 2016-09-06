@@ -8,10 +8,10 @@
 .pad-box {
   padding:20px 0 50px 0;
 }
-.page-width {
-  height:auto;
-  overflow: auto;
-}
+//.page-width {
+//  height:auto;
+//  overflow: auto;
+//}
 .column-title-ac {
   font-size:30px;
   font-weight: bold;
@@ -418,7 +418,7 @@
 
   .project-examine-two {
 	position: relative;
-	height: 720px;
+	height: 660px;
 	.ellipse-shape-center {
 	  position: absolute;
 	  left:50%;
@@ -949,9 +949,9 @@
 }
 
 @media screen and (max-width: 700px) {
-  * {
-	box-sizing: border-box;
-  }
+  //* {
+	//box-sizing: border-box;
+  //}
   .btn-guide {
 	padding: 3px 25px;
 	font-size: 12px;
@@ -962,6 +962,9 @@
   }
   .page-width {
 	padding:10px;
+  }
+  .header.page-width {
+	padding:0;
   }
  .quick-top-link {
    display: none;
@@ -1016,8 +1019,8 @@
 			width: 50%;
 			height: 90px;
 			background-size: contain;
-			-webkit-transform-origin:20px 120px;
-			-moz-transform-origin:20px 120px;
+			-webkit-transform-origin:20px 90px;
+			-moz-transform-origin:20px 90px;
 		  }
 		}
 	  }
@@ -1184,8 +1187,7 @@
 		  }
 		  dd {
 			padding-top: 0px;
-			margin-left: 20px;
-			float: left;
+			float: right;
 			width: 65%;
 		  }
 		}
@@ -1194,6 +1196,7 @@
 	.trade-risk-box dd {
 	  margin: 10px auto;
 	  width:100%;
+	  box-sizing: border-box;
 	  b {
 		font-size:15px;
 	  }
@@ -1208,6 +1211,7 @@
 	  }
 	}
 	.data-info-safety {
+	  height:300px;
 	  .axis-center {
 		width: 50px;
 		height: 278px;
@@ -1217,7 +1221,7 @@
 	  }
 	  .square-box-info {
 		font-size:11px;
-		width: 40%;
+		width: 37%;
 		z-index: 20;
 		padding: 5px!important;
 		border-radius: 5px;
@@ -1253,5 +1257,27 @@
 
   .bottom-open {
 	display: none;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .assurance-container .data-info-safety {
+	height: 255px;
+	overflow: hidden;
+	.axis-center {
+	  height: 278px;
+	  width: 40px;
+	}
+	.square-box-info {
+	  &:nth-child(2) {
+		top: 58px;
+	  }
+	  &:nth-child(3) {
+		top: 111px;
+	  }
+	  &:nth-child(4) {
+		top: 162px;
+	  }
+	}
   }
 }
