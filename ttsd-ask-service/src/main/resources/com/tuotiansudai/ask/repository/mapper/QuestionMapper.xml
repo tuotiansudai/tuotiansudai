@@ -128,7 +128,7 @@
             <if test="question != null and question != '' ">
                 and question like CONCAT(CONCAT('%', #{question}), '%')
             </if>
-            <if test="loginName != null">
+            <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
             <if test="status != null">
@@ -146,7 +146,7 @@
             <if test="question != null and question != '' ">
                 and question like CONCAT(CONCAT('%', #{question}), '%')
             </if>
-            <if test="loginName != null">
+            <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
             <if test="status != null">
