@@ -47,7 +47,7 @@
     </div>
 
     <div class="page-width pad-box clearfix">
-        <div class="column-title-ac">项目二审</div>
+        <div class="column-title-ac"><i></i>项目二审<i></i></div>
         <div class="project-examine-two">
             <div class="square-box-info">
                 <i class="triangle"><em></em></i>
@@ -131,7 +131,7 @@
      </div>
 
     <div class="page-width clearfix pad-box">
-        <div class="column-title-ac clearfix">权证放款</div>
+        <div class="column-title-ac clearfix"><i></i>权证放款<i></i></div>
         <div class="pad-m">
             <dl class="rectangle-box  fl">
                 <dt>抵押公证</dt>
