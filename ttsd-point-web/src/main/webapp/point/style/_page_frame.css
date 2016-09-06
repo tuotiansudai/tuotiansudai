@@ -37,7 +37,7 @@ h5 {
 .sprite-global-logo-tip,
 .sprite-global-close,
 .sprite-global-close-tip {
-  background-image: url("/point/images/global_20160523.png");
+  background-image: url("/point/images/global_20160904.png");
   background-repeat: no-repeat; }
 
 .sprite-global-app-pc-top, .header-container .header ul li.login-pop-app .img-app-pc-top {
@@ -133,7 +133,7 @@ h5 {
   .sprite-global-logo-tip,
   .sprite-global-close,
   .sprite-global-close-tip {
-    background-image: url("/point/images/global_20160523.png");
+    background-image: url("/point/images/global_20160904.png");
     -webkit-background-size: 408px 290px;
     -moz-background-size: 408px 290px;
     background-size: 408px 290px; } }
@@ -443,7 +443,7 @@ h5 {
         float: left;
         width: 100px;
         height: 100px;
-        background-image: url("/point/images/global_20160523.png");
+        background-image: url("/point/images/global_20160904.png");
         background-position: -308px -100px;
         -webkit-background-size: 408px 290px;
         -moz-background-size: 408px 290px;
