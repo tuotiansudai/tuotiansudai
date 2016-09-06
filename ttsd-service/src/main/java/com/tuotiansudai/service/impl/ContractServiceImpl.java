@@ -100,7 +100,14 @@ public class ContractServiceImpl implements ContractService {
         }
         String content = getContract("contract", dataModel).replace("&nbsp;", "&#160;");
         return content;
+    }
 
+    public String generateInvestorContract(String loginName, long loanId, long investId) {
+        Map<String, Object> dataModel = collectInvestorContractModel(loginName, loanId, investId);
+        if (dataModel.isEmpty()) {
+            return "";
+        }
+        String content
     }
 
     @Override
@@ -120,6 +127,33 @@ public class ContractServiceImpl implements ContractService {
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+    }
+
+    private Map<String, Object> collectInvestorContractModel(String investorLoginName, long loanId, long investId) {
+        Map<String, Object> dataModel = new HashMap<>();
+        LoanModel loanModel = loanMapper.findById(loanId);
+        UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
+        AccountModel agentAccount = accountMapper.findByLoginName(loanModel.getAgentLoginName());
+        UserModel investorModel = userMapper.findByLoginName(investorLoginName);
+        AccountModel investorAccount = accountMapper.findByLoginName(investorLoginName);
+        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
+        dataModel.put("agentMobile", agentModel.getMobile());
+        dataModel.put("agentIdentityNumber", agentAccount.getIdentityNumber());
+        dataModel.put("investorMobile", investorModel.getMobile());
+        dataModel.put("investorIdentityNumber", investorAccount.getIdentityNumber());
+        dataModel.put("loanerUserName", agentAccount.getUserName());
+        dataModel.put("loanerIdentityNumber", agentAccount.getIdentityNumber());
+        dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+        dataModel.put("periods", loanModel.getPeriods());
+        dataModel.put("totalRate", loanModel.getBaseRate() + loanModel.getActivityRate());
+        dataModel.put("recheckTime", loanModel.getRecheckTime());
+        dataModel.put("endTime", investRepayModel.getRepayDate());
+        if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
+            dataModel.put("pledge", "房屋");
+        } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
+            dataModel.put("pledge", "车辆");
+        }
+        return dataModel;
     }
 
     private Map<String, Object> collectContractModel(String loginName, long loanId, ContractType contractType) {
