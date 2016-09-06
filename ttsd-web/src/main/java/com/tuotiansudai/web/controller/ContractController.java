@@ -25,11 +25,12 @@ public class ContractController {
     @Autowired
     private ContractService contractService;
 
-    @RequestMapping(value = "/investor/loanId/{loanId}", method = RequestMethod.GET)
-    public void generateInvestorContract(@PathVariable long loanId, HttpServletRequest httpServletRequest , HttpServletResponse response) throws ServletException, IOException {
+    @RequestMapping(value = "/investor/loanId/{loanId}/investId/{investId}", method = RequestMethod.GET)
+    public void generateInvestorContract(@PathVariable long loanId, @PathVariable long investId, HttpServletRequest httpServletRequest,
+                                         HttpServletResponse response) throws ServletException, IOException {
         String loginName = LoginUserInfo.getLoginName();
         try {
-            String pdfString = contractService.generateInvestorContract(loginName, loanId, ContractType.INVEST);
+            String pdfString = contractService.generateInvestorContract(loginName, loanId, investId);
             if(StringUtils.isEmpty(pdfString)){
                 httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
                 return;
@@ -41,7 +42,8 @@ public class ContractController {
         }
     }
 
-    @RequestMapping(value = "/loaner/loanId/{loanId}", method = RequestMethod.GET)
+    //新合同无借款人版本
+//    @RequestMapping(value = "/loaner/loanId/{loanId}", method = RequestMethod.GET)
     public void generateLoanerContract(@PathVariable long loanId,HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
         String loginName = LoginUserInfo.getLoginName();
         try {

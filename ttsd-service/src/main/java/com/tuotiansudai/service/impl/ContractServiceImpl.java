@@ -102,6 +102,7 @@ public class ContractServiceImpl implements ContractService {
         return content;
     }
 
+    @Override
     public String generateInvestorContract(String loginName, long loanId, long investId) {
         Map<String, Object> dataModel = collectInvestorContractModel(loginName, loanId, investId);
         if (dataModel.isEmpty()) {
@@ -138,12 +139,13 @@ public class ContractServiceImpl implements ContractService {
         UserModel investorModel = userMapper.findByLoginName(investorLoginName);
         AccountModel investorAccount = accountMapper.findByLoginName(investorLoginName);
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
+        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanId);
         dataModel.put("agentMobile", agentModel.getMobile());
         dataModel.put("agentIdentityNumber", agentAccount.getIdentityNumber());
         dataModel.put("investorMobile", investorModel.getMobile());
         dataModel.put("investorIdentityNumber", investorAccount.getIdentityNumber());
-        dataModel.put("loanerUserName", agentAccount.getUserName());
-        dataModel.put("loanerIdentityNumber", agentAccount.getIdentityNumber());
+        dataModel.put("loanerUserName", loanerDetailsModel.getUserName());
+        dataModel.put("loanerIdentityNumber", loanerDetailsModel.getIdentityNumber());
         dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
         dataModel.put("periods", loanModel.getPeriods());
         dataModel.put("totalRate", loanModel.getBaseRate() + loanModel.getActivityRate());

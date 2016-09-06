@@ -10,6 +10,8 @@ public interface ContractService {
 
     String generateInvestorContract(String loginName,long loanId,ContractType contractType);
 
+    String generateInvestorContract(String loginName, long loanId, long investId);
+
     void generateContractPdf(String pdfString, OutputStream outputStream);
 
     String generateTransferContract(long transferApplicationId);
