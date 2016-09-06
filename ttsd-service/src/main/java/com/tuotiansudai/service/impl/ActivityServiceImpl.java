@@ -92,9 +92,10 @@ public class ActivityServiceImpl implements ActivityService {
                 return true;
             case APPROVED:
                 if (activityModelExist != null) {
-                    if (activityModelExist.getActivatedTime() == null) {
-                        activityModelExist.setActivatedTime(new Date());
-                        activityModelExist.setActivatedBy(loginName);
+                    activityModelExist.setActivatedBy(loginName);
+                    if(activityModelExist.isLongTerm()){
+                        activityModelExist.setExpiredTime(null);
+                        activityModelExist.setActivatedTime(null);
                     }
                     activityModelExist.setUpdatedTime(new Date());
                     activityModelExist.setUpdatedBy(loginName);
