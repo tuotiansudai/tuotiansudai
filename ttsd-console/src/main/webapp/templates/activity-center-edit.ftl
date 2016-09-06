@@ -32,7 +32,7 @@
                 <div class="col-sm-4">
                     <input type="text" name="seq" class="form-control activity-seq"
                            <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
-                           value="<#if dto??>${dto.seq!}</#if>" placeholder="" datatype="*"
+                           value="<#if dto??>${(dto.seq?c)!}</#if>" placeholder="" datatype="*"
                            errormsg="活动顺序不能为空">
                 </div>
                 <div class="col-sm-7">
@@ -197,22 +197,22 @@
                     <input type="radio" name="longTerm"  class="col-sm-1 activity-longTerm"
                            id="longTerm"
                            style="box-shadow: none;"
-                           <#--value="longTerm"-->
-                           <#if dto??&&dto.status == 'TO_APPROVE'>disabled</#if> <#if !(dto??) || dto??&&dto.longTerm>
+                           value="longTerm"
+                           <#if dto??&&dto.status == 'TO_APPROVE'>disabled</#if> <#if !(dto??) || dto??&&dto.longTerm=='longTerm' >
                            checked</#if> placeholder="">
                     <label style="float:left;">非长期活动:</label>
                     <input type="radio" name="longTerm"
                            class="col-sm-1 activity-longTerm" id="notLongTerm"
                            style="box-shadow: none;"
-                           <#--value="notLongTerm"-->
-                           <#if dto??&&dto.status == 'TO_APPROVE'>disabled</#if> <#if dto??&&!dto.longTerm>
+                           value="notLongTerm"
+                           <#if dto??&&dto.status == 'TO_APPROVE'>disabled</#if> <#if dto??&&dto.longTerm == 'notLongTerm'>
                            checked</#if> placeholder="">
                 </div>
                 <div class="col-sm-7">
                 </div>
             </div>
 
-            <div class="form-group" id="activityTime" style="display: <#if dto?? && !dto.longTerm>block<#else>none</#if>">
+            <div class="form-group" id="activityTime" style="display: <#if dto?? && dto.longTerm !='longTerm'>block<#else>none</#if>">
                 <label class="col-sm-2 control-label">活动时间: </label>
 
                 <div class="date col-sm-2">

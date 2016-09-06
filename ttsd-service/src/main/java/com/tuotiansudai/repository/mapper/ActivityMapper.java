@@ -27,14 +27,11 @@ public interface ActivityMapper {
                                              @Param(value = "index") int index,
                                              @Param(value = "pageSize") int pageSize);
 
+    List<ActivityModel> findMobileActiveActivities(@Param(value = "source") Source source,
+                                             @Param(value = "expiredTime") Date expiredTime,
+                                             @Param(value = "index") int index,
+                                             @Param(value = "pageSize") int pageSize);
 
-    List<ActivityModel> findActivity(@Param(value = "source") Source source,
-                                     @Param(value = "activityStatus") ActivityStatus activityStatus,
-                                     @Param(value = "beginExpiredTime") Date beginExpiredTime,
-                                     @Param(value = "endExpiredTime") Date endExpiredTime,
-                                     @Param(value = "longTerm") Boolean longTerm,
-                                     @Param(value = "index") int index,
-                                     @Param(value = "pageSize") int pageSize);
+    int countMobileActiveActivities(@Param(value = "source") Source source);
 
-    int countActiveActivities(@Param(value = "source") Source source);
 }

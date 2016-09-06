@@ -12,7 +12,7 @@
     <div class="activity-container clearfix">
         <div class="actor-list active">
             <#list data as activityItem>
-                <#if activityItem.longTerm || (activityItem.expiredTime?? && activityItem.expiredTime?date gte .now?date)>
+                <#if activityItem.longTerm=='longTerm' || (activityItem.expiredTime?? && activityItem.expiredTime?date gte .now?date)>
                     <div class="activity-box">
                         <div class="activity-img">
                             <div class="img-inner">
@@ -39,7 +39,7 @@
         </div>
         <div class="actor-list">
             <#list data as activityItem>
-                <#if !activityItem.longTerm && activityItem.expiredTime??&&activityItem.expiredTime?date lt .now?date>
+                <#if activityItem.longTerm == 'noLongTerm' && activityItem.expiredTime??&&activityItem.expiredTime?date lt .now?date>
                     <div class="activity-box">
                         <div class="activity-img">
                             <div class="img-inner">

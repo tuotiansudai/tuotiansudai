@@ -5,8 +5,16 @@
  * Author: xuqiang
  */
 define(['jquery','layerWrapper'], function ($,layer) {
-    $('#actorFinish').on('click', function(event) {
+    $('.actor-finish').on('click', function(event) {
         event.preventDefault();
-        layer.alert('当前活动已结束！',{title:'温馨提示'}); 
+        layer.open({
+            type: 1,
+            move:false,
+            area:['320px','auto'],
+            title:'温馨提示',
+            content: '<p style="padding:20px 0;text-align:center;">活动已经结束了哦!</p>'
+            +'<p style="text-align:center;">'
+            +'<a href="/activity-center" class="btn" style="background: #ff752a;border: 1px solid #f46916;color: #fff;">查看其他活动</a></p>'
+        });
     });
 });

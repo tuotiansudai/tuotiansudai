@@ -64,8 +64,8 @@ public class ActivityServiceImpl implements ActivityService {
                     activityModelExist.setUpdatedTime(new Date());
                     activityModelExist.setStatus(ActivityStatus.TO_APPROVE);
                     activityModelExist.setSeq(activityDto.getSeq());
-                    activityModelExist.setLongTerm(activityDto.getLongTerm());
-                    if(activityDto.getLongTerm()){
+                    activityModelExist.setLongTerm("longTerm".equals(activityDto.getLongTerm()));
+                    if(activityModelExist.isLongTerm()){
                         activityModelExist.setExpiredTime(null);
                         activityModelExist.setActivatedTime(null);
 
@@ -93,10 +93,6 @@ public class ActivityServiceImpl implements ActivityService {
             case APPROVED:
                 if (activityModelExist != null) {
                     activityModelExist.setActivatedBy(loginName);
-                    if(activityModelExist.isLongTerm()){
-                        activityModelExist.setExpiredTime(null);
-                        activityModelExist.setActivatedTime(null);
-                    }
                     activityModelExist.setUpdatedTime(new Date());
                     activityModelExist.setUpdatedBy(loginName);
                     activityModelExist.setStatus(ActivityStatus.APPROVED);

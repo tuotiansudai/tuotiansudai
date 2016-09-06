@@ -47,7 +47,7 @@ public class ActivityModel implements Serializable {
         this.shareContent = activityDto.getShareContent();
         this.shareUrl = activityDto.getShareUrl();
         this.seq = activityDto.getSeq();
-        this.longTerm = activityDto.getLongTerm();
+        this.longTerm = "longTerm".equals(activityDto.getLongTerm());
     }
 
     public Long getId() {
