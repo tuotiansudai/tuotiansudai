@@ -5,7 +5,7 @@ import uuid
 import redis
 from models import User, LoginLog, db
 import settings
-
+from logging_config import logger
 
 pool = redis.ConnectionPool(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 CAPTCHA_FORMAT = "CAPTCHA:LOGIN:{0}"
@@ -74,6 +74,7 @@ class LoginManager(object):
         self.form = form
         self.connection = redis.Redis(connection_pool=pool)
         self.session_manager = SessionManager()
+        logger.debug("x-forwarded-for:{}".format(ip_address))
 
     def _is_password_valid(self, user):
         return user and user.password == hashlib.sha1('%s{%s}' % (hashlib.sha1(self.form.password.data).hexdigest(), user.salt)).hexdigest()
@@ -82,18 +83,23 @@ class LoginManager(object):
         user = User.query.filter(
             (User.username == self.form.username.data) | (User.mobile == self.form.username.data)).first()
         if not user:
+            logger.debug("{} not exist".format(self.form.username.data))
             raise UserNotExistedError()
         return user
 
     def _success(self, user):
         user_info = {'login_name': user.username, 'mobile': user.mobile, 'roles': [role.role for role in user.roles]}
         new_token_id = self.session_manager.set(user_info, self.form.token.data, self.form.source.data)
+        logger.info("{} login successful. source: {}, token_id: {}, user_info: {}".format(self.form.username.data,
+                                                                                          self.form.source.data,
+                                                                                          new_token_id, user_info))
         return new_token_id, user_info
 
     def _increase_failed_times(self):
         login_failed_times_key = LOGIN_FAILED_TIMES_FORMAT.format(self.form.username.data)
         self.connection.incr(login_failed_times_key)
         self.connection.expire(login_failed_times_key, settings.LOGIN_FAILED_EXPIRED_SECONDS)
+        logger.info("{} login failed. source: {}".format(self.form.username.data, self.form.source.data))
 
     def _get_user_info(self):
         user = self._load_user()
@@ -104,6 +110,7 @@ class LoginManager(object):
         login_failed_times_key = LOGIN_FAILED_TIMES_FORMAT.format(self.form.username.data)
         failed_times = int(self.connection.get(login_failed_times_key)) if self.connection.get(login_failed_times_key) else 0
         if failed_times >= settings.LOGIN_FAILED_MAXIMAL_TIMES:
+            logger.debug("{} have been locked. source: {}".format(self.form.username.data, self.form.source.data))
             raise UserBannedError()
 
         info = self._get_user_info()
