@@ -331,16 +331,15 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
             }
         }
         if (null == curMembership) {
-            userInvestRepayResponseDataDto.setMembershipLevel("V0会员服务费10折");
+            userInvestRepayResponseDataDto.setMembershipLevel("0");
             logger.error(MessageFormat.format("[MobileAppTransferApplicationServiceImpl][userInvestRepay] {0}没有会员.", userInvestRepayRequestDto.getBaseParam().getUserId()));
         } else {
             MembershipModel membershipModel = membershipMapper.findById(curMembership.getMembershipId());
             if (null == membershipModel) {
-                userInvestRepayResponseDataDto.setMembershipLevel("V0会员服务费10折");
+                userInvestRepayResponseDataDto.setMembershipLevel("0");
                 logger.warn(MessageFormat.format("[MobileAppTransferApplicationServiceImpl][userInvestRepay]会员不存在, loginName:{0}}", userInvestRepayRequestDto.getBaseParam().getUserId()));
             } else {
-                final double baseFeeRate = 0.1D;
-                userInvestRepayResponseDataDto.setMembershipLevel(MessageFormat.format("V{0}会员服务费{1}折", membershipModel.getLevel(), (int) ((membershipModel.getFee() / baseFeeRate) * 10)));
+                userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(membershipModel.getLevel()));
             }
         }
         BaseResponseDto baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
