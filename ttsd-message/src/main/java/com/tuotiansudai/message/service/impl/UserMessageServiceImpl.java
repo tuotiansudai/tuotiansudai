@@ -107,7 +107,6 @@ public class UserMessageServiceImpl implements UserMessageService {
     @Override
     @Transactional
     public void generateUserMessages(String loginName, MessageChannel messageChannel) {
-        userMapper.lockByLoginName(loginName);
         List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName, messageChannel);
         for (MessageModel message : unreadManualMessages) {
             userMessageMapper.create(new UserMessageModel(message.getId(),
