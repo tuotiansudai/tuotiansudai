@@ -228,23 +228,25 @@
                     </div>
                 </div>
             </div>
+
+
             <div class="form-group">
-                <label class="col-sm-2 control-label">阶梯加息: </label>
+                <label class="col-sm-2 control-label">投资奖励: </label>
 
                 <div class="col-sm-4 checkbox">
                     <label for="extra"><input type="checkbox" id="extra"
                                               <#if loanInfo.loanStatus!= "WAITING_VERIFY">disabled="disabled"</#if>
                                               <#if extraLoanRates?? && extraLoanRates?size gt 0>checked</#if>>
-                        选中后此标的采用阶梯式加息
+                        选中后此标的采用投资奖励
                     </label>
                 </div>
             </div>
+
             <#if extraLoanRates?? && extraLoanRates?size gt 0>
                 <div class="form-group extra-rate">
-                    <#list extraLoanRates as extraLoanRate>
-                        <input type="hidden" class="extra-rate-id"
-                               value="${(extraLoanRate.extraRateRuleId)?string('0')}">
-                    </#list>
+                        <#list extraLoanRates as extraLoanRate>
+                            <input type="hidden" class="extra-rate-id" value="${(extraLoanRate.extraRateRuleId)?string('0')}">
+                        </#list>
                     <label class="col-sm-2 control-label"></label>
 
                     <div class="col-sm-4">
@@ -252,7 +254,7 @@
                             <thead>
                             <tr>
                                 <th>投资金额范围（元）</th>
-                                <th>加息比例（%）</th>
+                                <th>投资奖励比例（%）</th>
                             </tr>
                             </thead>
                             <tbody class="extra-rate-rule">
@@ -268,8 +270,53 @@
                         </table>
                     </div>
                 </div>
+
+                <div class="form-group extra-source">
+                    <label class="col-sm-2 control-label">投资奖励来源:</label>
+                    <#if  loanInfo?? && loanInfo.extraSource?? && extraLoanRates?? && extraLoanRates?size gt 0>
+                        <input type="hidden" class="extraSource" value="${loanInfo.extraSource}">
+                    </#if>
+
+                    <div class="col-sm-4" id="extraSource">
+                        <#list sources as source>
+                            <label>
+                            <input type="checkbox" name="extraSource" class="extraSource" value="${source.name()}" <#if loanInfo?? && loanInfo.extraSource?? && extraLoanRates?? && extraLoanRates?size gt 0 && loanInfo.extraSource?contains(source.name())>checked="checked"</#if>">${source.name()}
+                            </label>
+                        </#list>
+                    </div>
+                </div>
+            <#else>
+                <div class="form-group extra-rate hidden">
+                    <label class="col-sm-2 control-label"></label>
+
+                    <div class="col-sm-4">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>投资金额范围（元）</th>
+                                <th>投资奖励比例（%）</th>
+                            </tr>
+                            </thead>
+                            <tbody class="extra-rate-rule">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="form-group extra-source hidden">
+                    <label class="col-sm-2 control-label">投资奖励来源:</label>
+
+                    <div class="col-sm-4" id="extraSource">
+                        <#list sources as source>
+                            <label>
+                                <input type="checkbox" name="extraSource"  class="extraSource" value="${source.name()}">${source.name()}
+                            </label>
+                        </#list>
+                    </div>
+                </div>
+
             </#if>
-        </div>
+
         <h3><span>借款人基本信息</span></h3>
         <hr class="top-line">
         <div>

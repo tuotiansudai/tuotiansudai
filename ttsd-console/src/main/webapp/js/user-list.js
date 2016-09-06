@@ -71,7 +71,7 @@ require(['jquery', 'jquery-ui',
         });
 
         $('.down-load').click(function () {
-            location.href = "/user-manage/users?"+$('form').serialize()+"&export=csv";
+            location.href = "/export/users?" + $('form').serialize();
         });
     });
 });
