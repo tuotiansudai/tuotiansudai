@@ -60,14 +60,18 @@
         <div class="share-example"></div>
         <div class="share-recommend">
             <#if isAppSource?? && !isAppSource>
-                <#if noAccount?? && noAccount>
-                    <a href="/register/account">立即推荐</a>
+                <#if isLogin?? && !isLogin>
+                    <a href="javascript:void(0)" class="show-login">立即推荐</a>
                 <#else>
-                    <a href="/referrer/refer-list">立即推荐</a>
+                    <#if noAccount?? && noAccount>
+                        <a href="/register/account">立即推荐</a>
+                    <#else>
+                        <a href="/referrer/refer-list">立即推荐</a>
+                    </#if>
                 </#if>
             <#else>
                 <#if isLogin?? && !isLogin>
-                    <a href="javascript:void(0)" class="show-login">立即推荐</a>
+                    <a href="/login?redirect=/referrer/refer-list">立即推荐</a>
                 <#else>
                     <#if noAccount?? && noAccount>
                         <a href="/register/account">立即推荐</a>
