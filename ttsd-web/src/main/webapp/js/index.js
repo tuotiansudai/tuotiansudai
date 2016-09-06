@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down', 'jquery.validate', 'autoNumeric'], function ($, _, layer) {
+require(['jquery', 'underscore', 'layerWrapper', 'superslide','jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down', 'jquery.validate', 'autoNumeric'], function ($, _, layer) {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
             $registerBox = $('.register-ad-box', $bannerBox),
@@ -9,7 +9,14 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
             $bannerImg = $imgScroll.find('li'),
             screenWid, picWid, leftWid, adTimer = null,
             n = 0;
-
+    
+    $('.loan-info-dl .fa-mobile').on('mouseover', function(event) {
+        event.preventDefault();
+        var $self=$(this);
+        layer.tips('APP投资该项目享受最高0.8%年化收益奖励', $self, {
+            tips: 1
+        });
+    });
     var $bookInvestForm = $('.book-invest-form'),
             $projectTransfer=$('.project-transfer-frame');
 

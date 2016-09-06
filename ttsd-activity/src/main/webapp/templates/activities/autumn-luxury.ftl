@@ -1,5 +1,9 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.autumn_luxury}" pageJavascript="${js.autumn_luxury}" activeNav="" activeLeftNav="" title="拓天奢侈品_拓天活动_拓天速贷" keywords="拓天速贷,拓天排行榜,拓天天豆,投资拓天,霸道总裁" description="拓天速贷二期活动,投资送天豆,参与抽大奖,拓天速贷霸道总裁送您钱,车,房.">
+<@global.main pageCss="${css.autumn_luxury}" pageJavascript="${js.autumn_luxury}" activeNav="" activeLeftNav="" title="拓天奢品_奢品活动_拓天速贷" keywords="拓天大奖,大奖活动,投资活动,拓天速贷" description="拓天速贷奢华投资活动,海量奢品拓手可得,拓天大奖活动让您左手投资赚收益,右手白拿奢侈品.">
+<@global.isNotAnonymous>
+<div style="display: none" class="login-name" data-login-name='<@global.security.authentication property="principal.username" />'></div>
+<div style="display: none" class="mobile" data-mobile='<@global.security.authentication property="principal.mobile" />'></div>
+</@global.isNotAnonymous>
 <div class="luxury-list-container">
     <div class="luxury-top-item">
         <img src="${staticServer}/activity/images/sign/actor/luxury/top-banner.png" width="100%" class="pc-item">
@@ -34,7 +38,7 @@
                         </div>
                     </@global.isNotAnonymous>
                     <@global.isAnonymous>
-                        <a class="login-btn" href="/login?login?redirect=/activity/autumn/travel">立即登录</a>
+                        <a class="login-btn" href="/login?redirect=/activity/autumn/luxury">立即登录</a>
                     </@global.isAnonymous>
                 </div>
             </div>
@@ -42,22 +46,31 @@
                 <ul class="product-list clearfix">
                     <#list luxuryPrize as prize>
                         <li>
-                            <div class="product-img">
-                                <img src="${prize.image}" width="100%">
-                            </div>
-                            <div class="product-info">
-                                <p class="name-text">${prize.brand}</p>
-                                <p class="des-text">${prize.name}</p>
-                                <p class="price-text"><span>${prize.price}元</span><span class="bite-text">价值</span></p>
-                                <p class="intro-text"><span>投资满<@amount>${prize.investAmount?string.computer}</@amount>元即可获得</span></p>
-                                <p class="btn-text">
-                                    <@global.isAnonymous>
-                                        <a href="/login?redirect=/activity/autumn/luxury" class="autumn-luxury-invest-channel">立即投资</a>
-                                    </@global.isAnonymous>
-                                    <@global.isNotAnonymous>
-                                        <a href="/loan-list" class="autumn-luxury-invest-channel">立即投资</a>
-                                    </@global.isNotAnonymous>
-                                </p>
+                            <div class="picture-item">
+                                <div class="product-img">
+                                    <#if !isAppSource>
+                                    <a href="/activity/autumn/luxury/${prize.id?string.computer}/detail" target="_blank">
+                                    <#else>
+                                    <a href="javascript:void(0)">
+                                    </#if>
+                                    <img src="${prize.image}" width="100%">
+                                </a>
+                                </div>
+                                <div class="product-info">
+                                    <p class="name-text">${prize.brand}</p>
+                                    <p class="des-text">${prize.name}</p>
+                                    <p class="price-text"><span>${prize.price}元</span><span class="bite-text">商品价格</span></p>
+                                    <p class="intro-text"><span>投资满<strong><@amount>${prize.investAmount?string.computer}</@amount></strong>元可获得</span></p>
+                                    <p class="btn-text">
+                                        <@global.isAnonymous>
+                                            <a href="/login?redirect=/activity/autumn/luxury" class="autumn-luxury-invest-channel">立即投资</a>
+                                        </@global.isAnonymous>
+                                        <@global.isNotAnonymous>
+                                            <a href="/loan-list" class="autumn-luxury-invest-channel">立即投资</a>
+                                        </@global.isNotAnonymous>
+
+                                    </p>
+                                </div>
                             </div>
                             <div class="coupon-list">
                                 <div class="coupon-item">
@@ -68,7 +81,7 @@
                                         <i class="bottom-circle"></i>
                                     </div>
                                     <div class="tip-text">
-                                        投资满<@amount>${prize.thirtyPercentOffInvestAmount?string.computer}</@amount>元即可获得
+                                        投资满<span><@amount>${prize.thirtyPercentOffInvestAmount?string.computer}</@amount></span>元可获得
                                     </div>
                                 </div>
                                 <div class="coupon-item">
@@ -79,7 +92,7 @@
                                         <i class="bottom-circle"></i>
                                     </div>
                                     <div class="tip-text">
-                                        投资满<@amount>${prize.twentyPercentOffInvestAmount?string.computer}</@amount>元即可获得
+                                        投资满<span><@amount>${prize.twentyPercentOffInvestAmount?string.computer}</@amount></span>元可获得
                                     </div>
                                 </div>
                                 <div class="coupon-item">
@@ -90,7 +103,7 @@
                                         <i class="bottom-circle"></i>
                                     </div>
                                     <div class="tip-text">
-                                        投资满<@amount>${prize.tenPercentOffInvestAmount?string.computer}</@amount>元即可获得
+                                        投资满<span><@amount>${prize.tenPercentOffInvestAmount?string.computer}</@amount></span>元可获得
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +126,7 @@
                                 <thead>
                                 <tr>
                                     <th>用户</th>
-                                    <th>投资金额(元)</th>
+                                    <th class="mobile-hide">投资金额(元)</th>
                                     <th>奖品</th>
                                     <th>获奖时间</th>
                                 </tr>
@@ -122,8 +135,8 @@
                                     <#list userLuxuryPrize as item>
                                     <tr>
                                         <td>${item.mobile}</td>
-                                        <td>${item.investAmount}</td>
-                                        <td>${item.prize}</td>
+                                        <td class="mobile-hide">${item.investAmount}</td>
+                                        <td class="name-text" title="${item.prize}">${item.prize}</td>
                                         <td>${item.createdTime?string('yyyy-MM-dd')}</td>
                                     </tr>
                                     <#else>
@@ -139,7 +152,7 @@
                                 <thead>
                                 <tr>
                                     <th>用户</th>
-                                    <th>投资金额(元)</th>
+                                    <th class="mobile-hide">投资金额(元)</th>
                                     <th>奖品</th>
                                     <th>获奖时间</th>
                                 </tr>
@@ -148,8 +161,8 @@
                                     <#list myLuxuryPrize as item>
                                     <tr>
                                         <td>${item.mobile}</td>
-                                        <td>${item.investAmount}</td>
-                                        <td>${item.prize}</td>
+                                        <td class="mobile-hide">${item.investAmount}</td>
+                                        <td class="name-text" title="${item.prize}">${item.prize}</td>
                                         <td>${item.createdTime?string('yyyy-MM-dd')}</td>
                                     </tr>
                                     <#else>
@@ -238,7 +251,12 @@
                 </ul>
                 <p>活动期间，每推荐一名好友注册也可获得一次抽奖机会；好友投资，还可再得一次抽奖机会。邀请越多机会越多。</p>
                 <p>
-                    <a href="/referrer/refer-list" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                    <@global.isAnonymous>
+                        <a href="/login?redirect=/activity/autumn/luxury" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                    </@global.isAnonymous>
+                    <@global.isNotAnonymous>
+                        <a href="/referrer/refer-list" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                    </@global.isNotAnonymous>
                 </p>
             </div>
             <div class="phone-step">
@@ -246,7 +264,12 @@
                     <img src="${staticServer}/activity/images/sign/actor/luxury/intro-img.png" width="90%">
                 </p>
                 <p>
-                    <a href="#" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                    <@global.isAnonymous>
+                        <a href="/login?redirect=/activity/autumn/luxury" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                    </@global.isAnonymous>
+                    <@global.isNotAnonymous>
+                        <a href="/referrer/refer-list" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                    </@global.isNotAnonymous>
                 </p>
             </div>
             <#assign prizeType = 'luxury'/>
@@ -265,7 +288,7 @@
                     <li>5.用户在当日投资中如获得领取折扣券资格，客服将于次日联系用户确认购买意向，用户使用折扣券可以商品标价的对应折扣金额购买奢侈品，并采用货到付款的形式进行支付；</li>
                     <li>6.中奖结果将于次日在本活动页面公布，由客服联系确认。红包和加息券实时发放，用户可在“我的账户-我的宝藏”中查看，实物奖品将于活动结束后七个工作日内统一安排发放。部分地区邮费自付，详询客服；</li>
                     <li>7.奢侈品奖品中奖或确认购买并由客服确认信息后，不可再行更改。如用户在签收时发现商品有质量问题请立即联系客服；</li>
-                    <li>8.由于本活动是为答谢广大用户所提供的回馈性质的服务，因此您在本活动中兑换的商品；</li>
+                    <li>8.由于本活动是为答谢广大用户所提供的回馈性质的服务，因此您在本活动中兑换的商品均不提供发票；</li>
                     <li>9.获取抽奖机会和抽奖过程中，如果出现恶意刷量等违规行为，拓天速贷将取消您获得奖励的资格，并有权撤销违规交易，收回活动中所得的奖品；</li>
                     <li>10.拓天速贷在法律范围内保留对本活动的最终解释权。</li>
                 </ul>

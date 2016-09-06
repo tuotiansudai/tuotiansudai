@@ -1,9 +1,12 @@
 @import 'variables';
 @import 'jquery_fullpage';
-@import "coupon_alert";
-@import "index_png";
-@import "home_page";
+@import 'coupon_alert';
+@import 'index_png';
+@import 'home_page';
 
+.layui-layer-tips .layui-layer-content{
+  width:235px;
+}
 #fp-nav ul li {
   width: 25px;
   height: 25px;
@@ -144,33 +147,33 @@ body {
     }
   }
   .box-insurance {
-      padding-top: 50px;
-      .page-width {
-        position: relative;
-        .page-img {
-          position: absolute;
-          right: 20px;
-          top: 60px;
-        }
-        .sqr-title {
-          border-radius: 17px;
-          border: 1px dashed #fff;
-          display: inline-block;
-          padding: 4px 10px;
-          line-height: 1.4;
-        }
-        .fl {
-          width: 42%;
-        }
-        .fr {
-          width: 35%;
-          padding-top: 295px;
-        }
-        .article-mobile {
-          display: none;
-        }
+    padding-top: 50px;
+    .page-width {
+      position: relative;
+      .page-img {
+        position: absolute;
+        right: 20px;
+        top: 60px;
+      }
+      .sqr-title {
+        border-radius: 17px;
+        border: 1px dashed #fff;
+        display: inline-block;
+        padding: 4px 10px;
+        line-height: 1.4;
+      }
+      .fl {
+        width: 42%;
+      }
+      .fr {
+        width: 35%;
+        padding-top: 295px;
+      }
+      .article-mobile {
+        display: none;
       }
     }
+  }
 }
 
 /* new guide page  */

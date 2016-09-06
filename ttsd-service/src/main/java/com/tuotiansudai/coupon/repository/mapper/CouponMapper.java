@@ -1,6 +1,7 @@
 package com.tuotiansudai.coupon.repository.mapper;
 
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -42,4 +43,10 @@ public interface CouponMapper {
     List<CouponModel> findExchangeableCoupons(@Param(value = "index") Integer index, @Param(value = "pageSize") Integer pageSize);
 
     int findCouponExchangeableCount();
+
+    List<ExchangeCouponView> findExchangeableCouponViews(@Param(value = "index") Integer index, @Param(value = "pageSize") Integer pageSize);
+
+    int findExchangeableCouponViewCount(@Param(value = "index") Integer index, @Param(value = "pageSize") Integer pageSize);
+
+    ExchangeCouponView findExchangeableCouponViewById(long id);
 }

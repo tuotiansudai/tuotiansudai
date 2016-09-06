@@ -22,15 +22,18 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
     //td click
     $pointer.on('click', function(event) {
         event.preventDefault();
+        var $mobile = $('div.mobile');
+        var mobile = $mobile ? $mobile.data('mobile') : '';
+        var url = '/activity/autumn/luxury-draw?mobile='+mobile;
+        if($('#themeType').val() == 'travel'){
+            url = '/activity/autumn/travel-draw?mobile='+mobile;
+        }
 
         if (bRotate) return;
         $.ajax({
-            url: '/activity/draw-lottery',
+            url: url,
             type: 'POST',
-            dataType: 'json',
-            data:{
-                activityType:$('#themeType').val()
-            }
+            dataType: 'json'
         })
         .done(function(data) {
             if (data.returnCode == 0) {
@@ -39,7 +42,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
                         rotateFn(0, 337, '青花瓷杯子',data.prizeType);
                         break;
                     case 'INTEREST_COUPON_2':
-                        rotateFn(1, 56, '0.2加息券',data.prizeType);
+                        rotateFn(1, 56, '0.2%加息券',data.prizeType);
                         break;
                     case 'LUXURY':
                         rotateFn(2, 116, '奢侈品大奖',data.prizeType);
@@ -48,7 +51,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
                         rotateFn(3, 160, '100元现金红包',data.prizeType);
                         break;
                     case 'INTEREST_COUPON_5':
-                        rotateFn(4, 230, '0.5加息券',data.prizeType);
+                        rotateFn(4, 230, '0.5%加息券',data.prizeType);
                         break;
                     case 'RED_ENVELOPE_50':
                         rotateFn(5, 300, '50元现金红包',data.prizeType);
@@ -59,6 +62,8 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
                 }
             } else if (data.returnCode == 2) {
                 $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'nologin'})).show().find('.tip-dom').show();
+            } else if(data.returnCode == 3){
+                $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'timeout'})).show().find('.tip-dom').show();
             } else {
                 $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'notimes'})).show().find('.tip-dom').show();
             }
@@ -122,32 +127,36 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
     }
 
     function GiftRecord (){
+        var url = '/activity/autumn/luxury-all-list';
+        if($('#themeType').val() == 'travel'){
+            url = '/activity/autumn/travel-all-list';
+        }
         $.ajax({
-            url: '/activity/lottery-all-list',
-            type: 'POST',
-            dataType: 'json',
-            data:{
-                activityType:$('#themeType').val()
-            }
+            url: url,
+            type: 'GET',
+            dataType: 'json'
         })
         .done(function(data) {
             $('#GiftRecord').html(tpl('GiftRecordTpl', {record:data}));
         });
-    };
+    }
 
     function MyGift(){
+        var $mobile = $('div.mobile');
+        var mobile = $mobile ? $mobile.data('mobile') : '';
+        var url = '/activity/autumn/luxury-user-list?mobile='+mobile;
+        if($('#themeType').val() == 'travel'){
+            url = '/activity/autumn/travel-user-list?mobile='+mobile;
+        }
         $.ajax({
-            url: '/activity/lottery-record-list',
-            type: 'POST',
-            dataType: 'json',
-            data:{
-                activityType:$('#themeType').val()
-            }
+            url: url,
+            type: 'GET',
+            dataType: 'json'
         })
         .done(function(data) {
             $('#MyGift').html(tpl('MyGiftTpl', {gift:data}));
         });
-    };
+    }
     GiftRecord ();
     MyGift();
 });

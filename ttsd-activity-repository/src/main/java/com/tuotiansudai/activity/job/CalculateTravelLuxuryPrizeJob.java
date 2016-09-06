@@ -24,10 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class CalculateTravelLuxuryPrizeJob implements Job {
@@ -62,18 +59,19 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        Date currentDate = new Date();
-        if (currentDate.before(this.activityAutumnStartTime) || currentDate.after(this.activityAutumnEndTime)) {
+        Date yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay().toDate();
+
+        if (yesterday.before(this.activityAutumnStartTime) || yesterday.after(this.activityAutumnEndTime)) {
             return;
         }
-        logger.debug("[Calculate travel  prize begin...]");
-//        calculateTravelPrize();
-        logger.debug("[Calculate travel  prize end...]");
+        logger.debug("[calculate travel  prize begin...]");
+        calculateTravelPrize();
+        logger.debug("[calculate travel  prize end...]");
 
 
-        logger.debug("[Calculate travel  luxury begin...]");
+        logger.debug("[calculate travel  luxury begin...]");
         calculateLuxuryPrize();
-        logger.debug("[Calculate travel  luxury end...]");
+        logger.debug("[calculate travel  luxury end...]");
 
 
     }
@@ -82,7 +80,7 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
         DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
         Set travelKeySet = redisWrapperClient.hkeys(activityAutumnTravelInvestKey);
         List<TravelPrizeModel> travelPrizeModels = travelPrizeMapper.findAll();
-
+        logger.debug("[calculate travel] date:" + yesterday.toString());
         for (Object travelKey : travelKeySet) {
             String[] travelInvest = String.valueOf(travelKey).split(":");
             if (travelInvest.length < 4) {
@@ -106,7 +104,7 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
             for (TravelPrizeModel travelPrizeModel : travelPrizeModels) {
                 if (sumInvestAmount >= travelPrizeModel.getInvestAmount()) {
                     List<UserTravelPrizeModel> userTravels = userTravelPrizeMapper.findMobileAndCreatedTime(mobile, yesterday.toDate());
-                    if(CollectionUtils.isEmpty(userTravels)){
+                    if (CollectionUtils.isEmpty(userTravels)) {
                         UserTravelPrizeModel userTravelPrizeModel = new UserTravelPrizeModel(travelPrizeModel.getId(), travelPrizeModel.getName(), loginName, mobile, userName, sumInvestAmount);
                         userTravelPrizeModel.setCreatedTime(yesterday.toDate());
                         userTravelPrizeMapper.create(userTravelPrizeModel);
@@ -123,6 +121,7 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
         DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
         Set luxuryKeySet = redisWrapperClient.hkeys(activityAutumnLuxuryInvestKey);
         List<LuxuryPrizeModel> luxuryPrizeModels = luxuryPrizeMapper.findAll();
+        logger.debug("[calculate luxury] date:" + yesterday.toString());
 
         for (Object luxuryKey : luxuryKeySet) {
             String[] luxuryInvest = String.valueOf(luxuryKey).split(":");
@@ -144,38 +143,39 @@ public class CalculateTravelLuxuryPrizeJob implements Job {
 
             long sumInvestAmount = Long.parseLong(luxuryValue.split("\\|")[0]);
 
-            for (LuxuryPrizeModel luxuryPrizeModel : luxuryPrizeModels) {
-                List<UserLuxuryPrizeModel> userLuxury = userLuxuryPrizeMapper.findMobileAndCreatedTime(mobile, yesterday.toDate());
-                if(CollectionUtils.isEmpty(userLuxury)){
-                    String prizeName = getLuxuryPrizeName(luxuryPrizeModel, sumInvestAmount);
-                    if(StringUtils.isNotEmpty(prizeName)){
-
-                        UserLuxuryPrizeModel userLuxuryPrizeModel = new UserLuxuryPrizeModel(luxuryPrizeModel.getId(), prizeName, loginName, mobile, userName, sumInvestAmount);
-                        userLuxuryPrizeModel.setCreatedTime(yesterday.toDate());
-                        userLuxuryPrizeMapper.create(userLuxuryPrizeModel);
-                        break;
-                    }
-
+            List<UserLuxuryPrizeModel> userLuxury = userLuxuryPrizeMapper.findMobileAndCreatedTime(mobile, yesterday.toDate());
+            if (CollectionUtils.isEmpty(userLuxury)) {
+                String prizeName = getLuxuryPrizeName(luxuryPrizeModels, sumInvestAmount);
+                if (StringUtils.isNotEmpty(prizeName)) {
+                    long luxuryPrizeId = Long.parseLong(prizeName.split("\\|")[0]);
+                    UserLuxuryPrizeModel userLuxuryPrizeModel = new UserLuxuryPrizeModel(luxuryPrizeId, prizeName.split("\\|")[1], loginName, mobile, userName, sumInvestAmount);
+                    userLuxuryPrizeModel.setCreatedTime(yesterday.toDate());
+                    userLuxuryPrizeMapper.create(userLuxuryPrizeModel);
                 }
 
             }
 
+
         }
     }
 
-    private String getLuxuryPrizeName(LuxuryPrizeModel luxuryPrizeModel, long investAmount) {
-        String prizeName = "{0}{1}{2}";
+    private String getLuxuryPrizeName(List<LuxuryPrizeModel> luxuryPrizeModels, long investAmount) {
+        Map<Long, String> luxuryPrizeTreeMap = Maps.newTreeMap(new Comparator<Long>() {
+            @Override
+            public int compare(Long o1, Long o2) {
+                return o2.compareTo(o1);
+            }
+        });
 
-        Map<Long, String> luxuryPrizeLinkedHashMap = Maps.newLinkedHashMap(new ImmutableMap.Builder<Long, String>()
-                .put(luxuryPrizeModel.getInvestAmount(), luxuryPrizeModel.getBrand() + luxuryPrizeModel.getName())
-                .put(luxuryPrizeModel.getThirtyPercentOffInvestAmount(), MessageFormat.format(prizeName, luxuryPrizeModel.getBrand(), luxuryPrizeModel.getName(), "7折券"))
-                .put(luxuryPrizeModel.getTwentyPercentOffInvestAmount(), MessageFormat.format(prizeName, luxuryPrizeModel.getBrand(), luxuryPrizeModel.getName(), "8折券"))
-                .put(luxuryPrizeModel.getTenPercentOffInvestAmount(), MessageFormat.format(prizeName, luxuryPrizeModel.getBrand(), luxuryPrizeModel.getName(), "8折券"))
-                .build());
+        for (LuxuryPrizeModel luxuryPrizeModel : luxuryPrizeModels) {
+            luxuryPrizeTreeMap.put(luxuryPrizeModel.getInvestAmount(), MessageFormat.format("{0}|{1}", luxuryPrizeModel.getId(), luxuryPrizeModel.getName()));
+            luxuryPrizeTreeMap.put(luxuryPrizeModel.getThirtyPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(), luxuryPrizeModel.getName(), "7折券"));
+            luxuryPrizeTreeMap.put(luxuryPrizeModel.getTwentyPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(), luxuryPrizeModel.getName(), "8折券"));
+            luxuryPrizeTreeMap.put(luxuryPrizeModel.getTenPercentOffInvestAmount(), MessageFormat.format("{0}|{1}{2}", luxuryPrizeModel.getId(), luxuryPrizeModel.getName(), "9折券"));
+        }
 
-
-        for (Map.Entry<Long, String> luxuryEntry : luxuryPrizeLinkedHashMap.entrySet()) {
-            if (investAmount >= luxuryEntry.getKey() ) {
+        for (Map.Entry<Long, String> luxuryEntry : luxuryPrizeTreeMap.entrySet()) {
+            if (investAmount >= luxuryEntry.getKey()) {
                 return luxuryEntry.getValue();
             }
         }

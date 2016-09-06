@@ -34,8 +34,8 @@
                             <tr>
                                 <td>${lottery.mobile!}</td>
                                 <td>${lottery.userName!}</td>
-                                <td>${lottery.useCount!}</td>
                                 <td>${lottery.unUseCount!}</td>
+                                <td>${lottery.useCount!}</td>
                             </tr>
                         </#list>
                     </#if>

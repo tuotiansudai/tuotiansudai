@@ -266,15 +266,22 @@ body {
         font-size: 16px;
         margin-top: 20px;
         padding: 5px 20px;
+        span{
+          color:#FC4A52;
+          font-weight:bold;
+        }
       }
       .img-info {
-        margin:20px;
+        margin:18px;
         border:2px solid #fff;
         position: relative;
-        img { width: 100%; }
+        img {
+          width: 100%;
+          height:160px;
+        }
         .kind-text {
           position: absolute;
-          top: 120px;
+          top: 128px;
           height: 32px;
           background: rgba(0,0,0,0.2);
           width: 100%;
@@ -299,6 +306,9 @@ body {
           em {
             font-size: 20px;
           }
+        }
+        &:hover {
+          box-shadow: 0 0 20px rgba(0,0,0,0.3);
         }
       }
     }
@@ -433,17 +443,27 @@ body {
     -moz-transition: All 0.4s ease-in-out;
     -o-transition: All 0.4s ease-in-out;
   }
-  //*:hover {
-  //  transform: scale(1.2);
-  //  -webkit-transform: scale(1.2);
-  //  -moz-transform: scale(1.2);
-  //  -o-transform: scale(1.2);
-  //  -ms-transform: scale(1.2);
-  //}
-
   body {
     background: #a3e2ee;
   }
+  .lottery-draw {
+    float: none;
+  }
+  .leader-container {
+    float: none;
+    &.tour-theme .leader-list {
+      padding:0;
+      width: 100%;
+      .lottery-circle {
+        margin-top:0;
+        h3 {
+          float: none;
+          margin: 0 auto 30px auto;
+        }
+      }
+    }
+  }
+
   .tour-slide  {
     height: 188px;
     background: url("/activity/images/autumn-tour/bar-app.jpg") center top no-repeat;
@@ -469,7 +489,8 @@ body {
       }
     }
     .bg-box {
-      padding:10px;
+      padding:0px;
+      box-sizing: border-box;
     }
     .title-normal-box {
       text-align: left;
@@ -522,6 +543,7 @@ body {
       width:100%;
       height: 270px;
       padding-top: 40px;
+      padding-bottom: 40px;
       overflow: hidden;
       .swiper-wrapper {
         width:310%;
@@ -579,7 +601,7 @@ body {
         }
         .img-info {
           .kind-text {
-            top: 83px;
+            top: 128px;
           }
           .kind-bottom {
             font-size: 12px;
@@ -616,9 +638,15 @@ body {
         th {
           font-size:14px;
           padding: 5px 0 5px 6px;
+          &.hideCol {
+            display: none;
+          }
         }
         td {
           font-size: 11px;
+            &.hideCol {
+              display: none;
+            }
         }
       }
     }
@@ -643,6 +671,7 @@ body {
     }
     .activity-rule {
       font-size:11px;
+      padding:10px;
       b {
         font-size:12px;
         padding:10px 0;
@@ -710,6 +739,24 @@ body {
 
 @media (max-width: 390px) {
   .autumn-tour-frame {
+
+    .vertical-line {
+      display: none;
+      width: 8px;
+      height: 40px;
+      background-size: 100%;
+      &:nth-child(1) {
+        left: 30px;
+        top: 209px;
+        display: block;
+      }
+      &:nth-child(2) {
+        right: 30px;
+        top: 209px;
+        display: block;
+      }
+    }
+
     .prize-kind {
 
       .prize-box {
@@ -749,8 +796,27 @@ body {
   }
 }
 
+
 @media (max-width: 330px) {
   .autumn-tour-frame {
+
+    .vertical-line {
+      display: none;
+      width: 8px;
+      height: 40px;
+      background-size: 100%;
+      &:nth-child(1) {
+        left: 30px;
+        top: 265px;
+        display: block;
+      }
+      &:nth-child(2) {
+        right: 30px;
+        top: 265px;
+        display: block;
+      }
+    }
+
     .prize-kind {
 
       .prize-box {

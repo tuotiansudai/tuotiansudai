@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class LuxuryPrizeDto implements Serializable {
 
-    private long luxuryPrizeId;
+    private long id;
 
     private String brand;
 
@@ -28,7 +28,7 @@ public class LuxuryPrizeDto implements Serializable {
     private long thirtyPercentOffInvestAmount;
 
     public LuxuryPrizeDto(LuxuryPrizeModel luxuryPrizeModel) {
-        this.luxuryPrizeId = luxuryPrizeModel.getId();
+        this.id = luxuryPrizeModel.getId();
         this.brand = luxuryPrizeModel.getBrand();
         this.name = luxuryPrizeModel.getName();
         this.price = luxuryPrizeModel.getPrice();
@@ -40,8 +40,8 @@ public class LuxuryPrizeDto implements Serializable {
         this.thirtyPercentOffInvestAmount = luxuryPrizeModel.getThirtyPercentOffInvestAmount();
     }
 
-    public long getLuxuryPrizeId() {
-        return luxuryPrizeId;
+    public long getId() {
+        return id;
     }
 
     public String getBrand() {

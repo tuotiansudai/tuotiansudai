@@ -1,19 +1,25 @@
 package com.tuotiansudai.console.service.impl;
 
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ExportService;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+
+import com.tuotiansudai.dto.LoanListDto;
+import com.tuotiansudai.dto.LoanRepayDataItemDto;
+import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.point.dto.ProductOrderDto;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.ExportCsvUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,8 +33,10 @@ import java.util.List;
 public class ExportServiceImpl implements ExportService {
     @Autowired
     private AccountMapper accountMapper;
+
     @Autowired
     private UserMapper userMapper;
+
     @Override
     public <T> List<List<String>> buildUserPointToCsvData(List<T> originList) {
         List<List<String>> csvData = new ArrayList<>();
@@ -40,11 +48,11 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize){
-        List<AccountModel> accountModels =  accountMapper.findUsersAccountPoint(loginName, userName, mobile, (currentPageNo - 1) * pageSize, pageSize);
+    public List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize) {
+        List<AccountModel> accountModels = accountMapper.findUsersAccountPoint(loginName, userName, mobile, (currentPageNo - 1) * pageSize, pageSize);
 
         List<AccountItemDataDto> accountItemDataDtoList = new ArrayList<>();
-        for(AccountModel accountModel : accountModels) {
+        for (AccountModel accountModel : accountModels) {
             AccountItemDataDto accountItemDataDto = new AccountItemDataDto(accountModel);
             accountItemDataDto.setTotalPoint(accountMapper.findByLoginName(accountModel.getLoginName()).getPoint());
             accountItemDataDto.setMobile(userMapper.findByLoginName(accountModel.getLoginName()).getMobile());
@@ -52,6 +60,7 @@ public class ExportServiceImpl implements ExportService {
         }
         return accountItemDataDtoList;
     }
+
 
     @Override
     public List<List<String>> buildLoanRepayCsvData(List<LoanRepayDataItemDto> loanRepayDataItemDtos) {
@@ -314,6 +323,250 @@ public class ExportServiceImpl implements ExportService {
             row.add("-");
             row.add(loanListDto.getStatus().getDescription());
             row.add(new DateTime(loanListDto.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildUsers(List<UserItemDataDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (UserItemDataDto record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(record.getLoginName());
+            row.add(record.isBankCard() ? "是" : "否");
+            row.add(record.getUserName());
+            row.add(record.getMobile());
+            row.add(record.getEmail());
+            row.add(record.getReferrerMobile());
+            row.add(record.isReferrerStaff() ? "是" : "否");
+            row.add(record.getSource() != null ? record.getSource().name() : "");
+            row.add(record.getChannel());
+            row.add(new DateTime(record.getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add("1".equals(record.getAutoInvestStatus()) ? "是" : "否");
+            List<UserRoleModel> userRoleModels = record.getUserRoles();
+            List<String> userRole = Lists.transform(userRoleModels, new Function<UserRoleModel, String>() {
+                @Override
+                public String apply(UserRoleModel model) {
+                    return model.getRole().getDescription();
+                }
+            });
+            row.add(StringUtils.join(userRole, ";"));
+            row.add(UserStatus.ACTIVE.equals(record.getStatus()) ? "正常" : "禁用");
+            row.add(record.getBirthday());
+            row.add(record.getProvince());
+            row.add(record.getCity());
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildInvests(List<InvestPaginationItemDataDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (InvestPaginationItemDataDto record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(String.valueOf(record.getLoanId()));
+            row.add(record.getLoanName());
+            row.add(String.valueOf(record.getLoanPeriods()));
+            row.add(record.getInvestorLoginName());
+            row.add(record.isStaff() ? "是" : "否");
+            row.add(record.getInvestorUserName());
+            row.add(record.getInvestorMobile());
+            row.add(record.getBirthday());
+            row.add(record.getProvince());
+            row.add(record.getCity());
+            row.add(record.getReferrerLoginName());
+            row.add(record.getReferrerLoginName() != null ? record.isReferrerStaff() ? "是" : "否" : "");
+            row.add(record.getReferrerUserName());
+            row.add(record.getReferrerMobile());
+            row.add(record.getChannel());
+            row.add(record.getSource());
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(record.isAutoInvest() ? "是" : "否");
+            row.add(record.getAmount());
+            row.add(record.getRate() + "/" + record.getExpectedFee() + "/" + record.getActualFee());
+            row.add(record.getStatus());
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildRecharge(List<RechargePaginationItemDataDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (RechargePaginationItemDataDto record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(new BigDecimal(record.getRechargeId()).toString());
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(record.getLoginName());
+            row.add(record.isStaff() ? "是" : "否");
+            row.add(record.getUserName());
+            row.add(record.getMobile());
+            row.add(record.getAmount());
+            row.add(record.getBankCode());
+            row.add(record.isFastPay() ? "是" : "否");
+            row.add(record.getStatus());
+            row.add(record.getSource().name());
+            row.add(record.getChannel());
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildWithdraw(List<WithdrawPaginationItemDataDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (WithdrawPaginationItemDataDto record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(new BigDecimal(record.getWithdrawId()).toString());
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(new DateTime(record.getApplyNotifyTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(new DateTime(record.getNotifyTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(record.getLoginName());
+            row.add(record.isStaff() ? "是" : "否");
+            row.add(record.getUserName());
+            row.add(record.getMobile());
+            row.add(record.getAmount());
+            row.add(record.getFee());
+            row.add(record.getBankCard());
+            row.add(record.getStatus());
+            row.add(record.getSource().name());
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildUserFunds(List<UserBillPaginationView> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (UserBillPaginationView record : records) {
+            List<String> row = Lists.newArrayList();
+            DateTime dateTime = new DateTime(record.getCreatedTime());
+            row.add(dateTime.toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(String.valueOf(record.getId()));
+            row.add(record.getLoginName());
+            row.add(record.isStaff() ? "是" : "否");
+            row.add(record.getUserName());
+            row.add(record.getMobile());
+            row.add(record.getOperationType().getDescription());
+            row.add(record.getBusinessType().getDescription());
+            row.add(String.valueOf(new BigDecimal(record.getAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            row.add(String.valueOf(new BigDecimal(record.getBalance()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            row.add(String.valueOf(new BigDecimal(record.getFreeze()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildAccountBalance(List<UserItemDataDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (UserItemDataDto record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(record.getLoginName());
+            row.add(record.isStaff() ? "是" : "否");
+            row.add(record.getUserName());
+            row.add(record.getMobile());
+            row.add(record.getBirthday() != null ? record.getBirthday() : "");
+            row.add(record.getProvince() != null ? record.getProvince() : "");
+            row.add(record.getCity() != null ? record.getCity() : "");
+            row.add(record.getLastBillTime() != null ? new DateTime(record.getLastBillTime()).toString("yyyy-MM-dd HH:mm:ss") : "");
+            row.add(record.getBalance());
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildFeedBack(List<FeedbackModel> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (FeedbackModel record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(String.valueOf(record.getId()));
+            row.add(record.getLoginName());
+            row.add(record.getContact());
+            row.add(record.getSource().name());
+            row.add(record.getType().getDesc());
+            row.add(record.getContent());
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
+            row.add(record.getStatus().getDesc());
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildInvestAchievement(List<LoanAchievementView> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (LoanAchievementView record : records) {
+
+            List<String> row = Lists.newArrayList();
+            row.add(record.getName());
+            row.add(record.getLoanStatus().getDescription());
+            row.add(String.valueOf(record.getPeriods()));
+            row.add(AmountConverter.convertCentToString(record.getLoanAmount()));
+            if (record.getMaxAmountLoginName() != null) {
+                row.add(record.getMaxAmountLoginName() + "/" + AmountConverter.convertCentToString(record.getMaxAmount()));
+            } else {
+                row.add("/");
+            }
+            if (record.getFirstInvestLoginName() != null) {
+                row.add(record.getFirstInvestLoginName() + "/" + AmountConverter.convertCentToString(record.getFirstInvestAmount()));
+            } else {
+                row.add("/");
+            }
+            if (record.getLastInvestLoginName() != null) {
+                row.add(record.getLastInvestLoginName() + "/" + AmountConverter.convertCentToString(record.getLastInvestAmount()));
+            } else {
+                row.add("/");
+            }
+            row.add(record.getRaisingCompleteTime() != null ? new DateTime(record.getRaisingCompleteTime()).toString("yyyy-MM-dd HH:mm:ss") : "");
+            row.add(record.getFirstInvestDuration());
+            row.add(record.getCompleteInvestDuration());
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildReferrer(List<ReferrerManageView> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (ReferrerManageView record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(record.getLoanName());
+            row.add(String.valueOf(record.getPeriods()));
+            row.add(record.getInvestMobile());
+            row.add(record.getInvestName());
+            row.add(String.valueOf(new BigDecimal(record.getInvestAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            row.add(new DateTime(record.getInvestTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(record.getSource().name());
+            row.add(record.getReferrerMobile());
+            row.add(record.getReferrerName());
+            row.add(record.getRole() == Role.STAFF ? "是" : "否");
+            row.add(String.valueOf(record.getLevel()));
+            row.add(String.valueOf(new BigDecimal(record.getRewardAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            row.add(record.getStatus() == ReferrerRewardStatus.SUCCESS ? "已入账" : "入账失败");
+            row.add(new DateTime(record.getRewardTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<List<String>> buildProductOrderList(List<ProductOrderDto> records) {
+        List<List<String>> rows = Lists.newArrayList();
+        for (ProductOrderDto record : records) {
+            List<String> row = Lists.newArrayList();
+            row.add(record.getLoginName());
+            row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(String.valueOf(record.getNum()));
+            row.add(record.getContact());
+            row.add(record.getMobile());
+            row.add(record.getAddress());
+            String consignment = record.isConsignment() ? "已发货" : "未发货";
+            row.add(consignment);
+            row.add(new DateTime(record.getConsignmentTime()).toString("yyyy-MM-dd HH:mm:ss"));
             rows.add(row);
         }
         return rows;

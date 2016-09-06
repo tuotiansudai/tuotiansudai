@@ -9,6 +9,8 @@ public class CouponExchangeModel implements Serializable {
 
     private long couponId;
 
+    private int seq;
+
     private long exchangePoint;
 
     public long getId() {
@@ -25,6 +27,14 @@ public class CouponExchangeModel implements Serializable {
 
     public void setCouponId(long couponId) {
         this.couponId = couponId;
+    }
+
+    public int getSeq() {
+        return seq;
+    }
+
+    public void setSeq(int seq) {
+        this.seq = seq;
     }
 
     public long getExchangePoint() {

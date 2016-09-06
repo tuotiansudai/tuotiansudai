@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.service;
 
 
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.SendSmsCompositeRequestDto;
@@ -46,6 +47,9 @@ public class MobileAppSendSmsV2ServiceTest extends ServiceTestBase {
         SendSmsCompositeRequestDto sendSmsCompositeRequestDto = new SendSmsCompositeRequestDto();
         sendSmsCompositeRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
         sendSmsCompositeRequestDto.setPhoneNum("10002341");
+        BaseParam baseParam = new BaseParam();
+        baseParam.setDeviceId("1234443");
+        sendSmsCompositeRequestDto.setBaseParam(baseParam);
         mockMethod(true);
         BaseResponseDto baseResponseDto = mobileAppSendSmsV2Service.sendSms(sendSmsCompositeRequestDto,"192.168.1.1");
         assertEquals(baseResponseDto.getCode(), ReturnMessage.NEED_IMAGE_CAPTCHA.getCode());

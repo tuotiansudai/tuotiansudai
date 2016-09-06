@@ -16,7 +16,7 @@
         <div class="lottery-detail">
             <h3>我的抽奖机会：<span class="lottery-time">${drawTime}</span>次</h3>
             <ul class="gift-record">
-                <li class="active">中奖纪录</li>
+                <li class="active">中奖记录</li>
                 <li>我的奖品</li>
             </ul>
             <div class="record-list" id="recordList">
@@ -101,6 +101,9 @@
         {{else if istype=='notimes'}}
             <p class="login-text">您暂无抽奖机会啦~</p>
             <p class="des-text">赢取机会后再来抽奖吧！</p>
+        {{else if istype=='timeout'}}
+            <p class="login-text">不在活动时间内~</p>
+            <p class="des-text">不在活动时间内！</p>
         {{else}}
         {{/if}}
         </div>
@@ -108,10 +111,9 @@
             {{if istype=='real'}}
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             {{else if istype=='virtual'}}
-                <a href="/my-treasure" class="go-on">去查看</a>
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             {{else if istype=='nologin'}}
-                <a href="/login" class="go-on">去登录</a>
+                <a href="/login?redirect=/activity/autumn/${prizeType}" class="go-on">去登录</a>
             {{else if istype=='notimes'}}
                 <a href="javascript:void(0)" class="go-on go-close">知道了</a>
             {{else}}

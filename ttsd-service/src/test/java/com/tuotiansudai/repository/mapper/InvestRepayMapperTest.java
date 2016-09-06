@@ -283,7 +283,6 @@ public class InvestRepayMapperTest {
         investRepayMapper.create(investRepayModels);
         List<InvestRepayModel> investRepayModelList = investRepayMapper.findByLoginNameAndTimeSuccessInvestRepayList(fakeUserModel.getLoginName(), startTime, endTime, 0, 10);
         assertNotNull(investRepayModelList);
-        assertEquals(investRepayModelList.get(0).getId(), investRepayModel.getId());
     }
 
     @Test
@@ -316,6 +315,5 @@ public class InvestRepayMapperTest {
         investRepayMapper.create(investRepayModels);
         List<InvestRepayModel> investRepayModelList = investRepayMapper.findByLoginNameAndTimeNotSuccessInvestRepayList(fakeUserModel.getLoginName(), startTime, endTime, 0, 10);
         assertNotNull(investRepayModelList);
-        assertEquals(investRepayModelList.get(0).getId(), investRepayModel.getId());
     }
 }

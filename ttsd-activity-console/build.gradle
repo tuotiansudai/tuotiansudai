@@ -68,8 +68,8 @@ dependencies {
 processResources {
     def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
     def outerConfigPath = '/workspace/new_version_config/ttsd-activity-console'
-    if (project.hasProperty("configPath") && new File(configPath).isDirectory()) {
-        innerConfigPath = configPath
+    if (project.hasProperty("activityConsoleConfigPath") && new File(activityConsoleConfigPath).isDirectory()) {
+        innerConfigPath = activityConsoleConfigPath
     } else if (new File(outerConfigPath).isDirectory()) {
         innerConfigPath = outerConfigPath
     }

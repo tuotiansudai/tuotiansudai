@@ -9,6 +9,22 @@ i,em{
     font-style: normal;
 }
 
+.Validform_wrong {
+    color: red;
+    display: block;
+}
+.input-group.date {
+    padding-bottom:10px;
+}
+.input-group.date .Validform_wrong {
+    position: absolute;
+    top: 37px;
+    left: 0px;
+}
+
+.Validform_right {
+    display: none;
+}
 body {
     overflow-x: hidden;
 }
@@ -172,6 +188,17 @@ table td, table th {
 
 .form-control {
     *padding-bottom: 0px;
+}
+.form-control.seq {
+    width: 150px;
+    display: inline-block;
+    margin-right: 10px;
+}
+input.order-number:disabled {
+    width: 20px;
+    padding: 0;
+    text-align: center;
+    border: 0;
 }
 
 td.projectName {
@@ -632,6 +659,25 @@ td.td {
 }
 
 .ladder-table:hover .tip-table {
+    display: block;
+}
+.ladder-table-activity{
+    position: relative;
+}
+.ladder-table-activity .tip-activity {
+    position: absolute;
+    width: 290px;
+    height: auto;
+    top: 0;
+    left: -290px;
+    z-index: 99;
+    display: none;
+    background: #fff;
+    margin-bottom: 0;
+    max-width:none;
+}
+
+.ladder-table-activity:hover .tip-activity {
     display: block;
 }
 .thumbPictureImage{

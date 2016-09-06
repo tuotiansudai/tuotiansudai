@@ -1,5 +1,9 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.autumn_travel}" pageJavascript="${js.autumn_travel}" activeNav="" activeLeftNav="" title="活动中心_投资活动_拓天速贷" keywords="拓天活动中心,拓天活动,拓天投资列表,拓天速贷" description="拓天速贷活动中心为投资用户提供投资大奖,投资奖励,收益翻倍等福利,让您在赚钱的同时体验更多的投资乐趣.">
+<@global.main pageCss="${css.autumn_travel}" pageJavascript="${js.autumn_travel}" activeNav="" activeLeftNav="" title="拓荒计划_旅游活动_拓天速贷" keywords="拓荒计划,免费旅游,旅游活动投资,拓天速贷" description="拓天速贷金秋拓荒计划,多条旅游线路免费玩,你旅游我买单,邀请好友注册也可获得免费旅游大奖.">
+<@global.isNotAnonymous>
+<div style="display: none" class="login-name" data-login-name='<@global.security.authentication property="principal.username" />'></div>
+<div style="display: none" class="mobile" data-mobile='<@global.security.authentication property="principal.mobile" />'></div>
+</@global.isNotAnonymous>
 <div class="tour-slide">
 </div>
 <div class="autumn-tour-frame" id="pageone">
@@ -26,20 +30,25 @@
                 <span class="fr">我的投资额：${myInvestAmount}元<em class="note">［仅累计本日参与本活动的投资金额］</em></span>
             </@global.isNotAnonymous>
             <@global.isAnonymous>
-                <a href="/login?login?redirect=/activity/autumn/travel" class="fr btn-normal">立即登录</a>
+                <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal">立即登录</a>
             </@global.isAnonymous>
         </div>
 
         <div class="prize-kind clearfix swiper-container">
             <div class="swiper-wrapper" id="sliderBox">
                 <#list travelPrize as prize>
-                    <div class="prize-box swiper-slide <#if prize_index == 2>active</#if>">
-                        <div class="pk-title">投资满<@amount>${prize.investAmount?string.computer}</@amount>元即可获得</div>
+                    <div class="prize-box swiper-slide <#if prize_index == 1>active</#if>">
+                        <div class="pk-title">投资满<span><@amount>${prize.investAmount?string.computer}</@amount></span>元即可获得</div>
                         <div class="img-info">
-                            <img src="${staticServer}/activity/images/autumn-tour/p01.png">
+                        <#if !isAppSource>
+                            <a href="/activity/autumn/travel/${prize.id?string.computer}/detail" target="_blank">
+                        <#else>
+                        <a href="javascript:void(0)">
+                        </#if>
+                            <img src="${prize.image}"></a>
                             <span class="kind-text">${prize.name}</span>
                             <div class="kind-bottom">
-                                <span class="fl">价值<em>${prize.price}</em>元</span>
+                                <span class="fl">商品价格<em>${prize.price}</em>元</span>
                                 <@global.isAnonymous>
                                     <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
                                 </@global.isAnonymous>
@@ -67,7 +76,7 @@
                         <thead>
                         <tr>
                             <th>用户</th>
-                            <th>投资金额(元)</th>
+                            <th class="hideCol">投资金额(元)</th>
                             <th>奖品</th>
                             <th>获奖时间</th>
                         </tr>
@@ -76,7 +85,7 @@
                             <#list userTravelPrize as item>
                             <tr>
                                 <td>${item.mobile}</td>
-                                <td>${item.investAmount}</td>
+                                <td class="hideCol">${item.investAmount}</td>
                                 <td>${item.prize}</td>
                                 <td>${item.createdTime?string('yyyy-MM-dd')}</td>
                             </tr>
@@ -93,7 +102,7 @@
                         <thead>
                         <tr>
                             <th>用户</th>
-                            <th>投资金额(元)</th>
+                            <th class="hideCol">投资金额(元)</th>
                             <th>奖品</th>
                             <th>获奖时间</th>
                         </tr>
@@ -102,7 +111,7 @@
                             <#list myTravelPrize as item>
                             <tr>
                                 <td>${item.mobile}</td>
-                                <td>${item.investAmount}</td>
+                                <td class="hideCol">${item.investAmount}</td>
                                 <td>${item.prize}</td>
                                 <td>${item.createdTime?string('yyyy-MM-dd')}</td>
                             </tr>

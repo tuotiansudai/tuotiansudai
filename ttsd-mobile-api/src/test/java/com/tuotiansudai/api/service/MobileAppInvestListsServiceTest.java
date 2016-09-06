@@ -8,7 +8,9 @@ import com.tuotiansudai.api.dto.v2_0.UserInvestListRequestDto;
 import com.tuotiansudai.api.dto.v2_0.UserInvestListResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppInvestListsServiceImpl;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -57,6 +59,9 @@ public class MobileAppInvestListsServiceTest extends ServiceTestBase{
 
     @Mock
     private InvestExtraRateMapper investExtraRateMapper;
+
+    @Mock
+    private CouponRepayMapper couponRepayMapper;
 
     private LoanModel getFakeLoanModel(String fakeUserName, long loanId){
         LoanModel loanModel = new LoanModel();
@@ -148,6 +153,8 @@ public class MobileAppInvestListsServiceTest extends ServiceTestBase{
         when(couponMapper.findById(anyLong())).thenReturn(null);
 
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(null);
+
+        when(couponRepayMapper.findCouponRepayByInvestIdAndPeriod(anyLong(),anyInt())).thenReturn(new CouponRepayModel());
 
         UserInvestListRequestDto investListRequestDto = new UserInvestListRequestDto();
         BaseParam baseParam = new BaseParam();

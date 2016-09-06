@@ -3,6 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
 import com.tuotiansudai.repository.model.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillOperationType;
 import com.tuotiansudai.service.SystemBillService;
@@ -33,7 +34,7 @@ public class SystemBillController {
                                           @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
         ModelAndView modelAndView = new ModelAndView("/system-bill");
-        BaseDto<BasePaginationDataDto> baseDto = systemBillService.findSystemBillPagination(
+        BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> baseDto = systemBillService.findSystemBillPagination(
                 startTime,
                 endTime,
                 operationType,

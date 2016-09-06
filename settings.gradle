@@ -11,6 +11,7 @@ include "ttsd-service",
         "ttsd-activity",
         "ttsd-message",
         'ttsd-sign-in',
+        'ttsd-user-service',
         'ttsd-web-common-config',
         'ttsd-ask-web',
         'ttsd-ask-service',
@@ -21,5 +22,6 @@ include "ttsd-service",
         'ttsd-spring-extension',
         'ttsd-activity-console',
         'ttsd-activity-repository',
-        'ttsd-util'
+        'ttsd-util',
+        'ttsd-point-web'
 

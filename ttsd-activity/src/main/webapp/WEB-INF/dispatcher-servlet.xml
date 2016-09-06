@@ -49,8 +49,8 @@
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
-        <property name="javascriptLocation" value="/activity${web.js.path}"/>
-        <property name="cssLocation" value="/activity${web.css.path}"/>
+        <property name="javascriptLocation" value="${activity.js.path}"/>
+        <property name="cssLocation" value="${activity.css.path}"/>
         <property name="sourceMap">
             <map>
                 <entry key="webServer" value="${web.server}"/>

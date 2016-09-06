@@ -109,6 +109,11 @@ flyway {
         user = properties.getProperty("ask.jdbc.username")
         password = properties.getProperty("ask.jdbc.password")
     }
+
+    if ('edxactivity'.equals(defaultDatabase)) {
+        user = properties.getProperty("activity.jdbc.username")
+        password = properties.getProperty("activity.jdbc.password")
+    }
 }
 
 task flywayAA(type: FlywayMigrateTask) {
