@@ -1,14 +1,14 @@
-require(['jquery', 'jquery-ui', 'layer','layer-extend','layerWrapper', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment'], function ($) {
-    $(function() {
+require(['jquery', 'jquery-ui', 'layer', 'layer-extend', 'layerWrapper', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment'], function ($) {
+    $(function () {
         $('.selectpicker').selectpicker();
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
         $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
 
-        $('.tooltip-list').on('mouseover', function(){
+        $('.tooltip-list').on('mouseover', function () {
             var that = this,
                 tiptext = $(this).attr('data-original-title');
-            layer.tips(tiptext, that,{
-                tips: [4,'#000000']
+            layer.tips(tiptext, that, {
+                tips: [4, '#000000']
             });
         });
 
@@ -32,11 +32,11 @@ require(['jquery', 'jquery-ui', 'layer','layer-extend','layerWrapper', 'bootstra
             }
         });
     });
-    $('.feedback-status').on('click',function(e){
+    $('.feedback-status').on('click', function (e) {
         e.preventDefault();
-        var $self=$(this),
-            id=$self.attr('data-id'),
-            status=$self.prop('checked');
+        var $self = $(this),
+            id = $self.attr('data-id'),
+            status = $self.prop('checked');
 
         $.ajax({
             url: "/announce-manage/updateStatus",
@@ -44,28 +44,28 @@ require(['jquery', 'jquery-ui', 'layer','layer-extend','layerWrapper', 'bootstra
             dataType: 'json',
             contentType: 'application/json; charset=UTF-8',
             data: {
-                feedbackId:id,
-                status:status
+                feedbackId: id,
+                status: status
             }
         }).done(function (data) {
-            $self.prop('checked',status);
+            $self.prop('checked', status);
             location.href = "/announce-manage/feedback";
         }).fail(function () {
             alert("提交失败");
         });
     });
 
-    $('.feedback-remark').on('click',function(e){
+    $('.feedback-remark').on('click', function (e) {
         e.preventDefault();
-        var $self=$(this),
-            feedbackId=$self.attr('data-feedback-id');
+        var $self = $(this),
+            feedbackId = $self.attr('data-feedback-id');
         //向模态框中传值
         $('#feedbackId').val(feedbackId);
         $('#update').modal('show');
     });
 
     $('.down-load').click(function () {
-        location.href = "/announce-manage/feedback?"+$('form').serialize()+"&export=csv";
+        location.href = "/export/feedback?" + $('form').serialize();
     });
 
     $('.pagination .previous').click(function () {
@@ -97,8 +97,8 @@ function update() {
         type: "GET",
         url: "/announce-manage/updateRemark",
         data: {
-            feedbackId:feedbackId,
-            remark:remark
+            feedbackId: feedbackId,
+            remark: remark
         },
         dataType: 'json',
         contentType: 'application/json; charset=UTF-8'

@@ -10,10 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageTypeSpecifier;
-import javax.imageio.ImageWriter;
+import javax.imageio.*;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
@@ -171,8 +168,14 @@ public class OssWrapperClient {
                 imageWriter.write(null, new IIOImage(image, null, data), jpegParams);
                 imageWriter.dispose();
             } else {
-                graphics.dispose();
-                ImageIO.write(image, "jpg", swapStream);
+                ImageWriter imageWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
+                ios = ImageIO.createImageOutputStream(swapStream);
+                imageWriter.setOutput(ios);
+                JPEGImageWriteParam jpegParams = (JPEGImageWriteParam) imageWriter.getDefaultWriteParam();
+                jpegParams.setCompressionMode(JPEGImageWriteParam.MODE_EXPLICIT);
+                jpegParams.setCompressionQuality(1.0f);
+                imageWriter.write(null, new IIOImage(image, null, null), jpegParams);
+                imageWriter.dispose();
             }
         } catch (Exception e) {
             logger.error("upload oss fail");

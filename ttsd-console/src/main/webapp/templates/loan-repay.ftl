@@ -9,7 +9,7 @@
     <form action="${requestContext.getContextPath()}/project-manage/loan-repay" method="post" class="form-inline query-build">
         <div class="form-group">
             <label for="number">项目编号:</label>
-            <input type="text" class="form-control" id="loanId" placeholder="" value="${(loanId?string("0"))!}">
+            <input type="text" class="form-control" id="loanId" name="loanId" placeholder="" value="${(loanId?string("0"))!}">
         </div>
         <div class="form-group">
             <label for="number">用户名:</label>
@@ -20,7 +20,7 @@
             <label for="number">开始时间:</label>
 
             <div class='input-group date' id='datetimepicker1'>
-                <input type='text' class="form-control" id="startTime" value="${(startTime?string('yyyy-MM-dd'))!}"/>
+                <input type='text' class="form-control" id="startTime" name="startTime" value="${(startTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -29,7 +29,7 @@
             <label for="number">结束时间:</label>
 
             <div class='input-group date' id='datetimepicker2'>
-                <input type='text' class="form-control" id="endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
+                <input type='text' class="form-control" id="endTime" name="endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
