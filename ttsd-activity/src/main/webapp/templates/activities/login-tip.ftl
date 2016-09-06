@@ -31,7 +31,7 @@
     </div>
     <div class="code-item">
         <p class="code-img">
-            <img src="${staticServer}/images/logintip/app-img.jpg" width="180" height="180">
+            <img src="${staticServer}/activity/images/logintip/app-img.jpg" width="180" height="180">
         </p>
         <p>扫描二维码</p>
         <p>下载拓天速贷APP 投资快人一步</p>

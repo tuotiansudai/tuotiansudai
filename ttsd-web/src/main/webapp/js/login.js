@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jquery.form','logintip'], function ($, _) {
+require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jquery.form'], function ($, _) {
 
         var loginFormElement = $('.form-login'),
             loginSubmitElement = $('.login-submit', loginFormElement),

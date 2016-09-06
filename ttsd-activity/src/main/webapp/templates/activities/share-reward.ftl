@@ -67,10 +67,10 @@
                 </#if>
             <#else>
                 <#if isLogin?? && !isLogin>
-                    <a href="/login?redirect=/referrer/refer-list">立即推荐</a>
+                    <a href="javascript:void(0)" class="show-login">立即推荐</a>
                 <#else>
                     <#if noAccount?? && noAccount>
-                        <a href="/registeraccount">立即推荐</a>
+                        <a href="/register/account">立即推荐</a>
                     <#else>
                         <a href="/referrer/refer-list"
                            onclick="cnzzPush.trackClick('201APP分享','推荐奖励落地页','立即推荐')">立即推荐</a>
@@ -81,4 +81,5 @@
         <div class="share-rules"></div>
     </div>
 </div>
+    <#include "login-tip.ftl" />
 </@global.main>

@@ -803,6 +803,6 @@
     </div>
     <#include "coupon-alert.ftl" />
 </div>
-
-    <#include "red-envelope-float.ftl" />
+<#include "login-tip.ftl" />
+<#include "red-envelope-float.ftl" />
 </@global.main>

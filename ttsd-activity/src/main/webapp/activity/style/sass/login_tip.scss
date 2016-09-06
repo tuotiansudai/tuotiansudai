@@ -60,7 +60,7 @@
         height:30px;
         text-align:left;
         margin:5px 0 0 5px;
-        background:url("/images/logintip/result_20160901.png") no-repeat;
+        background:url("/activity/images/logintip/result_20160901.png") no-repeat;
         &.user{
           background-position: 2px 1px;
         }
@@ -102,7 +102,7 @@
     width:310px;
     height:305px;
     margin-top:75px;
-    background:url('/images/logintip/code-line.png') no-repeat;
+    background:url('/activity/images/logintip/code-line.png') no-repeat;
     background-position:0 0;
     @media (max-width:700px) {
       display:none;
@@ -124,7 +124,7 @@
     width:30px;
     height:30px;
     cursor:pointer;
-    background:url("/images/logintip/result_20160901.png") no-repeat;
+    background:url("/activity/images/logintip/result_20160901.png") no-repeat;
     background-position:0 -108px;
   }
 }

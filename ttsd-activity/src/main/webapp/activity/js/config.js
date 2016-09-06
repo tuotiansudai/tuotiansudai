@@ -35,6 +35,7 @@ var require = {
         'placeholder':staticServer+'/activity/js/libs/jquery.enplaceholder',
         'superslide': staticServer+'/activity/js/libs/jquery.SuperSlide.2.1.1',
         'circle': staticServer+'/activity/js/gift_circle',
+        'logintip': staticServer+'/js/dest/login_tip.min'
     },
     'waitSeconds':0,
     'shim': {

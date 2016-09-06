@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down', 'jquery.validate', 'autoNumeric'], function ($, _, layer) {
+require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down', 'jquery.validate', 'autoNumeric','logintip'], function ($, _, layer) {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
             $registerBox = $('.register-ad-box', $bannerBox),
@@ -104,7 +104,13 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
     $('.web-book-box,.book-text-tip').on('click', function (event) {
             event.preventDefault();
         if ($(this).find('a.btn-normal').hasClass('not-anonymous')) {
-            location.href = '/login';
+            layer.open({
+              type: 1,
+              title: false,
+              closeBtn: 0,
+              area:['auto','auto'],
+              content: $('#loginTip') 
+            });
             return;
         }
         if ($(this).find('a').hasClass('is-user')) {
