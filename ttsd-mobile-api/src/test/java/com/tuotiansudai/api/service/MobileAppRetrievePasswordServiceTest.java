@@ -4,8 +4,6 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.RetrievePasswordRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppRetrievePasswordServiceImpl;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.UserModel;

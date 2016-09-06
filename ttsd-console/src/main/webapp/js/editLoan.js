@@ -315,6 +315,12 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     showErrorMessage('最大投资金额不得大于预计出借金额',$('.jq-max-pay',curform));
                     return false;
                 }
+                if ($('#extra:checked').length > 0) {
+                    if ($('.extraSource:checked').length <= 0) {
+                        showErrorMessage("投资奖励渠道必须选择");
+                        return false;
+                    }
+                }
             },
             callback:function(form){
                 formFlag = true;
@@ -343,6 +349,15 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             });
             return extraRateIds;
         }
+
+        function getExtraSource() {
+            var extraSource = [];
+            $('#extraSource .extraSource').each(function () {
+                $(this).prop('checked')==true?extraSource.push($(this).val()):false;
+            });
+            return extraSource.join(",");
+        }
+
 
         //提交表单
         $('.jq-btn-form').click(function () {
@@ -392,6 +407,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "loanAmount": $('.jq-pay').val(),
                         "loanTitles": uploadFile,
                         "extraRateIds": getExtraRateIds(),
+                        "extraSource": getExtraSource(),
 
                         "declaration": $('.jq-loan-declaration').val(),
 
@@ -443,6 +459,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "loanAmount": $('.jq-pay').val(),
                         "loanTitles": uploadFile,
                         "extraRateIds": getExtraRateIds(),
+                        "extraSource": getExtraSource(),
 
                         "declaration": $('.jq-loan-declaration').val(),
 
@@ -492,9 +509,13 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
 
         function uncheckedExtraRate() {
             $('.extra-rate').addClass('hidden');
+            $('.extra-source').addClass('hidden');
             $('.extra-rate-rule').html('');
             $('.extra-rate-id').remove();
             $('#extra').prop('checked', false);
+            $('.extraSource').each(function() {
+                this.checked = false;
+            });
         }
 
         function checkedExtraRate() {
@@ -518,9 +539,11 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         if (res.data.status) {
                             $('.extra-rate-id').remove();
                             $('.extra-rate').removeClass('hidden');
+                            $('.extra-source').removeClass('hidden');
                             var $extraRateRule = $('.extra-rate-rule');
                             $extraRateRule.html('');
                             var extraLoanRateRuleModels = res.data.extraLoanRateRuleModels;
+                            console.log(extraLoanRateRuleModels)
                             for (var i = 0; i < extraLoanRateRuleModels.length; i++) {
                                 var minInvestAmount = extraLoanRateRuleModels[i].minInvestAmount / 100;
                                 var maxInvestAmount;
@@ -530,7 +553,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                                     maxInvestAmount = '';
                                 }
                                 $extraRateRule.append('<tr><td> ' + minInvestAmount + '≤投资额' + maxInvestAmount + '</td><td>' + parseFloat(extraLoanRateRuleModels[i].rate * 100) + '</td></tr>');
-                                $('.extra-rate').append('<input type="hidden" class="extra-rate-id" value="' + extraLoanRateRuleModels[i].id + '">');
+                                $('.extra-rate').append('<input type="text" class="extra-rate-id" value="' + extraLoanRateRuleModels[i].id + '">');
                             }
                         } else {
                             showErrorMessage('服务端校验失败');

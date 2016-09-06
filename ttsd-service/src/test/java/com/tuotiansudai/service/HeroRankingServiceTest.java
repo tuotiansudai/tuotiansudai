@@ -3,7 +3,7 @@ package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseListDataDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.MysteriousPrizeDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
@@ -14,7 +14,6 @@ import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -114,7 +113,7 @@ public class HeroRankingServiceTest {
         investModel3.setTradingTime(new DateTime("2016-07-05").toDate());
         investMapper.create(investModel3);
 
-        BaseListDataDto<HeroRankingView> baseListDataDto = heroRankingService.findHeroRankingByReferrer(new DateTime(2016, 7, 5, 0, 0, 0).toDate(), investor2.getLoginName(), 1, 10);
+        BasePaginationDataDto<HeroRankingView> baseListDataDto = heroRankingService.findHeroRankingByReferrer(new DateTime(2016, 7, 5, 0, 0, 0).toDate(), investor2.getLoginName(), 1, 10);
 
         assertThat(baseListDataDto.getRecords().get(0).getSumAmount(), is(4000l));
     }

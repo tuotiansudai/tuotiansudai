@@ -4,7 +4,7 @@
 
 <div class="col-md-10">
 
-    <form action="/activity-manage/coupon-exchange" method="post" class="form-horizontal form-list">
+    <form action="/point-manage/coupon-exchange" method="post" class="form-horizontal form-list">
 
         <div class="form-group">
             <label class="col-sm-2 control-label">优惠券类型:</label>
@@ -17,8 +17,16 @@
             </div>
         </div>
 
+        <div class="form-group invest-seq">
+            <label  class="col-sm-2 control-label">当前顺序: </label>
+            <div class="col-sm-8">
+                <div class="item-invest">1-</div> <input type="text" class="form-control invest-quota coupon-deadline" name="seq" placeholder="" datatype="n" errormsg="当前顺序只能为有效数字">
+            </div>
+
+        </div>
+
         <div class="form-group invest-coupon">
-            <label  class="col-sm-2 control-label">体验券金额(元): </label>
+            <label  class="col-sm-2 control-label">金额(元): </label>
             <div class="col-sm-4">
                 <input type="text" class="form-control coupon-number" name="amount" placeholder="" datatype="*" errormsg="体验券金额不能为空">
             </div>
@@ -58,9 +66,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">所需财豆</label>
+            <label class="col-sm-2 control-label">所需积分: </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control exchange-point" name="exchangePoint" placeholder="" data-type="n" errormsg="所需财豆需要填写数字">
+                <input type="text" class="form-control exchange-point" name="exchangePoint" placeholder="" data-type="n" errormsg="所需积分需要填写数字">
             </div>
         </div>
 
@@ -88,6 +96,20 @@
             <label  class="col-sm-2 control-label">使用条件: </label>
             <div class="col-sm-8">
                 <div class="item-invest">投资满</div><input type="text" class="form-control invest-quota coupon-number invest_limit" name="investLowerLimit" placeholder="" datatype="*" errormsg="使用条件金额不能为空"><div class="item-invest">元可用</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">来源: </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-source" name="couponSource" placeholder="" datatype="*" errormsg="来源不能为空">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">备注: </label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control coupon-comment" name="comment" placeholder="">
             </div>
         </div>
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.LuxuryPrizeMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="luxuryPrizeResultMap" type="luxuryPrizeModel">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="image" column="image"/>
+        <result property="investAmount" column="invest_amount"/>
+        <result property="tenPercentOffInvestAmount" column="ten_percent_off_invest_amount"/>
+        <result property="twentyPercentOffInvestAmount" column="twenty_percent_off_invest_amount"/>
+        <result property="thirtyPercentOffInvestAmount" column="thirty_percent_off_invest_amount"/>
+        <result property="introduce" column="introduce"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedTime" column="updated_time"/>
+    </resultMap>
+
+    <insert id="create" parameterType="LuxuryPrizeModel" useGeneratedKeys="true" keyProperty="id">
+        insert into luxury_prize(brand,name,price,image,invest_amount,ten_percent_off_invest_amount,twenty_percent_off_invest_amount,
+                        thirty_percent_off_invest_amount,introduce,created_by,created_time,updated_by,updated_time)
+               value(#{brand},#{name},#{price},#{image},#{investAmount},#{tenPercentOffInvestAmount},#{twentyPercentOffInvestAmount},
+                        #{thirtyPercentOffInvestAmount},#{introduce},#{createdBy},#{createdTime},#{updatedBy},#{updatedTime})
+    </insert>
+
+    <update id="update" parameterType="LuxuryPrizeModel">
+        update luxury_prize set brand=#{brand},
+                name = #{name},
+                price = #{price},
+                image = #{image},
+                invest_amount = #{investAmount},
+                ten_percent_off_invest_amount = #{tenPercentOffInvestAmount},
+                twenty_percent_off_invest_amount = #{twentyPercentOffInvestAmount},
+                thirty_percent_off_invest_amount = #{thirtyPercentOffInvestAmount},
+                introduce = #{introduce},
+                updated_by = #{updatedBy},
+                updated_time = #{updatedTime}
+        where id = #{id}
+    </update>
+    
+    <select id="findById" parameterType="long" resultMap="luxuryPrizeResultMap">
+        select * from luxury_prize where id = #{id}
+    </select>
+
+    <select id="findByPrizeId" parameterType="long" resultMap="luxuryPrizeResultMap">
+        select * from luxury_prize where prize_id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="luxuryPrizeResultMap">
+        select * from luxury_prize order by invest_amount desc
+    </select>
+
+</mapper>

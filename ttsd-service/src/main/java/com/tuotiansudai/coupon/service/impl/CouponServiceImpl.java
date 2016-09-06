@@ -22,7 +22,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.InterestCalculator;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +77,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     @Transactional
-    public void createCoupon(String loginName, ExchangeCouponDto exchangeCouponDto) throws CreateCouponException {
+    public ExchangeCouponDto createCoupon(String loginName, ExchangeCouponDto exchangeCouponDto) throws CreateCouponException {
         this.checkCoupon(exchangeCouponDto);
         CouponModel couponModel = new CouponModel(exchangeCouponDto);
         couponModel.setCreatedBy(loginName);
@@ -98,9 +98,11 @@ public class CouponServiceImpl implements CouponService {
         if (exchangeCouponDto.getExchangePoint() != null && exchangeCouponDto.getExchangePoint() > 0) {
             CouponExchangeModel couponExchangeModel = new CouponExchangeModel();
             couponExchangeModel.setCouponId(couponModel.getId());
+            couponExchangeModel.setSeq(exchangeCouponDto.getSeq());
             couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
             couponExchangeMapper.create(couponExchangeModel);
         }
+        return exchangeCouponDto;
 
     }
 
@@ -183,6 +185,7 @@ public class CouponServiceImpl implements CouponService {
 
             CouponExchangeModel couponExchangeModel = couponExchangeMapper.findByCouponId(exchangeCouponDto.getId());
             couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
+            couponExchangeModel.setSeq(exchangeCouponDto.getSeq());
             couponExchangeMapper.update(couponExchangeModel);
         }
 
@@ -377,7 +380,9 @@ public class CouponServiceImpl implements CouponService {
             @Override
             public ExchangeCouponDto apply(CouponModel input) {
                 ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(input);
-                exchangeCouponDto.setExchangePoint(couponExchangeMapper.findByCouponId(input.getId()).getExchangePoint());
+                CouponExchangeModel couponExchangeModel = couponExchangeMapper.findByCouponId(input.getId());
+                exchangeCouponDto.setExchangePoint(couponExchangeModel.getExchangePoint());
+                exchangeCouponDto.setSeq(couponExchangeModel.getSeq());
                 return exchangeCouponDto;
             }
         });

@@ -35,6 +35,7 @@
             </div>
 
             <div class="form-group">
+                <label for="control-label">状态</label>
                 <select class="selectpicker" name="isUsed">
                     <option value="" <#if !(isUsed??)>selected</#if>>全部</option>
                     <option value="true" <#if isUsed?? && isUsed>selected</#if>>已使用</option>

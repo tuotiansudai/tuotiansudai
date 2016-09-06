@@ -10,6 +10,7 @@ spike.py
 **/.gradle/
 **/.DS_Store
 **/*.key.p8
+**/*.crt
 **/war/
 .gradle
 **/gradlew.bat

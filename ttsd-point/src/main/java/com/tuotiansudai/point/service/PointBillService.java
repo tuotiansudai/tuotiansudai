@@ -12,6 +12,8 @@ public interface PointBillService {
 
     void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point);
 
+    void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note);
+
     void createTaskPointBill(String loginName, long pointTaskId, long point, String note);
 
     BasePaginationDataDto<PointBillPaginationItemDataDto> getPointBillPagination(String loginName,

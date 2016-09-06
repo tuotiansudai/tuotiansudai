@@ -37,6 +37,7 @@ public class LoanResponseDataDto {
     public String investedMoneyCent;
     public String loanMoneyCent;
     private List<ExtraLoanRateDto> extraRates;
+    private String extraSource;
 
     public String getLoanId() {
         return loanId;
@@ -283,5 +284,13 @@ public class LoanResponseDataDto {
 
     public void setLoanMoneyCent(String loanMoneyCent) {
         this.loanMoneyCent = loanMoneyCent;
+    }
+
+    public String getExtraSource() {
+        return extraSource;
+    }
+
+    public void setExtraSource(String extraSource) {
+        this.extraSource = extraSource;
     }
 }

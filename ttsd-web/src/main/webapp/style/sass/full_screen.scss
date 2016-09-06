@@ -1,9 +1,12 @@
 @import 'variables';
 @import 'jquery_fullpage';
-@import "coupon_alert";
-@import "index_png";
-@import "home_page";
+@import 'coupon_alert';
+@import 'index_png';
+@import 'home_page';
 
+.layui-layer-tips .layui-layer-content{
+  width:235px;
+}
 #fp-nav ul li {
   width: 25px;
   height: 25px;
@@ -38,7 +41,6 @@ body {
 .footer-container {
   margin-top: 0;
 }
-
 /* refer reward page */
 .refer-reward-instruction {
   overflow: hidden;
@@ -375,92 +377,6 @@ body {
       .point {
         color: #ff752a;
       }
-    }
-  }
-  /* new guide page  */
-  .new-guide-container {
-    .page-width{
-      .down {
-        bottom:0!important;
-        b {
-          display: none;
-        }
-      }
-    }
-    .intro-text{
-      background:url("/images/sign/wap-bg.png") no-repeat center!important;
-      .flex-model{
-        float:left;
-        width:100%;
-        position: static;
-        top:0;
-        left:0;
-        margin-top:0;
-        p{
-          color:#fff;
-          margin:0 20px;
-          &.intro-title{
-            font-size:36px;
-            line-height:36px;
-            margin-top:100px;
-          }
-          &.intro-english{
-            font-size:14px;
-            letter-spacing:6px;
-          }
-          &.text-name{
-            font-size:16px;
-            margin-top:30px;
-          }
-          &.intro-detail{
-            display:none;
-          }
-          &.intro-restext{
-            display:block;
-          }
-        }
-      }
-    }
-    .mode-operation{
-      margin-top:50px;
-      p{
-        float:left;
-        width:100%;
-        color:#808080;
-        text-align:center;
-        &.mode-title{
-          font-size:26px;
-          margin-bottom:0;
-          line-height: 26px;
-          span{
-            color:#449be2;
-          }
-        }
-        &.title-word{
-          font-size:16px;
-          margin-bottom:20px;
-        }
-        &.user-register{
-          margin-top:10px;
-          a{
-            padding:10px 100px;
-            text-align:center;
-            background:#ff9c2b;
-            color:#fff;
-            border-radius:5px;
-            line-height:40px;
-          }
-        }
-        &.pc-img{
-          display:none;
-        }
-        &.responsive-img{
-          display:block;
-        }
-      }
-    }
-    .intro-text{
-      background:url("/images/sign/guide-bg.png") no-repeat center fixed;
     }
   }
   .refer-reward-instruction {

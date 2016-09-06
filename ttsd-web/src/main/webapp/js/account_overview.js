@@ -75,8 +75,8 @@ require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrappe
                 })
                     .done(function (response) {
                         if (response.data.status) {
-                            signText.html("签到成功，领取" + response.data.signInPoint + "财豆！");
-                            tomorrowText.html("明日可领" + response.data.nextSignInPoint + "财豆");
+                            signText.html("签到成功，领取" + response.data.signInPoint + "积分！");
+                            tomorrowText.html("明日可领" + response.data.nextSignInPoint + "积分");
                             $addDou.html("+" + response.data.signInPoint);
                             $signTip.fadeIn('fast', function () {
                                 $(this).find('.add-dou').animate({

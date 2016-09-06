@@ -12,9 +12,9 @@ import java.util.List;
 
 public interface UserServiceConsole {
 
-    BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email, String mobile, Date beginTime, Date endTime,
-                                               Source source, RoleStage roleStage, String referrerMobile, String channel,
-                                               Integer pageIndex, Integer pageSize);
+    BaseDto<BasePaginationDataDto<UserItemDataDto>> findAllUser(String loginName, String email, String mobile, Date beginTime, Date endTime,
+                                                                Source source, RoleStage roleStage, String referrerMobile, String channel,
+                                                                Integer pageIndex, Integer pageSize);
 
     List<UserView> searchAllUsers(String loginName, String referrerMobile, String mobile, String identityNumber);
 

@@ -8,8 +8,10 @@ import com.tuotiansudai.api.dto.v2_0.UserInvestListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.UserInvestRecordResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppInvestListsService;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -18,7 +20,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +52,8 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
 
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
+    @Autowired
+    private CouponRepayMapper couponRepayMapper;
 
     @Override
     public BaseResponseDto<UserInvestListResponseDataDto> generateUserInvestList(UserInvestListRequestDto userInvestListRequestDto) {
@@ -96,8 +100,15 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
 
                 List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
                 for (InvestRepayModel investRepayModel : investRepayModels) {
+                    CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(),investRepayModel.getPeriod());
                     actualInterest += investRepayModel.getActualInterest() - investRepayModel.getActualFee() + investRepayModel.getDefaultInterest();
                     expectedInterest += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest();
+                    if(couponRepayModel != null){
+                        actualInterest += couponRepayModel.getRepayAmount();
+                        expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
+                    }
+
+
                 }
                 dto.setActualInterest(AmountConverter.convertCentToString(actualInterest));
                 dto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
