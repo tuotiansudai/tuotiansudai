@@ -72,7 +72,7 @@ public class ActivityMapperTest {
     }
 
     private List<ActivityModel> prepareData() {
-        UserModel userModel = createUserModel("testUser");
+        UserModel userModel = createUserModel("testUser1");
         createUserModel("updatedUser");
         List<ActivityModel> activityModels = new ArrayList<>();
         ActivityModel activityModel = createActivityModel(userModel, DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE);
@@ -140,6 +140,7 @@ public class ActivityMapperTest {
         updatedActivityModel.setShareContent("content");
         updatedActivityModel.setShareTitle("title");
         updatedActivityModel.setShareUrl("url");
+        updatedActivityModel.setSeq(10l);
         activityMapper.update(updatedActivityModel);
 
         ActivityModel activityModel = activityMapper.findById(activityModels.get(0).getId());
@@ -178,6 +179,6 @@ public class ActivityMapperTest {
         activityModels = activityMapper.findActiveActivities(Source.WEB, DateTime.parse("1999-1-1").toDate(), 0, 1);
         assertEquals(1, activityModels.size());
         activityModels = activityMapper.findActiveActivities(Source.WEB, DateTime.parse("2999-1-1").toDate(), 0, 1);
-        assertEquals(0, activityModels.size());
+        assertEquals(1, activityModels.size());
     }
 }
