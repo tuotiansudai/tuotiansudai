@@ -37,14 +37,17 @@ public class SensitiveWordsFilter {
     }
 
     public static String replace(String raw) {
-        return raw.replaceAll(sensitiveLevelOneWords,  "");
+//        return raw.replaceAll(sensitiveLevelOneWords,  "");
+        return raw;
     }
 
     public static String filter(String raw) {
-        return raw.replaceAll(sensitiveLevelTwoWords,  "*");
+//        return raw.replaceAll(sensitiveLevelTwoWords,  "*");
+        return raw;
     }
 
     public static boolean match(String raw) {
-        return !replace(raw).equals(raw);
+//        return !replace(raw).equals(raw);
+        return false;
     }
 }
