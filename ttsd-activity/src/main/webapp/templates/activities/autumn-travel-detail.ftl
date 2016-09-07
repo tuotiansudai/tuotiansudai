@@ -22,10 +22,10 @@
 
     <div class="tc">
         <@global.isAnonymous>
-            <a href="/login?redirect=/activity/autumn/travel" class="btn-normal">立即投资</a>
+            <a href="/login?redirect=/activity/autumn/travel" class="btn-normal" onclick="cnzzPush.trackClick('230旅游活动详情页面','立即投资')">立即投资</a>
         </@global.isAnonymous>
         <@global.isNotAnonymous>
-            <a href="/loan-list" class="btn-normal autumn-travel-invest-channel">立即投资</a>
+            <a href="/loan-list" class="btn-normal autumn-travel-invest-channel" onclick="cnzzPush.trackClick('230旅游活动详情页面','立即投资')">立即投资</a>
         </@global.isNotAnonymous>
     </div>
 </div>
