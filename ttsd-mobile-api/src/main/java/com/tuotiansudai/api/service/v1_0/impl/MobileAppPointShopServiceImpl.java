@@ -172,7 +172,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
         ProductModel productModel = productMapper.findById(Long.parseLong(productDetailRequestDto.getProductId().trim()));
 
-        if ((productModel.getTotalCount() - productModel.getUsedCount()) <= 0) {
+        if ((productModel.getTotalCount() - productModel.getUsedCount()) <= 0 || (productModel.getTotalCount() - productModel.getUsedCount()) < productDetailRequestDto.getNum()) {
             logger.error(MessageFormat.format("Insufficient product (userId = {0},totalCount = {1},usedCount = {2})", productDetailRequestDto.getBaseParam().getUserId(), productModel.getTotalCount(), productModel.getUsedCount()));
             return new BaseResponseDto<>(ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getCode(), ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getMsg());
         }
@@ -202,6 +202,9 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         if(productModel.getType().equals(GoodsType.COUPON)){
             couponAssignmentService.assignUserCoupon(productDetailRequestDto.getBaseParam().getUserId(),productModel.getCouponId());
         }
+
+        productModel.setUsedCount(productModel.getUsedCount() + productDetailRequestDto.getNum());
+        productMapper.update(productModel);
 
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
