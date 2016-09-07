@@ -39,12 +39,12 @@ public interface AnswerMapper {
     AnswerModel findBestAnswerByQuestionId(@Param(value = "questionId") long questionId);
 
     List<AnswerModel> findAnswersForConsole(@Param(value = "question") String question,
-                                            @Param(value = "loginName") String loginName,
+                                            @Param(value = "mobile") String mobile,
                                             @Param(value = "status") AnswerStatus status,
                                             @Param(value = "index") int index,
                                             @Param(value = "pageSize") int pageSize);
 
     long countAnswersForConsole(@Param(value = "question") String question,
-                                @Param(value = "loginName") String loginName,
+                                @Param(value = "mobile") String mobile,
                                 @Param(value = "status") AnswerStatus status);
 }

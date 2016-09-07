@@ -2,14 +2,8 @@ package com.tuotiansudai.paywrapper.extrarate.service.impl;
 
 
 import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
-import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
-import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.ExtraLoanRateModel;
-import com.tuotiansudai.repository.model.InvestExtraRateModel;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -37,6 +31,9 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
     private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
 
     @Override
@@ -46,6 +43,8 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
         if (CollectionUtils.isEmpty(extraLoanRateModels)) {
             return;
         }
+        LoanDetailsModel loanDetailsModel =  loanDetailsMapper.getLoanDetailsByLoanId(loanId);
+
         LoanModel loanModel = loanMapper.findById(loanId);
         Date repayDate = new DateTime(loanModel.getRecheckTime()).plusDays(loanModel.getDuration()).toDate();
         List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
@@ -70,7 +69,11 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
                             .longValue();
                     investExtraRateModel.setExpectedFee(expectedFee);
 
-                    investExtraRateMapper.create(investExtraRateModel);
+                    if(loanDetailsModel.getExtraSource().contains(investModel.getSource().name()))
+                    {
+                        investExtraRateMapper.create(investExtraRateModel);
+                    }
+
                 }
             }
         }
