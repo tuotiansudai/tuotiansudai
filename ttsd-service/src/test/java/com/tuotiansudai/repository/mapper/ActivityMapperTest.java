@@ -47,6 +47,7 @@ public class ActivityMapperTest {
     private ActivityModel createActivityModel(UserModel userModel, Date activatedTime, Date expiredTime, List<Source> source, ActivityStatus activityStatus) {
         ActivityModel activityModel = new ActivityModel();
         activityModel.setTitle("testTitle");
+        activityModel.setSeq(10l);
         activityModel.setWebActivityUrl("testWebActivityUrl");
         activityModel.setAppActivityUrl("testAppActivityUrl");
         activityModel.setDescription("testDescription");
