@@ -37,8 +37,8 @@
             <dd>资金、隐私、数据三方面全面保护！</dd>
             <dd class="high-profit">
                 <div class="high-box square-normal">
-                    <span>评估抵押物 &emsp;&emsp;&emsp; 审核借款人</span>
-                    <span>评估贷款项目 &emsp;&emsp;&emsp; 办理法律手续</span>
+                    <span>评估抵押物 &emsp;&emsp;&emsp;&emsp; 审核借款人</span>
+                    <span>评估贷款项目 &emsp;&emsp;办理法律手续</span>
                     <span class="line-align"></span>
                     <span class="line-valign"></span>
                 </div>

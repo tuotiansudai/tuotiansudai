@@ -621,12 +621,11 @@
 	overflow: hidden;
 	dl {
 	  margin-left: 80px;
-
 	  dt {
 		position: relative;
 		color: #333333;
 		font-size: 20px;
-		padding-left: 80px;
+		padding-left: 85px;
 		span {
 		  position: absolute;
 		  font-size: 80px;
@@ -635,10 +634,12 @@
 		  display: inline-block;
 		  left: -10px;
 		  top: -40px;
+		  font-family: arial;
+		  letter-spacing: -3px;
 		}
 	  }
 	  dd {
-		padding-left:80px;
+		padding-left:85px;
 		color: #808080;
 		&.img-load {
 		  padding-left:70px;
@@ -692,10 +693,10 @@
 			.high-box {
 			  border:1px solid #db6558;
 			  border-radius:10px;
-			  width:255px;
+			  width:265px;
 			  padding:10px;
 			  box-sizing: border-box;
-			  font-size:16px;
+			  font-size:15px;
 			  text-align: center;
 			  background: #fff;
 			  position: relative;

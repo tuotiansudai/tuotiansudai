@@ -37,7 +37,7 @@
 
     <div class="page-width trade-risk-box pad-box">
         <dl>
-            <dt class="column-title-ac">交易风险控制</dt>
+            <dt class="column-title-ac"><i></i>交易风险控制<i></i></dt>
             <dd>
                 <b>评估抵押物</b>
                 <p>拓天速贷对于每笔借款都要求借款人提供优质的房产抵押或者车辆抵押，并会对抵押物的价值进行评估。</p>
@@ -70,7 +70,7 @@
     </div>
 
     <div class="page-width pad-box">
-        <div class="column-title-ac">数据与信息安全</div>
+        <div class="column-title-ac"><i></i>数据与信息安全<i></i></div>
         <div class="data-info-safety">
 
         <div class="square-box-info">
