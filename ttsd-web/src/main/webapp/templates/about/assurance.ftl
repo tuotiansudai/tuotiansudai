@@ -1,143 +1,122 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.full_screen}" pageJavascript="${js.assurance}" activeNav="" activeLeftNav="" title="安全保障">
-<style type="text/css">
-    .header-container {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        z-index: 102;
-        display: block;
-    }
-    .nav-container {
-        position: absolute;
-        top: 30px;
-        z-index: 100;
-        display: block;
-    }
-    .footer-container {
-        display: none;
-    }
-    @media screen and (max-width: 700px) {
-        .header-container,.nav-container {
-            display: none;
-        }
-    }
-</style>
+<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.assurance}" activeNav="" activeLeftNav="" title="安全保障">
 
-<a href="/" class="back-home">返回首页</a>
 <div class="assurance-container" id="assuranceEffect">
-    <div class="section box-benift">
-        <div class="section-title">
-            <div class="line"></div>
-            <b class="bg1">稳健收益  较低门槛</b>
-            <em>最高46倍活期存款预期收益，最低投资门槛50元</em>
+    <ul class="quick-top-link page-width">
+        <li class="guide"><a href="/about/guide">新手指引</a></li>
+        <li class="risk"><a href="/about/risk-flow">风控流程</a></li>
+        <li class="assure active"><a href="/about/assurance">安全保障</a></li>
+    </ul>
+    <div class="main-banner">
+        <div class="page-width">
+            <img src="${staticServer}/images/sign/assure/assure-bar.jpg" alt="拓天速贷，安全保障">
         </div>
-            <div class="page-width">
-                <img src="${staticServer}/images/sign/assure/benift.png" class="fl" />
-                <div class="fr">
-                    <p>
-                        拓天速贷收益高且稳定持久。<br/>
-                        最高预期年化收益16%，高达银行活期46倍。
-                    </p>
-                    <P>
-                        <b class="text-16">新开三条产品线</b><br/>
-                        速盈利，预期年化收益10%，高达银行活期28倍以上；<br/>
-                        稳盈绣，预期年化收益12%，高达银行定期8倍以上；<br/>
-                        久盈富，预期年化收益14%，高达银行定期9倍以上。
-                    </P>
-                    <p>拓天速贷投资门槛低，50元即可起投。</p>
-                </div>
-                <div class="down clearfix"><b>试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/down.png" class="down-icon" alt=""></div>
-            </div>
-
     </div>
-    <div class="section box-wealth">
-        <div class="section-title">
-            <div class="line"></div>
-            <b class="bg2">三方托管 放心投资</b>
-            <em>第三方资金托管，第三方支付</em>
+    <div class="fund-safety-box bg-white clearfix pad-box">
+    <div class="page-width">
+        <dl class="safe-title clearfix">
+            <dt class="column-title-ac"><i></i>资金安全<i></i></dt>
+            <dd>为保障投资者的资金安全，拓天速贷采用多管齐下的资金管理措施。</dd>
+        </dl>
+        <div class="safe-info-list">
+        <dl>
+            <dt class="list01"><em>第三方<br/>资金托管</em></dt>
+            <dd>拓天速贷接入了联动优势的资金托管系统，联动优势为拓天建立专门账户，对所有资金进行监管。拓天只撮合投资项目，不经手资金。</dd>
+        </dl>
+        <dl>
+            <dt class="list02"><em>严密风控</em></dt>
+            <dd>拓天速贷拥有一套专业而成熟的风控体系，严格审核每笔项目的借款申请，从源头上确保用户资金安全。</dd>
+        </dl>
+        <dl>
+            <dt class="list03"><em>同卡同出</em></dt>
+            <dd>您在拓天速贷开通银行卡快捷支付，充值和提现的银行卡必须是同一张银行卡，即使账户丢失、手机丢失，您的钱也不会被盗走。</dd>
+        </dl>
         </div>
-            <div class="page-width wealth-content">
-                <img src="${staticServer}/images/sign/assure/wealth.png" class="page-img" />
-                <p class="article-one">
-                    拓天速贷由联动优势提供第三方资金托管和交易;<br/>
-                    拓天速贷只撮合投资项目，不经手资金;<br/>
-                    这样的运营模式让资金去向更明确、更透明、有效隔离风险。
-                </p>
-                <p class="article-two">
-                    联动优势作为拓天速贷的资金安全保障方;<br/>
-                    为拓天速贷的用户提供更安全、更稳健的资金保障。
-                </p>
-                <p class="article-three">
-                    联动优势由中国银联和中国移动于2003年联合创立;<br/>
-                    是国内专业的移动支付服务商;<br/>
-                    获央行颁发的《中华人民共和国支付业务许可证》。
-                </p>
-
-                <div class="down clearfix"><b>试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/down.png" class="down-icon" alt=""></div>
-            </div>
+        </div>
     </div>
-    <div class="section box-insurance">
-        <div class="section-title">
-            <div class="line"></div>
-            <b class="bg3">实力雄厚  安全保障</b>
-            <em>在沪挂牌企业投资，资金数据均安全</em>
-        </div>
-        <div class="page-width clearfix">
-            <img src="${staticServer}/images/sign/assure/insurance.png" class="page-img" />
-            <div class="fl">
-                <p class="info-one">
-                    <b class="text-18">在沪挂牌企业投资</b><br/>
-                    拓天速贷由在沪挂牌公司拓天伟业（北京）资产管理有限公司投资，提供更安全的投资产品，更全面的平台服务，更雄厚的资金保障。
-                </p>
-                <p>
-                    <b class="sqr-title">抵押模式安全</b><br/>
-                    拓天速贷平台项目都是质押债权，并立体化的审核评估借款人信用、抵押物状况、企业经营状况、还款来源等信息，确保项目的安全。
-                </p>
-                <p>
-                    <b class="sqr-title">操作流程严谨</b><br/>
 
-                    对投资项目进行实时监控及项目数据评估、识别、通报，严格把握风险调控，实现规范业务操作、防范业务风险的目标。
-                </p>
-                <p>
-                    <b class="sqr-title">平台信息透明</b><br/>
-                    拓天速贷的所有产品信息均可在线上查询，项目相关资料原件保存在公司档案库中，用户可随时申请实地查询。
-                </p>
-            </div>
-            <div class="fr">
-                <p>
-                    <b class="text-18">数据安全</b><br/>
-                    采用256位实时数据传输加密技术；<br/>
-                    使用高端软硬件防火墙技术；<br/>
-                    实施两地三中心的数据储存解决方案；<br/>
-                    充分保障用户信息和项目信息的安全。
+    <div class="page-width trade-risk-box pad-box">
+        <dl>
+            <dt class="column-title-ac"><i></i>交易风险控制<i></i></dt>
+            <dd>
+                <b>评估抵押物</b>
+                <p>拓天速贷对于每笔借款都要求借款人提供优质的房产抵押或者车辆抵押，并会对抵押物的价值进行评估。</p>
+            </dd>
+            <dd>
+                <b>审核借款人</b>
+                <p>拓天速贷要求借款人提交身份证、户口本、抵押物权力证明等资质证明；还会通过家访、征信、银行流水等了解借款人的偿还能力。</p>
+            </dd>
+            <dd>
+                <b>评估贷款项目</b>
+                <p>评估完相关信息后，对于符合规定的借款人，拓天速贷会对借款的项目进行审核与评估，包括借款用途、借款时长、还款方式等。</p>
+            </dd>
+            <dd>
+                <b>办理法律手续</b>
+                <p>对于每笔借款，拓天速贷都会要求借款人办理登记或公证，公证的内容包括：借款合同公证、委托抵押公证、委托买卖公证、强制执行公证、房产他项权利证登记等</p>
+            </dd>
+        </dl>
 
-                </p>
-            </div>
-            <div class="article-mobile">
-                <p>
-                    <b>在沪挂牌企业投资</b><br/>
-                拓天速贷由在沪挂牌公司<br/>
-                拓天伟业（北京）资产管理有限公司投资。
-                </p>
-                <p>
-                    <b>资金安全</b><br/>
-                    抵押模式安全；
-                    操作流程严谨；<br/>
-                    平台信息透明；全面保障用户的资金安全。
-                </p>
-                <p>
-                    <b>数据安全</b><br/>
-                    采用256位实时数据传输加密技术；<br/>
-                    使用高端软硬件防火墙技术；<br/>
-                    实施两地三中心的数据储存解决方案。
+     </div>
 
-                </p>
-            </div>
-            <div class="down clearfix"><b>试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/up.png" class="down-icon" alt=""></div>
+    <div class="private-safety-box bg-white clearfix pad-box">
+        <div class="page-width">
+            <dl class="safe-title clearfix">
+                <dt class="column-title-ac"><i></i>隐私安全<i></i></dt>
+                <dd>拓天速贷有严格的用户信息操作规范，从流程上确保用户隐私不会被泄露。</dd>
+                <dd>拓天速贷遵守国家相关法律法规，对用户的隐私信息进行严格的保护，不会在没有合法依据的情况下将用户的个人隐
+                    私及账户隐私以任何形式透露给第三方。</dd>
+            </dl>
          </div>
+    </div>
+
+    <div class="page-width pad-box">
+        <div class="column-title-ac"><i></i>数据与信息安全<i></i></div>
+        <div class="data-info-safety">
+
+        <div class="square-box-info">
+            <i class="triangle"></i>
+            <dl>
+                <dt>网络安全</dt>
+                <dd>使用高端软硬件防火墙技术</dd>
+            </dl>
+        </div>
+
+            <div class="square-box-info">
+                <i class="triangle"></i>
+                <dl>
+                    <dt>加密技术</dt>
+                    <dd>采用256位实时数据传输加密技术</dd>
+                </dl>
+            </div>
+
+            <div class="square-box-info">
+                <i class="triangle"></i>
+                <dl>
+                    <dt>容灾备份</dt>
+                    <dd>同城和异地均建立灾备设备，避免用户信息丢失</dd>
+                </dl>
+            </div>
+
+            <div class="square-box-info">
+                <i class="triangle"></i>
+                <dl>
+                    <dt>内控流程</dt>
+                    <dd>建立了完善的内部权限审核流程</dd>
+                </dl>
+            </div>
+            <div class="axis-center"></div>
     </div>
 </div>
 
-
+    <div class="bottom-close" style="display: none;"></div>
+    <div class="bottom-open">
+        <div class="page-width">
+            <div class="ren"></div>
+            <a href="/activity/landing-page" class="btn-normal">立即领取</a>
+            <div class="to-close fr">
+                <i class="fa fa-angle-left"></i>
+                <span>收<br/>起</span>
+            </div>
+        </div>
+    </div>
 </@global.main>

@@ -99,19 +99,19 @@ module.exports = function(grunt) {
                 files: [
                     '<%= meta.baseSassPath %>/**/*.scss'
                 ],
-                tasks: ['clean:css', 'sass']
+                tasks: ['newer:clean:css', 'newer:sass']
             },
             cssmin: {
                 files: [
                     ['<%= meta.baseCssPath %>/*.css']
                 ],
-                tasks: ['cssmin:dist']
+                tasks: ['newer:cssmin:dist']
             },
             uglify: {
                 files: [
                     ['<%= meta.baseJsPath %>/*.js']
                 ],
-                tasks: ['clean:js', 'uglify']
+                tasks: ['newer:clean:js', 'newer:uglify']
             }
         },
         connect: {
@@ -145,7 +145,16 @@ module.exports = function(grunt) {
     });
 
     // 默认被执行的任务列表。
-    grunt.registerTask('default', ['clean', 'uglify', 'sass', 'cssmin:dist', 'connect', 'watch']);
+    grunt.registerTask('default', ['newer:clean', 'newer:uglify', 'newer:sass', 'newer:cssmin:dist', 'connect', 'watch']);
     grunt.registerTask('base64', ['dataUri', 'cssmin:base64', 'clean:base64']);
+
+    grunt.registerTask('dev',
+        ['newer:clean',
+            'newer:uglify',
+            'newer:sass',
+            'newer:cssmin:dist',
+            'connect',
+            'watch:sass'
+        ]);
 
 };
