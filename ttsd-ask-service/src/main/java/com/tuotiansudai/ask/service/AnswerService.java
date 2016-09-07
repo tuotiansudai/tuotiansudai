@@ -191,10 +191,8 @@ public class AnswerService {
     }
 
     public BaseDto<BasePaginationDataDto> findAnswersForConsole(String question, String mobile, AnswerStatus status, int index, int pageSize) {
-        UserModel userModel = userMapper.findByMobile(mobile);
-        String loginName = userModel != null ? userModel.getLoginName() : null;
-        long count = answerMapper.countAnswersForConsole(question, loginName, status);
-        List<AnswerModel> answerModels = answerMapper.findAnswersForConsole(question, loginName, status, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        long count = answerMapper.countAnswersForConsole(question, mobile, status);
+        List<AnswerModel> answerModels = answerMapper.findAnswersForConsole(question, mobile, status, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
         return generatePaginationData(null, index, pageSize, count, answerModels, false);
     }
 
@@ -231,7 +229,8 @@ public class AnswerService {
             @Override
             public AnswerDto apply(AnswerModel input) {
                 QuestionModel questionModel = questionMapper.findById(input.getQuestionId());
-                QuestionDto questionDto = new QuestionDto(questionModel, userMapper.findByLoginName(questionModel.getLoginName()).getMobile());
+                QuestionDto questionDto = new QuestionDto(questionModel,
+                        isEncodeMobile && !questionModel.getLoginName().equalsIgnoreCase(loginName) ? (MobileEncoder.encode(Strings.isNullOrEmpty(questionModel.getFakeMobile()) ? questionModel.getMobile() : questionModel.getFakeMobile())) : questionModel.getMobile());
                 return new AnswerDto(input,
                         isEncodeMobile ? MobileEncoder.encode(Strings.isNullOrEmpty(input.getFakeMobile()) ? input.getMobile() : input.getFakeMobile()) : input.getMobile(),
                         input.getFavoredBy() != null && input.getFavoredBy().contains(loginName),

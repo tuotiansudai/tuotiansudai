@@ -6,10 +6,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.HomeLoanDto;
-import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +31,9 @@ public class HomeServiceImpl implements HomeService {
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Override
     public List<HomeLoanDto> getLoans() {
@@ -62,7 +62,12 @@ public class HomeServiceImpl implements HomeService {
                 }
 
                 List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loan.getId());
-                return new HomeLoanDto(newbieInterestCouponModel, loan, investAmount, loanRepayModels, extraLoanRateMapper.findMaxRateByLoanId(loan.getId()));
+                LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+                String extraSource = "";
+                if(loanDetailsModel != null){
+                    extraSource = loanDetailsModel.getExtraSource();
+                }
+                return new HomeLoanDto(newbieInterestCouponModel, loan, investAmount, loanRepayModels, extraLoanRateMapper.findMaxRateByLoanId(loan.getId()),extraSource);
             }
         });
     }

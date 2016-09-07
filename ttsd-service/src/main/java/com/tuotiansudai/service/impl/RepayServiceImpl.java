@@ -204,7 +204,9 @@ public class RepayServiceImpl implements RepayService {
                     InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
                     if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
                         repayAmount += investExtraRateModel.getRepayAmount();
-                        investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest + investExtraRateModel.getExpectedInterest()));
+                        actualFee += investExtraRateModel.getActualFee();
+                        expectedFee += investExtraRateModel.getExpectedFee();
+                        couponExpectedInterest += investExtraRateModel.getExpectedInterest();
                     }
                 }
 

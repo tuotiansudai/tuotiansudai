@@ -23,12 +23,12 @@ public class SystemBillServiceImpl implements SystemBillService {
 
 
     @Override
-    public BaseDto<BasePaginationDataDto> findSystemBillPagination(Date startTime,
-                                                                   Date endTime,
-                                                                   SystemBillOperationType operationType,
-                                                                   SystemBillBusinessType businessType,
-                                                                   int index,
-                                                                   int pageSize) {
+    public BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> findSystemBillPagination(Date startTime,
+                                                                                                    Date endTime,
+                                                                                                    SystemBillOperationType operationType,
+                                                                                                    SystemBillBusinessType businessType,
+                                                                                                    int index,
+                                                                                                    int pageSize) {
         if (index < 1) {
             index = 1;
         }
@@ -36,7 +36,7 @@ public class SystemBillServiceImpl implements SystemBillService {
             pageSize = 10;
         }
 
-        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
+        BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> baseDto = new BaseDto<>();
         List<SystemBillPaginationItemDataDto> systemBillPaginationItemDataDtos = Lists.newArrayList();
 
         int count = systemBillMapper.findSystemBillCount(startTime, endTime, operationType, businessType);
@@ -77,7 +77,6 @@ public class SystemBillServiceImpl implements SystemBillService {
                                    SystemBillOperationType operationType,
                                    SystemBillBusinessType businessType) {
 
-        int count = systemBillMapper.findSystemBillCount(startTime, endTime, operationType, businessType);
-        return count;
+        return systemBillMapper.findSystemBillCount(startTime, endTime, operationType, businessType);
     }
 }
