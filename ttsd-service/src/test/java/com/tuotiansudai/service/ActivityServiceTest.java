@@ -107,6 +107,7 @@ public class ActivityServiceTest {
         ActivityModel activityModel = new ActivityModel();
         activityModel.setId(id);
         activityModel.setTitle(title);
+        activityModel.setSeq(10l);
         activityModel.setWebActivityUrl("testWebActivityUrl");
         activityModel.setAppActivityUrl("testAppActivityUrl");
         activityModel.setDescription("testDescription");
@@ -132,7 +133,7 @@ public class ActivityServiceTest {
     }
 
     private List<ActivityModel> prepareData() {
-        UserModel userModel = createUserModel("testUser");
+        UserModel userModel = createUserModel("testUser1");
         long loanId = idGenerator.generate();
         createLoanModel(userModel.getLoginName(), loanId);
         createInvests(userModel.getLoginName(), loanId);
@@ -162,6 +163,7 @@ public class ActivityServiceTest {
         ActivityDto activityDto = new ActivityDto();
         activityDto.setActivityId(idGenerator.generate());
         activityDto.setTitle("title");
+        activityDto.setSeq(10l);
         activityDto.setWebActivityUrl("WebActivityUrl");
         activityDto.setAppActivityUrl("AppActivityUrl");
         activityDto.setWebPictureUrl("WebPictureUrl");
@@ -180,7 +182,7 @@ public class ActivityServiceTest {
 
     @Test
     public void shouldCreateEditRecheckActivityByCreate() {
-        UserModel userModel = createUserModel("testUser");
+        UserModel userModel = createUserModel("testUser1");
         ActivityDto activityDto = fakeActivityDto(userModel.getLoginName(), ActivityStatus.TO_APPROVE);
 
         activityService.saveOrUpdate(activityDto, ActivityStatus.TO_APPROVE, userModel.getLoginName(), "");
@@ -200,7 +202,7 @@ public class ActivityServiceTest {
 
     @Test
     public void shouldCreateEditRecheckActivityByEdit() {
-        UserModel userModel = createUserModel("testUser");
+        UserModel userModel = createUserModel("testUser1");
         ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);
 
@@ -223,7 +225,7 @@ public class ActivityServiceTest {
 
     @Test
     public void shouldCreateEditRecheckActivityByRejection() {
-        UserModel userModel = createUserModel("testUser");
+        UserModel userModel = createUserModel("testUser1");
         ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);
         activityService.saveOrUpdate(activityDto, ActivityStatus.REJECTION, userModel.getLoginName(), "");
@@ -234,7 +236,7 @@ public class ActivityServiceTest {
 
     @Test
     public void shouldCreateEditRecheckActivityByRecheck() {
-        UserModel userModel = createUserModel("testUser");
+        UserModel userModel = createUserModel("testUser1");
         ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);
         activityService.saveOrUpdate(activityDto, ActivityStatus.APPROVED, userModel.getLoginName(), "");
