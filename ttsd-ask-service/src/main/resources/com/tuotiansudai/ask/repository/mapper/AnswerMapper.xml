@@ -119,8 +119,8 @@
             <if test="question != null and question != '' ">
                 and exists(select 1 from question where question.id = answer.question_id and question like CONCAT(CONCAT('%', #{question}), '%'))
             </if>
-            <if test="loginName != null and loginName != ''">
-                and login_name = #{loginName}
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile}
             </if>
             <if test="status != null">
                 and status = #{status}
@@ -137,8 +137,8 @@
             <if test="question != null and question != '' ">
                 and exists(select 1 from question where question.id = answer.question_id and question like CONCAT(CONCAT('%', #{question}), '%'))
             </if>
-            <if test="loginName != null and loginName != ''">
-                and login_name = #{loginName}
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile}
             </if>
             <if test="status != null">
                 and status = #{status}
