@@ -9,6 +9,8 @@
     <resultMap id="questionResultMap" type="QuestionModel">
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="fake_mobile" property="fakeMobile"/>
         <result column="question" property="question"/>
         <result column="addition" property="addition"/>
         <result column="tags" property="tags" typeHandler="com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler"/>
@@ -23,13 +25,15 @@
     </resultMap>
 
     <insert id="create" parameterType="QuestionModel" useGeneratedKeys="true" keyProperty="id">
-        insert into question (login_name, question, addition, tags, answers, last_answered_time, approved_by, approved_time, rejected_by, rejected_time, status, created_time)
-        value(#{loginName}, #{question}, #{addition}, #{tags, typeHandler=com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler}, #{answers}, #{lastAnsweredTime}, #{approvedBy}, #{approvedTime}, #{rejectedBy}, #{rejectedTime}, #{status}, now())
+        insert into question (login_name, mobile, fake_mobile, question, addition, tags, answers, last_answered_time, approved_by, approved_time, rejected_by, rejected_time, status, created_time)
+        value(#{loginName}, #{mobile}, #{fakeMobile}, #{question}, #{addition}, #{tags, typeHandler=com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler}, #{answers}, #{lastAnsweredTime}, #{approvedBy}, #{approvedTime}, #{rejectedBy}, #{rejectedTime}, #{status}, now())
     </insert>
 
     <update id="update" parameterType="QuestionModel">
         update question set
         login_name = #{loginName},
+        mobile = #{mobile},
+        fake_mobile = #{fakeMobile},
         question = #{question},
         addition = #{addition},
         tags = #{tags, typeHandler=com.tuotiansudai.ask.repository.mybatis.TagListTypeHandler},
@@ -124,8 +128,8 @@
             <if test="question != null and question != '' ">
                 and question like CONCAT(CONCAT('%', #{question}), '%')
             </if>
-            <if test="loginName != null">
-                and login_name = #{loginName}
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile}
             </if>
             <if test="status != null">
                 and status = #{status}
@@ -142,8 +146,8 @@
             <if test="question != null and question != '' ">
                 and question like CONCAT(CONCAT('%', #{question}), '%')
             </if>
-            <if test="loginName != null">
-                and login_name = #{loginName}
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile}
             </if>
             <if test="status != null">
                 and status = #{status}

@@ -1,6 +1,6 @@
 package com.tuotiansudai.activity.controller;
 
-import com.tuotiansudai.dto.BaseListDataDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.repository.model.LoanModel;
@@ -52,15 +52,15 @@ public class HeroRankingController {
 
     @RequestMapping(value = "/referrer-invest/{tradingTime}", method = RequestMethod.GET)
     @ResponseBody
-    public BaseListDataDto<HeroRankingView> obtainHeroRankingByReferrer(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
+    public BasePaginationDataDto<HeroRankingView> obtainHeroRankingByReferrer(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
         return heroRankingService.findHeroRankingByReferrer(tradingTime, LoginUserInfo.getLoginName(), 1, 3);
     }
 
     @RequestMapping(value = "/invest/{tradingTime}", method = RequestMethod.GET)
     @ResponseBody
-    public BaseListDataDto<HeroRankingView> obtainHeroRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
+    public BasePaginationDataDto<HeroRankingView> obtainHeroRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
         final String loginName = LoginUserInfo.getLoginName();
-        BaseListDataDto<HeroRankingView> baseListDataDto = new BaseListDataDto<>();
+        BasePaginationDataDto<HeroRankingView> baseListDataDto = new BasePaginationDataDto<>();
         List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(tradingTime);
 
         if (heroRankingViews != null) {

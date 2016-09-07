@@ -13,12 +13,9 @@ sourceSets {
 }
 
 dependencies {
-    def springSecurityVersion = '4.0.2.RELEASE'
-
     compile project(':ttsd-user-service'),
-            project(':ttsd-client'),
-            "org.springframework.security:spring-security-config:$springSecurityVersion",
-            "org.springframework.security:spring-security-taglibs:$springSecurityVersion"
+            project(':ttsd-client')
+
 
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }

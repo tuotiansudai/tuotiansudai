@@ -145,7 +145,7 @@ public class InvestTransferPurchaseServiceTest {
 
         investTransferPurchaseService.noPasswordPurchase(investDto);
 
-        InvestModel investModel = investMapper.findByLoginName(transferee.getLoginName(), 0, 1).get(0);
+        InvestModel investModel = investMapper.findPaginationByLoginName(transferee.getLoginName(), 0, 1).get(0);
 
         investTransferPurchaseService.postPurchase(investModel.getId());
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(), Lists.newArrayList(TransferStatus.SUCCESS));

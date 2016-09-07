@@ -5,7 +5,6 @@ import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 
 import java.util.Map;
 

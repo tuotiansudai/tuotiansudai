@@ -8,6 +8,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
@@ -38,9 +39,10 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
     private IdGenerator idGenerator;
     @Mock
     private CouponService couponService;
-
     @Mock
     private ExtraLoanRateMapper extraLoanRateMapper;
+    @Mock
+    private LoanDetailsMapper loanDetailsMapper;
     @Test
     public void shouldGenerateLoanListIsOk(){
         ReflectionTestUtils.setField(mobileAppLoanListService, "defaultFee", 0.1);
@@ -57,6 +59,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         when(userMembershipEvaluator.evaluate(anyString())).thenReturn(membershipModel);
         when(couponService.findExperienceInvestAmount(any(List.class))).thenReturn(1000l);
         when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
+        when(loanDetailsMapper.getLoanDetailsByLoanId(anyLong())).thenReturn(null);
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testLoan");

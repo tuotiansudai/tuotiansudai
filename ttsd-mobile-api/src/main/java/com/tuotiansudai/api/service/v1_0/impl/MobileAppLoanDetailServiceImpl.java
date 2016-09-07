@@ -15,7 +15,7 @@ import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -197,6 +197,11 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loan.getId());
         if (CollectionUtils.isNotEmpty(extraLoanRateModels)) {
             loanDetailResponseDataDto.setExtraRates(fillExtraLoanRateDto(extraLoanRateModels));
+        }
+
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+        if(loanDetailsModel != null){
+            loanDetailResponseDataDto.setExtraSource("WEB".equals(loanDetailsModel.getExtraSource())?loanDetailsModel.getExtraSource():"");
         }
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);

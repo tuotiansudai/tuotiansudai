@@ -34,9 +34,9 @@ public class WithdrawServiceImpl implements WithdrawService {
     }
 
     @Override
-    public BaseDto<BasePaginationDataDto> findWithdrawPagination(String withdrawId, String mobile,
-                                                                 WithdrawStatus status, Source source,
-                                                                 int index, int pageSize, Date startTime, Date endTime) {
+    public BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> findWithdrawPagination(String withdrawId, String mobile,
+                                                                                                WithdrawStatus status, Source source,
+                                                                                                int index, int pageSize, Date startTime, Date endTime) {
         if (index < 1) {
             index = 1;
         }
@@ -44,7 +44,7 @@ public class WithdrawServiceImpl implements WithdrawService {
             pageSize = 10;
         }
 
-        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
+        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = new BaseDto<>();
         List<WithdrawPaginationItemDataDto> withdrawPaginationItemDataDtos = Lists.newArrayList();
 
         long count = withdrawMapper.findWithdrawCount(withdrawId, mobile, status, source, startTime, endTime);
@@ -88,11 +88,11 @@ public class WithdrawServiceImpl implements WithdrawService {
 
     @Override
     public int findWithdrawCount(String withdrawId,
-                                  String mobile,
-                                  WithdrawStatus status,
-                                  Source source,
-                                  Date startTime,
-                                  Date endTime) {
+                                 String mobile,
+                                 WithdrawStatus status,
+                                 Source source,
+                                 Date startTime,
+                                 Date endTime) {
 
         return withdrawMapper.findWithdrawCount(withdrawId, mobile, status, source, startTime, endTime);
     }

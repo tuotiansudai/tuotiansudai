@@ -75,7 +75,7 @@ public class SignInClient extends BaseClient {
                 .add("password", dto.getPassword())
                 .add("captcha", dto.getCaptcha())
                 .add("source", dto.getSource());
-        if (StringUtils.isNotEmpty(dto.getDeviceId())) {
+        if (!Strings.isNullOrEmpty(dto.getDeviceId())) {
             formEncodingBuilder.add("deviceId", dto.getDeviceId());
         }
 

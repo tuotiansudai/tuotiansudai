@@ -19,48 +19,49 @@ require(['jquery', 'jquery-ui',
             }
         });
         $("#loginName").blur(function () {
-            for(var i = 0; i< autoValue.length; i++){
-                if($(this).val()== autoValue[i]){
+            for (var i = 0; i < autoValue.length; i++) {
+                if ($(this).val() == autoValue[i]) {
                     $(this).removeClass('Validform_error');
                     return false;
-                }else{
+                } else {
                     $(this).addClass('Validform_error');
                 }
 
             }
 
         });
-        $("#btnRepayReset").click(function(){
+        $("#btnRepayReset").click(function () {
 
-            location.href="/project-manage/loan-repay";
+            location.href = "/project-manage/loan-repay";
         });
 
 
         $('.down-load').click(function () {
             location.href = "/export/loan-repay?" + $('form').serialize();
         });
-        function pageinationView(e){
+        function pageinationView(e) {
             var index = $(e.target).attr("pageIndex");
 
             if ($('#loanId').val() != "" && !$('#loanId').val().match("^[0-9]*$")) {
                 $('#loanId').val('0');
             }
 
-            var loanId =  $('#loanId').val();
-            var loginName =  $('#loginName').val();
-            var startTime =  $('#startTime').val();
-            var endTime =  $('#endTime').val();
+            var loanId = $('#loanId').val();
+            var loginName = $('#loginName').val();
+            var startTime = $('#startTime').val();
+            var endTime = $('#endTime').val();
             var repayStatus = $('#repayStatus').val()
             var pageSize = 10;
 
-            location.href="/project-manage/loan-repay?loanId="+loanId
-            +"&loginName="+loginName
-            +"&startTime="+startTime
-            +"&endTime="+endTime
-            +"&repayStatus="+repayStatus
-            +"&index="+index
-            +"&pageSize="+pageSize;
+            location.href = "/project-manage/loan-repay?loanId=" + loanId
+                + "&loginName=" + loginName
+                + "&startTime=" + startTime
+                + "&endTime=" + endTime
+                + "&repayStatus=" + repayStatus
+                + "&index=" + index
+                + "&pageSize=" + pageSize;
         }
+
         $('#btnRepayQuery').click(pageinationView);
         $('.Previous').click(pageinationView);
         $('.Next').click(pageinationView);

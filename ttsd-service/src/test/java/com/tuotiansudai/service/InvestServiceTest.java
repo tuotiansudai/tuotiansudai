@@ -3,10 +3,7 @@ package com.tuotiansudai.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.AutoInvestPlanDto;
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.IdGenerator;
@@ -48,6 +45,9 @@ public class InvestServiceTest {
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     private void createLoanByUserId(String userId, long loanId) {
         LoanDto loanDto = new LoanDto();
@@ -154,6 +154,9 @@ public class InvestServiceTest {
         createLoanByUserId(loginName, loanId);
         List<ExtraLoanRateModel> extraLoanRateModels = createExtraLoanRate(loanId);
         extraLoanRateMapper.create(extraLoanRateModels);
+
+        loanDetailsMapper.create(createLoanDetails(loanId));
+
         long amount = investService.estimateInvestIncome(loanId, loginName, 100000);
         assertNotNull(amount);
         assertTrue(amount == 2810);
@@ -192,6 +195,15 @@ public class InvestServiceTest {
         list.add(model2);
         list.add(model3);
         return list;
+    }
+
+    private LoanDetailsModel createLoanDetails(long loanId){
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
+        loanDetailsModel.setId(idGenerator.generate());
+        loanDetailsModel.setDeclaration("声明材料");
+        loanDetailsModel.setExtraSource("WEB");
+        loanDetailsModel.setLoanId(loanId);
+        return loanDetailsModel;
     }
 
 }

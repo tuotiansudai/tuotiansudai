@@ -13,7 +13,7 @@
         <b class="text-m">实时关注</b>
 
         <ul class="real-attention clearfix">
-            <li><img src="${staticServer}/images/sign/weixin-code.png" class="responsive-width" alt="" title="" width="204" height="204"/><span>扫我关注拓天速贷微信</span></li>
+            <li><img src="${staticServer}/images/sign/weixin-code.jpg" class="responsive-width" alt="" title="" width="204" height="204"/><span>扫我关注拓天速贷微信</span></li>
             <li><img src="${staticServer}/images/sign/sina-code.png" class="responsive-width" alt="" title="" width="204" height="204"/><span>扫我关注拓天速贷微博</span></li>
         </ul>
 

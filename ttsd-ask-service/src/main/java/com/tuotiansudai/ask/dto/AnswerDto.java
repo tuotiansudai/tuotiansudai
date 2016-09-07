@@ -1,5 +1,6 @@
 package com.tuotiansudai.ask.dto;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.ask.repository.model.AnswerModel;
 import com.tuotiansudai.ask.repository.model.AnswerStatus;
 import com.tuotiansudai.ask.utils.SensitiveWordsFilter;

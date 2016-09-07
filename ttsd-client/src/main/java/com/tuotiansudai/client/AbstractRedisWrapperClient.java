@@ -1,6 +1,6 @@
 package com.tuotiansudai.client;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Strings;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +37,7 @@ public abstract class AbstractRedisWrapperClient {
         while (true) {
             try {
                 jedis = getJedisPool().getResource();
-                if (StringUtils.isNotEmpty(getRedisPassword())) {
+                if (!Strings.isNullOrEmpty(getRedisPassword())) {
                     jedis.auth(getRedisPassword());
                 }
                 jedis.select(db);

@@ -8,7 +8,7 @@ import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageUserGroup;
 import com.tuotiansudai.message.service.impl.MessageServiceImpl;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
