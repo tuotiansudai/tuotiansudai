@@ -32,6 +32,7 @@ public class ContractServiceImpl implements ContractService {
      * 后缀为FTL
      */
     private static final String FTL = ".ftl";
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
     private LoanMapper loanMapper;
@@ -115,9 +116,9 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("loanerIdentityNumber", loanerDetailsModel.getIdentityNumber());
         dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
         dataModel.put("periods", loanModel.getPeriods());
-        dataModel.put("totalRate", loanModel.getBaseRate() + loanModel.getActivityRate());
-        dataModel.put("recheckTime", loanModel.getRecheckTime());
-        dataModel.put("endTime", investRepayModel.getRepayDate());
+        dataModel.put("totalRate", loanModel.getBaseRate());
+        dataModel.put("recheckTime", simpleDateFormat.format(loanModel.getRecheckTime()));
+        dataModel.put("endTime", simpleDateFormat.format(investRepayModel.getRepayDate()));
         if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
             dataModel.put("pledge", "房屋");
         } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
@@ -157,7 +158,6 @@ public class ContractServiceImpl implements ContractService {
 
     private Map<String, Object> collectTransferContractModel(long transferApplicationId) {
         Map<String, Object> dataModel = new HashMap<>();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
         if (null == transferApplicationModel) {
