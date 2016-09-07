@@ -49,12 +49,12 @@ public interface QuestionMapper {
                                   @Param(value = "pageSize") int pageSize);
 
     List<QuestionModel> findQuestionsForConsole(@Param(value = "question") String question,
-                                                @Param(value = "loginName") String loginName,
+                                                @Param(value = "mobile") String mobile,
                                                 @Param(value = "status") QuestionStatus status,
                                                 @Param(value = "index") int index,
                                                 @Param(value = "pageSize") int pageSize);
 
     long countQuestionsForConsole(@Param(value = "question") String question,
-                                  @Param(value = "loginName") String loginName,
+                                  @Param(value = "mobile") String mobile,
                                   @Param(value = "status") QuestionStatus status);
 }
