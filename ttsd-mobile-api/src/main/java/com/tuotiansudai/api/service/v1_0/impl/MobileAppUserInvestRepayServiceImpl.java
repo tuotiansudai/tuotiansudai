@@ -15,6 +15,7 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -48,9 +49,6 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
     private CouponRepayMapper couponRepayMapper;
 
     @Autowired
-    private MembershipMapper membershipMapper;
-
-    @Autowired
     private UserCouponMapper userCouponMapper;
 
     @Autowired
@@ -60,7 +58,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
     private TransferApplicationMapper transferApplicationMapper;
 
     @Autowired
-    private UserMembershipMapper userMembershipMapper;
+    private UserMembershipService userMembershipService;
 
     private final static String RED_ENVELOPE_TEMPLATE = "{0}元现金红包";
 
@@ -129,13 +127,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(completeTotalActualInterest));
             userInvestRepayResponseDataDto.setUnPaidRepay(AmountConverter.convertCentToString(unPaidTotalRepay));
             userInvestRepayResponseDataDto.setInvestRepays(investRepayList);
-            List<UserMembershipModel> userMembershipModels = userMembershipMapper.findByLoginNameOrInvestTime(investModel.getLoginName(), investModel.getInvestTime());
-
-            int level = 0;
-            if(CollectionUtils.isNotEmpty(userMembershipModels)){
-                level = membershipMapper.findById(userMembershipModels.get(0).getMembershipId()).getLevel();
-            }
-            userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(level));
+            userInvestRepayResponseDataDto.setMembershipLevel(userMembershipService.getMembershipLevelByLoginNameAndInvestTime(investModel.getLoginName(), investModel.getInvestTime()));
             List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModel.getId());
 
             List<String> usedCoupons = Lists.transform(userCouponModels, new Function<UserCouponModel, String>() {
