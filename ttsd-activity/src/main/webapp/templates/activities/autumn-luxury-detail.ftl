@@ -9,10 +9,10 @@
         </div>
         <div class="detail-btn">
         	<@global.isAnonymous>
-                <a href="/login?redirect=/activity/autumn/luxury">立即投资</a>
+                <a href="/login?redirect=/activity/autumn/luxury" onclick="cnzzPush.trackClick('218奢侈品活动详情页','立即投资')">立即投资</a>
             </@global.isAnonymous>
             <@global.isNotAnonymous>
-                <a href="/loan-list" class="autumn-luxury-invest-channel">立即投资</a>
+                <a href="/loan-list" class="autumn-luxury-invest-channel" onclick="cnzzPush.trackClick('218奢侈品活动详情页','立即投资')">立即投资</a>
             </@global.isNotAnonymous>
         </div>
     </div>

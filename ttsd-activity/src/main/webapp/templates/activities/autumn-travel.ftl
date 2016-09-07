@@ -50,10 +50,10 @@
                             <div class="kind-bottom">
                                 <span class="fl">商品价格<em>${prize.price}</em>元</span>
                                 <@global.isAnonymous>
-                                    <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+                                    <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel" onclick="cnzzPush.trackClick('220旅游活动页面','立即投资' + ${prize_index + 1})">立即投资</a>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
-                                    <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+                                    <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel" onclick="cnzzPush.trackClick('220旅游活动页面','立即投资' + ${prize_index + 1})">立即投资</a>
                                 </@global.isNotAnonymous>
                             </div>
                         </div>
@@ -138,10 +138,10 @@
 
         <div class="tc customized-button">
             <@global.isAnonymous>
-                <a href="/login?redirect=/activity/autumn/travel" class="btn-normal autumn-travel-invest-channel">立即投资领奖</a>
+                <a href="/login?redirect=/activity/autumn/travel" class="btn-normal autumn-travel-invest-channel" onclick="cnzzPush.trackClick('223旅游活动页面','立即投资领奖')">立即投资领奖</a>
             </@global.isAnonymous>
             <@global.isNotAnonymous>
-                <a href="/loan-list" class="btn-normal autumn-travel-invest-channel">立即投资领奖</a>
+                <a href="/loan-list" class="btn-normal autumn-travel-invest-channel" onclick="cnzzPush.trackClick('223旅游活动页面','立即投资领奖')">立即投资领奖</a>
             </@global.isNotAnonymous>
         </div>
     </div>
@@ -157,7 +157,7 @@
                         <i class="arrow-right"></i>
                         <em>
                             <#if steps[0] == 1>
-                                <a href="/register/user">去注册 >></a>
+                                <a href="/register/user" onclick="cnzzPush.trackClick('224旅游活动页面','去注册')">去注册 >></a>
                             </#if>
                             <#if steps[0] == 2>已注册<b class="fa fa-check-circle"></b></#if>
                         </em>
@@ -171,7 +171,7 @@
                         <em>
                             <#if steps[1] == 0>认证</#if>
                             <#if steps[1] == 1>
-                                <a href="/register/account">去认证 >></a>
+                                <a href="/register/account" onclick="cnzzPush.trackClick('225旅游活动页面','去认证')">去认证 >></a>
                             </#if>
                             <#if steps[1] == 2>已认证<b class="fa fa-check-circle"></b></#if>
                         </em>
@@ -185,7 +185,7 @@
                         <em>
                             <#if steps[2] == 0>绑卡</#if>
                             <#if steps[2] == 1>
-                                <a href="/bind-card">去绑卡 >></a>
+                                <a href="/bind-card" onclick="cnzzPush.trackClick('226旅游活动页面','去绑卡')">去绑卡 >></a>
                             </#if>
                             <#if steps[2] == 2>已绑卡<b class="fa fa-check-circle"></b></#if>
                         </em>
@@ -199,7 +199,7 @@
                         <em>
                             <#if steps[3] == 0>充值</#if>
                             <#if steps[3] == 1>
-                                <a href="/recharge">去充值 >></a>
+                                <a href="/recharge" onclick="cnzzPush.trackClick('227旅游活动页面','去充值')">去充值 >></a>
                             </#if>
                         </em>
                         <s class="arrow-left"></s>
@@ -213,10 +213,10 @@
                             <#if steps[4] == 0>投资</#if>
                             <#if steps[4] == 1>
                                 <@global.isAnonymous>
-                                    <a href="/login?redirect=/activity/autumn/travel" class="autumn-travel-invest-channel">去投资 >></a>
+                                    <a href="/login?redirect=/activity/autumn/travel" class="autumn-travel-invest-channel" onclick="cnzzPush.trackClick('228旅游活动页面','去投资')">去投资 >></a>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
-                                    <a href="/loan-list" class="autumn-travel-invest-channel">去投资 >></a>
+                                    <a href="/loan-list" class="autumn-travel-invest-channel" onclick="cnzzPush.trackClick('228旅游活动页面','去投资')">去投资 >></a>
                                 </@global.isNotAnonymous>
                             </#if>
                         </em>
@@ -229,11 +229,11 @@
             <span class="activity-text">活动期间，每推荐一名好友注册也可获得一次抽奖机会；好友投资，还可再得一次抽奖机会。邀请越多机会越多。</span>
             <div class="tc customized-button">
                 <span class="pc">
-                    <a href="/referrer/refer-list" class="btn-normal">立即邀请好友赢抽奖机会</a>
+                    <a href="/referrer/refer-list" class="btn-normal" onclick="cnzzPush.trackClick('229旅游活动页面','立即邀请好友赢抽奖机会')">立即邀请好友赢抽奖机会</a>
                     <br/>
                 </span>
                 <span class="mobile">
-                    <a href="/referrer/refer-list" class="btn-normal">立即邀请好友赢抽奖机会</a>
+                    <a href="/referrer/refer-list" class="btn-normal" onclick="cnzzPush.trackClick('229旅游活动页面','立即邀请好友赢抽奖机会')">立即邀请好友赢抽奖机会</a>
                 </span>
             </div>
         </div>

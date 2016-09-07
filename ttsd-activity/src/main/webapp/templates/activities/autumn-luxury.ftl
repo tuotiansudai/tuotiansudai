@@ -63,10 +63,10 @@
                                     <p class="intro-text"><span>投资满<strong><@amount>${prize.investAmount?string.computer}</@amount></strong>元可获得</span></p>
                                     <p class="btn-text">
                                         <@global.isAnonymous>
-                                            <a href="/login?redirect=/activity/autumn/luxury" class="autumn-luxury-invest-channel">立即投资</a>
+                                            <a href="/login?redirect=/activity/autumn/luxury" class="autumn-luxury-invest-channel" onclick="cnzzPush.trackClick('209奢侈品活动页面','立即投资' +   ${prize_index + 1})">立即投资</a>
                                         </@global.isAnonymous>
                                         <@global.isNotAnonymous>
-                                            <a href="/loan-list" class="autumn-luxury-invest-channel">立即投资</a>
+                                            <a href="/loan-list" class="autumn-luxury-invest-channel" onclick="cnzzPush.trackClick('209奢侈品活动页面','立即投资' + ${prize_index + 1})">立即投资</a>
                                         </@global.isNotAnonymous>
 
                                     </p>
@@ -185,10 +185,10 @@
             </div>
             <div class="btn-item">
                 <@global.isAnonymous>
-                    <a href="/login?redirect=/activity/autumn/luxury">立即投资领奖</a>
+                    <a href="/login?redirect=/activity/autumn/luxury" onclick="cnzzPush.trackClick('211奢侈品活动页面','立即投资领奖')">立即投资领奖</a>
                 </@global.isAnonymous>
                 <@global.isNotAnonymous>
-                    <a href="/loan-list" class="autumn-luxury-invest-channel">立即投资领奖</a>
+                    <a href="/loan-list" class="autumn-luxury-invest-channel" onclick="cnzzPush.trackClick('211奢侈品活动页面','立即投资领奖')">立即投资领奖</a>
                 </@global.isNotAnonymous>
             </div>
         </div>
@@ -202,7 +202,7 @@
                     <li class="<#if steps[0] == 1>active</#if><#if steps[0] == 2>finished</#if>">
                         <div class="icon user-icon"></div>
                         <#if steps[0] == 1>
-                            <div class="icon-text"><a href="/register/user">去注册</a></div></#if>
+                            <div class="icon-text"><a href="/register/user" onclick="cnzzPush.trackClick('212奢侈品活动页面','去注册')">去注册</a></div></#if>
                         <#if steps[0] == 2>
                             <div class="icon-text">已注册</div></#if>
                     </li>
@@ -211,7 +211,7 @@
                         <#if steps[1] == 0>
                             <div class="icon-text">认证</div></#if>
                         <#if steps[1] == 1>
-                            <div class="icon-text"><a href="/register/account">去认证</a></div></#if>
+                            <div class="icon-text"><a href="/register/account" onclick="cnzzPush.trackClick('213奢侈品活动页面','去认证')">去认证</a></div></#if>
                         <#if steps[1] == 2>
                             <div class="icon-text">已认证</div></#if>
                         <div class="step-icon"></div>
@@ -221,7 +221,7 @@
                         <#if steps[2] == 0>
                             <div class="icon-text">绑卡</div></#if>
                         <#if steps[2] == 1>
-                            <div class="icon-text"><a href="/bind-card">去绑卡</a></div></#if>
+                            <div class="icon-text"><a href="/bind-card" onclick="cnzzPush.trackClick('214奢侈品活动页面','去绑卡')">去绑卡</a></div></#if>
                         <#if steps[2] == 2>
                             <div class="icon-text">已绑卡</div></#if>
                         <div class="step-icon"></div>
@@ -231,7 +231,7 @@
                         <#if steps[3] == 0>
                             <div class="icon-text">充值</div></#if>
                         <#if steps[3] == 1>
-                            <div class="icon-text"><a href="/recharge">去充值</a></div></#if>
+                            <div class="icon-text"><a href="/recharge" onclick="cnzzPush.trackClick('215奢侈品活动页面','去充值')">去充值</a></div></#if>
                         <div class="step-icon"></div>
                     </li>
                     <li class="<#if steps[4] == 1>active</#if>">
@@ -240,10 +240,10 @@
                             <div class="icon-text">投资</div></#if>
                         <#if steps[4] == 1>
                             <@global.isAnonymous>
-                                <a href="/login?redirect=/activity/autumn/luxury" class="icon-text autumn-luxury-invest-channel">去投资</a>
+                                <a href="/login?redirect=/activity/autumn/luxury" class="icon-text autumn-luxury-invest-channel" onclick="cnzzPush.trackClick('216奢侈品活动页面','去投资')">去投资</a>
                             </@global.isAnonymous>
                             <@global.isNotAnonymous>
-                                <a href="/loan-list" class="icon-text autumn-luxury-invest-channel">去投资</a>
+                                <a href="/loan-list" class="icon-text autumn-luxury-invest-channel" onclick="cnzzPush.trackClick('216奢侈品活动页面','去投资')">去投资</a>
                             </@global.isNotAnonymous>
                         </#if>
                         <div class="step-icon"></div>
@@ -252,10 +252,10 @@
                 <p>活动期间，每推荐一名好友注册也可获得一次抽奖机会；好友投资，还可再得一次抽奖机会。邀请越多机会越多。</p>
                 <p>
                     <@global.isAnonymous>
-                        <a href="/login?redirect=/activity/autumn/luxury" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                        <a href="/login?redirect=/activity/autumn/luxury" class="btn-invite" onclick="cnzzPush.trackClick('217奢侈品活动页面','立即邀请好友赢抽奖机会')">立即邀请好友赢抽奖机会</a>
                     </@global.isAnonymous>
                     <@global.isNotAnonymous>
-                        <a href="/referrer/refer-list" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                        <a href="/referrer/refer-list" class="btn-invite" onclick="cnzzPush.trackClick('217奢侈品活动页面','立即邀请好友赢抽奖机会')">立即邀请好友赢抽奖机会</a>
                     </@global.isNotAnonymous>
                 </p>
             </div>
@@ -265,10 +265,10 @@
                 </p>
                 <p>
                     <@global.isAnonymous>
-                        <a href="/login?redirect=/activity/autumn/luxury" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                        <a href="/login?redirect=/activity/autumn/luxury" class="btn-invite" onclick="cnzzPush.trackClick('217奢侈品活动页面','立即邀请好友赢抽奖机会')">立即邀请好友赢抽奖机会</a>
                     </@global.isAnonymous>
                     <@global.isNotAnonymous>
-                        <a href="/referrer/refer-list" class="btn-invite">立即邀请好友赢抽奖机会</a>
+                        <a href="/referrer/refer-list" class="btn-invite" onclick="cnzzPush.trackClick('217奢侈品活动页面','立即邀请好友赢抽奖机会')">立即邀请好友赢抽奖机会</a>
                     </@global.isNotAnonymous>
                 </p>
             </div>
