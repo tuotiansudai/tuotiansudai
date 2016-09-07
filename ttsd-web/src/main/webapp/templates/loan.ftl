@@ -18,7 +18,6 @@
                         <#if extraLoanRates??>
                             <div class="fl orange extra-rate" id="extra-rate">投资奖励+${extraLoanRates.minExtraRate}%~${extraLoanRates.maxExtraRate}%<i class="fa fa-question-circle" aria-hidden="true"></i>
                             </div>
-
                             <script>
                                 var __extraRate = [
                                     <#list extraLoanRates.items as extraLoanRate>
@@ -34,7 +33,7 @@
                             <div class="extra-rate-popup" id="extra-rate-popup">
                                 <div class="header clearfix">
                                     <div class="td fl">投资金额</div>
-                                    <div class="td fl">加息</div>
+                                    <div class="td fl">投资奖励</div>
                                 </div>
                                 <% _.each(__extraRate, function(value){
                                 var text;
