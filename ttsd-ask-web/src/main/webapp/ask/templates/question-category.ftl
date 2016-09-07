@@ -1,7 +1,7 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}">
+<@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}" title="拓天问答_投资问答_拓天速贷" keywords="" description="">
 <div class="article-content fl">
-    <div class="category-title">分类为 <span>${tag.description}</span> 下的问题</div>
+    <div class="category-title">分类为<span>${tag.description}</span> 下的问题</div>
     <div class="borderBox clearfix">
         <div class="answers-box">
             <#list questions.data.records as question>
