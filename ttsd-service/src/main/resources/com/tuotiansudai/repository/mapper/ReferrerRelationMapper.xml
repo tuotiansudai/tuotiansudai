@@ -38,4 +38,8 @@
          select count(1) from referrer_relation  where referrer_login_name = #{referrerLoginName}
     </select>
 
+    <select id="findByReferrerLoginName" parameterType="map" resultMap="referrerRelationResultMap">
+        select * from referrer_relation where referrer_login_name = #{referrerLoginName}
+    </select>
+
 </mapper>

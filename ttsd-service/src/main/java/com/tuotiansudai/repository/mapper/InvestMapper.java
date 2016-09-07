@@ -245,5 +245,7 @@ public interface InvestMapper {
 
 
 
+    List<InvestModel> findSuccessInvestByInvestTime(@Param(value = "startTime") Date startTime,
+                                              @Param(value = "endTime") Date endTime);
 
 }

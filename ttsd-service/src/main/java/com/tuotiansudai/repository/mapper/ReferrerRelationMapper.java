@@ -28,5 +28,6 @@ public interface ReferrerRelationMapper {
     int findReferrerCountByReferrerLoginName(@Param(value = "referrerLoginName") String referrerLoginName);
 
 
+    List<ReferrerRelationModel> findByReferrerLoginName(@Param(value = "referrerLoginName") String referrerLoginName);
 
 }

@@ -395,4 +395,9 @@ public class UserServiceImpl implements UserService {
         ResetUmpayPasswordDto resetUmpayPasswordDto = new ResetUmpayPasswordDto(loginName, identityNumber);
         return payWrapperClient.resetUmpayPassword(resetUmpayPasswordDto);
     }
+
+    @Override
+    public List<UserModel> findByRegisterTime(Date startTime, Date endTime){
+        return userMapper.findByRegisterTime(startTime, endTime);
+    }
 }
