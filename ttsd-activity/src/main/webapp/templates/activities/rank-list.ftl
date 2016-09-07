@@ -164,7 +164,8 @@
                     </h3>
 
                     <div class="circle-shade">
-                        <div class="pointer-img" id="pointerTd" data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
+                        <#--id="pointerTd"-->
+                        <div class="pointer-img actor-finish"data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
                             <img src="${staticServer}/activity/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
@@ -240,7 +241,8 @@
                     </h3>
 
                     <div class="circle-shade">
-                        <div class="pointer-img" id="pointerCd" data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
+                        <#--id="pointerCd"-->
+                        <div class="pointer-img actor-finish"  data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
                             <img src="${staticServer}/activity/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
@@ -542,7 +544,8 @@
                 </div>
                 <div class="gift-circle">
                     <div class="max-gift">
-                        <div class="pointer-img" id="pointerTdPhone" data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
+                        <#--id="pointerTdPhone"-->
+                        <div class="pointer-img actor-finish"  data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
                             <img src="${staticServer}/activity/images/sign/actor/ranklist/pointer.png" width="100%" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
@@ -611,7 +614,8 @@
                 </div>
                 <div class="gift-circle">
                     <div class="max-gift">
-                        <div class="pointer-img" id="pointerCdPhone" data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
+                        <#--id="pointerCdPhone"-->
+                        <div class="pointer-img actor-finish"  data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
                             <img src="${staticServer}/activity/images/sign/actor/ranklist/pointer.png" width="100%" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
