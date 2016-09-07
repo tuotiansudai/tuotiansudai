@@ -39,7 +39,7 @@
         </div>
         <div class="actor-list">
             <#list data as activityItem>
-                <#if activityItem.longTerm == 'noLongTerm' && activityItem.expiredTime??&&activityItem.expiredTime?date lt .now?date>
+                <#if activityItem.longTerm == 'notLongTerm' && activityItem.expiredTime??&&activityItem.expiredTime?date lt .now?date>
                     <div class="activity-box">
                         <div class="activity-img">
                             <div class="img-inner">
