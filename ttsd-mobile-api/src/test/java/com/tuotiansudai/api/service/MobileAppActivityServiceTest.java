@@ -134,7 +134,7 @@ public class MobileAppActivityServiceTest {
     }
 
     private List<ActivityModel> prepareData() {
-        UserModel userModel = createUserModel("testUser");
+        UserModel userModel = createUserModel("testUser1");
         long loanId = idGenerator.generate();
         createLoanModel(userModel.getLoginName(), loanId);
         createInvests(userModel.getLoginName(), loanId);
@@ -170,7 +170,7 @@ public class MobileAppActivityServiceTest {
         List<ActivityCenterDataDto> activityCenterDataDtos = activityCenterResponseDto.getActivities();
         assertEquals(4, activityCenterDataDtos.size());
         assertEquals("新手1", activityCenterDataDtos.get(0).getDescTitle());
-        assertEquals("normal2", activityCenterDataDtos.get(1).getDescTitle());
+        assertEquals("normal4", activityCenterDataDtos.get(1).getDescTitle());
         assertEquals("新手2", activityCenterDataDtos.get(2).getDescTitle());
         assertEquals("normal3", activityCenterDataDtos.get(3).getDescTitle());
     }
