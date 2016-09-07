@@ -5,7 +5,6 @@ import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ReferrerRelationModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.console.activity.service.ExportService;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,19 +18,17 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
-public class ExportServiceTest {
+@Transactional(value = "activityTransactionManager")
+public class ExportAutumnServiceTest {
 
+    @Autowired
+    private UserLotteryService userLotteryService;
 
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
-
-    @Autowired
-    private ExportService exportService;
-
 
 
     @Test
@@ -49,7 +46,7 @@ public class ExportServiceTest {
         createReferrerRelationModel("maliu", "test", 1);
 
 
-        exportService.getAutumnExport();
+        //exportService.getAutumnExport();
 
     }
 
