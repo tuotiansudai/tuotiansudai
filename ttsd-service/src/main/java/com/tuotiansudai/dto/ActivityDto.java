@@ -11,11 +11,14 @@ import java.util.List;
 public class ActivityDto {
     private Long activityId;
     private String title;
+    private Long seq;
     private String webActivityUrl;
     private String appActivityUrl;
     private String description;
     private String webPictureUrl;
     private String appPictureUrl;
+    private String longTerm;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date activatedTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date expiredTime;
@@ -36,6 +39,7 @@ public class ActivityDto {
     public ActivityDto(ActivityModel activityModel) {
         this.activityId = activityModel.getId();
         this.title = activityModel.getTitle();
+        this.seq = activityModel.getSeq();
         this.webActivityUrl = activityModel.getWebActivityUrl();
         this.appActivityUrl = activityModel.getAppActivityUrl();
         this.description = activityModel.getDescription();
@@ -69,6 +73,14 @@ public class ActivityDto {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Long getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Long seq) {
+        this.seq = seq;
     }
 
     public String getWebActivityUrl() {
@@ -109,6 +121,14 @@ public class ActivityDto {
 
     public void setAppPictureUrl(String appPictureUrl) {
         this.appPictureUrl = appPictureUrl;
+    }
+
+    public String getLongTerm() {
+        return longTerm;
+    }
+
+    public void setLongTerm(String longTerm) {
+        this.longTerm = longTerm;
     }
 
     public Date getActivatedTime() {

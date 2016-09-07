@@ -4,6 +4,7 @@ import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.scripting.xmltags.VarDeclSqlNode;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -26,6 +27,14 @@ public interface ActivityMapper {
                                              @Param(value = "expiredTime") Date expiredTime,
                                              @Param(value = "index") int index,
                                              @Param(value = "pageSize") int pageSize);
+
+    List<ActivityModel> findActivity(@Param(value = "source") Source source,
+                                     @Param(value = "activityStatus") ActivityStatus activityStatus,
+                                     @Param(value = "beginExpiredTime") Date beginExpiredTime,
+                                     @Param(value = "endExpiredTime") Date endExpiredTime,
+                                     @Param(value = "longTerm") Boolean longTerm,
+                                     @Param(value = "index") int index,
+                                     @Param(value = "pageSize") int pageSize);
 
     int countActiveActivities(@Param(value = "source") Source source);
 }

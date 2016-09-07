@@ -27,16 +27,19 @@
         <result column="share_title" property="shareTitle"/>
         <result column="share_content" property="shareContent"/>
         <result column="share_url" property="shareUrl"/>
+        <result column="seq" property="seq"/>
+        <result column="long_term" property="longTerm"/>
     </resultMap>
 
     <insert id="create" parameterType="ActivityModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`activity`
         (title, web_activity_url, app_activity_url, description, web_picture_url, app_picture_url, activated_time,
-        expired_time, source, status, created_by, created_time, updated_by, updated_time, activated_by,share_title,share_content,share_url)
+        expired_time, source, status, created_by, created_time, updated_by, updated_time, activated_by,share_title,
+        share_content,share_url,seq,long_term)
         VALUES
         (#{title}, #{webActivityUrl}, #{appActivityUrl}, #{description}, #{webPictureUrl}, #{appPictureUrl}, #{activatedTime},
         #{expiredTime}, #{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{status}, #{createdBy}, #{createdTime}, #{updatedBy},#{updatedTime}, #{activatedBy},
-        #{shareTitle},#{shareContent},#{shareUrl})
+        #{shareTitle},#{shareContent},#{shareUrl},#{seq},#{longTerm})
     </insert>
 
     <update id="update" parameterType="ActivityModel">
@@ -59,7 +62,9 @@
         activated_by = #{activatedBy},
         share_title = #{shareTitle},
         share_content = #{shareContent},
-        share_url = #{shareUrl}
+        share_url = #{shareUrl},
+        seq = #{seq},
+        long_term = #{longTerm}
         WHERE
         id = #{id}
     </update>
@@ -113,6 +118,29 @@
         <if test="source != null">
             AND source like CONCAT('%', #{source}, '%')
         </if>
+    </select>
+
+    <select id="findActivity" resultMap="activityResultMap" parameterType="map">
+        SELECT * FROM `aa`.`activity`
+        <where>
+            <if test="beginExpiredTime != null">
+                AND expired_time &gt;= #{beginExpiredTime}
+            </if>
+            <if test="endExpiredTime != null">
+                AND expired_time &lt;= #{endExpiredTime}
+            </if>
+            <if test="activityStatus!=null">
+                AND status = #{activityStatus}
+            </if>
+            <if test="source != null">
+                AND source like CONCAT('%', #{source}, '%')
+            </if>
+            <if test="longTerm != null">
+                OR long_term = #{longTerm}
+            </if>
+        </where>
+        order by seq ASC ,updated_time DESC
+        LIMIT #{index}, #{pageSize}
     </select>
 
 </mapper>
