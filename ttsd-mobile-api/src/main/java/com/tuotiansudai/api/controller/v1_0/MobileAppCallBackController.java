@@ -101,7 +101,7 @@ public class MobileAppCallBackController {
             rechargeAmount = AmountConverter.convertCentToString(rechargeModel.getAmount());
             message = "充值成功";
             href = MessageFormat.format("tuotian://recharge/{0}",callBackStatus);
-        } else if (UmPayFrontService.PROJECT_TRANSFER_INVEST.getServiceName().equals(service)) {
+        } else if (UmPayFrontService.PROJECT_TRANSFER_INVEST.getServiceName().equals(service) || UmPayFrontService.PTP_MER_NO_PASSWORD_INVEST.getServiceName().equals(service)) {
             InvestModel investModel = investService.findById(Long.parseLong(orderId));
             LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
             investAmount = AmountConverter.convertCentToString(investModel.getAmount());
