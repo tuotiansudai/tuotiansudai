@@ -14,7 +14,7 @@
     </div>
     <div class="section-box-one bg-white clearfix pad-box">
         <div class="page-width">
-            <div class="column-title-ac"><i></i>项目预审<i></i> </div>
+            <div class="column-title-ac"><i></i>什么是拓天速贷<i></i> </div>
             <p>拓天速贷于2015年7月正式上线运营，是一家稳健型的互联网金融信息服务平台。以安全、公平、透明为原则，以创新、诚信、专业为核心价值观，通过严谨的风控审核机制，为有资金需求的小微企业、个体以及有出借需求的个人、家庭提供规范、安全、专业的信息服务。</p>
         </div>
      </div>
