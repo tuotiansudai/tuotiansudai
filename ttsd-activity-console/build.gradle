@@ -21,6 +21,11 @@ repositories {
     maven { url "http://central.maven.org/maven2/" }
 }
 
+
+configurations {
+    compile.exclude group:'org.slf4j'
+}
+
 dependencies {
     compile(project(":ttsd-user-service")) {
         exclude module: 'ttsd-dependency'

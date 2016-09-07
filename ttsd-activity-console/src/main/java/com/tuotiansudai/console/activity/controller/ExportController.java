@@ -2,10 +2,9 @@ package com.tuotiansudai.console.activity.controller;
 
 
 import com.tuotiansudai.console.activity.dto.AutumnExportDto;
-import com.tuotiansudai.console.activity.service.ExportAutumnService;
+import com.tuotiansudai.console.activity.service.ExportService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,13 +20,8 @@ import java.util.List;
 @RequestMapping("/activity-console/activity-manage")
 public class ExportController {
 
-    private static Logger logger = Logger.getLogger(ExportController.class);
-
     @Autowired
-    private ExportAutumnService exportService;
-
-    @Autowired
-
+    private ExportService exportService;
 
     @RequestMapping(value = "/autumn-list", method = RequestMethod.GET)
     public void autumnActivityListExport(HttpServletResponse response) throws IOException {
@@ -35,7 +29,7 @@ public class ExportController {
         try {
             response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.AutumnActivityList.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(), e);
+            //logger.error(e.getLocalizedMessage(), e);
         }
         response.setContentType("application/csv");
 

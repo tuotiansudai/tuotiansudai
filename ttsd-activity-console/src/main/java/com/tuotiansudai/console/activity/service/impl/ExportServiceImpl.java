@@ -1,8 +1,9 @@
-package com.tuotiansudai.console.activity.service;
+package com.tuotiansudai.console.activity.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.activity.dto.AutumnExportDto;
 import com.tuotiansudai.console.activity.dto.UserItemExportDto;
+import com.tuotiansudai.console.activity.service.ExportService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -14,11 +15,16 @@ import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class ExportAutumnService {
+@Service
+public class ExportServiceImpl implements ExportService{
 
     @Autowired
     private UserService userService;
@@ -38,7 +44,7 @@ public class ExportAutumnService {
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    public Map<String, Map<String, List<String>>> getHomeMap(){
+    private Map<String, Map<String, List<String>>> getHomeMap(){
         Map<String, Map<String, List<String>>>  homeMap = new HashMap<String, Map<String, List<String>>>();
         int homeSeq = 1;
         List<UserModel> userModelList =  userService.findByRegisterTime(activityAutumnStartTime, activityAutumnEndTime);
@@ -53,7 +59,7 @@ public class ExportAutumnService {
                     //过滤出只在活动期间内的团员
                     if(userModel.getLoginName().equals(referrerRelationModel.getLoginName()))
                     {
-                      alluser.add(referrerRelationModel.getLoginName());
+                        alluser.add(referrerRelationModel.getLoginName());
                     }
                 }
                 //团长本人
@@ -67,6 +73,8 @@ public class ExportAutumnService {
         return homeMap;
     }
 
+
+    @Override
     public List<AutumnExportDto> getAutumnExport(){
         List<AutumnExportDto> autumnExportDtoList = Lists.newArrayList();
         List<UserItemExportDto> userItemExportDtoList = Lists.newArrayList();
@@ -113,6 +121,7 @@ public class ExportAutumnService {
         return autumnExportDtoList;
     }
 
+    @Override
     public List<List<String>> buildAutumnList(List<AutumnExportDto> records) {
         List<List<String>> rows = Lists.newArrayList();
         for (AutumnExportDto record : records) {
@@ -126,14 +135,4 @@ public class ExportAutumnService {
         }
         return rows;
     }
-
-
-    public static void main(String args[]){
-        ExportAutumnService exportService = new ExportAutumnService();
-
-        exportService.getAutumnExport();
-    }
 }
-
-
-
