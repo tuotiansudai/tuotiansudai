@@ -465,12 +465,9 @@ public class ExportServiceImpl implements ExportService {
         for (UserItemDataDto record : records) {
             List<String> row = Lists.newArrayList();
             row.add(record.getLoginName());
-            row.add(record.isStaff() ? "是" : "否");
             row.add(record.getUserName());
             row.add(record.getMobile());
-            row.add(record.getBirthday() != null ? record.getBirthday() : "");
             row.add(record.getProvince() != null ? record.getProvince() : "");
-            row.add(record.getCity() != null ? record.getCity() : "");
             row.add(record.getLastBillTime() != null ? new DateTime(record.getLastBillTime()).toString("yyyy-MM-dd HH:mm:ss") : "");
             row.add(record.getBalance());
             rows.add(row);
