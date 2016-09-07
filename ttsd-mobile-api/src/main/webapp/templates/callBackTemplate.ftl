@@ -31,6 +31,25 @@
         </ul>
 
     </div>
-    <a href="${href}" class="btn-success">确认</a>
+    <a href="${href}" class="btn-disabled" id="Btn">3s</a>
+
+    <script>
+        var num = 3,
+                href=document.getElementById('Btn').getAttribute('href');
+        function countTime(){
+            if(num == 0){
+                document.getElementById('Btn').innerHTML ='确定';
+                document.getElementById('Btn').setAttribute('href',href);
+                document.getElementById('Btn').setAttribute('class','btn-success');
+                clearInterval(timer);
+            }else{
+                document.getElementById('Btn').setAttribute('class','btn-disabled');
+                document.getElementById('Btn').setAttribute('href','javascript:void(0)');
+                document.getElementById('Btn').innerHTML = num + 's';
+                num = num-1;
+            }
+        }
+        var timer=setInterval('countTime()',1000);
+    </script>
 </body>
 </html>

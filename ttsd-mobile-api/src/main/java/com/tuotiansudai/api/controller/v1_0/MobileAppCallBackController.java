@@ -92,7 +92,7 @@ public class MobileAppCallBackController {
             bankName = BankCardUtil.getBankName(withdrawModel.getBankCard().getBankCode());
             cardNumber = withdrawModel.getBankCard().getCardNumber();
             withdrawAmount = AmountConverter.convertCentToString(withdrawModel.getAmount());
-            message = "提现成功";
+            message = "申请提现成功";
             href = MessageFormat.format("tuotian://withdraw/{0}",callBackStatus);
         } else if (UmPayFrontService.MER_RECHARGE_PERSON.getServiceName().equals(service)) {
             RechargeModel rechargeModel = rechargeService.findRechargeById(Long.parseLong(orderId));
