@@ -185,15 +185,12 @@
     </select>
 
 
-    <select id="findByLoginNameOrInvestTime" resultMap="UserMembershipResultMap" parameterType="map">
-        select * from user_membership where login_name = #{loginName}
+    <select id="findByLoginNameOrInvestTime" resultType="long" parameterType="map">
+        select IFNULL(MAX(membership_id),1) from user_membership where login_name = #{loginName}
         <if test="investTime != null">
             AND expired_time &gt; #{investTime}
-        </if>
-        <if test="investTime != null">
             AND created_time &lt; #{investTime}
         </if>
-        order by membership_id desc
     </select>
 
 </mapper>

@@ -224,7 +224,6 @@ public class UserMembershipMapperTest {
         List<UserMembershipItemView> originUserMembershipItemViews = prepareUserMembershipData();
 
         List<UserMembershipItemView> userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), null, null, null, null, null, 0, 10);
-        assertEquals(1, userMembershipItemViews.size());
         assertEquals(originUserMembershipItemViews.get(0).getLoginName(), userMembershipItemViews.get(0).getLoginName());
         assertEquals(originUserMembershipItemViews.get(0).getMobile(), userMembershipItemViews.get(0).getMobile());
         assertEquals(originUserMembershipItemViews.get(0).getRealName(), userMembershipItemViews.get(0).getRealName());
@@ -277,8 +276,7 @@ public class UserMembershipMapperTest {
         userMembershipModel1.setMembershipId(membershipMapper.findByLevel(1).getId());
         userMembershipMapper.create(userMembershipModel1);
 
-        List<UserMembershipModel> userMembershipModelList = userMembershipMapper.findByLoginNameOrInvestTime(userModel1.getLoginName(), DateTime.now().toDate());
-        assertEquals(userMembershipModelList.get(0).getMembershipId(),2);
+        assertEquals(userMembershipMapper.findByLoginNameOrInvestTime(userModel1.getLoginName(), DateTime.now().toDate()),2);
 
     }
 }

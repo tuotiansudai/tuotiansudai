@@ -145,6 +145,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         }catch(Exception e){
             responseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
             responseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+            e.printStackTrace();
         }
         return responseDto;
     }
