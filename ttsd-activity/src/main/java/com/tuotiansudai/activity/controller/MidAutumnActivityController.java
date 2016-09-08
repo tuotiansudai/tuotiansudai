@@ -1,6 +1,7 @@
 package com.tuotiansudai.activity.controller;
 
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.activity.service.MidAutumnActivityService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,14 @@ public class MidAutumnActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView travelPrize() {
-        ModelAndView modelAndView = new ModelAndView("/activities/hero-ranking", "responsive", true);
-        String loginName = LoginUserInfo.getLoginName();
-        modelAndView.addObject("referrer", loginName);
+        ModelAndView modelAndView = new ModelAndView("/activities/mid-autumn", "responsive", true);
+//        String loginName = LoginUserInfo.getLoginName();
+        String loginName = "boss";
+        modelAndView.addObject("loginName", Strings.isNullOrEmpty(loginName) ? "" : loginName);
         Map<String,Object> myFamilyMap = midAutumnActivityService.getMyMinAutumnActivityFamily(loginName);
-        modelAndView.addObject("myFamilyNumber",myFamilyMap.get("number"));
+        modelAndView.addObject("myFamilyNumber",myFamilyMap.get("number") == null ? "" : myFamilyMap.get("number"));
         modelAndView.addObject("myFamilyGroup",myFamilyMap.get("myFamily"));
-        modelAndView.addObject("myFamilyInvestAmount", myFamilyMap.get("myFamilyInvestAmount"));
+        modelAndView.addObject("myFamilyInvestAmount", myFamilyMap.get("myFamilyInvestAmount")  == null ? "0" : myFamilyMap.get("myFamilyInvestAmount"));
         modelAndView.addObject("allFamilyInvestAmounts",midAutumnActivityService.getAllFamilyInvestAmount());
         return modelAndView;
     }
