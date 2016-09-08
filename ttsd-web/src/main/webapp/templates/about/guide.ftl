@@ -33,7 +33,7 @@
         <div class="line"></div>
 
         <dl class="box-02">
-            <dt><span>02</span>高收益＋稳定</dt>
+            <dt><span>02</span>安全有保障</dt>
             <dd>资金、隐私、数据三方面全面保护！</dd>
             <dd class="high-profit">
                 <div class="high-box square-normal">
