@@ -12,14 +12,10 @@ require(['jquery', 'underscore', 'layerWrapper','copyclip','commonFun', 'placeho
         var copyLinkVal=$('.copy-link',$copyLinkbox).text();
 
     client.on( "ready", function( readyEvent ) {
-        //debugger
-         //alert( "ZeroClipboard SWF is ready!" );
-        console.log('ddd');
         client.on( "aftercopy", function( event ) {
-            //event.target.style.display = "none";
-            debugger
-            event.data='pooo';
-            alert("Copied text to clipboard: " + event.data["text/plain"] );
+            // event.data["text/plain"]
+            layer.msg('复制成功');
+
         } );
     } );
 

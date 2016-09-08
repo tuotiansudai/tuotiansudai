@@ -17,11 +17,10 @@
             </div>
             <div class="copy-link-box" id="copyLinkBox">
                 <b for="copy-title">立即邀请好友加入家庭</b>
-                <span  class="copy-link" >https://tuotiansudai.com/register/user?referrer=cg007008</span>
-                <em class="button" id="copy-button">复制链接发送给好友</em>
+                <span  class="copy-link" id="clipboard_text">https://tuotiansudai.com/register/user?referrer=cg007008</span>
+                <em class="button" id="copy-button" data-clipboard-target="clipboard_text">复制链接发送给好友</em>
+                <div class="tc"><a href="#" class="btn-normal-invest">立即邀请好友组家庭</a> </div>
             </div>
-            <div class="tc"><a href="#" class="btn-normal-invest">立即邀请好友组家庭</a> </div>
-
         </div>
 
         <div class="normal-border my-family-group">
