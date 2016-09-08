@@ -1,5 +1,9 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}" title="${question.question!}" keywords="${question.question!}" description="${bestAnswer.answer!}">
+<#assign descrition="">
+<#if bestAnswer??>
+    <#assign descrition="${bestAnswer.answer}">
+</#if>
+<@global.main pageCss="${(css.main)!'main.css'}" pageJavascript="${(js.main)!'main.js'}" title="${question.question!}" keywords="${question.question!}" description="${descrition}">
 <div class="article-content fl answer-container" id="questionDetailTag">
     <div class="borderBox clearfix">
         <div class="answers-box">
