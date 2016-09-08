@@ -51,7 +51,7 @@ def logout(session_id):
 def get_session(session_id):
     user_info = service.SessionManager().get(session_id)
     if user_info:
-        return success({'user_info': user_info})
+        return success({'user_info': user_info, 'token': session_id})
     return fail()
 
 
