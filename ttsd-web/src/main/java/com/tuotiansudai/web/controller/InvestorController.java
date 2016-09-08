@@ -4,8 +4,6 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.InvestRepayDataDto;
 import com.tuotiansudai.dto.InvestorInvestPaginationItemDataDto;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.RepayService;

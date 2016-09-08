@@ -1,6 +1,7 @@
 package com.tuotiansudai.ask.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tuotiansudai.dto.BaseDataDto;
 
 public class QuestionResultDataDto extends BaseDataDto {
 

@@ -194,4 +194,14 @@
         WHERE t.role = #{role};
     </select>
 
+    <select id="findUserModelByMobile" parameterType="string" resultMap="userResultMap">
+        select * from user
+        <where>
+            <if test="mobile != null and mobile != ''">
+                mobile like CONCAT('%', #{mobile}, '%')
+            </if>
+        </where>
+        order by register_time desc limit #{index}, #{pageSize}
+    </select>
+
 </mapper>

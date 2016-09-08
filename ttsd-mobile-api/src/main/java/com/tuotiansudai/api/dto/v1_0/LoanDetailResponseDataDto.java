@@ -46,6 +46,8 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     private List<EvidenceResponseDataDto> evidence;
 
+    private String extraSource;
+
     public String getLoanId() {
         return loanId;
     }
@@ -343,5 +345,13 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setExtraRates(List<ExtraLoanRateDto> extraRates) {
         this.extraRates = extraRates;
+    }
+
+    public String getExtraSource() {
+        return extraSource;
+    }
+
+    public void setExtraSource(String extraSource) {
+        this.extraSource = extraSource;
     }
 }

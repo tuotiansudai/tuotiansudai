@@ -12,6 +12,7 @@ import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
@@ -23,7 +24,7 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,21 +97,27 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
+    private UserCouponService userCouponService;
+
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
-        checkInvestAmount(investDto);
-
+        investDto.setNoPassword(false);
+        this.checkInvestAvailable(investDto);
         return payWrapperClient.invest(investDto);
     }
 
     @Override
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(true);
-        this.checkInvestAmount(investDto);
+        this.checkInvestAvailable(investDto);
         return payWrapperClient.noPasswordInvest(investDto);
     }
 
-    private void checkInvestAmount(InvestDto investDto) throws InvestException {
+    private void checkInvestAvailable(InvestDto investDto) throws InvestException {
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
 
@@ -176,6 +183,11 @@ public class InvestServiceImpl implements InvestService {
             throw new InvestException(InvestExceptionType.MORE_THAN_MAX_INVEST_AMOUNT);
         }
 
+        UserCouponDto maxBenefitUserCoupon = userCouponService.getMaxBenefitUserCoupon(investDto.getLoginName(), loanId, investAmount);
+        if (maxBenefitUserCoupon != null && CollectionUtils.isEmpty(investDto.getUserCouponIds())) {
+            throw new InvestException(InvestExceptionType.NONE_COUPON_SELECTED);
+        }
+
         // 验证优惠券是否可用
         List<Long> userCouponIds = investDto.getUserCouponIds();
         if (CollectionUtils.isNotEmpty(userCouponIds)) {
@@ -204,8 +216,16 @@ public class InvestServiceImpl implements InvestService {
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double investFeeRate = membershipModel != null ? membershipModel.getFee() : defaultFee;
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-        long extraRateInterest = getExtraRate(loanId, amount, loanModel.getDuration());
-        long extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanId);
+
+        long extraRateInterest = 0;
+        long extraRateFee = 0;
+        if(!Strings.isNullOrEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB.name())){
+            extraRateInterest = getExtraRate(loanId, amount, loanModel.getDuration());
+            extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        }
+
         return (expectedInterest - expectedFee) + (extraRateInterest - extraRateFee);
     }
 

@@ -12,6 +12,7 @@ public class TransferApplicationRecordDto implements Serializable {
     private long transferApplicationId;
     private String name;
     private long transferAmount;
+    private long investId;
     private long investAmount;
     private Date transferTime;
     private double baseRate;
@@ -55,6 +56,14 @@ public class TransferApplicationRecordDto implements Serializable {
 
     public void setTransferAmount(long transferAmount) {
         this.transferAmount = transferAmount;
+    }
+
+    public long getInvestId() {
+        return investId;
+    }
+
+    public void setInvestId(long investId) {
+        this.investId = investId;
     }
 
     public long getInvestAmount() {
@@ -176,7 +185,7 @@ public class TransferApplicationRecordDto implements Serializable {
     public void setApplicationTime(Date applicationTime) {
         this.applicationTime = applicationTime;
     }
-    
+
     public Source getSource() {
         return source;
     }

@@ -48,6 +48,8 @@ public class BaseCouponResponseDataDto {
 
     protected List<String> productNewTypes;
 
+    protected String couponSource;
+
     public BaseCouponResponseDataDto() {
     }
 
@@ -56,7 +58,7 @@ public class BaseCouponResponseDataDto {
         this.userCouponId = String.valueOf(userCouponModel.getId());
         this.type = couponModel.getCouponType();
         this.name = couponModel.getCouponType().getName();
-        this.amount = AmountConverter.convertCentToString(couponModel.getAmount());
+        this.amount = AmountConverter.convertCentToString(couponModel.getAmount()).replaceAll("\\.00","");
         this.startDate = userCouponModel.getStartTime();
         this.endDate = userCouponModel.getEndTime();
         this.investLowerLimit = AmountConverter.convertCentToString(couponModel.getInvestLowerLimit());
@@ -75,7 +77,7 @@ public class BaseCouponResponseDataDto {
                 return input.name();
             }
         });
-
+        this.couponSource = couponModel.getCouponSource();
     }
     public String getUserCouponId() {
         return userCouponId;
@@ -184,4 +186,12 @@ public class BaseCouponResponseDataDto {
     public List<String> getProductNewTypes() { return productNewTypes; }
 
     public void setProductNewTypes(List<String> productNewTypes) { this.productNewTypes = productNewTypes; }
+
+    public String getCouponSource() {
+        return couponSource;
+    }
+
+    public void setCouponSource(String couponSource) {
+        this.couponSource = couponSource;
+    }
 }

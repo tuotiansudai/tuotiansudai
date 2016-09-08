@@ -4,12 +4,14 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.CouponAlertDto;
 import com.tuotiansudai.coupon.service.CouponAlertService;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +29,9 @@ public class ActivitiesController {
     @Autowired
     private CouponAlertService couponAlertService;
 
+    @Autowired
+    private AccountService accountService;
+
     @RequestMapping(path = "/{item:^recruit|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|loan-hike$}", method = RequestMethod.GET)
     public ModelAndView activities(HttpServletRequest httpServletRequest, @PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
@@ -36,6 +41,16 @@ public class ActivitiesController {
             modelAndView.addObject("referrer", userService.getMobile(loginName));
         }
 
+        String token = httpServletRequest.getHeader("token");
+        if (!StringUtils.isEmpty(token)) {
+            token = token.replace("app-token:", "");
+            loginName = token.substring(0, token.indexOf(":"));
+        } else {
+            loginName = LoginUserInfo.getLoginName();
+        }
+        modelAndView.addObject("isLogin", null != loginName);
+        AccountModel accountModel = accountService.findByLoginName(loginName);
+        modelAndView.addObject("noAccount", null == accountModel);
         return modelAndView;
     }
 
@@ -47,6 +62,4 @@ public class ActivitiesController {
         modelAndView.addObject("couponAlert", newbieCouponAlert);
         return modelAndView;
     }
-
-
 }

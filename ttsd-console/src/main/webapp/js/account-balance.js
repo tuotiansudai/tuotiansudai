@@ -1,4 +1,4 @@
-require(['jquery', 'bootstrap','jquery-ui'], function ($) {
+require(['jquery', 'bootstrap', 'jquery-ui'], function ($) {
 
     var autoValue = '';
     $(".jq-loginName").autocomplete({
@@ -26,11 +26,8 @@ require(['jquery', 'bootstrap','jquery-ui'], function ($) {
         window.location.href = "/finance-manage/account-balance?balanceMin=50";
     });
 
-    $('.down-load').click(function(){
-        var mobile = $('.jq-loginName').val();
-        var minBalance = $('.jq-balance-min').val();
-        var maxBalance = $('.jq-balance-max').val();
-        window.location.href = "/finance-manage/account-balance?mobile=" + mobile + '&balanceMin=' + minBalance + '&balanceMax=' + maxBalance + "&export=csv";
+    $('.down-load').click(function () {
+        window.location.href = "/export/account-balance?" + $('form').serialize();
     });
 
 });
