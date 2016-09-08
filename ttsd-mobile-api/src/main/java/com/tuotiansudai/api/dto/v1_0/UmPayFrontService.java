@@ -28,7 +28,12 @@ public enum UmPayFrontService {
     /**
      * 投资
      */
-    PROJECT_TRANSFER_INVEST("project_transfer_invest");
+    PROJECT_TRANSFER_INVEST("project_transfer_invest"),
+
+    /**
+     * 无密投资
+     */
+    PROJECT_TRANSFER_NOPASSWORD_INVEST("project_transfer_no_password_invest");
 
     private final String serviceName;
 

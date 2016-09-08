@@ -16,4 +16,6 @@ public interface BindBankCardService {
     boolean isReplacing(String loginName);
 
     boolean isManual(String loginName);
+
+    BankCardModel getPassedBankCardById(long id);
 }
