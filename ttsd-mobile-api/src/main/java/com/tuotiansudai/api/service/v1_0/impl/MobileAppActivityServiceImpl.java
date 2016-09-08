@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.ActivityCenterDataDto;
 import com.tuotiansudai.api.dto.v1_0.ActivityCenterRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ActivityCenterResponseDto;
-import com.tuotiansudai.api.dto.v1_0.ActivityType;
+import com.tuotiansudai.api.dto.v1_0.ActivityCenterType;
 import com.tuotiansudai.api.service.v1_0.MobileAppActivityService;
 import com.tuotiansudai.repository.mapper.ActivityMapper;
 import com.tuotiansudai.repository.model.ActivityModel;
@@ -41,7 +41,7 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
         return fillActivityCenterData(requestDto.getActivityType(), index, pageSize, source);
     }
 
-    private ActivityCenterResponseDto fillActivityCenterData(ActivityType activityType, int index, int pageSize, Source source) {
+    private ActivityCenterResponseDto fillActivityCenterData(ActivityCenterType activityType, int index, int pageSize, Source source) {
         List<ActivityCenterDataDto> activityCenterDataDtos = new ArrayList<>();
         List<ActivityModel> activityModels = Lists.newArrayList();
         int totalCount = 0 ;

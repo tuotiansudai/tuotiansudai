@@ -168,7 +168,7 @@ public class MobileAppActivityServiceTest {
         baseParam.setPlatform(Source.IOS.toString());
         ActivityCenterRequestDto requestDto = new ActivityCenterRequestDto();
         requestDto.setBaseParam(baseParam);
-        requestDto.setActivityType(com.tuotiansudai.api.dto.v1_0.ActivityType.CURRENT);
+        requestDto.setActivityType(ActivityCenterType.CURRENT);
         ActivityCenterResponseDto activityCenterResponseDto = mobileAppActivityService.getAppActivityCenterResponseData(requestDto);
         assertEquals(6, activityCenterResponseDto.getTotalCount().longValue());
         assertEquals(1, activityCenterResponseDto.getIndex().intValue());
