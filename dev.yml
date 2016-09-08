@@ -4,7 +4,7 @@ sign-in:
     - ./signin_service:/app
     - /var/log/signin:/var/log/signin
   ports:
-    - "20001:8080"
+    - "20001:80"
   links:
     - "redis-server"
 web:
