@@ -1,7 +1,7 @@
 <div class="nav-container">
     <div class="nav">
-        <a href="${webServer}" class="logo"></a><i class="fa fa-navicon show-main-menu fr"></i>
-        <ul>
+        <a href="${webServer}" class="logo"></a><i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>
+        <ul id="TopMainMenuList">
             <li><a  href="${webServer}" onclick="cnzzPush.trackClick('16顶部导航','首页')">首页</a></li>
             <li><a href="${webServer}/loan-list" onclick="cnzzPush.trackClick('17顶部导航','我要投资')">我要投资</a></li>
             <li><a href="${webServer}/account" onclick="cnzzPush.trackClick('18顶部导航','我的账户')">我的账户</a></li>
