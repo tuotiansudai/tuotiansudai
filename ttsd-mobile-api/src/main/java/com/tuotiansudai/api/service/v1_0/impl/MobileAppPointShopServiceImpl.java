@@ -109,14 +109,14 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         Iterator<ProductDetailResponseDto> virtualList = Iterators.transform(virtualProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
             @Override
             public ProductDetailResponseDto apply(ProductModel input) {
-                return new ProductDetailResponseDto(String.valueOf(input), input.getImageUrl(), input.getName(), String.valueOf(input.getPoints()));
+                return new ProductDetailResponseDto(String.valueOf(input.getId()), input.getImageUrl(), input.getName(), String.valueOf(input.getPoints()));
             }
         });
 
         Iterator<ProductDetailResponseDto> physicals = Iterators.transform(physicalsProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
             @Override
             public ProductDetailResponseDto apply(ProductModel input) {
-                return new ProductDetailResponseDto(String.valueOf(input), input.getImageUrl(), input.getName(), String.valueOf(input.getPoints()));
+                return new ProductDetailResponseDto(String.valueOf(input.getId()), input.getImageUrl(), input.getName(), String.valueOf(input.getPoints()));
             }
         });
 
