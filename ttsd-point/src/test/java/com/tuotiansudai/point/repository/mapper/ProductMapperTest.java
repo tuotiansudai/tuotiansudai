@@ -74,8 +74,8 @@ public class ProductMapperTest {
         productMapper.create(productModel1);
         productMapper.create(productModel2);
         productMapper.create(productModel3);
-        List<ProductModel> virtualList = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON, GoodsType.VIRTUAL), 0, 10);
-        List<ProductModel> physicalList= productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.PHYSICAL), 0, 10);
+        List<ProductModel> virtualList = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON, GoodsType.VIRTUAL));
+        List<ProductModel> physicalList= productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.PHYSICAL));
         assertEquals(virtualList.size(),2);
         assertEquals(physicalList.size(),1);
     }

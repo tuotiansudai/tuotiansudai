@@ -118,7 +118,6 @@
             </if>
         </where>
         ORDER BY seq ASC, updated_time DESC
-        limit #{index}, #{pageSize}
     </select>
 
     <select id="lockById" parameterType="long" resultMap="productResultMap">

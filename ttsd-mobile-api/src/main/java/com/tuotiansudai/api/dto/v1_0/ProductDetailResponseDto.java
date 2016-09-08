@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 
 import java.util.List;
@@ -20,20 +21,13 @@ public class ProductDetailResponseDto extends BaseResponseDataDto{
 
     private String leftCount;
 
-    public ProductDetailResponseDto(String productId, String imageUrl, String name, String points) {
-        this.productId = productId;
+    public ProductDetailResponseDto(long productId, String imageUrl, String name, long points,GoodsType goodsType,long leftCount) {
+        this.productId = String.valueOf(productId);
         this.imageUrl = imageUrl;
-        this.points = points;
-        this.name = name.replaceAll("\\.00","");
-    }
-
-    public ProductDetailResponseDto(ProductModel productModel){
-        this.productId = String.valueOf(productModel.getId());
-        this.name = productModel.getName().replaceAll("\\.00","");
-        this.goodsType = productModel.getType().name();
-        this.imageUrl = productModel.getImageUrl();
-        this.points = String.valueOf(productModel.getPoints());
-        this.leftCount = String.valueOf(productModel.getTotalCount() - productModel.getUsedCount());
+        this.points = String.valueOf(points);
+        this.name = name.replaceAll("\\.00", "");
+        this.goodsType = goodsType.name();
+        this.leftCount = String.valueOf(leftCount);
     }
 
     public String getProductId() {

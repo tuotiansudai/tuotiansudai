@@ -16,13 +16,6 @@ public class ProductOrderResponseDto{
 
     private String orderTime;
 
-    public ProductOrderResponseDto(String productId, String productName, String productNum, String orderTime) {
-        this.productId = productId;
-        this.productName = productName;
-        this.productNum = productNum;
-        this.orderTime = orderTime;
-    }
-
     public ProductOrderResponseDto(ProductOrderViewDto productOrderViewDto){
         this.productId = String.valueOf(productOrderViewDto.getId());
         this.productName = productOrderViewDto.getName();
