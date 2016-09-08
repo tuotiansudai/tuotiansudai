@@ -123,6 +123,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
 
         var isInvestor = 'INVESTOR' === $loanDetail.data('user-role');
+        var isAuthentication = 'USER' === $loanDetail.data('authentication');
         var $ticketList = $('.ticket-list');
         var $useExperienceTicket = $('#use-experience-ticket');
         var $couponExpectedInterest = $(".experience-income");
@@ -342,6 +343,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             if (isInvestor) {
                 noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
                 return;
+            }
+            if(isAuthentication){
+                location.href = '/register/user';
             }
             layer.open({
               type: 1,
