@@ -1,3 +1,4 @@
+BEGIN;
 USE aa;
 CREATE TABLE point_bill_temp
   LIKE point_bill;
@@ -237,3 +238,4 @@ UPDATE `aa`.`account`, tmp
 SET account.point = tmp.point
 WHERE tmp.login_name = account.login_name;
 DROP TABLE tmp;
+COMMIT;
