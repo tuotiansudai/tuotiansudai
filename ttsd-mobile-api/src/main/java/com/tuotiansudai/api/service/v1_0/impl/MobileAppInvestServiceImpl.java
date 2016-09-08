@@ -50,7 +50,7 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
                 responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
             }
 
-            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_invest?ret_code={1}&message={2}", domainName, responseDto.getCode(), responseDto.getMessage())));
+            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_no_password_invest?ret_code={1}&message={2}&order_id={3}&investAmount={4}", domainName, responseDto.getCode(), responseDto.getMessage(), investDto.getLoanId(), investDto.getAmount())));
 
         } catch (InvestException e) {
             return this.convertExceptionToDto(e);

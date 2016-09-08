@@ -44,19 +44,13 @@ public class MobileAppCallBackController {
     public ModelAndView callBack(@PathVariable String service, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("/callBackTemplate");
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        logger.debug("service = "+ service);
-        logger.debug("request = " + request);
-
-        for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
-            logger.debug(" key = "+entry.getKey());
-            logger.debug("value = "+ entry.getValue());
-        }
-
         String retCode = paramsMap.get("ret_code");
-        String orderId = paramsMap.get("order_id").trim();
+        String orderId = paramsMap.get("order_id");
+        String investAmount = service.equals("project_transfer_no_password_invest")? paramsMap.get("investAmount"):"";
+
         Map<String,String> retMaps = Maps.newHashMap();
         if ("0000".equals(retCode)) {
-            retMaps = this.frontMessageByService(service,"success","",orderId);
+            retMaps = this.frontMessageByService(service,"success","",orderId,investAmount);
             mv.addObject("bankName", retMaps.get("bankName"));
             mv.addObject("cardNumber",retMaps.get("cardNumber"));
             mv.addObject("rechargeAmount", retMaps.get("rechargeAmount"));
@@ -67,7 +61,7 @@ public class MobileAppCallBackController {
             mv.addObject("href",retMaps.get("href"));
         } else {
             String retMsg = paramsMap.get("ret_msg");
-            retMaps = this.frontMessageByService(service,"fail",retMsg,orderId);
+            retMaps = this.frontMessageByService(service,"fail",retMsg,orderId,investAmount);
             mv.addObject("href",retMaps.get("href"));
         }
         mv.addObject("message", retMaps.get("message"));
@@ -87,7 +81,7 @@ public class MobileAppCallBackController {
         return paramsMap;
     }
 
-    private Map<String, String> frontMessageByService(String service,String callBackStatus,String retMsg,String orderId) {
+    private Map<String, String> frontMessageByService(String service,String callBackStatus,String retMsg,String orderId,String investAmount) {
         Map<String, String> retMaps = Maps.newHashMap();
         String message = "";
         String href = "";
@@ -113,13 +107,19 @@ public class MobileAppCallBackController {
             message = "充值成功";
             href = MessageFormat.format("tuotian://recharge/{0}",callBackStatus);
         } else if (UmPayFrontService.PROJECT_TRANSFER_INVEST.getServiceName().equals(service)) {
-            if(orderId != null){
-                InvestModel investModel = investService.findById(Long.parseLong(orderId));
-                LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
-                investAmount = AmountConverter.convertCentToString(investModel.getAmount());
-                investName = loanModel.getName();
-                investId = String.valueOf(loanModel.getId());
-            }
+            InvestModel investModel = investService.findById(Long.parseLong(orderId));
+            LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
+            investAmount = AmountConverter.convertCentToString(investModel.getAmount());
+            investName = loanModel.getName();
+            investId = String.valueOf(loanModel.getId());
+            message = "投资成功";
+            href = MessageFormat.format("tuotian://invest/{0}",callBackStatus);
+        }
+        else if (UmPayFrontService.PROJECT_TRANSFER_NOPASSWORD_INVEST.getServiceName().equals(service)) {
+            LoanModel loanModel = loanService.findLoanById(Long.parseLong(orderId));
+            investAmount = AmountConverter.convertCentToString(Long.parseLong(investAmount));
+            investName = loanModel.getName();
+            investId = String.valueOf(loanModel.getId());
             message = "投资成功";
             href = MessageFormat.format("tuotian://invest/{0}",callBackStatus);
         } else if (UmPayFrontService.PTP_MER_BIND_AGREEMENT.getServiceName().equals(service)) {
