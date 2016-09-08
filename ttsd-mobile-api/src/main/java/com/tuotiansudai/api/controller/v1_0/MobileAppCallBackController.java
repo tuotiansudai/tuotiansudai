@@ -101,12 +101,14 @@ public class MobileAppCallBackController {
             rechargeAmount = AmountConverter.convertCentToString(rechargeModel.getAmount());
             message = "充值成功";
             href = MessageFormat.format("tuotian://recharge/{0}",callBackStatus);
-        } else if (UmPayFrontService.PROJECT_TRANSFER_INVEST.getServiceName().equals(service) || UmPayFrontService.PTP_MER_NO_PASSWORD_INVEST.getServiceName().equals(service)) {
-            InvestModel investModel = investService.findById(Long.parseLong(orderId));
-            LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
-            investAmount = AmountConverter.convertCentToString(investModel.getAmount());
-            investName = loanModel.getName();
-            investId = String.valueOf(loanModel.getId());
+        } else if (UmPayFrontService.PROJECT_TRANSFER_INVEST.getServiceName().equals(service)) {
+            if(orderId != null){
+                InvestModel investModel = investService.findById(Long.parseLong(orderId));
+                LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
+                investAmount = AmountConverter.convertCentToString(investModel.getAmount());
+                investName = loanModel.getName();
+                investId = String.valueOf(loanModel.getId());
+            }
             message = "投资成功";
             href = MessageFormat.format("tuotian://invest/{0}",callBackStatus);
         } else if (UmPayFrontService.PTP_MER_BIND_AGREEMENT.getServiceName().equals(service)) {
@@ -130,7 +132,7 @@ public class MobileAppCallBackController {
         }
         retMaps.put("message",message);
         retMaps.put("href",href);
-        retMaps.put("bankName",bankName == null?"":bankName);
+        retMaps.put("bankName",bankName);
         retMaps.put("cardNumber",cardNumber);
         retMaps.put("rechargeAmount",rechargeAmount);
         retMaps.put("withdrawNumber",withdrawAmount);
