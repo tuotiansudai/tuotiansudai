@@ -42,7 +42,7 @@ public class MobileAppCallBackController {
         ModelAndView mv = new ModelAndView("/callBackTemplate");
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String retCode = paramsMap.get("ret_code");
-        String orderId = paramsMap.get("order_id");
+        String orderId = paramsMap.get("order_id").trim();
         Map<String,String> retMaps = Maps.newHashMap();
         if ("0000".equals(retCode)) {
             retMaps = this.frontMessageByService(service,"success","",orderId);
@@ -88,7 +88,7 @@ public class MobileAppCallBackController {
         String investId = "";
         String withdrawAmount = "";
         if (UmPayFrontService.CUST_WITHDRAWALS.getServiceName().equals(service)) {
-            WithdrawModel withdrawModel = withdrawService.findById(Long.parseLong(orderId.trim()));
+            WithdrawModel withdrawModel = withdrawService.findById(Long.parseLong(orderId));
             bankName = BankCardUtil.getBankName(withdrawModel.getBankCard().getBankCode());
             cardNumber = withdrawModel.getBankCard().getCardNumber();
             withdrawAmount = AmountConverter.convertCentToString(withdrawModel.getAmount());
@@ -115,7 +115,7 @@ public class MobileAppCallBackController {
         } else if (UmPayFrontService.PTP_MER_BIND_CARD.getServiceName().equals(service)) {
             BankCardModel bankCardModel =  bindBankCardService.getPassedBankCardById(Long.parseLong(orderId));
             cardNumber = bankCardModel.getCardNumber();
-            bankName = BankCardUtil.getBankName(bankCardModel.getBankCode());
+            bankName = BankCardUtil.getBankName(bankCardModel.getBankCode().toUpperCase());
             message = "绑卡成功";
             href = MessageFormat.format("tuotian://bindcard/{0}",callBackStatus);
         } else if (UmPayFrontService.PTP_MER_REPLACE_CARD.getServiceName().equals(service)) {
@@ -130,7 +130,7 @@ public class MobileAppCallBackController {
         }
         retMaps.put("message",message);
         retMaps.put("href",href);
-        retMaps.put("bankName",bankName);
+        retMaps.put("bankName",bankName == null?"":bankName);
         retMaps.put("cardNumber",cardNumber);
         retMaps.put("rechargeAmount",rechargeAmount);
         retMaps.put("withdrawNumber",withdrawAmount);

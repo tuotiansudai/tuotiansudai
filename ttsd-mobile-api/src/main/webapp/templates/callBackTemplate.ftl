@@ -13,7 +13,7 @@
         <ul class="info-detail">
         <#if service == 'ptp_mer_bind_card'>
             <li><span class="title">银行卡名称</span><em class="col-info">${bankName}</em></li>
-            <li><span class="title">银行卡号:</span><em class="col-info card">${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")} </em></li>
+            <li><span class="title">银行卡号:</span><em class="col-info"><#if cardNumber??></#if>${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</em></li>
         <#elseif service == 'mer_recharge_person'>
             <li><span class="title">所用卡号</span><em class="col-info">${bankName} <#if cardNumber??></#if>${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</em></li>
             <li><span class="title">充值金额</span><em class="col-info">${rechargeAmount}元</em></li>
