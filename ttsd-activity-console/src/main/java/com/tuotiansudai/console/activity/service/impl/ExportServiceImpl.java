@@ -77,7 +77,6 @@ public class ExportServiceImpl implements ExportService{
     @Override
     public List<AutumnExportDto> getAutumnExport(){
         List<AutumnExportDto> autumnExportDtoList = Lists.newArrayList();
-        List<UserItemExportDto> userItemExportDtoList = Lists.newArrayList();
         Map<String, Map<String, List<String>>>  homeMap = getHomeMap();
         AutumnExportDto autumnExportDto = new AutumnExportDto();
         for(Map.Entry<String,  Map<String, List<String>>> entry:homeMap.entrySet()){
@@ -90,34 +89,26 @@ public class ExportServiceImpl implements ExportService{
                 }
                 List<InvestModel> investModelList = investMapper.findSuccessInvestByInvestTime(new DateTime(nameAndRegisterTime[1]).withTimeAtStartOfDay().toDate(), new DateTime(nameAndRegisterTime[1]).withTime(23,59,59,0).toDate());
                 for(InvestModel investModel:investModelList){
-                    UserItemExportDto userItemExportDto = new UserItemExportDto();
-                    userItemExportDto.setLoginName(investModel.getLoginName());
-                    userItemExportDto.setInvestAmount(investModel.getAmount());
-                    userItemExportDto.setJoinTime(investModel.getCreatedTime());
-                    userItemExportDto.setMobile("222222");
-                    userItemExportDtoList.add(userItemExportDto);
+                    autumnExportDto.setName(nameAndRegisterTime[0]);
+                    autumnExportDto.setTotalAmount(totalAmount);
+                    autumnExportDto.setInvestTime(new DateTime(nameAndRegisterTime[1]).toDate());
+                    if(totalAmount > 5000000){
+                        autumnExportDto.setPrize("50元红包");
+                    }
+                    if(totalAmount > 2000000){
+                        autumnExportDto.setPrize("15元红包");
+                    }
+                    if(totalAmount > 1000000){
+                        autumnExportDto.setPrize("5元红包");
+                    }
+                    autumnExportDto.setLoginName(investModel.getLoginName());
+                    autumnExportDto.setInvestAmount(investModel.getAmount());
+                    autumnExportDto.setJoinTime(investModel.getCreatedTime());
+                    autumnExportDto.setMobile("222222");
+                    autumnExportDtoList.add(autumnExportDto);
                 }
-
-                autumnExportDto.setName(nameAndRegisterTime[0]);
-                autumnExportDto.setTotalAmount(totalAmount);
-
-                autumnExportDto.setInvestTime(new DateTime(nameAndRegisterTime[1]).toDate());
-                if(totalAmount > 5000000){
-                    autumnExportDto.setPrize("50元红包");
-                }
-                if(totalAmount > 2000000){
-                    autumnExportDto.setPrize("15元红包");
-                }
-                if(totalAmount > 1000000){
-                    autumnExportDto.setPrize("5元红包");
-                }
-                autumnExportDto.setUserItemExportDtos(userItemExportDtoList);
-
-                autumnExportDtoList.add(autumnExportDto);
-
             }
         }
-
         return autumnExportDtoList;
     }
 
@@ -130,7 +121,10 @@ public class ExportServiceImpl implements ExportService{
             row.add(AmountConverter.convertCentToString(record.getTotalAmount()));
             row.add(new DateTime(record.getInvestTime()).toString("yyyy-MM-dd"));
             row.add(record.getPrize());
-            row.add(record.getUserItemExportDtos().toString());
+            row.add(record.getLoginName());
+            row.add(AmountConverter.convertCentToString(record.getInvestAmount()));
+            row.add(new DateTime(record.getJoinTime()).toString("HH:mm:ss"));
+            row.add(record.getMobile());
             rows.add(row);
         }
         return rows;

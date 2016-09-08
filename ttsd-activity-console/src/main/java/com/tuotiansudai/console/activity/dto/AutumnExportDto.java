@@ -13,7 +13,13 @@ public class AutumnExportDto {
 
     private String prize;
 
-    private List<UserItemExportDto> userItemExportDtos;
+    private String loginName;
+
+    private String mobile;
+
+    private Date joinTime;
+
+    private long investAmount;
 
     public String getName() {
         return name;
@@ -47,11 +53,35 @@ public class AutumnExportDto {
         this.prize = prize;
     }
 
-    public List<UserItemExportDto> getUserItemExportDtos() {
-        return userItemExportDtos;
+    public String getLoginName() {
+        return loginName;
     }
 
-    public void setUserItemExportDtos(List<UserItemExportDto> userItemExportDtos) {
-        this.userItemExportDtos = userItemExportDtos;
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public Date getJoinTime() {
+        return joinTime;
+    }
+
+    public void setJoinTime(Date joinTime) {
+        this.joinTime = joinTime;
+    }
+
+    public long getInvestAmount() {
+        return investAmount;
+    }
+
+    public void setInvestAmount(long investAmount) {
+        this.investAmount = investAmount;
     }
 }
