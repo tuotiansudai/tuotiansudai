@@ -35,7 +35,7 @@ public class SignInResult implements Serializable {
     }
 
     @JsonProperty(value = "user_info")
-    public void setSignInUserInfo(SignInUserInfo userInfo) {
+    public void setUserInfo(SignInUserInfo userInfo) {
         this.userInfo = userInfo;
     }
 

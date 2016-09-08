@@ -156,7 +156,7 @@ public class SignInClient {
         do {
             Response response = okHttpClient.newCall(request).execute();
             if (response.code() < 500) {
-                return response.body().toString();
+                return response.body().string();
             }
         } while (++times < RETRY_MAX_TIMES);
 
