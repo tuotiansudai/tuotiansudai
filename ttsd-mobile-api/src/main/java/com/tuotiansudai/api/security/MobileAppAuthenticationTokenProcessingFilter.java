@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.security;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
@@ -38,6 +39,10 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
 
     @Autowired
     private SignInClient signInClient;
+
+    public MobileAppAuthenticationTokenProcessingFilter() {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
@@ -108,7 +113,7 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
     private BaseParamDto getBaseParamDto(HttpServletRequest httpServletRequest) {
         try {
             BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(httpServletRequest);
-            return objectMapper.readValue(bufferedRequest.getInputStream(), BaseParamDto.class);
+            return objectMapper.readValue(bufferedRequest.getInputStreamString(), BaseParamDto.class);
         } catch (IOException ignored) {
         }
         return null;
