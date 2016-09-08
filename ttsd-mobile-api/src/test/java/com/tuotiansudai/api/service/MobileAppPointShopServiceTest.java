@@ -64,6 +64,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         BaseParamDto baseParamDto = new BaseParamDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(userModel.getLoginName());
+        baseParam.setPhoneNum("15544443333");
         baseParamDto.setBaseParam(baseParam);
         UserAddressRequestDto userAddressRequestDto = new UserAddressRequestDto();
         userAddressRequestDto.setBaseParam(baseParam);
@@ -82,6 +83,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         BaseParamDto baseParamDto = new BaseParamDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(userModel.getLoginName());
+        baseParam.setPhoneNum("15544443333");
         baseParamDto.setBaseParam(baseParam);
 
         UserAddressRequestDto userAddressRequestDto = new UserAddressRequestDto();
@@ -108,6 +110,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         ProductOrderModel productOrderModel = getProductOrderModel(productModel.getId(), userModel.getLoginName());
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(userModel.getLoginName());
+        baseParam.setPhoneNum("13900000000");
         BaseParamDto baseParamDto = new BaseParamDto();
         baseParamDto.setBaseParam(baseParam);
         baseParamDto.setIndex(1);
@@ -128,6 +131,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         BaseParamDto baseParamDto = new BaseParamDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(userModel.getLoginName());
+        baseParam.setPhoneNum("13900000000");
         baseParamDto.setBaseParam(baseParam);
         getProductModel(loginName, GoodsType.COUPON, 100,0l);
         getProductModel(loginName, GoodsType.PHYSICAL, 100,0l);
@@ -156,6 +160,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
+        baseParam.setPhoneNum("13900000000");
         productDetailRequestDto.setBaseParam(baseParam);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
         assertEquals(baseResponseDto.getCode(),ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getCode());
@@ -168,6 +173,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
+        baseParam.setPhoneNum("13900000000");
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId("11");
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
@@ -182,6 +188,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
+        baseParam.setPhoneNum("13900000000");
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(0);
@@ -197,6 +204,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
+        baseParam.setPhoneNum("13900000000");
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
@@ -215,6 +223,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
+        baseParam.setPhoneNum("13900000000");
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
@@ -222,7 +231,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         accountModel.setPoint(1000l);
         accountMapper.create(accountModel);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
-        assertEquals(baseResponseDto.getCode(),ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getCode());
+        assertEquals(baseResponseDto.getCode(),ReturnMessage.SUCCESS.getCode());
     }
 
     @Test
@@ -235,6 +244,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
+        baseParam.setPhoneNum("13900000000");
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);

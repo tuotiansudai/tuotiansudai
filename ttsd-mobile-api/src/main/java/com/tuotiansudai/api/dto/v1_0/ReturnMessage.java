@@ -154,7 +154,7 @@ public enum ReturnMessage {
     POINTS_PRODUCT_IS_NOT_NULL("0110","商品不能为空"),
     POINTS_PRODUCT_NUM_IS_NOT_NULL("0111","商品数量不能为空"),
     INSUFFICIENT_POINTS_BALANCE("0112","积分余额不足"),
-    INSUFFICIENT_PRODUCT_NUM("0112","商品已经兑换完了"),
+    INSUFFICIENT_PRODUCT_NUM("0112","商品剩余数量不足"),
     USER_ADDRESS_IS_NOT_NULL("0113","收货地址不可以为空");
 
     private String code;
