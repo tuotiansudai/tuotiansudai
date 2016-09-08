@@ -284,7 +284,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                 return CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(loginName, pointTask));
             case EACH_RECOMMEND:
                 //只能完成一次
-                return accountMapper.findByLoginName(referrer) != null && CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(loginName, pointTask));
+                return accountMapper.findByLoginName(referrer) != null && CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(referrer, pointTask));
             case FIRST_REFERRER_INVEST:
                 return accountMapper.findByLoginName(referrer) != null && userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask) == 0;
             case EACH_REFERRER_INVEST:
