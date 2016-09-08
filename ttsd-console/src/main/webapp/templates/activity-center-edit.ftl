@@ -27,6 +27,19 @@
             </div>
 
             <div class="form-group">
+                <label class="col-sm-2 control-label">活动顺序: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" name="seq" class="form-control activity-seq"
+                           <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
+                           value="<#if dto??>${(dto.seq?c)!}</#if>" placeholder="" datatype="*"
+                           errormsg="活动顺序不能为空">
+                </div>
+                <div class="col-sm-7">
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label class="col-sm-2 control-label">活动名称: </label>
 
                 <div class="col-sm-4">
@@ -133,10 +146,12 @@
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">分享标题(移动端): </label>
+
                 <div class="col-sm-4">
-                    <input type="text" name="shareTitle"  class="form-control activity-description"
+                    <input type="text" name="shareTitle" class="form-control activity-description"
                            <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
-                           value="<#if dto??>${dto.shareTitle!}</#if>" placeholder="" datatype="*" errormsg="分享标题(移动端)不能为空">
+                           value="<#if dto??>${dto.shareTitle!}</#if>" placeholder="" datatype="*"
+                           errormsg="分享标题(移动端)不能为空">
                 </div>
                 <div class="col-sm-7">
 
@@ -146,10 +161,12 @@
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">分享内容(移动端): </label>
+
                 <div class="col-sm-4">
-                    <input type="text" name="shareContent"  class="form-control activity-description"
+                    <input type="text" name="shareContent" class="form-control activity-description"
                            <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
-                           value="<#if dto??>${dto.shareContent!}</#if>" placeholder="" datatype="*" errormsg="分享内容(移动端)不能为空">
+                           value="<#if dto??>${dto.shareContent!}</#if>" placeholder="" datatype="*"
+                           errormsg="分享内容(移动端)不能为空">
                 </div>
                 <div class="col-sm-7">
 
@@ -159,10 +176,12 @@
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">分享链接(移动端): </label>
+
                 <div class="col-sm-4">
-                    <input type="text" name="shareUrl"  class="form-control activity-description"
+                    <input type="text" name="shareUrl" class="form-control activity-description"
                            <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
-                           value="<#if dto??>${dto.shareUrl!}</#if>" placeholder="" datatype="*" errormsg="分享链接(移动端)不能为空">
+                           value="<#if dto??>${dto.shareUrl!}</#if>" placeholder="" datatype="*"
+                           errormsg="分享链接(移动端)不能为空">
                 </div>
                 <div class="col-sm-7">
 
@@ -171,13 +190,47 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label">结束时间: </label>
+                <label class="col-sm-2 control-label">活动类型: </label>
 
-                <div class="date col-sm-4">
+                <div class="col-sm-4" style="padding-top:7px;">
+                    <label style="float:left;">长期活动:</label>
+                    <input type="radio" name="longTerm"  class="col-sm-1 activity-longTerm"
+                           id="longTerm"
+                           style="box-shadow: none;"
+                           value="longTerm"
+                           <#if dto??&&dto.status == 'TO_APPROVE'>disabled</#if> <#if !(dto??) || dto??&&dto.longTerm=='longTerm' >
+                           checked</#if> placeholder="">
+                    <label style="float:left;">非长期活动:</label>
+                    <input type="radio" name="longTerm"
+                           class="col-sm-1 activity-longTerm" id="notLongTerm"
+                           style="box-shadow: none;"
+                           value="notLongTerm"
+                           <#if dto??&&dto.status == 'TO_APPROVE'>disabled</#if> <#if dto??&&dto.longTerm == 'notLongTerm'>
+                           checked</#if> placeholder="">
+                </div>
+                <div class="col-sm-7">
+                </div>
+            </div>
+
+            <div class="form-group" id="activityTime" style="display: <#if dto?? && dto.longTerm !='longTerm'>block<#else>none</#if>">
+                <label class="col-sm-2 control-label">活动时间: </label>
+
+                <div class="date col-sm-2">
                     <div class="input-group" id='datetimepicker1'>
-                        <input type='text' class="form-control" name="expiredTime"
+                        <input type='text' class="form-control activatedTime" name="activatedTime"
                                <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
-                               value="<#if dto??>${dto.expiredTime?string('yyyy-MM-dd HH:mm')}</#if>"/>
+                               value="<#if dto??&&dto.activatedTime??>${dto.activatedTime?string('yyyy-MM-dd HH:mm')}</#if>"/>
+					                <span class="input-group-addon">
+					                    <span class="glyphicon glyphicon-calendar"></span>
+					                </span>
+                    </div>
+                </div>
+                <div style="float:left;text-align:center;line-height:34px;">-</div>
+                <div class="date col-sm-2">
+                    <div class="input-group" id='datetimepicker2'>
+                        <input type='text' class="form-control expiredTime" name="expiredTime"
+                               <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
+                               value="<#if dto??&&dto.expiredTime??>${dto.expiredTime?string('yyyy-MM-dd HH:mm')}</#if>"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -188,6 +241,8 @@
                 </div>
 
             </div>
+
+
             <div class="form-group">
                 <label class="col-sm-2 control-label"></label>
 

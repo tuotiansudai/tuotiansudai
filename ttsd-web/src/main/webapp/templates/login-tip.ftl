@@ -1,3 +1,4 @@
+<@global.isAnonymous>
 <div class="login-tip" id="loginTip">
     <i class="close-btn"></i>
     <div class="login-box">
@@ -37,3 +38,4 @@
         <p>下载拓天速贷APP 投资快人一步</p>
     </div>
 </div>
+</@global.isAnonymous>

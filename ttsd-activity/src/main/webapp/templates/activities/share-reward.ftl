@@ -59,8 +59,8 @@
         <div class="reward-info-title"></div>
         <div class="share-example"></div>
         <div class="share-recommend">
-            <#if isAppSource?? && !isAppSource>
-                <#if isLogin?? && !isLogin>
+            <#if !isAppSource>
+                <#if !isLogin>
                     <a href="javascript:void(0)" class="show-login">立即推荐</a>
                 <#else>
                     <#if noAccount?? && noAccount>
@@ -70,7 +70,7 @@
                     </#if>
                 </#if>
             <#else>
-                <#if isLogin?? && !isLogin>
+                <#if !isLogin>
                     <a href="/login?redirect=/referrer/refer-list">立即推荐</a>
                 <#else>
                     <#if noAccount?? && noAccount>
