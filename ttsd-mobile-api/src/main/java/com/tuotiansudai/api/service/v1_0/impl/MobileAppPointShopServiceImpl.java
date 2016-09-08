@@ -2,6 +2,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
@@ -174,7 +175,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     @Override
     @Transactional
     public BaseResponseDto productExchange(ProductDetailRequestDto productDetailRequestDto) {
-        if (StringUtils.isEmpty(productDetailRequestDto.getProductId())) {
+        if (Strings.isNullOrEmpty(productDetailRequestDto.getProductId())) {
             logger.info(MessageFormat.format("Product id is null (userId = {0})", productDetailRequestDto.getBaseParam().getUserId()));
             return new BaseResponseDto<>(ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getCode(), ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getMsg());
         }
