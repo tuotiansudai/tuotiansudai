@@ -12,6 +12,7 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,7 +51,7 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
                 responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
             }
 
-            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_no_password_invest?ret_code={1}&message={2}&order_id={3}&amount={4}", domainName, responseDto.getCode(), responseDto.getMessage(), investDto.getLoanId(), investDto.getAmount())));
+            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_no_password_invest?ret_code={1}&message={2}&order_id={3}&amount={4}", domainName, responseDto.getCode(), responseDto.getMessage(), investDto.getLoanId(), AmountConverter.convertStringToCent(investDto.getAmount()))));
 
         } catch (InvestException e) {
             return this.convertExceptionToDto(e);
