@@ -18,7 +18,7 @@
             <#else>
                 <div class="login-model">
                     <p>
-                        <a href="${webServer}/login?redirect=${pointServer}/point-shop"
+                        <a href="${webServer}/login?redirect=${pointServer}"
                            class="login-btn">立即登录</a>
                     </p>
 
