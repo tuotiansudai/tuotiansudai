@@ -770,11 +770,4 @@
             </if>
     </select>
 
-    <select id="findCountExperienceLoanByLoginName" parameterType="map" resultType="int">
-        select count(1) from invest
-        inner join loan on invest.loan_id = loan.id
-        where invest.login_name = #{loginName}
-        and loan.status &lt;&gt; 'CANCEL' and loan.product_type = 'EXPERIENCE'
-    </select>
-
 </mapper>
