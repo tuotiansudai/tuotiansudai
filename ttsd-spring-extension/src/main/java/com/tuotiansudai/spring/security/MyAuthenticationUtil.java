@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.MyUser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,12 +29,18 @@ public class MyAuthenticationUtil {
 
     static Logger logger = Logger.getLogger(MyAuthenticationUtil.class);
 
-    @Autowired
-    private HttpServletRequest httpServletRequest;
-
     private OkHttpClient okHttpClient = new OkHttpClient();
 
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    private HttpServletRequest httpServletRequest;
+
+    @Value("${signIn.host}")
+    private String signInHost;
+
+    @Value("${signIn.port}")
+    private String signInPort;
 
     public MyAuthenticationUtil() {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -48,7 +55,7 @@ public class MyAuthenticationUtil {
 
         RequestBody requestBody = formEncodingBuilder.build();
         Request.Builder request = new Request.Builder()
-                .url("http://localhost:5000/login/nopassword/")
+                .url(MessageFormat.format("http://{0}:{1}/login/nopassword/", signInHost, signInPort))
                 .post(requestBody)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
@@ -94,7 +101,7 @@ public class MyAuthenticationUtil {
 
         RequestBody requestBody = formEncodingBuilder.build();
         Request.Builder request = new Request.Builder()
-                .url(MessageFormat.format("http://localhost:5000/refresh/{0}", token))
+                .url(MessageFormat.format("http://{0}:{1}/refresh/{2}", signInHost, signInPort, token))
                 .post(requestBody);
         try {
             Response response = okHttpClient.newCall(request.build()).execute();

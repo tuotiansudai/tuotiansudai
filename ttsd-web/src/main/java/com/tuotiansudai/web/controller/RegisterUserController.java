@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.MessageFormat;
 
@@ -188,7 +189,8 @@ public class RegisterUserController {
         BaseDto<SmsDataDto> baseDto = new BaseDto<>();
         SmsDataDto dataDto = new SmsDataDto();
         baseDto.setData(dataDto);
-        boolean result = this.captchaHelper.captchaVerify(dto.getImageCaptcha(), httpServletRequest.getSession(false).getId(), httpServletRequest.getRemoteAddr());
+        HttpSession session = httpServletRequest.getSession(false);
+        boolean result = this.captchaHelper.captchaVerify(dto.getImageCaptcha(), session != null ? session.getId() : "", httpServletRequest.getRemoteAddr());
         if (result) {
             return smsCaptchaService.sendRegisterCaptcha(dto.getMobile(), RequestIPParser.parse(httpServletRequest));
         }

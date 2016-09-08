@@ -2,13 +2,12 @@ package com.tuotiansudai.console.activity.config;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.spring.MyAccessDeniedHandler;
+import com.tuotiansudai.spring.security.MyAccessDeniedHandler;
 import com.tuotiansudai.spring.security.MyPreAuthenticatedProcessingFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 @Configuration

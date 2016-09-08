@@ -30,9 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:dispatcher-servlet.xml", "classpath:applicationContext.xml", "classpath:spring-security.xml"})
-public class RegisterUserControllerTest {
+public class RegisterUserControllerTest extends BaseControllerTest {
 
     private MockMvc mockMvc;
 
@@ -58,7 +56,6 @@ public class RegisterUserControllerTest {
     private MyAuthenticationUtil myAuthenticationUtil;
 
     @Before
-
     public void init() {
         MockitoAnnotations.initMocks(this);
 
@@ -147,7 +144,7 @@ public class RegisterUserControllerTest {
     @Test
     public void shouldRegisterUser() throws Exception {
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);
-        doNothing().when(myAuthenticationUtil).createAuthentication(anyString(), any(Source.class));
+        when(myAuthenticationUtil.createAuthentication(anyString(), any(Source.class))).thenReturn("newToken");
 
         this.mockMvc.perform(post("/register/user")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -183,7 +180,6 @@ public class RegisterUserControllerTest {
         SmsDataDto dataDto = new SmsDataDto();
         baseDto.setData(dataDto);
         dataDto.setStatus(true);
-
 
         when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
         when(captchaHelper.captchaVerify(anyString(), anyString(), anyString())).thenReturn(true);

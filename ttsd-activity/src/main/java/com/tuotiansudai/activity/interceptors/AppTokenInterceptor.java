@@ -2,7 +2,8 @@ package com.tuotiansudai.activity.interceptors;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.AppTokenRedisWrapperClient;
-import com.tuotiansudai.spring.MyAuthenticationManager;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -16,7 +17,7 @@ public class AppTokenInterceptor extends HandlerInterceptorAdapter {
     static Logger logger = Logger.getLogger(AppTokenInterceptor.class);
 
     @Autowired
-    private MyAuthenticationManager myAuthenticationManager;
+    private MyAuthenticationUtil myAuthenticationUtil;
 
     @Autowired
     private AppTokenRedisWrapperClient AppTokenRedisWrapperClient;
@@ -31,16 +32,16 @@ public class AppTokenInterceptor extends HandlerInterceptorAdapter {
         String token = Strings.isNullOrEmpty(request.getHeader("token")) ? request.getParameter("token") : request.getHeader("token");
         if (Strings.isNullOrEmpty(token)) {
             logger.debug(MessageFormat.format("url:{0},uri:{1} , token is null", request.getRequestURL(), request.getRequestURI()));
-            myAuthenticationManager.removeAuthentication();
+            myAuthenticationUtil.removeAuthentication();
             return true;
         }
 
         String loginName = AppTokenRedisWrapperClient.get(token);
 
         if (Strings.isNullOrEmpty(loginName)) {
-            myAuthenticationManager.removeAuthentication();
+            myAuthenticationUtil.removeAuthentication();
         } else {
-            myAuthenticationManager.createAuthentication(loginName);
+            myAuthenticationUtil.createAuthentication(loginName, Source.WEB);
         }
 
         return true;

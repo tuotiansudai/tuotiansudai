@@ -15,8 +15,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MobileAppCertificationServiceImpl implements MobileAppCertificationService {
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private AccountMapper accountMapper;
 
@@ -40,7 +42,7 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
         if (accountService.isIdentityNumberExist(certificationRequestDto.getUserIdCardNumber())) {
             return new BaseResponseDto(ReturnMessage.ID_CARD_IS_EXIST.getCode(), ReturnMessage.ID_CARD_IS_EXIST.getMsg());
         }
-        BaseDto<PayDataDto> dto = userService.registerAccount(registerAccountDto, Source.valueOf(certificationRequestDto.getBaseParam().getPlatform().toUpperCase()));
+        BaseDto<PayDataDto> dto = userService.registerAccount(registerAccountDto);
         if(dto.getData().getStatus()){
             CertificationResponseDataDto certificationResponseDataDto = new CertificationResponseDataDto();
             certificationResponseDataDto.setUserIdCardNumber(certificationRequestDto.getUserIdCardNumber());

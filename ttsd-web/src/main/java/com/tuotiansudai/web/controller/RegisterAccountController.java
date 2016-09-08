@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.web.util.IdentityNumberValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,9 @@ public class RegisterAccountController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private MyAuthenticationUtil myAuthenticationUtil;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerAccount(@RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
@@ -50,7 +54,9 @@ public class RegisterAccountController {
     public BaseDto<PayDataDto> registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto) {
         if (IdentityNumberValidator.validateIdentity(registerAccountDto.getIdentityNumber())) {
             registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
-            return this.userService.registerAccount(registerAccountDto, Source.WEB);
+            BaseDto<PayDataDto> baseDto = this.userService.registerAccount(registerAccountDto);
+            myAuthenticationUtil.createAuthentication(LoginUserInfo.getLoginName(), Source.WEB);
+            return baseDto;
         }
 
         BaseDto<PayDataDto> baseDto = new BaseDto<>();

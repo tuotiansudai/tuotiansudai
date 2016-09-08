@@ -6,19 +6,6 @@
 		   http://www.springframework.org/schema/security
 		   http://www.springframework.org/schema/security/spring-security-4.1.xsd">
 
-    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.api.security.MobileAppAccessDeniedHandler"/>
-
-    <beans:bean id="mobileAppAuthenticationEntryPoint" class="com.tuotiansudai.api.security.MobileAppAuthenticationEntryPoint"/>
-
-    <beans:bean id="captchaHelper" class="com.tuotiansudai.spring.security.CaptchaHelper"/>
-
-    <beans:bean id="tokenFilter" class="com.tuotiansudai.api.security.MobileAppAuthenticationTokenProcessingFilter" />
-    <beans:bean id="mySimpleUrlAuthenticationSuccessHandler" class="com.tuotiansudai.api.security.MySimpleUrlAuthenticationSuccessHandler"/>
-    <beans:bean id="mySimpleUrlAuthenticationFailureHandler" class="com.tuotiansudai.api.security.MySimpleUrlAuthenticationFailureHandler"/>
-    <beans:bean id="mySimpleUrlLogoutSuccessHandler" class="com.tuotiansudai.api.security.MySimpleUrlLogoutSuccessHandler"/>
-    <beans:bean id="myWebAuthenticationDetailsSource" class="com.tuotiansudai.spring.security.MyWebAuthenticationDetailsSource"/>
-    <beans:bean id="myAuthenticationProvider" class="com.tuotiansudai.spring.security.MyAuthenticationProvider"/>
-
     <authentication-manager alias="authenticationManager">
         <authentication-provider ref="myAuthenticationProvider"/>
     </authentication-manager>
@@ -26,15 +13,15 @@
     <http auto-config="true" use-expressions="true" disable-url-rewriting="true" entry-point-ref="mobileAppAuthenticationEntryPoint">
         <csrf disabled="true"/>
 
-        <access-denied-handler ref="myAccessDeniedHandler"/>
+        <access-denied-handler ref="mobileAppAccessDeniedHandler"/>
 
-        <custom-filter ref="tokenFilter" position="PRE_AUTH_FILTER"/>
+        <custom-filter ref="mobileAppAuthenticationTokenProcessingFilter" position="PRE_AUTH_FILTER"/>
 
         <form-login login-processing-url="/login" authentication-details-source-ref="myWebAuthenticationDetailsSource"
-                    authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
-                    authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
+                    authentication-success-handler-ref="myMobileSimpleUrlAuthenticationSuccessHandler"
+                    authentication-failure-handler-ref="myMobileSimpleUrlAuthenticationFailureHandler"/>
 
-        <logout success-handler-ref="mySimpleUrlLogoutSuccessHandler" logout-url="/usermember/logout"/>
+        <logout success-handler-ref="myMobileSimpleUrlLogoutSuccessHandler" logout-url="/usermember/logout"/>
 
         <intercept-url pattern="/login" access="permitAll()"/>
         <intercept-url pattern="/usermember/logout" access="permitAll()"/>

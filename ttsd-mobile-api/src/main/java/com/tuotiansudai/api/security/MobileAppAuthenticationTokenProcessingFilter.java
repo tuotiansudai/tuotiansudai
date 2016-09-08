@@ -17,10 +17,12 @@ import com.tuotiansudai.spring.MyUser;
 import com.tuotiansudai.spring.security.LoginResult;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -33,6 +35,7 @@ import java.io.PrintWriter;
 import java.text.MessageFormat;
 import java.util.List;
 
+@Component
 public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterBean {
 
     private String refreshTokenUrl = "/refresh-token";
@@ -40,6 +43,12 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
     private OkHttpClient okHttpClient = new OkHttpClient();
 
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Value("${signIn.host}")
+    private String signInHost;
+
+    @Value("${signIn.port}")
+    private String signInPort;
 
     @Autowired
     private MyAuthenticationUtil myAuthenticationUtil;
@@ -54,7 +63,7 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
         String token = getToken(httpServletRequest);
         if (!Strings.isNullOrEmpty(token)) {
             Request.Builder preAuthenticatedRequest = new Request.Builder()
-                    .url(MessageFormat.format("http://localhost:5000/session/{0}", token))
+                    .url(MessageFormat.format("http://{0}:{1}/session/{2}", signInHost, signInPort, token))
                     .get();
             Response execute = okHttpClient.newCall(preAuthenticatedRequest.build()).execute();
             LoginResult loginResult = objectMapper.readValue(execute.body().string(), LoginResult.class);

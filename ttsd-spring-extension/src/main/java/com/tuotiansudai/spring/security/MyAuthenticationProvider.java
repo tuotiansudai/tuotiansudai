@@ -9,6 +9,7 @@ import com.squareup.okhttp.*;
 import com.tuotiansudai.spring.MyUser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,14 +19,23 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.List;
 
+@Component
 public class MyAuthenticationProvider implements AuthenticationProvider {
 
     static Logger logger = Logger.getLogger(MyAuthenticationProvider.class);
+
+    private MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
+
+    private OkHttpClient okHttpClient = new OkHttpClient();
+
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private CaptchaHelper captchaHelper;
@@ -33,11 +43,11 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private HttpServletRequest httpServletRequest;
 
-    private MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
+    @Value("${signIn.host}")
+    private String signInHost;
 
-    private OkHttpClient okHttpClient = new OkHttpClient();
-
-    private ObjectMapper objectMapper = new ObjectMapper();
+    @Value("${signIn.port}")
+    private String signInPort;
 
     public MyAuthenticationProvider() {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -60,7 +70,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
         RequestBody requestBody = formEncodingBuilder.build();
         Request.Builder request = new Request.Builder()
-                .url("http://localhost:5000/login/")
+                .url(MessageFormat.format("http://{0}:{1}/login/", signInHost, signInPort))
                 .post(requestBody)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 

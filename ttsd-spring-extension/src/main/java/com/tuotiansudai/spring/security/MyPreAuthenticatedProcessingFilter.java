@@ -9,10 +9,12 @@ import com.google.common.collect.Lists;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 
+@Component
 public class MyPreAuthenticatedProcessingFilter extends GenericFilterBean implements ApplicationEventPublisherAware {
 
     private ApplicationEventPublisher eventPublisher = null;
@@ -33,6 +36,12 @@ public class MyPreAuthenticatedProcessingFilter extends GenericFilterBean implem
     private OkHttpClient okHttpClient = new OkHttpClient();
 
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Value("${signIn.host}")
+    private String signInHost;
+
+    @Value("${signIn.port}")
+    private String signInPort;
 
     public MyPreAuthenticatedProcessingFilter() {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -59,7 +68,7 @@ public class MyPreAuthenticatedProcessingFilter extends GenericFilterBean implem
             if (cookieOptional.isPresent()) {
                 String sessionId = cookieOptional.get().getValue();
                 Request.Builder preAuthenticatedRequest = new Request.Builder()
-                        .url(MessageFormat.format("http://localhost:5000/session/{0}", sessionId))
+                        .url(MessageFormat.format("http://{0}:{1}/session/{2}", signInHost, signInPort, sessionId))
                         .get();
                 Response execute = okHttpClient.newCall(preAuthenticatedRequest.build()).execute();
                 LoginResult loginResult = objectMapper.readValue(execute.body().string(), LoginResult.class);

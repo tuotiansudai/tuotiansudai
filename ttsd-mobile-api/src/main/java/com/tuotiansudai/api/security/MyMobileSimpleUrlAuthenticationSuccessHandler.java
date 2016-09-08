@@ -5,10 +5,10 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.LoginResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.spring.MyUser;
-import com.tuotiansudai.spring.security.LoginDto;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+@Component
+public class MyMobileSimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private static Logger logger = Logger.getLogger(MySimpleUrlAuthenticationSuccessHandler.class);
+    private static Logger logger = Logger.getLogger(MyMobileSimpleUrlAuthenticationSuccessHandler.class);
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -41,8 +42,6 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
         try {
             writer = response.getWriter();
             writer.print(jsonBody);
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
         } finally {
             if (writer != null) {
                 writer.close();

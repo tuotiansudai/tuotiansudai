@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
 
+@Component
 public class CaptchaHelper {
 
     static Logger logger = Logger.getLogger(CaptchaHelper.class);

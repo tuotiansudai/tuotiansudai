@@ -98,7 +98,7 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         BaseResponseDto<RegisterResponseDataDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
         RegisterResponseDataDto registerDataDto = new RegisterResponseDataDto();
         registerDataDto.setPhoneNum(registerRequestDto.getPhoneNum());
-        registerDataDto.setToken(myAuthenticationUtil.createAuthentication(dto.getLoginName(), Source.valueOf(registerRequestDto.getBaseParam().getPhoneNum())));
+        registerDataDto.setToken(myAuthenticationUtil.createAuthentication(dto.getLoginName(), Source.valueOf(registerRequestDto.getBaseParam().getPlatform().toUpperCase())));
         baseResponseDto.setData(registerDataDto);
         return baseResponseDto;
     }

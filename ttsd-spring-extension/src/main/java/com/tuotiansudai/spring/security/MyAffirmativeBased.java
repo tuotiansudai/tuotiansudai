@@ -1,8 +1,9 @@
-package com.tuotiansudai.spring;
+package com.tuotiansudai.spring.security;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.spring.UserRoleAccessDeniedException;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;

@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 
+@Component
 public class MobileAppAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     static Logger log = Logger.getLogger(MobileAppAuthenticationEntryPoint.class);
@@ -32,8 +34,14 @@ public class MobileAppAuthenticationEntryPoint implements AuthenticationEntryPoi
         dto.setData(loginResponseDataDto);
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        PrintWriter out = response.getWriter();
-        String jsonString = objectMapper.writeValueAsString(dto);
-        out.print(jsonString);
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            writer.print(objectMapper.writeValueAsString(dto));
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
     }
 }

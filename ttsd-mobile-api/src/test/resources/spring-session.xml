@@ -9,13 +9,13 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties" />
+    <context:property-placeholder location="classpath*:ttsd-env.properties"/>
 
     <!-- enable autowire -->
     <context:annotation-config/>
+
     <bean class="com.tuotiansudai.spring.session.MyRedisHttpSessionConfiguration"/>
 
-    <!--<bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"/>-->
     <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
           p:hostName="${common.redis.host}"
           p:port="${common.redis.port}"

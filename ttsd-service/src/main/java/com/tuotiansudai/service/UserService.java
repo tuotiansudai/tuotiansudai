@@ -24,7 +24,7 @@ public interface UserService {
 
     boolean loginNameOrMobileIsExist(String loginNameOrMobile);
 
-    BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto, Source source);
+    BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto);
 
     /**
      * 修改用户密码
