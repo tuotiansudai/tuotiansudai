@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.BankCardUtil;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/callback")
 public class MobileAppCallBackController {
+
+    static Logger logger = Logger.getLogger(MobileAppCallBackController.class);
 
     @Autowired
     private BindBankCardService bindBankCardService;
@@ -41,6 +44,14 @@ public class MobileAppCallBackController {
     public ModelAndView callBack(@PathVariable String service, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("/callBackTemplate");
         Map<String, String> paramsMap = this.parseRequestParameters(request);
+        logger.debug("service = "+ service);
+        logger.debug("request = " + request);
+
+        for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
+            logger.debug(" key = "+entry.getKey());
+            logger.debug("value = "+ entry.getValue());
+        }
+
         String retCode = paramsMap.get("ret_code");
         String orderId = paramsMap.get("order_id").trim();
         Map<String,String> retMaps = Maps.newHashMap();
