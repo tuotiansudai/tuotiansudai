@@ -78,7 +78,7 @@
     <div class="main-advantage page-width">
         <dl>
             <dd>
-                <a href="/about/assurance?aid=1" onclick="cnzzPush.trackClick('28首页','安全保障模块','1')" target="_blank">
+                <a href="/about/guide" onclick="cnzzPush.trackClick('28首页','安全保障模块','1')" target="_blank">
                     <div class="icon-hover img-icon-off-1"></div>
                     <span class="clearfix">
                          <b class="clearfix">稳健收益 较低门槛</b>
@@ -87,16 +87,16 @@
                 </a>
             </dd>
             <dd>
-                <a href="/about/assurance?aid=2" onclick="cnzzPush.trackClick('29首页','安全保障模块','2')" target="_blank">
+                <a href="/about/risk-flow" onclick="cnzzPush.trackClick('29首页','安全保障模块','2')" target="_blank">
                     <div class="icon-hover img-icon-off-2"></div>
                     <span class="clearfix">
-                        <b class="clearfix">三方托管 放心投资</b>
-                        第三方资金托管，第三方支付
+                        <b class="clearfix">六重风控 审核严谨</b>
+                       22道审核手续，项目安全透明无死角
                     </span>
                 </a>
             </dd>
             <dd>
-                <a href="/about/assurance?aid=3" onclick="cnzzPush.trackClick('30首页','安全保障模块','3')" target="_blank">
+                <a href="/about/assurance" onclick="cnzzPush.trackClick('30首页','安全保障模块','3')" target="_blank">
                     <div class="icon-hover img-icon-off-3"></div>
                     <span class="clearfix">
                         <b class="clearfix">实力雄厚 安全保障</b>
@@ -694,7 +694,7 @@
 
             <div class="box-radius clearfix">
                 <ul class="media-list fl">
-                    <li><i>●</i><a rel="nofollow" href="http://mt.sohu.com/20160331/n443005759.shtml?qq-pf-to=pcqq.c2c"
+                    <li><i>●</i><a rel="nofollow" href="http://economy.gmw.cn/2016-03/31/content_19527114.htm"
                                    onclick="cnzzPush.trackClick('73首页','媒体报道模块','霸道总裁')" target="_blank">拓天速贷第二期全国排行活动正式启动</a>
                         <time>2016-03-31</time>
                     </li>
@@ -703,7 +703,7 @@
                         感恩豪礼滚滚来</a>
                         <time>2016-03-14</time>
                     </li>
-                    <li><i>●</i><a rel="nofollow" href="http://help.3g.163.com/0414/16/0201/14/BEOCI8PP041403U2.html"
+                    <li><i>●</i><a rel="nofollow" href="http://roll-sohu.com/money/20160201/n1963.html"
                                    onclick="cnzzPush.trackClick('41首页','媒体报道模块','现金红包')" target="_blank">拓天速贷：新年贺岁嗨翻天，全民领取888元现金红包</a>
                         <time>2016-02-01</time>
                     </li>
@@ -712,7 +712,7 @@
                                    onclick="cnzzPush.trackClick('42首页','媒体报道模块','宝马名花有主')" target="_blank">拓天速贷：宝马名花有主，猴年豪礼来袭</a>
                         <time>2016-01-20</time>
                     </li>
-                    <li><i>●</i><a rel="nofollow" href="http://toutiao.com/news/6233268186905575938/"
+                    <li><i>●</i><a rel="nofollow" href="http://w.huanqiu.com/r/MV8wXzgyNzQ4NDZfMTM5NF8xNDUxMzAzNzYy"
                                    onclick="cnzzPush.trackClick('43首页','媒体报道模块','高效资产平台')" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
                         <time>2015-12-28</time>
                     </li>
