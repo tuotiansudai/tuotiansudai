@@ -21,7 +21,7 @@ public class EnvironmentAspect {
     private String fakeCaptcha;
 
 
-    @Around(value = "execution(public boolean com.tuotiansudai.spring.security.CaptchaHelper.captchaVerify(..))")
+    @Around(value = "execution(* *..CaptchaHelper.captchaVerify(..))")
     public Object aroundCaptchaVerify(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         if (Environment.SMOKE == environment) {
             return true;

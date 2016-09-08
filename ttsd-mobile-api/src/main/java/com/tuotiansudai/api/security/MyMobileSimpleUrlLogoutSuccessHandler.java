@@ -6,7 +6,9 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.spring.security.SignInClient;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
@@ -24,23 +26,13 @@ public class MyMobileSimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSucces
 
     static Logger logger = Logger.getLogger(MyMobileSimpleUrlLogoutSuccessHandler.class);
 
-    private OkHttpClient okHttpClient = new OkHttpClient();
-
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @Value("${signIn.host}")
-    private String signInHost;
-
-    @Value("${signIn.port}")
-    private String signInPort;
+    @Autowired
+    private SignInClient signInClient;
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        Request.Builder logoutRequest = new Request.Builder()
-                .url(MessageFormat.format("http://{0}:{1}/logout/{2}", signInHost, signInPort, request.getParameter("token")))
-                .post(RequestBody.create(null, new byte[0]));
-        okHttpClient.newCall(logoutRequest.build()).execute();
-
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -59,5 +51,7 @@ public class MyMobileSimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSucces
         }
 
         super.onLogoutSuccess(request, response, authentication);
+
+        signInClient.logout(request.getParameter("token"));
     }
 }

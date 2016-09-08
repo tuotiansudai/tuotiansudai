@@ -93,7 +93,4 @@
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="300"/>
     </bean>
-
-    <bean id="captchaHelper" class="com.tuotiansudai.spring.security.CaptchaHelper"/>
-
 </beans>

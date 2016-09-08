@@ -1,11 +1,11 @@
-package com.tuotiansudai.spring.security;
+package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class UserInfo implements Serializable {
+public class SignInUserInfo implements Serializable {
     private String loginName;
 
     private String mobile;

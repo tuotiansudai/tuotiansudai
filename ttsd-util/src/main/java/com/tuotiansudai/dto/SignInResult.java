@@ -1,15 +1,16 @@
-package com.tuotiansudai.spring.security;
+package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
-public class LoginResult implements Serializable {
+public class SignInResult implements Serializable {
+
     private boolean result;
 
     private String message;
 
-    private UserInfo userInfo;
+    private SignInUserInfo userInfo;
 
     private String token;
 
@@ -29,12 +30,12 @@ public class LoginResult implements Serializable {
         this.message = message;
     }
 
-    public UserInfo getUserInfo() {
+    public SignInUserInfo getUserInfo() {
         return userInfo;
     }
 
     @JsonProperty(value = "user_info")
-    public void setUserInfo(UserInfo userInfo) {
+    public void setSignInUserInfo(SignInUserInfo userInfo) {
         this.userInfo = userInfo;
     }
 

@@ -1,23 +1,18 @@
 package com.tuotiansudai.api.security;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.LoginResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.MyUser;
-import com.tuotiansudai.spring.security.LoginResult;
-import com.tuotiansudai.spring.security.MyAuthenticationUtil;
+import com.tuotiansudai.dto.SignInResult;
+import com.tuotiansudai.spring.security.SignInClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,7 +27,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.MessageFormat;
 import java.util.List;
 
 @Component
@@ -40,67 +34,51 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
 
     private String refreshTokenUrl = "/refresh-token";
 
-    private OkHttpClient okHttpClient = new OkHttpClient();
-
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @Value("${signIn.host}")
-    private String signInHost;
-
-    @Value("${signIn.port}")
-    private String signInPort;
-
     @Autowired
-    private MyAuthenticationUtil myAuthenticationUtil;
-
-    public MobileAppAuthenticationTokenProcessingFilter() {
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
+    private SignInClient signInClient;
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
         String token = getToken(httpServletRequest);
-        if (!Strings.isNullOrEmpty(token)) {
-            Request.Builder preAuthenticatedRequest = new Request.Builder()
-                    .url(MessageFormat.format("http://{0}:{1}/session/{2}", signInHost, signInPort, token))
-                    .get();
-            Response execute = okHttpClient.newCall(preAuthenticatedRequest.build()).execute();
-            LoginResult loginResult = objectMapper.readValue(execute.body().string(), LoginResult.class);
-            if (loginResult.isResult()) {
-                List<GrantedAuthority> grantedAuthorities = Lists.transform(loginResult.getUserInfo().getRoles(), new Function<String, GrantedAuthority>() {
-                    @Override
-                    public GrantedAuthority apply(String role) {
-                        return new SimpleGrantedAuthority(role);
-                    }
-                });
 
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        new MyUser(loginResult.getToken(), loginResult.getUserInfo().getLoginName(), "", true, true, true, true, grantedAuthorities, loginResult.getUserInfo().getMobile()),
-                        "",
-                        grantedAuthorities);
-                authenticationToken.setDetails(authenticationToken.getDetails());
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        SignInResult verifyTokenResult = signInClient.verifyToken(token);
 
-                if (httpServletRequest.getRequestURI().equalsIgnoreCase(refreshTokenUrl)) {
-                    String newToken = myAuthenticationUtil.refreshTokenProcess(token, getSource(httpServletRequest));
-                    BaseResponseDto<LoginResponseDataDto> dto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
-                    LoginResponseDataDto loginResponseDataDto = new LoginResponseDataDto();
-                    loginResponseDataDto.setToken(newToken);
-                    dto.setData(loginResponseDataDto);
+        if (verifyTokenResult != null && verifyTokenResult.isResult()) {
+            List<GrantedAuthority> grantedAuthorities = Lists.transform(verifyTokenResult.getUserInfo().getRoles(), new Function<String, GrantedAuthority>() {
+                @Override
+                public GrantedAuthority apply(String role) {
+                    return new SimpleGrantedAuthority(role);
+                }
+            });
 
-                    PrintWriter writer = null;
-                    try {
-                        writer = response.getWriter();
-                        writer.print(objectMapper.writeValueAsString(dto));
-                    } finally {
-                        if (writer != null) {
-                            writer.close();
-                        }
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    new MyUser(verifyTokenResult.getToken(), verifyTokenResult.getUserInfo().getLoginName(), "", true, true, true, true, grantedAuthorities, verifyTokenResult.getUserInfo().getMobile()),
+                    "",
+                    grantedAuthorities);
+            authenticationToken.setDetails(authenticationToken.getDetails());
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+            if (httpServletRequest.getRequestURI().equalsIgnoreCase(refreshTokenUrl)) {
+                SignInResult refreshResult = signInClient.refresh(token, getSource(httpServletRequest));
+                String newToken = refreshResult != null && refreshResult.isResult() ? refreshResult.getToken() : null;
+
+                BaseResponseDto<LoginResponseDataDto> dto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
+                LoginResponseDataDto loginResponseDataDto = new LoginResponseDataDto();
+                loginResponseDataDto.setToken(newToken);
+                dto.setData(loginResponseDataDto);
+
+                PrintWriter writer = null;
+                try {
+                    writer = response.getWriter();
+                    writer.print(objectMapper.writeValueAsString(dto));
+                } finally {
+                    if (writer != null) {
+                        writer.close();
                     }
                 }
-            } else {
-                logger.error(MessageFormat.format("token {0} is invalid", token));
             }
         }
         chain.doFilter(httpServletRequest, response);

@@ -1,15 +1,11 @@
 package com.tuotiansudai.spring.security;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import org.springframework.beans.factory.annotation.Value;
+import com.tuotiansudai.dto.SignInResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.security.core.Authentication;
@@ -23,9 +19,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.List;
 
 @Component
@@ -33,19 +27,11 @@ public class MyPreAuthenticatedProcessingFilter extends GenericFilterBean implem
 
     private ApplicationEventPublisher eventPublisher = null;
 
-    private OkHttpClient okHttpClient = new OkHttpClient();
+    @Autowired
+    private SignInClient signInClient;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-
-    @Value("${signIn.host}")
-    private String signInHost;
-
-    @Value("${signIn.port}")
-    private String signInPort;
-
-    public MyPreAuthenticatedProcessingFilter() {
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
+    @Autowired
+    private MyAuthenticationUtil myAuthenticationUtil;
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
@@ -66,14 +52,9 @@ public class MyPreAuthenticatedProcessingFilter extends GenericFilterBean implem
             });
 
             if (cookieOptional.isPresent()) {
-                String sessionId = cookieOptional.get().getValue();
-                Request.Builder preAuthenticatedRequest = new Request.Builder()
-                        .url(MessageFormat.format("http://{0}:{1}/session/{2}", signInHost, signInPort, sessionId))
-                        .get();
-                Response execute = okHttpClient.newCall(preAuthenticatedRequest.build()).execute();
-                LoginResult loginResult = objectMapper.readValue(execute.body().string(), LoginResult.class);
-                if (!loginResult.isResult()) {
-                    this.preAuthenticatedProcess(httpServletRequest);
+                SignInResult signInResult = signInClient.verifyToken(cookieOptional.get().getValue());
+                if (signInResult == null || !signInResult.isResult()) {
+                    this.myAuthenticationUtil.removeAuthentication();
                 }
             }
         }
@@ -83,17 +64,5 @@ public class MyPreAuthenticatedProcessingFilter extends GenericFilterBean implem
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher anApplicationEventPublisher) {
         this.eventPublisher = anApplicationEventPublisher;
-    }
-
-    private void preAuthenticatedProcess(HttpServletRequest httpServletRequest) {
-        SecurityContextHolder.clearContext();
-
-        HttpSession session = httpServletRequest.getSession(false);
-
-        if (session != null) {
-            logger.debug("Invalidating existing session");
-            session.invalidate();
-            httpServletRequest.getSession();
-        }
     }
 }

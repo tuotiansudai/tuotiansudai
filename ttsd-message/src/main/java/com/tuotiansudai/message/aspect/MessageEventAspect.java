@@ -1,17 +1,12 @@
 package com.tuotiansudai.message.aspect;
 
-import com.google.common.base.Strings;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.RegisterAccountDto;
-import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.message.util.UserMessageEventGenerator;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import org.apache.log4j.Logger;
@@ -22,7 +17,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.Map;
 
@@ -31,9 +25,6 @@ import java.util.Map;
 public class MessageEventAspect {
 
     private static Logger logger = Logger.getLogger(MessageEventAspect.class);
-
-    @Autowired
-    private UserMapper userMapper;
 
     @Autowired
     private RechargeMapper rechargeMapper;
@@ -87,7 +78,7 @@ public class MessageEventAspect {
     public void rewardReferrerSuccessPointcut() {
     }
 
-    @Pointcut("execution(* *..MySimpleUrlAuthenticationSuccessHandler.onAuthenticationSuccess(..))")
+    @Pointcut("execution(* *..SignInClient.login(..))")
     public void loginSuccessPointcut() {
     }
 
@@ -223,15 +214,15 @@ public class MessageEventAspect {
         }
     }
 
-    @AfterReturning(value = "loginSuccessPointcut()")
-    public void afterReturningUserLogin(JoinPoint joinPoint) {
-        String loginName = LoginUserInfo.getLoginName();
-        logger.info(MessageFormat.format("[Message Event Aspect] after login success({0}) pointcut start", loginName));
+    @AfterReturning(value = "loginSuccessPointcut()", returning = "signInResult")
+    public void afterReturningUserLogin(JoinPoint joinPoint, SignInResult signInResult) {
         try {
-            userMessageEventGenerator.generateCouponExpiredAlertEvent(loginName);
-            logger.info(MessageFormat.format("[Message Event Aspect] after login success({0}) pointcut finished", loginName));
+            if (signInResult != null && signInResult.isResult()) {
+                userMessageEventGenerator.generateCouponExpiredAlertEvent(signInResult.getUserInfo().getLoginName());
+            }
+            logger.info(MessageFormat.format("[Message Event Aspect] after login success({0}) pointcut finished", signInResult.getUserInfo().getLoginName()));
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[Message Event Aspect] after login success({0}) pointcut is fail", loginName), e);
+            logger.error("[Message Event Aspect] after login success({0}) pointcut is fail", e);
         }
     }
 

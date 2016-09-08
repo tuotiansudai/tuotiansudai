@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.dto.SignInResult;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -43,11 +43,11 @@ public class CouponAspect {
     public void registerUserPointcut() {
     }
 
-    @Pointcut("execution(* *..MySimpleUrlAuthenticationSuccessHandler.onAuthenticationSuccess(..))")
+    @Pointcut("execution(* *..SignInClient.login(..))")
     public void loginSuccessPointcut() {
     }
 
-    @Pointcut("execution(* *..MyAuthenticationUtil.refreshTokenProcess(..))")
+    @Pointcut("execution(* *..SignInClient.refresh(..))")
     public void refreshTokenPointcut() {
     }
 
@@ -65,24 +65,15 @@ public class CouponAspect {
         }
     }
 
-    @AfterReturning(value = "loginSuccessPointcut()")
-    public void afterReturningUserLogin(JoinPoint joinPoint) {
-        logger.info("assign coupon after user login");
+    @AfterReturning(value = "loginSuccessPointcut() || refreshTokenPointcut()", returning = "signInResult")
+    public void afterReturningUserLogin(JoinPoint joinPoint, SignInResult signInResult) {
         try {
-            couponAssignmentService.assignUserCoupon(LoginUserInfo.getLoginName(), userGroups);
+            if (signInResult != null && signInResult.isResult()) {
+                logger.info("assign coupon after user login");
+                couponAssignmentService.assignUserCoupon(signInResult.getUserInfo().getLoginName(), userGroups);
+            }
         } catch (Exception e) {
             logger.error("assign coupon after user login is failed ", e);
-        }
-    }
-
-    @AfterReturning(value = "refreshTokenPointcut()")
-    public void afterReturningRefreshTokenPointcut(JoinPoint joinPoint) {
-        logger.info("assign coupon after refresh token success");
-        try {
-            String loginName = (String) joinPoint.getArgs()[0];
-            couponAssignmentService.assignUserCoupon(LoginUserInfo.getLoginName(), userGroups);
-        } catch (Exception e) {
-            logger.error("assign coupon after refresh token is failed", e);
         }
     }
 }

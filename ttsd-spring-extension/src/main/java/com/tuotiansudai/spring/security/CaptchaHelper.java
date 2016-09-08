@@ -44,10 +44,6 @@ public class CaptchaHelper {
     }
 
     public boolean captchaVerify(String captcha, String sessionIdOrDeviceId, String ip) {
-        if (!Environment.isProduction(environment) && captcha.equals(fakeCaptcha)) {
-            return true;
-        }
-
         if (!this.isImageCaptchaNecessary(ip)) {
             return true;
         }
