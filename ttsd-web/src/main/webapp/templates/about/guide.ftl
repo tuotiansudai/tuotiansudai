@@ -1,112 +1,162 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.full_screen}" pageJavascript="${js.newguide}" activeNav="新手指引" activeLeftNav="" title="新手指引_拓天新手理财_拓天速贷" keywords="拓天速贷,新手理财,新手投资,小额理财,拓天速贷888红包" description="拓天速贷是中国P2P金融信息服务平台,为广大理财、投资、贷款的用户,提供多元化的投资选择和优质的综合理财服务,拓天速贷投资理财的用户可通过新手专区领取现金888元大奖,进行散标投资获得稳定收益.">
-<style type="text/css">
-    .header-container {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        z-index: 102;
-        display: block;
-    }
-    .nav-container {
-        position: absolute;
-        top: 30px;
-        z-index: 100;
-        display: block;
-    }
-    .footer-container {
-        display: none;
-    }
-    #fp-nav{
-        display: none;
-    }
-    @media screen and (max-width: 700px) {
-        .header-container,.nav-container {
-            display: none;
-        }
-    }
+<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.assurance}" activeNav="新手指引" activeLeftNav="" title="新手指引_拓天新手理财_拓天速贷" keywords="拓天速贷,新手理财,新手投资,小额理财,拓天速贷888红包" description="拓天速贷是中国P2P金融信息服务平台,为广大理财、投资、贷款的用户,提供多元化的投资选择和优质的综合理财服务,拓天速贷投资理财的用户可通过新手专区领取现金888元大奖,进行散标投资获得稳定收益.">
 
-</style>
-<a href="/" class="back-home">返回首页</a>
-<div class="new-guide-container" id="assuranceEffect">
-    <div class="section intro-text">
-        <div class="page-width clearfix">
-            <div class="flex-model">
-                <p class="intro-title">我们是谁？</p>
-                <p class="intro-english">Who Are We?</p>
-                <p class="text-name">拓天速贷——互联网金融信息服务平台</p>
-                <p class="intro-detail">以创新、诚信、专业作为核心价值观，坚持安全，公平，透明的原则，</br>
-                    在为个人和企业提供急需的资金的同时，响应普惠金融的号召，</br>
-                    为普通老百姓提供崭新的投资渠道选择。
-                </p>
-                <p class="intro-restext">以创新、诚信、专业作为核心价值观，坚持安全，公平，透明的原则，在为个人和企业提供急需的资金的同时，响应普惠金融的号召，为普通老百姓提供崭新的投资渠道选择。
-                </p>
-            </div>
-            <div class="down clearfix"><b>试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/down.png" class="down-icon" alt=""></div>
+<div class="new-guide-container" id="pageGuide">
+    <ul class="quick-top-link page-width">
+        <li class="guide active"><a href="/about/guide">新手指引</a></li>
+        <li class="risk "><a href="/about/risk-flow">风控流程</a></li>
+        <li class="assure"><a href="/about/assurance">安全保障</a></li>
+    </ul>
+    <div class="main-banner">
+        <div class="page-width">
+            <img src="${staticServer}/images/sign/assure/newer-bar.jpg" alt="风控流程">
         </div>
     </div>
-    <div class="section">
-        <div class="page-width clearfix">
-            <div class="mode-operation">
-                <p class="mode-title">我们的<span>运作模式</span></p>
-                <p class="title-word">Our Way Of Operation</p>
-                <p class="pc-img"><img src="${staticServer}/images/sign/model-type-new.png"  width="55%" alt=""></p>
-                <p class="responsive-img"><img src="${staticServer}/images/sign/res-model-new.png"  width="80%" alt=""></p>
-            </div>
-            <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/down-gray.png" class="down-icon" alt=""></div>
+    <div class="section-box-one bg-white clearfix pad-box">
+        <div class="page-width">
+            <div class="column-title-ac"><i></i>什么是拓天速贷<i></i> </div>
+            <p>拓天速贷于2015年7月正式上线运营，是一家稳健型的互联网金融信息服务平台。以安全、公平、透明为原则，以创新、诚信、专业为核心价值观，通过严谨的风控审核机制，为有资金需求的小微企业、个体以及有出借需求的个人、家庭提供规范、安全、专业的信息服务。</p>
         </div>
-    </div>
-    <div class="section">
-        <div class="page-width clearfix">
-            <div class="mode-operation">
-                <p class="mode-title">为什么选择<span>拓天速贷</span></p>
-                <p class="title-word">Why Should You Select Us</p>
-                <p class="pc-img"><img src="${staticServer}/images/sign/why-img-new.png"  width="80%" alt=""></p>
-                <p class="responsive-img"><img src="${staticServer}/images/sign/res-kind-new.png"  width="70%" alt=""></p>
-            </div>
-            <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/down-gray.png" class="down-icon" alt=""></div>
-        </div>
-    </div>
-    <div class="section">
-        <div class="page-width clearfix">
-            <div class="mode-operation">
-                <p class="mode-title">拓天速贷<span>投资示例</span></p>
-                <p class="title-word">An Example Of Investing</p>
-                <p class="pc-img"><img src="${staticServer}/images/sign/choose-img-new.png"  width="40%" alt=""></p>
-                <p class="responsive-img"><img src="${staticServer}/images/sign/res-case-new.png"  width="80%" alt=""></p>
-            </div>
-            <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/down-gray.png" class="down-icon" alt=""></div>
-        </div>
-    </div>
-    <div class="section">
-        <div class="page-width clearfix">
-            <div class="mode-operation">
-                <p class="mode-title">多种<span>投资方式</span>供您选择</p>
-                <p class="title-word">Abundant Choices For Your Investment Needs</p>
-                <p class="pc-img"><img src="${staticServer}/images/sign/tou-img-new.png"  width="60%" alt=""></p>
-                <p class="responsive-img"><img src="${staticServer}/images/sign/res-type-new.png"  width="70%" alt=""></p>
-            </div>
-            <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/down-gray.png" class="down-icon" alt=""></div>
-        </div>
-    </div>
-    <div class="section">
-        <div class="page-width clearfix">
-            <div class="mode-operation">
-                <p class="mode-title">轻松四步<span>坐享预期收益</span></p>
-                <p class="title-word">Enjoy Your Profit In Four Simple Steps</p>
-                <p class="pc-img"><img src="${staticServer}/images/sign/liu-img-new.png"  width="65%" alt=""></p>
-                <p class="responsive-img"><img src="${staticServer}/images/sign/res-register-new.png"  width="60%" alt=""></p>
-                <p class="user-register">
-                    <@global.isAnonymous>
-                        <a href="/register/user">立即注册</a>
-                    </@global.isAnonymous>
+     </div>
 
-                    <@global.isNotAnonymous>
-                        <a href="/loan-list">立即投资</a>
-                    </@global.isNotAnonymous>
-                </p>
+    <div class="section-box-two clearfix pad-box page-width">
+        <div class="column-title-ac"><i></i>为什么选择拓天速贷投资<i></i> </div>
+        <dl>
+            <dt><span>01</span>高收益＋稳定</dt>
+            <dd>可选择不同期限产品，预期年化收益最高可达<em>13%</em></dd>
+            <dd class="img-load">
+                <div class="arrow-rise"></div>
+                <img src="${staticServer}/images/sign/assure/load.jpg">
+            </dd>
+        </dl>
+
+        <div class="line"></div>
+
+        <dl class="box-02">
+            <dt><span>02</span>高收益＋稳定</dt>
+            <dd>资金、隐私、数据三方面全面保护！</dd>
+            <dd class="high-profit">
+                <div class="high-box square-normal">
+                    <span>评估抵押物 &emsp;&emsp;&emsp;&emsp; 审核借款人</span>
+                    <span>评估贷款项目 &emsp;&emsp;办理法律手续</span>
+                    <span class="line-align"></span>
+                    <span class="line-valign"></span>
+                </div>
+                <div class="high-box">
+                    <span>第三方资金托管</span>
+                    <span class="line-align"></span>
+                    <span>专业而成熟的风控体系</span>
+                    <span class="line-align"></span>
+                    <span>同卡进出，避免异常操作</span>
+                </div>
+                <div class="high-box">
+                    <span>严格的用户信息操作规范</span>
+                    <span class="line-align"></span>
+                    <span>严格遵守国家相关法律法规</span>
+                </div>
+                <div class="high-box square-normal">
+                    <span>网络安全 &emsp;&emsp;&emsp; 加密技术</span>
+                    <span>容灾备份 &emsp;&emsp;&emsp; 内控流程</span>
+                    <span class="line-align"></span>
+                    <span class="line-valign"></span>
+                </div>
+            </dd>
+        </dl>
+
+        <div class="line"></div>
+        <dl class="box-03 fl">
+            <dt><span>03</span>高效便捷＋门槛低</dt>
+            <dd>手机APP随时随地便捷投资，只需50元。</dd>
+            <dd class="benefit-img">
+                <img src="${staticServer}/images/sign/assure/benefit01.png">
+            </dd>
+         </dl>
+        <div class="line hack"></div>
+        <dl class="box-04 fr">
+            <dt><span>04</span>优质产品＋资金周转灵活</dt>
+            <dd>抵押债权，相对安全的债权模式； <br/>
+                债权转让，急用即转，方便快捷。</dd>
+            <dd class="benefit-img">
+                <img src="${staticServer}/images/sign/assure/benefit02.png">
+            </dd>
+        </dl>
+
+    </div>
+
+    <div class="section-box-three bg-white clearfix pad-box">
+        <div class="page-width">
+            <div class="column-title-ac"><i></i>产品介绍<i></i> </div>
+            <div class="sub-title-one">
+                <div class="line-align"></div>
+                <div class="title-word"><i class="fl"></i>抵押标<i class="fr"></i></div>
             </div>
-            <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/up-gray.png" class="down-icon" alt=""></div>
+            <p>每笔抵押贷都有超额的房产或车辆作为抵押物，风控严谨，变现力强，适用于有资金需求的小微企业、个体以及有出借需求的个人及家庭。</p>
+            <ul class="mortgage-list">
+                <li><span>新手专享30天项目 <br/>
+                    预计年化收益10%</span></li>
+                <li><span>90天短期项目<br/>
+                    预计年化收益11%</span></li>
+                <li><span>180天中期项目<br/>
+                    预计年化收益12%</span></li>
+                <li><span>360天长期项目<br/>
+                    预计年化收益13%</span></li>
+            </ul>
+    <div class="tc">
+        <a href="/loan-list" class="btn-guide">立刻投资</a>
+    </div>
+            <div class="sub-title-two">
+                <div class="line-align"></div>
+                <div class="title-word"><i class="fl"></i>债权转让<i class="fr"></i></div>
+            </div>
+
+            <div class="creditor-right-info">
+                <img src="${staticServer}/images/sign/assure/creditor-right.png" class="fl">
+                <p>抵押贷债权持有者因资金流动性需求，将持有的债权项目挂出并转让，并承担一定比例的折让金。一对一转让，不可拆分。周期为5天，5天未有购买的将流标。5 天内如有回款则债权无法申请转让，当前为逾期状态债权也不能申请转让。
+
+                </p>
+                <div class="tc">
+                    <a href="/transfer-list" class="btn-guide">购买债权</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-box-four clearfix pad-box page-width">
+        <div class="column-title-ac"><i></i>如何投资<i></i> </div>
+        <img src="${staticServer}/images/sign/assure/steps.jpg" alt="风控流程">
+        <div class="tc">
+            <a href="/register/user" class="btn-guide">注册投资</a>
+        </div>
+    </div>
+
+    <div class="section-box-five bg-white clearfix pad-box">
+        <div class="page-width">
+            <div class="column-title-ac"><i></i>关注拓天<i></i> </div>
+            <div class="code-ma tc">
+                <span>
+                    <img src="${staticServer}/images/sign/assure/weixin-img.png"> <br/>
+                    拓天速贷微信订阅号
+                </span>
+                <span>
+                    <img src="${staticServer}/images/sign/assure/app-img.png"> <br/>
+                    下载拓天速贷APP
+                </span>
+
+
+            </div>
+            </div>
+
+        </div>
+
+    <div class="bottom-close" style="display: none;"></div>
+    <div class="bottom-open">
+        <div class="page-width">
+            <div class="ren"></div>
+            <a href="/activity/landing-page" class="btn-normal">立即领取</a>
+            <div class="to-close fr">
+                <i class="fa fa-angle-left"></i>
+                <span>收<br/>起</span>
+            </div>
         </div>
     </div>
 </div>

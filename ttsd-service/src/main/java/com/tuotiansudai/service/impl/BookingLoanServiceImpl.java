@@ -1,5 +1,7 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.BookingLoanPaginationItemDataDto;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -126,5 +129,36 @@ public class BookingLoanServiceImpl implements BookingLoanService {
         bookingLoanModel.setNoticeTime(new Date());
         bookingLoanModel.setUpdateTime(new Date());
         bookingLoanMapper.update(bookingLoanModel);
+    }
+
+    @Override
+    public List<BookingLoanSumAmountView> findBookingLoanSumAmountByProductType(ProductType productType, Date bookingTimeStartTime,
+                                                                   Date bookingTimeEndTime, String mobile,
+                                                                   Date noticeTimeStartTime, Date noticeTimeEndTime,
+                                                                   Source source, Boolean status){
+        if (bookingTimeStartTime != null) {
+            bookingTimeStartTime = new DateTime(bookingTimeStartTime).withTimeAtStartOfDay().toDate();
+        }
+        if (bookingTimeEndTime != null) {
+            bookingTimeEndTime = new DateTime(bookingTimeEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+        }
+
+        if (noticeTimeStartTime != null) {
+            noticeTimeStartTime = new DateTime(noticeTimeStartTime).withTimeAtStartOfDay().toDate();
+        }
+        if (noticeTimeEndTime != null) {
+            noticeTimeEndTime = new DateTime(noticeTimeEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+        }
+
+        List<BookingLoanSumAmountView>  bookingLoanSumAmountViewList = bookingLoanMapper.findBookingLoanSumAmountByProductType(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status);
+
+        Iterator<BookingLoanSumAmountView> transform = Iterators.transform(bookingLoanSumAmountViewList.iterator(), new Function<BookingLoanSumAmountView, BookingLoanSumAmountView>() {
+            @Override
+            public BookingLoanSumAmountView apply(BookingLoanSumAmountView input) {
+                input.setSumAmount(AmountConverter.convertCentToString(Long.parseLong(input.getSumAmount())));
+                return input;
+            }
+        });
+        return Lists.newArrayList(transform);
     }
 }

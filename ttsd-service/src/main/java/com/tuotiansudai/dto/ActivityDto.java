@@ -45,6 +45,7 @@ public class ActivityDto {
         this.description = activityModel.getDescription();
         this.webPictureUrl = activityModel.getWebPictureUrl();
         this.appPictureUrl = activityModel.getAppPictureUrl();
+        this.longTerm = activityModel.isLongTerm()?"longTerm":"notLongTerm";
         this.activatedTime = activityModel.getActivatedTime();
         this.expiredTime = activityModel.getExpiredTime();
         this.source = activityModel.getSource();

@@ -32,23 +32,29 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
         Source source = Source.valueOf(requestDto.getBaseParam().getPlatform().toUpperCase());
         Integer index = requestDto.getIndex();
         Integer pageSize = requestDto.getPageSize();
+        if (null == index) {
+            index = 1;
+        }
+        if (null == pageSize) {
+            pageSize = 10;
+        }
         return fillActivityCenterData(requestDto.getActivityType(), index, pageSize, source);
     }
 
     private ActivityCenterResponseDto fillActivityCenterData(ActivityType activityType, int index, int pageSize, Source source) {
         List<ActivityCenterDataDto> activityCenterDataDtos = new ArrayList<>();
         List<ActivityModel> activityModels = Lists.newArrayList();
-        if (activityType == null) {
-            activityModels = activityMapper.findActiveActivities(source, new Date(), (index - 1) * pageSize, pageSize);
-        } else {
-            switch (activityType) {
-                case CURRENT:
-                    activityModels = activityMapper.findActivity(source, ActivityStatus.APPROVED, new Date(), null, true, (index - 1) * pageSize, pageSize);
-                    break;
-                case PREVIOUS:
-                    activityModels = activityMapper.findActivity(source, ActivityStatus.APPROVED, null, new Date(), false, (index - 1) * pageSize, pageSize);
-                    break;
-            }
+        int totalCount = 0 ;
+
+        switch (activityType) {
+            case CURRENT:
+                activityModels = activityMapper.findActivity(source, ActivityStatus.APPROVED, new Date(), null, true, (index - 1) * pageSize, pageSize);
+                totalCount = activityMapper.countActivity(source, ActivityStatus.APPROVED, new Date(), null, true);
+                break;
+            case PREVIOUS:
+                activityModels = activityMapper.findActivity(source, ActivityStatus.APPROVED, null, new Date(), false, (index - 1) * pageSize, pageSize);
+                totalCount = activityMapper.countActivity(source, ActivityStatus.APPROVED, new Date(), null, false);
+                break;
         }
         for (ActivityModel activityModel : activityModels) {
             ActivityCenterDataDto activityCenterDataDto = new ActivityCenterDataDto(activityModel);
@@ -58,7 +64,7 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
         ActivityCenterResponseDto activityCenterResponseDto = new ActivityCenterResponseDto();
         activityCenterResponseDto.setIndex(index);
         activityCenterResponseDto.setPageSize(pageSize);
-        activityCenterResponseDto.setTotalCount(activityMapper.countActiveActivities(source));
+        activityCenterResponseDto.setTotalCount(totalCount);
         activityCenterResponseDto.setActivities(activityCenterDataDtos);
         return activityCenterResponseDto;
     }

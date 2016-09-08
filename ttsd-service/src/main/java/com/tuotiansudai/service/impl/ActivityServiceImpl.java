@@ -1,5 +1,6 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.ActivityDto;
 import com.tuotiansudai.repository.mapper.ActivityMapper;
@@ -13,7 +14,6 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,19 +28,17 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     InvestMapper investMapper;
 
+    @Override
     public List<ActivityDto> getAllActiveActivities(String loginName, Source source) {
-        //Web不分页
-        final int fixedIndex = 1;
-        final int fixedPageSize = 1000;
-
-        List<ActivityModel> activityModels = activityMapper.findActiveActivities(source, new Date(), (fixedIndex - 1) * fixedPageSize, fixedPageSize);
-
-        final List<ActivityDto> activityDtos = new ArrayList<>();
-        for (ActivityModel activityModel : activityModels) {
-            activityDtos.add(new ActivityDto(activityModel));
-        }
-
-        return activityDtos;
+        int index = 1;
+        int pageSize = Integer.MAX_VALUE;
+        List<ActivityModel> activityModels = activityMapper.findActiveActivities(source, new Date(), (index - 1) * pageSize, pageSize);
+        return Lists.transform(activityModels, new Function<ActivityModel, ActivityDto>() {
+            @Override
+            public ActivityDto apply(ActivityModel model) {
+                return new ActivityDto(model);
+            }
+        });
     }
 
     @Override
@@ -66,7 +64,12 @@ public class ActivityServiceImpl implements ActivityService {
                     activityModelExist.setUpdatedTime(new Date());
                     activityModelExist.setStatus(ActivityStatus.TO_APPROVE);
                     activityModelExist.setSeq(activityDto.getSeq());
-                    activityModelExist.setLongTerm(activityDto.getLongTerm().equals("longTerm"));
+                    activityModelExist.setLongTerm("longTerm".equals(activityDto.getLongTerm()));
+                    if(activityModelExist.isLongTerm()){
+                        activityModelExist.setExpiredTime(null);
+                        activityModelExist.setActivatedTime(null);
+
+                    }
                     activityMapper.update(activityModelExist);
                 } else {
                     ActivityModel activityModel = new ActivityModel(activityDto);
@@ -89,10 +92,7 @@ public class ActivityServiceImpl implements ActivityService {
                 return true;
             case APPROVED:
                 if (activityModelExist != null) {
-                    if (activityModelExist.getActivatedTime() == null) {
-                        activityModelExist.setActivatedTime(new Date());
-                        activityModelExist.setActivatedBy(loginName);
-                    }
+                    activityModelExist.setActivatedBy(loginName);
                     activityModelExist.setUpdatedTime(new Date());
                     activityModelExist.setUpdatedBy(loginName);
                     activityModelExist.setStatus(ActivityStatus.APPROVED);

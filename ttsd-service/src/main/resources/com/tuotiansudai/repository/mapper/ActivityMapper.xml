@@ -101,23 +101,12 @@
     <select id="findActiveActivities" resultMap="activityResultMap">
         SELECT * FROM `aa`.`activity`
         WHERE
-        expired_time > #{expiredTime} AND
         status = 'APPROVED'
         <if test="source != null">
             AND source like CONCAT('%', #{source}, '%')
         </if>
-        ORDER BY activated_time DESC
+        order by seq ASC ,updated_time DESC
         LIMIT #{index}, #{pageSize}
-    </select>
-
-    <select id="countActiveActivities" resultType="java.lang.Integer">
-        SELECT count(1) FROM `aa`.`activity`
-        WHERE
-        expired_time > now() AND
-        status = 'APPROVED'
-        <if test="source != null">
-            AND source like CONCAT('%', #{source}, '%')
-        </if>
     </select>
 
     <select id="findActivity" resultMap="activityResultMap" parameterType="map">
@@ -141,6 +130,27 @@
         </where>
         order by seq ASC ,updated_time DESC
         LIMIT #{index}, #{pageSize}
+    </select>
+
+    <select id="countActivity" resultType="java.lang.Integer">
+        SELECT count(1) FROM `aa`.`activity`
+        <where>
+            <if test="beginExpiredTime != null">
+                AND expired_time &gt;= #{beginExpiredTime}
+            </if>
+            <if test="endExpiredTime != null">
+                AND expired_time &lt;= #{endExpiredTime}
+            </if>
+            <if test="activityStatus!=null">
+                AND status = #{activityStatus}
+            </if>
+            <if test="source != null">
+                AND source like CONCAT('%', #{source}, '%')
+            </if>
+            <if test="longTerm != null">
+                OR long_term = #{longTerm}
+            </if>
+        </where>
     </select>
 
 </mapper>

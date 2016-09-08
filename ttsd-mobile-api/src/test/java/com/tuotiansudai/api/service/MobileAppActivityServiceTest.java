@@ -1,10 +1,7 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.v1_0.ActivityCenterDataDto;
-import com.tuotiansudai.api.dto.v1_0.ActivityCenterRequestDto;
-import com.tuotiansudai.api.dto.v1_0.ActivityCenterResponseDto;
-import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppActivityService;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.ActivityMapper;
@@ -12,6 +9,9 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -110,6 +110,7 @@ public class MobileAppActivityServiceTest {
     private ActivityModel createActivityModel(long id, UserModel userModel, String description, Date activatedTime, List<Source> source) {
         ActivityModel activityModel = new ActivityModel();
         activityModel.setId(id);
+        activityModel.setSeq(10L);
         activityModel.setTitle(description);
         activityModel.setWebActivityUrl("testWebActivityUrl");
         activityModel.setAppActivityUrl("testAppActivityUrl");
@@ -135,7 +136,7 @@ public class MobileAppActivityServiceTest {
     }
 
     private List<ActivityModel> prepareData() {
-        UserModel userModel = createUserModel("testUser");
+        UserModel userModel = createUserModel("testUser1");
         long loanId = idGenerator.generate();
         createLoanModel(userModel.getLoginName(), loanId);
         createInvests(userModel.getLoginName(), loanId);
@@ -167,15 +168,16 @@ public class MobileAppActivityServiceTest {
         baseParam.setPlatform(Source.IOS.toString());
         ActivityCenterRequestDto requestDto = new ActivityCenterRequestDto();
         requestDto.setBaseParam(baseParam);
+        requestDto.setActivityType(com.tuotiansudai.api.dto.v1_0.ActivityType.CURRENT);
         ActivityCenterResponseDto activityCenterResponseDto = mobileAppActivityService.getAppActivityCenterResponseData(requestDto);
         assertEquals(6, activityCenterResponseDto.getTotalCount().longValue());
         assertEquals(1, activityCenterResponseDto.getIndex().intValue());
-        assertEquals(4, activityCenterResponseDto.getPageSize().intValue());
+        assertEquals(10, activityCenterResponseDto.getPageSize().intValue());
 
         List<ActivityCenterDataDto> activityCenterDataDtos = activityCenterResponseDto.getActivities();
-        assertEquals(4, activityCenterDataDtos.size());
+        assertEquals(6, activityCenterDataDtos.size());
         assertEquals("新手1", activityCenterDataDtos.get(0).getDescTitle());
-        assertEquals("normal2", activityCenterDataDtos.get(1).getDescTitle());
+        assertEquals("normal4", activityCenterDataDtos.get(1).getDescTitle());
         assertEquals("新手2", activityCenterDataDtos.get(2).getDescTitle());
         assertEquals("normal3", activityCenterDataDtos.get(3).getDescTitle());
     }
