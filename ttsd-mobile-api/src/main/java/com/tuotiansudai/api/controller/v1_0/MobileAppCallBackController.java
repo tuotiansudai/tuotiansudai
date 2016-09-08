@@ -6,6 +6,8 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.BankCardUtil;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,8 +24,6 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/callback")
 public class MobileAppCallBackController {
-
-    static Logger logger = Logger.getLogger(MobileAppCallBackController.class);
 
     @Autowired
     private BindBankCardService bindBankCardService;
@@ -46,22 +46,21 @@ public class MobileAppCallBackController {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String retCode = paramsMap.get("ret_code");
         String orderId = paramsMap.get("order_id");
-        String investAmount = service.equals("project_transfer_no_password_invest")? paramsMap.get("investAmount"):"";
-
+        String amount = service.equals("project_transfer_no_password_invest")? paramsMap.get("amount"):"";
         Map<String,String> retMaps = Maps.newHashMap();
         if ("0000".equals(retCode)) {
-            retMaps = this.frontMessageByService(service,"success","",orderId,investAmount);
+            retMaps = this.frontMessageByService(service,"success","",orderId,amount);
             mv.addObject("bankName", retMaps.get("bankName"));
             mv.addObject("cardNumber",retMaps.get("cardNumber"));
             mv.addObject("rechargeAmount", retMaps.get("rechargeAmount"));
             mv.addObject("withdrawAmount",retMaps.get("withdrawAmount"));
             mv.addObject("investAmount",retMaps.get("investAmount"));
             mv.addObject("investName",retMaps.get("investName"));
-            mv.addObject("investId",retMaps.get("investId"));
+            mv.addObject("loanId",retMaps.get("loanId"));
             mv.addObject("href",retMaps.get("href"));
         } else {
             String retMsg = paramsMap.get("ret_msg");
-            retMaps = this.frontMessageByService(service,"fail",retMsg,orderId,investAmount);
+            retMaps = this.frontMessageByService(service,"fail",retMsg,orderId,amount);
             mv.addObject("href",retMaps.get("href"));
         }
         mv.addObject("message", retMaps.get("message"));
@@ -81,7 +80,7 @@ public class MobileAppCallBackController {
         return paramsMap;
     }
 
-    private Map<String, String> frontMessageByService(String service,String callBackStatus,String retMsg,String orderId,String investAmount) {
+    private Map<String, String> frontMessageByService(String service,String callBackStatus,String retMsg,String orderId,String amount) {
         Map<String, String> retMaps = Maps.newHashMap();
         String message = "";
         String href = "";
@@ -90,7 +89,7 @@ public class MobileAppCallBackController {
         String rechargeAmount = "";
         String investAmount = "";
         String investName = "";
-        String investId = "";
+        String loanId = "";
         String withdrawAmount = "";
         if (UmPayFrontService.CUST_WITHDRAWALS.getServiceName().equals(service)) {
             WithdrawModel withdrawModel = withdrawService.findById(Long.parseLong(orderId));
@@ -111,15 +110,15 @@ public class MobileAppCallBackController {
             LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
             investAmount = AmountConverter.convertCentToString(investModel.getAmount());
             investName = loanModel.getName();
-            investId = String.valueOf(loanModel.getId());
+            loanId = String.valueOf(loanModel.getId());
             message = "投资成功";
             href = MessageFormat.format("tuotian://invest/{0}",callBackStatus);
         }
         else if (UmPayFrontService.PROJECT_TRANSFER_NOPASSWORD_INVEST.getServiceName().equals(service)) {
             LoanModel loanModel = loanService.findLoanById(Long.parseLong(orderId));
-            investAmount = AmountConverter.convertCentToString(Long.parseLong(investAmount));
+            investAmount = AmountConverter.convertCentToString(Long.parseLong(amount));
             investName = loanModel.getName();
-            investId = String.valueOf(loanModel.getId());
+            loanId = String.valueOf(loanModel.getId());
             message = "投资成功";
             href = MessageFormat.format("tuotian://invest/{0}",callBackStatus);
         } else if (UmPayFrontService.PTP_MER_BIND_AGREEMENT.getServiceName().equals(service)) {
@@ -149,7 +148,7 @@ public class MobileAppCallBackController {
         retMaps.put("withdrawNumber",withdrawAmount);
         retMaps.put("investAmount",investAmount);
         retMaps.put("investName",investName);
-        retMaps.put("investId",investId);
+        retMaps.put("loanId",loanId);
         retMaps.put("withdrawAmount",withdrawAmount);
         return retMaps;
 
