@@ -1,6 +1,6 @@
 .activity-frame {
   .ac-title {
-    background: url("/images/sign/activityCenter/icon-title.png") left bottom no-repeat;
+    background: url("/activity/images/sign/activityCenter/icon-title.png") left bottom no-repeat;
     padding-left: 38px;
     margin-bottom: 10px;
     span {
@@ -19,67 +19,116 @@
       vertical-align: top;
     }
   }
+  .ac-item{
+    margin-bottom:25px;
+    @media (max-width:700px) {
+      margin:0 10px;      
+    }
+    span{
+      float:left;
+      width:120px;
+      height:35px;
+      color:#808080;
+      line-height:35px;
+      background:#fff;
+      cursor:pointer;
+      text-align:center;
+      border:1px solid #ff752a;
+      @media (max-width:700px) {
+        width:50%;
+        box-sizing: border-box; 
+      }
+      &.active{
+        color:#fff;
+        background:#ff752a;
+      }
+    }
+  }
   .activity-container {
-
-    .activity-box {
-      height:198px;
+    .actor-list{
+      float:left;
       width:100%;
-      border:1px solid #e6e6e6;
-      position: relative;
-      margin-bottom: 10px;
-      .activity-img {
-        width:689px;
+      display:none;
+      &.active{
+        display:block;
+      }
+      .activity-box {
         height:198px;
-        position: absolute;
-        left: 0;
-        top:0;
-        overflow: hidden;
-        .img-inner {
-          height:100%;
-          img {
+        width:100%;
+        border:1px solid #e6e6e6;
+        position: relative;
+        margin-bottom: 10px;
+        .activity-img {
+          width:689px;
+          height:198px;
+          position: absolute;
+          left: 0;
+          top:0;
+          overflow: hidden;
+          .img-inner {
             height:100%;
-            margin-left: -165px;
+            img {
+              height:100%;
+              margin-left: -165px;
+            }
           }
         }
-      }
-      .icon-going {
-        position: absolute;
-        right:20px;
-        top:-2px;
-        background: url("/images/sign/activityCenter/going.png") left top no-repeat;
-        width:49px;
-        height:52px;
-      }
-      .activity-title {
-        position: absolute;
-        width:309px;
-        right:0;
-        top:50px;
-        text-align: center;
-        font-size: 18px;
-        color: #4c4c4c;
-      }
-      .button-pos {
-        position: absolute;
-        right: 80px;
-        top: 122px;
-        .btn {
-          border-radius: 0;
-          background: #fff;
-          border:1px solid #bfbfbf;
-          color: #808080;
+        .icon-going {
+          position: absolute;
+          right:20px;
+          top:-2px;
+          background: url("/activity/images/sign/activityCenter/going.png") left top no-repeat;
+          width:49px;
+          height:52px;
         }
-      }
-      &:hover {
-        border:1px solid #ff752a;
-        -moz-box-shadow:1px 1px 10px #ccc;
-        -webkit-box-shadow:1px 1px 10px #ccc;
-        box-shadow:1px 1px 10px #ccc;
-        cursor: pointer;
-        .button-pos .btn {
-          background: #ff752a;
+        .icon-finished {
+          position: absolute;
+          right:20px;
+          top:-2px;
+          background: url("/activity/images/sign/activityCenter/finished.png") left top no-repeat;
+          width:49px;
+          height:52px;
+        }
+        .activity-title {
+          position: absolute;
+          width:309px;
+          right:0;
+          top:50px;
+          text-align: center;
+          font-size: 18px;
+          color: #4c4c4c;
+        }
+        .time {
+          position: absolute;
+          width: 309px;
+          right: 0;
+          top: 82px;
+          text-align: center;
+          font-size: 13px;
+          color: #b2b2b2;
+        }
+        .button-pos {
+          position: absolute;
+          right: 80px;
+          top: 122px;
+          .btn {
+            border-radius: 0;
+            background: #fff;
+            border:1px solid #bfbfbf;
+            color: #808080;
+          }
+        }
+        &:hover {
           border:1px solid #ff752a;
-          color: #fff;
+          -moz-box-shadow:1px 1px 10px #ccc;
+          -webkit-box-shadow:1px 1px 10px #ccc;
+          box-shadow:1px 1px 10px #ccc;
+          cursor: pointer;
+          .button-pos .btn {
+            background: #ff752a;
+            border:1px solid #ff752a;
+            color: #fff;
+          }
         }
       }
     }
@@ -93,11 +142,11 @@
     }
     .activity-container {
       padding:10px;
-      .activity-box {
+      .actor-list .activity-box {
         border-width: 0;
         overflow: hidden;
         background: #fff;
-        height:235px;
+        height:250px;
         margin-bottom: 10px;
         .activity-title {
           position: absolute;
@@ -112,11 +161,19 @@
           z-index: 5;
 
         }
+        .time {
+          right: auto;
+          left: 10px;
+          width: auto;
+          top: 29px;
+          z-index: 5;
+          font-size: 11px;
+        }
         .activity-img {
-          height:145px;
+          height:150px;
           overflow: hidden;
           position: absolute;
-          top: 28px;
+          top: 41px;
           width: calc(100% - 20px);
           margin: 10px;
           .img-inner {
