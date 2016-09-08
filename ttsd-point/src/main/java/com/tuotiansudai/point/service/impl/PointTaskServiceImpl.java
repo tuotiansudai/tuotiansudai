@@ -34,7 +34,6 @@ public class PointTaskServiceImpl implements PointTaskService {
             PointTask.FIRST_SINGLE_INVEST,
             PointTask.EACH_RECOMMEND,
             PointTask.FIRST_REFERRER_INVEST,
-            PointTask.EACH_REFERRER_INVEST,
             PointTask.FIRST_INVEST_180,
             PointTask.FIRST_INVEST_360,
             PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST,
