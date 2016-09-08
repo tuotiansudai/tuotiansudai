@@ -345,7 +345,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 return;
             }
             if(isAuthentication){
-                location.href = '/register/user';
+                location.href = '/register/account';
             }
             layer.open({
               type: 1,
