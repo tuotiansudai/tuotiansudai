@@ -1,3 +1,4 @@
+@import 'register_png';
 body {
   background: #47226f url("/activity/images/mid-autumn/bg-lantern.jpg") center 593px no-repeat;
   overflow-x: hidden;
@@ -85,6 +86,7 @@ body {
     padding: 20px;
     background: #fef7e6;
     padding-bottom: 70px;
+    margin-top: -20px;
   }
     .note-box {
       .note {
@@ -312,6 +314,9 @@ body {
       margin-bottom:10px;
     }
   }
+  .frame-box-four {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 700px) {
@@ -380,7 +385,6 @@ body {
       .frame-box-one-inner {
         margin:0;
         padding:10px;
-        margin-top:-25px;
       }
       .note-box {
         .note {
@@ -394,16 +398,19 @@ body {
       .my-family-group {
         font-size:12px;
         .yes-logged {
-          dt {
-            float: left;
-            width: 23%;
-          }
-          dd {
-            width: 77%;
-            span {
-              width: 50%;
+          dl {
+            dt {
+              float: left;
+              width: 63px;
+            }
+            dd {
+              width: calc(100% - 63px);
+              span {
+                width: 50%;
+              }
             }
           }
+
         }
       }
       .today-invest-box{
@@ -493,9 +500,13 @@ body {
         font-size:14px;
       }
     }
+    .frame-box-four {
+      display: block;
+    }
   }
 
   //手机注册
+
   .landing-phone-section-header {
     margin-top: -5px;
     margin-bottom: 0px;
@@ -527,7 +538,7 @@ body {
   }
   .landing-top {
     position: relative;
-    height: 500px;
+    height: 420px;
     .landing-inner {
       width: 100%;
       height: 30px;
@@ -545,8 +556,8 @@ body {
       margin-top: 13px;
 
       .register-user-form {
-        width: 320px;
-        height: 420px;
+        width: 100%;
+        height: 360px;
         padding: 20px 0 0 32px;
       }
       .register-step-one {
@@ -600,7 +611,7 @@ body {
               padding-left: 18px;
               letter-spacing: 0;
               position: absolute;
-              right: 0;
+              right: 45px;
               top: 2px;
               font-size: 12px;
               border-radius: 15px;
