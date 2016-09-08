@@ -283,20 +283,20 @@ def point():
     execute(deploy_static)
 
 
-def get_30days_before(date_format="%Y-%m-%d"):
+def get_7days_before(date_format="%Y-%m-%d"):
     from datetime import timedelta, date
-    return (date.today() - timedelta(days=30)).strftime(date_format)
+    return (date.today() - timedelta(days=7)).strftime(date_format)
 
 
 def remove_tomcat_logs():
-    iso_date = get_30days_before()
+    iso_date = get_7days_before()
     with cd('/var/log/tomcat'):
         run('rm -f *{0}.log'.format(iso_date))
         run('rm -f *{0}.txt'.format(iso_date))
 
 
 def remove_nginx_logs():
-    normal_date = get_30days_before(date_format='%Y%m%d')
+    normal_date = get_7days_before(date_format='%Y%m%d')
     with cd('/var/log/nginx'):
         run('rm -f *{0}.gz'.format(normal_date))
 
@@ -339,7 +339,7 @@ def remove_api_logs():
 @roles('worker')
 @parallel
 def remove_worker_logs():
-    iso_date = get_30days_before()
+    iso_date = get_7days_before()
     with cd('/var/log/job-worker'):
         run('rm -f *{0}.log'.format(iso_date))
 
