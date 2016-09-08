@@ -278,7 +278,7 @@
         FROM
         user_coupon u
         WHERE
-        login_name = #{loginName} and u.status &lt;&gt; 'SUCCESS'
+        login_name = #{loginName} and (u.status &lt;&gt; 'SUCCESS' or u.status is null )
         AND EXISTS( SELECT
         1
         FROM
