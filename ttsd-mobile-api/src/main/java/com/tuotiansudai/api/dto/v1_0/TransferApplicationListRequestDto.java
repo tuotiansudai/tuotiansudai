@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+
 public class TransferApplicationListRequestDto extends TransferApplicationRequestDto {
     private String rateLower;
     private String rateUpper;

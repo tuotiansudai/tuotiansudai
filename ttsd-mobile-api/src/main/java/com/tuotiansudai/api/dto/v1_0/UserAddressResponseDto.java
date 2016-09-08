@@ -9,12 +9,6 @@ public class UserAddressResponseDto extends BaseResponseDataDto{
     private String mobile;
     private String address;
 
-    public UserAddressResponseDto(String contract, String mobile, String address) {
-        this.contact = contract;
-        this.mobile = mobile;
-        this.address = address;
-    }
-
     public UserAddressResponseDto(UserAddressModel userAddressModel){
         this.contact = userAddressModel.getContact();
         this.mobile = userAddressModel.getMobile();
