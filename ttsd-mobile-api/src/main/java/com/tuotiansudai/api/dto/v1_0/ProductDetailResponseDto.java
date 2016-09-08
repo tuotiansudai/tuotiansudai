@@ -24,13 +24,13 @@ public class ProductDetailResponseDto extends BaseResponseDataDto{
         this.productId = productId;
         this.imageUrl = imageUrl;
         this.points = points;
-        this.name = name;
+        this.name = name.replaceAll("\\.00","");
     }
 
     public ProductDetailResponseDto(ProductModel productModel){
         this.productId = String.valueOf(productModel.getId());
-        this.name = productModel.getName();
-        this.goodsType = productModel.getType().getDescription();
+        this.name = productModel.getName().replaceAll("\\.00","");
+        this.goodsType = productModel.getType().name();
         this.imageUrl = productModel.getImageUrl();
         this.points = String.valueOf(productModel.getPoints());
         this.leftCount = String.valueOf(productModel.getTotalCount() - productModel.getUsedCount());

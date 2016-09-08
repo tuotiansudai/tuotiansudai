@@ -2,19 +2,11 @@ package com.tuotiansudai.api.dto.v1_0;
 
 
 public class UserAddressRequestDto extends BaseParamDto {
-    private String contract;
+    private String contact;
 
     private String mobile;
 
     private String address;
-
-    public String getContract() {
-        return contract;
-    }
-
-    public void setContract(String contract) {
-        this.contract = contract;
-    }
 
     public String getMobile() {
         return mobile;
@@ -30,5 +22,13 @@ public class UserAddressRequestDto extends BaseParamDto {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 }

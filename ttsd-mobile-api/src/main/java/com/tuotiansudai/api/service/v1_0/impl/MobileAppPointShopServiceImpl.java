@@ -143,11 +143,11 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
         ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(productModel);
         String[] description;
-        CouponModel couponModel = couponMapper.findById(productModel.getId());
+        CouponModel couponModel = couponMapper.findById(productModel.getCouponId());
         if (productModel.getType() == GoodsType.COUPON && couponModel != null) {
             description = new String[]{couponModel.getAmount() > 0 ? MessageFormat.format("投资满{0}元即可使用;", couponModel.getAmount()) : "",
-                    MessageFormat.format("{0}天产品可用;", couponModel.getProductTypes().toString()),
-                    MessageFormat.format("有效期限:{0}天", couponModel.getDeadline())};
+                    MessageFormat.format("{0}天产品可用;", couponModel.getProductTypes().toString().replaceAll("_","")),
+                    MessageFormat.format("有效期限:{0}天。", couponModel.getDeadline())};
         } else {
             description = new String[]{productModel.getDescription()};
         }
@@ -185,14 +185,23 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         }
 
         List<UserAddressModel> userAddressModels = userAddressMapper.findByLoginName(productDetailRequestDto.getBaseParam().getUserId());
-        if (CollectionUtils.isEmpty(userAddressModels)) {
+        if (CollectionUtils.isEmpty(userAddressModels) && productModel.getType().equals(GoodsType.PHYSICAL)) {
             logger.error(MessageFormat.format("Insufficient points (userId = {0},myPoints = {1},productPoints = {2})", productDetailRequestDto.getBaseParam().getUserId(), accountModel.getPoint(), points));
             return new BaseResponseDto<>(ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getCode(), ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getMsg());
         }
 
         productMapper.lockById(productModel.getId());
 
-        UserAddressModel userAddressModel = userAddressModels.get(0);
+        UserAddressModel userAddressModel;
+        if(productModel.getType().equals(GoodsType.PHYSICAL)){
+            userAddressModel = userAddressModels.get(0);
+        }else{
+            userAddressModel = new UserAddressModel();
+            userAddressModel.setMobile(productDetailRequestDto.getBaseParam().getPhoneNum());
+            userAddressModel.setContact(productDetailRequestDto.getBaseParam().getUserId());
+            userAddressModel.setAddress("");
+        }
+
         ProductOrderModel productOrderModel = new ProductOrderModel(productModel.getId(), productModel.getPoints(), productDetailRequestDto.getNum(), points, userAddressModel.getContact(), userAddressModel.getMobile(), userAddressModel.getAddress(), false, null, productDetailRequestDto.getBaseParam().getUserId());
         productOrderMapper.create(productOrderModel);
 
@@ -213,7 +222,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
     private UserAddressModel convertUserAddressModel(UserAddressRequestDto userAddressRequestDto) {
         return new UserAddressModel(userAddressRequestDto.getBaseParam().getUserId(),
-                userAddressRequestDto.getContract(),
+                userAddressRequestDto.getContact(),
                 userAddressRequestDto.getMobile(),
                 userAddressRequestDto.getAddress(),
                 userAddressRequestDto.getBaseParam().getUserId());

@@ -5,28 +5,20 @@ import com.tuotiansudai.point.repository.model.UserAddressModel;
 
 public class UserAddressResponseDto extends BaseResponseDataDto{
 
-    private String contract;
+    private String contact;
     private String mobile;
     private String address;
 
     public UserAddressResponseDto(String contract, String mobile, String address) {
-        this.contract = contract;
+        this.contact = contract;
         this.mobile = mobile;
         this.address = address;
     }
 
     public UserAddressResponseDto(UserAddressModel userAddressModel){
-        this.contract = userAddressModel.getContact();
+        this.contact = userAddressModel.getContact();
         this.mobile = userAddressModel.getMobile();
         this.address = userAddressModel.getAddress();
-    }
-
-    public String getContract() {
-        return contract;
-    }
-
-    public void setContract(String contract) {
-        this.contract = contract;
     }
 
     public String getMobile() {
@@ -43,5 +35,13 @@ public class UserAddressResponseDto extends BaseResponseDataDto{
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 }

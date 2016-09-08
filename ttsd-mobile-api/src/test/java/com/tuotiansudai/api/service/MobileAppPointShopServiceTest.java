@@ -69,11 +69,11 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         userAddressRequestDto.setBaseParam(baseParam);
         userAddressRequestDto.setMobile(userModel.getMobile());
         userAddressRequestDto.setAddress("test");
-        userAddressRequestDto.setContract("test");
+        userAddressRequestDto.setContact("test");
         mobileAppPointShopService.updateUserAddress(userAddressRequestDto);
         BaseResponseDto<UserAddressResponseDto> baseResponseDto = mobileAppPointShopService.findUserAddressResponseDto(baseParamDto);
         assertEquals(baseResponseDto.getData().getAddress(),"test");
-        assertEquals(baseResponseDto.getData().getContract(),"test");
+        assertEquals(baseResponseDto.getData().getContact(),"test");
     }
 
     @Test
@@ -88,17 +88,17 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         userAddressRequestDto.setBaseParam(baseParam);
         userAddressRequestDto.setMobile(userModel.getMobile());
         userAddressRequestDto.setAddress("test");
-        userAddressRequestDto.setContract("test");
+        userAddressRequestDto.setContact("test");
         mobileAppPointShopService.updateUserAddress(userAddressRequestDto);
         BaseResponseDto<UserAddressResponseDto> baseResponseDto = mobileAppPointShopService.findUserAddressResponseDto(baseParamDto);
         assertEquals(baseResponseDto.getData().getAddress(), "test");
-        assertEquals(baseResponseDto.getData().getContract(), "test");
+        assertEquals(baseResponseDto.getData().getContact(), "test");
         userAddressRequestDto.setAddress("newTest");
-        userAddressRequestDto.setContract("newContract");
+        userAddressRequestDto.setContact("newContract");
         mobileAppPointShopService.updateUserAddress(userAddressRequestDto);
         baseResponseDto = mobileAppPointShopService.findUserAddressResponseDto(baseParamDto);
         assertEquals(baseResponseDto.getData().getAddress(),"newTest");
-        assertEquals(baseResponseDto.getData().getContract(), "newContract");
+        assertEquals(baseResponseDto.getData().getContact(), "newContract");
     }
 
     @Test
