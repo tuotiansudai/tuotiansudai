@@ -38,12 +38,7 @@
                         <span>185****5678 <em>团长</em></span>
                         <span>185****5678</span>
                         <span>185****5678</span>
-                        <span>185****5678</span>
-                        <span>185****5678</span>
-                        <span>185****5678</span>
-                        <span>185****5678</span>
-                        <span>185****5678</span>
-                        <span>185****5678</span>
+
                     </dd>
                 </dl>
             </div>
@@ -57,13 +52,13 @@
                     <i>家庭全员均可获得</i></span></dd>
             </dl>
             <dl class="red-bag-normal">
-                <dt><span><b>5</b>元红包</span></dt>
-                <dd><span>每日投资满10000元
+                <dt><span><b>15</b>元红包</span></dt>
+                <dd><span>每日投资满20000元
                     <i>家庭全员均可获得</i></span></dd>
             </dl>
             <dl class="red-bag-normal">
-                <dt><span><b>5</b>元红包</span></dt>
-                <dd><span>每日投资满10000元
+                <dt><span><b>50</b>元红包</span></dt>
+                <dd><span>每日投资满50000元
                     <i>家庭全员均可获得</i></span></dd>
             </dl>
             <div class="tc clearfix">
@@ -110,7 +105,7 @@
                 </table>
                 <div class="my-family-bag">
                     <dl class="red-bag-normal">
-                        <dt><span><b>5</b>元红包</span></dt>
+                        <dt><span><b>1000</b>元红包</span></dt>
                         <dd><span>第二名全员平分1000元红包</span></dd>
                     </dl>
                     <dl class="red-bag-normal">
@@ -137,7 +132,7 @@
         <img src="${staticServer}/activity/images/mid-autumn/title-two.png" class="main-title" alt="晒张“团圆饭”赏月领大奖">
         <p class="note">9月15日-9月17日，关注微信公众号，上传一张“团圆饭”给小编并回复关键词“团圆饭”，即可参与领奖活动！</p>
 
-        <img src="${staticServer}/activity/images/mid-autumn/app-cm.png"> <br/>
+        <img src="${staticServer}/activity/images/mid-autumn/app-cm.png" class="img-sm"> <br/>
         <span class="to-sao">扫码上传团圆饭</span>
 
         <div class="bill-fee-list clearfix">
@@ -246,7 +241,7 @@
                                 <li id="agreementInputErr" class="height"></li>
                                 <li  class="tc">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                    <input type="submit" class="register-user" value="立即注册">
+                                    <input type="submit" class="register-user btn-normal-invest" value="立即注册">
                                 </li>
                                 <li class="tc mobile-agreement">
                                     <label>点击立即注册即同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>

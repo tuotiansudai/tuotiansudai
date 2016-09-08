@@ -11,9 +11,12 @@ body {
   height: 660px;
   background: url("/activity/images/mid-autumn/bar-mid.jpg") center top no-repeat;
 }
+.br {
+  display: block;
+}
 .normal-border {
   border:1px dashed #4b0a0b;
-  padding: 10px 20px;
+  padding: 10px 20px 20px 20px;
   margin-top: 20px;
 }
 .btn-normal-invest {
@@ -472,7 +475,7 @@ body {
         margin:0;
         padding:10px;
       }
-      img {
+      img.img-sm {
         width:50%;
       }
       .to-sao {
@@ -665,16 +668,20 @@ body {
             height: 20px;
             overflow: hidden;
           }
-          .register-user, .register-account {
+          .register-user {
             width: 150px;
-            background: #ff0000;
-            border-radius: 3px;
             text-align: center;
-            margin: 10px 0px 0px -20px;
+            margin: 10px 0px 0px -40px;
             font-size: 20px;
             color: #fff;
             border: 0;
             cursor: pointer;
+            border-radius:0;
+            color: #ffff00;
+            background: #e62222;
+            padding: 10px 30px;
+            font-size: 14px;
+
           }
         }
         .register-account {
