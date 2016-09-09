@@ -51,15 +51,18 @@ public class MidAutumnActivityService {
     public List getAllFamilyInvestAmount() {
         Map<String, List<String>> allFamily = getAllFamilyMap();
         List<MidAutumnFamilyDto> allFamilyAmountList = Lists.newArrayList();
-        int count = 1;
+        int count = 0;
         for (String key : allFamily.keySet()) {
+            count++;
+            if(count > 3){
+                break;
+            }
             List<String> family = allFamily.get(key);
             long investAmount = 0l;
             for (String name : family) {
                 investAmount += investMapper.sumInvestAmount(null, name, null, null, null, activityMinAutumnStartTime, activityMinAutumnEndTime, InvestStatus.SUCCESS, null);
             }
             allFamilyAmountList.add(new MidAutumnFamilyDto(MessageFormat.format("{0}号家庭", count), AmountConverter.convertCentToString(investAmount)));
-            count++;
         }
 
         return allFamilyAmountList;
