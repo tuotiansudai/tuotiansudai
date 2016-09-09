@@ -17,35 +17,38 @@
             </div>
             <div class="copy-link-box" id="copyLinkBox">
                 <b for="copy-title">立即邀请好友加入家庭</b>
-                <span  class="copy-link" id="clipboard_text">https://tuotiansudai.com/register/user?referrer=cg007008</span>
+                <span  class="copy-link" id="clipboard_text">https://tuotiansudai.com/register/user?referrer=${loginName}</span>
                 <em class="button" id="copy-button" data-clipboard-target="clipboard_text">复制链接发送给好友</em>
                 <div class="tc"><a href="#" class="btn-normal-invest">立即邀请好友组家庭</a> </div>
             </div>
         </div>
 
         <div class="normal-border my-family-group">
-            <span class="no-family">您还没有家庭，快去邀请好友组建自己的家庭吧！</span>
+            <#if myFamilyNumber == "">
+                <span class="no-family">您还没有家庭，快去邀请好友组建自己的家庭吧！</span>
+            </#if>
 
-            <div class="no-logged tc">
-                <a href="/login" class="btn-normal-invest">立即登录查看我的家庭</a>
-            </div>
-
-            <div class="yes-logged clearfix">
-                <div class="sub-title">我的家庭：团员1号家庭</div>
-                <dl>
-                    <dt>家庭成员：</dt>
-                    <dd>
-                        <span>185****5678 <em>团长</em></span>
-                        <span>185****5678</span>
-                        <span>185****5678</span>
-
-                    </dd>
-                </dl>
-            </div>
-         </div>
-
+            <@global.isAnonymous>
+                <div class="no-logged tc">
+                    <a href="/login" class="btn-normal-invest">立即登录查看我的家庭</a>
+                </div>
+            </@global.isAnonymous>
+            <#if myFamilyNumber != "">
+                <div class="yes-logged clearfix">
+                    <div class="sub-title">我的家庭：团员${myFamilyNumber}号家庭</div>
+                    <dl>
+                        <dt>家庭成员：</dt>
+                        <dd>
+                            <#list myFamilyGroup as mobile>
+                                <span>${mobile} <#if mobile_index  == 0><em>团长</em></#if></span>
+                            </#list>
+                        </dd>
+                    </dl>
+                </div>
+             </div>
+        </#if>
         <div class="normal-border today-invest-box clearfix">
-            <div class="sub-title">我的家庭累积投资额：500000.00元</div>
+            <div class="sub-title">我的家庭今日投资额：${myFamilyInvestAmount}元</div>
             <dl class="red-bag-normal">
                 <dt><span><b>5</b>元红包</span></dt>
                 <dd><span>每日投资满10000元
@@ -67,7 +70,7 @@
         </div>
 
         <div class="normal-border today-invest-box clearfix">
-            <div class="sub-title">我的家庭今日投资额：500000.00元</div>
+            <div class="sub-title">我的家庭今日投资额：${myFamilyInvestAmount}元</div>
 
             <div class="product-show">
                 <img src="${staticServer}/activity/images/mid-autumn/product.jpg" alt="">

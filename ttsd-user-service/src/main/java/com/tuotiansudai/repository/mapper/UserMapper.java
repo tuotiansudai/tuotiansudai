@@ -51,5 +51,9 @@ public interface UserMapper {
                                         @Param(value = "pageSize") int pageSize);
 
     List<UserModel> findUsersByRegisterTime(@Param(value = "startTime") Date startTime,
+<<<<<<< HEAD
                                           @Param(value = "endTime") Date endTime);
+=======
+                                            @Param(value = "endTime") Date endTime);
+>>>>>>> 04dc726e619bb1aaa43701b1665d901abfbf4bab
 }
