@@ -272,6 +272,23 @@
         select * from user_coupon where login_name = #{loginName} and coupon_id = #{couponId}
     </select>
 
+    <select id="findUsedExperienceByLoginName" parameterType="map" resultMap="userCouponResultMap">
+        SELECT
+        *
+        FROM
+        user_coupon u
+        WHERE
+        login_name = #{loginName} and (u.status &lt;&gt; 'SUCCESS' or u.status is null )
+        AND EXISTS( SELECT
+        1
+        FROM
+        coupon c
+        WHERE
+        u.coupon_id = c.id
+        AND c.product_types = 'EXPERIENCE')
+    </select>
+
+
     <select id="findBirthdaySuccessByLoginNameAndInvestId" parameterType="map" resultMap="userCouponResultMap">
         select t.* from user_coupon t join coupon m on t.coupon_id = m.id and m.coupon_type = 'BIRTHDAY_COUPON' where t.login_name = #{loginName} and t.invest_id = #{investId} and t.status = 'SUCCESS'
     </select>
