@@ -10,23 +10,28 @@
         <div class="frame-box-one-inner clearfix">
         <img src="${staticServer}/activity/images/mid-autumn/title-one.png" class="main-title" alt="组团投资“礼”遇全家，赢平板电脑">
 
+
         <div class="normal-border note-box">
             <div class="note clearfix">
                 活动期间：邀请好友加入家庭，组团冲击每日累计投资额，全体成员都可获得奖励！ <br/>
                 同时，根据每个家庭活动期间的所有累计投资额进行排名，第一名获得三星平板电脑大奖，前三名均可获得丰厚奖品！<br/>
             </div>
-            <div class="copy-link-box" id="copyLinkBox">
-                <b for="copy-title">立即邀请好友加入家庭</b>
-                <span  class="copy-link" id="clipboard_text">https://tuotiansudai.com/register/user?referrer=${loginName}</span>
-                <em class="button" id="copy-button" data-clipboard-target="clipboard_text">复制链接发送给好友</em>
-                <div class="tc"><a href="#" class="btn-normal-invest">立即邀请好友组家庭</a> </div>
-            </div>
+            <@global.isNotAnonymous>
+                <div class="copy-link-box" id="copyLinkBox">
+                    <b for="copy-title">立即邀请好友加入家庭</b>
+                    <span  class="copy-link" id="clipboard_text">https://tuotiansudai.com/register/user?referrer=${loginName}</span>
+                    <em class="button" id="copy-button" data-clipboard-target="clipboard_text">复制链接发送给好友</em>
+                    <div class="tc"><a href="#" class="btn-normal-invest">立即邀请好友组家庭</a> </div>
+                </div>
+            </@global.isNotAnonymous>
         </div>
 
         <div class="normal-border my-family-group">
-            <#if myFamilyNumber == "">
-                <span class="no-family">您还没有家庭，快去邀请好友组建自己的家庭吧！</span>
-            </#if>
+            <@global.isNotAnonymous>
+                <#if myFamilyNumber == "">
+                    <span class="no-family">您还没有家庭，快去邀请好友组建自己的家庭吧！</span>
+                </#if>
+            </@global.isNotAnonymous>
 
             <@global.isAnonymous>
                 <div class="no-logged tc">
@@ -35,7 +40,7 @@
             </@global.isAnonymous>
             <#if myFamilyNumber != "">
                 <div class="yes-logged clearfix">
-                    <div class="sub-title">我的家庭：团员${myFamilyNumber}号家庭</div>
+                    <div class="sub-title">我的家庭：${myFamilyNumber}</div>
                     <dl>
                         <dt>家庭成员：</dt>
                         <dd>
@@ -89,21 +94,25 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>团员1号家庭</td>
-                        <td>500000.00</td>
-                        <td>三星Galaxy平板电脑</td>
-                    </tr>
-                    <tr>
-                        <td>团员1号家庭</td>
-                        <td>500000.00</td>
-                        <td>平分1000元红包</td>
-                    </tr>
-                    <tr>
-                        <td>团员1号家庭</td>
-                        <td>500000.00</td>
-                        <td>平分500元红包 +每人0.5%加息券</td>
-                    </tr>
+                    <#list allFamilyInvestAmounts as family>
+                        <tr>
+                            <td>${family.name}</td>
+                            <td>${family.investAmount}</td>
+                            <td>
+                                <#if family_index  == 0>
+                                    三星Galaxy平板电脑
+                                </#if>
+
+                                <#if family_index  == 1>
+                                    平分1000元红包
+                                </#if>
+
+                                <#if family_index  == 2>
+                                    平分500元红包 +每人0.5%加息券
+                                </#if>
+                            </td>
+                        </tr>
+                    </#list>
                     </tbody>
                 </table>
                 <div class="my-family-bag">

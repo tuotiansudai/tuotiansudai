@@ -22,13 +22,12 @@ public class MidAutumnActivityController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView travelPrize() {
         ModelAndView modelAndView = new ModelAndView("/activities/mid-autumn", "responsive", true);
-//        String loginName = LoginUserInfo.getLoginName();
-        String loginName = "boss";
+        String loginName = LoginUserInfo.getLoginName();
         modelAndView.addObject("loginName", Strings.isNullOrEmpty(loginName) ? "" : loginName);
         Map<String,Object> myFamilyMap = midAutumnActivityService.getMidAutumnHomeData(loginName);
         modelAndView.addObject("myFamilyNumber",myFamilyMap.get("myFamilyNum"));
         modelAndView.addObject("myFamilyGroup",myFamilyMap.get("myFamily"));
-        modelAndView.addObject("myFamilyInvestAmount", myFamilyMap.get("totalInvestAmount"));
+        modelAndView.addObject("myFamilyInvestAmount", myFamilyMap.get("todayInvestAmount"));
         modelAndView.addObject("myFamilyTotalInvestAmount", myFamilyMap.get("totalInvestAmount"));
         modelAndView.addObject("allFamilyInvestAmounts",myFamilyMap.get("topThreeFamily"));
         return modelAndView;
