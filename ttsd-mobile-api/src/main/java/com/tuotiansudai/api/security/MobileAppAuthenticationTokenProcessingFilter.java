@@ -40,7 +40,7 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
     private String refreshTokenUrl = "/refresh-token";
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        BufferedRequestWrapper httpServletRequest = new BufferedRequestWrapper((HttpServletRequest) request);
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
         if (shouldNotAuthenticated(httpServletRequest)) {

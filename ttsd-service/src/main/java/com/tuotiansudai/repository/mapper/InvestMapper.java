@@ -1,7 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.repository.model.TransferableInvestView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -241,8 +240,4 @@ public interface InvestMapper {
     long countInvestorSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
                                                @Param(value = "startTime") Date startTime,
                                                @Param(value = "endTime") Date endTime);
-
-
-
-
 }
