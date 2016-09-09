@@ -25,7 +25,7 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan
-            base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.spring,com.tuotiansudai.util,com.tuotiansudai.cache,com.tuotiansudai.coupon.aspect,com.tuotiansudai.coupon,com.tuotiansudai.transfer,com.tuotiansudai.membership"/>
+            base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.util,com.tuotiansudai.cache,com.tuotiansudai.coupon.aspect,com.tuotiansudai.coupon,com.tuotiansudai.transfer,com.tuotiansudai.membership"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
@@ -96,12 +96,4 @@
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="300"/>
     </bean>
-
-    <bean class="com.tuotiansudai.spring.session.MyRedisHttpSessionConfiguration"/>
-
-    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
-          p:hostName="${common.redis.host}"
-          p:port="${common.redis.port}"
-          p:database="${common.session.db}"/>
-
 </beans>

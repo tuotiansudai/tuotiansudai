@@ -50,7 +50,7 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
         BaseParamDto baseParamDto = this.getBaseParamDto(bufferedRequestWrapper);
 
         String token = baseParamDto != null && baseParamDto.getBaseParam() != null ? baseParamDto.getBaseParam().getToken() : null;
-        Source source = baseParamDto != null && baseParamDto.getBaseParam() != null && Strings.isNullOrEmpty(baseParamDto.getBaseParam().getPlatform())
+        Source source = baseParamDto != null && baseParamDto.getBaseParam() != null && !Strings.isNullOrEmpty(baseParamDto.getBaseParam().getPlatform())
                 ? Source.valueOf(baseParamDto.getBaseParam().getPlatform().toUpperCase()) : null;
 
         SignInResult verifyTokenResult = signInClient.verifyToken(token);
@@ -93,10 +93,9 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
         chain.doFilter(bufferedRequestWrapper, response);
     }
 
-    private BaseParamDto getBaseParamDto(HttpServletRequest httpServletRequest) {
+    private BaseParamDto getBaseParamDto(BufferedRequestWrapper bufferedRequestWrapper) {
         try {
-            BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(httpServletRequest);
-            return objectMapper.readValue(bufferedRequest.getInputStreamString(), BaseParamDto.class);
+            return objectMapper.readValue(bufferedRequestWrapper.getInputStreamString(), BaseParamDto.class);
         } catch (IOException ignored) {
         }
         return null;

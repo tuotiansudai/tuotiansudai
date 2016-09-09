@@ -26,20 +26,17 @@ public class AppTokenInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (!APP_SOURCE_FLAG.equalsIgnoreCase(request.getParameter("source"))) {
-            return true;
-        }
-
-        String token = Strings.isNullOrEmpty(request.getHeader("token")) ? request.getParameter("token") : request.getHeader("token");
-
-        SignInResult signInResult = signInClient.verifyToken(token);
-
-        if (signInResult != null && signInResult.isResult()) {
-            myAuthenticationUtil.createAuthentication(signInResult.getUserInfo().getLoginName(), Source.WEB);
-        } else {
+        String source = request.getParameter("source");
+        if (APP_SOURCE_FLAG.equalsIgnoreCase(source)) {
+            String token = request.getHeader("token");
+            SignInResult signInResult = signInClient.verifyToken(token);
+            if (signInResult != null && signInResult.isResult()) {
+                request.getSession();
+                myAuthenticationUtil.createAuthentication(signInResult.getUserInfo().getLoginName(), Source.WEB);
+                return true;
+            }
             myAuthenticationUtil.removeAuthentication();
         }
-
         return true;
     }
 }
