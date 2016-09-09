@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.UserView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -48,4 +49,7 @@ public interface UserMapper {
     List<UserModel> findUserModelByMobile(@Param(value = "mobile") String mobile,
                                         @Param(value = "index") int index,
                                         @Param(value = "pageSize") int pageSize);
+
+    List<UserModel> findUsersByRegisterTime(@Param(value = "startTime") Date startTime,
+                                          @Param(value = "endTime") Date endTime);
 }

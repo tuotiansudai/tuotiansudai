@@ -38,4 +38,15 @@
          select count(1) from referrer_relation  where referrer_login_name = #{referrerLoginName}
     </select>
 
+    <select id="findByReferrerLoginName" parameterType="map" resultMap="referrerRelationResultMap">
+        select * from referrer_relation where referrer_login_name = #{referrerLoginName}
+    </select>
+
+    <select id="findByReferrerLoginNameAndLevelAndRegisterTime" parameterType="map" resultMap="referrerRelationResultMap">
+        select rr.* from referrer_relation rr
+        INNER JOIN user u on rr.login_name = u.login_name
+        where referrer_login_name = #{referrerLoginName}
+        and u.register_time BETWEEN  #{startTime} AND #{endTime}
+    </select>
+
 </mapper>

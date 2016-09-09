@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.repository.model.UserView;
 
+import java.util.Date;
 import java.util.List;
 
 public interface UserService {
@@ -54,5 +55,4 @@ public interface UserService {
     boolean mobileIsRegister(String mobile);
 
     UserModel findByMobile(String mobile);
-
 }
