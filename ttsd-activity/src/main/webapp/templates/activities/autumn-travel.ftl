@@ -6,7 +6,11 @@
 </@global.isNotAnonymous>
 <div class="tour-slide">
 </div>
-<div class="autumn-tour-frame" id="pageone">
+<div class="autumn-tour-frame" id="autumnTravelPage">
+    <div class="reg-tag-current" style="display: none">
+        <#include '../register.ftl' />
+    </div>
+
     <div class="bg-box">
         <div class="title-normal-box">
             <div class="title-normal-title01"></div>
@@ -26,11 +30,10 @@
             </div>
         </div>
 
-
         <div class="prize-kind clearfix swiper-container">
             <div class="swiper-wrapper" id="sliderBox">
 
-                    <div class="prize-box swiper-slide active">
+                    <div class="prize-box swiper-slide ">
                         <div class="pk-title clearfix">
                             <span><em>投资</em><i>5万</i>元</span>
                             <span><em>额外收益</em><i>1000.00万</i>元</span>
@@ -47,7 +50,7 @@
                             </div>
                         </div>
                     </div>
-                <div class="prize-box swiper-slide">
+                <div class="prize-box swiper-slide active">
                     <div class="pk-title clearfix">
                         <span><em>投资</em><i>5万</i>元</span>
                         <span><em>额外收益</em><i>1000.00万</i>元</span>
@@ -87,34 +90,40 @@
         </div>
 
 
-        <div class="prize-kind clearfix swiper-container">
-            <div class="swiper-wrapper" id="sliderBox">
-                <#list travelPrize as prize>
-                    <div class="prize-box swiper-slide <#if prize_index == 1>active</#if>">
-                        <div class="pk-title">投资满<span><@amount>${prize.investAmount?string.computer}</@amount></span>元即可获得</div>
-                        <div class="img-info">
-                        <#if !isAppSource>
-                            <a href="/activity/autumn/travel/${prize.id?string.computer}/detail" target="_blank">
-                        <#else>
-                        <a href="javascript:void(0)">
-                        </#if>
-                            <img src="${prize.image}"></a>
-                            <span class="kind-text">${prize.name}</span>
-                            <div class="kind-bottom">
-                                <span class="fl">商品价格<em>${prize.price}</em>元</span>
-                                <@global.isAnonymous>
-                                    <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
-                                </@global.isAnonymous>
-                                <@global.isNotAnonymous>
-                                    <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
-                                </@global.isNotAnonymous>
-                            </div>
-                        </div>
-                    </div>
-                </#list>
-                <div class="bg-shadow"></div>
-            </div>
-        </div>
+        <#--<div class="prize-kind clearfix swiper-container">-->
+            <#--<div class="swiper-wrapper" id="sliderBox">-->
+                <#--<#list travelPrize as prize>-->
+                    <#--<div class="prize-box swiper-slide <#if prize_index == 1>active</#if>">-->
+
+                        <#--<div class="pk-title clearfix">-->
+                            <#--<span><em>投资</em><i><@amount>${prize.investAmount?string.computer}</@amount></i>元</span>-->
+                            <#--<span><em>额外收益</em><i>1000.00万</i>元</span>-->
+                        <#--</div>-->
+
+                        <#--&lt;#&ndash;<div class="pk-title">投资满<span><@amount>${prize.investAmount?string.computer}</@amount></span>元即可获得</div>&ndash;&gt;-->
+                        <#--<div class="img-info">-->
+                        <#--<#if !isAppSource>-->
+                            <#--<a href="/activity/autumn/travel/${prize.id?string.computer}/detail" target="_blank">-->
+                        <#--<#else>-->
+                        <#--<a href="javascript:void(0)">-->
+                        <#--</#if>-->
+                            <#--<img src="${prize.image}"></a>-->
+                            <#--<span class="kind-text">${prize.name}</span>-->
+                            <#--<div class="kind-bottom">-->
+                                <#--<span class="fl">商品价格<em>${prize.price}</em>元</span>-->
+                                <#--<@global.isAnonymous>-->
+                                    <#--<a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>-->
+                                <#--</@global.isAnonymous>-->
+                                <#--<@global.isNotAnonymous>-->
+                                    <#--<a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>-->
+                                <#--</@global.isNotAnonymous>-->
+                            <#--</div>-->
+                        <#--</div>-->
+                    <#--</div>-->
+                <#--</#list>-->
+                <#--<div class="bg-shadow"></div>-->
+            <#--</div>-->
+        <#--</div>-->
 
         <div class="award-records clearfix" id="awardRecordsFrame">
 
@@ -137,10 +146,7 @@
                         <a href="/loan-list" class="btn-normal autumn-travel-invest-channel">立即投资领奖</a>
                     </@global.isNotAnonymous>
                 </div>
-
         </div>
-
-
     </div>
 
     <div class="bg-box">
@@ -264,6 +270,7 @@
             详细活动规则请查看电脑网页版活动页面。
         </span>
     </div>
+
 </div>
 </@global.main>
 

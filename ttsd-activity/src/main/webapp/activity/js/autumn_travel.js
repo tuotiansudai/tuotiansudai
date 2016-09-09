@@ -1,14 +1,15 @@
-require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'circle'], function ($, _, layer) {
+require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'circle','register_common'], function ($, _, layer) {
 
-var $awardList = $('.award-list');
+var $autumnTravelPage=$('#autumnTravelPage'),
+    $awardList = $('.award-list',$autumnTravelPage);
     var scrollTimer, scrollTimer2;
-    var $swiperWrapper = $('.swiper-wrapper'),
+    var $swiperWrapper = $('.swiper-wrapper',$autumnTravelPage),
         $swiperslide = $('.swiper-slide', $swiperWrapper);
     var browser = commonFun.browserRedirect();
     if (browser == 'mobile') {
         var searchTag=location.search.split('=')[1];
         if(searchTag=='yes') {
-
+            $autumnTravelPage.find('.reg-tag-current').show();
         }
         var isScrolling, startPos, endPos;
         var slider = {
