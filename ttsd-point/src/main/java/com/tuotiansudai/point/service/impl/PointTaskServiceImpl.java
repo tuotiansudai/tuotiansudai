@@ -97,12 +97,9 @@ public class PointTaskServiceImpl implements PointTaskService {
             switch (pointTask) {
                 case EACH_SUM_INVEST:
                     //累计投资满5000元返100积分，只能完成一次
-                    long sumInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName);
-                    if (sumInvestAmount >= SUM_INVEST_5000_AMOUNT) {
-                        userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), SUM_INVEST_5000_POINT, FIRST_TASK_LEVEL));
-                        pointBillNote = MessageFormat.format("累计投资满{0}元奖励{1}积分", AmountConverter.convertCentToString(SUM_INVEST_5000_AMOUNT), String.valueOf(SUM_INVEST_5000_POINT));
-                        pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), SUM_INVEST_5000_POINT, pointBillNote);
-                    }
+                    userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), SUM_INVEST_5000_POINT, FIRST_TASK_LEVEL));
+                    pointBillNote = MessageFormat.format("累计投资满{0}元奖励{1}积分", AmountConverter.convertCentToString(SUM_INVEST_5000_AMOUNT), String.valueOf(SUM_INVEST_5000_POINT));
+                    pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), SUM_INVEST_5000_POINT, pointBillNote);
                     break;
                 case FIRST_SINGLE_INVEST:
                     //首次投资满10000元返200积分，只能完成一次
@@ -278,7 +275,8 @@ public class PointTaskServiceImpl implements PointTaskService {
         switch (pointTask) {
             case EACH_SUM_INVEST:
                 //只能完成一次
-                return CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(loginName, pointTask));
+                long sumInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(null, loginName);
+                return CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(loginName, pointTask)) && (sumInvestAmount >= SUM_INVEST_5000_AMOUNT);
             case FIRST_SINGLE_INVEST:
                 //只能完成一次
                 return CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(loginName, pointTask));
