@@ -55,6 +55,4 @@ public interface UserService {
     boolean mobileIsRegister(String mobile);
 
     UserModel findByMobile(String mobile);
-
-    List<UserModel> findByRegisterTime(Date startTime, Date endTime);
 }

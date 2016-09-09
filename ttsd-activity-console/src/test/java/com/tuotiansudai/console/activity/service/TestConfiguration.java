@@ -11,7 +11,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 @org.springframework.boot.test.context.TestConfiguration
-@ComponentScan("com.tuotiansudai.console.activity.service.ExportService")
 @MapperScan("com.tuotiansudai.repository.mapper")
 public class TestConfiguration {
 

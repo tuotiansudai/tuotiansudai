@@ -4,6 +4,7 @@ import com.tuotiansudai.repository.model.ReferrerRelationModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -29,5 +30,9 @@ public interface ReferrerRelationMapper {
 
 
     List<ReferrerRelationModel> findByReferrerLoginName(@Param(value = "referrerLoginName") String referrerLoginName);
+
+    List<ReferrerRelationModel> findByReferrerLoginNameAndLevelAndRegisterTime(@Param(value = "referrerLoginName") String referrerLoginName,
+                                                                               @Param(value = "startTime") Date startTime,
+                                                                               @Param(value = "endTime") Date endTime);
 
 }

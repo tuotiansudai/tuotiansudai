@@ -4,15 +4,12 @@
 
 <div class="col-md-10">
     <div class="panel panel-default">
-
+            <a href="/activity-console/activity-manage/export-autumn-list">请点击此处导出EXCEl</a>
     </div>
 
     <div class="table-responsive">
-        <form action="/activity-console/activity-manage/autumn-list" method="get" class="form-inline query-build" id ="prizeFrom">
 
-
-            <button type="submit" class="btn btn-sm btn-primary btnSearch">导出EXCEL</button>
-        </form>
+        <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
 
         </div>
 </div>
