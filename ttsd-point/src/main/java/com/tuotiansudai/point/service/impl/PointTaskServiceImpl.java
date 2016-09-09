@@ -39,9 +39,9 @@ public class PointTaskServiceImpl implements PointTaskService {
             PointTask.FIRST_TURN_ON_AUTO_INVEST,
             PointTask.FIRST_INVEST_360);
 
-    final static long SUM_INVEST_5000_AMOUNT = 500000L;
+    final static long SUM_INVEST_5000_AMOUNT = 100L;
     final static long SUM_INVEST_5000_POINT = 100;
-    final static long FIRST_INVEST_10000_AMOUNT = 1000000L;
+    final static long FIRST_INVEST_10000_AMOUNT = 100L;
     final static long FIRST_INVEST_10000_POINT = 200;
 
     @Autowired
