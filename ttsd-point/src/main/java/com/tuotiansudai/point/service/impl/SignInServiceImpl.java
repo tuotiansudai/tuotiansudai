@@ -97,10 +97,8 @@ public class SignInServiceImpl implements SignInService {
         }
 
         DateTime today = new DateTime().withTimeAtStartOfDay();
-        if (lastSignInPointDto != null) {
-            if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()).withTimeAtStartOfDay(), today) == Days.ZERO) {
-                return SignInPoint.getPointByTimes(lastSignInPointDto.getSignInCount() + 1);
-            }
+        if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()).withTimeAtStartOfDay(), today) == Days.ZERO || ays.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()).withTimeAtStartOfDay(), today) == Days.ONE) {
+            return SignInPoint.getPointByTimes(lastSignInPointDto.getSignInCount() + 1);
         }
 
         return SignInPoint.FIRST_SIGN_IN.getPoint();
