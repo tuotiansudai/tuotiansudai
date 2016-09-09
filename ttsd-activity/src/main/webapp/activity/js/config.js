@@ -35,7 +35,9 @@ var require = {
         'count_down': staticServer+'/activity/js/dest/count_down.min',
         'placeholder':staticServer+'/activity/js/libs/jquery.enplaceholder',
         'superslide': staticServer+'/activity/js/libs/jquery.SuperSlide.2.1.1',
-        'circle': staticServer+'/activity/js/dest/gift_circle.min'
+        'logintip': staticServer+'/activity/js/dest/login_tip.min',
+        'circle': staticServer+'/activity/js/dest/gift_circle.min',
+        'endTime': staticServer+'/activity/js/dest/actor_time.min'
     },
     'waitSeconds':0,
     'shim': {

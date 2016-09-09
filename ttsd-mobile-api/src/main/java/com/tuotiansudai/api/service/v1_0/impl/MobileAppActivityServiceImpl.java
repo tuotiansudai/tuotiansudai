@@ -32,7 +32,7 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
             pageSize = 10;
         }
 
-        List<ActivityModel> activityModels = activityMapper.findActiveActivities(source, new Date(), (index - 1) * pageSize, pageSize);
+        List<ActivityModel> activityModels = activityMapper.findMobileActiveActivities(source, new Date(), (index - 1) * pageSize, pageSize);
 
         List<ActivityCenterDataDto> activityCenterDataDtos = new ArrayList<>();
         for (ActivityModel activityModel : activityModels) {
@@ -44,7 +44,7 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
         ActivityCenterResponseDto activityCenterResponseDto = new ActivityCenterResponseDto();
         activityCenterResponseDto.setIndex(index);
         activityCenterResponseDto.setPageSize(pageSize);
-        activityCenterResponseDto.setTotalCount(activityMapper.countActiveActivities(source));
+        activityCenterResponseDto.setTotalCount(activityMapper.countMobileActiveActivities(source));
         activityCenterResponseDto.setActivities(activityCenterDataDtos);
 
         return activityCenterResponseDto;
