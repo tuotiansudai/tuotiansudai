@@ -8,7 +8,6 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -23,10 +22,10 @@ public class AutumnService {
     @Autowired
     private AutumnMapper autumnMapper;
 
-    public Map getAllFamilyMap(Date activityMinAutumnStartTime,Date activityMinAutumnEndTime) {
+    public Map getAllFamilyMap(Date activityMinAutumnStartTime, Date activityMinAutumnEndTime) {
         List<UserModel> userModels = userMapper.findUsersByRegisterTime(activityMinAutumnStartTime, activityMinAutumnEndTime);
 
-        if (CollectionUtils.isEmpty(userModels)) {
+        if (userModels.size() == 0) {
             return Maps.newConcurrentMap();
         }
 
@@ -36,12 +35,13 @@ public class AutumnService {
         for (UserModel userModel : userModels) {
             List<AutumnReferrerRelationView> referrerRelationModels = autumnMapper.findByLoginNameAndLevel(userModel.getLoginName(), 1);
             //有一级推荐时查询是否是团长，否则查询是否是团长推荐（无视推荐层级）
-            if (CollectionUtils.isNotEmpty(referrerRelationModels)) {
+            if (referrerRelationModels.size() > 0) {
                 referrerLoginName = referrerRelationModels.get(0).getReferrerLoginName();
                 loginName = userModel.getLoginName();
                 if (allFamily.get(referrerLoginName) != null) {
                     allFamily.get(referrerLoginName).add(loginName);
                     continue;
+
                 }
 
                 for (String name : allFamily.keySet()) {

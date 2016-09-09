@@ -4,13 +4,10 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.service.AutumnService;
 import com.tuotiansudai.console.activity.dto.AutumnExportDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.ReferrerRelationModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.DateUtil;
 import org.joda.time.DateTime;
@@ -18,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.xml.ws.ServiceMode;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,9 +29,6 @@ public class ExportService {
     private UserMapper userMapper;
 
     @Autowired
-    private ReferrerRelationMapper referrerRelationMapper;
-
-    @Autowired
     private InvestMapper investMapper;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
@@ -46,61 +37,28 @@ public class ExportService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.endTime}\")}")
     private Date activityAutumnEndTime;
 
-    /*
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-    private Map<String, Map<String, List<String>>> getHomeMap(){
-        Map<String, Map<String, List<String>>>  homeMap = new HashMap<String, Map<String, List<String>>>();
-        int homeSeq = 1;
-        List<UserModel> userModelList =  userMapper.findUsersByRegisterTime(activityAutumnStartTime, activityAutumnEndTime);
-        for(UserModel userModel:userModelList){
-            List<ReferrerRelationModel> referrerRelationModelList = referrerRelationMapper.findByReferrerLoginNameAndLevel(userModel.getLoginName(), 1);
-
-            if(referrerRelationModelList.size() > 0 && !homeMap.containsKey(referrerRelationModelList.get(0).getReferrerLoginName())){
-                //找出当前团长的所有团员
-                List<ReferrerRelationModel> referrerRelationModelListAll = referrerRelationMapper.findByReferrerLoginNameAndLevelAndRegisterTime(referrerRelationModelList.get(0).getReferrerLoginName(), activityAutumnStartTime, activityAutumnEndTime);
-                Map<String, List<String>> userMap = new HashMap<String, List<String>>();
-                List<String> alluser = Lists.newArrayList();
-                for(ReferrerRelationModel referrerRelationModel: referrerRelationModelListAll){
-                    //放入所有团员
-                    alluser.add(referrerRelationModel.getLoginName());
-                }
-                //最后放入团长本人
-                alluser.add(referrerRelationModelList.get(0).getReferrerLoginName());
-
-                //把活动期间的所有天数存起来
-                int activityDays = (int)DateUtil.differenceDay(activityAutumnStartTime, activityAutumnEndTime) + 1;
-                for(int i = 0; i < activityDays;i ++){
-                    userMap.put("团员" + homeSeq + "号家庭|"+ new DateTime(activityAutumnStartTime).plusDays(i), alluser);
-                }
-                homeMap.put(referrerRelationModelList.get(0).getReferrerLoginName(), userMap);
-                homeSeq ++;
-            }
-        }
-        return homeMap;
-    }
-    */
-
     public List<AutumnExportDto> getAutumnExport(){
         List<AutumnExportDto> autumnExportDtoList = Lists.newArrayList();
-        Map<String, List<String>>  homeMap = autumnService.getHomeMap();
-       /* for(Map.Entry<String,  Map<String, List<String>>> entry:homeMap.entrySet()){
-            Map<String, List<String>> allUser = entry.getValue();
-            for(Map.Entry<String, List<String>> entry1:allUser.entrySet()){
+        int activityDays = (int)DateUtil.differenceDay(activityAutumnStartTime, activityAutumnEndTime) + 1;
+        for(int i = 0; i < activityDays;i ++){
+            Date startTime = new DateTime(activityAutumnStartTime).plusDays(i).withTimeAtStartOfDay().toDate();
+            Date endTime =  new DateTime(activityAutumnStartTime).plusDays(i).withTime(23,59,59,0).toDate();
+
+            Map<String, List<String>> allFamilyAndNum = autumnService.getAllFamilyMap(activityAutumnStartTime, endTime);
+
+            for(Map.Entry<String, List<String>> entry1:allFamilyAndNum.entrySet()){
                 long totalAmount = 0;
-                String nameAndRegisterTime = entry1.getKey().toString();
-                String nameAndRegisterTimeArr[] = nameAndRegisterTime.split("\\|");
                 List<InvestModel> currentHomeInvestModelList = Lists.newArrayList();
                 for(String loginName: entry1.getValue()){
-                    totalAmount += investMapper.sumInvestAmount(null, loginName, null, null, null, new DateTime(nameAndRegisterTimeArr[1]).withTimeAtStartOfDay().toDate(), new DateTime(nameAndRegisterTimeArr[1]).withTime(23,59,59,0).toDate(), InvestStatus.SUCCESS, null);
-                    List<InvestModel> investModelList = investMapper.findSuccessInvestByInvestTime(loginName, new DateTime(nameAndRegisterTimeArr[1]).withTimeAtStartOfDay().toDate(), new DateTime(nameAndRegisterTimeArr[1]).withTime(23,59,59,0).toDate());
+                    totalAmount += investMapper.sumInvestAmount(null, loginName, null, null, null, startTime, endTime, InvestStatus.SUCCESS, null);
+                    List<InvestModel> investModelList = investMapper.findSuccessInvestByInvestTime(loginName, startTime, endTime);
                     currentHomeInvestModelList.addAll(investModelList);
                 }
                 for(InvestModel investModel:currentHomeInvestModelList){
                     AutumnExportDto autumnExportDto = new AutumnExportDto();
-                    autumnExportDto.setName(nameAndRegisterTimeArr[0]);
+                    autumnExportDto.setName(entry1.getKey());
                     autumnExportDto.setTotalAmount(totalAmount);
-                    autumnExportDto.setInvestTime(new DateTime(nameAndRegisterTimeArr[1]).toDate());
+                    autumnExportDto.setInvestTime(startTime);
                     if(totalAmount >= 5000000){
                         autumnExportDto.setPrize("50元红包");
                     }
@@ -122,7 +80,7 @@ public class ExportService {
                     autumnExportDtoList.add(autumnExportDto);
                 }
             }
-        }*/
+        }
         return autumnExportDtoList;
     }
 
