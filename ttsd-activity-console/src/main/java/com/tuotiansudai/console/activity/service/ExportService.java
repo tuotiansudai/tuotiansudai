@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.activity.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.service.AutumnService;
 import com.tuotiansudai.console.activity.dto.AutumnExportDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
@@ -27,8 +28,8 @@ import java.util.Map;
 @Service
 public class ExportService {
 
-//    @Autowired
-//    private UserService userService;
+    @Autowired
+    private AutumnService autumnService;
 
     @Autowired
     private UserMapper userMapper;
@@ -45,7 +46,7 @@ public class ExportService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.endTime}\")}")
     private Date activityAutumnEndTime;
 
-
+    /*
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     private Map<String, Map<String, List<String>>> getHomeMap(){
@@ -78,11 +79,12 @@ public class ExportService {
         }
         return homeMap;
     }
+    */
 
     public List<AutumnExportDto> getAutumnExport(){
         List<AutumnExportDto> autumnExportDtoList = Lists.newArrayList();
-        Map<String, Map<String, List<String>>>  homeMap = getHomeMap();
-        for(Map.Entry<String,  Map<String, List<String>>> entry:homeMap.entrySet()){
+        Map<String, List<String>>  homeMap = autumnService.getHomeMap();
+       /* for(Map.Entry<String,  Map<String, List<String>>> entry:homeMap.entrySet()){
             Map<String, List<String>> allUser = entry.getValue();
             for(Map.Entry<String, List<String>> entry1:allUser.entrySet()){
                 long totalAmount = 0;
@@ -120,7 +122,7 @@ public class ExportService {
                     autumnExportDtoList.add(autumnExportDto);
                 }
             }
-        }
+        }*/
         return autumnExportDtoList;
     }
 
