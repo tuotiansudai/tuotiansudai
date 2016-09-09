@@ -4,6 +4,8 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
             boolFlag = false, //校验布尔变量值
             $errorDom = $('.form-error'); //错误提示节点
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+        $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+
         var _URL = window.URL || window.webkitURL;
 
         $('.appPicture,.webPicture').on('change', function () {
@@ -124,6 +126,26 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                     showErrorMessage('活动介绍最多15个中文字符', $('.activity-description', $activityCenterForm));
                     return false;
                 }
+                //if($('input:radio[name="longTerm"]:checked').val() == 'notLongTerm'){
+                //    if($('.activatedTime').val() == ''){
+                //        showErrorMessage('活动起期不能为空', $('.activatedTime', $activityCenterForm));
+                //        return false;
+                //    }
+                //    if($('.expiredTime').val() == ''){
+                //        showErrorMessage('活动止期不能为空', $('.expiredTime', $activityCenterForm));
+                //        return false;
+                //    }
+                //}
+                if($('#notLongTerm').attr("checked")){
+                        if($('.activatedTime').val() == ''){
+                            showErrorMessage('活动起期不能为空', $('.activatedTime', $activityCenterForm));
+                            return false;
+                        }
+                        if($('.expiredTime').val() == ''){
+                            showErrorMessage('活动止期不能为空', $('.expiredTime', $activityCenterForm));
+                            return false;
+                        }
+                }
 
 
             },
@@ -160,5 +182,13 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
             }
         });
 
+        $('#longTerm').on('change', function (event) {
+            event.preventDefault();
+            $('#activityTime').hide();
+        });
+        $('#notLongTerm').on('change', function (event) {
+            event.preventDefault();
+            $('#activityTime').show();
+        });
     });
-})
+});

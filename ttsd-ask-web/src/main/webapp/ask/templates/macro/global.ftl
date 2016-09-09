@@ -91,7 +91,59 @@
 </div>
 
     <#include "../footer.ftl" />
+
+<script type="text/javascript">
+    window.$ = function(id) {
+        return document.getElementById(id);
+    };
+    var imgDom=window.$('iphone-app-img'),
+            TopMainMenuList=window.$('TopMainMenuList');
+    if (window.$('iphone-app-pop')) {
+        window.$('iphone-app-pop').onclick=function(event) {
+            if(imgDom.style.display == "block") {
+                imgDom.style.display='none';
+            }
+            else {
+                imgDom.style.display='block';
+            }
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            }
+            else if (window.event) {
+                window.event.cancelBubble = true;
+            }
+        };
+    }
+
+
+    document.getElementById('showMainMenu').onclick=function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        this.nextElementSibling.style.display='block';
+    }
+
+    document.getElementsByTagName("body")[0].onclick=function(e) {
+        var userAgent = navigator.userAgent.toLowerCase(),
+                event = e || window.event,
+                target = event.srcElement || event.target;
+
+        imgDom.style.display='none';
+        if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
+
+            //判断是否为viewport
+            var metaTags=document.getElementsByTagName('meta'),
+                    metaLen=metaTags.length,i=0;
+            for(;i<metaLen;i++) {
+                if(metaTags[i].getAttribute('name')=='viewport') {
+                    document.getElementById('TopMainMenuList').style.display='none';
+                }
+            }
+        }
+
+    };
+</script>
 <script src="${staticServer}${jsPath}${pageJavascript}" type="text/javascript"></script>
+
 </body>
 </html>
 </#macro>

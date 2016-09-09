@@ -6,6 +6,7 @@ import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.spring.LoginUserInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,7 @@ public class QuestionController {
         }
 
         ModelAndView modelAndView = new ModelAndView("/question", "questionId", questionId);
-        modelAndView.addObject("isQuestionOwner", question.getMobile().equalsIgnoreCase(LoginUserInfo.getMobile()));
+        modelAndView.addObject("isQuestionOwner", StringUtils.isEmpty(question.getMobile()) ? false : question.getMobile().equalsIgnoreCase(LoginUserInfo.getMobile()));
         modelAndView.addObject("question", question);
         modelAndView.addObject("bestAnswer", answerService.getBestAnswer(LoginUserInfo.getLoginName(), questionId));
         modelAndView.addObject("answers", answerService.getNotBestAnswers(LoginUserInfo.getLoginName(), questionId, index, pageSize));

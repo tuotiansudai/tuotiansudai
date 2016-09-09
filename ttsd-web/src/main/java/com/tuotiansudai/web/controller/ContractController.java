@@ -1,6 +1,5 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.repository.model.ContractType;
 import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -25,27 +24,12 @@ public class ContractController {
     @Autowired
     private ContractService contractService;
 
-    @RequestMapping(value = "/investor/loanId/{loanId}", method = RequestMethod.GET)
-    public void generateInvestorContract(@PathVariable long loanId, HttpServletRequest httpServletRequest , HttpServletResponse response) throws ServletException, IOException {
+    @RequestMapping(value = "/investor/loanId/{loanId}/investId/{investId}", method = RequestMethod.GET)
+    public void generateInvestorContract(@PathVariable long loanId, @PathVariable long investId, HttpServletRequest httpServletRequest,
+                                         HttpServletResponse response) throws ServletException, IOException {
         String loginName = LoginUserInfo.getLoginName();
         try {
-            String pdfString = contractService.generateInvestorContract(loginName, loanId, ContractType.INVEST);
-            if(StringUtils.isEmpty(pdfString)){
-                httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
-                return;
-            }
-            response.setContentType("application/pdf;charset=UTF-8");
-            contractService.generateContractPdf(pdfString, response.getOutputStream());
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-    }
-
-    @RequestMapping(value = "/loaner/loanId/{loanId}", method = RequestMethod.GET)
-    public void generateLoanerContract(@PathVariable long loanId,HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
-        String loginName = LoginUserInfo.getLoginName();
-        try {
-            String pdfString = contractService.generateInvestorContract(loginName, loanId, ContractType.LOAN);
+            String pdfString = contractService.generateInvestorContract(loginName, loanId, investId);
             if(StringUtils.isEmpty(pdfString)){
                 httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
                 return;

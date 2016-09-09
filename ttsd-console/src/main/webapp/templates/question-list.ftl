@@ -5,8 +5,8 @@
 <div class="col-md-10">
     <form action="/ask-manage/questions" class="form-inline query-build" method="get">
         <div class="form-group">
-            <label for="loginName">问题</label>
-            <input type="text" id="question" name="question" value="${question!}"/>
+            <label for="question">问题</label>
+            <input type="text" id="question" name="question" class="form-control" value="${question!}"/>
         </div>
         <div class="form-group">
             <label for="mobile">提问人</label>
