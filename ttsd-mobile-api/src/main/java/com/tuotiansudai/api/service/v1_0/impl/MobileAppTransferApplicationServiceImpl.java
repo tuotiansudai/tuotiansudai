@@ -2,6 +2,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
@@ -9,7 +10,10 @@ import com.tuotiansudai.api.service.v1_0.MobileAppTransferApplicationService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -38,6 +42,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -64,6 +71,12 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private UserMembershipEvaluator userMembershipEvaluator;
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
+
+    @Autowired
+    MembershipMapper membershipMapper;
+
+    @Autowired
+    UserMembershipMapper userMembershipMapper;
 
 
     @Override
@@ -271,5 +284,67 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(transferApplicationDetailResponseDataDto);
         return dto;
+    }
+
+    @Override
+    public BaseResponseDto userInvestRepay(UserInvestRepayRequestDto userInvestRepayRequestDto) {
+        Preconditions.checkNotNull(userInvestRepayRequestDto.getInvestId());
+        Preconditions.checkNotNull(userInvestRepayRequestDto.getBaseParam().getUserId());
+        //return TransferLoan Details
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(
+                Long.parseLong(userInvestRepayRequestDto.getInvestId().trim()));
+        if (null == transferApplicationModel) {
+            return new BaseResponseDto(ReturnMessage.ERROR.getCode(), ReturnMessage.ERROR.getMsg());
+        }
+        LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
+        if (null == loanModel) {
+            return new BaseResponseDto(ReturnMessage.ERROR.getCode(), ReturnMessage.ERROR.getMsg());
+        }
+
+        UserInvestRepayResponseDataDto userInvestRepayResponseDataDto = new UserInvestRepayResponseDataDto(loanModel, transferApplicationModel);
+
+        long totalExpectedInterest = 0;
+        long totalActualInterest = 0;
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(userInvestRepayRequestDto.getBaseParam().getUserId(),
+                Long.parseLong(userInvestRepayRequestDto.getInvestId().trim()));
+        for (InvestRepayModel investRepayModel : investRepayModels) {
+            totalExpectedInterest += investRepayModel.getExpectedInterest();
+            totalActualInterest += investRepayModel.getActualInterest();
+            userInvestRepayResponseDataDto.getInvestRepays().add(new InvestRepayDataDto(investRepayModel));
+            if (investRepayModel.getPeriod() == loanModel.getPeriods()) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                userInvestRepayResponseDataDto.setLastRepayDate(simpleDateFormat.format(investRepayModel.getRepayDate()));
+            }
+        }
+        userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(totalExpectedInterest));
+        userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(totalActualInterest));
+        userInvestRepayResponseDataDto.setUnPaidRepay(AmountConverter.convertCentToString(totalExpectedInterest - totalActualInterest));
+
+        List<UserMembershipModel> userMembershipModels = userMembershipMapper.findByLoginName(userInvestRepayRequestDto.getBaseParam().getUserId());
+        UserMembershipModel curMembership = null;
+        for (UserMembershipModel userMembershipModel : userMembershipModels) {
+            if (null == curMembership) {
+                curMembership = userMembershipModel;
+            } else if (userMembershipModel.getExpiredTime().after(new Date()) && curMembership.getMembershipId() < userMembershipModel.getMembershipId()) {
+                //等级越高的Membership id越大
+                curMembership = userMembershipModel;
+            }
+        }
+        if (null == curMembership) {
+            userInvestRepayResponseDataDto.setMembershipLevel("0");
+            logger.error(MessageFormat.format("[MobileAppTransferApplicationServiceImpl][userInvestRepay] {0}没有会员.", userInvestRepayRequestDto.getBaseParam().getUserId()));
+        } else {
+            MembershipModel membershipModel = membershipMapper.findById(curMembership.getMembershipId());
+            if (null == membershipModel) {
+                userInvestRepayResponseDataDto.setMembershipLevel("0");
+                logger.warn(MessageFormat.format("[MobileAppTransferApplicationServiceImpl][userInvestRepay]会员不存在, loginName:{0}}", userInvestRepayRequestDto.getBaseParam().getUserId()));
+            } else {
+                userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(membershipModel.getLevel()));
+            }
+        }
+        BaseResponseDto baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
+        baseResponseDto.setData(userInvestRepayResponseDataDto);
+
+        return baseResponseDto;
     }
 }

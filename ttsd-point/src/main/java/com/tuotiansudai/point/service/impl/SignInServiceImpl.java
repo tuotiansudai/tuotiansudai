@@ -88,4 +88,21 @@ public class SignInServiceImpl implements SignInService {
         }
         return signInPointDto;
     }
+
+    @Override
+    public int getNextSignInPoint(String loginName){
+        SignInPointDto lastSignInPointDto = obtainSignInPointDto(loginName);
+        if(lastSignInPointDto == null){
+            return SignInPoint.FIRST_SIGN_IN.getPoint();
+        }
+
+        DateTime today = new DateTime().withTimeAtStartOfDay();
+        if (lastSignInPointDto != null) {
+            if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()).withTimeAtStartOfDay(), today) == Days.ZERO) {
+                return SignInPoint.getPointByTimes(lastSignInPointDto.getSignInCount() + 1);
+            }
+        }
+
+        return SignInPoint.FIRST_SIGN_IN.getPoint();
+    }
 }

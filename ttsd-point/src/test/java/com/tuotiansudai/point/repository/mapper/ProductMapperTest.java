@@ -1,5 +1,6 @@
 package com.tuotiansudai.point.repository.mapper;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -61,6 +63,21 @@ public class ProductMapperTest {
         fakeUserModel.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(fakeUserModel);
         return fakeUserModel;
+    }
+
+    @Test
+    public void shouldFindAllProductsByGoodsTypeIsOk(){
+        UserModel fakeUserModel = this.createFakeUserModel();
+        ProductModel productModel1 = new ProductModel(GoodsType.VIRTUAL, "50元充值卡", 1, "upload/images/11.png", "50yuan", 100, 0, 200, new Date(), new DateTime().plusDays(7).toDate(), false, fakeUserModel.getLoginName(), new Date());
+        ProductModel productModel2 = new ProductModel(GoodsType.COUPON, "50元充值卡", 1, "upload/images/11.png", "50yuan", 100, 0, 200, new Date(), new DateTime().plusDays(7).toDate(), false, fakeUserModel.getLoginName(), new Date());
+        ProductModel productModel3 = new ProductModel(GoodsType.PHYSICAL, "50元充值卡", 1, "upload/images/11.png", "50yuan", 100, 0, 200, new Date(), new DateTime().plusDays(7).toDate(), false, fakeUserModel.getLoginName(), new Date());
+        productMapper.create(productModel1);
+        productMapper.create(productModel2);
+        productMapper.create(productModel3);
+        List<ProductModel> virtualList = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON, GoodsType.VIRTUAL));
+        List<ProductModel> physicalList= productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.PHYSICAL));
+        assertEquals(virtualList.size(),2);
+        assertEquals(physicalList.size(),1);
     }
 
 }
