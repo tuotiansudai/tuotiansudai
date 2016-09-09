@@ -33,18 +33,13 @@ public class CaptchaHelper {
     @Value("${mobile.login.interval.seconds}")
     private int ipLeftSecond;
 
-    @Value("${common.environment}")
-    private Environment environment;
-
-    @Value("${common.fake.captcha}")
-    private String fakeCaptcha;
-
     public void storeCaptcha(String captcha, String sessionIdOrDeviceId) {
         redisWrapperClient.setex(this.getCaptchaRedisKey(sessionIdOrDeviceId), 60, captcha);
     }
 
     public boolean captchaVerify(String captcha, String sessionIdOrDeviceId, String ip) {
         if (!this.isImageCaptchaNecessary(ip)) {
+            redisWrapperClient.setex(MessageFormat.format(MOBILE_APP_IMAGE_CAPTCHA_IP_KEY, ip), ipLeftSecond, new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
             return true;
         }
 
@@ -52,10 +47,7 @@ public class CaptchaHelper {
         String actualCaptcha = redisWrapperClient.get(captchaRedisKey);
         redisWrapperClient.del(captchaRedisKey);
 
-        boolean result = true;
-        if (isImageCaptchaNecessary(ip)) {
-            result = !Strings.isNullOrEmpty(captcha) && captcha.trim().equalsIgnoreCase(actualCaptcha);
-        }
+        boolean result = !Strings.isNullOrEmpty(captcha) && captcha.trim().equalsIgnoreCase(actualCaptcha);
         redisWrapperClient.setex(MessageFormat.format(MOBILE_APP_IMAGE_CAPTCHA_IP_KEY, ip), ipLeftSecond, new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
         return result;
     }
