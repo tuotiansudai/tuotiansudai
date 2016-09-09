@@ -1,6 +1,7 @@
 package com.tuotiansudai.activity.service;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.autumn.mapper.AutumnMapper;
 import com.tuotiansudai.activity.repository.autumn.model.AutumnReferrerRelationView;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.*;
 
 @Service
@@ -21,42 +23,45 @@ public class AutumnService {
     @Autowired
     private AutumnMapper autumnMapper;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
-    private Date activityAutumnStartTime;
+    public Map getAllFamilyMap(Date activityMinAutumnStartTime,Date activityMinAutumnEndTime) {
+        List<UserModel> userModels = userMapper.findUsersByRegisterTime(activityMinAutumnStartTime, activityMinAutumnEndTime);
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.endTime}\")}")
-    private Date activityAutumnEndTime;
+        if (CollectionUtils.isEmpty(userModels)) {
+            return Maps.newConcurrentMap();
+        }
 
-    public Map<String, List<String>> getHomeMap(){
-        Map<String, List<String>>  homeMap = new LinkedHashMap<String, List<String>>();
-        int homeSeq = 1;
-        List<UserModel> userModelList =  userMapper.findUsersByRegisterTime(activityAutumnStartTime, activityAutumnEndTime);
-        for(UserModel userModel:userModelList){
-            List<AutumnReferrerRelationView> referrerRelationViewList = autumnMapper.findByLoginNameAndLevel(userModel.getLoginName(), 1);
-
-            if(CollectionUtils.isNotEmpty(referrerRelationViewList)){
-
-                if(!homeMap.containsKey(referrerRelationViewList.get(0).getReferrerLoginName() + "|团员" + homeSeq + "号家庭")){
-                    //找出当前团长的所有团员
-                    List<AutumnReferrerRelationView> autumnReferrerRelationViewListAll = autumnMapper.findByReferrerLoginNameAndLevelAndRegisterTime(referrerRelationViewList.get(0).getReferrerLoginName(), activityAutumnStartTime, activityAutumnEndTime);
-                    List<String> alluser = Lists.newArrayList();
-                    // 先放入团长本人
-                    alluser.add(referrerRelationViewList.get(0).getReferrerLoginName() + "|");
-                    for(AutumnReferrerRelationView referrerRelationModel: autumnReferrerRelationViewListAll){
-                        //放入所有团员
-                        alluser.add(referrerRelationModel.getLoginName());
-                    }
-
-                    //把活动期间的所有天数存起来
-//                int activityDays = (int)DateUtil.differenceDay(activityAutumnStartTime, activityAutumnEndTime) + 1;
-//                for(int i = 0; i < activityDays;i ++){
-//                    userMap.put("团员" + homeSeq + "号家庭|"+ new DateTime(activityAutumnStartTime).plusDays(i), alluser);
-//                }
-                    homeMap.put(referrerRelationViewList.get(0).getReferrerLoginName() + "|团员" + homeSeq + "号家庭" , alluser);
-                    homeSeq ++;
+        Map<String, List<String>> allFamily = new LinkedHashMap<>();
+        String referrerLoginName;
+        String loginName;
+        for (UserModel userModel : userModels) {
+            List<AutumnReferrerRelationView> referrerRelationModels = autumnMapper.findByLoginNameAndLevel(userModel.getLoginName(), 1);
+            //有一级推荐时查询是否是团长，否则查询是否是团长推荐（无视推荐层级）
+            if (CollectionUtils.isNotEmpty(referrerRelationModels)) {
+                referrerLoginName = referrerRelationModels.get(0).getReferrerLoginName();
+                loginName = userModel.getLoginName();
+                if (allFamily.get(referrerLoginName) != null) {
+                    allFamily.get(referrerLoginName).add(loginName);
+                    continue;
                 }
+
+                for (String name : allFamily.keySet()) {
+                    if (autumnMapper.findByReferrerAndLoginName(name, loginName) != null) {
+                        allFamily.get(name).add(loginName);
+                        continue;
+                    }
+                }
+            } else {
+                //没有一级推荐就是团长
+                allFamily.put(userModel.getLoginName(), Lists.newArrayList(userModel.getLoginName()));
             }
         }
-        return homeMap;
+
+        Map<String, List<String>> allFamilyAndNum = new LinkedHashMap<>();
+        int num = 0;
+        for(String key : allFamily.keySet()){
+            allFamilyAndNum.put(MessageFormat.format("团员{0}号家庭",String.valueOf(num)),allFamily.get(key));
+        }
+        
+        return allFamilyAndNum;
     }
 }

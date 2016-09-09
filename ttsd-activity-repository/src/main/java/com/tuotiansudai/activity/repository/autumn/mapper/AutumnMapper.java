@@ -18,4 +18,7 @@ public interface AutumnMapper {
                                                                                     @Param(value = "startTime") Date startTime,
                                                                                     @Param(value = "endTime") Date endTime);
 
+    AutumnReferrerRelationView findByReferrerAndLoginName(@Param(value = "referrerLoginName") String referrerLoginName,
+                                                                @Param(value = "loginName") String loginName);
+
 }

@@ -7,9 +7,12 @@ public class MidAutumnFamilyDto {
 
     private String investAmount;
 
-    public MidAutumnFamilyDto(String name, String investAmount) {
+    private long amount;
+
+    public MidAutumnFamilyDto(String name, String investAmount,long amount) {
         this.name = name;
         this.investAmount = investAmount;
+        this.amount = amount;
     }
 
     public String getName() {
@@ -26,5 +29,13 @@ public class MidAutumnFamilyDto {
 
     public void setInvestAmount(String investAmount) {
         this.investAmount = investAmount;
+    }
+
+    public long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(long amount) {
+        this.amount = amount;
     }
 }

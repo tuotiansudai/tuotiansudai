@@ -25,11 +25,12 @@ public class MidAutumnActivityController {
 //        String loginName = LoginUserInfo.getLoginName();
         String loginName = "boss";
         modelAndView.addObject("loginName", Strings.isNullOrEmpty(loginName) ? "" : loginName);
-        Map<String,Object> myFamilyMap = midAutumnActivityService.getMyMinAutumnActivityFamily(loginName);
-        modelAndView.addObject("myFamilyNumber",myFamilyMap.get("number") == null ? "" : myFamilyMap.get("number"));
+        Map<String,Object> myFamilyMap = midAutumnActivityService.getMidAutumnHomeData(loginName);
+        modelAndView.addObject("myFamilyNumber",myFamilyMap.get("myFamilyNum"));
         modelAndView.addObject("myFamilyGroup",myFamilyMap.get("myFamily"));
-        modelAndView.addObject("myFamilyInvestAmount", myFamilyMap.get("myFamilyInvestAmount")  == null ? "0" : myFamilyMap.get("myFamilyInvestAmount"));
-        modelAndView.addObject("allFamilyInvestAmounts",midAutumnActivityService.getAllFamilyInvestAmount());
+        modelAndView.addObject("myFamilyInvestAmount", myFamilyMap.get("totalInvestAmount"));
+        modelAndView.addObject("myFamilyTotalInvestAmount", myFamilyMap.get("totalInvestAmount"));
+        modelAndView.addObject("allFamilyInvestAmounts",myFamilyMap.get("topThreeFamily"));
         return modelAndView;
     }
 }

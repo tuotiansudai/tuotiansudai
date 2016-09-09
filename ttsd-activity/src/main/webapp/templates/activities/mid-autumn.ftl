@@ -70,7 +70,7 @@
         </div>
 
         <div class="normal-border today-invest-box clearfix">
-            <div class="sub-title">我的家庭今日投资额：${myFamilyInvestAmount}元</div>
+            <div class="sub-title">我的家庭累计投资额：${myFamilyTotalInvestAmount}元</div>
 
             <div class="product-show">
                 <img src="${staticServer}/activity/images/mid-autumn/product.jpg" alt="">
@@ -187,7 +187,8 @@
         3、每天24点将结清当日用户投资，用户在当日24点之前进行的多次投资，金额可累计计算，24点全部清零，用户投资额将重新计算；<br/>
         4、中奖结果将于次日由客服联系确认，红包和加息券在中奖后三个工作日发放，用户可在“我的账户-我的宝藏”中查看；实物奖品将于活动
         结束后七个工作日内统一安排发放；部分地区邮费自付，详询客服；<br/>
-        5、活动中如果出现恶意刷量等违规行为，拓天速贷将取消您获得奖励的资格，并有权撤销违规交易，拓天速贷在法律范围内保留对本活动的最
+        5、活动结束后，如遇多个家庭累计投资金额一致，则组建时间靠前的家庭优先获奖，组建家庭较晚的依次顺延到下一奖项；<br/>
+        6、活动中如果出现恶意刷量等违规行为，拓天速贷将取消您获得奖励的资格，并有权撤销违规交易，拓天速贷在法律范围内保留对本活动的最
         终解释权。<br/>
     </div>
     <div class="frame-box-four">

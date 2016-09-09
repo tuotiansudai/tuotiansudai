@@ -16,6 +16,10 @@
         select * from referrer_relation where login_name = #{loginName} and level = #{level}
     </select>
 
+    <select id="findByReferrerAndLoginName" parameterType="map" resultMap="referrerRelationResultMap">
+        select * from referrer_relation where referrer_login_name = #{referrerLoginName} and login_name = #{loginName}
+    </select>
+
     <select id="findByReferrerLoginNameAndLevelAndRegisterTime" parameterType="map" resultMap="referrerRelationResultMap">
         select rr.* from referrer_relation rr
         INNER JOIN user u on rr.login_name = u.login_name

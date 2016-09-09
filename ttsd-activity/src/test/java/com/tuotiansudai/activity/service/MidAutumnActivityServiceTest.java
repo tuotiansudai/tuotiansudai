@@ -48,30 +48,30 @@ public class MidAutumnActivityServiceTest {
     @Autowired
     private InvestMapper investMapper;
 
-    @Ignore
-    public void shouldGetAllFamilyIsOk(){
-        ReflectionTestUtils.setField(midAutumnActivityService, "activityMinAutumnStartTime", DateTime.parse("2016-09-14").toDate());
-        ReflectionTestUtils.setField(midAutumnActivityService, "activityMinAutumnEndTime", DateTime.parse("2016-09-18").toDate());
-        List<MidAutumnFamilyDto> allFamily = midAutumnActivityService.getAllFamilyInvestAmount();
-        assertEquals(allFamily.size(),2);
-        assertEquals(allFamily.get(0).getInvestAmount(),"2.00");
-        assertEquals(allFamily.get(1).getInvestAmount(),"1.00");
-    }
-
-    @Ignore
-    public void shouldGetMyMinAutumnActivityFamilyIsOk(){
-        Map<String,Object> myFamily = midAutumnActivityService.getMyMinAutumnActivityFamily("boss");
-        assertEquals(myFamily.get("number"), "1");
-        assertEquals(myFamily.get("myFamilyInvestAmount"), "2.00");
-        List<String> myFamilyNameList = (List<String>) myFamily.get("myFamily");
-        assertEquals(myFamilyNameList.size(), 5);
-        myFamily = midAutumnActivityService.getMyMinAutumnActivityFamily("boss1");
-        assertEquals(myFamily.get("number"), "1");
-        assertEquals(myFamily.get("myFamilyInvestAmount"), "2.00");
-        myFamily = midAutumnActivityService.getMyMinAutumnActivityFamily("boss11");
-        assertEquals(myFamily.get("number"), "1");
-        assertEquals(myFamily.get("myFamilyInvestAmount"), "2.00");
-    }
+//    @Ignore
+//    public void shouldGetAllFamilyIsOk(){
+//        ReflectionTestUtils.setField(midAutumnActivityService, "activityMinAutumnStartTime", DateTime.parse("2016-09-14").toDate());
+//        ReflectionTestUtils.setField(midAutumnActivityService, "activityMinAutumnEndTime", DateTime.parse("2016-09-18").toDate());
+//        List<MidAutumnFamilyDto> allFamily = midAutumnActivityService.getAllFamilyInvestAmount();
+//        assertEquals(allFamily.size(),2);
+//        assertEquals(allFamily.get(0).getInvestAmount(),"2.00");
+//        assertEquals(allFamily.get(1).getInvestAmount(),"1.00");
+//    }
+//
+//    @Ignore
+//    public void shouldGetMyMinAutumnActivityFamilyIsOk(){
+//        Map<String,Object> myFamily = midAutumnActivityService.getMyMinAutumnActivityFamily("boss");
+//        assertEquals(myFamily.get("number"), "1");
+//        assertEquals(myFamily.get("myFamilyInvestAmount"), "2.00");
+//        List<String> myFamilyNameList = (List<String>) myFamily.get("myFamily");
+//        assertEquals(myFamilyNameList.size(), 5);
+//        myFamily = midAutumnActivityService.getMyMinAutumnActivityFamily("boss1");
+//        assertEquals(myFamily.get("number"), "1");
+//        assertEquals(myFamily.get("myFamilyInvestAmount"), "2.00");
+//        myFamily = midAutumnActivityService.getMyMinAutumnActivityFamily("boss11");
+//        assertEquals(myFamily.get("number"), "1");
+//        assertEquals(myFamily.get("myFamilyInvestAmount"), "2.00");
+//    }
 
     private InvestModel getFakeInvestModel(long loanId,String loginName) {
         InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 100l, loginName, DateTime.now().toDate(), Source.WEB, null, 0.1);
