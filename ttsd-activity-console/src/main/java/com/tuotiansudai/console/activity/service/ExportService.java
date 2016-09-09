@@ -15,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ExportService {
@@ -85,6 +83,21 @@ public class ExportService {
     }
 
     public List<List<String>> buildAutumnList(List<AutumnExportDto> records) {
+
+        Comparator<AutumnExportDto> comparator = new Comparator<AutumnExportDto>() {
+            public int compare(AutumnExportDto autumnExportDto1, AutumnExportDto autumnExportDto2) {
+                // 先排名称
+                if (autumnExportDto1.getName() != autumnExportDto2.getLoginName()) {
+                    return autumnExportDto1.getName().compareTo(autumnExportDto2.getName());
+                } else if (!autumnExportDto1.getName().equals(autumnExportDto2.getName())) {
+                    // 名称相同按日期
+                    return (int)(autumnExportDto1.getInvestTime().getTime() - autumnExportDto2.getInvestTime().getTime());
+                }
+                return -1;
+            }
+        };
+
+        Collections.sort(records,comparator);
         List<List<String>> rows = Lists.newArrayList();
         for (AutumnExportDto record : records) {
             List<String> row = Lists.newArrayList();

@@ -7,11 +7,6 @@
             <a href="/activity-console/activity-manage/export-autumn-list">请点击此处导出EXCEl</a>
     </div>
 
-    <div class="table-responsive">
-
-        <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
-
-        </div>
 </div>
 <!-- content area end -->
 </@global.main>
