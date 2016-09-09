@@ -35,10 +35,18 @@ public class AutumnService {
         String loginName;
         for (UserModel userModel : userModels) {
             List<AutumnReferrerRelationView> referrerRelationModels = autumnMapper.findByLoginNameAndLevel(userModel.getLoginName(), 1);
+
             //有一级推荐时查询是否是团长，否则查询是否是团长推荐（无视推荐层级）
             if (CollectionUtils.isNotEmpty(referrerRelationModels)) {
                 referrerLoginName = referrerRelationModels.get(0).getReferrerLoginName();
                 loginName = userModel.getLoginName();
+
+                if(isNewRegister(userModels,referrerRelationModels.get(0).getReferrerLoginName())){
+                    if(allFamily.get(referrerLoginName) == null){
+                        allFamily.put(referrerLoginName, Lists.newArrayList(referrerLoginName));
+                    }
+                }
+
                 if (allFamily.get(referrerLoginName) != null) {
                     allFamily.get(referrerLoginName).add(loginName);
                     continue;
@@ -59,10 +67,23 @@ public class AutumnService {
         Map<String, List<String>> allFamilyAndNum = new LinkedHashMap<>();
         int num = 0;
         for(String key : allFamily.keySet()){
+            List<String> family = allFamily.get(key);
+            if(family.size() == 1){
+                continue;
+            }
             num ++;
             allFamilyAndNum.put(MessageFormat.format("团员{0}号家庭",String.valueOf(num)),allFamily.get(key));
         }
 
         return allFamilyAndNum;
+    }
+
+    private boolean isNewRegister(List<UserModel> userModels,String loginName){
+        for(UserModel userModel : userModels){
+            if(userModel.getLoginName().equals(loginName)){
+                return false;
+            }
+        }
+        return true;
     }
 }

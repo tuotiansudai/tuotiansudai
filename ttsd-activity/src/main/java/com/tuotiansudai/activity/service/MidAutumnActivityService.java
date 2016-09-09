@@ -4,6 +4,7 @@ package com.tuotiansudai.activity.service;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -44,25 +45,24 @@ public class MidAutumnActivityService {
     @Autowired
     private InvestMapper investMapper;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.min.autumn.startTime}\")}")
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityMinAutumnStartTime;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.min.autumn.endTime}\")}")
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.endTime}\")}")
     private Date activityMinAutumnEndTime;
 
     public Map getMidAutumnHomeData(String loginName){
-        Map<String,List<String>> allFamily = autumnService.getAllFamilyMap(activityMinAutumnStartTime,activityMinAutumnEndTime);
+        Map<String,List<String>> allFamily = autumnService.getAllFamilyMap(activityMinAutumnStartTime, activityMinAutumnEndTime);
         List<String> myFamily = Lists.newArrayList();
         String myFamilyNum = "";
-        if(allFamily.get(loginName) != null){
-            myFamily.addAll(allFamily.get(loginName));
-        }else{
+
+        if(!Strings.isNullOrEmpty(loginName)){
             for(String key : allFamily.keySet()){
                 List<String> family = allFamily.get(key);
                 for(String name : family){
-                    if(loginName.equals(name.split("|")[0])){
+                    if(loginName.equals(name)){
                         myFamily.addAll(family);
-                        myFamilyNum = name.split("|")[1];
+                        myFamilyNum = key;
                         break;
                     }
                 }
@@ -101,7 +101,7 @@ public class MidAutumnActivityService {
             for(String name : family){
                 totalFamilyInvestAmount += investMapper.sumInvestAmount(null, name, null, null, null, activityMinAutumnStartTime, activityMinAutumnEndTime, InvestStatus.SUCCESS, null);
             }
-            MidAutumnFamilyDto midAutumnFamilyDto = new MidAutumnFamilyDto(key.split("|")[1],AmountConverter.convertCentToString(totalFamilyInvestAmount),totalFamilyInvestAmount);
+            MidAutumnFamilyDto midAutumnFamilyDto = new MidAutumnFamilyDto(key,AmountConverter.convertCentToString(totalFamilyInvestAmount),totalFamilyInvestAmount);
             allFamilyAmountList.add(midAutumnFamilyDto);
         }
 
