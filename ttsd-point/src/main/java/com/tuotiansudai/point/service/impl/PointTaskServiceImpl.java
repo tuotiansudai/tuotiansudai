@@ -35,9 +35,9 @@ public class PointTaskServiceImpl implements PointTaskService {
             PointTask.EACH_RECOMMEND,
             PointTask.FIRST_REFERRER_INVEST,
             PointTask.FIRST_INVEST_180,
-            PointTask.FIRST_INVEST_360,
             PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST,
-            PointTask.FIRST_TURN_ON_AUTO_INVEST);
+            PointTask.FIRST_TURN_ON_AUTO_INVEST,
+            PointTask.FIRST_INVEST_360);
 
     final static long SUM_INVEST_5000_AMOUNT = 500000L;
     final static long SUM_INVEST_5000_POINT = 100;

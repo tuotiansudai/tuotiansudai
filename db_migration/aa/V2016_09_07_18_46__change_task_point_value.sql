@@ -1,4 +1,5 @@
 BEGIN;
+-- change task point
 UPDATE `aa`.`point_task`
 SET point = 100
 WHERE name = 'REGISTER';
@@ -29,4 +30,15 @@ WHERE name = 'FIRST_REFERRER_INVEST';
 UPDATE `aa`.`point_task`
 SET point = 50
 WHERE name = 'EACH_RECOMMEND';
+-- modify multiple task detail
+UPDATE `aa`.`point_task`
+SET multiple = 0
+WHERE name IN ('EACH_SUM_INVEST', 'FIRST_SINGLE_INVEST', 'EACH_RECOMMEND', 'EACH_REFERRER_INVEST');
+UPDATE `aa`.`point_task`
+SET max_level = 1
+WHERE name IN ('EACH_SUM_INVEST', 'FIRST_SINGLE_INVEST', 'EACH_RECOMMEND', 'EACH_REFERRER_INVEST');
+UPDATE `aa`.`point_task`
+SET active = 0
+WHERE name = 'EACH_REFERRER_INVEST';
+
 COMMIT;

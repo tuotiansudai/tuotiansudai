@@ -11,12 +11,12 @@ public enum PointTask {
     EACH_SUM_INVEST("累计投资满{0}元", "累计投资满5000 奖励100"),
     FIRST_SINGLE_INVEST("单笔投资满{0}元", "单笔投资满10000 奖励200"),
     EACH_RECOMMEND("首次邀请好友注册", "首次邀请好友注册奖励50财豆"),
-    EACH_REFERRER_INVEST("每邀请好友投资满1000元", "好友每投1000元奖1000财豆，还拿年化1%现金奖励"),
+    EACH_REFERRER_INVEST("每邀请好友投资满1000元", "好友每投1000元奖1000财豆，还拿年化1%现金奖励"), //取消
     FIRST_REFERRER_INVEST("首次邀请好友投资", "首次邀请好友投资奖励50财豆"),
-    FIRST_INVEST_180("首次投资180天标的", "首次投资180天标的奖励1000财豆"),
-    FIRST_INVEST_360("首次投资360天标的", "首次投资360天标的奖励1000财豆"),
-    FIRST_TURN_ON_NO_PASSWORD_INVEST("首次开通免密支付", "首次开通免密支付并成功投资奖励1000财豆"),
-    FIRST_TURN_ON_AUTO_INVEST("首次开通自动投标", "首次开通并成功自动投标奖励1000财豆");
+    FIRST_INVEST_180("首次投资180天标的", "首次投资180天标的奖励100财豆"),
+    FIRST_INVEST_360("首次投资360天标的", "首次投资360天标的奖励200财豆"),
+    FIRST_TURN_ON_NO_PASSWORD_INVEST("首次开通免密支付", "首次开通免密支付并成功投资奖励100财豆"),
+    FIRST_TURN_ON_AUTO_INVEST("首次开通自动投标", "首次开通并成功自动投标奖励50财豆");
 
     private final String title;
 
