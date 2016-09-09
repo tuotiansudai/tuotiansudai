@@ -45,9 +45,13 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        BufferedRequestWrapper bufferedRequestWrapper = new BufferedRequestWrapper((HttpServletRequest) request);
 
-        String token = getToken(httpServletRequest);
+        BaseParamDto baseParamDto = this.getBaseParamDto(bufferedRequestWrapper);
+
+        String token = baseParamDto != null && baseParamDto.getBaseParam() != null ? baseParamDto.getBaseParam().getToken() : null;
+        Source source = baseParamDto != null && baseParamDto.getBaseParam() != null && Strings.isNullOrEmpty(baseParamDto.getBaseParam().getPlatform())
+                ? Source.valueOf(baseParamDto.getBaseParam().getPlatform().toUpperCase()) : null;
 
         SignInResult verifyTokenResult = signInClient.verifyToken(token);
 
@@ -66,8 +70,8 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
             authenticationToken.setDetails(authenticationToken.getDetails());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-            if (httpServletRequest.getRequestURI().equalsIgnoreCase(refreshTokenUrl)) {
-                SignInResult refreshResult = signInClient.refresh(token, getSource(httpServletRequest));
+            if (bufferedRequestWrapper.getRequestURI().equalsIgnoreCase(refreshTokenUrl)) {
+                SignInResult refreshResult = signInClient.refresh(token, source);
                 String newToken = refreshResult != null && refreshResult.isResult() ? refreshResult.getToken() : null;
 
                 BaseResponseDto<LoginResponseDataDto> dto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
@@ -86,28 +90,7 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
                 }
             }
         }
-        chain.doFilter(httpServletRequest, response);
-    }
-
-
-    private String getToken(HttpServletRequest httpServletRequest) {
-        // 访问H5页面时token在header里
-        if (!Strings.isNullOrEmpty(httpServletRequest.getHeader("token"))) {
-            return httpServletRequest.getHeader("token");
-        }
-        // logout时token在query里
-        if (!Strings.isNullOrEmpty(httpServletRequest.getParameter("token"))) {
-            return httpServletRequest.getParameter("token");
-        }
-        // API token在baseParam里
-        BaseParamDto baseParamDto = this.getBaseParamDto(httpServletRequest);
-        return baseParamDto != null ? baseParamDto.getBaseParam().getToken() : null;
-    }
-
-    private Source getSource(HttpServletRequest httpServletRequest) {
-        BaseParamDto baseParamDto = this.getBaseParamDto(httpServletRequest);
-        return baseParamDto != null && baseParamDto.getBaseParam() != null && Strings.isNullOrEmpty(baseParamDto.getBaseParam().getPlatform())
-                ? Source.valueOf(baseParamDto.getBaseParam().getPlatform()) : null;
+        chain.doFilter(bufferedRequestWrapper, response);
     }
 
     private BaseParamDto getBaseParamDto(HttpServletRequest httpServletRequest) {
