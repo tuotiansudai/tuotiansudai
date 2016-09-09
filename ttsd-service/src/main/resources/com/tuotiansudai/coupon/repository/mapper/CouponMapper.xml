@@ -39,6 +39,7 @@
     <resultMap id="exchangeCouponViewResultMap" type="ExchangeCouponView" extends="couponResultMap">
         <result column="exchange_point" property="exchangePoint"/>
         <result column="seq" property="seq"/>
+        <result column="image_url" property="imageUrl"/>
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
@@ -272,7 +273,7 @@
 
     <select id="findExchangeableCouponViews" resultMap="exchangeCouponViewResultMap">
         SELECT
-        coupon.*, product.points as exchange_point, product.seq as seq
+        coupon.*, product.points as exchange_point, product.seq as seq, product.image_url as image_url
         FROM
         (SELECT * FROM `coupon`
         WHERE
@@ -314,16 +315,16 @@
 
     <select id="findExchangeableCouponViewById" parameterType="java.lang.Long" resultMap="exchangeCouponViewResultMap">
         SELECT
-        coupon.*, coupon_exchange.exchange_point, coupon_exchange.seq
+        coupon.*, product.points as exchange_point, product.seq as seq, product.image_url as image_url
         FROM
         (SELECT * FROM `coupon`
         WHERE
         id = #{id}
         ) coupon
         JOIN
-        coupon_exchange
+        product
         ON
-        coupon.id = coupon_exchange.coupon_id
+        coupon.id = product.coupon_id
     </select>
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.tuotiansudai.point.service;
 
 
+import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.point.dto.ProductDto;
@@ -54,4 +55,8 @@ public interface ProductService {
     BaseDataDto updateProduct(ProductDto productDto);
 
     ProductModel findProductByCouponId(long couponId);
+
+    List<ExchangeCouponDto> findCouponExchanges(int index, int pageSize);
+
+    int findCouponExchangeCount();
 }

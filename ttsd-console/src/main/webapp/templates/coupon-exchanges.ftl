@@ -23,6 +23,9 @@
                     当前顺序
                 </th>
                 <th>
+                    图片名称
+                </th>
+                <th>
                     金额(元)
                 </th>
                 <th>
@@ -68,6 +71,7 @@
                     <td>
                         1-${exchangeCoupon.seq?string('0')!}
                     </td>
+                    <td><img src="/${exchangeCoupon.imageUrl}" width="100px" height="50px"></td>
                     <td>
                         <#if exchangeCoupon.couponType == 'INVEST_COUPON' ||  exchangeCoupon.couponType == 'RED_ENVELOPE'>
                         ${exchangeCoupon.amount}

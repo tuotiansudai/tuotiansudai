@@ -199,8 +199,10 @@ public class PointManageController {
         CouponModel couponModel = couponService.findCouponById(id);
         CouponExchangeModel couponExchangeModel = couponService.findCouponExchangeByCouponId(id);
         ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(couponModel);
-        exchangeCouponDto.setExchangePoint(couponExchangeModel.getExchangePoint());
-        exchangeCouponDto.setSeq(couponExchangeModel.getSeq());
+        ProductModel productModel = productService.findProductByCouponId(id);
+        exchangeCouponDto.setSeq(productModel.getSeq());
+        exchangeCouponDto.setExchangePoint(productModel.getPoints());
+        exchangeCouponDto.setImageUrl(productModel.getImageUrl());
         ModelAndView modelAndView = new ModelAndView("/coupon-exchange-edit");
         modelAndView.addObject("exchangeCouponDto", exchangeCouponDto);
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
@@ -237,11 +239,11 @@ public class PointManageController {
                                              @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
 
         ModelAndView modelAndView = new ModelAndView("/coupon-exchanges");
-        List<ExchangeCouponDto> exchangeCouponDtos = couponService.findCouponExchanges(index, pageSize);
+        List<ExchangeCouponDto> exchangeCouponDtos = productService.findCouponExchanges(index, pageSize);
         modelAndView.addObject("exchangeCoupons", exchangeCouponDtos);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        int exchangeCouponCount = couponService.findCouponExchangeCount();
+        int exchangeCouponCount = productService.findCouponExchangeCount();
         modelAndView.addObject("exchangeCouponCount", exchangeCouponCount);
         long totalPages = exchangeCouponCount / pageSize + (exchangeCouponCount % pageSize > 0 || exchangeCouponCount == 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
