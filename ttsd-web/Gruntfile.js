@@ -148,13 +148,6 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['newer:clean', 'newer:uglify', 'newer:sass', 'newer:cssmin:dist', 'connect', 'watch']);
     grunt.registerTask('base64', ['dataUri', 'cssmin:base64', 'clean:base64']);
 
-    grunt.registerTask('dev',
-        ['newer:clean',
-            'newer:uglify',
-            'newer:sass',
-            'newer:cssmin:dist',
-            'connect',
-            'watch:sass'
-        ]);
+    grunt.registerTask('dev',['newer:clean','newer:uglify','newer:sass','newer:cssmin:dist','connect','watch']);
 
 };
