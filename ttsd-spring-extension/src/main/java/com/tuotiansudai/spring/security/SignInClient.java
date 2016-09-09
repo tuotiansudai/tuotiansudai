@@ -131,7 +131,7 @@ public class SignInClient {
 
     public SignInResult verifyToken(String token) {
         if (Strings.isNullOrEmpty(token)) {
-            logger.error("[sign in client] token is empty");
+            logger.info("[sign in client] verified token is empty");
             return null;
         }
 
@@ -145,7 +145,7 @@ public class SignInClient {
             }
             return signInResult;
         } catch (IOException e) {
-            logger.error("[sign in client] verify session failed", e);
+            logger.error("[sign in client] verify token failed", e);
         }
 
         return null;

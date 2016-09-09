@@ -251,7 +251,7 @@ public class UserMessageEventGenerator {
 
             List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
             for (UserCouponModel userCouponModel : userCouponModels) {
-                if (InvestStatus.SUCCESS != userCouponModel.getStatus() && Days.daysBetween(new DateTime(userCouponModel.getEndTime()), new DateTime()).getDays() == 5) {
+                if (InvestStatus.SUCCESS != userCouponModel.getStatus() && Days.daysBetween(new DateTime(userCouponModel.getEndTime()).withTimeAtStartOfDay(), new DateTime().withTimeAtStartOfDay()).getDays() == 5) {
                     String title;
                     String appTitle;
                     CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());

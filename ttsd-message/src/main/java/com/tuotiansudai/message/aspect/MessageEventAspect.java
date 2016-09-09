@@ -219,8 +219,8 @@ public class MessageEventAspect {
         try {
             if (signInResult != null && signInResult.isResult()) {
                 userMessageEventGenerator.generateCouponExpiredAlertEvent(signInResult.getUserInfo().getLoginName());
+                logger.info(MessageFormat.format("[Message Event Aspect] after login success({0}) pointcut finished", signInResult.getUserInfo().getLoginName()));
             }
-            logger.info(MessageFormat.format("[Message Event Aspect] after login success({0}) pointcut finished", signInResult.getUserInfo().getLoginName()));
         } catch (Exception e) {
             logger.error("[Message Event Aspect] after login success({0}) pointcut is fail", e);
         }
