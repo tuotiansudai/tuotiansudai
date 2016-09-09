@@ -59,9 +59,10 @@ public class AutumnService {
         Map<String, List<String>> allFamilyAndNum = new LinkedHashMap<>();
         int num = 0;
         for(String key : allFamily.keySet()){
+            num ++;
             allFamilyAndNum.put(MessageFormat.format("团员{0}号家庭",String.valueOf(num)),allFamily.get(key));
         }
-        
+
         return allFamilyAndNum;
     }
 }
