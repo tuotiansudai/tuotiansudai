@@ -67,7 +67,7 @@
                     <i class="br">家庭全员均可获得</i></span></dd>
                 </dl>
                 <div class="tc clearfix">
-                    <a href="/loan-list?redirect=/activity/mid-autumn" class="btn-normal-invest">立即投资</a>
+                    <a href="/loan-list" class="btn-normal-invest">立即投资</a>
                 </div>
             </div>
 
@@ -126,7 +126,7 @@
                         </dl>
 
                         <div class="tc clearfix">
-                            <a href="/loan-list?redirect=/activity/mid-autumn" class="btn-normal-invest">立即投资</a>
+                            <a href="/loan-list" class="btn-normal-invest">立即投资</a>
                         </div>
                     </div>
                 </div>

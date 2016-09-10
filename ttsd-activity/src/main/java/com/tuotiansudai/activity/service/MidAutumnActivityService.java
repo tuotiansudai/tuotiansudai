@@ -105,6 +105,9 @@ public class MidAutumnActivityService {
             for(String name : family){
                 totalFamilyInvestAmount += investMapper.sumInvestAmount(null, name, null, null, null, activityMinAutumnStartTime, activityMinAutumnEndTime, InvestStatus.SUCCESS, null);
             }
+            if(totalFamilyInvestAmount == 0){
+                continue;
+            }
             MidAutumnFamilyDto midAutumnFamilyDto = new MidAutumnFamilyDto(key,AmountConverter.convertCentToString(totalFamilyInvestAmount),totalFamilyInvestAmount);
             allFamilyAmountList.add(midAutumnFamilyDto);
         }
@@ -115,6 +118,7 @@ public class MidAutumnActivityService {
                 return Long.compare(o2.getAmount(),o1.getAmount());
             }
         });
+
         return allFamilyAmountList.size() > 3 ? allFamilyAmountList.subList(0,3) : allFamilyAmountList;
     }
 

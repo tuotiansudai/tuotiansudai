@@ -170,6 +170,8 @@ body {
       .product-detail {
         float: left;
         width:60%;
+        position: relative;
+        z-index: 50;
         .table {
           caption {
             text-align: center;

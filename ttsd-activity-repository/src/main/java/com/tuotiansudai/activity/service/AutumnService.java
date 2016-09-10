@@ -80,7 +80,7 @@ public class AutumnService {
 
     private boolean isNewRegister(List<UserModel> userModels,String loginName){
         for(UserModel userModel : userModels){
-            if(userModel.getLoginName().equals(loginName)){
+            if(userModel.getLoginName().toLowerCase().equals(loginName)){
                 return false;
             }
         }
