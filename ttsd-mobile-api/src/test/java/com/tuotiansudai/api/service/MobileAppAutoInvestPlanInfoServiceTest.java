@@ -26,10 +26,7 @@ import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
-public class MobileAppAutoInvestPlanInfoServiceTest  {
+public class MobileAppAutoInvestPlanInfoServiceTest extends ServiceTestBase {
 
     @Autowired
     private MobileAppAutoInvestPlanInfoService mobileAppAutoInvestPlanInfoService;
@@ -47,7 +44,7 @@ public class MobileAppAutoInvestPlanInfoServiceTest  {
     private AccountMapper accountMapper;
 
     @Test
-    public void shouldGetAutoInvestPlanInfoDataIsSuccess(){
+    public void shouldGetAutoInvestPlanInfoDataIsSuccess() {
         UserModel userModel = createUserModelTest();
 
         AutoInvestPlanModel autoInvestPlanModel = createUserAutoInvestPlan(userModel.getLoginName(), 769);
@@ -62,15 +59,14 @@ public class MobileAppAutoInvestPlanInfoServiceTest  {
         baseParamDto.setBaseParam(baseParam);
 
         BaseResponseDto<AutoInvestPlanInfoResponseDataDto> baseDto = mobileAppAutoInvestPlanInfoService.getAutoInvestPlanInfoData(baseParamDto);
-        assertEquals(true,baseDto.getData().isAutoInvest());
+        assertEquals(true, baseDto.getData().isAutoInvest());
         assertEquals("" + autoInvestPlanModel.getId(), baseDto.getData().getAutoInvestPlan().getAutoPlanId());
-        assertEquals("1",baseDto.getData().getAutoInvestPlan().getAutoInvestPeriods().get(0).getPid());
-        assertEquals("256",baseDto.getData().getAutoInvestPlan().getAutoInvestPeriods().get(8).getPid());
-        assertEquals("512",baseDto.getData().getAutoInvestPlan().getAutoInvestPeriods().get(9).getPid());
+        assertEquals("1", baseDto.getData().getAutoInvestPlan().getAutoInvestPeriods().get(0).getPid());
+        assertEquals("256", baseDto.getData().getAutoInvestPlan().getAutoInvestPeriods().get(8).getPid());
+        assertEquals("512", baseDto.getData().getAutoInvestPlan().getAutoInvestPeriods().get(9).getPid());
 
 
     }
-
 
 
     private UserModel createUserModelTest() {
@@ -86,7 +82,7 @@ public class MobileAppAutoInvestPlanInfoServiceTest  {
         return userModelTest;
     }
 
-    private AutoInvestPlanModel createUserAutoInvestPlan(String userId, int periods){
+    private AutoInvestPlanModel createUserAutoInvestPlan(String userId, int periods) {
         AutoInvestPlanModel model = new AutoInvestPlanModel();
         model.setEnabled(true);
         model.setLoginName(userId);

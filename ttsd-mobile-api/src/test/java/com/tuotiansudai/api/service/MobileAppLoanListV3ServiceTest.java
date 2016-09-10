@@ -24,10 +24,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
-public class MobileAppLoanListV3ServiceTest {
+public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
 
     @Autowired
     private IdGenerator idGenerator;

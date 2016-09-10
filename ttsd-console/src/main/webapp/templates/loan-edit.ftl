@@ -331,11 +331,10 @@
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">借款人性别: </label>
-
                 <div class="col-sm-4">
                     <select class="selectpicker b-width jq-loaner-gender">
                         <option value="MALE" <#if loanInfo.loanerGender == 'MALE'>selected</#if>>男</option>
-                        <option value="FEMALE" <#if loanInfo.loanerGender == 'FEMAIL'>selected</#if>>女</option>
+                        <option value="FEMALE" <#if loanInfo.loanerGender == 'FEMALE'>selected</#if>>女</option>
                     </select>
                 </div>
             </div>

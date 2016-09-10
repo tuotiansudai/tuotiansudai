@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MobileAppAgreementController extends MobileAppBaseController{
+public class MobileAppAgreementController extends MobileAppBaseController {
 
     @Autowired
     private MobileAppAgreementService mobileAppAgreementService;

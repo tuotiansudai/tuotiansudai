@@ -18,7 +18,7 @@ import cn.jpush.api.schedule.model.SchedulePayload;
 import cn.jpush.api.schedule.model.TriggerPayload;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.jpush.service.impl.JPushScheduleAlertServiceImpl;
-import com.tuotiansudai.repository.model.Environment;
+import com.tuotiansudai.dto.Environment;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

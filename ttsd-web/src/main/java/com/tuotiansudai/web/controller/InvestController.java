@@ -12,7 +12,7 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CaptchaGenerator;
-import com.tuotiansudai.util.CaptchaHelper;
+import com.tuotiansudai.spring.security.CaptchaHelper;
 import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.spring.LoginUserInfo;
 import nl.captcha.Captcha;
@@ -114,12 +114,12 @@ public class InvestController {
     }
 
     @RequestMapping(value = "/no-password-invest/image-captcha", method = RequestMethod.GET)
-    public void imageCaptcha(HttpServletResponse response) {
+    public void imageCaptcha(HttpServletRequest request, HttpServletResponse response) {
         int captchaWidth = 70;
         int captchaHeight = 38;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
-        captchaHelper.storeCaptcha(CaptchaHelper.TURN_OFF_NO_PASSWORD_INVEST, captcha.getAnswer());
+        captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false).getId());
     }
 
     @RequestMapping(path = "/no-password-invest/send-captcha", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
@@ -128,7 +128,7 @@ public class InvestController {
         BaseDto<SmsDataDto> baseDto = new BaseDto<>();
         SmsDataDto dataDto = new SmsDataDto();
         baseDto.setData(dataDto);
-        boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.TURN_OFF_NO_PASSWORD_INVEST, dto.getImageCaptcha());
+        boolean result = this.captchaHelper.captchaVerify(dto.getImageCaptcha(), httpServletRequest.getSession(false).getId(), httpServletRequest.getRemoteAddr());
         if (result) {
             return smsCaptchaService.sendNoPasswordInvestCaptcha(dto.getMobile(), RequestIPParser.parse(httpServletRequest));
         }

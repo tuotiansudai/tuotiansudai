@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
     var refreshCaptcha = function () {
         var captcha = $('.verification-console-img');
         captcha.attr('src', '/login/captcha?' + new Date().toTimeString());
@@ -8,8 +8,7 @@ $(function() {
         $('.captcha').val('');
     });
 
-    String.prototype.trim = function()
-    {
+    String.prototype.trim = function () {
         return this.replace(/(^\s*)|(\s*$)/g, "");
     };
 
@@ -20,8 +19,10 @@ $(function() {
             return false;
         }
 
+        $(this).addClass("disabled");
+
         $.ajax({
-            url: '/login/sign-in',
+            url: '/login',
             type: 'post',
             data: $('.form-login').serialize()
         }).done(function (response) {
@@ -30,11 +31,7 @@ $(function() {
                 window.location.href = "/";
             } else {
                 refreshCaptcha();
-                if (response.isCaptchaNotMatch) {
-                    $('.error').text('验证码不正确').css('visibility', 'visible');
-                } else {
-                    $('.error').text('用户名或密码不正确').css('visibility', 'visible');
-                }
+                $('.error').text(response.message).css('visibility', 'visible');
             }
         });
     };
