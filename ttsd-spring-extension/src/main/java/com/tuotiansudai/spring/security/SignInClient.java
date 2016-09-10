@@ -134,14 +134,14 @@ public class SignInClient {
         return null;
     }
 
-    public SignInResult verifyToken(String token) {
+    public SignInResult verifyToken(String token, Source source) {
         if (Strings.isNullOrEmpty(token)) {
             logger.info("[sign in client] verified token is empty");
             return null;
         }
 
         Request.Builder request = new Request.Builder()
-                .url(MessageFormat.format("http://{0}:{1}/session/{2}", signInHost, signInPort, token))
+                .url(MessageFormat.format("http://{0}:{1}/session/{2}?source={3}", signInHost, signInPort, token, source))
                 .get();
         try {
             SignInResult signInResult = objectMapper.readValue(this.execute(request), SignInResult.class);

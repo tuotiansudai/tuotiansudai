@@ -56,7 +56,7 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
         Source source = baseParamDto != null && baseParamDto.getBaseParam() != null && !Strings.isNullOrEmpty(baseParamDto.getBaseParam().getPlatform())
                 ? Source.valueOf(baseParamDto.getBaseParam().getPlatform().toUpperCase()) : null;
 
-        SignInResult verifyTokenResult = signInClient.verifyToken(token);
+        SignInResult verifyTokenResult = signInClient.verifyToken(token, source);
 
         if (verifyTokenResult != null && verifyTokenResult.isResult()) {
             List<GrantedAuthority> grantedAuthorities = Lists.transform(verifyTokenResult.getUserInfo().getRoles(), new Function<String, GrantedAuthority>() {
