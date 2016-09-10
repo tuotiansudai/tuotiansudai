@@ -5,7 +5,10 @@
 <div style="display: none" class="mobile" data-mobile='<@global.security.authentication property="principal.mobile" />'></div>
 </@global.isNotAnonymous>
 <div class="tour-slide">
-    <div class="activity-date">第二期活动时间：9月11日~9月17日</div>
+    <div class="page-width">
+        <div class="activity-date">第二期活动时间：9月11日~9月17日</div>
+    </div>
+
 </div>
 
 <div class="luxury-list-container">
@@ -78,7 +81,7 @@
                                 <img src="/activity/images/sign/actor/luxury/pp03.png"></a>
                             <span class="kind-text">Dior粉色漆皮钱包</span>
                             <div class="kind-bottom">
-                                <span class="fl">商品价格<em>9100</em>元</span>
+                                <span class="fl">商品价格<em>7000</em>元</span>
                                 <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
 
                             </div>
@@ -155,7 +158,7 @@
                     </div>
                     <div class="prize-box swiper-slide">
                         <div class="pk-title clearfix">
-                            <span><em>投资</em><i>3万</i>元</span>
+                            <span><em>投资</em><i>30万</i>元</span>
                             <span><em>额外收益</em><i>9320</i>元</span>
                         </div>
                         <div class="img-info">

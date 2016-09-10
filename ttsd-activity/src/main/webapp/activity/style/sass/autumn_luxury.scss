@@ -19,16 +19,20 @@ $width:700px;
 .tour-slide  {
   height: 457px;
   background: url("/activity/images/sign/actor/luxury/luxury-top-new.jpg") center top no-repeat;
-  position: relative;
 
-  .activity-date {
-    position: absolute;
-    bottom:90px;
-    left:50%;
-    color: #fff;
-    font-size:17px;
-    font-weight: bold;
+  .page-width {
+    position: relative;
+    height:100%;
+    .activity-date {
+      position: absolute;
+      bottom:90px;
+      left: 39%;
+      color: #fff;
+      font-size:17px;
+      font-weight: bold;
+    }
   }
+
 }
 .line-item{
   width:100%;
@@ -478,7 +482,7 @@ $width:700px;
     margin-bottom: 39px;
   }
   .luxury-list-container .wp .luxury-item {
-    padding:0 10px 10px 10px;
+    padding:10px 10px 10px 10px;
     &.hack {
       margin-bottom:20px;
     }
