@@ -2282,7 +2282,8 @@ input[type='checkbox'] {
 a {
   cursor: pointer;
   color: #ff752a;
-  text-decoration: none; }
+  text-decoration: none;
+  outline: none; }
   a:hover {
     color: #e54c14; }
 
