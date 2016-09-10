@@ -34,7 +34,7 @@
 
                     <div class="prize-box swiper-slide ">
                         <div class="pk-title clearfix">
-                            <span><em>投资</em><i>1万</i>元</span>
+                            <span><em>投资</em><i>10万</i>元</span>
                             <span><em>额外收益</em><i>3106</i>元</span>
                         </div>
                         <div class="img-info">
@@ -53,7 +53,7 @@
                     </div>
                     <div class="prize-box swiper-slide active">
                         <div class="pk-title clearfix">
-                            <span><em>投资</em><i>1.2万</i>元</span>
+                            <span><em>投资</em><i>12万</i>元</span>
                             <span><em>额外收益</em><i>3728</i>元</span>
                         </div>
                         <div class="img-info">
@@ -69,7 +69,7 @@
                     </div>
                     <div class="prize-box swiper-slide">
                         <div class="pk-title clearfix">
-                            <span><em>投资</em><i>1.5万</i>元</span>
+                            <span><em>投资</em><i>15万</i>元</span>
                             <span><em>额外收益</em><i>4660</i>元</span>
                         </div>
                         <div class="img-info">
@@ -86,7 +86,7 @@
 
                     <div class="prize-box swiper-slide">
                         <div class="pk-title clearfix">
-                            <span><em>投资</em><i>1.5万</i>元</span>
+                            <span><em>投资</em><i>15万</i>元</span>
                             <span><em>额外收益</em><i>4660</i>元</span>
                         </div>
                         <div class="img-info">
@@ -104,7 +104,7 @@
 
                     <div class="prize-box swiper-slide">
                         <div class="pk-title clearfix">
-                            <span><em>投资</em><i>1.8万</i>元</span>
+                            <span><em>投资</em><i>18万</i>元</span>
                             <span><em>额外收益</em><i>5592</i>元</span>
                         </div>
                         <div class="img-info">
@@ -121,7 +121,7 @@
                     </div>
                     <div class="prize-box swiper-slide">
                         <div class="pk-title clearfix">
-                            <span><em>投资</em><i>2万</i>元</span>
+                            <span><em>投资</em><i>20万</i>元</span>
                             <span><em>额外收益</em><i>6213</i>元</span>
                         </div>
                         <div class="img-info">
@@ -138,7 +138,7 @@
                     </div>
                     <div class="prize-box swiper-slide">
                         <div class="pk-title clearfix">
-                            <span><em>投资</em><i>2.4万</i>元</span>
+                            <span><em>投资</em><i>24万</i>元</span>
                             <span><em>额外收益</em><i>7456</i>元</span>
                         </div>
                         <div class="img-info">
@@ -184,12 +184,8 @@
             </div>
 
             <div class="btn-item">
-                <@global.isAnonymous>
-                    <a href="/login?redirect=/activity/autumn/luxury">立即领奖</a>
-                </@global.isAnonymous>
-                <@global.isNotAnonymous>
-                    <a href="/loan-list" class="autumn-luxury-invest-channel">立即领奖</a>
-                </@global.isNotAnonymous>
+                <a href="/loan-list" class="autumn-luxury-invest-channel" target="_blank">立即投资</a>
+
             </div>
         </div>
         <div class="luxury-item hack clearfix">
@@ -280,7 +276,7 @@
                 <div class="actor-title">
                     温馨提示
                 </div>
-                <p>
+                <p class="pc">
                     1、活动期间，用户在”我要投资“页面投资7%标的，即视为参与活动； <br/>
                     2、本活动仅计算当日的投资额，用户在当日24点之前进行的多次投资，金额可累计计算，次日全部清零；<br/>
                     3、本次活动期间，用户每人每天仅限量领取一个奢侈品奖品；<br/>
@@ -293,7 +289,7 @@
                     拓天速贷在法律范围内保留对本活动的最终解释权。
                 </p>
 
-                <p>
+                <p class="nopc">
                     1、用户在”我要投资“页面投资7%标的，即视为参与活动； <br/>
                     2、本活动仅计算当日的投资额，次日全部清零；<br/>
                     3、用户每人每天仅限量领取一个奢侈品奖品；<br/>

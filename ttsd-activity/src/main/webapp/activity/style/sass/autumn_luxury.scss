@@ -437,10 +437,10 @@ $width:700px;
         }
         p {
           color: #fff;
-          &:nth-child(1) {
+          &.pc {
             display: block;
           }
-          &:nth-child(2) {
+          &.nopc {
             display: none;
           }
         }
@@ -486,12 +486,13 @@ $width:700px;
       }
       p {
         font-size:11px;
-        &:nth-child(1) {
+        &.pc {
           display: none;
         }
-        &:nth-child(2) {
-          display: none;
+        &.nopc {
+          display: block;
         }
+
       }
     }
     .title-info p {
