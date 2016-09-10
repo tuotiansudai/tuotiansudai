@@ -39,6 +39,7 @@
       height: auto;
       overflow: auto;
       margin: 15px;
+      margin-top:0;
       .register-user-form {
         padding: 10px 20px;
       }
@@ -85,10 +86,10 @@
           .captcha-tag {
             position: relative;
             display: inline-block;
-            width: 90%;
+            width: 100%;
 
             .fetch-captcha {
-              width: 120px;
+              width: 105px;
               height: 36px;
               padding:0px;
               letter-spacing: 0;

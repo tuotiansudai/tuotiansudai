@@ -8,9 +8,13 @@
 </div>
 
 <div class="luxury-list-container">
+
     <div class="wp clearfix">
         <div class="left-bg"></div>
         <div class="right-bg"></div>
+        <div class="reg-tag-current" style="display: none">
+            <#include '../register.ftl' />
+        </div>
         <div class="luxury-item clearfix">
             <div class="title-one">
                 <img src="${staticServer}/activity/images/sign/actor/luxury/title-one.png">
