@@ -32,11 +32,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:dispatcher-servlet.xml", "classpath:applicationContext.xml", "classpath:spring-security.xml"})
-@WebAppConfiguration
-@Transactional
-public class TransferControllerTest {
+public class TransferControllerTest extends BaseControllerTest {
 
     private MockMvc mockMvc;
 

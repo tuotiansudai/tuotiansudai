@@ -2,10 +2,9 @@ package com.tuotiansudai.api.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.BaseParamTest;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.security.MobileAppTokenProvider;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -21,13 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-session.xml"})
 @WebAppConfiguration
 @Transactional
 public abstract class ControllerTestBase {
@@ -42,14 +39,10 @@ public abstract class ControllerTestBase {
     @Mock
     protected HttpServletRequest httpServletRequest;
 
-    @Mock
-    protected MobileAppTokenProvider mobileAppTokenProvider;
-
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(getControllerObject()).build();
-        when(mobileAppTokenProvider.getLoginName(httpServletRequest)).thenReturn("loginName");
         successResponseDto = new BaseResponseDto();
         successResponseDto.setCode("0000");
     }

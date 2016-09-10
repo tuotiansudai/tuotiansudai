@@ -3,11 +3,12 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.util.CaptchaHelper;
-import com.tuotiansudai.spring.MyAuthenticationManager;
+import com.tuotiansudai.spring.security.MyAuthenticationUtil;
+import com.tuotiansudai.spring.security.CaptchaHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,9 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:dispatcher-servlet.xml", "classpath:applicationContext.xml", "classpath:spring-security.xml"})
-public class RegisterUserControllerTest {
+public class RegisterUserControllerTest extends BaseControllerTest {
 
     private MockMvc mockMvc;
 
@@ -54,10 +53,9 @@ public class RegisterUserControllerTest {
     private PrepareUserService prepareService;
 
     @Mock
-    private MyAuthenticationManager myAuthenticationManager;
+    private MyAuthenticationUtil myAuthenticationUtil;
 
     @Before
-
     public void init() {
         MockitoAnnotations.initMocks(this);
 
@@ -146,7 +144,7 @@ public class RegisterUserControllerTest {
     @Test
     public void shouldRegisterUser() throws Exception {
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);
-        doNothing().when(myAuthenticationManager).createAuthentication(anyString());
+        when(myAuthenticationUtil.createAuthentication(anyString(), any(Source.class))).thenReturn("newToken");
 
         this.mockMvc.perform(post("/register/user")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -183,9 +181,8 @@ public class RegisterUserControllerTest {
         baseDto.setData(dataDto);
         dataDto.setStatus(true);
 
-
         when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
-        when(captchaHelper.captchaVerify(anyString(), anyString())).thenReturn(true);
+        when(captchaHelper.captchaVerify(anyString(), anyString(), anyString())).thenReturn(true);
         this.mockMvc.perform(post("/register/user/send-register-captcha")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("mobile", "13900000000").param("imageCaptcha", "12345"))
@@ -217,7 +214,7 @@ public class RegisterUserControllerTest {
         baseDto.setData(dataDto);
 
         when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
-        when(captchaHelper.captchaVerify(anyString(), anyString())).thenReturn(false);
+        when(captchaHelper.captchaVerify(anyString(), anyString(), anyString())).thenReturn(false);
         this.mockMvc.perform(post("/register/user/send-register-captcha")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("mobile", "13900000000").param("imageCaptcha", "12345"))
