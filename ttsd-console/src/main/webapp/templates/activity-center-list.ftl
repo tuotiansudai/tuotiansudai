@@ -86,7 +86,7 @@
                         <td><span class="appImg"><img id="appPicture" src="/${activity.appPictureUrl!}"/></span></td>
                         <td>${activity.title!}</td>
                         <td><#if activity.activatedTime??>${activity.activatedTime?string('yyyy-MM-dd')}</#if></td>
-                        <td>${activity.expiredTime?string('yyyy-MM-dd HH:mm')}</td>
+                        <td><#if activity.expiredTime??>${activity.expiredTime?string('yyyy-MM-dd HH:mm')}</#if></td>
                         <td><a href="${activity.webActivityUrl!}" target="_blank">${activity.webActivityUrl!}</a><br/><a href="${activity.appActivityUrl!}"
                                                                                                                          target="_blank">${activity.appActivityUrl!}</a></td>
                         <td>${activity.description!}</td>
@@ -111,20 +111,20 @@
                                 </#if>
                             </td>
 
-                            <td>
-                                <#if activity.status == 'TO_APPROVE' >
-                                    <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                                        <a href="/activity-manage/activity-center/${activity.activityId?c!}">审核</a>
-                                    </@security.authorize>
-                                <#elseif activity.status == 'REJECTION' || (activity.status == 'APPROVED' && (expiredTime?date('yyyy-MM-dd HH:mm') gt currentTime?date('yyyy-MM-dd HH:mm')))>
-                                    <@security.authorize access="hasAnyAuthority('OPERATOR')">
-                                        <a href="/activity-manage/activity-center/${activity.activityId?c!}">修改</a>
-                                    </@security.authorize>
-                                <#elseif (expiredTime?date('yyyy-MM-dd HH:mm') lt currentTime?date('yyyy-MM-dd HH:mm'))>
-                                    --
-                                </#if>
-                            </td>
+                        <#else>
+                            <td>${activity.status.getDescription()!}</td>
                         </#if>
+                        <td>
+                            <#if activity.status == 'TO_APPROVE' >
+                                <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                                    <a href="/activity-manage/activity-center/${activity.activityId?c!}">审核</a>
+                                </@security.authorize>
+                            <#elseif activity.status == 'REJECTION' || (activity.status == 'APPROVED' )>
+                                <@security.authorize access="hasAnyAuthority('OPERATOR')">
+                                    <a href="/activity-manage/activity-center/${activity.activityId?c!}">修改</a>
+                                </@security.authorize>
+                            </#if>
+                        </td>
                     </tr>
                     <#else>
                     <tr>

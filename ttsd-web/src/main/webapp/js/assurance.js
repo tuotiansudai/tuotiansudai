@@ -1,34 +1,30 @@
-require(['jquery', 'fullPage'], function($) {
+require(['jquery'], function($) {
 
-    var $assuranceEffect = $('#assuranceEffect'),
-        locationId;
-    if (!!location.search) {
-        locationId = Number(/\d/.exec(location.search)[0]);
+    var $riskFlow=$('#riskFlow');
+    if($riskFlow.length) {
+
+        var $projectList=$('.project-info-list',$riskFlow);
+        setInterval(function() {
+            var num=$projectList.find('dl.active').data('num'),
+                next;
+            if(num<6) {
+                 next=num+1;
+            }
+            else {
+                next=1;
+            }
+            $projectList.find('dl[data-num="'+next+'"]').addClass('active').siblings('dl').removeClass('active');
+        },3000);
     }
-    $assuranceEffect.find('.section').eq(locationId - 1).addClass('active').siblings('.section').removeClass('active');
 
-    $assuranceEffect.fullpage({
-        sectionsColor: ['#d9ac52', '#50b281', '#9676d6'],
-        navigation: true,
-        resize: true,
-        scrollingSpeed: 800,
-        css3: true,
-        afterLoad: function(anchorLink, index) {
-            var $fpNav = $('#fp-nav');
-            $fpNav.find('li').each(function(key, option) {
-                var $this = $(this);
-                switch (key) {
-                    case 0:
-                        $this.find('span').text('益');
-                        break;
-                    case 1:
-                        $this.find('span').text('财');
-                        break;
-                    case 2:
-                        $this.find('span').text('保');
-                        break;
-                }
-            });
-        }
+    var $bottomClose= $('.bottom-close'),
+        $bottomOpen=$('.bottom-open');
+    $('.to-close').on('click',function() {
+        $bottomClose.show();
+        $bottomOpen.hide();
+    });
+    $bottomClose.on('click',function() {
+        $bottomClose.hide();
+        $bottomOpen.show();
     });
 });

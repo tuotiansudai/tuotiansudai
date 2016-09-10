@@ -22,7 +22,6 @@ public class ActivityCenterController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getAllOperatingActivities() {
         ModelAndView modelAndView = new ModelAndView("/activity-center");
-
         String loginName = LoginUserInfo.getLoginName();
         List<ActivityDto> activityDtos = activityService.getAllActiveActivities(loginName, Source.WEB);
         modelAndView.addObject("data", activityDtos);

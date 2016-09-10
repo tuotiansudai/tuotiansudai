@@ -777,7 +777,6 @@
         and loan.status &lt;&gt; 'CANCEL' and loan.product_type = 'EXPERIENCE'
     </select>
 
-
     <select id="findSuccessInvestByInvestTime" parameterType="map" resultMap="investResultMap">
         select *
         from invest

@@ -149,7 +149,7 @@ public class QuestionService {
     public BaseDto<BasePaginationDataDto> findByTag(String loginName, Tag tag, int index, int pageSize) {
         long count = questionMapper.countByTag(loginName, tag);
         List<QuestionModel> questions = questionMapper.findByTag(loginName, tag, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        return generatePaginationData(loginName, index, pageSize, count, questions, false);
+        return generatePaginationData(loginName, index, pageSize, count, questions, true);
     }
 
     public BaseDto<BasePaginationDataDto> findQuestionsForConsole(String question, String mobile, QuestionStatus status, int index, int pageSize) {
