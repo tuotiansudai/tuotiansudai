@@ -38,7 +38,7 @@ public class AutumnService {
             //有一级推荐时查询是否是团长，否则查询是否是团长推荐（无视推荐层级）
             if (referrerRelationModels.size() > 0) {
                 referrerLoginName = referrerRelationModels.get(0).getReferrerLoginName();
-                loginName = userModel.getLoginName();
+                loginName = userModel.getLoginName().toLowerCase();
 
                 if(isNewRegister(userModels,referrerRelationModels.get(0).getReferrerLoginName())){
                     if(allFamily.get(referrerLoginName) == null){
@@ -55,7 +55,7 @@ public class AutumnService {
                 for (String name : allFamily.keySet()) {
                     if (autumnMapper.findByReferrerAndLoginName(name, loginName) != null) {
                         allFamily.get(name).add(loginName);
-                        continue;
+                        break;
                     }
                 }
             } else {

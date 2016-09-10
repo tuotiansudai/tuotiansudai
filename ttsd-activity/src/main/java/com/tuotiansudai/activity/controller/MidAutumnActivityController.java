@@ -22,7 +22,8 @@ public class MidAutumnActivityController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView travelPrize() {
         ModelAndView modelAndView = new ModelAndView("/activities/mid-autumn", "responsive", true);
-        String loginName = LoginUserInfo.getLoginName();
+//        String loginName = LoginUserInfo.getLoginName();
+        String loginName = "gaoyinglong";
         modelAndView.addObject("loginName", Strings.isNullOrEmpty(loginName) ? "" : loginName);
         Map<String,Object> myFamilyMap = midAutumnActivityService.getMidAutumnHomeData(loginName);
         modelAndView.addObject("myFamilyNumber",myFamilyMap.get("myFamilyNum"));
