@@ -18,14 +18,8 @@
             <@global.isNotAnonymous>
                 <div class="copy-link-box" id="copyLinkBox">
                     <b for="copy-title">立即邀请好友加入家庭</b>
-<<<<<<< HEAD
                     <span  class="copy-link" id="clipboard_text">http://ci1.tuotiansudai.com:6002/register/user?referrer=${loginName}</span>
-                    <em class="button" id="copy-button" data-clipboard-target="clipboard_text">复制链接发送给好友</em>
-                    <div class="tc"><a href="#" class="btn-normal-invest">立即邀请好友组家庭</a> </div>
-=======
-                    <span  class="copy-link" id="clipboard_text">https://tuotiansudai.com/register/user?referrer=${loginName}</span>
                     <div class="tc"><a href="javascript:void(0);" class="btn-normal-invest" id="copy-button" data-clipboard-target="clipboard_text">复制链接发送给好友</a> </div>
->>>>>>> 2a8b53b15595db74cf76ce5fa8e01d91889537b3
                 </div>
             </@global.isNotAnonymous>
             </div>
