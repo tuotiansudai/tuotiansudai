@@ -13,7 +13,7 @@
                     <img src="upload/20160910/93931473486149974.jpg" width="100%">
                     <#break >
                 <#case 3>
-                    <img src="upload/20160910/93931473486149974.jpg" width="100%">
+                    <img src="upload/20160910/34671473486198463.jpg" width="100%">
                     <#break >
                 <#case 4>
                     <img src="upload/20160910/49071473486061671.jpg" width="100%">
