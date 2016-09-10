@@ -7,9 +7,11 @@ import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.MessageFormat;
 
@@ -29,6 +31,9 @@ public class SignInClient {
 
     @Value("${signIn.port}")
     private String signInPort;
+
+    @Autowired
+    private HttpServletRequest httpServletRequest;
 
     public SignInClient() {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -55,7 +60,7 @@ public class SignInClient {
                 .post(formEncodingBuilder.build());
 
         try {
-            String response = this.execute(request.build());
+            String response = this.execute(request);
             return objectMapper.readValue(response, SignInResult.class);
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] login failed (user={0} token={1} source={2} deviceId={3})", username, token, source, deviceId), e);
@@ -82,7 +87,7 @@ public class SignInClient {
                 .post(requestBody);
 
         try {
-            return objectMapper.readValue(this.execute(request.build()), SignInResult.class);
+            return objectMapper.readValue(this.execute(request), SignInResult.class);
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] login no password failed (user={0} source={1})", username, source.name()));
         }
@@ -100,7 +105,7 @@ public class SignInClient {
                 .post(RequestBody.create(null, new byte[0]));
 
         try {
-            return objectMapper.readValue(this.execute(request.build()), SignInResult.class);
+            return objectMapper.readValue(this.execute(request), SignInResult.class);
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] logout (token={0})", token));
         }
@@ -121,7 +126,7 @@ public class SignInClient {
                 .url(MessageFormat.format("http://{0}:{1}/refresh/{2}", signInHost, signInPort, token))
                 .post(requestBody);
         try {
-            return objectMapper.readValue(this.execute(request.build()), SignInResult.class);
+            return objectMapper.readValue(this.execute(request), SignInResult.class);
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] refresh failed (token={0} source={1})", token, source.name()));
         }
@@ -139,7 +144,7 @@ public class SignInClient {
                 .url(MessageFormat.format("http://{0}:{1}/session/{2}", signInHost, signInPort, token))
                 .get();
         try {
-            SignInResult signInResult = objectMapper.readValue(this.execute(request.build()), SignInResult.class);
+            SignInResult signInResult = objectMapper.readValue(this.execute(request), SignInResult.class);
             if (!signInResult.isResult()) {
                 logger.info(MessageFormat.format("[sign in client] session({0}) is invalid", token));
             }
@@ -160,17 +165,20 @@ public class SignInClient {
                 .url(MessageFormat.format("http://{0}:{1}/user/{2}/active/", signInHost, signInPort, mobile))
                 .post(RequestBody.create(null, new byte[0]));
         try {
-            this.execute(loginNameRequest.build());
-            this.execute(mobileRequest.build());
+            this.execute(loginNameRequest);
+            this.execute(mobileRequest);
             logger.info(MessageFormat.format("[sign in client] activate user(loginName={0} mobile={1})", loginName, mobile));
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] activate user(loginName={0} mobile={1}) failed", loginName, mobile) , e);
         }
     }
 
-    private String execute(Request request) throws IOException {
+    private String execute(Request.Builder requestBuilder) throws IOException {
         int times = 0;
+        Request.Builder builder = requestBuilder.addHeader("X-Forwarded-For", httpServletRequest.getHeader("X-Forwarded-For"));
+        Request request = builder.build();
         do {
+
             Response response = okHttpClient.newCall(request).execute();
             if (response.code() < 500) {
                 return response.body().string();
