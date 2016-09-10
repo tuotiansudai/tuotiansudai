@@ -37,9 +37,6 @@ public class MidAutumnActivityServiceTest {
     private ReferrerRelationMapper referrerRelationMapper;
 
     @Autowired
-    private MidAutumnActivityService midAutumnActivityService;
-
-    @Autowired
     private IdGenerator idGenerator;
 
     @Autowired
