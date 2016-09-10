@@ -151,6 +151,23 @@ public class SignInClient {
         return null;
     }
 
+    public void unlockUser(String loginName, String mobile) {
+        Request.Builder loginNameRequest = new Request.Builder()
+                .url(MessageFormat.format("http://{0}:{1}/user/{2}/active/", signInHost, signInPort, loginName))
+                .post(RequestBody.create(null, new byte[0]));
+
+        Request.Builder mobileRequest = new Request.Builder()
+                .url(MessageFormat.format("http://{0}:{1}/user/{2}/active/", signInHost, signInPort, mobile))
+                .post(RequestBody.create(null, new byte[0]));
+        try {
+            this.execute(loginNameRequest.build());
+            this.execute(mobileRequest.build());
+            logger.info(MessageFormat.format("[sign in client] activate user(loginName={0} mobile={1})", loginName, mobile));
+        } catch (IOException e) {
+            logger.error(MessageFormat.format("[sign in client] activate user(loginName={0} mobile={1}) failed", loginName, mobile) , e);
+        }
+    }
+
     private String execute(Request request) throws IOException {
         int times = 0;
         do {
