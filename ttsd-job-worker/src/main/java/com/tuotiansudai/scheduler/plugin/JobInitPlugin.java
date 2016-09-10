@@ -49,7 +49,8 @@ public class JobInitPlugin implements SchedulerPlugin {
             createCalculateDefaultInterest();
         }
         if (JobType.CalculateTravelLuxuryPrize.name().equalsIgnoreCase(schedulerName)){
-            calculateTravelLuxuryPrize();
+            //运营生成中奖纪录,暂时停掉该job
+            //calculateTravelLuxuryPrize();
         }
         if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
             createRefreshAreaByMobile();
