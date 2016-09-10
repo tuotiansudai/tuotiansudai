@@ -8,7 +8,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.util.GsonUtil;
 import com.tuotiansudai.api.util.HttpClientUtil;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.repository.model.Environment;
+import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;

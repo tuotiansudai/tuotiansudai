@@ -23,10 +23,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
-public class MobileAppMediaCenterServiceTest {
+public class MobileAppMediaCenterServiceTest extends ServiceTestBase {
 
     @Autowired
     private MobileAppMediaCenterService mobileAppAgreementService;
@@ -45,38 +42,40 @@ public class MobileAppMediaCenterServiceTest {
         licaiquanArticleMapper.createArticle(licaiquanArticleModel);
         BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = mobileAppAgreementService.obtainCarouselArticle();
         assertEquals(1, baseResponseDto.getData().getArticleList().size());
-        assertEquals(licaiquanArticleModel.getTitle(),baseResponseDto.getData().getArticleList().get(0).getTitle());
-        assertEquals(licaiquanArticleModel.getSection(),baseResponseDto.getData().getArticleList().get(0).getSection());
-        assertEquals(licaiquanArticleModel.getAuthor(),baseResponseDto.getData().getArticleList().get(0).getAuthor());
-        assertEquals(domainName  + "/" + licaiquanArticleModel.getShowPicture(), baseResponseDto.getData().getArticleList().get(0).getShowPicture());
+        assertEquals(licaiquanArticleModel.getTitle(), baseResponseDto.getData().getArticleList().get(0).getTitle());
+        assertEquals(licaiquanArticleModel.getSection(), baseResponseDto.getData().getArticleList().get(0).getSection());
+        assertEquals(licaiquanArticleModel.getAuthor(), baseResponseDto.getData().getArticleList().get(0).getAuthor());
+        assertEquals(domainName + "/" + licaiquanArticleModel.getShowPicture(), baseResponseDto.getData().getArticleList().get(0).getShowPicture());
 
 
     }
+
     @Test
-    public void shouldObtainArticleListIsSuccess(){
+    public void shouldObtainArticleListIsSuccess() {
         LicaiquanArticleModel licaiquanArticleModel = fakeLiCaiQuanArticleModel();
         licaiquanArticleMapper.createArticle(licaiquanArticleModel);
-        BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = mobileAppAgreementService.obtainArticleList(ArticleSectionType.INDUSTRY_NEWS,1,10);
+        BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = mobileAppAgreementService.obtainArticleList(ArticleSectionType.INDUSTRY_NEWS, 1, 10);
         assertEquals(1, baseResponseDto.getData().getArticleList().size());
         assertEquals(licaiquanArticleModel.getAuthor(), baseResponseDto.getData().getArticleList().get(0).getAuthor());
-        assertEquals(ArticleSectionType.INDUSTRY_NEWS,baseResponseDto.getData().getArticleList().get(0).getSection());
-        assertEquals(licaiquanArticleModel.getAuthor(),baseResponseDto.getData().getArticleList().get(0).getAuthor());
-        assertEquals(licaiquanArticleModel.getTitle(),baseResponseDto.getData().getArticleList().get(0).getTitle());
-        assertEquals(licaiquanArticleModel.getContent(),baseResponseDto.getData().getArticleList().get(0).getContent());
-        assertEquals(domainName+ "/" + licaiquanArticleModel.getShowPicture(),baseResponseDto.getData().getArticleList().get(0).getShowPicture());
+        assertEquals(ArticleSectionType.INDUSTRY_NEWS, baseResponseDto.getData().getArticleList().get(0).getSection());
+        assertEquals(licaiquanArticleModel.getAuthor(), baseResponseDto.getData().getArticleList().get(0).getAuthor());
+        assertEquals(licaiquanArticleModel.getTitle(), baseResponseDto.getData().getArticleList().get(0).getTitle());
+        assertEquals(licaiquanArticleModel.getContent(), baseResponseDto.getData().getArticleList().get(0).getContent());
+        assertEquals(domainName + "/" + licaiquanArticleModel.getShowPicture(), baseResponseDto.getData().getArticleList().get(0).getShowPicture());
 
     }
+
     @Test
-    public void shouldObtainArticleContentIsSuccess(){
+    public void shouldObtainArticleContentIsSuccess() {
         LicaiquanArticleModel licaiquanArticleModel = fakeLiCaiQuanArticleModel();
         licaiquanArticleMapper.createArticle(licaiquanArticleModel);
         BaseResponseDto<MediaArticleResponseDataDto> baseResponseDto = mobileAppAgreementService.obtainArticleContent(licaiquanArticleModel.getId());
 
         assertEquals(licaiquanArticleModel.getAuthor(), baseResponseDto.getData().getAuthor());
-        assertEquals(ArticleSectionType.INDUSTRY_NEWS,baseResponseDto.getData().getSection());
-        assertEquals(licaiquanArticleModel.getAuthor(),baseResponseDto.getData().getAuthor());
-        assertEquals(licaiquanArticleModel.getTitle(),baseResponseDto.getData().getTitle());
-        assertEquals(licaiquanArticleModel.getContent(),baseResponseDto.getData().getContent());
+        assertEquals(ArticleSectionType.INDUSTRY_NEWS, baseResponseDto.getData().getSection());
+        assertEquals(licaiquanArticleModel.getAuthor(), baseResponseDto.getData().getAuthor());
+        assertEquals(licaiquanArticleModel.getTitle(), baseResponseDto.getData().getTitle());
+        assertEquals(licaiquanArticleModel.getContent(), baseResponseDto.getData().getContent());
         assertEquals(domainName + "/" + licaiquanArticleModel.getShowPicture(), baseResponseDto.getData().getShowPicture());
 
     }
@@ -101,6 +100,7 @@ public class MobileAppMediaCenterServiceTest {
         licaiquanArticleModel.setUpdatedTime(new Date());
         return licaiquanArticleModel;
     }
+
     private UserModel getUserModelTest() {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName("helloworld");

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>登录</title>
     <!-- link bootstrap css and js -->
-    <link href="${applicationContext}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="${applicationContext}/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
     <link href="${applicationContext}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${applicationContext}/style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
     <script src="${applicationContext}/js/libs/jquery-1.11.3.min.js"></script> <!-- jquery -->
@@ -49,16 +49,15 @@
                 <div class="form-group">
                     <label for="yzm">验证码：</label>
                     <div class="captcha-column">
-
-                            <input type="text" class="form-control captcha" id="yzm" name="captcha" placeholder="请输入验证码" maxlength="5">
-
+                        <input type="text" class="form-control captcha" id="yzm" name="captcha" placeholder="请输入验证码" maxlength="5">
                         <div class="captcha-img">
                             <img class="verification-console-img" src="/login/captcha" alt=""/>
                         </div>
                     </div>
                 </div>
+                <input type="hidden" name="source" value="WEB"/>
                 <div class="form-group">
-                   <span class="error" style="visibility:hidden; color: #cc0000;">用户名或密码不正确</span>
+                    <span class="error" style="visibility:hidden; color: #cc0000;">用户名或密码不正确</span>
                 </div>
                 <div class="form-group">
                     <button class="btn grey btn-primary btn-block btn-lg" type="button">登录</button>

@@ -7,7 +7,7 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.FeedbackService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaGenerator;
-import com.tuotiansudai.util.CaptchaHelper;
+import com.tuotiansudai.spring.security.CaptchaHelper;
 import com.tuotiansudai.spring.LoginUserInfo;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -37,14 +38,18 @@ public class FeedbackController {
 
     @ResponseBody
     @RequestMapping(value = "/submit", params = {"contact", "type", "content", "captcha"}, method = RequestMethod.POST)
-    public BaseDto feedback(String contact, FeedbackType type, String content, String captcha) {
+    public BaseDto feedback(HttpServletRequest httpServletRequest,
+                            String contact,
+                            FeedbackType type,
+                            String content,
+                            String captcha) {
 
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto baseDataDto = new BaseDataDto();
         baseDto.setData(baseDataDto);
         baseDto.setSuccess(true);
 
-        boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.FEEDBACK_CAPTCHA, captcha);
+        boolean result = this.captchaHelper.captchaVerify(captcha, httpServletRequest.getSession(false).getId(), httpServletRequest.getRemoteAddr());
 
         if (!result) {
             logger.debug("submit feedback failed: captcha does not match actual value");
@@ -60,12 +65,12 @@ public class FeedbackController {
     }
 
     @RequestMapping(value = "/captcha", method = RequestMethod.GET)
-    public void feedbackCaptcha(HttpServletResponse response) {
+    public void feedbackCaptcha(HttpServletRequest request, HttpServletResponse response) {
         int captchaWidth = 80;
         int captchaHeight = 30;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
 
-        this.captchaHelper.storeCaptcha(CaptchaHelper.FEEDBACK_CAPTCHA, captcha.getAnswer());
+        this.captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false).getId());
     }
 }
