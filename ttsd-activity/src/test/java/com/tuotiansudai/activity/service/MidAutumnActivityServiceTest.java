@@ -1,7 +1,6 @@
 package com.tuotiansudai.activity.service;
 
 
-import com.tuotiansudai.activity.dto.MidAutumnFamilyDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
@@ -11,15 +10,16 @@ import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -35,6 +35,7 @@ public class MidAutumnActivityServiceTest {
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
 
+    @Autowired
     private MidAutumnActivityService midAutumnActivityService;
 
     @Autowired

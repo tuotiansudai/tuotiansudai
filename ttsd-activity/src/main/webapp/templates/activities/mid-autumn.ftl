@@ -19,7 +19,7 @@
             <@global.isNotAnonymous>
                 <div class="copy-link-box" id="copyLinkBox">
                     <b for="copy-title">立即邀请好友加入家庭</b>
-                    <span  class="copy-link" id="clipboard_text">https://tuotiansudai.com/register/user?referrer=${loginName}</span>
+                    <span  class="copy-link" id="clipboard_text">http://ci1.tuotiansudai.com:6002/register/user?referrer=${loginName}</span>
                     <em class="button" id="copy-button" data-clipboard-target="clipboard_text">复制链接发送给好友</em>
                     <div class="tc"><a href="#" class="btn-normal-invest">立即邀请好友组家庭</a> </div>
                 </div>
