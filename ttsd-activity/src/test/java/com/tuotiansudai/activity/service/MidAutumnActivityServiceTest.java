@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -18,12 +19,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -36,6 +35,8 @@ public class MidAutumnActivityServiceTest {
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
 
+    private MidAutumnActivityService midAutumnActivityService;
+
     @Autowired
     private IdGenerator idGenerator;
 
@@ -45,30 +46,16 @@ public class MidAutumnActivityServiceTest {
     @Autowired
     private InvestMapper investMapper;
 
-//    @Ignore
-//    public void shouldGetAllFamilyIsOk(){
-//        ReflectionTestUtils.setField(midAutumnActivityService, "activityMinAutumnStartTime", DateTime.parse("2016-09-14").toDate());
-//        ReflectionTestUtils.setField(midAutumnActivityService, "activityMinAutumnEndTime", DateTime.parse("2016-09-18").toDate());
-//        List<MidAutumnFamilyDto> allFamily = midAutumnActivityService.getAllFamilyInvestAmount();
-//        assertEquals(allFamily.size(),2);
-//        assertEquals(allFamily.get(0).getInvestAmount(),"2.00");
-//        assertEquals(allFamily.get(1).getInvestAmount(),"1.00");
-//    }
-//
-//    @Ignore
-//    public void shouldGetMyMinAutumnActivityFamilyIsOk(){
-//        Map<String,Object> myFamily = midAutumnActivityService.getMyMinAutumnActivityFamily("boss");
-//        assertEquals(myFamily.get("number"), "1");
-//        assertEquals(myFamily.get("myFamilyInvestAmount"), "2.00");
-//        List<String> myFamilyNameList = (List<String>) myFamily.get("myFamily");
-//        assertEquals(myFamilyNameList.size(), 5);
-//        myFamily = midAutumnActivityService.getMyMinAutumnActivityFamily("boss1");
-//        assertEquals(myFamily.get("number"), "1");
-//        assertEquals(myFamily.get("myFamilyInvestAmount"), "2.00");
-//        myFamily = midAutumnActivityService.getMyMinAutumnActivityFamily("boss11");
-//        assertEquals(myFamily.get("number"), "1");
-//        assertEquals(myFamily.get("myFamilyInvestAmount"), "2.00");
-//    }
+    @Ignore
+    public void shouldGetMidAutumnHomeDataIsOk(){
+        String loginName = "boss";
+        Map autumnMap = midAutumnActivityService.getMidAutumnHomeData(loginName);
+        assertTrue(autumnMap.size() > 0);
+        assertEquals(autumnMap.get("myFamilyNum"), 2);
+        assertTrue(CollectionUtils.isNotEmpty((Collection) autumnMap.get("myFamily")));
+        assertEquals(autumnMap.get("todayInvestAmount"), "2.00");
+        assertEquals(autumnMap.get("totalInvestAmount"), "10.00");
+    }
 
     private InvestModel getFakeInvestModel(long loanId,String loginName) {
         InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 100l, loginName, DateTime.now().toDate(), Source.WEB, null, 0.1);
