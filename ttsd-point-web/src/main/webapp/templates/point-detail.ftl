@@ -9,25 +9,9 @@
 			</div>
 			<div class="detail-info">
 				<div class="detail-left">
-					<#if productShowItem.itemType.name() == 'RED_ENVELOPE'>
-                        <p class="mater-img bag-bg">
-                            <span><i><@amount>${productShowItem.pictureDescription!0}</@amount></i>元</span>
-                        </p>
-					<#elseif productShowItem.itemType.name() == 'INVEST_COUPON'>
-                        <p class="mater-img coupon-bg">
-                            <span><i><@amount>${productShowItem.pictureDescription!0}</@amount></i>元</span>
-                            <span>投资体验券</span>
-                        </p>
-					<#elseif productShowItem.itemType.name() == 'INTEREST_COUPON'>
-                        <p class="mater-img jia-bg">
-                            <span><i>${productShowItem.pictureDescription!"0"}</i>%</span>
-                            <span>加息券</span>
-                        </p>
-					<#else>
-                        <p class="mater-img picture-item">
-                            <img src="${productShowItem.imageUrl}" width="300" height="244"/>
-                        </p>
-					</#if>
+					<p class="mater-img picture-item">
+						<img src="/${productShowItem.imageUrl}" width="300" height="244"/>
+					</p>
 				</div>
 				<div class="detail-right">
                     <h3>${productShowItem.name!}</h3>

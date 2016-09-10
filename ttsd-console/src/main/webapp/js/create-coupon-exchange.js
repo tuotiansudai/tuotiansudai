@@ -32,6 +32,59 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
             $errorDom.append(html);
         }
 
+        var _URL = window.URL || window.webkitURL;
+
+        var checkImage = function (file, width, height) {
+            var defer = $.Deferred(),
+                img = new Image();
+            img.src = _URL.createObjectURL(file);
+            img.onload = function () {
+                if (this.width != width) {
+                    defer.reject('图片长宽应为' + width);
+                    return;
+                }
+                if (this.height != height) {
+                    defer.reject('图片长宽应为' + height);
+                    return;
+                }
+                defer.resolve(file);
+            }
+            return defer.promise();
+        };
+
+        $('.imageUrlProduct').on('change', function () {
+            var $self = $(this),
+                imageWidth,
+                imageHeight;
+            var file = $self.find('input').get(0).files[0];
+            var formData = new FormData();
+            formData.append('upfile', file);
+            imageWidth = $self.find('input').attr("imageWidth");
+            imageHeight = $self.find('input').attr("imageHeight");
+            checkImage(file, imageWidth, imageHeight).done(function () {
+                var formData = new FormData();
+                formData.append('upfile', file);
+                $.ajax({
+                    url: '/ueditor?action=uploadimage',
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'JSON',
+                    contentType: false,
+                    processData: false
+                }).done(function (data) {
+                    if (data.state) {
+                        $('.form-imageUrl').val(data.title);
+                        $('.imageUrlImage').html('<img style="width:100%" src="/' + data.title + '" >');
+                    }
+                });
+            }).fail(function (message) {
+                showErrorMessage(message, $('.form-imageUrl', $('.form-list')));
+            });
+        });
+
+
+
+
         var rep = /^\d+$/;
         var rep_point2 = /^[0-9]+\.[0-9]*$/;
 
