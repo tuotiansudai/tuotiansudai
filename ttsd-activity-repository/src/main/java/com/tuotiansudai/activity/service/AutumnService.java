@@ -36,14 +36,14 @@ public class AutumnService {
                 continue;
             }
             if(CollectionUtils.isEmpty(allFamily.values())){
-                allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getLoginName()));
+                allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getReferrer(),userModel.getLoginName()));
                 continue;
             }
             for (List<String> family : allFamily.values()) {
                 if(family.contains(userModel.getReferrer())){
                     family.add(userModel.getLoginName());
                 }else{
-                    allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getLoginName()));
+                    allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getReferrer(),userModel.getLoginName()));
                 }
             }
 
