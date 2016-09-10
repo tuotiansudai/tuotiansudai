@@ -1,0 +1,7 @@
+signin:
+  image: "leoshi/ttsd-signin-flask"
+  volumes:
+    - .:/app
+    - /var/log/signin:/var/log/signin
+  ports:
+    - "31000:80"

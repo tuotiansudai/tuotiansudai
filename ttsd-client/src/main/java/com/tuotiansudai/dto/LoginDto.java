@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.security.core.AuthenticationException;
 
 import java.io.Serializable;
 

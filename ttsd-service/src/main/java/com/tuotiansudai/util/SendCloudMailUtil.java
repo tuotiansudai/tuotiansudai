@@ -2,7 +2,7 @@ package com.tuotiansudai.util;
 
 import com.tuotiansudai.client.SendCloudClient;
 import com.tuotiansudai.dto.SendCloudType;
-import com.tuotiansudai.repository.model.Environment;
+import com.tuotiansudai.dto.Environment;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

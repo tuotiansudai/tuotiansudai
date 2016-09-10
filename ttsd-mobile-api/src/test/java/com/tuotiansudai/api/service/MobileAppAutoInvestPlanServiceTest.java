@@ -27,10 +27,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
-public class MobileAppAutoInvestPlanServiceTest {
+public class MobileAppAutoInvestPlanServiceTest extends ServiceTestBase {
 
     @Autowired
     private MobileAppAutoInvestPlanService mobileAppAutoInvestPlanService;
@@ -48,7 +45,7 @@ public class MobileAppAutoInvestPlanServiceTest {
     private AccountMapper accountMapper;
 
     @Test
-    public void shouldCreateAutoInvestPlanIsSuccess(){
+    public void shouldCreateAutoInvestPlanIsSuccess() {
         AutoInvestPlanRequestDto autoInvestPlanRequestDto = getAutoInvestPlanRequestDto();
         autoInvestPlanRequestDto.setAutoPlanId("");
         autoInvestPlanRequestDto.setIp("127.0.0.1");
@@ -58,19 +55,19 @@ public class MobileAppAutoInvestPlanServiceTest {
         assertEquals("500.00", baseDto.getData().getMinInvestAmount());
         assertEquals("10000.00", baseDto.getData().getMaxInvestAmount());
         assertEquals("100.00", baseDto.getData().getRetentionAmount());
-        assertEquals(false,baseDto.getData().getAutoInvestPeriods().get(1).isSelected());
-        assertEquals(true,baseDto.getData().getAutoInvestPeriods().get(2).isSelected());
+        assertEquals(false, baseDto.getData().getAutoInvestPeriods().get(1).isSelected());
+        assertEquals(true, baseDto.getData().getAutoInvestPeriods().get(2).isSelected());
         assertEquals("4", baseDto.getData().getAutoInvestPeriods().get(2).getPid());
-        assertEquals(true,baseDto.getData().getAutoInvestPeriods().get(6).isSelected());
-        assertEquals("64",baseDto.getData().getAutoInvestPeriods().get(6).getPid());
-        assertEquals("2048",baseDto.getData().getAutoInvestPeriods().get(11).getPid());
-        assertEquals(false,baseDto.getData().getAutoInvestPeriods().get(12).isSelected());
+        assertEquals(true, baseDto.getData().getAutoInvestPeriods().get(6).isSelected());
+        assertEquals("64", baseDto.getData().getAutoInvestPeriods().get(6).getPid());
+        assertEquals("2048", baseDto.getData().getAutoInvestPeriods().get(11).getPid());
+        assertEquals(false, baseDto.getData().getAutoInvestPeriods().get(12).isSelected());
 
 
     }
 
     @Test
-    public void shouldUpdateAutoInvestPlanIsSuccess(){
+    public void shouldUpdateAutoInvestPlanIsSuccess() {
         AutoInvestPlanRequestDto autoInvestPlanRequestDto = getAutoInvestPlanRequestDto();
 
         AutoInvestPlanModel autoInvestPlanModel = fakeUserAutoInvestPlan(autoInvestPlanRequestDto.getBaseParam().getUserId(), 769);
@@ -81,8 +78,8 @@ public class MobileAppAutoInvestPlanServiceTest {
         autoInvestPlanRequestDto.setIp("127.0.0.1");
 
         BaseResponseDto<AutoInvestPlanDataDto> baseDto = mobileAppAutoInvestPlanService.buildAutoInvestPlan(autoInvestPlanRequestDto);
-        assertEquals(false,baseDto.getData().getAutoInvestPeriods().get(1).isSelected());
-        assertEquals(true,baseDto.getData().getAutoInvestPeriods().get(2).isSelected());
+        assertEquals(false, baseDto.getData().getAutoInvestPeriods().get(1).isSelected());
+        assertEquals(true, baseDto.getData().getAutoInvestPeriods().get(2).isSelected());
         assertEquals("4", baseDto.getData().getAutoInvestPeriods().get(2).getPid());
         assertEquals(true, baseDto.getData().getAutoInvestPeriods().get(6).isSelected());
         assertEquals("64", baseDto.getData().getAutoInvestPeriods().get(6).getPid());
@@ -118,9 +115,9 @@ public class MobileAppAutoInvestPlanServiceTest {
         autoInvestPlanRequestDto.setMaxInvestAmount(AmountConverter.convertCentToString(autoInvestPlanModel.getMaxInvestAmount()));
         List<AutoInvestPeriodDto> autoInvestPeriodDtos = Lists.newArrayList();
 
-        AutoInvestPeriodDto autoInvestPeriodDto1 = new AutoInvestPeriodDto("4","2月期",true);
-        AutoInvestPeriodDto autoInvestPeriodDto2 = new AutoInvestPeriodDto("64","6月期",true);
-        AutoInvestPeriodDto autoInvestPeriodDto3 = new AutoInvestPeriodDto("2048","11月期",true);
+        AutoInvestPeriodDto autoInvestPeriodDto1 = new AutoInvestPeriodDto("4", "2月期", true);
+        AutoInvestPeriodDto autoInvestPeriodDto2 = new AutoInvestPeriodDto("64", "6月期", true);
+        AutoInvestPeriodDto autoInvestPeriodDto3 = new AutoInvestPeriodDto("2048", "11月期", true);
         autoInvestPeriodDtos.add(autoInvestPeriodDto1);
         autoInvestPeriodDtos.add(autoInvestPeriodDto2);
         autoInvestPeriodDtos.add(autoInvestPeriodDto3);
@@ -130,7 +127,7 @@ public class MobileAppAutoInvestPlanServiceTest {
     }
 
     @Test
-    public void shouldTurnOffAutoInvestPlan(){
+    public void shouldTurnOffAutoInvestPlan() {
         AutoInvestPlanRequestDto autoInvestPlanRequestDto = getAutoInvestPlanRequestDto();
 
         AutoInvestPlanModel autoInvestPlanModel = fakeUserAutoInvestPlan(autoInvestPlanRequestDto.getBaseParam().getUserId(), 769);
@@ -142,11 +139,12 @@ public class MobileAppAutoInvestPlanServiceTest {
         autoInvestPlanRequestDto.setIp("127.0.0.1");
 
         BaseResponseDto<AutoInvestPlanDataDto> baseDto = mobileAppAutoInvestPlanService.buildAutoInvestPlan(autoInvestPlanRequestDto);
-        assertEquals(false,baseDto.getData().isEnabled());
+        assertEquals(false, baseDto.getData().isEnabled());
 
     }
+
     @Test
-    public void shouldTurnOnAutoInvestPlan(){
+    public void shouldTurnOnAutoInvestPlan() {
         AutoInvestPlanRequestDto autoInvestPlanRequestDto = getAutoInvestPlanRequestDto();
 
         AutoInvestPlanModel autoInvestPlanModel = fakeUserAutoInvestPlan(autoInvestPlanRequestDto.getBaseParam().getUserId(), 769);
@@ -158,7 +156,7 @@ public class MobileAppAutoInvestPlanServiceTest {
         autoInvestPlanRequestDto.setIp("127.0.0.1");
 
         BaseResponseDto<AutoInvestPlanDataDto> baseDto = mobileAppAutoInvestPlanService.buildAutoInvestPlan(autoInvestPlanRequestDto);
-        assertEquals(true,baseDto.getData().isEnabled());
+        assertEquals(true, baseDto.getData().isEnabled());
 
     }
 
@@ -175,7 +173,7 @@ public class MobileAppAutoInvestPlanServiceTest {
         return userModelTest;
     }
 
-    private AutoInvestPlanModel fakeUserAutoInvestPlan(String userId, int periods){
+    private AutoInvestPlanModel fakeUserAutoInvestPlan(String userId, int periods) {
         AutoInvestPlanModel model = new AutoInvestPlanModel();
         model.setEnabled(true);
         model.setLoginName(userId);

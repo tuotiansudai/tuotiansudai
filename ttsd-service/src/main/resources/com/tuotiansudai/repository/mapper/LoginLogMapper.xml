@@ -53,7 +53,7 @@
 
     <select id="countSuccessTimesOnDate" parameterType="map" resultType="long">
         select count(1) from ${table}
-        where login_name = #{loginName}
+        where (login_name = #{loginName} or login_name = (select mobile from user where user.login_name = #{loginName}))
         and success is TRUE
         and date_format(#{date},'%Y-%m-%d') = date_format(login_time,'%Y-%m-%d')
     </select>

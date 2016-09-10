@@ -1,6 +1,6 @@
 package com.tuotiansudai.web.ask.controller;
 
-import com.tuotiansudai.ask.utils.CaptchaGenerator;
+import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.ask.service.CaptchaHelperService;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;

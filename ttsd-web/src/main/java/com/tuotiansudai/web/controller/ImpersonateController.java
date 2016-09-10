@@ -1,6 +1,9 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.base.Strings;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ImpersonateService;
+import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +19,14 @@ public class ImpersonateController {
     @Autowired
     private ImpersonateService impersonateService;
 
+    @Autowired
+    private MyAuthenticationUtil myAuthenticationUtil;
+
     @RequestMapping(params = "securityCode")
     public ModelAndView impersonate(String securityCode, HttpServletRequest request, HttpServletResponse response) {
-
-        if (impersonateService.impersonateLogin(securityCode)) {
+        String loginName = impersonateService.impersonateLogin(securityCode);
+        if (Strings.isNullOrEmpty(loginName)) {
+            myAuthenticationUtil.createAuthentication(loginName, Source.WEB);
             request.getSession().setAttribute("impersonate", "1");
             return new ModelAndView("redirect:/");
         } else {

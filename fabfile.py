@@ -60,10 +60,18 @@ def mk_static_zip():
     local('cd ./ttsd-point-web/src/main/webapp && zip -r static_point.zip point/')
     local('cd ./ttsd-ask-web/src/main/webapp && zip -r static_ask.zip ask/')
 
+
+def mk_signin_zip():
+    for i in ('1', '2'):
+        local('cp /workspace/v2config/default/signin_service/{0}/* ./sigin_service/'.format(i))
+        local('cd ./signin_service/ && zip -r signin_{0}.zip *.py *.ini *.yml'.format(i))
+
+
 def build():
     mk_war()
     mk_worker_zip()
     mk_static_zip()
+    mk_signin_zip()
 
 
 def compile():
@@ -115,6 +123,7 @@ def deploy_pay():
     sudo('rm -rf /opt/tomcat/webapps/ROOT')
     upload_project(local_dir='./ttsd-pay-wrapper/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
+    sudo('service nginx restart')
 
 
 @roles('worker')
@@ -136,6 +145,7 @@ def deploy_api():
     sudo('rm -rf /opt/tomcat/webapps/ROOT')
     upload_project(local_dir='./ttsd-mobile-api/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
+    sudo('service nginx restart')
 
 
 @roles('portal')
@@ -145,6 +155,7 @@ def deploy_web():
     sudo('rm -rf /opt/tomcat/webapps/ROOT')
     upload_project(local_dir='./ttsd-web/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
+    sudo('service nginx restart')
 
 
 @roles('activity')
@@ -154,6 +165,7 @@ def deploy_activity():
     sudo('rm -rf /opt/tomcat/webapps/ROOT')
     upload_project(local_dir='./ttsd-activity/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
+    sudo('service nginx restart')
 
 
 @roles('ask')
@@ -163,15 +175,23 @@ def deploy_ask():
     sudo('rm -rf /opt/tomcat/webapps/ROOT')
     upload_project(local_dir='./ttsd-ask-web/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
+    sudo('service nginx restart')
 
 
 @roles('signin')
 @parallel
 def deploy_sign_in():
-    sudo('service tomcat stop')
-    sudo('rm -rf /opt/tomcat/webapps/ROOT')
-    upload_project(local_dir='./ttsd-sign-in/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
-    sudo('service tomcat start')
+    upload_project(local_dir='./signin_service/*.zip', remote_dir='/workspace')
+    for i in ('1', '2'):
+        with cd('/workspace'):
+            folder_name = 'signin_{0}'.format(i)
+            sudo('rm -rf {0}'.format(folder_name))
+            sudo('unzip {0}.zip'.format(folder_name))
+        with cd('/workspace/{0}'.format(folder_name)):
+            sudo('/usr/local/bin/docker-compose -f prod.yml -p ttsd stop')
+            sudo('/usr/local/bin/docker-compose -f prod.yml -p ttsd rm -f')
+            sudo('/usr/local/bin/docker-compose -f prod.yml -p ttsd up -d')
+    sudo('service nginx restart')
 
 
 @roles('point')
@@ -181,6 +201,7 @@ def deploy_point():
     sudo('rm -rf /opt/tomcat/webapps/ROOT')
     upload_project(local_dir='./ttsd-point-web/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
+    sudo('service nginx restart')
 
 
 def deploy_all():
@@ -195,6 +216,7 @@ def deploy_all():
     execute(deploy_activity)
     execute(deploy_point)
     execute(deploy_ask)
+
 
 def pre_deploy():
     compile()
@@ -254,26 +276,27 @@ def signin():
     pre_deploy()
     execute(deploy_sign_in)
 
+
 def point():
     pre_deploy()
     execute(deploy_point)
     execute(deploy_static)
 
 
-def get_30days_before(date_format="%Y-%m-%d"):
+def get_7days_before(date_format="%Y-%m-%d"):
     from datetime import timedelta, date
-    return (date.today() - timedelta(days=30)).strftime(date_format)
+    return (date.today() - timedelta(days=7)).strftime(date_format)
 
 
 def remove_tomcat_logs():
-    iso_date = get_30days_before()
+    iso_date = get_7days_before()
     with cd('/var/log/tomcat'):
         run('rm -f *{0}.log'.format(iso_date))
         run('rm -f *{0}.txt'.format(iso_date))
 
 
 def remove_nginx_logs():
-    normal_date = get_30days_before(date_format='%Y%m%d')
+    normal_date = get_7days_before(date_format='%Y%m%d')
     with cd('/var/log/nginx'):
         run('rm -f *{0}.gz'.format(normal_date))
 
@@ -316,7 +339,7 @@ def remove_api_logs():
 @roles('worker')
 @parallel
 def remove_worker_logs():
-    iso_date = get_30days_before()
+    iso_date = get_7days_before()
     with cd('/var/log/job-worker'):
         run('rm -f *{0}.log'.format(iso_date))
 
