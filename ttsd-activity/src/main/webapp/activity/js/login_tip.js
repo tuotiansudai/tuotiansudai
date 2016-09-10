@@ -27,13 +27,7 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
                 } else {
                     refreshCaptcha();
                     $loginSubmitElement.removeClass('loading');
-                    if (data.isLocked) {
-                        layer.msg('用户已被锁定');
-                    }else if (data.isCaptchaNotMatch) {
-                        layer.msg('验证码不正确');
-                    }else{
-                        layer.msg('用户或密码不正确');
-                    }
+                    layer.msg(data.message);
                 }
             },
             error: function() {
@@ -87,6 +81,7 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
     })
     .on('click', '.show-login', function(event) {
         event.preventDefault();
+        refreshCaptcha();
         layer.open({
             type: 1,
             title: false,

@@ -24,10 +24,7 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
-public class MobileAppActivityServiceTest {
+public class MobileAppActivityServiceTest extends ServiceTestBase {
     @Autowired
     InvestMapper investMapper;
 

@@ -3,6 +3,7 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.repository.model.UserView;
@@ -37,8 +38,6 @@ public interface UserService {
     boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId);
 
     void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException, ReferrerRelationException;
-
-    void updateUserStatus(String loginName, UserStatus userStatus, String ip, String operatorLoginName);
 
     EditUserDto getEditUser(String loginName);
 
