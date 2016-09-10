@@ -553,7 +553,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                                     maxInvestAmount = '';
                                 }
                                 $extraRateRule.append('<tr><td> ' + minInvestAmount + '≤投资额' + maxInvestAmount + '</td><td>' + parseFloat(extraLoanRateRuleModels[i].rate * 100) + '</td></tr>');
-                                $('.extra-rate').append('<input type="text" class="extra-rate-id" value="' + extraLoanRateRuleModels[i].id + '">');
+                                $('.extra-rate').append('<input type="hidden" class="extra-rate-id" value="' + extraLoanRateRuleModels[i].id + '">');
                             }
                         } else {
                             showErrorMessage('服务端校验失败');
