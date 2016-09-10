@@ -8,7 +8,10 @@ import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.service.PointTaskService;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang.RandomStringUtils;
@@ -25,7 +28,6 @@ import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
@@ -74,30 +76,16 @@ public class PointTaskServiceTest {
         pointTaskService.completeAdvancedTask(PointTask.EACH_SUM_INVEST, loginName);
 
         maxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.EACH_SUM_INVEST);
-        assertThat(maxTaskLevel, is(6L));
+        assertThat(maxTaskLevel, is(1L));
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        assertThat(accountModel.getPoint(), is(168000L));
+        assertThat(accountModel.getPoint(), is(100L));
 
         List<PointBillModel> pointBillModels = pointBillMapper.findByLoginName(loginName);
-        assertThat(pointBillModels.size(), is(6));
-        assertThat(pointBillModels.get(5).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(5).getPoint(), is(1000L));
-
-        assertThat(pointBillModels.get(4).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(4).getPoint(), is(2000L));
-
-        assertThat(pointBillModels.get(3).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(3).getPoint(), is(5000L));
-
-        assertThat(pointBillModels.get(2).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(2).getPoint(), is(10000L));
-
-        assertThat(pointBillModels.get(1).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(1).getPoint(), is(50000L));
+        assertThat(pointBillModels.size(), is(1));
 
         assertThat(pointBillModels.get(0).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(0).getPoint(), is(100000L));
+        assertThat(pointBillModels.get(0).getPoint(), is(100L));
     }
 
     @Test
@@ -114,27 +102,16 @@ public class PointTaskServiceTest {
         pointTaskService.completeAdvancedTask(PointTask.FIRST_SINGLE_INVEST, loginName);
 
         long maxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.FIRST_SINGLE_INVEST);
-        assertThat(maxTaskLevel, is(5L));
+        assertThat(maxTaskLevel, is(1L));
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        assertThat(accountModel.getPoint(), is(87000L));
+        assertThat(accountModel.getPoint(), is(200L));
 
         List<PointBillModel> pointBillModels = pointBillMapper.findByLoginName(loginName);
-        assertThat(pointBillModels.size(), is(5));
-        assertThat(pointBillModels.get(4).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(4).getPoint(), is(2000L));
-
-        assertThat(pointBillModels.get(3).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(3).getPoint(), is(5000L));
-
-        assertThat(pointBillModels.get(2).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(2).getPoint(), is(10000L));
-
-        assertThat(pointBillModels.get(1).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(1).getPoint(), is(20000L));
+        assertThat(pointBillModels.size(), is(1));
 
         assertThat(pointBillModels.get(0).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(0).getPoint(), is(50000L));
+        assertThat(pointBillModels.get(0).getPoint(), is(200L));
     }
 
     @Test
@@ -145,14 +122,14 @@ public class PointTaskServiceTest {
         pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND, newbie1.getLoginName());
 
         assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_RECOMMEND), is(1L));
-        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(200L));
+        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(50L));
 
         UserModel newbie2 = this.createFakeUser("newbie2", referrer.getLoginName());
 
         pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND, newbie2.getLoginName());
 
-        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_RECOMMEND), is(2L));
-        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(400L));
+        assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.EACH_RECOMMEND), is(1L));
+        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(50L));
     }
 
     @Test
@@ -165,7 +142,7 @@ public class PointTaskServiceTest {
         pointTaskService.completeAdvancedTask(PointTask.FIRST_REFERRER_INVEST, newbie1.getLoginName());
 
         assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.FIRST_REFERRER_INVEST), is(1L));
-        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(5000L));
+        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(50L));
 
         UserModel newbie2 = this.createFakeUser("newbie2", referrer.getLoginName());
         this.createFakeInvest(newbie2.getLoginName(), fakeLoan.getId(), 2L);
@@ -173,7 +150,7 @@ public class PointTaskServiceTest {
         pointTaskService.completeAdvancedTask(PointTask.FIRST_REFERRER_INVEST, newbie2.getLoginName());
 
         assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(referrer.getLoginName(), PointTask.FIRST_REFERRER_INVEST), is(1L));
-        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(5000L));
+        assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(50L));
     }
 
     @Test
@@ -215,17 +192,17 @@ public class PointTaskServiceTest {
         pointTaskService.completeAdvancedTask(PointTask.FIRST_INVEST_180, loginName);
 
         assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.FIRST_INVEST_180), is(1L));
-        assertThat(accountMapper.findByLoginName(loginName).getPoint(), is(1000L));
+        assertThat(accountMapper.findByLoginName(loginName).getPoint(), is(50L));
 
         this.createFakeInvest(loginName, fakeLoan.getId(), 1L);
 
         assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.FIRST_INVEST_180), is(1L));
-        assertThat(accountMapper.findByLoginName(loginName).getPoint(), is(1000L));
+        assertThat(accountMapper.findByLoginName(loginName).getPoint(), is(50L));
 
         List<PointBillModel> pointBillModels = pointBillMapper.findByLoginName(loginName);
         assertThat(pointBillModels.size(), is(1));
         assertThat(pointBillModels.get(0).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(0).getPoint(), is(1000L));
+        assertThat(pointBillModels.get(0).getPoint(), is(50L));
     }
 
     @Test
@@ -238,17 +215,17 @@ public class PointTaskServiceTest {
         pointTaskService.completeAdvancedTask(PointTask.FIRST_INVEST_360, loginName);
 
         assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.FIRST_INVEST_360), is(1L));
-        assertThat(accountMapper.findByLoginName(loginName).getPoint(), is(1000L));
+        assertThat(accountMapper.findByLoginName(loginName).getPoint(), is(200L));
 
         this.createFakeInvest(loginName, fakeLoan.getId(), 1L);
 
         assertThat(userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, PointTask.FIRST_INVEST_360), is(1L));
-        assertThat(accountMapper.findByLoginName(loginName).getPoint(), is(1000L));
+        assertThat(accountMapper.findByLoginName(loginName).getPoint(), is(200L));
 
         List<PointBillModel> pointBillModels = pointBillMapper.findByLoginName(loginName);
         assertThat(pointBillModels.size(), is(1));
         assertThat(pointBillModels.get(0).getBusinessType(), is(PointBusinessType.TASK));
-        assertThat(pointBillModels.get(0).getPoint(), is(1000L));
+        assertThat(pointBillModels.get(0).getPoint(), is(200L));
     }
 
 
