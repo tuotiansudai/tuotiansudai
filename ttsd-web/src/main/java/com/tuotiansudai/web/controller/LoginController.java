@@ -22,9 +22,6 @@ public class LoginController {
 
     static Logger logger = Logger.getLogger(LoginController.class);
 
-    @Value(value = "${web.domain:#{null}}")
-    private String domain;
-
     @Autowired
     private CaptchaHelper captchaHelper;
 
