@@ -14,21 +14,21 @@ LOGIN_FAILED_TIMES_FORMAT = 'LOGIN_FAILED_TIMES:{0}'
 
 
 class SessionManager(object):
-    def __init__(self):
+    def __init__(self, source='WEB'):
         self.connection = redis.Redis(connection_pool=pool)
+        self.expire_seconds = settings.WEB_TOKEN_EXPIRED_SECONDS if source.upper() == 'WEB' else settings.MOBILE_TOKEN_EXPIRED_SECONDS
 
     def get(self, session_id):
-        user_info = self.connection.get(TOKEN_FORMAT.format(session_id))
+        token_key = TOKEN_FORMAT.format(session_id)
+        user_info = self.connection.get(token_key)
         if user_info:
+            self.connection.expire(token_key, self.expire_seconds)
             return json.loads(user_info)
 
-    def set(self, data, old_session_id, source='WEB'):
+    def set(self, data, old_session_id):
         new_token_id = self._generate_token_id()
         token_key = TOKEN_FORMAT.format(new_token_id)
-        if source.upper() == 'WEB':
-            self.connection.setex(token_key, json.dumps(data), settings.WEB_TOKEN_EXPIRED_SECONDS)
-        else:
-            self.connection.setex(token_key, json.dumps(data), settings.MOBILE_TOKEN_EXPIRED_SECONDS)
+        self.connection.setex(token_key, json.dumps(data), self.expire_seconds)
         old_token_key = TOKEN_FORMAT.format(old_session_id)
         self.connection.delete(old_token_key)
         return new_token_id
@@ -51,7 +51,7 @@ class SessionManager(object):
         if data:
             new_token_id = self._generate_token_id()
             new_token = TOKEN_FORMAT.format(new_token_id)
-            self.connection.setex(new_token, data, settings.MOBILE_TOKEN_EXPIRED_SECONDS)
+            self.connection.setex(new_token, data, self.expire_seconds)
             self.connection.delete(old_token)
             return new_token_id
 
@@ -70,10 +70,10 @@ class UserBannedError(Exception):
 
 class LoginManager(object):
     def __init__(self, form, ip_address="127.0.0.1"):
-        self.ip_address = ip_address
+        self.ip_address = ip_address.split(',')[0] if ip_address else None
         self.form = form
         self.connection = redis.Redis(connection_pool=pool)
-        self.session_manager = SessionManager()
+        self.session_manager = SessionManager(source=self.form.source.data)
         logger.debug("x-forwarded-for:{}".format(ip_address))
 
     def _is_password_valid(self, user):
@@ -89,7 +89,7 @@ class LoginManager(object):
 
     def _success(self, user):
         user_info = {'login_name': user.username, 'mobile': user.mobile, 'roles': [role.role for role in user.roles]}
-        new_token_id = self.session_manager.set(user_info, self.form.token.data, self.form.source.data)
+        new_token_id = self.session_manager.set(user_info, self.form.token.data)
         logger.info("{} login successful. source: {}, token_id: {}, user_info: {}".format(self.form.username.data,
                                                                                           self.form.source.data,
                                                                                           new_token_id, user_info))

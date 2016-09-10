@@ -49,7 +49,8 @@ def logout(session_id):
 
 @sign_in.route("/session/<session_id>", methods=['GET'])
 def get_session(session_id):
-    user_info = service.SessionManager().get(session_id)
+    source = request.args.get('source', 'WEB')
+    user_info = service.SessionManager(source=source).get(session_id)
     if user_info:
         return success({'user_info': user_info, 'token': session_id})
     return fail()
