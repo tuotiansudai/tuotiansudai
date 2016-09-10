@@ -7,7 +7,7 @@ import service
 sign_in = Blueprint('sign_in', __name__)
 
 
-def success(data):
+def success(data={}):
     ret = {'result': True}
     ret.update(data)
     return jsonify(ret), 200
@@ -62,5 +62,11 @@ def refresh_session(session_id):
         new_session_id = service.SessionManager().refresh(session_id)
         return get_session(new_session_id)
     return fail({'message': form.errors})
+
+
+@sign_in.route("/user/<username>/active/", methods=['POST'])
+def active_user(username):
+    service.active(username)
+    return success()
 
 

@@ -156,3 +156,9 @@ class LoginManager(object):
                              device=self.form.device_id.data, success=is_success)
         db.session.add(login_log)
         db.session.commit()
+
+
+def active(username):
+    login_failed_times_key = LOGIN_FAILED_TIMES_FORMAT.format(username)
+    conn = redis.Redis(connection_pool=pool)
+    conn.delete(login_failed_times_key)

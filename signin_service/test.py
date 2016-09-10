@@ -118,6 +118,27 @@ class TestView(TestCase):
         self.assertFalse(response_data['result'])
         self.assertEqual(u'用户已被禁用', response_data['message'])
 
+    def test_should_active_user_given_user_was_banned(self):
+        data = {'username': 'sidneygao', 'source': 'WEB', 'device_id': 'device_id1',
+                'token': 'fake_token', 'password': 'wrong_pwd'}
+        for _ in range(LOGIN_FAILED_MAXIMAL_TIMES):
+            self.app.post('/login/', data=data)
+
+        rv = self.app.post('/login/', data=data)
+        response_data = json.loads(rv.data)
+        self.assertEqual(400, rv.status_code)
+        self.assertEqual(u'用户已被禁用', response_data['message'])
+
+        rv = self.app.post('/user/sidneygao/active/')
+        self.assertEqual(200, rv.status_code)
+
+        data['password'] = '123abc'
+        rv = self.app.post('/login/', data=data)
+        response_data = json.loads(rv.data)
+        self.assertEqual(200, rv.status_code)
+        self.assertTrue(response_data['result'])
+        self.assertEqual('sidneygao', response_data['user_info']['login_name'])
+
     def test_should_login_successful_without_password(self):
         data = {'username': 'sidneygao', 'source': 'WEB', 'device_id': 'device_id1',
                 'token': 'fake_token'}
