@@ -95,7 +95,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage"
-                  value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.membership.repository.model"/>
+                  value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.membership.repository.model,com.tuotiansudai.activity.repository.autumn.model"/>
     </bean>
     <bean id="activitySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="activityHikariCPDataSource"/>
@@ -106,7 +106,7 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <property name="basePackage"
-                  value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.point.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.membership.repository.mapper"/>
+                  value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.point.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.membership.repository.mapper,com.tuotiansudai.activity.repository.autumn.mapper"/>
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
