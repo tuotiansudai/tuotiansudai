@@ -63,7 +63,7 @@ def mk_static_zip():
 
 def mk_signin_zip():
     for i in ('1', '2'):
-        local('cp /workspace/v2config/default/signin_service/{0}/* ./sigin_service/'.format(i))
+        local('cp /workspace/v2config/default/signin_service/{0}/* ./signin_service/'.format(i))
         local('cd ./signin_service/ && zip -r signin_{0}.zip *.py *.ini *.yml'.format(i))
 
 
@@ -181,12 +181,12 @@ def deploy_ask():
 @roles('signin')
 @parallel
 def deploy_sign_in():
-    upload_project(local_dir='./signin_service/*.zip', remote_dir='/workspace')
     for i in ('1', '2'):
+        folder_name = 'signin_{0}'.format(i)
+        upload_project(local_dir='./signin_service/{0}.zip'.format(folder_name), remote_dir='/workspace')
         with cd('/workspace'):
-            folder_name = 'signin_{0}'.format(i)
             sudo('rm -rf {0}'.format(folder_name))
-            sudo('unzip {0}.zip'.format(folder_name))
+            sudo('unzip {0}.zip -d {0}'.format(folder_name))
         with cd('/workspace/{0}'.format(folder_name)):
             sudo('/usr/local/bin/docker-compose -f prod.yml -p ttsd stop')
             sudo('/usr/local/bin/docker-compose -f prod.yml -p ttsd rm -f')
