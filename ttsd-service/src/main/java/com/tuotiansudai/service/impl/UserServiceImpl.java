@@ -17,7 +17,6 @@ import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.spring.MyAuthenticationManager;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import com.tuotiansudai.util.RandomStringGenerator;
@@ -65,15 +64,6 @@ public class UserServiceImpl implements UserService {
     private ReferrerRelationService referrerRelationService;
 
     @Autowired
-    private AuditLogService auditLogService;
-
-    @Autowired
-    private MyAuthenticationManager myAuthenticationManager;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
     private BindBankCardService bindBankCardService;
 
     @Autowired
@@ -84,11 +74,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PrepareUserMapper prepareUserMapper;
+
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
-
-    @Value("${web.login.max.failed.times}")
-    private int times;
 
     public static String SHA = "SHA";
 
@@ -191,10 +179,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
         dto.setMobile(userMapper.findByLoginName(dto.getLoginName()).getMobile());
-        BaseDto<PayDataDto> baseDto = payWrapperClient.register(dto);
-        myAuthenticationManager.createAuthentication(dto.getLoginName());
-
-        return baseDto;
+        return payWrapperClient.register(dto);
     }
 
     @Override
@@ -261,24 +246,6 @@ public class UserServiceImpl implements UserService {
                 throw new EditUserException(baseDto.getData().getMessage());
             }
         }
-    }
-
-    @Override
-    @Transactional
-    public void updateUserStatus(String loginName, UserStatus userStatus, String ip, String operatorLoginName) {
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        userModel.setStatus(userStatus);
-        userModel.setLastModifiedTime(new Date());
-        userModel.setLastModifiedUser(operatorLoginName);
-        userMapper.updateUser(userModel);
-        String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", loginName);
-        if (userStatus == UserStatus.ACTIVE) {
-            redisWrapperClient.del(redisKey);
-        } else {
-            redisWrapperClient.set(redisKey, String.valueOf(times));
-        }
-
-        auditLogService.createUserActiveLog(loginName, operatorLoginName, userStatus, ip);
     }
 
     private void checkUpdateUserData(EditUserDto editUserDto) throws EditUserException {

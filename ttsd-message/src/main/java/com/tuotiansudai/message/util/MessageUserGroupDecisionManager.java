@@ -1,6 +1,7 @@
 package com.tuotiansudai.message.util;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
@@ -43,6 +44,9 @@ public class MessageUserGroupDecisionManager {
 
     @SuppressWarnings(value = "unchecked")
     private boolean contains(String loginName, MessageUserGroup messageUserGroup, long messageId) {
+        if (Strings.isNullOrEmpty(loginName) || userMapper.findByLoginName(loginName) == null) {
+            return false;
+        }
         String mobile = userMapper.findByLoginName(loginName).getMobile();
         switch (messageUserGroup) {
             case ALL_USER:

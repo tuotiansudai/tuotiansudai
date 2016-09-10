@@ -32,8 +32,7 @@ public abstract class BaseClient {
 
     protected ObjectMapper objectMapper = new ObjectMapper();
 
-    @Autowired
-    private OkHttpClient okHttpClient;
+    private OkHttpClient okHttpClient = new OkHttpClient();
 
     protected String execute(String path, String requestJson, String method) {
         String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);

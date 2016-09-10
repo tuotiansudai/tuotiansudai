@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-session.xml"})
 @Transactional
 public abstract class ServiceTestBase {
 

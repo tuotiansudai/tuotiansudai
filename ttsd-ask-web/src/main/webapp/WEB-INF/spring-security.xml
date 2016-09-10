@@ -11,7 +11,7 @@
 
     <context:property-placeholder location="classpath*:ttsd-env.properties"/>
 
-    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.spring.MyAccessDeniedHandler">
+    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.spring.security.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/error/404"/>
         <beans:property name="accessDeniedExceptionRedirect">
             <beans:map>
@@ -22,18 +22,23 @@
 
     <beans:bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
 
-    <beans:bean id="affirmativeBased" class="com.tuotiansudai.spring.MyAffirmativeBased">
+    <beans:bean id="affirmativeBased" class="com.tuotiansudai.spring.security.MyAffirmativeBased">
         <beans:constructor-arg ref="webExpressionVoter"/>
     </beans:bean>
 
-    <beans:bean id="myLoginUrlAuthenticationEntryPoint" class="com.tuotiansudai.spring.MyLoginUrlAuthenticationEntryPoint">
+    <beans:bean id="myLoginUrlAuthenticationEntryPoint" class="com.tuotiansudai.spring.security.MyLoginUrlAuthenticationEntryPoint">
         <beans:constructor-arg name="loginFormUrl" value="${web.server}/login"/>
     </beans:bean>
 
-    <http auto-config="true" use-expressions="true" access-decision-manager-ref="affirmativeBased" entry-point-ref="myLoginUrlAuthenticationEntryPoint">
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider ref="myAuthenticationProvider"/>
+    </authentication-manager>
+
+    <http auto-config="true" use-expressions="true" access-decision-manager-ref="affirmativeBased" entry-point-ref="myLoginUrlAuthenticationEntryPoint" authentication-manager-ref="authenticationManager">
         <access-denied-handler ref="myAccessDeniedHandler"/>
         <form-login login-page="${web.server}/login"/>
 
+        <custom-filter ref="myPreAuthenticatedProcessingFilter" position="PRE_AUTH_FILTER"/>
 
         <!--DO NOT MODIFY THE BELLOW CONFIG ANYTIME!-->
         <intercept-url pattern="/ask/dist/**" access="permitAll()"/>
@@ -44,6 +49,5 @@
 
 
         <intercept-url pattern="/**" access="permitAll()"/>
-
     </http>
 </beans:beans>
