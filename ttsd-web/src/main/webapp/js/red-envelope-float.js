@@ -115,6 +115,7 @@ define(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension',
     //show feedback
     $('.fix-nav-list .show-feed').on('click', function(event) {
         event.preventDefault();
+        $("#captcha").attr('src', '/feedback/captcha?' + new Date().getTime().toString());
         var $self=$(this),
             $feedBack=$('.feedback-container');
         $self.addClass('active');

@@ -26,7 +26,7 @@ import java.util.Date;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-session.xml"})
 @Transactional
 public class ContractServiceTest {
 
