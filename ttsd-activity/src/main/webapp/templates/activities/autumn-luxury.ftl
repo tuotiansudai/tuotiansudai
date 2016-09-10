@@ -5,7 +5,7 @@
 <div style="display: none" class="mobile" data-mobile='<@global.security.authentication property="principal.mobile" />'></div>
 </@global.isNotAnonymous>
 <div class="tour-slide">
-    <div class="activity-date">第二期活动时间：9月01日~9月30日</div>
+    <div class="activity-date">第二期活动时间：9月11日~9月17日</div>
 </div>
 
 <div class="luxury-list-container">
