@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 
 public class MobileAppUserMessageServiceTest extends ServiceTestBase {
 
-
     @Autowired
     private MobileAppUserMessageService mobileAppUserMessageService;
 

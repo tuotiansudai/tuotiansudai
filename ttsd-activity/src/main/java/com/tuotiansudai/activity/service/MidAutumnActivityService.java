@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -32,9 +33,6 @@ public class MidAutumnActivityService {
 
     @Autowired
     private AutumnService autumnService;
-
-    @Autowired
-    private ReferrerRelationMapper referrerRelationMapper;
 
     @Autowired
     private UserMapper userMapper;
@@ -83,12 +81,18 @@ public class MidAutumnActivityService {
             }
         });
 
+        String isOverdue = "false";
+        if (DateTime.now().toDate().before(activityMinAutumnStartTime) || DateTime.now().toDate().after(activityMinAutumnEndTime)) {
+            isOverdue = "true";
+        }
+
         Map<String,Object> homeData = Maps.newConcurrentMap();
         homeData.put("myFamily",Lists.newArrayList(family));
         homeData.put("myFamilyNum",myFamilyNum);
         homeData.put("totalInvestAmount",AmountConverter.convertCentToString(totalInvestAmount));
         homeData.put("todayInvestAmount",AmountConverter.convertCentToString(todayInvestAmount));
         homeData.put("topThreeFamily",getTopThreeFamily(allFamily));
+        homeData.put("isOverdue",isOverdue);
 
         return homeData;
     }
@@ -101,6 +105,9 @@ public class MidAutumnActivityService {
             for(String name : family){
                 totalFamilyInvestAmount += investMapper.sumInvestAmount(null, name, null, null, null, activityMinAutumnStartTime, activityMinAutumnEndTime, InvestStatus.SUCCESS, null);
             }
+            if(totalFamilyInvestAmount == 0){
+                continue;
+            }
             MidAutumnFamilyDto midAutumnFamilyDto = new MidAutumnFamilyDto(key,AmountConverter.convertCentToString(totalFamilyInvestAmount),totalFamilyInvestAmount);
             allFamilyAmountList.add(midAutumnFamilyDto);
         }
@@ -111,6 +118,7 @@ public class MidAutumnActivityService {
                 return Long.compare(o2.getAmount(),o1.getAmount());
             }
         });
+
         return allFamilyAmountList.size() > 3 ? allFamilyAmountList.subList(0,3) : allFamilyAmountList;
     }
 

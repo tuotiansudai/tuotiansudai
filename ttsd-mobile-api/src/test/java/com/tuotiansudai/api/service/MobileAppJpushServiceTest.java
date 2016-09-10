@@ -14,16 +14,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static junit.framework.TestCase.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
-public class MobileAppJpushServiceTest {
+public class MobileAppJpushServiceTest extends ServiceTestBase {
+
     @Autowired
     private MobileAppJpushService mobileAppJpushService;
+
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
     @Test
-    public void shouldStoreJPushIdIsSuccess(){
+    public void shouldStoreJPushIdIsSuccess() {
         JpushRequestDto jPushRequestDto = new JpushRequestDto();
         String loginName = "test";
         BaseParam baseParam = new BaseParam();
@@ -31,8 +31,8 @@ public class MobileAppJpushServiceTest {
         jPushRequestDto.setJpushId("1111");
         jPushRequestDto.setBaseParam(baseParam);
         mobileAppJpushService.storeJpushId(jPushRequestDto);
-        String jpushId = redisWrapperClient.hget("api:jpushId:store",loginName);
-        assertEquals("1111",jpushId);
+        String jpushId = redisWrapperClient.hget("api:jpushId:store", loginName);
+        assertEquals("1111", jpushId);
         redisWrapperClient.del("api:jpushId:store");
     }
 }

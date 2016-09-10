@@ -1,7 +1,8 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-public class LoginResponseDataDto extends BaseResponseDataDto{
-    private String token;
+public class LoginResponseDataDto extends BaseResponseDataDto {
+
+    private String token = "";
 
     public String getToken() {
         return token;

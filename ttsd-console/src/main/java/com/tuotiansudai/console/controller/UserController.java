@@ -14,7 +14,7 @@ import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.spring.security.SignInClient;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
@@ -44,9 +44,6 @@ public class UserController {
     private UserServiceConsole userServiceConsole;
 
     @Autowired
-    private UserMapperConsole userMapperConsole;
-
-    @Autowired
     private ImpersonateService impersonateService;
 
     @Autowired
@@ -63,6 +60,12 @@ public class UserController {
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private SignInClient signInClient;
+
+    @Autowired
+    private AuditLogService auditLogService;
 
     @Value("${web.server}")
     private String webServer;
@@ -197,22 +200,13 @@ public class UserController {
         return mv;
     }
 
-    @RequestMapping(value = "/user/{loginName}/disable", method = RequestMethod.POST)
-    @ResponseBody
-    public String disableUser(@PathVariable String loginName, HttpServletRequest request) {
-        if (loginName.equals(LoginUserInfo.getLoginName())) {
-            return "不能禁用当前登录用户";
-        }
-        String ip = RequestIPParser.parse(request);
-        userService.updateUserStatus(loginName, UserStatus.INACTIVE, ip, LoginUserInfo.getLoginName());
-        return "OK";
-    }
-
     @RequestMapping(value = "/user/{loginName}/enable", method = RequestMethod.POST)
     @ResponseBody
     public String enableUser(@PathVariable String loginName, HttpServletRequest request) {
         String ip = RequestIPParser.parse(request);
-        userService.updateUserStatus(loginName, UserStatus.ACTIVE, ip, LoginUserInfo.getLoginName());
+        String mobile = userService.getMobile(loginName);
+        signInClient.unlockUser(loginName, mobile);
+        auditLogService.createUserActiveLog(loginName, LoginUserInfo.getLoginName(), UserStatus.ACTIVE, ip);
         return "OK";
     }
 
