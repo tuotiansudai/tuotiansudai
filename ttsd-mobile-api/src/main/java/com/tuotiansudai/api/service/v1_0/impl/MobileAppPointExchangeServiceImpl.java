@@ -5,7 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.PointExchangeRequestDto;
 import com.tuotiansudai.api.dto.v1_0.PointExchangeResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointExchangeService;
-import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
+import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.service.PointExchangeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MobileAppPointExchangeServiceImpl implements MobileAppPointExchangeService {
 
     @Autowired
-    private CouponExchangeMapper couponExchangeMapper;
+    private ProductMapper productMapper;
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
@@ -33,7 +33,7 @@ public class MobileAppPointExchangeServiceImpl implements MobileAppPointExchange
 
         PointExchangeResponseDataDto pointExchangeResponseDataDto = new PointExchangeResponseDataDto();
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        long CouponExchangePoint = couponExchangeMapper.findByCouponId(Long.parseLong(couponId)).getExchangePoint();
+        long CouponExchangePoint = productMapper.findByCouponId(Long.parseLong(couponId)).getPoints();
         long userPoint = accountModel.getPoint();
         if(pointExchangeService.exchangeableCoupon(Long.parseLong(couponId), loginName)){
             if(pointExchangeService.exchangeCoupon(Long.parseLong(couponId),loginName,CouponExchangePoint)){

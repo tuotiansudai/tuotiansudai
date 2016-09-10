@@ -18,10 +18,8 @@ public class ExchangeCouponView extends CouponModel {
         super(couponDto);
     }
 
-    public ExchangeCouponView(CouponModel couponModel, long exchangePoint, int seq) {
+    public ExchangeCouponView(CouponModel couponModel) {
         super(couponModel);
-        this.exchangePoint = exchangePoint;
-        this.seq = seq;
     }
 
     public Long getExchangePoint() {

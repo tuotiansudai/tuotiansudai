@@ -1,9 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.repository.model.CouponType;
@@ -19,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
@@ -35,9 +32,6 @@ public class CouponMapperTest {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private CouponExchangeMapper couponExchangeMapper;
 
     private CouponModel fakeCouponModel(){
         CouponModel couponModel = new CouponModel();
@@ -108,13 +102,7 @@ public class CouponMapperTest {
 
         couponMapper.create(couponModel);
 
-        CouponExchangeModel couponExchangeModel = new CouponExchangeModel();
-        couponExchangeModel.setCouponId(couponModel.getId());
-        couponExchangeModel.setExchangePoint(1000);
-        couponExchangeModel.setSeq(1);
-        couponExchangeMapper.create(couponExchangeModel);
-
-        return new ExchangeCouponView(couponModel, couponExchangeModel.getExchangePoint(), couponExchangeModel.getSeq());
+        return new ExchangeCouponView(couponModel);
     }
 
     @Test

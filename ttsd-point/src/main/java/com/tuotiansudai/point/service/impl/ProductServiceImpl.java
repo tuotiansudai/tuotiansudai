@@ -4,9 +4,7 @@ package com.tuotiansudai.point.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
@@ -59,9 +57,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
-
-    @Autowired
-    private CouponExchangeMapper couponExchangeMapper;
 
     @Autowired
     private PointBillService pointBillService;
