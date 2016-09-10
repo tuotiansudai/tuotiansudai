@@ -8,23 +8,21 @@
     <div class="frame-box-one clearfix">
         <div class="decorate-bottom"></div>
         <div class="frame-box-one-inner clearfix">
-        <img src="${staticServer}/activity/images/mid-autumn/title-one.png" class="main-title" alt="组团投资“礼”遇全家，赢平板电脑">
+            <img src="${staticServer}/activity/images/mid-autumn/title-one.png" class="main-title" alt="组团投资“礼”遇全家，赢平板电脑">
 
-
-        <div class="normal-border note-box">
-            <div class="note clearfix">
-                活动期间：邀请好友加入家庭，组团冲击每日累计投资额，全体成员都可获得奖励！ <br/>
-                同时，根据每个家庭活动期间的所有累计投资额进行排名，第一名获得三星平板电脑大奖，前三名均可获得丰厚奖品！<br/>
-            </div>
+            <div class="normal-border note-box">
+                <div class="note clearfix">
+                    活动期间：邀请好友加入家庭，组团冲击每日累计投资额，全体成员都可获得奖励！ <br/>
+                    同时，根据每个家庭活动期间的所有累计投资额进行排名，第一名获得三星平板电脑大奖，前三名均可获得丰厚奖品！<br/>
+                </div>
             <@global.isNotAnonymous>
                 <div class="copy-link-box" id="copyLinkBox">
                     <b for="copy-title">立即邀请好友加入家庭</b>
                     <span  class="copy-link" id="clipboard_text">https://tuotiansudai.com/register/user?referrer=${loginName}</span>
-                    <em class="button" id="copy-button" data-clipboard-target="clipboard_text">复制链接发送给好友</em>
-                    <div class="tc"><a href="#" class="btn-normal-invest">立即邀请好友组家庭</a> </div>
+                    <div class="tc"><a href="javascript:void(0);" class="btn-normal-invest" id="copy-button" data-clipboard-target="clipboard_text">复制链接发送给好友</a> </div>
                 </div>
             </@global.isNotAnonymous>
-        </div>
+            </div>
 
         <div class="normal-border my-family-group">
             <@global.isNotAnonymous>
@@ -35,7 +33,7 @@
 
             <@global.isAnonymous>
                 <div class="no-logged tc">
-                    <a href="/login" class="btn-normal-invest">立即登录查看我的家庭</a>
+                    <a href="/login?redirect=/activity/mid-autumn" class="btn-normal-invest">立即登录查看我的家庭</a>
                 </div>
             </@global.isAnonymous>
             <#if myFamilyNumber != "">
@@ -50,93 +48,93 @@
                         </dd>
                     </dl>
                 </div>
-             </div>
-        </#if>
-        <div class="normal-border today-invest-box clearfix">
-            <div class="sub-title">我的家庭今日投资额：${myFamilyInvestAmount}元</div>
-            <dl class="red-bag-normal">
-                <dt><span><b>5</b>元红包</span></dt>
-                <dd><span>每日投资满10000元
-                    <i>家庭全员均可获得</i></span></dd>
-            </dl>
-            <dl class="red-bag-normal">
-                <dt><span><b>15</b>元红包</span></dt>
-                <dd><span>每日投资满20000元
-                    <i>家庭全员均可获得</i></span></dd>
-            </dl>
-            <dl class="red-bag-normal">
-                <dt><span><b>50</b>元红包</span></dt>
-                <dd><span>每日投资满50000元
-                    <i>家庭全员均可获得</i></span></dd>
-            </dl>
-            <div class="tc clearfix">
-                <a href="/loan-list" class="btn-normal-invest">立即投资</a>
-            </div>
-        </div>
-
-        <div class="normal-border today-invest-box clearfix">
-            <div class="sub-title">我的家庭累计投资额：${myFamilyTotalInvestAmount}元</div>
-
-            <div class="product-show">
-                <img src="${staticServer}/activity/images/mid-autumn/product.jpg" alt="">
-                <span>家庭累计投资排行第一名可获得三星平板电脑 <br/>
-                （由家庭团长获得）</span>
-            </div>
-
-            <div class="product-detail">
-                <table class="table">
-                    <caption>家庭累计投资排行</caption>
-                    <thead>
-                    <tr>
-                        <th>家庭名称</th>
-                        <th>累计投资额（元）</th>
-                        <th>奖品</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <#list allFamilyInvestAmounts as family>
-                        <tr>
-                            <td>${family.name}</td>
-                            <td>${family.investAmount}</td>
-                            <td>
-                                <#if family_index  == 0>
-                                    三星Galaxy平板电脑
-                                </#if>
-
-                                <#if family_index  == 1>
-                                    平分1000元红包
-                                </#if>
-
-                                <#if family_index  == 2>
-                                    平分500元红包 +每人0.5%加息券
-                                </#if>
-                            </td>
-                        </tr>
-                    </#list>
-                    </tbody>
-                </table>
-                <div class="my-family-bag">
-                    <dl class="red-bag-normal">
-                        <dt><span><b>1000</b>元红包</span></dt>
-                        <dd><span>第二名全员平分1000元红包</span></dd>
-                    </dl>
-                    <dl class="red-bag-normal">
-                        <dt><span class="hack"><b>500</b>元红包</span>
-                            <span class="hack"><b>0.5%</b>加息券</span>
-                        </dt>
-                        <dd><span>第三名全员平分500元红包
-                        <i class="br">+每人0.5%加息券</i></span></dd>
-                    </dl>
-
-                    <div class="tc clearfix">
-                        <a href="/loan-list" class="btn-normal-invest">立即投资</a>
-                    </div>
+            </#if>
+            <div class="normal-border today-invest-box clearfix">
+                <div class="sub-title">我的家庭今日投资额：${myFamilyInvestAmount}元</div>
+                <dl class="red-bag-normal">
+                    <dt><span><b>5</b>元红包</span></dt>
+                    <dd><span>每日投资满10000元
+                    <i class="br">家庭全员均可获得</i></span></dd>
+                </dl>
+                <dl class="red-bag-normal">
+                    <dt><span><b>15</b>元红包</span></dt>
+                    <dd><span>每日投资满20000元
+                    <i class="br">家庭全员均可获得</i></span></dd>
+                </dl>
+                <dl class="red-bag-normal">
+                    <dt><span><b>50</b>元红包</span></dt>
+                    <dd><span>每日投资满50000元
+                    <i class="br">家庭全员均可获得</i></span></dd>
+                </dl>
+                <div class="tc clearfix">
+                    <a href="/loan-list?redirect=/activity/mid-autumn" class="btn-normal-invest">立即投资</a>
                 </div>
             </div>
 
+            <div class="normal-border today-invest-box clearfix">
+                <div class="sub-title">我的家庭累计投资额：${myFamilyTotalInvestAmount}元</div>
+
+                <div class="product-show">
+                    <img src="${staticServer}/activity/images/mid-autumn/product.jpg" alt="">
+                <span>家庭累计投资排行第一名可获得三星平板电脑 <br/>
+                （由家庭团长获得）</span>
+                </div>
+
+                <div class="product-detail">
+                    <table class="table">
+                        <caption>家庭累计投资排行</caption>
+                        <thead>
+                        <tr>
+                            <th>家庭名称</th>
+                            <th>累计投资额（元）</th>
+                            <th>奖品</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <#list allFamilyInvestAmounts as family>
+                            <tr>
+                                <td>${family.name}</td>
+                                <td>${family.investAmount}</td>
+                                <td>
+                                    <#if family_index  == 0>
+                                        三星Galaxy平板电脑
+                                    </#if>
+
+                                    <#if family_index  == 1>
+                                        平分1000元红包
+                                    </#if>
+
+                                    <#if family_index  == 2>
+                                        平分500元红包 +每人0.5%加息券
+                                    </#if>
+                                </td>
+                            </tr>
+                            </#list>
+                        </tbody>
+                    </table>
+                    <div class="my-family-bag">
+                        <dl class="red-bag-normal">
+                            <dt><span><b>1000</b>元红包</span></dt>
+                            <dd><span>第二名全员平分1000元红包</span></dd>
+                        </dl>
+                        <dl class="red-bag-normal">
+                            <dt><span class="hack"><b>500</b>元红包</span>
+                                <span class="hack"><b>0.5%</b>加息券</span>
+                            </dt>
+                            <dd><span>第三名全员平分500元红包
+                        <i class="br">+每人0.5%加息券</i></span></dd>
+                        </dl>
+
+                        <div class="tc clearfix">
+                            <a href="/loan-list?redirect=/activity/mid-autumn" class="btn-normal-invest">立即投资</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
-    </div>
+   </div>
 
     <div class="frame-box-two">
         <div class="decorate-bottom"></div>
@@ -166,11 +164,11 @@
                     <div class="tag"><i></i><span>拓天速贷</span></div>
                     <span class="bill-amount">
                         <i class="unit">¥</i>
-                        <i class="amount"> 300</i>
+                        <i class="amount"> 100</i>
                         元话费
                     </span>
                 </div>
-                <span class="title">一等奖可得300元话费</span>
+                <span class="title">二等奖可得100元话费</span>
 
             </div>
 
@@ -179,11 +177,11 @@
                     <div class="tag"><i></i><span>拓天速贷</span></div>
                     <span class="bill-amount">
                         <i class="unit">¥</i>
-                        <i class="amount"> 300</i>
+                        <i class="amount"> 50</i>
                         元话费
                     </span>
                 </div>
-                <span class="title">一等奖可得300元话费</span>
+                <span class="title">三等奖可得50元话费</span>
 
             </div>
         </div>
@@ -197,8 +195,7 @@
         4、中奖结果将于次日由客服联系确认，红包和加息券在中奖后三个工作日发放，用户可在“我的账户-我的宝藏”中查看；实物奖品将于活动
         结束后七个工作日内统一安排发放；部分地区邮费自付，详询客服；<br/>
         5、活动结束后，如遇多个家庭累计投资金额一致，则组建时间靠前的家庭优先获奖，组建家庭较晚的依次顺延到下一奖项；<br/>
-        6、活动中如果出现恶意刷量等违规行为，拓天速贷将取消您获得奖励的资格，并有权撤销违规交易，拓天速贷在法律范围内保留对本活动的最
-        终解释权。<br/>
+        6、活动中如果出现恶意刷量等违规行为，拓天速贷将取消您获得奖励的资格，并有权撤销违规交易，拓天速贷在法律范围内保留对本活动的最终解释权。<br/>
     </div>
     <div class="frame-box-four">
         <div class="landing-phone-section-header">
