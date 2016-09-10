@@ -42,8 +42,10 @@ public class AutumnService {
             for (List<String> family : allFamily.values()) {
                 if(family.contains(userModel.getReferrer())){
                     family.add(userModel.getLoginName());
+                    break;
                 }else{
                     allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getReferrer(),userModel.getLoginName()));
+                    break;
                 }
             }
 
