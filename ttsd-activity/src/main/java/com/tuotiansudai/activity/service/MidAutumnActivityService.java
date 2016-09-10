@@ -82,7 +82,7 @@ public class MidAutumnActivityService {
         });
 
         String isOverdue = "false";
-        if (DateTime.now().toDate().after(activityMinAutumnEndTime)) {
+        if (DateTime.now().toDate().before(activityMinAutumnStartTime) || DateTime.now().toDate().after(activityMinAutumnEndTime)) {
             isOverdue = "true";
         }
 
