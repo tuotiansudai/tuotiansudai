@@ -38,8 +38,6 @@ public interface UserService {
 
     void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException, ReferrerRelationException;
 
-    void updateUserStatus(String loginName, UserStatus userStatus, String ip, String operatorLoginName);
-
     EditUserDto getEditUser(String loginName);
 
     boolean verifyPasswordCorrect(String loginName, String password);

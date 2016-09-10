@@ -64,12 +64,6 @@ public class UserServiceImpl implements UserService {
     private ReferrerRelationService referrerRelationService;
 
     @Autowired
-    private AuditLogService auditLogService;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
     private BindBankCardService bindBankCardService;
 
     @Autowired
@@ -83,9 +77,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
-
-    @Value("${web.login.max.failed.times}")
-    private int times;
 
     public static String SHA = "SHA";
 
@@ -255,24 +246,6 @@ public class UserServiceImpl implements UserService {
                 throw new EditUserException(baseDto.getData().getMessage());
             }
         }
-    }
-
-    @Override
-    @Transactional
-    public void updateUserStatus(String loginName, UserStatus userStatus, String ip, String operatorLoginName) {
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        userModel.setStatus(userStatus);
-        userModel.setLastModifiedTime(new Date());
-        userModel.setLastModifiedUser(operatorLoginName);
-        userMapper.updateUser(userModel);
-        String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", loginName);
-        if (userStatus == UserStatus.ACTIVE) {
-            redisWrapperClient.del(redisKey);
-        } else {
-            redisWrapperClient.set(redisKey, String.valueOf(times));
-        }
-
-        auditLogService.createUserActiveLog(loginName, operatorLoginName, userStatus, ip);
     }
 
     private void checkUpdateUserData(EditUserDto editUserDto) throws EditUserException {
