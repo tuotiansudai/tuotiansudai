@@ -5,7 +5,32 @@
         <div class="left-bg"></div>
         <div class="right-bg"></div>
         <div class="detail-img">
-        	<img src="${introduce}" width="100%">
+            <#switch prizeId!"">
+                <#case 1>
+                    <img src="upload/20160910/3471473485766113.jpg" width="100%">
+                    <#break >
+                <#case 2>
+                    <img src="upload/20160910/54941473485786239.jpg" width="100%">
+                    <#break >
+                <#case 3>
+                    <img src="upload/20160910/7561473485815624.jpg" width="100%">
+                    <#break >
+                <#case 4>
+                    <img src="upload/20160910/75001473485681804.jpg" width="100%">
+                    <#break >
+                <#case 5>
+                    <img src="upload/20160910/42911473485742523.jpg" width="100%">
+                    <#break >
+                <#case 6>
+                    <img src="upload/20160910/47191473485652945.jpg" width="100%">
+                    <#break >
+                <#case 7>
+                    <img src="upload/20160910/42911473485742523.jpg" width="100%">
+                    <#break >
+                <#case 8>
+                    <img src="upload/20160910/27481473485719594.jpg" width="100%">
+                    <#break >
+            </#switch>
         </div>
         <div class="detail-btn">
         	<@global.isAnonymous>

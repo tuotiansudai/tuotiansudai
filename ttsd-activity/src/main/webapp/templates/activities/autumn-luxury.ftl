@@ -19,7 +19,7 @@
                 <h1>简单三步，免费去旅游！</h1>
                 <P>
                     <em>步骤一：</em>进入”我要投资“页面；<br/>
-                    <em>步骤二：</em>找到预期年化收益为8%的标的并对其投资；<br/>
+                    <em>步骤二：</em>找到预期年化收益为7%的标的并对其投资；<br/>
                     <em>步骤三：</em><span class="info"><b>”零元兑“</b>玩法：每日投资该标的达到指定额度，即可0元获得该商品，同时又能拿收益！<br/>
                     <b class="space">”折扣兑“</b>玩法：如每日投资该标的不满1万元，可投资少量金额以获得该商品折扣券，同时又能拿收益，详见积分商城！</span>
                 </P>
@@ -34,8 +34,12 @@
                             <span><em>额外收益</em><i>3106</i>元</span>
                         </div>
                         <div class="img-info">
-                            <a href="#" target="_blank">
-                                <img src="/activity/images/autumn-tour/p01.jpg"></a>
+                            <a href="/activity/autumn/luxury/1/detail" target="_blank">
+                                <img src="/activity/images/sign/actor/luxury/pp01.png">
+                            </a>
+                            <#--<a href="/upload/20160910/60391473486032623.jpg" target="_blank">-->
+                                <#--<img src="/activity/images/sign/actor/luxury/pp01.png">-->
+                            <#--</a>-->
                             <span class="kind-text">YSL蓝色钱包</span>
                             <div class="kind-bottom">
                                 <span class="fl">商品价格<em>5000</em>元</span>
@@ -49,12 +53,11 @@
                             <span><em>额外收益</em><i>3728</i>元</span>
                         </div>
                         <div class="img-info">
-                            <a href="#" target="_blank">
-                                <img src="/activity/images/autumn-tour/p01.jpg"></a>
+                            <a href="/activity/autumn/luxury/2/detail" target="_blank">
+                                <img src="/activity/images/sign/actor/luxury/pp02.png"></a>
                             <span class="kind-text">LV红色漆皮钱包</span>
                             <div class="kind-bottom">
                                 <span class="fl">商品价格<em>6000</em>元</span>
-
                                 <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
 
                             </div>
@@ -66,12 +69,11 @@
                             <span><em>额外收益</em><i>4660</i>元</span>
                         </div>
                         <div class="img-info">
-                            <a href="#" target="_blank">
-                                <img src="/activity/images/autumn-tour/p01.jpg"></a>
+                            <a href="/activity/autumn/luxury/3/detail" target="_blank">
+                                <img src="/activity/images/sign/actor/luxury/pp03.png"></a>
                             <span class="kind-text">Dior粉色漆皮钱包</span>
                             <div class="kind-bottom">
-                                <span class="fl">商品价格<em>7000</em>元</span>
-
+                                <span class="fl">商品价格<em>9100</em>元</span>
                                 <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
 
                             </div>
@@ -80,15 +82,50 @@
 
                     <div class="prize-box swiper-slide">
                         <div class="pk-title clearfix">
-                            <span><em>投资</em><i>5万</i>元</span>
-                            <span><em>额外收益</em><i>1000.00万</i>元</span>
+                            <span><em>投资</em><i>1.5万</i>元</span>
+                            <span><em>额外收益</em><i>4660</i>元</span>
                         </div>
                         <div class="img-info">
-                            <a href="#" target="_blank">
-                                <img src="/activity/images/autumn-tour/p01.jpg"></a>
+                            <a href="/activity/autumn/luxury/4/detail" target="_blank">
+                                <img src="/activity/images/sign/actor/luxury/pp04.png"></a>
                             <span class="kind-text">浪琴手表黛绰维纳系列</span>
                             <div class="kind-bottom">
                                 <span class="fl">商品价格<em>9100</em>元</span>
+                                <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="prize-box swiper-slide">
+                        <div class="pk-title clearfix">
+                            <span><em>投资</em><i>1.8万</i>元</span>
+                            <span><em>额外收益</em><i>5592</i>元</span>
+                        </div>
+                        <div class="img-info">
+                            <a href="/activity/autumn/luxury/5/detail" target="_blank">
+                                <img src="/activity/images/sign/actor/luxury/pp05.png">
+                            </a>
+                            <span class="kind-text">浪琴手表康卡斯系列</span>
+                            <div class="kind-bottom">
+                                <span class="fl">商品价格<em>7000</em>元</span>
+                                <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prize-box swiper-slide">
+                        <div class="pk-title clearfix">
+                            <span><em>投资</em><i>2万</i>元</span>
+                            <span><em>额外收益</em><i>6213</i>元</span>
+                        </div>
+                        <div class="img-info">
+                            <a href="/activity/autumn/luxury/6/detail" target="_blank">
+                                <img src="/activity/images/sign/actor/luxury/pp06.png"></a>
+                            <span class="kind-text">浪琴手表黛绰维纳系列</span>
+                            <div class="kind-bottom">
+                                <span class="fl">商品价格<em>11360</em>元</span>
 
                                 <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
 
@@ -97,16 +134,15 @@
                     </div>
                     <div class="prize-box swiper-slide">
                         <div class="pk-title clearfix">
-                            <span><em>投资</em><i>5万</i>元</span>
-                            <span><em>额外收益</em><i>1000.00万</i>元</span>
+                            <span><em>投资</em><i>2.4万</i>元</span>
+                            <span><em>额外收益</em><i>7456</i>元</span>
                         </div>
                         <div class="img-info">
-                            <a href="#" target="_blank">
-                                <img src="/activity/images/autumn-tour/p01.jpg"></a>
-                            <span class="kind-text">erer</span>
+                            <a href="/activity/autumn/luxury/7/detail" target="_blank">
+                                <img src="/activity/images/sign/actor/luxury/pp07.png"></a>
+                            <span class="kind-text">LV小号手袋开心果绿</span>
                             <div class="kind-bottom">
-                                <span class="fl">商品价格<em>56</em>元</span>
-
+                                <span class="fl">商品价格<em>11600</em>元</span>
                                 <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
 
                             </div>
@@ -114,55 +150,21 @@
                     </div>
                     <div class="prize-box swiper-slide">
                         <div class="pk-title clearfix">
-                            <span><em>投资</em><i>5万</i>元</span>
-                            <span><em>额外收益</em><i>1000.00万</i>元</span>
+                            <span><em>投资</em><i>3万</i>元</span>
+                            <span><em>额外收益</em><i>9320</i>元</span>
                         </div>
                         <div class="img-info">
-                            <a href="#" target="_blank">
-                                <img src="/activity/images/autumn-tour/p01.jpg"></a>
-                            <span class="kind-text">erer</span>
+                            <a href="/activity/autumn/luxury/8/detail" target="_blank">
+                                <img src="/activity/images/sign/actor/luxury/pp08.png"></a>
+                            <span class="kind-text">prada 黑色杀手包</span>
                             <div class="kind-bottom">
-                                <span class="fl">商品价格<em>56</em>元</span>
-
+                                <span class="fl">商品价格<em>15000</em>元</span>
                                 <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
 
                             </div>
                         </div>
                     </div>
-                    <div class="prize-box swiper-slide">
-                        <div class="pk-title clearfix">
-                            <span><em>投资</em><i>5万</i>元</span>
-                            <span><em>额外收益</em><i>1000.00万</i>元</span>
-                        </div>
-                        <div class="img-info">
-                            <a href="#" target="_blank">
-                                <img src="/activity/images/autumn-tour/p01.jpg"></a>
-                            <span class="kind-text">erer</span>
-                            <div class="kind-bottom">
-                                <span class="fl">商品价格<em>56</em>元</span>
 
-                                <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="prize-box swiper-slide">
-                        <div class="pk-title clearfix">
-                            <span><em>投资</em><i>5万</i>元</span>
-                            <span><em>额外收益</em><i>1000.00万</i>元</span>
-                        </div>
-                        <div class="img-info">
-                            <a href="#" target="_blank">
-                                <img src="/activity/images/autumn-tour/p01.jpg"></a>
-                            <span class="kind-text">erer</span>
-                            <div class="kind-bottom">
-                                <span class="fl">商品价格<em>56</em>元</span>
-
-                                <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
-
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="prize-box code-item-box">
                         <div class="code-item">
@@ -275,7 +277,7 @@
                     温馨提示
                 </div>
                 <p>
-                    1、活动期间，用户在”我要投资“页面投资8%标的，即视为参与活动； <br/>
+                    1、活动期间，用户在”我要投资“页面投资7%标的，即视为参与活动； <br/>
                     2、本活动仅计算当日的投资额，用户在当日24点之前进行的多次投资，金额可累计计算，次日全部清零；<br/>
                     3、本次活动期间，用户每人每天仅限量领取一个奢侈品奖品；<br/>
                     4、如用户在当日投资中获得领取奖品或折扣券资格，客服将于该债权放款后三个工作日内电话联系确认并发放奖品；<br/>
@@ -288,7 +290,7 @@
                 </p>
 
                 <p>
-                    1、用户在”我要投资“页面投资8%标的，即视为参与活动； <br/>
+                    1、用户在”我要投资“页面投资7%标的，即视为参与活动； <br/>
                     2、本活动仅计算当日的投资额，次日全部清零；<br/>
                     3、用户每人每天仅限量领取一个奢侈品奖品；<br/>
                     4、如用户在当日投资中获得领取奖品或折扣券资格，客服将于该债权放款后三个工作日内电话联系确认并发放奖品；<br/>
