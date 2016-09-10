@@ -43,7 +43,6 @@ def mk_war():
     local('/opt/gradle/latest/bin/gradle ttsd-activity-console:war -PconfigPath=/workspace/v2config/default/ttsd-config/ -PactivityConsoleConfigPath=/workspace/v2config/default/ttsd-activity-console/')
     local('/opt/gradle/latest/bin/gradle ttsd-mobile-api:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('/opt/gradle/latest/bin/gradle ttsd-sms-wrapper:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('/opt/gradle/latest/bin/gradle ttsd-sign-in:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('/opt/gradle/latest/bin/gradle ttsd-point-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('/opt/gradle/latest/bin/gradle ttsd-ask-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
 
@@ -273,7 +272,7 @@ def pay():
 
 
 def signin():
-    pre_deploy()
+    mk_signin_zip()
     execute(deploy_sign_in)
 
 
