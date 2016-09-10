@@ -19,6 +19,16 @@ $width:700px;
 .tour-slide  {
   height: 457px;
   background: url("/activity/images/sign/actor/luxury/luxury-top-new.jpg") center top no-repeat;
+  position: relative;
+
+  .activity-date {
+    position: absolute;
+    bottom:90px;
+    left:50%;
+    color: #fff;
+    font-size:17px;
+    font-weight: bold;
+  }
 }
 .line-item{
   width:100%;
@@ -459,6 +469,9 @@ $width:700px;
     height: 185px;
     background: url("/activity/images/sign/actor/luxury/top-wap.jpg") center top no-repeat;
     background-size: cover;
+    .activity-date {
+      display: none;
+    }
   }
 
   .register-common-frame .landing-top .register-box {
