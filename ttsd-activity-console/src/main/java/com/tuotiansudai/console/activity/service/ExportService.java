@@ -29,10 +29,10 @@ public class ExportService {
     @Autowired
     private InvestMapper investMapper;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.endTime}\")}")
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.endTime}\")}")
     private Date activityAutumnEndTime;
 
     public List<AutumnExportDto> getAutumnExport(){
@@ -44,6 +44,7 @@ public class ExportService {
 
             Map<String, List<String>> allFamilyAndNum = autumnService.getAllFamilyMap(activityAutumnStartTime, endTime);
 
+            if(allFamilyAndNum.size() == 0) continue;
             for(Map.Entry<String, List<String>> entry1:allFamilyAndNum.entrySet()){
                 long totalAmount = 0;
                 List<InvestModel> currentHomeInvestModelList = Lists.newArrayList();

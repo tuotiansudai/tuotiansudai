@@ -34,7 +34,7 @@ public class ExportController {
     public void autumnActivityListExport(HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("UTF-8");
         try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.AutumnActivityList.getDescription() + new DateTime().toString("yyyyMMdd") + ".csv", "UTF-8"));
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.AutumnActivityList.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             //logger.error(e.getLocalizedMessage(), e);
         }
