@@ -124,8 +124,8 @@
             <if test="source != null">
                 AND source like CONCAT('%', #{source}, '%')
             </if>
-            <if test="longTerm != null">
-                OR long_term = #{longTerm}
+            <if test="longTerm == 'true'">
+                OR long_term = 1
             </if>
         </where>
         order by seq ASC ,updated_time DESC
@@ -147,8 +147,8 @@
             <if test="source != null">
                 AND source like CONCAT('%', #{source}, '%')
             </if>
-            <if test="longTerm != null">
-                OR long_term = #{longTerm}
+            <if test="longTerm == 'true'">
+                OR long_term = 1
             </if>
         </where>
     </select>
