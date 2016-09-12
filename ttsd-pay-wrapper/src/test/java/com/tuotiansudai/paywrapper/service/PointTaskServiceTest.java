@@ -153,7 +153,8 @@ public class PointTaskServiceTest {
         assertThat(accountMapper.findByLoginName(referrer.getLoginName()).getPoint(), is(50L));
     }
 
-    @Test
+    //    @Test
+//    该任务已取消
     public void shouldCompletedEachReferrerInvestTask() throws Exception {
         LoanModel fakeLoan = this.createFakeLoan(ProductType._30);
         UserModel referrer = this.createFakeUser("referrer", null);
