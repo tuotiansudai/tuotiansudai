@@ -262,9 +262,7 @@ public class ProductServiceImpl implements ProductService {
         }
         List<ProductShowItemDto> filteredProductShowItemDtos = new ArrayList<>();
         for(ProductShowItemDto productShowItemDto : productShowItemDtos) {
-            if(productShowItemDto.getLeftCount() != 0) {
-                filteredProductShowItemDtos.add(productShowItemDto);
-            }
+            filteredProductShowItemDtos.add(productShowItemDto);
         }
         return filteredProductShowItemDtos;
     }

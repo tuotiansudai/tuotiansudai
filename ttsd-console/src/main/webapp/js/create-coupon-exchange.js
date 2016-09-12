@@ -144,6 +144,19 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                     showErrorMessage('优惠券有效天数必须大于0', $('.coupon-deadline', curform));
                     return false;
                 }
+
+                var  exchangePoint = parseInt($('.exchange-point', curform).val());
+                if (exchangePoint <= 0) {
+                    showErrorMessage('所需要积分必须大于0', $('.exchange-point', curform));
+                    return false;
+                }
+
+                var giveNumber = parseInt($('.give-number', curform).val());
+                if (giveNumber <= 0) {
+                    showErrorMessage('总数量必须大于0', $('.give-number', curform));
+                    return false;
+                }
+
                 var fivenumber = parseInt($('.give-number', curform).val());
                 if (fivenumber <= 0) {
                     showErrorMessage('最小为1', $('.give-number', curform));

@@ -5,6 +5,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.SignInResult;
+import com.tuotiansudai.repository.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -52,7 +53,7 @@ public class MyPreAuthenticatedProcessingFilter extends GenericFilterBean implem
             });
 
             if (cookieOptional.isPresent()) {
-                SignInResult signInResult = signInClient.verifyToken(cookieOptional.get().getValue());
+                SignInResult signInResult = signInClient.verifyToken(cookieOptional.get().getValue(), Source.WEB);
                 if (signInResult == null || !signInResult.isResult()) {
                     this.myAuthenticationUtil.removeAuthentication();
                 }

@@ -109,14 +109,13 @@
 
     <select id="findAllProductsByGoodsType" resultMap="productResultMap">
         SELECT * FROM product p
-        <where>
+        where active = 1
             <if test="goodsTypes != null ">
                 and type IN
                 <foreach collection="goodsTypes" item="goodsType" open="(" separator="," close=")">
                     #{goodsType}
                 </foreach>
             </if>
-        </where>
         ORDER BY seq ASC, updated_time DESC
     </select>
 

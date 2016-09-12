@@ -20,6 +20,10 @@
     </insert>
 
     <select id="findById" parameterType="java.lang.Long" resultMap="BankCardResultMap">
+        select * from bank_card where id = #{id}
+    </select>
+
+    <select id="findPassedById" parameterType="java.lang.Long" resultMap="BankCardResultMap">
         select * from bank_card where id = #{id} and status = 'PASSED'
     </select>
 
