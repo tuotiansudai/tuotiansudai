@@ -35,10 +35,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
-public class MobileAppRepayCalendarServiceTest {
+public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
 
     @Autowired
     private MobileAppRepayCalendarService mobileAppRepayCalendarService;

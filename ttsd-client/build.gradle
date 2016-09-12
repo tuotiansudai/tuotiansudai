@@ -19,7 +19,6 @@ dependencies {
             'commons-codec:commons-codec:1.10',
             'com.sun.mail:javax.mail:1.5.5',
             'com.aliyun.oss:aliyun-sdk-oss:2.3.0'
-//            fileTree(dir: 'libs', include: '**/*.jar')
 }
 
 processResources.outputs.upToDateWhen { false }

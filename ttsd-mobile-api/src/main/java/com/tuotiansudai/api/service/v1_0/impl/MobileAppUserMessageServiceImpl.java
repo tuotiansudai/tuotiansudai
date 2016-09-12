@@ -10,6 +10,7 @@ import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.MessageChannel;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
     @Override
     public BaseResponseDto getUserMessages(UserMessagesRequestDto requestDto) {
-        String loginName = requestDto.getBaseParam().getUserId();
+        String loginName = LoginUserInfo.getLoginName();
         userMessageServices.generateUserMessages(loginName, MessageChannel.APP_MESSAGE);
         int index = requestDto.getIndex();
         int pageSize = requestDto.getPageSize();
@@ -50,7 +51,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
     @Override
     public BaseResponseDto getUnreadMessageCount(BaseParamDto baseParamDto) {
-        String loginName = baseParamDto.getBaseParam().getUserId();
+        String loginName = LoginUserInfo.getLoginName();
         userMessageServices.generateUserMessages(loginName, MessageChannel.APP_MESSAGE);
         long currentUnreadMessageCount = userMessageMapper.countUnreadMessagesByLoginName(loginName, MessageChannel.APP_MESSAGE);
         boolean existUnreadMessage = existUnreadMessage(loginName, currentUnreadMessageCount);

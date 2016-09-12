@@ -6,7 +6,7 @@
 		   http://www.springframework.org/schema/security
 		   http://www.springframework.org/schema/security/spring-security-4.1.xsd">
 
-    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.spring.MyAccessDeniedHandler">
+    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.spring.security.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/403"/>
         <beans:property name="errorPageMapping">
             <beans:map>
@@ -15,21 +15,29 @@
         </beans:property>
     </beans:bean>
 
-    <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider ref="myAuthenticationProvider"/>
+    </authentication-manager>
 
-    <http auto-config="true" use-expressions="true">
+    <http auto-config="true" use-expressions="true" authentication-manager-ref="authenticationManager">
         <headers>
             <frame-options policy="SAMEORIGIN"/>
         </headers>
         <access-denied-handler ref="myAccessDeniedHandler"/>
-        <form-login login-page="/login"/>
+        <form-login login-page="/login"
+                    authentication-details-source-ref="myWebAuthenticationDetailsSource"
+                    authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
+                    authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
+
+        <logout logout-url="/logout" success-handler-ref="mySimpleUrlLogoutSuccessHandler"/>
+
+        <custom-filter ref="myPreAuthenticatedProcessingFilter" position="PRE_AUTH_FILTER"/>
 
         <intercept-url pattern="/images/**" access="permitAll()" />
         <intercept-url pattern="/upload/**" access="permitAll()" />
         <intercept-url pattern="/js/**" access="permitAll()" />
         <intercept-url pattern="/style/**" access="permitAll()" />
 
-        <intercept-url pattern="/monitor" access="permitAll()" />
         <intercept-url pattern="/login/**" access="permitAll()"/>
 
         <intercept-url pattern="/" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN','EDITOR','ASK_ADMIN')"/>
@@ -67,7 +75,6 @@
                 <beans:value>/ueditor/**</beans:value>
                 <beans:value>/upload</beans:value>
                 <beans:value>/activity-manage/import-excel</beans:value>
-                <beans:value>/login/**</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>
