@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class LoginLogModel implements Serializable {
+
     private long id;
 
     private String loginName;
