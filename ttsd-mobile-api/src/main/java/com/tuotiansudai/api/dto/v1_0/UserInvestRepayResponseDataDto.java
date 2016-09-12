@@ -35,8 +35,8 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         this.loanId = String.valueOf(transferApplicationModel.getLoanId());
         this.loanName = transferApplicationModel.getName();
-        this.baseRate = String.valueOf(loanModel.getBaseRate());
-        this.activityRate = String.valueOf(loanModel.getActivityRate());
+        this.baseRate = String.valueOf(loanModel.getBaseRate() * 100);
+        this.activityRate = String.valueOf(loanModel.getActivityRate() * 100);
         this.duration = String.valueOf(loanModel.getDuration());
         this.interestInitiateType = loanModel.getType().getInterestInitiateType().name();
         this.productNewType = loanModel.getProductType().name();

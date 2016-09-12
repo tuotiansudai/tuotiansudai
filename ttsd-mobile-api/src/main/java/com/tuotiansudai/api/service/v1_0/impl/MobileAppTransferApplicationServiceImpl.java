@@ -310,11 +310,14 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         for (InvestRepayModel investRepayModel : investRepayModels) {
             totalExpectedInterest += investRepayModel.getExpectedInterest();
             totalActualInterest += investRepayModel.getActualInterest();
-            userInvestRepayResponseDataDto.getInvestRepays().add(new InvestRepayDataDto(investRepayModel));
+            InvestRepayDataDto investRepayDataDto = new InvestRepayDataDto(investRepayModel);
             if (investRepayModel.getPeriod() == loanModel.getPeriods()) {
+                InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
+                investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investModel.getAmount()));
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
                 userInvestRepayResponseDataDto.setLastRepayDate(simpleDateFormat.format(investRepayModel.getRepayDate()));
             }
+            userInvestRepayResponseDataDto.getInvestRepays().add(investRepayDataDto);
         }
         userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(totalExpectedInterest));
         userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(totalActualInterest));

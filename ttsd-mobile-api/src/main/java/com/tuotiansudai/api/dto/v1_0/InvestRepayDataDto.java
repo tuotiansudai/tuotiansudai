@@ -29,7 +29,7 @@ public class InvestRepayDataDto extends BaseResponseDataDto {
         }
         this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getExpectedInterest());
         this.actualInterest = AmountConverter.convertCentToString(investRepayModel.getActualInterest());
-        this.status = investRepayModel.getStatus().getDescription();
+        this.status = investRepayModel.getStatus().name();
         this.isTransferred = investRepayModel.isTransferred();
     }
 
