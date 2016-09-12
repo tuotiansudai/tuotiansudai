@@ -24,7 +24,7 @@
                 <img src="${staticServer}/activity/images/sign/actor/luxury/title-one.png">
             </div>
             <div class="title-info clearfix">
-                <h1>简单三步，免费去旅游！</h1>
+                <h1>简单三步，奖品收益两手拿！</h1>
                 <P>
                     <em>步骤一：</em>进入”我要投资“页面；<br/>
                     <em>步骤二：</em>找到预期年化收益为7%的标的并对其投资；<br/>

@@ -7,8 +7,8 @@ var $autumnTravelPage=$('#autumnTravelPage'),
         $swiperslide = $('.swiper-slide', $swiperWrapper);
     var browser = commonFun.browserRedirect();
     if (browser == 'mobile') {
-        var searchTag=location.search.split('=')[1];
-        if(searchTag=='yes') {
+        var urlObj=commonFun.parseURL(location.href);
+        if(urlObj.params.tag=='yes') {
             $autumnTravelPage.find('.reg-tag-current').show();
         }
         var isScrolling, startPos, endPos;
