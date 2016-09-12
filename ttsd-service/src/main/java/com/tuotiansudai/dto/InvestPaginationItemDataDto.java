@@ -1,193 +1,104 @@
 package com.tuotiansudai.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.InvestPaginationItemView;
+import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.util.Date;
 
 public class InvestPaginationItemDataDto implements Serializable {
-
     private long investId;
-
     private long loanId;
-
     private String loanName;
-
-    private String loanType;
-
     private int loanPeriods;
-
-    private String amount;
-
     private String investorLoginName;
-
     private String investorUserName;
-
     private String investorMobile;
-
+    private boolean investorStaff;
     private String referrerLoginName;
-
     private String referrerUserName;
-
     private String referrerMobile;
-
-    private String referrerRoles;
-
-    private String source;
-
+    private boolean referrerStaff;
     private String channel;
-
-    private String roles;
-
-    private boolean isAutoInvest;
-
-    private String status;
-
-    private Date createdTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
-    private Date nextRepayDate;
-
-    private String nextRepayAmount;
-
-    private boolean hasInvestRepay;
-
-    private String identityNumber;
-
-    private String province;
-
-    private String city;
-
-    private boolean birthdayCoupon;
-
-    private double birthdayBenefit;
-
-    private String transferStatus;
-
-    private String baseRate;
-
-    private String activityRate;
-
-    private String sumRate;
-
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
-    private Date lastRepayDate;
-
-    private int leftPeriod;
-
-    private double rate;
-
-    private Long expectedFee;
-
-    private Long actualFee;
+    private Source source;
+    private Date investTime;
+    private boolean autoInvest;
+    private String investAmount;
+    private String couponDetail;
+    private String couponActualInterest;
+    private String extraDetail;
+    private String extraActualInterest;
+    private InvestStatus investStatus;
 
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
-        this.investId = view.getId();
+        this.investId = view.getInvestId();
         this.loanId = view.getLoanId();
-        this.amount = AmountConverter.convertCentToString(view.getAmount());
         this.loanName = view.getLoanName();
-        this.investorLoginName = view.getLoginName();
+        this.loanPeriods = view.getLoanPeriods();
+        this.investorLoginName = view.getInvestorLoginName();
         this.investorUserName = view.getInvestorUserName();
         this.investorMobile = view.getInvestorMobile();
+        this.investorStaff = view.getInvestorRoleList().contains(Role.STAFF);
         this.referrerLoginName = view.getReferrerLoginName();
         this.referrerUserName = view.getReferrerUserName();
         this.referrerMobile = view.getReferrerMobile();
-        this.referrerRoles = view.getReferrerRoles();
-        this.source = view.getSource().name();
+        this.referrerStaff = view.getReferrerRoleList().contains(Role.STAFF);
         this.channel = view.getChannel();
-        this.roles = view.getRoles();
-        this.isAutoInvest = view.isAutoInvest();
-        this.loanType = view.getLoanType().getName();
-        this.loanPeriods = view.getLoanPeriods();
-        this.createdTime = view.getTradingTime() == null ? view.getCreatedTime() : view.getTradingTime();
-        this.status = view.getStatus().getDescription();
-        this.nextRepayDate = view.getNextRepayDate();
-        this.nextRepayAmount = AmountConverter.convertCentToString(view.getNextRepayAmount());
-        this.hasInvestRepay = view.getStatus() == InvestStatus.SUCCESS && Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE).contains(view.getLoanStatus());
-        this.identityNumber = view.getIdentityNumber();
-        this.province = view.getProvince();
-        this.city = view.getCity();
-        this.birthdayCoupon = view.isBirthdayCoupon();
-        this.birthdayBenefit = view.getBirthdayBenefit();
-        this.baseRate = view.getLoanBaseRatePercent();
-        this.activityRate = view.getLoanActivityRatePercent();
-        this.sumRate = view.getSumRatePercent();
+        this.source = view.getSource();
+        this.investTime = view.getInvestTime();
+        this.autoInvest = view.isAutoInvest();
+        this.investAmount = AmountConverter.convertCentToString(view.getInvestAmount());
+        this.extraDetail = MessageFormat.format("{0}%", view.getExtraRate());
+        this.extraActualInterest = AmountConverter.convertCentToString(view.getExtraActualInterest());
+        this.investStatus = view.getInvestStatus();
     }
 
-    public InvestPaginationItemDataDto(InvestPaginationItemView view, InvestExtraRateModel extraRateModel) {
-        this(view);
-        this.rate = extraRateModel.getExtraRate();
-        this.expectedFee = extraRateModel.getExpectedFee();
-        this.actualFee = extraRateModel.getActualFee();
-    }
-
-    public boolean isStaff() {
-        return StringUtils.containsIgnoreCase(this.roles, Role.STAFF.name());
-    }
-
-    public boolean isReferrerStaff() {
-        return StringUtils.containsIgnoreCase(this.referrerRoles, Role.STAFF.name());
+    public void setCouponDetail(CouponModel couponModel) {
+        switch (couponModel.getCouponType()) {
+            case RED_ENVELOPE:
+            case NEWBIE_COUPON:
+            case INVEST_COUPON:
+                this.couponDetail = MessageFormat.format("{0}元{1}", AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
+                break;
+            case INTEREST_COUPON:
+                this.couponDetail = MessageFormat.format("{0}%{1}", couponModel.getRate() * 100, couponModel.getCouponType().getName());
+                break;
+            case BIRTHDAY_COUPON:
+                this.couponDetail = MessageFormat.format("{0}倍{1}", couponModel.getBirthdayBenefit() + 1, couponModel.getCouponType().getName());
+                break;
+            default:
+                this.couponDetail = "";
+                break;
+        }
     }
 
     public long getInvestId() {
         return investId;
     }
 
+    public void setInvestId(long investId) {
+        this.investId = investId;
+    }
+
     public long getLoanId() {
         return loanId;
+    }
+
+    public void setLoanId(long loanId) {
+        this.loanId = loanId;
     }
 
     public String getLoanName() {
         return loanName;
     }
 
-    public String getLoanType() {
-        return loanType;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public String getInvestorLoginName() {
-        return investorLoginName;
-    }
-
-    public String getReferrerLoginName() {
-        return referrerLoginName;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public boolean isAutoInvest() {
-        return isAutoInvest;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public Date getNextRepayDate() {
-        return nextRepayDate;
-    }
-
-    public String getNextRepayAmount() {
-        return nextRepayAmount;
-    }
-
-    public boolean isHasInvestRepay() {
-        return hasInvestRepay;
+    public void setLoanName(String loanName) {
+        this.loanName = loanName;
     }
 
     public int getLoanPeriods() {
@@ -198,20 +109,12 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.loanPeriods = loanPeriods;
     }
 
-    public String getChannel() {
-        return channel;
+    public String getInvestorLoginName() {
+        return investorLoginName;
     }
 
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
-
-    public String getRoles() {
-        return roles;
-    }
-
-    public void setRoles(String roles) {
-        this.roles = roles;
+    public void setInvestorLoginName(String investorLoginName) {
+        this.investorLoginName = investorLoginName;
     }
 
     public String getInvestorUserName() {
@@ -230,6 +133,22 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.investorMobile = investorMobile;
     }
 
+    public boolean isInvestorStaff() {
+        return investorStaff;
+    }
+
+    public void setInvestorStaff(boolean investorStaff) {
+        this.investorStaff = investorStaff;
+    }
+
+    public String getReferrerLoginName() {
+        return referrerLoginName;
+    }
+
+    public void setReferrerLoginName(String referrerLoginName) {
+        this.referrerLoginName = referrerLoginName;
+    }
+
     public String getReferrerUserName() {
         return referrerUserName;
     }
@@ -246,130 +165,91 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.referrerMobile = referrerMobile;
     }
 
-    public String getReferrerRoles() {
-        return referrerRoles;
+    public boolean isReferrerStaff() {
+        return referrerStaff;
     }
 
-    public void setReferrerRoles(String referrerRoles) {
-        this.referrerRoles = referrerRoles;
+    public void setReferrerStaff(boolean referrerStaff) {
+        this.referrerStaff = referrerStaff;
     }
 
-    public String getIdentityNumber() {
-        return identityNumber;
+    public String getChannel() {
+        return channel;
     }
 
-    public void setIdentityNumber(String identityNumber) {
-        this.identityNumber = identityNumber;
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
-    public String getProvince() {
-        return province;
+    public Source getSource() {
+        return source;
     }
 
-    public void setProvince(String province) {
-        this.province = province;
+    public void setSource(Source source) {
+        this.source = source;
     }
 
-    public String getCity() {
-        return city;
+    public Date getInvestTime() {
+        return investTime;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setInvestTime(Date investTime) {
+        this.investTime = investTime;
     }
 
-    public String getBirthday() {
-        if (identityNumber == null) {
-            return "";
-        } else if (identityNumber.length() == 18) {
-            return identityNumber.substring(6, 14);
-        } else if (identityNumber.length() == 15) {
-            return identityNumber.substring(6, 12);
-        } else {
-            return "";
-        }
+    public boolean isAutoInvest() {
+        return autoInvest;
     }
 
-    public boolean isBirthdayCoupon() {
-        return birthdayCoupon;
+    public void setAutoInvest(boolean autoInvest) {
+        this.autoInvest = autoInvest;
     }
 
-    public void setBirthdayCoupon(boolean birthdayCoupon) {
-        this.birthdayCoupon = birthdayCoupon;
+    public String getInvestAmount() {
+        return investAmount;
     }
 
-    public double getBirthdayBenefit() {
-        return birthdayBenefit;
+    public void setInvestAmount(String investAmount) {
+        this.investAmount = investAmount;
     }
 
-    public void setBirthdayBenefit(double birthdayBenefit) {
-        this.birthdayBenefit = birthdayBenefit;
+    public String getCouponDetail() {
+        return couponDetail;
     }
 
-    public String getTransferStatus() {
-        return transferStatus;
+    public void setCouponDetail(String couponDetail) {
+        this.couponDetail = couponDetail;
     }
 
-    public void setTransferStatus(String transferStatus) {
-        this.transferStatus = transferStatus;
+    public String getCouponActualInterest() {
+        return couponActualInterest;
     }
 
-    public String getBaseRate() {
-        return baseRate;
+    public void setCouponActualInterest(long couponActualInterest) {
+        this.couponActualInterest = AmountConverter.convertCentToString(couponActualInterest);
     }
 
-    public void setBaseRate(String baseRate) {
-        this.baseRate = baseRate;
+    public String getExtraDetail() {
+        return extraDetail;
     }
 
-    public String getActivityRate() {
-        return activityRate;
+    public void setExtraDetail(String extraDetail) {
+        this.extraDetail = extraDetail;
     }
 
-    public void setActivityRate(String activityRate) {
-        this.activityRate = activityRate;
+    public String getExtraActualInterest() {
+        return extraActualInterest;
     }
 
-    public Date getLastRepayDate() {
-        return lastRepayDate;
+    public void setExtraActualInterest(String extraActualInterest) {
+        this.extraActualInterest = extraActualInterest;
     }
 
-    public void setLastRepayDate(Date lastRepayDate) {
-        this.lastRepayDate = lastRepayDate;
+    public InvestStatus getInvestStatus() {
+        return investStatus;
     }
 
-    public int getLeftPeriod() {
-        return leftPeriod;
-    }
-
-    public void setLeftPeriod(int leftPeriod) {
-        this.leftPeriod = leftPeriod;
-    }
-
-    public String getSumRate() {
-        return sumRate;
-    }
-
-    public void setSumRate(String sumRate) {
-        this.sumRate = sumRate;
-    }
-
-    public String getRate() {
-        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
-        return decimalFormat.format(rate * 100);
-    }
-
-    public String getExpectedFee() {
-        if (expectedFee != null) {
-            return AmountConverter.convertCentToString(expectedFee);
-        }
-        return "-";
-    }
-
-    public String getActualFee() {
-        if (actualFee != null) {
-            return AmountConverter.convertCentToString(actualFee);
-        }
-        return "-";
+    public void setInvestStatus(InvestStatus investStatus) {
+        this.investStatus = investStatus;
     }
 }

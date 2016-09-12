@@ -52,6 +52,17 @@
 					                </span>
             </div>
         </div>
+        <div class="form-group">
+            <label>使用优惠类型</label>
+            <select class="selectpicker" name="usedPreferenceType">
+                <option value="">全部</option>
+                <#list preferenceTypes as preferenceType>
+                    <option value="${preferenceType.name()}"
+                            <#if (selectedPreferenceType?has_content && preferenceType == selectedPreferenceType.name()) >selected</#if>
+                            >${preferenceType.getDescription()}</option>
+                </#list>
+            </select>
+        </div>
         <button type="submit" class="btn btn-sm btn-primary search">查询</button>
     </form>
     <div class="table-responsive">
@@ -80,6 +91,8 @@
                 <th>服务费(元)</th>
                 <th>实际回款(元)</th>
                 <th>推荐奖励</th>
+                <th>使用优惠(使用优惠信息／实际返款)</th>
+                <th>阶梯加息优惠(阶梯加息利率/实际返款)</th>
             </tr>
             </thead>
             <tbody>
@@ -107,6 +120,8 @@
                     <td>${(financeReportDto.fee)!}</td>
                     <td>${(financeReportDto.actualRepayAmount)!}</td>
                     <td>${(financeReportDto.recommendAmount)!}</td>
+                    <td>${financeReportDto.couponDetail!'-'} / ${financeReportDto.couponActualInterest!'-'}</td>
+                    <td>${financeReportDto.extraDetail!'-'} / ${financeReportDto.extraActualInterest!'-'}</td>
                 </tr>
                 </#list>
             </tbody>
@@ -123,7 +138,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="/finance-manage/financeReport?index=${data.index - 1}&pageSize=${data.pageSize}&loanId=${(loanId?c)!}&period=${selectedPeriod!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd HH:mm'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd HH:mm'))!}"
+                    <a href="/finance-manage/financeReport?index=${data.index - 1}&pageSize=${data.pageSize}&loanId=${(loanId?c)!}&period=${selectedPeriod!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd HH:mm'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd HH:mm'))!}&<#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -134,7 +149,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="/finance-manage/financeReport?index=${data.index + 1}&pageSize=${data.pageSize}&loanId=${(loanId?c)!}&period=${selectedPeriod!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd HH:mm'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd HH:mm'))!}"
+                    <a href="/finance-manage/financeReport?index=${data.index + 1}&pageSize=${data.pageSize}&loanId=${(loanId?c)!}&period=${selectedPeriod!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd HH:mm'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd HH:mm'))!}&<#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

@@ -243,14 +243,16 @@ public class ExportController {
                               @RequestParam(name = "mobile", required = false) String investorMobile,
                               @RequestParam(name = "channel", required = false) String channel,
                               @RequestParam(name = "source", required = false) Source source,
-                              @RequestParam(name = "role", required = false) String role,
+                              @RequestParam(name = "role", required = false) Role role,
                               @RequestParam(name = "investStatus", required = false) InvestStatus investStatus,
                               @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                              @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime, HttpServletResponse response) throws IOException {
+                              @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                              @RequestParam(name = "usedPreferenceType", required = false) PreferenceType preferenceType, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleInvests.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        InvestPaginationDataDto investPagination = investService.getInvestPagination(loanId, investorMobile, channel, source, role, index, pageSize, startTime, endTime, investStatus, null);
+        InvestPaginationDataDto investPagination = investService.getInvestPagination(loanId, investorMobile, channel, source,
+                role, startTime, endTime, investStatus, preferenceType, index, pageSize);
         List<InvestPaginationItemDataDto> records = investPagination.getRecords();
         List<List<String>> investsData = exportService.buildInvests(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, investsData, response.getOutputStream());

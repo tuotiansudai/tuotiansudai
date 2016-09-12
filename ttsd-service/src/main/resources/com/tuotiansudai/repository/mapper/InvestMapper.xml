@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.InvestMapper">
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="investResultMap" type="InvestModel">
         <id column="id" property="id"/>
@@ -21,30 +21,33 @@
         <result column="invest_time" property="investTime"/>
         <result column="created_time" property="createdTime"/>
         <result column="trading_time" property="tradingTime"/>
-        <result column="achievements" property="achievements" typeHandler="com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler"/>
+        <result column="achievements" property="achievements"
+                typeHandler="com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler"/>
         <result column="invest_fee_rate" property="investFeeRate"/>
     </resultMap>
 
-    <resultMap id="investPaginationItemView" type="InvestPaginationItemView" extends="investResultMap">
-        <result column="loan_id" property="loanId"></result>
-        <result column="loan_name" property="loanName"></result>
-        <result column="loan_type" property="loanType"></result>
-        <result column="loan_status" property="loanStatus"></result>
-        <result column="loan_periods" property="loanPeriods"></result>
-        <result column="loan_base_rate" property="loanBaseRate"></result>
-        <result column="loan_activity_rate" property="loanActivityRate"></result>
-        <result column="roles" property="roles"></result>
-        <result column="referrer_login_name" property="referrerLoginName"></result>
-        <result column="next_repay_date" property="nextRepayDate"></result>
-        <result column="next_repay_amount" property="nextRepayAmount"></result>
-        <result column="investor_user_name" property="investorUserName"></result>
-        <result column="investor_mobile" property="investorMobile"></result>
-        <result column="referrer_roles" property="referrerRoles"></result>
-        <result column="referrer_user_name" property="referrerUserName"></result>
-        <result column="referrer_mobile" property="referrerMobile"></result>
-        <result column="identity_number" property="identityNumber"></result>
-        <result column="province" property="province"></result>
-        <result column="city" property="city"></result>
+    <resultMap id="investPaginationItemView" type="InvestPaginationItemView">
+        <id column="invest_id" property="investId"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="loan_name" property="loanName"/>
+        <result column="loan_periods" property="loanPeriods"/>
+        <result column="investor_login_name" property="investorLoginName"/>
+        <result column="investor_username" property="investorUserName"/>
+        <result column="investor_mobile" property="investorMobile"/>
+        <result column="investor_roles" property="investorRoles"/>
+        <result column="referrer_login_name" property="referrerLoginName"/>
+        <result column="referrer_username" property="referrerUserName"/>
+        <result column="referrer_mobile" property="referrerMobile"/>
+        <result column="referrer_roles" property="referrerRoles"/>
+        <result column="channel" property="channel"/>
+        <result column="source" property="source"/>
+        <result column="invest_time" property="investTime"/>
+        <result column="auto_invest" property="autoInvest"/>
+        <result column="invest_amount" property="investAmount"/>
+        <result column="coupon_id" property="couponId"/>
+        <result column="extra_rate" property="extraRate"/>
+        <result column="extra_actual_interest" property="extraActualInterest"/>
+        <result column="invest_status" property="investStatus"/>
     </resultMap>
 
     <resultMap id="heroRankingView" type="HeroRankingView">
@@ -80,8 +83,12 @@
     </sql>
 
     <insert id="create" parameterType="InvestModel">
-        insert into invest ( <include refid="columns"></include> )
-        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source}, #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, now(), #{investTime}, #{tradingTime}, #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler}, #{investFeeRate})
+        insert into invest (
+        <include refid="columns"></include>
+        )
+        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source},
+        #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, now(), #{investTime}, #{tradingTime},
+        #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler}, #{investFeeRate})
     </insert>
 
     <update id="update" parameterType="InvestModel">
@@ -107,19 +114,22 @@
     </update>
 
     <select id="findById" parameterType="long" resultMap="investResultMap">
-        select <include refid="columns"></include>
+        select
+        <include refid="columns"></include>
         from invest
         where id = #{id}
     </select>
 
     <select id="lockById" parameterType="long" resultMap="investResultMap">
-        select <include refid="columns"></include>
+        select
+        <include refid="columns"></include>
         from invest
         where id = #{id} for update
     </select>
 
     <select id="findLatestSuccessInvest" parameterType="string" resultMap="investResultMap">
-        select <include refid="columns"></include>
+        select
+        <include refid="columns"></include>
         from invest
         where login_name = #{loginName}
         order by case when trading_time is null then created_time else trading_time end desc
@@ -145,7 +155,8 @@
     </select>
 
     <select id="findByLoginNameExceptTransfer" parameterType="map" resultMap="investResultMap">
-        select invest.id, invest.transfer_invest_id, invest.login_name, invest.loan_id, invest.amount, invest.status, invest.transfer_status, invest.source, invest.is_auto_invest, invest.created_time, invest.invest_time
+        select invest.id, invest.transfer_invest_id, invest.login_name, invest.loan_id, invest.amount, invest.status,
+        invest.transfer_status, invest.source, invest.is_auto_invest, invest.created_time, invest.invest_time
         from invest
         inner join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
@@ -166,7 +177,8 @@
     </select>
 
     <select id="findSuccessInvestsByLoanId" parameterType="long" resultMap="investResultMap">
-        select <include refid="columns"></include>
+        select
+        <include refid="columns"></include>
         from invest
         where loan_id = #{loanId} and status = 'SUCCESS' and transfer_status != 'SUCCESS'
         order by trading_time
@@ -180,7 +192,8 @@
     </select>
 
     <select id="findByStatus" parameterType="map" resultMap="investResultMap">
-        select <include refid="columns"></include>
+        select
+        <include refid="columns"></include>
         from invest
         where loan_id = #{loanId}
         and transfer_invest_id is null
@@ -226,65 +239,91 @@
         and status = 'SUCCESS'
     </select>
 
-    <select id="findInvestPagination" parameterType="map" resultMap="investPaginationItemView">
-        select invest.*,
-        loan.id as loan_id,
-        loan.name as loan_name,
-        loan.status as loan_status,
-        loan.type as loan_type,
-        loan.periods as loan_periods,
-        loan.base_rate as loan_base_rate,
-        loan.activity_rate as loan_activity_rate,
-        a.user_name as investor_user_name,
-        u.mobile as investor_mobile,
-        a.identity_number as identity_number,
-        u.province as province,
-        u.city as city,
-        u.referrer as referrer_login_name,
-        ra.user_name as referrer_user_name,
-        ru.mobile as referrer_mobile,
-        (select group_concat(role order by role separator ", ") from user_role where login_name = invest.login_name) as roles,
-        (select group_concat(role order by role separator ", ") from user_role where login_name = u.referrer) as referrerRoles,
-        (select min(repay_date) from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING') as next_repay_date,
-        (select invest_repay.expected_interest + invest_repay.corpus - invest_repay.expected_fee
-          from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING'
-          and invest_repay.period = (select min(invest_repay.period) from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING')
-        ) as next_repay_amount
-        from invest
-        inner join loan on invest.loan_id = loan.id
-        inner join user u on u.login_name = invest.login_name
-        <if test="investorMobile != null and investorMobile != ''">
-            and u.mobile = #{investorMobile}
-        </if>
-        left join account a on a.login_name = u.login_name
-        left join user ru on ru.login_name = u.referrer
-        left join account ra on ra.login_name = u.referrer
+    <select id="findInvestPagination" resultMap="investPaginationItemView">
+        SELECT
+        invest.id AS invest_id,
+        loan.id AS loan_id,
+        loan.name AS loan_name,
+        loan.periods AS loan_periods,
+        investor_user.login_name AS investor_login_name,
+        investor_account.user_name AS investor_username,
+        investor_user.mobile AS investor_mobile,
+        (SELECT group_concat(role ORDER BY role separator ', ') FROM user_role WHERE login_name = invest.login_name) AS
+        investor_roles,
+        referrer_user.login_name AS referrer_login_name,
+        referrer_account.user_name AS referrer_username,
+        referrer_user.mobile AS referrer_mobile,
+        (SELECT group_concat(role ORDER BY role separator ', ') FROM user_role WHERE login_name =
+        referrer_user.login_name) as referrer_roles,
+        invest.channel AS channel,
+        invest.source AS source,
+        invest.invest_time AS invest_time,
+        invest.is_auto_invest AS auto_invest,
+        invest.amount AS invest_amount,
+        coupon.coupon_id AS coupon_id,
+        invest_extra_rate.extra_rate AS extra_rate,
+        invest_extra_rate.actual_interest AS extra_actual_interest,
+        invest.status AS invest_status
+        FROM
+        (SELECT
+        id, loan_id, login_name, channel, source, invest_time, is_auto_invest, amount, status, created_time,
+        trading_time
+        FROM
+        `aa`.`invest`
         <where>
-            invest.transfer_invest_id is null
+            invest.transfer_invest_id IS NULL
             <if test="loanId != null">
-                and loan.id = #{loanId}
+                AND invest.loan_id = #{loanId}
             </if>
-            <if test="loanStatus != null">
-                and loan.status = #{loanStatus}
+            <if test="investorLoginName != null and investorLoginName != ''">
+                AND invest.login_name = #{investorLoginName}
             </if>
             <if test="investStatus != null">
-                and invest.status = #{investStatus}
+                AND invest.status = #{investStatus}
             </if>
             <if test="channel != null and channel != ''">
-                and invest.channel = #{channel}
+                AND invest.channel = #{channel}
             </if>
             <if test="source != null">
-                and invest.source = #{source}
+                AND invest.source = #{source}
             </if>
-            <if test="role != null and role != ''">
-                and exists (select 1 from user_role where user_role.login_name=invest.login_name and user_role.role= #{role} )
+            <if test="role != null">role
+                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name=invest.login_name AND user_role.role=
+                #{role})
             </if>
-            <if test="startTime != null &amp;&amp; endTime != null">
-                and invest.created_time between #{startTime} and #{endTime}
+            <if test="startTime != null">
+                AND invest.invest_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND invest.invest_time &lt;= #{endTime}
             </if>
         </where>
-        order by case invest.trading_time when null then invest.created_time else invest.trading_time end desc, invest.id asc
-        limit #{index}, #{pageSize}
+        )
+        invest
+        JOIN (SELECT id, name, periods FROM `aa`.`loan`) loan ON invest.loan_id = loan.id
+        JOIN (SELECT login_name, mobile, referrer FROM `aa`.`user`) investor_user ON investor_user.login_name =
+        invest.login_name
+        JOIN (SELECT login_name, user_name FROM `aa`.`account`) investor_account ON investor_account.login_name =
+        investor_user.login_name
+        JOIN (SELECT login_name, mobile FROM `aa`.`user`) referrer_user ON referrer_user.login_name =
+        investor_user.referrer
+        JOIN (SELECT login_name, user_name FROM `aa`.`account`) referrer_account ON referrer_account.login_name =
+        referrer_user.login_name
+        LEFT JOIN (SELECT user_coupon.coupon_id, user_coupon.invest_id, coupon.coupon_type FROM `aa`.`user_coupon` JOIN
+        `aa`.`coupon` ON user_coupon.coupon_id = coupon.id) coupon ON coupon.invest_id = invest.id
+        LEFT JOIN (SELECT extra_rate, actual_interest, invest_id FROM `aa`.`invest_extra_rate`) invest_extra_rate ON
+        invest_extra_rate.invest_id = invest.id
+        <where>
+            <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
+                AND invest_extra_rate.extra_rate IS NOT NULL
+            </if>
+            <if test="preferenceType != null and preferenceType.name() != 'INVEST_BENEFIT'">
+                AND coupon.coupon_type = #{preferenceType}
+            </if>
+        </where>
+        ORDER BY CASE invest.trading_time WHEN NULL THEN invest.created_time ELSE invest.trading_time END DESC,
+        invest.id ASC
+        limit #{index}, #{pageSize};
     </select>
 
     <select id="findInvestorInvestPagination" parameterType="map" resultMap="investResultMap">
@@ -301,15 +340,18 @@
             </if>
             <if test="loanStatus != null">
                 AND (loan.status = #{loanStatus}
-                OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
-                OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
+                OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
+                TO_DAYS(invest_time) &lt; loan.duration)
+                OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
+                TO_DAYS(invest_time) &gt;= loan.duration)))
             </if>
 
             <if test="loanStatus != null &amp;&amp; loanStatus.name() == 'RAISING'">
                 AND loan.product_type != 'EXPERIENCE'
             </if>
         </where>
-        order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc, invest.id asc
+        order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc,
+        invest.id asc
         limit #{index}, #{pageSize}
     </select>
 
@@ -327,8 +369,10 @@
             </if>
             <if test="loanStatus != null">
                 AND (loan.status = #{loanStatus}
-                OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
-                OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
+                OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
+                TO_DAYS(invest_time) &lt; loan.duration)
+                OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
+                TO_DAYS(invest_time) &gt;= loan.duration)))
             </if>
 
             <if test="loanStatus != null &amp;&amp; loanStatus.name() == 'RAISING'">
@@ -338,35 +382,65 @@
     </select>
 
     <select id="findCountInvestPagination" parameterType="map" resultType="long">
-        select count(1)
-        from invest join loan on invest.loan_id = loan.id join user on invest.login_name = user.login_name
-        <if test="investorMobile != null and investorMobile != ''">
-            and user.mobile = #{investorMobile}
-        </if>
+        SELECT
+        COUNT(1)
+        FROM
+        (SELECT
+        id, loan_id, login_name, channel, source, invest_time, is_auto_invest, amount, status
+        FROM
+        `aa`.`invest`
         <where>
-            invest.transfer_invest_id is null
+            invest.transfer_invest_id IS NULL
             <if test="loanId != null">
-                and loan.id = #{loanId}
+                AND invest.loan_id = #{loanId}
             </if>
-            <if test="loanStatus != null">
-                and loan.status = #{loanStatus}
+            <if test="investorLoginName != null and investorLoginName != ''">
+                AND invest.login_name = #{investorLoginName}
             </if>
             <if test="investStatus != null">
-                and invest.status = #{investStatus}
+                AND invest.status = #{investStatus}
             </if>
             <if test="channel != null and channel != ''">
-                and invest.channel = #{channel}
+                AND invest.channel = #{channel}
             </if>
             <if test="source != null">
-                and invest.source = #{source}
+                AND invest.source = #{source}
             </if>
             <if test="role != null and role != ''">
-                and exists (select 1 from user_role where user_role.login_name=invest.login_name and user_role.role= #{role} )
+                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name=invest.login_name AND user_role.role=
+                #{role})
             </if>
-            <if test="startTime != null &amp;&amp; endTime != null">
-                and invest.created_time between #{startTime} and #{endTime}
+            <if test="startTime != null">
+                AND invest.invest_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND invest.invest_time &lt;= #{endTime}
             </if>
         </where>
+        )
+        invest
+        JOIN (SELECT id, name, periods FROM `aa`.`loan`) loan ON invest.loan_id = loan.id
+        JOIN (SELECT login_name, mobile, referrer FROM `aa`.`user`) investor_user ON investor_user.login_name =
+        invest.login_name
+        JOIN (SELECT login_name, user_name FROM `aa`.`account`) investor_account ON investor_account.login_name =
+        investor_user.login_name
+        JOIN (SELECT login_name, mobile FROM `aa`.`user`) referrer_user ON referrer_user.login_name =
+        investor_user.referrer
+        JOIN (SELECT login_name, user_name FROM `aa`.`account`) referrer_account ON referrer_account.login_name =
+        referrer_user.login_name
+        LEFT JOIN (SELECT user_coupon.coupon_id, user_coupon.invest_id, coupon.coupon_type FROM `aa`.`user_coupon` JOIN
+        `aa`.`coupon` ON user_coupon.coupon_id = coupon.id) coupon ON coupon.invest_id = invest.id
+        LEFT JOIN (SELECT extra_rate, actual_interest, invest_id FROM `aa`.`invest_extra_rate`) invest_extra_rate ON
+        invest_extra_rate.invest_id = invest.id
+        <where>
+            <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
+                AND invest_extra_rate.extra_rate IS NOT NULL
+            </if>
+            <if test="preferenceType != null and preferenceType.name() != 'INVEST_BENEFIT'">
+                AND coupon.coupon_type = #{preferenceType}
+            </if>
+        </where>
+        ;
     </select>
 
     <select id="sumInvestAmount" parameterType="map" resultType="long">
@@ -396,6 +470,67 @@
             </if>
             <if test="startTime != null &amp;&amp; endTime != null">
                 and invest.created_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="sumInvestAmountConsole" resultType="long">
+        SELECT
+        IFNULL(sum(amount), 0) as sum_amount
+        FROM
+        (SELECT
+        id, loan_id, login_name, channel, source, invest_time, amount, status
+        FROM
+        `aa`.`invest`
+        <where>
+            invest.transfer_invest_id IS NULL
+            <if test="loanId != null">
+                AND invest.loan_id = #{loanId}
+            </if>
+            <if test="investorLoginName != null and investorLoginName">
+                AND invest.login_name = #{investorLoginName}
+            </if>
+            <if test="investStatus != null">
+                AND invest.status = #{investStatus}
+            </if>
+            <if test="channel != null and channel != ''">
+                AND invest.channel = #{channel}
+            </if>
+            <if test="source != null">
+                AND invest.source = #{source}
+            </if>
+            <if test="role != null">
+                AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name=invest.login_name AND user_role.role=
+                #{role})
+            </if>
+            <if test="startTime != null">
+                AND invest.invest_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND invest.invest_time &lt;= #{endTime}
+            </if>
+        </where>
+        )
+        invest
+        JOIN (SELECT id, name, periods FROM `aa`.`loan`) loan ON invest.loan_id = loan.id
+        JOIN (SELECT login_name, mobile, referrer FROM `aa`.`user`) investor_user ON investor_user.login_name =
+        invest.login_name
+        JOIN (SELECT login_name, user_name FROM `aa`.`account`) investor_account ON investor_account.login_name =
+        investor_user.login_name
+        JOIN (SELECT login_name, mobile FROM `aa`.`user`) referrer_user ON referrer_user.login_name =
+        investor_user.referrer
+        JOIN (SELECT login_name, user_name FROM `aa`.`account`) referrer_account ON referrer_account.login_name =
+        referrer_user.login_name
+        LEFT JOIN (SELECT user_coupon.coupon_id, user_coupon.invest_id, coupon.coupon_type FROM `aa`.`user_coupon` JOIN
+        `aa`.`coupon` ON user_coupon.coupon_id = coupon.id) coupon ON coupon.invest_id = invest.id
+        LEFT JOIN (SELECT extra_rate, actual_interest, invest_id FROM `aa`.`invest_extra_rate`) invest_extra_rate ON
+        invest_extra_rate.invest_id = invest.id
+        <where>
+            <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
+                AND invest_extra_rate.extra_rate IS NOT NULL
+            </if>
+            <if test="preferenceType != null and preferenceType.name() != 'INVEST_BENEFIT'">
+                AND coupon.coupon_type = #{preferenceType}
             </if>
         </where>
     </select>
@@ -450,7 +585,7 @@
         select count(*) from account a where not exists(select 1 from invest i where a.login_name = i.login_name and i.status='SUCCESS');
     </select>
 
-    <select id="findNoInvestInThirtyDay" resultType="string" >
+    <select id="findNoInvestInThirtyDay" resultType="string">
         SELECT
         t.`login_name`
         FROM
@@ -462,6 +597,11 @@
 
     <select id="getInvestDetail" resultMap="investDataView">
         <![CDATA[
+
+
+
+
+
          select case
             when loan.periods ='1' then 30
             when loan.periods ='3' then 90
@@ -473,7 +613,12 @@
           and invest.trading_time between '2015-07-01 00:00:00' and date_add(curdate(), interval '00:00:00' hour_second)
           group by loan.periods
           ORDER BY productName
-          ]]>
+
+
+
+
+
+        ]]>
     </select>
 
     <select id="countAchievementTimesByLoginName" parameterType="map" resultType="int">
@@ -561,19 +706,25 @@
         where invest.login_name = #{loginName}
         <if test="loanStatus.name() == 'COMPLETE' ">
             and (loan.status = #{loanStatus}
-            OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
-            OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
+            OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
+            TO_DAYS(invest_time) &lt; loan.duration)
+            OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
+            TO_DAYS(invest_time) &gt;= loan.duration)))
         </if>
         <if test="loanStatus.name() == 'REPAYING' ">
             and (loan.status in ('REPAYING','OVERDUE')
-            OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &lt; loan.duration)
-            OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) - TO_DAYS(invest_time) &gt;= loan.duration)))
+            OR ((#{loanStatus} = 'REPAYING' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
+            TO_DAYS(invest_time) &lt; loan.duration)
+            OR (#{loanStatus} = 'COMPLETE' AND loan.product_type = 'EXPERIENCE' AND TO_DAYS(NOW()) -
+            TO_DAYS(invest_time) &gt;= loan.duration)))
         </if>
         <if test="loanStatus.name() == 'RAISING' ">
             and loan.status in ('RAISING','RECHECK') and loan.product_type != 'EXPERIENCE'
         </if>
-        and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null and invest.`transfer_status` != 'SUCCESS'
-        order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc, invest.id asc
+        and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null and invest.`transfer_status` !=
+        'SUCCESS'
+        order by case when invest.trading_time is null then invest.created_time else invest.trading_time end desc,
+        invest.id asc
         limit #{index}, #{pageSize}
     </select>
 
@@ -591,7 +742,8 @@
         <if test="loanStatus.name() == 'RAISING' ">
             and loan.status in ('RAISING','RECHECK')
         </if>
-        and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null and invest.`transfer_status` != 'SUCCESS'
+        and invest.`status` = 'SUCCESS' and invest.`transfer_invest_id` is null and invest.`transfer_status` !=
+        'SUCCESS'
     </select>
 
     <select id="countSuccessInvestByInvestTime" parameterType="map" resultMap="investResultMap">
@@ -600,7 +752,8 @@
         where loan_id = #{loanId} and status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
     </select>
 
-    <select id="findWebTransferableApplicationPaginationByLoginName" useCache="false" parameterType="map" resultMap="transferableInvestView">
+    <select id="findWebTransferableApplicationPaginationByLoginName" useCache="false" parameterType="map"
+            resultMap="transferableInvestView">
         SELECT
             invest.loan_id,
             invest.id as invest_id,
@@ -647,7 +800,8 @@
             limit #{index}, #{pageSize}
     </select>
 
-    <select id="findWebCountTransferableApplicationPaginationByLoginName" useCache="false" parameterType="map" resultType="long">
+    <select id="findWebCountTransferableApplicationPaginationByLoginName" useCache="false" parameterType="map"
+            resultType="long">
         SELECT
           count(1)
         FROM
@@ -676,7 +830,8 @@
     </select>
 
 
-    <select id="findTransferableApplicationPaginationByLoginName" parameterType="map" resultMap="investResultMap" useCache="false">
+    <select id="findTransferableApplicationPaginationByLoginName" parameterType="map" resultMap="investResultMap"
+            useCache="false">
         SELECT
         invest.id,
         invest.transfer_invest_id,
@@ -716,7 +871,8 @@
             limit #{index}, #{pageSize}
     </select>
 
-    <select id="findCountTransferableApplicationPaginationByLoginName" parameterType="map" resultType="long" useCache="false">
+    <select id="findCountTransferableApplicationPaginationByLoginName" parameterType="map" resultType="long"
+            useCache="false">
         SELECT
           count(1)
         FROM
@@ -760,14 +916,14 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-            AND loan.product_type != 'EXPERIENCE'
-            AND invest.status = 'SUCCESS'
-            <if test="startTime != null">
-                AND invest.invest_time &gt; #{startTime}
-            </if>
-            <if test="endTime != null">
-                AND invest.invest_time &lt; #{endTime}
-            </if>
+        AND loan.product_type != 'EXPERIENCE'
+        AND invest.status = 'SUCCESS'
+        <if test="startTime != null">
+            AND invest.invest_time &gt; #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND invest.invest_time &lt; #{endTime}
+        </if>
     </select>
 
     <select id="findCountExperienceLoanByLoginName" parameterType="map" resultType="int">
