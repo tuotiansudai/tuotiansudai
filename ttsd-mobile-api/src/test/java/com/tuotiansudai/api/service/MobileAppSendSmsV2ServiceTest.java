@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.service;
 
 
+import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
@@ -11,7 +12,7 @@ import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.util.CaptchaHelper;
+import com.tuotiansudai.spring.security.CaptchaHelper;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -37,7 +38,9 @@ public class MobileAppSendSmsV2ServiceTest extends ServiceTestBase {
         sendSmsCompositeRequestDto.setImageCaptcha("ABCDEF");
         sendSmsCompositeRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
         sendSmsCompositeRequestDto.setPhoneNum("10002341");
-        mockMethod(false);
+        sendSmsCompositeRequestDto.setBaseParam(BaseParamTest.newInstance());
+        mockMethod();
+        when(captchaHelper.captchaVerify(anyString(), anyString(), anyString())).thenReturn(true);
         BaseResponseDto baseResponseDto = mobileAppSendSmsV2Service.sendSms(sendSmsCompositeRequestDto,"192.168.1.1");
         assertEquals(baseResponseDto.getCode(), ReturnMessage.SUCCESS.getCode());
     }
@@ -50,13 +53,12 @@ public class MobileAppSendSmsV2ServiceTest extends ServiceTestBase {
         BaseParam baseParam = new BaseParam();
         baseParam.setDeviceId("1234443");
         sendSmsCompositeRequestDto.setBaseParam(baseParam);
-        mockMethod(true);
+        mockMethod();
         BaseResponseDto baseResponseDto = mobileAppSendSmsV2Service.sendSms(sendSmsCompositeRequestDto,"192.168.1.1");
         assertEquals(baseResponseDto.getCode(), ReturnMessage.NEED_IMAGE_CAPTCHA.getCode());
     }
 
-    private void mockMethod(boolean captchaVerify){
-        when(captchaHelper.isNeedImageCaptcha(anyString(),anyString())).thenReturn(captchaVerify);
+    private void mockMethod(){
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         BaseDto<SmsDataDto> sms = new BaseDto<>();
         sms.setSuccess(true);

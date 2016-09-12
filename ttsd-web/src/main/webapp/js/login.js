@@ -75,19 +75,11 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
                     },
                     success: function (data) {
                         if (data.status) {
-                            window.location.href = loginFormElement.data('redirect-url');
+                            window.location.href = _.difference(data.roles, ['USER']).length > 0 ? loginFormElement.data('redirect-url') : "/register/account";
                         } else {
                             refreshCaptcha();
                             loginSubmitElement.removeClass('loading');
-                            if (data.isLocked) {
-                                errorElement.text("用户已被锁定").css('visibility', 'visible');
-                                return;
-                            }
-                            if (data.isCaptchaNotMatch) {
-                                errorElement.text("验证码不正确").css('visibility', 'visible');
-                                return;
-                            }
-                            errorElement.text("用户或密码不正确").css('visibility', 'visible');
+                            errorElement.text(data.message).css('visibility', 'visible');
                         }
                     },
                     error: function () {

@@ -15,7 +15,7 @@
         <beans:property name="userPropertyToUse" value="salt"/>
     </beans:bean>
 
-    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.spring.MyAccessDeniedHandler">
+    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.spring.security.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/error/404"/>
         <beans:property name="accessDeniedExceptionRedirect">
             <beans:map>
@@ -32,15 +32,19 @@
         </beans:property>
     </beans:bean>
 
-    <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
+    <beans:bean id="myAuthenticationProvider" class="com.tuotiansudai.spring.security.MyAuthenticationProvider"/>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider ref="myAuthenticationProvider"/>
+    </authentication-manager>
 
     <beans:bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
 
-    <beans:bean id="affirmativeBased" class="com.tuotiansudai.spring.MyAffirmativeBased">
+    <beans:bean id="affirmativeBased" class="com.tuotiansudai.spring.security.MyAffirmativeBased">
         <beans:constructor-arg ref="webExpressionVoter"/>
     </beans:bean>
 
-    <beans:bean id="myLoginUrlAuthenticationEntryPoint" class="com.tuotiansudai.spring.MyLoginUrlAuthenticationEntryPoint">
+    <beans:bean id="myLoginUrlAuthenticationEntryPoint" class="com.tuotiansudai.spring.security.MyLoginUrlAuthenticationEntryPoint">
         <beans:constructor-arg name="loginFormUrl" value="${web.server}/login"/>
     </beans:bean>
 
