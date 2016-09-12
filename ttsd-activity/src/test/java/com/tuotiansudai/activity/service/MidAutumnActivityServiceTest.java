@@ -49,7 +49,7 @@ public class MidAutumnActivityServiceTest {
     @Mock
     private InvestMapper investMapper;
 
-    @Test
+    @Ignore
     public void shouldGetMidAutumnHomeDataIsOk(){
         String loginName = "boss";
         Date activityAutumnStartTime = DateTime.now().withTimeAtStartOfDay().toDate();

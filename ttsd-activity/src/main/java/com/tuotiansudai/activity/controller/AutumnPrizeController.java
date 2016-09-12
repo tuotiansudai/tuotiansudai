@@ -139,20 +139,10 @@ public class AutumnPrizeController {
 
     @RequestMapping(path = "/luxury/{id:^\\d+$}/detail", method = RequestMethod.GET)
     public ModelAndView luxuryPrizeDetail(@PathVariable final long id) {
-        List<LuxuryPrizeDto> prizeItems = autumnPrizeService.getLuxuryPrizeItems();
-        Optional<LuxuryPrizeDto> optional = Iterators.tryFind(prizeItems.iterator(), new Predicate<LuxuryPrizeDto>() {
-            @Override
-            public boolean apply(LuxuryPrizeDto input) {
-                return input.getId() == id;
-            }
-        });
-        if (optional.isPresent()) {
-            ModelAndView modelAndView = new ModelAndView("/activities/autumn-luxury-detail", "responsive", true);
-            modelAndView.addObject("introduce", optional.get().getIntroduce());
-            return modelAndView;
-        }
+        ModelAndView modelAndView = new ModelAndView("/activities/autumn-luxury-detail", "responsive", true);
+        modelAndView.addObject("prizeId", id);
 
-        return new ModelAndView("/error/404");
+        return modelAndView;
     }
 
     @ResponseBody
