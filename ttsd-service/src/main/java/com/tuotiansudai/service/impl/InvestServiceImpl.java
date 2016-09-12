@@ -16,7 +16,10 @@ import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -81,6 +84,12 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
+
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private MembershipMapper membershipMapper;
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
@@ -471,5 +480,16 @@ public class InvestServiceImpl implements InvestService {
         }
 
         return rate == 0 ? 0 : new BigDecimal(duration * amount).multiply(new BigDecimal(rate)).divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
+    }
+
+    public long calculateMembershipPreference(String loginName, long loanId, long investAmount) {
+        long preference = 0;
+        UserMembershipModel userMembershipModel = userMembershipMapper.findCurrentMaxByLoginName(loginName);
+        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getId());
+        LoanModel loanModel = loanMapper.findById(loanId);
+        double preferenceRate = defaultFee - membershipModel.getFee();
+        long interest = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);
+        preference = new BigDecimal(preferenceRate).multiply(new BigDecimal(interest)).longValue();
+        return preference;
     }
 }

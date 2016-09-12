@@ -10,11 +10,11 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.SmsCaptchaService;
+import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.spring.security.CaptchaHelper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CaptchaGenerator;
-import com.tuotiansudai.spring.security.CaptchaHelper;
 import com.tuotiansudai.util.RequestIPParser;
-import com.tuotiansudai.spring.LoginUserInfo;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -206,5 +206,12 @@ public class InvestController {
         }
 
         return modelAndView;
+    }
+
+    @RequestMapping(path = "/get-membership-preference", method = RequestMethod.GET)
+    public String getMembershipPreference(@RequestParam(value = "loanId") long loanId,
+                                          @RequestParam(value = "investAmount") long investAmount) {
+        String loginName = LoginUserInfo.getLoginName();
+        return AmountConverter.convertCentToString(investService.calculateMembershipPreference(loginName, loanId, investAmount));
     }
 }

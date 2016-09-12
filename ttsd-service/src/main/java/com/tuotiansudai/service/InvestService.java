@@ -60,4 +60,6 @@ public interface InvestService {
     boolean switchNoPasswordInvest(String loginName, boolean isTurnOn, String ip);
 
     void markNoPasswordRemind(String loginName);
+
+    long calculateMembershipPreference(String loginName, long loanId, long investAmount);
 }
