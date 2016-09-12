@@ -14,6 +14,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.transfer.service.TransferService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;

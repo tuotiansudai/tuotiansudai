@@ -1,9 +1,10 @@
 sign-in:
-  image: "leoshi/ttsd-tomcat8-java7:UTC8"
-  ports:
-    - "20001:8080"
+  image: "leoshi/ttsd-signin-flask"
   volumes:
-    - ./ttsd-sign-in/war:/webapps
+    - ./signin_service:/app
+    - /var/log/signin:/var/log/signin
+  ports:
+    - "20001:80"
   links:
     - "redis-server"
 web:
@@ -38,6 +39,7 @@ activity-console:
     - ./ttsd-activity-console/war:/webapps
   links:
     - "redis-server"
+    - "sign-in"
 pay-wrapper:
   image: "leoshi/ttsd-tomcat8-java7:UTC8"
   ports:
@@ -76,6 +78,7 @@ activity:
   links:
     - "redis-server"
     - "static-server"
+    - "sign-in"
 point:
   image: "leoshi/ttsd-tomcat8-java7:UTC8"
   ports:
@@ -85,6 +88,7 @@ point:
   links:
     - "redis-server"
     - "static-server"
+    - "sign-in"
 redis-server:
   image: "grokzen/redis-cluster"
   ports:
@@ -157,3 +161,4 @@ ask:
   links:
     - "redis-server"
     - "static-server"
+    - "sign-in"

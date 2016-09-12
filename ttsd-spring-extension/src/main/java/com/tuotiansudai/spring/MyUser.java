@@ -7,30 +7,30 @@ import java.util.List;
 
 public class MyUser extends User {
 
-    private String salt;
+    private String token;
 
     private String mobile;
 
-    public MyUser(String username,
+    public MyUser(String token,
+                  String username,
                   String password,
                   boolean enabled,
                   boolean accountNonExpired,
                   boolean credentialsNonExpired,
                   boolean accountNonLocked,
                   List<GrantedAuthority> authorities,
-                  String mobile,
-                  String salt) {
+                  String mobile) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+        this.token = token;
         this.mobile = mobile;
-        this.salt = salt;
     }
 
-    public String getSalt() {
-        return salt;
+    public String getToken() {
+        return token;
     }
 
-    public void setSalt(String salt) {
-        this.salt = salt;
+    public void setToken(String sessionId) {
+        this.token = sessionId;
     }
 
     public String getMobile() {

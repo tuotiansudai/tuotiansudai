@@ -1,49 +1,41 @@
 package com.tuotiansudai.activity.interceptors;
 
-import com.google.common.base.Strings;
-import com.tuotiansudai.client.AppTokenRedisWrapperClient;
-import com.tuotiansudai.spring.MyAuthenticationManager;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.dto.SignInResult;
+import com.tuotiansudai.spring.security.MyAuthenticationUtil;
+import com.tuotiansudai.spring.security.SignInClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.MessageFormat;
 
 public class AppTokenInterceptor extends HandlerInterceptorAdapter {
 
     static Logger logger = Logger.getLogger(AppTokenInterceptor.class);
 
-    @Autowired
-    private MyAuthenticationManager myAuthenticationManager;
-
-    @Autowired
-    private AppTokenRedisWrapperClient AppTokenRedisWrapperClient;
-
     private final static String APP_SOURCE_FLAG = "app";
+
+    @Autowired
+    private MyAuthenticationUtil myAuthenticationUtil;
+
+    @Autowired
+    private SignInClient signInClient;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (!APP_SOURCE_FLAG.equalsIgnoreCase(request.getParameter("source"))) {
-            return true;
+        String source = request.getParameter("source");
+        if (APP_SOURCE_FLAG.equalsIgnoreCase(source)) {
+            String token = request.getHeader("token");
+            SignInResult signInResult = signInClient.verifyToken(token, Source.WEB);
+            if (signInResult != null && signInResult.isResult()) {
+                request.getSession();
+                myAuthenticationUtil.createAuthentication(signInResult.getUserInfo().getLoginName(), Source.WEB);
+                return true;
+            }
+            myAuthenticationUtil.removeAuthentication();
         }
-        String token = Strings.isNullOrEmpty(request.getHeader("token")) ? request.getParameter("token") : request.getHeader("token");
-        if (Strings.isNullOrEmpty(token)) {
-            logger.debug(MessageFormat.format("url:{0},uri:{1} , token is null", request.getRequestURL(), request.getRequestURI()));
-            myAuthenticationManager.removeAuthentication();
-            return true;
-        }
-
-        String loginName = AppTokenRedisWrapperClient.get(token);
-
-        if (Strings.isNullOrEmpty(loginName)) {
-            myAuthenticationManager.removeAuthentication();
-        } else {
-            myAuthenticationManager.createAuthentication(loginName);
-        }
-
         return true;
     }
-
 }

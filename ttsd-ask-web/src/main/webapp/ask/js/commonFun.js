@@ -109,6 +109,7 @@ comm.matchiChSymbol=function(str) {
 
 $('#logout-link').click(function() {
     $('#logout-form').submit();
+    return false;
 });
 
 module.exports = comm;

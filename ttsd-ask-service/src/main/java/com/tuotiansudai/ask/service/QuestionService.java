@@ -149,14 +149,12 @@ public class QuestionService {
     public BaseDto<BasePaginationDataDto> findByTag(String loginName, Tag tag, int index, int pageSize) {
         long count = questionMapper.countByTag(loginName, tag);
         List<QuestionModel> questions = questionMapper.findByTag(loginName, tag, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        return generatePaginationData(loginName, index, pageSize, count, questions, false);
+        return generatePaginationData(loginName, index, pageSize, count, questions, true);
     }
 
     public BaseDto<BasePaginationDataDto> findQuestionsForConsole(String question, String mobile, QuestionStatus status, int index, int pageSize) {
-        UserModel userModel = userMapper.findByMobile(mobile);
-        String loginName = userModel != null ? userModel.getLoginName() : null;
-        long count = questionMapper.countQuestionsForConsole(question, loginName, status);
-        List<QuestionModel> myQuestions = questionMapper.findQuestionsForConsole(question, loginName, status, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        long count = questionMapper.countQuestionsForConsole(question, mobile, status);
+        List<QuestionModel> myQuestions = questionMapper.findQuestionsForConsole(question, mobile, status, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
         return generatePaginationData(null, index, pageSize, count, myQuestions, false);
     }
 

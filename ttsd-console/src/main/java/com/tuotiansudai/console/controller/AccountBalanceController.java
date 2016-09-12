@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.UserItemDataDto;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,6 +28,9 @@ public class AccountBalanceController {
                                        @RequestParam(value = "mobile", required = false) String mobile,
                                        @RequestParam(value = "balanceMin", required = false) String balanceMin,
                                        @RequestParam(value = "balanceMax", required = false) String balanceMax) {
+        if (StringUtils.isEmpty(balanceMax)) {
+            balanceMax = String.valueOf(Long.MAX_VALUE);
+        }
         ModelAndView modelAndView = new ModelAndView("/account-balance");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);

@@ -2,11 +2,11 @@
 <@global.main pageCss="${css.login}" pageJavascript="${js.login}" activeLeftNav="" title="登录拓天速贷_拓天速贷" keywords="拓天速贷,拓天会员,新手理财,拓天速贷用户" description="拓天速贷为投资理财人士提供规范、安全、专业的互联网金融信息服务,让您获得稳定收益和高收益的投资理财产品.">
 <div class="login-container page-width">
 
-        <img src="/images/sign/login-app-new.png" class="login-app">
+        <img src="${staticServer}/images/sign/login-app-new.png" class="login-app">
         <div class="login-box">
             <h3>欢迎登录拓天速贷</h3>
 
-            <form class="form-login" action="/login/sign-in" method="post" data-redirect-url="${redirect}">
+            <form class="form-login" action="/login" method="post" data-redirect-url="${redirect}">
                 <label>
                     <em class="name">账<i></i>号:</em>
                     <input class="login-name unlock" type="text" value="" name="username" placeholder="请输入账号/手机号"/>
@@ -22,6 +22,7 @@
                         <img src="/login/captcha" alt=""/>
                     </em>
                 </label>
+                <input type="hidden" name="source" value="WEB" />
                 <i class="error fa fa-times-circle"></i>
                 <div class="forgot-password tc">
                     <div class="tr">

@@ -8,6 +8,8 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppPersonalInfoService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.DistrictUtil;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -15,6 +17,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.util.BankCardUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +41,8 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
 
     @Autowired
     private LoanMapper loanMapper;
+    @Autowired
+    private UserCouponMapper userCouponMapper;
 
     @Override
     public BaseResponseDto getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto) {
@@ -97,12 +102,12 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             personalInfoDataDto.setFastPaymentEnable(false);
             personalInfoDataDto.setBankName("");
         }
-        if(investMapper.findCountExperienceLoanByLoginName(user.getLoginName()) > 0){
-            personalInfoDataDto.setIsExperienceEnable(false);
-        }else{
+        List<UserCouponModel> userCouponModels = userCouponMapper.findUsedExperienceByLoginName(user.getLoginName());
+        if(CollectionUtils.isNotEmpty(userCouponModels)){
             personalInfoDataDto.setIsExperienceEnable(true);
+        }else{
+            personalInfoDataDto.setIsExperienceEnable(false);
         }
-
         if(investMapper.sumSuccessInvestCountByLoginName(user.getLoginName()) > 0){
             personalInfoDataDto.setIsNewbieEnable(false);
         }else{

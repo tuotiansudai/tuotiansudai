@@ -88,7 +88,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
             }
             responseDto.setCode(code);
             responseDto.setMessage(message);
-            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_invest?ret_code={1}", domainName, code)));
+            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_no_password_invest?ret_code={1}&order_id={2}&amount={3}", domainName, code, investDto.getLoanId(), investDto.getAmount())));
         } catch (InvestException e) {
             return this.convertExceptionToDto(e);
         }

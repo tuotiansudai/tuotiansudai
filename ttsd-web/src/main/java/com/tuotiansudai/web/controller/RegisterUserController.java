@@ -5,12 +5,13 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.spring.MyAuthenticationManager;
+import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.util.CaptchaGenerator;
-import com.tuotiansudai.util.CaptchaHelper;
+import com.tuotiansudai.spring.security.CaptchaHelper;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.MessageFormat;
 
@@ -47,7 +49,7 @@ public class RegisterUserController {
     private PrepareUserService prepareService;
 
     @Autowired
-    private MyAuthenticationManager myAuthenticationManager;
+    private MyAuthenticationUtil myAuthenticationUtil;
 
     @RequestMapping(method = RequestMethod.GET)
 
@@ -126,7 +128,7 @@ public class RegisterUserController {
 
         if (isRegisterSuccess) {
             logger.info(MessageFormat.format("[Register User {0}] authenticate starting...", registerUserDto.getMobile()));
-            myAuthenticationManager.createAuthentication(registerUserDto.getMobile());
+            myAuthenticationUtil.createAuthentication(registerUserDto.getMobile(), Source.WEB);
             logger.info(MessageFormat.format("[Register User {0}] authenticate completed", registerUserDto.getMobile()));
         }
 
@@ -182,11 +184,13 @@ public class RegisterUserController {
 
     @RequestMapping(path = "/send-register-captcha", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public BaseDto<SmsDataDto> sendRegisterCaptcha(HttpServletRequest httpServletRequest, @Valid @ModelAttribute RegisterCaptchaDto dto) {
+    public BaseDto<SmsDataDto> sendRegisterCaptcha(HttpServletRequest httpServletRequest,
+                                                   @Valid @ModelAttribute RegisterCaptchaDto dto) {
         BaseDto<SmsDataDto> baseDto = new BaseDto<>();
         SmsDataDto dataDto = new SmsDataDto();
         baseDto.setData(dataDto);
-        boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.REGISTER_CAPTCHA, dto.getImageCaptcha());
+        HttpSession session = httpServletRequest.getSession(false);
+        boolean result = this.captchaHelper.captchaVerify(dto.getImageCaptcha(), session != null ? session.getId() : "", httpServletRequest.getRemoteAddr());
         if (result) {
             return smsCaptchaService.sendRegisterCaptcha(dto.getMobile(), RequestIPParser.parse(httpServletRequest));
         }
@@ -212,11 +216,11 @@ public class RegisterUserController {
     }
 
     @RequestMapping(value = "/image-captcha", method = RequestMethod.GET)
-    public void registerImageCaptcha(HttpServletResponse response) {
+    public void registerImageCaptcha(HttpServletRequest request, HttpServletResponse response) {
         int captchaWidth = 80;
         int captchaHeight = 38;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
-        captchaHelper.storeCaptcha(CaptchaHelper.REGISTER_CAPTCHA, captcha.getAnswer());
+        captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false).getId());
     }
 }

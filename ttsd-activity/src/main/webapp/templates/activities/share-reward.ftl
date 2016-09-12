@@ -30,11 +30,15 @@
             <div class="example-case-detail"></div>
         </div>
         <div class="share-recommend">
+        <#if isLogin>
             <#if noAccount?? && noAccount>
                 <a href="/register/account">立即推荐</a>
             <#else>
                 <a href="/referrer/refer-list">立即推荐</a>
             </#if>
+        <#else>
+            <a href="javascript:void(0)" class="show-login">立即推荐</a>
+        </#if>
         </div>
         <div class="share-rules">
             <div class="rules-title">
@@ -59,11 +63,15 @@
         <div class="reward-info-title"></div>
         <div class="share-example"></div>
         <div class="share-recommend">
-            <#if isAppSource?? && !isAppSource>
+            <#if !isAppSource>
+                <#if isLogin>
                 <#if noAccount?? && noAccount>
                     <a href="/register/account">立即推荐</a>
                 <#else>
                     <a href="/referrer/refer-list">立即推荐</a>
+                </#if>
+                <#else>
+                    <a href="javascript:void(0)" class="show-login">立即推荐</a>
                 </#if>
             <#else>
                 <#if isLogin?? && !isLogin>
@@ -81,4 +89,5 @@
         <div class="share-rules"></div>
     </div>
 </div>
+    <#include "login-tip.ftl" />
 </@global.main>
