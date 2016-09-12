@@ -277,7 +277,6 @@
         FROM
         (SELECT * FROM `coupon`
         WHERE
-        `total_count` > `issued_count` AND
         `active` is TRUE AND
         `deleted` is FALSE AND
         `coupon_type` IN ('INVEST_COUPON','INTEREST_COUPON', 'RED_ENVELOPE') AND
@@ -300,7 +299,6 @@
         FROM
         (SELECT * FROM `coupon`
         WHERE
-        `total_count` > `issued_count` AND
         `active` is TRUE AND
         `deleted` is FALSE AND
         `coupon_type` IN ('INVEST_COUPON','INTEREST_COUPON', 'RED_ENVELOPE') AND

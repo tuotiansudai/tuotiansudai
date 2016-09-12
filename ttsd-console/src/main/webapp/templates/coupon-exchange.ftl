@@ -93,7 +93,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">所需积分: </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control exchange-point" name="exchangePoint" placeholder="" data-type="n" errormsg="所需积分需要填写数字">
+                <input type="text" class="form-control exchange-point" name="exchangePoint" placeholder="" datatype="n" errormsg="所需积分需要填写数字">
             </div>
         </div>
 

@@ -153,9 +153,13 @@
                                 <p class="convert-btn">
                                     <span class="name-text">${virtualProduct.name!"0"}</span>
                                     <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
-                                    <a class="fl"
-                                       href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/1"><span
-                                            class="fl get-btn">立即兑换</span></a>
+                                    <#if virtualProduct?? && virtualProduct.leftCount ==0 >
+                                        <span class="fl get-btn">已售罄</span>
+                                    <#else>
+                                        <a class="fl" href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/1"><span
+                                                class="fl get-btn">立即兑换</span></a>
+                                    </#if>
+
                                 </p>
                             </a>
                         </li>
@@ -167,9 +171,12 @@
                                 <p class="convert-btn">
                                     <span class="name-text">${virtualProduct.name}</span>
                                     <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
-                                    <a class="fl"
-                                       href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/1"><span
-                                            class="fl get-btn">立即兑换</span></a>
+                                    <#if virtualProduct?? && virtualProduct.leftCount ==0 >
+                                        <span class="fl get-btn">已售罄</span>
+                                    <#else>
+                                        <a class="fl" href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/1"><span
+                                                class="fl get-btn">立即兑换</span></a>
+                                    </#if>
                                 </p>
                             </a>
                         </li>
@@ -205,8 +212,12 @@
                                 <p class="convert-btn">
                                     <span class="name-text">${physicalProduct.name}</span>
                                     <span class="price-text">尊享价：<i>${physicalProduct.points?string('0')}</i>积分</span>
-                                    <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.itemType.name()}/1"><span
-                                            class="get-btn">立即兑换</span></a>
+                                    <#if physicalProduct?? && physicalProduct.leftCount ==0 >
+                                        <span class="fl get-btn">已售罄</span>
+                                    <#else>
+                                        <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.itemType.name()}/1"><span
+                                                class="get-btn">立即兑换</span></a>
+                                    </#if>
                                 </p>
                             </a>
                         </li>
@@ -222,8 +233,12 @@
                                 <p class="convert-btn">
                                     <span class="name-text">${physicalProduct.name}</span>
                                     <span class="price-text">尊享价：<i>${physicalProduct.points?string('0')}</i>积分</span>
-                                    <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.itemType.name()}/1"><span
-                                            class="get-btn">立即兑换</span></a>
+                                    <#if physicalProduct?? && physicalProduct.leftCount ==0 >
+                                        <span class="fl get-btn">已售罄</span>
+                                    <#else>
+                                        <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.itemType.name()}/1"><span
+                                                class="get-btn">立即兑换</span></a>
+                                    </#if>
                                 </p>
                             </a>
                         </li>
