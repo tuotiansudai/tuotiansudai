@@ -14,6 +14,7 @@ import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -33,9 +34,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -74,6 +73,9 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
 
     @Mock
     private CouponMapper couponMapper;
+
+    @Mock
+    private UserMembershipService userMembershipService;
 
     @Test
     public void shouldUserInvestRepayOnePeriodCompleteIsOk(){
@@ -122,6 +124,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(investService.findById(anyLong())).thenReturn(investModel);
         when(loanService.findLoanById(anyLong())).thenReturn(loanModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
+        when(userMembershipService.getMembershipLevelByLoginNameAndInvestTime(anyString(),any(Date.class))).thenReturn(String.valueOf(1));
 
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
