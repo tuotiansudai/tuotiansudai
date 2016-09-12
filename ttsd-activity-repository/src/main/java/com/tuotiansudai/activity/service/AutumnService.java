@@ -1,5 +1,6 @@
 package com.tuotiansudai.activity.service;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -31,11 +32,11 @@ public class AutumnService {
         }
 
         for (UserModel userModel : userModels) {
-            if (StringUtils.isEmpty(userModel.getReferrer())) {
+            if (Strings.isNullOrEmpty(userModel.getReferrer())) {
                 allFamily.put(userModel.getLoginName(),Lists.newArrayList(userModel.getLoginName()));
                 continue;
             }
-            if(CollectionUtils.isEmpty(allFamily.values())){
+            if(allFamily.values() == null || allFamily.values().size() == 0){
                 allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getReferrer(),userModel.getLoginName()));
                 continue;
             }
