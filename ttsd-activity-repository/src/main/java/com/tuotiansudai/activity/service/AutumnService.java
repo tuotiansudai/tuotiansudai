@@ -39,14 +39,17 @@ public class AutumnService {
                 allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getReferrer(),userModel.getLoginName()));
                 continue;
             }
+            boolean isFamily = false;
             for (List<String> family : allFamily.values()) {
                 if(family.contains(userModel.getReferrer())){
+                    isFamily = true;
                     family.add(userModel.getLoginName());
                     break;
-                }else{
-                    allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getReferrer(),userModel.getLoginName()));
-                    break;
                 }
+            }
+
+            if(!isFamily){
+                allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getReferrer(),userModel.getLoginName()));
             }
 
         }
