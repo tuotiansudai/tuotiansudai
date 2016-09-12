@@ -188,24 +188,24 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
 
+        final List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginNameAndCouponId(loginName, null);
+
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
             @Override
             public boolean apply(CouponModel couponModel) {
                 boolean isInUserGroup = userGroups.contains(couponModel.getUserGroup())
                         && CouponAssignmentServiceImpl.this.getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName);
-                List<UserCouponModel> existingUserCoupons = userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId());
-
-                boolean isAssignableCoupon = this.isAssignableCoupon(couponModel, existingUserCoupons);
+                boolean isAssignableCoupon = this.isAssignableCoupon(couponModel, userCouponModels);
                 return isInUserGroup && isAssignableCoupon;
             }
 
-            private boolean isAssignableCoupon(CouponModel couponModel, List<UserCouponModel> existingUserCouponModels) {
+            private boolean isAssignableCoupon(final CouponModel couponModel, List<UserCouponModel> existingUserCouponModels) {
                 boolean isAssignableCoupon = CollectionUtils.isEmpty(existingUserCouponModels);
                 if (CollectionUtils.isNotEmpty(existingUserCouponModels) && couponModel.isMultiple()) {
-                    isAssignableCoupon = Iterables.all(existingUserCouponModels, new Predicate<UserCouponModel>() {
+                    isAssignableCoupon = !Iterables.any(existingUserCouponModels, new Predicate<UserCouponModel>() {
                         @Override
                         public boolean apply(UserCouponModel input) {
-                            return input.getStatus() == InvestStatus.SUCCESS;
+                            return couponModel.getId() == input.getCouponId() && input.getStatus() != InvestStatus.SUCCESS;
                         }
                     });
                 }
