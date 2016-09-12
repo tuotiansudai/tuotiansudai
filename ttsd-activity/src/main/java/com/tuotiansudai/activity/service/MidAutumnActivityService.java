@@ -81,9 +81,9 @@ public class MidAutumnActivityService {
             }
         });
 
-        String isOverdue = "false";
+        boolean isOverdue = false;
         if (DateTime.now().toDate().before(activityMinAutumnStartTime) || DateTime.now().toDate().after(activityMinAutumnEndTime)) {
-            isOverdue = "true";
+            isOverdue = true;
         }
 
         Map<String,Object> homeData = Maps.newConcurrentMap();

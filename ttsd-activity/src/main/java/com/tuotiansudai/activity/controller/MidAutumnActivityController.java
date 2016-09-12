@@ -30,6 +30,7 @@ public class MidAutumnActivityController {
         modelAndView.addObject("myFamilyInvestAmount", myFamilyMap.get("todayInvestAmount"));
         modelAndView.addObject("myFamilyTotalInvestAmount", myFamilyMap.get("totalInvestAmount"));
         modelAndView.addObject("allFamilyInvestAmounts",myFamilyMap.get("topThreeFamily"));
+        modelAndView.addObject("isOverdue",myFamilyMap.get("isOverdue"));
         return modelAndView;
     }
 }

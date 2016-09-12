@@ -67,7 +67,12 @@
                     <i class="br">家庭全员均可获得</i></span></dd>
                 </dl>
                 <div class="tc clearfix">
+                <#if !isOverdue>
                     <a href="/loan-list" class="btn-normal-invest">立即投资</a>
+                    <#else>
+                   <button class="btn-normal-invest" disabled>活动已结束</button>
+                </#if>
+
                 </div>
             </div>
 
@@ -126,7 +131,11 @@
                         </dl>
 
                         <div class="tc clearfix">
-                            <a href="/loan-list" class="btn-normal-invest">立即投资</a>
+                            <#if !isOverdue>
+                                <a href="/loan-list" class="btn-normal-invest">立即投资</a>
+                            <#else>
+                                <button class="btn-normal-invest" disabled>活动已结束</button>
+                            </#if>
                         </div>
                     </div>
                 </div>
@@ -197,12 +206,12 @@
         5、活动结束后，如遇多个家庭累计投资金额一致，则组建时间靠前的家庭优先获奖，组建家庭较晚的依次顺延到下一奖项；<br/>
         6、活动中如果出现恶意刷量等违规行为，拓天速贷将取消您获得奖励的资格，并有权撤销违规交易，拓天速贷在法律范围内保留对本活动的最终解释权。<br/>
     </div>
-    <div class="frame-box-four">
-        <div class="landing-phone-section-header">
-            <h3><span><i class="left-icon"></i>现在就注册吧<i class="right-icon"></i></span></h3>
-        </div>
 
         <#if !isAppSource>
+        <div class="frame-box-four">
+            <div class="landing-phone-section-header">
+                <h3><span><i class="left-icon"></i>现在就注册吧<i class="right-icon"></i></span></h3>
+            </div>
             <div class="landing-top">
                 <div class="landing-inner">
                     <div class="register-box">
@@ -262,9 +271,8 @@
                     </div>
                 </div>
             </div>
-
+        </div>
         </#if>
-    </div>
 </div>
 <div id="agreementBox"  style="display: none;">
     <div class="pad-m">

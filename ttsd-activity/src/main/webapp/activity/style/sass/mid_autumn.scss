@@ -26,6 +26,12 @@ body {
   padding: 0px 50px;
   font-size: 24px;
   margin-top:20px;
+  border:0;
+  height:50px;
+  &:disabled {
+    background: #ccc;
+    color: #999;
+}
   &:hover {
     color: #ffff00;
   }
