@@ -12,6 +12,8 @@ public interface BankCardMapper {
 
     BankCardModel findById(long id);
 
+    BankCardModel findPassedById(long id);
+
     BankCardModel findPassedBankCardByLoginName(String loginName);
 
     BankCardModel findByLoginNameAndIsFastPayOn(String loginName);

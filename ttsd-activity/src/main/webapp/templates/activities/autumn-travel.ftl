@@ -6,125 +6,128 @@
 </@global.isNotAnonymous>
 <div class="tour-slide">
 </div>
-<div class="autumn-tour-frame" id="pageone">
-    <div class="vertical-line"></div>
-    <div class="vertical-line"></div>
-    <div class="vertical-line"></div>
-    <div class="vertical-line"></div>
-    <div class="vertical-line"></div>
-    <div class="vertical-line"></div>
-    <div class="vertical-line"></div>
-    <div class="vertical-line"></div>
+<div class="autumn-tour-frame" id="autumnTravelPage">
+    <div class="reg-tag-current" style="display: none">
+        <#include '../register.ftl' />
+    </div>
+
     <div class="bg-box">
         <div class="title-normal-box">
             <div class="title-normal-title01"></div>
             <div class="box-inner-content">
-                <h1>活动期间投资满一定额度，即可获得当日对应旅游大奖</h1>
-                <p>小贴士：用户如想获取本次旅游活动奖励，请用户每次投资时，必须通过本页面中的“立即投资”按钮进行投资，才能参与活动哦！通过其他方式投资无法享受活动奖励。</p>
-
+                <div class="vertical-line"></div>
+                <div class="vertical-line"></div>
+                <div class="vertical-line"></div>
+                <div class="vertical-line"></div>
+                <div class="vertical-line"></div>
+                <div class="vertical-line"></div>
+                <h1>简单三步，免费去旅游！</h1>
+                <p>
+                    <em>步骤一：</em>进入”我要投资“页面； <br/>
+                    <em>步骤二：</em>找到预期年化收益为8%的标的并对其投资；<br/>
+                    <em>步骤三：</em>每日投资该标的达到指定额度，即可0元获得该商品，同时又能拿收益！
+                </p>
             </div>
-        </div>
-        <div class="time-axis clearfix">
-            <span class="fl date">${today?string('yyyy-MM-dd')}</span>
-            <@global.isNotAnonymous>
-                <span class="fr">我的投资额：${myInvestAmount}元<em class="note">［仅累计本日参与本活动的投资金额］</em></span>
-            </@global.isNotAnonymous>
-            <@global.isAnonymous>
-                <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal">立即登录</a>
-            </@global.isAnonymous>
         </div>
 
         <div class="prize-kind clearfix swiper-container">
             <div class="swiper-wrapper" id="sliderBox">
-                <#list travelPrize as prize>
-                    <div class="prize-box swiper-slide <#if prize_index == 1>active</#if>">
-                        <div class="pk-title">投资满<span><@amount>${prize.investAmount?string.computer}</@amount></span>元即可获得</div>
+
+                    <div class="prize-box swiper-slide ">
+                        <div class="pk-title clearfix">
+                            <span><em>投资</em><i>5万</i>元</span>
+                            <span><em>额外收益</em><i>1000.00万</i>元</span>
+                        </div>
                         <div class="img-info">
-                        <#if !isAppSource>
-                            <a href="/activity/autumn/travel/${prize.id?string.computer}/detail" target="_blank">
-                        <#else>
-                        <a href="javascript:void(0)">
-                        </#if>
-                            <img src="${prize.image}"></a>
-                            <span class="kind-text">${prize.name}</span>
+                            <a href="#" target="_blank">
+                            <img src="/activity/images/autumn-tour/p01.jpg"></a>
+                            <span class="kind-text">erer</span>
                             <div class="kind-bottom">
-                                <span class="fl">商品价格<em>${prize.price}</em>元</span>
-                                <@global.isAnonymous>
-                                    <a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
-                                </@global.isAnonymous>
-                                <@global.isNotAnonymous>
-                                    <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
-                                </@global.isNotAnonymous>
+                                <span class="fl">商品价格<em>56</em>元</span>
+
+                                <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+
                             </div>
                         </div>
                     </div>
-                </#list>
+                <div class="prize-box swiper-slide active">
+                    <div class="pk-title clearfix">
+                        <span><em>投资</em><i>5万</i>元</span>
+                        <span><em>额外收益</em><i>1000.00万</i>元</span>
+                    </div>
+                    <div class="img-info">
+                        <a href="#" target="_blank">
+                            <img src="/activity/images/autumn-tour/p01.jpg"></a>
+                        <span class="kind-text">erer</span>
+                        <div class="kind-bottom">
+                            <span class="fl">商品价格<em>56</em>元</span>
+
+                            <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="prize-box swiper-slide">
+                    <div class="pk-title clearfix">
+                        <span><em>投资</em><i>5万</i>元</span>
+                        <span><em>额外收益</em><i>1000.00万</i>元</span>
+                    </div>
+                    <div class="img-info">
+                        <a href="#" target="_blank">
+                            <img src="/activity/images/autumn-tour/p01.jpg"></a>
+                        <span class="kind-text">erer</span>
+                        <div class="kind-bottom">
+                            <span class="fl">商品价格<em>56</em>元</span>
+
+                            <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+
+                        </div>
+                    </div>
+                </div>
+
                 <div class="bg-shadow"></div>
             </div>
         </div>
 
+
+        <#--<div class="prize-kind clearfix swiper-container">-->
+            <#--<div class="swiper-wrapper" id="sliderBox">-->
+                <#--<#list travelPrize as prize>-->
+                    <#--<div class="prize-box swiper-slide <#if prize_index == 1>active</#if>">-->
+
+                        <#--<div class="pk-title clearfix">-->
+                            <#--<span><em>投资</em><i><@amount>${prize.investAmount?string.computer}</@amount></i>元</span>-->
+                            <#--<span><em>额外收益</em><i>1000.00万</i>元</span>-->
+                        <#--</div>-->
+
+                        <#--&lt;#&ndash;<div class="pk-title">投资满<span><@amount>${prize.investAmount?string.computer}</@amount></span>元即可获得</div>&ndash;&gt;-->
+                        <#--<div class="img-info">-->
+                        <#--<#if !isAppSource>-->
+                            <#--<a href="/activity/autumn/travel/${prize.id?string.computer}/detail" target="_blank">-->
+                        <#--<#else>-->
+                        <#--<a href="javascript:void(0)">-->
+                        <#--</#if>-->
+                            <#--<img src="${prize.image}"></a>-->
+                            <#--<span class="kind-text">${prize.name}</span>-->
+                            <#--<div class="kind-bottom">-->
+                                <#--<span class="fl">商品价格<em>${prize.price}</em>元</span>-->
+                                <#--<@global.isAnonymous>-->
+                                    <#--<a href="/login?redirect=/activity/autumn/travel" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>-->
+                                <#--</@global.isAnonymous>-->
+                                <#--<@global.isNotAnonymous>-->
+                                    <#--<a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>-->
+                                <#--</@global.isNotAnonymous>-->
+                            <#--</div>-->
+                        <#--</div>-->
+                    <#--</div>-->
+                <#--</#list>-->
+                <#--<div class="bg-shadow"></div>-->
+            <#--</div>-->
+        <#--</div>-->
+
         <div class="award-records clearfix" id="awardRecordsFrame">
+
             <div class="award-box fl">
-                <ul class="award-category">
-                    <li class="active"><span>获奖名单</span></li>
-                    <@global.isNotAnonymous>
-                        <li><span>我的获奖记录</span></li>
-                    </@global.isNotAnonymous>
-                </ul>
-                <div class="winner-box switchContent">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>用户</th>
-                            <th class="hideCol">投资金额(元)</th>
-                            <th>奖品</th>
-                            <th>获奖时间</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <#list userTravelPrize as item>
-                            <tr>
-                                <td>${item.mobile}</td>
-                                <td class="hideCol">${item.investAmount}</td>
-                                <td>${item.prize}</td>
-                                <td>${item.createdTime?string('yyyy-MM-dd')}</td>
-                            </tr>
-                            <#else>
-                            <tr>
-                                <td colspan="4">暂无数据</td>
-                            </tr>
-                            </#list>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="record-box switchContent" style="display: none;">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>用户</th>
-                            <th class="hideCol">投资金额(元)</th>
-                            <th>奖品</th>
-                            <th>获奖时间</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <#list myTravelPrize as item>
-                            <tr>
-                                <td>${item.mobile}</td>
-                                <td class="hideCol">${item.investAmount}</td>
-                                <td>${item.prize}</td>
-                                <td>${item.createdTime?string('yyyy-MM-dd')}</td>
-                            </tr>
-                            <#else>
-                            <tr>
-                                <td colspan="4">暂无数据</td>
-                            </tr>
-                            </#list>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="award-box fr">
                 <div class="scan-code">
                     <img src="${staticServer}/activity/images/autumn-tour/wx.png">
                 <span>如何说走就走？ <br/>
@@ -134,15 +137,15 @@
                 </div>
 
             </div>
-        </div>
 
-        <div class="tc customized-button">
-            <@global.isAnonymous>
-                <a href="/login?redirect=/activity/autumn/travel" class="btn-normal autumn-travel-invest-channel">立即投资领奖</a>
-            </@global.isAnonymous>
-            <@global.isNotAnonymous>
-                <a href="/loan-list" class="btn-normal autumn-travel-invest-channel">立即投资领奖</a>
-            </@global.isNotAnonymous>
+                <div class="tc customized-button">
+                    <@global.isAnonymous>
+                        <a href="/login?redirect=/activity/autumn/travel" class="btn-normal autumn-travel-invest-channel">立即投资领奖</a>
+                    </@global.isAnonymous>
+                    <@global.isNotAnonymous>
+                        <a href="/loan-list" class="btn-normal autumn-travel-invest-channel">立即投资领奖</a>
+                    </@global.isNotAnonymous>
+                </div>
         </div>
     </div>
 
@@ -267,6 +270,7 @@
             详细活动规则请查看电脑网页版活动页面。
         </span>
     </div>
+
 </div>
 </@global.main>
 

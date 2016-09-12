@@ -8,7 +8,7 @@
                     <img src="${staticServer}/activity/images/sign/actor/circle/pointer.png" alt="pointer" width="100%"/>
                 </div>
                 <div class="rotate-btn" id="rotate">
-                    <img src="${staticServer}/activity/images/sign/actor/circle/luxury-gift.png" alt="turntable" width="100%" class="luxury-img"/>
+                    <img src="${staticServer}/activity/images/sign/actor/circle/luxury-gift-new.png" alt="turntable" width="100%" class="luxury-img"/>
                     <img src="${staticServer}/activity/images/sign/actor/circle/tour-gift.png" alt="pointer" width="100%" class="tour-img"/>
                 </div>
             </div>
