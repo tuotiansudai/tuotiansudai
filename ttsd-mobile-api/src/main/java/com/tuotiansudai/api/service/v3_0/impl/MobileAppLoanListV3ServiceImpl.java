@@ -87,7 +87,11 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                             } else if (o1.getProductType().getDuration() < o2.getProductType().getDuration()) {
                                 return -1;
                             } else {
-                                return 0;
+                                if (o1.getRecheckTime().after(o2.getRecheckTime())) {
+                                    return -1;
+                                } else {
+                                    return 1;
+                                }
                             }
                         }
                     }
@@ -105,7 +109,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 if (completedLoanModels.size() > 0) {
                     loanModel = completedLoanModels.get(0);
                     for (LoanModel curLoanModel : completedLoanModels) {
-                        if (loanModel.getRecheckTime().before(curLoanModel.getRecheckTime())) {
+                        if (loanModel.getRecheckTime().after(curLoanModel.getRecheckTime())) {
                             loanModel = curLoanModel;
                         }
                     }
