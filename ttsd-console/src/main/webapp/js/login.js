@@ -19,7 +19,7 @@ $(function () {
             return false;
         }
 
-        $(this).addClass("disabled");
+        $(".btn-lg").addClass("disabled");
 
         $.ajax({
             url: '/login',
@@ -27,10 +27,10 @@ $(function () {
             data: $('.form-login').serialize()
         }).done(function (response) {
             if (response.status) {
-                //redirectByRoles(response.data.roles);
                 window.location.href = "/";
             } else {
                 refreshCaptcha();
+                $(".btn-lg").removeClass("disabled");
                 $('.error').text(response.message).css('visibility', 'visible');
             }
         });
