@@ -46,7 +46,9 @@ public class HomeLoanDto {
 
     private String extraSource;
 
-    public HomeLoanDto(CouponModel newbieInterestCouponModel, LoanModel loan, long investAmount, List<LoanRepayModel> loanRepayModels, double extraRate, String extraSource) {
+    private boolean isActivity;
+
+    public HomeLoanDto(CouponModel newbieInterestCouponModel, LoanModel loan, long investAmount, List<LoanRepayModel> loanRepayModels, double extraRate, String extraSource, boolean isActivity) {
         this.id = loan.getId();
         this.name = loan.getName();
         this.productType = loan.getProductType();
@@ -75,6 +77,7 @@ public class HomeLoanDto {
             this.extraRate = extraRate;
             this.extraSource = extraSource;
         }
+        this.isActivity = isActivity;
     }
 
     public long getId() {
@@ -159,5 +162,13 @@ public class HomeLoanDto {
 
     public void setExtraSource(String extraSource) {
         this.extraSource = extraSource;
+    }
+
+    public boolean isActivity() {
+        return isActivity;
+    }
+
+    public void setActivity(boolean activity) {
+        isActivity = activity;
     }
 }

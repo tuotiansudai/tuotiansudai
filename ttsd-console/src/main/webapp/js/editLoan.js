@@ -222,6 +222,13 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 $('.jq-index').val('0');
             }
         });
+        $('.jq-activity-checkbox label').click(function () {
+            if ($('.jq-activity').prop('checked')) {
+                $('.jq-activity').val('1');
+            } else {
+                $('.jq-activity').val('0');
+            }
+        });
         //自动完成提示
         var autoValue = '';
         $(".jq-agent").autocomplete({
@@ -378,6 +385,12 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 if (showOnHomeInputVal == '0') {
                     showOnHome = false;
                 }
+
+                var isActivityInputVal =  $('.jq-activity').val();
+                var isActivity = false;
+                if (isActivityInputVal == '1') {
+                    isActivity = true;
+                }
                 var value = $('.jq-name').val();
                 var url = API_FORM + operate;
                 if ("房产抵押借款" == value) {
@@ -408,6 +421,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "loanTitles": uploadFile,
                         "extraRateIds": getExtraRateIds(),
                         "extraSource": getExtraSource(),
+                        "isActivity": isActivity,
 
                         "declaration": $('.jq-loan-declaration').val(),
 
@@ -460,6 +474,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "loanTitles": uploadFile,
                         "extraRateIds": getExtraRateIds(),
                         "extraSource": getExtraSource(),
+                        "isActivity": isActivity,
 
                         "declaration": $('.jq-loan-declaration').val(),
 
@@ -553,7 +568,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                                     maxInvestAmount = '';
                                 }
                                 $extraRateRule.append('<tr><td> ' + minInvestAmount + '≤投资额' + maxInvestAmount + '</td><td>' + parseFloat(extraLoanRateRuleModels[i].rate * 100) + '</td></tr>');
-                                $('.extra-rate').append('<input type="text" class="extra-rate-id" value="' + extraLoanRateRuleModels[i].id + '">');
+                                $('.extra-rate').append('<input type="hidden" class="extra-rate-id" value="' + extraLoanRateRuleModels[i].id + '">');
                             }
                         } else {
                             showErrorMessage('服务端校验失败');

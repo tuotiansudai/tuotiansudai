@@ -70,6 +70,14 @@
                         <option value="车辆抵押借款" <#if loanInfo.projectName == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
                     </select>
                 </div>
+                <div class="checkbox jq-activity-checkbox">
+                    <label>
+                        <input type="checkbox" class="jq-activity" value="1" <#if loanInfo.isActivity>checked</#if>
+                               <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>>
+                        首页
+                    </label>
+                </div>
+
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">代理用户: </label>

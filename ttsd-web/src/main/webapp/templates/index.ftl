@@ -180,7 +180,9 @@
 
                                 <div class="loan-info-frame fl">
                                     <div class="loan-top">
-                                        <span class="l-title fl">${loan.name}</span>
+                                        <span class="l-title fl">${loan.name}
+                                        <#if loan.isActivity?string("true")>活动专享</#if>
+                                        </span>
                                     </div>
                                     <div class="loan-info-dl">
                                         <dl>
@@ -300,7 +302,9 @@
                             <li data-url="/loan/${(loan.id?string.computer)!}" class="clearfix">
                                 <div class="loan-info-frame fl">
                                     <div class="loan-top">
-                                        <span class="l-title fl">${loan.name}</span>
+                                        <span class="l-title fl">${loan.name}
+                                        <#if loan.isActivity?string('true')>活动专享</#if>
+                                        </span>
 
                                     </div>
                                     <div class="loan-info-dl">
