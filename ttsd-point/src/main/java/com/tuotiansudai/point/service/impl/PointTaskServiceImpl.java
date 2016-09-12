@@ -285,8 +285,6 @@ public class PointTaskServiceImpl implements PointTaskService {
                 return accountMapper.findByLoginName(referrer) != null && CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(referrer, pointTask));
             case FIRST_REFERRER_INVEST:
                 return accountMapper.findByLoginName(referrer) != null && userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask) == 0;
-            case EACH_REFERRER_INVEST:
-                return accountMapper.findByLoginName(referrer) != null && investMapper.findLatestSuccessInvest(loginName).getAmount() >= 10L;
             case FIRST_INVEST_180:
                 return userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, pointTask) == 0
                         && loanMapper.findById(investMapper.findLatestSuccessInvest(loginName).getLoanId()).getProductType() == ProductType._180;
