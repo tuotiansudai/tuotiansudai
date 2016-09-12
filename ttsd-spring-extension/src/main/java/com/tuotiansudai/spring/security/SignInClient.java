@@ -181,11 +181,13 @@ public class SignInClient {
         }
         Request request = requestBuilder.build();
         do {
-
             Response response = okHttpClient.newCall(request).execute();
             if (response.code() < 500) {
                 return response.body().string();
             }
+
+            logger.error(MessageFormat.format("[sign in client] 500 error (url={0})", request.httpUrl().url()));
+
         } while (++times < RETRY_MAX_TIMES);
 
         throw new IOException(MessageFormat.format("[sign in client] sign in server error (url={0})", request.httpUrl().url()));

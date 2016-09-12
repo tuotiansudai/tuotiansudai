@@ -221,11 +221,10 @@ $width:700px;
             position: relative;
             img {
               width: 100%;
-              height:160px;
             }
             .kind-text {
               position: absolute;
-              top: 128px;
+              top: 127px;
               height: 32px;
               background: rgba(0,0,0,0.2);
               width: 100%;
@@ -565,9 +564,6 @@ $width:700px;
           .kind-text {
             top: auto;
             bottom: 30px
-          }
-          img {
-            height: 90px;
           }
           .kind-bottom {
             font-size:11px;
