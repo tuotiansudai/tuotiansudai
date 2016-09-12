@@ -118,8 +118,6 @@ public class PointTaskServiceImpl implements PointTaskService {
                     pointBillNote = MessageFormat.format("{0}奖励{1}积分", pointTask.getTitle(), String.valueOf(pointTaskModel.getPoint()));
                     pointBillService.createTaskPointBill(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), pointBillNote);
                     break;
-                case EACH_REFERRER_INVEST:
-                    break;
                 default:
                     userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), pointTaskModel.getPoint(), maxTaskLevel + 1));
                     pointBillNote = MessageFormat.format("{0}奖励{1}积分", pointTask.getTitle(), String.valueOf(pointTaskModel.getPoint()));
@@ -231,9 +229,6 @@ public class PointTaskServiceImpl implements PointTaskService {
                 case EACH_RECOMMEND:
                     pointTaskDto.setTitle(pointTask.getTitle());
                     break;
-                case EACH_REFERRER_INVEST:
-                    pointTaskDto.setTitle(pointTask.getTitle());
-                    break;
                 default:
                     pointTaskDto.setTitle(pointTask.getTitle());
             }
@@ -273,6 +268,10 @@ public class PointTaskServiceImpl implements PointTaskService {
 
     private boolean isCompletedAdvancedTaskConditions(final PointTask pointTask, String loginName) {
         String referrer = userMapper.findByLoginName(loginName).getReferrer();
+        PointTaskModel pointTaskModel = pointTaskMapper.findByName(pointTask);
+        if (!pointTaskModel.isActive()) {
+            return false;
+        }
         switch (pointTask) {
             case EACH_SUM_INVEST:
                 //只能完成一次
