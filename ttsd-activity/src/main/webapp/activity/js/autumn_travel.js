@@ -1,18 +1,16 @@
-require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'circle'], function ($, _, layer) {
+require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'circle','register_common'], function ($, _, layer) {
 
-    var $awardRecordsFrame = $('#awardRecordsFrame');
-    var $slideBody = $('table tbody', $awardRecordsFrame);
-
-    var $awardList = $('.award-list');
-    var $awardCategory = $('.award-category', $awardRecordsFrame);
-    var $winnerBox = $('.winner-box table tbody', $awardRecordsFrame);
-    var $recordBox = $('.record-box table tbody', $awardRecordsFrame);
-
+var $autumnTravelPage=$('#autumnTravelPage'),
+    $awardList = $('.award-list',$autumnTravelPage);
     var scrollTimer, scrollTimer2;
-    var $swiperWrapper = $('.swiper-wrapper'),
+    var $swiperWrapper = $('.swiper-wrapper',$autumnTravelPage),
         $swiperslide = $('.swiper-slide', $swiperWrapper);
     var browser = commonFun.browserRedirect();
     if (browser == 'mobile') {
+        var searchTag=location.search.split('=')[1];
+        if(searchTag=='yes') {
+            $autumnTravelPage.find('.reg-tag-current').show();
+        }
         var isScrolling, startPos, endPos;
         var slider = {
             //判断设备是否支持touch事件
@@ -124,35 +122,6 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'circle'], functio
         }).trigger("mouseout");
     }
 
-    //获奖名单
-    if ($winnerBox.find('tr').length > 5) {
-        $winnerBox.hover(function () {
-            clearInterval(scrollTimer);
-        }, function () {
-            scrollTimer = setInterval(function () {
-                scrollAwardRecords($winnerBox);
-            }, 2000);
-        }).trigger("mouseout");
-    }
-
-    //我的获奖记录
-    if ($recordBox.find('tr').length > 5) {
-        $recordBox.hover(function () {
-            clearInterval(scrollTimer);
-        }, function () {
-            scrollTimer = setInterval(function () {
-                scrollAwardRecords($recordBox);
-            }, 2000);
-        }).trigger("mouseout");
-    }
-
-    $awardCategory.find('li').on('click', function () {
-        var $this = $(this),
-            num = $this.index();
-        $this.addClass('active').siblings('li').removeClass('active');
-        $('.switchContent', $awardRecordsFrame).eq(num).show().siblings('.switchContent').hide();
-
-    });
 
     var $loginName = $('div.login-name');
     var loginName = $loginName ? $loginName.data('login-name') : '';

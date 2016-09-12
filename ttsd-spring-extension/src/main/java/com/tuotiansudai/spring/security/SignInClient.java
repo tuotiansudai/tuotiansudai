@@ -134,14 +134,14 @@ public class SignInClient {
         return null;
     }
 
-    public SignInResult verifyToken(String token) {
+    public SignInResult verifyToken(String token, Source source) {
         if (Strings.isNullOrEmpty(token)) {
             logger.info("[sign in client] verified token is empty");
             return null;
         }
 
         Request.Builder request = new Request.Builder()
-                .url(MessageFormat.format("http://{0}:{1}/session/{2}", signInHost, signInPort, token))
+                .url(MessageFormat.format("http://{0}:{1}/session/{2}?source={3}", signInHost, signInPort, token, source))
                 .get();
         try {
             SignInResult signInResult = objectMapper.readValue(this.execute(request), SignInResult.class);
@@ -169,14 +169,17 @@ public class SignInClient {
             this.execute(mobileRequest);
             logger.info(MessageFormat.format("[sign in client] activate user(loginName={0} mobile={1})", loginName, mobile));
         } catch (IOException e) {
-            logger.error(MessageFormat.format("[sign in client] activate user(loginName={0} mobile={1}) failed", loginName, mobile) , e);
+            logger.error(MessageFormat.format("[sign in client] activate user(loginName={0} mobile={1}) failed", loginName, mobile), e);
         }
     }
 
     private String execute(Request.Builder requestBuilder) throws IOException {
         int times = 0;
-        Request.Builder builder = requestBuilder.addHeader("X-Forwarded-For", httpServletRequest.getHeader("X-Forwarded-For"));
-        Request request = builder.build();
+        String header = httpServletRequest.getHeader("X-Forwarded-For");
+        if (!Strings.isNullOrEmpty(header)) {
+            requestBuilder.addHeader("X-Forwarded-For", header);
+        }
+        Request request = requestBuilder.build();
         do {
 
             Response response = okHttpClient.newCall(request).execute();
