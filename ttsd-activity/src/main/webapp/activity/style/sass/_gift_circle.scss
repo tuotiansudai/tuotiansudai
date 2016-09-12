@@ -247,7 +247,7 @@ $width:700px;
           &.user-record{
             padding:10px 30px;
             @media (max-width:$width) {
-              padding:10px 0;
+              padding:10px;
             }
             li{
               float:left;

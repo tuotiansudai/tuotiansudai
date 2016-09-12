@@ -1,6 +1,5 @@
 package com.tuotiansudai.activity.interceptors;
 
-import com.google.common.base.Strings;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
@@ -29,7 +28,7 @@ public class AppTokenInterceptor extends HandlerInterceptorAdapter {
         String source = request.getParameter("source");
         if (APP_SOURCE_FLAG.equalsIgnoreCase(source)) {
             String token = request.getHeader("token");
-            SignInResult signInResult = signInClient.verifyToken(token);
+            SignInResult signInResult = signInClient.verifyToken(token, Source.WEB);
             if (signInResult != null && signInResult.isResult()) {
                 request.getSession();
                 myAuthenticationUtil.createAuthentication(signInResult.getUserInfo().getLoginName(), Source.WEB);
