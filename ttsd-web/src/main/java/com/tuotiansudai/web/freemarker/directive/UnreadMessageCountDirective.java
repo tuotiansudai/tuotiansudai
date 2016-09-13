@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.freemarker.directive;
 
 
+import com.tuotiansudai.message.repository.model.MessageChannel;
 import com.tuotiansudai.message.service.UserMessageService;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import freemarker.core.Environment;
@@ -44,7 +45,7 @@ public class UnreadMessageCountDirective implements TemplateDirectiveModel {
         @Override
         public void write(char[] cbuf, int off, int len) throws IOException {
             String mobile = new String(cbuf, off, len);
-            long unreadMessageCount = userMessageService.getUnreadMessageCount(userMapper.findByMobile(mobile).getLoginName());
+            long unreadMessageCount = userMessageService.getUnreadMessageCount(userMapper.findByMobile(mobile).getLoginName(), MessageChannel.WEBSITE);
             out.write(unreadMessageCount > 0 ? String.valueOf(unreadMessageCount) : "zero");
         }
 
