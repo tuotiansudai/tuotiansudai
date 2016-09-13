@@ -185,7 +185,6 @@ module.exports = function(grunt) {
         'base64',
         'connect',
         'watch'
-
     ]);
 
     /*前端人员开发的时候用，最后发布的时候执行一次 grunt */
@@ -197,6 +196,4 @@ module.exports = function(grunt) {
             'connect',
             'watch:sass'
         ]);
-
-
 };
