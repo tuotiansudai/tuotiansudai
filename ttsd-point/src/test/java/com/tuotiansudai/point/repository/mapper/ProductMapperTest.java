@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -42,11 +43,11 @@ public class ProductMapperTest {
 
         List<ProductModel> productModelList = productMapper.findAllProducts(GoodsType.VIRTUAL, 0, 10);
 
-        assertThat(productModelList.size() >= 1, is(true));
+        assertTrue(productModelList.size() > 0);
 
         long productCount = productMapper.findAllProductsCount(GoodsType.VIRTUAL);
 
-        assertThat(productCount >= 1, is(true));
+        assertTrue(productCount > 0);
 
     }
 
