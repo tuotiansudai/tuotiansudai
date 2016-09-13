@@ -105,11 +105,12 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 }
             } else {
                 //没有可投标的
-                List<LoanModel> completedLoanModels = loanMapper.findByStatus(LoanStatus.COMPLETE);
-                if (completedLoanModels.size() > 0) {
-                    loanModel = completedLoanModels.get(0);
-                    for (LoanModel curLoanModel : completedLoanModels) {
-                        if (loanModel.getRecheckTime().after(curLoanModel.getRecheckTime())) {
+                List<LoanModel> soldLoanModels = loanMapper.findByStatus(LoanStatus.COMPLETE);
+                soldLoanModels.addAll(loanMapper.findByStatus(LoanStatus.REPAYING));
+                if (soldLoanModels.size() > 0) {
+                    loanModel = soldLoanModels.get(0);
+                    for (LoanModel curLoanModel : soldLoanModels) {
+                        if (loanModel.getRaisingCompleteTime().before(curLoanModel.getRaisingCompleteTime())) {
                             loanModel = curLoanModel;
                         }
                     }

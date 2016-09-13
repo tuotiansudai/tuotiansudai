@@ -290,9 +290,13 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     public BaseResponseDto userInvestRepay(UserInvestRepayRequestDto userInvestRepayRequestDto) {
         Preconditions.checkNotNull(userInvestRepayRequestDto.getInvestId());
         Preconditions.checkNotNull(userInvestRepayRequestDto.getBaseParam().getUserId());
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
+        final long transferInvestId = Long.parseLong(userInvestRepayRequestDto.getInvestId().trim());
         //return TransferLoan Details
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(
-                Long.parseLong(userInvestRepayRequestDto.getInvestId().trim()));
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(transferInvestId);
+        InvestModel originInvestModel = investMapper.findById(transferInvestId);
         if (null == transferApplicationModel) {
             return new BaseResponseDto(ReturnMessage.ERROR.getCode(), ReturnMessage.ERROR.getMsg());
         }
@@ -305,6 +309,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
 
         long totalExpectedInterest = 0;
         long totalActualInterest = 0;
+        //债权在转让人手中时的正常回款记录
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(userInvestRepayRequestDto.getBaseParam().getUserId(),
                 Long.parseLong(userInvestRepayRequestDto.getInvestId().trim()));
         for (InvestRepayModel investRepayModel : investRepayModels) {
@@ -314,11 +319,18 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
             if (investRepayModel.getPeriod() == loanModel.getPeriods()) {
                 InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
                 investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investModel.getAmount()));
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
                 userInvestRepayResponseDataDto.setLastRepayDate(simpleDateFormat.format(investRepayModel.getRepayDate()));
             }
             userInvestRepayResponseDataDto.getInvestRepays().add(investRepayDataDto);
         }
+        //债权的转让记录, 还款记录小于periods时说明发生了债权转让
+        if (investRepayModels.size() < loanModel.getPeriods()) {
+            InvestRepayDataDto transferRecord = new InvestRepayDataDto();
+            transferRecord.setActualRepayDate(simpleDateFormat.format(transferApplicationModel.getTransferTime()));
+            transferRecord.setIsTransferred(true);
+            userInvestRepayResponseDataDto.getInvestRepays().add(transferRecord);
+        }
+
         userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(totalExpectedInterest));
         userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(totalActualInterest));
         userInvestRepayResponseDataDto.setUnPaidRepay(AmountConverter.convertCentToString(totalExpectedInterest - totalActualInterest));
