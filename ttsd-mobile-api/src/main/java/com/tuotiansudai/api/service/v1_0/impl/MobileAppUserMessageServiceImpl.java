@@ -39,51 +39,37 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     public BaseResponseDto getUserMessages(UserMessagesRequestDto requestDto) {
         String loginName = LoginUserInfo.getLoginName();
         userMessageServices.generateUserMessages(loginName, MessageChannel.APP_MESSAGE);
-        int index = requestDto.getIndex();
-        int pageSize = requestDto.getPageSize();
-        UserMessageResponseDataDto messageDataDto = fillMessageDataDto(loginName, index, pageSize);
-        BaseResponseDto responseDto = new BaseResponseDto<>();
-        responseDto.setCode(ReturnMessage.SUCCESS.getCode());
-        responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        UserMessageResponseDataDto messageDataDto = fillMessageDataDto(loginName, requestDto.getIndex(), requestDto.getPageSize());
+        BaseResponseDto<UserMessageResponseDataDto> responseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
         responseDto.setData(messageDataDto);
         return responseDto;
     }
 
     @Override
-    public BaseResponseDto getUnreadMessageCount(BaseParamDto baseParamDto) {
+    public BaseResponseDto<MobileAppUnreadMessageCount> getUnreadMessageCount(BaseParamDto baseParamDto) {
         String loginName = LoginUserInfo.getLoginName();
-        userMessageServices.generateUserMessages(loginName, MessageChannel.APP_MESSAGE);
-        long currentUnreadMessageCount = userMessageMapper.countUnreadMessagesByLoginName(loginName, MessageChannel.APP_MESSAGE);
-        boolean existUnreadMessage = existUnreadMessage(loginName, currentUnreadMessageCount);
-        MobileAppUnreadMessageCount messageCount = new MobileAppUnreadMessageCount();
-        messageCount.setUnreadMessageCount(currentUnreadMessageCount);
-        messageCount.setNewMessage(existUnreadMessage);
-        BaseResponseDto responseDto = new BaseResponseDto();
-        responseDto.setCode(ReturnMessage.SUCCESS.getCode());
-        responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        long unreadMessageCount = userMessageServices.getUnreadMessageCount(loginName, MessageChannel.APP_MESSAGE);
+        boolean existUnreadMessage = existUnreadMessage(loginName, unreadMessageCount);
+        MobileAppUnreadMessageCount messageCount = new MobileAppUnreadMessageCount(unreadMessageCount, existUnreadMessage);
+        BaseResponseDto<MobileAppUnreadMessageCount> responseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
         responseDto.setData(messageCount);
         return responseDto;
     }
 
     private UserMessageResponseDataDto fillMessageDataDto(String loginName, int index, int pageSize) {
-        UserMessageResponseDataDto responseDataDto = new UserMessageResponseDataDto();
-        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.APP_MESSAGE, (index - 1) * pageSize, pageSize);
         long totalCount = userMessageMapper.countMessagesByLoginName(loginName, MessageChannel.APP_MESSAGE);
-        List<UserMessageDto> userMessages = CollectionUtils.isEmpty(userMessageModels) ? new ArrayList<UserMessageDto>() :
-                Lists.transform(userMessageModels, new Function<UserMessageModel, UserMessageDto>() {
-                    @Override
-                    public UserMessageDto apply(UserMessageModel model) {
-                        UserMessageDto userMessageDto = new UserMessageDto(model);
-                        userMessageDto.setTitle(model.getAppTitle());
-                        userMessageDto.setContent(StringUtils.isEmpty(model.getContent()) ? model.getAppTitle() : model.getContent());
-                        return userMessageDto;
-                    }
-                });
-        responseDataDto.setIndex(index);
-        responseDataDto.setPageSize(pageSize);
-        responseDataDto.setTotalCount(totalCount);
-        responseDataDto.setMessages(userMessages);
-        return responseDataDto;
+        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.APP_MESSAGE, (index - 1) * pageSize, pageSize);
+        List<UserMessageDto> userMessages = Lists.transform(userMessageModels, new Function<UserMessageModel, UserMessageDto>() {
+            @Override
+            public UserMessageDto apply(UserMessageModel model) {
+                UserMessageDto userMessageDto = new UserMessageDto(model);
+                userMessageDto.setTitle(model.getAppTitle());
+                userMessageDto.setContent(StringUtils.isEmpty(model.getContent()) ? model.getAppTitle() : model.getContent());
+                return userMessageDto;
+            }
+        });
+
+        return new UserMessageResponseDataDto(index, pageSize, totalCount, userMessages);
     }
 
     private boolean existUnreadMessage(String loginName, long currentUnreadMessageCount) {
