@@ -94,11 +94,10 @@
 
     <select id="findAllProducts" resultMap="productResultMap">
         SELECT * FROM product p
-        <where>
-            <if test="type != null">
-                AND p.type = #{type}
-            </if>
-        </where>
+        WHERE p.active = 1
+        <if test="type != null">
+            AND p.type = #{type}
+        </if>
         ORDER BY seq ASC, updated_time DESC
         limit #{index}, #{pageSize}
     </select>

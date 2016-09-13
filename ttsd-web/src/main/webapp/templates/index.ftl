@@ -180,7 +180,9 @@
 
                                 <div class="loan-info-frame fl">
                                     <div class="loan-top">
-                                        <span class="l-title fl">${loan.name}</span>
+                                        <span class="l-title fl">${loan.name}
+
+                                        </span>
                                     </div>
                                     <div class="loan-info-dl">
                                         <dl>
@@ -300,7 +302,9 @@
                             <li data-url="/loan/${(loan.id?string.computer)!}" class="clearfix">
                                 <div class="loan-info-frame fl">
                                     <div class="loan-top">
-                                        <span class="l-title fl">${loan.name}</span>
+                                        <span class="l-title fl">${loan.name}
+                                            <#if loan.activity?string("true","false") == "true">(活动专享)</#if>
+                                        </span>
 
                                     </div>
                                     <div class="loan-info-dl">
@@ -524,7 +528,9 @@
                                     <i class="${loan.productType.name()?lower_case}"></i>
                                 </#if>
                                 <div class="pad-m" title="BLQ001" data-url="/loan/${(loan.id?string.computer)!}">
-                                    <h2 class="pr-title">${loan.name}</h2>
+                                    <h2 class="pr-title">${loan.name}
+                                        <#if loan.activity?string("true","false") == "true">(活动专享)</#if>
+                                    </h2>
 
                                     <div class="pr-square tc">
                                         <div class="pr-square-in">

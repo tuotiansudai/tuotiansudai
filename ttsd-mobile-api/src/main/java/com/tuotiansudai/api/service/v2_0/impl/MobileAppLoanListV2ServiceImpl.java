@@ -13,6 +13,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
@@ -30,6 +31,9 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -85,7 +89,21 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
-            loanResponseDataDto.setLoanName(loan.getName());
+
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+            String loanName = "";
+            if(loanDetailsModel != null){
+                if(loanDetailsModel.isActivity()){
+                    loanName = loan.getName()+("(活动专享)");
+                }
+                else{
+                    loanName = loan.getName();
+                }
+            }
+            else {
+                loanName = loan.getName();
+            }
+            loanResponseDataDto.setLoanName(loanName);
             loanResponseDataDto.setActivityType(loan.getActivityType().name());
             loanResponseDataDto.setDuration(String.valueOf(loan.getDuration()));
             loanResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));

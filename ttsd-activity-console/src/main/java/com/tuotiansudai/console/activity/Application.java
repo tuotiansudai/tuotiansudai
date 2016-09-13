@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication(exclude = {SessionAutoConfiguration.class})
-@ComponentScan(basePackages = {"com.tuotiansudai.console.activity", "com.tuotiansudai.cache", "com.tuotiansudai.client", "com.tuotiansudai.spring"})
+@ComponentScan(basePackages = {"com.tuotiansudai.console.activity", "com.tuotiansudai.activity.service","com.tuotiansudai.cache", "com.tuotiansudai.client", "com.tuotiansudai.spring"})
 @PropertySource(value = {"classpath:ttsd-env.properties", "classpath:ttsd-biz.properties"})
 public class Application extends SpringBootServletInitializer {
 
