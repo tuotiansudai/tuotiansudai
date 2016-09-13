@@ -176,8 +176,8 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             totalAmount += transferApplicationModel.getTransferAmount();
             int periods = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId()).size();
             repayCalendarDateResponseDtoList.add(new RepayCalendarDateResponseDto(loanMapper.findById(transferApplicationModel.getLoanId()).getName(),
-                    AmountConverter.convertCentToString(repayActualInterest),
-                    AmountConverter.convertCentToString(repayExpectedInterest),
+                    AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()),
+                    AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()),
                     String.valueOf(periods),
                     String.valueOf(periods),
                     RepayStatus.COMPLETE.name(),
