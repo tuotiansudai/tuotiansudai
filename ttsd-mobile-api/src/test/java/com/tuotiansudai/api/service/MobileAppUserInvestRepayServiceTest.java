@@ -77,6 +77,9 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
     @Mock
     private UserMembershipService userMembershipService;
 
+    @Mock
+    private InvestExtraRateMapper investExtraRateMapper;
+
     @Test
     public void shouldUserInvestRepayOnePeriodCompleteIsOk(){
         LoanModel loanModel = createLoanModel();
@@ -92,6 +95,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(investService.findById(anyLong())).thenReturn(investModel);
         when(loanService.findLoanById(anyLong())).thenReturn(loanModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
+        when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
 
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
@@ -124,7 +128,8 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(investService.findById(anyLong())).thenReturn(investModel);
         when(loanService.findLoanById(anyLong())).thenReturn(loanModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
-        when(userMembershipService.getMembershipLevelByLoginNameAndInvestTime(anyString(),any(Date.class))).thenReturn(String.valueOf(1));
+        when(userMembershipService.getMembershipLevelByLoginNameAndInvestTime(anyString(), any(Date.class))).thenReturn(String.valueOf(1));
+        when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
 
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
@@ -172,6 +177,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(membershipMapper.findAllMembership()).thenReturn(memberships);
         when(userCouponMapper.findByInvestId(anyLong())).thenReturn(userCoupon);
         when(couponMapper.findById(anyLong())).thenReturn(new CouponModel());
+        when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
 
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
