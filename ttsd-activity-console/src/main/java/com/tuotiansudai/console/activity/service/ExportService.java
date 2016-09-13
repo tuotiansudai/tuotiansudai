@@ -51,6 +51,12 @@ public class ExportService {
                 for(String loginName: entry1.getValue()){
                     totalAmount += investMapper.sumInvestAmount(null, loginName, null, null, null, startTime, endTime, InvestStatus.SUCCESS, null);
                     List<InvestModel> investModelList = investMapper.findSuccessInvestByInvestTime(loginName, startTime, endTime);
+                    if(investModelList == null || investModelList.size() ==0){
+                        InvestModel investModel = new InvestModel();
+                        investModel.setLoginName(loginName);
+                        investModel.setAmount(0);
+                        investModelList.add(investModel);
+                    }
                     currentHomeInvestModelList.addAll(investModelList);
                 }
                 for(InvestModel investModel:currentHomeInvestModelList){
@@ -70,12 +76,9 @@ public class ExportService {
                     else{
                         autumnExportDto.setPrize("");
                     }
-                    UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
 
                     autumnExportDto.setLoginName(investModel.getLoginName());
                     autumnExportDto.setInvestAmount(investModel.getAmount());
-                    autumnExportDto.setJoinTime(userModel.getRegisterTime());
-                    autumnExportDto.setMobile(userModel.getMobile());
                     autumnExportDtoList.add(autumnExportDto);
                 }
             }
@@ -87,12 +90,15 @@ public class ExportService {
 
         Comparator<AutumnExportDto> comparator = new Comparator<AutumnExportDto>() {
             public int compare(AutumnExportDto autumnExportDto1, AutumnExportDto autumnExportDto2) {
-                // 先排名称
-                if (autumnExportDto1.getName() != autumnExportDto2.getLoginName()) {
+                //按日期
+                if (!autumnExportDto1.getName().equals(autumnExportDto2.getName())) {
+                    //
+                    return (int) (autumnExportDto1.getInvestTime().getTime() - autumnExportDto2.getInvestTime().getTime());
+                }
+                //日期相同按名称
+                else if (autumnExportDto1.getName() != autumnExportDto2.getLoginName()) {
                     return autumnExportDto1.getName().compareTo(autumnExportDto2.getName());
-                } else if (!autumnExportDto1.getName().equals(autumnExportDto2.getName())) {
-                    // 名称相同按日期
-                    return (int)(autumnExportDto1.getInvestTime().getTime() - autumnExportDto2.getInvestTime().getTime());
+
                 }
                 return -1;
             }
@@ -100,20 +106,20 @@ public class ExportService {
 
         Collections.sort(records,comparator);
         List<List<String>> rows = Lists.newArrayList();
+
+
         for (AutumnExportDto record : records) {
             List<String> row = Lists.newArrayList();
             row.add(record.getName());
             row.add(AmountConverter.convertCentToString(record.getTotalAmount()));
             row.add(new DateTime(record.getInvestTime()).toString("yyyy-MM-dd"));
             row.add(record.getPrize());
-            row.add("明细-->");
             row.add(record.getLoginName());
             row.add(AmountConverter.convertCentToString(record.getInvestAmount()));
-            row.add(new DateTime(record.getJoinTime()).toString("HH:mm:ss"));
-            row.add(record.getMobile());
             rows.add(row);
         }
         return rows;
+
     }
 
 }

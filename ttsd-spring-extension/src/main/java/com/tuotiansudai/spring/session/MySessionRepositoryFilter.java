@@ -305,13 +305,6 @@ public class MySessionRepositoryFilter<S extends ExpiringSession>
             if (!create) {
                 return null;
             }
-            if (SESSION_LOGGER.isDebugEnabled()) {
-                SESSION_LOGGER.debug(
-                        "A new session was created. To help you troubleshoot where the session was created we provided a StackTrace (this is not an error). You can prevent this from appearing by disabling DEBUG logging for "
-                                + SESSION_LOGGER_NAME,
-                        new RuntimeException(
-                                "For debugging purposes only (not an error)"));
-            }
 
             String newSessionId = this.getRequest().getAttribute("newSessionId") != null ? (String) this.getRequest().getAttribute("newSessionId") : null;
 
