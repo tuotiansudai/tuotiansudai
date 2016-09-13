@@ -6,7 +6,6 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.google.common.primitives.Ints;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.message.dto.UserMessagePaginationItemDto;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
@@ -17,6 +16,7 @@ import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
 import com.tuotiansudai.message.util.MessageUserGroupDecisionManager;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,13 +42,13 @@ public class UserMessageServiceImpl implements UserMessageService {
 
     @Override
     public BasePaginationDataDto<UserMessagePaginationItemDto> getUserMessages(String loginName, int index, int pageSize) {
-        this.generateUserMessages(loginName, MessageChannel.WEBSITE);
+        ((UserMessageService) AopContext.currentProxy()).generateUserMessages(loginName, MessageChannel.WEBSITE);
 
-        long count = userMessageMapper.countMessagesByLoginName(loginName, MessageChannel.WEBSITE);
         pageSize = pageSize < 1 ? 10 : pageSize;
-        int totalPage = (int) (count > 0 && count % pageSize == 0 ? count / pageSize : count / pageSize + 1);
-        index = index < 1 ? 1 : Ints.min(index, totalPage);
-        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.WEBSITE, (index - 1) * pageSize, pageSize);
+        long count = userMessageMapper.countMessagesByLoginName(loginName, MessageChannel.WEBSITE);
+        int offset = PaginationUtil.calculateOffset(index, pageSize, count);
+
+        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.WEBSITE, offset, pageSize);
         for (UserMessageModel userMessageModel : userMessageModels) {
             if (Strings.isNullOrEmpty(userMessageModel.getContent())) {
                 userMessageModel.setRead(true);
@@ -98,9 +98,9 @@ public class UserMessageServiceImpl implements UserMessageService {
     }
 
     @Override
-    public long getUnreadMessageCount(String loginName) {
-        List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName, MessageChannel.WEBSITE);
-        long unreadCount = userMessageMapper.countUnreadMessagesByLoginName(loginName, MessageChannel.WEBSITE);
+    public long getUnreadMessageCount(String loginName, MessageChannel messageChannel) {
+        List<MessageModel> unreadManualMessages = getUnreadManualMessages(loginName, messageChannel);
+        long unreadCount = userMessageMapper.countUnreadMessagesByLoginName(loginName, messageChannel);
         return unreadManualMessages.size() + unreadCount;
     }
 
