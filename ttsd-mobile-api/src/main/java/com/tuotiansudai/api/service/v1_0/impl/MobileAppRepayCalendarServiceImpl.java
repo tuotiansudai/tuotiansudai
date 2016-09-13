@@ -8,6 +8,7 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppRepayCalendarService;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
+import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -44,6 +45,9 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
+
+    @Autowired
+    private InvestExtraRateMapper investExtraRateMapper;
 
     private static final String YEAR_REPAY_CALENDAR = "YEAR_REPAY_CALENDAR";
 
@@ -124,6 +128,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
+            //提前还款
             if (investRepayModel.getActualRepayDate() != null && !formatDate.format(investRepayModel.getActualRepayDate()).equals(repayCalendarRequestDto.getDate())) {
                 continue;
             }
@@ -157,6 +162,19 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
             if (investModel.getLoanId() == experienceLoanId) {
                 continue;
+            }
+
+            if (periods == investRepayModel.getPeriod()) {
+                InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
+                if(investExtraRateModel != null && !investExtraRateModel.isTransfer()){
+                    if(investExtraRateModel.getActualRepayDate() != null){
+                        repayActualInterest += investExtraRateModel.getRepayAmount();
+                        totalAmount += investExtraRateModel.getRepayAmount();
+                    }else{
+                        repayExpectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+                        totalAmount += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+                    }
+                }
             }
             boolean isTransferred = investModel.getTransferInvestId() != null ? true : false;
             TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investRepayModel.getInvestId());
@@ -258,6 +276,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
+            //提前还款
             if (RepayStatus.COMPLETE == couponRepayModel.getStatus() && couponRepayModel.getActualRepayDate() != null && couponRepayModel.getActualRepayDate().before(new DateTime(couponRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())) {
                 continue;
             }
@@ -269,7 +288,6 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 couponRepayCalendarResponseDtoMaps.put(dateFormat.format(couponRepayModel.getRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(couponRepayModel.getRepayDate()), couponRepayModel));
                 continue;
             }
-
 
             if (couponRepayModel.getActualRepayDate() != null) {
                 couponRepayCalendarYearResponseDto = couponRepayCalendarResponseDtoMaps.get(dateFormat.format(couponRepayModel.getActualRepayDate()));
@@ -315,6 +333,21 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             } else {
                 repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate()));
                 repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(), String.valueOf(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest())));
+            }
+
+            int periods = investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId()).size();
+
+            if (periods == investRepayModel.getPeriod()) {
+                InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
+                if(investExtraRateModel != null && !investExtraRateModel.isTransfer()){
+                    if(investExtraRateModel.getActualRepayDate() != null){
+                        repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getActualRepayDate()));
+                        repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(), String.valueOf(investExtraRateModel.getRepayAmount())));
+                    }else{
+                        repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate()));
+                        repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(), String.valueOf(investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee())));
+                    }
+                }
             }
         }
         return repayCalendarResponseDtoMaps;

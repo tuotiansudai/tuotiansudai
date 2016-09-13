@@ -240,4 +240,9 @@ public interface InvestMapper {
     long countInvestorSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
                                                @Param(value = "startTime") Date startTime,
                                                @Param(value = "endTime") Date endTime);
+
+    List<InvestModel> findSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
+                                                @Param(value = "startTime") Date startTime,
+                                                @Param(value = "endTime") Date endTime);
+
 }

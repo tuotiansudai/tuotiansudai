@@ -33,7 +33,7 @@ public class RankingActivityController {
     @Autowired
     private AccountMapper accountMapper;
 
-    @RequestMapping(value = "/rank-list", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/rank-list", method = RequestMethod.GET)
     public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
 
@@ -53,7 +53,7 @@ public class RankingActivityController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/rank-list-app", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/rank-list-app", method = RequestMethod.GET)
     public ModelAndView loadAppPageData() {
         return new ModelAndView("/activities/rank-list-app", "responsive", true);
     }
@@ -73,7 +73,7 @@ public class RankingActivityController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/get-lottery-chance", method = RequestMethod.POST)
+    @RequestMapping(value = "/get-lottery-chance", method = RequestMethod.GET)
     public boolean getLotteryChance() {
         String loginName = LoginUserInfo.getLoginName();
         pointLotteryService.getLotteryOnceChance(loginName);
@@ -81,14 +81,14 @@ public class RankingActivityController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getTianDouPrizeList", method = RequestMethod.POST)
+    @RequestMapping(value = "/getTianDouPrizeList", method = RequestMethod.GET)
     public Map<String, List<UserTianDouRecordDto>> getTianDouPrizeList() {
         Map<String, List<UserTianDouRecordDto>> winnerList = rankingActivityService.getTianDouWinnerList();
         return winnerList;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getMyTianDouPrize", method = RequestMethod.POST)
+    @RequestMapping(value = "/getMyTianDouPrize", method = RequestMethod.GET)
     public List<UserTianDouRecordDto> getMyTianDouPrize() {
         String loginName = LoginUserInfo.getLoginName();
         List<UserTianDouRecordDto> myPrizeList = rankingActivityService.getPrizeByLoginName(loginName);
@@ -96,14 +96,14 @@ public class RankingActivityController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getPointPrizeList", method = RequestMethod.POST)
+    @RequestMapping(value = "/getPointPrizeList", method = RequestMethod.GET)
     public List<UserPointPrizeDto> getPointPrizeList() {
         List<UserPointPrizeDto> allPointLotteries = pointLotteryService.findAllDrawLottery();
         return allPointLotteries;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getMyPointPrize", method = RequestMethod.POST)
+    @RequestMapping(value = "/getMyPointPrize", method = RequestMethod.GET)
     public List<UserPointPrizeDto> getMyPointPrize() {
         String loginName = LoginUserInfo.getLoginName();
         List<UserPointPrizeDto> myPrizeList = pointLotteryService.findMyDrawLottery(loginName);
@@ -111,7 +111,7 @@ public class RankingActivityController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getTianDouTop15", method = RequestMethod.POST)
+    @RequestMapping(value = "/getTianDouTop15", method = RequestMethod.GET)
     public List<UserScoreDto> getTianDouTop15() {
         String loginName = LoginUserInfo.getLoginName();
         List<UserScoreDto> tianDouTop15 = rankingActivityService.getTianDouTop15(loginName);

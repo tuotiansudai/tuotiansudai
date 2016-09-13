@@ -1,6 +1,7 @@
 package com.tuotiansudai.spring.session;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,10 +29,8 @@ import org.springframework.session.web.http.SessionRepositoryFilter;
 
 
 @Order(SessionRepositoryFilter.DEFAULT_ORDER)
-public class MySessionRepositoryFilter<S extends ExpiringSession>
-        extends OncePerRequestFilter {
-    private static final String SESSION_LOGGER_NAME = SessionRepositoryFilter.class
-            .getName().concat(".SESSION_LOGGER");
+public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePerRequestFilter {
+    private static final String SESSION_LOGGER_NAME = MySessionRepositoryFilter.class.getName().concat(".SESSION_LOGGER");
 
     private static final Log SESSION_LOGGER = LogFactory.getLog(SESSION_LOGGER_NAME);
 
@@ -155,10 +154,9 @@ public class MySessionRepositoryFilter<S extends ExpiringSession>
      * @author Rob Winch
      * @since 1.0
      */
-    private final class SessionRepositoryRequestWrapper
-            extends HttpServletRequestWrapper {
-        private final String CURRENT_SESSION_ATTR = HttpServletRequestWrapper.class
-                .getName();
+    private final class SessionRepositoryRequestWrapper extends HttpServletRequestWrapper {
+
+        private final String CURRENT_SESSION_ATTR = HttpServletRequestWrapper.class.getName();
         private Boolean requestedSessionIdValid;
         private boolean requestedSessionInvalidated;
         private final HttpServletResponse response;
@@ -186,11 +184,11 @@ public class MySessionRepositoryFilter<S extends ExpiringSession>
             else {
                 S session = wrappedSession.getSession();
                 MySessionRepositoryFilter.this.sessionRepository.save(session);
-                if (!isRequestedSessionIdValid()
-                        || !session.getId().equals(getRequestedSessionId())) {
-                    MySessionRepositoryFilter.this.httpSessionStrategy.onNewSession(session,
-                            this, this.response);
+                if (!isRequestedSessionIdValid() || !session.getId().equals(getRequestedSessionId())) {
+                    MySessionRepositoryFilter.this.httpSessionStrategy.onNewSession(session, this, this.response);
                 }
+
+                SESSION_LOGGER.info(MessageFormat.format("[commit session] session id = {0}", session.getId()));
             }
         }
 
@@ -213,9 +211,10 @@ public class MySessionRepositoryFilter<S extends ExpiringSession>
             HttpSession session = getSession(false);
 
             if (session == null) {
-                throw new IllegalStateException(
-                        "Cannot change session ID. There is no session associated with this request.");
+                throw new IllegalStateException("Cannot change session ID. There is no session associated with this request.");
             }
+
+            String originalSessionId = session.getId();
 
             // eagerly get session attributes in case implementation lazily loads them
             Map<String, Object> attrs = new HashMap<>();
@@ -227,7 +226,7 @@ public class MySessionRepositoryFilter<S extends ExpiringSession>
                 attrs.put(attrName, value);
             }
 
-            MySessionRepositoryFilter.this.sessionRepository.delete(session.getId());
+            MySessionRepositoryFilter.this.sessionRepository.delete(originalSessionId);
             HttpSessionWrapper original = getCurrentSession();
             setCurrentSession(null);
 
@@ -240,6 +239,9 @@ public class MySessionRepositoryFilter<S extends ExpiringSession>
                 Object attrValue = attr.getValue();
                 newSession.setAttribute(attrName, attrValue);
             }
+
+            SESSION_LOGGER.info(MessageFormat.format("[change session id] original sessionId = {0}, new sessionId = {1}", originalSessionId, newSession.getId()));
+
             return newSession.getId();
         }
 
@@ -266,8 +268,7 @@ public class MySessionRepositoryFilter<S extends ExpiringSession>
         }
 
         private S getSession(String sessionId) {
-            S session = MySessionRepositoryFilter.this.sessionRepository
-                    .getSession(sessionId);
+            S session = MySessionRepositoryFilter.this.sessionRepository.getSession(sessionId);
             if (session == null) {
                 return null;
             }
@@ -282,8 +283,7 @@ public class MySessionRepositoryFilter<S extends ExpiringSession>
                 return currentSession;
             }
             String requestedSessionId = getRequestedSessionId();
-            if (requestedSessionId != null
-                    && getAttribute(INVALID_SESSION_ID_ATTR) == null) {
+            if (requestedSessionId != null && getAttribute(INVALID_SESSION_ID_ATTR) == null) {
                 S session = getSession(requestedSessionId);
                 if (session != null) {
                     this.requestedSessionIdValid = true;
@@ -339,8 +339,7 @@ public class MySessionRepositoryFilter<S extends ExpiringSession>
 
         @Override
         public String getRequestedSessionId() {
-            return MySessionRepositoryFilter.this.httpSessionStrategy
-                    .getRequestedSessionId(this);
+            return MySessionRepositoryFilter.this.httpSessionStrategy.getRequestedSessionId(this);
         }
 
         /**
