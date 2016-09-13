@@ -87,7 +87,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                             } else if (o1.getProductType().getDuration() < o2.getProductType().getDuration()) {
                                 return -1;
                             } else {
-                                if (o1.getVerifyTime().after(o2.getVerifyTime())) {
+                                if (o1.getVerifyTime().before(o2.getVerifyTime())) {
                                     return -1;
                                 } else {
                                     return 1;

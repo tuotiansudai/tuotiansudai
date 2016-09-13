@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.util.AmountConverter;
 
@@ -10,15 +11,15 @@ public class InvestRepayDataDto extends BaseResponseDataDto {
     private int period;
     private String repayDate;
     private String actualRepayDate;
-    private String expectedInterest;
-    private String actualInterest;
+    private String expectedInterest;    //expectedBenefit
+    private String actualInterest;  //actualBenefit
     private String status;
     private boolean isTransferred;
 
     public InvestRepayDataDto() {
     }
 
-    public InvestRepayDataDto(InvestRepayModel investRepayModel) {
+    public InvestRepayDataDto(InvestRepayModel investRepayModel, CouponRepayModel couponRepayModel) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         this.period = investRepayModel.getPeriod();
         this.repayDate = simpleDateFormat.format(investRepayModel.getRepayDate());
@@ -27,8 +28,14 @@ public class InvestRepayDataDto extends BaseResponseDataDto {
         } else {
             this.actualRepayDate = "";
         }
-        this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getExpectedInterest());
-        this.actualInterest = AmountConverter.convertCentToString(investRepayModel.getActualInterest());
+        if (null != couponRepayModel) {
+            this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + couponRepayModel.getExpectedInterest());
+            this.actualInterest = AmountConverter.convertCentToString(investRepayModel.getActualInterest() - investRepayModel.getActualFee() + investRepayModel.getCorpus() + couponRepayModel.getActualInterest() - couponRepayModel.getActualFee());
+        } else {
+            this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getExpectedInterest());
+            this.actualInterest = AmountConverter.convertCentToString(investRepayModel.getActualInterest() - investRepayModel.getActualFee() + investRepayModel.getCorpus());
+        }
+
         this.status = investRepayModel.getStatus().name();
         this.isTransferred = investRepayModel.isTransferred();
     }
