@@ -15,11 +15,22 @@
                     活动期间：邀请好友加入家庭，组团冲击每日累计投资额，全体成员都可获得奖励！ <br/>
                     同时，根据每个家庭活动期间的所有累计投资额进行排名，第一名获得三星平板电脑大奖，前三名均可获得丰厚奖品！<br/>
                 </div>
+
             <@global.isNotAnonymous>
                 <div class="copy-link-box" id="copyLinkBox">
                     <b for="copy-title">立即邀请好友加入家庭</b>
                     <span  class="copy-link" id="clipboard_text">http://ci1.tuotiansudai.com:6002/register/user?referrer=${loginName}</span>
-                    <div class="tc"><a href="javascript:void(0);" class="btn-normal-invest" id="copy-button" data-clipboard-target="clipboard_text">复制链接发送给好友</a> </div>
+
+
+                    <div class="tc">
+                        <#if !isOverdue>
+                            <a href="javascript:void(0);" class="btn-normal-invest" id="copy-button" data-clipboard-target="clipboard_text">复制链接发送给好友</a>
+                        <#else>
+                            <button class="btn-normal-invest" disabled>活动已结束</button>
+                        </#if>
+
+
+                    </div>
                 </div>
             </@global.isNotAnonymous>
             </div>

@@ -31,6 +31,9 @@ body {
   &:disabled {
     background: #ccc;
     color: #999;
+    &:hover {
+      color: #999;
+    }
 }
   &:hover {
     color: #ffff00;
