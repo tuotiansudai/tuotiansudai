@@ -3,11 +3,16 @@ package com.tuotiansudai.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.AutoInvestPlanDto;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,8 +26,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -48,6 +52,14 @@ public class InvestServiceTest {
 
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private MembershipMapper membershipMapper;
+
+    static private long LOAN_ID = 0;
 
     private void createLoanByUserId(String userId, long loanId) {
         LoanDto loanDto = new LoanDto();
@@ -106,6 +118,7 @@ public class InvestServiceTest {
     @Before
     public void setup() throws Exception {
         long loanId = idGenerator.generate();
+        LOAN_ID = loanId;
         createUserByUserId("testuser");
         createLoanByUserId("testuser", loanId);
         createInvests("testuser", loanId);
@@ -206,4 +219,31 @@ public class InvestServiceTest {
         return loanDetailsModel;
     }
 
+    @Test
+    public void testCalculateMembershipPreference() throws Exception {
+        UserMembershipModel userMembershipModel = new UserMembershipModel("testUser", membershipMapper.findByLevel(5).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        userMembershipMapper.create(userMembershipModel);
+        long preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
+        assertEquals(6, preference);
+        userMembershipModel.setMembershipId(membershipMapper.findByLevel(4).getId());
+        userMembershipMapper.update(userMembershipModel);
+        preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
+        assertEquals(4, preference);
+        userMembershipModel.setMembershipId(membershipMapper.findByLevel(3).getId());
+        userMembershipMapper.update(userMembershipModel);
+        preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
+        assertEquals(4, preference);
+        userMembershipModel.setMembershipId(membershipMapper.findByLevel(2).getId());
+        userMembershipMapper.update(userMembershipModel);
+        preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
+        assertEquals(2, preference);
+        userMembershipModel.setMembershipId(membershipMapper.findByLevel(1).getId());
+        userMembershipMapper.update(userMembershipModel);
+        preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
+        assertEquals(0, preference);
+        userMembershipModel.setMembershipId(membershipMapper.findByLevel(0).getId());
+        userMembershipMapper.update(userMembershipModel);
+        preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
+        assertEquals(0, preference);
+    }
 }
