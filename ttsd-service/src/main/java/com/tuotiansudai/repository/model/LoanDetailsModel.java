@@ -9,23 +9,23 @@ public class LoanDetailsModel implements Serializable {
     private long loanId;
     private String declaration;
     private String extraSource;
-    private boolean isActivity;
+    private boolean activity;
 
     public LoanDetailsModel() {
     }
 
-    public LoanDetailsModel(long loanId, String declaration, String extraSource, boolean isActivity) {
+    public LoanDetailsModel(long loanId, String declaration, String extraSource, boolean activity) {
         this.loanId = loanId;
         this.declaration = declaration;
         this.extraSource = extraSource;
-        this.isActivity = isActivity;
+        this.activity = activity;
     }
 
     public LoanDetailsModel(LoanDetailsDto loanDetailsDto) {
         this.loanId = loanDetailsDto.getLoanId();
         this.declaration = loanDetailsDto.getDeclaration();
         this.extraSource = loanDetailsDto.getExtraSource();
-        this.isActivity = loanDetailsDto.isActivity();
+        this.activity = loanDetailsDto.isActivity();
     }
 
     public long getId() {
@@ -61,10 +61,10 @@ public class LoanDetailsModel implements Serializable {
     }
 
     public boolean isActivity() {
-        return isActivity;
+        return activity;
     }
 
     public void setActivity(boolean activity) {
-        isActivity = activity;
+        this.activity = activity;
     }
 }

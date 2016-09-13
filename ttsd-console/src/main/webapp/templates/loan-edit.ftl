@@ -72,9 +72,9 @@
                 </div>
                 <div class="checkbox jq-activity-checkbox">
                     <label>
-                        <input type="checkbox" class="jq-activity" value="1" <#if loanInfo.isActivity>checked</#if>
+                        <input type="checkbox" class="jq-activity" value="1" <#if loanInfo.activity>checked</#if>
                                <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>>
-                        首页
+                        活动专享
                     </label>
                 </div>
 

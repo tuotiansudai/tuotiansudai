@@ -386,10 +386,10 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     showOnHome = false;
                 }
 
-                var isActivityInputVal =  $('.jq-activity').val();
-                var isActivity = false;
-                if (isActivityInputVal == '1') {
-                    isActivity = true;
+                var activityInputVal =  $('.jq-activity').val();
+                var activity = false;
+                if (activityInputVal == '1') {
+                    activity = true;
                 }
                 var value = $('.jq-name').val();
                 var url = API_FORM + operate;
@@ -421,7 +421,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "loanTitles": uploadFile,
                         "extraRateIds": getExtraRateIds(),
                         "extraSource": getExtraSource(),
-                        "isActivity": isActivity,
+                        "activity": activity,
 
                         "declaration": $('.jq-loan-declaration').val(),
 
@@ -474,7 +474,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "loanTitles": uploadFile,
                         "extraRateIds": getExtraRateIds(),
                         "extraSource": getExtraSource(),
-                        "isActivity": isActivity,
+                        "activity": activity,
 
                         "declaration": $('.jq-loan-declaration').val(),
 
