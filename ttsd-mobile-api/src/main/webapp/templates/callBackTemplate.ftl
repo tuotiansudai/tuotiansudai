@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>拓天速贷</title>
-    <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}base.css" charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}ttsd-mobile.css" charset="utf-8" />
+    <#--<link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}base.css" charset="utf-8" />-->
+    <#--<link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}ttsd-mobile.css" charset="utf-8" />-->
+    <link rel="stylesheet" type="text/css" href="http://localhost:9088/api/style/base.css" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="http://localhost:9088/api/style/ttsd-mobile.css" charset="utf-8" />
 </head>
 <body>
     <div class="main-layout">

@@ -127,7 +127,7 @@ public class MobileAppCallBackController {
         } else if (UmPayFrontService.PTP_MER_BIND_CARD.getServiceName().equals(service)) {
             BankCardModel bankCardModel =  bindBankCardService.getBankCardById(Long.parseLong(orderId));
             cardNumber = bankCardModel.getCardNumber();
-            message = "绑卡成功";
+            message = "绑卡申请成功";
             href = MessageFormat.format("tuotian://bindcard/{0}",callBackStatus);
         } else if (UmPayFrontService.PTP_MER_REPLACE_CARD.getServiceName().equals(service)) {
             message = "换卡成功";
