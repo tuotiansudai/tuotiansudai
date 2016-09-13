@@ -163,4 +163,9 @@ public class HomeLoanDto {
     public void setExtraSource(String extraSource) {
         this.extraSource = extraSource;
     }
+
+    public boolean getActivity() {
+        return activity;
+    }
+
 }

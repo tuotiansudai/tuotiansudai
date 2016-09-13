@@ -302,9 +302,8 @@
                             <li data-url="/loan/${(loan.id?string.computer)!}" class="clearfix">
                                 <div class="loan-info-frame fl">
                                     <div class="loan-top">
-                                        <span class="l-title fl">${loan.name}2222--${(loan.activity)?string("true","false")! }
-                                        <#assign foos =loan.activity>
-                                            ${foos?string("true","false")}
+                                        <span class="l-title fl">${loan.name}
+                                            <#if loan.activity?string("true","false") == "true">(活动专享)</#if>
                                         </span>
 
                                     </div>

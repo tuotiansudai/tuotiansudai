@@ -31,6 +31,8 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     @Autowired
     private LoanMapper loanMapper;
 
+    @Au
+
     @Autowired
     private InvestMapper investMapper;
 
@@ -85,6 +87,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
+            LoanDetailsModel loanDetailsModel = loande
             loanResponseDataDto.setLoanName(loan.getName());
             loanResponseDataDto.setActivityType(loan.getActivityType().name());
             loanResponseDataDto.setDuration(String.valueOf(loan.getDuration()));
