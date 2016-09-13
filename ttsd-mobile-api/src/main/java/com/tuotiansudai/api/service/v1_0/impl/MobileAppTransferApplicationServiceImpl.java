@@ -15,6 +15,7 @@ import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
@@ -77,6 +78,9 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
 
     @Autowired
     UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private UserMembershipService userMembershipService;
 
 
     @Override
@@ -335,28 +339,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(totalActualInterest));
         userInvestRepayResponseDataDto.setUnPaidRepay(AmountConverter.convertCentToString(totalExpectedInterest - totalActualInterest));
 
-        List<UserMembershipModel> userMembershipModels = userMembershipMapper.findByLoginName(userInvestRepayRequestDto.getBaseParam().getUserId());
-        UserMembershipModel curMembership = null;
-        for (UserMembershipModel userMembershipModel : userMembershipModels) {
-            if (null == curMembership) {
-                curMembership = userMembershipModel;
-            } else if (userMembershipModel.getExpiredTime().after(new Date()) && curMembership.getMembershipId() < userMembershipModel.getMembershipId()) {
-                //等级越高的Membership id越大
-                curMembership = userMembershipModel;
-            }
-        }
-        if (null == curMembership) {
-            userInvestRepayResponseDataDto.setMembershipLevel("0");
-            logger.error(MessageFormat.format("[MobileAppTransferApplicationServiceImpl][userInvestRepay] {0}没有会员.", userInvestRepayRequestDto.getBaseParam().getUserId()));
-        } else {
-            MembershipModel membershipModel = membershipMapper.findById(curMembership.getMembershipId());
-            if (null == membershipModel) {
-                userInvestRepayResponseDataDto.setMembershipLevel("0");
-                logger.warn(MessageFormat.format("[MobileAppTransferApplicationServiceImpl][userInvestRepay]会员不存在, loginName:{0}}", userInvestRepayRequestDto.getBaseParam().getUserId()));
-            } else {
-                userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(membershipModel.getLevel()));
-            }
-        }
+        userInvestRepayResponseDataDto.setMembershipLevel(userMembershipService.getMembershipLevelByLoginNameAndInvestTime(transferApplicationModel.getLoginName(), transferApplicationModel.getTransferTime()));
         BaseResponseDto baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
         baseResponseDto.setData(userInvestRepayResponseDataDto);
 

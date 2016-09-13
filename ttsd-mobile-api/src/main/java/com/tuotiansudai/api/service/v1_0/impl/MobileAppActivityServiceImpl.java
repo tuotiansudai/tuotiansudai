@@ -38,7 +38,7 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
         if (null == pageSize) {
             pageSize = 10;
         }
-        return fillActivityCenterData(requestDto.getActivityType(), index, pageSize, source);
+        return fillActivityCenterData(requestDto.getActivityType() == null?ActivityCenterType.CURRENT:requestDto.getActivityType(), index, pageSize, source);
     }
 
     private ActivityCenterResponseDto fillActivityCenterData(ActivityCenterType activityType, int index, int pageSize, Source source) {
