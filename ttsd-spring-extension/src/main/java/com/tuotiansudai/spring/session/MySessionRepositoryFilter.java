@@ -211,8 +211,7 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
             HttpSession session = getSession(false);
 
             if (session == null) {
-                throw new IllegalStateException(
-                        "Cannot change session ID. There is no session associated with this request.");
+                throw new IllegalStateException("Cannot change session ID. There is no session associated with this request.");
             }
 
             String originalSessionId = session.getId();
@@ -269,8 +268,7 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
         }
 
         private S getSession(String sessionId) {
-            S session = MySessionRepositoryFilter.this.sessionRepository
-                    .getSession(sessionId);
+            S session = MySessionRepositoryFilter.this.sessionRepository.getSession(sessionId);
             if (session == null) {
                 return null;
             }
@@ -285,8 +283,7 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
                 return currentSession;
             }
             String requestedSessionId = getRequestedSessionId();
-            if (requestedSessionId != null
-                    && getAttribute(INVALID_SESSION_ID_ATTR) == null) {
+            if (requestedSessionId != null && getAttribute(INVALID_SESSION_ID_ATTR) == null) {
                 S session = getSession(requestedSessionId);
                 if (session != null) {
                     this.requestedSessionIdValid = true;
@@ -342,8 +339,7 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
 
         @Override
         public String getRequestedSessionId() {
-            return MySessionRepositoryFilter.this.httpSessionStrategy
-                    .getRequestedSessionId(this);
+            return MySessionRepositoryFilter.this.httpSessionStrategy.getRequestedSessionId(this);
         }
 
         /**
