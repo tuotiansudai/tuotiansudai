@@ -29,7 +29,7 @@ public enum CsvHeaderType {
     ConsoleLoanList("编号,项目名称,借款期限,借款人,代理人,借款金额(元),年化/活动(利率),阶梯加息,项目状态,发起时间", "所有的借款"),
     AccountBalance("用户名,姓名,手机号,地区,最后交易时间,账户余额", "用户余额"),
     ProductOrderList("用户名,兑换时间,兑换数量,姓名,手机号码,收货地址,状态,发货时间", "商品订单导出"),
-    AutumnActivityList("家庭名称,投资金额(元),时间,奖品,家庭成员,用户名,投资金额(元),加入时间,手机号码","中秋活动列表导出");
+    AutumnActivityList("家庭名称,投资金额(元),时间,奖品,家庭成员,投资金额(元)","中秋活动列表导出");
 
     private String header;
 
