@@ -43,7 +43,7 @@ public class MyRedisHttpSessionConfiguration implements ImportAware {
 
     private ServletContext servletContext;
 
-    private Integer maxInactiveIntervalInSeconds = -1;
+    private Integer maxInactiveIntervalInSeconds = 1800;
 
     private ConfigureRedisAction configureRedisAction = new ConfigureNotifyKeyspaceEventsAction();
 
