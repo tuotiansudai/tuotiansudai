@@ -94,7 +94,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             String loanName = "";
             if(loanDetailsModel != null){
                 if(loanDetailsModel.isActivity()){
-                    loanName = loan.getName()+("活动专享");
+                    loanName = loan.getName()+("(活动专享)");
                 }
                 else{
                     loanName = loan.getName();
