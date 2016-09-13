@@ -41,7 +41,7 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
         this.interestInitiateType = loanModel.getType().getInterestInitiateType().name();
         this.productNewType = loanModel.getProductType().name();
         this.investId = String.valueOf(transferApplicationModel.getInvestId());
-        this.investAmount = String.valueOf(transferApplicationModel.getInvestAmount());
+        this.investAmount = AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount());
         this.investTime = simpleDateFormat.format(transferApplicationModel.getTransferTime());
         this.recheckTime = simpleDateFormat.format(loanModel.getRecheckTime());
     }
