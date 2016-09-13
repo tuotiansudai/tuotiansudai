@@ -199,7 +199,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                     String.valueOf(periods),
                     String.valueOf(periods),
                     RepayStatus.COMPLETE.name(),
-                    String.valueOf(transferApplicationModel.getInvestId()),
+                    String.valueOf(transferApplicationModel.getTransferInvestId()),
                     false,
                     String.valueOf(transferApplicationModel.getId())));
         }
