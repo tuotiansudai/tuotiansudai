@@ -52,6 +52,12 @@
                         <option value="车辆抵押借款">车辆抵押借款</option>
                     </select>
                 </div>
+                <div class="checkbox jq-activity-checkbox">
+                    <label>
+                        <input type="checkbox" class="jq-activity" value="0">
+                        活动专享
+                    </label>
+                </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">代理用户: </label>

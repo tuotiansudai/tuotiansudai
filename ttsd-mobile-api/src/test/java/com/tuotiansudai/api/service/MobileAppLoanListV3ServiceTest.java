@@ -79,7 +79,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         loanModel.setRecheckTime(DateTime.parse(recheckTime).toDate());
         loanMapper.create(loanModel);
 
-        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "", "MOBILE,WEB");
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "", "MOBILE,WEB", false);
         loanDetailsMapper.create(loanDetailsModel);
 
         return loanModel;
