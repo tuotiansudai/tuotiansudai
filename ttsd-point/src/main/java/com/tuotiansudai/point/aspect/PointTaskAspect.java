@@ -82,7 +82,6 @@ public class PointTaskAspect {
 
         pointTaskService.completeAdvancedTask(PointTask.EACH_SUM_INVEST, loginName);
         pointTaskService.completeAdvancedTask(PointTask.FIRST_SINGLE_INVEST, loginName);
-        pointTaskService.completeAdvancedTask(PointTask.EACH_REFERRER_INVEST, loginName);
         pointTaskService.completeAdvancedTask(PointTask.FIRST_REFERRER_INVEST, loginName);
         pointTaskService.completeAdvancedTask(PointTask.FIRST_INVEST_180, loginName);
         pointTaskService.completeAdvancedTask(PointTask.FIRST_INVEST_360, loginName);

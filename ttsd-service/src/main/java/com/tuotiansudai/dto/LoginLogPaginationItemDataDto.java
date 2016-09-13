@@ -5,15 +5,15 @@ import com.tuotiansudai.repository.model.Source;
 import java.util.Date;
 
 public class LoginLogPaginationItemDataDto {
-    private String mobile;
+    private String loginName;
     private Source source;
     private String ip;
     private Date loginTime;
     private String device;
     private boolean success;
 
-    public LoginLogPaginationItemDataDto(String mobile, Source source, String ip, String device, Date loginTime, boolean success) {
-        this.mobile = mobile;
+    public LoginLogPaginationItemDataDto(String loginName, Source source, String ip, String device, Date loginTime, boolean success) {
+        this.loginName = loginName;
         this.source = source;
         this.ip = ip;
         this.device = device;
@@ -21,8 +21,8 @@ public class LoginLogPaginationItemDataDto {
         this.success = success;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getLoginName() {
+        return loginName;
     }
 
     public Source getSource() {

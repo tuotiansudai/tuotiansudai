@@ -12,8 +12,9 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension', 'circle'
         }
         var browser = commonFun.browserRedirect();
         if (browser == 'mobile') {
-            var searchTag=location.search.split('=')[1];
-            if(searchTag=='yes') {
+
+            var urlObj=commonFun.parseURL(location.href);
+            if(urlObj.params.tag=='yes') {
                 $('.reg-tag-current').show();
             }
         }

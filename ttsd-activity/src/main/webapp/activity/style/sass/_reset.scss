@@ -48,6 +48,7 @@ a{
   cursor: pointer;
   color:nth($linkColor,1);
   text-decoration: none;
+  outline: none;
   &:hover{
     color:nth($linkColor,2);
   }
