@@ -77,7 +77,8 @@ public class ExportService {
                         autumnExportDto.setPrize("");
                     }
 
-                    autumnExportDto.setLoginName(investModel.getLoginName());
+                    UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
+                    autumnExportDto.setLoginName(userModel == null?"":userModel.getMobile());
                     autumnExportDto.setInvestAmount(investModel.getAmount());
                     autumnExportDtoList.add(autumnExportDto);
                 }
