@@ -54,7 +54,7 @@
                 </div>
                 <div class="checkbox jq-activity-checkbox">
                     <label>
-                        <input type="checkbox" class="jq-activity" value="1">
+                        <input type="checkbox" class="jq-activity" value="0">
                         活动专享
                     </label>
                 </div>
