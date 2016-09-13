@@ -2453,6 +2453,12 @@ form input.error + label.error:before {
   border: 0 !important;
   text-indent: -9999px; }
 
+.test {
+  background: url("../../images/icons/icon-shop.png") no-repeat; }
+
+.color2 {
+  color: red; }
+
 h1 {
   font-size: 2em;
   font-weight: normal; }

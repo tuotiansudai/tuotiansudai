@@ -19,9 +19,10 @@ module.exports = function(grunt) {
                 files: [{
                     dot: true,
                     src: [
-                        '<%= meta.baseCssPath %>/*.css',
-                        '<%= meta.baseCssPath %>/*.map',
-                        '<%= meta.baseCssMinPath %>/*'
+                        '<%= meta.baseCssPath %>/*',
+                        //'<%= meta.base64CssPath %>/*',
+                        //'<%= meta.baseCssPath %>/*.map',
+                        //'<%= meta.baseCssMinPath %>/*'
                     ]
                 }]
             },
@@ -32,15 +33,15 @@ module.exports = function(grunt) {
                         '<%= meta.baseJsMinPath %>/*'
                     ]
                 }]
-            },
-            base64: {
-                files: [{
-                    dot: true,
-                    src: [
-                        '<%= meta.base64CssPath %>'
-                    ]
-                }]
             }
+            //base64: {
+            //    files: [{
+            //        dot: true,
+            //        src: [
+            //            '<%= meta.base64CssPath %>/*'
+            //        ]
+            //    }]
+            //}
         },
         uglify: {
             options: {
@@ -103,12 +104,17 @@ module.exports = function(grunt) {
                 ],
                 tasks: ['newer:clean:css', 'newer:sass']
             },
-            cssmin: {
+            dataUri:{
                 files: [
-                    ['<%= meta.base64CssPath %>/*.css']
+                    '<%= meta.baseCssPath %>/*.css'
                 ],
-                tasks: ['newer:cssmin:dist']
+                tasks: ['dataUri']
             },
+            cssmin: {
+                files: ['<%= meta.base64CssPath %>/*.css'],
+                tasks: ['newer:cssmin:base64']
+            },
+
             uglify: {
                 files: [
                     ['<%= meta.baseJsPath %>/*.js']
@@ -142,20 +148,41 @@ module.exports = function(grunt) {
                     maxBytes: 1024 * 8   //小于8k的图片会生成base64 ,并且需要是相对路径
                 }
             }
-        }
+        },
+        imagemin: {
+            /* 压缩图片大小 */
+            dist: {
+                options: {
+                    // cache:false,
+                    optimizationLevel: 3,
+                    progressive: true
+                },
+                files: [
+                    {
+                        expand: true,
+                        cwd: '<%=meta.baseImagePath%>/',
+                        src: ['**/*.{png,jpg,jpeg}'],   // 优化 img 目录下所有 png/jpg/jpeg 图片
+                        dest:'<%=meta.baseImagePath%>/' // 优化后的图片保存位置，覆盖旧图片，并且不作提示
+                    }
+                ]
+            }
+        },
     });
 
     //转化成base64
-    grunt.registerTask('base64', ['dataUri', 'cssmin:base64']);
+    grunt.registerTask('base64', ['dataUri', 'newer:cssmin:base64']);
     //,'clean:base64'
+
+    //压缩图片
+    grunt.registerTask('imagemin', ['newer:imagemin']);
 
     // 默认被执行的任务列表。
     grunt.registerTask('default', [
         'clean',
         'newer:uglify',
-        'sass',
+        'newer:sass',
+        'newer:cssmin:dist',
         'base64',
-        'cssmin:base64',
         'connect',
         'watch'
 
