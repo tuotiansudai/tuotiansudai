@@ -213,6 +213,14 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 $('.jq-index').val('0');
             }
         });
+
+        $('.jq-activity-checkbox label').click(function () {
+            if ($('.jq-activity').prop('checked')) {
+                $('.jq-activity').val('1');
+            } else {
+                $('.jq-activity').val('0');
+            }
+        });
         //自动完成提示
         var autoValue = '';
         $(".jq-agent").autocomplete({
@@ -364,11 +372,19 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 indexPic();
                 var startTime = $('.jq-star-date').val();
                 var endTime = $('.jq-end-date').val();
+
                 var showOnHomeInputVal = $('.jq-index').val();
                 var showOnHome = true;
                 if (showOnHomeInputVal == '0') {
                     showOnHome = false;
                 }
+
+                var activityInputVal =  $('.jq-activity').val();
+                var activity = false;
+                if (activityInputVal == '1') {
+                    activity = true;
+                }
+
                 var value = $('.jq-name').val();
                 var url = "/project-manage/loan/create";
                 if ("房产抵押借款" == value) {
@@ -396,6 +412,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "loanTitles": uploadFile,
                         "extraRateIds": getExtraRateIds(),
                         "extraSource": getExtraSource(),
+                        "activity": activity,
 
                         "declaration": $('.jq-loan-declaration').val(),
 
@@ -443,6 +460,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "loanTitles": uploadFile,
                         "extraRateIds": getExtraRateIds(),
                         "extraSource": getExtraSource(),
+                        "activity": activity,
 
                         "declaration": $('.jq-loan-declaration').val(),
 

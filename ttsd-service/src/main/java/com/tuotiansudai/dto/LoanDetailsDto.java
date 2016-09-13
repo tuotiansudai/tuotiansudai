@@ -1,21 +1,19 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.Source;
-
-import java.util.List;
-
 public class LoanDetailsDto {
     private long loanId;
     private String declaration;
     private String extraSource;
+    private boolean activity;
 
     public LoanDetailsDto() {
     }
 
-    public LoanDetailsDto(long loanId, String declaration, String extraSource) {
+    public LoanDetailsDto(long loanId, String declaration, String extraSource, boolean activity) {
         this.loanId = loanId;
         this.declaration = declaration;
         this.extraSource = extraSource;
+        this.activity = activity;
     }
 
     public long getLoanId() {
@@ -40,5 +38,13 @@ public class LoanDetailsDto {
 
     public void setExtraSource(String extraSource) {
         this.extraSource = extraSource;
+    }
+
+    public boolean isActivity() {
+        return activity;
+    }
+
+    public void setActivity(boolean activity) {
+        this.activity = activity;
     }
 }
