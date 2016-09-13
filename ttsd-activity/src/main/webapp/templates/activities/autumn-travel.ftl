@@ -35,42 +35,25 @@
 
         <div class="prize-kind clearfix swiper-container">
             <div class="swiper-wrapper" id="sliderBox">
-                <div class="prize-box swiper-slide">
+
+                <div class="prize-box swiper-slide ">
                     <div class="pk-title clearfix">
                         <span><em>投资</em><i>5万</i>元</span>
-                        <span><em>额外收益</em><i>4660</i>元</span>
+                        <span><em>额外收益</em><i>1553</i>元</span>
                     </div>
                     <div class="img-info">
-                        <a href="/activity/autumn/travel/3/detail" target="_blank">
-                            <img src="/activity/images/autumn-tour/pp03.png">
-                        </a>
-                        <span class="kind-text">日本和韵·九州4日游</span>
+                        <a href="/activity/autumn/travel/1/detail" target="_blank">
+                            <img src="/activity/images/autumn-tour/pp01.png"></a>
+                        <span class="kind-text">华东五市双高五日游</span>
                         <div class="kind-bottom">
-                            <span class="fl">价值<em>3880</em>元/人</span>
+                            <span class="fl">价值<em>1599</em>元/人</span>
 
                             <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
 
                         </div>
                     </div>
                 </div>
-                    <div class="prize-box swiper-slide ">
-                        <div class="pk-title clearfix">
-                            <span><em>投资</em><i>5万</i>元</span>
-                            <span><em>额外收益</em><i>1553</i>元</span>
-                        </div>
-                        <div class="img-info">
-                            <a href="/activity/autumn/travel/1/detail" target="_blank">
-                            <img src="/activity/images/autumn-tour/pp01.png"></a>
-                            <span class="kind-text">华东五市双高五日游</span>
-                            <div class="kind-bottom">
-                                <span class="fl">价值<em>1599</em>元/人</span>
-
-                                <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
-
-                            </div>
-                        </div>
-                    </div>
-                <div class="prize-box swiper-slide active">
+                <div class="prize-box swiper-slide">
                     <div class="pk-title clearfix">
                         <span><em>投资</em><i>10万</i>元</span>
                         <span><em>额外收益</em><i>3106</i>元</span>
@@ -88,8 +71,25 @@
                     </div>
                 </div>
 
+                <div class="prize-box swiper-slide">
+                    <div class="pk-title clearfix">
+                        <span><em>投资</em><i>15万</i>元</span>
+                        <span><em>额外收益</em><i>4660</i>元</span>
+                    </div>
+                    <div class="img-info">
+                        <a href="/activity/autumn/travel/3/detail" target="_blank">
+                            <img src="/activity/images/autumn-tour/pp03.png">
+                        </a>
+                        <span class="kind-text">日本和韵·九州4日游</span>
+                        <div class="kind-bottom">
+                            <span class="fl">价值<em>3880</em>元/人</span>
 
-                <div class="bg-shadow"></div>
+                            <a href="/loan-list" class="fr btn-normal autumn-travel-invest-channel">立即投资</a>
+
+                        </div>
+                    </div>
+                </div>
+                <#--<div class="bg-shadow"></div>-->
             </div>
         </div>
 
@@ -143,12 +143,7 @@
             </div>
 
                 <div class="tc customized-button">
-                    <@global.isAnonymous>
-                        <a href="/login?redirect=/activity/autumn/travel" class="btn-normal autumn-travel-invest-channel">立即投资领奖</a>
-                    </@global.isAnonymous>
-                    <@global.isNotAnonymous>
-                        <a href="/loan-list" class="btn-normal autumn-travel-invest-channel">立即投资领奖</a>
-                    </@global.isNotAnonymous>
+                    <a href="/loan-list" class="btn-normal autumn-travel-invest-channel">立即投资领奖</a>
                 </div>
         </div>
     </div>
@@ -255,23 +250,24 @@
     <div class="bg-box activity-rule">
         <b>活动规则</b>
         <span class="pc">
-            1、本活动仅计算当日的投资额，用户在当日24点之前进行的多次投资，金额可累计计算，次日全部清零； <br/>
-            2、本次活动期间，用户每人每天仅限量领取一个旅游奖品；<br/>
-            3、当用户从当前页面进行投资时，当日所有投资均计为参加旅游活动所做的投资，如用户想参与奢侈品活动，必须通过奢侈品活动页面进行投资方可生效；<br/>
-            4、拓天速贷会根据活动的情况，以等值，增值为基础调整旅游产品；<br/>
-            5、中奖结果将于次日在本活动页面公布，由客服联系确认。红包和加息券实时发放，用户可在“我的账户-我的宝藏”中查看，实物奖品将于活动结束后七个工作日内统一安排发放；<br/>
-            6、旅游奖品中奖并由客服确认信息后，不可再行更改。如无法按时参团请与旅行社接洽，旅途中相关问题及引起的不良后果与拓天速贷无关；<br/>
-            7、旅游产品内容随淡旺季变化价格调整较为频繁，请用户在投资前注意网页中的出团日期，避免延误您的行程；网页中的产品介绍、行程安排等图片及文字信息仅供参考，最终产品内容以用户和旅行社的签约合同为准；<br/>
-            8、获取抽奖机会和抽奖过程中，如果出现恶意刷量等违规行为，拓天速贷将取消您获得奖励的资格，并有权撤销违规交易，收回活动中所得的奖品；<br/>
-            9、拓天速贷在法律范围内保留对本活动的最终解释权。<br/>
+1．活动期间，用户在”我要投资“页面投资7%标的，即视为参与活动；<br/>
+2．本活动仅计算当日的投资额，用户在当日24点之前进行的多次投资，金额可累计计算，次日全部清零；<br/>
+3．本次活动期间，用户每人每天仅限量领取一个旅游产品；<br/>
+4．如用户在当日投资中获得免费旅游大奖，客服将于该债权放款后三个工作日内电话联系确认；<br/>
+5．旅游奖品中奖并由客服确认信息后，不可再行更改。如无法按时参团请与旅行社接洽，旅途中相关问题及引起的不良后果与拓天速贷无关；<br/>
+6．旅游产品内容随淡旺季变化价格调整较为频繁，请用户在投资前注意网页中的出团日期，避免延误您的行程；网页中的产品介绍、行程安排等图片及文字信息仅供参考，最终产品内容以用户和旅行社的签约合同为准；<br/>
+7．用户在抽奖活动中所获得的红包和加息券实时发放，可在“我的账户-我的宝藏”中查看；<br/>
+8．获取抽奖机会和抽奖过程中，如果出现恶意刷量等违规行为，拓天速贷将取消您获得奖励的资格，并有权撤销违规交易，收回活动中所得的奖品。<br/>
+拓天速贷在法律范围内保留对本活动的最终解释权。
         </span>
         <span class="mobile">
-            1.本活动仅计算当日的投资额，次日全部清零；<br/>
-            2.用户每人每天仅限量领取一个旅游奖品；<br/>
-            3.用户从当前页面进行投资时，其所有投资均计为参加旅游活动所做的投资，如用户想参与奢侈品活动，必须通过奢侈品活动页面进行投资方可生效；<br/>
-            4.中奖奖品，红包和加息券实时发放至“我的宝藏”当中，实物奖品将于活动结束后七个工作日内统一安排发放；<br/>
-            5.拓天速贷在法律范围内保留对本活动的最终解释权。<br/>
-            详细活动规则请查看电脑网页版活动页面。
+            1．用户在”我要投资“页面投资7%标的，即视为参与活动；<br/>
+2．本活动仅计算当日的投资额，次日全部清零；<br/>
+3．用户每人每天仅限量领取一个旅游产品；<br/>
+4．如用户在当日投资中获得免费旅游大奖，客服将于该债权放款后三个工作日内电话联系确认；<br/>
+5．用户在抽奖活动中所获得的红包和加息券实时发放，可在“我的账户-我的宝藏”中查看；<br/>
+6．拓天速贷在法律范围内保留对本活动的最终解释权。<br/>
+详细活动规则请查看电脑网页版活动页面
         </span>
     </div>
 

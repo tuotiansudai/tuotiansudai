@@ -506,7 +506,7 @@ body {
       }
     }
     .prize-kind {
-      margin:10px 0;
+      margin:10px;
       overflow: hidden;
       .swiper-wrapper {
         width: 108%;
@@ -525,9 +525,9 @@ body {
         .pk-title {
           margin:0;
           span {
-            font-size:12px;
+            font-size:13px;
             i {
-              font-size:13px;
+              font-size:14px;
             }
             &:nth-child(1) {
               width: 35%;
