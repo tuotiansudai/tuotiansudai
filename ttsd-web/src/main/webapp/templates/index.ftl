@@ -528,7 +528,9 @@
                                     <i class="${loan.productType.name()?lower_case}"></i>
                                 </#if>
                                 <div class="pad-m" title="BLQ001" data-url="/loan/${(loan.id?string.computer)!}">
-                                    <h2 class="pr-title">${loan.name}</h2>
+                                    <h2 class="pr-title">${loan.name}
+                                        <#if loan.activity?string("true","false") == "true">(活动专享)</#if>
+                                    </h2>
 
                                     <div class="pr-square tc">
                                         <div class="pr-square-in">
