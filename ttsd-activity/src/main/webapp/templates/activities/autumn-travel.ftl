@@ -230,13 +230,15 @@
 
             <span class="activity-text">活动期间，每推荐一名好友注册也可获得一次抽奖机会；好友投资，还可再得一次抽奖机会。邀请越多机会越多。</span>
             <div class="tc customized-button">
-                <span class="pc">
-                    <a href="/referrer/refer-list" class="btn-normal">立即邀请好友赢抽奖机会</a>
-                    <br/>
+                <span>
+                <@global.isAnonymous>
+                   <a href="/login?redirect=/activity/autumn/travel" class="btn-normal">立即邀请好友赢抽奖机会</a>
+                </@global.isAnonymous>
+            <@global.isNotAnonymous>
+                <a href="/referrer/refer-list" class="btn-normal">立即邀请好友赢抽奖机会</a>
+            </@global.isNotAnonymous>
                 </span>
-                <span class="mobile">
-                    <a href="/referrer/refer-list" class="btn-normal">立即邀请好友赢抽奖机会</a>
-                </span>
+
             </div>
         </div>
 
