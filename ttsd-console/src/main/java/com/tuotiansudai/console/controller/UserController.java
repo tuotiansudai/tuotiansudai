@@ -215,10 +215,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/{loginName}/impersonate", method = RequestMethod.GET)
-    public ModelAndView impersonate(@PathVariable String loginName) {
-        String securityCode = impersonateService.plantSecurityCode(LoginUserInfo.getLoginName(), loginName);
-        myAuthenticationUtil.removeAuthentication();
-        return new ModelAndView(MessageFormat.format("redirect:{0}/impersonate/security-code/{1}", webServer, securityCode));
+    @ResponseBody
+    public String impersonate(@PathVariable String loginName) {
+        return impersonateService.plantSecurityCode(LoginUserInfo.getLoginName(), loginName);
     }
 
     @RequestMapping(value = "/user/agents", method = RequestMethod.GET)

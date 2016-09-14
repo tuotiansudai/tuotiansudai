@@ -1,6 +1,4 @@
-require(['jquery', 'jquery-ui',
-    'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect',
-    'moment', 'csrf'], function ($) {
+require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'csrf'], function ($) {
     $(function () {
         $('.selectpicker').selectpicker();
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
@@ -73,5 +71,24 @@ require(['jquery', 'jquery-ui',
         $('.down-load').click(function () {
             location.href = "/export/users?" + $('form').serialize();
         });
+
+        $('.impersonate-link').click(function () {
+            var _this = $(this);
+            $.ajax({
+                url: _this.prop('href'),
+                type: 'GET',
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function (data) {
+                if (data) {
+                    var $logoutForm = $('#logout-form');
+                    $logoutForm.prop('action', "/logout?impersonateSecurityCode=" + data);
+                    $logoutForm.submit();
+                }
+            }).fail(function (data) {
+                alert('操作失败');
+            });
+            return false;
+        });
+
     });
 });
