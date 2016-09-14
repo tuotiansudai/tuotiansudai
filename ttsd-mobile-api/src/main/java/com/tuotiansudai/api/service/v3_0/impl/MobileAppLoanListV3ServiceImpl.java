@@ -105,7 +105,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                     loanModel = raisingLoanModels.get(0);
                     if (raisingLoanModels.size() > 1) {
                         for (int i = 1; i < raisingLoanModels.size(); ++i) {
-                            if (loanModel.getPeriods() == raisingLoanModels.get(i).getPeriods()) {
+                            if (loanModel.getProductType() == raisingLoanModels.get(i).getProductType()) {
                                 loanModel = raisingLoanModels.get(i);
                             } else {
                                 break;
