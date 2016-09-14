@@ -23,6 +23,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +56,9 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
     @Autowired
     private PointBillMapper pointBillMapper;
+
+    @Value("${web.banner.server}")
+    private String bannerServer;
 
     @Override
     public BaseResponseDto updateUserAddress(UserAddressRequestDto userAddressRequestDto) {
@@ -120,25 +124,24 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         List<ProductModel> virtualProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.VIRTUAL));
         List<ProductModel> physicalsProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.PHYSICAL));
 
-
         Iterator<ProductDetailResponseDto> couponList = Iterators.transform(exchangeCoupons.iterator(), new Function<ExchangeCouponView, ProductDetailResponseDto>() {
             @Override
             public ProductDetailResponseDto apply(ExchangeCouponView exchangeCouponView) {
-                return new ProductDetailResponseDto(exchangeCouponView);
+                return new ProductDetailResponseDto(exchangeCouponView,bannerServer);
             }
         });
 
         Iterator<ProductDetailResponseDto> virtualList = Iterators.transform(virtualProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
             @Override
             public ProductDetailResponseDto apply(ProductModel input) {
-                return new ProductDetailResponseDto(input.getId(), input.getImageUrl(), input.getName(), input.getPoints(),input.getType(),1000);
+                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(),input.getType(),1000);
             }
         });
 
         Iterator<ProductDetailResponseDto> physicals = Iterators.transform(physicalsProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
             @Override
             public ProductDetailResponseDto apply(ProductModel input) {
-                return new ProductDetailResponseDto(input.getId(), input.getImageUrl(), input.getName(), input.getPoints(),input.getType(),1000);
+                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(),input.getType(),1000);
             }
         });
 
@@ -167,7 +170,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
         ProductModel productModel = productMapper.findById(Long.parseLong(productDetailRequestDto.getProductId()));
 
-        ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(productModel.getId(),productModel.getImageUrl(),productModel.getName(),productModel.getPoints(),productModel.getType(),productModel.getTotalCount() - productModel.getUsedCount());
+        ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(productModel.getId(),bannerServer + productModel.getImageUrl(),productModel.getName(),productModel.getPoints(),productModel.getType(),productModel.getTotalCount() - productModel.getUsedCount());
         List<String> description = Lists.newArrayList();
         CouponModel couponModel = couponMapper.findById(productModel.getCouponId());
         if (productModel.getType() == GoodsType.COUPON && couponModel != null) {

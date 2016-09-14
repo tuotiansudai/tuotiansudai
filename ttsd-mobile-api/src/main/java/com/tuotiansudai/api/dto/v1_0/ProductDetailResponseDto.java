@@ -33,9 +33,9 @@ public class ProductDetailResponseDto extends BaseResponseDataDto{
         this.leftCount = String.valueOf(leftCount);
     }
 
-    public ProductDetailResponseDto(ExchangeCouponView exchangeCouponView){
+    public ProductDetailResponseDto(ExchangeCouponView exchangeCouponView,String bannerServer){
         this.productId = String.valueOf(exchangeCouponView.getProductId());
-        this.imageUrl = exchangeCouponView.getImageUrl();
+        this.imageUrl = bannerServer + exchangeCouponView.getImageUrl();
         this.points = String.valueOf(exchangeCouponView.getExchangePoint());
         this.leftCount = String.valueOf(exchangeCouponView.getTotalCount() - exchangeCouponView.getIssuedCount());
         switch (exchangeCouponView.getCouponType()) {
