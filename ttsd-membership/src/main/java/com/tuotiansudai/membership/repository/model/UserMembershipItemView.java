@@ -3,7 +3,7 @@ package com.tuotiansudai.membership.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserMembershipItemView implements Serializable{
+public class UserMembershipItemView implements Serializable {
     private long id;
     private String loginName;
     private String realName;
