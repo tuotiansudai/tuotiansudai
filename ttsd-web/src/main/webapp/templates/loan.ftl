@@ -235,7 +235,7 @@
                                 <span>预计总收益：</span>
                                 <span class="principal-income">0.00</span>
                                 <span class="experience-income"></span>
-                                元
+                                元 <i class="icon-graded">V5</i>
                             </dd>
 
                             <dd class="time-item" <#if loan.loanStatus == "RAISING">style="display: none"</#if>>

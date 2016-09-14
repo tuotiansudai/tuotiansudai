@@ -319,6 +319,17 @@ $red: #eb4a3e;
               font-size: 15px;
               color: #ff7200;
             }
+            .icon-graded {
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+              background: #ff7200;
+              display: inline-block;
+              font-size: 10px;
+              line-height: 20px;
+              color: #fff;
+              margin-left: 10px;
+            }
           }
           &.experience-revenue {
             margin-bottom: 0;

@@ -768,6 +768,34 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         }, 300);
 
         $investInput.on('keyup', keyupHandler);
+
+        $accountInfo.find('.icon-graded').on('click',function() {
+            layer.closeAll('tips');
+            var value = _.compose(parseFloat, replace)($investInput.val());
+            $.ajax({
+                url: '/get-membership-preference',
+                type: 'GET',
+                dataType: 'json',
+                data:{"loanId":loanId,"investAmount":value},
+                contentType: 'application/json; charset=UTF-8'
+            })
+                .done(function(response) {
+                    if (response.data.status) {
+                        console.log('response.data');
+                    }
+                })
+                .fail(function() {
+
+                });
+            //layer.tips('您已享受生日福利，首月收益翻', $(this), {
+            //    tips: [1, '#ff7200'],
+            //    time: 3000,
+            //    tipsMore: true,
+            //    area: 'auto',
+            //    maxWidth: '500'
+            //});
+        });
+
     })();
 
 });
