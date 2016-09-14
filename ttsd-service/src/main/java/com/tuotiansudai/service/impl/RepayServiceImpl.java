@@ -207,6 +207,8 @@ public class RepayServiceImpl implements RepayService {
                         actualFee += investExtraRateModel.getActualFee();
                         expectedFee += investExtraRateModel.getExpectedFee();
                         couponExpectedInterest += investExtraRateModel.getExpectedInterest();
+                        sumExpectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+                        sumActualInterest += investExtraRateModel.getRepayAmount();
                     }
                 }
 
