@@ -318,7 +318,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
                 transferInvestId);
         for (InvestRepayModel investRepayModel : investRepayModels) {
             totalExpectedInterest += investRepayModel.getExpectedInterest();
-            totalActualInterest += (investRepayModel.getActualInterest() + investRepayModel.getCorpus() - investRepayModel.getActualFee());
+            totalActualInterest += investRepayModel.getRepayAmount();
             corpus += investRepayModel.getCorpus();
             CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
             InvestRepayDataDto investRepayDataDto = new InvestRepayDataDto(investRepayModel, couponRepayModel);

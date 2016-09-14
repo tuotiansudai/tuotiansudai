@@ -29,11 +29,11 @@ public class InvestRepayDataDto extends BaseResponseDataDto {
             this.actualRepayDate = "";
         }
         if (null != couponRepayModel) {
-            this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + couponRepayModel.getExpectedInterest());
-            this.actualInterest = AmountConverter.convertCentToString(investRepayModel.getActualInterest() - investRepayModel.getActualFee() + investRepayModel.getCorpus() + couponRepayModel.getActualInterest() - couponRepayModel.getActualFee());
+            this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getCorpus() + couponRepayModel.getExpectedInterest());
+            this.actualInterest = AmountConverter.convertCentToString(investRepayModel.getRepayAmount() + couponRepayModel.getRepayAmount());
         } else {
-            this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getExpectedInterest());
-            this.actualInterest = AmountConverter.convertCentToString(investRepayModel.getActualInterest() - investRepayModel.getActualFee() + investRepayModel.getCorpus());
+            this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getCorpus());
+            this.actualInterest = AmountConverter.convertCentToString(investRepayModel.getRepayAmount());
         }
 
         this.status = investRepayModel.getStatus().name();
