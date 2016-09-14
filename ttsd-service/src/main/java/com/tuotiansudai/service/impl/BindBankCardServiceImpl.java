@@ -78,7 +78,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     }
 
     @Override
-    public BankCardModel getPassedBankCardById(long id) {
-        return bankCardMapper.findPassedById(id);
+    public BankCardModel getBankCardById(long id) {
+        return bankCardMapper.findById(id);
     }
 }
