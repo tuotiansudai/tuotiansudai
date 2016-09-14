@@ -60,7 +60,7 @@
                     </div>
                     <div class="img-info">
                         <a href="/activity/autumn/travel/2/detail" target="_blank">
-                            <img src="/activity/images/autumn-tour/pp02.png"></a>
+                            <img src="/activity/images/autumn-tour/pp021.png"></a>
                         <span class="kind-text">越南岘港一地6日度假游</span>
                         <div class="kind-bottom">
                             <span class="fl">价值<em>2680</em>元/人</span>
@@ -78,7 +78,7 @@
                     </div>
                     <div class="img-info">
                         <a href="/activity/autumn/travel/3/detail" target="_blank">
-                            <img src="/activity/images/autumn-tour/pp03.png">
+                            <img src="/activity/images/autumn-tour/pp031.png">
                         </a>
                         <span class="kind-text">日本和韵·九州4日游</span>
                         <div class="kind-bottom">
