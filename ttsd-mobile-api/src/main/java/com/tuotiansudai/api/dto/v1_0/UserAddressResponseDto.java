@@ -3,13 +3,13 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.point.repository.model.UserAddressModel;
 
-public class UserAddressResponseDto extends BaseResponseDataDto{
+public class UserAddressResponseDto extends BaseResponseDataDto {
 
     private String contact;
     private String mobile;
     private String address;
 
-    public UserAddressResponseDto(UserAddressModel userAddressModel){
+    public UserAddressResponseDto(UserAddressModel userAddressModel) {
         this.contact = userAddressModel.getContact();
         this.mobile = userAddressModel.getMobile();
         this.address = userAddressModel.getAddress();

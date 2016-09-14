@@ -11,10 +11,6 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
@@ -114,7 +110,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 int periods = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId()).size();
                 if (periods == investRepayModel.getPeriod()) {
                     InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
-                    if(investExtraRateModel != null && !investExtraRateModel.isTransfer()){
+                    if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
                         expectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
                         actualInterest += investExtraRateModel.getRepayAmount();
                     }

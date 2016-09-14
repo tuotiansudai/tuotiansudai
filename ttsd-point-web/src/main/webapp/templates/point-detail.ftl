@@ -9,9 +9,9 @@
 			</div>
 			<div class="detail-info">
 				<div class="detail-left">
-					<p class="mater-img picture-item">
-						<img src="/${productShowItem.imageUrl}" width="300" height="244"/>
-					</p>
+                    <p class="mater-img picture-item">
+                        <img src="/${productShowItem.imageUrl}" width="300" height="244"/>
+                    </p>
 				</div>
 				<div class="detail-right">
                     <h3>${productShowItem.name!}</h3>

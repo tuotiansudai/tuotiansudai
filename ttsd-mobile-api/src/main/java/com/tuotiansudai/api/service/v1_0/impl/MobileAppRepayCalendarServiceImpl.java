@@ -166,11 +166,11 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
 
             if (periods == investRepayModel.getPeriod()) {
                 InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
-                if(investExtraRateModel != null && !investExtraRateModel.isTransfer()){
-                    if(investExtraRateModel.getActualRepayDate() != null){
+                if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
+                    if (investExtraRateModel.getActualRepayDate() != null) {
                         repayActualInterest += investExtraRateModel.getRepayAmount();
                         totalAmount += investExtraRateModel.getRepayAmount();
-                    }else{
+                    } else {
                         repayExpectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
                         totalAmount += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
                     }
@@ -339,11 +339,11 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
 
             if (periods == investRepayModel.getPeriod()) {
                 InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
-                if(investExtraRateModel != null && !investExtraRateModel.isTransfer()){
-                    if(investExtraRateModel.getActualRepayDate() != null){
+                if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
+                    if (investExtraRateModel.getActualRepayDate() != null) {
                         repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getActualRepayDate()));
                         repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(), String.valueOf(investExtraRateModel.getRepayAmount())));
-                    }else{
+                    } else {
                         repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate()));
                         repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(), String.valueOf(investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee())));
                     }

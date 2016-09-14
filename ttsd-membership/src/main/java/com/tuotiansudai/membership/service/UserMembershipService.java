@@ -27,5 +27,5 @@ public interface UserMembershipService {
 
     List<Integer> getAllLevels();
 
-    String getMembershipLevelByLoginNameAndInvestTime(String loginName,Date investTime);
+    String getMembershipLevelByLoginNameAndInvestTime(String loginName, Date investTime);
 }

@@ -1,7 +1,6 @@
 package com.tuotiansudai.activity.controller;
 
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
 import com.tuotiansudai.dto.ranking.UserScoreDto;
 import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
@@ -10,6 +9,7 @@ import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.RankingActivityService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
