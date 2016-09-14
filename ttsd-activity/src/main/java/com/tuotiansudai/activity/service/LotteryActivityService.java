@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.dto.LotteryPrize;
+import com.tuotiansudai.activity.dto.PrizeType;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
@@ -145,7 +146,7 @@ public class LotteryActivityService {
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(),accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate()));
+        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(),accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), PrizeType.AUTUMN_PRIZE));
         drawLotteryResultDto.setReturnCode(0);
         drawLotteryResultDto.setPrizeType(lotteryPrize.getType());
         drawLotteryResultDto.setPrize(lotteryPrize.name());

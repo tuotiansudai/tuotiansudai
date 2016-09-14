@@ -1,6 +1,7 @@
 package com.tuotiansudai.activity.repository.model;
 
 import com.tuotiansudai.activity.dto.LotteryPrize;
+import com.tuotiansudai.activity.dto.PrizeType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,15 +20,17 @@ public class UserLotteryPrizeModel implements Serializable {
 
     private Date lotteryTime;
 
+    private PrizeType prizeType;
 
     public UserLotteryPrizeModel() {}
 
-    public UserLotteryPrizeModel(String mobile, String loginName,String userName, LotteryPrize prize, Date lotteryTime) {
+    public UserLotteryPrizeModel(String mobile, String loginName,String userName, LotteryPrize prize, Date lotteryTime,PrizeType prizeType) {
         this.mobile = mobile;
         this.loginName = loginName;
         this.userName = userName;
         this.prize = prize;
         this.lotteryTime = lotteryTime;
+        this.prizeType = prizeType;
     }
 
     public long getId() {
@@ -76,5 +79,13 @@ public class UserLotteryPrizeModel implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public PrizeType getPrizeType() {
+        return prizeType;
+    }
+
+    public void setPrizeType(PrizeType prizeType) {
+        this.prizeType = prizeType;
     }
 }
