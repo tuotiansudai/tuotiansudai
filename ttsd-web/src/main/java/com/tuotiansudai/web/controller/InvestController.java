@@ -215,6 +215,7 @@ public class InvestController {
     }
 
     @RequestMapping(path = "/get-membership-preference", method = RequestMethod.GET)
+    @ResponseBody
     public BaseDto<MembershipPreferenceDto> getMembershipPreference(@RequestParam(value = "loanId") long loanId,
                                                                     @RequestParam(value = "investAmount") long investAmount) {
         String loginName = LoginUserInfo.getLoginName();

@@ -771,7 +771,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         $accountInfo.find('.icon-graded').on('click',function() {
             layer.closeAll('tips');
-            var value = _.compose(parseFloat, replace)($investInput.val());
+            var value = _.compose(parseFloat, replace)($investInput.val()),
+                $expected=$accountInfo.find('.expected-interest-dd');
             $.ajax({
                 url: '/get-membership-preference',
                 type: 'GET',
@@ -780,20 +781,24 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 contentType: 'application/json; charset=UTF-8'
             })
                 .done(function(response) {
-                    if (response.data.status) {
-                        console.log('response.data');
+                    var data=response.data;
+                    if (data.status) {
+                        var info='<i class="fa fa-times-circle"></i>V'+data.level+'会员，专享服务费'+data.rate+'折优惠，已多赚'+data.amount+'元';
+
+                        layer.tips(info, $expected, {
+                            tips: [1, '#ff7200'],
+                            time: 3000,
+                            skin: 'level-layer-tips',
+                            tipsMore: true,
+                            area: 'auto',
+                            maxWidth: '400'
+                        });
                     }
                 })
                 .fail(function() {
 
                 });
-            //layer.tips('您已享受生日福利，首月收益翻', $(this), {
-            //    tips: [1, '#ff7200'],
-            //    time: 3000,
-            //    tipsMore: true,
-            //    area: 'auto',
-            //    maxWidth: '500'
-            //});
+
         });
 
     })();

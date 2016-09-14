@@ -4,9 +4,17 @@ $gray2: #999;
 $orange: #ee7b2f;
 $orange2: #f1a03f;
 $red: #eb4a3e;
-.layui-layer-tips .layui-layer-content{
-  width:235px;
+
+.level-layer-tips {
+  .layui-layer-content {
+    width:275px!important;
+    left: 43px;
+  }
+  i.layui-layer-TipsT {
+    left: 180px!important;
+  }
 }
+
 /* loan detail */
 .loan-detail-content {
   color: #8c8c8c;
@@ -320,15 +328,28 @@ $red: #eb4a3e;
               color: #ff7200;
             }
             .icon-graded {
-              width: 20px;
-              height: 20px;
+              width: 24px;
+              height: 24px;
               border-radius: 50%;
-              background: #ff7200;
               display: inline-block;
               font-size: 10px;
               line-height: 20px;
               color: #fff;
               margin-left: 10px;
+              cursor: pointer;
+              vertical-align: middle;
+              &.level2 {
+                background: url(/images/icons/level-v2.png) no-repeat;
+              }
+              &.level3 {
+                background: url(/images/icons/level-v3.png) no-repeat;
+              }
+              &.level4 {
+                background: url(/images/icons/level-v4.png) no-repeat;
+              }
+              &.level5 {
+                background: url(/images/icons/level-v5.png) no-repeat;
+              }
             }
           }
           &.experience-revenue {
