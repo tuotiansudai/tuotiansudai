@@ -38,15 +38,17 @@ public class InvestController {
     @RequestMapping(value = "/invests", method = RequestMethod.GET)
     public ModelAndView getInvestList(@RequestParam(name = "loanId", required = false) Long loanId,
                                       @RequestParam(name = "mobile", required = false) String investorMobile,
+                                      @RequestParam(name = "usedPreferenceType", required = false) PreferenceType preferenceType,
                                       @RequestParam(name = "channel", required = false) String channel,
                                       @RequestParam(name = "source", required = false) Source source,
-                                      @RequestParam(name = "role", required = false) String role,
+                                      @RequestParam(name = "role", required = false) Role role,
                                       @RequestParam(name = "investStatus", required = false) InvestStatus investStatus,
-                                      @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                      @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
                                       @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                      @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
-        InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorMobile, channel, source, role, index, pageSize, startTime, endTime, investStatus, null);
+                                      @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                      @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
+                                      @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorMobile, channel, source, role,
+                startTime, endTime, investStatus, preferenceType, index, pageSize);
         List<String> channelList = investService.findAllChannel();
         ModelAndView mv = new ModelAndView("/invest-list");
         mv.addObject("data", dataDto);
@@ -55,6 +57,8 @@ public class InvestController {
         mv.addObject("loanId", loanId);
         mv.addObject("source", source);
         mv.addObject("role", role);
+        mv.addObject("preferenceTypes", PreferenceType.values());
+        mv.addObject("selectedPreferenceType", preferenceType);
         mv.addObject("startTime", startTime);
         mv.addObject("endTime", endTime);
         mv.addObject("investStatus", investStatus);
@@ -64,7 +68,6 @@ public class InvestController {
         mv.addObject("roleList", Role.values());
         return mv;
     }
-
 
     @RequestMapping(value = "/invest-repay/{investId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getInvestRepayList(@PathVariable long investId) {

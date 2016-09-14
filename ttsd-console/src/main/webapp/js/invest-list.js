@@ -37,6 +37,9 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
             if ($('form select[name="role"]').val()) {
                 queryParams += "role=" + $('form select[name="role"]').val() + "&";
             }
+            if ($('form select[name="usedPreferenceType"].val()')) {
+                queryParams += "usedPreferenceType=" + $('form select[name="usedPreferenceType"]').val() + "&";
+            }
             location.href = "?" + queryParams;
             return false;
         });
