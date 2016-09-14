@@ -305,9 +305,9 @@
         invest.login_name
         JOIN (SELECT login_name, user_name FROM `aa`.`account`) investor_account ON investor_account.login_name =
         investor_user.login_name
-        JOIN (SELECT login_name, mobile FROM `aa`.`user`) referrer_user ON referrer_user.login_name =
+        LEFT JOIN (SELECT login_name, mobile FROM `aa`.`user`) referrer_user ON referrer_user.login_name =
         investor_user.referrer
-        JOIN (SELECT login_name, user_name FROM `aa`.`account`) referrer_account ON referrer_account.login_name =
+        LEFT JOIN (SELECT login_name, user_name FROM `aa`.`account`) referrer_account ON referrer_account.login_name =
         referrer_user.login_name
         LEFT JOIN (SELECT user_coupon.coupon_id, user_coupon.invest_id, coupon.coupon_type FROM `aa`.`user_coupon` JOIN
         `aa`.`coupon` ON user_coupon.coupon_id = coupon.id) coupon ON coupon.invest_id = invest.id

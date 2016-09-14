@@ -301,7 +301,12 @@ public class InvestServiceImpl implements InvestService {
 
         String investorLoginName = null;
         if (!StringUtils.isEmpty(investorMobile)) {
-            investorLoginName = userMapper.findByMobile(investorMobile).getLoginName();
+            UserModel userModel = userMapper.findByMobile(investorMobile);
+            if (null != userModel) {
+                investorLoginName = userMapper.findByMobile(investorMobile).getLoginName();
+            } else {
+                investorLoginName = investorMobile;
+            }
         }
 
         final long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType);
