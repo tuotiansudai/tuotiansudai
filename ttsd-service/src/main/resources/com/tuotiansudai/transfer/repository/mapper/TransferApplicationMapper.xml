@@ -126,7 +126,8 @@
     <select id="findTransfereeApplicationPaginationByLoginName" parameterType="map"
             resultMap="transferApplicationRecordDtoMap">
         select
-        ta.id,ta.name,ta.transfer_amount,ta.invest_id,ta.invest_amount,ta.transfer_time,ta.status,ta.deadline,ta.left_period,l.base_rate,l.activity_rate
+        ta.id,ta.name,ta.transfer_amount,ta.invest_id,ta.invest_amount,ta.transfer_time,ta.status,ta.deadline,ta.left_period,l.base_rate,l.activity_rate,
+        ta.transfer_invest_id
         from transfer_application ta JOIN invest i on ta.invest_id = i.id JOIN loan l on l.id = ta.loan_id
         <where>
             <if test="loginName != null">
@@ -310,7 +311,9 @@
 
     <select id="findByTransferInvestIdAndTransferTime" parameterType="long" resultMap="transferApplicationResultMap">
         SELECT * FROM transfer_application WHERE status = 'SUCCESS'
-        AND login_name = #{loginName}
+        <if test="loginName != null and loginName != ''">
+            AND login_name = #{loginName}
+        </if>
         <if test="year != null and year != ''">
             AND DATE_FORMAT(transfer_time, '%Y') = #{year}
         </if>

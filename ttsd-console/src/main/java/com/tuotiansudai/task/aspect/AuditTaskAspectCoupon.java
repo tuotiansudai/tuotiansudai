@@ -82,7 +82,7 @@ public class AuditTaskAspectCoupon {
 
             String operateURL;
             if (couponExchangeMapper.findByCouponId(couponDto.getId()) != null && couponDto.getUserGroup() == UserGroup.EXCHANGER) {
-                operateURL = "/activity-manage/coupon-exchange-manage";
+                operateURL = "/point-manage/coupon-exchange-manage";
             } else {
                 if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {
                     operateURL = "/activity-manage/interest-coupons";

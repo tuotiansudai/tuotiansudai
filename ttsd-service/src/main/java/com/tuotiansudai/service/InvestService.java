@@ -25,21 +25,9 @@ public interface InvestService {
                                                                                    Date endTime,
                                                                                    LoanStatus loanStatus);
 
-    long findCountInvestPagination(Long loanId, String investorLoginName,
-                                   String channel, Source source, String role,
-                                   Date startTime, Date endTime,
-                                   InvestStatus investStatus, LoanStatus loanStatus);
-
-    InvestPaginationDataDto getInvestPagination(Long loanId, String investorLoginName,
-                                                String channel,
-                                                Source source,
-                                                String role,
-                                                int index,
-                                                int pageSize,
-                                                Date startTime,
-                                                Date endTime,
-                                                InvestStatus investStatus,
-                                                LoanStatus loanStatus);
+    InvestPaginationDataDto getInvestPagination(Long loanId, String investorMobile, String channel, Source source,
+                                                Role role, Date startTime, Date endTime, InvestStatus investStatus,
+                                                PreferenceType preferenceType, int index, int pageSize);
 
     boolean turnOnAutoInvest(String loginName, AutoInvestPlanDto model, String ip);
 

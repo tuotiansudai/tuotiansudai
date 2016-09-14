@@ -2,10 +2,12 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
@@ -26,9 +28,23 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
     private String lastRepayDate;
     private String unPaidRepay;
     private String membershipLevel;
-    private List<String> usedCoupons;
-    private List<InvestRepayDataDto> investRepays;
+    private List<String> usedCoupons = new ArrayList<>();
+    private List<InvestRepayDataDto> investRepays = new ArrayList<>();
 
+    public UserInvestRepayResponseDataDto(LoanModel loanModel, TransferApplicationModel transferApplicationModel) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        this.loanId = String.valueOf(transferApplicationModel.getLoanId());
+        this.loanName = transferApplicationModel.getName();
+        this.baseRate = String.valueOf(loanModel.getBaseRate() * 100);
+        this.activityRate = String.valueOf(loanModel.getActivityRate() * 100);
+        this.duration = String.valueOf(loanModel.getDuration());
+        this.interestInitiateType = loanModel.getType().getInterestInitiateType().name();
+        this.productNewType = loanModel.getProductType().name();
+        this.investId = String.valueOf(transferApplicationModel.getInvestId());
+        this.investAmount = AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount());
+        this.investTime = simpleDateFormat.format(transferApplicationModel.getTransferTime());
+        this.recheckTime = simpleDateFormat.format(loanModel.getRecheckTime());
+    }
 
     public UserInvestRepayResponseDataDto(LoanModel loanModel, InvestModel investModel){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

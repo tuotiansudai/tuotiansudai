@@ -31,17 +31,17 @@
 
                 <div class="imageUrlImage" style="margin-top: 10px">
                     <#if product?? && product.imageUrl??>
-                        <img style="width:100%" src="/${product.imageUrl!}" alt="缩略图" width="300" height="244"/>
+                        <img style="width:100%" src="/${product.imageUrl!}" alt="缩略图" width="480" height="390"/>
                     </#if>
                 </div>
             </div>
 
             <div class="col-sm-6">
                 <div class="imageUrlProduct">
-                    <input type="file" imageWidth="300" imageHeight="244"/>
+                    <input type="file" imageWidth="480" imageHeight="390"/>
                 </div>
                 <div class="text-danger">
-                    (图片必须是300px * 244px)
+                    (图片必须是480px * 390px)
                 </div>
 
             </div>

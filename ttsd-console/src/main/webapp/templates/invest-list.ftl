@@ -78,6 +78,17 @@
                 </#list>
             </select>
         </div>
+        <div class="form-group">
+            <label>使用优惠类型</label>
+            <select class="selectpicker" name="usedPreferenceType">
+                <option value="">全部</option>
+                <#list preferenceTypes as preferenceType>
+                    <option value="${preferenceType.name()}"
+                            <#if (selectedPreferenceType?has_content && preferenceType == selectedPreferenceType.name()) >selected</#if>
+                            >${preferenceType.getDescription()}</option>
+                </#list>
+            </select>
+        </div>
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
         <button type="reset" class="btn btn-sm btn-default btnSearch">重置</button>
     </form>
@@ -102,7 +113,8 @@
                 <th>投资时间</th>
                 <th>自动投标</th>
                 <th>投资金额(元)</th>
-                <th>加息利率（%）/预期收益（元）/实发收益（元）</th>
+                <th>使用优惠(使用优惠信息／实际返款)</th>
+                <th>阶梯加息优惠(阶梯加息利率/实际返款)</th>
                 <th>投资状态</th>
                 <th>回款记录</th>
             </tr>
@@ -115,13 +127,13 @@
                     <td>${invest.loanPeriods?string('0')}</td>
                     <td>${invest.investorLoginName!}</td>
                     <td>${invest.investorUserName!}
-                        <#if invest.isStaff()>
+                        <#if invest.investorStaff>
                             <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                         </#if>
                     </td>
                     <td>${invest.investorMobile!}</td>
                     <td>${invest.referrerLoginName!}
-                        <#if invest.isReferrerStaff()>
+                        <#if invest.referrerStaff>
                             <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                         </#if>
                     </td>
@@ -129,11 +141,12 @@
                     <td>${invest.referrerMobile!}</td>
                     <td>${invest.channel!}</td>
                     <td>${invest.source}</td>
-                    <td>${invest.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                    <td>${invest.investTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${invest.autoInvest?then('是','否')}</td>
-                    <td>${invest.amount}</td>
-                    <td>${invest.rate}/${invest.expectedFee}/${invest.actualFee}</td>
-                    <td>${invest.status}</td>
+                    <td>${invest.investAmount}</td>
+                    <td>${invest.couponDetail!'-'} / ${invest.couponActualInterest!'-'}</td>
+                    <td>${invest.extraDetail!'-'} / ${invest.extraActualInterest!'-'}</td>
+                    <td>${invest.investStatus}</td>
                     <td><a href="/finance-manage/invest-repay/${invest.investId?string.computer}">回款记录</a></td>
                 </tr>
                 <#else>
@@ -155,7 +168,8 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Previous">
+                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                       aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -165,7 +179,8 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Next">
+                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                       aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

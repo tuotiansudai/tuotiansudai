@@ -3,7 +3,10 @@ package com.tuotiansudai.point.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
@@ -58,6 +61,9 @@ public class ProductServiceImpl implements ProductService {
     private CouponAssignmentService couponAssignmentService;
 
     @Autowired
+    private CouponExchangeMapper couponExchangeMapper;
+
+    @Autowired
     private PointBillService pointBillService;
 
     @Override
@@ -69,17 +75,14 @@ public class ProductServiceImpl implements ProductService {
                 case RED_ENVELOPE:
                     productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元现金红包");
                     productDto.setDescription(String.valueOf(couponModel.getAmount()));
-                    productDto.setImageUrl("");
                     break;
                 case INVEST_COUPON:
                     productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元投资体验券");
                     productDto.setDescription(String.valueOf(couponModel.getAmount()));
-                    productDto.setImageUrl("");
                     break;
                 case INTEREST_COUPON:
                     productDto.setName(couponModel.getRate()*100 + "%加息券");
                     productDto.setDescription(String.valueOf(couponModel.getRate() * 100));
-                    productDto.setImageUrl("");
                     break;
             }
         }
@@ -201,17 +204,14 @@ public class ProductServiceImpl implements ProductService {
                 case RED_ENVELOPE:
                     productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元现金红包");
                     productDto.setDescription(String.valueOf(couponModel.getAmount()));
-                    productDto.setImageUrl("");
                     break;
                 case INVEST_COUPON:
                     productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元投资体验券");
                     productDto.setDescription(String.valueOf(couponModel.getAmount()));
-                    productDto.setImageUrl("");
                     break;
                 case INTEREST_COUPON:
                     productDto.setName(couponModel.getRate()*100 + "%加息券");
                     productDto.setDescription(String.valueOf(couponModel.getRate() * 100));
-                    productDto.setImageUrl("");
                     break;
             }
         }
@@ -262,9 +262,7 @@ public class ProductServiceImpl implements ProductService {
         }
         List<ProductShowItemDto> filteredProductShowItemDtos = new ArrayList<>();
         for(ProductShowItemDto productShowItemDto : productShowItemDtos) {
-            if(productShowItemDto.getLeftCount() != 0) {
-                filteredProductShowItemDtos.add(productShowItemDto);
-            }
+            filteredProductShowItemDtos.add(productShowItemDto);
         }
         return filteredProductShowItemDtos;
     }
@@ -424,4 +422,25 @@ public class ProductServiceImpl implements ProductService {
     public ProductModel findProductByCouponId(long couponId){
         return productMapper.findByCouponId(couponId);
     }
+
+    @Override
+    public List<ExchangeCouponDto> findCouponExchanges(int index, int pageSize) {
+        List<CouponModel> couponModels = couponMapper.findCouponExchanges((index - 1) * pageSize, pageSize);
+        return Lists.transform(couponModels, new Function<CouponModel, ExchangeCouponDto>() {
+            @Override
+            public ExchangeCouponDto apply(CouponModel input) {
+                ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(input);
+                ProductModel productModel = productMapper.findByCouponId(input.getId());
+                exchangeCouponDto.setExchangePoint(productModel.getPoints());
+                exchangeCouponDto.setSeq(productModel.getSeq());
+                exchangeCouponDto.setImageUrl(productModel.getImageUrl());
+                return exchangeCouponDto;
+            }
+        });
+    }
+
+    public int findCouponExchangeCount() {
+        return couponMapper.findCouponExchangeCount();
+    }
+
 }
