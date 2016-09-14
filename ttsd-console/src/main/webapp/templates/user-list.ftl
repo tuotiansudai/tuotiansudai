@@ -129,7 +129,7 @@
                         <a href="/user-manage/user/${userItem.loginName}">编辑</a> |
                         <a class="user-status-modifier" href="#" data-url="/user-manage/user/${userItem.loginName}/enable">解禁</a>
                         <@security.authorize access="hasAnyAuthority('ADMIN')">
-                            <a href="/user-manage/user/${userItem.loginName}/impersonate" target="_blank"> | 模拟登录</a>
+                            <a href="/user-manage/user/${userItem.loginName}/impersonate" class="impersonate-link"> | 模拟登录</a>
                         </@security.authorize>
                     </td>
                 </tr>

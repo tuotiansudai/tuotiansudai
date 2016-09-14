@@ -48,7 +48,11 @@ public class MyAuthenticationUtil {
 
             if (Source.WEB == source) {
                 httpServletRequest.setAttribute("newSessionId", signInResult.getToken());
-                httpServletRequest.changeSessionId();
+                if (httpServletRequest.getSession(false) == null) {
+                    httpServletRequest.getSession();
+                } else {
+                    httpServletRequest.changeSessionId();
+                }
             }
 
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
