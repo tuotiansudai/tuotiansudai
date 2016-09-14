@@ -769,9 +769,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         $investInput.on('keyup', keyupHandler);
 
-        $accountInfo.find('.icon-graded').on('click',function() {
+        $accountInfo.find('.icon-graded').on('mouseover',function() {
             layer.closeAll('tips');
-            var value = _.compose(parseFloat, replace)($investInput.val()),
+            var value = _.compose(replace)($investInput.val()),
                 $expected=$accountInfo.find('.expected-interest-dd');
             $.ajax({
                 url: '/get-membership-preference',

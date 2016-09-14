@@ -217,7 +217,7 @@ public class InvestController {
     @RequestMapping(path = "/get-membership-preference", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<MembershipPreferenceDto> getMembershipPreference(@RequestParam(value = "loanId") long loanId,
-                                                                    @RequestParam(value = "investAmount") long investAmount) {
+                                                                    @RequestParam(value = "investAmount") String investAmount) {
         String loginName = LoginUserInfo.getLoginName();
         MembershipPreferenceDto membershipPreferenceDto = new MembershipPreferenceDto(true);
         MembershipModel membershipModel = membershipInvestService.getCurMaxMembership(loginName);
@@ -227,7 +227,7 @@ public class InvestController {
             membershipPreferenceDto.setValid(true);
             membershipPreferenceDto.setLevel(membershipModel.getLevel());
             membershipPreferenceDto.setRate((int) (membershipModel.getFee() * 100));
-            membershipPreferenceDto.setAmount(AmountConverter.convertCentToString(investService.calculateMembershipPreference(loginName, loanId, investAmount)));
+            membershipPreferenceDto.setAmount(AmountConverter.convertCentToString(investService.calculateMembershipPreference(loginName, loanId, AmountConverter.convertStringToCent(investAmount))));
         }
         BaseDto<MembershipPreferenceDto> baseDto = new BaseDto<>();
         baseDto.setData(membershipPreferenceDto);
