@@ -415,3 +415,22 @@
   }
 }
 
+.user-bill-list-content {
+  .money-box {
+    font-size: 12px;
+    background: url("/images/sign/invest-record.png") 360px 30px no-repeat;
+
+    a {
+      display: inline-block;
+      margin-right: 10px;
+      line-height: 1;
+      padding: 8px 10px;
+      letter-spacing: 0px;
+    }
+    .balance {
+      color: #ffac2a;
+      padding: 0px 0 20px;
+    }
+  }
+}
+

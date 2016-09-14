@@ -16,7 +16,7 @@
         <#assign description="拓天速贷为您提供准确及时的P2P投资项目,投资用户通过拓天速贷平台进行准确投标的方式进行投资,让您获得较高的收益.">
 </#switch>
 
-<@global.main pageCss="${css.loan_page}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="" title="${title!}" keywords="${keywords!}" description="${description!}">
+<@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="" title="${title!}" keywords="${keywords!}" description="${description!}">
 <div class="loan-list-content">
     <ul class="project-type">
         <li class="active"><a href="/loan-list">直投项目</a></li>

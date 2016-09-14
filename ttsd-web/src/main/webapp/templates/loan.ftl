@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.loan_page}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
+<@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
 <div class="loan-detail-content" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" >
     <div class="borderBox clearfix no-border">
@@ -236,6 +236,21 @@
                                 <span class="principal-income">0.00</span>
                                 <span class="experience-income"></span>
                                 元
+                                <#if membershipPreferenceValid>
+                                    <#if membershipLevel==2>
+                                        <i class="icon-graded level2"></i>
+                                    </#if>
+                                    <#if membershipLevel==3>
+                                        <i class="icon-graded level3"></i>
+                                    </#if>
+                                    <#if membershipLevel==4>
+                                        <i class="icon-graded level4"></i>
+                                    </#if>
+                                    <#if membershipLevel==5>
+                                        <i class="icon-graded level5"></i>
+                                    </#if>
+                                </#if>
+
                             </dd>
 
                             <dd class="time-item" <#if loan.loanStatus == "RAISING">style="display: none"</#if>>
