@@ -35,7 +35,7 @@ public class InvestController {
     @Autowired
     private RepayService repayService;
 
-    @RequestMapping(value = "/invests", method = RequestMethod.GET)
+    //    @RequestMapping(value = "/invests", method = RequestMethod.GET)
     public ModelAndView getInvestList(@RequestParam(name = "loanId", required = false) Long loanId,
                                       @RequestParam(name = "mobile", required = false) String investorMobile,
                                       @RequestParam(name = "usedPreferenceType", required = false) PreferenceType preferenceType,
