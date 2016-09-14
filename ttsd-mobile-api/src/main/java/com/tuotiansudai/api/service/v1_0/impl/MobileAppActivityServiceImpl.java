@@ -53,7 +53,7 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
                 break;
             case PREVIOUS:
                 activityModels = activityMapper.findActivity(source, ActivityStatus.APPROVED, null, new Date(), "false", (index - 1) * pageSize, pageSize);
-                totalCount = activityMapper.countActivity(source, ActivityStatus.APPROVED, new Date(), null, "false");
+                totalCount = activityMapper.countActivity(source, ActivityStatus.APPROVED, null, new Date(), "false");
                 break;
         }
         for (ActivityModel activityModel : activityModels) {
