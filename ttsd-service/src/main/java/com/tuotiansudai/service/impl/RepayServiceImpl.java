@@ -207,8 +207,9 @@ public class RepayServiceImpl implements RepayService {
                         actualFee += investExtraRateModel.getActualFee();
                         expectedFee += investExtraRateModel.getExpectedFee();
                         couponExpectedInterest += investExtraRateModel.getExpectedInterest();
-                        sumExpectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
-                        sumActualInterest += investExtraRateModel.getRepayAmount();
+                        if(investExtraRateModel.getActualRepayDate() == null){
+                            sumExpectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+                        }
                     }
                 }
 
@@ -220,7 +221,7 @@ public class RepayServiceImpl implements RepayService {
                 investRepayDataItemDto.setExpectedFee(AmountConverter.convertCentToString(expectedFee));
                 investRepayDataItemDto.setCouponExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest));
                 sumActualInterest += repayAmount;
-                if(!investRepayModel.getStatus().equals(RepayStatus.COMPLETE)){
+                if(!investRepayModel.getStatus().equals(RepayStatus.COMPLETE)) {
                     sumExpectedInterest += expectedAmount;
                 }
                 records.add(investRepayDataItemDto);
