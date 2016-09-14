@@ -9,7 +9,9 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointShopService;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.point.dto.ProductShowItemDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
@@ -114,9 +116,17 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
     @Override
     public BaseResponseDto findPointHome(BaseParamDto baseParamDto) {
-        List<ProductModel> virtualProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON, GoodsType.VIRTUAL));
+        List<ExchangeCouponView> exchangeCoupons = couponMapper.findExchangeableCouponViews(0, Integer.MAX_VALUE);
+        List<ProductModel> virtualProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.VIRTUAL));
         List<ProductModel> physicalsProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.PHYSICAL));
 
+
+        Iterator<ProductDetailResponseDto> couponList = Iterators.transform(exchangeCoupons.iterator(), new Function<ExchangeCouponView, ProductDetailResponseDto>() {
+            @Override
+            public ProductDetailResponseDto apply(ExchangeCouponView exchangeCouponView) {
+                return new ProductDetailResponseDto(exchangeCouponView);
+            }
+        });
 
         Iterator<ProductDetailResponseDto> virtualList = Iterators.transform(virtualProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
             @Override
@@ -132,10 +142,13 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             }
         });
 
+        List virtualShopList = Lists.newArrayList(virtualList);
+        if(couponList != null){
+            virtualShopList.addAll(Lists.newArrayList(couponList));
+        }
         AccountModel accountModel = accountMapper.findByLoginName(baseParamDto.getBaseParam().getUserId());
-
         ProductListResponseDto productListResponseDto = new ProductListResponseDto();
-        productListResponseDto.setVirtuals(Lists.newArrayList(virtualList));
+        productListResponseDto.setVirtuals(virtualShopList);
         productListResponseDto.setPhysicals(Lists.newArrayList(physicals));
         productListResponseDto.setMyPoints(accountModel != null ? String.valueOf(accountModel.getPoint()) : "0");
         BaseResponseDto baseResponseDto = new BaseResponseDto();

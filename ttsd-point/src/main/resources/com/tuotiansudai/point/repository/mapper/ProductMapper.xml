@@ -110,6 +110,10 @@
     <select id="findAllProductsByGoodsType" resultMap="productResultMap">
         SELECT * FROM product p
         where active = 1
+        <![CDATA[
+        AND p.end_time >= now()
+        AND p.start_time <= now()
+        ]]>
             <if test="goodsTypes != null ">
                 and type IN
                 <foreach collection="goodsTypes" item="goodsType" open="(" separator="," close=")">

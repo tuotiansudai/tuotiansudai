@@ -1,8 +1,11 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.point.repository.model.GoodsType;
+import com.tuotiansudai.point.repository.model.ItemType;
 import com.tuotiansudai.point.repository.model.ProductModel;
+import com.tuotiansudai.util.AmountConverter;
 
 import java.util.List;
 
@@ -29,6 +32,26 @@ public class ProductDetailResponseDto extends BaseResponseDataDto{
         this.goodsType = goodsType.name();
         this.leftCount = String.valueOf(leftCount);
     }
+
+    public ProductDetailResponseDto(ExchangeCouponView exchangeCouponView){
+        this.productId = String.valueOf(exchangeCouponView.getProductId());
+        this.imageUrl = exchangeCouponView.getImageUrl();
+        this.points = String.valueOf(exchangeCouponView.getExchangePoint());
+        this.leftCount = String.valueOf(exchangeCouponView.getTotalCount() - exchangeCouponView.getIssuedCount());
+        switch (exchangeCouponView.getCouponType()) {
+            case RED_ENVELOPE:
+                this.name = AmountConverter.convertCentToString(exchangeCouponView.getAmount()) + "元现金红包";
+                break;
+            case INVEST_COUPON:
+                this.name = AmountConverter.convertCentToString(exchangeCouponView.getAmount()) + "元投资体验券";
+                break;
+            case INTEREST_COUPON:
+                this.name = exchangeCouponView.getRate() * 100 + "%加息券";
+                break;
+        }
+
+    }
+
 
     public String getProductId() {
         return productId;
