@@ -87,7 +87,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                             } else if (o1.getProductType().getDuration() < o2.getProductType().getDuration()) {
                                 return -1;
                             } else {
-                                if (o1.getVerifyTime().before(o2.getVerifyTime())) {
+                                if (o1.getVerifyTime().after(o2.getVerifyTime())) {
                                     return -1;
                                 } else {
                                     return 1;
@@ -101,7 +101,17 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                     loanModel = raisingLoanModels.get(0);
                 } else {
                     //登录 && 投资过其它标
-                    loanModel = raisingLoanModels.get(raisingLoanModels.size() - 1);
+                    Collections.reverse(raisingLoanModels);
+                    loanModel = raisingLoanModels.get(0);
+                    if (raisingLoanModels.size() > 1) {
+                        for (int i = 1; i < raisingLoanModels.size(); ++i) {
+                            if (loanModel.getPeriods() == raisingLoanModels.get(i).getPeriods()) {
+                                loanModel = raisingLoanModels.get(i);
+                            } else {
+                                break;
+                            }
+                        }
+                    }
                 }
             } else {
                 //没有可投标的
