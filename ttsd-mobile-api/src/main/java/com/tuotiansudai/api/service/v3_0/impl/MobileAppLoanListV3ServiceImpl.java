@@ -131,6 +131,20 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
+            LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+
+            String loanName = "";
+            if(loanDetailsModelActivity != null){
+                if(loanDetailsModelActivity.isActivity()){
+                    loanName = loan.getName()+("(活动专享)");
+                }
+                else{
+                    loanName = loan.getName();
+                }
+            }
+            else {
+                loanName = loan.getName();
+            }
             loanResponseDataDto.setLoanName(loan.getName());
             loanResponseDataDto.setActivityType(loan.getActivityType().name());
             loanResponseDataDto.setDuration(String.valueOf(loan.getDuration()));

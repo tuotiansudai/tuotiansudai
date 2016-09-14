@@ -56,7 +56,7 @@ public interface UserCouponMapper {
 
     List<UserCouponModel> findByCouponId(long couponId);
 
-    List<UserCouponModel> findByLoginNameAndCouponId(@Param("loginName") String loginName, @Param("couponId") long couponId);
+    List<UserCouponModel> findByLoginNameAndCouponId(@Param("loginName") String loginName, @Param("couponId") Long couponId);
 
     List<UserCouponModel> findBirthdaySuccessByLoginNameAndInvestId(@Param("loginName") String loginName, @Param("investId") long investId);
 

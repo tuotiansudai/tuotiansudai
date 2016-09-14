@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Component
 @RequestMapping(path = "/impersonate")
@@ -29,7 +28,6 @@ public class ImpersonateController {
         if (Strings.isNullOrEmpty(loginName)) {
             return new ModelAndView("/error/404");
         }
-
         myAuthenticationUtil.createAuthentication(loginName, Source.WEB);
         request.getSession().setAttribute("impersonate", "1");
         return new ModelAndView("redirect:/");

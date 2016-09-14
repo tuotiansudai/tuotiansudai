@@ -125,7 +125,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), exchangeCode);
 
-        if(StringUtils.isNotEmpty(exchangeCode) && userCouponModel == null){
+        if (StringUtils.isNotEmpty(exchangeCode) && userCouponModel == null) {
             return false;
         }
 
@@ -188,28 +188,38 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
 
+        final List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginNameAndCouponId(loginName, null);
+
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
             @Override
             public boolean apply(CouponModel couponModel) {
                 boolean isInUserGroup = userGroups.contains(couponModel.getUserGroup())
                         && CouponAssignmentServiceImpl.this.getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName);
-                List<UserCouponModel> existingUserCoupons = userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId());
-
-                boolean isAssignableCoupon = this.isAssignableCoupon(couponModel, existingUserCoupons);
+                boolean isAssignableCoupon = this.isAssignableCoupon(couponModel);
                 return isInUserGroup && isAssignableCoupon;
             }
 
-            private boolean isAssignableCoupon(CouponModel couponModel, List<UserCouponModel> existingUserCouponModels) {
-                boolean isAssignableCoupon = CollectionUtils.isEmpty(existingUserCouponModels);
-                if (CollectionUtils.isNotEmpty(existingUserCouponModels) && couponModel.isMultiple()) {
-                    isAssignableCoupon = Iterables.all(existingUserCouponModels, new Predicate<UserCouponModel>() {
-                        @Override
-                        public boolean apply(UserCouponModel input) {
-                            return input.getStatus() == InvestStatus.SUCCESS;
-                        }
-                    });
+            private boolean isAssignableCoupon(final CouponModel couponModel) {
+                UnmodifiableIterator<UserCouponModel> assignedUserCoupons = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
+                    @Override
+                    public boolean apply(UserCouponModel input) {
+                        return input.getCouponId() == couponModel.getId();
+                    }
+                });
+
+                if (!assignedUserCoupons.hasNext()) {
+                    return true;
                 }
-                return isAssignableCoupon;
+
+                boolean isUnusedUserCouponExisted = false;
+                while (assignedUserCoupons.hasNext()) {
+                    UserCouponModel next = assignedUserCoupons.next();
+                    if (next.getCouponId() == couponModel.getId() && next.getStatus() != InvestStatus.SUCCESS) {
+                        isUnusedUserCouponExisted = true;
+                    }
+                }
+
+                return couponModel.isMultiple() && !isUnusedUserCouponExisted;
             }
         }));
 
@@ -234,10 +244,10 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             endTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMaximumValue().withTime(23, 59, 59, 0).toDate();
         }
         UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId(), startTime, endTime);
-        if(StringUtils.isNotEmpty(exchangeCode)){
+        if (StringUtils.isNotEmpty(exchangeCode)) {
             int exchangeCodeCount = userCouponMapper.findByExchangeCode(exchangeCode);
-            if(exchangeCodeCount > 0){
-                logger.debug(MessageFormat.format("[Exchange Coupon:] Exchange{0} had been exchanged ",exchangeCode));
+            if (exchangeCodeCount > 0) {
+                logger.debug(MessageFormat.format("[Exchange Coupon:] Exchange{0} had been exchanged ", exchangeCode));
                 return null;
             }
         }
@@ -247,7 +257,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     }
 
     @Override
-    public void assignUserCoupon(long loanId,String loginNameOrMobile,long couponId){
+    public void assignUserCoupon(long loanId, String loginNameOrMobile, long couponId) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
         CouponModel couponModel = couponMapper.findById(couponId);
@@ -262,7 +272,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             return;
         }
 
-        boolean contains = investAchievementCollector.contains(couponModel.getId(),loanId, loginName,couponModel.getUserGroup());
+        boolean contains = investAchievementCollector.contains(couponModel.getId(), loanId, loginName, couponModel.getUserGroup());
 
         if (!contains) {
             logger.error(MessageFormat.format("[Coupon Assignment] user({0}) is not coupon({1}) user group({2})", loginName, String.valueOf(couponId), couponModel.getUserGroup()));

@@ -66,7 +66,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control invest-coupon-total_count"  value="全部用户"  readonly="true">
+                <input type="text" class="form-control invest-coupon-total_count"  value="全部用户"  readonly="readonly">
                 <input type="hidden" class="user-group-hid" name="userGroup" value="ALL_USER"  >
             </div>
         </div>

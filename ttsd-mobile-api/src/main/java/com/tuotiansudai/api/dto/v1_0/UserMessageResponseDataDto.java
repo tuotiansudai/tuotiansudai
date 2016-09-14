@@ -9,35 +9,26 @@ public class UserMessageResponseDataDto extends BaseResponseDataDto {
     private long totalCount;
     private List<UserMessageDto> messages;
 
-    public long getIndex() {
-        return index;
+    public UserMessageResponseDataDto(long index, long pageSize, long totalCount, List<UserMessageDto> userMessages) {
+        this.index = index;
+        this.pageSize = pageSize;
+        this.totalCount = totalCount;
+        this.messages = userMessages;
     }
 
-    public void setIndex(long index) {
-        this.index = index;
+    public long getIndex() {
+        return index;
     }
 
     public long getPageSize() {
         return pageSize;
     }
 
-    public void setPageSize(long pageSize) {
-        this.pageSize = pageSize;
-    }
-
     public long getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(long totalCount) {
-        this.totalCount = totalCount;
-    }
-
     public List<UserMessageDto> getMessages() {
         return messages;
-    }
-
-    public void setMessages(List<UserMessageDto> messages) {
-        this.messages = messages;
     }
 }
