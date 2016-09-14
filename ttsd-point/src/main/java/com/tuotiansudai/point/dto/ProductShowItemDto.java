@@ -44,6 +44,7 @@ public class ProductShowItemDto {
     public ProductShowItemDto(ExchangeCouponView exchangeCouponView) {
         this.id = exchangeCouponView.getId();
         this.seq = exchangeCouponView.getSeq();
+        this.imageUrl = exchangeCouponView.getImageUrl();
         switch (exchangeCouponView.getCouponType()) {
             case RED_ENVELOPE:
                 this.itemType = ItemType.RED_ENVELOPE;
@@ -62,7 +63,6 @@ public class ProductShowItemDto {
                 break;
         }
         this.description = generateCouponDescription(exchangeCouponView);
-        this.imageUrl = "";
         this.leftCount = exchangeCouponView.getTotalCount() - exchangeCouponView.getIssuedCount();
         this.points = exchangeCouponView.getExchangePoint();
         this.updatedTime = exchangeCouponView.getUpdatedTime();

@@ -91,7 +91,7 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         }
         dataDto.setSignIn(signInService.signInIsSuccess(loginName));
         dataDto.setSignInTimes(signInCount);
-        dataDto.setNextSignInPoint(lastSignInPointDto == null ? 0 : lastSignInPointDto.getNextSignInPoint());
+        dataDto.setNextSignInPoint(signInService.getNextSignInPoint(loginName));
 
         BaseResponseDto dto = new BaseResponseDto();
         dto.setCode(ReturnMessage.SUCCESS.getCode());

@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.extrarate.service.impl;
 
 
+import com.mysql.jdbc.StringUtils;
 import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -69,7 +70,18 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
                             .longValue();
                     investExtraRateModel.setExpectedFee(expectedFee);
 
-                    if(loanDetailsModel.getExtraSource().contains(investModel.getSource().name()))
+                    String investSource;
+                    if("IOS".equals(investModel.getSource().name()) || "ANDROID".equals(investModel.getSource().name()) || "MOBILE".equals(investModel.getSource().name())){
+                        investSource = "MOBILE";
+                    }
+                    else if("WEB".equals(investModel.getSource().name())){
+                        investSource = "WEB";
+                    }
+                    else{
+                        investSource = "AUTO";
+                    }
+
+                    if(!StringUtils.isNullOrEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(investSource))
                     {
                         investExtraRateMapper.create(investExtraRateModel);
                     }

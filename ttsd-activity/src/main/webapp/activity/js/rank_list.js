@@ -594,7 +594,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
     function rankList(){
         $.ajax({
             url: '/activity/getTianDouTop15',
-            type: 'POST',
+            type: 'GET',
             dataType: 'json'
         })
         .done(function(data) {
@@ -605,7 +605,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
     function TdGiftRecord(){
         $.ajax({
             url: '/activity/getTianDouPrizeList',
-            type: 'POST',
+            type: 'GET',
             dataType: 'json'
         })
         .done(function(data) {
@@ -616,7 +616,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
     function TdMyGift(){
         $.ajax({
             url: '/activity/getMyTianDouPrize',
-            type: 'POST',
+            type: 'GET',
             dataType: 'json'
         })
         .done(function(data) {
@@ -628,7 +628,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
     function CdGiftRecord(){
         $.ajax({
             url: '/activity/getPointPrizeList',
-            type: 'POST',
+            type: 'GET',
             dataType: 'json'
         })
         .done(function(data) {
@@ -640,7 +640,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
     function CdMyGift(){
         $.ajax({
             url: '/activity/getMyPointPrize',
-            type: 'POST',
+            type: 'GET',
             dataType: 'json'
         })
         .done(function(data) {
@@ -660,7 +660,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
     function rankListPhone(){
         $.ajax({
             url: '/activity/getTianDouTop15',
-            type: 'POST',
+            type: 'GET',
             dataType: 'json'
         })
         .done(function(data) {
@@ -671,7 +671,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
     function TdGiftRecordPhone(){
         $.ajax({
             url: '/activity/getTianDouPrizeList',
-            type: 'POST',
+            type: 'GET',
             dataType: 'json'
         })
         .done(function(data) {
@@ -682,7 +682,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
     function TdMyGiftPhone(){
         $.ajax({
             url: '/activity/getMyTianDouPrize',
-            type: 'POST',
+            type: 'GET',
             dataType: 'json'
         })
         .done(function(data) {
@@ -694,7 +694,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
     function CdGiftRecordPhone(){
         $.ajax({
             url: '/activity/getPointPrizeList',
-            type: 'POST',
+            type: 'GET',
             dataType: 'json'
         })
         .done(function(data) {
@@ -706,7 +706,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
     function CdMyGiftPhone(){
         $.ajax({
             url: '/activity/getMyPointPrize',
-            type: 'POST',
+            type: 'GET',
             dataType: 'json'
         })
         .done(function(data) {
@@ -730,7 +730,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
 function sendShare(){
     $.ajax({
         url: '/activity/get-lottery-chance',
-        type: 'POST',
+        type: 'GET',
         dataType: 'json'
     });
 };
