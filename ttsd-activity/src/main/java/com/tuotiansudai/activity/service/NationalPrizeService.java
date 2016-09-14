@@ -149,7 +149,7 @@ public class NationalPrizeService {
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(),accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), PrizeType.AUTUMN_PRIZE));
+        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(),accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), PrizeType.NATIONAL_PRIZE));
         drawLotteryResultDto.setReturnCode(0);
         drawLotteryResultDto.setPrizeType(lotteryPrize.getType());
         drawLotteryResultDto.setPrize(lotteryPrize.name());
