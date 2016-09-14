@@ -2,6 +2,7 @@ package com.tuotiansudai.activity.repository.mapper;
 
 
 import com.tuotiansudai.activity.dto.LotteryPrize;
+import com.tuotiansudai.activity.dto.PrizeType;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import org.apache.ibatis.annotations.Param;
@@ -18,6 +19,7 @@ public interface UserLotteryPrizeMapper {
 
     List<UserLotteryPrizeView> findUserLotteryPrizeViews(@Param(value = "mobile") String mobile,
                                                          @Param(value = "lotteryPrize") LotteryPrize lotteryPrize,
+                                                         @Param(value = "prizeType") PrizeType prizeType,
                                                          @Param(value = "startTime") Date startTime,
                                                          @Param(value = "endTime") Date endTime,
                                                          @Param(value = "index") Integer index,
@@ -25,6 +27,7 @@ public interface UserLotteryPrizeMapper {
 
     int findUserLotteryPrizeCountViews(@Param(value = "mobile") String mobile,
                                        @Param(value = "lotteryPrize") LotteryPrize LotteryPrize,
+                                       @Param(value = "prizeType") PrizeType prizeType,
                                        @Param(value = "startTime") Date startTime,
                                        @Param(value = "endTime") Date endTime);
 

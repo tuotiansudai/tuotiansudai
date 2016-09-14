@@ -5,6 +5,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.dto.LotteryPrize;
+import com.tuotiansudai.activity.dto.PrizeType;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;
@@ -49,14 +50,14 @@ public class UserLotteryService{
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.endTime}\")}")
     private Date activityAutumnEndTime;
 
-    public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile,Integer index,Integer pageSize) {
+    public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile,final PrizeType prizeType,Integer index,Integer pageSize) {
         List<UserModel> userModels = userMapper.findUserModelByMobile(mobile,index, pageSize);
 
         Iterator<UserLotteryTimeView> transform = Iterators.transform(userModels.iterator(), new Function<UserModel, UserLotteryTimeView>() {
             @Override
             public UserLotteryTimeView apply(UserModel input) {
                 UserLotteryTimeView model = new UserLotteryTimeView(input.getMobile(),input.getLoginName());
-                model.setUseCount(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(input.getMobile(), null, null, null));
+                model.setUseCount(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(input.getMobile(), null,prizeType, null, null));
                 model.setUnUseCount((findLotteryTime(model.getMobile()) - model.getUseCount()));
                 return model;
             }
@@ -69,12 +70,12 @@ public class UserLotteryService{
         return userMapper.findUserModelByMobile(mobile,0, Integer.MAX_VALUE).size();
     }
 
-    public List<UserLotteryPrizeView> findUserLotteryPrizeViews(String mobile,LotteryPrize selectPrize,Date startTime,Date endTime,Integer index,Integer pageSize){
-        return userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, startTime, endTime, index, pageSize);
+    public List<UserLotteryPrizeView> findUserLotteryPrizeViews(String mobile,LotteryPrize selectPrize,PrizeType prizeType,Date startTime,Date endTime,Integer index,Integer pageSize){
+        return userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize,prizeType, startTime, endTime, index, pageSize);
     }
 
-    public int findUserLotteryPrizeCountViews(String mobile,LotteryPrize selectPrize,Date startTime,Date endTime){
-        return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, selectPrize, startTime, endTime);
+    public int findUserLotteryPrizeCountViews(String mobile,LotteryPrize selectPrize,PrizeType prizeType,Date startTime,Date endTime){
+        return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, selectPrize, prizeType,startTime, endTime);
     }
 
     private int findLotteryTime(String mobile){

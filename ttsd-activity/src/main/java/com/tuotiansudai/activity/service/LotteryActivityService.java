@@ -101,7 +101,7 @@ public class LotteryActivityService {
             lotteryTime ++;
         }
 
-        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(),null,null,null);
+        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(),null,PrizeType.AUTUMN_PRIZE,null,null);
         if(lotteryTime > 0){
             lotteryTime -= userTime;
         }
@@ -120,7 +120,7 @@ public class LotteryActivityService {
         }
 
         if (StringUtils.isEmpty(mobile)) {
-            logger.error("User not login. can't draw prize.");
+            logger.debug("User not login. can't draw prize.");
             drawLotteryResultDto.setMessage("您还未登陆，请登陆后再来抽奖吧！");
             drawLotteryResultDto.setReturnCode(2);
             return drawLotteryResultDto;

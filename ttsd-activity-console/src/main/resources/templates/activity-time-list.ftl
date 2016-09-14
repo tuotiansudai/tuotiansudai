@@ -17,6 +17,17 @@
                     <label>用户手机号</label>
                     <input id="login-name" name="mobile" id="mobile" class="form-control" value="${mobile!}"/>
                 </div>
+
+                <div class="form-group">
+                    <label>活动类型</label>
+                    <select class="selectpicker" name="prizeType">
+                        <#list prizeTypes as prizeType>
+                            <option value="${prizeType}" <#if prizeTypes?? && prizeType==selectPrize>selected</#if>>
+                            ${prizeType.description}
+                            </option>
+                        </#list>
+                    </select>
+                </div>
             <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
         </form>
             <table class="table table-bordered table-hover">

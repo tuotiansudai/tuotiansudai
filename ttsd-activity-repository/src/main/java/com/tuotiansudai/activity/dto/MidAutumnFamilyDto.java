@@ -9,7 +9,7 @@ public class MidAutumnFamilyDto {
 
     private long amount;
 
-    public MidAutumnFamilyDto(String name, String investAmount,long amount) {
+    public MidAutumnFamilyDto(String name, String investAmount, long amount) {
         this.name = name;
         this.investAmount = investAmount;
         this.amount = amount;

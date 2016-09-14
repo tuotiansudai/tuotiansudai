@@ -18,6 +18,17 @@
                 </div>
 
                 <div class="form-group">
+                    <label>活动类型</label>
+                    <select class="selectpicker" name="prizeType">
+                        <#list prizeTypes as prizeType>
+                            <option value="${prizeType}" <#if prizeTypes?? && prizeType==selectPrizeType>selected</#if>>
+                            ${prizeType.description}
+                            </option>
+                        </#list>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label>奖品</label>
                     <select class="selectpicker" name="selectPrize">
                         <option value="" <#if !(lotteryPrizes??)>selected</#if>>全部</option>

@@ -13,6 +13,7 @@
         <result column="user_name" property="userName"></result>
         <result column="prize" property="prize"></result>
         <result column="lottery_time" property="lotteryTime"></result>
+        <result column="prize_type" property="prizeType"></result>
     </resultMap>
 
     <resultMap id="userLotteryPrizeView" type="com.tuotiansudai.activity.repository.model.UserLotteryPrizeView">
@@ -23,8 +24,8 @@
     </resultMap>
 
     <insert id="create" parameterType="userLotteryPrizeModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `edxactivity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`user_name`,`prize`,`lottery_time`)
-        VALUES(#{id},#{mobile},#{loginName},#{userName},#{prize},#{lotteryTime});
+        INSERT INTO `edxactivity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`user_name`,`prize`,`lottery_time`,`prize_type`)
+        VALUES(#{id},#{mobile},#{loginName},#{userName},#{prize},#{lotteryTime},#{prizeType});
 
     </insert>
 
@@ -36,7 +37,8 @@
         `login_name` = #{login_name},
         `user_name` = #{user_name},
         `prize` = #{prize},
-        `lottery_time` = #{lotteryTime}
+        `lottery_time` = #{lotteryTime},
+        `prize_type` = #{prizeType}
         WHERE `id` = #{id}
     </update>
 
@@ -54,6 +56,9 @@
             </if>
             <if test="endTime != null">
                 <![CDATA[ and p.lottery_time <= #{endTime} ]]>
+            </if>
+            <if test="prizeType != null">
+                and prize_type = #{prizeType}
             </if>
         </where>
         order by p.lottery_time DESC
@@ -74,6 +79,9 @@
             </if>
             <if test="endTime != null">
                 <![CDATA[ and p.lottery_time <= #{endTime} ]]>
+            </if>
+            <if test="prizeType != null">
+                and prize_type = #{prizeType}
             </if>
         </where>
     </select>
