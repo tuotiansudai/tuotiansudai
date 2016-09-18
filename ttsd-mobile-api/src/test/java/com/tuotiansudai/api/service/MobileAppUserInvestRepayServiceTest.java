@@ -80,6 +80,9 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
     @Mock
     private InvestExtraRateMapper investExtraRateMapper;
 
+    @Mock
+    private LoanMapper loanMapper;
+
     @Test
     public void shouldUserInvestRepayOnePeriodCompleteIsOk(){
         LoanModel loanModel = createLoanModel();
@@ -96,6 +99,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(loanService.findLoanById(anyLong())).thenReturn(loanModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
@@ -108,7 +112,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         assertEquals("90", responseDto.getData().getDuration());
         assertEquals("_90", responseDto.getData().getProductNewType());
         assertEquals("50.00", responseDto.getData().getInvestAmount());
-        assertEquals("50.30", responseDto.getData().getExpectedInterest());
+        assertEquals("0.30", responseDto.getData().getExpectedInterest());
         assertEquals("0.10", responseDto.getData().getActualInterest());
         assertEquals(3, responseDto.getData().getInvestRepays().size());
     }
@@ -130,6 +134,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
         when(userMembershipService.getMembershipLevelByLoginNameAndInvestTime(anyString(), any(Date.class))).thenReturn(String.valueOf(1));
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
@@ -142,7 +147,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         assertEquals("90", responseDto.getData().getDuration());
         assertEquals("_90", responseDto.getData().getProductNewType());
         assertEquals("50.00", responseDto.getData().getInvestAmount());
-        assertEquals("50.30", responseDto.getData().getExpectedInterest());
+        assertEquals("0.30", responseDto.getData().getExpectedInterest());
         assertEquals("0.20", responseDto.getData().getActualInterest());
         assertEquals(3, responseDto.getData().getInvestRepays().size());
     }
@@ -178,6 +183,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(userCouponMapper.findByInvestId(anyLong())).thenReturn(userCoupon);
         when(couponMapper.findById(anyLong())).thenReturn(new CouponModel());
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
@@ -190,7 +196,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         assertEquals("90", responseDto.getData().getDuration());
         assertEquals("_90", responseDto.getData().getProductNewType());
         assertEquals("50.00", responseDto.getData().getInvestAmount());
-        assertEquals("50.30", responseDto.getData().getExpectedInterest());
+        assertEquals("0.30", responseDto.getData().getExpectedInterest());
         assertEquals("0.30", responseDto.getData().getActualInterest());
         assertEquals(3, responseDto.getData().getInvestRepays().size());
     }
