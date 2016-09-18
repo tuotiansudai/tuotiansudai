@@ -15,6 +15,8 @@ public interface UserMembershipMapper {
 
     void create(UserMembershipModel userMembershipModel);
 
+    void createMass(List<UserMembershipModel> userMembershipModels);
+
     void update(UserMembershipModel userMembershipModel);
 
     UserMembershipModel findById(long id);

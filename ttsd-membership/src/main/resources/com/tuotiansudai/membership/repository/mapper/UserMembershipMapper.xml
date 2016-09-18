@@ -33,6 +33,14 @@
         value(#{loginName}, #{membershipId}, #{expiredTime}, #{createdTime}, #{type})
     </insert>
 
+    <insert id="createMass" parameterType="UserMembershipModel">
+        INSERT INTO `aa`.`user_membership` (login_name, membership_id, expired_time, created_time, type)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.loginName}, #{item.membershipId}, #{item.expiredTime}, #{item.createdTime}, #{item.type})
+        </foreach>
+    </insert>
+
     <update id="update" parameterType="UserMembershipModel">
         update user_membership set login_name = #{loginName}, membership_id = #{membershipId}, expired_time = #{expiredTime}, expired_time = #{createdTime}, type = #{type} where id = #{id}
     </update>

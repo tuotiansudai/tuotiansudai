@@ -3,7 +3,7 @@ CREATE TABLE `membership_give` (
   COMMENT '主键',
   `membership_id`      BIGINT(20) UNSIGNED NOT NULL
   COMMENT '对应membership表中的ID',
-  `vaild_period`       INT(10) UNSIGNED    NOT NULL
+  `valid_period`       INT(10) UNSIGNED    NOT NULL
   COMMENT '有效天数',
   `receive_start_time` DATETIME            NOT NULL
   COMMENT '领取活动开始时间',
@@ -11,10 +11,8 @@ CREATE TABLE `membership_give` (
   COMMENT '领取活动结束时间',
   `user_group`         VARCHAR(200)        NOT NULL
   COMMENT '发放用户组',
-  `expect_amount`      INT(10) UNSIGNED    NOT NULL
-  COMMENT '期望发放数量',
-  `actual_amount`      INT(10) UNSIGNED    NOT NULL
-  COMMENT '实际发放数量',
+  `sms_notify`         TINYINT(1)          NOT NULL
+  COMMENT '是否短信通知, 0-不通知， 1-通知',
   `valid`              TINYINT(1)          NOT NULL
   COMMENT '是否生效，0-不生效，1-生效',
   `valid_login_name`   VARCHAR(25)                  DEFAULT NULL

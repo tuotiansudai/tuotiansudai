@@ -1,14 +1,18 @@
 package com.tuotiansudai.membership.repository.mapper;
 
 import com.tuotiansudai.membership.repository.model.MembershipGiveModel;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface MembershipGiveMapper {
-    void create(MembershipModel membershipModel);
+    void create(MembershipGiveModel membershipGiveModel);
 
-    void update(MembershipModel membershipModel);
+    void update(MembershipGiveModel membershipGiveModel);
 
-    List<MembershipGiveModel> findSome(int index, int pageSize);
+    MembershipGiveModel findById(@Param(value = "id") long id);
+
+    List<MembershipGiveModel> findSome(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+
+    void delete(@Param(value = "id") long id);
 }

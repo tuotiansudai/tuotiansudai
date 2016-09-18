@@ -1,13 +1,12 @@
-package com.tuotiansudai.membership.repository.model;
+package com.tuotiansudai.membership.dto;
 
-import com.tuotiansudai.membership.dto.MembershipGiveDto;
+import com.tuotiansudai.membership.repository.model.MembershipUserGroup;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class MembershipGiveModel implements Serializable {
+public class MembershipGiveDto {
     private long id;
-    private long membershipId;
+    private int membershipLevel;
     private int validPeriod;
     private Date receiveStartTime;
     private Date receiveEndTime;
@@ -15,28 +14,8 @@ public class MembershipGiveModel implements Serializable {
     private boolean smsNotify;
     private boolean valid;
     private String validLoginName;
-    private Date createdTime;
     private String createdLoginName;
-    private Date updatedTime;
     private String updatedLoginName;
-
-    public MembershipGiveModel() {
-    }
-
-    public MembershipGiveModel(MembershipGiveDto membershipGiveDto, MembershipModel membershipModel) {
-        this.membershipId = membershipModel.getId();
-        this.validPeriod = membershipGiveDto.getValidPeriod();
-        this.receiveStartTime = membershipGiveDto.getReceiveStartTime();
-        this.receiveEndTime = membershipGiveDto.getReceiveEndTime();
-        this.userGroup = membershipGiveDto.getUserGroup();
-        this.smsNotify = membershipGiveDto.isSmsNotify();
-        this.valid = membershipGiveDto.isValid();
-        this.validLoginName = membershipGiveDto.getValidLoginName();
-        this.createdTime = new Date();
-        this.createdLoginName = membershipGiveDto.getCreatedLoginName();
-        this.updatedTime = new Date();
-        this.updatedLoginName = membershipGiveDto.getUpdatedLoginName();
-    }
 
     public long getId() {
         return id;
@@ -46,12 +25,12 @@ public class MembershipGiveModel implements Serializable {
         this.id = id;
     }
 
-    public long getMembershipId() {
-        return membershipId;
+    public int getMembershipLevel() {
+        return membershipLevel;
     }
 
-    public void setMembershipId(long membershipId) {
-        this.membershipId = membershipId;
+    public void setMembershipLevel(int membershipLevel) {
+        this.membershipLevel = membershipLevel;
     }
 
     public int getValidPeriod() {
@@ -110,28 +89,12 @@ public class MembershipGiveModel implements Serializable {
         this.validLoginName = validLoginName;
     }
 
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
-
     public String getCreatedLoginName() {
         return createdLoginName;
     }
 
     public void setCreatedLoginName(String createdLoginName) {
         this.createdLoginName = createdLoginName;
-    }
-
-    public Date getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(Date updatedTime) {
-        this.updatedTime = updatedTime;
     }
 
     public String getUpdatedLoginName() {

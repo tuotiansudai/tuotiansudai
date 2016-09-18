@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.membership.repository.mapper.MembershipGiveMapper">
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="MembershipGiveResultMap" type="MembershipGiveModel">
+        <id column="id" property="id"/>
+        <result column="membership_id" property="membershipId"/>
+        <result column="valid_period" property="validPeriod"/>
+        <result column="receive_start_time" property="receiveStartTime"/>
+        <result column="receive_end_time" property="receiveEndTime"/>
+        <result column="user_group" property="userGroup"/>
+        <result column="expect_amount" property="expectAmount"/>
+        <result column="actual_amount" property="actualAmount"/>
+        <result column="sms_notify" property="smsNotify"/>
+        <result column="valid" property="valid"/>
+        <result column="valid_login_name" property="validLoginName"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="created_login_name" property="createdLoginName"/>
+        <result column="updated_time" property="updatedTime"/>
+        <result column="updated_login_name" property="updatedLoginName"/>
+    </resultMap>
+
+    <insert id="create" parameterType="MembershipGiveModel">
+        INSERT INTO `aa`.`membership_give` (membership_id, valid_period, receive_start_time, receive_end_time, user_group,
+        expect_amount, actual_amount, sms_notify, valid, valid_login_name, created_time, created_login_name, updated_time,
+        updated_login_name)
+        VALUES (#{membershipId}, #{validPeriod}, #{receiveStartTime}, #{receiveEndTime}, #{userGroup}, #{expectAmount},
+        #{actualAmount}, #{smsNotify}, #{valid}, #{validLoginName}, #{createdTime}, #{createdLoginName}, #{updatedTime},
+        #{updatedLoginName})
+    </insert>
+
+    <update id="update" parameterType="MembershipGiveModel">
+        UPDATE `aa`.`membership_give`
+        SET
+        membership_id = #{membershipId},
+        valid_period = #{validPeriod},
+        <if test="receiveStartTime != null">
+            receive_start_time = #{receiveStartTime},
+        </if>
+        <if test="receiveEndTime != null">
+            receive_end_time = #{receiveEndTime},
+        </if>
+        <if test="userGroup != null">
+            user_group = #{userGroup},
+        </if>
+        expect_amount = #{expectAmount},
+        actual_amount = #{actualAmount},
+        sms_notify = #{smsNotify},
+        valid = #{valid},
+        <if test="validLoginName != null and validLoginName != ''">
+            valid_login_name = #{validLoginName},
+        </if>
+        <if test="createdTime != null">
+            created_time = #{createdTime},
+        </if>
+        <if test="createdLoginName != null and createdLoginName != ''">
+            created_login_name = #{createdLoginName},
+        </if>
+        <if test="updatedTime != null">
+            updated_time = #{updatedTime},
+        </if>
+        <if test="updatedLoginName != null and updatedLoginName != ''">
+            updated_login_name = #{updatedLoginName}
+        </if>
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="findById" resultMap="MembershipGiveResultMap">
+        SELECT * FROM `aa`.`membership_give` WHERE id = #{id};
+    </select>
+
+    <select id="findSome" resultMap="MembershipGiveResultMap">
+        SELECT * FROM `aa`.`membership_give` LIMIT #{index}, #{pageSize}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM `aa`.`membership_give` WHERE id = #{id}
+    </delete>
+
+</mapper>
