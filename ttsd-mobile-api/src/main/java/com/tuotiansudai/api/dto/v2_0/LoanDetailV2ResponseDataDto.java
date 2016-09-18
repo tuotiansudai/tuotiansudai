@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.EvidenceResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ExtraLoanRateDto;
 import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.PledgeType;
 
 import java.util.Date;
 import java.util.List;
@@ -102,6 +103,10 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
     private String extraSource;
 
     private ActivityType activityType;
+
+    private String activityDesc;
+
+    private PledgeType pledgeType;
 
     public Long getLoanId() {
         return loanId;
@@ -469,5 +474,21 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     public void setExtraSource(String extraSource) {
         this.extraSource = extraSource;
+    }
+
+    public String getActivityDesc() {
+        return activityDesc;
+    }
+
+    public void setActivityDesc(String activityDesc) {
+        this.activityDesc = activityDesc;
+    }
+
+    public PledgeType getPledgeType() {
+        return pledgeType;
+    }
+
+    public void setPledgeType(PledgeType pledgeType) {
+        this.pledgeType = pledgeType;
     }
 }

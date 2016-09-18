@@ -91,20 +91,18 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanResponseDataDto.setLoanId("" + loan.getId());
 
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
-            String loanName = "";
-            if(loanDetailsModel != null){
-                if(loanDetailsModel.isActivity()){
-                    loanName = loan.getName()+("(活动专享)");
-                }
-                else{
-                    loanName = loan.getName();
-                }
+
+            loanResponseDataDto.setLoanName(loan.getName());
+            loanResponseDataDto.setActivityType(loan.getActivityType().name());
+
+            if(loanDetailsModel != null && ActivityType.ACTIVITY.name()  == loan.getActivityType().name()){
+                loanResponseDataDto.setActivityDesc(loanDetailsModel.getActivityDesc());
             }
             else {
-                loanName = loan.getName();
+                loanResponseDataDto.setActivityDesc("");
             }
-            loanResponseDataDto.setLoanName(loanName);
-            loanResponseDataDto.setActivityType(loan.getActivityType().name());
+
+            loanResponseDataDto.setPledgeType(loan.getPledgeType());
             loanResponseDataDto.setDuration(String.valueOf(loan.getDuration()));
             loanResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
             loanResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));

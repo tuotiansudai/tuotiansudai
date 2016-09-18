@@ -4,7 +4,8 @@ public enum ActivityType {
     NORMAL("普通投资"),
     NEWBIE("新手专享"),
     EXCLUSIVE("定向投资"),
-    PROMOTION("加息投资");
+    PROMOTION("加息投资"),
+    ACTIVITY("活动专享");
 
     private String activityTypeName;
 

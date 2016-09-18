@@ -302,10 +302,14 @@
                             <li data-url="/loan/${(loan.id?string.computer)!}" class="clearfix">
                                 <div class="loan-info-frame fl">
                                     <div class="loan-top">
-                                        <span class="l-title fl">${loan.name}
-                                            <#if loan.activity?string("true","false") == "true">(活动专享)</#if>
-                                        </span>
-
+                                        <span class="l-title fl">${loan.name}</span>
+                                        <#if loan.activityType == "ACTIVITY">
+                                            <span class="arrow-tag-normal">
+                                                <i class="ic-left"></i>
+                                                <em> ${loan.activityDesc!}</em>
+                                                <i class="ic-right"></i>
+                                            </span>
+                                        </#if>
                                     </div>
                                     <div class="loan-info-dl">
                                         <dl>
@@ -529,7 +533,7 @@
                                 </#if>
                                 <div class="pad-m" title="BLQ001" data-url="/loan/${(loan.id?string.computer)!}">
                                     <h2 class="pr-title">${loan.name}
-                                        <#if loan.activity?string("true","false") == "true">(活动专享)</#if>
+                                         <#if loan.activityType == "ACTIVITY">${loan.activityDesc!}</#if>
                                     </h2>
 
                                     <div class="pr-square tc">

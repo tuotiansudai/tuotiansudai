@@ -107,24 +107,16 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setLoanId("" + loan.getId());
             loanResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().getProductLine() : "");
             loanResponseDataDto.setLoanTypeName(loan.getProductType() != null ? loan.getProductType().getProductLineName() : "");
-
             LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
-
-            String loanName = "";
-            if(loanDetailsModelActivity != null){
-                if(loanDetailsModelActivity.isActivity()){
-                    loanName = loan.getName()+("(活动专享)");
-                }
-                else{
-                    loanName = loan.getName();
-                }
+            loanResponseDataDto.setLoanName(loan.getName());
+            if(loanDetailsModelActivity != null && ActivityType.ACTIVITY.name()  == loan.getActivityType().name()){
+                loanResponseDataDto.setActivityDesc(loanDetailsModelActivity.getActivityDesc());
             }
             else {
-                loanName = loan.getName();
+                loanResponseDataDto.setActivityDesc("");
             }
 
-
-            loanResponseDataDto.setLoanName(loanName);
+            loanResponseDataDto.setPledgeType(loan.getPledgeType());
             loanResponseDataDto.setRepayTypeCode("");
             loanResponseDataDto.setRepayTypeName(loan.getType().getName());
             loanResponseDataDto.setDeadline(loan.getPeriods());

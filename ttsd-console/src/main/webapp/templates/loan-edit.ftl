@@ -70,13 +70,6 @@
                         <option value="车辆抵押借款" <#if loanInfo.projectName == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
                     </select>
                 </div>
-                <div class="checkbox jq-activity-checkbox">
-                    <label>
-                        <input type="checkbox" class="jq-activity"  <#if loanInfo.activity>checked</#if>
-                               <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>>
-                        活动专享
-                    </label>
-                </div>
 
             </div>
             <div class="form-group">
@@ -174,7 +167,7 @@
                 <label class="col-sm-2 control-label">活动类型: </label>
 
                 <div class="col-sm-4">
-                    <select class="selectpicker "
+                    <select class="selectpicker jq-activity-type"
                             <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>>
                         <#list activityTypes as activityType>
                             <#if activityType.name() != 'PROMOTION'>
@@ -325,6 +318,14 @@
 
             </#if>
 
+            <div class="form-group">
+                <label class="col-sm-2 control-label">标的所属活动: </label>
+
+                <div class="col-sm-4">
+                    <input type="text" class="form-control jq-activity-desc" <#if loanInfo.activityType != "ACTIVITY">disabled value="" <#else>value="${loanInfo.activityDesc}"</#if>
+                           placeholder=""  maxlength="4">
+                </div>
+            </div>
         <h3><span>借款人基本信息</span></h3>
         <hr class="top-line">
         <div>
