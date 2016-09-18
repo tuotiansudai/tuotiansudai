@@ -468,9 +468,10 @@ public class InvestServiceImpl implements InvestService {
         UserMembershipModel userMembershipModel = userMembershipMapper.findCurrentMaxByLoginName(loginName);
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
         LoanModel loanModel = loanMapper.findById(loanId);
-        double preferenceRate = defaultFee - membershipModel.getFee();
         long interest = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);
-        preference = new BigDecimal(preferenceRate).multiply(new BigDecimal(interest)).longValue();
+        long originFee = new BigDecimal(interest).multiply(new BigDecimal(defaultFee)).longValue();
+        long membershipFee = new BigDecimal(interest).multiply(new BigDecimal(membershipModel.getFee())).longValue();
+        preference = originFee - membershipFee;
         return preference;
     }
 }
