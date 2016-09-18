@@ -3,7 +3,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import java.util.List;
 
-public class ProductListResponseDto extends BaseResponseDataDto{
+public class ProductListResponseDto extends BaseResponseDataDto {
 
     private String myPoints;
 

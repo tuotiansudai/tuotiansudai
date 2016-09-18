@@ -114,12 +114,12 @@
         AND p.end_time >= now()
         AND p.start_time <= now()
         ]]>
-            <if test="goodsTypes != null ">
-                and type IN
-                <foreach collection="goodsTypes" item="goodsType" open="(" separator="," close=")">
-                    #{goodsType}
-                </foreach>
-            </if>
+        <if test="goodsTypes != null ">
+            and type IN
+            <foreach collection="goodsTypes" item="goodsType" open="(" separator="," close=")">
+                #{goodsType}
+            </foreach>
+        </if>
         ORDER BY seq ASC, updated_time DESC
     </select>
 

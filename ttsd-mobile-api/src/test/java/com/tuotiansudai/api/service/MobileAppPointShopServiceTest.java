@@ -33,7 +33,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class MobileAppPointShopServiceTest extends ServiceTestBase{
+public class MobileAppPointShopServiceTest extends ServiceTestBase {
 
     @Autowired
     private MobileAppPointShopService mobileAppPointShopService;
@@ -60,7 +60,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
     private UserCouponMapper userCouponMapper;
 
     @Test
-    public void shouldUpdateUserAddressIsOk(){
+    public void shouldUpdateUserAddressIsOk() {
         UserModel userModel = getUserModelTest("testUserAddress");
         BaseParamDto baseParamDto = new BaseParamDto();
         BaseParam baseParam = new BaseParam();
@@ -74,12 +74,12 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         userAddressRequestDto.setContact("test");
         mobileAppPointShopService.updateUserAddress(userAddressRequestDto);
         BaseResponseDto<UserAddressResponseDto> baseResponseDto = mobileAppPointShopService.findUserAddressResponseDto(baseParamDto);
-        assertEquals(baseResponseDto.getData().getAddress(),"test");
-        assertEquals(baseResponseDto.getData().getContact(),"test");
+        assertEquals(baseResponseDto.getData().getAddress(), "test");
+        assertEquals(baseResponseDto.getData().getContact(), "test");
     }
 
     @Test
-    public void shouldUserAddressIsAlreadyUpdateIsOk(){
+    public void shouldUserAddressIsAlreadyUpdateIsOk() {
         UserModel userModel = getUserModelTest("testUserAddress");
         BaseParamDto baseParamDto = new BaseParamDto();
         BaseParam baseParam = new BaseParam();
@@ -100,14 +100,14 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         userAddressRequestDto.setContact("newContract");
         mobileAppPointShopService.updateUserAddress(userAddressRequestDto);
         baseResponseDto = mobileAppPointShopService.findUserAddressResponseDto(baseParamDto);
-        assertEquals(baseResponseDto.getData().getAddress(),"newTest");
+        assertEquals(baseResponseDto.getData().getAddress(), "newTest");
         assertEquals(baseResponseDto.getData().getContact(), "newContract");
     }
 
     @Test
-    public void shouldFindUserPointsOrdersIsOk(){
+    public void shouldFindUserPointsOrdersIsOk() {
         UserModel userModel = getUserModelTest("testUserAddress");
-        ProductModel productModel = getProductModel(userModel.getLoginName(),GoodsType.VIRTUAL,100,0l);
+        ProductModel productModel = getProductModel(userModel.getLoginName(), GoodsType.VIRTUAL, 100, 0l);
         ProductOrderModel productOrderModel = getProductOrderModel(productModel.getId(), userModel.getLoginName());
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(userModel.getLoginName());
@@ -119,11 +119,11 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         BaseResponseDto<ProductListOrderResponseDto> pointsOrders = mobileAppPointShopService.findUserPointsOrders(baseParamDto);
         List<ProductOrderResponseDto> productOrderResponseDtoList = pointsOrders.getData().getOrders();
         assertTrue(CollectionUtils.isNotEmpty(productOrderResponseDtoList));
-        assertEquals(productOrderResponseDtoList.get(0).getProductNum(),String.valueOf(productOrderModel.getNum()));
+        assertEquals(productOrderResponseDtoList.get(0).getProductNum(), String.valueOf(productOrderModel.getNum()));
     }
 
     @Ignore
-    public void shouldFindPointHomeIsOk(){
+    public void shouldFindPointHomeIsOk() {
         String loginName = "findPointHomeUser";
         UserModel userModel = getUserModelTest(loginName);
         AccountModel accountModel = new AccountModel(loginName, loginName, "identityNumber", "payUserId", "payAccountId", new Date());
@@ -134,28 +134,28 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         baseParam.setUserId(userModel.getLoginName());
         baseParam.setPhoneNum("13900000000");
         baseParamDto.setBaseParam(baseParam);
-        getProductModel(loginName, GoodsType.COUPON, 100,0l);
-        getProductModel(loginName, GoodsType.PHYSICAL, 100,0l);
-        getProductModel(loginName, GoodsType.VIRTUAL, 100,0l);
+        getProductModel(loginName, GoodsType.COUPON, 100, 0l);
+        getProductModel(loginName, GoodsType.PHYSICAL, 100, 0l);
+        getProductModel(loginName, GoodsType.VIRTUAL, 100, 0l);
         BaseResponseDto<ProductListResponseDto> pointHome = mobileAppPointShopService.findPointHome(baseParamDto);
-        assertEquals(pointHome.getData().getMyPoints(),String.valueOf(accountModel.getPoint()));
+        assertEquals(pointHome.getData().getMyPoints(), String.valueOf(accountModel.getPoint()));
         assertTrue(pointHome.getData().getVirtuals().size() >= 2);
         assertTrue(pointHome.getData().getPhysicals().size() >= 1);
     }
 
     @Test
-    public void shouldFindProductDetailIsOk(){
+    public void shouldFindProductDetailIsOk() {
         String loginName = "findPointHomeUser";
         getUserModelTest(loginName);
-        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON,100,0l);
+        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 100, 0l);
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         BaseResponseDto<ProductDetailResponseDto> baseResponseDto = mobileAppPointShopService.findProductDetail(productDetailRequestDto);
-        assertEquals(baseResponseDto.getData().getProductId(),String.valueOf(productModel.getId()));
+        assertEquals(baseResponseDto.getData().getProductId(), String.valueOf(productModel.getId()));
     }
 
     @Test
-    public void shouldProductIdIsNullIsFault(){
+    public void shouldProductIdIsNullIsFault() {
         String loginName = "findPointHomeUser";
         getUserModelTest(loginName);
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
@@ -164,11 +164,11 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         baseParam.setPhoneNum("13900000000");
         productDetailRequestDto.setBaseParam(baseParam);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
-        assertEquals(baseResponseDto.getCode(),ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getCode());
+        assertEquals(baseResponseDto.getCode(), ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getCode());
     }
 
     @Test
-    public void shouldProductNumIsNullIsFault(){
+    public void shouldProductNumIsNullIsFault() {
         String loginName = "findPointHomeUser";
         getUserModelTest(loginName);
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
@@ -178,14 +178,14 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId("11");
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
-        assertEquals(baseResponseDto.getCode(),ReturnMessage.POINTS_PRODUCT_NUM_IS_NOT_NULL.getCode());
+        assertEquals(baseResponseDto.getCode(), ReturnMessage.POINTS_PRODUCT_NUM_IS_NOT_NULL.getCode());
     }
 
     @Test
-    public void shouldProductCountIsZeroIsFault(){
+    public void shouldProductCountIsZeroIsFault() {
         String loginName = "findPointHomeUser";
         getUserModelTest(loginName);
-        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON,0l,0l);
+        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 0l, 0l);
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
@@ -194,14 +194,14 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(0);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
-        assertEquals(baseResponseDto.getCode(),ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getCode());
+        assertEquals(baseResponseDto.getCode(), ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getCode());
     }
 
     @Test
-    public void shouldMyPointsIsZeroIsFault(){
+    public void shouldMyPointsIsZeroIsFault() {
         String loginName = "findPointHomeUser";
         getUserModelTest(loginName);
-        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON,100,0l);
+        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 100, 0l);
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
@@ -213,14 +213,14 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         accountModel.setPoint(10l);
         accountMapper.create(accountModel);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
-        assertEquals(baseResponseDto.getCode(),ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode());
+        assertEquals(baseResponseDto.getCode(), ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode());
     }
 
     @Test
-    public void shouldMyAddressIsNullIsFault(){
+    public void shouldMyAddressIsNullIsFault() {
         String loginName = "findPointHomeUser";
         getUserModelTest(loginName);
-        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON,100,0l);
+        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 100, 0l);
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
@@ -232,16 +232,16 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         accountModel.setPoint(1000l);
         accountMapper.create(accountModel);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
-        assertEquals(baseResponseDto.getCode(),ReturnMessage.SUCCESS.getCode());
+        assertEquals(baseResponseDto.getCode(), ReturnMessage.SUCCESS.getCode());
     }
 
     @Test
-    public void shouldProductExchangeIsOk(){
+    public void shouldProductExchangeIsOk() {
         String loginName = "findPointHomeUser";
         UserModel userModel = getUserModelTest(loginName);
         CouponModel couponModel = fakeCouponModel(loginName);
         couponMapper.create(couponModel);
-        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON,100,couponModel.getId());
+        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 100, couponModel.getId());
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
@@ -252,18 +252,18 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         AccountModel accountModel = new AccountModel(loginName, loginName, "identityNumber", "payUserId", "payAccountId", new Date());
         accountModel.setPoint(1000l);
         accountMapper.create(accountModel);
-        UserAddressModel userAddressModel = new UserAddressModel(loginName,loginName,userModel.getMobile(),"",loginName);
+        UserAddressModel userAddressModel = new UserAddressModel(loginName, loginName, userModel.getMobile(), "", loginName);
         userAddressMapper.create(userAddressModel);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
         List<ProductOrderModel> productOrderModels = productOrderMapper.findProductOrderList(productModel.getId(), loginName, 0, 10);
-        List<UserCouponModel>  userCouponModels = userCouponMapper.findByCouponId(couponModel.getId());
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(couponModel.getId());
         assertEquals(baseResponseDto.getCode(), ReturnMessage.SUCCESS.getCode());
-        assertEquals(productOrderModels.get(0).getProductId(),productModel.getId());
-        assertEquals(userCouponModels.get(0).getCouponId(),couponModel.getId());
+        assertEquals(productOrderModels.get(0).getProductId(), productModel.getId());
+        assertEquals(userCouponModels.get(0).getCouponId(), couponModel.getId());
     }
 
 
-    private CouponModel fakeCouponModel(String loginName){
+    private CouponModel fakeCouponModel(String loginName) {
         CouponModel couponModel = new CouponModel();
         couponModel.setAmount(1000L);
         couponModel.setActivatedBy(loginName);
@@ -284,7 +284,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         return couponModel;
     }
 
-    private ProductModel getProductModel(String loginName,GoodsType goodsType,long totalCount,long couponId){
+    private ProductModel getProductModel(String loginName, GoodsType goodsType, long totalCount, long couponId) {
         ProductModel productModel = new ProductModel(goodsType, "50元充值卡", 1, "upload/images/11.png", "50yuan", totalCount, 0, 200, new Date(), new DateTime().plusDays(7).toDate(), false, loginName, new Date());
         productModel.setCouponId(couponId);
         productModel.setActive(true);
@@ -292,7 +292,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase{
         return productModel;
     }
 
-    private ProductOrderModel getProductOrderModel(long productId,String loginName){
+    private ProductOrderModel getProductOrderModel(long productId, String loginName) {
         ProductOrderModel productOrderModel = new ProductOrderModel();
         productOrderModel.setId(10001);
         productOrderModel.setProductId(productId);

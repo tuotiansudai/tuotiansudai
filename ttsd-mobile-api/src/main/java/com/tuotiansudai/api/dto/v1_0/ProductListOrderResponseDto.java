@@ -3,7 +3,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import java.util.List;
 
-public class ProductListOrderResponseDto extends BaseResponseDataDto{
+public class ProductListOrderResponseDto extends BaseResponseDataDto {
     private Integer index;
     private Integer pageSize;
     private Integer totalCount;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MobileAppPointShopController extends MobileAppBaseController{
+public class MobileAppPointShopController extends MobileAppBaseController {
 
     @Autowired
     private MobileAppPointShopService mobileAppPointShopService;
@@ -35,20 +35,20 @@ public class MobileAppPointShopController extends MobileAppBaseController{
         return mobileAppPointShopService.findUserPointsOrders(baseParamDto);
     }
 
-    @RequestMapping(value = "/get/point-home",method = RequestMethod.POST)
-    public BaseResponseDto getPointHome(@RequestBody BaseParamDto baseParamDto){
+    @RequestMapping(value = "/get/point-home", method = RequestMethod.POST)
+    public BaseResponseDto getPointHome(@RequestBody BaseParamDto baseParamDto) {
         baseParamDto.getBaseParam().setUserId(getLoginName());
         return mobileAppPointShopService.findPointHome(baseParamDto);
     }
 
-    @RequestMapping(value = "/get/product-detail",method = RequestMethod.POST)
-    public BaseResponseDto getProductDetail(@RequestBody ProductDetailRequestDto productDetailRequestDto){
+    @RequestMapping(value = "/get/product-detail", method = RequestMethod.POST)
+    public BaseResponseDto getProductDetail(@RequestBody ProductDetailRequestDto productDetailRequestDto) {
         productDetailRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppPointShopService.findProductDetail(productDetailRequestDto);
     }
 
-    @RequestMapping(value = "/product-exchange",method = RequestMethod.POST)
-    public BaseResponseDto productExchange(@RequestBody ProductDetailRequestDto productDetailRequestDto){
+    @RequestMapping(value = "/product-exchange", method = RequestMethod.POST)
+    public BaseResponseDto productExchange(@RequestBody ProductDetailRequestDto productDetailRequestDto) {
         productDetailRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppPointShopService.productExchange(productDetailRequestDto);
     }

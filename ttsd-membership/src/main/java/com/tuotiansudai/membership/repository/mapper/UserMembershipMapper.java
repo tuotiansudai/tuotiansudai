@@ -32,6 +32,8 @@ public interface UserMembershipMapper {
 
     UserMembershipModel findActiveByLoginName(String loginName);
 
+    UserMembershipModel findCurrentMaxByLoginName(String loginName);
+
     Double findRateByLoginName(String loginName);
 
     Integer findRealLevelByLoginName(String loginName);
