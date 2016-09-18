@@ -62,12 +62,12 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
         if (pageSize == null || pageSize <= 0) {
             pageSize = 10;
         }
-        List<InvestModel> transferableInvestList = investMapper.findTransferableApplicationPaginationByLoginName(loginName, (index-1)*pageSize, pageSize);
+        List<InvestModel> transferableInvestList = investMapper.findTransferableApplicationPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
         dtoData.setInvestList(convertResponseData(transferableInvestList));
         dtoData.setIndex(requestDto.getIndex());
         dtoData.setPageSize(requestDto.getPageSize());
-        dtoData.setTotalCount((int)investMapper.findCountTransferableApplicationPaginationByLoginName(loginName));
+        dtoData.setTotalCount((int) investMapper.findCountTransferableApplicationPaginationByLoginName(loginName));
 
         BaseResponseDto<UserInvestListResponseDataDto> dto = new BaseResponseDto<>();
         dto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -75,7 +75,6 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
         dto.setData(dtoData);
 
         return dto;
-
     }
 
     private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel> investList) {
@@ -83,10 +82,10 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
         Map<Long, LoanModel> loanMapCache = Maps.newHashMap();
         if (investList != null) {
             for (InvestModel invest : investList) {
-                TransferRuleModel transferRuleModel =  transferRuleMapper.find();
-                if(!transferRuleModel.isMultipleTransferEnabled()){
+                TransferRuleModel transferRuleModel = transferRuleMapper.find();
+                if (!transferRuleModel.isMultipleTransferEnabled()) {
                     TransferApplicationModel transfereeApplicationModel = transferApplicationMapper.findByInvestId(invest.getId());
-                    if( transfereeApplicationModel != null){
+                    if (transfereeApplicationModel != null) {
                         logger.debug(MessageFormat.format("{0} MultipleTransferEnabled is false ", invest.getId()));
                         continue;
                     }
@@ -109,7 +108,7 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
                 }
 
                 if (CollectionUtils.isEmpty(investRepayModels)) {
-                    amount = investService.estimateInvestIncome(invest.getLoanId(),invest.getLoginName(), invest.getAmount());
+                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getLoginName(), invest.getAmount());
                 }
 
                 dto.setInvestInterest(AmountConverter.convertCentToString(amount));

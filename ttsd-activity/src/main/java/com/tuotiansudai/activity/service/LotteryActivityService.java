@@ -11,6 +11,7 @@ import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -49,6 +50,9 @@ public class LotteryActivityService {
 
     @Autowired
     private RechargeMapper rechargeMapper;
+
+    @Autowired
+    private RandomUtils randomUtils;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -196,20 +200,8 @@ public class LotteryActivityService {
 
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, lotteryPrizes);
         for(UserLotteryPrizeView view : userLotteryPrizeViews){
-            view.setMobile(encryptWebMiddleMobile(view.getMobile()));
+            view.setMobile(randomUtils.encryptWebMiddleMobile(view.getMobile()));
         }
         return userLotteryPrizeViews;
-    }
-
-    public String encryptWebMiddleMobile(String mobile) {
-        return mobile.substring(0, 3) + showChar(4) + mobile.substring(7);
-    }
-
-    private static String showChar(int showLength) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < showLength; i++) {
-            sb.append('*');
-        }
-        return sb.toString();
     }
 }

@@ -16,9 +16,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.session.ExpiringSession;
-import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.MapSession;
 import org.springframework.session.Session;
 import org.springframework.session.data.redis.RedisFlushMode;
@@ -115,7 +113,7 @@ public class MyRedisOperationsSessionRepository implements MyFindByIndexNameSess
         this.expirationPolicy.cleanExpiredSessions();
     }
 
-    public RedisSession getSession(String id) {
+    public   RedisSession getSession(String id) {
         return getSession(id, false);
     }
 
@@ -306,7 +304,7 @@ public class MyRedisOperationsSessionRepository implements MyFindByIndexNameSess
 
     String getPrincipalKey(String principalName) {
         return this.keyPrefix + "index:"
-                + FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME + ":"
+                + MyFindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME + ":"
                 + principalName;
     }
 
@@ -455,7 +453,7 @@ public class MyRedisOperationsSessionRepository implements MyFindByIndexNameSess
             }
             String sessionId = getId();
             getSessionBoundHashOperations(sessionId).putAll(this.delta);
-            String principalSessionKey = getSessionAttrNameKey(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME);
+            String principalSessionKey = getSessionAttrNameKey(MyFindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME);
             String securityPrincipalSessionKey = getSessionAttrNameKey(SPRING_SECURITY_CONTEXT);
             if (this.delta.containsKey(principalSessionKey) || this.delta.containsKey(securityPrincipalSessionKey)) {
                 if (this.originalPrincipalName != null) {

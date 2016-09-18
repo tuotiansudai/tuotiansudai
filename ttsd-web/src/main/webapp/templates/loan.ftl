@@ -7,6 +7,7 @@
             <div class="news-share bg-w">
                 <h2 class="hd clearfix title-block <#if loan.activityType == 'NEWBIE'>new</#if>">
                     <div class="fl title">${loan.name}
+                        <#if loan.activity?string("true","false") == "true">(活动专享)</#if>
 
                     </div>
                     <#if loan.extraSource?? && loan.extraSource == "MOBILE">

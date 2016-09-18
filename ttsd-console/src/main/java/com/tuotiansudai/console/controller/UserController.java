@@ -14,6 +14,7 @@ import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.spring.security.SignInClient;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
@@ -63,6 +64,9 @@ public class UserController {
 
     @Autowired
     private SignInClient signInClient;
+
+    @Autowired
+    private MyAuthenticationUtil myAuthenticationUtil;
 
     @Autowired
     private AuditLogService auditLogService;
@@ -211,9 +215,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/{loginName}/impersonate", method = RequestMethod.GET)
-    public ModelAndView impersonate(@PathVariable String loginName) {
-        String securityCode = impersonateService.plantSecurityCode(LoginUserInfo.getLoginName(), loginName);
-        return new ModelAndView("redirect:" + webServer + "/impersonate?securityCode=" + securityCode);
+    @ResponseBody
+    public String impersonate(@PathVariable String loginName) {
+        return impersonateService.plantSecurityCode(LoginUserInfo.getLoginName(), loginName);
     }
 
     @RequestMapping(value = "/user/agents", method = RequestMethod.GET)

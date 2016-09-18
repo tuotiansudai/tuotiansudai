@@ -45,6 +45,8 @@ public class LoanItemDto {
 
     private String extraSource;
 
+    private boolean activity;
+
     public long getId() {
         return id;
     }
@@ -187,5 +189,13 @@ public class LoanItemDto {
 
     public void setExtraSource(String extraSource) {
         this.extraSource = extraSource;
+    }
+
+    public boolean isActivity() {
+        return activity;
+    }
+
+    public void setActivity(boolean activity) {
+        this.activity = activity;
     }
 }

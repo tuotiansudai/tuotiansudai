@@ -315,14 +315,14 @@ public class CouponModel implements Serializable {
         this.comment = comment;
     }
 
-    public CouponModel(CouponDto couponDto){
+    public CouponModel(CouponDto couponDto) {
         this.shared = couponDto.isShared();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime() != null ? new DateTime(couponDto.getStartTime()).withTimeAtStartOfDay().toDate() : null;
         this.endTime = couponDto.getEndTime() != null ? new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate() : null;
         this.deadline = couponDto.getDeadline() != null ? couponDto.getDeadline() : 0;
         this.totalCount = couponDto.getTotalCount() != null ? couponDto.getTotalCount() : 0;
-        this.productTypes = couponDto.getProductTypes() ;
+        this.productTypes = couponDto.getProductTypes();
         this.couponType = couponDto.getCouponType();
         this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());
         this.smsAlert = couponDto.isSmsAlert();
@@ -331,7 +331,7 @@ public class CouponModel implements Serializable {
         this.birthdayBenefit = couponDto.getBirthdayBenefit() == null ? 0 : new BigDecimal(couponDto.getBirthdayBenefit()).subtract(new BigDecimal(1)).doubleValue();
         this.agents = couponDto.getAgents();
         this.channels = couponDto.getChannels();
-        this.multiple = Lists.newArrayList(CouponType.BIRTHDAY_COUPON,UserGroup.FIRST_INVEST_ACHIEVEMENT,UserGroup.MAX_AMOUNT_ACHIEVEMENT,UserGroup.LAST_INVEST_ACHIEVEMENT,UserGroup.EXCHANGER).contains(couponDto.getUserGroup());
+        this.multiple = couponDto.getCouponType() == CouponType.BIRTHDAY_COUPON || Lists.newArrayList(UserGroup.FIRST_INVEST_ACHIEVEMENT, UserGroup.MAX_AMOUNT_ACHIEVEMENT, UserGroup.LAST_INVEST_ACHIEVEMENT, UserGroup.EXCHANGER).contains(couponDto.getUserGroup());
         this.couponSource = couponDto.getCouponSource();
         this.comment = couponDto.getComment();
         this.updatedTime = new Date();

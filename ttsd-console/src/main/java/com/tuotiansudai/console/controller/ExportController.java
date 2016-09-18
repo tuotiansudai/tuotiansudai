@@ -8,6 +8,7 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.point.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
@@ -22,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,7 +33,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -90,6 +94,9 @@ public class ExportController {
 
     @Autowired
     private ReferrerManageService referrerManageService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public void exportCoupons(HttpServletResponse response) throws IOException {
@@ -153,7 +160,7 @@ public class ExportController {
     @RequestMapping(value = "/coupon-exchange", method = RequestMethod.GET)
     public void exportCouponExchange(HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.CouponExchangeHeader.getDescription());
-        List<ExchangeCouponDto> exchangeCouponDtos = couponService.findCouponExchanges(1, Integer.MAX_VALUE);
+        List<ExchangeCouponDto> exchangeCouponDtos = productService.findCouponExchanges(1, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildCouponExchangeCsvData(exchangeCouponDtos);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponExchangeHeader, csvData, response.getOutputStream());
     }
@@ -393,4 +400,10 @@ public class ExportController {
         }
         httpServletResponse.setContentType("application/csv");
     }
+
+
+
+
+
+
 }

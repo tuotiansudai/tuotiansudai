@@ -47,6 +47,7 @@ public class CreateVehicleLoanDto extends AbstractCreateLoanDto {
         //LoanDetailsDto
         this.declaration = loanDetailsModel.getDeclaration();
         this.extraSource = loanDetailsModel.getExtraSource();
+        this.activity = loanDetailsModel.isActivity();
         //LoanerDetailsDto
         this.loanerLoginName = loanerDetailsModel.getLoginName();
         this.loanerUserName = loanerDetailsModel.getUserName();
