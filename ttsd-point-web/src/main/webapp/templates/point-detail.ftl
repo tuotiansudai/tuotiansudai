@@ -9,25 +9,9 @@
 			</div>
 			<div class="detail-info">
 				<div class="detail-left">
-					<#if productShowItem.itemType.name() == 'RED_ENVELOPE'>
-                        <p class="mater-img bag-bg">
-                            <span><i><@amount>${productShowItem.pictureDescription!0}</@amount></i>元</span>
-                        </p>
-					<#elseif productShowItem.itemType.name() == 'INVEST_COUPON'>
-                        <p class="mater-img coupon-bg">
-                            <span><i><@amount>${productShowItem.pictureDescription!0}</@amount></i>元</span>
-                            <span>投资体验券</span>
-                        </p>
-					<#elseif productShowItem.itemType.name() == 'INTEREST_COUPON'>
-                        <p class="mater-img jia-bg">
-                            <span><i>${productShowItem.pictureDescription!"0"}</i>%</span>
-                            <span>加息券</span>
-                        </p>
-					<#else>
-                        <p class="mater-img picture-item">
-                            <img src="${productShowItem.imageUrl}" width="300" height="244"/>
-                        </p>
-					</#if>
+					<p class="mater-img picture-item">
+						<img src="/${productShowItem.imageUrl}" width="300" height="244"/>
+					</p>
 				</div>
 				<div class="detail-right">
                     <h3>${productShowItem.name!}</h3>
@@ -71,8 +55,13 @@
 						</div>
 					</div>
 					<div class="info-text mt-20">
-                        <a href="javascript:void(0)" class="btn get-btn" data-id="${productShowItem.id?c!0}"
-                           data-type="${productShowItem.itemType.name()}" id="getBtn">立即兑换</a>
+						<#if productShowItem?? && productShowItem.leftCount == 0>
+                            <a class="btn get-btn">已售罄</a>
+						<#else>
+                            <a href="javascript:void(0)" class="btn get-btn" data-id="${productShowItem.id?c!0}"
+                               data-type="${productShowItem.itemType.name()}" id="getBtn">立即兑换</a>
+						</#if>
+
 					</div>
 					<div class="info-text mt-20">
 						<#if productShowItem.itemType.name() == 'PHYSICAL' || productShowItem.itemType.name() == 'VIRTUAL'>

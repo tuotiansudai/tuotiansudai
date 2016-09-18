@@ -125,6 +125,7 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(signInService.getLastSignIn(anyString())).thenReturn(signInPointDto);
         when(signInService.signInIsSuccess(anyString())).thenReturn(true);
+        when(signInService.getNextSignInPoint(anyString())).thenReturn(10);
         BaseParamDto baseParamDto = new BaseParamDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("signTest");

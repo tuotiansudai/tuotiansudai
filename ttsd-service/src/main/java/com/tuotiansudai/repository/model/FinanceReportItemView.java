@@ -26,6 +26,9 @@ public class FinanceReportItemView implements Serializable {
     private long actualInterest; //实际收益 InvestRepayModel.actualInterest
     private long fee;   //服务费   InvestRepayModel.actualFee
     private long actualRepayAmount; //实际回款  InvestRepayModel.repayAmount
+    private long couponId;  //使用红包
+    private double extraRate; //使用阶梯加息利率
+    private long extraAmount; //阶梯加息加息金额
 
     public long getLoanId() {
         return loanId;
@@ -201,5 +204,29 @@ public class FinanceReportItemView implements Serializable {
 
     public void setActualRepayAmount(long actualRepayAmount) {
         this.actualRepayAmount = actualRepayAmount;
+    }
+
+    public long getCouponId() {
+        return couponId;
+    }
+
+    public void setCouponId(long couponId) {
+        this.couponId = couponId;
+    }
+
+    public double getExtraRate() {
+        return extraRate;
+    }
+
+    public void setExtraRate(double extraRate) {
+        this.extraRate = extraRate;
+    }
+
+    public long getExtraAmount() {
+        return extraAmount;
+    }
+
+    public void setExtraAmount(long extraAmount) {
+        this.extraAmount = extraAmount;
     }
 }

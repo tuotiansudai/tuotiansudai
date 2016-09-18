@@ -2,6 +2,8 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.repository.model.ActivityModel;
 
+import java.util.Date;
+
 public class ActivityCenterDataDto {
     private String descTitle;
     private String imageUrl;
@@ -9,6 +11,8 @@ public class ActivityCenterDataDto {
     private String title;
     private String sharedUrl;
     private String content;
+    private Date activatedTime;
+    private Date expiredTime;
 
 
     public ActivityCenterDataDto() {
@@ -21,6 +25,8 @@ public class ActivityCenterDataDto {
         this.title = activityModel.getTitle();
         this.content = activityModel.getShareContent();
         this.sharedUrl = activityModel.getShareUrl();
+        this.activatedTime = activityModel.getActivatedTime();
+        this.expiredTime = activityModel.getExpiredTime();
     }
 
     public String getDescTitle() {
@@ -69,5 +75,21 @@ public class ActivityCenterDataDto {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Date getActivatedTime() {
+        return activatedTime;
+    }
+
+    public void setActivatedTime(Date activatedTime) {
+        this.activatedTime = activatedTime;
+    }
+
+    public Date getExpiredTime() {
+        return expiredTime;
+    }
+
+    public void setExpiredTime(Date expiredTime) {
+        this.expiredTime = expiredTime;
     }
 }

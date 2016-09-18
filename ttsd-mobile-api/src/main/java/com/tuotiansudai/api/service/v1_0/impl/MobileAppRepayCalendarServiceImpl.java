@@ -8,11 +8,12 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppRepayCalendarService;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
+import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.InvestRepayModel;
-import com.tuotiansudai.repository.model.RepayStatus;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
@@ -44,6 +45,9 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
+
+    @Autowired
+    private InvestExtraRateMapper investExtraRateMapper;
 
     private static final String YEAR_REPAY_CALENDAR = "YEAR_REPAY_CALENDAR";
 
@@ -114,6 +118,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
     public BaseResponseDto<RepayCalendarDateListResponseDto> getDateRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto) {
         BaseResponseDto<RepayCalendarDateListResponseDto> baseResponseDto = new BaseResponseDto<>();
         List<RepayCalendarDateResponseDto> repayCalendarDateResponseDtoList = Lists.newArrayList();
+        long experienceLoanId = loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(ProductType.EXPERIENCE), ActivityType.NEWBIE).get(0).getId();
         List<InvestRepayModel> investRepayModelList = investRepayMapper.findInvestRepayByLoginNameAndRepayTime(repayCalendarRequestDto.getBaseParam().getUserId(), null, null, repayCalendarRequestDto.getDate());
         long repayExpectedInterest = 0;
         long repayActualInterest = 0;
@@ -123,6 +128,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
+            //提前还款
             if (investRepayModel.getActualRepayDate() != null && !formatDate.format(investRepayModel.getActualRepayDate()).equals(repayCalendarRequestDto.getDate())) {
                 continue;
             }
@@ -153,12 +159,34 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 }
             }
             int periods = investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId()).size();
+            InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
+            if (investModel.getLoanId() == experienceLoanId) {
+                continue;
+            }
+
+            if (periods == investRepayModel.getPeriod()) {
+                InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
+                if(investExtraRateModel != null && !investExtraRateModel.isTransfer()){
+                    if(investExtraRateModel.getActualRepayDate() != null){
+                        repayActualInterest += investExtraRateModel.getRepayAmount();
+                        totalAmount += investExtraRateModel.getRepayAmount();
+                    }else{
+                        repayExpectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+                        totalAmount += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+                    }
+                }
+            }
+            boolean isTransferred = investModel.getTransferInvestId() != null ? true : false;
+            TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investRepayModel.getInvestId());
             repayCalendarDateResponseDtoList.add(new RepayCalendarDateResponseDto(loanMapper.findById(investMapper.findById(investRepayModel.getInvestId()).getLoanId()).getName(),
                     AmountConverter.convertCentToString(repayActualInterest),
                     AmountConverter.convertCentToString(repayExpectedInterest),
                     investRepayModel.getActualRepayDate() != null && investRepayModel.getCorpus() > 0 ? String.valueOf(periods) : String.valueOf(investRepayModel.getPeriod()),
                     String.valueOf(periods),
-                    investRepayModel.getStatus().name()));
+                    investRepayModel.getStatus().name(),
+                    String.valueOf(investRepayModel.getInvestId()),
+                    isTransferred,
+                    transferApplicationModel != null ? String.valueOf(transferApplicationModel.getId()) : ""));
         }
 
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestIdAndTransferTime(repayCalendarRequestDto.getBaseParam().getUserId(), null, null, repayCalendarRequestDto.getDate());
@@ -166,11 +194,14 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             totalAmount += transferApplicationModel.getTransferAmount();
             int periods = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId()).size();
             repayCalendarDateResponseDtoList.add(new RepayCalendarDateResponseDto(loanMapper.findById(transferApplicationModel.getLoanId()).getName(),
-                    AmountConverter.convertCentToString(repayActualInterest),
-                    AmountConverter.convertCentToString(repayExpectedInterest),
+                    AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()),
+                    AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()),
                     String.valueOf(periods),
                     String.valueOf(periods),
-                    RepayStatus.COMPLETE.name()));
+                    RepayStatus.COMPLETE.name(),
+                    String.valueOf(transferApplicationModel.getTransferInvestId()),
+                    false,
+                    String.valueOf(transferApplicationModel.getId())));
         }
 
         RepayCalendarDateListResponseDto repayCalendarDateListResponseDto = new RepayCalendarDateListResponseDto();
@@ -245,6 +276,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
+            //提前还款
             if (RepayStatus.COMPLETE == couponRepayModel.getStatus() && couponRepayModel.getActualRepayDate() != null && couponRepayModel.getActualRepayDate().before(new DateTime(couponRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())) {
                 continue;
             }
@@ -256,7 +288,6 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 couponRepayCalendarResponseDtoMaps.put(dateFormat.format(couponRepayModel.getRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(couponRepayModel.getRepayDate()), couponRepayModel));
                 continue;
             }
-
 
             if (couponRepayModel.getActualRepayDate() != null) {
                 couponRepayCalendarYearResponseDto = couponRepayCalendarResponseDtoMaps.get(dateFormat.format(couponRepayModel.getActualRepayDate()));
@@ -273,12 +304,18 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         List<InvestRepayModel> investRepayModelList = investRepayMapper.findInvestRepayByLoginNameAndRepayTime(userId, yearDate, replenishMonth(monthDate), null);
         RepayCalendarYearResponseDto repayCalendarYearResponseDto;
         Map<String, RepayCalendarYearResponseDto> repayCalendarResponseDtoMaps = Maps.newConcurrentMap();
+        long experienceLoanId = loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(ProductType.EXPERIENCE), ActivityType.NEWBIE).get(0).getId();
         for (InvestRepayModel investRepayModel : investRepayModelList) {
             if (investRepayModel.isTransferred()) {
                 continue;
             }
 
             if (RepayStatus.COMPLETE == investRepayModel.getStatus() && investRepayModel.getActualRepayDate() != null && investRepayModel.getActualRepayDate().before(new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())) {
+                continue;
+            }
+
+            InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
+            if (experienceLoanId == investModel.getLoanId()) {
                 continue;
             }
 
@@ -296,6 +333,21 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             } else {
                 repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate()));
                 repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(), String.valueOf(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest())));
+            }
+
+            int periods = investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId()).size();
+
+            if (periods == investRepayModel.getPeriod()) {
+                InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
+                if(investExtraRateModel != null && !investExtraRateModel.isTransfer()){
+                    if(investExtraRateModel.getActualRepayDate() != null){
+                        repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getActualRepayDate()));
+                        repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(), String.valueOf(investExtraRateModel.getRepayAmount())));
+                    }else{
+                        repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate()));
+                        repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(), String.valueOf(investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee())));
+                    }
+                }
             }
         }
         return repayCalendarResponseDtoMaps;
