@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.FinanceReportItemView;
+import com.tuotiansudai.repository.model.PreferenceType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +15,7 @@ public interface FinanceReportMapper {
                                                        @Param(value = "investLoginName") String investLoginName,
                                                        @Param(value = "investStartTime") Date investStartTime,
                                                        @Param(value = "investEndTime") Date investEndTime,
+                                                       @Param(value = "preferenceType") PreferenceType preferenceType,
                                                        @Param(value = "index") int index,
                                                        @Param(value = "pageSize") int pageSize);
 
@@ -21,5 +23,6 @@ public interface FinanceReportMapper {
                                     @Param(value = "period") Integer period,
                                     @Param(value = "investLoginName") String investLoginName,
                                     @Param(value = "investStartTime") Date investStartTime,
-                                    @Param(value = "investEndTime") Date investEndTime);
+                                    @Param(value = "investEndTime") Date investEndTime,
+                                    @Param(value = "preferenceType") PreferenceType preferenceType);
 }

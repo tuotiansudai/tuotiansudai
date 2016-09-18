@@ -87,7 +87,11 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                             } else if (o1.getProductType().getDuration() < o2.getProductType().getDuration()) {
                                 return -1;
                             } else {
-                                return 0;
+                                if (o1.getVerifyTime().after(o2.getVerifyTime())) {
+                                    return -1;
+                                } else {
+                                    return 1;
+                                }
                             }
                         }
                     }
@@ -97,15 +101,26 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                     loanModel = raisingLoanModels.get(0);
                 } else {
                     //登录 && 投资过其它标
-                    loanModel = raisingLoanModels.get(raisingLoanModels.size() - 1);
+                    Collections.reverse(raisingLoanModels);
+                    loanModel = raisingLoanModels.get(0);
+                    if (raisingLoanModels.size() > 1) {
+                        for (int i = 1; i < raisingLoanModels.size(); ++i) {
+                            if (loanModel.getProductType() == raisingLoanModels.get(i).getProductType()) {
+                                loanModel = raisingLoanModels.get(i);
+                            } else {
+                                break;
+                            }
+                        }
+                    }
                 }
             } else {
                 //没有可投标的
-                List<LoanModel> completedLoanModels = loanMapper.findByStatus(LoanStatus.COMPLETE);
-                if (completedLoanModels.size() > 0) {
-                    loanModel = completedLoanModels.get(0);
-                    for (LoanModel curLoanModel : completedLoanModels) {
-                        if (loanModel.getRecheckTime().before(curLoanModel.getRecheckTime())) {
+                List<LoanModel> soldLoanModels = loanMapper.findByStatus(LoanStatus.COMPLETE);
+                soldLoanModels.addAll(loanMapper.findByStatus(LoanStatus.REPAYING));
+                if (soldLoanModels.size() > 0) {
+                    loanModel = soldLoanModels.get(0);
+                    for (LoanModel curLoanModel : soldLoanModels) {
+                        if (loanModel.getRaisingCompleteTime().before(curLoanModel.getRaisingCompleteTime())) {
                             loanModel = curLoanModel;
                         }
                     }

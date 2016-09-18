@@ -98,6 +98,10 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                     expectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
                 }
 
+                if(investExtraRateModel != null && investExtraRateModel.getActualRepayDate() != null){
+                    actualInterest += investExtraRateModel.getRepayAmount();
+                }
+
                 List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
                 for (InvestRepayModel investRepayModel : investRepayModels) {
                     CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(),investRepayModel.getPeriod());

@@ -1,49 +1,73 @@
 package com.tuotiansudai.repository.model;
 
-import java.text.DecimalFormat;
+import com.google.common.base.Splitter;
+import org.springframework.util.StringUtils;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class InvestPaginationItemView extends InvestModel {
+public class InvestPaginationItemView implements Serializable {
+    private long investId;
+    private long loanId;
     private String loanName;
-
-    private LoanStatus loanStatus;
-
-    private LoanType loanType;
-
     private int loanPeriods;
-
-    private String roles;
-
+    private String investorLoginName;
     private String investorUserName;
-
     private String investorMobile;
-
+    private String investorRoles;
     private String referrerLoginName;
-
     private String referrerUserName;
-
     private String referrerMobile;
-
     private String referrerRoles;
+    private String channel;
+    private Source source;
+    private Date investTime;
+    private boolean autoInvest;
+    private long investAmount;
+    private long couponId;
+    private double extraRate;
+    private long extraActualInterest;
+    private InvestStatus investStatus;
 
-    private Date nextRepayDate;
+    public List<Role> getInvestorRoleList() {
+        List<Role> roles = new ArrayList<>();
+        if (!StringUtils.isEmpty(investorRoles) && !StringUtils.isEmpty(investorRoles.trim())) {
+            List<String> roleStrings = Splitter.on(",").trimResults().splitToList(investorRoles);
+            for (String roleString : roleStrings) {
+                roles.add(Role.valueOf(roleString));
+            }
+        }
+        return roles;
+    }
 
-    private long nextRepayAmount;
+    public List<Role> getReferrerRoleList() {
+        List<Role> roles = new ArrayList<>();
+        if (!StringUtils.isEmpty(referrerRoles) && !StringUtils.isEmpty(referrerRoles.trim())) {
+            List<String> roleStrings = Splitter.on(",").trimResults().splitToList(referrerRoles);
+            for (String roleString : roleStrings) {
+                roles.add(Role.valueOf(roleString));
+            }
+        }
+        return roles;
+    }
 
-    private String identityNumber;
+    public long getInvestId() {
+        return investId;
+    }
 
-    private String province;
+    public void setInvestId(long investId) {
+        this.investId = investId;
+    }
 
-    private String city;
+    public long getLoanId() {
+        return loanId;
+    }
 
-    private boolean birthdayCoupon;
-
-    private double birthdayBenefit;
-
-    private double loanBaseRate;
-
-    private double loanActivityRate;
+    public void setLoanId(long loanId) {
+        this.loanId = loanId;
+    }
 
     public String getLoanName() {
         return loanName;
@@ -51,22 +75,6 @@ public class InvestPaginationItemView extends InvestModel {
 
     public void setLoanName(String loanName) {
         this.loanName = loanName;
-    }
-
-    public LoanType getLoanType() {
-        return loanType;
-    }
-
-    public void setLoanType(LoanType loanType) {
-        this.loanType = loanType;
-    }
-
-    public LoanStatus getLoanStatus() {
-        return loanStatus;
-    }
-
-    public void setLoanStatus(LoanStatus loanStatus) {
-        this.loanStatus = loanStatus;
     }
 
     public int getLoanPeriods() {
@@ -77,36 +85,12 @@ public class InvestPaginationItemView extends InvestModel {
         this.loanPeriods = loanPeriods;
     }
 
-    public String getRoles() {
-        return roles;
+    public String getInvestorLoginName() {
+        return investorLoginName;
     }
 
-    public void setRoles(String roles) {
-        this.roles = roles;
-    }
-
-    public String getReferrerLoginName() {
-        return referrerLoginName;
-    }
-
-    public void setReferrerLoginName(String referrerLoginName) {
-        this.referrerLoginName = referrerLoginName;
-    }
-
-    public Date getNextRepayDate() {
-        return nextRepayDate;
-    }
-
-    public void setNextRepayDate(Date nextRepayDate) {
-        this.nextRepayDate = nextRepayDate;
-    }
-
-    public long getNextRepayAmount() {
-        return nextRepayAmount;
-    }
-
-    public void setNextRepayAmount(long nextRepayAmount) {
-        this.nextRepayAmount = nextRepayAmount;
+    public void setInvestorLoginName(String investorLoginName) {
+        this.investorLoginName = investorLoginName;
     }
 
     public String getInvestorUserName() {
@@ -123,6 +107,22 @@ public class InvestPaginationItemView extends InvestModel {
 
     public void setInvestorMobile(String investorMobile) {
         this.investorMobile = investorMobile;
+    }
+
+    public String getInvestorRoles() {
+        return investorRoles;
+    }
+
+    public void setInvestorRoles(String investorRoles) {
+        this.investorRoles = investorRoles;
+    }
+
+    public String getReferrerLoginName() {
+        return referrerLoginName;
+    }
+
+    public void setReferrerLoginName(String referrerLoginName) {
+        this.referrerLoginName = referrerLoginName;
     }
 
     public String getReferrerUserName() {
@@ -149,70 +149,75 @@ public class InvestPaginationItemView extends InvestModel {
         this.referrerRoles = referrerRoles;
     }
 
-    public String getIdentityNumber() {
-        return identityNumber;
+    public String getChannel() {
+        return channel;
     }
 
-    public void setIdentityNumber(String identityNumber) {
-        this.identityNumber = identityNumber;
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
-    public String getProvince() {
-        return province;
+    public Source getSource() {
+        return source;
     }
 
-    public void setProvince(String province) {
-        this.province = province;
+    public void setSource(Source source) {
+        this.source = source;
     }
 
-    public String getCity() {
-        return city;
+    public Date getInvestTime() {
+        return investTime;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setInvestTime(Date investTime) {
+        this.investTime = investTime;
     }
 
-    public boolean isBirthdayCoupon() {
-        return birthdayCoupon;
+    public boolean isAutoInvest() {
+        return autoInvest;
     }
 
-    public void setBirthdayCoupon(boolean birthdayCoupon) {
-        this.birthdayCoupon = birthdayCoupon;
+    public void setAutoInvest(boolean autoInvest) {
+        this.autoInvest = autoInvest;
     }
 
-    public double getBirthdayBenefit() {
-        return birthdayBenefit;
+    public long getInvestAmount() {
+        return investAmount;
     }
 
-    public void setBirthdayBenefit(double birthdayBenefit) {
-        this.birthdayBenefit = birthdayBenefit;
+    public void setInvestAmount(long investAmount) {
+        this.investAmount = investAmount;
     }
 
-    public String getLoanBaseRatePercent(){
-        return new DecimalFormat("######0.##").format(loanBaseRate * 100);
-    }
-    public double getLoanBaseRate() {
-        return loanBaseRate;
+    public long getCouponId() {
+        return couponId;
     }
 
-    public void setLoanBaseRate(double loanBaseRate) {
-        this.loanBaseRate = loanBaseRate;
+    public void setCouponId(long couponId) {
+        this.couponId = couponId;
     }
 
-    public String getLoanActivityRatePercent(){
-        return new DecimalFormat("######0.##").format(loanActivityRate * 100);
+    public double getExtraRate() {
+        return extraRate;
     }
 
-    public String getSumRatePercent(){
-        return new DecimalFormat("######0.##").format((loanActivityRate + loanBaseRate) * 100);
+    public void setExtraRate(double extraRate) {
+        this.extraRate = extraRate;
     }
 
-    public double getLoanActivityRate() {
-        return loanActivityRate;
+    public long getExtraActualInterest() {
+        return extraActualInterest;
     }
 
-    public void setLoanActivityRate(double loanActivityRate) {
-        this.loanActivityRate = loanActivityRate;
+    public void setExtraActualInterest(long extraActualInterest) {
+        this.extraActualInterest = extraActualInterest;
+    }
+
+    public InvestStatus getInvestStatus() {
+        return investStatus;
+    }
+
+    public void setInvestStatus(InvestStatus investStatus) {
+        this.investStatus = investStatus;
     }
 }
