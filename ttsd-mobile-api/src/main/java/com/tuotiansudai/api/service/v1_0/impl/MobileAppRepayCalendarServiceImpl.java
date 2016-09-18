@@ -158,7 +158,8 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                     totalAmount += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
                 }
             }
-            int periods = investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId()).size();
+
+            int periods = loanMapper.findById(investMapper.findById(investRepayModel.getInvestId()).getLoanId()).getPeriods();
             InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
             if (investModel.getLoanId() == experienceLoanId) {
                 continue;
