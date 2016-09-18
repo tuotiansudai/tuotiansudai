@@ -3,6 +3,7 @@ package com.tuotiansudai.console.activity.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.dto.LotteryPrize;
+import com.tuotiansudai.activity.dto.NationalPrize;
 import com.tuotiansudai.activity.dto.PrizeType;
 import com.tuotiansudai.console.activity.service.UserLotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ public class LotteryController {
     @RequestMapping(value = "/user-prize-list", method = RequestMethod.GET)
     public ModelAndView userPrizeList(@RequestParam(name = "mobile", required = false) String mobile,
                                       @RequestParam(name = "selectPrize", required = false) LotteryPrize selectPrize,
+                                      @RequestParam(name = "selectNational", required = false) LotteryPrize selectNational,
                                       @RequestParam(name = "prizeType", required = false) PrizeType prizeType,
                                       @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                       @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
@@ -57,9 +59,9 @@ public class LotteryController {
                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/activity-prize-list");
         prizeType = prizeType == null ? PrizeType.AUTUMN_PRIZE : prizeType;
-        int lotteryCount = userLotteryService.findUserLotteryPrizeCountViews(mobile, selectPrize, prizeType, startTime, endTime);
+        int lotteryCount = userLotteryService.findUserLotteryPrizeCountViews(mobile, selectPrize == null ? selectNational.toString() : selectPrize.toString(), prizeType, startTime, endTime);
         modelAndView.addObject("lotteryCount", lotteryCount);
-        modelAndView.addObject("prizeList", userLotteryService.findUserLotteryPrizeViews(mobile, selectPrize, prizeType,startTime, endTime, (index - 1) * pageSize, pageSize));
+        modelAndView.addObject("prizeList", userLotteryService.findUserLotteryPrizeViews(mobile, selectPrize == null ? selectNational.toString() : selectPrize.toString(), prizeType,startTime, endTime, (index - 1) * pageSize, pageSize));
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         long totalPages = lotteryCount / pageSize + (lotteryCount % pageSize > 0 || lotteryCount == 0 ? 1 : 0);
@@ -74,6 +76,8 @@ public class LotteryController {
         modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("selectPrizeType",prizeType);
         modelAndView.addObject("prizeTypes", Lists.newArrayList(PrizeType.values()));
+        modelAndView.addObject("nationals", Lists.newArrayList(NationalPrize.values()));
+        modelAndView.addObject("selectNational",selectNational == null ? "" : selectNational);
         return modelAndView;
     }
 }

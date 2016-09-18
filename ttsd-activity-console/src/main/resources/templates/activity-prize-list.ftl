@@ -19,7 +19,7 @@
 
                 <div class="form-group">
                     <label>活动类型</label>
-                    <select class="selectpicker" name="prizeType">
+                    <select class="selectpicker" name="prizeType" onchange="switchPrize()">
                         <#list prizeTypes as prizeType>
                             <option value="${prizeType}" <#if prizeTypes?? && prizeType==selectPrizeType>selected</#if>>
                             ${prizeType.description}
@@ -37,6 +37,14 @@
                                     ${prize.description}
                                 </option>
                         </#list>
+                    </select>
+                    <select class="selectpicker" name="selectNational" style="display: none">
+                        <option value="" <#if !(nationals??)>selected</#if>>全部</option>
+                            <#list nationals as national>
+                                <option value="${national}" <#if nationals?? && national==selectNational>selected</#if>>
+                                ${national.description}
+                                </option>
+                            </#list>
                     </select>
                 </div>
 

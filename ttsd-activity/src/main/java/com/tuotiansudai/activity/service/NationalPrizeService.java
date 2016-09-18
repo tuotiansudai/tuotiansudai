@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.dto.LotteryPrize;
+import com.tuotiansudai.activity.dto.NationalPrize;
 import com.tuotiansudai.activity.dto.PrizeType;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
@@ -143,9 +144,9 @@ public class NationalPrizeService {
 
         userMapper.lockByLoginName(userModel.getLoginName());
 
-        LotteryPrize lotteryPrize = getDrawPrize(drawType);
-        if(lotteryPrize.getType().equals("virtual")){
-            couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
+        NationalPrize nationalPrize = getNationalprize();
+        if(nationalPrize.equals(NationalPrize.RED_ENVELOPE_15) || nationalPrize.equals(NationalPrize.RED_ENVELOPE_50)){
+            couponAssignmentService.assignUserCoupon(mobile, getCouponId(nationalPrize));
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
@@ -156,35 +157,33 @@ public class NationalPrizeService {
         return drawLotteryResultDto;
     }
 
-    private long getCouponId(LotteryPrize lotteryPrize){
+    private long getCouponId(NationalPrize lotteryPrize){
         switch (lotteryPrize){
-            case RED_ENVELOPE_100 :
-                return 305;
+            case RED_ENVELOPE_15 :
+                return 309;
             case RED_ENVELOPE_50 :
-                return 306;
-            case INTEREST_COUPON_5 :
-                return 307;
-            case INTEREST_COUPON_2 :
-                return 308;
+                return 310;
         }
         return 0l;
     }
 
-    private LotteryPrize getDrawPrize(LotteryPrize drawType){
+    private NationalPrize getNationalprize(){
         int random = (int) (Math.random() * 100000000);
-        int mod = random % 200;
-        if(drawType.equals(LotteryPrize.TOURISM) && mod == 0){
-            return LotteryPrize.MANGO_CARD_100;
-        } else if (drawType.equals(LotteryPrize.LUXURY) && mod == 0){
-            return LotteryPrize.PORCELAIN_CUP;
-        } else if (mod >= 1 && mod <= 40){ // 1/5
-            return LotteryPrize.RED_ENVELOPE_100;
-        } else if (mod >= 41 && mod <= 90){ // 1/4
-            return LotteryPrize.RED_ENVELOPE_50;
-        } else if (mod >= 91 && mod <= 140){ // 1/4
-            return LotteryPrize.INTEREST_COUPON_5;
-        } else {
-            return LotteryPrize.INTEREST_COUPON_2;
+        int mod = random % 100;
+        if (mod >= 0 && mod <= 3){
+            return NationalPrize.MEMBERSHIP_V5;
+        } else if (mod >= 4 && mod <= 6){
+            return NationalPrize.CINEMA_TICKET;
+        } else if (mod >= 7 && mod <= 10){
+            return NationalPrize.IQIYI_MEMBERSHIP;
+        } else if (mod >= 11 && mod <= 15){
+            return NationalPrize.TELEPHONE_FARE_10;
+        } else if (mod >= 16 && mod <= 45){
+            return NationalPrize.RED_ENVELOPE_50;
+        }else if (mod >= 46 && mod <= 75){
+            return NationalPrize.RED_ENVELOPE_15;
+        }else{
+            return NationalPrize.MEMBERSHIP_V5;
         }
     }
 
