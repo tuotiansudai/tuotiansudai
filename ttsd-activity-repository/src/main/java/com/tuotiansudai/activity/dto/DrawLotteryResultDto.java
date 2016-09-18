@@ -5,6 +5,17 @@ import com.tuotiansudai.dto.BaseDataDto;
 
 public class DrawLotteryResultDto extends BaseDataDto {
 
+    public DrawLotteryResultDto(int returnCode,String prize,String prizeType){
+        this.returnCode = returnCode;
+        this.prize = prize;
+        this.prizeType = prizeType;
+    }
+
+
+    public DrawLotteryResultDto(int returnCode){
+        this.returnCode = returnCode;
+    }
+
     private int returnCode;
 
     private String prize;

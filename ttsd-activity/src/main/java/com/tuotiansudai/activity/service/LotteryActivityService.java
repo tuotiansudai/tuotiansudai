@@ -110,36 +110,27 @@ public class LotteryActivityService {
 
     public DrawLotteryResultDto drawLotteryPrize(String mobile,LotteryPrize drawType){
         logger.debug(mobile + " is drawing the lottery prize.");
-        DrawLotteryResultDto drawLotteryResultDto = new DrawLotteryResultDto();
 
         Date nowDate = DateTime.now().toDate();
         if(!nowDate.before(activityAutumnEndTime) || !nowDate.after(activityAutumnStartTime)){
-            drawLotteryResultDto.setMessage("不在活动时间范围内！");
-            drawLotteryResultDto.setReturnCode(3);
-            return drawLotteryResultDto;
+            return new DrawLotteryResultDto(3);//不在活动时间范围内！
         }
 
         if (StringUtils.isEmpty(mobile)) {
             logger.debug("User not login. can't draw prize.");
-            drawLotteryResultDto.setMessage("您还未登陆，请登陆后再来抽奖吧！");
-            drawLotteryResultDto.setReturnCode(2);
-            return drawLotteryResultDto;
+            return new DrawLotteryResultDto(2);//您还未登陆，请登陆后再来抽奖吧！
         }
 
         int drawTime = getDrawPrizeTime(mobile);
         if(drawTime <= 0){
             logger.debug(mobile + "is no chance. draw time:" + drawTime);
-            drawLotteryResultDto.setMessage("您暂无抽奖机会，赢取机会后再来抽奖吧！");
-            drawLotteryResultDto.setReturnCode(1);
-            return drawLotteryResultDto;
+            return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
 
         UserModel userModel = userMapper.findByMobile(mobile);
         if(userModel == null){
-            logger.debug(mobile + "is no chance. draw time:" + drawTime);
-            drawLotteryResultDto.setMessage("该用户不存在！");
-            drawLotteryResultDto.setReturnCode(1);
-            return drawLotteryResultDto;
+            logger.debug(mobile + "user is not found");
+            return new DrawLotteryResultDto(1);//该用户不存在！
         }
 
         userMapper.lockByLoginName(userModel.getLoginName());
@@ -150,11 +141,8 @@ public class LotteryActivityService {
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(),accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), PrizeType.AUTUMN_PRIZE));
-        drawLotteryResultDto.setReturnCode(0);
-        drawLotteryResultDto.setPrizeType(lotteryPrize.getType());
-        drawLotteryResultDto.setPrize(lotteryPrize.name());
-        return drawLotteryResultDto;
+        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(),accountModel != null ? accountModel.getUserName() : "", lotteryPrize.name(), DateTime.now().toDate(), PrizeType.AUTUMN_PRIZE));
+        return new DrawLotteryResultDto(0,lotteryPrize.name(),lotteryPrize.getType());
     }
 
     private long getCouponId(LotteryPrize lotteryPrize){
@@ -199,7 +187,7 @@ public class LotteryActivityService {
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile,LotteryPrize activityType){
         List<LotteryPrize> lotteryPrizes = activityType.equals(LotteryPrize.TOURISM) ? Lists.newArrayList(LotteryPrize.TOURISM,LotteryPrize.MANGO_CARD_100) : Lists.newArrayList(LotteryPrize.PORCELAIN_CUP,LotteryPrize.LUXURY);
 
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, lotteryPrizes);
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, lotteryPrizes,PrizeType.AUTUMN_PRIZE);
         for(UserLotteryPrizeView view : userLotteryPrizeViews){
             view.setMobile(randomUtils.encryptWebMiddleMobile(view.getMobile()));
         }

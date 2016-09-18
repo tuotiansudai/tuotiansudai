@@ -99,6 +99,10 @@
                     #{prize}
                 </foreach>
             </if>
+
+            <if test="prizeType != null">
+                and prize_type = #{prizeType}
+            </if>
         </where>
         order by lottery_time DESC
     </select>
