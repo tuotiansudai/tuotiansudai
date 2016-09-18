@@ -236,21 +236,6 @@
                                 <span class="principal-income">0.00</span>
                                 <span class="experience-income"></span>
                                 元
-                                <#if membershipPreferenceValid>
-                                    <#if membershipLevel==2>
-                                        <i class="icon-graded level2"></i>
-                                    </#if>
-                                    <#if membershipLevel==3>
-                                        <i class="icon-graded level3"></i>
-                                    </#if>
-                                    <#if membershipLevel==4>
-                                        <i class="icon-graded level4"></i>
-                                    </#if>
-                                    <#if membershipLevel==5>
-                                        <i class="icon-graded level5"></i>
-                                    </#if>
-                                </#if>
-
                             </dd>
 
                             <dd class="time-item" <#if loan.loanStatus == "RAISING">style="display: none"</#if>>
