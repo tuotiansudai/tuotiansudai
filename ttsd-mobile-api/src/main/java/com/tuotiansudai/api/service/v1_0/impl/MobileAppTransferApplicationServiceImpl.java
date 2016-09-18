@@ -323,6 +323,9 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
             CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
             InvestRepayDataDto investRepayDataDto = new InvestRepayDataDto(investRepayModel, couponRepayModel);
             userInvestRepayResponseDataDto.getInvestRepays().add(investRepayDataDto);
+            if (investRepayModel.getPeriod() == loanModel.getPeriods()) {
+                userInvestRepayResponseDataDto.setLastRepayDate(simpleDateFormat.format(investRepayModel.getRepayDate()));
+            }
         }
 
         userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(totalExpectedInterest));

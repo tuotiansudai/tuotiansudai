@@ -18,6 +18,7 @@ import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
@@ -64,6 +65,9 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
 
+    @Autowired
+    private LoanMapper loanMapper;
+
     private final static String RED_ENVELOPE_TEMPLATE = "{0}元现金红包";
 
     private final static String NEWBIE_COUPON_TEMPLATE = "{0}元新手体验金";
@@ -84,37 +88,39 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             InvestModel investModel = investService.findById(Long.parseLong(userInvestRepayRequestDto.getInvestId().trim()));
             LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
             //未放款时按照预计利息计算
-            if(loanModel.getRecheckTime() == null){
+            if (loanModel.getRecheckTime() == null) {
                 totalExpectedInterest = investService.estimateInvestIncome(loanModel.getId(), investModel.getLoginName(), investModel.getAmount());
             }
             UserInvestRepayResponseDataDto userInvestRepayResponseDataDto = new UserInvestRepayResponseDataDto(loanModel, investModel);
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
             List<InvestRepayDataDto> investRepayList = new ArrayList<>();
-            int maxPeriods = investRepayModels == null?0:investRepayModels.size();
+            int maxPeriods = investRepayModels == null ? 0 : investRepayModels.size();
             InvestRepayModel lastedInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), maxPeriods);
             userInvestRepayResponseDataDto.setLastRepayDate(lastedInvestRepayModel == null ? "" : sdf.format(lastedInvestRepayModel.getRepayDate()));
             List<TransferApplicationModel> transferApplicationModels;
             for (InvestRepayModel investRepayModel : investRepayModels) {
                 Date repayDate = investRepayModel.getActualRepayDate();
-                if(investRepayModel.isTransferred()){
+                if (investRepayModel.isTransferred()) {
                     transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.SUCCESS));
-                    if(CollectionUtils.isNotEmpty(transferApplicationModels) && transferApplicationModels.get(0).getPeriod() != investRepayModel.getPeriod()){
+                    if (CollectionUtils.isNotEmpty(transferApplicationModels) && transferApplicationModels.get(0).getPeriod() != investRepayModel.getPeriod()) {
                         continue;
                     }
                     repayDate = transferApplicationModels.get(0).getTransferTime();
                 }
-                CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(),investRepayModel.getPeriod());
-                long expectedInterest = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee();
+                CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
+                long expectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee();
                 long actualInterest = investRepayModel.getRepayAmount();
-                if(couponRepayModel != null){
+                if (couponRepayModel != null) {
                     expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
                     actualInterest += couponRepayModel.getRepayAmount();
                 }
 
-                int periods = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId()).size();
+                int periods = loanMapper.findById(investModel.getLoanId()).getPeriods();
+                long corpus = 0;
                 if (periods == investRepayModel.getPeriod()) {
+                    corpus = investRepayModel.getCorpus();
                     InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
-                    if(investExtraRateModel != null && !investExtraRateModel.isTransfer()){
+                    if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
                         expectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
                         actualInterest += investExtraRateModel.getRepayAmount();
                     }
@@ -125,14 +131,14 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 investRepayDataDto.setPeriod(investRepayModel.getPeriod());
                 investRepayDataDto.setRepayDate(sdf.format(investRepayModel.getRepayDate()));
                 investRepayDataDto.setActualRepayDate(repayDate == null ? "" : sdf.format(repayDate));
-                investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
+                investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest + corpus));
                 investRepayDataDto.setActualInterest(AmountConverter.convertCentToString(actualInterest));
                 investRepayDataDto.setStatus(investRepayModel.getStatus().name());
                 investRepayList.add(investRepayDataDto);
                 if (investRepayModel.getStatus() == RepayStatus.COMPLETE) {
                     completeTotalActualInterest += actualInterest;
-                }else{
-                    unPaidTotalRepay += expectedInterest;
+                } else {
+                    unPaidTotalRepay += expectedInterest + investRepayModel.getCorpus();
                 }
                 totalExpectedInterest += expectedInterest;
             }
@@ -156,7 +162,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             responseDto.setCode(ReturnMessage.SUCCESS.getCode());
             responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
             responseDto.setData(userInvestRepayResponseDataDto);
-        }catch(Exception e){
+        } catch (Exception e) {
             responseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
             responseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
             e.printStackTrace();
@@ -164,23 +170,23 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         return responseDto;
     }
 
-    private String generateUsedCouponName(CouponModel couponModel){
-        if(couponModel == null){
+    private String generateUsedCouponName(CouponModel couponModel) {
+        if (couponModel == null) {
             return "";
         }
         String usedCouponName = "";
-        switch (couponModel.getCouponType()){
+        switch (couponModel.getCouponType()) {
             case RED_ENVELOPE:
-                usedCouponName = MessageFormat.format(RED_ENVELOPE_TEMPLATE,AmountConverter.convertCentToString(couponModel.getAmount()));
+                usedCouponName = MessageFormat.format(RED_ENVELOPE_TEMPLATE, AmountConverter.convertCentToString(couponModel.getAmount()));
                 return usedCouponName;
             case NEWBIE_COUPON:
-                usedCouponName = MessageFormat.format(NEWBIE_COUPON_TEMPLATE,AmountConverter.convertCentToString(couponModel.getAmount()));
+                usedCouponName = MessageFormat.format(NEWBIE_COUPON_TEMPLATE, AmountConverter.convertCentToString(couponModel.getAmount()));
                 return usedCouponName;
             case INVEST_COUPON:
-                usedCouponName = MessageFormat.format(INVEST_COUPON_TEMPLATE,AmountConverter.convertCentToString(couponModel.getAmount()));
+                usedCouponName = MessageFormat.format(INVEST_COUPON_TEMPLATE, AmountConverter.convertCentToString(couponModel.getAmount()));
                 return usedCouponName;
             case INTEREST_COUPON:
-                usedCouponName = MessageFormat.format(INTEREST_COUPON_TEMPLATE,couponModel.getRate() * 100);
+                usedCouponName = MessageFormat.format(INTEREST_COUPON_TEMPLATE, couponModel.getRate() * 100);
                 return usedCouponName;
             case BIRTHDAY_COUPON:
                 usedCouponName = couponModel.getCouponType().getName();
