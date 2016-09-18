@@ -245,16 +245,18 @@
         loan.id AS loan_id,
         loan.name AS loan_name,
         loan.periods AS loan_periods,
-        investor_user.login_name AS investor_login_name,
-        investor_account.user_name AS investor_username,
-        investor_user.mobile AS investor_mobile,
-        (SELECT group_concat(role ORDER BY role separator ', ') FROM user_role WHERE login_name = invest.login_name) AS
+        invest.login_name AS investor_login_name,
+        (SELECT user_name FROM account WHERE login_name = invest.login_name) AS investor_username,
+        (SELECT mobile FROM user WHERE login_name = invest.login_name) AS investor_mobile,
+        (SELECT GROUP_CONCAT(role ORDER BY role SEPARATOR ', ') FROM user_role WHERE login_name = invest.login_name) AS
         investor_roles,
-        referrer_user.login_name AS referrer_login_name,
-        referrer_account.user_name AS referrer_username,
-        referrer_user.mobile AS referrer_mobile,
-        (SELECT group_concat(role ORDER BY role separator ', ') FROM user_role WHERE login_name =
-        referrer_user.login_name) as referrer_roles,
+        (SELECT referrer FROM user WHERE login_name = invest.login_name) AS referrer_login_name,
+        (SELECT user_name FROM account WHERE login_name = (SELECT referrer FROM user WHERE login_name =
+        invest.login_name)) AS referrer_username,
+        (SELECT mobile FROM user WHERE login_name = (SELECT referrer FROM user WHERE login_name = invest.login_name)) AS
+        referrer_mobile,
+        (SELECT GROUP_CONCAT(role ORDER BY role SEPARATOR ', ') FROM user_role WHERE login_name = (SELECT referrer FROM
+        user WHERE login_name = invest.login_name)) AS referrer_roles,
         invest.channel AS channel,
         invest.source AS source,
         invest.invest_time AS invest_time,
@@ -301,14 +303,6 @@
         )
         invest
         JOIN (SELECT id, name, periods FROM `aa`.`loan`) loan ON invest.loan_id = loan.id
-        JOIN (SELECT login_name, mobile, referrer FROM `aa`.`user`) investor_user ON investor_user.login_name =
-        invest.login_name
-        JOIN (SELECT login_name, user_name FROM `aa`.`account`) investor_account ON investor_account.login_name =
-        investor_user.login_name
-        LEFT JOIN (SELECT login_name, mobile FROM `aa`.`user`) referrer_user ON referrer_user.login_name =
-        investor_user.referrer
-        LEFT JOIN (SELECT login_name, user_name FROM `aa`.`account`) referrer_account ON referrer_account.login_name =
-        referrer_user.login_name
         LEFT JOIN (SELECT user_coupon.coupon_id, user_coupon.invest_id, coupon.coupon_type FROM `aa`.`user_coupon` JOIN
         `aa`.`coupon` ON user_coupon.coupon_id = coupon.id) coupon ON coupon.invest_id = invest.id
         LEFT JOIN (SELECT extra_rate, actual_interest, invest_id FROM `aa`.`invest_extra_rate`) invest_extra_rate ON
@@ -386,7 +380,7 @@
         COUNT(1)
         FROM
         (SELECT
-        id, loan_id, login_name, channel, source, invest_time, is_auto_invest, amount, status
+        id, loan_id
         FROM
         `aa`.`invest`
         <where>
@@ -420,14 +414,6 @@
         )
         invest
         JOIN (SELECT id, name, periods FROM `aa`.`loan`) loan ON invest.loan_id = loan.id
-        JOIN (SELECT login_name, mobile, referrer FROM `aa`.`user`) investor_user ON investor_user.login_name =
-        invest.login_name
-        JOIN (SELECT login_name, user_name FROM `aa`.`account`) investor_account ON investor_account.login_name =
-        investor_user.login_name
-        LEFT JOIN (SELECT login_name, mobile FROM `aa`.`user`) referrer_user ON referrer_user.login_name =
-        investor_user.referrer
-        LEFT JOIN (SELECT login_name, user_name FROM `aa`.`account`) referrer_account ON referrer_account.login_name =
-        referrer_user.login_name
         LEFT JOIN (SELECT user_coupon.coupon_id, user_coupon.invest_id, coupon.coupon_type FROM `aa`.`user_coupon` JOIN
         `aa`.`coupon` ON user_coupon.coupon_id = coupon.id) coupon ON coupon.invest_id = invest.id
         LEFT JOIN (SELECT extra_rate, actual_interest, invest_id FROM `aa`.`invest_extra_rate`) invest_extra_rate ON
@@ -466,7 +452,8 @@
                 and invest.source = #{source}
             </if>
             <if test="role != null and role != ''">
-                and exists (select 1 from user_role where user_role.login_name=invest.login_name and user_role.role= #{role} )
+                and exists (select 1 from user_role where user_role.login_name=invest.login_name and user_role.role=
+                #{role} )
             </if>
             <if test="startTime != null &amp;&amp; endTime != null">
                 and invest.created_time between #{startTime} and #{endTime}
@@ -479,7 +466,7 @@
         IFNULL(sum(amount), 0) as sum_amount
         FROM
         (SELECT
-        id, loan_id, login_name, channel, source, invest_time, amount, status
+        id, loan_id, amount
         FROM
         `aa`.`invest`
         <where>
@@ -513,14 +500,6 @@
         )
         invest
         JOIN (SELECT id, name, periods FROM `aa`.`loan`) loan ON invest.loan_id = loan.id
-        JOIN (SELECT login_name, mobile, referrer FROM `aa`.`user`) investor_user ON investor_user.login_name =
-        invest.login_name
-        JOIN (SELECT login_name, user_name FROM `aa`.`account`) investor_account ON investor_account.login_name =
-        investor_user.login_name
-        LEFT JOIN (SELECT login_name, mobile FROM `aa`.`user`) referrer_user ON referrer_user.login_name =
-        investor_user.referrer
-        LEFT JOIN (SELECT login_name, user_name FROM `aa`.`account`) referrer_account ON referrer_account.login_name =
-        referrer_user.login_name
         LEFT JOIN (SELECT user_coupon.coupon_id, user_coupon.invest_id, coupon.coupon_type FROM `aa`.`user_coupon` JOIN
         `aa`.`coupon` ON user_coupon.coupon_id = coupon.id) coupon ON coupon.invest_id = invest.id
         LEFT JOIN (SELECT extra_rate, actual_interest, invest_id FROM `aa`.`invest_extra_rate`) invest_extra_rate ON
@@ -597,11 +576,6 @@
 
     <select id="getInvestDetail" resultMap="investDataView">
         <![CDATA[
-
-
-
-
-
          select case
             when loan.periods ='1' then 30
             when loan.periods ='3' then 90
@@ -613,11 +587,6 @@
           and invest.trading_time between '2015-07-01 00:00:00' and date_add(curdate(), interval '00:00:00' hour_second)
           group by loan.periods
           ORDER BY productName
-
-
-
-
-
         ]]>
     </select>
 
@@ -755,72 +724,75 @@
     <select id="findWebTransferableApplicationPaginationByLoginName" useCache="false" parameterType="map"
             resultMap="transferableInvestView">
         SELECT
-            invest.loan_id,
-            invest.id as invest_id,
-            invest.amount ,
-            invest.created_time,
-            invest.transfer_status,
-            loan.name as loan_name,
-            loan.base_rate,
-            loan.activity_rate,
-            ( select
-                min(ir.repay_date)
-              from invest_repay ir
-              where ir.invest_id = invest.id and ir.status in ('REPAYING')
-            ) as next_repay_date,
+        invest.loan_id,
+        invest.id as invest_id,
+        invest.amount ,
+        invest.created_time,
+        invest.transfer_status,
+        loan.name as loan_name,
+        loan.base_rate,
+        loan.activity_rate,
+        ( select
+        min(ir.repay_date)
+        from invest_repay ir
+        where ir.invest_id = invest.id and ir.status in ('REPAYING')
+        ) as next_repay_date,
 
-            (select ir.expected_interest + ir.corpus - ir.expected_fee
-              from invest_repay ir where ir.invest_id = invest.id and ir.status in ('REPAYING')
-              and ir.period = (select min(ir.period) from invest_repay ir where ir.invest_id = invest.id and ir.status in ('REPAYING'))
-            ) as next_repay_amount
+        (select ir.expected_interest + ir.corpus - ir.expected_fee
+        from invest_repay ir where ir.invest_id = invest.id and ir.status in ('REPAYING')
+        and ir.period = (select min(ir.period) from invest_repay ir where ir.invest_id = invest.id and ir.status in
+        ('REPAYING'))
+        ) as next_repay_amount
         FROM
-          invest
+        invest
         INNER JOIN
-          loan ON invest.loan_id = loan.id
-
+        loan ON invest.loan_id = loan.id
         WHERE
-            invest.login_name = #{loginName}
-            AND loan.status = 'REPAYING'
-            AND invest.status = 'SUCCESS'
-            AND invest.transfer_status = 'TRANSFERABLE'
-            AND invest.transfer_invest_id IS NULL
-            AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
-                        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`)  >=DATE(NOW())
-                        and lr.status = 'REPAYING'), '%Y-%m-%d'),
-            DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
-            days_limit
+        invest.login_name = #{loginName}
+        AND loan.status = 'REPAYING'
+        AND invest.status = 'SUCCESS'
+        AND invest.transfer_status = 'TRANSFERABLE'
+        AND invest.transfer_invest_id IS NULL
+        AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
+        and lr.status = 'REPAYING'), '%Y-%m-%d'),
+        DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
+        days_limit
         FROM
-            transfer_rule)
-            AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
-                  or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d')) &lt;&gt; 0)
-            ORDER BY invest.created_time DESC
-            limit #{index}, #{pageSize}
+        transfer_rule)
+        AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
+        or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from
+        `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
+        &lt;&gt; 0)
+        ORDER BY invest.created_time DESC
+        limit #{index}, #{pageSize}
     </select>
 
     <select id="findWebCountTransferableApplicationPaginationByLoginName" useCache="false" parameterType="map"
             resultType="long">
         SELECT
-          count(1)
+        count(1)
         FROM
-          invest
+        invest
         INNER JOIN
-          loan ON invest.loan_id = loan.id
-
+        loan ON invest.loan_id = loan.id
         WHERE
-            invest.login_name = #{loginName}
-            AND loan.status = 'REPAYING'
-            AND invest.status = 'SUCCESS'
-            AND invest.transfer_status = 'TRANSFERABLE'
-            AND invest.transfer_invest_id IS NULL
-            AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
-                        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`)  >=DATE(NOW())
-                        and lr.status = 'REPAYING'), '%Y-%m-%d'),
-            DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
-            days_limit
-            FROM
-            transfer_rule)
-            AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
-                  or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d')) &lt;&gt; 0)
+        invest.login_name = #{loginName}
+        AND loan.status = 'REPAYING'
+        AND invest.status = 'SUCCESS'
+        AND invest.transfer_status = 'TRANSFERABLE'
+        AND invest.transfer_invest_id IS NULL
+        AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
+        and lr.status = 'REPAYING'), '%Y-%m-%d'),
+        DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
+        days_limit
+        FROM
+        transfer_rule)
+        AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
+        or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from
+        `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
+        &lt;&gt; 0)
     </select>
 
 
@@ -839,53 +811,55 @@
         invest.created_time,
         invest.invest_time
         FROM
-          invest
+        invest
         INNER JOIN
-          loan ON invest.loan_id = loan.id
-
+        loan ON invest.loan_id = loan.id
         WHERE
-            invest.login_name = #{loginName}
-            AND loan.status = 'REPAYING'
-            AND invest.status = 'SUCCESS'
-            AND invest.transfer_status = 'TRANSFERABLE'
-            AND invest.transfer_invest_id IS NULL
-            AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
-                        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`)  >=DATE(NOW())
-                        and lr.status = 'REPAYING'), '%Y-%m-%d'),
-            DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
-            days_limit
-            FROM
-            transfer_rule)
-            AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
-                  or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d')) &lt;&gt; 0)
-            ORDER BY invest.created_time DESC
-            limit #{index}, #{pageSize}
+        invest.login_name = #{loginName}
+        AND loan.status = 'REPAYING'
+        AND invest.status = 'SUCCESS'
+        AND invest.transfer_status = 'TRANSFERABLE'
+        AND invest.transfer_invest_id IS NULL
+        AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
+        and lr.status = 'REPAYING'), '%Y-%m-%d'),
+        DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
+        days_limit
+        FROM
+        transfer_rule)
+        AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
+        or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from
+        `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
+        &lt;&gt; 0)
+        ORDER BY invest.created_time DESC
+        limit #{index}, #{pageSize}
     </select>
 
     <select id="findCountTransferableApplicationPaginationByLoginName" parameterType="map" resultType="long"
             useCache="false">
         SELECT
-          count(1)
+        count(1)
         FROM
-          invest
+        invest
         INNER JOIN
-          loan ON invest.loan_id = loan.id
-
+        loan ON invest.loan_id = loan.id
         WHERE
-            invest.login_name = #{loginName}
-            AND loan.status = 'REPAYING'
-            AND invest.status = 'SUCCESS'
-            AND invest.transfer_status = 'TRANSFERABLE'
-            AND invest.transfer_invest_id IS NULL
-            AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
-                        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`)  >=DATE(NOW())
-                        and lr.status = 'REPAYING'), '%Y-%m-%d'),
-            DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
-            days_limit
-            FROM
-            transfer_rule)
+        invest.login_name = #{loginName}
+        AND loan.status = 'REPAYING'
+        AND invest.status = 'SUCCESS'
+        AND invest.transfer_status = 'TRANSFERABLE'
+        AND invest.transfer_invest_id IS NULL
+        AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
+        and lr.status = 'REPAYING'), '%Y-%m-%d'),
+        DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
+        days_limit
+        FROM
+        transfer_rule)
         AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
-        or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d')) &lt;&gt; 0)
+        or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from
+        `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
+        &lt;&gt; 0)
     </select>
 
     <select id="findCountSuccessByLoginNameAndProductTypes" parameterType="map" resultType="int">
