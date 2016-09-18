@@ -7,6 +7,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.ContractService;
@@ -112,7 +113,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         LoanerDetailsModel loanerDetailsModel = new LoanerDetailsModel();
         loanerDetailsModel.setUserName("UserName");
         when(loanerDetailsMapper.getLoanerDetailByLoanId(anyLong())).thenReturn(loanerDetailsModel);
-        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "declaration", "");
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "declaration", "",false);
         when(loanDetailsMapper.getLoanDetailsByLoanId(anyLong())).thenReturn(loanDetailsModel);
 
         PledgeHouseModel pledgeHouseModel = new PledgeHouseModel();

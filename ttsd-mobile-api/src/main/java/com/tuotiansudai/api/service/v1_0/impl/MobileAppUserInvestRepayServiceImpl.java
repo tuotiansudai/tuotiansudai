@@ -12,7 +12,11 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipService;
+import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -46,9 +50,6 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
     private CouponRepayMapper couponRepayMapper;
 
     @Autowired
-    private MembershipMapper membershipMapper;
-
-    @Autowired
     private UserCouponMapper userCouponMapper;
 
     @Autowired
@@ -56,6 +57,12 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
+
+    @Autowired
+    private UserMembershipService userMembershipService;
+
+    @Autowired
+    private InvestExtraRateMapper investExtraRateMapper;
 
     private final static String RED_ENVELOPE_TEMPLATE = "{0}元现金红包";
 
@@ -103,6 +110,16 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                     expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
                     actualInterest += couponRepayModel.getRepayAmount();
                 }
+
+                int periods = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId()).size();
+                if (periods == investRepayModel.getPeriod()) {
+                    InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
+                    if(investExtraRateModel != null && !investExtraRateModel.isTransfer()){
+                        expectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+                        actualInterest += investExtraRateModel.getRepayAmount();
+                    }
+                }
+
                 InvestRepayDataDto investRepayDataDto = new InvestRepayDataDto();
                 investRepayDataDto.setIsTransferred(investRepayModel.isTransferred());
                 investRepayDataDto.setPeriod(investRepayModel.getPeriod());
@@ -124,10 +141,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(completeTotalActualInterest));
             userInvestRepayResponseDataDto.setUnPaidRepay(AmountConverter.convertCentToString(unPaidTotalRepay));
             userInvestRepayResponseDataDto.setInvestRepays(investRepayList);
-            List<MembershipModel> membershipModels =  membershipMapper.findAllMembership();
-            for(MembershipModel membershipModel:membershipModels){
-                userInvestRepayResponseDataDto.setMembershipLevel(investModel.getInvestFeeRate() == membershipModel.getFee()?String.valueOf(membershipModel.getLevel()):"0");
-            }
+            userInvestRepayResponseDataDto.setMembershipLevel(userMembershipService.getMembershipLevelByLoginNameAndInvestTime(investModel.getLoginName(), investModel.getInvestTime()));
             List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModel.getId());
 
             List<String> usedCoupons = Lists.transform(userCouponModels, new Function<UserCouponModel, String>() {
@@ -145,6 +159,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         }catch(Exception e){
             responseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
             responseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+            e.printStackTrace();
         }
         return responseDto;
     }

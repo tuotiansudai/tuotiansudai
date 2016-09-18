@@ -57,4 +57,6 @@ public interface UserMembershipMapper {
                                          @Param(value = "levels") List<Integer> levels,
                                          @Param(value = "index") int index,
                                          @Param(value = "pageSize") int pageSize);
+
+    long findByLoginNameOrInvestTime(@Param(value = "loginName") String loginName, @Param(value = "investTime") Date investTime);
 }

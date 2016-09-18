@@ -69,9 +69,17 @@ public class MidAutumnActivityService {
 
         long totalInvestAmount = 0l;
         long todayInvestAmount = 0l;
+        Date toDayStartTime = null;
+        Date toDayEndTime = null;
+        if(DateTime.now().toDate().before(activityMinAutumnEndTime) && DateTime.now().toDate().after(activityMinAutumnStartTime)){
+            toDayStartTime = DateTime.now().withTimeAtStartOfDay().toDate();
+            toDayEndTime = DateUtils.addMilliseconds(DateTime.now().plusDays(1).withTimeAtStartOfDay().toDate(), -1000);
+        }
         for (String name : myFamily) {
             totalInvestAmount += investMapper.sumInvestAmount(null, name, null, null, null, activityMinAutumnStartTime, activityMinAutumnEndTime, InvestStatus.SUCCESS, null);
-            todayInvestAmount += investMapper.sumInvestAmount(null, name, null, null, null, DateTime.now().withTimeAtStartOfDay().toDate(), DateUtils.addMilliseconds(DateTime.now().plusDays(1).withTimeAtStartOfDay().toDate(), -1000), InvestStatus.SUCCESS, null);
+            if(toDayStartTime != null && toDayEndTime != null){
+                todayInvestAmount += investMapper.sumInvestAmount(null, name, null, null, null, toDayStartTime, toDayEndTime, InvestStatus.SUCCESS, null);
+            }
         }
 
         Iterator<String> family = Iterators.transform(myFamily.iterator(), new Function<String, String>() {

@@ -84,6 +84,8 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
 
                 PrintWriter writer = null;
                 try {
+                    response.setContentType("application/json; charset=UTF-8");
+                    response.setCharacterEncoding("UTF-8");
                     writer = response.getWriter();
                     writer.print(objectMapper.writeValueAsString(dto));
                 } finally {

@@ -9,10 +9,12 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.BannerMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
+import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.transfer.service.TransferService;
@@ -46,6 +48,9 @@ public class HomeController {
     private LoanMapper loanMapper;
 
     @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
     private CouponService couponService;
 
     @Autowired
@@ -60,6 +65,7 @@ public class HomeController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/index", "responsive", true);
+        modelAndView.addObject("hello",true);
         modelAndView.addObject("loans", homeService.getLoans());
         modelAndView.addObject("announces", announceService.getAnnouncementList(1, 3).getData().getRecords());
         modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE)));

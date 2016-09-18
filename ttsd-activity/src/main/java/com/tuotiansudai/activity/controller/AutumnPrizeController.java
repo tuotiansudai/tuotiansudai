@@ -101,20 +101,9 @@ public class AutumnPrizeController {
 
     @RequestMapping(path = "/travel/{id:^\\d+$}/detail", method = RequestMethod.GET)
     public ModelAndView travelPrizeDetail(@PathVariable final long id) {
-        List<TravelPrizeDto> prizeItems = autumnPrizeService.getTravelPrizeItems();
-        Optional<TravelPrizeDto> optional = Iterators.tryFind(prizeItems.iterator(), new Predicate<TravelPrizeDto>() {
-            @Override
-            public boolean apply(TravelPrizeDto input) {
-                return input.getId() == id;
-            }
-        });
-        if (optional.isPresent()) {
-            ModelAndView modelAndView = new ModelAndView("/activities/autumn-travel-detail", "responsive", true);
-            modelAndView.addObject("introduce", optional.get().getIntroduce());
-            return modelAndView;
-        }
-
-        return new ModelAndView("/error/404");
+        ModelAndView modelAndView = new ModelAndView("/activities/autumn-travel-detail", "responsive", true);
+        modelAndView.addObject("prizeId", id);
+        return modelAndView;
     }
 
     @RequestMapping(path = "/travel/invest", method = RequestMethod.POST)

@@ -1,5 +1,11 @@
 package com.tuotiansudai.service.impl;
 
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.FinanceReportDto;
 import com.tuotiansudai.repository.mapper.FinanceReportMapper;
@@ -32,6 +38,15 @@ public class FinanceReportServiceImpl implements FinanceReportService {
 
     @Autowired
     InvestRepayMapper investRepayMapper;
+
+    @Autowired
+    CouponMapper couponMapper;
+
+    @Autowired
+    UserCouponMapper userCouponMapper;
+
+    @Autowired
+    CouponRepayMapper couponRepayMapper;
 
     private List<FinanceReportDto> combineFinanceReportDtos(List<FinanceReportItemView> financeReportItemViews) {
         List<FinanceReportDto> financeReportDtos = new ArrayList<>();
@@ -74,6 +89,25 @@ public class FinanceReportServiceImpl implements FinanceReportService {
                 }
             }
 
+            //Set Coupon Detail
+            CouponModel couponModel = couponMapper.findById(financeReportItemView.getCouponId());
+            if (null != couponModel) {
+                long couponActualInterest = 0;
+                if (couponModel.getCouponType().equals(CouponType.RED_ENVELOPE)) {
+                    List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessByInvestId(financeReportItemView.getInvestId());
+                    for (UserCouponModel userCouponModel : userCouponModels) {
+                        couponActualInterest += userCouponModel.getActualInterest();
+                    }
+                } else {
+                    List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(financeReportItemView.getInvestId());
+                    for (CouponRepayModel couponRepayModel : couponRepayModels) {
+                        couponActualInterest += couponRepayModel.getActualInterest();
+                    }
+                }
+                financeReportDto.setCouponActualInterest(couponActualInterest);
+                financeReportDto.setCouponDetail(couponModel);
+            }
+
             financeReportDtos.add(financeReportDto);
         }
         return financeReportDtos;
@@ -81,20 +115,21 @@ public class FinanceReportServiceImpl implements FinanceReportService {
 
     @Override
     public BasePaginationDataDto<FinanceReportDto> getFinanceReportDtos(Long loanId, Integer period, String investLoginName,
-                                                                        Date investStartTime, Date investEndTime, int index, int pageSize) {
-        List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, (index - 1) * pageSize, pageSize);
+                                                                        Date investStartTime, Date investEndTime, PreferenceType preferenceType,
+                                                                        int index, int pageSize) {
+        List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, preferenceType, (index - 1) * pageSize, pageSize);
         List<FinanceReportDto> financeReportDtos = combineFinanceReportDtos(financeReportItemViews);
-        int count = financeReportMapper.findCountFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime);
+        int count = financeReportMapper.findCountFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, preferenceType);
         return new BasePaginationDataDto<>(index, pageSize, count, financeReportDtos);
     }
 
     @Override
     public List<List<String>> getFinanceReportCsvData(Long loanId, Integer period, String investLoginName,
-                                                      Date investStartTime, Date investEndTime) {
+                                                      Date investStartTime, Date investEndTime, PreferenceType preferenceType) {
         //直接导出所有内容，所以index = 1, pageSize = 9999999
         final int index = 1;
         final int pageSize = 9999999;
-        List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, (index - 1) * pageSize, pageSize);
+        List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, preferenceType, (index - 1) * pageSize, pageSize);
         List<FinanceReportDto> financeReportDtos = combineFinanceReportDtos(financeReportItemViews);
         List<List<String>> csvData = new ArrayList<>();
         for (FinanceReportDto financeReportDto : financeReportDtos) {

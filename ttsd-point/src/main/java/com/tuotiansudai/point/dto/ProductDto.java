@@ -36,6 +36,7 @@ public class ProductDto implements Serializable {
         this.couponId = exchangeCouponDto.getId();
         this.name = exchangeCouponDto.getCouponType().getName();
         this.seq = exchangeCouponDto.getSeq();
+        this.imageUrl = exchangeCouponDto.getImageUrl();
         this.points = exchangeCouponDto.getExchangePoint();
         this.totalCount = exchangeCouponDto.getTotalCount();
         this.startTime = exchangeCouponDto.getStartTime();
@@ -49,6 +50,7 @@ public class ProductDto implements Serializable {
         this.couponId = exchangeCouponDto.getId();
         this.name = exchangeCouponDto.getCouponType().getName();
         this.seq = exchangeCouponDto.getSeq();
+        this.imageUrl = exchangeCouponDto.getImageUrl();
         this.points = exchangeCouponDto.getExchangePoint();
         this.totalCount = exchangeCouponDto.getTotalCount();
         this.startTime = exchangeCouponDto.getStartTime();

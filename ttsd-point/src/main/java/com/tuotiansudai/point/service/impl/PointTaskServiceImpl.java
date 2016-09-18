@@ -112,7 +112,6 @@ public class PointTaskServiceImpl implements PointTaskService {
                     break;
                 case EACH_RECOMMEND:
                 case FIRST_REFERRER_INVEST:
-                case EACH_REFERRER_INVEST:
                     String referrer = userMapper.findByLoginName(loginName).getReferrer();
                     long referrerMaxTaskLevel = userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask);
                     userPointTaskMapper.create(new UserPointTaskModel(referrer, pointTaskModel.getId(), pointTaskModel.getPoint(), referrerMaxTaskLevel + 1));
@@ -230,9 +229,6 @@ public class PointTaskServiceImpl implements PointTaskService {
                 case EACH_RECOMMEND:
                     pointTaskDto.setTitle(pointTask.getTitle());
                     break;
-                case EACH_REFERRER_INVEST:
-                    pointTaskDto.setTitle(pointTask.getTitle());
-                    break;
                 default:
                     pointTaskDto.setTitle(pointTask.getTitle());
             }
@@ -272,6 +268,10 @@ public class PointTaskServiceImpl implements PointTaskService {
 
     private boolean isCompletedAdvancedTaskConditions(final PointTask pointTask, String loginName) {
         String referrer = userMapper.findByLoginName(loginName).getReferrer();
+        PointTaskModel pointTaskModel = pointTaskMapper.findByName(pointTask);
+        if (!pointTaskModel.isActive()) {
+            return false;
+        }
         switch (pointTask) {
             case EACH_SUM_INVEST:
                 //只能完成一次
@@ -285,8 +285,6 @@ public class PointTaskServiceImpl implements PointTaskService {
                 return accountMapper.findByLoginName(referrer) != null && CollectionUtils.isEmpty(userPointTaskMapper.findByLoginNameAndTask(referrer, pointTask));
             case FIRST_REFERRER_INVEST:
                 return accountMapper.findByLoginName(referrer) != null && userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask) == 0;
-            case EACH_REFERRER_INVEST:
-                return accountMapper.findByLoginName(referrer) != null && investMapper.findLatestSuccessInvest(loginName).getAmount() >= 100000L;
             case FIRST_INVEST_180:
                 return userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, pointTask) == 0
                         && loanMapper.findById(investMapper.findLatestSuccessInvest(loginName).getLoanId()).getProductType() == ProductType._180;
