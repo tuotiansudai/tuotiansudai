@@ -18,6 +18,7 @@ import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
@@ -63,6 +64,9 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
 
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
+
+    @Autowired
+    private LoanMapper loanMapper;
 
     private final static String RED_ENVELOPE_TEMPLATE = "{0}元现金红包";
 
@@ -111,8 +115,9 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                     actualInterest += couponRepayModel.getRepayAmount();
                 }
 
-                int periods = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId()).size();
+                int periods = loanMapper.findById(investModel.getLoanId()).getPeriods();
                 if (periods == investRepayModel.getPeriod()) {
+                    expectedInterest += investRepayModel.getCorpus();
                     InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
                     if(investExtraRateModel != null && !investExtraRateModel.isTransfer()){
                         expectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
@@ -132,7 +137,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 if (investRepayModel.getStatus() == RepayStatus.COMPLETE) {
                     completeTotalActualInterest += actualInterest;
                 }else{
-                    unPaidTotalRepay += expectedInterest;
+                    unPaidTotalRepay += expectedInterest + investRepayModel.getCorpus();
                 }
                 totalExpectedInterest += expectedInterest;
             }
