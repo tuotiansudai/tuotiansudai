@@ -1,8 +1,8 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 public class ActivityCenterRequestDto extends BaseParamDto {
-    private Integer index ;
-    private Integer pageSize ;
+    private Integer index;
+    private Integer pageSize;
     private ActivityCenterType activityType;
 
     public Integer getIndex() {

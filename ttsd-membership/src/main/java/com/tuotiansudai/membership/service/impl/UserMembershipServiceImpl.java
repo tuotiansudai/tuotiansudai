@@ -100,7 +100,7 @@ public class UserMembershipServiceImpl implements UserMembershipService {
     }
 
     @Override
-    public String getMembershipLevelByLoginNameAndInvestTime(String loginName,Date investTime){
+    public String getMembershipLevelByLoginNameAndInvestTime(String loginName, Date investTime) {
         long level = userMembershipMapper.findByLoginNameOrInvestTime(loginName, investTime);
         return String.valueOf(membershipMapper.findById(level).getLevel());
     }

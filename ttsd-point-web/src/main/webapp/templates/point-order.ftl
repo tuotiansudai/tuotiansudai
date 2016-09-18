@@ -62,9 +62,9 @@
 				<h3>订单确认</h3>
 				<div class="order-table">
 					<div class="order-picture">
-						<p class="mater-img picture-item">
-							<img src="/${productShowItem.imageUrl}" width="140" height="114"/>
-						</p>
+                        <p class="mater-img picture-item">
+                            <img src="/${productShowItem.imageUrl}" width="140" height="114"/>
+                        </p>
 					</div>
 					<div class="order-name">
                         <p class="name-text">${productShowItem.name!}</p>
@@ -112,7 +112,7 @@
 				<p>
 
 					<#if productShowItem.leftCount == 0>
-                        <input type="button" value="已售罄"  class="order-btn">
+                        <input type="button" value="已售罄" class="order-btn">
 					<#else>
                         <input type="button" value="立即兑换" class="order-btn" data-id="${productShowItem.id?c!0}"
                                data-type="${productShowItem.itemType.name()}" id="orderBtn">

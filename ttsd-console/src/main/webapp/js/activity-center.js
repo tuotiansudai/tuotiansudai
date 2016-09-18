@@ -126,7 +126,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                     showErrorMessage('活动介绍最多15个中文字符', $('.activity-description', $activityCenterForm));
                     return false;
                 }
-                if($('#notLongTerm').prop("checked")){
+                if ($('#notLongTerm').prop("checked")) {
                         if($('.activatedTime').val() == ''){
                             showErrorMessage('活动起期不能为空', $('.activatedTime', $activityCenterForm));
                             return false;

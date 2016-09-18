@@ -99,7 +99,7 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                     expectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
                 }
 
-                if(investExtraRateModel != null && investExtraRateModel.getActualRepayDate() != null){
+                if (investExtraRateModel != null && investExtraRateModel.getActualRepayDate() != null) {
                     actualInterest += investExtraRateModel.getRepayAmount();
                 }
 
