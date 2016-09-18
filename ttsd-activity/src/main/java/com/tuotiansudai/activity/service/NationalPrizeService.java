@@ -55,11 +55,11 @@ public class NationalPrizeService {
     @Autowired
     private RandomUtils randomUtils;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
-    private Date activityAutumnStartTime;
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.startTime}\")}")
+    private Date activityNationalStartTime;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.endTime}\")}")
-    private Date activityAutumnEndTime;
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.endTime}\")}")
+    private Date activityNationalEndTime;
 
     public int getDrawPrizeTime(String mobile){
         int lotteryTime = 0;
@@ -68,36 +68,36 @@ public class NationalPrizeService {
             return lotteryTime;
         }
 
-        if(userModel.getRegisterTime().before(activityAutumnEndTime) && userModel.getRegisterTime().after(activityAutumnStartTime)){
+        if(userModel.getRegisterTime().before(activityNationalEndTime) && userModel.getRegisterTime().after(activityNationalStartTime)){
             lotteryTime ++;
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        if(accountModel != null && accountModel.getRegisterTime().before(activityAutumnEndTime) && accountModel.getRegisterTime().after(activityAutumnStartTime)){
+        if(accountModel != null && accountModel.getRegisterTime().before(activityNationalEndTime) && accountModel.getRegisterTime().after(activityNationalStartTime)){
             lotteryTime ++;
         }
 
         List<ReferrerRelationModel> referrerRelationModels = referrerRelationMapper.findByReferrerLoginNameAndLevel(userModel.getLoginName(), 1);
         for(ReferrerRelationModel referrerRelationModel : referrerRelationModels){
             UserModel referrerUserModel = userMapper.findByLoginName(referrerRelationModel.getLoginName());
-            if(referrerUserModel.getRegisterTime().before(activityAutumnEndTime) && referrerUserModel.getRegisterTime().after(activityAutumnStartTime)){
+            if(referrerUserModel.getRegisterTime().before(activityNationalEndTime) && referrerUserModel.getRegisterTime().after(activityNationalStartTime)){
                 lotteryTime ++;
-                if(investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), activityAutumnStartTime, activityAutumnEndTime) > 0){
+                if(investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), activityNationalStartTime, activityNationalEndTime) > 0){
                     lotteryTime ++;
                 }
             }
         }
 
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
-        if(bankCardModel != null && bankCardModel.getCreatedTime().before(activityAutumnEndTime) && bankCardModel.getCreatedTime().after(activityAutumnStartTime)){
+        if(bankCardModel != null && bankCardModel.getCreatedTime().before(activityNationalEndTime) && bankCardModel.getCreatedTime().after(activityNationalStartTime)){
             lotteryTime ++;
         }
 
-        if(rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, activityAutumnStartTime,activityAutumnEndTime) > 0){
+        if(rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, activityNationalStartTime,activityNationalEndTime) > 0){
             lotteryTime ++;
         }
 
-        if(investMapper.countInvestorSuccessInvestByInvestTime(userModel.getLoginName(), activityAutumnStartTime, activityAutumnEndTime) > 0){
+        if(investMapper.countInvestorSuccessInvestByInvestTime(userModel.getLoginName(), activityNationalStartTime, activityNationalEndTime) > 0){
             lotteryTime ++;
         }
 
@@ -112,7 +112,7 @@ public class NationalPrizeService {
         logger.debug(mobile + " is drawing the lottery prize.");
 
         Date nowDate = DateTime.now().toDate();
-        if(!nowDate.before(activityAutumnEndTime) || !nowDate.after(activityAutumnStartTime)){
+        if(!nowDate.before(activityNationalEndTime) || !nowDate.after(activityNationalStartTime)){
             return new DrawLotteryResultDto(3);//不在活动时间范围内！
         }
 

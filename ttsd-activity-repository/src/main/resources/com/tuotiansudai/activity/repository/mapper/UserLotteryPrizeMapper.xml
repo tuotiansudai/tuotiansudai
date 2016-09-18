@@ -48,7 +48,7 @@
             <if test="mobile !=null and mobile !='' ">
                 and p.mobile like '${mobile}%'
             </if>
-            <if test="lotteryPrize !=null and lotteryPrize.description !='' ">
+            <if test="lotteryPrize !=null and lotteryPrize !='' ">
                 and p.prize like '${lotteryPrize}%'
             </if>
             <if test="startTime != null">
@@ -71,7 +71,7 @@
             <if test="mobile !=null and mobile !='' ">
                 and p.mobile like '${mobile}%'
             </if>
-            <if test="lotteryPrize !=null and lotteryPrize.description !='' ">
+            <if test="lotteryPrize !=null and lotteryPrize !='' ">
                 and p.prize like '${lotteryPrize}%'
             </if>
             <if test="startTime != null">

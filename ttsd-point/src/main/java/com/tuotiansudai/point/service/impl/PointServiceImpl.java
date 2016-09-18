@@ -1,6 +1,7 @@
 package com.tuotiansudai.point.service.impl;
 
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
@@ -11,11 +12,15 @@ import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +47,15 @@ public class PointServiceImpl implements PointService {
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.startTime}\")}")
+    private Date activityNationalStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.endTime}\")}")
+    private Date activityNationalEndTime;
+
     @Override
     @Transactional
     public void createCouponAndExchange(String loginName, ExchangeCouponDto exchangeCouponDto) {
@@ -62,6 +76,15 @@ public class PointServiceImpl implements PointService {
     public void obtainPointInvest(InvestModel investModel) {
         int duration = loanMapper.findById(investModel.getLoanId()).getDuration();
         long point = new BigDecimal((investModel.getAmount()*duration/InterestCalculator.DAYS_OF_YEAR)).divide(new BigDecimal(100), 0, BigDecimal.ROUND_DOWN).longValue();
+        Date nowDate = DateTime.now().toDate();
+        if(nowDate.before(activityNationalEndTime) && nowDate.after(activityNationalStartTime)){
+            UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
+            if(userModel != null && !Strings.isNullOrEmpty(userModel.getReferrer())){
+                pointBillService.createPointBill(userModel.getReferrer(), investModel.getId(), PointBusinessType.ACTIVITY, (long) (point * 0.1));
+            }
+
+            point *= 2;
+        }
         pointBillService.createPointBill(investModel.getLoginName(), investModel.getId(), PointBusinessType.INVEST, point);
         logger.debug(MessageFormat.format("{0} has obtained point {1}", investModel.getId(), point));
     }
@@ -71,5 +94,4 @@ public class PointServiceImpl implements PointService {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         return accountModel != null ? accountModel.getPoint() : 0;
     }
-
 }

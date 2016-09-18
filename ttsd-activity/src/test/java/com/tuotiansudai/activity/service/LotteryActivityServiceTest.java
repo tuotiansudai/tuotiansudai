@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -120,12 +121,11 @@ public class LotteryActivityServiceTest {
         ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnEndTime", activityAutumnEndTime);
         DrawLotteryResultDto drawLotteryResultDto = lotteryActivityService.drawLotteryPrize("", null);
         assertTrue(!drawLotteryResultDto.getStatus());
-        assertEquals(drawLotteryResultDto.getMessage(), "您还未登陆，请登陆后再来抽奖吧！");
     }
 
     private UserLotteryPrizeModel getUserLotteryPrizeModel(String loginName,String mobile,String userName){
         UserLotteryPrizeModel userLotteryPrizeModel = new UserLotteryPrizeModel();
-        userLotteryPrizeModel.setPrize(LotteryPrize.INTEREST_COUPON_2);
+        userLotteryPrizeModel.setPrize(LotteryPrize.INTEREST_COUPON_2.name());
         userLotteryPrizeModel.setLotteryTime(DateTime.now().toDate());
         userLotteryPrizeModel.setLoginName(loginName);
         userLotteryPrizeModel.setMobile(mobile);
