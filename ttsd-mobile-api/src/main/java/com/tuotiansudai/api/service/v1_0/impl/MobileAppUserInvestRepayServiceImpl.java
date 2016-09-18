@@ -116,8 +116,9 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 }
 
                 int periods = loanMapper.findById(investModel.getLoanId()).getPeriods();
+                long corpus = 0;
                 if (periods == investRepayModel.getPeriod()) {
-                    expectedInterest += investRepayModel.getCorpus();
+                    corpus = investRepayModel.getCorpus();
                     InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
                     if(investExtraRateModel != null && !investExtraRateModel.isTransfer()){
                         expectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
@@ -130,7 +131,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 investRepayDataDto.setPeriod(investRepayModel.getPeriod());
                 investRepayDataDto.setRepayDate(sdf.format(investRepayModel.getRepayDate()));
                 investRepayDataDto.setActualRepayDate(repayDate == null ? "" : sdf.format(repayDate));
-                investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest));
+                investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest + corpus));
                 investRepayDataDto.setActualInterest(AmountConverter.convertCentToString(actualInterest));
                 investRepayDataDto.setStatus(investRepayModel.getStatus().name());
                 investRepayList.add(investRepayDataDto);
