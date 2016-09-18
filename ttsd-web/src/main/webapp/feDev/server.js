@@ -29,6 +29,11 @@ var config = [
         route: '/activity',
         template: 'activity-center',
         data: 'activity_demo'
+    },
+    {
+        route: '/consult',
+        template: 'consult-center',
+        data: 'activity_demo'
     }];
 
 
