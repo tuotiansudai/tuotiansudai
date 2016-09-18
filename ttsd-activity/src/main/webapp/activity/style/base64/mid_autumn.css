@@ -116,6 +116,8 @@ body {
   .btn-normal-invest:disabled {
     background: #ccc;
     color: #999; }
+    .btn-normal-invest:disabled:hover {
+      color: #999; }
   .btn-normal-invest:hover {
     color: #ffff00; }
 

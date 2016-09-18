@@ -21,7 +21,7 @@ module.exports = function(grunt) {
                     src: [
                         '<%= meta.baseCssPath %>/*',
                         //'<%= meta.base64CssPath %>/*',
-                        //'<%= meta.baseCssPath %>/*.map',
+                        '<%= meta.baseCssPath %>/*.map'
                         //'<%= meta.baseCssMinPath %>/*'
                     ]
                 }]
@@ -33,15 +33,15 @@ module.exports = function(grunt) {
                         '<%= meta.baseJsMinPath %>/*'
                     ]
                 }]
+            },
+            base64: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '<%= meta.base64CssPath %>/*'
+                    ]
+                }]
             }
-            //base64: {
-            //    files: [{
-            //        dot: true,
-            //        src: [
-            //            '<%= meta.base64CssPath %>/*'
-            //        ]
-            //    }]
-            //}
         },
         uglify: {
             options: {
@@ -73,19 +73,30 @@ module.exports = function(grunt) {
                 }]
             }
         },
-        cssmin: {
+        dataUri: {
             dist: {
-                files: [{
-                    expand: true, // Enable dynamic expansion.
-                    cwd: '', // Src matches are relative to this path.
-                    src: ['<%= meta.baseCssPath %>/*.css'], // Actual pattern(s) to match.
-                    dest: '<%= meta.baseCssMinPath %>/', // Destination path prefix.
-                    ext: '.min.css', // Dest filepaths will have this extension.
-                    extDot: 'first', // Extensions in filenames begin after the first dot
-                    flatten: true
-                }]
-            },
-            base64: {
+                src: ['<%= meta.baseCssPath %>/*.css'],
+                dest: '<%= meta.base64CssPath %>',
+                options: {
+                    target: ['<%=meta.baseImagePath %>/**/*.*'],
+                    fixDirLevel: false,
+                    maxBytes: 1024 * 8   //小于8k的图片会生成base64 ,并且需要是相对路径
+                }
+            }
+        },
+        cssmin: {
+            //dist: {
+            //    files: [{
+            //        expand: true, // Enable dynamic expansion.
+            //        cwd: '', // Src matches are relative to this path.
+            //        src: ['<%= meta.baseCssPath %>/*.css'], // Actual pattern(s) to match.
+            //        dest: '<%= meta.baseCssMinPath %>/', // Destination path prefix.
+            //        ext: '.min.css', // Dest filepaths will have this extension.
+            //        extDot: 'first', // Extensions in filenames begin after the first dot
+            //        flatten: true
+            //    }]
+            //},
+            dist: {
                 files: [{
                     expand: true, // Enable dynamic expansion.
                     cwd: '', // Src matches are relative to this path.
@@ -102,7 +113,7 @@ module.exports = function(grunt) {
                 files: [
                     '<%= meta.baseSassPath %>/*.scss'
                 ],
-                tasks: ['newer:clean:css', 'newer:sass']
+                tasks: ['newer:sass']
             },
             dataUri:{
                 files: [
@@ -112,7 +123,7 @@ module.exports = function(grunt) {
             },
             cssmin: {
                 files: ['<%= meta.base64CssPath %>/*.css'],
-                tasks: ['newer:cssmin:base64']
+                tasks: ['newer:cssmin']
             },
 
             uglify: {
@@ -138,17 +149,6 @@ module.exports = function(grunt) {
                 }
             }
         },
-        dataUri: {
-            dist: {
-                src: ['<%= meta.baseCssPath %>/*.css'],
-                dest: '<%= meta.base64CssPath %>',
-                options: {
-                    target: ['<%=meta.baseImagePath %>/**/*.*'],
-                    fixDirLevel: false,
-                    maxBytes: 1024 * 8   //小于8k的图片会生成base64 ,并且需要是相对路径
-                }
-            }
-        },
         imagemin: {
             /* 压缩图片大小 */
             dist: {
@@ -170,10 +170,10 @@ module.exports = function(grunt) {
     });
 
     //转化成base64
-    grunt.registerTask('base64', ['dataUri', 'newer:cssmin:base64']);
+    grunt.registerTask('base64', ['dataUri', 'newer:cssmin']);
     //,'clean:base64'
 
-    //压缩图片
+    //压缩图片，需要压缩图片的时候单独执行 grunt imagemin
     grunt.registerTask('imagemin', ['newer:imagemin']);
 
     // 默认被执行的任务列表。
@@ -181,7 +181,7 @@ module.exports = function(grunt) {
         'clean',
         'newer:uglify',
         'newer:sass',
-        'newer:cssmin:dist',
+        'newer:cssmin',
         'base64',
         'connect',
         'watch'

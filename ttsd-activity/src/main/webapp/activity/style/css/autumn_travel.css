@@ -552,7 +552,17 @@ body {
 
 .tour-slide {
   height: 678px;
-  background: url("/activity/images/autumn-tour/tour-top-bar-new.jpg") center top no-repeat; }
+  background: url("/activity/images/autumn-tour/tour-top-bar2.jpg") center top no-repeat; }
+  .tour-slide .page-width {
+    position: relative;
+    height: 100%; }
+    .tour-slide .page-width .activity-date {
+      position: absolute;
+      bottom: 209px;
+      left: 36%;
+      color: #fff;
+      font-size: 25px;
+      font-weight: bold; }
 
 .autumn-tour-frame {
   width: 1100px;
@@ -746,8 +756,7 @@ body {
       border: 1px solid #fff;
       position: relative; }
       .autumn-tour-frame .prize-kind .prize-box .img-info img {
-        width: 100%;
-        height: 160px; }
+        width: 100%; }
       .autumn-tour-frame .prize-kind .prize-box .img-info .kind-text {
         position: absolute;
         top: 128px;
@@ -861,9 +870,17 @@ body {
           margin: 0 auto 30px auto; }
 
   .tour-slide {
-    height: 188px;
-    background: url("/activity/images/autumn-tour/bar-app.jpg") center top no-repeat;
+    height: 327px;
+    background: url("/activity/images/autumn-tour/bar-app2.jpg") center top no-repeat;
     background-size: cover; }
+    .tour-slide .page-width .activity-date {
+      position: absolute;
+      bottom: 99px;
+      left: 31%;
+      color: #fff;
+      font-size: 13px;
+      font-weight: normal;
+      line-height: 20px; }
 
   .autumn-tour-frame {
     width: 100%;
@@ -875,7 +892,7 @@ body {
       box-sizing: border-box; }
     .autumn-tour-frame .title-normal-box {
       text-align: left;
-      padding-top: 15px; }
+      padding-top: 0px; }
       .autumn-tour-frame .title-normal-box .title-normal-title01, .autumn-tour-frame .title-normal-box .title-normal-title02 {
         width: 100%;
         height: 45px;
@@ -891,78 +908,59 @@ body {
       .autumn-tour-frame .title-normal-box .box-inner-content {
         font-size: 12px; }
         .autumn-tour-frame .title-normal-box .box-inner-content h1 {
-          font-size: 13px;
-          line-height: 24px; }
+          font-size: 15px;
+          line-height: 24px;
+          text-align: center;
+          font-weight: bold; }
+        .autumn-tour-frame .title-normal-box .box-inner-content p {
+          width: 100%; }
         .autumn-tour-frame .title-normal-box .box-inner-content .steps-list {
           display: none; }
       .autumn-tour-frame .title-normal-box .activity-text {
         text-align: left;
         padding: 15px !important; }
     .autumn-tour-frame .prize-kind {
-      width: 100%;
-      height: 309px;
-      padding-top: 40px;
-      padding-bottom: 40px;
+      margin: 10px;
       overflow: hidden; }
       .autumn-tour-frame .prize-kind .swiper-wrapper {
-        width: 310%;
-        height: 100%;
-        margin-left: -15%;
-        position: relative; }
-        .autumn-tour-frame .prize-kind .swiper-wrapper .bg-shadow {
-          position: absolute;
-          z-index: 15;
-          background: rgba(0, 0, 0, 0.3);
-          width: 100%;
-          height: 100%; }
+        width: 108%;
+        width: calc(100% + 30px); }
       .autumn-tour-frame .prize-kind .prize-box {
-        width: 265px;
-        margin: 0 10px 0 10px;
-        position: absolute; }
+        width: 45%;
+        margin-right: 10px !important;
+        margin-bottom: 10px !important;
+        margin-left: 0 !important;
+        padding-top: 0;
+        margin-top: 10px; }
+        .autumn-tour-frame .prize-kind .prize-box.code-item-box {
+          display: none; }
         .autumn-tour-frame .prize-kind .prize-box .pk-title {
-          padding: 2px 10px;
-          font-size: 11px;
-          margin-top: 10px; }
+          margin: 0; }
           .autumn-tour-frame .prize-kind .prize-box .pk-title span {
-            padding-left: 2%; }
+            font-size: 13px; }
             .autumn-tour-frame .prize-kind .prize-box .pk-title span i {
               font-size: 14px; }
+            .autumn-tour-frame .prize-kind .prize-box .pk-title span:nth-child(1) {
+              width: 35%; }
+            .autumn-tour-frame .prize-kind .prize-box .pk-title span:nth-child(2) {
+              width: 48%; }
         .autumn-tour-frame .prize-kind .prize-box .img-info {
-          margin: 15px; }
+          margin: 0; }
+          .autumn-tour-frame .prize-kind .prize-box .img-info a {
+            display: block; }
+          .autumn-tour-frame .prize-kind .prize-box .img-info .kind-text {
+            top: auto;
+            bottom: 30px; }
+          .autumn-tour-frame .prize-kind .prize-box .img-info .kind-bottom {
+            font-size: 11px;
+            height: 30px;
+            line-height: 30px; }
+            .autumn-tour-frame .prize-kind .prize-box .img-info .kind-bottom em {
+              font-size: 14px; }
+            .autumn-tour-frame .prize-kind .prize-box .img-info .kind-bottom .btn-normal {
+              display: none; }
         .autumn-tour-frame .prize-kind .prize-box:nth-child(1) {
-          left: -120px;
-          z-index: 10; }
-        .autumn-tour-frame .prize-kind .prize-box:nth-child(2) {
-          left: 87px;
-          z-index: 20; }
-        .autumn-tour-frame .prize-kind .prize-box:nth-child(3) {
-          left: 217px;
-          z-index: 10; }
-        .autumn-tour-frame .prize-kind .prize-box.first {
-          left: -120px !important;
-          z-index: 10 !important; }
-        .autumn-tour-frame .prize-kind .prize-box.last {
-          left: 217px !important;
-          z-index: 10 !important; }
-        .autumn-tour-frame .prize-kind .prize-box.active {
-          transform: scale(1.2);
-          -webkit-transform: scale(1.2);
-          -moz-transform: scale(1.2);
-          -o-transform: scale(1.2);
-          -ms-transform: scale(1.2);
-          z-index: 20 !important;
-          left: 95px !important; }
-        .autumn-tour-frame .prize-kind .prize-box .img-info .kind-text {
-          top: 128px; }
-        .autumn-tour-frame .prize-kind .prize-box .img-info .kind-bottom {
-          font-size: 12px;
-          height: 45px;
-          line-height: 45px; }
-          .autumn-tour-frame .prize-kind .prize-box .img-info .kind-bottom em {
-            font-size: 15px; }
-          .autumn-tour-frame .prize-kind .prize-box .img-info .kind-bottom .btn-normal {
-            font-size: 14px;
-            padding: 5px 7px; }
+          width: 100%; }
     .autumn-tour-frame .award-records .award-box {
       width: 100%;
       display: none; }
@@ -1003,77 +1001,5 @@ body {
         letter-spacing: 0;
         font-weight: bold;
         padding: 10px 20px; } }
-@media (max-width: 450px) {
-  .autumn-tour-frame .prize-kind .prize-box:nth-child(1) {
-    left: -35px;
-    z-index: 10; }
-  .autumn-tour-frame .prize-kind .prize-box:nth-child(2) {
-    left: 87px;
-    z-index: 20; }
-  .autumn-tour-frame .prize-kind .prize-box:nth-child(3) {
-    left: 285px;
-    z-index: 10; }
-  .autumn-tour-frame .prize-kind .prize-box.first {
-    left: -35px !important;
-    z-index: 10 !important; }
-  .autumn-tour-frame .prize-kind .prize-box.last {
-    left: 285px !important;
-    z-index: 10 !important; }
-  .autumn-tour-frame .prize-kind .prize-box.active {
-    transform: scale(1.2);
-    -webkit-transform: scale(1.2);
-    -moz-transform: scale(1.2);
-    -o-transform: scale(1.2);
-    -ms-transform: scale(1.2);
-    z-index: 20 !important;
-    left: 118px !important; } }
-@media (max-width: 390px) {
-  .autumn-tour-frame .prize-kind .prize-box:nth-child(1) {
-    left: -120px;
-    z-index: 10; }
-  .autumn-tour-frame .prize-kind .prize-box:nth-child(2) {
-    left: 87px;
-    z-index: 20; }
-  .autumn-tour-frame .prize-kind .prize-box:nth-child(3) {
-    left: 217px;
-    z-index: 10; }
-  .autumn-tour-frame .prize-kind .prize-box.first {
-    left: -120px !important;
-    z-index: 10 !important; }
-  .autumn-tour-frame .prize-kind .prize-box.last {
-    left: 217px !important;
-    z-index: 10 !important; }
-  .autumn-tour-frame .prize-kind .prize-box.active {
-    transform: scale(1.2);
-    -webkit-transform: scale(1.2);
-    -moz-transform: scale(1.2);
-    -o-transform: scale(1.2);
-    -ms-transform: scale(1.2);
-    z-index: 20 !important;
-    left: 95px !important; } }
-@media (max-width: 330px) {
-  .autumn-tour-frame .prize-kind .prize-box:nth-child(1) {
-    left: -120px;
-    z-index: 10; }
-  .autumn-tour-frame .prize-kind .prize-box:nth-child(2) {
-    left: 87px;
-    z-index: 20; }
-  .autumn-tour-frame .prize-kind .prize-box:nth-child(3) {
-    left: 217px;
-    z-index: 10; }
-  .autumn-tour-frame .prize-kind .prize-box.first {
-    left: -120px !important;
-    z-index: 10 !important; }
-  .autumn-tour-frame .prize-kind .prize-box.last {
-    left: 217px !important;
-    z-index: 10 !important; }
-  .autumn-tour-frame .prize-kind .prize-box.active {
-    transform: scale(1.1);
-    -webkit-transform: scale(1.1);
-    -moz-transform: scale(1.1);
-    -o-transform: scale(1.1);
-    -ms-transform: scale(1.1);
-    z-index: 20 !important;
-    left: 53px !important; } }
 
 /*# sourceMappingURL=autumn_travel.css.map */
