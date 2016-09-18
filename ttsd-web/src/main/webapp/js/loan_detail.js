@@ -768,6 +768,39 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         }, 300);
 
         $investInput.on('keyup', keyupHandler);
+
+        $accountInfo.find('.icon-graded').on('mouseover',function() {
+            layer.closeAll('tips');
+            var value = _.compose(replace)($investInput.val()),
+                $expected=$accountInfo.find('.expected-interest-dd');
+            $.ajax({
+                url: '/get-membership-preference',
+                type: 'GET',
+                dataType: 'json',
+                data:{"loanId":loanId,"investAmount":value},
+                contentType: 'application/json; charset=UTF-8'
+            })
+                .done(function(response) {
+                    var data=response.data;
+                    if (data.status) {
+                        var info='<i class="fa fa-times-circle"></i>V'+data.level+'会员，专享服务费'+data.rate+'折优惠，已多赚'+data.amount+'元';
+
+                        layer.tips(info, $expected, {
+                            tips: [1, '#ff7200'],
+                            time: 3000,
+                            skin: 'level-layer-tips',
+                            tipsMore: true,
+                            area: 'auto',
+                            maxWidth: '400'
+                        });
+                    }
+                })
+                .fail(function() {
+
+                });
+
+        });
+
     })();
 
 });

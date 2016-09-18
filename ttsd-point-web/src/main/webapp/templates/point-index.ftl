@@ -149,6 +149,7 @@
                         <li class="big-gift">
                             <a href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail">
                                 <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
+
                                 <p><img src="/${virtualProduct.imageUrl}" width="160" height="100"></p>
                                 <p class="convert-btn">
                                     <span class="name-text">${virtualProduct.name!"0"}</span>
@@ -156,7 +157,8 @@
                                     <#if virtualProduct?? && virtualProduct.leftCount ==0 >
                                         <span class="fl get-btn">已售罄</span>
                                     <#else>
-                                        <a class="fl" href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/1"><span
+                                        <a class="fl"
+                                           href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/1"><span
                                                 class="fl get-btn">立即兑换</span></a>
                                     </#if>
 
@@ -167,6 +169,7 @@
                         <li>
                             <a href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail">
                                 <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
+
                                 <p><img src="/${virtualProduct.imageUrl}" width="160" height="100"></p>
                                 <p class="convert-btn">
                                     <span class="name-text">${virtualProduct.name}</span>
@@ -174,7 +177,8 @@
                                     <#if virtualProduct?? && virtualProduct.leftCount ==0 >
                                         <span class="fl get-btn">已售罄</span>
                                     <#else>
-                                        <a class="fl" href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/1"><span
+                                        <a class="fl"
+                                           href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/1"><span
                                                 class="fl get-btn">立即兑换</span></a>
                                     </#if>
                                 </p>

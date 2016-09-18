@@ -1,13 +1,11 @@
 package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.controller.v1_0.MobileAppPointShopController;
-import com.tuotiansudai.api.controller.v1_0.MobileAppRechargeController;
 import com.tuotiansudai.api.dto.v1_0.BankCardRequestDto;
 import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.ProductDetailRequestDto;
 import com.tuotiansudai.api.dto.v1_0.UserAddressRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointShopService;
-import com.tuotiansudai.api.service.v1_0.MobileAppRechargeService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

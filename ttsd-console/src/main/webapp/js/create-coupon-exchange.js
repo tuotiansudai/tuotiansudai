@@ -145,7 +145,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                     return false;
                 }
 
-                var  exchangePoint = parseInt($('.exchange-point', curform).val());
+                var exchangePoint = parseInt($('.exchange-point', curform).val());
                 if (exchangePoint <= 0) {
                     showErrorMessage('所需要积分必须大于0', $('.exchange-point', curform));
                     return false;
