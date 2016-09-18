@@ -426,7 +426,6 @@
                 AND coupon.coupon_type = #{preferenceType}
             </if>
         </where>
-        ;
     </select>
 
     <select id="sumInvestAmount" parameterType="map" resultType="long">
