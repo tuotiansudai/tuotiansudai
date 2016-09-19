@@ -154,7 +154,7 @@ module.exports = function(grunt) {
             dist: {
                 options: {
                     // cache:false,
-                    optimizationLevel: 3,
+                    optimizationLevel: 5,
                     progressive: true
                 },
                 files: [
@@ -174,7 +174,8 @@ module.exports = function(grunt) {
     //,'clean:base64'
 
     //压缩图片，需要压缩图片的时候单独执行 grunt imagemin
-    grunt.registerTask('imagemin', ['newer:imagemin']);
+
+    //grunt.registerTask('imagemin', ['newer:imagemin']);
 
     // 默认被执行的任务列表。
     grunt.registerTask('default', [
