@@ -104,13 +104,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
 
         dataDto.setLoanName(loanModel.getName());
-
-        if(loanDetailsModelActivity != null && ActivityType.ACTIVITY.name()  == loanModel.getActivityType().name()){
-            dataDto.setActivityDesc(loanDetailsModelActivity.getActivityDesc());
-        }
-        else {
-            dataDto.setActivityDesc("");
-        }
+        dataDto.setActivityDesc((loanDetailsModelActivity != null && ActivityType.ACTIVITY.name()  == loanModel.getActivityType().name()) ? loanDetailsModelActivity.getActivityDesc() : "");
 
         dataDto.setPledgeType(loanModel.getPledgeType());
         dataDto.setRepayTypeCode("");

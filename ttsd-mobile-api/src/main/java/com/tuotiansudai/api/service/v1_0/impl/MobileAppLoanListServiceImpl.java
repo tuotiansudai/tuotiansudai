@@ -109,12 +109,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setLoanTypeName(loan.getProductType() != null ? loan.getProductType().getProductLineName() : "");
             LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
             loanResponseDataDto.setLoanName(loan.getName());
-            if(loanDetailsModelActivity != null && ActivityType.ACTIVITY.name()  == loan.getActivityType().name()){
-                loanResponseDataDto.setActivityDesc(loanDetailsModelActivity.getActivityDesc());
-            }
-            else {
-                loanResponseDataDto.setActivityDesc("");
-            }
+            loanResponseDataDto.setActivityDesc((loanDetailsModelActivity != null && ActivityType.ACTIVITY.name() == loan.getActivityType().name()) ? loanDetailsModelActivity.getActivityDesc() : "");
 
             loanResponseDataDto.setPledgeType(loan.getPledgeType());
             loanResponseDataDto.setRepayTypeCode("");
