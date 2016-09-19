@@ -259,7 +259,7 @@ public class LoanServiceTest {
                 DateTime.parse("2012-2-1").toDate(), 1000, 20000);
         loanDto.setId(loanId);
         loanDto.setPledgeType(PledgeType.VEHICLE);
-        LoanDetailsDto loanDetailsDto = new LoanDetailsDto(loanId, "updateDeclaration", null, false);
+        LoanDetailsDto loanDetailsDto = new LoanDetailsDto(loanId, "updateDeclaration", null, "");
         LoanerDetailsDto loanerDetailsDto = new LoanerDetailsDto(loanId, "updateLoginName", "updateLoanerUser", Gender.FEMALE,
                 334, "updateId", Marriage.MARRIED, "updateRegion", "updateIncome", "updateStatus");
         PledgeVehicleDto vehicleDto = new PledgeVehicleDto(loanId, "updateLocation", "updateValue", "updateAmount", "updateBrand",

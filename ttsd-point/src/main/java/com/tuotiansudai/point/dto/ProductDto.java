@@ -6,7 +6,6 @@ import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -36,6 +35,7 @@ public class ProductDto implements Serializable {
         this.couponId = exchangeCouponDto.getId();
         this.name = exchangeCouponDto.getCouponType().getName();
         this.seq = exchangeCouponDto.getSeq();
+        this.imageUrl = exchangeCouponDto.getImageUrl();
         this.points = exchangeCouponDto.getExchangePoint();
         this.totalCount = exchangeCouponDto.getTotalCount();
         this.startTime = exchangeCouponDto.getStartTime();
@@ -49,6 +49,7 @@ public class ProductDto implements Serializable {
         this.couponId = exchangeCouponDto.getId();
         this.name = exchangeCouponDto.getCouponType().getName();
         this.seq = exchangeCouponDto.getSeq();
+        this.imageUrl = exchangeCouponDto.getImageUrl();
         this.points = exchangeCouponDto.getExchangePoint();
         this.totalCount = exchangeCouponDto.getTotalCount();
         this.startTime = exchangeCouponDto.getStartTime();

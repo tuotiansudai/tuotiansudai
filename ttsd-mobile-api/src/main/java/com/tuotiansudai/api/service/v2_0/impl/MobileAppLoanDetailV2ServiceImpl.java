@@ -103,21 +103,10 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
 
         LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
 
-        String loanName = "";
-        if(loanDetailsModelActivity != null){
-            if(loanDetailsModelActivity.isActivity()){
-                loanName = loanModel.getName()+("(活动专享)");
-            }
-            else{
-                loanName = loanModel.getName();
-            }
-        }
-        else {
-            loanName = loanModel.getName();
-        }
+        dataDto.setLoanName(loanModel.getName());
+        dataDto.setActivityDesc((loanDetailsModelActivity != null && ActivityType.ACTIVITY.name()  == loanModel.getActivityType().name()) ? loanDetailsModelActivity.getActivityDesc() : "");
 
-        dataDto.setLoanName(loanName);
-
+        dataDto.setPledgeType(loanModel.getPledgeType());
         dataDto.setRepayTypeCode("");
         dataDto.setDuration(loanModel.getDuration());
         String repayTypeName = loanModel.getType().getRepayType();
@@ -163,7 +152,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
         if (loanDetailsModel != null) {
             dataDto.setDeclaration(loanDetailsModel.getDeclaration());
-            dataDto.setExtraSource("WEB".equals(loanDetailsModel.getExtraSource())?loanDetailsModel.getExtraSource():"");
+            dataDto.setExtraSource(Source.WEB.name() == loanDetailsModel.getExtraSource()?loanDetailsModel.getExtraSource():"");
         }
         dataDto.setActivityType(loanModel.getActivityType());
         dataDto.setRemainTime(calculateRemainTime(loanModel.getFundraisingEndTime(), loanModel.getStatus()));

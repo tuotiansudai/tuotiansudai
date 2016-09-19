@@ -39,6 +39,20 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             }
         });
 
+        //根据活动类型来显示标的所属活动是否可以编辑
+        $('.jq-activity-type').change(function () {
+            var value =  $('.jq-activity-type').val();
+            if("ACTIVITY" == value){
+                $('.jq-activity-desc').prop('disabled',false);
+            }
+            else{
+                $('.jq-activity-desc').val("");
+                $('.jq-activity-desc').prop('disabled',true);
+            }
+
+        });
+
+
         function initSelect() {
             var _selectAll = $('.jq-form select');
             var _selectOption = $('select option');
@@ -214,13 +228,6 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             }
         });
 
-        $('.jq-activity-checkbox label').click(function () {
-            if ($('.jq-activity').prop('checked')) {
-                $('.jq-activity').val('1');
-            } else {
-                $('.jq-activity').val('0');
-            }
-        });
         //自动完成提示
         var autoValue = '';
         $(".jq-agent").autocomplete({
@@ -283,6 +290,14 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     return false;
                 }
 
+                var activityType = $('.jq-activity-type', curform).val();
+                var activityDesc = $('.jq-activity-desc', curform).val();
+                if ("ACTIVITY" == activityType && activityDesc.trim() == "") {
+                    showErrorMessage('活动类型是活动专享,标的所属活动必须填写', $('.jq-activity-desc', curform));
+                    $('.jq-activity-desc').prop('disabled', false);
+                    return false;
+                }
+
                 var duration = $('.jq-duration', curform).val();
                 if (duration == '') {
                     showErrorMessage('请选择借款期限', $('.jq-duration', curform));
@@ -319,6 +334,10 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         return false;
                     }
                 }
+
+
+
+
             },
             callback: function (form) {
                 formFlag = true;
@@ -379,12 +398,6 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     showOnHome = false;
                 }
 
-                var activityInputVal =  $('.jq-activity').val();
-                var activity = false;
-                if (activityInputVal == '1') {
-                    activity = true;
-                }
-
                 var value = $('.jq-name').val();
                 var url = "/project-manage/loan/create";
                 if ("房产抵押借款" == value) {
@@ -412,7 +425,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "loanTitles": uploadFile,
                         "extraRateIds": getExtraRateIds(),
                         "extraSource": getExtraSource(),
-                        "activity": activity,
+                        "activityDesc": $('.jq-activity-desc').val(),
 
                         "declaration": $('.jq-loan-declaration').val(),
 
@@ -460,7 +473,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "loanTitles": uploadFile,
                         "extraRateIds": getExtraRateIds(),
                         "extraSource": getExtraSource(),
-                        "activity": activity,
+                        "activityDesc": $('.jq-activity-desc').val(),
 
                         "declaration": $('.jq-loan-declaration').val(),
 
