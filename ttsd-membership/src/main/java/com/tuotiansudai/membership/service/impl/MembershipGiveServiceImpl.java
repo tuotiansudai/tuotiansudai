@@ -97,6 +97,7 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
 
     @SuppressWarnings(value = "unchecked")
     @Transactional
+    @Override
     public BaseDto<BaseDataDto> approveMembershipGive(long id, String validLoginName) {
         MembershipGiveModel membershipGiveModel = membershipGiveMapper.findById(id);
         if (null == membershipGiveModel) {
@@ -124,6 +125,29 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
             }
             userMembershipMapper.createMass(userMembershipModels);
         }
+
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    @Override
+    public BaseDto<BaseDataDto> cancelMembershipGive(long id, String validLoginName) {
+        MembershipGiveModel membershipGiveModel = membershipGiveMapper.findById(id);
+        if (null == membershipGiveModel) {
+            return new BaseDto<>(new BaseDataDto(false, "会员发放计划不存在"));
+        }
+        if (!membershipGiveModel.isValid()) {
+            return new BaseDto<>(new BaseDataDto(false, "会员发放计划未生效"));
+        }
+        if (!membershipGiveModel.getUserGroup().equals(MembershipUserGroup.NEW_REGISTERED_USER)) {
+            return new BaseDto<>(new BaseDataDto(false, "只有新注册用户的会员发放计划可以取消"));
+        }
+
+        membershipGiveModel.setValid(false);
+        membershipGiveModel.setValidLoginName(validLoginName);
+        membershipGiveModel.setUpdatedLoginName(validLoginName);
+        membershipGiveModel.setUpdatedTime(new Date());
+
+        membershipGiveMapper.update(membershipGiveModel);
 
         return new BaseDto<>(new BaseDataDto(true));
     }
