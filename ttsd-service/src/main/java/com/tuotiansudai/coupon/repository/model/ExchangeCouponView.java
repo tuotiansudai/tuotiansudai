@@ -10,6 +10,8 @@ public class ExchangeCouponView extends CouponModel {
 
     private String imageUrl;
 
+    private long productId;
+
     public ExchangeCouponView() {
         super();
     }
@@ -44,5 +46,13 @@ public class ExchangeCouponView extends CouponModel {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(long productId) {
+        this.productId = productId;
     }
 }

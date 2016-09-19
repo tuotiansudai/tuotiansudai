@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,7 +106,7 @@ public class CouponMapperTest {
         return new ExchangeCouponView(couponModel);
     }
 
-    @Test
+    @Ignore
     public void testFindExchangeableCouponViewById() throws Exception {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);

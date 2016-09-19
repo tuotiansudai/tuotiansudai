@@ -60,7 +60,7 @@
                             </span>
                         </p>
 
-                        <p class="intro-text">连续签到，积分翻倍送，最多每天可领<span>80</span>积分！</p>
+                        <p class="intro-text">连续签到，积分翻倍送，最多每天可领<span>10</span>积分！</p>
                     </div>
                     <div class="sign-bottom">
                         <ul>
@@ -68,7 +68,7 @@
                                 <p class="day-name">第1天</p>
 
                                 <p class="day-beans">
-                                    <span>5</span>
+                                    <span>2</span>
                                     <i class="bean-img"></i>
                                 </p>
                             </li>
@@ -76,7 +76,7 @@
                                 <p class="day-name">第2天</p>
 
                                 <p class="day-beans">
-                                    <span>10</span>
+                                    <span>3</span>
                                     <i class="bean-img"></i>
                                 </p>
                             </li>
@@ -84,7 +84,7 @@
                                 <p class="day-name">第3天</p>
 
                                 <p class="day-beans">
-                                    <span>20</span>
+                                    <span>4</span>
                                     <i class="bean-img"></i>
                                 </p>
                             </li>
@@ -92,7 +92,7 @@
                                 <p class="day-name">第4天</p>
 
                                 <p class="day-beans">
-                                    <span>40</span>
+                                    <span>5</span>
                                     <i class="bean-img"></i>
                                 </p>
                             </li>
@@ -100,7 +100,7 @@
                                 <p class="day-name">第5天</p>
 
                                 <p class="day-beans">
-                                    <span>80</span>
+                                    <span>10</span>
                                     <i class="bean-img"></i>
                                 </p>
                             </li>
@@ -108,7 +108,7 @@
                                 <p class="day-name">第6天</p>
 
                                 <p class="day-beans">
-                                    <span>80</span>
+                                    <span>10</span>
                                     <i class="bean-img"></i>
                                 </p>
                             </li>
@@ -116,7 +116,7 @@
                                 <p class="day-name">第7天</p>
 
                                 <p class="day-beans">
-                                    <span>80</span>
+                                    <span>10</span>
                                     <i class="bean-img"></i>
                                 </p>
                             </li>
@@ -149,13 +149,19 @@
                         <li class="big-gift">
                             <a href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail">
                                 <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
+
                                 <p><img src="/${virtualProduct.imageUrl}" width="160" height="100"></p>
                                 <p class="convert-btn">
                                     <span class="name-text">${virtualProduct.name!"0"}</span>
                                     <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
-                                    <a class="fl"
-                                       href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/1"><span
-                                            class="fl get-btn">立即兑换</span></a>
+                                    <#if virtualProduct?? && virtualProduct.leftCount ==0 >
+                                        <span class="fl get-btn">已售罄</span>
+                                    <#else>
+                                        <a class="fl"
+                                           href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/1"><span
+                                                class="fl get-btn">立即兑换</span></a>
+                                    </#if>
+
                                 </p>
                             </a>
                         </li>
@@ -163,13 +169,18 @@
                         <li>
                             <a href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail">
                                 <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
+
                                 <p><img src="/${virtualProduct.imageUrl}" width="160" height="100"></p>
                                 <p class="convert-btn">
                                     <span class="name-text">${virtualProduct.name}</span>
                                     <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
-                                    <a class="fl"
-                                       href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/1"><span
-                                            class="fl get-btn">立即兑换</span></a>
+                                    <#if virtualProduct?? && virtualProduct.leftCount ==0 >
+                                        <span class="fl get-btn">已售罄</span>
+                                    <#else>
+                                        <a class="fl"
+                                           href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/1"><span
+                                                class="fl get-btn">立即兑换</span></a>
+                                    </#if>
                                 </p>
                             </a>
                         </li>
@@ -205,8 +216,12 @@
                                 <p class="convert-btn">
                                     <span class="name-text">${physicalProduct.name}</span>
                                     <span class="price-text">尊享价：<i>${physicalProduct.points?string('0')}</i>积分</span>
-                                    <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.itemType.name()}/1"><span
-                                            class="get-btn">立即兑换</span></a>
+                                    <#if physicalProduct?? && physicalProduct.leftCount ==0 >
+                                        <span class="fl get-btn">已售罄</span>
+                                    <#else>
+                                        <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.itemType.name()}/1"><span
+                                                class="get-btn">立即兑换</span></a>
+                                    </#if>
                                 </p>
                             </a>
                         </li>
@@ -222,8 +237,12 @@
                                 <p class="convert-btn">
                                     <span class="name-text">${physicalProduct.name}</span>
                                     <span class="price-text">尊享价：<i>${physicalProduct.points?string('0')}</i>积分</span>
-                                    <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.itemType.name()}/1"><span
-                                            class="get-btn">立即兑换</span></a>
+                                    <#if physicalProduct?? && physicalProduct.leftCount ==0 >
+                                        <span class="fl get-btn">已售罄</span>
+                                    <#else>
+                                        <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.itemType.name()}/1"><span
+                                                class="get-btn">立即兑换</span></a>
+                                    </#if>
                                 </p>
                             </a>
                         </li>

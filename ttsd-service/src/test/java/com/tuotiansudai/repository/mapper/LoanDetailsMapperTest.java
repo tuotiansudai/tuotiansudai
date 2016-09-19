@@ -69,7 +69,7 @@ public class LoanDetailsMapperTest {
     @Test
     public void testCreateAndGetLoanDetailsByLoanId() throws Exception {
         prepareData();
-        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(9999L, "testDescription", "");
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(9999L, "testDescription", "", false);
 
         loanDetailsMapper.create(loanDetailsModel);
         LoanDetailsModel findLoanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanDetailsModel.getLoanId());
@@ -81,7 +81,7 @@ public class LoanDetailsMapperTest {
     @Test
     public void testUpdateByLoanId() throws Exception {
         prepareData();
-        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(9999L, "testDescription", "");
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(9999L, "testDescription", "", false);
         loanDetailsMapper.create(loanDetailsModel);
 
         loanDetailsModel.setDeclaration("update");

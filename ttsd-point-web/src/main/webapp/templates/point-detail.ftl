@@ -9,9 +9,9 @@
 			</div>
 			<div class="detail-info">
 				<div class="detail-left">
-					<p class="mater-img picture-item">
-						<img src="/${productShowItem.imageUrl}" width="300" height="244"/>
-					</p>
+                    <p class="mater-img picture-item">
+                        <img src="/${productShowItem.imageUrl}" width="300" height="244"/>
+                    </p>
 				</div>
 				<div class="detail-right">
                     <h3>${productShowItem.name!}</h3>
@@ -55,8 +55,13 @@
 						</div>
 					</div>
 					<div class="info-text mt-20">
-                        <a href="javascript:void(0)" class="btn get-btn" data-id="${productShowItem.id?c!0}"
-                           data-type="${productShowItem.itemType.name()}" id="getBtn">立即兑换</a>
+						<#if productShowItem?? && productShowItem.leftCount == 0>
+                            <a class="btn get-btn">已售罄</a>
+						<#else>
+                            <a href="javascript:void(0)" class="btn get-btn" data-id="${productShowItem.id?c!0}"
+                               data-type="${productShowItem.itemType.name()}" id="getBtn">立即兑换</a>
+						</#if>
+
 					</div>
 					<div class="info-text mt-20">
 						<#if productShowItem.itemType.name() == 'PHYSICAL' || productShowItem.itemType.name() == 'VIRTUAL'>

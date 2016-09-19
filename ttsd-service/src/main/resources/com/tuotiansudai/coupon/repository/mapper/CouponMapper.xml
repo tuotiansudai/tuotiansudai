@@ -40,6 +40,7 @@
         <result column="exchange_point" property="exchangePoint"/>
         <result column="seq" property="seq"/>
         <result column="image_url" property="imageUrl"/>
+        <result column="product_id" property="productId"/>
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
@@ -273,11 +274,11 @@
 
     <select id="findExchangeableCouponViews" resultMap="exchangeCouponViewResultMap">
         SELECT
-        coupon.*, product.points as exchange_point, product.seq as seq, product.image_url as image_url
+        coupon.*, product.points as exchange_point, product.seq as seq, product.image_url as image_url,product.id as
+        product_id
         FROM
         (SELECT * FROM `coupon`
         WHERE
-        `total_count` > `issued_count` AND
         `active` is TRUE AND
         `deleted` is FALSE AND
         `coupon_type` IN ('INVEST_COUPON','INTEREST_COUPON', 'RED_ENVELOPE') AND
@@ -300,7 +301,6 @@
         FROM
         (SELECT * FROM `coupon`
         WHERE
-        `total_count` > `issued_count` AND
         `active` is TRUE AND
         `deleted` is FALSE AND
         `coupon_type` IN ('INVEST_COUPON','INTEREST_COUPON', 'RED_ENVELOPE') AND

@@ -89,6 +89,7 @@
                     <div class="loan-info-frame fl">
                         <div class="loan-top">
                             <span class="l-title fl">${loanItem.name}
+                                <#if loanItem.activity?string("true","false") == "true">(活动专享)</#if>
 
                                 <#if loanItem.productType == 'EXPERIENCE'><i
                                     class="new-tip">仅限使用体验金投资</i></#if></span>

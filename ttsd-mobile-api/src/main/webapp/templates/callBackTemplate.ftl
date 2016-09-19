@@ -12,7 +12,6 @@
         <h3 class="info-title"><i></i>${message} </h3>
         <ul class="info-detail">
         <#if service == 'ptp_mer_bind_card'>
-            <li><span class="title">银行卡名称</span><em class="col-info"><#if bankName??>${bankName}</#if></em></li>
             <li><span class="title">银行卡号:</span><em class="col-info"><#if cardNumber??>${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</#if></em></li>
         <#elseif service == 'mer_recharge_person'>
             <li><span class="title">所用卡号</span><em class="col-info"><#if bankName??>${bankName}</#if> <#if cardNumber??>${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</#if></em></li>

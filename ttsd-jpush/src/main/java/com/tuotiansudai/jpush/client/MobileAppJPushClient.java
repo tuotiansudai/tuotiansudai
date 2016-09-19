@@ -16,7 +16,7 @@ import cn.jpush.api.push.model.notification.Notification;
 import cn.jpush.api.report.ReceivedsResult;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.jpush.repository.model.PushSource;
-import com.tuotiansudai.repository.model.Environment;
+import com.tuotiansudai.dto.Environment;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

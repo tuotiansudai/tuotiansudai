@@ -31,11 +31,13 @@
 
             <div class="col-sm-4 ">
                 <input type="text" name="imageUrl" class="form-control form-imageUrl" readonly placeholder=""
-                       value="<#if exchangeCouponDto??>${exchangeCouponDto.imageUrl!}</#if>" datatype="*" errormsg="请上传商品图片">
+                       value="<#if exchangeCouponDto??>${exchangeCouponDto.imageUrl!}</#if>" datatype="*"
+                       errormsg="请上传商品图片">
 
                 <div class="imageUrlImage" style="margin-top: 10px">
                     <#if exchangeCouponDto?? && exchangeCouponDto.imageUrl??>
-                        <img style="width:100%" src="/${exchangeCouponDto.imageUrl!}" alt="缩略图" width="542" height="340"/>
+                        <img style="width:100%" src="/${exchangeCouponDto.imageUrl!}" alt="缩略图" width="542"
+                             height="340"/>
                     </#if>
                 </div>
             </div>
@@ -99,7 +101,9 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">所需积分: </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control exchange-point" name="exchangePoint" <#if exchangeCouponDto??>value="${exchangeCouponDto.exchangePoint?string('0')!}"</#if> placeholder="" data-type="n" errormsg="所需积分需要填写数字">
+                <input type="text" class="form-control exchange-point" name="exchangePoint"
+                       <#if exchangeCouponDto??>value="${exchangeCouponDto.exchangePoint?string('0')!}"</#if>
+                       placeholder="" datatype="n" errormsg="所需积分需要填写数字">
             </div>
         </div>
 

@@ -11,4 +11,6 @@ public interface SignInService {
 
     SignInPointDto getLastSignIn(String loginName);
 
+    int getNextSignInPoint(String loginName);
+
 }

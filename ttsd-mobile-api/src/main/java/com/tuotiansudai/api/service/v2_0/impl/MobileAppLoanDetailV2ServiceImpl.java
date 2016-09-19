@@ -100,7 +100,24 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         LoanDetailV2ResponseDataDto dataDto = new LoanDetailV2ResponseDataDto();
         dataDto.setLoanId(loanModel.getId());
         dataDto.setLoanType(loanModel.getProductType() != null ? loanModel.getProductType().getProductLine() : "");
-        dataDto.setLoanName(loanModel.getName());
+
+        LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
+
+        String loanName = "";
+        if(loanDetailsModelActivity != null){
+            if(loanDetailsModelActivity.isActivity()){
+                loanName = loanModel.getName()+("(活动专享)");
+            }
+            else{
+                loanName = loanModel.getName();
+            }
+        }
+        else {
+            loanName = loanModel.getName();
+        }
+
+        dataDto.setLoanName(loanName);
+
         dataDto.setRepayTypeCode("");
         dataDto.setDuration(loanModel.getDuration());
         String repayTypeName = loanModel.getType().getRepayType();

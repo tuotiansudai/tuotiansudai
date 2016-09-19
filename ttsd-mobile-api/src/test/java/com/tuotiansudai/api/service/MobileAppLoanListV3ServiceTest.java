@@ -13,21 +13,14 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
-public class MobileAppLoanListV3ServiceTest {
+public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
 
     @Autowired
     private IdGenerator idGenerator;
@@ -61,7 +54,7 @@ public class MobileAppLoanListV3ServiceTest {
         return userModel;
     }
 
-    private LoanModel createLoan(String loanerLoginName, ActivityType activityType, ProductType productType, LoanStatus loanStatus, String recheckTime) {
+    private LoanModel createLoan(String loanerLoginName, ActivityType activityType, ProductType productType, LoanStatus loanStatus, String raisingCompleteTime) {
         LoanModel loanModel = new LoanModel();
         loanModel.setId(idGenerator.generate());
         loanModel.setName(loanerLoginName);
@@ -70,7 +63,7 @@ public class MobileAppLoanListV3ServiceTest {
         loanModel.setLoanerIdentityNumber("111111111111111111");
         loanModel.setAgentLoginName(loanerLoginName);
         loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
-        loanModel.setPeriods(3);
+        loanModel.setPeriods(productType.getPeriods());
         loanModel.setStatus(loanStatus);
         loanModel.setActivityType(activityType);
         loanModel.setFundraisingStartTime(new Date());
@@ -79,10 +72,12 @@ public class MobileAppLoanListV3ServiceTest {
         loanModel.setProductType(productType);
         loanModel.setActivityType(activityType);
         loanModel.setPledgeType(PledgeType.HOUSE);
-        loanModel.setRecheckTime(DateTime.parse(recheckTime).toDate());
+        loanModel.setRaisingCompleteTime(DateTime.parse(raisingCompleteTime).toDate());
+        loanModel.setRecheckTime(new Date());
         loanMapper.create(loanModel);
+        loanMapper.update(loanModel);
 
-        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "", "MOBILE,WEB");
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "", "MOBILE,WEB", false);
         loanDetailsMapper.create(loanDetailsModel);
 
         return loanModel;

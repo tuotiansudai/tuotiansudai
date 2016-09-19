@@ -6,26 +6,22 @@ import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.spring.MyUser;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.FilterChainProxy;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpSession;
@@ -38,11 +34,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:dispatcher-servlet.xml", "classpath:applicationContext.xml", "classpath:spring-security.xml"})
-@WebAppConfiguration
-@Transactional
-public class LoanerControllerTest {
+public class LoanerControllerTest extends BaseControllerTest {
 
     private MockMvc mockMvc;
 
@@ -69,9 +61,6 @@ public class LoanerControllerTest {
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Before
     public void setUp() throws Exception {
@@ -119,7 +108,7 @@ public class LoanerControllerTest {
 
         loanRepayMapper.create(loanRepayModels);
 
-        HttpSession session = getHttpSession(loginName);
+        HttpSession session = getHttpSession(fakeUser, Lists.newArrayList(Role.USER, Role.LOANER));
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -145,16 +134,22 @@ public class LoanerControllerTest {
                 .andExpect(jsonPath("$.data.records[1].actualRepayAmount").value("0.13"));
     }
 
-    private HttpSession getHttpSession(String loginName) throws Exception {
+    private HttpSession getHttpSession(UserModel userModel, List<Role> roles) throws Exception {
         HttpSession session = mockMvc.perform(post("/"))
                 .andReturn()
                 .getRequest()
                 .getSession();
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(loginName);
+        List<GrantedAuthority> authorities = Lists.newArrayList();
+
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.name()));
+        }
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.getAuthorities());
+                new MyUser("token", userModel.getLoginName(), userModel.getPassword(), true, true, true, true, authorities, userModel.getMobile()),
+                null,
+                authorities);
 
         SecurityContextHolder.getContext().setAuthentication(token);
 
@@ -201,7 +196,7 @@ public class LoanerControllerTest {
 
         loanRepayMapper.create(loanRepayModels);
 
-        HttpSession session = getHttpSession(loginName);
+        HttpSession session = getHttpSession(fakeUser, Lists.newArrayList(Role.USER, Role.LOANER));
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -264,7 +259,7 @@ public class LoanerControllerTest {
 
         loanRepayMapper.create(loanRepayModels);
 
-        HttpSession session = getHttpSession(loginName);
+        HttpSession session = getHttpSession(fakeUser, Lists.newArrayList(Role.USER, Role.LOANER));
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 

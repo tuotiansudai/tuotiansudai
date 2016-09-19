@@ -2,7 +2,6 @@ package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.security.MobileAppTokenProvider;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppRegisterServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
@@ -10,10 +9,12 @@ import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -41,7 +42,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
     private MobileAppChannelService channelService;
 
     @Mock
-    private MobileAppTokenProvider mobileAppTokenProvider;
+    private MyAuthenticationUtil myAuthenticationUtil;
 
     @Test
     public void shouldSendRegisterByMobileNumberSMS() {
@@ -106,7 +107,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);
         when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
-        when(mobileAppTokenProvider.refreshToken(anyString())).thenReturn("");
+        when(myAuthenticationUtil.createAuthentication(anyString(), any(Source.class))).thenReturn("");
         BaseResponseDto baseResponseDto = mobileAppRegisterService.registerUser(registerRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
         assertEquals("13900000000",((RegisterResponseDataDto)baseResponseDto.getData()).getPhoneNum());

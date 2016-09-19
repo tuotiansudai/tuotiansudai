@@ -1,5 +1,5 @@
 @import "gift_circle";
-
+@import "register_common";
 
 $width:700px;
 @mixin mobilehide () {
@@ -16,17 +16,34 @@ $width:700px;
   width:100%;
   margin:0 auto;
 }
+.tour-slide  {
+  height: 457px;
+  background: url("/activity/images/sign/actor/luxury/luxury-top-new.jpg") center top no-repeat;
 
+  .page-width {
+    position: relative;
+    height:100%;
+    .activity-date {
+      position: absolute;
+      bottom:90px;
+      left: 39%;
+      color: #fff;
+      font-size:17px;
+      font-weight: bold;
+    }
+  }
+
+}
+.line-item{
+  width:100%;
+  height:10px;
+  background:url("/activity/images/sign/actor/luxury/line-item.png") no-repeat center;
+  overflow: hidden;
+}
 .luxury-list-container {
   background: #100f33 url("/activity/images/sign/actor/luxury/bg.png") repeat center;
   @media (max-width: $width) {
     background-size:100%;
-  }
-  .pc-item{
-    @include mobilehide;
-  }
-  .phone-item{
-    @include PChide;
   }
   .luxury-top-item {
     float:left;
@@ -92,520 +109,164 @@ $width:700px;
       }
     }
     .luxury-item{
-      margin-top:100px;
-      padding:0 30px;
+      padding:0 30px 30px 30px;
       background:#372876;
       position: relative;
-      @media (max-width: $width) {
-        width:90%;
-        margin:50px 5% 0;
-        padding:0;
-        display:inline-block;
-      }
-      &.foot-last{
-        margin-bottom:120px;
-        @media (max-width: $width) {
-          margin-bottom:80px;
-        }
+      margin-bottom:75px;
+      &.hack {
+        margin-bottom:40px;
       }
       .title-one{
-        position: absolute;
-        width:266px;
-        height:50px;
-        top:-37px;
-        left:50%;
-        margin-left:-133px;
-        @media (max-width: $width) {
-          width:180px;
-          height:auto;
-          top:-25px;
-          margin-left:-90px;
+        position: relative;
+        img {
+          position: absolute;
+          top: -32px;
+          left: 37%;
         }
       }
-      .title-two{
-        width:310px;
-        height:50px;
-        position: absolute;
-        top:-37px;
-        left:50%;
-        margin-left:-155px;
-        @media (max-width: $width) {
-          width:180px;
-          height:auto;
-          top:-21px;
-          margin-left:-90px;
+      .title-two {
+        position: relative;
+        img {
+          position: absolute;
+          top: -35px;
+          left: 35%;
         }
       }
+
       .title-info{
-        width:700px;
         margin:0 auto;
-        padding:40px 0;
+        padding:20px 0;
         text-align:center;
+        color:#e6d647;
         @media (max-width: $width) {
           width:100%;
           padding:20px 0;
         }
-        h3{
-          margin-bottom:10px;
-          img{
-            @media (max-width: $width) {
-              width:80%;
-            }
-          }
+        h1 {
+          font-size: 20px;
+          line-height: 45px;
+          font-weight: bold;
         }
-        p{
-          color:#fff;
-          font-size:14px;
-          @media (max-width: $width) {
-            padding:0 10px;
-            font-size:12px;
+        p {
+          color: #fff;
+          text-align: left;
+          font-weight: bold;
+          width: 85%;
+          display: block;
+          margin: 10px auto;
+          em {
+            color: #e6d647;
+          }
+          .space {
+            display: inline-block;
+            padding-left:50px;
           }
         }
       }
-      .user-account{
-        float:left;
-        width:100%;
-        height:60px;
-        margin-bottom:30px;
-        position: relative;
-        @media (max-width: $width) {
-          height:60px;
-        }
-        i.title-icon{
-          width:21px;
-          height:80px;
-          position: absolute;
-          top:-10px;
-          &.left-icon{
-            left:-50px;
-            background:url("/activity/images/sign/actor/luxury/left-icon.png") no-repeat center;
-            background-size:100%;
-            @media (max-width:$width) {
-              left:-20px;
-            }
-          }
-          &.right-icon{
-            right:-50px;
-            background:url("/activity/images/sign/actor/luxury/right-icon.png") no-repeat center;
-            background-size:100%;
-            @media (max-width:$width) {
-              right:-20px;
-            }
-          }
-        }
-        .bg-item{
-          width:1100px;
-          height:60px;
-          position: absolute;
-          top:0;
-          left:-30px;
-          background:#6150a9;
-          text-align:center;
-          @media (max-width: $width) {
-            width:100%;
-            left:0;
-          }
-          .date-time{
-            float:left;
-            height:30px;
-            margin-top:15px;
-            margin-left:80px;
-            @media (max-width: $width) {
-              margin-left:0;
-            }
-            .time-icon{
-              float:left;
-              width:16px;
-              height:18px;
-              margin:6px 10px 0 0;
-              background:url("/activity/images/sign/actor/luxury/date-icon.png") no-repeat center;
-            }
-            span{
-              float:left;
-              font-size:16px;
-              color:#fff;
-              line-height:30px;
-              @media (max-width: $width) {
-                font-size:12px;
-              }
-            }
-          }
-          .account-text{
-            display:inline-block;
-            line-height:60px;
-            span{
-              color:#fff;
-              &.user-text{
-                font-size:24px;
-                @media (max-width: $width) {
-                  font-size:12px;
-                }
-                strong{
+      .prize-kind {
+        margin: 10px 0px 10px 60px;
+        padding-top:20px;
+        .prize-box {
+          width:280px;
+          background: #d1cbed;
+          text-align: center;
+          float: left;
+          margin-right:40px;
+          margin-bottom:40px;
+          &.code-item-box {
+            background: none;
+            .code-item{
+              text-align: center;
+              p{
+                color:#fff;
+                font-size:20px;
+                margin-bottom:0;
+                span{
                   color:#e6d647;
                 }
               }
-              &.user-tip{
-                font-size:12px;
-                @media (max-width: $width) {
-                  display:none;
-                }
-              }
+            }
+            &:hover {
+              box-shadow: none;
             }
           }
-          .login-btn{
-            float:right;
-            width:140px;
-            color:#e6d647;
-            line-height:40px;
-            font-size:20px;
-            text-align:center;
-            border:1px solid #e6d647;
-            border-radius:25px;
-            margin-top:10px;
-            margin-right:35px;
-            text-decoration:none;
-            @media (max-width:$width) {
-              width: 60px;
-              font-size: 12px;
-              line-height: 25px;
-              margin-right: 0;
-              margin-top: 18px;  
+          .pk-title {
+            display: block;
+            color: #372876;
+            font-size: 14px;
+            padding: 6px 0;
+            span {
+              display: inline-block;
+              width: 45%;
+              float: left;
+              padding-left:5%;
+              text-align: left;
+              line-height: 22px;
+              em {
+                display: block;
+              }
+              i {
+                font-size:20px;
+              }
+              &:nth-child(1) {
+                width: 42%;
+                border-right: 1px solid #ed702c;
+              }
             }
+
+
+          }
+          .img-info {
+            border:1px solid #fff;
+            position: relative;
+            img {
+              width: 100%;
+            }
+            .kind-text {
+              position: absolute;
+              top: 127px;
+              height: 32px;
+              background: rgba(0,0,0,0.2);
+              width: 100%;
+              left: 0;
+              line-height: 32px;
+              color: #fff;
+            }
+            .kind-bottom {
+              padding:0 10px;
+              height:57px;
+              line-height: 57px;
+              //background: #e6fbff;
+              color: #808080;
+              font-size: 14px;
+              .btn-normal {
+                border-radius: 0;
+                margin-top: 10px;
+                font-size: 18px;
+                letter-spacing: 0;
+                padding:8px 15px;
+                background: #372876;
+                border:0;
+              }
+              span {
+                text-decoration: line-through;
+              }
+              em {
+                font-size: 20px;
+              }
+            }
+
+          }
+          &:hover {
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
           }
         }
       }
-      .product-item{
-        float:left;
-        width:100%;
-        position: relative;
-        .product-list{
-          margin:0 -15px;
-          @media (max-width: $width) {
-            margin:0;
-          }
-          li{
-            float:left;
-            width:500px;
-            margin:0 15px;
-            @media (max-width: $width) {
-              width:100%;
-              margin:0;
-            }
-            .picture-item{
-              float:left;
-              width:100%;
-              &:hover{
-                box-shadow: 0px 0px 20px #e6d647;
-                box-sizing: border-box;
-              }
-              .product-img{
-                float:left;
-                width:310px;
-                @media (max-width: $width) {
-                  width:50%;
-                }
-              }
-              .product-info{
-                float:left;
-                width:190px;
-                background:#fff;
-                @media (max-width: $width) {
-                  width:50%;
-                }
-                p{
-                  padding-left:20px;
-                  margin-bottom:0;
-                  @media (max-width: $width) {
-                    padding-left:10px;
-                  }
-                  &.name-text{
-                    font-size:16px;
-                    color:#191748;
-                    margin-top:25px;
-                    @media (max-width: $width) {
-                      margin-top:0;
-                      font-size:14px;
-                    }
-                  }
-                  &.des-text{
-                    font-size:12px;
-                    color:#191748;
-                  }
-                  &.price-text{
-                    font-size:20px;
-                    color:#372876;
-                    @media (max-width: $width) {
-                      font-size:16px;
-                    }
-                    .bite-text{
-                      padding:0 2px;
-                      font-size:12px;
-                      color:#fff;
-                      background:#9f91dc;
-                      margin-left:5px;
-                      line-height:20px;
-                      display: inline-block;
-                    }
-                  }
-                  &.intro-text{
-                    span{
-                      font-size:12px;
-                      color:#fff;
-                      padding:0 10px;
-                      background:#372876;
-                      line-height: 20px;
-                      display: inline-block;
-                      strong{
-                        color:#FC4A52;
-                      }
-                      @media (max-width: $width) {
-                        padding:0 5px;
-                      }
-                    }
-                  }
-                  &.btn-text{
-                    padding-left:0;
-                    margin-top:13px;
-                    @media (max-width: $width) {
-                      margin-top:0;
-                    }
-                    a{
-                      display:inline-block;
-                      width:100%;
-                      height:50px;
-                      line-height:50px;
-                      text-align:center;
-                      font-size:16px;
-                      color:#372876;
-                      background:#e6d647;
-                      @media (max-width: $width) {
-                        height:30px;
-                        line-height:30px;
-                        font-size:14px;
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            .coupon-list{
-              float:left;
-              width:100%;
-              margin:30px 0;
-              @media (max-width: $width) {
-                margin:10px 0;
-              }
-              .coupon-item{
-                float:left;
-                width:100%;
-                margin-bottom:10px;
-                overflow:hidden;
-                .info-text{
-                  float:left;
-                  width:330px;
-                  line-height:50px;
-                  background:#f1e896;
-                  position: relative;
-                  @media (max-width: $width) {
-                    width:50%;
-                    line-height:30px;
-                  }
-                  i{
-                    width:6px;
-                    height:6px;
-                    background:#372876;
-                    border-radius:10px;
-                    position: absolute;
-                    &.top-circle{
-                      top:-3px;
-                      right:-3px;
-                    }
-                    &.bottom-circle{
-                      bottom:-3px;
-                      right:-3px;
-                    }
-                  }
-                  span{
-                    &.coupon-name{
-                      float:left;
-                      font-size:16px;
-                      color:#191748;
-                      margin-left:40px;
-                      @media (max-width: $width) {
-                        font-size:12px;
-                        margin-left:0;
-                        width: 100px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                      }
-                    }
-                    &.count-number{
-                      float:right;
-                      font-size:24px;
-                      color:#191748;
-                      margin-right:40px;
-                      @media (max-width: $width) {
-                        font-size:14px;
-                        margin-right:0;
-                      }
-                    }
-                  }
-                }
-                .tip-text{
-                  float:left;
-                  width:170px;
-                  text-align:center;
-                  font-size:14px;
-                  color:#191748;
-                  line-height:50px;
-                  background:#fff;
-                  span{
-                    color:#FC4A52;
-                    font-weight:bold;
-                  }
-                  @media (max-width: $width) {
-                    width:50%;
-                    font-size:12px;
-                    line-height:30px;
-                  }
-                }
-              }
-            }
-          }
-        }
-        .line-item{
-          width:1106px;
-          height:10px;
-          position: absolute;
-          bottom:0;
-          left:-33px;
-          background:url("/activity/images/sign/actor/luxury/line-item.png") no-repeat center;
-          background-size: 100%;
-          @media (max-width: $width) {
-            width:100%;
-            left:0;
-          }
-        }
-      }
-      .winer-record{
-        float:left;
-        width:100%;
-        margin-top:40px;
-        @media (max-width: $width) {
-          margin-top:20px;
-        }
-        .record-list{
-          float:left;
-          width:500px;
-          border:1px solid #6150a9;
-          @media (max-width: $width) {
-            width:100%;
-          }
-          h3{
-            float:left;
-            width:100%;
-            background:#372876;
-            span{
-              float:left;
-              width:50%;
-              line-height:45px;
-              color:#ccc;
-              font-size:18px;
-              text-align:center;
-              cursor:pointer;
-              @media (max-width: $width) {
-                line-height:40px;
-                font-size:16px;
-              }
-              &.active{
-                color:#fff;
-                background:#6150a9;
-              }
-            }
-          }
-          .record-item{
-            float:left;
-            width:100%;
-            .record-data{
-              float:left;
-              width:100%;
-              height:270px;
-              background:#6150a9;
-              overflow:hidden;
-              display:none;
-              @media (max-width: $width) {
-                height:180px;
-              }
-              &.active{
-                display:block;
-              }
-              table>thead>tr>th{
-                background:#e6d647;
-                &.mobile-hide{
-                  @media (max-width: $width) {
-                    display:none;
-                  }
-                }
-                @media (max-width: $width) {
-                  font-size:12px;
-                  padding:0;
-                  line-height:30px;
-                }
-              }
-              table>tbody>tr>td{
-                color:#fff;
-                line-height:30px;
-                &.mobile-hide{
-                  @media (max-width: $width) {
-                    display:none;
-                  }
-                }
-                &.name-text{
-                  width: 200px;
-                  text-overflow: ellipsis;
-                  overflow: hidden;
-                  white-space: nowrap;
-                  display: inline-block;
-                  @media (max-width: $width) {
-                    width:120px;
-                  }
-                }
-                @media (max-width: $width) {
-                  font-size:12px;
-                  padding:0;
-                  line-height:30px;
-                }
-              }
-            }
-          }
-        }
-        .code-item{
-          float:left;
-          width:500px;
-          margin-left:30px;
-          text-align: center;
-          @media (max-width: $width) {
-            display:none;
-          }
-          p{
-            color:#fff;
-            font-size:20px;
-            margin-bottom:0;
-            span{
-              color:#e6d647;
-            }
-          }
-        }
-      }
+
       .btn-item{
         float:left;
         width:100%;
-        margin:40px 0 25px;
         text-align:center;
-        @media (max-width: $width) {
-          margin:20px 0 25px;
-        }
         a{
           display:inline-block;
           width:280px;
@@ -779,48 +440,24 @@ $width:700px;
         }
       }
       .actor-info-text{
-        float:left;
-        width:100%;
         padding:20px 0;
-        @media (max-width:$width) {
-          width:90%;
-          margin:0 5%;
-        }
         .actor-title{
           float:left;
           width:100%;
           color:#fff;
           font-size:24px;
           margin-bottom:20px;
-          @media (max-width:$width) {
-            font-size:20px;
-            margin-bottom:10px;
+        }
+        p {
+          color: #fff;
+          &.pc {
+            display: block;
+          }
+          &.nopc {
+            display: none;
           }
         }
-        .rule-list{
-          float:left;
-          width:100%;
-          opacity:.7;
-          @include mobilehide();
-          li{
-            float:left;
-            width:100%;
-            color:#fff;
-            font-size:12px;
-          }
-        }
-        .phone-rule{
-          float:left;
-          width:100%;
-          opacity:.7;
-          @include PChide();
-          li{
-            float:left;
-            width:100%;
-            color:#fff;
-            font-size:12px;
-          }
-        }
+
       }
     }
   }
@@ -828,5 +465,140 @@ $width:700px;
     clear:both;
     display:block;
   }
+}
+
+@media (max-width: 700px) {
+  .tour-slide  {
+    height: 185px;
+    background: url("/activity/images/sign/actor/luxury/top-wap.jpg") center top no-repeat;
+    background-size: cover;
+    .activity-date {
+      display: none;
+    }
+  }
+
+  .register-common-frame .landing-top .register-box {
+    margin-bottom: 39px;
+  }
+
+  .luxury-list-container .wp {
+    &.detail-wp {
+      width: 100%;
+      .detail-img {
+        float: none;
+      }
+    }
+    .luxury-item {
+      padding:10px 10px 10px 10px;
+      &.hack {
+        margin-bottom:20px;
+      }
+      .title-one{
+        position: relative;
+        img {
+          width: 50%;
+          position: absolute;
+          top: -18px;
+          left: 26%;
+        }
+      }
+      .actor-info-text {
+        width:100%;
+        .actor-title {
+          font-size:15px;
+          margin-bottom:10px;
+        }
+        p {
+          font-size:11px;
+          &.pc {
+            display: none;
+          }
+          &.nopc {
+            display: block;
+          }
+
+        }
+      }
+      .title-info p {
+        font-weight: normal;
+        width: 95%;
+        font-size: 11px;
+
+        em {
+          width: 50px;
+          display: inline-block;
+          float: left;
+        }
+        span.info {
+          width:calc(100% - 50px);
+          float: left;
+          .space {
+            padding-left:0;
+          }
+        }
+      }
+      .prize-kind {
+        margin:10px 0;
+        overflow: hidden;
+        .swiper-wrapper {
+          width: 108%;
+          width: calc(100% + 30px);
+        }
+        .prize-box {
+          width:45%;
+          margin-right: 10px;
+          margin-bottom: 10px;
+          &.code-item-box {
+            display: none;
+          }
+          .pk-title {
+            span {
+              font-size:12px;
+              i {
+                font-size:13px;
+              }
+              &:nth-child(1) {
+                width: 35%;
+              }
+              &:nth-child(2) {
+                width: 48%;
+              }
+            }
+          }
+          .img-info  {
+            a {
+              display: block;
+            }
+            .kind-text {
+              top: auto;
+              bottom: 30px
+            }
+            .kind-bottom {
+              font-size:11px;
+              height: 30px;
+              line-height: 30px;
+              em {
+                font-size: 14px;
+              }
+              .btn-normal {
+                display: none;
+              }
+            }
+          }
+        }
+
+      }
+
+      .title-two {
+        img {
+          width: 69%;
+          position: absolute;
+          top: -35px;
+          left: 15%;
+        }
+      }
+    }
+  }
+
 }
 

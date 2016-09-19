@@ -1,8 +1,7 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.v1_0.ActivityCenterDataDto;
-import com.tuotiansudai.api.dto.v1_0.ActivityCenterResponseDto;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppActivityService;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.ActivityMapper;
@@ -10,24 +9,19 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
-public class MobileAppActivityServiceTest {
+public class MobileAppActivityServiceTest extends ServiceTestBase {
     @Autowired
     InvestMapper investMapper;
 
@@ -161,14 +155,19 @@ public class MobileAppActivityServiceTest {
     @Test
     public void testGetAppActivityCenterResponseData() {
         prepareData();
-
-        ActivityCenterResponseDto activityCenterResponseDto = mobileAppActivityService.getAppActivityCenterResponseData("testUser", Source.IOS, 1, 4);
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("testUser");
+        baseParam.setPlatform(Source.IOS.toString());
+        ActivityCenterRequestDto requestDto = new ActivityCenterRequestDto();
+        requestDto.setBaseParam(baseParam);
+        requestDto.setActivityType(ActivityCenterType.CURRENT);
+        ActivityCenterResponseDto activityCenterResponseDto = mobileAppActivityService.getAppActivityCenterResponseData(requestDto);
         assertEquals(6, activityCenterResponseDto.getTotalCount().longValue());
         assertEquals(1, activityCenterResponseDto.getIndex().intValue());
-        assertEquals(4, activityCenterResponseDto.getPageSize().intValue());
+        assertEquals(10, activityCenterResponseDto.getPageSize().intValue());
 
         List<ActivityCenterDataDto> activityCenterDataDtos = activityCenterResponseDto.getActivities();
-        assertEquals(4, activityCenterDataDtos.size());
+        assertEquals(6, activityCenterDataDtos.size());
         assertEquals("新手1", activityCenterDataDtos.get(0).getDescTitle());
         assertEquals("normal4", activityCenterDataDtos.get(1).getDescTitle());
         assertEquals("新手2", activityCenterDataDtos.get(2).getDescTitle());

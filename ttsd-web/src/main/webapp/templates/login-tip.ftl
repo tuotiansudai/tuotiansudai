@@ -3,7 +3,7 @@
     <i class="close-btn"></i>
     <div class="login-box">
         <h3>欢迎登录拓天速贷</h3>
-        <form class="form-login" action="/login/sign-in" method="post">
+        <form class="form-login" action="/login" method="post">
             <label>
                 <em class="name user"></em>
                 <input class="login-name unlock" type="text" value="" name="username" placeholder="请输入账号/手机号"/>
@@ -19,6 +19,7 @@
                     <img src="/login/captcha" alt="" width="120" height="43"/>
                 </em>
             </label>
+            <input type="hidden" name="source" value="WEB" />
             <div class="forgot-password tc">
                 <input type="submit" class="login-submit btn-normal" value="登录">
                 <div class="fl">
