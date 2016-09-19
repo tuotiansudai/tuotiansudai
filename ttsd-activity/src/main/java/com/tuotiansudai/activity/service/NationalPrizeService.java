@@ -10,8 +10,11 @@ import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.point.repository.mapper.PointBillMapper;
+import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -54,6 +57,9 @@ public class NationalPrizeService {
 
     @Autowired
     private RandomUtils randomUtils;
+
+    @Autowired
+    private PointBillMapper pointBillMapper;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.startTime}\")}")
     private Date activityNationalStartTime;
@@ -190,5 +196,17 @@ public class NationalPrizeService {
             view.setMobile(randomUtils.encryptWebMiddleMobile(view.getMobile()));
         }
         return userLotteryPrizeViews;
+    }
+
+    public String getMyActivityPoint(String loginName){
+        return String.valueOf(pointBillMapper.findSumPointByLoginNameAndBusinessType(loginName,activityNationalStartTime,activityNationalEndTime,Lists.newArrayList(PointBusinessType.ACTIVITY)));
+    }
+
+    public String getAllActivityInvestAmount(){
+        return AmountConverter.convertCentToString(investMapper.findSumInvestAmountByActivityTypeAndInvestTime(ActivityType.ACTIVITY,activityNationalStartTime,activityNationalEndTime));
+    }
+
+    public String getAllActivityUserCount(){
+        return String.valueOf(investMapper.findSumUserCountByActivityTypeAndInvestTime(ActivityType.ACTIVITY,activityNationalStartTime,activityNationalEndTime));
     }
 }

@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.repository.model.TransferableInvestView;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -855,7 +856,107 @@ public class InvestMapperTest {
         investModel2.setTransferInvestId(investModel2.getId());
         investMapper.create(investModel2);
 
-        long count = investMapper.countInvestorSuccessInvestByInvestTime(User_ID2,DateUtils.addMonths(DateTime.now().toDate(), -1), DateUtils.addMonths(DateTime.now().toDate(), 1));
-        assertEquals(count,1);
+        long count = investMapper.countInvestorSuccessInvestByInvestTime(User_ID2, DateUtils.addMonths(DateTime.now().toDate(), -1), DateUtils.addMonths(DateTime.now().toDate(), 1));
+        assertEquals(count, 1);
+    }
+
+    @Test
+    public void shouldFindSumInvestAmountByActivityTypeAndInvestTimeIsOk(){
+        LoanModel fakeLoanModel = new LoanModel();
+        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setName(User_ID);
+        fakeLoanModel.setLoanerLoginName(User_ID);
+        fakeLoanModel.setLoanerUserName(User_ID);
+        fakeLoanModel.setLoanerIdentityNumber("111111111111111111");
+        fakeLoanModel.setAgentLoginName(User_ID);
+        fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        fakeLoanModel.setPeriods(3);
+        fakeLoanModel.setStatus(LoanStatus.RAISING);
+        fakeLoanModel.setActivityType(ActivityType.ACTIVITY);
+        fakeLoanModel.setFundraisingStartTime(new Date());
+        fakeLoanModel.setFundraisingEndTime(new Date());
+        fakeLoanModel.setDescriptionHtml("html");
+        fakeLoanModel.setDescriptionText("text");
+        fakeLoanModel.setCreatedTime(new Date());
+        fakeLoanModel.setProductType(ProductType._180);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
+        loanMapper.create(fakeLoanModel);
+
+        InvestModel investModel2 = this.getFakeInvestModel();
+        investModel2.setLoanId(fakeLoanModel.getId());
+        investModel2.setLoginName(User_ID2);
+        investModel2.setInvestTime(DateTime.now().toDate());
+        investModel2.setStatus(InvestStatus.SUCCESS);
+        investModel2.setInvestTime(DateTime.now().toDate());
+        investModel2.setTransferInvestId(investModel2.getId());
+        investModel2.setCreatedTime(DateTime.now().toDate());
+        investModel2.setAmount(100l);
+        investMapper.create(investModel2);
+
+        InvestModel investModel3 = this.getFakeInvestModel();
+        investModel3.setLoanId(fakeLoanModel.getId());
+        investModel3.setLoginName(User_ID2);
+        investModel3.setInvestTime(DateTime.now().toDate());
+        investModel3.setStatus(InvestStatus.SUCCESS);
+        investModel3.setInvestTime(DateTime.now().toDate());
+        investModel3.setTransferInvestId(investModel3.getId());
+        investModel3.setCreatedTime(DateTime.now().toDate());
+        investModel3.setAmount(1000l);
+        investMapper.create(investModel3);
+
+        Date startDate = DateUtils.addDays(DateTime.now().toDate(),-1);
+        Date endDate = DateUtils.addDays(DateTime.now().toDate(),1);
+        String amount = AmountConverter.convertCentToString(investMapper.findSumInvestAmountByActivityTypeAndInvestTime(ActivityType.ACTIVITY,startDate,endDate));
+        assertEquals(amount,"11.00");
+    }
+
+    @Test
+    public void shouldFindSumUserCountByActivityTypeAndInvestTimeIsOk(){
+        LoanModel fakeLoanModel = new LoanModel();
+        fakeLoanModel.setId(idGenerator.generate());
+        fakeLoanModel.setName(User_ID);
+        fakeLoanModel.setLoanerLoginName(User_ID);
+        fakeLoanModel.setLoanerUserName(User_ID);
+        fakeLoanModel.setLoanerIdentityNumber("111111111111111111");
+        fakeLoanModel.setAgentLoginName(User_ID);
+        fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        fakeLoanModel.setPeriods(3);
+        fakeLoanModel.setStatus(LoanStatus.RAISING);
+        fakeLoanModel.setActivityType(ActivityType.ACTIVITY);
+        fakeLoanModel.setFundraisingStartTime(new Date());
+        fakeLoanModel.setFundraisingEndTime(new Date());
+        fakeLoanModel.setDescriptionHtml("html");
+        fakeLoanModel.setDescriptionText("text");
+        fakeLoanModel.setCreatedTime(new Date());
+        fakeLoanModel.setProductType(ProductType._180);
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
+        loanMapper.create(fakeLoanModel);
+
+        InvestModel investModel3 = this.getFakeInvestModel();
+        investModel3.setLoanId(fakeLoanModel.getId());
+        investModel3.setLoginName(User_ID);
+        investModel3.setInvestTime(DateTime.now().toDate());
+        investModel3.setStatus(InvestStatus.SUCCESS);
+        investModel3.setInvestTime(DateTime.now().toDate());
+        investModel3.setTransferInvestId(investModel3.getId());
+        investModel3.setCreatedTime(DateTime.now().toDate());
+        investModel3.setAmount(1000l);
+        investMapper.create(investModel3);
+
+        InvestModel investModel2 = this.getFakeInvestModel();
+        investModel2.setLoanId(fakeLoanModel.getId());
+        investModel2.setLoginName(User_ID2);
+        investModel2.setInvestTime(DateTime.now().toDate());
+        investModel2.setStatus(InvestStatus.SUCCESS);
+        investModel2.setInvestTime(DateTime.now().toDate());
+        investModel2.setTransferInvestId(investModel2.getId());
+        investModel2.setCreatedTime(DateTime.now().toDate());
+        investModel2.setAmount(100l);
+        investMapper.create(investModel2);
+
+        Date startDate = DateUtils.addDays(DateTime.now().toDate(),-1);
+        Date endDate = DateUtils.addDays(DateTime.now().toDate(),1);
+        int userNum = investMapper.findSumUserCountByActivityTypeAndInvestTime(ActivityType.ACTIVITY,startDate,endDate);
+        assertEquals(userNum,2);
     }
 }

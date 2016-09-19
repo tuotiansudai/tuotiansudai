@@ -6,6 +6,8 @@ import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import org.apache.commons.lang.time.DateUtils;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -66,5 +69,18 @@ public class PointBillMapperTest {
         pointBillMapper.create(pointBillModel1);
         List<PointBillModel> pointBillModelList = pointBillMapper.findPointBillPagination(fakeUserModel.getLoginName(), 0, 10, null, null, Lists.newArrayList(PointBusinessType.EXCHANGE, PointBusinessType.LOTTERY));
         assertThat(pointBillModelList.size(), is(2));
+    }
+
+    @Test
+    public void shouldFindSumPointByLoginNameAndBusinessTypeIsOk(){
+        UserModel fakeUserModel = this.createFakeUserModel();
+        PointBillModel pointBillModel = new PointBillModel(fakeUserModel.getLoginName(), null, 10, PointBusinessType.ACTIVITY, "note");
+        pointBillMapper.create(pointBillModel);
+        PointBillModel pointBillModel1 = new PointBillModel(fakeUserModel.getLoginName(), null, 200, PointBusinessType.ACTIVITY, "note");
+        pointBillMapper.create(pointBillModel1);
+        Date startDate = DateUtils.addDays(DateTime.now().toDate(),-1);
+        Date endDate = DateUtils.addDays(DateTime.now().toDate(),1);
+        long sumPoint = pointBillMapper.findSumPointByLoginNameAndBusinessType(fakeUserModel.getLoginName(),startDate,endDate,Lists.newArrayList(PointBusinessType.ACTIVITY));
+        assertEquals(sumPoint,210);
     }
 }

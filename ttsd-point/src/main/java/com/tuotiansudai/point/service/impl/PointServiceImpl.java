@@ -13,10 +13,7 @@ import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -78,16 +75,18 @@ public class PointServiceImpl implements PointService {
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         int duration = loanModel.getDuration();
         long point = new BigDecimal((investModel.getAmount()*duration/InterestCalculator.DAYS_OF_YEAR)).divide(new BigDecimal(100), 0, BigDecimal.ROUND_DOWN).longValue();
+        PointBusinessType pointBusinessType = PointBusinessType.INVEST;
         Date nowDate = DateTime.now().toDate();
-        if(nowDate.before(activityNationalEndTime) && nowDate.after(activityNationalStartTime)){
+        if(nowDate.before(activityNationalEndTime) && nowDate.after(activityNationalStartTime) && loanModel.getActivityType().equals(ActivityType.ACTIVITY)){
+            pointBusinessType = PointBusinessType.ACTIVITY;
             UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
             if(userModel.getRegisterTime().before(activityNationalEndTime) && userModel.getRegisterTime().after(activityNationalStartTime) && !Strings.isNullOrEmpty(userModel.getReferrer())){
-                pointBillService.createPointBill(userModel.getReferrer(), investModel.getId(), PointBusinessType.ACTIVITY, (long) (point * 0.1));
+                pointBillService.createPointBill(userModel.getReferrer(), investModel.getId(), pointBusinessType, (long) (point * 0.1));
             }
             
             point *= 2;
         }
-        pointBillService.createPointBill(investModel.getLoginName(), investModel.getId(), PointBusinessType.INVEST, point);
+        pointBillService.createPointBill(investModel.getLoginName(), investModel.getId(), pointBusinessType, point);
         logger.debug(MessageFormat.format("{0} has obtained point {1}", investModel.getId(), point));
     }
 

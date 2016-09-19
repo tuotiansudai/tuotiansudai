@@ -255,4 +255,12 @@ public interface InvestMapper {
                                                 @Param(value = "startTime") Date startTime,
                                                 @Param(value = "endTime") Date endTime);
 
+    long findSumInvestAmountByActivityTypeAndInvestTime(@Param(value = "activityType") ActivityType activityType,
+                                                        @Param(value = "startTime") Date startTime,
+                                                        @Param(value = "endTime") Date endTime);
+
+    int findSumUserCountByActivityTypeAndInvestTime(@Param(value = "activityType") ActivityType activityType,
+                                                    @Param(value = "startTime") Date startTime,
+                                                    @Param(value = "endTime") Date endTime);
+
 }

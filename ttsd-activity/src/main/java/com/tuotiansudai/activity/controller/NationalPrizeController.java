@@ -38,7 +38,9 @@ public class NationalPrizeController {
     public ModelAndView travelPrize() {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/", "responsive", true);
-        modelAndView.addObject("today", new Date());
+        modelAndView.addObject("myPoint",nationalPrizeService.getMyActivityPoint(loginName));
+        modelAndView.addObject("allInvestAmount",nationalPrizeService.getAllActivityInvestAmount());
+        modelAndView.addObject("userCount",nationalPrizeService.getAllActivityUserCount());
         modelAndView.addObject("steps", generateSteps(loginName));
         return modelAndView;
     }

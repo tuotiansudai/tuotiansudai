@@ -900,4 +900,27 @@
         where status = 'SUCCESS' and login_name = #{loginName} and created_time BETWEEN #{startTime} and #{endTime}
     </select>
 
+    <select id="findSumInvestAmountByActivityTypeAndInvestTime" parameterType="map" resultType="long">
+        select IFNULL(SUM(amount),0) from loan l join invest i on l.id = i.loan_id where i.status = 'SUCCESS'
+        <if test="activityType != null">
+            and l.activity_type = #{activityType.name}
+        </if>
+        <if test="startTime != null &amp;&amp; endTime != null">
+            and i.created_time between #{startTime} and #{endTime}
+        </if>
+    </select>
+
+    <select id="findSumUserCountByActivityTypeAndInvestTime" parameterType="map" resultType="int">
+        select count(1) from(
+            select login_name from loan l join invest i on l.id = i.loan_id where i.status = 'SUCCESS'
+            <if test="activityType != null">
+                and l.activity_type = #{activityType.name}
+            </if>
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and i.created_time between #{startTime} and #{endTime}
+            </if>
+            GROUP BY i.login_name
+        ) t
+    </select>
+
 </mapper>
