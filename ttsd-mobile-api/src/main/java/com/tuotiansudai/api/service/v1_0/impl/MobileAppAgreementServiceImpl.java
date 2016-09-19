@@ -48,7 +48,7 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService{
         try {
             if (formDto.isSuccess()) {
                 responseDataDto.setUrl(formDto.getData().getUrl());
-                responseDataDto.setRequestData(CommonUtils.mapToFormData(formDto.getData().getFields(), true));
+                responseDataDto.setRequestData(CommonUtils.mapToFormData(formDto.getData().getFields()));
             }
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);

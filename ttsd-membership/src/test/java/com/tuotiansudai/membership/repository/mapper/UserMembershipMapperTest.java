@@ -58,21 +58,6 @@ public class UserMembershipMapperTest {
     }
 
     @Test
-    public void shouldUpdateUserMembership() throws Exception {
-
-        UserModel fakeUser = createFakeUser("loginName");
-        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 2, new Date(), UserMembershipType.UPGRADE);
-        userMembershipMapper.create(userMembershipModel);
-
-        UserMembershipModel updateUserMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 5, new Date(), UserMembershipType.GIVEN);
-        userMembershipMapper.update(updateUserMembershipModel);
-
-        assertThat(updateUserMembershipModel.getLoginName(), is(fakeUser.getLoginName()));
-        assertThat(updateUserMembershipModel.getMembershipId(), is(5L));
-        assertThat(updateUserMembershipModel.getType(), is(UserMembershipType.GIVEN));
-    }
-
-    @Test
     public void shouldUserMembershipFindById() throws Exception {
 
         UserModel fakeUser = createFakeUser("loginName");
@@ -85,36 +70,6 @@ public class UserMembershipMapperTest {
         assertThat(membershipModel1.getMembershipId(), is(2L));
         assertThat(membershipModel1.getType(), is(UserMembershipType.GIVEN));
 
-    }
-
-    @Test
-    public void shouldFindActiveByLoginName() throws Exception {
-
-        UserModel fakeUser = createFakeUser("loginName");
-        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), 2, new DateTime().plusDays(2).toDate(), UserMembershipType.GIVEN);
-        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), 3, new DateTime().plusDays(-2).toDate(), UserMembershipType.GIVEN);
-        userMembershipMapper.create(userMembershipModel1);
-        userMembershipMapper.create(userMembershipModel2);
-
-        UserMembershipModel membershipModel1 = userMembershipMapper.findActiveByLoginName(fakeUser.getLoginName());
-
-        assertThat(membershipModel1.getLoginName(), is(fakeUser.getLoginName()));
-        assertThat(membershipModel1.getMembershipId(), is(2L));
-        assertThat(membershipModel1.getType(), is(UserMembershipType.GIVEN));
-    }
-
-    @Test
-    public void shouldFindRateByLoginName() throws Exception {
-
-        UserModel fakeUser = createFakeUser("loginName");
-        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), 1, new DateTime().plusDays(-2).toDate(), UserMembershipType.GIVEN);
-        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), 3, new DateTime().plusDays(2).toDate(), UserMembershipType.GIVEN);
-        userMembershipMapper.create(userMembershipModel1);
-        userMembershipMapper.create(userMembershipModel2);
-
-        double rate = userMembershipMapper.findRateByLoginName(fakeUser.getLoginName());
-
-        assertThat(rate, is(0.09));
     }
 
     @Test

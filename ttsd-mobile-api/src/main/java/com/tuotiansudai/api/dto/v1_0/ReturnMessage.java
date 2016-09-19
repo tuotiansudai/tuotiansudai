@@ -148,6 +148,11 @@ public enum ReturnMessage {
     BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权"),
 
+    /******会员购买******/
+    MEMBERSHIP_PURCHASE_FAILED("0200", "会员购买失败"),
+    MEMBERSHIP_IS_PURCHASED("0201", "会员已购买，请勿重复购买"),
+    MEMBERSHIP_PURCHASE_NO_ENOUGH_AMOUNT("0202", "账户金额不足，请充值"),
+
     ERROR("9999", "错误");
 
     private String code;

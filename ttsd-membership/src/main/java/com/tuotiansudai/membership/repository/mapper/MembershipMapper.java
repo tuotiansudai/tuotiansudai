@@ -13,8 +13,6 @@ public interface MembershipMapper {
 
     MembershipModel findByLevel(long level);
 
-    List<Integer> findAllLevels();
-
     MembershipModel findByExperience(long experience);
 
     List<MembershipModel> findAllMembership();

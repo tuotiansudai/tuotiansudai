@@ -1,5 +1,7 @@
 package com.tuotiansudai.membership.repository.model;
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -24,12 +26,8 @@ public class UserMembershipModel implements Serializable{
         this.type = type;
     }
 
-    public UserMembershipModel(String loginName, long membershipId, Date expiredTime, Date createdTime, UserMembershipType type) {
-        this.loginName = loginName;
-        this.membershipId = membershipId;
-        this.expiredTime = expiredTime;
-        this.createdTime = createdTime;
-        this.type = type;
+    public static UserMembershipModel createUpgradeUserMembershipModel(String loginName, long membershipId) {
+        return new UserMembershipModel(loginName, membershipId, new DateTime(9999, 12, 31, 23, 59, 59, 0).toDate(), UserMembershipType.UPGRADE);
     }
 
     public long getId() {

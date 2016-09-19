@@ -32,7 +32,9 @@ public enum SystemBillBusinessType {
 
     LOTTERY_CASH("抽奖现金"),
 
-    EXTRA_RATE("投资奖励");
+    EXTRA_RATE("投资奖励"),
+
+    MEMBERSHIP_PURCHASE("会员购买");
 
     private final String description;
 
