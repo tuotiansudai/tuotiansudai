@@ -110,7 +110,7 @@
             <div class="account-info bg-w">
                 <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
-                    <form action="/invest" method="post" id="investForm" onsubmit ="return false;" >
+                    <form action="/invest" method="post" id="investForm">
                         <dl class="account-list">
                             <dd class="clearfix">
                                 <span class="fl">账户余额：</span>
