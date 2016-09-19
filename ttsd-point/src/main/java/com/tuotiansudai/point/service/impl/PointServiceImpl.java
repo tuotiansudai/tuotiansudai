@@ -15,6 +15,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
@@ -74,15 +75,16 @@ public class PointServiceImpl implements PointService {
     @Override
     @Transactional
     public void obtainPointInvest(InvestModel investModel) {
-        int duration = loanMapper.findById(investModel.getLoanId()).getDuration();
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+        int duration = loanModel.getDuration();
         long point = new BigDecimal((investModel.getAmount()*duration/InterestCalculator.DAYS_OF_YEAR)).divide(new BigDecimal(100), 0, BigDecimal.ROUND_DOWN).longValue();
         Date nowDate = DateTime.now().toDate();
         if(nowDate.before(activityNationalEndTime) && nowDate.after(activityNationalStartTime)){
             UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
-            if(userModel != null && !Strings.isNullOrEmpty(userModel.getReferrer())){
+            if(userModel.getRegisterTime().before(activityNationalEndTime) && userModel.getRegisterTime().after(activityNationalStartTime) && !Strings.isNullOrEmpty(userModel.getReferrer())){
                 pointBillService.createPointBill(userModel.getReferrer(), investModel.getId(), PointBusinessType.ACTIVITY, (long) (point * 0.1));
             }
-
+            
             point *= 2;
         }
         pointBillService.createPointBill(investModel.getLoginName(), investModel.getId(), PointBusinessType.INVEST, point);

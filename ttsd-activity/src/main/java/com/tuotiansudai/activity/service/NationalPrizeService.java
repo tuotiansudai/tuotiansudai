@@ -121,16 +121,16 @@ public class NationalPrizeService {
             return new DrawLotteryResultDto(2);//您还未登陆，请登陆后再来抽奖吧！
         }
 
+        UserModel userModel = userMapper.findByMobile(mobile);
+        if(userModel == null){
+            logger.debug(mobile + "User is not found.");
+            return new DrawLotteryResultDto(2);//"该用户不存在！"
+        }
+
         int drawTime = getDrawPrizeTime(mobile);
         if(drawTime <= 0){
             logger.debug(mobile + "is no chance. draw time:" + drawTime);
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
-        }
-
-        UserModel userModel = userMapper.findByMobile(mobile);
-        if(userModel == null){
-            logger.debug(mobile + "User is not found.");
-            return new DrawLotteryResultDto(1);//"该用户不存在！"
         }
 
         userMapper.lockByLoginName(userModel.getLoginName());
@@ -160,17 +160,17 @@ public class NationalPrizeService {
     private NationalPrize getNationalPrize(){
         int random = (int) (Math.random() * 100000000);
         int mod = random % 100;
-        if (mod >= 0 && mod <= 3){
+        if (mod >= 0 && mod <= 2){
             return NationalPrize.MEMBERSHIP_V5;
-        } else if (mod >= 4 && mod <= 6){
+        } else if (mod >= 3 && mod <= 5){
             return NationalPrize.CINEMA_TICKET;
-        } else if (mod >= 7 && mod <= 10){
+        } else if (mod >= 6 && mod <= 9){
             return NationalPrize.IQIYI_MEMBERSHIP;
-        } else if (mod >= 11 && mod <= 15){
+        } else if (mod >= 10 && mod <= 14){
             return NationalPrize.TELEPHONE_FARE_10;
-        } else if (mod >= 16 && mod <= 45){
+        } else if (mod >= 15 && mod <= 44){
             return NationalPrize.RED_ENVELOPE_50;
-        }else if (mod >= 46 && mod <= 75){
+        }else if (mod >= 45 && mod <= 74){
             return NationalPrize.RED_ENVELOPE_15;
         }else{
             return NationalPrize.MEMBERSHIP_V5;
