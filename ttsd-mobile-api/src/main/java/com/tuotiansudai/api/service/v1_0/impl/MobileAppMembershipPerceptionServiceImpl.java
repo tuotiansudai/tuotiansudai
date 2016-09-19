@@ -6,7 +6,6 @@ import com.tuotiansudai.api.dto.v1_0.MembershipPerceptionRequestDto;
 import com.tuotiansudai.api.dto.v1_0.MembershipPerceptionResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppMembershipPerceptionService;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -26,9 +25,6 @@ public class MobileAppMembershipPerceptionServiceImpl implements MobileAppMember
 
     @Autowired
     private UserMembershipMapper userMemberhshipMapper;
-
-    @Autowired
-    private CouponService couponService;
 
     @Autowired
     private InvestService investService;
