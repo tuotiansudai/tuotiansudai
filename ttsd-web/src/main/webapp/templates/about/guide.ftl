@@ -9,7 +9,7 @@
     </ul>
     <div class="main-banner">
         <div class="page-width">
-            <img src="${staticServer}/images/sign/assure/newer-bar.jpg" alt="风控流程">
+            <img src="${staticServer}/images/sign/assure/newer-bar2.jpg" alt="风控流程">
         </div>
     </div>
     <div class="section-box-one bg-white clearfix pad-box">
