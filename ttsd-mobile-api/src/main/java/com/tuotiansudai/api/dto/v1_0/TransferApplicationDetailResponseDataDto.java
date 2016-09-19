@@ -1,13 +1,10 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
-import com.tuotiansudai.util.AmountConverter;
-import org.joda.time.DateTime;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDto {
 
@@ -159,6 +156,7 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
     }
 
     public TransferApplicationDetailResponseDataDto(TransferApplicationDetailDto transferApplicationDetailDto) {
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         this.transferApplicationId = String.valueOf(transferApplicationDetailDto.getId());
         this.name = transferApplicationDetailDto.getName();
         this.transferrer = transferApplicationDetailDto.getTransferrer();
@@ -169,8 +167,8 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
         this.loanType = transferApplicationDetailDto.getLoanType() == null?"":transferApplicationDetailDto.getLoanType();
         this.investAmount = transferApplicationDetailDto.getInvestAmount();
         this.transferAmount = transferApplicationDetailDto.getTransferAmount();
-        this.baseRate = String.valueOf(transferApplicationDetailDto.getBaseRate());
-        this.activityRate = String.valueOf(transferApplicationDetailDto.getActivityRate());
+        this.baseRate = decimalFormat.format(transferApplicationDetailDto.getBaseRate());
+        this.activityRate = decimalFormat.format(transferApplicationDetailDto.getActivityRate());
         this.leftPeriod = transferApplicationDetailDto.getLeftPeriod();
         this.expecedInterest = transferApplicationDetailDto.getExpecedInterest();
         this.deadline = sdf.format(transferApplicationDetailDto.getDeadLine());
