@@ -86,7 +86,7 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
                 response.setCharacterEncoding("UTF-8");
                 PrintWriter writer = response.getWriter();
                 writer.print(objectMapper.writeValueAsString(dto));
-
+                return;
             }
         }
         chain.doFilter(bufferedRequestWrapper, response);
