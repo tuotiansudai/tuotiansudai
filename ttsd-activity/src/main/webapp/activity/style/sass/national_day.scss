@@ -2,7 +2,7 @@
 @import "register_common";
 
 body {
-  background: #d9483d;
+  background: #ec3332;
   overflow-x: hidden;
 }
 .main-frame {
@@ -10,24 +10,121 @@ body {
   margin: 0 auto;
 }
 .tour-slide  {
-  height: 678px;
-  background: url("/activity/images/autumn-tour/tour-top-bar2.jpg") center top no-repeat;
-  .page-width {
-    position: relative;
-    height:100%;
-    .activity-date {
-      position: absolute;
-      bottom: 209px;
-      left: 36%;
-      color: #fff;
-      font-size: 25px;
-      font-weight: bold;
-    }
+  height: 619px;
+  background: url("/activity/images/national-day/bar-national.jpg") center top no-repeat;
+
+}
+
+.btn-normal-invest {
+  display: inline-block;
+  width: 273px;
+  height: 81px;
+  line-height: 80px;
+  color: #69260c;
+  text-align: center;
+  font-size: 18px;
+  border:0;
+  margin-top:20px;
+  font-weight: bold;
+  background: url("/activity/images/national-day/bg-button.jpg") center top no-repeat;
+  //&:disabled {
+  //  background: #ccc;
+  //  color: #999;
+  //  &:hover {
+  //    color: #999;
+  //  }
+  //}
+  &:hover {
+    color: #69260c;
   }
 }
+.bg-box-normal {
+  background: #fff2cb;
+  padding:30px;
+}
 .national-day-frame {
-  width:1100px;
-  margin:-10px auto 0 auto;
-  position: relative;
+  width:1080px;
+  margin: 30px auto;
+  color: #69260c;
+  .section-outer {
+    .section-one-title {
+      min-height: 106px;
+      background: url("/activity/images/national-day/title01.png") center top no-repeat;
+    }
+    .section-two-title {
+      min-height: 106px;
+      background: url("/activity/images/national-day/title02.png") center top no-repeat;
+    }
+    .section-inner {
+      margin: 0px 40px 30px 40px;
+      background: #fcebbf;
+      border:2px solid #8a301b;
+      border-top-width: 0px;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      padding:20px 40px;
+      .notice {
+        font-size:12px;
+        color: #992900;
+      }
+      .invest-percent-box {
+        background: #fff2cb;
+        padding: 24px 57px;
+        color: #992900;
+        font-size: 16px;
+        font-weight: bold;
+        .progress-bar {
+          height:30px;
+          background: #ffd7b3;
+          border:1px solid #eba07d;
+          border-radius: 19px;
+          margin-top: 13px;
+          margin-bottom: 13px;
+          .progress-percent {
+            height: 100%;
+            background: url("/activity/images/national-day/bg-progress.jpg") left top repeat-x;
+            width: 50%;
+            display: inline-block;
+            border-radius: 20px;
+          }
+          .count-total {
+            em {
+              color: #ce2607;
+            }
+          }
+        }
+
+      }
+
+      .national-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: #992900;
+      }
+      .tab-invest-show {
+        margin-bottom:10px;
+        tr td {
+          padding: 25px 5px;
+          text-align: center;
+          color: #992900;
+          font-size: 14px;
+          border:1px solid #992900;
+        }
+      }
+
+      .my-integral {
+        background: #ffea00;
+        color: #992900;
+        border:1px dashed #992900;
+        display: inline-block;
+        font-size: 20px;
+        border-radius: 25px;
+        padding: 5px 30px;
+        font-weight: bold;
+      }
+    }
+  }
 
 }
