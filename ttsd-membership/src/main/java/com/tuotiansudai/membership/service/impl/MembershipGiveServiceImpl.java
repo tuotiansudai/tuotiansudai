@@ -13,6 +13,7 @@ import com.tuotiansudai.membership.service.MembershipGiveService;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class MembershipGiveServiceImpl implements MembershipGiveService {
 
     static Logger logger = Logger.getLogger(MembershipGiveServiceImpl.class);

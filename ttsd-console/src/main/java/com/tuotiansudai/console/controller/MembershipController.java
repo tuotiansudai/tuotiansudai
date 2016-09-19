@@ -1,13 +1,16 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.membership.dto.UserMembershipItemDto;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.MembershipUserGroup;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.membership.service.MembershipExperienceBillService;
+import com.tuotiansudai.membership.service.MembershipGiveService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -43,6 +46,9 @@ public class MembershipController {
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private MembershipGiveService membershipGiveService;
 
     @RequestMapping(value = "/membership-list", method = RequestMethod.GET)
     @ResponseBody
@@ -114,6 +120,16 @@ public class MembershipController {
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
         modelAndView.addObject("loginName", loginName);
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/give/edit", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView membershipDetail() {
+        ModelAndView modelAndView = new ModelAndView("/membership-give-edit");
+        modelAndView.addObject("userGroups", MembershipUserGroup.values());
+        modelAndView.addObject("membershipLevels", Lists.newArrayList(0, 1, 2, 3, 4, 5));
 
         return modelAndView;
     }
