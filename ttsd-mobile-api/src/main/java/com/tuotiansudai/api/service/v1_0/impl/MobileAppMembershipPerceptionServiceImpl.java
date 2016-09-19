@@ -1,0 +1,85 @@
+package com.tuotiansudai.api.service.v1_0.impl;
+
+
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.MobileAppMembershipPerceptionService;
+import com.tuotiansudai.api.service.v1_0.MobileAppMembershipService;
+import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.service.InvestService;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class MobileAppMembershipPerceptionServiceImpl implements MobileAppMembershipPerceptionService {
+
+
+    @Autowired
+    private UserMembershipMapper userMemberhshipMapper;
+
+    @Autowired
+    private CouponService couponService;
+
+    @Autowired
+    private InvestService investService;
+
+    @Override
+    public BaseResponseDto getMembershipPerception(MembershipPerceptionRequestDto requestDto) {
+        String loginName = requestDto.getBaseParam().getUserId();
+        UserMembershipModel userMembershipModel = userMemberhshipMapper.findCurrentMaxByLoginName(loginName);
+
+
+        String userCouponIds = "";
+        for (Long userCouponId : requestDto.getUserCouponIds()) {
+            userCouponIds += String.valueOf(userCouponId);
+        }
+
+        //long couponExpectedInterest = couponService.estimateCouponExpectedInterest(loginName, requestDto.getLoanId(), userCouponIds, requestDto.getInvestAmount());
+
+        //long investExpectedInterest = investService.estimateInvestIncome(loanId, loginName, amount);
+
+        return null;
+    }
+
+   /* @Override
+    public BaseResponseDto getMembershipExperienceBill(MembershipRequestDto requestDto) {
+        String loginName = requestDto.getBaseParam().getUserId();
+
+        int index = requestDto.getIndex() == null?1:requestDto.getIndex();
+        int pageSize = requestDto.getPageSize() == null?10:requestDto.getPageSize();
+
+        MembershipResponseDataDto dataDto = fillMembershipDataDto(loginName, index, pageSize);
+        BaseResponseDto responseDto = new BaseResponseDto<>();
+        responseDto.setCode(ReturnMessage.SUCCESS.getCode());
+        responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        responseDto.setData(dataDto);
+        return responseDto;
+    }
+
+    private MembershipResponseDataDto fillMembershipDataDto(String loginName, Integer index, Integer pageSize) {
+        MembershipResponseDataDto dataDto = new MembershipResponseDataDto();
+        List<MembershipExperienceBillModel> membershipExperienceBillModels = membershipExperienceBillMapper.findMembershipExperienceBillByLoginName(loginName, null, null, (index - 1) * pageSize, pageSize);
+        List<MembershipExperienceBillDataDto> membershipExperienceBillDtos = CollectionUtils.isEmpty(membershipExperienceBillModels) ? new ArrayList<MembershipExperienceBillDataDto>() :
+                Lists.transform(membershipExperienceBillModels, new Function<MembershipExperienceBillModel, MembershipExperienceBillDataDto>() {
+                    @Override
+                    public MembershipExperienceBillDataDto apply(MembershipExperienceBillModel model) {
+                        return new MembershipExperienceBillDataDto(model);
+                    }
+                });
+        long count = membershipExperienceBillMapper.findMembershipExperienceBillCountByLoginName(loginName, null, null);
+        dataDto.setIndex(index);
+        dataDto.setPageSize(pageSize);
+        dataDto.setTotalCount(count);
+        dataDto.setMembershipExperienceBill(membershipExperienceBillDtos);
+        return dataDto;
+    }*/
+}
