@@ -2,11 +2,10 @@ package com.tuotiansudai.api.dto.v1_0;
 
 
 import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
-import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 
-public class ProductOrderResponseDto{
+public class ProductOrderResponseDto {
 
     private String productId;
 
@@ -16,7 +15,7 @@ public class ProductOrderResponseDto{
 
     private String orderTime;
 
-    public ProductOrderResponseDto(ProductOrderViewDto productOrderViewDto){
+    public ProductOrderResponseDto(ProductOrderViewDto productOrderViewDto) {
         this.productId = String.valueOf(productOrderViewDto.getId());
         this.productName = productOrderViewDto.getName();
         this.productNum = String.valueOf(productOrderViewDto.getNum());

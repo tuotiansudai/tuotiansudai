@@ -90,9 +90,9 @@ public class SignInServiceImpl implements SignInService {
     }
 
     @Override
-    public int getNextSignInPoint(String loginName){
+    public int getNextSignInPoint(String loginName) {
         SignInPointDto lastSignInPointDto = obtainSignInPointDto(loginName);
-        if(lastSignInPointDto == null){
+        if (lastSignInPointDto == null) {
             return SignInPoint.FIRST_SIGN_IN.getPoint();
         }
 

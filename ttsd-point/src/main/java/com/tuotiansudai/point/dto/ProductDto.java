@@ -6,7 +6,6 @@ import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
 import java.io.Serializable;
 import java.util.Date;
 

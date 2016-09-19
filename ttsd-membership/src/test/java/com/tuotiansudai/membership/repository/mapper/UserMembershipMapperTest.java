@@ -179,7 +179,7 @@ public class UserMembershipMapperTest {
         UserMembershipModel userMembershipModel = new UserMembershipModel();
         userMembershipModel.setLoginName(loginName);
         userMembershipModel.setCreatedTime(new Date());
-        userMembershipModel.setExpiredTime(new Date());
+        userMembershipModel.setExpiredTime(DateTime.parse("2099-06-30T01:20").toDate());
         userMembershipModel.setType(userMembershipType);
         userMembershipModel.setMembershipId(membershipMapper.findByLevel(level).getId());
         userMembershipMapper.create(userMembershipModel);
@@ -258,7 +258,7 @@ public class UserMembershipMapperTest {
     }
 
     @Test
-    public void shouldFindByLoginNameOrInvestTimeIsOk(){
+    public void shouldFindByLoginNameOrInvestTimeIsOk() {
         UserModel userModel1 = createFakeUser("testUser1", "18612340001", DateTime.parse("2000-06-30T12:30").toDate());
         UserMembershipModel userMembershipModel = new UserMembershipModel();
         userMembershipModel.setLoginName(userModel1.getLoginName());
@@ -276,7 +276,18 @@ public class UserMembershipMapperTest {
         userMembershipModel1.setMembershipId(membershipMapper.findByLevel(1).getId());
         userMembershipMapper.create(userMembershipModel1);
 
-        assertEquals(userMembershipMapper.findByLoginNameOrInvestTime(userModel1.getLoginName(), DateTime.now().toDate()),2);
+        assertEquals(userMembershipMapper.findByLoginNameOrInvestTime(userModel1.getLoginName(), DateTime.now().toDate()), 2);
 
+    }
+
+    @Test
+    public void testFindCurrentMaxByLoginName() throws Exception {
+        prepareUserMembershipData();
+        createUserMembershipModel("testUser1", UserMembershipType.UPGRADE, 1);
+        createUserMembershipModel("testUser1", UserMembershipType.UPGRADE, 2);
+        createUserMembershipModel("testUser1", UserMembershipType.GIVEN, 3);
+
+        UserMembershipModel userMembershipModel = userMembershipMapper.findCurrentMaxByLoginName("testUser1");
+        assertEquals(3, membershipMapper.findById(userMembershipModel.getMembershipId()).getLevel());
     }
 }

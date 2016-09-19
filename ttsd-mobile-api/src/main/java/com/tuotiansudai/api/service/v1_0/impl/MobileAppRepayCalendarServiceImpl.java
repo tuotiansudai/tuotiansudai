@@ -158,7 +158,8 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                     totalAmount += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
                 }
             }
-            int periods = investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId()).size();
+
+            int periods = loanMapper.findById(investMapper.findById(investRepayModel.getInvestId()).getLoanId()).getPeriods();
             InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
             if (investModel.getLoanId() == experienceLoanId) {
                 continue;
@@ -166,11 +167,11 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
 
             if (periods == investRepayModel.getPeriod()) {
                 InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
-                if(investExtraRateModel != null && !investExtraRateModel.isTransfer()){
-                    if(investExtraRateModel.getActualRepayDate() != null){
+                if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
+                    if (investExtraRateModel.getActualRepayDate() != null) {
                         repayActualInterest += investExtraRateModel.getRepayAmount();
                         totalAmount += investExtraRateModel.getRepayAmount();
-                    }else{
+                    } else {
                         repayExpectedInterest += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
                         totalAmount += investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
                     }
@@ -339,11 +340,11 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
 
             if (periods == investRepayModel.getPeriod()) {
                 InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
-                if(investExtraRateModel != null && !investExtraRateModel.isTransfer()){
-                    if(investExtraRateModel.getActualRepayDate() != null){
+                if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
+                    if (investExtraRateModel.getActualRepayDate() != null) {
                         repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getActualRepayDate()));
                         repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(), String.valueOf(investExtraRateModel.getRepayAmount())));
-                    }else{
+                    } else {
                         repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate()));
                         repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(), String.valueOf(investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee())));
                     }
