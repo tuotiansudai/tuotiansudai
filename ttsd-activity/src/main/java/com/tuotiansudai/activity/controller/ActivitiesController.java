@@ -33,21 +33,14 @@ public class ActivitiesController {
     private AccountService accountService;
 
     @RequestMapping(path = "/{item:^recruit|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|loan-hike$}", method = RequestMethod.GET)
-    public ModelAndView activities(HttpServletRequest httpServletRequest, @PathVariable String item) {
+    public ModelAndView activities(@PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
-        String loginName = httpServletRequest.getParameter("loginName");
+        String loginName = LoginUserInfo.getLoginName();
 
         if (!Strings.isNullOrEmpty(loginName) && userService.loginNameIsExist(loginName.trim())) {
             modelAndView.addObject("referrer", userService.getMobile(loginName));
         }
 
-        String token = httpServletRequest.getHeader("token");
-        if (!StringUtils.isEmpty(token)) {
-            token = token.replace("app-token:", "");
-            loginName = token.substring(0, token.indexOf(":"));
-        } else {
-            loginName = LoginUserInfo.getLoginName();
-        }
         modelAndView.addObject("isLogin", null != loginName);
         AccountModel accountModel = accountService.findByLoginName(loginName);
         modelAndView.addObject("noAccount", null == accountModel);

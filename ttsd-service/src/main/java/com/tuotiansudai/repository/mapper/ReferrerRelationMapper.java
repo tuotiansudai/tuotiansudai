@@ -4,6 +4,7 @@ import com.tuotiansudai.repository.model.ReferrerRelationModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -26,7 +27,5 @@ public interface ReferrerRelationMapper {
                 @Param(value = "loginName") String loginName);
 
     int findReferrerCountByReferrerLoginName(@Param(value = "referrerLoginName") String referrerLoginName);
-
-
 
 }

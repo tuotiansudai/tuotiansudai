@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -178,7 +179,7 @@ public class UserMembershipMapperTest {
         UserMembershipModel userMembershipModel = new UserMembershipModel();
         userMembershipModel.setLoginName(loginName);
         userMembershipModel.setCreatedTime(new Date());
-        userMembershipModel.setExpiredTime(new Date());
+        userMembershipModel.setExpiredTime(DateTime.parse("2099-06-30T01:20").toDate());
         userMembershipModel.setType(userMembershipType);
         userMembershipModel.setMembershipId(membershipMapper.findByLevel(level).getId());
         userMembershipMapper.create(userMembershipModel);
@@ -223,7 +224,6 @@ public class UserMembershipMapperTest {
         List<UserMembershipItemView> originUserMembershipItemViews = prepareUserMembershipData();
 
         List<UserMembershipItemView> userMembershipItemViews = userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), null, null, null, null, null, 0, 10);
-        assertEquals(1, userMembershipItemViews.size());
         assertEquals(originUserMembershipItemViews.get(0).getLoginName(), userMembershipItemViews.get(0).getLoginName());
         assertEquals(originUserMembershipItemViews.get(0).getMobile(), userMembershipItemViews.get(0).getMobile());
         assertEquals(originUserMembershipItemViews.get(0).getRealName(), userMembershipItemViews.get(0).getRealName());
@@ -255,5 +255,39 @@ public class UserMembershipMapperTest {
         assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), originUserMembershipItemViews.get(0).getMobile(), null, null, UserMembershipType.GIVEN, null, 0, 10).size());
         assertEquals(0, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), originUserMembershipItemViews.get(0).getMobile(), null, null, originUserMembershipItemViews.get(0).getUserMembershipType(), Lists.newArrayList(3), 0, 10).size());
         assertEquals(1, userMembershipMapper.findUserMembershipItemViews(originUserMembershipItemViews.get(0).getLoginName(), null, null, null, null, Lists.newArrayList(0, 1, 5), 0, 10).size());
+    }
+
+    @Test
+    public void shouldFindByLoginNameOrInvestTimeIsOk() {
+        UserModel userModel1 = createFakeUser("testUser1", "18612340001", DateTime.parse("2000-06-30T12:30").toDate());
+        UserMembershipModel userMembershipModel = new UserMembershipModel();
+        userMembershipModel.setLoginName(userModel1.getLoginName());
+        userMembershipModel.setCreatedTime(DateUtils.addDays(DateTime.now().toDate(), -1));
+        userMembershipModel.setExpiredTime(DateUtils.addDays(DateTime.now().toDate(), 1));
+        userMembershipModel.setType(UserMembershipType.GIVEN);
+        userMembershipModel.setMembershipId(membershipMapper.findByLevel(0).getId());
+        userMembershipMapper.create(userMembershipModel);
+
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel();
+        userMembershipModel1.setLoginName(userModel1.getLoginName());
+        userMembershipModel1.setCreatedTime(DateUtils.addDays(DateTime.now().toDate(), -1));
+        userMembershipModel1.setExpiredTime(DateUtils.addDays(DateTime.now().toDate(), 1));
+        userMembershipModel1.setType(UserMembershipType.GIVEN);
+        userMembershipModel1.setMembershipId(membershipMapper.findByLevel(1).getId());
+        userMembershipMapper.create(userMembershipModel1);
+
+        assertEquals(userMembershipMapper.findByLoginNameOrInvestTime(userModel1.getLoginName(), DateTime.now().toDate()), 2);
+
+    }
+
+    @Test
+    public void testFindCurrentMaxByLoginName() throws Exception {
+        prepareUserMembershipData();
+        createUserMembershipModel("testUser1", UserMembershipType.UPGRADE, 1);
+        createUserMembershipModel("testUser1", UserMembershipType.UPGRADE, 2);
+        createUserMembershipModel("testUser1", UserMembershipType.GIVEN, 3);
+
+        UserMembershipModel userMembershipModel = userMembershipMapper.findCurrentMaxByLoginName("testUser1");
+        assertEquals(3, membershipMapper.findById(userMembershipModel.getMembershipId()).getLevel());
     }
 }

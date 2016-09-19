@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'fancybox', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert', 'red-envelope-float', 'jquery.form', 'commonFun'], function ($, pagination, Mustache, investListTemplate, layer, _) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'fancybox', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert', 'red-envelope-float', 'jquery.form', 'commonFun','logintip'], function ($, pagination, Mustache, investListTemplate, layer, _) {
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
         amountInputElement = $(".text-input-amount", $loanDetail),
@@ -123,6 +123,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
 
         var isInvestor = 'INVESTOR' === $loanDetail.data('user-role');
+        var isAuthentication = 'USER' === $loanDetail.data('authentication');
         var $ticketList = $('.ticket-list');
         var $useExperienceTicket = $('#use-experience-ticket');
         var $couponExpectedInterest = $(".experience-income");
@@ -343,7 +344,16 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
                 return;
             }
-            location.href = '/login?redirect=' + encodeURIComponent(location.href);
+            if(isAuthentication){
+                location.href = '/register/account';
+            }
+            layer.open({
+              type: 1,
+              title: false,
+              closeBtn: 0,
+              area:['auto','auto'],
+              content: $('#loginTip') 
+            });
         });
 
         $useExperienceTicket.click(function(event) {
@@ -758,6 +768,39 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         }, 300);
 
         $investInput.on('keyup', keyupHandler);
+
+        $accountInfo.find('.icon-graded').on('mouseover',function() {
+            layer.closeAll('tips');
+            var value = _.compose(replace)($investInput.val()),
+                $expected=$accountInfo.find('.expected-interest-dd');
+            $.ajax({
+                url: '/get-membership-preference',
+                type: 'GET',
+                dataType: 'json',
+                data:{"loanId":loanId,"investAmount":value},
+                contentType: 'application/json; charset=UTF-8'
+            })
+                .done(function(response) {
+                    var data=response.data;
+                    if (data.status) {
+                        var info='<i class="fa fa-times-circle"></i>V'+data.level+'会员，专享服务费'+data.rate+'折优惠，已多赚'+data.amount+'元';
+
+                        layer.tips(info, $expected, {
+                            tips: [1, '#ff7200'],
+                            time: 3000,
+                            skin: 'level-layer-tips',
+                            tipsMore: true,
+                            area: 'auto',
+                            maxWidth: '400'
+                        });
+                    }
+                })
+                .fail(function() {
+
+                });
+
+        });
+
     })();
 
 });

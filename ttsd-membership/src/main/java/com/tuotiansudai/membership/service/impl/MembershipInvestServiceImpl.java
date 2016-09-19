@@ -50,4 +50,13 @@ public class MembershipInvestServiceImpl implements MembershipInvestService {
             logger.error(e.getLocalizedMessage(), e);
         }
     }
+
+    @Override
+    public MembershipModel getCurMaxMembership(String loginName) {
+        UserMembershipModel userMembershipModel = userMembershipMapper.findCurrentMaxByLoginName(loginName);
+        if (null == userMembershipModel) {
+            return null;
+        }
+        return membershipMapper.findById(userMembershipModel.getMembershipId());
+    }
 }

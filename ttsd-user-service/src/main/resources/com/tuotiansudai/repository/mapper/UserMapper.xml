@@ -204,4 +204,8 @@
         order by register_time desc limit #{index}, #{pageSize}
     </select>
 
+    <select id="findUsersByRegisterTime" parameterType="map" resultMap="userResultMap">
+        select * from user where register_time between #{startTime} and #{endTime} order by register_time
+    </select>
+
 </mapper>

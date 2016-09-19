@@ -3,10 +3,12 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.repository.model.UserView;
 
+import java.util.Date;
 import java.util.List;
 
 public interface UserService {
@@ -37,8 +39,6 @@ public interface UserService {
 
     void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException, ReferrerRelationException;
 
-    void updateUserStatus(String loginName, UserStatus userStatus, String ip, String operatorLoginName);
-
     EditUserDto getEditUser(String loginName);
 
     boolean verifyPasswordCorrect(String loginName, String password);
@@ -54,5 +54,4 @@ public interface UserService {
     boolean mobileIsRegister(String mobile);
 
     UserModel findByMobile(String mobile);
-
 }

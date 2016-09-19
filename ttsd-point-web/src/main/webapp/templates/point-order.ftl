@@ -62,25 +62,9 @@
 				<h3>订单确认</h3>
 				<div class="order-table">
 					<div class="order-picture">
-						<#if productShowItem.itemType.name() == 'RED_ENVELOPE'>
-                            <p class="mater-img bag-bg">
-                                <span><i><@amount>${productShowItem.pictureDescription!0}</@amount></i>元</span>
-                            </p>
-						<#elseif productShowItem.itemType.name() == 'INVEST_COUPON'>
-                            <p class="mater-img coupon-bg">
-                                <span><i><@amount>${productShowItem.pictureDescription!0}</@amount></i>元</span>
-                                <span>投资体验券</span>
-                            </p>
-						<#elseif productShowItem.itemType.name() == 'INTEREST_COUPON'>
-                            <p class="mater-img jia-bg">
-                                <span><i>${productShowItem.pictureDescription!"0"}</i>%</span>
-                                <span>加息券</span>
-                            </p>
-						<#else>
-                            <p class="mater-img picture-item">
-                                <img src="${productShowItem.imageUrl}" width="140" height="114"/>
-                            </p>
-						</#if>
+                        <p class="mater-img picture-item">
+                            <img src="/${productShowItem.imageUrl}" width="140" height="114"/>
+                        </p>
 					</div>
 					<div class="order-name">
                         <p class="name-text">${productShowItem.name!}</p>
@@ -126,8 +110,14 @@
                                   data-num="${productShowItem.points?string('0')}">${productShowItem.points * number}</i>积分</span>
 				</p>
 				<p>
-                    <input type="button" value="立即兑换" class="order-btn" data-id="${productShowItem.id?c!0}"
-                           data-type="${productShowItem.itemType.name()}" id="orderBtn">
+
+					<#if productShowItem.leftCount == 0>
+                        <input type="button" value="已售罄" class="order-btn">
+					<#else>
+                        <input type="button" value="立即兑换" class="order-btn" data-id="${productShowItem.id?c!0}"
+                               data-type="${productShowItem.itemType.name()}" id="orderBtn">
+					</#if>
+
 				</p>
 			</div>
 		</div>

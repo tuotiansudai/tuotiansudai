@@ -1,12 +1,13 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
 <div class="loan-detail-content" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
-     data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
+     data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" >
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w">
             <div class="news-share bg-w">
                 <h2 class="hd clearfix title-block <#if loan.activityType == 'NEWBIE'>new</#if>">
                     <div class="fl title">${loan.name}
+                        <#if loan.activity?string("true","false") == "true">(活动专享)</#if>
 
                     </div>
                     <#if loan.extraSource?? && loan.extraSource == "MOBILE">
@@ -18,7 +19,6 @@
                         <#if extraLoanRates??>
                             <div class="fl orange extra-rate" id="extra-rate">投资奖励+${extraLoanRates.minExtraRate}%~${extraLoanRates.maxExtraRate}%<i class="fa fa-question-circle" aria-hidden="true"></i>
                             </div>
-
                             <script>
                                 var __extraRate = [
                                     <#list extraLoanRates.items as extraLoanRate>
@@ -34,7 +34,7 @@
                             <div class="extra-rate-popup" id="extra-rate-popup">
                                 <div class="header clearfix">
                                     <div class="td fl">投资金额</div>
-                                    <div class="td fl">加息</div>
+                                    <div class="td fl">投资奖励</div>
                                 </div>
                                 <% _.each(__extraRate, function(value){
                                 var text;
@@ -110,7 +110,7 @@
             <div class="account-info bg-w">
                 <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
-                    <form action="/invest" method="post" id="investForm">
+                    <form action="/invest" method="post" id="investForm" onsubmit ="return false;" >
                         <dl class="account-list">
                             <dd class="clearfix">
                                 <span class="fl">账户余额：</span>
@@ -236,6 +236,21 @@
                                 <span class="principal-income">0.00</span>
                                 <span class="experience-income"></span>
                                 元
+                                <#if membershipPreferenceValid>
+                                    <#if membershipLevel==2>
+                                        <i class="icon-graded level2"></i>
+                                    </#if>
+                                    <#if membershipLevel==3>
+                                        <i class="icon-graded level3"></i>
+                                    </#if>
+                                    <#if membershipLevel==4>
+                                        <i class="icon-graded level4"></i>
+                                    </#if>
+                                    <#if membershipLevel==5>
+                                        <i class="icon-graded level5"></i>
+                                    </#if>
+                                </#if>
+
                             </dd>
 
                             <dd class="time-item" <#if loan.loanStatus == "RAISING">style="display: none"</#if>>
@@ -452,4 +467,5 @@
     <#include "coupon-alert.ftl" />
 </div>
     <#include "red-envelope-float.ftl" />
+    <#include "login-tip.ftl" />
 </@global.main>

@@ -91,6 +91,9 @@ public class ExportController {
     @Autowired
     private ReferrerManageService referrerManageService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public void exportCoupons(HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.CouponHeader.getDescription());
@@ -153,7 +156,7 @@ public class ExportController {
     @RequestMapping(value = "/coupon-exchange", method = RequestMethod.GET)
     public void exportCouponExchange(HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.CouponExchangeHeader.getDescription());
-        List<ExchangeCouponDto> exchangeCouponDtos = couponService.findCouponExchanges(1, Integer.MAX_VALUE);
+        List<ExchangeCouponDto> exchangeCouponDtos = productService.findCouponExchanges(1, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildCouponExchangeCsvData(exchangeCouponDtos);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponExchangeHeader, csvData, response.getOutputStream());
     }
@@ -243,14 +246,16 @@ public class ExportController {
                               @RequestParam(name = "mobile", required = false) String investorMobile,
                               @RequestParam(name = "channel", required = false) String channel,
                               @RequestParam(name = "source", required = false) Source source,
-                              @RequestParam(name = "role", required = false) String role,
+                              @RequestParam(name = "role", required = false) Role role,
                               @RequestParam(name = "investStatus", required = false) InvestStatus investStatus,
                               @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                              @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime, HttpServletResponse response) throws IOException {
+                              @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                              @RequestParam(name = "usedPreferenceType", required = false) PreferenceType preferenceType, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleInvests.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        InvestPaginationDataDto investPagination = investService.getInvestPagination(loanId, investorMobile, channel, source, role, index, pageSize, startTime, endTime, investStatus, null);
+        InvestPaginationDataDto investPagination = investService.getInvestPagination(loanId, investorMobile, channel, source,
+                role, startTime, endTime, investStatus, preferenceType, index, pageSize);
         List<InvestPaginationItemDataDto> records = investPagination.getRecords();
         List<List<String>> investsData = exportService.buildInvests(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, investsData, response.getOutputStream());
@@ -391,4 +396,10 @@ public class ExportController {
         }
         httpServletResponse.setContentType("application/csv");
     }
+
+
+
+
+
+
 }

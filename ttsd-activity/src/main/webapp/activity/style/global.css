@@ -2121,7 +2121,7 @@ h5 {
 .count-form h3 .close-count,
 .sprite-global-close-tip,
 .img-close-tip {
-  background-image: url("/activity/images/compress/global_20160523.png");
+  background-image: url("/activity/images/compress/global_20160904.png");
   background-repeat: no-repeat; }
 
 .sprite-global-app-pc-top, .header-container .header ul li.login-pop-app .img-app-pc-top, .fix-nav-list li .fix-nav.app-img {
@@ -2229,7 +2229,7 @@ h5 {
   .count-form h3 .close-count,
   .sprite-global-close-tip,
   .img-close-tip {
-    background-image: url("/activity/images/compress/global_20160523.png");
+    background-image: url("/activity/images/compress/global_20160904.png");
     -webkit-background-size: 408px 290px;
     -moz-background-size: 408px 290px;
     background-size: 408px 290px; } }
@@ -2282,7 +2282,8 @@ input[type='checkbox'] {
 a {
   cursor: pointer;
   color: #ff752a;
-  text-decoration: none; }
+  text-decoration: none;
+  outline: none; }
   a:hover {
     color: #e54c14; }
 
@@ -2741,7 +2742,7 @@ h5 {
 .count-form h3 .close-count,
 .sprite-global-close-tip,
 .img-close-tip {
-  background-image: url("/activity/images/compress/global_20160523.png");
+  background-image: url("/activity/images/compress/global_20160904.png");
   background-repeat: no-repeat; }
 
 .sprite-global-app-pc-top, .header-container .header ul li.login-pop-app .img-app-pc-top, .fix-nav-list li .fix-nav.app-img {
@@ -2849,7 +2850,7 @@ h5 {
   .count-form h3 .close-count,
   .sprite-global-close-tip,
   .img-close-tip {
-    background-image: url("/activity/images/compress/global_20160523.png");
+    background-image: url("/activity/images/compress/global_20160904.png");
     -webkit-background-size: 408px 290px;
     -moz-background-size: 408px 290px;
     background-size: 408px 290px; } }
@@ -3035,7 +3036,7 @@ h5 {
     position: relative;
     margin: 0 auto; }
     .nav-container .nav .logo {
-      background: url("/activity/images/icons/logo-new.png") left center no-repeat;
+      background: url("/activity/images/icons/logo-index.png") left center no-repeat;
       width: 420px;
       height: 50px;
       display: block;

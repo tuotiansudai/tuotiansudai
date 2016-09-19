@@ -67,6 +67,9 @@
         <if test="channels != null">
             and find_in_set(#{channels},m.channels)
         </if>
+        <if test="channels != null and channels.name() == 'APP_MESSAGE'">
+            and u.app_title is not null
+        </if>
     </select>
 
     <select id="countUnreadMessagesByLoginName" parameterType="map" resultType="long">

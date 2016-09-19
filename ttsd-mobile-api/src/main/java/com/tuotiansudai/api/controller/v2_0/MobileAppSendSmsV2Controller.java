@@ -28,10 +28,10 @@ public class MobileAppSendSmsV2Controller extends MobileAppBaseController {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
             return new BaseResponseDto(errorCode, errorMessage);
-        } else {
-            sendSmsCompositeRequestDto.getBaseParam().setUserId(getLoginName());
-            String remoteIp = CommonUtils.getRemoteHost(request);
-            return mobileAppSendSmsV2Service.sendSms(sendSmsCompositeRequestDto, remoteIp);
         }
+
+        sendSmsCompositeRequestDto.getBaseParam().setUserId(getLoginName());
+        String remoteIp = CommonUtils.getRemoteHost(request);
+        return mobileAppSendSmsV2Service.sendSms(sendSmsCompositeRequestDto, remoteIp);
     }
 }

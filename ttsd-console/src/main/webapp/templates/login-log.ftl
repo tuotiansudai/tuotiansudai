@@ -44,7 +44,7 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th>手机号</th>
+                <th>登录</th>
                 <th>来源</th>
                 <th>IP</th>
                 <th>设备</th>
@@ -55,7 +55,7 @@
             <tbody>
                 <#list data.records as record>
                 <tr>
-                    <td>${record.mobile}</td>
+                    <td>${record.loginName}</td>
                     <td>${record.source}</td>
                     <td>${record.ip!}</td>
                     <td>${record.device!}</td>

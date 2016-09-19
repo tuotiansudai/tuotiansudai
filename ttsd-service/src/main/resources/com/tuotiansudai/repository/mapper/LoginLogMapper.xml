@@ -4,46 +4,36 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.LoginLogMapper">
 
-    <resultMap id="loginLogViewResultMap" type="LoginLogView">
-        <id column="log_id" property="id"></id>
-        <result column="mobile" property="mobile"></result>
-        <result column="log_source" property="source"></result>
+    <resultMap id="loginLogModelResultMap" type="LoginLogModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="source" property="source"></result>
         <result column="ip" property="ip"></result>
         <result column="device" property="device"></result>
         <result column="login_time" property="loginTime"></result>
         <result column="success" property="success"></result>
     </resultMap>
 
-    <insert id="create" parameterType="map">
-        insert into ${table} (login_name, source, ip, device, login_time, success)
-        values (#{model.loginName}, #{model.source}, #{model.ip}, #{model.device}, #{model.loginTime}, #{model.success})
-    </insert>
-
-    <select id="getPaginationData" parameterType="map" resultMap="loginLogViewResultMap">
-        select `${table}`.`id` as log_id, mobile, `${table}`.`source` as log_source, ip, device, login_time, success
-        from ${table} join user
-        on
-        ${table}.login_name = user.login_name
+    <select id="getPaginationData" parameterType="map" resultMap="loginLogModelResultMap">
+        select *
+        from ${table}
         <where>
-            <if test="mobile != null">
-                and mobile = #{mobile}
+            <if test="mobile != null and mobile != '' ">
+                and (login_name = #{mobile} or login_name = (select login_name from user where user.mobile = #{mobile}))
             </if>
             <if test="success != null">
                 and success = #{success}
             </if>
         </where>
-        order by login_time desc, log_id asc
+        order by login_time desc, id asc
         limit #{index}, #{pageSize}
     </select>
 
     <select id="count" parameterType="map" resultType="long">
-        select count(1)
-        from ${table} join user
-        on
-        ${table}.login_name = user.login_name
+        select count(1) from ${table}
         <where>
-            <if test="mobile != null">
-                and mobile = #{mobile}
+            <if test="mobile != null and mobile != '' ">
+                and (login_name = #{mobile} or login_name = (select login_name from user where user.mobile = #{mobile}))
             </if>
             <if test="success != null">
                 and success = #{success}
@@ -53,7 +43,7 @@
 
     <select id="countSuccessTimesOnDate" parameterType="map" resultType="long">
         select count(1) from ${table}
-        where login_name = #{loginName}
+        where (login_name = #{loginName} or login_name = (select mobile from user where user.login_name = #{loginName}))
         and success is TRUE
         and date_format(#{date},'%Y-%m-%d') = date_format(login_time,'%Y-%m-%d')
     </select>

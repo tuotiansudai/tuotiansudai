@@ -9,7 +9,7 @@ import com.tuotiansudai.service.RetrievePasswordService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CaptchaGenerator;
-import com.tuotiansudai.util.CaptchaHelper;
+import com.tuotiansudai.spring.security.CaptchaHelper;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
@@ -63,7 +63,7 @@ public class RetrievePasswordController {
         int captchaHeight = 30;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
-        captchaHelper.storeCaptcha(CaptchaHelper.RETRIEVE_PASSWORD_CAPTCHA, captcha.getAnswer());
+        captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false).getId());
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/verify", method = RequestMethod.GET)
@@ -93,7 +93,7 @@ public class RetrievePasswordController {
         BaseDto<SmsDataDto> baseDto = new BaseDto<>();
         SmsDataDto dataDto = new SmsDataDto();
         baseDto.setData(dataDto);
-        boolean result = captchaHelper.captchaVerify(CaptchaHelper.RETRIEVE_PASSWORD_CAPTCHA, imageCaptcha);
+        boolean result = captchaHelper.captchaVerify(imageCaptcha, httpServletRequest.getSession(false).getId(), httpServletRequest.getRemoteAddr());
         if (result) {
             return smsCaptchaService.sendRetrievePasswordCaptcha(mobile, RequestIPParser.parse(httpServletRequest));
         }

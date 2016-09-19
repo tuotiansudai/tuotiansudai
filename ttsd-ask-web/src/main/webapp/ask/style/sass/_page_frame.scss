@@ -65,6 +65,9 @@
               top: 30px;
               display: none;
               z-index: 999;
+              background-position: 0 0;
+              width: 180px;
+              height: 230px;
             }
           }
           a {
@@ -349,6 +352,9 @@
   .header-container {
     padding-left:10px;
     padding-right:10px;
+    .membership-store,.header-membership,.header-activity-center {
+      display: none;
+    }
     .header-download {
       display: block;
     }
@@ -376,6 +382,10 @@
       .show-main-menu {
         display: inline-block;
         cursor: pointer;
+        width: 20px;
+        height: 20px;
+        background: url("../../images/icons/icon-menu.png") no-repeat left center;
+        background-size: contain;
       }
       ul {
         display: none;

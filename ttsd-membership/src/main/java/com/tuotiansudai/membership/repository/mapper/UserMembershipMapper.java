@@ -34,6 +34,8 @@ public interface UserMembershipMapper {
 
     UserMembershipModel findActiveByLoginName(String loginName);
 
+    UserMembershipModel findCurrentMaxByLoginName(String loginName);
+
     Double findRateByLoginName(String loginName);
 
     Integer findRealLevelByLoginName(String loginName);
@@ -59,4 +61,6 @@ public interface UserMembershipMapper {
                                          @Param(value = "levels") List<Integer> levels,
                                          @Param(value = "index") int index,
                                          @Param(value = "pageSize") int pageSize);
+
+    long findByLoginNameOrInvestTime(@Param(value = "loginName") String loginName, @Param(value = "investTime") Date investTime);
 }

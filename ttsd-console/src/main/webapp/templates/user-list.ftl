@@ -2,16 +2,16 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="user-list.js" headLab="user-manage" sideLab="userMan" title="用户管理">
 
-<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
-<#assign pagination = baseDto.data />
-<#assign userList = pagination.records />
+    <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+    <#assign pagination = baseDto.data />
+    <#assign userList = pagination.records />
 
 <!-- content area begin -->
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
         <div class="form-group">
             <label for="loginName">用户名</label>
-            <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}" />
+            <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}"/>
         </div>
         <div class="form-group">
             <label for="number">注册时间</label>
@@ -38,10 +38,8 @@
                 <option value="">全部</option>
                 <#list roleStageList as roleItem>
                     <#if roleItem.name()!='OTHERS' && roleItem.name()!='ALL'>
-                        <option value="${roleItem.name()}"
-                                <#if (roleStage.name())?has_content && roleStage.name() == roleItem.name()>selected</#if>
-                                >${roleItem.description}</option>
-
+                        <option value="${roleItem.name()}" <#if (roleStage.name())?has_content && roleStage.name() == roleItem.name()>selected</#if>>${roleItem.description}
+                        </option>
                     </#if>
                 </#list>
             </select>
@@ -61,7 +59,7 @@
                 <#list channelList as channelName>
                     <option value="${channelName}"
                             <#if (channel?has_content && channel == channelName) >selected</#if>
-                            >${channelName}</option>
+                    >${channelName}</option>
                 </#list>
             </select>
         </div>
@@ -71,9 +69,8 @@
                 <option value="">全部</option>
                 <#list sourceList as sourceItem>
                     <#if sourceItem.name() != 'AUTO'>
-                        <option value="${sourceItem}"
-                                <#if (source?has_content && source.name() == sourceItem.name()) >selected</#if>
-                                >${sourceItem.name()}</option>
+                        <option value="${sourceItem}" <#if (source?has_content && source.name() == sourceItem.name()) >selected</#if>>${sourceItem.name()}
+                        </option>
                     </#if>
                 </#list>
             </select>
@@ -100,16 +97,15 @@
                 <th>注册时间</th>
                 <th>开通自动投标</th>
                 <th>角色</th>
-                <th>状态</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
                 <#list userList as userItem>
-                <tr class="<#if userItem.status!='ACTIVE'>bg-danger</#if> <#if userItem.modify>bg-warning</#if>" >
+                <tr class="<#if userItem.status!='ACTIVE'>bg-danger</#if> <#if userItem.modify>bg-warning</#if>">
                     <td>${userItem.loginName}
                         <#if userItem.bankCard>
-                        <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>
                         </#if>
                     </td>
                     <td>${userItem.userName!}</td>
@@ -121,7 +117,7 @@
                     <td>${userItem.email!}</td>
                     <td>${userItem.referrerMobile!}
                         <#if userItem.referrerStaff>
-                        <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                         </#if>
                     </td>
                     <td>${userItem.source!}</td>
@@ -129,22 +125,17 @@
                     <td>${userItem.registerTime?string('yyyy-MM-dd HH:mm')}</td>
                     <td><#if userItem.autoInvestStatus=='1'>是<#else>否</#if></td>
                     <td><#list userItem.userRoles as rs> ${rs.role.description}<#if rs_has_next>,</#if> </#list></td>
-                    <td>${(userItem.status=='ACTIVE')?then('正常','禁用')}</td>
                     <td>
                         <a href="/user-manage/user/${userItem.loginName}">编辑</a> |
-                        <#if userItem.status=='ACTIVE'>
-                            <a class="user-status-modifier" href="#" data-url="/user-manage/user/${userItem.loginName}/disable">禁止</a>
-                        <#else>
-                            <a class="user-status-modifier" href="#" data-url="/user-manage/user/${userItem.loginName}/enable">解禁</a>
-                        </#if>
+                        <a class="user-status-modifier" href="#" data-url="/user-manage/user/${userItem.loginName}/enable">解禁</a>
                         <@security.authorize access="hasAnyAuthority('ADMIN')">
-                            <a href="/user-manage/user/${userItem.loginName}/impersonate" target="_blank"> | 模拟登录</a>
+                            <a href="/user-manage/user/${userItem.loginName}/impersonate" class="impersonate-link"> | 模拟登录</a>
                         </@security.authorize>
                     </td>
                 </tr>
                 <#else>
                 <tr>
-                    <td colspan="10">Empty</td>
+                    <td colspan="9">Empty</td>
                 </tr>
                 </#list>
             </tbody>
