@@ -2,20 +2,26 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppMembershipPerceptionService;
 import com.tuotiansudai.api.service.v1_0.MobileAppMembershipService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,54 +38,43 @@ public class MobileAppMembershipPerceptionServiceImpl implements MobileAppMember
     @Autowired
     private InvestService investService;
 
+    @Autowired
+    private MembershipMapper membershipMapper;
+
     @Override
     public BaseResponseDto getMembershipPerception(MembershipPerceptionRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
-        UserMembershipModel userMembershipModel = userMemberhshipMapper.findCurrentMaxByLoginName(loginName);
-
-
-        String userCouponIds = "";
-        for (Long userCouponId : requestDto.getUserCouponIds()) {
-            userCouponIds += String.valueOf(userCouponId);
+        String loanId = requestDto.getLoanId();
+        if (StringUtils.isEmpty(loanId)) {
+            return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+        }
+        String amount = requestDto.getInvestAmount();
+        if (StringUtils.isEmpty(loanId)) {
+            return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+        }
+        List<Long> couponIds = requestDto.getUserCouponIds();
+        if(CollectionUtils.isEmpty(couponIds)){
+            return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
 
-        //long couponExpectedInterest = couponService.estimateCouponExpectedInterest(loginName, requestDto.getLoanId(), userCouponIds, requestDto.getInvestAmount());
+        UserMembershipModel userMembershipModel = userMemberhshipMapper.findCurrentMaxByLoginName(loginName);
+        MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
+        long couponExpectedInterest = couponService.estimateCouponExpectedInterest(loginName, Long.parseLong(loanId), requestDto.getUserCouponIds(), AmountConverter.convertStringToCent(amount));
+        long investExpectedInterest = investService.estimateInvestIncome( Long.parseLong(loanId), loginName,  AmountConverter.convertStringToCent(amount));
+        String getMoney = AmountConverter.convertCentToString(investService.calculateMembershipPreference(loginName,  Long.parseLong(loanId),  AmountConverter.convertStringToCent(amount)));
 
-        //long investExpectedInterest = investService.estimateInvestIncome(loanId, loginName, amount);
+        MembershipPerceptionResponseDataDto membershipPerceptionResponseDataDto = new MembershipPerceptionResponseDataDto();
+        membershipPerceptionResponseDataDto.setTip(MessageFormat.format("{0}是实际收益.V{1}会员,专享服务费{2}折优惠,已经多赚{3}元",
+                                                                        AmountConverter.convertCentToString(investExpectedInterest + couponExpectedInterest),
+                                                                        membershipModel.getLevel(),
+                                                                        membershipModel.getFee() * 100,
+                                                                        getMoney
+                                                                        ));
 
-        return null;
-    }
-
-   /* @Override
-    public BaseResponseDto getMembershipExperienceBill(MembershipRequestDto requestDto) {
-        String loginName = requestDto.getBaseParam().getUserId();
-
-        int index = requestDto.getIndex() == null?1:requestDto.getIndex();
-        int pageSize = requestDto.getPageSize() == null?10:requestDto.getPageSize();
-
-        MembershipResponseDataDto dataDto = fillMembershipDataDto(loginName, index, pageSize);
-        BaseResponseDto responseDto = new BaseResponseDto<>();
+        BaseResponseDto<MembershipPerceptionResponseDataDto> responseDto = new BaseResponseDto<>();
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
         responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        responseDto.setData(dataDto);
+        responseDto.setData(membershipPerceptionResponseDataDto);
         return responseDto;
     }
-
-    private MembershipResponseDataDto fillMembershipDataDto(String loginName, Integer index, Integer pageSize) {
-        MembershipResponseDataDto dataDto = new MembershipResponseDataDto();
-        List<MembershipExperienceBillModel> membershipExperienceBillModels = membershipExperienceBillMapper.findMembershipExperienceBillByLoginName(loginName, null, null, (index - 1) * pageSize, pageSize);
-        List<MembershipExperienceBillDataDto> membershipExperienceBillDtos = CollectionUtils.isEmpty(membershipExperienceBillModels) ? new ArrayList<MembershipExperienceBillDataDto>() :
-                Lists.transform(membershipExperienceBillModels, new Function<MembershipExperienceBillModel, MembershipExperienceBillDataDto>() {
-                    @Override
-                    public MembershipExperienceBillDataDto apply(MembershipExperienceBillModel model) {
-                        return new MembershipExperienceBillDataDto(model);
-                    }
-                });
-        long count = membershipExperienceBillMapper.findMembershipExperienceBillCountByLoginName(loginName, null, null);
-        dataDto.setIndex(index);
-        dataDto.setPageSize(pageSize);
-        dataDto.setTotalCount(count);
-        dataDto.setMembershipExperienceBill(membershipExperienceBillDtos);
-        return dataDto;
-    }*/
 }

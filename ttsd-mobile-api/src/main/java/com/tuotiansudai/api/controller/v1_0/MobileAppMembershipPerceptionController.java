@@ -2,8 +2,8 @@ package com.tuotiansudai.api.controller.v1_0;
 
 
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.MembershipRequestDto;
-import com.tuotiansudai.api.service.v1_0.MobileAppMembershipService;
+import com.tuotiansudai.api.dto.v1_0.MembershipPerceptionRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppMembershipPerceptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class MobileAppMembershipPerceptionController extends MobileAppBaseController {
 
     @Autowired
-    private MobileAppMembershipService mobileAppMembershipService;
+    private MobileAppMembershipPerceptionService mobileAppMembershipPerceptionService;
 
-    @RequestMapping(value = "/get/membership-experience-bill", method = RequestMethod.POST)
-    public BaseResponseDto getMembershipExperienceBill(@RequestBody MembershipRequestDto requestDto) {
+    @RequestMapping(value = "/membership-perception", method = RequestMethod.POST)
+    public BaseResponseDto getMembershipPerception(@RequestBody MembershipPerceptionRequestDto requestDto) {
         requestDto.getBaseParam().setUserId(getLoginName());
-        return mobileAppMembershipService.getMembershipExperienceBill(requestDto);
+        System.out.println(requestDto.getInvestAmount());
+        System.out.println(requestDto.getLoanId());
+        System.out.println(requestDto.getUserCouponIds());
+        System.out.println(requestDto.getUserCouponIds().size());
+        return mobileAppMembershipPerceptionService.getMembershipPerception(requestDto);
     }
 }
