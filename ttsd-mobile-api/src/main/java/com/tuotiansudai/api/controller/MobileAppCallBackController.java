@@ -162,5 +162,6 @@ public class MobileAppCallBackController {
         HashMap<String, Object> viewObject = Maps.newHashMap();
         viewObject.put("href", service.getConfirmUrl(isCallbackSuccess));
         viewObject.put("message", isCallbackSuccess ? service.getMessage() : paramsMap.get("ret_msg"));
+        return viewObject;
     }
 }

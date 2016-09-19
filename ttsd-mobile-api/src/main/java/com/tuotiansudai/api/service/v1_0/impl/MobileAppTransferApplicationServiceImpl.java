@@ -2,15 +2,21 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppTransferApplicationService;
+import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
@@ -38,6 +44,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -61,9 +68,20 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     @Autowired
     private InvestRepayMapper investRepayMapper;
     @Autowired
+    private CouponRepayMapper couponRepayMapper;
+    @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
+
+    @Autowired
+    MembershipMapper membershipMapper;
+
+    @Autowired
+    UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private UserMembershipService userMembershipService;
 
 
     @Override
@@ -271,5 +289,54 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(transferApplicationDetailResponseDataDto);
         return dto;
+    }
+
+    @Override
+    public BaseResponseDto userInvestRepay(UserInvestRepayRequestDto userInvestRepayRequestDto) {
+        Preconditions.checkNotNull(userInvestRepayRequestDto.getInvestId());
+        Preconditions.checkNotNull(userInvestRepayRequestDto.getBaseParam().getUserId());
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
+        final long transferInvestId = Long.parseLong(userInvestRepayRequestDto.getInvestId().trim());
+        //return TransferLoan Details
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(transferInvestId);
+        if (null == transferApplicationModel) {
+            return new BaseResponseDto(ReturnMessage.ERROR.getCode(), ReturnMessage.ERROR.getMsg());
+        }
+        LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
+        if (null == loanModel) {
+            return new BaseResponseDto(ReturnMessage.ERROR.getCode(), ReturnMessage.ERROR.getMsg());
+        }
+
+        UserInvestRepayResponseDataDto userInvestRepayResponseDataDto = new UserInvestRepayResponseDataDto(loanModel, transferApplicationModel);
+
+        long totalExpectedInterest = 0;
+        long totalActualInterest = 0;
+        long corpus = 0;
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(userInvestRepayRequestDto.getBaseParam().getUserId(),
+                transferInvestId);
+        for (InvestRepayModel investRepayModel : investRepayModels) {
+            totalExpectedInterest += investRepayModel.getExpectedInterest();
+            totalActualInterest += investRepayModel.getRepayAmount();
+            corpus += investRepayModel.getCorpus();
+            CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
+            InvestRepayDataDto investRepayDataDto = new InvestRepayDataDto(investRepayModel, couponRepayModel);
+            userInvestRepayResponseDataDto.getInvestRepays().add(investRepayDataDto);
+            if (investRepayModel.getPeriod() == loanModel.getPeriods()) {
+                userInvestRepayResponseDataDto.setLastRepayDate(simpleDateFormat.format(investRepayModel.getRepayDate()));
+            }
+        }
+
+        userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(totalExpectedInterest));
+        userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(totalActualInterest));
+        userInvestRepayResponseDataDto.setUnPaidRepay(AmountConverter.convertCentToString(totalExpectedInterest + corpus - totalActualInterest));
+
+        MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(userInvestRepayRequestDto.getBaseParam().getUserId(), transferApplicationModel.getTransferTime());
+        userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(membershipModel.getLevel()));
+        BaseResponseDto baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
+        baseResponseDto.setData(userInvestRepayResponseDataDto);
+
+        return baseResponseDto;
     }
 }

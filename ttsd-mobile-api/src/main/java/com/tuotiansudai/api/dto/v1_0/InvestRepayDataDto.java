@@ -1,14 +1,44 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
+import com.tuotiansudai.repository.model.InvestRepayModel;
+import com.tuotiansudai.util.AmountConverter;
+
+import java.text.SimpleDateFormat;
+
 public class InvestRepayDataDto extends BaseResponseDataDto {
 
     private int period;
     private String repayDate;
     private String actualRepayDate;
-    private String expectedInterest;
-    private String actualInterest;
+    private String expectedInterest;    //expectedBenefit
+    private String actualInterest;  //actualBenefit
     private String status;
     private boolean isTransferred;
+
+    public InvestRepayDataDto() {
+    }
+
+    public InvestRepayDataDto(InvestRepayModel investRepayModel, CouponRepayModel couponRepayModel) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        this.period = investRepayModel.getPeriod();
+        this.repayDate = simpleDateFormat.format(investRepayModel.getRepayDate());
+        if (null != investRepayModel.getActualRepayDate()) {
+            this.actualRepayDate = simpleDateFormat.format(investRepayModel.getActualRepayDate());
+        } else {
+            this.actualRepayDate = "";
+        }
+        if (null != couponRepayModel) {
+            this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getCorpus() + couponRepayModel.getExpectedInterest());
+            this.actualInterest = AmountConverter.convertCentToString(investRepayModel.getRepayAmount() + couponRepayModel.getRepayAmount());
+        } else {
+            this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getCorpus());
+            this.actualInterest = AmountConverter.convertCentToString(investRepayModel.getRepayAmount());
+        }
+
+        this.status = investRepayModel.getStatus().name();
+        this.isTransferred = investRepayModel.isTransferred();
+    }
 
     public int getPeriod() {
         return period;

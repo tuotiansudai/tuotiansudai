@@ -33,6 +33,8 @@ public interface UserMembershipMapper {
                                                              @Param(value = "pageIndex") int pageIndex,
                                                              @Param(value = "pageSize") int pageSize);
 
+    UserMembershipModel findCurrentMaxByLoginName(String loginName);
+
     int findCountUserMembershipItemViews(@Param(value = "loginName") String loginName,
                                          @Param(value = "mobile") String mobile,
                                          @Param(value = "registerStartTime") Date registerStartTime,
@@ -41,4 +43,5 @@ public interface UserMembershipMapper {
                                          @Param(value = "levels") List<Integer> levels,
                                          @Param(value = "index") int index,
                                          @Param(value = "pageSize") int pageSize);
+
 }

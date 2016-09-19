@@ -14,6 +14,8 @@ import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -33,9 +35,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -75,6 +75,15 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
     @Mock
     private CouponMapper couponMapper;
 
+    @Mock
+    private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Mock
+    private InvestExtraRateMapper investExtraRateMapper;
+
+    @Mock
+    private LoanMapper loanMapper;
+
     @Test
     public void shouldUserInvestRepayOnePeriodCompleteIsOk(){
         LoanModel loanModel = createLoanModel();
@@ -90,6 +99,8 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(investService.findById(anyLong())).thenReturn(investModel);
         when(loanService.findLoanById(anyLong())).thenReturn(loanModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
+        when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
@@ -102,7 +113,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         assertEquals("90", responseDto.getData().getDuration());
         assertEquals("_90", responseDto.getData().getProductNewType());
         assertEquals("50.00", responseDto.getData().getInvestAmount());
-        assertEquals("50.30", responseDto.getData().getExpectedInterest());
+        assertEquals("0.30", responseDto.getData().getExpectedInterest());
         assertEquals("0.10", responseDto.getData().getActualInterest());
         assertEquals(3, responseDto.getData().getInvestRepays().size());
     }
@@ -122,6 +133,9 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(investService.findById(anyLong())).thenReturn(investModel);
         when(loanService.findLoanById(anyLong())).thenReturn(loanModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
+        when(userMembershipEvaluator.evaluateSpecifiedDate(anyString(), any(Date.class))).thenReturn(new MembershipModel(0, 1, 0, 0.1));
+        when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
@@ -134,7 +148,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         assertEquals("90", responseDto.getData().getDuration());
         assertEquals("_90", responseDto.getData().getProductNewType());
         assertEquals("50.00", responseDto.getData().getInvestAmount());
-        assertEquals("50.30", responseDto.getData().getExpectedInterest());
+        assertEquals("0.30", responseDto.getData().getExpectedInterest());
         assertEquals("0.20", responseDto.getData().getActualInterest());
         assertEquals(3, responseDto.getData().getInvestRepays().size());
     }
@@ -169,6 +183,8 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(membershipMapper.findAllMembership()).thenReturn(memberships);
         when(userCouponMapper.findByInvestId(anyLong())).thenReturn(userCoupon);
         when(couponMapper.findById(anyLong())).thenReturn(new CouponModel());
+        when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
@@ -181,7 +197,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         assertEquals("90", responseDto.getData().getDuration());
         assertEquals("_90", responseDto.getData().getProductNewType());
         assertEquals("50.00", responseDto.getData().getInvestAmount());
-        assertEquals("50.30", responseDto.getData().getExpectedInterest());
+        assertEquals("0.30", responseDto.getData().getExpectedInterest());
         assertEquals("0.30", responseDto.getData().getActualInterest());
         assertEquals(3, responseDto.getData().getInvestRepays().size());
     }

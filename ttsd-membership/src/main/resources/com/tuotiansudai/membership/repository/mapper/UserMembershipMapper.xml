@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.membership.repository.mapper.UserMembershipMapper">
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="UserMembershipResultMap" type="UserMembershipModel">
         <id column="id" property="id"/>
@@ -135,6 +135,17 @@
         </where>
         ORDER BY membership.level DESC) t
         GROUP BY login_name ) t
+    </select>
+
+    <select id="findCurrentMaxByLoginName" resultMap="UserMembershipResultMap" parameterType="java.lang.String">
+        SELECT user_membership.*
+        FROM
+        (SELECT *
+        FROM user_membership
+        WHERE login_name = #{loginName}
+        AND expired_time > now()) user_membership
+        JOIN membership ON user_membership.membership_id = membership.id
+        ORDER BY membership.level DESC LIMIT 1
     </select>
 
     <select id="countMembershipByLevel" resultType="long" parameterType="int">

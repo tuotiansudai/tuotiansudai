@@ -148,12 +148,20 @@ public enum ReturnMessage {
     BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权"),
 
+    ERROR("9999", "错误"),
+    /******
+     * APP积分商城
+     ******/
+    POINTS_PRODUCT_IS_NOT_NULL("0110", "商品不能为空"),
+    POINTS_PRODUCT_NUM_IS_NOT_NULL("0111", "商品数量不能为空"),
+    INSUFFICIENT_POINTS_BALANCE("0112", "积分余额不足"),
+    INSUFFICIENT_PRODUCT_NUM("0112", "商品剩余数量不足"),
+    USER_ADDRESS_IS_NOT_NULL("0113", "收货地址不可以为空"),
+
     /******会员购买******/
     MEMBERSHIP_PURCHASE_FAILED("0200", "会员购买失败"),
     MEMBERSHIP_IS_PURCHASED("0201", "会员已购买，请勿重复购买"),
-    MEMBERSHIP_PURCHASE_NO_ENOUGH_AMOUNT("0202", "账户金额不足，请充值"),
-
-    ERROR("9999", "错误");
+    MEMBERSHIP_PURCHASE_NO_ENOUGH_AMOUNT("0202", "账户金额不足，请充值");
 
     private String code;
     private String msg;

@@ -80,5 +80,9 @@ public class MobileAppTransferApplicationController extends MobileAppBaseControl
         return mobileAppTransferApplicationService.transferApplicationById(requestDto);
     }
 
-
+    @RequestMapping(value = "/get/user-transfee-repay", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponseDto getTransferLoanRepay(@RequestBody UserInvestRepayRequestDto userInvestRepayRequestDto) {
+        return mobileAppTransferApplicationService.userInvestRepay(userInvestRepayRequestDto);
+    }
 }

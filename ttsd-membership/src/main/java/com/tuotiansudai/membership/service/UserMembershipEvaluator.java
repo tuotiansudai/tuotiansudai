@@ -48,16 +48,21 @@ public class UserMembershipEvaluator {
     }
 
     public MembershipModel evaluate(String loginName) {
-        return membershipMapper.findById(this.evaluateUserMembership(loginName).getMembershipId());
+        return membershipMapper.findById(this.evaluateUserMembership(loginName, new Date()).getMembershipId());
     }
 
-    public UserMembershipModel evaluateUserMembership(String loginName) {
+    public MembershipModel evaluateSpecifiedDate(String loginName, Date date) {
+        return membershipMapper.findById(this.evaluateUserMembership(loginName, date).getMembershipId());
+    }
+
+
+    public UserMembershipModel evaluateUserMembership(String loginName, final Date date) {
         List<UserMembershipModel> userMembershipModels = userMembershipMapper.findByLoginName(loginName);
 
         UnmodifiableIterator<UserMembershipModel> filter = Iterators.filter(userMembershipModels.iterator(), new Predicate<UserMembershipModel>() {
             @Override
             public boolean apply(UserMembershipModel input) {
-                return input.getExpiredTime().after(new Date());
+                return input.getExpiredTime().after(date);
             }
         });
 
