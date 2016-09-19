@@ -19,10 +19,6 @@ public class MobileAppMembershipPerceptionController extends MobileAppBaseContro
     @RequestMapping(value = "/membership-perception", method = RequestMethod.POST)
     public BaseResponseDto getMembershipPerception(@RequestBody MembershipPerceptionRequestDto requestDto) {
         requestDto.getBaseParam().setUserId(getLoginName());
-        System.out.println(requestDto.getInvestAmount());
-        System.out.println(requestDto.getLoanId());
-        System.out.println(requestDto.getUserCouponIds());
-        System.out.println(requestDto.getUserCouponIds().size());
         return mobileAppMembershipPerceptionService.getMembershipPerception(requestDto);
     }
 }
