@@ -23,7 +23,7 @@ var config = [
     {
         route: '/',
         template: 'footer',
-        data: 'footer'
+        data: 'activity_demo'
     },
     {
         route: '/activity',
@@ -33,7 +33,7 @@ var config = [
     {
         route: '/consult',
         template: 'consult-center',
-        data: 'activity_demo'
+        data: 'consult-center'
     }];
 
 

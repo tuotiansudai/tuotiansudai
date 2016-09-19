@@ -1,0 +1,124 @@
+.consult-center-container {
+    .con-category {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 2;
+      background: rgba(255,102,0,0.5);
+      color: #fff;
+      display: inline-block;
+      font-size: 14px;
+      padding: 0 10px;
+    }
+  .recommend-img-box {
+    margin-bottom:10px;
+    .category-inner {
+      position: relative;
+      height:100%;
+
+      img {
+        position: absolute;
+        width: 100%;
+        height: auto;
+        left: 0;
+        top: 0;
+        z-index: 1;
+      }
+      .con-title {
+        position: absolute;
+        bottom: 20px;
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        font-weight: bold;
+        z-index: 3;
+        font-size:22px;
+      }
+    }
+    .category-box-left {
+      width:700px;
+      height: 340px;
+      float: left;
+    }
+    .category-box-right {
+      width:290px;
+      float: right;
+      .category-inner {
+        height: 165px;
+        margin-bottom: 10px;
+        &:nth-child(2) {
+          margin-bottom: 0px;
+        }
+      }
+    }
+  }
+
+  .category-content-frame {
+    width:700px;
+    box-sizing: border-box;
+    float: left;
+    border:1px solid #e6e6e6;
+    .category-menu {
+      font-size: 18px;
+      li {
+        float: left;
+        padding: 5px 23px;
+        border-right:1px solid #e6e6e6;
+        border-bottom:1px solid #e6e6e6;
+        &.active {
+          color: #ff6500;
+        }
+      }
+    }
+
+    .content-list {
+
+      .summary-box {
+        padding: 20px;
+        border-bottom: 1px solid #ccc;
+        .img-show {
+          width:200px;
+          position: relative;
+          float: left;
+          margin-right:20px;
+          img {
+            width:200px;
+            height:123px;
+            position: absolute;
+            z-index: 1;
+          }
+          .con-category {
+            background: rgba(0,0,0,0.4);
+          }
+        }
+
+        .summary-info {
+          width:438px;
+          float: right;
+          color: #999;
+          font-size:14px;
+          height: 125px;
+          position: relative;
+          dl {
+            line-height: 1.6;
+            dt {
+              color: #333;
+              font-size: 18px;
+              font-weight: bold;
+              padding-bottom: 10px;
+            }
+          }
+          .source-form {
+            position: absolute;
+            bottom:0;
+            left:0px;
+          }
+        }
+      }
+    }
+  }
+  .hot-notice-frame {
+    width:290px;
+    float: right;
+  }
+}
