@@ -16,6 +16,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.ExperienceLoanDetailService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,9 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
+
+    @Autowired
+    private ExperienceLoanDetailService experienceLoanDetailService;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -119,7 +123,12 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanResponseDataDto.setMinInvestMoneyCent(String.valueOf(loan.getMinInvestAmount()));
             loanResponseDataDto.setCardinalNumberCent(String.valueOf(loan.getInvestIncreasingAmount()));
             loanResponseDataDto.setMaxInvestMoneyCent(String.valueOf(loan.getMaxInvestAmount()));
-            loanResponseDataDto.setInvestedMoneyCent(String.valueOf(investMapper.sumSuccessInvestAmount(loan.getId())));
+            if (loan.getProductType().equals(ProductType.EXPERIENCE)) {
+                ExperienceLoanDto experienceLoanDto = experienceLoanDetailService.findExperienceLoanDtoDetail(loan.getId(), loginName);
+                loanResponseDataDto.setInvestedMoneyCent(String.valueOf(loan.getLoanAmount() - AmountConverter.convertStringToCent(experienceLoanDto.getInvestAmount())));
+            } else {
+                loanResponseDataDto.setInvestedMoneyCent(String.valueOf(investMapper.sumSuccessInvestAmount(loan.getId())));
+            }
             loanResponseDataDto.setLoanMoneyCent(String.valueOf(loan.getLoanAmount()));
 
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
