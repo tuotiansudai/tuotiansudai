@@ -532,8 +532,15 @@
                                     <i class="${loan.productType.name()?lower_case}"></i>
                                 </#if>
                                 <div class="pad-m" title="BLQ001" data-url="/loan/${(loan.id?string.computer)!}">
-                                    <h2 class="pr-title">${loan.name}
-                                         <#if loan.activityType == "ACTIVITY">${loan.activityDesc!}</#if>
+                                    <h2 class="pr-title">
+                                        <span class="fl">${loan.name}</span>
+                                        <#if loan.activityType == "ACTIVITY">
+                                            <span class="arrow-tag-normal">
+                                                <i class="ic-left"></i>
+                                                <em> ${loan.activityDesc!}</em>
+                                                <i class="ic-right"></i>
+                                            </span>
+                                         </#if>
                                     </h2>
 
                                     <div class="pr-square tc">

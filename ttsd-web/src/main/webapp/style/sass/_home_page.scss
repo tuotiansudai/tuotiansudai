@@ -1357,6 +1357,15 @@
                 margin-left: 15px;
                 color: #4c4c4c;
                 padding-left:20px;
+                .arrow-tag-normal {
+                  margin-top: 2px;
+                  .ic-left {
+                    margin-left:-10px;
+                  }
+                  em {
+                    font-size:11px;
+                  }
+                }
               }
               .pr-square {
                 width: 54%;
