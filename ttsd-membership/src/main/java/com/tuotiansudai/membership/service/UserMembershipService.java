@@ -26,4 +26,6 @@ public interface UserMembershipService {
                                                        int pageSize);
 
     List<Integer> getAllLevels();
+
+    String getMembershipLevelByLoginNameAndInvestTime(String loginName, Date investTime);
 }

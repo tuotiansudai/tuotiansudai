@@ -8,7 +8,6 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.point.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
@@ -23,7 +22,6 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,9 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Controller
@@ -160,7 +156,7 @@ public class ExportController {
     @RequestMapping(value = "/coupon-exchange", method = RequestMethod.GET)
     public void exportCouponExchange(HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.CouponExchangeHeader.getDescription());
-        List<ExchangeCouponDto> exchangeCouponDtos = couponService.findCouponExchanges(1, Integer.MAX_VALUE);
+        List<ExchangeCouponDto> exchangeCouponDtos = productService.findCouponExchanges(1, Integer.MAX_VALUE);
         List<List<String>> csvData = exportService.buildCouponExchangeCsvData(exchangeCouponDtos);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.CouponExchangeHeader, csvData, response.getOutputStream());
     }
@@ -250,14 +246,16 @@ public class ExportController {
                               @RequestParam(name = "mobile", required = false) String investorMobile,
                               @RequestParam(name = "channel", required = false) String channel,
                               @RequestParam(name = "source", required = false) Source source,
-                              @RequestParam(name = "role", required = false) String role,
+                              @RequestParam(name = "role", required = false) Role role,
                               @RequestParam(name = "investStatus", required = false) InvestStatus investStatus,
                               @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                              @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime, HttpServletResponse response) throws IOException {
+                              @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                              @RequestParam(name = "usedPreferenceType", required = false) PreferenceType preferenceType, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleInvests.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        InvestPaginationDataDto investPagination = investService.getInvestPagination(loanId, investorMobile, channel, source, role, index, pageSize, startTime, endTime, investStatus, null);
+        InvestPaginationDataDto investPagination = investService.getInvestPagination(loanId, investorMobile, channel, source,
+                role, startTime, endTime, investStatus, preferenceType, index, pageSize);
         List<InvestPaginationItemDataDto> records = investPagination.getRecords();
         List<List<String>> investsData = exportService.buildInvests(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, investsData, response.getOutputStream());

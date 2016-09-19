@@ -480,115 +480,125 @@ $width:700px;
   .register-common-frame .landing-top .register-box {
     margin-bottom: 39px;
   }
-  .luxury-list-container .wp .luxury-item {
-    padding:10px 10px 10px 10px;
-    &.hack {
-      margin-bottom:20px;
-    }
-    .title-one{
-      position: relative;
-      img {
-        width: 50%;
-        position: absolute;
-        top: -18px;
-        left: 26%;
-      }
-    }
-    .actor-info-text {
-      width:100%;
-      .actor-title {
-        font-size:15px;
-        margin-bottom:10px;
-      }
-      p {
-        font-size:11px;
-        &.pc {
-          display: none;
-        }
-        &.nopc {
-          display: block;
-        }
 
+  .luxury-list-container .wp {
+    &.detail-wp {
+      width: 100%;
+      .detail-img {
+        float: none;
       }
     }
-    .title-info p {
-      font-weight: normal;
-      width: 95%;
-      font-size: 11px;
+    .luxury-item {
+      padding:10px 10px 10px 10px;
+      &.hack {
+        margin-bottom:20px;
+      }
+      .title-one{
+        position: relative;
+        img {
+          width: 50%;
+          position: absolute;
+          top: -18px;
+          left: 26%;
+        }
+      }
+      .actor-info-text {
+        width:100%;
+        .actor-title {
+          font-size:15px;
+          margin-bottom:10px;
+        }
+        p {
+          font-size:11px;
+          &.pc {
+            display: none;
+          }
+          &.nopc {
+            display: block;
+          }
 
-      em {
-        width: 50px;
-        display: inline-block;
-        float: left;
-      }
-      span.info {
-        width:calc(100% - 50px);
-        float: left;
-        .space {
-          padding-left:0;
         }
       }
-    }
-    .prize-kind {
-      margin:10px 0;
-      overflow: hidden;
-      .swiper-wrapper {
-        width: 108%;
-        width: calc(100% + 30px);
-      }
-      .prize-box {
-        width:45%;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        &.code-item-box {
-          display: none;
+      .title-info p {
+        font-weight: normal;
+        width: 95%;
+        font-size: 11px;
+
+        em {
+          width: 50px;
+          display: inline-block;
+          float: left;
         }
-        .pk-title {
-          span {
-            font-size:12px;
-            i {
-              font-size:13px;
-            }
-            &:nth-child(1) {
-              width: 35%;
-            }
-            &:nth-child(2) {
-              width: 48%;
-            }
+        span.info {
+          width:calc(100% - 50px);
+          float: left;
+          .space {
+            padding-left:0;
           }
         }
-        .img-info  {
+      }
+      .prize-kind {
+        margin:10px 0;
+        overflow: hidden;
+        .swiper-wrapper {
+          width: 108%;
+          width: calc(100% + 30px);
+        }
+        .prize-box {
+          width:45%;
+          margin-right: 10px;
+          margin-bottom: 10px;
+          &.code-item-box {
+            display: none;
+          }
+          .pk-title {
+            span {
+              font-size:12px;
+              i {
+                font-size:13px;
+              }
+              &:nth-child(1) {
+                width: 35%;
+              }
+              &:nth-child(2) {
+                width: 48%;
+              }
+            }
+          }
+          .img-info  {
             a {
               display: block;
             }
-          .kind-text {
-            top: auto;
-            bottom: 30px
-          }
-          .kind-bottom {
-            font-size:11px;
-            height: 30px;
-            line-height: 30px;
-            em {
-              font-size: 14px;
+            .kind-text {
+              top: auto;
+              bottom: 30px
             }
-            .btn-normal {
-              display: none;
+            .kind-bottom {
+              font-size:11px;
+              height: 30px;
+              line-height: 30px;
+              em {
+                font-size: 14px;
+              }
+              .btn-normal {
+                display: none;
+              }
             }
           }
         }
+
       }
 
-    }
-
-    .title-two {
-      img {
-        width: 69%;
-        position: absolute;
-        top: -35px;
-        left: 15%;
+      .title-two {
+        img {
+          width: 69%;
+          position: absolute;
+          top: -35px;
+          left: 15%;
+        }
       }
     }
   }
+
 }
 

@@ -98,4 +98,10 @@ public class UserMembershipServiceImpl implements UserMembershipService {
     public List<Integer> getAllLevels() {
         return membershipMapper.findAllLevels();
     }
+
+    @Override
+    public String getMembershipLevelByLoginNameAndInvestTime(String loginName, Date investTime) {
+        long level = userMembershipMapper.findByLoginNameOrInvestTime(loginName, investTime);
+        return String.valueOf(membershipMapper.findById(level).getLevel());
+    }
 }

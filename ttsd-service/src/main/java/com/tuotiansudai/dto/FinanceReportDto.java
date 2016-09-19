@@ -1,8 +1,10 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.FinanceReportItemView;
 import com.tuotiansudai.util.AmountConverter;
 
+import java.text.MessageFormat;
 import java.util.Date;
 
 public class FinanceReportDto {
@@ -29,6 +31,10 @@ public class FinanceReportDto {
     private String fee;   //服务费   InvestRepayModel.actualFee
     private String actualRepayAmount; //实际回款  InvestRepayModel.repayAmount
     private String recommendAmount;   //推荐奖励 InvestReferrerRewardModel.amount and InvestReferrerRewardModel.status = SUCCESS
+    private String couponDetail;    //使用红包详情
+    private String couponActualInterest;    //使用红包实际返款
+    private String extraDetail; //使用阶梯加息详情
+    private String extraActualInterest; //使用阶梯加息实际返款
 
     public FinanceReportDto() {
     }
@@ -54,6 +60,27 @@ public class FinanceReportDto {
         this.setActualInterest(AmountConverter.convertCentToString(financeReportItemView.getActualInterest()));
         this.setFee(AmountConverter.convertCentToString(financeReportItemView.getFee()));
         this.setActualRepayAmount(AmountConverter.convertCentToString(financeReportItemView.getActualRepayAmount()));
+        this.extraDetail = MessageFormat.format("{0}%", financeReportItemView.getExtraRate());
+        this.extraActualInterest = AmountConverter.convertCentToString(financeReportItemView.getExtraAmount());
+    }
+
+    public void setCouponDetail(CouponModel couponModel) {
+        switch (couponModel.getCouponType()) {
+            case RED_ENVELOPE:
+            case NEWBIE_COUPON:
+            case INVEST_COUPON:
+                this.couponDetail = MessageFormat.format("{0}元{1}", AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
+                break;
+            case INTEREST_COUPON:
+                this.couponDetail = MessageFormat.format("{0}%{1}", couponModel.getRate() * 100, couponModel.getCouponType().getName());
+                break;
+            case BIRTHDAY_COUPON:
+                this.couponDetail = MessageFormat.format("{0}倍{1}", couponModel.getBirthdayBenefit() + 1, couponModel.getCouponType().getName());
+                break;
+            default:
+                this.couponDetail = "";
+                break;
+        }
     }
 
     public long getLoanId() {
@@ -230,5 +257,37 @@ public class FinanceReportDto {
 
     public void setRecommendAmount(String recommendAmount) {
         this.recommendAmount = recommendAmount;
+    }
+
+    public String getCouponDetail() {
+        return couponDetail;
+    }
+
+    public void setCouponDetail(String couponDetail) {
+        this.couponDetail = couponDetail;
+    }
+
+    public String getCouponActualInterest() {
+        return couponActualInterest;
+    }
+
+    public void setCouponActualInterest(long couponActualInterest) {
+        this.couponActualInterest = AmountConverter.convertCentToString(couponActualInterest);
+    }
+
+    public String getExtraDetail() {
+        return extraDetail;
+    }
+
+    public void setExtraDetail(String extraDetail) {
+        this.extraDetail = extraDetail;
+    }
+
+    public String getExtraActualInterest() {
+        return extraActualInterest;
+    }
+
+    public void setExtraActualInterest(String extraActualInterest) {
+        this.extraActualInterest = extraActualInterest;
     }
 }

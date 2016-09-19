@@ -1,7 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.repository.model.TransferableInvestView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -118,26 +117,26 @@ public interface InvestMapper {
                                     @Param(value = "afterTime") Date afterTime);
 
     long findCountInvestPagination(@Param(value = "loanId") Long loanId,
-                                   @Param(value = "investorMobile") String investorMobile,
+                                   @Param(value = "investorLoginName") String investorLoginName,
                                    @Param(value = "channel") String channel,
                                    @Param(value = "source") Source source,
-                                   @Param(value = "role") String role,
+                                   @Param(value = "role") Role role,
                                    @Param(value = "startTime") Date startTime,
                                    @Param(value = "endTime") Date endTime,
                                    @Param(value = "investStatus") InvestStatus investStatus,
-                                   @Param(value = "loanStatus") LoanStatus loanStatus);
+                                   @Param(value = "preferenceType") PreferenceType preferenceType);
 
     List<InvestPaginationItemView> findInvestPagination(@Param(value = "loanId") Long loanId,
-                                                        @Param(value = "investorMobile") String investorMobile,
+                                                        @Param(value = "investorLoginName") String investorLoginName,
                                                         @Param(value = "channel") String channel,
                                                         @Param(value = "source") Source source,
-                                                        @Param(value = "role") String role,
-                                                        @Param(value = "index") int index,
-                                                        @Param(value = "pageSize") int pageSize,
+                                                        @Param(value = "role") Role role,
                                                         @Param(value = "startTime") Date startTime,
                                                         @Param(value = "endTime") Date endTime,
                                                         @Param(value = "investStatus") InvestStatus investStatus,
-                                                        @Param(value = "loanStatus") LoanStatus loanStatus);
+                                                        @Param(value = "preferenceType") PreferenceType preferenceType,
+                                                        @Param(value = "index") int index,
+                                                        @Param(value = "pageSize") int pageSize);
 
     long sumInvestAmount(@Param(value = "loanId") Long loanId,
                          @Param(value = "investorLoginName") String investorLoginName,
@@ -148,6 +147,16 @@ public interface InvestMapper {
                          @Param(value = "endTime") Date endTime,
                          @Param(value = "investStatus") InvestStatus investStatus,
                          @Param(value = "loanStatus") LoanStatus loanStatus);
+
+    long sumInvestAmountConsole(@Param(value = "loanId") Long loanId,
+                                @Param(value = "investorLoginName") String investorLoginName,
+                                @Param(value = "channel") String channel,
+                                @Param(value = "source") Source source,
+                                @Param(value = "role") Role role,
+                                @Param(value = "startTime") Date startTime,
+                                @Param(value = "endTime") Date endTime,
+                                @Param(value = "investStatus") InvestStatus investStatus,
+                                @Param(value = "preferenceType") PreferenceType preferenceType);
 
     long sumInvestAmountRanking(@Param(value = "startTime") Date startTime,
                                 @Param(value = "endTime") Date endTime);
@@ -241,8 +250,6 @@ public interface InvestMapper {
     long countInvestorSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
                                                @Param(value = "startTime") Date startTime,
                                                @Param(value = "endTime") Date endTime);
-
-
 
     List<InvestModel> findSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
                                                 @Param(value = "startTime") Date startTime,

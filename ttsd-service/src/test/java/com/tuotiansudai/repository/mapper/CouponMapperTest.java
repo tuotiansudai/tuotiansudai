@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
@@ -117,7 +117,7 @@ public class CouponMapperTest {
         return new ExchangeCouponView(couponModel, couponExchangeModel.getExchangePoint(), couponExchangeModel.getSeq());
     }
 
-    @Test
+    @Ignore
     public void testFindExchangeableCouponViewById() throws Exception {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);

@@ -43,7 +43,7 @@
         <!--DO NOT MODIFY THE BELLOW CONFIG ANYTIME!-->
         <intercept-url pattern="/ask/dist/**" access="permitAll()"/>
 
-        <intercept-url pattern="/question/my-question" method="GET" access="not isAnonymous()"/>
+        <intercept-url pattern="/question/my-questions" method="GET" access="not isAnonymous()"/>
         <intercept-url pattern="/question" method="POST" access="not isAnonymous()"/>
         <intercept-url pattern="/answer/**" access="not isAnonymous()"/>
 

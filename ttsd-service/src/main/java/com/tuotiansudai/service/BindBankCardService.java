@@ -17,5 +17,5 @@ public interface BindBankCardService {
 
     boolean isManual(String loginName);
 
-    BankCardModel getPassedBankCardById(long id);
+    BankCardModel getBankCardById(long id);
 }

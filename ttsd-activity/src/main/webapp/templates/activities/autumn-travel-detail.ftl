@@ -18,15 +18,20 @@
     }
 </style>
 <div class="page-width autumn-travel-detail">
-    <img src="${introduce}">
+    <#switch prizeId!"">
+        <#case 1>
+            <img src="upload/20160913/97751473762817444.jpg" width="100%">
+            <#break >
+        <#case 2>
+            <img src="upload/20160913/90391473762899533.jpg" width="100%">
+            <#break >
+        <#case 3>
+            <img src="upload/20160913/54491473762873600.jpg" width="100%">
+            <#break >
+    </#switch>
 
     <div class="tc">
-        <@global.isAnonymous>
-            <a href="/login?redirect=/activity/autumn/travel" class="btn-normal">立即投资</a>
-        </@global.isAnonymous>
-        <@global.isNotAnonymous>
-            <a href="/loan-list" class="btn-normal autumn-travel-invest-channel">立即投资</a>
-        </@global.isNotAnonymous>
+        <a href="/loan-list" class="btn-normal autumn-travel-invest-channel">立即投资</a>
     </div>
 </div>
 </@global.main>

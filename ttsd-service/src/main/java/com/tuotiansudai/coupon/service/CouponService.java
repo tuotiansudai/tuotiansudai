@@ -46,10 +46,6 @@ public interface CouponService {
 
     long estimateCouponExpectedInterest(String loginName, long loanId, List<Long> couponIds, long amount);
 
-    List<ExchangeCouponDto> findCouponExchanges(int index, int pageSize);
-
-    int findCouponExchangeCount();
-
     CouponExchangeModel findCouponExchangeByCouponId(long couponId);
 
     long findExperienceInvestAmount(List<InvestModel> investModelList);

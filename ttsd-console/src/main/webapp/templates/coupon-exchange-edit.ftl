@@ -26,6 +26,32 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label class="col-sm-2 control-label">商品图片:</label>
+
+            <div class="col-sm-4 ">
+                <input type="text" name="imageUrl" class="form-control form-imageUrl" readonly placeholder=""
+                       value="<#if exchangeCouponDto??>${exchangeCouponDto.imageUrl!}</#if>" datatype="*"
+                       errormsg="请上传商品图片">
+
+                <div class="imageUrlImage" style="margin-top: 10px">
+                    <#if exchangeCouponDto?? && exchangeCouponDto.imageUrl??>
+                        <img style="width:100%" src="/${exchangeCouponDto.imageUrl!}" alt="缩略图" width="542"
+                             height="340"/>
+                    </#if>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="imageUrlProduct">
+                    <input type="file" imageWidth="542" imageHeight="340"/>
+                </div>
+                <div class="text-danger">
+                    (图片必须是542px * 340px)
+                </div>
+            </div>
+        </div>
+
         <#if exchangeCouponDto?? && (exchangeCouponDto.couponType.name() == "INVEST_COUPON" || exchangeCouponDto.couponType.name() == "RED_ENVELOPE") >
             <div class="form-group invest-coupon">
                 <label  class="col-sm-2 control-label">金额(元): </label>
@@ -75,7 +101,9 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">所需积分: </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control exchange-point" name="exchangePoint" <#if exchangeCouponDto??>value="${exchangeCouponDto.exchangePoint?string('0')!}"</#if> placeholder="" data-type="n" errormsg="所需积分需要填写数字">
+                <input type="text" class="form-control exchange-point" name="exchangePoint"
+                       <#if exchangeCouponDto??>value="${exchangeCouponDto.exchangePoint?string('0')!}"</#if>
+                       placeholder="" datatype="n" errormsg="所需积分需要填写数字">
             </div>
         </div>
 

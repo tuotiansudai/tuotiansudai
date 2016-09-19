@@ -28,7 +28,6 @@ public class ImpersonateController {
         if (Strings.isNullOrEmpty(loginName)) {
             return new ModelAndView("/error/404");
         }
-
         myAuthenticationUtil.createAuthentication(loginName, Source.WEB);
         request.getSession().setAttribute("impersonate", "1");
         return new ModelAndView("redirect:/");

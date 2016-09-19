@@ -19,7 +19,7 @@
             <@global.isNotAnonymous>
                 <div class="copy-link-box" id="copyLinkBox">
                     <b for="copy-title">立即邀请好友加入家庭</b>
-                    <span  class="copy-link" id="clipboard_text">http://ci1.tuotiansudai.com:6002/register/user?referrer=${loginName}</span>
+                    <span  class="copy-link" id="clipboard_text">https://tuotiansudai.com/register/user?referrer=${loginName}</span>
 
 
                     <div class="tc">
