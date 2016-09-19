@@ -20,7 +20,9 @@
         <div class="form-group invest-seq">
             <label  class="col-sm-2 control-label">当前顺序: </label>
             <div class="col-sm-8">
-                <div class="item-invest">1-</div> <input type="text" class="form-control invest-quota" name="seq" placeholder="" datatype="n" errormsg="当前顺序只能为有效数字">
+                <div class="item-invest">1-</div>
+                <input type="text" class="form-control invest-quota" name="seq" placeholder="" datatype="n"
+                       errormsg="当前顺序只能为有效数字">
             </div>
 
         </div>
@@ -30,11 +32,13 @@
 
             <div class="col-sm-4 ">
                 <input type="text" name="imageUrl" class="form-control form-imageUrl" readonly placeholder=""
-                       value="<#if exchangeCouponDto??>${exchangeCouponDto.imageUrl!}</#if>" datatype="*" errormsg="请上传商品图片">
+                       value="<#if exchangeCouponDto??>${exchangeCouponDto.imageUrl!}</#if>" datatype="*"
+                       errormsg="请上传商品图片">
 
                 <div class="imageUrlImage" style="margin-top: 10px">
                     <#if exchangeCouponDto?? && exchangeCouponDto.imageUrl??>
-                        <img style="width:100%" src="/${exchangeCouponDto.imageUrl!}" alt="缩略图" width="542" height="340"/>
+                        <img style="width:100%" src="/${exchangeCouponDto.imageUrl!}" alt="缩略图" width="542"
+                             height="340"/>
                     </#if>
                 </div>
             </div>
@@ -87,13 +91,18 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">优惠券有效天数(天): </label>
             <div class="col-sm-8">
-                <div class="item-invest">用户收到优惠券后</div><input type="text" class="form-control invest-quota coupon-deadline" name="deadline" placeholder=""  datatype="n"  errormsg="有效天数需要填写数字"><div class="item-invest">天内有效</div>
+                <div class="item-invest">用户收到优惠券后</div>
+                <input type="text" class="form-control invest-quota coupon-deadline" name="deadline" placeholder=""
+                       datatype="n" errormsg="有效天数需要填写数字">
+
+                <div class="item-invest">天内有效</div>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">所需积分: </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control exchange-point" name="exchangePoint" placeholder="" datatype="n" errormsg="所需积分需要填写数字">
+                <input type="text" class="form-control exchange-point" name="exchangePoint" placeholder="" datatype="n"
+                       errormsg="所需积分需要填写数字">
             </div>
         </div>
 

@@ -3,13 +3,11 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.point.repository.model.GoodsType;
-import com.tuotiansudai.point.repository.model.ItemType;
-import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.util.List;
 
-public class ProductDetailResponseDto extends BaseResponseDataDto{
+public class ProductDetailResponseDto extends BaseResponseDataDto {
     private String productId;
 
     private String imageUrl;
@@ -24,7 +22,7 @@ public class ProductDetailResponseDto extends BaseResponseDataDto{
 
     private String leftCount;
 
-    public ProductDetailResponseDto(long productId, String imageUrl, String name, long points,GoodsType goodsType,long leftCount) {
+    public ProductDetailResponseDto(long productId, String imageUrl, String name, long points, GoodsType goodsType, long leftCount) {
         this.productId = String.valueOf(productId);
         this.imageUrl = imageUrl;
         this.points = String.valueOf(points);
@@ -33,7 +31,7 @@ public class ProductDetailResponseDto extends BaseResponseDataDto{
         this.leftCount = String.valueOf(leftCount);
     }
 
-    public ProductDetailResponseDto(ExchangeCouponView exchangeCouponView,String bannerServer){
+    public ProductDetailResponseDto(ExchangeCouponView exchangeCouponView, String bannerServer) {
         this.productId = String.valueOf(exchangeCouponView.getProductId());
         this.imageUrl = bannerServer + exchangeCouponView.getImageUrl();
         this.points = String.valueOf(exchangeCouponView.getExchangePoint());
