@@ -71,8 +71,8 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
-    @Value("${web.server}")
-    private String domainName;
+    @Value("${web.static.server}")
+    private String staticServer;
 
     private String title = "拓天速贷引领投资热，开启互金新概念";
 
@@ -274,7 +274,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             String materialUrl = loanTitleRelationModel.getApplicationMaterialUrls();
             if (StringUtils.isNotEmpty(materialUrl)) {
                 for (String url : materialUrl.split(",")) {
-                    String tempUrl = domainName + "/" + url;
+                    String tempUrl = staticServer + url;
                     imageUrlList.add(tempUrl);
                 }
             }

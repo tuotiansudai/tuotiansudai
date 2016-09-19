@@ -387,7 +387,7 @@
                                                 <div class="row">
                                                     <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
                                                         <a class="col" href="${title}" rel="example_group">
-                                                            <img class="img" layer-src="${title}" src="${title}" alt="${loanTitle.title}"/>
+                                                            <img class="img" layer-src="${staticServer}${title}" src="${staticServer}${title}" alt="${loanTitle.title}"/>
                                                         </a>
                                                     </#list>
                                                 </div>

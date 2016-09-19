@@ -62,8 +62,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
 
-    @Value("${web.server}")
-    private String domainName;
+    @Value("${web.static.server}")
+    private String staticServer;
 
     private String title = "拓天速贷引领投资热，开启互金新概念";
 
@@ -225,7 +225,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             String materialUrl = loanTitleRelationModel.getApplicationMaterialUrls();
             if (StringUtils.isNotEmpty(materialUrl)) {
                 for (String url : materialUrl.split(",")) {
-                    String tempUrl = domainName + "/" +url;
+                    String tempUrl = staticServer  +url;
                     imageUrlList.add(tempUrl);
                 }
             }
