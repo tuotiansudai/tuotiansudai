@@ -20,9 +20,9 @@ module.exports = function(grunt) {
                     dot: true,
                     src: [
                         '<%= meta.baseCssPath %>/*',
-                        //'<%= meta.base64CssPath %>/*',
-                        '<%= meta.baseCssPath %>/*.map'
-                        //'<%= meta.baseCssMinPath %>/*'
+                        '<%= meta.base64CssPath %>/*',
+                        '<%= meta.baseCssPath %>/*.map',
+                        '<%= meta.baseCssMinPath %>/*'
                     ]
                 }]
             },
@@ -31,14 +31,6 @@ module.exports = function(grunt) {
                     dot: true,
                     src: [
                         '<%= meta.baseJsMinPath %>/*'
-                    ]
-                }]
-            },
-            base64: {
-                files: [{
-                    dot: true,
-                    src: [
-                        '<%= meta.base64CssPath %>/*'
                     ]
                 }]
             }
@@ -171,7 +163,7 @@ module.exports = function(grunt) {
 
     //转化成base64
     grunt.registerTask('base64', ['dataUri', 'newer:cssmin']);
-    //,'clean:base64'
+    //,
 
     //压缩图片，需要压缩图片的时候单独执行 grunt imagemin
 
