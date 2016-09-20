@@ -1,4 +1,4 @@
-<div class="leader-container <#if prizeType='travel'>tour-theme</#if>" id="awardCom"><!--旅游主题class替换为tour-theme-->
+<div class="leader-container <#if prizeType='travel'>tour-theme</#if>" <#if prizeType='national-day-theme'>tour-theme</#if>"  id="awardCom"><!--旅游主题class替换为tour-theme-->
     <input type="hidden" value="${prizeType}" id="themeType"/>
     <div class="leader-list">
         <div class="lottery-circle">

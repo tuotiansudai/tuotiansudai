@@ -5,7 +5,7 @@
 </div>
 <div class="national-day-frame" >
 
-    <div class="section-outer">
+ <div class="section-outer">
         <div class="section-one-title"></div>
         <div class="section-inner">
             <p class="notice">如活动结束后，所有国庆专享标筹满1949000元，则参与本活动的全部用户将按投资比例瓜分10000元红包，红包适用于90天及以上标的，投资50元即可激活！<br/>
@@ -49,21 +49,141 @@
 <div class="section-outer">
     <div class="section-two-title"></div>
     <div class="section-inner">
-        <div class="bg-box-normal">
+        <div class="bg-box-normal tc">
             <span class="my-integral">我的积分：125645</span>
         </div>
 
         <div class="bg-box-normal">
-
-            <dl>
+            <dl class="example-show">
                 <dt>活动期间投资即可获得双倍积分。</dt>
                 <dd>举个栗子：<img src="${staticServer}/activity/images/national-day/icon-example.png" class="main-title" alt="">
                     <br/>
                     您在活动期间投资360天标的20000元，将获得20000X2=40,000的积分（活动结束后投资只能获得1倍的积分）
                 </dd>
             </dl>
+
+            <div class="tc">
+                <a href="#" class="btn-normal-invest">去投资赚积分</a>
+            </div>
         </div>
 
+        <div class="bg-box-normal">
+            <dl class="example-show">
+                <dt>活动期间邀请好友注册并投资，可额外获得好友年化投资额的0.1倍积分，上不封顶。</dt>
+                <dd>举个栗子：<img src="${staticServer}/activity/images/national-day/icon-example.png" class="main-title" alt="">
+                    <br/>
+                    您邀请好友注册，好友投资360天标的2万元，您可获得2000积分
+                </dd>
+            </dl>
+
+            <div class="tc">
+                <a href="#" class="btn-normal-invest">去投资赚积分</a>
+            </div>
+        </div>
+
+        <div class="to-see-point tr">
+            <a href="/point-shop" target="_blank"> 积分商城看一看>></a>
+        </div>
+
+        </div>
+    </div>
+
+<div class="section-outer">
+    <div class="section-three-title"></div>
+    <div class="section-inner clearfix">
+        <p class="notice tc">活动期间，新用户在平台完成注册、实名认证、绑卡、充值、投资均可获得一次抽奖机会。</p>
+
+        <ul class="steps-list clearfix">
+            <li class="finished step-one">
+                <span>已注册</span>
+            </li>
+            <li class="active step-two">
+                <em class="arrow"></em>
+                <span>去认证</span>
+            </li>
+            <li class="step-three">
+                <em class="arrow"></em>
+                <span>绑卡</span>
+            </li>
+
+            <li class="step-four">
+                <em class="arrow"></em>
+                <span>充值</span>
+            </li>
+
+            <li class="step-five">
+                <span>投资</span>
+            </li>
+            </ul>
+
+        <p class="notice tc">活动期间，每推荐一名好友注册也可获得一次抽奖机会；好友投资，还可再得一次抽奖机会。邀请越多机会越多。</p>
+
+    <div class="tc">
+        <a href="#" class="btn-normal-invest">立即邀请好友赢抽奖机会</a>
+    </div>
+
+        <#--<#include "gift-circle.ftl"/>-->
+
+        <div class="leader-container national-day-theme"  id="awardCom"><!--旅游主题class替换为tour-theme-->
+            <input type="hidden"  id="themeType"/>
+            <div class="leader-list">
+                <div class="lottery-circle">
+                    <h3>我的抽奖机会：<span class="lottery-time">0</span>次</h3>
+                    <div class="circle-shade">
+                        <div class="pointer-img" id="pointer" data-islogin="true">
+                            <img src="${staticServer}/activity/images/sign/actor/circle/pointer.png" alt="pointer" width="100%"/>
+                        </div>
+                        <div class="rotate-btn" id="rotate">
+                            <img src="${staticServer}/activity/images/sign/actor/circle/luxury-gift-new.png" alt="turntable" width="100%" class="luxury-img"/>
+                            <img src="${staticServer}/activity/images/sign/actor/circle/tour-gift.png" alt="pointer" width="100%" class="tour-img"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="lottery-detail">
+                    <h3>我的抽奖机会：<span class="lottery-time">1</span>次</h3>
+                    <ul class="gift-record">
+                        <li class="active">中奖记录</li>
+                        <li>我的奖品</li>
+                    </ul>
+                    <div class="record-list" id="recordList">
+
+                        <ul class="record-model own-record" id="MyGift">
+                                <li>
+                                    <#--<span class="award-name">-->
+                                        <#--华东旅游大奖-->
+                                    <#--</span>-->
+                                    恭喜130****7149抽中了新马泰七日游
+                                </li>
+                            <li>
+                                恭喜130****7149抽中了新马泰七日游
+                            </li>
+                                <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <#assign prizeType = 'national-day-theme'/>
+    <#--<#include "gift-circle.ftl"/>-->
+    </div>
+
+<div class="section-outer">
+    <div class="section-three-title"></div>
+    <div class="section-inner clearfix">
+        <dl class="activity-explain">
+            <dt> <全民加薪节&emsp;&emsp;瓜分万元奖池>活动说明：</dt>
+            <dd>1、活动期间投资“国庆专享标”，单笔投资满10000元即可参与活动。 <br/>
+                2、如活动结束后，所有“国庆专享标”筹满1949000元，则参与本活动的全部用户将按投资比例瓜分10000元红包，红包适用于90天及以上标的，投资50元即可激活！用户所获红包大奖将于活动结束后三个工作日内，由客服联系确认后，以红包形式返至用户，用户可在“我的宝藏”中查看、投资；<br/>
+                3、如活动结束后，所有“国庆专享标”未筹满1949000元，则参与本活动的用户每人将获得50元投资红包。投资红包将于活动结束后三个工作日内发放，用户可在“我的账户-我的宝藏”中查看、投资使用；<br/>
+                4、活动截止时间为10月7日24：00，如活动结束时国庆专享未筹满，继续投资本专享标的用户仍可获得50元投资红包，直至专享标筹满为止；</dd>
+            <dt class="title"> <国庆抽壕礼&emsp;&emsp;幸运大悦宾>活动说明：</dt>
+            <dd>所获红包将即时发放，用户可在“我的账户-我的宝藏”中查看； <br/>
+                实物奖品将于活动结束后七个工作日内由客服联系确认后统一安排发放，部分地区邮费自付，详询客服；</dd>
+            <dt>特别说明：</dt>
+            <dd>活动中如果出现恶意刷量等违规行为，拓天速贷将取消您获得奖励的资格，并有权撤销违规交易，拓天速贷在法律范围内保留对本活动的最终解释权。</dd>
+
+        </dl>
         </div>
     </div>
 </div>

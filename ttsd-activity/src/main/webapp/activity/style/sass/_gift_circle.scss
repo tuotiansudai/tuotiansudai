@@ -9,86 +9,6 @@ $width:700px;
     margin-top:10px;
     margin-bottom:0;
   }
-  &.tour-theme{
-    background:none;
-    margin:30px 0 0 0;
-    .leader-list{
-      padding:40px 0 0 0;
-      .lottery-circle{
-        h3{
-          background:#e6fbff;
-          color:#146566;
-          width: 60%;
-          margin:10% 20%;
-          border:1px solid #009289;
-          border-radius: 10px;
-          box-sizing:border-box;
-        }
-        .circle-shade{
-          background: url("/activity/images/sign/actor/circle/tour-bg.png") no-repeat center;
-          background-size:100%;
-          .rotate-btn{
-            .tour-img{
-              display:block;
-            }
-            .luxury-img{
-              display:none;
-            }
-          }
-        }
-      }
-      .lottery-detail{
-        float:left;
-        width:340px;
-        height:520px;
-        margin-top:30px;
-        @media (max-width:$width) {
-          width:100%;
-          height:auto;
-        }
-        h3{
-          background:#e6fbff;
-          color:#146566;
-          border:1px solid #009289;
-          border-radius: 20px;
-          box-sizing:border-box;
-        }
-        .gift-record{
-          background:#71cfcf;
-          border-bottom:1px solid #009289;
-          border-radius: 20px 20px 0 0;
-          overflow:hidden;
-          li{
-            background:#71cfcf;
-            color:#3f8f89;
-            &.active{
-              color:#ed702c;
-              background:#e6fbff;
-              border-radius: 20px 20px 0 0;
-              box-sizing: border-box;
-            }
-          }
-        }
-        .record-list{
-          background:#e6fbff;
-          .record-model{
-            &.user-record{
-              li{
-                color:#ed702c;
-              }
-            }
-            &.own-record{
-              li{
-                span{
-                  color:#ed702c;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
   .leader-list{
     float:left;
     width:100%;
@@ -289,7 +209,130 @@ $width:700px;
       }
     }
   }
+
+  &.tour-theme{
+    background:none;
+    margin:30px 0 0 0;
+    .leader-list{
+      padding:40px 0 0 0;
+      .lottery-circle{
+        h3{
+          background:#e6fbff;
+          color:#146566;
+          width: 60%;
+          margin:10% 20%;
+          border:1px solid #009289;
+          border-radius: 10px;
+          box-sizing:border-box;
+        }
+        .circle-shade{
+          background: url("/activity/images/sign/actor/circle/tour-bg.png") no-repeat center;
+          background-size:100%;
+          .rotate-btn{
+            .tour-img{
+              display:block;
+            }
+            .luxury-img{
+              display:none;
+            }
+          }
+        }
+      }
+      .lottery-detail{
+        float:left;
+        width:340px;
+        height:520px;
+        margin-top:30px;
+        @media (max-width:$width) {
+          width:100%;
+          height:auto;
+        }
+        h3{
+          background:#e6fbff;
+          color:#146566;
+          border:1px solid #009289;
+          border-radius: 20px;
+          box-sizing:border-box;
+        }
+        .gift-record{
+          background:#71cfcf;
+          border-bottom:1px solid #009289;
+          border-radius: 20px 20px 0 0;
+          overflow:hidden;
+          li{
+            background:#71cfcf;
+            color:#3f8f89;
+            &.active{
+              color:#ed702c;
+              background:#e6fbff;
+              border-radius: 20px 20px 0 0;
+              box-sizing: border-box;
+            }
+          }
+        }
+        .record-list{
+          background:#e6fbff;
+          .record-model{
+            &.user-record{
+              li{
+                color:#ed702c;
+              }
+            }
+            &.own-record{
+              li{
+                span{
+                  color:#ed702c;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  &.national-day-theme {
+    float: none;
+    margin:0 auto;
+    .leader-list {
+      .lottery-detail {
+        h3 {
+          background: #ffee9a;
+          border:1px solid #69260c;
+          border-radius:34px;
+          color: #69260c;
+        }
+        .gift-record {
+          background: #71cfcf;
+          border-bottom: 1px solid #009289;
+          border-radius: 20px 20px 0 0;
+          overflow: hidden;
+          li {
+            background: #facc50;
+            color: #fff;
+            &.active {
+              background: #ffee9a;
+              color: #69260c;
+            }
+          }
+        }
+        .record-list {
+          background: #ffee9a;
+          .record-model {
+            display: block;
+          }
+        }
+      }
+      .lottery-circle {
+        width:570px;
+        .circle-shade {
+          margin: 0 0 40px -10px;
+        }
+      }
+    }
+
+  }
 }
+//弹框
 .tip-list{
   position: fixed;
   top:0;

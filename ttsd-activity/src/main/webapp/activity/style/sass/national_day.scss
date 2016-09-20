@@ -26,7 +26,7 @@ body {
   border:0;
   margin-top:20px;
   font-weight: bold;
-  background: url("/activity/images/national-day/bg-button.jpg") center top no-repeat;
+  background: url("/activity/images/national-day/bg-button.png") center top no-repeat;
   //&:disabled {
   //  background: #ccc;
   //  color: #999;
@@ -41,6 +41,7 @@ body {
 .bg-box-normal {
   background: #fff2cb;
   padding:30px;
+  margin-bottom: 20px;
 }
 .national-day-frame {
   width:1080px;
@@ -54,6 +55,10 @@ body {
     .section-two-title {
       min-height: 106px;
       background: url("/activity/images/national-day/title02.png") center top no-repeat;
+    }
+    .section-three-title {
+      min-height: 106px;
+      background: url("/activity/images/national-day/title03.png") center top no-repeat;
     }
     .section-inner {
       margin: 0px 40px 30px 40px;
@@ -124,7 +129,87 @@ body {
         padding: 5px 30px;
         font-weight: bold;
       }
+
+      .example-show {
+        font-size:14px;
+        dt {
+          font-weight: bold;
+          font-size: 16px;
+        }
+      }
+
+      .steps-list {
+        margin-bottom:20px;
+        li {
+          float: left;
+          width: 20%;
+          text-align: center;
+          position: relative;
+          padding-top: 70px;
+          &.step-one {
+            background: url("/activity/images/national-day/icon-step1.png") center top no-repeat;
+          }
+          &.step-two {
+            background: url("/activity/images/national-day/icon-step2.png") center top no-repeat;
+          }
+          &.step-three {
+            background: url("/activity/images/national-day/icon-step3.png") center top no-repeat;
+          }
+          &.step-four {
+            background: url("/activity/images/national-day/icon-step4.png") center 12px no-repeat;
+          }
+          &.step-five {
+            background: url("/activity/images/national-day/icon-step5.png") center top no-repeat;
+          }
+          span {
+            display: inline-block;
+            font-size:16px;
+            color: #fb781d;
+            border:1px solid #fb781d;
+            padding: 0 10px;
+
+          }
+          &.finished {
+            span {
+              background: #fb781d;
+              color: #fff;
+            }
+          }
+
+          &.active {
+            span {
+              background: #ce2607;
+              color: #f9dfb3;
+            }
+            &.step-one {
+              background: url("/activity/images/national-day/icon-step1-h.png") center top no-repeat;
+            }
+            &.step-two {
+              background: url("/activity/images/national-day/icon-step2-h.png") center top no-repeat;
+            }
+            &.step-three {
+              background: url("/activity/images/national-day/icon-step3-h.png") center top no-repeat;
+            }
+            &.step-four {
+              background: url("/activity/images/national-day/icon-step4-h.png") center 12px no-repeat;
+            }
+            &.step-five {
+              background: url("/activity/images/national-day/icon-step5-h.png") center top no-repeat;
+            }
+          }
+        }
+      }
+      .activity-explain {
+        dt {
+          font-size: 16px;
+          font-weight: bold;
+          color: #721f00;
+          padding-bottom:5px;
+        }
+        dd {
+          color: #992900;
+        }
+      }
     }
   }
-
 }
