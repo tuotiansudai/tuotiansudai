@@ -139,23 +139,27 @@
                 <label class="col-sm-2 control-label">活动类型: </label>
 
                 <div class="col-sm-4">
-                    <select class="selectpicker ">
-                        <#list activityTypes as activityType>
-                            <#if activityType.name() != 'PROMOTION'>
-                                <option value="${activityType.name()}">
-                                ${activityType.getActivityTypeName()}
-                                </option>
-                            </#if>
-                        </#list>
-                    </select>
-                    <input type="hidden" class="jq-impact-type"/>
+                    <div class="item-invest">
+                        <select class="selectpicker ">
+                            <#list activityTypes as activityType>
+                                <#if activityType.name() != 'PROMOTION'>
+                                    <option value="${activityType.name()}">
+                                    ${activityType.getActivityTypeName()}
+                                    </option>
+                                </#if>
+                            </#list>
+                        </select>
+                        <input type="hidden" class="jq-impact-type"/>
+                    </div>
+                    <div class="item-invest" style="margin-left:10px">
+                        <span class="checkbox jq-activity-checkbox" style="padding-top:0">
+                            <label>
+                                <input type="checkbox" class="jq-activity" value="0" style="top:8px">
+                                活动专享
+                            </label>
+                        </span>
+                    </div>
 
-                    <span class="checkbox jq-activity-checkbox">
-                        <label>
-                            <input type="checkbox" class="jq-activity" value="0">
-                            活动专享
-                        </label>
-                    </span>
                 </div>
             </div>
             <div class="form-group">
