@@ -46,6 +46,8 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
+    private ImportUtils importUtils = ImportUtils.getInstance();
+
     @Override
     public void createAndEditMembershipGive(MembershipGiveDto membershipGiveDto, long importUsersId) {
         long membershipGiveId = membershipGiveDto.getId();
@@ -99,7 +101,6 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
         return membershipGiveMapper.findAllCount();
     }
 
-    @SuppressWarnings(value = "unchecked")
     private void createMembershipGive(MembershipGiveDto membershipGiveDto, long importUsersId) {
         MembershipModel membershipModel = membershipMapper.findByLevel(membershipGiveDto.getMembershipLevel());
         if (null == membershipModel) {
@@ -111,13 +112,12 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
 
         if (membershipGiveDto.getUserGroup().equals(MembershipUserGroup.IMPORT_USER)) {
             String membershipGiveId = String.valueOf(membershipGiveModel.getId());
-            List<String> importUsers = (List<String>) redisWrapperClient.hgetSeri(ImportUtils.redisMembershipGiveReceivers, String.valueOf(importUsersId));
+            List<String> importUsers = importUtils.getImportStrings(ImportUtils.redisMembershipGiveReceivers, membershipGiveModel.getId());
             redisWrapperClient.hdelSeri(ImportUtils.redisMembershipGiveReceivers, String.valueOf(importUsersId));
             redisWrapperClient.hsetSeri(ImportUtils.redisMembershipGiveReceivers, membershipGiveId, importUsers);
         }
     }
 
-    @SuppressWarnings(value = "unchecked")
     private void editMembershipGive(MembershipGiveModel originMembershipGiveModel, MembershipGiveDto membershipGiveDto, long importUsersId) {
         MembershipModel membershipModel = membershipMapper.findByLevel(membershipGiveDto.getMembershipLevel());
         if (null == membershipModel) {
@@ -145,7 +145,6 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
         }
     }
 
-    @SuppressWarnings(value = "unchecked")
     @Transactional
     @Override
     public BaseDto<BaseDataDto> approveMembershipGive(long id, String validLoginName) {
@@ -166,7 +165,7 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
 
         if (membershipGiveModel.getUserGroup().equals(MembershipUserGroup.IMPORT_USER)) {
             List<UserMembershipModel> userMembershipModels = new ArrayList<>();
-            List<String> importUsers = (List<String>) redisWrapperClient.hgetSeri(ImportUtils.redisMembershipGiveReceivers, String.valueOf(membershipGiveModel.getId()));
+            List<String> importUsers = importUtils.getImportStrings(ImportUtils.redisMembershipGiveReceivers, membershipGiveModel.getId());
             for (String loginName : importUsers) {
                 UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipGiveModel.getMembershipId(),
                         DateTime.now().plusDays(membershipGiveModel.getValidPeriod()).toDate(), UserMembershipType.GIVEN);
@@ -203,8 +202,22 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
     }
 
     @Override
+    public BaseDto<BaseDataDto> deleteMembershipGive(long id) {
+        MembershipGiveModel membershipGiveModel = membershipGiveMapper.findById(id);
+        if (null == membershipGiveModel) {
+            return new BaseDto<>(new BaseDataDto(false, "会员发放计划不存在"));
+        }
+        if (membershipGiveModel.isValid()) {
+            return new BaseDto<>(new BaseDataDto(false, "会员发放计划已生效"));
+        }
+
+        membershipGiveMapper.delete(id);
+
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    @Override
     public BaseDto<BaseDataDto> importGiveUsers(long importUsersId, InputStream inputStream) {
-        ImportUtils importUtils = ImportUtils.getInstance();
         if (null == inputStream) {
             return new BaseDto<>(new BaseDataDto(false, "没有导入名单"));
         }

@@ -10,10 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ImportUtils {
 
@@ -39,7 +36,7 @@ public class ImportUtils {
         return redisKeys.containsKey(redisKey);
     }
 
-    public long importStrings(final String redisKey, long oldImportUsersId, InputStream inputStream) throws IOException {
+    public long importStrings(final String redisKey, long oldImportId, InputStream inputStream) throws IOException {
         if (!redisKeyIsLegal(redisKey)) {
             throw new IllegalArgumentException();
         }
@@ -53,19 +50,34 @@ public class ImportUtils {
             }
         }
 
-        List<String> importUsers = Lists.newArrayList();
-        for (String loginName : Splitter.on(',').splitToList(stringBuilder.toString())) {
-            if (!StringUtils.isEmpty(loginName)) {
-                importUsers.add(loginName);
+        List<String> Strings = Lists.newArrayList();
+        for (String string : Splitter.on(',').splitToList(stringBuilder.toString())) {
+            if (!StringUtils.isEmpty(string)) {
+                Strings.add(string);
             }
         }
 
-        if (redisWrapperClient.hexists(redisKey, String.valueOf(oldImportUsersId))) {
-            redisWrapperClient.hdel(redisKey, String.valueOf(oldImportUsersId));
+        if (redisWrapperClient.hexists(redisKey, String.valueOf(oldImportId))) {
+            redisWrapperClient.hdel(redisKey, String.valueOf(oldImportId));
         }
-        long importUsersId = new Date().getTime();
-        redisWrapperClient.hsetSeri(redisKey, String.valueOf(importUsersId), importUsers);
+        long importId = new Date().getTime();
+        redisWrapperClient.hsetSeri(redisKey, String.valueOf(importId), Strings);
 
-        return importUsersId;
+        return importId;
+    }
+
+    @SuppressWarnings(value = "unchecked")
+    public List<String> getImportStrings(final String redisKey, final long importId) {
+        if (!redisKeyIsLegal(redisKey)) {
+            throw new IllegalArgumentException();
+        }
+
+        List<String> importStrings = (List<String>) redisWrapperClient.hgetSeri(redisKey, String.valueOf(importId));
+
+        if(null == importStrings) {
+            importStrings = new ArrayList<>();
+        }
+
+        return importStrings;
     }
 }

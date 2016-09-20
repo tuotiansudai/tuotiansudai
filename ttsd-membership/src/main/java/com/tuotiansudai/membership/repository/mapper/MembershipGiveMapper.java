@@ -17,4 +17,6 @@ public interface MembershipGiveMapper {
     long findAllCount();
 
     void delete(@Param(value = "id") long id);
+
+    List<MembershipGiveModel> findAllCurrentNewUserGivePlans();
 }

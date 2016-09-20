@@ -43,7 +43,11 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String EXPERIENCE_REPAY_NOTIFY_URL = "/sms/experience-repay-notify";
 
-    private final static String CANCEL_TRANSFER_LOAN = "/sms/cancel-transfer-loan";
+    private final static String CANCEL_TRANSFER_LOAN_URI = "/sms/cancel-transfer-loan";
+
+    private final static String IMPORT_USER_RECEIVE_MEMBERSHIP_URI = "/sms/import-user-receive-membership";
+
+    private final static String NEW_USER_RECEIVE_MEMBERSHIP_URI = "/sms/new-user-receive-membership";
 
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, REGISTER_CAPTCHA_SMS_URI);
@@ -86,7 +90,15 @@ public class SmsWrapperClient extends BaseClient {
     }
 
     public BaseDto<SmsDataDto> sendCancelTransferLoanNotify(SmsCancelTransferLoanNotifyDto dto) {
-        return send(dto, CANCEL_TRANSFER_LOAN);
+        return send(dto, CANCEL_TRANSFER_LOAN_URI);
+    }
+
+    public BaseDto<SmsDataDto> sendImportUserReceiveMembership(SmsUserReceiveMembershipDto dto) {
+        return send(dto, IMPORT_USER_RECEIVE_MEMBERSHIP_URI);
+    }
+
+    public BaseDto<SmsDataDto> sendNewUserReceiveMembership(SmsUserReceiveMembershipDto dto) {
+        return send(dto, NEW_USER_RECEIVE_MEMBERSHIP_URI);
     }
 
     private BaseDto<SmsDataDto> send(Object requestData, String requestPath) {

@@ -19,6 +19,7 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.MembershipGiveTempService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -56,6 +57,9 @@ public class MembershipController {
 
     @Autowired
     private MembershipGiveService membershipGiveService;
+
+    @Autowired
+    private MembershipGiveTempService membershipGiveTempService;
 
     @RequestMapping(value = "/membership-list", method = RequestMethod.GET)
     public ModelAndView membershipList(@RequestParam(value = "index", required = true, defaultValue = "1") int index,
@@ -222,5 +226,17 @@ public class MembershipController {
         int totalPage = (int) (totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1);
         modelAndView.addObject("hasNextPage", index < totalPage);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/give/approve/{membershipGiveId}", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> approveMembershipGive(@PathVariable long membershipGiveId) {
+        return membershipGiveTempService.approveMembershipGive(membershipGiveId, LoginUserInfo.getLoginName());
+    }
+
+    @RequestMapping(value = "/give/delete/{membershipGiveId}", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> deleteMembershipGive(@PathVariable long membershipGiveId) {
+        return membershipGiveService.deleteMembershipGive(membershipGiveId);
     }
 }

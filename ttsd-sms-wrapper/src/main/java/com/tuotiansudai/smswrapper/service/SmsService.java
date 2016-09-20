@@ -27,4 +27,8 @@ public interface SmsService {
     BaseDto<SmsDataDto> experienceRepayNotify(List<String> mobiles, String repayAmount);
 
     BaseDto<SmsDataDto> cancelTransferLoan(String mobile, String TransferLoanName);
+
+    BaseDto<SmsDataDto> importUserGetGiveMembership(String mobile, int level);
+
+    BaseDto<SmsDataDto> newUserGetGiveMembership(String mobile, int level);
 }

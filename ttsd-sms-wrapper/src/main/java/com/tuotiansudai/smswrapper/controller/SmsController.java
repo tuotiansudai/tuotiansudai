@@ -79,4 +79,16 @@ public class SmsController {
     public BaseDto<SmsDataDto> cancelTransferLoan(@RequestBody SmsCancelTransferLoanNotifyDto notifyDto) {
         return smsService.cancelTransferLoan(notifyDto.getMobile(), notifyDto.getTransferLoanName());
     }
+
+    @RequestMapping(value = "/import-user-receive-membership", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> importUserReceiveMembership(@RequestBody SmsUserReceiveMembershipDto notifyDto) {
+        return smsService.importUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
+    }
+
+    @RequestMapping(value = "/new-user-receive-membership", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> newUserReceiveMembership(@RequestBody SmsUserReceiveMembershipDto notifyDto) {
+        return smsService.newUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
+    }
 }
