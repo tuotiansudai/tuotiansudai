@@ -10,6 +10,11 @@ import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.MembershipLevel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
@@ -60,6 +65,12 @@ public class NationalPrizeService {
 
     @Autowired
     private PointBillMapper pointBillMapper;
+
+    @Autowired
+    private MembershipMapper membershipMapper;
+
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.startTime}\")}")
     private Date activityNationalStartTime;
@@ -142,10 +153,12 @@ public class NationalPrizeService {
         userMapper.lockByLoginName(userModel.getLoginName());
 
         NationalPrize nationalPrize = getNationalPrize();
-        String prizeType = "real";
+        String prizeType = "physical";
         if(nationalPrize.equals(NationalPrize.RED_ENVELOPE_15) || nationalPrize.equals(NationalPrize.RED_ENVELOPE_50)){
             couponAssignmentService.assignUserCoupon(mobile, getCouponId(nationalPrize));
             prizeType = "virtual";
+        }else if(nationalPrize.equals(NationalPrize.MEMBERSHIP_V5)){
+            createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
@@ -203,10 +216,19 @@ public class NationalPrizeService {
     }
 
     public String getAllActivityInvestAmount(){
-        return AmountConverter.convertCentToString(investMapper.findSumInvestAmountByActivityTypeAndInvestTime(ActivityType.ACTIVITY,activityNationalStartTime,activityNationalEndTime));
+        return AmountConverter.convertCentToString(investMapper.findSumInvestAmountByActivityTypeAndInvestTime(ActivityType.ACTIVITY, activityNationalStartTime, activityNationalEndTime));
     }
 
     public String getAllActivityUserCount(){
-        return String.valueOf(investMapper.findSumUserCountByActivityTypeAndInvestTime(ActivityType.ACTIVITY,activityNationalStartTime,activityNationalEndTime));
+        return String.valueOf(investMapper.findSumUserCountByActivityTypeAndInvestTime(ActivityType.ACTIVITY, activityNationalStartTime, activityNationalEndTime));
+    }
+
+    private void createUserMembershipModel(String loginName, int level) {
+        UserMembershipModel userMembershipModel = new UserMembershipModel(loginName,
+                membershipMapper.findByLevel(level).getId(),
+                DateTime.now().plusMonths(1).toDate(),
+                new Date(),
+                UserMembershipType.GIVEN);
+        userMembershipMapper.create(userMembershipModel);
     }
 }

@@ -2,7 +2,7 @@ package com.tuotiansudai.activity.dto;
 
 
 public enum PrizeType {
-    AUTUMN_PRIZE("中秋活动"),
+    AUTUMN_PRIZE("旅游奢侈品活动"),
     NATIONAL_PRIZE("国庆活动");
 
     PrizeType(String description) {
