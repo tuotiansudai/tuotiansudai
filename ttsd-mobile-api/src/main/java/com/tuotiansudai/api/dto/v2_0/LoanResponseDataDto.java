@@ -1,5 +1,7 @@
 package com.tuotiansudai.api.dto.v2_0;
 
+import com.tuotiansudai.repository.model.PledgeType;
+
 import java.util.List;
 
 public class LoanResponseDataDto {
@@ -26,6 +28,8 @@ public class LoanResponseDataDto {
     public String investedMoneyCent;
     public String loanMoneyCent;
     private List<ExtraRateListResponseDataDto> extraRates;
+    private String activityDesc;
+    private PledgeType pledgeType;
 
     public String getLoanId() { return loanId; }
 
@@ -149,5 +153,21 @@ public class LoanResponseDataDto {
 
     public void setLoanMoneyCent(String loanMoneyCent) {
         this.loanMoneyCent = loanMoneyCent;
+    }
+
+    public String getActivityDesc() {
+        return activityDesc;
+    }
+
+    public void setActivityDesc(String activityDesc) {
+        this.activityDesc = activityDesc;
+    }
+
+    public PledgeType getPledgeType() {
+        return pledgeType;
+    }
+
+    public void setPledgeType(PledgeType pledgeType) {
+        this.pledgeType = pledgeType;
     }
 }

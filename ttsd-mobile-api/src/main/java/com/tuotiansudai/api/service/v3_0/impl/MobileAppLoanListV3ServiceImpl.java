@@ -164,8 +164,15 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             else {
                 loanName = loan.getName();
             }
+
+
+
             loanResponseDataDto.setLoanName(loan.getName());
             loanResponseDataDto.setActivityType(loan.getActivityType().name());
+
+            loanResponseDataDto.setActivityDesc((loanDetailsModelActivity != null && ActivityType.ACTIVITY.name() == loan.getActivityType().name()) ? loanDetailsModelActivity.getActivityDesc() : "");
+            loanResponseDataDto.setPledgeType(loan.getPledgeType());
+
             loanResponseDataDto.setDuration(String.valueOf(loan.getDuration()));
             loanResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
             loanResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));

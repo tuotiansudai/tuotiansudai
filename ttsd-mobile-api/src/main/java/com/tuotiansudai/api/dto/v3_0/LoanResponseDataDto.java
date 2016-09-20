@@ -30,6 +30,8 @@ public class LoanResponseDataDto {
     private String extraSource;
     private List<ExtraRateListResponseDataDto> extraRates;
 
+
+
     public String getLoanId() {
         return loanId;
     }
