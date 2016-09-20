@@ -82,17 +82,11 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
                 loginResponseDataDto.setToken(newToken);
                 dto.setData(loginResponseDataDto);
 
-                PrintWriter writer = null;
-                try {
-                    response.setContentType("application/json; charset=UTF-8");
-                    response.setCharacterEncoding("UTF-8");
-                    writer = response.getWriter();
-                    writer.print(objectMapper.writeValueAsString(dto));
-                } finally {
-                    if (writer != null) {
-                        writer.close();
-                    }
-                }
+                response.setContentType("application/json; charset=UTF-8");
+                response.setCharacterEncoding("UTF-8");
+                PrintWriter writer = response.getWriter();
+                writer.print(objectMapper.writeValueAsString(dto));
+                return;
             }
         }
         chain.doFilter(bufferedRequestWrapper, response);
