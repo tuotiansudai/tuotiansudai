@@ -185,7 +185,7 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
 
     }
 
-    public UserInvestRecordResponseDataDto(InvestModel invest, LoanModel loan) {
+    public UserInvestRecordResponseDataDto(InvestModel invest, LoanModel loan,  LoanDetailsModel loanDetailsModel) {
         InvestStatus investStatus = InvestStatus.convertInvestStatus(invest.getStatus());
         this.loanId = String.valueOf(invest.getLoanId());
         this.loanName = loan.getName();
@@ -195,7 +195,8 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
         this.investStatus = investStatus;
         this.investStatusDesc = investStatus.getMessage();
         this.achievements = invest.getAchievements();
-        this.activityDesc = loand
+        this.activityDesc = loanDetailsModel != null?loanDetailsModel.getActivityDesc():"";
+        this.pledgeType = loan.getPledgeType();
     }
 
     public String getActivityDesc() {
