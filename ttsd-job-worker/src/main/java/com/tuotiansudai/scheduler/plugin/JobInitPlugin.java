@@ -36,7 +36,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         this.schedulerName = scheduler.getSchedulerName().replaceFirst("^Scheduler-", "");
     }
 
-
     @Override
     public void start() {
         if (JobType.InvestCallBack.name().equalsIgnoreCase(schedulerName)) {

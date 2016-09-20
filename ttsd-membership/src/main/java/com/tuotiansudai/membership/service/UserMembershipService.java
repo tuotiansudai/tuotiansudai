@@ -37,9 +37,6 @@ public class UserMembershipService {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
-    @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
-    private List<String> heroRankingActivityPeriod;
-
     public MembershipModel getMembershipByLevel(int level) {
         return membershipMapper.findByLevel(level);
     }
@@ -94,5 +91,9 @@ public class UserMembershipService {
                 return input.getLevel();
             }
         });
+    }
+
+    public List<UserMembershipModel> getExpiredUserMembership(Date expiredDate) {
+        return userMembershipMapper.findExpiredUserMembership(expiredDate);
     }
 }

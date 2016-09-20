@@ -169,4 +169,9 @@
         and membership_id =  #{membershipId}
         and expired_time > now()
     </select>
+
+    <select id="findExpiredUserMembership" resultMap="UserMembershipResultMap" parameterType="date">
+        select * from user_membership
+        where datediff(#{expiredDate}, expired_time) = 0
+    </select>
 </mapper>

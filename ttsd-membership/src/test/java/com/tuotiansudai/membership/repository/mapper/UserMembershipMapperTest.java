@@ -222,4 +222,24 @@ public class UserMembershipMapperTest {
         UserMembershipModel userMembershipModel = userMembershipMapper.findCurrentMaxByLoginName("testUser1");
         assertEquals(3, membershipMapper.findById(userMembershipModel.getMembershipId()).getLevel());
     }
+
+    @Test
+    public void shouldFindExpiredUserMembership() throws Exception {
+        UserModel fakeUser = this.createFakeUser("expiredMembership", RandomStringUtils.randomNumeric(11), new Date());
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(5).getId(), new DateTime().toDate(), UserMembershipType.PURCHASED);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(5).getId(), new DateTime().minusDays(1).toDate(), UserMembershipType.PURCHASED);
+        userMembershipMapper.create(userMembershipModel1);
+        userMembershipMapper.create(userMembershipModel2);
+
+        List<UserMembershipModel> actualExpiredUserMembership = userMembershipMapper.findExpiredUserMembership(new DateTime().plusDays(100).toDate());
+        assertThat(actualExpiredUserMembership.size(), is(0));
+
+        List<UserMembershipModel> actualExpiredUserMembership2 = userMembershipMapper.findExpiredUserMembership(new Date());
+        assertThat(actualExpiredUserMembership2.size(), is(1));
+        assertThat(actualExpiredUserMembership2.get(0).getId(), is(userMembershipModel1.getId()));
+
+        List<UserMembershipModel> actualExpiredUserMembership3 = userMembershipMapper.findExpiredUserMembership(new DateTime().minusDays(1).toDate());
+        assertThat(actualExpiredUserMembership3.size(), is(1));
+        assertThat(actualExpiredUserMembership3.get(0).getId(), is(userMembershipModel2.getId()));
+    }
 }
