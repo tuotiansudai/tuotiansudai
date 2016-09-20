@@ -1,4 +1,4 @@
-<div class="leader-container <#if prizeType='travel'>tour-theme</#if>" <#if prizeType='national-day-theme'>tour-theme</#if>"  id="awardCom"><!--旅游主题class替换为tour-theme-->
+<div class="leader-container <#if prizeType='travel'>tour-theme</#if> <#if prizeType='national-day-theme'>tour-theme</#if>"   id="awardCom"><!--旅游主题class替换为tour-theme-->
     <input type="hidden" value="${prizeType}" id="themeType"/>
     <div class="leader-list">
         <div class="lottery-circle">
@@ -16,8 +16,8 @@
         <div class="lottery-detail">
             <h3>我的抽奖机会：<span class="lottery-time">${drawTime}</span>次</h3>
             <ul class="gift-record">
-                <li class="active">中奖记录</li>
-                <li>我的奖品</li>
+                <li class="active"><span>中奖记录</span></li>
+                <li><span>我的奖品</span></li>
             </ul>
             <div class="record-list" id="recordList">
                 <ul class="record-model user-record active" id="GiftRecord">
@@ -82,6 +82,7 @@
         </div>
     </div>
 </div>
+
 <div class="tip-list <#if prizeType='travel'>tour-theme</#if>" id="tipList"><!--旅游主题class替换为tour-theme-->
     <script id="tipListTpl" type="text/html">
     <div class="tip-dom">

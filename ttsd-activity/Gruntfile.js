@@ -105,6 +105,9 @@ module.exports = function(grunt) {
                 files: [
                     '<%= meta.baseSassPath %>/*.scss'
                 ],
+                //tasks: ['sass']
+                //如果scss文件没有import别的scss文件，可以加newer，效率快
+                //如果scss有import别的scss文件，不要加newer,不然监听不到import里文件的变化
                 tasks: ['newer:sass']
             },
             dataUri:{

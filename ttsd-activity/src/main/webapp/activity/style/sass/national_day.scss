@@ -12,10 +12,34 @@ body {
 .tour-slide  {
   height: 619px;
   background: url("/activity/images/national-day/bar-national.jpg") center top no-repeat;
+  &.fixed-menu {
+    position:fixed;
+    top:-481px;
+    width:100%;
+    z-index:100;
+  }
+  .button-area {
+    padding-top:506px;
+    cursor: pointer;
+    li {
+      float: left;
+      height: 85px;
+      width:260px;
+      margin-left: 30px;
+      margin-right: 48px;
+      &:nth-last-child(1) {
+        margin-right:0;
+      }
+      a {
+        display: block;
+        height: 100%;
+      }
+    }
 
+  }
 }
 
-.btn-normal-invest {
+.btn-normal-day {
   display: inline-block;
   width: 273px;
   height: 81px;
@@ -47,6 +71,10 @@ body {
   width:1080px;
   margin: 30px auto;
   color: #69260c;
+  .seizeSeat {
+    height:600px;
+    display: none;
+  }
   .section-outer {
     .section-one-title {
       min-height: 106px;
@@ -85,12 +113,14 @@ body {
           border-radius: 19px;
           margin-top: 13px;
           margin-bottom: 13px;
+          position: relative;
           .progress-percent {
             height: 100%;
             background: url("/activity/images/national-day/bg-progress.jpg") left top repeat-x;
             width: 50%;
             display: inline-block;
             border-radius: 20px;
+            position: absolute;
           }
           .count-total {
             em {
@@ -132,9 +162,11 @@ body {
 
       .example-show {
         font-size:14px;
+        color: #992900;
         dt {
           font-weight: bold;
           font-size: 16px;
+          color: #69260c;
         }
       }
 
@@ -205,11 +237,177 @@ body {
           font-weight: bold;
           color: #721f00;
           padding-bottom:5px;
+          &.ex-title {
+            padding-top:15px;
+          }
         }
         dd {
           color: #992900;
+
+        }
+        .for-app {
+          display: none;
+        }
+      }
+      .ms-code {
+        margin-top:20px;
+        span {
+          display: inline-block;
+          font-weight: bold;
+          padding-top:10px;
+          padding-bottom:30px;
         }
       }
     }
   }
+}
+
+@media screen and (max-width: 700px) {
+  .tour-slide  {
+    height: 380px;
+    background: url("/activity/images/national-day/bar-national-app.jpg") center top no-repeat;
+    background-size: cover;
+   .button-area {
+     display: none;
+   }
+  }
+  .btn-normal-day {
+    display: inline-block;
+    width: 150px;
+    height: 45px;
+    line-height: 45px;
+    background: url("/activity/images/national-day/bg-button.png") center top no-repeat;
+    background-size: contain;
+    font-size:12px;
+    margin:10px;
+  }
+  .bg-box-normal {
+    padding:10px;
+  }
+  .national-day-frame {
+    width:100%;
+    margin:0 auto;
+    .mobile-padding {
+      padding:0 10px;
+    }
+    .section-outer {
+      .section-one-title {
+        min-height: 54px;
+        background: url(/activity/images/national-day/title01-app.png) center top no-repeat;
+        background-size: cover;
+      }
+
+      .section-two-title {
+        min-height: 54px;
+        background: url(/activity/images/national-day/title01-app.png) center top no-repeat;
+        background-size: cover;
+      }
+
+      .section-three-title {
+        min-height: 54px;
+        background: url(/activity/images/national-day/title01-app.png) center top no-repeat;
+        background-size: cover;
+      }
+      .section-inner {
+        margin: 0px 10px 10px 10px;
+        padding: 0px;
+        .notice {
+          padding:10px;
+          i {
+            display: none;
+          }
+        }
+
+        .invest-percent-box {
+          font-size:12px;
+          padding:10px;
+          .progress-bar {
+            height:15px;
+          }
+
+        }
+        .national-title {
+          font-size: 12px;
+        }
+        .tab-invest-show {
+          tr td {
+            font-size:12px;
+            padding: 5px 2px;
+          }
+        }
+        .my-integral {
+          background: none;
+          border:0;
+        }
+        .example-show {
+          font-size:12px;
+          dt {
+            font-size:13px;
+          }
+        }
+        .to-see-point,.steps-list {
+          display: none;
+        }
+        .notice {
+          text-align: left;
+          margin-bottom:0px;
+          padding:0 10px;
+          em {
+            display: none;
+          }
+          i {
+            display: inline-block;
+          }
+        }
+        .activity-explain {
+          padding:10px;
+          font-size:12px;
+          dt {
+            font-size:13px;
+            em {
+              display: none;
+            }
+          }
+          .for-mobile {
+            display: none;
+          }
+          .for-app {
+            display: block;
+          }
+        }
+      }
+    }
+
+  }
+  .leader-container {
+    &.national-day-theme {
+      .leader-list {
+        .lottery-circle {
+          width:100%;
+          float: none;
+          h3 {
+            color: #69260c;
+            font-weight: bold;
+            float: none;
+          }
+          .circle-shade {
+            margin:10px auto;
+            float: none;
+            left:auto;
+          }
+        }
+        .lottery-detail {
+          width: 80%;
+          height: auto;
+          margin: 20px auto;
+          float: none;
+          .record-list {
+
+            margin-bottom:20px;
+          }
+        }
+      }
+    }
+  }
+
 }

@@ -293,6 +293,7 @@ $width:700px;
   &.national-day-theme {
     float: none;
     margin:0 auto;
+    background: red;
     .leader-list {
       .lottery-detail {
         h3 {
@@ -303,12 +304,21 @@ $width:700px;
         }
         .gift-record {
           background: #71cfcf;
-          border-bottom: 1px solid #009289;
           border-radius: 20px 20px 0 0;
           overflow: hidden;
+          border: 1px solid #69260c;
+          border-bottom-width: 0px;
+          box-sizing: border-box;
           li {
             background: #facc50;
             color: #fff;
+            width:50%;
+            &:nth-child(1) {
+              span {
+                display: block;
+                border-right:1px solid #69260c;
+              }
+            }
             &.active {
               background: #ffee9a;
               color: #69260c;
@@ -317,6 +327,9 @@ $width:700px;
         }
         .record-list {
           background: #ffee9a;
+          border: 1px solid #69260c;
+          width:100%;
+          box-sizing: border-box;
           .record-model {
             display: block;
           }
@@ -326,6 +339,8 @@ $width:700px;
         width:570px;
         .circle-shade {
           margin: 0 0 40px -10px;
+          background: url("/activity/images/sign/actor/circle/bg-national-circle.png") no-repeat center;
+          background-size: 100%;
         }
       }
     }
