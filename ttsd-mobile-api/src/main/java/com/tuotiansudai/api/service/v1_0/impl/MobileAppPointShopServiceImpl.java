@@ -169,6 +169,10 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         ProductModel productModel = productMapper.findById(Long.parseLong(productDetailRequestDto.getProductId()));
 
         ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(productModel.getId(), bannerServer + productModel.getImageUrl(), productModel.getName(), productModel.getPoints(), productModel.getType(), productModel.getTotalCount() - productModel.getUsedCount());
+        if(productModel.getType().equals(GoodsType.COUPON)){
+            ExchangeCouponView exchangeCouponView = couponMapper.findExchangeableCouponViewById(productModel.getCouponId());
+            productDetailResponseDto.setLeftCount(String.valueOf(exchangeCouponView.getTotalCount() - exchangeCouponView.getIssuedCount()));
+        }
         List<String> description = Lists.newArrayList();
         CouponModel couponModel = couponMapper.findById(productModel.getCouponId());
         if (productModel.getType() == GoodsType.COUPON && couponModel != null) {
@@ -241,10 +245,10 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             for(int i = 0; i < num; i++){
                 couponAssignmentService.assignUserCoupon(loginName, productModel.getCouponId());
             }
+        }else{
+            productModel.setUsedCount(productModel.getUsedCount() + num);
+            productMapper.update(productModel);
         }
-
-        productModel.setUsedCount(productModel.getUsedCount() + num);
-        productMapper.update(productModel);
 
         pointBillMapper.create(new PointBillModel(loginName, productModel.getId(), (-points), PointBusinessType.EXCHANGE, ""));
         return new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
