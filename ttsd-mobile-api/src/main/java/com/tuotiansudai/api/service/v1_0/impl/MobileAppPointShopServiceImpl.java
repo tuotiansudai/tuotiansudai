@@ -172,7 +172,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         List<String> description = Lists.newArrayList();
         CouponModel couponModel = couponMapper.findById(productModel.getCouponId());
         if (productModel.getType() == GoodsType.COUPON && couponModel != null) {
-            description.add(couponModel.getAmount() > 0 ? MessageFormat.format("投资满{0}元即可使用;", couponModel.getAmount()) : "");
+            description.add(couponModel.getAmount() > 0 ? MessageFormat.format("投资满{0}元即可使用;", couponModel.getInvestLowerLimit()) : "");
             description.add(MessageFormat.format("{0}天产品可用;", couponModel.getProductTypes().toString().replaceAll("_", "")));
             description.add(MessageFormat.format("有效期限:{0}天。", couponModel.getDeadline()));
         } else {
@@ -238,7 +238,9 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         accountMapper.update(accountModel);
 
         if (productModel.getType().equals(GoodsType.COUPON)) {
-            couponAssignmentService.assignUserCoupon(loginName, productModel.getCouponId());
+            for(int i = 0; i < num; i++){
+                couponAssignmentService.assignUserCoupon(loginName, productModel.getCouponId());
+            }
         }
 
         productModel.setUsedCount(productModel.getUsedCount() + num);
