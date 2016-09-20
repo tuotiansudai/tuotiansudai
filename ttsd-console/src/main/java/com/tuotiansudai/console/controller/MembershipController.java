@@ -2,7 +2,11 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.membership.dto.MembershipGiveDto;
+import com.tuotiansudai.membership.dto.MembershipGiveReceiveDto;
 import com.tuotiansudai.membership.dto.UserMembershipItemDto;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
@@ -15,16 +19,19 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +58,6 @@ public class MembershipController {
     private MembershipGiveService membershipGiveService;
 
     @RequestMapping(value = "/membership-list", method = RequestMethod.GET)
-    @ResponseBody
     public ModelAndView membershipList(@RequestParam(value = "index", required = true, defaultValue = "1") int index,
                                        @RequestParam(value = "pageSize", required = true, defaultValue = "10") int pageSize,
                                        @RequestParam(value = "loginName", required = false, defaultValue = "") String loginName,
@@ -91,7 +97,6 @@ public class MembershipController {
     }
 
     @RequestMapping(value = "/membership-detail", method = RequestMethod.GET)
-    @ResponseBody
     public ModelAndView membershipDetail(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                          @RequestParam(value = "loginName") String loginName) {
@@ -124,13 +129,98 @@ public class MembershipController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/give/edit", method = RequestMethod.GET)
-    @ResponseBody
+    @RequestMapping(value = "/give/edit-view", method = RequestMethod.GET)
     public ModelAndView membershipDetail() {
         ModelAndView modelAndView = new ModelAndView("/membership-give-edit");
         modelAndView.addObject("userGroups", MembershipUserGroup.values());
         modelAndView.addObject("membershipLevels", Lists.newArrayList(0, 1, 2, 3, 4, 5));
 
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/give/edit-view/{membershipGiveId}", method = RequestMethod.GET)
+    public ModelAndView membershipDetail(@PathVariable long membershipGiveId) {
+        ModelAndView modelAndView = new ModelAndView("/membership-give-edit");
+        modelAndView.addObject("userGroups", MembershipUserGroup.values());
+        modelAndView.addObject("membershipLevels", Lists.newArrayList(0, 1, 2, 3, 4, 5));
+
+        MembershipGiveDto membershipGiveDto = membershipGiveService.getMembershipGiveDtoById(membershipGiveId);
+        modelAndView.addObject("membershipGiveId", membershipGiveDto.getId());
+        modelAndView.addObject("originMembershipLevel", membershipGiveDto.getMembershipLevel());
+        modelAndView.addObject("validPeriod", membershipGiveDto.getValidPeriod());
+        modelAndView.addObject("receiveStartTime", membershipGiveDto.getReceiveStartTime());
+        modelAndView.addObject("receiveEndTime", membershipGiveDto.getReceiveEndTime());
+        modelAndView.addObject("originUserGroup", membershipGiveDto.getUserGroup());
+        modelAndView.addObject("smsNotify", membershipGiveDto.isSmsNotify());
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/give/{membershipGiveId}/details", method = RequestMethod.GET)
+    public ModelAndView membershipGiveReceiveDetails(@PathVariable long membershipGiveId,
+                                                     @RequestParam(value = "mobile", defaultValue = "") String mobile,
+                                                     @RequestParam(value = "index", defaultValue = "1") int index,
+                                                     @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        ModelAndView modelAndView = new ModelAndView("/membership-give-receive-detail");
+        List<MembershipGiveReceiveDto> membershipGiveReceiveDtos = membershipGiveService.getMembershipGiveReceiveDtosByMobile(membershipGiveId, mobile, index, pageSize);
+
+        modelAndView.addObject("membershipGiveReceiveDtos", membershipGiveReceiveDtos);
+        modelAndView.addObject("mobile", mobile);
+
+        long totalCount = membershipGiveService.getCountMembershipGiveReceiveDtosByMobile(membershipGiveId, mobile);
+        modelAndView.addObject("totalCount", totalCount);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("hasPreviousPage", index > 1);
+        int totalPage = (int) (totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1);
+        modelAndView.addObject("hasNextPage", index < totalPage);
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/give/edit", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> editMembershipGive(@RequestBody MembershipGiveDto membershipGiveDto,
+                                                   @RequestParam(value = "importUsersId") long importUsersId) {
+        membershipGiveDto.setCreatedLoginName(LoginUserInfo.getLoginName());
+        membershipGiveService.createAndEditMembershipGive(membershipGiveDto, importUsersId);
+
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    @RequestMapping(value = "/give/import-users/{importUsersId}", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> importUsers(@PathVariable long importUsersId,
+                                            HttpServletRequest httpServletRequest) {
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
+        MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
+        if (!multipartFile.getOriginalFilename().endsWith(".csv")) {
+            return new BaseDto<>(new BaseDataDto(false, "上传失败!文件必须是csv格式"));
+        }
+
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            baseDto = membershipGiveService.importGiveUsers(importUsersId, inputStream);
+        } catch (IOException e) {
+            baseDto.setData(new BaseDataDto(false, "上传文件失败"));
+        }
+        return baseDto;
+    }
+
+    @RequestMapping(value = "/give/list", method = RequestMethod.GET)
+    public ModelAndView getMembershipGives(@RequestParam(value = "index", defaultValue = "1") int index,
+                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        ModelAndView modelAndView = new ModelAndView("/membership-give-list");
+        List<MembershipGiveDto> membershipGiveDtos = membershipGiveService.getMembershipGiveDtos(index, pageSize);
+        modelAndView.addObject("membershipGiveDtos", membershipGiveDtos);
+
+        long totalCount = membershipGiveService.getMembershipGiveCount();
+        modelAndView.addObject("totalCount", totalCount);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("hasPreviousPage", index > 1);
+        int totalPage = (int) (totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1);
+        modelAndView.addObject("hasNextPage", index < totalPage);
         return modelAndView;
     }
 }

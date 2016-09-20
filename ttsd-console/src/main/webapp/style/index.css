@@ -357,7 +357,7 @@ td.td {
     font-size: 16px;
 }
 
-.invest-quota {
+.invest-quota, .jq-valid-period {
     width: 121px;
     float: left;
 }

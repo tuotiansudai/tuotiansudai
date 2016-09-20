@@ -14,5 +14,7 @@ public interface MembershipGiveMapper {
 
     List<MembershipGiveModel> findSome(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
+    long findAllCount();
+
     void delete(@Param(value = "id") long id);
 }

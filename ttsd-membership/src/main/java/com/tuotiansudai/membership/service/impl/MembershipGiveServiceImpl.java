@@ -1,25 +1,30 @@
 package com.tuotiansudai.membership.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.membership.dto.MembershipGiveDto;
+import com.tuotiansudai.membership.dto.MembershipGiveReceiveDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipGiveMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.*;
 import com.tuotiansudai.membership.service.ImportUtils;
 import com.tuotiansudai.membership.service.MembershipGiveService;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MembershipGiveServiceImpl implements MembershipGiveService {
@@ -36,6 +41,9 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
     UserMembershipMapper userMembershipMapper;
 
     @Autowired
+    UserMapper userMapper;
+
+    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     @Override
@@ -49,6 +57,46 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
         } else {
             createMembershipGive(membershipGiveDto, importUsersId);
         }
+    }
+
+    @Override
+    public MembershipGiveDto getMembershipGiveDtoById(long membershipGiveId) {
+        MembershipGiveModel membershipGiveModel = membershipGiveMapper.findById(membershipGiveId);
+        if (null == membershipGiveModel) {
+            return null;
+        } else {
+            MembershipModel membershipModel = membershipMapper.findById(membershipGiveModel.getMembershipId());
+            if (null == membershipModel) {
+                return null;
+            } else {
+                MembershipGiveDto membershipGiveDto = new MembershipGiveDto(membershipGiveModel);
+                membershipGiveDto.setMembershipLevel(membershipModel.getLevel());
+                return membershipGiveDto;
+            }
+        }
+    }
+
+    @Override
+    public List<MembershipGiveDto> getMembershipGiveDtos(int index, int pageSize) {
+        List<MembershipModel> membershipModels = membershipMapper.findAllMembership();
+        Map<Long, Integer> map = new HashMap<>();
+        for (MembershipModel membershipModel : membershipModels) {
+            map.put(membershipModel.getId(), membershipModel.getLevel());
+        }
+
+        List<MembershipGiveModel> membershipGiveModels = membershipGiveMapper.findSome((index - 1) * pageSize, pageSize);
+        List<MembershipGiveDto> membershipGiveDtos = new ArrayList<>();
+        for (MembershipGiveModel membershipGiveModel : membershipGiveModels) {
+            MembershipGiveDto membershipGiveDto = new MembershipGiveDto(membershipGiveModel);
+            membershipGiveDto.setMembershipLevel(map.get(membershipGiveModel.getMembershipId()));
+            membershipGiveDtos.add(membershipGiveDto);
+        }
+        return membershipGiveDtos;
+    }
+
+    @Override
+    public long getMembershipGiveCount() {
+        return membershipGiveMapper.findAllCount();
     }
 
     @SuppressWarnings(value = "unchecked")
@@ -152,5 +200,61 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
         membershipGiveMapper.update(membershipGiveModel);
 
         return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    @Override
+    public BaseDto<BaseDataDto> importGiveUsers(long importUsersId, InputStream inputStream) {
+        ImportUtils importUtils = ImportUtils.getInstance();
+        if (null == inputStream) {
+            return new BaseDto<>(new BaseDataDto(false, "没有导入名单"));
+        }
+        long newImportUsersId;
+        try {
+            newImportUsersId = importUtils.importStrings(ImportUtils.redisMembershipGiveReceivers, importUsersId, inputStream);
+        } catch (IOException e) {
+            return new BaseDto<>(new BaseDataDto(false, "用户导入失败"));
+        } catch (IllegalArgumentException e) {
+            return new BaseDto<>(new BaseDataDto(false, "无法存储导入名单"));
+        } finally {
+            try {
+                inputStream.close();
+            } catch (Exception e) {
+                logger.error("[MembershipGiveServiceImpl][importGiveUsers] importUsers stream close fail!");
+            }
+        }
+        return new BaseDto<>(new BaseDataDto(true, String.valueOf(newImportUsersId)));
+    }
+
+    @Override
+    public List<MembershipGiveReceiveDto> getMembershipGiveReceiveDtosByMobile(long membershipGiveId, String mobile,
+                                                                               int index, int pageSize) {
+        UserModel userModel = userMapper.findByMobile(mobile);
+        String loginName = null;
+        if (null != userModel) {
+            loginName = userModel.getLoginName();
+        }
+
+        List<UserMembershipModel> userMembershipModels = userMembershipMapper.findGiveMembershipsByLoginNameAndGiveId(membershipGiveId, loginName, index, pageSize);
+        return Lists.transform(userMembershipModels, new Function<UserMembershipModel, MembershipGiveReceiveDto>() {
+            @Override
+            public MembershipGiveReceiveDto apply(UserMembershipModel userMembershipModel) {
+                MembershipGiveReceiveDto membershipGiveReceiveDto = new MembershipGiveReceiveDto();
+                membershipGiveReceiveDto.setLoginName(userMembershipModel.getLoginName());
+                membershipGiveReceiveDto.setMobile(userMapper.findByLoginName(userMembershipModel.getLoginName()).getMobile());
+                membershipGiveReceiveDto.setReceiveTime(userMembershipModel.getCreatedTime());
+                return membershipGiveReceiveDto;
+            }
+        });
+    }
+
+    @Override
+    public long getCountMembershipGiveReceiveDtosByMobile(long membershipGiveId, String mobile) {
+        UserModel userModel = userMapper.findByMobile(mobile);
+        String loginName = null;
+        if (null != userModel) {
+            loginName = userModel.getLoginName();
+        }
+
+        return userMembershipMapper.findCountGiveMembershipsByLoginNameAndGiveId(membershipGiveId, loginName);
     }
 }

@@ -12,8 +12,6 @@
         <result column="receive_start_time" property="receiveStartTime"/>
         <result column="receive_end_time" property="receiveEndTime"/>
         <result column="user_group" property="userGroup"/>
-        <result column="expect_amount" property="expectAmount"/>
-        <result column="actual_amount" property="actualAmount"/>
         <result column="sms_notify" property="smsNotify"/>
         <result column="valid" property="valid"/>
         <result column="valid_login_name" property="validLoginName"/>
@@ -25,11 +23,9 @@
 
     <insert id="create" parameterType="MembershipGiveModel">
         INSERT INTO `aa`.`membership_give` (membership_id, valid_period, receive_start_time, receive_end_time, user_group,
-        expect_amount, actual_amount, sms_notify, valid, valid_login_name, created_time, created_login_name, updated_time,
-        updated_login_name)
-        VALUES (#{membershipId}, #{validPeriod}, #{receiveStartTime}, #{receiveEndTime}, #{userGroup}, #{expectAmount},
-        #{actualAmount}, #{smsNotify}, #{valid}, #{validLoginName}, #{createdTime}, #{createdLoginName}, #{updatedTime},
-        #{updatedLoginName})
+        sms_notify, valid, valid_login_name, created_time, created_login_name, updated_time, updated_login_name)
+        VALUES (#{membershipId}, #{validPeriod}, #{receiveStartTime}, #{receiveEndTime}, #{userGroup}, #{smsNotify},
+        #{valid}, #{validLoginName}, #{createdTime}, #{createdLoginName}, #{updatedTime}, #{updatedLoginName})
     </insert>
 
     <update id="update" parameterType="MembershipGiveModel">
@@ -46,8 +42,6 @@
         <if test="userGroup != null">
             user_group = #{userGroup},
         </if>
-        expect_amount = #{expectAmount},
-        actual_amount = #{actualAmount},
         sms_notify = #{smsNotify},
         valid = #{valid},
         <if test="validLoginName != null and validLoginName != ''">
@@ -70,11 +64,15 @@
     </update>
 
     <select id="findById" resultMap="MembershipGiveResultMap">
-        SELECT * FROM `aa`.`membership_give` WHERE id = #{id};
+        SELECT * FROM `aa`.`membership_give` WHERE id = #{id}
     </select>
 
     <select id="findSome" resultMap="MembershipGiveResultMap">
         SELECT * FROM `aa`.`membership_give` LIMIT #{index}, #{pageSize}
+    </select>
+
+    <select id="findAllCount" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM `aa`.`membership_give`
     </select>
 
     <delete id="delete" parameterType="java.lang.Long">

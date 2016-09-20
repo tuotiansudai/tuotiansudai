@@ -35,7 +35,7 @@ public class MembershipGiveModel implements Serializable {
         this.createdTime = new Date();
         this.createdLoginName = membershipGiveDto.getCreatedLoginName();
         this.updatedTime = new Date();
-        this.updatedLoginName = membershipGiveDto.getUpdatedLoginName();
+        this.updatedLoginName = membershipGiveDto.getCreatedLoginName();
     }
 
     public long getId() {

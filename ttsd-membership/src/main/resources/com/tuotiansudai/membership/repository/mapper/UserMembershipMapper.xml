@@ -203,12 +203,30 @@
         select * from user_membership where login_name = #{loginName} and membership_id =  #{membershipId} and expired_time > now()
     </select>
 
-
     <select id="findByLoginNameOrInvestTime" resultType="long" parameterType="map">
         select IFNULL(MAX(membership_id),1) from user_membership where login_name = #{loginName}
         <if test="investTime != null">
             AND expired_time &gt; #{investTime}
             AND created_time &lt; #{investTime}
+        </if>
+    </select>
+
+    <select id="findGiveMembershipsByLoginNameAndGiveId" resultMap="UserMembershipResultMap">
+        SELECT * FROM `aa`.`user_membership`
+        WHERE
+        membership_give_id = #{membershipGiveId}
+        <if test="loginName != null and loginName != ''">
+            AND login_name = #{loginName}
+        </if>
+        LIMIT #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountGiveMembershipsByLoginNameAndGiveId" resultMap="java.lang.Long">
+        SELECT COUNT(1) FROM `aa`.`user_membership`
+        WHERE
+        membership_give_id = #{membershipGiveId}
+        <if test="loginName != null and loginName != ''">
+            AND login_name = #{loginName}
         </if>
     </select>
 

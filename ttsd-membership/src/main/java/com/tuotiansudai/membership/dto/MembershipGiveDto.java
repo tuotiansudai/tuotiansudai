@@ -1,5 +1,6 @@
 package com.tuotiansudai.membership.dto;
 
+import com.tuotiansudai.membership.repository.model.MembershipGiveModel;
 import com.tuotiansudai.membership.repository.model.MembershipUserGroup;
 
 import java.util.Date;
@@ -16,6 +17,23 @@ public class MembershipGiveDto {
     private String validLoginName;
     private String createdLoginName;
     private String updatedLoginName;
+
+    public MembershipGiveDto() {
+    }
+
+    public MembershipGiveDto(MembershipGiveModel membershipGiveModel) {
+        this.id = membershipGiveModel.getId();
+//        private int membershipLevel;
+        this.validPeriod = membershipGiveModel.getValidPeriod();
+        this.receiveStartTime = membershipGiveModel.getReceiveStartTime();
+        this.receiveEndTime = membershipGiveModel.getReceiveEndTime();
+        this.userGroup = membershipGiveModel.getUserGroup();
+        this.smsNotify = membershipGiveModel.isSmsNotify();
+        this.valid = membershipGiveModel.isValid();
+        this.validLoginName = membershipGiveModel.getValidLoginName();
+        this.createdLoginName = membershipGiveModel.getCreatedLoginName();
+        this.updatedLoginName = membershipGiveModel.getUpdatedLoginName();
+    }
 
     public long getId() {
         return id;

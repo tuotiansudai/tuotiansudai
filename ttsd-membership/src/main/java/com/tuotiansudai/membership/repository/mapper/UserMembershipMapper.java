@@ -63,4 +63,18 @@ public interface UserMembershipMapper {
                                          @Param(value = "pageSize") int pageSize);
 
     long findByLoginNameOrInvestTime(@Param(value = "loginName") String loginName, @Param(value = "investTime") Date investTime);
+
+    List<UserMembershipModel> findGiveMembershipsByMembershipGiveId(@Param(value = "membershipGiveId") long membershipGiveId,
+                                                                    @Param(value = "index") int index,
+                                                                    @Param(value = "pageSize") int pageSize);
+
+    long findCountGiveMembershipsByMembershipGiveId(@Param(value = "membershipGiveId") long membershipGiveId);
+
+    List<UserMembershipModel> findGiveMembershipsByLoginNameAndGiveId(@Param(value = "membershipGiveId") long membershipGiveId,
+                                                                      @Param(value = "loginName") String loginName,
+                                                                      @Param(value = "index") int index,
+                                                                      @Param(value = "pageSize") int pageSize);
+
+    long findCountGiveMembershipsByLoginNameAndGiveId(@Param(value = "membershipGiveId") long membershipGiveId,
+                                                      @Param(value = "loginName") String loginName);
 }

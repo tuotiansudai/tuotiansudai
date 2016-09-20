@@ -31,7 +31,7 @@ public class ImportUtils {
     private ImportUtils() {
     }
 
-    public ImportUtils getInstance() {
+    public static ImportUtils getInstance() {
         return new ImportUtils();
     }
 
@@ -44,17 +44,13 @@ public class ImportUtils {
             throw new IllegalArgumentException();
         }
 
-        if (redisWrapperClient.hexists(redisKey, String.valueOf(oldImportUsersId))) {
-            redisWrapperClient.hdel(redisKey, String.valueOf(oldImportUsersId));
-        }
-
-        long importUsersId = new Date().getTime();
-
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        while (null != (line = bufferedReader.readLine())) {
-            stringBuilder.append(line);
+        try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+             BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
+            String line;
+            while (null != (line = bufferedReader.readLine())) {
+                stringBuilder.append(line);
+            }
         }
 
         List<String> importUsers = Lists.newArrayList();
@@ -63,7 +59,13 @@ public class ImportUtils {
                 importUsers.add(loginName);
             }
         }
+
+        if (redisWrapperClient.hexists(redisKey, String.valueOf(oldImportUsersId))) {
+            redisWrapperClient.hdel(redisKey, String.valueOf(oldImportUsersId));
+        }
+        long importUsersId = new Date().getTime();
         redisWrapperClient.hsetSeri(redisKey, String.valueOf(importUsersId), importUsers);
+
         return importUsersId;
     }
 }

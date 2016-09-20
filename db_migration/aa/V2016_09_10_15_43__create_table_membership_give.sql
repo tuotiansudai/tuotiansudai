@@ -5,9 +5,9 @@ CREATE TABLE `membership_give` (
   COMMENT '对应membership表中的ID',
   `valid_period`       INT(10) UNSIGNED    NOT NULL
   COMMENT '有效天数',
-  `receive_start_time` DATETIME            NOT NULL
+  `receive_start_time` DATETIME DEFAULT NULL
   COMMENT '领取活动开始时间',
-  `receive_end_time`   DATETIME            NOT NULL
+  `receive_end_time`   DATETIME DEFAULT NULL
   COMMENT '领取活动结束时间',
   `user_group`         VARCHAR(200)        NOT NULL
   COMMENT '发放用户组',
