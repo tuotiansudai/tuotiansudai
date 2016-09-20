@@ -27,13 +27,15 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
 
     private Date updatedTime;
 
-    public ProductDetailResponseDto(long productId, String imageUrl, String name, long points, GoodsType goodsType, long leftCount) {
+    public ProductDetailResponseDto(long productId, String imageUrl, String name, long points, GoodsType goodsType, long leftCount,int seq,Date updatedTime) {
         this.productId = String.valueOf(productId);
         this.imageUrl = imageUrl;
         this.points = String.valueOf(points);
         this.name = name.replaceAll("\\.00", "");
         this.goodsType = goodsType.name();
         this.leftCount = String.valueOf(leftCount);
+        this.seq = seq;
+        this.updatedTime = updatedTime;
     }
 
     public ProductDetailResponseDto(ExchangeCouponView exchangeCouponView, String bannerServer) {

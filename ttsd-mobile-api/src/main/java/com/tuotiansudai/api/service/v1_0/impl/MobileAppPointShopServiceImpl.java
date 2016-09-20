@@ -134,14 +134,14 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         Iterator<ProductDetailResponseDto> virtualList = Iterators.transform(virtualProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
             @Override
             public ProductDetailResponseDto apply(ProductModel input) {
-                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000);
+                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000,input.getSeq(),input.getUpdatedTime());
             }
         });
 
         Iterator<ProductDetailResponseDto> physicals = Iterators.transform(physicalsProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
             @Override
             public ProductDetailResponseDto apply(ProductModel input) {
-                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000);
+                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000,input.getSeq(),input.getUpdatedTime());
             }
         });
 
@@ -188,7 +188,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
         ProductModel productModel = productMapper.findById(Long.parseLong(productDetailRequestDto.getProductId()));
 
-        ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(productModel.getId(), bannerServer + productModel.getImageUrl(), productModel.getName(), productModel.getPoints(), productModel.getType(), productModel.getTotalCount() - productModel.getUsedCount());
+        ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(productModel.getId(), bannerServer + productModel.getImageUrl(), productModel.getName(), productModel.getPoints(), productModel.getType(), productModel.getTotalCount() - productModel.getUsedCount(),productModel.getSeq(),productModel.getUpdatedTime());
         if(productModel.getType().equals(GoodsType.COUPON)){
             ExchangeCouponView exchangeCouponView = couponMapper.findExchangeableCouponViewById(productModel.getCouponId());
             productDetailResponseDto.setLeftCount(exchangeCouponView != null ? String.valueOf(exchangeCouponView.getTotalCount() - exchangeCouponView.getIssuedCount()) : String.valueOf(productModel.getTotalCount()));
