@@ -205,8 +205,12 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
         ProductModel productModel = productMapper.lockById(Long.parseLong(productDetailRequestDto.getProductId().trim()));
         AccountModel accountModel = accountMapper.lockByLoginName(productDetailRequestDto.getBaseParam().getUserId());
-
-        if ((productDetailRequestDto.getNum() + productModel.getUsedCount()) > productModel.getTotalCount()) {
+        long leftCount = productDetailRequestDto.getNum() + productModel.getUsedCount();
+        if(productModel.getType().equals(GoodsType.COUPON)){
+            ExchangeCouponView exchangeCouponView = couponMapper.findExchangeableCouponViewById(productModel.getCouponId());
+            leftCount = productDetailRequestDto.getNum() + exchangeCouponView.getIssuedCount();
+        }
+        if (leftCount > productModel.getTotalCount()) {
             logger.info(MessageFormat.format("Insufficient product (userId = {0},totalCount = {1},usedCount = {2})", productDetailRequestDto.getBaseParam().getUserId(), productModel.getTotalCount(), productModel.getUsedCount()));
             return new BaseResponseDto<>(ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getCode(), ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getMsg());
         }
