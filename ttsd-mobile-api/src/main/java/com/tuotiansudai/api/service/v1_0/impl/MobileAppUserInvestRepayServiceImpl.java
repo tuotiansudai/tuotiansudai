@@ -11,6 +11,8 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
@@ -56,7 +58,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
     private TransferApplicationMapper transferApplicationMapper;
 
     @Autowired
-    private UserMembershipService userMembershipService;
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
@@ -143,7 +145,8 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(completeTotalActualInterest));
             userInvestRepayResponseDataDto.setUnPaidRepay(AmountConverter.convertCentToString(unPaidTotalRepay));
             userInvestRepayResponseDataDto.setInvestRepays(investRepayList);
-            userInvestRepayResponseDataDto.setMembershipLevel(userMembershipService.getMembershipLevelByLoginNameAndInvestTime(investModel.getLoginName(), investModel.getInvestTime()));
+            MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(investModel.getLoginName(), investModel.getInvestTime());
+            userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(membershipModel.getLevel()));
             List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModel.getId());
 
             List<String> usedCoupons = Lists.transform(userCouponModels, new Function<UserCouponModel, String>() {

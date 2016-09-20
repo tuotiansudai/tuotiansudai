@@ -226,23 +226,18 @@ public class InvestServiceTest {
         long preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
         assertEquals(7, preference);
         userMembershipModel.setMembershipId(membershipMapper.findByLevel(4).getId());
-        userMembershipMapper.update(userMembershipModel);
         preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
         assertEquals(5, preference);
         userMembershipModel.setMembershipId(membershipMapper.findByLevel(3).getId());
-        userMembershipMapper.update(userMembershipModel);
         preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
         assertEquals(5, preference);
         userMembershipModel.setMembershipId(membershipMapper.findByLevel(2).getId());
-        userMembershipMapper.update(userMembershipModel);
         preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
         assertEquals(3, preference);
         userMembershipModel.setMembershipId(membershipMapper.findByLevel(1).getId());
-        userMembershipMapper.update(userMembershipModel);
         preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
         assertEquals(0, preference);
         userMembershipModel.setMembershipId(membershipMapper.findByLevel(0).getId());
-        userMembershipMapper.update(userMembershipModel);
         preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
         assertEquals(0, preference);
     }

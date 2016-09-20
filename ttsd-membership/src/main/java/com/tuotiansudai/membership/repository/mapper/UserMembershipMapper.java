@@ -15,11 +15,14 @@ public interface UserMembershipMapper {
 
     void create(UserMembershipModel userMembershipModel);
 
-    void update(UserMembershipModel userMembershipModel);
-
     UserMembershipModel findById(long id);
 
     List<UserMembershipModel> findByLoginName(String loginName);
+
+    List<UserMembershipModel> findByLoginNameAndMembershipId(@Param(value = "loginName") String loginName,
+                                                             @Param(value = "membershipId") long membershipId);
+
+    long countMembershipByLevel(int level);
 
     List<UserMembershipItemView> findUserMembershipItemViews(@Param(value = "loginName") String loginName,
                                                              @Param(value = "mobile") String mobile,
@@ -30,26 +33,7 @@ public interface UserMembershipMapper {
                                                              @Param(value = "pageIndex") int pageIndex,
                                                              @Param(value = "pageSize") int pageSize);
 
-    UserMembershipModel findActiveByLoginName(String loginName);
-
     UserMembershipModel findCurrentMaxByLoginName(String loginName);
-
-    Double findRateByLoginName(String loginName);
-
-    Integer findRealLevelByLoginName(String loginName);
-
-    Long findMembershipPointByLoginName(String loginName);
-
-    long countMembershipByLevel(int level);
-
-    void updateMembershipPoint(@Param(value = "loginName") String loginName,
-                               @Param(value = "membershipPoint") long membershipPoint);
-
-    UserMembershipModel findByLoginNameByType(@Param(value = "loginName") String loginName,
-                                              @Param(value = "type") UserMembershipType type);
-
-    List<UserMembershipModel> findByLoginNameByMembershipId(@Param(value = "loginName") String loginName,
-                                                      @Param(value = "membershipId") long membershipId);
 
     int findCountUserMembershipItemViews(@Param(value = "loginName") String loginName,
                                          @Param(value = "mobile") String mobile,
@@ -60,5 +44,4 @@ public interface UserMembershipMapper {
                                          @Param(value = "index") int index,
                                          @Param(value = "pageSize") int pageSize);
 
-    long findByLoginNameOrInvestTime(@Param(value = "loginName") String loginName, @Param(value = "investTime") Date investTime);
 }

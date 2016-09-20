@@ -170,7 +170,7 @@ public class UserServiceImpl implements UserService {
         }
 
         MembershipModel membershipModel = membershipMapper.findByLevel(0);
-        UserMembershipModel userMembershipModel = new UserMembershipModel(userModel.getLoginName(), membershipModel.getId(), new DateTime().withDate(9999, 12, 31).withTime(23, 59, 59, 0).toDate(), UserMembershipType.UPGRADE);
+        UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(userModel.getLoginName(), membershipModel.getId());
         userMembershipMapper.create(userMembershipModel);
 
         return true;

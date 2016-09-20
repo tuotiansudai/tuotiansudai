@@ -126,7 +126,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             return baseDto;
         }
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
-        double rate = userMembershipMapper.findRateByLoginName(loginName);
+        double rate = userMembershipEvaluator.evaluate(loginName).getFee();
         InvestModel investModel = generateInvestModel(investDto, loginName, transferApplicationModel, transferrerModel, rate);
 
         investMapper.create(investModel);
@@ -179,7 +179,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             return dto;
         }
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
-        double rate = userMembershipMapper.findRateByLoginName(transferee);
+        double rate = userMembershipEvaluator.evaluate(transferee).getFee();
         InvestModel investModel = generateInvestModel(investDto, transferee, transferApplicationModel, transferrerModel, rate);
 
         investMapper.create(investModel);

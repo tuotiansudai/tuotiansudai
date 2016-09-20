@@ -33,10 +33,6 @@
         value(#{loginName}, #{membershipId}, #{expiredTime}, #{createdTime}, #{type})
     </insert>
 
-    <update id="update" parameterType="UserMembershipModel">
-        update user_membership set login_name = #{loginName}, membership_id = #{membershipId}, expired_time = #{expiredTime}, expired_time = #{createdTime}, type = #{type} where id = #{id}
-    </update>
-
     <select id="findById" resultMap="UserMembershipResultMap" parameterType="long">
         select * from user_membership where id = #{id}
     </select>
@@ -141,10 +137,6 @@
         GROUP BY login_name ) t
     </select>
 
-    <select id="findActiveByLoginName" resultMap="UserMembershipResultMap" parameterType="string">
-        select * from user_membership where login_name = #{loginName} and expired_time > now() and type = 'GIVEN' order by membership_id desc, created_time desc limit 1
-    </select>
-
     <select id="findCurrentMaxByLoginName" resultMap="UserMembershipResultMap" parameterType="java.lang.String">
         SELECT user_membership.*
         FROM
@@ -154,18 +146,6 @@
         AND expired_time > now()) user_membership
         JOIN membership ON user_membership.membership_id = membership.id
         ORDER BY membership.level DESC LIMIT 1
-    </select>
-
-    <select id="findRateByLoginName" resultType="double" parameterType="string">
-        select m.fee from user_membership um join membership m on um.membership_id = m.id where um.login_name = #{loginName} and um.expired_time > now() order by m.level desc limit 1
-    </select>
-
-    <select id="findRealLevelByLoginName" resultType="Integer" parameterType="string">
-        select m.level from user_membership um join membership m on um.membership_id = m.id where um.login_name = #{loginName} and um.expired_time > now() and um.type = 'UPGRADE' order by um.created_time desc limit 1
-    </select>
-
-    <select id="findMembershipPointByLoginName" resultType="long" parameterType="string">
-        select membership_point from account where login_name = #{loginName}
     </select>
 
     <select id="countMembershipByLevel" resultType="long" parameterType="int">
@@ -183,25 +163,10 @@
         and membership.level = #{level}
     </select>
 
-    <update id="updateMembershipPoint" parameterType="map">
-        update account set membership_point = #{membershipPoint} where login_name = #{loginName}
-    </update>
-
-    <select id="findByLoginNameByType" resultMap="UserMembershipResultMap" parameterType="map">
-        select * from user_membership where login_name = #{loginName} and type =  #{type}
+    <select id="findByLoginNameAndMembershipId" resultMap="UserMembershipResultMap" parameterType="map">
+        select * from user_membership
+        where login_name = #{loginName}
+        and membership_id =  #{membershipId}
+        and expired_time > now()
     </select>
-
-    <select id="findByLoginNameByMembershipId" resultMap="UserMembershipResultMap" parameterType="map">
-        select * from user_membership where login_name = #{loginName} and membership_id =  #{membershipId} and expired_time > now()
-    </select>
-
-
-    <select id="findByLoginNameOrInvestTime" resultType="long" parameterType="map">
-        select IFNULL(MAX(membership_id),1) from user_membership where login_name = #{loginName}
-        <if test="investTime != null">
-            AND expired_time &gt; #{investTime}
-            AND created_time &lt; #{investTime}
-        </if>
-    </select>
-
 </mapper>

@@ -56,13 +56,11 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
         systemRechargeModel.setId(idGenerator.generate());
 
         AccountModel accountModel = accountMapper.findByLoginName(systemRechargeModel.getLoginName());
-        if (accountModel == null){
-            logger.debug(systemRechargeModel.getLoginName() + " not certification");
-        }
-        TransferAsynRequestModel requestModel = new TransferAsynRequestModel(String.valueOf(systemRechargeModel.getId()),
-                accountModel.getPayUserId(),""+systemRechargeModel.getAmount());
-        String remark = MessageFormat.format("{0} 从 {1} 账户为平台账户充值 {2} 元",dto.getOperatorLoginName(),
-                dto.getMobile(),dto.getAmount());
+
+        TransferAsynRequestModel requestModel = TransferAsynRequestModel.createSystemRechargeRequestModel(String.valueOf(systemRechargeModel.getId()),
+                accountModel.getPayUserId(), String.valueOf(systemRechargeModel.getAmount()));
+        String remark = MessageFormat.format("{0} 从 {1} 账户为平台账户充值 {2} 元", dto.getOperatorLoginName(),
+                dto.getMobile(), dto.getAmount());
         systemRechargeModel.setRemark(remark);
 
         try {
@@ -77,7 +75,6 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
             baseDto.setData(payFormDataDto);
             return baseDto;
         }
-
     }
 
     @Override
@@ -116,7 +113,7 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
                 try {
                     amountTransfer.transferOutBalance(loginName, orderId, amount, UserBillBusinessType.SYSTEM_RECHARGE, null, null);
                     systemBillService.transferIn(orderId, amount, SystemBillBusinessType.SYSTEM_RECHARGE,
-                            MessageFormat.format("{0}充值到平台账户{1}",loginName,amount));
+                            MessageFormat.format("{0}充值到平台账户{1}", loginName, amount));
                 } catch (AmountTransferException e) {
                     logger.error(MessageFormat.format("system recharge transfer out balance failed (orderId = {0})", String.valueOf(callbackRequestModel.getOrderId())));
                 }
@@ -129,6 +126,5 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
             logger.error(MessageFormat.format("System Recharge callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
             logger.error(e.getLocalizedMessage(), e);
         }
-
     }
 }

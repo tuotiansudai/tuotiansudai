@@ -15,6 +15,7 @@ import javax.validation.Valid;
 
 @RestController
 public class MobileAppActivityCenterController extends MobileAppBaseController {
+
     @Autowired
     private MobileAppActivityService mobileAppActivityService;
 
