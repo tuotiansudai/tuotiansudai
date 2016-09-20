@@ -47,6 +47,13 @@
         {"title":"常见问题", "url":"/about/qa"},
         {"title":"联系我们", "url":"/about/contact"},
         {"title":"运营数据", "url":"/about/operational"}
+    ]},
+    {"title":"帮助中心", "url":"/about/help-center","category":"21顶部导航", "leftNavs":[
+        {"title":"注册认证", "url":"/about/account"},
+        {"title":"账户管理", "url":"/about/user"},
+        {"title":"资金相关", "url":"/about/money"},
+        {"title":"产品类型", "url":"/about/product"},
+        {"title":"其他问题", "url":"/about/other"}
     ]}
     ]/>
 
