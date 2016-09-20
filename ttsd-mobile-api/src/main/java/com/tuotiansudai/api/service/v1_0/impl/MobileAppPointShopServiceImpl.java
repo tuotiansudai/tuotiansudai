@@ -26,6 +26,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -147,6 +149,24 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         if (couponList != null) {
             virtualShopList.addAll(Lists.newArrayList(couponList));
         }
+
+        Collections.sort(virtualShopList, new Comparator<ProductDetailResponseDto>() {
+            @Override
+            public int compare(ProductDetailResponseDto o1, ProductDetailResponseDto o2) {
+                int result = 0;
+                if (o1.getSeq() > o2.getSeq()) {
+                    result = 1;
+                } else if (o1.getSeq() < o2.getSeq()) {
+                    result = -1;
+                }
+                if (0 == result && null != o1.getUpdatedTime() && null != o2.getUpdatedTime()) {
+                    return o2.getUpdatedTime().compareTo(o1.getUpdatedTime());
+                } else {
+                    return result;
+                }
+            }
+        });
+
         AccountModel accountModel = accountMapper.findByLoginName(baseParamDto.getBaseParam().getUserId());
         ProductListResponseDto productListResponseDto = new ProductListResponseDto();
         productListResponseDto.setVirtuals(virtualShopList);

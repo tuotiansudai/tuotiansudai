@@ -5,6 +5,7 @@ import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.util.AmountConverter;
 
+import java.util.Date;
 import java.util.List;
 
 public class ProductDetailResponseDto extends BaseResponseDataDto {
@@ -22,6 +23,10 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
 
     private String leftCount;
 
+    private int seq;
+
+    private Date updatedTime;
+
     public ProductDetailResponseDto(long productId, String imageUrl, String name, long points, GoodsType goodsType, long leftCount) {
         this.productId = String.valueOf(productId);
         this.imageUrl = imageUrl;
@@ -36,6 +41,8 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
         this.imageUrl = bannerServer + exchangeCouponView.getImageUrl();
         this.points = String.valueOf(exchangeCouponView.getExchangePoint());
         this.leftCount = String.valueOf(exchangeCouponView.getTotalCount() - exchangeCouponView.getIssuedCount());
+        this.seq = exchangeCouponView.getSeq();
+        this.updatedTime = exchangeCouponView.getUpdatedTime();
         switch (exchangeCouponView.getCouponType()) {
             case RED_ENVELOPE:
                 this.name = AmountConverter.convertCentToString(exchangeCouponView.getAmount()) + "元现金红包";
@@ -50,6 +57,22 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
 
     }
 
+
+    public int getSeq() {
+        return seq;
+    }
+
+    public void setSeq(int seq) {
+        this.seq = seq;
+    }
+
+    public Date getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
+    }
 
     public String getProductId() {
         return productId;
