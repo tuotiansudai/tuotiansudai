@@ -23,6 +23,7 @@ import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
@@ -252,7 +253,7 @@ public class ProductServiceImpl implements ProductService {
                 productShowItemDtos = Lists.transform(exchangeCouponDtos, new Function<ExchangeCouponView, ProductShowItemDto>() {
                     @Override
                     public ProductShowItemDto apply(ExchangeCouponView exchangeCouponView) {
-                        return new ProductShowItemDto(exchangeCouponView);
+                        return convertProductShowItemDto(exchangeCouponView);
                     }
                 });
                 break;
@@ -307,7 +308,7 @@ public class ProductServiceImpl implements ProductService {
             case RED_ENVELOPE:
                 ExchangeCouponView exchangeCouponView = couponMapper.findExchangeableCouponViewById(id);
                 if (null != exchangeCouponView) {
-                    productShowItemDto = new ProductShowItemDto(exchangeCouponView);
+                    productShowItemDto = convertProductShowItemDto(exchangeCouponView);
                 }
                 break;
             default:
@@ -442,4 +443,23 @@ public class ProductServiceImpl implements ProductService {
         return couponMapper.findCouponExchangeCount();
     }
 
+    @Override
+    public List<String> getProductDescription(long investLowerLimit,List<ProductType> productTypes,Integer deadline){
+        List<String> description = Lists.newArrayList();
+        description.add(investLowerLimit > 0 ? MessageFormat.format("投资满{0}元即可使用;", AmountConverter.convertCentToString(investLowerLimit)) : "");
+        description.add(MessageFormat.format("{0}天产品可用;", productTypes.toString().replaceAll("_", "")));
+        description.add(MessageFormat.format("有效期限:{0}天。", deadline));
+        return description;
+    }
+
+    private ProductShowItemDto convertProductShowItemDto(ExchangeCouponView exchangeCouponView){
+        ProductShowItemDto productShowItemDto = new ProductShowItemDto(exchangeCouponView);
+        List<String> descriptions = getProductDescription(exchangeCouponView.getInvestLowerLimit(), exchangeCouponView.getProductTypes(), exchangeCouponView.getDeadline());
+        String descriptionString = "";
+        for(String description : descriptions){
+            descriptionString += description + "\n";
+        }
+        productShowItemDto.setDescription(descriptionString.length() > 2 ? descriptionString.substring(0, descriptionString.length() - 1) : descriptionString);
+        return productShowItemDto;
+    }
 }
