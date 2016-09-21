@@ -1,3 +1,3 @@
-require(['jquery','layerWrapper'], function ($,layer) {
+require(['jquery'], function ($) {
     
 });
