@@ -214,11 +214,11 @@ public class NationalPrizeService {
     }
 
     public long getAllActivityInvestAmount(){
-        return investMapper.findSumInvestAmountByActivityTypeAndInvestTime(ActivityType.ACTIVITY, activityNationalStartTime, activityNationalEndTime);
+        return investMapper.findSumInvestAmountByActivityTypeAndInvestTime(true, activityNationalStartTime, activityNationalEndTime);
     }
 
     public String getAllActivityUserCount(){
-        return String.valueOf(investMapper.findSumUserCountByActivityTypeAndInvestTime(ActivityType.ACTIVITY, activityNationalStartTime, activityNationalEndTime));
+        return String.valueOf(investMapper.findSumUserCountByActivityTypeAndInvestTime(true, activityNationalStartTime, activityNationalEndTime));
     }
 
     private void createUserMembershipModel(String loginName, int level) {

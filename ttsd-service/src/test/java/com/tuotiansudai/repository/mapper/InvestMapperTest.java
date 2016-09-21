@@ -51,6 +51,8 @@ public class InvestMapperTest {
     private TransferApplicationMapper transferApplicationMapper;
     @Autowired
     private AccountMapper accountMapper;
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
     private List<String> heroRankingActivityPeriod;
@@ -376,7 +378,7 @@ public class InvestMapperTest {
         UserModel investorModel = createUser("investorModelRound5Test");
         UserModel loanerModel = createUser("loanerModelRound5Test");
         LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId, LoanStatus.REPAYING);
-        InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS,TransferStatus.TRANSFERABLE);
+        InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
         loanRepayMapper.create(Lists.newArrayList(loanRepayModel));
         InvestRepayModel investRepayModel = getFakeInvestRepayModel(investModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
@@ -548,21 +550,21 @@ public class InvestMapperTest {
         investMapper.create(investModel3);
 
         List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(new DateTime("2016-07-05").toDate(),heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1));
-        assertEquals(3,heroRankingViews.size());
+        assertEquals(3, heroRankingViews.size());
         assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
         assertEquals(investModel3.getAmount(), heroRankingViews.get(0).getSumAmount());
         assertEquals(accountModel3.getUserName(), heroRankingViews.get(0).getUserName());
-        assertEquals(investor3.getMobile(),heroRankingViews.get(0).getMobile());
+        assertEquals(investor3.getMobile(), heroRankingViews.get(0).getMobile());
 
-        assertEquals(investModel1.getLoginName(),heroRankingViews.get(1).getLoginName());
-        assertEquals(investModel1.getAmount(),heroRankingViews.get(1).getSumAmount());
-        assertEquals(accountModel1.getUserName(),heroRankingViews.get(1).getUserName());
-        assertEquals(investor1.getMobile(),heroRankingViews.get(1).getMobile());
+        assertEquals(investModel1.getLoginName(), heroRankingViews.get(1).getLoginName());
+        assertEquals(investModel1.getAmount(), heroRankingViews.get(1).getSumAmount());
+        assertEquals(accountModel1.getUserName(), heroRankingViews.get(1).getUserName());
+        assertEquals(investor1.getMobile(), heroRankingViews.get(1).getMobile());
 
-        assertEquals(investModel2.getLoginName(),heroRankingViews.get(2).getLoginName());
-        assertEquals(investModel2.getAmount(),heroRankingViews.get(2).getSumAmount());
-        assertEquals(accountModel2.getUserName(),heroRankingViews.get(2).getUserName());
-        assertEquals(investor2.getMobile(),heroRankingViews.get(2).getMobile());
+        assertEquals(investModel2.getLoginName(), heroRankingViews.get(2).getLoginName());
+        assertEquals(investModel2.getAmount(), heroRankingViews.get(2).getSumAmount());
+        assertEquals(accountModel2.getUserName(), heroRankingViews.get(2).getUserName());
+        assertEquals(investor2.getMobile(), heroRankingViews.get(2).getMobile());
 
     }
 
@@ -882,6 +884,15 @@ public class InvestMapperTest {
         fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(fakeLoanModel);
 
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
+        loanDetailsModel.setActivity(true);
+        loanDetailsModel.setActivityDesc("123");
+        loanDetailsModel.setDeclaration("12");
+        loanDetailsModel.setExtraSource("1");
+        loanDetailsModel.setId(idGenerator.generate());
+        loanDetailsModel.setLoanId(fakeLoanModel.getId());
+        loanDetailsMapper.create(loanDetailsModel);
+
         InvestModel investModel2 = this.getFakeInvestModel();
         investModel2.setLoanId(fakeLoanModel.getId());
         investModel2.setLoginName(User_ID2);
@@ -906,8 +917,8 @@ public class InvestMapperTest {
 
         Date startDate = DateUtils.addDays(DateTime.now().toDate(),-1);
         Date endDate = DateUtils.addDays(DateTime.now().toDate(),1);
-        String amount = AmountConverter.convertCentToString(investMapper.findSumInvestAmountByActivityTypeAndInvestTime(ActivityType.ACTIVITY,startDate,endDate));
-        assertEquals(amount,"11.00");
+        String amount = AmountConverter.convertCentToString(investMapper.findSumInvestAmountByActivityTypeAndInvestTime(true, startDate, endDate));
+        assertEquals(amount, "11.00");
     }
 
     @Test
@@ -931,6 +942,14 @@ public class InvestMapperTest {
         fakeLoanModel.setProductType(ProductType._180);
         fakeLoanModel.setPledgeType(PledgeType.HOUSE);
         loanMapper.create(fakeLoanModel);
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
+        loanDetailsModel.setActivity(true);
+        loanDetailsModel.setActivityDesc("123");
+        loanDetailsModel.setDeclaration("12");
+        loanDetailsModel.setExtraSource("1");
+        loanDetailsModel.setId(idGenerator.generate());
+        loanDetailsModel.setLoanId(fakeLoanModel.getId());
+        loanDetailsMapper.create(loanDetailsModel);
 
         InvestModel investModel3 = this.getFakeInvestModel();
         investModel3.setLoanId(fakeLoanModel.getId());
@@ -956,7 +975,7 @@ public class InvestMapperTest {
 
         Date startDate = DateUtils.addDays(DateTime.now().toDate(),-1);
         Date endDate = DateUtils.addDays(DateTime.now().toDate(),1);
-        int userNum = investMapper.findSumUserCountByActivityTypeAndInvestTime(ActivityType.ACTIVITY,startDate,endDate);
+        int userNum = investMapper.findSumUserCountByActivityTypeAndInvestTime(true,startDate,endDate);
         assertEquals(userNum,2);
     }
 }
