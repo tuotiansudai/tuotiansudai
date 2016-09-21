@@ -64,12 +64,14 @@ public class HomeServiceImpl implements HomeService {
                 List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loan.getId());
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
                 String extraSource = "";
+                boolean activity = false;
                 String activityDesc = "";
                 if(loanDetailsModel != null){
                     extraSource = loanDetailsModel.getExtraSource();
+                    activity = loanDetailsModel.isActivity();
                     activityDesc = loanDetailsModel.getActivityDesc();
                 }
-                return new HomeLoanDto(newbieInterestCouponModel, loan, investAmount, loanRepayModels, extraLoanRateMapper.findMaxRateByLoanId(loan.getId()), extraSource, activityDesc);
+                return new HomeLoanDto(newbieInterestCouponModel, loan, investAmount, loanRepayModels, extraLoanRateMapper.findMaxRateByLoanId(loan.getId()), extraSource, activity, activityDesc);
             }
         });
     }

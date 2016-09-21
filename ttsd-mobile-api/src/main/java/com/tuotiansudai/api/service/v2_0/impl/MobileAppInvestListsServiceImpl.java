@@ -49,6 +49,7 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
 
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
+
     @Autowired
     private CouponRepayMapper couponRepayMapper;
 
