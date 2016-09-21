@@ -2,9 +2,10 @@ require(['jquery'], function($) {
 	$(function() {
 		var $changeBtn = $('.problem-title-item span'),
 			$contentList = $('.problem-content-item'),
-			$problem = $('.problem-single-item');
-
-
+			$problem = $('.problem-single-item'),
+			page=location.href.split('#')[1]?parseInt(location.href.split('#')[1].slice(0,1))-1:false,
+			index=location.href.split('#')[1]?parseInt(location.href.split('#')[1].slice(1,2))-1:false;
+		
 		//切换类型
 		$changeBtn.on('click', function(event) {
 			event.preventDefault();
@@ -25,5 +26,8 @@ require(['jquery'], function($) {
 			event.preventDefault();
 			$(this).siblings('.single-title').trigger('click')
 		});
+
+		$('.problem-title-item span:eq('+page+')').trigger('click');
+		$('.list-group:eq('+page+')').find('.problem-single-item:eq('+index+') .single-title').trigger('click');
 	});
 });

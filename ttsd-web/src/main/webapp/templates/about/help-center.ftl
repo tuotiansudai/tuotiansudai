@@ -7,15 +7,15 @@
     <div class="model-group">
         <h3>常见问题</h3>
         <ul class="problem-list-item">
-            <li title="怎么使用红包、加息券？"><a href="/about/user">怎么使用红包、加息券？</a></li>
-            <li title="VIP会员享有哪些特权？"><a href="/about/user">VIP会员享有哪些特权？</a></li>
-            <li title="如何提高会员等级？"><a href="/about/user">如何提高会员等级？</a></li>
-            <li title="绑卡时提示该银行卡不支持，怎么回事？"><a href="/about/user">绑卡时提示该银行卡不支持，怎么回事？</a></li>
-            <li title="如何更换绑定的银行卡？"><a href="/about/user">如何更换绑定的银行卡？</a></li>
-            <li title="借款人逾期还款怎么办？"><a href="/about/money">借款人逾期还款怎么办？</a></li>
-            <li title="投资后能不能提前收款？"><a href="/about/money">投资后能不能提前收款？</a></li>
-            <li title="申请提现后，资金到账时间一般是多久？"><a href="/about/money">申请提现后，资金到账时间一般是多久？</a></li>
-            <li title="什么是“好友推荐赚奖励”？"><a href="/about/other">什么是“好友推荐赚奖励”？</a></li>
+            <li title="怎么使用红包、加息券？"><a href="/about/user#22">怎么使用红包、加息券？</a></li>
+            <li title="VIP会员享有哪些特权？"><a href="/about/user#32">VIP会员享有哪些特权？</a></li>
+            <li title="如何提高会员等级？"><a href="/about/user#33">如何提高会员等级？</a></li>
+            <li title="绑卡时提示该银行卡不支持，怎么回事？"><a href="/about/user#43">绑卡时提示该银行卡不支持，怎么回事？</a></li>
+            <li title="如何更换绑定的银行卡？"><a href="/about/user#45">如何更换绑定的银行卡？</a></li>
+            <li title="借款人逾期还款怎么办？"><a href="/about/money#33">借款人逾期还款怎么办？</a></li>
+            <li title="投资后能不能提前收款？"><a href="/about/money#34">投资后能不能提前收款？</a></li>
+            <li title="申请提现后，资金到账时间一般是多久？"><a href="/about/money#41">申请提现后，资金到账时间一般是多久？</a></li>
+            <li title="什么是“好友推荐赚奖励”？"><a href="/about/other#21">什么是“好友推荐赚奖励”？</a></li>
         </ul>
     </div>
     <div class="model-group">
