@@ -27,6 +27,8 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         var url = '/activity/autumn/luxury-draw?mobile='+mobile;
         if($('#themeType').val() == 'travel'){
             url = '/activity/autumn/travel-draw?mobile='+mobile;
+        }else if($('#themeType').val() == 'national'){
+            url = '/activity/national/draw?mobile='+mobile;
         }
 
         if (bRotate) return;
@@ -152,6 +154,8 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         var url = '/activity/autumn/luxury-all-list';
         if($('#themeType').val() == 'travel'){
             url = '/activity/autumn/travel-all-list';
+        }else if($('#themeType').val() == 'national'){
+            url = '/activity/national/all-list';
         }
         $.ajax({
             url: url,
@@ -169,6 +173,8 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         var url = '/activity/autumn/luxury-user-list?mobile='+mobile;
         if($('#themeType').val() == 'travel'){
             url = '/activity/autumn/travel-user-list?mobile='+mobile;
+        }else if($('#themeType').val() == 'national'){
+            url = '/activity/national/user-list?mobile='+mobile;
         }
         $.ajax({
             url: url,
@@ -179,6 +185,6 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
             $('#MyGift').html(tpl('MyGiftTpl', {gift:data}));
         });
     }
-    // GiftRecord ();
-    // MyGift();
+    GiftRecord ();
+    MyGift();
 });
