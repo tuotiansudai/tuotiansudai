@@ -2,10 +2,9 @@ package com.tuotiansudai.activity.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
-import com.tuotiansudai.activity.dto.LotteryPrize;
-import com.tuotiansudai.activity.dto.NationalPrize;
 import com.tuotiansudai.activity.dto.PrizeType;
+import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
+import com.tuotiansudai.activity.dto.NationalPrize;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
@@ -19,7 +18,6 @@ import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -118,7 +116,7 @@ public class NationalPrizeService {
             lotteryTime ++;
         }
 
-        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(),null,PrizeType.NATIONAL_PRIZE,null,null);
+        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(),null, PrizeType.NATIONAL_PRIZE,null,null);
         if(lotteryTime > 0){
             lotteryTime -= userTime;
         }
@@ -204,7 +202,7 @@ public class NationalPrizeService {
     }
 
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile){
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, null,PrizeType.NATIONAL_PRIZE);
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, null, PrizeType.NATIONAL_PRIZE);
         for(UserLotteryPrizeView view : userLotteryPrizeViews){
             view.setMobile(randomUtils.encryptWebMiddleMobile(view.getMobile()));
         }
@@ -215,8 +213,8 @@ public class NationalPrizeService {
         return String.valueOf(pointBillMapper.findSumPointByLoginNameAndBusinessType(loginName,activityNationalStartTime,activityNationalEndTime,Lists.newArrayList(PointBusinessType.ACTIVITY)));
     }
 
-    public String getAllActivityInvestAmount(){
-        return AmountConverter.convertCentToString(investMapper.findSumInvestAmountByActivityTypeAndInvestTime(ActivityType.ACTIVITY, activityNationalStartTime, activityNationalEndTime));
+    public long getAllActivityInvestAmount(){
+        return investMapper.findSumInvestAmountByActivityTypeAndInvestTime(ActivityType.ACTIVITY, activityNationalStartTime, activityNationalEndTime);
     }
 
     public String getAllActivityUserCount(){

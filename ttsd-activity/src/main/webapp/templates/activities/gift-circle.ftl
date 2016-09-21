@@ -1,7 +1,7 @@
-<div class="leader-container national-day-theme"   id="awardCom"><!--旅游：tour-theme，国庆：national-day-theme  -->
+<div class="leader-container <#if activityType= 'luxury'></#if><#if activityType= 'travel'>tour-theme</#if><#if activityType= 'national'>national-day-theme</#if>"   id="awardCom"><!--旅游：tour-theme，国庆：national-day-theme  -->
     <div class="leader-list">
         <div class="lottery-circle">
-            <h3>我的抽奖机会：<span class="lottery-time">22</span>次</h3>
+            <h3>我的抽奖机会：<span class="lottery-time">${drawTime}</span>次</h3>
             <div class="circle-shade">
                 <div class="pointer-img" id="pointer" data-islogin="true">
                     <img src="${staticServer}/activity/images/sign/actor/circle/pointer.png" alt="pointer" width="100%"/>
@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="lottery-detail">
-            <h3>我的抽奖机会：<span class="lottery-time">22</span>次</h3>
+            <h3>我的抽奖机会：<span class="lottery-time">${drawTime}</span>次</h3>
             <ul class="gift-record">
                 <li class="active"><span>中奖记录</span></li>
                 <li><span>我的奖品</span></li>
@@ -83,7 +83,7 @@
     </div>
 </div>
 
-<div class="tip-list national-day-theme" id="tipList"><!--旅游:tour-theme,国庆：national-day-theme   -->
+<div class="tip-list <#if activityType= 'luxury'></#if><#if activityType= 'travel'>tour-theme</#if><#if activityType= 'national'>national-day-theme</#if>" id="tipList"><!--旅游:tour-theme,国庆：national-day-theme   -->
     <script id="tipListTpl" type="text/html">
     <div class="tip-dom">
         <div class="close-btn go-close"></div>

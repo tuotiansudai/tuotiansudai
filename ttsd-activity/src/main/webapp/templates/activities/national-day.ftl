@@ -21,12 +21,12 @@
             如活动结束后，所有国庆专享标未筹满1949000元，则参与本活动的用户每人将获得50元投资红包，红包适用于180天及以上标的，需投资10000元激活！</P>
 
             <dl class="invest-percent-box clearfix">
-                <dt>目前专享标共投资：1，625，000元</dt>
+                <dt>目前专享标共投资：${allInvestAmount}元</dt>
                 <dd class="progress-bar">
-                    <span class="progress-percent"></span>
+                    <span class="progress-percent" style="width: ${investScale}%"></span>
                 </dd>
                 <dd class="count-total">
-                    <span class="fl">已有<em>123</em>人参与</span>
+                    <span class="fl">已有<em>${userCount}</em>人参与</span>
                     <span class="fr">总额度：1，949，000元</span>
                 </dd>
 
@@ -61,7 +61,7 @@
     <div class="section-two-title"></div>
     <div class="section-inner">
         <div class="bg-box-normal tc">
-            <span class="my-integral">我的积分：125645</span>
+            <span class="my-integral">我的积分：${myPoint}</span>
         </div>
 
         <div class="bg-box-normal">
@@ -105,25 +105,54 @@
         <p class="notice tc"><em>活动期间，</em><i>1、</i>新用户在平台完成注册、实名认证、绑卡、充值、投资均可获得一次抽奖机会。</p>
 
         <ul class="steps-list clearfix">
-            <li class="finished step-one">
-                <span>已注册</span>
+            <li class="<#if steps[0] == 1>active</#if><#if steps[0] == 2>finished</#if> step-one">
+                <#if steps[0] == 1>
+                    <div class="icon-text"><a href="/register/user">去注册</a></div></#if>
+                <#if steps[0] == 2>
+                    <div class="icon-text">已注册</div></#if>
             </li>
-            <li class="active step-two">
+            <li class="<#if steps[1] == 1>active</#if><#if steps[1] == 2>finished</#if> step-two">
                 <em class="arrow"></em>
-                <span>去认证</span>
+                <#if steps[1] == 0>
+                    <div class="icon-text">认证</div></#if>
+                <#if steps[1] == 1>
+                    <div class="icon-text"><a href="/register/account">去认证</a></div></#if>
+                <#if steps[1] == 2>
+                    <div class="icon-text">已认证</div></#if>
+                <div class="step-icon"></div>
             </li>
-            <li class="step-three">
+            <li class="<#if steps[2] == 1>active</#if><#if steps[2] == 2>finished</#if> step-three">
                 <em class="arrow"></em>
-                <span>绑卡</span>
+                <#if steps[2] == 0>
+                    <div class="icon-text">绑卡</div></#if>
+                <#if steps[2] == 1>
+                    <div class="icon-text"><a href="/bind-card">去绑卡</a></div></#if>
+                <#if steps[2] == 2>
+                    <div class="icon-text">已绑卡</div></#if>
+                <div class="step-icon"></div>
             </li>
 
-            <li class="step-four">
+            <li class="<#if steps[3] == 1>active</#if> step-four">
                 <em class="arrow"></em>
-                <span>充值</span>
+                <#if steps[3] == 0>
+                    <div class="icon-text">充值</div></#if>
+                <#if steps[3] == 1>
+                    <div class="icon-text"><a href="/recharge">去充值</a></div></#if>
+                <div class="step-icon"></div>
             </li>
 
-            <li class="step-five">
-                <span>投资</span>
+            <li class="<#if steps[4] == 1>active</#if> step-five">
+                <#if steps[4] == 0>
+                    <div class="icon-text">投资</div></#if>
+                <#if steps[4] == 1>
+                    <@global.isAnonymous>
+                        <a href="/login?redirect=/activity/autumn/luxury" class="icon-text autumn-luxury-invest-channel">去投资</a>
+                    </@global.isAnonymous>
+                    <@global.isNotAnonymous>
+                        <a href="/loan-list" class="icon-text autumn-luxury-invest-channel">去投资</a>
+                    </@global.isNotAnonymous>
+                </#if>
+                <div class="step-icon"></div>
             </li>
             </ul>
 
@@ -133,7 +162,7 @@
         <a href="#" class="btn-normal-day">立即邀请好友赢抽奖机会</a>
     </div>
         <#include "gift-circle.ftl"/>
-        <!-- <#assign prizeType = 'national-day-theme'/> -->
+        <!-- <#assign activityPrizeType = 'national-day-theme'/> -->
     </div>
 
 <div class="section-outer">
