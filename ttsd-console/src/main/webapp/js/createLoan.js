@@ -228,6 +228,16 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             }
         });
 
+        $('.jq-activity-checkbox label').click(function () {
+            if ($('.jq-activity').prop('checked')) {
+                $('.jq-activity').val('1');
+                $('.jq-activity-desc').prop('disabled',false);
+            } else {
+                $('.jq-activity').val('0');
+                $('.jq-activity-desc').val("");
+                $('.jq-activity-desc').prop('disabled',true);
+            }
+        });
         //自动完成提示
         var autoValue = '';
         $(".jq-agent").autocomplete({
@@ -290,10 +300,9 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     return false;
                 }
 
-                var activityType = $('.jq-activity-type', curform).val();
                 var activityDesc = $('.jq-activity-desc', curform).val();
-                if ("ACTIVITY" == activityType && activityDesc.trim() == "") {
-                    showErrorMessage('活动类型是活动专享,标的所属活动必须填写', $('.jq-activity-desc', curform));
+                if ($('.jq-activity').prop('checked') && activityDesc.trim() == "") {
+                    showErrorMessage('您选择了活动专享,标的所属活动必须填写', $('.jq-activity-desc', curform));
                     $('.jq-activity-desc').prop('disabled', false);
                     return false;
                 }
@@ -425,6 +434,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "loanTitles": uploadFile,
                         "extraRateIds": getExtraRateIds(),
                         "extraSource": getExtraSource(),
+                        "activity": activity,
                         "activityDesc": $('.jq-activity-desc').val(),
 
                         "declaration": $('.jq-loan-declaration').val(),
@@ -473,6 +483,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "loanTitles": uploadFile,
                         "extraRateIds": getExtraRateIds(),
                         "extraSource": getExtraSource(),
+                        "activity": activity,
                         "activityDesc": $('.jq-activity-desc').val(),
 
                         "declaration": $('.jq-loan-declaration').val(),

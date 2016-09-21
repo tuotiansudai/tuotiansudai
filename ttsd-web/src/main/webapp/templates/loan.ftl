@@ -7,7 +7,7 @@
             <div class="news-share bg-w">
                 <h2 class="hd clearfix title-block <#if loan.activityType == 'NEWBIE'>new</#if>">
                     <div class="fl title">${loan.name}</div>
-                    <#if loan.activityType == "ACTIVITY">
+                    <#if loan.activity?string("true","false") == "true">
                         <span class="arrow-tag-normal">
                             <i class="ic-left"></i>
                             <em>${loan.activityDesc!}</em>

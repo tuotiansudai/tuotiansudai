@@ -1,5 +1,6 @@
 <div class="leader-container <#if activityType= 'luxury'></#if><#if activityType= 'travel'>tour-theme</#if>"  id="awardCom"><!--旅游：tour-theme，国庆：national-day-theme  -->
     <div class="leader-list">
+    <input type="hidden" val="${activityType}" id="themeType">
         <div class="lottery-circle">
             <h3>我的抽奖机会：<span class="lottery-time">${drawTime}</span>次</h3>
             <div class="circle-shade">
@@ -34,6 +35,18 @@
                             0.5%加息券
                         {{else if $value.prize=='INTEREST_COUPON_2'}}
                             0.2%加息券
+                        {{else if $value.prize=='MEMBERSHIP_V5'}}
+                            1个月V5会员
+                        {{else if $value.prize=='RED_INVEST_15'}}
+                            15元投资红包
+                        {{else if $value.prize=='RED_INVEST_50'}}
+                            50元投资红包
+                        {{else if $value.prize=='TELEPHONE_FARE_10'}}
+                            10元话费
+                        {{else if $value.prize=='IQIYI_MEMBERSHIP'}}
+                            1个月爱奇艺会员
+                        {{else if $value.prize=='CINEMA_TICKET'}}
+                            电影票一张
                         {{/if}}
                         .</li>
                     {{/each}}
@@ -62,6 +75,18 @@
                                 0.5%加息券
                             {{else if $value.prize=='INTEREST_COUPON_2'}}
                                 0.2%加息券
+                            {{else if $value.prize=='MEMBERSHIP_V5'}}
+                                1个月V5会员
+                            {{else if $value.prize=='RED_INVEST_15'}}
+                                15元投资红包
+                            {{else if $value.prize=='RED_INVEST_50'}}
+                                50元投资红包
+                            {{else if $value.prize=='TELEPHONE_FARE_10'}}
+                                10元话费
+                            {{else if $value.prize=='IQIYI_MEMBERSHIP'}}
+                                1个月爱奇艺会员
+                            {{else if $value.prize=='CINEMA_TICKET'}}
+                                电影票一张
                             {{/if}}
                         </span>
                         <span class="award-time">{{$value.lotteryTime}}</span>
@@ -91,6 +116,10 @@
             <p>恭喜您！</p>
             <p>{{tiptext}}！</p>
             <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
+        {{else if istype=='membership'}}
+            <p>恭喜您！</p>
+            <p>{{tiptext}}！</p>
+            <p class="des-text">奖品即时生效，赶快去投资吧！</p>
         {{else if istype=='nologin'}}
             <p class="login-text">您还未登录~</p>
             <p class="des-text">请登录后再来抽奖吧！</p>
@@ -100,7 +129,6 @@
         {{else if istype=='timeout'}}
             <p class="login-text">不在活动时间内~</p>
             <p class="des-text">不在活动时间内！</p>
-        {{else}}
         {{/if}}
         </div>
         <div class="btn-list">
@@ -108,11 +136,13 @@
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             {{else if istype=='virtual'}}
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            {{else if istype=='membership'}}
+                <a href="/loan-list" class="go-on">去投资</a>
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             {{else if istype=='nologin'}}
                 <a href="/login?redirect=/activity/autumn/" class="go-on">去登录</a>
             {{else if istype=='notimes'}}
                 <a href="javascript:void(0)" class="go-on go-close">知道了</a>
-            {{else}}
             {{/if}}
         </div>
     </div>

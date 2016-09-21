@@ -152,7 +152,7 @@ public class NationalPrizeService {
 
         NationalPrize nationalPrize = getNationalPrize();
         String prizeType = "physical";
-        if(nationalPrize.equals(NationalPrize.RED_ENVELOPE_15) || nationalPrize.equals(NationalPrize.RED_ENVELOPE_50)){
+        if(nationalPrize.equals(NationalPrize.RED_INVEST_15) || nationalPrize.equals(NationalPrize.RED_INVEST_50)){
             couponAssignmentService.assignUserCoupon(mobile, getCouponId(nationalPrize));
             prizeType = "virtual";
         }else if(nationalPrize.equals(NationalPrize.MEMBERSHIP_V5)){
@@ -166,9 +166,9 @@ public class NationalPrizeService {
 
     private long getCouponId(NationalPrize lotteryPrize){
         switch (lotteryPrize){
-            case RED_ENVELOPE_15 :
+            case RED_INVEST_15 :
                 return 309;
-            case RED_ENVELOPE_50 :
+            case RED_INVEST_50 :
                 return 310;
         }
         return 0l;
@@ -186,9 +186,9 @@ public class NationalPrizeService {
         } else if (mod >= 10 && mod <= 14){
             return NationalPrize.TELEPHONE_FARE_10;
         } else if (mod >= 15 && mod <= 44){
-            return NationalPrize.RED_ENVELOPE_50;
+            return NationalPrize.RED_INVEST_50;
         }else if (mod >= 45 && mod <= 74){
-            return NationalPrize.RED_ENVELOPE_15;
+            return NationalPrize.RED_INVEST_15;
         }else{
             return NationalPrize.MEMBERSHIP_V5;
         }
@@ -214,11 +214,11 @@ public class NationalPrizeService {
     }
 
     public long getAllActivityInvestAmount(){
-        return investMapper.findSumInvestAmountByActivityTypeAndInvestTime(ActivityType.ACTIVITY, activityNationalStartTime, activityNationalEndTime);
+        return investMapper.findSumInvestAmountByActivityTypeAndInvestTime(true, activityNationalStartTime, activityNationalEndTime);
     }
 
     public String getAllActivityUserCount(){
-        return String.valueOf(investMapper.findSumUserCountByActivityTypeAndInvestTime(ActivityType.ACTIVITY, activityNationalStartTime, activityNationalEndTime));
+        return String.valueOf(investMapper.findSumUserCountByActivityTypeAndInvestTime(true, activityNationalStartTime, activityNationalEndTime));
     }
 
     private void createUserMembershipModel(String loginName, int level) {

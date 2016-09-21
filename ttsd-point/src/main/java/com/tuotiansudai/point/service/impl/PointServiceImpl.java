@@ -9,6 +9,7 @@ import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
@@ -43,6 +44,9 @@ public class PointServiceImpl implements PointService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.startTime}\")}")
     private Date activityNationalStartTime;
 
@@ -66,7 +70,8 @@ public class PointServiceImpl implements PointService {
         long point = new BigDecimal((investModel.getAmount()*duration/InterestCalculator.DAYS_OF_YEAR)).divide(new BigDecimal(100), 0, BigDecimal.ROUND_DOWN).longValue();
         PointBusinessType pointBusinessType = PointBusinessType.INVEST;
         Date nowDate = DateTime.now().toDate();
-        if(nowDate.before(activityNationalEndTime) && nowDate.after(activityNationalStartTime) && loanModel.getActivityType().equals(ActivityType.ACTIVITY)){
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
+        if(nowDate.before(activityNationalEndTime) && nowDate.after(activityNationalStartTime) && loanDetailsModel.isActivity()){
             pointBusinessType = PointBusinessType.ACTIVITY;
             UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
             if(userModel.getRegisterTime().before(activityNationalEndTime) && userModel.getRegisterTime().after(activityNationalStartTime) && !Strings.isNullOrEmpty(userModel.getReferrer())){
