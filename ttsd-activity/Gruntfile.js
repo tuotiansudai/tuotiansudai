@@ -183,7 +183,7 @@ module.exports = function(grunt) {
         'watch'
     ]);
 
-    /*前端人员开发的时候用，最后发布的时候执行一次 grunt */
+    /* 前端人员开发的时候用，最后发布的时候执行一次 grunt */
     grunt.registerTask('dev',
         [
             'newer:clean',
