@@ -157,6 +157,6 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
             $('#MyGift').html(tpl('MyGiftTpl', {gift:data}));
         });
     }
-    GiftRecord ();
-    MyGift();
+    // GiftRecord ();
+    // MyGift();
 });

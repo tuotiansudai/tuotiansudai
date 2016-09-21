@@ -132,79 +132,8 @@
     <div class="tc">
         <a href="#" class="btn-normal-day">立即邀请好友赢抽奖机会</a>
     </div>
-        <#--<#include "gift-circle.ftl"/>-->
-
-        <div class="leader-container national-day-theme"  id="awardCom"><!--旅游主题class替换为tour-theme-->
-            <input type="hidden"  id="themeType"/>
-            <div class="leader-list">
-                <div class="lottery-circle">
-                    <h3>我的抽奖机会：<span class="lottery-time">0</span>次</h3>
-                    <div class="circle-shade">
-                        <div class="pointer-img" id="pointer" data-islogin="true">
-                            <img src="${staticServer}/activity/images/sign/actor/circle/pointer.png" alt="pointer" width="100%"/>
-                        </div>
-                        <div class="rotate-btn" id="rotate">
-                            <img src="${staticServer}/activity/images/sign/actor/circle/national-day-gift.png" alt="pointer" width="100%" />
-                        </div>
-                    </div>
-                </div>
-                <div class="lottery-detail">
-                    <h3>我的抽奖机会：<span class="lottery-time">1</span>次</h3>
-                    <ul class="gift-record">
-                        <li class="active"><span>中奖记录</span></li>
-                        <li><span>我的奖品</span></li>
-                    </ul>
-                    <div class="record-list" id="recordList">
-
-                        <ul class="record-model own-record" id="MyGift">
-                                <li>
-                                    <#--<span class="award-name">-->
-                                        <#--华东旅游大奖-->
-                                    <#--</span>-->
-                                    恭喜130****7149抽中了新马泰七日游
-                                </li>
-                            <li>
-                                恭喜130****7149抽中了新马泰七日游
-                            </li>
-                            <li>
-                                恭喜130****7149抽中了新马泰七日游
-                            </li>
-                            <li>
-                                恭喜130****7149抽中了新马泰七日游
-                            </li>
-                            <li>
-                                恭喜130****7149抽中了新马泰七日游
-                            </li>
-                            <li>
-                                恭喜130****7149抽中了新马泰七日游
-                            </li>
-                            <li>
-                                恭喜130****7149抽中了新马泰七日游
-                            </li>
-                            <li>
-                                恭喜130****7149抽中了新马泰七日游
-                            </li>
-                            <li>
-                                恭喜130****7149抽中了新马泰七日游
-                            </li>
-                            <li>
-                                恭喜130****7149抽中了新马泰七日游
-                            </li>
-                            <li>
-                                恭喜130****7149抽中了新马泰七日游
-                            </li>
-                            <li>
-                                恭喜130****7149抽中了新马泰七日游
-                            </li>
-                                <#--<li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>-->
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    <#assign prizeType = 'national-day-theme'/>
-    <#--<#include "gift-circle.ftl"/>-->
+        <#include "gift-circle.ftl"/>
+        <!-- <#assign prizeType = 'national-day-theme'/> -->
     </div>
 
 <div class="section-outer">
