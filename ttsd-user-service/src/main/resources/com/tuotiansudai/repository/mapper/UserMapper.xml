@@ -68,7 +68,7 @@
         select * from user where login_name = #{loginName}
     </select>
 
-    <select id="lockByLoginName" parameterType="string" resultMap="userResultMap" useCache="false">
+    <select id="lockByLoginName" parameterType="string" resultMap="userResultMap">
         select * from user where login_name = #{loginName} for update
     </select>
 
