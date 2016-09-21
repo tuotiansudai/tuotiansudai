@@ -1,8 +1,7 @@
-<div class="leader-container <#if prizeType='travel'>tour-theme</#if>" id="awardCom"><!--旅游主题class替换为tour-theme-->
-    <input type="hidden" value="${prizeType}" id="themeType"/>
+<div class="leader-container national-day-theme"   id="awardCom"><!--旅游：tour-theme，国庆：national-day-theme  -->
     <div class="leader-list">
         <div class="lottery-circle">
-            <h3>我的抽奖机会：<span class="lottery-time">${drawTime}</span>次</h3>
+            <h3>我的抽奖机会：<span class="lottery-time">22</span>次</h3>
             <div class="circle-shade">
                 <div class="pointer-img" id="pointer" data-islogin="true">
                     <img src="${staticServer}/activity/images/sign/actor/circle/pointer.png" alt="pointer" width="100%"/>
@@ -10,14 +9,15 @@
                 <div class="rotate-btn" id="rotate">
                     <img src="${staticServer}/activity/images/sign/actor/circle/luxury-gift-new.png" alt="turntable" width="100%" class="luxury-img"/>
                     <img src="${staticServer}/activity/images/sign/actor/circle/tour-gift.png" alt="pointer" width="100%" class="tour-img"/>
+                    <img src="${staticServer}/activity/images/sign/actor/circle/national-day-gift.png" alt="pointer" width="100%" class="national-img"/>
                 </div>
             </div>
         </div>
         <div class="lottery-detail">
-            <h3>我的抽奖机会：<span class="lottery-time">${drawTime}</span>次</h3>
+            <h3>我的抽奖机会：<span class="lottery-time">22</span>次</h3>
             <ul class="gift-record">
-                <li class="active">中奖记录</li>
-                <li>我的奖品</li>
+                <li class="active"><span>中奖记录</span></li>
+                <li><span>我的奖品</span></li>
             </ul>
             <div class="record-list" id="recordList">
                 <ul class="record-model user-record active" id="GiftRecord">
@@ -82,7 +82,8 @@
         </div>
     </div>
 </div>
-<div class="tip-list <#if prizeType='travel'>tour-theme</#if>" id="tipList"><!--旅游主题class替换为tour-theme-->
+
+<div class="tip-list national-day-theme" id="tipList"><!--旅游:tour-theme,国庆：national-day-theme   -->
     <script id="tipListTpl" type="text/html">
     <div class="tip-dom">
         <div class="close-btn go-close"></div>
@@ -113,7 +114,7 @@
             {{else if istype=='virtual'}}
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             {{else if istype=='nologin'}}
-                <a href="/login?redirect=/activity/autumn/${prizeType}" class="go-on">去登录</a>
+                <a href="/login?redirect=/activity/autumn/" class="go-on">去登录</a>
             {{else if istype=='notimes'}}
                 <a href="javascript:void(0)" class="go-on go-close">知道了</a>
             {{else}}
