@@ -66,13 +66,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     @Override
     @Transactional
     public BaseDto<BaseDataDto> invest(InvestDto investDto) {
-//        userMapper.lockByLoginName(investDto.getLoginName());
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        userMapper.lockByLoginName(investDto.getLoginName());
         BaseDataDto dataDto = new BaseDataDto();
         BaseDto<BaseDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
@@ -82,7 +76,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         }
 
         UserCouponModel userCouponModel = userCouponMapper.findById(investDto.getUserCouponIds().get(0));
-        CouponModel couponModel = couponMapper.lockById(userCouponModel.getCouponId());
+        CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
         couponModel.setUsedCount(couponModel.getUsedCount() + 1);
         couponMapper.updateCoupon(couponModel);
 
