@@ -161,8 +161,12 @@
     <div class="tc">
         <a href="#" class="btn-normal-day">立即邀请好友赢抽奖机会</a>
     </div>
-        <#include "gift-circle.ftl"/>
-        <!-- <#assign activityPrizeType = 'national-day-theme'/> -->
+
+        <#--<!-- <#assign activityPrizeType = 'national-day-theme'/> &ndash;&gt;-->
+        <div class="national-day-theme" id="nationalDayCircle">
+            <#include "gift-circle.ftl"/>
+        </div>
+
     </div>
 
 <div class="section-outer">

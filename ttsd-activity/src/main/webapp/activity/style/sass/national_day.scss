@@ -262,6 +262,112 @@ body {
   }
 }
 
+.national-day-theme {
+  .leader-container{
+    float: none;
+    margin:0 auto;
+    background: red;
+    .leader-list {
+      .lottery-detail {
+        h3 {
+          background: #ffee9a;
+          border:1px solid #69260c;
+          border-radius:34px;
+          color: #69260c;
+        }
+        .gift-record {
+          background: #71cfcf;
+          border-radius: 20px 20px 0 0;
+          overflow: hidden;
+          border: 1px solid #69260c;
+          border-bottom-width: 0px;
+          box-sizing: border-box;
+          li {
+            background: #facc50;
+            color: #fff;
+            width:50%;
+            &:nth-child(1) {
+              span {
+                display: block;
+                border-right:1px solid #69260c;
+              }
+            }
+            &.active {
+              background: #ffee9a;
+              color: #69260c;
+            }
+          }
+        }
+        .record-list {
+          background: #ffee9a;
+          border: 1px solid #69260c;
+          width:100%;
+          box-sizing: border-box;
+          .record-model {
+            display: block;
+          }
+        }
+      }
+      .lottery-circle {
+        width:570px;
+        .circle-shade {
+          margin: 0 0 40px -10px;
+          background: url("/activity/images/sign/actor/circle/bg-national-circle.png") no-repeat center;
+          background-size: 100%;
+          .rotate-btn{
+            background: url("/activity/images/sign/actor/circle/national-day-gift.png") no-repeat center;
+          }
+        }
+      }
+    }
+  }
+
+  .tip-list{
+    .tip-dom{
+      height:200px;
+      background:url("/activity/images/national-day/national-bg.png") no-repeat center;
+      background-size: 100%;
+      border-radius: 10px;
+      border:1px solid #69260c;
+      box-sizing:border-box;
+      overflow: hidden;
+      .text-tip{
+        width:100%;
+        height:120px;
+        margin:0;
+        padding-top:20px;
+        p{
+          color:#ffea00;
+          &.des-text{
+            color:#fff;
+          }
+        }
+      }
+      .close-btn{
+        width: 15px;
+        height: 15px;
+        top: 10px;
+        right: 10px;
+        background:url("/activity/images/national-day/close-btn.png") no-repeat center;
+        background-size:100%;
+      }
+      .btn-list{
+        height:60px;
+        background:#fff;
+        a{
+          width:100px;
+          height:30px;
+          line-height:30px;
+          margin:15px 10px 0;
+          color:#992900;
+          background:url("/activity/images/national-day/btn-bg.png") no-repeat center;
+          background-size: 100%;
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 700px) {
   .tour-slide  {
     height: 380px;
@@ -377,10 +483,10 @@ body {
         }
       }
     }
-
   }
-  .leader-container {
-    &.national-day-theme {
+
+  .national-day-theme {
+    .leader-container {
       .leader-list {
         .lottery-circle {
           width:100%;
@@ -407,7 +513,9 @@ body {
           }
         }
       }
+
     }
   }
+
 
 }

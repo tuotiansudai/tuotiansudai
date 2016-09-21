@@ -1,7 +1,8 @@
 require(['jquery', 'underscore', 'layerWrapper','commonFun','register_common','circle'], function ($, _, layer) {
 
     var $nationalDayFrame=$('#nationalDayFrame'),
-        $tourSlide=$('#tourSlide');
+        $tourSlide=$('#tourSlide'),
+        $nationalDayCircle=$('#nationalDayCircle');
     var browser = commonFun.browserRedirect();
     if (browser == 'mobile') {
         var urlObj=commonFun.parseURL(location.href);
@@ -42,6 +43,9 @@ require(['jquery', 'underscore', 'layerWrapper','commonFun','register_common','c
         }
 
     });
+
+    //抽奖
+
 
 
 });
