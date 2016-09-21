@@ -28,7 +28,7 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id = "autumnPrizeDiv">
                     <label>奖品</label>
                     <select class="selectpicker" name="selectPrize">
                         <option value="" <#if !(lotteryPrizes??)>selected</#if>>全部</option>
@@ -38,15 +38,18 @@
                                 </option>
                         </#list>
                     </select>
-                    <select class="selectpicker" name="selectNational" style="display: none">
-                            <#list nationalPrizes as national>
-                                <option value="${national}" <#if nationalPrizes?? && national==selectPrize>selected</#if>>
-                                    ${national.description}
-                                </option>
-                            </#list>
+
+                </div>
+                <div class="form-group" style="display:none;" id="nationalDiv">
+                    <select class="selectpicker" name="selectNational">
+                        <option value="" <#if !(nationalPrizes??)>selected</#if>>全部</option>
+                        <#list nationalPrizes as national>
+                            <option value="${national}" <#if nationalPrizes?? && national==selectPrize>selected</#if>>
+                            ${national.description}
+                            </option>
+                        </#list>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label>获奖时间</label>
                     <div class='input-group date' id='datetimepicker1'>

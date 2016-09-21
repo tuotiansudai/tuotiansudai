@@ -6,11 +6,11 @@ require(['jquery', 'underscore', 'jquery-ui', 'bootstrap', 'bootstrapSelect', 'b
 
     $("select[name='prizeType']").change(function (){
         if($("select[name='prizeType']").val() == 'NATIONAL_PRIZE'){
-            $("select[name='selectNational']").show();
-            $("select[name='selectPrize']").hide();
+            $("#nationalDiv").show();
+            $("#autumnPrizeDiv").hide();
         }else{
-            $("select[name='selectNational']").hide();
-            $("select[name='selectPrize']").show();
+            $("select[name='nationalDiv']").hide();
+            $("select[name='autumnPrizeDiv']").show();
         }
     });
 

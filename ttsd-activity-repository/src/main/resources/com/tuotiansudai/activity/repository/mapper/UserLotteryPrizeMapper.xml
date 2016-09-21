@@ -48,8 +48,8 @@
             <if test="mobile !=null and mobile !='' ">
                 and p.mobile like '${mobile}%'
             </if>
-            <if test="lotteryPrize !=null and lotteryPrize.name !='' ">
-                and p.prize = '${lotteryPrize.name}'
+            <if test="lotteryPrize !=null ">
+                and p.prize = '${lotteryPrize}'
             </if>
             <if test="startTime != null">
                 and p.lottery_time >= #{startTime}
@@ -71,8 +71,8 @@
             <if test="mobile !=null and mobile !='' ">
                 and p.mobile like '${mobile}%'
             </if>
-            <if test="lotteryPrize !=null and lotteryPrize.name !='' ">
-                and p.prize = '${lotteryPrize.name}'
+            <if test="lotteryPrize !=null ">
+                and p.prize = '${lotteryPrize}'
             </if>
             <if test="startTime != null">
                 and p.lottery_time >= #{startTime}
