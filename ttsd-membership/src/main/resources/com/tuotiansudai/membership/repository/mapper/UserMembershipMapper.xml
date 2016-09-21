@@ -30,8 +30,8 @@
     </resultMap>
 
     <insert id="create" parameterType="UserMembershipModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_membership (login_name, membership_id, expired_time, created_time, type)
-        value(#{loginName}, #{membershipId}, #{expiredTime}, #{createdTime}, #{type})
+        insert into user_membership (login_name, membership_id, expired_time, created_time, type, membership_give_id)
+        value(#{loginName}, #{membershipId}, #{expiredTime}, #{createdTime}, #{type}, #{membershipGiveId})
     </insert>
 
     <insert id="createMass" parameterType="UserMembershipModel">

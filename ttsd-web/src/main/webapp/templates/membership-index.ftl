@@ -5,6 +5,7 @@
 <div class="global-member-ship">
     <#if mobile??>
         <div class="user-info-block page-width">
+            <span class="date-time-item">有效期至：${expiredDate?string("yyyy-MM-dd")!}</span>
             <div class="info clearfix">
                 <div class="avatar fl">
                     <img src="${staticServer}/images/sign/head.png"/>
@@ -40,51 +41,7 @@
         </div>
 
         <div class="my-level">
-            拥有特权
-            <#if membershipLevel == 0>
-                <i class="icon multi-ensuring"></i>
-                <i class="icon anytime-withdraw"></i>
-                <i class="icon birthday-privilege"></i>
-            <#elseif membershipLevel == 1>
-                <i class="icon multi-ensuring"></i>
-                <i class="icon anytime-withdraw"></i>
-                <i class="icon birthday-privilege"></i>
-            <#elseif membershipLevel == 2>
-                <i class="icon multi-ensuring"></i>
-                <i class="icon anytime-withdraw"></i>
-                <i class="icon birthday-privilege"></i>
-                <i class="icon membership-giftbag"></i>
-                <i class="icon service-fee-discount"></i>
-            <#elseif membershipLevel == 3>
-                <i class="icon multi-ensuring"></i>
-                <i class="icon anytime-withdraw"></i>
-                <i class="icon birthday-privilege"></i>
-                <i class="icon membership-giftbag"></i>
-                <i class="icon service-fee-discount"></i>
-                <i class="icon vip-service"></i>
-            <#elseif membershipLevel == 4>
-                <i class="icon multi-ensuring"></i>
-                <i class="icon anytime-withdraw"></i>
-                <i class="icon birthday-privilege"></i>
-                <i class="icon membership-giftbag"></i>
-                <i class="icon service-fee-discount"></i>
-                <i class="icon spec-financial-advisor"></i>
-                <i class="icon vip-service"></i>
-            <#elseif membershipLevel == 5>
-                <i class="icon multi-ensuring"></i>
-                <i class="icon anytime-withdraw"></i>
-                <i class="icon birthday-privilege"></i>
-                <i class="icon membership-giftbag"></i>
-                <i class="icon service-fee-discount"></i>
-                <i class="icon vip-service"></i>
-                <i class="icon spec-financial-advisor"></i>
-                <i class="icon birthday-benefits"></i>
-            <#else>
-                <i class="icon multi-ensuring"></i>
-                <i class="icon anytime-withdraw"></i>
-                <i class="icon service-fee-discount"></i>
-            </#if>
-            想提高等级? <a href="/loan-list">去投资></a>
+            特权多多,稳赚收益 <a href="/loan-list">马上去投资></a>
         </div>
 
         <div class="levels">
@@ -418,16 +375,7 @@
         </div>
 
         <div class="my-level">
-            拥有特权
-            <i class="icon multi-ensuring"></i>
-            <i class="icon anytime-withdraw"></i>
-            <i class="icon birthday-privilege"></i>
-            <i class="icon membership-giftbag"></i>
-            <i class="icon vip-service"></i>
-            <i class="icon spec-financial-advisor"></i>
-            <i class="icon birthday-benefits"></i>
-            <i class="icon service-fee-discount"></i>
-            想提高等级? <a href="/loan-list">去投资></a>
+            特权多多,稳赚收益 <a href="/loan-list">去投资></a>
         </div>
 
         <div class="levels">

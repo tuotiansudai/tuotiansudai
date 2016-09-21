@@ -4,6 +4,16 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
+
+    <form action="/membership-manage/give/${selectGiveId?c}/details" class="form-inline query-build">
+        <div class="form-group">
+            <label>手机</label>
+            <input type='text' class="form-control" id="mobile" name="mobile" value="${selectMobile!}"/>
+        </div>
+
+        <button class="btn btn-sm btn-primary query">查询</button>
+    </form>
+
     <div class="table-responsive">
         <table class="table table-bordered table-hover ">
             <thead>
@@ -40,7 +50,7 @@
             <ul class="pagination">
                 <li>
                     <#if hasPreviousPage>
-                    <a href="?index=${index - 1}&pageSize=${pageSize}" aria-label="Previous">
+                    <a href="?index=${index - 1}&pageSize=${pageSize}<#if selectMobile??>&mobile=${selectMobile}</#if>" aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -50,7 +60,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage>
-                    <a href="?index=${index + 1}&pageSize=${pageSize}" aria-label="Next">
+                    <a href="?index=${index + 1}&pageSize=${pageSize}<#if selectMobile??>&mobile=${selectMobile}</#if>" aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

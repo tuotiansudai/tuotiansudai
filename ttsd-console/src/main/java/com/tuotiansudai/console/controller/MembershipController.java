@@ -178,6 +178,8 @@ public class MembershipController {
         modelAndView.addObject("hasPreviousPage", index > 1);
         int totalPage = (int) (totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1);
         modelAndView.addObject("hasNextPage", index < totalPage);
+        modelAndView.addObject("selectMobile", mobile);
+        modelAndView.addObject("selectGiveId", membershipGiveId);
 
         return modelAndView;
     }

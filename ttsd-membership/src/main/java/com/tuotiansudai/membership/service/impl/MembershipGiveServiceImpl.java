@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.membership.dto.MembershipGiveDto;
 import com.tuotiansudai.membership.dto.MembershipGiveReceiveDto;
+import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipGiveMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -39,6 +40,9 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private MembershipExperienceBillMapper membershipExperienceBillMapper;
 
     @Autowired
     private UserMapper userMapper;
@@ -162,6 +166,10 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
         if (membershipGiveModel.isValid()) {
             return new BaseDto<>(new BaseDataDto(false, "会员发放计划已生效"));
         }
+        MembershipModel membershipModel = membershipMapper.findById(membershipGiveModel.getMembershipId());
+        if (null == membershipModel) {
+            return new BaseDto<>(new BaseDataDto(false, "会员发放计划中对应的会员数据不存在"));
+        }
         if (membershipGiveModel.getUserGroup().equals(MembershipUserGroup.IMPORT_USER)) {
             List<String> importUsers = importService.getImportStrings(ImportService.redisMembershipGiveReceivers, membershipGiveModel.getId());
             if (0 == importUsers.size()) {
@@ -184,14 +192,27 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
 
         if (membershipGiveModel.getUserGroup().equals(MembershipUserGroup.IMPORT_USER)) {
             List<UserMembershipModel> userMembershipModels = new ArrayList<>();
+            List<MembershipExperienceBillModel> membershipExperienceBillModels = new ArrayList<>();
             List<String> importUsers = importService.getImportStrings(ImportService.redisMembershipGiveReceivers, membershipGiveModel.getId());
             for (String loginName : importUsers) {
                 UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipGiveModel.getMembershipId(),
-                        DateTime.now().plusDays(membershipGiveModel.getValidPeriod()).toDate(), UserMembershipType.GIVEN);
+                        DateTime.now().withTimeAtStartOfDay().plusDays(1).plusDays(membershipGiveModel.getValidPeriod()).plusSeconds(-1).toDate(),
+                        UserMembershipType.GIVEN);
                 userMembershipModel.setMembershipGiveId(membershipGiveModel.getId());
                 userMembershipModels.add(userMembershipModel);
+
+                long totalExperience = 0;
+                List<MembershipExperienceBillModel> userMembershipBills = membershipExperienceBillMapper.findMembershipExperienceBillByLoginName(loginName, null, null, 0, 1);
+                if (userMembershipBills.size() != 0) {
+                    totalExperience = userMembershipBills.get(0).getTotalExperience();
+                }
+                MembershipExperienceBillModel membershipExperienceBillModel = new MembershipExperienceBillModel(loginName,
+                        0L, totalExperience, new Date(),
+                        MessageFormat.format("获赠期限为{0}天的V{1}会员", membershipGiveModel.getValidPeriod(), membershipModel.getLevel()));
+                membershipExperienceBillModels.add(membershipExperienceBillModel);
             }
             userMembershipMapper.createMass(userMembershipModels);
+            membershipExperienceBillMapper.createMass(membershipExperienceBillModels);
         }
 
         return new BaseDto<>(new BaseDataDto(true));

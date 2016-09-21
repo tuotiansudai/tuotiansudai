@@ -20,6 +20,14 @@
         value(#{loginName}, #{experience}, #{totalExperience}, #{createdTime}, #{description})
     </insert>
 
+    <insert id="createMass" parameterType="MembershipExperienceBillModel">
+        INSERT INTO `aa`.`membership_experience_bill` (login_name, experience, total_experience, created_time, description)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.loginName}, #{item.experience}, #{item.totalExperience}, #{item.createdTime}, #{item.description})
+        </foreach>
+    </insert>
+
     <update id="update" parameterType="MembershipExperienceBillModel">
         update membership_experience_bill set login_name = #{loginName}, experience = #{experience}, total_experience = #{totalExperience}, created_time = #{createdTime}, description = #{description} where id = #{id}
     </update>
