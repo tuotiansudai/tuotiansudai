@@ -66,7 +66,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     @Override
     @Transactional
     public BaseDto<BaseDataDto> invest(InvestDto investDto) {
-        userMapper.lockByLoginName(investDto.getLoginName());
+//        userMapper.lockByLoginName(investDto.getLoginName());
 
         BaseDataDto dataDto = new BaseDataDto();
         BaseDto<BaseDataDto> dto = new BaseDto<>();
