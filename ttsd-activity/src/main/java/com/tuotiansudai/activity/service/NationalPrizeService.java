@@ -2,9 +2,9 @@ package com.tuotiansudai.activity.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.dto.PrizeType;
 import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
-import com.tuotiansudai.activity.dto.NationalPrize;
+import com.tuotiansudai.activity.dto.LotteryPrize;
+import com.tuotiansudai.activity.dto.PrizeType;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
@@ -150,12 +150,12 @@ public class NationalPrizeService {
 
         userMapper.lockByLoginName(userModel.getLoginName());
 
-        NationalPrize nationalPrize = getNationalPrize();
+        LotteryPrize nationalPrize = getLotteryPrize();
         String prizeType = "physical";
-        if(nationalPrize.equals(NationalPrize.RED_INVEST_15) || nationalPrize.equals(NationalPrize.RED_INVEST_50)){
+        if(nationalPrize.equals(LotteryPrize.RED_INVEST_15) || nationalPrize.equals(LotteryPrize.RED_INVEST_50)){
             couponAssignmentService.assignUserCoupon(mobile, getCouponId(nationalPrize));
             prizeType = "virtual";
-        }else if(nationalPrize.equals(NationalPrize.MEMBERSHIP_V5)){
+        }else if(nationalPrize.equals(LotteryPrize.MEMBERSHIP_V5)){
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         }
 
@@ -164,7 +164,7 @@ public class NationalPrizeService {
         return new DrawLotteryResultDto(0,nationalPrize.name(),prizeType);
     }
 
-    private long getCouponId(NationalPrize lotteryPrize){
+    private long getCouponId(LotteryPrize lotteryPrize){
         switch (lotteryPrize){
             case RED_INVEST_15 :
                 return 309;
@@ -174,23 +174,23 @@ public class NationalPrizeService {
         return 0l;
     }
 
-    private NationalPrize getNationalPrize(){
+    private LotteryPrize getLotteryPrize(){
         int random = (int) (Math.random() * 100000000);
         int mod = random % 100;
         if (mod >= 0 && mod <= 2){
-            return NationalPrize.MEMBERSHIP_V5;
+            return LotteryPrize.MEMBERSHIP_V5;
         } else if (mod >= 3 && mod <= 5){
-            return NationalPrize.CINEMA_TICKET;
+            return LotteryPrize.CINEMA_TICKET;
         } else if (mod >= 6 && mod <= 9){
-            return NationalPrize.IQIYI_MEMBERSHIP;
+            return LotteryPrize.IQIYI_MEMBERSHIP;
         } else if (mod >= 10 && mod <= 14){
-            return NationalPrize.TELEPHONE_FARE_10;
+            return LotteryPrize.TELEPHONE_FARE_10;
         } else if (mod >= 15 && mod <= 44){
-            return NationalPrize.RED_INVEST_50;
+            return LotteryPrize.RED_INVEST_50;
         }else if (mod >= 45 && mod <= 74){
-            return NationalPrize.RED_INVEST_15;
+            return LotteryPrize.RED_INVEST_15;
         }else{
-            return NationalPrize.MEMBERSHIP_V5;
+            return LotteryPrize.MEMBERSHIP_V5;
         }
     }
 

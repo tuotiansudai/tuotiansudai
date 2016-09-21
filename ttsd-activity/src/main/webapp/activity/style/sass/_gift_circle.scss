@@ -333,8 +333,19 @@ $width:700px;
           border: 1px solid #69260c;
           width:100%;
           box-sizing: border-box;
-          .record-model {
-            display: block;
+          .record-model{
+            &.user-record{
+              li{
+                color:#69260c;
+              }
+            }
+            &.own-record{
+              li{
+                span{
+                  color:#69260c;
+                }
+              }
+            }
           }
         }
       }

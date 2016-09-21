@@ -174,4 +174,8 @@ public class HomeLoanDto {
     public void setActivityDesc(String activityDesc) {
         this.activityDesc = activityDesc;
     }
+
+    public boolean getActivity() {
+        return activity;
+    }
 }

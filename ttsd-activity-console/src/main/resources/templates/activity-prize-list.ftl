@@ -39,10 +39,9 @@
                         </#list>
                     </select>
                     <select class="selectpicker" name="selectNational" style="display: none">
-                        <option value="" <#if !(nationals??)>selected</#if>>全部</option>
-                            <#list nationals as national>
-                                <option value="${national}" <#if nationals?? && national==selectNational>selected</#if>>
-                                ${national.description}
+                            <#list nationalPrizes as national>
+                                <option value="${national}" <#if nationalPrizes?? && national==selectPrize>selected</#if>>
+                                    ${national.description}
                                 </option>
                             </#list>
                     </select>

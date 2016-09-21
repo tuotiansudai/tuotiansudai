@@ -3,7 +3,6 @@ package com.tuotiansudai.console.activity.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.dto.LotteryPrize;
-import com.tuotiansudai.activity.dto.NationalPrize;
 import com.tuotiansudai.activity.dto.PrizeType;
 import com.tuotiansudai.console.activity.service.UserLotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/activity-console/activity-manage")
@@ -50,18 +50,18 @@ public class LotteryController {
 
     @RequestMapping(value = "/user-prize-list", method = RequestMethod.GET)
     public ModelAndView userPrizeList(@RequestParam(name = "mobile", required = false) String mobile,
-                                      @RequestParam(name = "selectPrize", required = false) LotteryPrize selectPrize,
-                                      @RequestParam(name = "selectNational", required = false) LotteryPrize selectNational,
-                                      @RequestParam(name = "prizeType", required = false) PrizeType prizeType,
+                                      @RequestParam(name = "selectPrize", required = false) LotteryPrize autumnPrize,
+                                      @RequestParam(name = "selectNational", required = false) LotteryPrize NationalPrize,
+                                      @RequestParam(name = "prizeType", required = false ,defaultValue = "AUTUMN_PRIZE") PrizeType prizeType,
                                       @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                       @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                       @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/activity-prize-list");
-        prizeType = prizeType == null ? PrizeType.AUTUMN_PRIZE : prizeType;
-        int lotteryCount = userLotteryService.findUserLotteryPrizeCountViews(mobile, selectPrize == null ? selectNational.toString() : selectPrize.toString(), prizeType, startTime, endTime);
+        LotteryPrize lotteryPrize = prizeType.equals(PrizeType.AUTUMN_PRIZE) ? autumnPrize : NationalPrize;
+        int lotteryCount = userLotteryService.findUserLotteryPrizeCountViews(mobile, lotteryPrize, prizeType, startTime, endTime);
         modelAndView.addObject("lotteryCount", lotteryCount);
-        modelAndView.addObject("prizeList", userLotteryService.findUserLotteryPrizeViews(mobile, selectPrize == null ? selectNational.toString() : selectPrize.toString(), prizeType,startTime, endTime, (index - 1) * pageSize, pageSize));
+        modelAndView.addObject("prizeList", userLotteryService.findUserLotteryPrizeViews(mobile, lotteryPrize, prizeType, startTime, endTime, (index - 1) * pageSize, pageSize));
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         long totalPages = lotteryCount / pageSize + (lotteryCount % pageSize > 0 || lotteryCount == 0 ? 1 : 0);
@@ -70,14 +70,23 @@ public class LotteryController {
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
         modelAndView.addObject("mobile", mobile);
-        modelAndView.addObject("lotteryPrizes", Lists.newArrayList(LotteryPrize.values()));
-        modelAndView.addObject("selectPrize", selectPrize == null ? "" : selectPrize);
+        modelAndView.addObject("selectPrize", autumnPrize == null ? "" : autumnPrize);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
-        modelAndView.addObject("selectPrizeType",prizeType);
+        modelAndView.addObject("selectPrizeType", prizeType == null ? "" : prizeType);
         modelAndView.addObject("prizeTypes", Lists.newArrayList(PrizeType.values()));
-        modelAndView.addObject("nationals", Lists.newArrayList(NationalPrize.values()));
-        modelAndView.addObject("selectNational",selectNational == null ? "" : selectNational);
+        modelAndView.addObject("lotteryPrizes", getAutumnPrize());
+        modelAndView.addObject("nationalPrizes", getNationalPrize());
         return modelAndView;
+    }
+
+    private List getAutumnPrize(){
+        return Lists.newArrayList(LotteryPrize.TOURISM, LotteryPrize.MANGO_CARD_100, LotteryPrize.LUXURY, LotteryPrize.PORCELAIN_CUP,
+                LotteryPrize.RED_ENVELOPE_100, LotteryPrize.RED_ENVELOPE_50, LotteryPrize.INTEREST_COUPON_5, LotteryPrize.INTEREST_COUPON_2);
+    }
+
+    private List getNationalPrize(){
+        return Lists.newArrayList(LotteryPrize.MEMBERSHIP_V5, LotteryPrize.RED_INVEST_15, LotteryPrize.RED_INVEST_50, LotteryPrize.TELEPHONE_FARE_10,
+                LotteryPrize.IQIYI_MEMBERSHIP, LotteryPrize.CINEMA_TICKET, LotteryPrize.FLOWER_CUP, LotteryPrize.IPHONE_7);
     }
 }

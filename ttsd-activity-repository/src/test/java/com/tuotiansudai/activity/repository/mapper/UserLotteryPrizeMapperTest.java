@@ -37,7 +37,7 @@ public class UserLotteryPrizeMapperTest extends BaseMapperTest{
     public void shouldFindUserLotteryPrizeViewsIsOk(){
         String mobile = "12312341113";
         userLotteryPrizeMapper.create(getUserLotteryPrizeModel("testUserLotteryPrize", mobile, LotteryPrize.INTEREST_COUPON_2));
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, LotteryPrize.INTEREST_COUPON_2.name(),null, DateUtils.addDays(DateTime.now().toDate(),-10),DateUtils.addDays(DateTime.now().toDate(),10),0,10);
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, LotteryPrize.INTEREST_COUPON_2,null, DateUtils.addDays(DateTime.now().toDate(),-10),DateUtils.addDays(DateTime.now().toDate(),10),0,10);
         assertTrue(CollectionUtils.isNotEmpty(userLotteryPrizeViews));
     }
 
