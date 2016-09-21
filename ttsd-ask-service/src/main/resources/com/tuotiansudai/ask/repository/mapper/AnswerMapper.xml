@@ -53,7 +53,7 @@
         where id = #{id}
     </select>
 
-    <select id="lockById" parameterType="long" resultMap="answerResultMap">
+    <select id="lockById" parameterType="long" resultMap="answerResultMap" useCache="false">
         select *
         from answer
         where id = #{id}
@@ -104,7 +104,7 @@
         </if>
     </select>
 
-    <select id="findBestAnswerByQuestionId" parameterType="long" resultMap="answerResultMap">
+    <select id="findBestAnswerByQuestionId" parameterType="long" resultMap="answerResultMap" useCache="false">
         select *
         from answer
         where question_id = #{questionId}

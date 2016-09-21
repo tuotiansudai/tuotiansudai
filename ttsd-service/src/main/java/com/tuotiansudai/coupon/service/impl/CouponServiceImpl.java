@@ -7,7 +7,6 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -62,9 +61,6 @@ public class CouponServiceImpl implements CouponService {
     private CouponUserGroupMapper couponUserGroupMapper;
 
     @Autowired
-    private CouponExchangeMapper couponExchangeMapper;
-
-    @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
@@ -94,13 +90,6 @@ public class CouponServiceImpl implements CouponService {
             couponUserGroupModel.setUserGroup(couponModel.getUserGroup());
             couponUserGroupModel.setUserGroupItems(couponModel.getUserGroup() == UserGroup.AGENT ? couponModel.getAgents() : couponModel.getChannels());
             couponUserGroupMapper.create(couponUserGroupModel);
-        }
-        if (exchangeCouponDto.getExchangePoint() != null && exchangeCouponDto.getExchangePoint() > 0) {
-            CouponExchangeModel couponExchangeModel = new CouponExchangeModel();
-            couponExchangeModel.setCouponId(couponModel.getId());
-            couponExchangeModel.setSeq(exchangeCouponDto.getSeq());
-            couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
-            couponExchangeMapper.create(couponExchangeModel);
         }
         return exchangeCouponDto;
 
@@ -180,13 +169,6 @@ public class CouponServiceImpl implements CouponService {
             if (couponUserGroupModel != null) {
                 couponUserGroupMapper.delete(couponUserGroupModel.getId());
             }
-        }
-        if (exchangeCouponDto.getExchangePoint() != null && exchangeCouponDto.getExchangePoint() > 0) {
-
-            CouponExchangeModel couponExchangeModel = couponExchangeMapper.findByCouponId(exchangeCouponDto.getId());
-            couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
-            couponExchangeModel.setSeq(exchangeCouponDto.getSeq());
-            couponExchangeMapper.update(couponExchangeModel);
         }
 
     }
@@ -371,13 +353,6 @@ public class CouponServiceImpl implements CouponService {
         }
 
         return totalInterest;
-    }
-
-
-
-    @Override
-    public CouponExchangeModel findCouponExchangeByCouponId(long couponId) {
-        return couponExchangeMapper.findByCouponId(couponId);
     }
 
     @Override
