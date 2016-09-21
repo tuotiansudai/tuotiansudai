@@ -10,7 +10,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
         $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
 
         //导入用户按钮
-        $importBtn.change(function () {
+        $importBtn.click(function () {
             if ("IMPORT_USER" == $('.jq-userGroup').val()) {
                 var file = $(this).find('input').get(0).files[0];
                 var formData = new FormData();
@@ -33,6 +33,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                 });
             } else {
                 alert("只有\"导入用户\"才能导入");
+                return;
             }
         });
 

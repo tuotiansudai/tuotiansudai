@@ -2,7 +2,9 @@ package com.tuotiansudai.membership.dto;
 
 import com.tuotiansudai.membership.repository.model.MembershipGiveModel;
 import com.tuotiansudai.membership.repository.model.MembershipUserGroup;
+import org.joda.time.DateTime;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MembershipGiveDto {
@@ -64,7 +66,9 @@ public class MembershipGiveDto {
     }
 
     public void setReceiveStartTime(Date receiveStartTime) {
-        this.receiveStartTime = receiveStartTime;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date = simpleDateFormat.format(receiveStartTime);
+        this.receiveStartTime = DateTime.parse(date).toDate();
     }
 
     public Date getReceiveEndTime() {
@@ -72,7 +76,9 @@ public class MembershipGiveDto {
     }
 
     public void setReceiveEndTime(Date receiveEndTime) {
-        this.receiveEndTime = receiveEndTime;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date = simpleDateFormat.format(receiveEndTime);
+        this.receiveEndTime = DateTime.parse(date).toDate();
     }
 
     public MembershipUserGroup getUserGroup() {
