@@ -70,7 +70,7 @@ public class LoanDetailDto extends BaseDataDto {
 
     private String extraSource;
 
-    private boolean activity;
+    private String activityDesc;
 
     public LoanDetailDto(LoanModel loanModel, LoanDetailsModel loanDetails, long investedAmount, List<LoanTitleModel> loanTitleModels, List<LoanTitleRelationModel> loanTitleRelationModels, InvestorDto investorDto) {
         this.id = loanModel.getId();
@@ -96,7 +96,7 @@ public class LoanDetailDto extends BaseDataDto {
         this.investor = investorDto;
         this.declaration = loanDetails == null ? null : loanDetails.getDeclaration();
         this.extraSource = loanDetails == null ? null :loanDetails.getExtraSource();
-        this.activity = loanDetails == null ? false : loanDetails.isActivity();
+        this.activityDesc = loanDetails == null ? "" : loanDetails.getActivityDesc();
     }
 
     public long getId() {
@@ -235,11 +235,11 @@ public class LoanDetailDto extends BaseDataDto {
         this.extraSource = extraSource;
     }
 
-    public boolean isActivity() {
-        return activity;
+    public String getActivityDesc() {
+        return activityDesc;
     }
 
-    public void setActivity(boolean activity) {
-        this.activity = activity;
+    public void setActivityDesc(String activityDesc) {
+        this.activityDesc = activityDesc;
     }
 }

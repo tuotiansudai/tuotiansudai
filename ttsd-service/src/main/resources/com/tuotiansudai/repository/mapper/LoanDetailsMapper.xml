@@ -11,14 +11,14 @@
         <result column="loan_id" property="loanId"/>
         <result column="declaration" property="declaration"/>
         <result column="extra_source" property="extraSource"/>
-        <result column="activity" property="activity"/>
+        <result column="activity_desc" property="activityDesc"/>
     </resultMap>
 
     <insert id="create" parameterType="LoanDetailsModel">
         INSERT INTO `aa`.`loan_details`
-        (id, loan_id, declaration, extra_source, activity)
+        (id, loan_id, declaration, extra_source, activity_desc)
         VALUES
-        (#{id}, #{loanId}, #{declaration}, #{extraSource}, #{activity})
+        (#{id}, #{loanId}, #{declaration}, #{extraSource}, #{activityDesc})
     </insert>
 
     <select id="getLoanDetailsByLoanId" resultMap="LoanDetailsResultMap">
@@ -36,7 +36,7 @@
         <trim prefix="set" suffixOverrides=",">
             <if test="declaration !=null"> declaration = #{declaration},</if>
             <if test="extraSource !=null"> extra_source = #{extraSource},</if>
-            <if test="activity !=null"> activity = #{activity}</if>
+            <if test="activityDesc !=null"> activity_desc = #{activityDesc}</if>
         </trim>
         WHERE
           loan_id = #{loanId}
