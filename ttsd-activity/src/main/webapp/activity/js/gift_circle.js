@@ -59,6 +59,27 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
                     case 'MANGO_CARD_100':
                         rotateFn(6, 347, '100元芒果卡',data.prizeType);
                         break;
+                    case 'RED_INVEST_15':
+                        rotateFn(7, 30, '15元投资红包',data.prizeType);
+                        break;
+                    case 'RED_INVEST_50':
+                        rotateFn(8, 120, '50元投资红包',data.prizeType);
+                        break;
+                    case 'TELEPHONE_FARE_10':
+                        rotateFn(9, 265, '10元话费',data.prizeType);
+                        break;
+                    case 'IQIYI_MEMBERSHIP':
+                        rotateFn(10, 80, '1个月爱奇艺会员',data.prizeType);
+                        break;
+                    case 'CINEMA_TICKET':
+                        rotateFn(11, 310, '电影票一张',data.prizeType);
+                        break;
+                    case 'FLOWER_CUP':
+                        rotateFn(12, 170, '青花瓷杯子',data.prizeType);
+                        break;
+                    case 'MEMBERSHIP_V5':
+                        rotateFn(13, 347, '1个月V5会员',data.prizeType);
+                        break;
                 }
             } else if (data.returnCode == 2) {
                 $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'nologin'})).show().find('.tip-dom').show();
@@ -81,6 +102,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
             animateTo: angles + 1800,
             duration: 8000,
             callback: function() {
+                console.log(type);
                 $('#tipList').html(tpl('tipListTpl', {tiptext:'抽中了'+txt,istype:type})).show().find('.tip-dom').show();
                 bRotate = !bRotate;
                 $('.lottery-time').each(function(index,el){
@@ -157,6 +179,6 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
             $('#MyGift').html(tpl('MyGiftTpl', {gift:data}));
         });
     }
-    GiftRecord ();
-    MyGift();
+    // GiftRecord ();
+    // MyGift();
 });
