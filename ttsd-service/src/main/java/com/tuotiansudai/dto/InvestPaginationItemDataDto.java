@@ -72,7 +72,7 @@ public class InvestPaginationItemDataDto implements Serializable {
                 this.couponDetail = MessageFormat.format("{0}元{1}", AmountConverter.convertCentToString(couponModel.getAmount()), couponModel.getCouponType().getName());
                 break;
             case INTEREST_COUPON:
-                this.couponDetail = MessageFormat.format("{0}%{1}", couponModel.getRate() * 100, couponModel.getCouponType().getName());
+                this.couponDetail = MessageFormat.format("{0}%{1}", Long.toString((long)(couponModel.getRate() * 100)), couponModel.getCouponType().getName());
                 break;
             case BIRTHDAY_COUPON:
                 this.couponDetail = MessageFormat.format("{0}倍{1}", couponModel.getBirthdayBenefit() + 1, couponModel.getCouponType().getName());
