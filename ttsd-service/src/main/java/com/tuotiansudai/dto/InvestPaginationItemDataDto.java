@@ -34,6 +34,9 @@ public class InvestPaginationItemDataDto implements Serializable {
     private String extraDetail;
     private String extraActualInterest;
     private InvestStatus investStatus;
+    private String province;
+    private String city;
+    private String identityNumber;
 
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getInvestId();
@@ -56,6 +59,9 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.extraDetail = MessageFormat.format("{0}%", view.getExtraRate());
         this.extraActualInterest = AmountConverter.convertCentToString(view.getExtraActualInterest());
         this.investStatus = view.getInvestStatus();
+        this.province = view.getProvince();
+        this.city = view.getCity();
+        this.identityNumber = view.getIdentityNumber();
     }
 
     public void setCouponDetail(CouponModel couponModel) {
@@ -251,5 +257,41 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public void setInvestStatus(InvestStatus investStatus) {
         this.investStatus = investStatus;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getBirthday() {
+        if (identityNumber == null) {
+            return "";
+        } else if (identityNumber.length() == 18) {
+            return identityNumber.substring(6, 14);
+        } else if (identityNumber.length() == 15) {
+            return identityNumber.substring(6, 12);
+        } else {
+            return "";
+        }
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
     }
 }
