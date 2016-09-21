@@ -4,15 +4,17 @@ public class LoanDetailsDto {
     private long loanId;
     private String declaration;
     private String extraSource;
+    private boolean activity;
     private String activityDesc;
 
     public LoanDetailsDto() {
     }
 
-    public LoanDetailsDto(long loanId, String declaration, String extraSource, String activityDesc) {
+    public LoanDetailsDto(long loanId, String declaration, String extraSource, boolean activity, String activityDesc) {
         this.loanId = loanId;
         this.declaration = declaration;
         this.extraSource = extraSource;
+        this.activity = activity;
         this.activityDesc = activityDesc;
     }
 
@@ -38,6 +40,14 @@ public class LoanDetailsDto {
 
     public void setExtraSource(String extraSource) {
         this.extraSource = extraSource;
+    }
+
+    public boolean isActivity() {
+        return activity;
+    }
+
+    public void setActivity(boolean activity) {
+        this.activity = activity;
     }
 
     public String getActivityDesc() {

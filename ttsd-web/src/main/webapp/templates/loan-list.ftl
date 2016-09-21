@@ -89,10 +89,10 @@
                     <div class="loan-info-frame fl">
                         <div class="loan-top">
                             <span class="l-title fl">${loanItem.name}
-                                <#if loanItem.productType == 'EXPERIENCE'><i
-                                    class="new-tip">仅限使用体验金投资</i></#if>
+                                <#if loanItem.productType == 'EXPERIENCE'><i class="new-tip">仅限使用体验金投资</i></#if>
                             </span>
-                            <#if loanItem.activityType == "ACTIVITY">
+
+                            <#if loanItem.activity?string("true","false") == "true">
                                 <span class="arrow-tag-normal">
                                     <i class="ic-left"></i>
                                     <em>${loanItem.activityDesc!}</em>

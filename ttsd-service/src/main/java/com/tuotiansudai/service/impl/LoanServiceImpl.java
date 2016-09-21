@@ -738,16 +738,19 @@ public class LoanServiceImpl implements LoanService {
                 loanItemDto.setDuration(loanModel.getDuration());
                 double rate = extraLoanRateMapper.findMaxRateByLoanId(loanModel.getId());
                 String extraSource = "";
+                boolean activity = false;
                 String activityDesc = "";
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
                 if(loanDetailsModel != null){
                     extraSource = loanDetailsModel.getExtraSource();
+                    activity = loanDetailsModel.isActivity();
                     activityDesc = loanDetailsModel.getActivityDesc();
                 }
                 if (rate > 0) {
                     loanItemDto.setExtraRate(rate * 100);
                     loanItemDto.setExtraSource(extraSource);
                 }
+                loanItemDto.setActivity(activity);
                 loanItemDto.setActivityDesc(activityDesc);
                 return loanItemDto;
             }
