@@ -1,5 +1,7 @@
-.main-frame{
-  margin:0 auto;
+.main-frame {
+    width: 1000px;
+    height: auto;
+    margin: 20px auto;
 }
 .help-center-container{
   padding-bottom:40px;
@@ -161,4 +163,94 @@
   padding: 10px 30px 30px 40px;
   overflow: hidden;
   min-height: 400px;
+  margin-bottom:20px;
+  h3{
+    line-height:50px;
+    a{
+      font-size:16px;
+      color:#4c4c4c;
+      &:hover{
+        color:#ff7200;
+      }
+    }
+  }
+  .problem-list-group{
+    float:left;
+    width:100%;
+    border:1px solid #e6e6e6;
+    .problem-title-item{
+      float:left;
+      width:100%;
+      border-bottom:1px solid #e6e6e6;
+      span{
+        display:inline-block;
+        height:50px;
+        line-height:50px;
+        font-size:16px;
+        color:#4e4e4e;
+        padding: 0 20px;
+        text-align:center;
+        cursor:pointer;
+        &.active{
+          color:#ff7200;
+        }
+      }
+    }
+    .problem-content-item{
+      float:left;
+      width:100%;
+      padding:20px;
+      box-sizing:border-box;
+      .list-group{
+        float:left;
+        width:100%;
+        display:none;
+        &.active{
+          display:block;
+        }
+        .problem-single-item{
+          float:left;
+          width:100%;
+          background:#fcfcfc;
+          position: relative;
+          padding:10px;
+          box-sizing:border-box;
+          margin-bottom:10px;
+          border:1px solid #fff;
+          &:hover{
+            background:#ebeff5;
+          }
+          &.active{
+            border:1px solid #e6e6e6;
+            &:hover{
+              background:#fcfcfc;
+            }
+            p{
+              &.single-answer{
+                display:block;
+              }
+            }
+          }
+          .fa{
+            position: absolute;
+            top:5px;
+            right:10px;
+            font-size:30px;
+            color:#b2b2b2;
+          }
+          p{
+            font-size:13px;
+            margin-bottom:0;
+            &.single-title{
+              color:#666;
+            }
+            &.single-answer{
+              color:#999;
+              display:none;
+            }
+          }
+        }
+      }
+    }
+  }
 }
