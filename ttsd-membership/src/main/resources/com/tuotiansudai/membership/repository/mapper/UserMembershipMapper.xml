@@ -13,6 +13,7 @@
         <result column="expired_time" property="expiredTime"/>
         <result column="created_time" property="createdTime"/>
         <result column="type" property="type"/>
+        <result column="membership_give_id" property="membershipGiveId"/>
     </resultMap>
 
     <resultMap id="UserMembershipItemResultMap" type="UserMembershipItemView">
@@ -34,10 +35,12 @@
     </insert>
 
     <insert id="createMass" parameterType="UserMembershipModel">
-        INSERT INTO `aa`.`user_membership` (login_name, membership_id, expired_time, created_time, type)
+        INSERT INTO `aa`.`user_membership` (login_name, membership_id, expired_time, created_time, type,
+        membership_give_id)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.loginName}, #{item.membershipId}, #{item.expiredTime}, #{item.createdTime}, #{item.type})
+            (#{item.loginName}, #{item.membershipId}, #{item.expiredTime}, #{item.createdTime}, #{item.type},
+            #{item.membershipGiveId})
         </foreach>
     </insert>
 
@@ -215,16 +218,18 @@
         SELECT * FROM `aa`.`user_membership`
         WHERE
         membership_give_id = #{membershipGiveId}
+        AND type = 'GIVEN'
         <if test="loginName != null and loginName != ''">
             AND login_name = #{loginName}
         </if>
         LIMIT #{index}, #{pageSize}
     </select>
 
-    <select id="findCountGiveMembershipsByLoginNameAndGiveId" resultMap="java.lang.Long">
+    <select id="findCountGiveMembershipsByLoginNameAndGiveId" resultType="java.lang.Long">
         SELECT COUNT(1) FROM `aa`.`user_membership`
         WHERE
         membership_give_id = #{membershipGiveId}
+        AND type = 'GIVEN'
         <if test="loginName != null and loginName != ''">
             AND login_name = #{loginName}
         </if>

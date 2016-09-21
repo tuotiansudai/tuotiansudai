@@ -710,3 +710,11 @@ td.td {
 .info-text{
     line-height:34px;
 }
+
+.edit-btn {
+    display: none;
+}
+
+.edit-btn.active {
+    display: block;
+}

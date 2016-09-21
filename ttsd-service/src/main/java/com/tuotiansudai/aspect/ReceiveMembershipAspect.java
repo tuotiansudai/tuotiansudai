@@ -7,8 +7,8 @@ import com.tuotiansudai.membership.repository.mapper.MembershipGiveMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipGiveModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,9 +30,13 @@ public class ReceiveMembershipAspect {
     @Autowired
     SmsWrapperClient smsWrapperClient;
 
-    @After(value = "execution(* com.tuotiansudai.service.UserService.registerUser(..))")
-    public void registerUserPointcut(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        RegisterUserDto dto = (RegisterUserDto) proceedingJoinPoint.getArgs()[0];
+    @AfterReturning(value = "execution(* *..com.tuotiansudai.service.UserService.registerUser(*))", returning = "returnValue")
+    public void registerUserPointcut(JoinPoint joinPoint, boolean returnValue) throws Throwable {
+        if(!returnValue) {
+            return;
+        }
+
+        RegisterUserDto dto = (RegisterUserDto) joinPoint.getArgs()[0];
         String mobile = dto.getMobile();
 
         List<MembershipModel> membershipModels = membershipMapper.findAllMembership();

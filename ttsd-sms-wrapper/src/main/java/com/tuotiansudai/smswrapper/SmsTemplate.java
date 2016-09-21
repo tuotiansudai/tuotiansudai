@@ -25,9 +25,9 @@ public enum SmsTemplate {
 
     SMS_CANCEL_TRANSFER_LOAN(3031027, "尊敬的拓天速贷客户，由于原始项目提前还款，您的债权转让项目%s已自动取消，请尽快登录平台进行查看。"),
 
-    SMS_IMPORT_RECEIVE_MEMBERSHIP(0, "【拓天速贷】尊敬的用户，拓天给您赠送了V%s会员，赶紧投资享受会员特权吧！"),
+    SMS_IMPORT_RECEIVE_MEMBERSHIP(3031214, "尊敬的用户，拓天给您赠送了V%s会员，赶紧投资享受会员特权吧！"),
 
-    SMS_NEW_USER_RECEIVE_MEMBERSHIP(0, "【拓天速贷】尊敬的用户，欢迎您加入拓天，拓天给您赠送了V%s会员，赶紧投资享受会员特权吧！");
+    SMS_NEW_USER_RECEIVE_MEMBERSHIP(3031215, "尊敬的用户，欢迎您加入拓天，拓天给您赠送了V%s会员，赶紧投资享受会员特权吧！");
 
     private long templateId;
 

@@ -11,7 +11,7 @@ import com.tuotiansudai.membership.repository.mapper.MembershipGiveMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.*;
-import com.tuotiansudai.membership.service.ImportUtils;
+import com.tuotiansudai.membership.service.ImportService;
 import com.tuotiansudai.membership.service.MembershipGiveService;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
@@ -32,21 +32,22 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
     static Logger logger = Logger.getLogger(MembershipGiveServiceImpl.class);
 
     @Autowired
-    MembershipGiveMapper membershipGiveMapper;
+    private MembershipGiveMapper membershipGiveMapper;
 
     @Autowired
-    MembershipMapper membershipMapper;
+    private MembershipMapper membershipMapper;
 
     @Autowired
-    UserMembershipMapper userMembershipMapper;
+    private UserMembershipMapper userMembershipMapper;
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    private ImportUtils importUtils = ImportUtils.getInstance();
+    @Autowired
+    private ImportService importService;
 
     @Override
     public void createAndEditMembershipGive(MembershipGiveDto membershipGiveDto, long importUsersId) {
@@ -112,13 +113,17 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
 
         if (membershipGiveDto.getUserGroup().equals(MembershipUserGroup.IMPORT_USER)) {
             String membershipGiveId = String.valueOf(membershipGiveModel.getId());
-            List<String> importUsers = importUtils.getImportStrings(ImportUtils.redisMembershipGiveReceivers, membershipGiveModel.getId());
-            redisWrapperClient.hdelSeri(ImportUtils.redisMembershipGiveReceivers, String.valueOf(importUsersId));
-            redisWrapperClient.hsetSeri(ImportUtils.redisMembershipGiveReceivers, membershipGiveId, importUsers);
+            List<String> importUsers = importService.getImportStrings(ImportService.redisMembershipGiveReceivers, importUsersId);
+            redisWrapperClient.hdelSeri(ImportService.redisMembershipGiveReceivers, String.valueOf(importUsersId));
+            redisWrapperClient.hsetSeri(ImportService.redisMembershipGiveReceivers, membershipGiveId, importUsers);
         }
     }
 
     private void editMembershipGive(MembershipGiveModel originMembershipGiveModel, MembershipGiveDto membershipGiveDto, long importUsersId) {
+        if (originMembershipGiveModel.isValid()) {
+            return;
+        }
+
         MembershipModel membershipModel = membershipMapper.findByLevel(membershipGiveDto.getMembershipLevel());
         if (null == membershipModel) {
             logger.error(MessageFormat.format("[MembershipGiveServiceImpl][createMembershipGive]Membership level {0} not exist.", membershipGiveDto.getMembershipLevel()));
@@ -140,8 +145,10 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
 
         membershipGiveMapper.update(originMembershipGiveModel);
 
-        if (!membershipGiveDto.getUserGroup().equals(MembershipUserGroup.IMPORT_USER)) {
-            redisWrapperClient.hdelSeri(ImportUtils.redisMembershipGiveReceivers, String.valueOf(importUsersId));
+        List<String> importUsers = importService.getImportStrings(ImportService.redisMembershipGiveReceivers, importUsersId);
+        redisWrapperClient.hdelSeri(ImportService.redisMembershipGiveReceivers, String.valueOf(importUsersId));
+        if (membershipGiveDto.getUserGroup().equals(MembershipUserGroup.IMPORT_USER)) {
+            redisWrapperClient.hsetSeri(ImportService.redisMembershipGiveReceivers, String.valueOf(originMembershipGiveModel.getId()), importUsers);
         }
     }
 
@@ -155,6 +162,18 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
         if (membershipGiveModel.isValid()) {
             return new BaseDto<>(new BaseDataDto(false, "会员发放计划已生效"));
         }
+        if (membershipGiveModel.getUserGroup().equals(MembershipUserGroup.IMPORT_USER)) {
+            List<String> importUsers = importService.getImportStrings(ImportService.redisMembershipGiveReceivers, membershipGiveModel.getId());
+            if (0 == importUsers.size()) {
+                return new BaseDto<>(new BaseDataDto(false, "导入用户名单未导入或已丢失"));
+            }
+            for (String loginName : importUsers) {
+                UserModel userModel = userMapper.findByLoginName(loginName);
+                if (null == userModel) {
+                    return new BaseDto<>(new BaseDataDto(false, "导入用户名单中含有不存在的用户名,需要重新导入"));
+                }
+            }
+        }
 
         membershipGiveModel.setValid(true);
         membershipGiveModel.setValidLoginName(validLoginName);
@@ -165,7 +184,7 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
 
         if (membershipGiveModel.getUserGroup().equals(MembershipUserGroup.IMPORT_USER)) {
             List<UserMembershipModel> userMembershipModels = new ArrayList<>();
-            List<String> importUsers = importUtils.getImportStrings(ImportUtils.redisMembershipGiveReceivers, membershipGiveModel.getId());
+            List<String> importUsers = importService.getImportStrings(ImportService.redisMembershipGiveReceivers, membershipGiveModel.getId());
             for (String loginName : importUsers) {
                 UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, membershipGiveModel.getMembershipId(),
                         DateTime.now().plusDays(membershipGiveModel.getValidPeriod()).toDate(), UserMembershipType.GIVEN);
@@ -202,28 +221,13 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
     }
 
     @Override
-    public BaseDto<BaseDataDto> deleteMembershipGive(long id) {
-        MembershipGiveModel membershipGiveModel = membershipGiveMapper.findById(id);
-        if (null == membershipGiveModel) {
-            return new BaseDto<>(new BaseDataDto(false, "会员发放计划不存在"));
-        }
-        if (membershipGiveModel.isValid()) {
-            return new BaseDto<>(new BaseDataDto(false, "会员发放计划已生效"));
-        }
-
-        membershipGiveMapper.delete(id);
-
-        return new BaseDto<>(new BaseDataDto(true));
-    }
-
-    @Override
     public BaseDto<BaseDataDto> importGiveUsers(long importUsersId, InputStream inputStream) {
         if (null == inputStream) {
             return new BaseDto<>(new BaseDataDto(false, "没有导入名单"));
         }
         long newImportUsersId;
         try {
-            newImportUsersId = importUtils.importStrings(ImportUtils.redisMembershipGiveReceivers, importUsersId, inputStream);
+            newImportUsersId = importService.importStrings(ImportService.redisMembershipGiveReceivers, importUsersId, inputStream);
         } catch (IOException e) {
             return new BaseDto<>(new BaseDataDto(false, "用户导入失败"));
         } catch (IllegalArgumentException e) {
@@ -247,7 +251,7 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
             loginName = userModel.getLoginName();
         }
 
-        List<UserMembershipModel> userMembershipModels = userMembershipMapper.findGiveMembershipsByLoginNameAndGiveId(membershipGiveId, loginName, index, pageSize);
+        List<UserMembershipModel> userMembershipModels = userMembershipMapper.findGiveMembershipsByLoginNameAndGiveId(membershipGiveId, loginName, (index - 1) * pageSize, pageSize);
         return Lists.transform(userMembershipModels, new Function<UserMembershipModel, MembershipGiveReceiveDto>() {
             @Override
             public MembershipGiveReceiveDto apply(UserMembershipModel userMembershipModel) {

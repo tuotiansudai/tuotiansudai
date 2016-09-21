@@ -234,9 +234,9 @@ public class MembershipController {
         return membershipGiveTempService.approveMembershipGive(membershipGiveId, LoginUserInfo.getLoginName());
     }
 
-    @RequestMapping(value = "/give/delete/{membershipGiveId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/give/cancel/{membershipGiveId}", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> deleteMembershipGive(@PathVariable long membershipGiveId) {
-        return membershipGiveService.deleteMembershipGive(membershipGiveId);
+    public BaseDto<BaseDataDto> cancelMembershipGive(@PathVariable long membershipGiveId) {
+        return membershipGiveService.cancelMembershipGive(membershipGiveId, LoginUserInfo.getLoginName());
     }
 }

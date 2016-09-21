@@ -21,8 +21,6 @@ public interface MembershipGiveService {
 
     BaseDto<BaseDataDto> cancelMembershipGive(long id, String validLoginName);
 
-    BaseDto<BaseDataDto> deleteMembershipGive(long id);
-
     BaseDto<BaseDataDto> importGiveUsers(long importUsersId, InputStream inputStream);
 
     List<MembershipGiveReceiveDto> getMembershipGiveReceiveDtosByMobile(long membershipGiveId, String mobile, int index,

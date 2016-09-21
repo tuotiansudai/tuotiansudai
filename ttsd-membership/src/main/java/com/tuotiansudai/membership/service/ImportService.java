@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,28 +13,22 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
-public class ImportUtils {
+@Service
+public class ImportService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    private final static Map<String, String> redisKeys = new HashMap<>();
+    private final static Set<String> redisKeys = new HashSet<>();
 
     public final static String redisMembershipGiveReceivers = "membership:membership-give:receivers";
 
     static {
-        redisKeys.put("redisMembershipGiveReceivers", "membership:membership-give:receivers");
-    }
-
-    private ImportUtils() {
-    }
-
-    public static ImportUtils getInstance() {
-        return new ImportUtils();
+        redisKeys.add("membership:membership-give:receivers");
     }
 
     private boolean redisKeyIsLegal(String redisKey) {
-        return redisKeys.containsKey(redisKey);
+        return redisKeys.contains(redisKey);
     }
 
     public long importStrings(final String redisKey, long oldImportId, InputStream inputStream) throws IOException {
@@ -72,10 +67,12 @@ public class ImportUtils {
             throw new IllegalArgumentException();
         }
 
-        List<String> importStrings = (List<String>) redisWrapperClient.hgetSeri(redisKey, String.valueOf(importId));
+        Object storeStrings = redisWrapperClient.hgetSeri(redisKey, String.valueOf(importId));
 
-        if(null == importStrings) {
-            importStrings = new ArrayList<>();
+        List<String> importStrings = new ArrayList<>();
+
+        if (null != storeStrings) {
+            importStrings = (List<String>) storeStrings;
         }
 
         return importStrings;

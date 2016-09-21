@@ -41,35 +41,39 @@
             </thead>
             <tbody>
                 <#list membershipGiveDtos as membershipGiveDto>
-                <td>V${membershipGiveDto.membershipLevel}</td>
-                <td>${membershipGiveDto.validPeriod}天</td>
-                <td>${membershipGiveDto.receiveStartTime?date} 至 ${membershipGiveDto.receiveEndTime?date}</td>
-                <td>${membershipGiveDto.userGroup.getDescription()}</td>
-                <td>
-                    <#if membershipGiveDto.valid>
+                <tr>
+                    <td>V${membershipGiveDto.membershipLevel}</td>
+                    <td>${membershipGiveDto.validPeriod}天</td>
+                    <td>${(membershipGiveDto.receiveStartTime?date)!"-"}
+                        至 ${(membershipGiveDto.receiveEndTime?date)!"-"}</td>
+                    <td>${membershipGiveDto.userGroup.getDescription()}</td>
+                    <td class="edit-list">
+
                         <@security.authorize access="hasAnyAuthority('OPERATOR','OPERATOR_ADMIN','ADMIN')">
-                            <a href="/">删除</a>
+                            <a href="/membership-manage/give/edit-view/${membershipGiveDto.id?c}"
+                               class="edit-btn <#if !membershipGiveDto.valid>active</#if>">编辑</a>
                         </@security.authorize>
-                    <#else>
-                        <@security.authorize access="hasAnyAuthority('OPERATOR','OPERATOR_ADMIN','ADMIN')">
-                            <a href="/membership-manage/give/edit-view/${membershipGiveDto.id?c}">编辑</a>
-                        </@security.authorize>
-                    </#if>
-                </td>
-                <td>
-                    <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                        <#if membershipGiveDto.valid>
-                            <#if membershipGiveDto.userGroup == "NEW_REGISTERED_USER">
-                                <input type="checkbox" name="valid" value="已生效" checked="checked" disabled/>
+                    </td>
+                    <td>
+                        <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                            <#if membershipGiveDto.valid>
+                                <#if membershipGiveDto.userGroup == "IMPORT_USER">
+                                    <input type="checkbox" name="valid" checked="checked"
+                                           data-type="${membershipGiveDto.userGroup}" disabled/>
+                                <#else>
+                                    <input type="checkbox" name="valid" checked="checked"
+                                           data-type="${membershipGiveDto.userGroup}"
+                                           data-id="${membershipGiveDto.id}" class="give-membership"/>
+                                </#if>
                             <#else>
-                                <input type="checkbox" name="valid" value="已生效" checked="checked"/>
+                                <input type="checkbox" name="valid"
+                                       data-type="${membershipGiveDto.userGroup}"
+                                       data-id="${membershipGiveDto.id}" class="give-membership"/>
                             </#if>
-                        <#else>
-                            <input type="checkbox" name="valid" value="未生效"/>
-                        </#if>
-                    </@security.authorize>
-                </td>
-                <td><a href="/membership-manage/give/edit-view/${membershipGiveDto.id?c}">查看详情</a></td>
+                        </@security.authorize>
+                    </td>
+                    <td><a href="/membership-manage/give/${membershipGiveDto.id}/details">查看详情</a></td>
+                </tr>
                 </#list>
             </tbody>
         </table>

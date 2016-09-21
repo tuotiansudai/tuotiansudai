@@ -21,9 +21,11 @@
             </thead>
             <tbody>
                 <#list membershipGiveReceiveDtos as membershipGiveReceiveDto>
-                <td>${membershipGiveReceiveDto.loginName}</td>
-                <td>${membershipGiveReceiveDto.mobile}</td>
-                <td>${membershipGiveReceiveDto.receiveTime}</td>
+                <tr>
+                    <td>${membershipGiveReceiveDto.loginName}</td>
+                    <td>${membershipGiveReceiveDto.mobile}</td>
+                    <td>${membershipGiveReceiveDto.receiveTime?date}</td>
+                </tr>
                 </#list>
             </tbody>
         </table>

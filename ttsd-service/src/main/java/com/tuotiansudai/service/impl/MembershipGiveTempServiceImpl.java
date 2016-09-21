@@ -5,15 +5,17 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsUserReceiveMembershipDto;
 import com.tuotiansudai.membership.dto.MembershipGiveDto;
-import com.tuotiansudai.membership.service.ImportUtils;
+import com.tuotiansudai.membership.service.ImportService;
 import com.tuotiansudai.membership.service.MembershipGiveService;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.MembershipGiveTempService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class MembershipGiveTempServiceImpl implements MembershipGiveTempService {
 
     @Autowired
@@ -25,7 +27,8 @@ public class MembershipGiveTempServiceImpl implements MembershipGiveTempService 
     @Autowired
     private UserMapper userMapper;
 
-    private ImportUtils importUtils = ImportUtils.getInstance();
+    @Autowired
+    private ImportService importService;
 
     @Override
     public BaseDto<BaseDataDto> approveMembershipGive(long id, String validLoginName) {
@@ -33,7 +36,7 @@ public class MembershipGiveTempServiceImpl implements MembershipGiveTempService 
         if (baseDto.getData().getStatus()) {
             MembershipGiveDto membershipGiveDto = membershipGiveService.getMembershipGiveDtoById(id);
             if (membershipGiveDto.isSmsNotify()) {
-                List<String> importUsers = importUtils.getImportStrings(ImportUtils.redisMembershipGiveReceivers, membershipGiveDto.getId());
+                List<String> importUsers = importService.getImportStrings(ImportService.redisMembershipGiveReceivers, membershipGiveDto.getId());
                 for (String loginName : importUsers) {
                     UserModel userModel = userMapper.findByLoginName(loginName);
                     if (null != userModel) {

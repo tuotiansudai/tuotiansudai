@@ -26,7 +26,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                 }).done(function (data) {
                     if (data.data.status) {
                         alert(data.data.message);
-                        $('.importUsersId').val(data.data.message);
+                        $('#importUsersId').val(data.data.message);
                     } else {
                         alert(data.data.message);
                     }
@@ -89,7 +89,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function (res) {
                     if (res.data.status) {
-                        location.href = '/project-manage/loan-list';
+                        location.href = '/membership-manage/give/list';
                     } else {
                         alert(res.data.message);
                     }
