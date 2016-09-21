@@ -119,6 +119,7 @@ public class InvestServiceImpl implements InvestService {
     private UserBirthdayUtil userBirthdayUtil;
 
     @Override
+    @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(false);
         this.checkInvestAvailable(investDto);
@@ -126,6 +127,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
+    @Transactional
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(true);
         this.checkInvestAvailable(investDto);
@@ -206,7 +208,7 @@ public class InvestServiceImpl implements InvestService {
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loanModel = loanMapper.findById(loanId);
         String loginName = investDto.getLoginName();
-        long investAmount = Long.parseLong(investDto.getAmount());
+        long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
 
         UserCouponDto maxBenefitUserCoupon = userCouponService.getMaxBenefitUserCoupon(loginName, loanId, investAmount);
         if (maxBenefitUserCoupon != null && CollectionUtils.isEmpty(investDto.getUserCouponIds())) {
