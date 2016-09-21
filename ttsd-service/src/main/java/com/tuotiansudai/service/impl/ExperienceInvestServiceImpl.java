@@ -68,6 +68,11 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     public BaseDto<BaseDataDto> invest(InvestDto investDto) {
 //        userMapper.lockByLoginName(investDto.getLoginName());
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         BaseDataDto dataDto = new BaseDataDto();
         BaseDto<BaseDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
