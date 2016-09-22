@@ -36,7 +36,7 @@ public class NationalPrizeController {
     @Autowired
     private BindBankCardService bindBankCardService;
 
-    private static final float NATIONAL_SUM_AMOUNT = 194900000;
+    private static final float NATIONAL_SUM_AMOUNT = 1000;
 
     private static NumberFormat numberFormat = NumberFormat.getInstance();
 
