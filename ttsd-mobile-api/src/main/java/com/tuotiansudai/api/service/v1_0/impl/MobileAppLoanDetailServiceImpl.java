@@ -205,8 +205,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         }
 
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
-        if(loanDetailsModel != null){
-            loanDetailResponseDataDto.setExtraSource("WEB".equals(loanDetailsModel.getExtraSource())?loanDetailsModel.getExtraSource():"");
+        if (loanDetailsModel != null) {
+            loanDetailResponseDataDto.setExtraSource((Source.WEB.name().equals(loanDetailsModel.getExtraSource())) ? loanDetailsModel.getExtraSource() : "");
         }
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
