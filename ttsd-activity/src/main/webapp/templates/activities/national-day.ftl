@@ -52,7 +52,7 @@
             </div>
 
             <div class="tc">
-                <a href="#" class="btn-normal-day">马上投资国庆专享标！</a>
+                <a href="/loan-list" class="btn-normal-day" target="_blank">马上投资国庆专享标！</a>
             </div>
         </div>
     </div>
@@ -74,7 +74,7 @@
             </dl>
 
             <div class="tc">
-                <a href="#" class="btn-normal-day">去投资赚积分</a>
+                <a href="/loan-list" class="btn-normal-day" target="_blank">去投资赚积分</a>
             </div>
         </div>
 
@@ -88,7 +88,7 @@
             </dl>
 
             <div class="tc">
-                <a href="#" class="btn-normal-day">去投资赚积分</a>
+                <a href="/referrer/refer-list" class="btn-normal-day" target="_blank">邀请好友赚积分</a>
             </div>
         </div>
 
@@ -160,7 +160,7 @@
         <p class="notice tc"><em>活动期间，</em><i>2、</i>每推荐一名好友注册也可获得一次抽奖机会；好友投资，还可再得一次抽奖机会。邀请越多机会越多。</p>
 
     <div class="tc">
-        <a href="#" class="btn-normal-day">立即邀请好友赢抽奖机会</a>
+        <a href="/referrer/refer-list" class="btn-normal-day" target="_blank">立即邀请好友赢抽奖机会</a>
     </div>
 
         <!-- <#assign activityPrizeType = 'national-day-theme'/> -->
@@ -169,6 +169,7 @@
         </div>
 
     </div>
+</div>
 
 <div class="section-outer">
     <div class="section-three-title"></div>
@@ -195,11 +196,7 @@
         </div>
     </div>
 </div>
+
+</div>
 </@global.main>
-
-
-
-
-
-
 

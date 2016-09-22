@@ -161,7 +161,7 @@ module.exports = function(grunt) {
                     }
                 ]
             }
-        },
+        }
     });
 
     //转化成base64

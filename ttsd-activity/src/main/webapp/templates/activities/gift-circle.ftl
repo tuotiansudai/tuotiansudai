@@ -109,16 +109,16 @@
         <div class="close-btn go-close"></div>
         <div class="text-tip">
         {{if istype=='CONCRETE'}}
-            <p>恭喜您！</p>
-            <p>{{tiptext}}！</p>
-            <p class="des-text">拓天客服将会在7个工作日内联系您发放奖品</p>
+            <p class="success-text">恭喜您！</p>
+            <p class="reward-text">{{tiptext}}！</p>
+            <p class="des-text">拓天客服将会在7个工作日内<br/>联系您发放奖品</p>
         {{else if istype=='VIRTUAL'}}
-            <p>恭喜您！</p>
-            <p>{{tiptext}}！</p>
+            <p class="success-text">恭喜您！</p>
+            <p class="reward-text">{{tiptext}}！</p>
             <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
         {{else if istype=='membership'}}
-            <p>恭喜您！</p>
-            <p>{{tiptext}}！</p>
+            <p class="success-text">恭喜您！</p>
+            <p class="reward-text">{{tiptext}}！</p>
             <p class="des-text">奖品即时生效，赶快去投资吧！</p>
         {{else if istype=='nologin'}}
             <p class="login-text">您还未登录~</p>
