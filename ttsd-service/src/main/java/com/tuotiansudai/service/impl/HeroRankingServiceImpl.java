@@ -3,6 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -21,6 +22,7 @@ import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -68,6 +70,8 @@ public class HeroRankingServiceImpl implements HeroRankingService {
     @Autowired
     private AccountMapper accountMapper;
 
+    private int lifeSecond = 5184000;
+
     @Override
     public List<HeroRankingView> obtainHeroRanking(Date tradingTime) {
         if (tradingTime == null) {
@@ -87,7 +91,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
     }
 
     @Override
-    public Map obtainHeroRankingByLoginName(ActivityCategory activityCategory,Date tradingTime, final String loginName) {
+    public Map obtainHeroRankingAndInvestAmountByLoginName(ActivityCategory activityCategory,Date tradingTime, final String loginName) {
         if (tradingTime == null) {
             logger.debug("tradingTime is null");
             return null;
@@ -98,24 +102,29 @@ public class HeroRankingServiceImpl implements HeroRankingService {
         if (count > 0) {
             return null;
         }
+
+        int investRanking = 0;
+        String investAmount = "0";
         List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(tradingTime, activityPeriod.get(0), activityPeriod.get(1));
         if (heroRankingViews != null) {
-            Optional<HeroRankingView> heroRankingViewOptional = Iterators.tryFind(heroRankingViews.iterator(), new Predicate<HeroRankingView>() {
+            investRanking = Iterators.indexOf(heroRankingViews.iterator(), new Predicate<HeroRankingView>() {
                 @Override
                 public boolean apply(HeroRankingView input) {
-                    return input.getLoginName().equalsIgnoreCase(loginName);;
+                    return input.getLoginName().equalsIgnoreCase(loginName);
                 }
-            });
-        }
+            }) + 1;
 
-        Map<String,String> param = Maps.newConcurrentMap();
-        return param;
+            investAmount = AmountConverter.convertCentToString(heroRankingViews.get(investRanking - 1).getSumAmount());
+        }
+        return Maps.newHashMap(ImmutableMap.<String, String>builder().
+                put("investRanking", String.valueOf(investRanking)).
+                put("investAmount",investAmount).build());
     }
 
     @Override
     public void saveMysteriousPrize(MysteriousPrizeDto mysteriousPrizeDto) {
         String prizeDate = new DateTime(mysteriousPrizeDto.getPrizeDate()).withTimeAtStartOfDay().toString("yyyy-MM-dd");
-        redisWrapperClient.hsetSeri(MYSTERIOUSREDISKEY, prizeDate, mysteriousPrizeDto);
+        redisWrapperClient.hsetSeri(MYSTERIOUSREDISKEY, prizeDate, mysteriousPrizeDto,lifeSecond);
     }
 
     @Override

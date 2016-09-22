@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/activity/hero-ranking")
@@ -36,13 +37,16 @@ public class HeroRankingController {
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loadPageData(@RequestParam(value = "activityCategory",defaultValue = "HERO_RANKING") ActivityCategory activityCategory) {
         String loginName = LoginUserInfo.getLoginName();
+        Map param = heroRankingService.obtainHeroRankingAndInvestAmountByLoginName(activityCategory, new Date(), loginName);
+        Integer investRanking = (Integer) param.get("investRanking");
+        String investAmount = param.get("investAmount").toString();
 
         ModelAndView modelAndView = new ModelAndView(activityCategory.equals(ActivityCategory.HERO_RANKING) ? "/activities/hero-ranking" : "", "responsive", true);
         modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
         modelAndView.addObject("yesterdayTime", DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1));
-        Integer investRanking = heroRankingService.obtainHeroRankingByLoginName(activityCategory,new Date(), loginName);
         Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(loginName);
         modelAndView.addObject("investRanking", investRanking);
+        modelAndView.addObject("investAmount", investAmount);
         modelAndView.addObject("referRanking", referRanking);
         modelAndView.addObject("mysteriousPrizeDto", heroRankingService.obtainMysteriousPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         return modelAndView;
