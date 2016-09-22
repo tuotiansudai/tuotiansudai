@@ -38,64 +38,84 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
         });
 
         function checkFormat() {
+            var membershipGiveId = document.getElementById('membershipGiveId').value;
+            var userGroup = $('.jq-userGroup').val();
+            var startTime = $('.jq-start-date').val();
+            var endTime = $('.jq-end-date').val();
+            var validPeriod = $('.jq-valid-period').val();
+
+            if ("NEW_REGISTERED_USER" == userGroup) {
+                if (null == startTime || "" == startTime ||
+                    null == endTime || "" == startTime) {
+                    alert("新注册用户必须填写开始领取时间和结束领取时间");
+                    return false;
+                }
+            }
+
+            if (!/^d+$/.test(validPeriod)) {
+                alert("有效期必须是数字");
+                return false;
+            }
+
             return true;
         }
 
         //提交表单
         $submitBtn.on('click', function () {
+            if (!checkFormat()) {
+                return;
+            }
             if (!confirm("确认要执行此操作吗?")) {
                 return;
             }
-            if (checkFormat()) {
-                var membershipGiveId = document.getElementById('membershipGiveId').value;
-                var userGroup = $('.jq-userGroup').val();
-                var membershipLevel = $('.jq-membershipLevel').val();
-                var startTime = $('.jq-start-date').val();
-                var endTime = $('.jq-end-date').val();
-                var validPeriod = $('.jq-valid-period').val();
-                var smsNotify = $('.jq-smsNotify').get(0).checked;
+            var membershipGiveId = document.getElementById('membershipGiveId').value;
+            var userGroup = $('.jq-userGroup').val();
+            var membershipLevel = $('.jq-membershipLevel').val();
+            var startTime = $('.jq-start-date').val();
+            var endTime = $('.jq-end-date').val();
+            var validPeriod = $('.jq-valid-period').val();
+            var smsNotify = $('.jq-smsNotify').get(0).checked;
 
-                var importUsersId = document.getElementById('importUsersId').value;
+            var importUsersId = document.getElementById('importUsersId').value;
 
-                var url = "/membership-manage/give/edit?importUsersId=" + importUsersId;
-                if ("IMPORT_USER" == userGroup) {
-                    var dataDto = {
-                        "id": membershipGiveId,
-                        "membershipLevel": membershipLevel,
-                        "validPeriod": validPeriod,
-                        "receiveStartTime": null,
-                        "receiveEndTime": null,
-                        "userGroup": userGroup,
-                        "smsNotify": smsNotify,
-                        "valid": false
-                    };
-                } else if ("NEW_REGISTERED_USER" == userGroup) {
-                    var dataDto = {
-                        "id": membershipGiveId,
-                        "membershipLevel": membershipLevel,
-                        "validPeriod": validPeriod,
-                        "receiveStartTime": startTime,
-                        "receiveEndTime": endTime,
-                        "userGroup": userGroup,
-                        "smsNotify": smsNotify,
-                        "valid": false
-                    };
-                }
-                var dataForm = JSON.stringify(dataDto);
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    dataType: 'json',
-                    data: dataForm,
-                    contentType: 'application/json; charset=UTF-8'
-                }).done(function (res) {
-                    if (res.data.status) {
-                        location.href = '/membership-manage/give/list';
-                    } else {
-                        alert(res.data.message);
-                    }
-                });
+            var url = "/membership-manage/give/edit?importUsersId=" + importUsersId;
+            if ("IMPORT_USER" == userGroup) {
+                var dataDto = {
+                    "id": membershipGiveId,
+                    "membershipLevel": membershipLevel,
+                    "validPeriod": validPeriod,
+                    "receiveStartTime": null,
+                    "receiveEndTime": null,
+                    "userGroup": userGroup,
+                    "smsNotify": smsNotify,
+                    "valid": false
+                };
+            } else if ("NEW_REGISTERED_USER" == userGroup) {
+                var dataDto = {
+                    "id": membershipGiveId,
+                    "membershipLevel": membershipLevel,
+                    "validPeriod": validPeriod,
+                    "receiveStartTime": startTime,
+                    "receiveEndTime": endTime,
+                    "userGroup": userGroup,
+                    "smsNotify": smsNotify,
+                    "valid": false
+                };
             }
+            var dataForm = JSON.stringify(dataDto);
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: dataForm,
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function (res) {
+                if (res.data.status) {
+                    location.href = '/membership-manage/give/list';
+                } else {
+                    alert(res.data.message);
+                }
+            });
         });
     });
 });

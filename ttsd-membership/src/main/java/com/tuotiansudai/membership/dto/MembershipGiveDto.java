@@ -2,17 +2,15 @@ package com.tuotiansudai.membership.dto;
 
 import com.tuotiansudai.membership.repository.model.MembershipGiveModel;
 import com.tuotiansudai.membership.repository.model.MembershipUserGroup;
-import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class MembershipGiveDto {
     private long id;
     private int membershipLevel;
     private int validPeriod;
-    private Date receiveStartTime;
-    private Date receiveEndTime;
+    private String receiveStartTime;
+    private String receiveEndTime;
     private MembershipUserGroup userGroup;
     private boolean smsNotify;
     private boolean valid;
@@ -24,11 +22,16 @@ public class MembershipGiveDto {
     }
 
     public MembershipGiveDto(MembershipGiveModel membershipGiveModel) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         this.id = membershipGiveModel.getId();
 //        private int membershipLevel;
         this.validPeriod = membershipGiveModel.getValidPeriod();
-        this.receiveStartTime = membershipGiveModel.getReceiveStartTime();
-        this.receiveEndTime = membershipGiveModel.getReceiveEndTime();
+        if (null != membershipGiveModel.getReceiveStartTime()) {
+            this.receiveStartTime = simpleDateFormat.format(membershipGiveModel.getReceiveStartTime());
+        }
+        if (null != membershipGiveModel.getReceiveEndTime()) {
+            this.receiveEndTime = simpleDateFormat.format(membershipGiveModel.getReceiveEndTime());
+        }
         this.userGroup = membershipGiveModel.getUserGroup();
         this.smsNotify = membershipGiveModel.isSmsNotify();
         this.valid = membershipGiveModel.isValid();
@@ -61,24 +64,20 @@ public class MembershipGiveDto {
         this.validPeriod = validPeriod;
     }
 
-    public Date getReceiveStartTime() {
+    public String getReceiveStartTime() {
         return receiveStartTime;
     }
 
-    public void setReceiveStartTime(Date receiveStartTime) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String date = simpleDateFormat.format(receiveStartTime);
-        this.receiveStartTime = DateTime.parse(date).toDate();
+    public void setReceiveStartTime(String receiveStartTime) {
+        this.receiveStartTime = receiveStartTime;
     }
 
-    public Date getReceiveEndTime() {
+    public String getReceiveEndTime() {
         return receiveEndTime;
     }
 
-    public void setReceiveEndTime(Date receiveEndTime) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String date = simpleDateFormat.format(receiveEndTime);
-        this.receiveEndTime = DateTime.parse(date).toDate();
+    public void setReceiveEndTime(String receiveEndTime) {
+        this.receiveEndTime = receiveEndTime;
     }
 
     public MembershipUserGroup getUserGroup() {

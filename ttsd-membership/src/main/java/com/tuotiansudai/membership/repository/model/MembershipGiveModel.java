@@ -1,6 +1,7 @@
 package com.tuotiansudai.membership.repository.model;
 
 import com.tuotiansudai.membership.dto.MembershipGiveDto;
+import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,8 +27,8 @@ public class MembershipGiveModel implements Serializable {
     public MembershipGiveModel(MembershipGiveDto membershipGiveDto, MembershipModel membershipModel) {
         this.membershipId = membershipModel.getId();
         this.validPeriod = membershipGiveDto.getValidPeriod();
-        this.receiveStartTime = membershipGiveDto.getReceiveStartTime();
-        this.receiveEndTime = membershipGiveDto.getReceiveEndTime();
+        this.receiveStartTime = DateTime.parse(membershipGiveDto.getReceiveStartTime()).toDate();
+        this.receiveEndTime = DateTime.parse(membershipGiveDto.getReceiveEndTime()).toDate();
         this.userGroup = membershipGiveDto.getUserGroup();
         this.smsNotify = membershipGiveDto.isSmsNotify();
         this.valid = membershipGiveDto.isValid();

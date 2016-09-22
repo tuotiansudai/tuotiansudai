@@ -140,8 +140,8 @@ public class MembershipGiveServiceImpl implements MembershipGiveService {
 
         originMembershipGiveModel.setMembershipId(membershipModel.getId());
         originMembershipGiveModel.setValidPeriod(membershipGiveDto.getValidPeriod());
-        originMembershipGiveModel.setReceiveStartTime(membershipGiveDto.getReceiveStartTime());
-        originMembershipGiveModel.setReceiveEndTime(membershipGiveDto.getReceiveEndTime());
+        originMembershipGiveModel.setReceiveStartTime(DateTime.parse(membershipGiveDto.getReceiveStartTime()).toDate());
+        originMembershipGiveModel.setReceiveEndTime(DateTime.parse(membershipGiveDto.getReceiveEndTime()).toDate());
         originMembershipGiveModel.setUserGroup(membershipGiveDto.getUserGroup());
         originMembershipGiveModel.setSmsNotify(membershipGiveDto.isSmsNotify());
         originMembershipGiveModel.setUpdatedTime(new Date());
