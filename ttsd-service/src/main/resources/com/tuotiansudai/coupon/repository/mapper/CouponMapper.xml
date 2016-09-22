@@ -68,7 +68,7 @@
               and ((start_time is null or end_time is null) or (now() between start_time and end_time));
     </select>
 
-    <select useCache="false" id="lockById" parameterType="java.lang.Long" resultMap="couponResultMap">
+    <select id="lockById" parameterType="java.lang.Long" resultMap="couponResultMap" useCache="false">
         select * from coupon where id = #{id} for update
     </select>
 

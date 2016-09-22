@@ -120,7 +120,7 @@
         where id = #{id}
     </select>
 
-    <select id="lockById" parameterType="long" resultMap="investResultMap">
+    <select id="lockById" parameterType="long" resultMap="investResultMap" useCache="false">
         select
         <include refid="columns"></include>
         from invest
