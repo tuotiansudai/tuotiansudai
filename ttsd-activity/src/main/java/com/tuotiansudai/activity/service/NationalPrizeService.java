@@ -162,6 +162,7 @@ public class NationalPrizeService {
             couponAssignmentService.assignUserCoupon(mobile, getCouponId(nationalPrize));
             prizeType = PrizeType.VIRTUAL;
         }else if(nationalPrize.equals(LotteryPrize.MEMBERSHIP_V5)){
+            prizeType = PrizeType.MEMBERSHIP;
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         }
 
@@ -184,7 +185,7 @@ public class NationalPrizeService {
         int random = (int) (Math.random() * 100000000);
         int mod = random % 100;
         if (mod >= 0 && mod <= 2){
-            return LotteryPrize.MEMBERSHIP_V5;
+            return LotteryPrize.FLOWER_CUP;
         } else if (mod >= 3 && mod <= 5){
             return LotteryPrize.CINEMA_TICKET;
         } else if (mod >= 6 && mod <= 9){

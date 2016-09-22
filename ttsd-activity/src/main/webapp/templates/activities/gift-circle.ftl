@@ -116,7 +116,7 @@
             <p>恭喜您！</p>
             <p>{{tiptext}}！</p>
             <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
-        {{else if istype=='membership'}}
+        {{else if istype=='MEMBERSHIP'}}
             <p>恭喜您！</p>
             <p>{{tiptext}}！</p>
             <p class="des-text">奖品即时生效，赶快去投资吧！</p>
