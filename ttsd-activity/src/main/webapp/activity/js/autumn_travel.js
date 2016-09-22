@@ -58,7 +58,7 @@ var $autumnTravelPage=$('#autumnTravelPage'),
         travelAllList='/activity/autumn/travel-all-list',  //中奖记录接口地址
         travelUserList='/activity/autumn/travel-user-list',   //我的奖品接口地址
         drawURL='/activity/autumn/travel-draw',    //抽奖的接口链接
-        myMobileNumber=$MobileNumber ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
+        myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
     var drawCircle=new drawCircle(travelAllList,travelUserList,drawURL,myMobileNumber);
 

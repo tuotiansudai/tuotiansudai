@@ -50,7 +50,7 @@ require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonF
         travelAllList='/activity/national/all-list',  //中奖记录接口地址
         travelUserList='/activity/national/user-list',   //我的奖品接口地址
         drawURL='/activity/national/draw',    //抽奖的接口链接
-        myMobileNumber=$MobileNumber ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
+        myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
     var drawCircle=new drawCircle(travelAllList,travelUserList,drawURL,myMobileNumber);
 
