@@ -1,9 +1,11 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.MysteriousPrizeDto;
@@ -14,6 +16,7 @@ import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.model.ActivityCategory;
 import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.service.HeroRankingService;
@@ -29,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class HeroRankingServiceImpl implements HeroRankingService {
@@ -51,6 +55,9 @@ public class HeroRankingServiceImpl implements HeroRankingService {
 
     @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
     private List<String> heroRankingActivityPeriod = Lists.newArrayList();
+
+    @Value("#{'${activity.new.heroRanking.period}'.split('\\~')}")
+    private List<String> newHeroRankingActivityPeriod = Lists.newArrayList();
 
     @Autowired
     private MembershipMapper membershipMapper;
@@ -80,26 +87,29 @@ public class HeroRankingServiceImpl implements HeroRankingService {
     }
 
     @Override
-    public Integer obtainHeroRankingByLoginName(Date tradingTime, final String loginName) {
+    public Map obtainHeroRankingByLoginName(ActivityCategory activityCategory,Date tradingTime, final String loginName) {
         if (tradingTime == null) {
             logger.debug("tradingTime is null");
             return null;
         }
+        List<String> activityPeriod = getActivityPeriod(activityCategory);
         tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
-        long count = transferApplicationMapper.findCountTransferApplicationByApplicationTime(loginName, tradingTime, heroRankingActivityPeriod.get(0));
+        long count = transferApplicationMapper.findCountTransferApplicationByApplicationTime(loginName, tradingTime, activityPeriod.get(0));
         if (count > 0) {
             return null;
         }
-        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(tradingTime, heroRankingActivityPeriod.get(0), heroRankingActivityPeriod.get(1));
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(tradingTime, activityPeriod.get(0), activityPeriod.get(1));
         if (heroRankingViews != null) {
-            return Iterators.indexOf(heroRankingViews.iterator(), new Predicate<HeroRankingView>() {
+            Optional<HeroRankingView> heroRankingViewOptional = Iterators.tryFind(heroRankingViews.iterator(), new Predicate<HeroRankingView>() {
                 @Override
                 public boolean apply(HeroRankingView input) {
-                    return input.getLoginName().equalsIgnoreCase(loginName);
+                    return input.getLoginName().equalsIgnoreCase(loginName);;
                 }
-            }) + 1;
+            });
         }
-        return null;
+
+        Map<String,String> param = Maps.newConcurrentMap();
+        return param;
     }
 
     @Override
@@ -197,6 +207,10 @@ public class HeroRankingServiceImpl implements HeroRankingService {
                 new Date(),
                 UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel);
+    }
+
+    private List getActivityPeriod(ActivityCategory activityCategory){
+        return activityCategory.equals(ActivityCategory.HERO_RANKING) ? heroRankingActivityPeriod : newHeroRankingActivityPeriod;
     }
 
 }

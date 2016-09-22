@@ -3,11 +3,13 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.MysteriousPrizeDto;
+import com.tuotiansudai.repository.model.ActivityCategory;
 import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.repository.model.HeroRankingView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface HeroRankingService {
 
@@ -19,7 +21,7 @@ public interface HeroRankingService {
 
     List<HeroRankingView> obtainHeroRankingReferrer(Date tradingTime);
 
-    Integer obtainHeroRankingByLoginName(Date tradingTime, String loginName);
+    Map obtainHeroRankingAndInvestAmountByLoginName(ActivityCategory activityCategory,Date tradingTime, String loginName);
 
     void saveMysteriousPrize(MysteriousPrizeDto MysteriousPrizeDto);
 
