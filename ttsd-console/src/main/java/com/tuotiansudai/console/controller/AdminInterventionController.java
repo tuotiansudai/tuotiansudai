@@ -6,10 +6,10 @@ import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
-import static com.tuotiansudai.repository.model.UserBillBusinessType.ADMIN_INTERVENTION;
+import static com.tuotiansudai.enums.UserBillBusinessType.ADMIN_INTERVENTION;
 
 @Controller
 @RequestMapping(path = "/finance-manage/admin-intervention")

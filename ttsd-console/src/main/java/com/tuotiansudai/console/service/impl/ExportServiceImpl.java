@@ -7,6 +7,7 @@ import com.tuotiansudai.console.service.ExportService;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.point.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;

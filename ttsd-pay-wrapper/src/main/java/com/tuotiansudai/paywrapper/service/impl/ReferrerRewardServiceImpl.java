@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
@@ -15,7 +16,6 @@ import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

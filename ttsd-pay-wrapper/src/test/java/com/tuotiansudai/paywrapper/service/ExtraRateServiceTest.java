@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;

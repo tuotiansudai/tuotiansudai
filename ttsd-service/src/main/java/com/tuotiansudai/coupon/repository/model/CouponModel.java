@@ -2,7 +2,7 @@ package com.tuotiansudai.coupon.repository.model;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.CouponDto;
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;

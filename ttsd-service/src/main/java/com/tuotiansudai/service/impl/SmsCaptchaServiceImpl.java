@@ -2,8 +2,8 @@ package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.SmsCaptchaDto;
 import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.dto.smsDto.SmsCaptchaDto;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.SmsCaptchaModel;

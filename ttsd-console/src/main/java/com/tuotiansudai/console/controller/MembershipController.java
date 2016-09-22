@@ -19,7 +19,6 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.MembershipGiveTempService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -57,9 +56,6 @@ public class MembershipController {
 
     @Autowired
     private MembershipGiveService membershipGiveService;
-
-    @Autowired
-    private MembershipGiveTempService membershipGiveTempService;
 
     @RequestMapping(value = "/membership-list", method = RequestMethod.GET)
     public ModelAndView membershipList(@RequestParam(value = "index", required = true, defaultValue = "1") int index,
@@ -137,7 +133,7 @@ public class MembershipController {
     public ModelAndView membershipDetail() {
         ModelAndView modelAndView = new ModelAndView("/membership-give-edit");
         modelAndView.addObject("userGroups", MembershipUserGroup.values());
-        modelAndView.addObject("membershipLevels", Lists.newArrayList(0, 1, 2, 3, 4, 5));
+        modelAndView.addObject("membershipLevels", Lists.newArrayList(userMembershipService.getAllLevels()));
 
         return modelAndView;
     }
@@ -145,17 +141,12 @@ public class MembershipController {
     @RequestMapping(value = "/give/edit-view/{membershipGiveId}", method = RequestMethod.GET)
     public ModelAndView membershipDetail(@PathVariable long membershipGiveId) {
         ModelAndView modelAndView = new ModelAndView("/membership-give-edit");
-        modelAndView.addObject("userGroups", MembershipUserGroup.values());
-        modelAndView.addObject("membershipLevels", Lists.newArrayList(0, 1, 2, 3, 4, 5));
 
         MembershipGiveDto membershipGiveDto = membershipGiveService.getMembershipGiveDtoById(membershipGiveId);
-        modelAndView.addObject("membershipGiveId", membershipGiveDto.getId());
-        modelAndView.addObject("originMembershipLevel", membershipGiveDto.getMembershipLevel());
-        modelAndView.addObject("validPeriod", membershipGiveDto.getValidPeriod());
-        modelAndView.addObject("receiveStartTime", membershipGiveDto.getReceiveStartTime());
-        modelAndView.addObject("receiveEndTime", membershipGiveDto.getReceiveEndTime());
-        modelAndView.addObject("originUserGroup", membershipGiveDto.getUserGroup());
-        modelAndView.addObject("smsNotify", membershipGiveDto.isSmsNotify());
+        modelAndView.addObject("membershipGiveDto", membershipGiveDto);
+
+        modelAndView.addObject("userGroups", MembershipUserGroup.values());
+        modelAndView.addObject("membershipLevels", Lists.newArrayList(userMembershipService.getAllLevels()));
 
         return modelAndView;
     }
@@ -166,18 +157,9 @@ public class MembershipController {
                                                      @RequestParam(value = "index", defaultValue = "1") int index,
                                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/membership-give-receive-detail");
-        List<MembershipGiveReceiveDto> membershipGiveReceiveDtos = membershipGiveService.getMembershipGiveReceiveDtosByMobile(membershipGiveId, mobile, index, pageSize);
+        BasePaginationDataDto<MembershipGiveReceiveDto> basePaginationDataDto = membershipGiveService.getMembershipGiveReceiveDtosByMobile(membershipGiveId, mobile, index, pageSize);
 
-        modelAndView.addObject("membershipGiveReceiveDtos", membershipGiveReceiveDtos);
-        modelAndView.addObject("mobile", mobile);
-
-        long totalCount = membershipGiveService.getCountMembershipGiveReceiveDtosByMobile(membershipGiveId, mobile);
-        modelAndView.addObject("totalCount", totalCount);
-        modelAndView.addObject("index", index);
-        modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("hasPreviousPage", index > 1);
-        int totalPage = (int) (totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1);
-        modelAndView.addObject("hasNextPage", index < totalPage);
+        modelAndView.addObject("dataDto", basePaginationDataDto);
         modelAndView.addObject("selectMobile", mobile);
         modelAndView.addObject("selectGiveId", membershipGiveId);
 
@@ -188,7 +170,7 @@ public class MembershipController {
     @ResponseBody
     public BaseDto<BaseDataDto> editMembershipGive(@RequestBody MembershipGiveDto membershipGiveDto,
                                                    @RequestParam(value = "importUsersId") long importUsersId) {
-        membershipGiveDto.setCreatedLoginName(LoginUserInfo.getLoginName());
+        membershipGiveDto.setCreatedBy(LoginUserInfo.getLoginName());
         membershipGiveService.createAndEditMembershipGive(membershipGiveDto, importUsersId);
 
         return new BaseDto<>(new BaseDataDto(true));
@@ -217,23 +199,17 @@ public class MembershipController {
     public ModelAndView getMembershipGives(@RequestParam(value = "index", defaultValue = "1") int index,
                                            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/membership-give-list");
-        List<MembershipGiveDto> membershipGiveDtos = membershipGiveService.getMembershipGiveDtos(index, pageSize);
-        modelAndView.addObject("membershipGiveDtos", membershipGiveDtos);
+        BasePaginationDataDto<MembershipGiveDto> basePaginationDataDto = membershipGiveService.getMembershipGiveDtos(index, pageSize);
 
-        long totalCount = membershipGiveService.getMembershipGiveCount();
-        modelAndView.addObject("totalCount", totalCount);
-        modelAndView.addObject("index", index);
-        modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("hasPreviousPage", index > 1);
-        int totalPage = (int) (totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1);
-        modelAndView.addObject("hasNextPage", index < totalPage);
+        modelAndView.addObject("dataDto", basePaginationDataDto);
+
         return modelAndView;
     }
 
     @RequestMapping(value = "/give/approve/{membershipGiveId}", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> approveMembershipGive(@PathVariable long membershipGiveId) {
-        return membershipGiveTempService.approveMembershipGive(membershipGiveId, LoginUserInfo.getLoginName());
+        return membershipGiveService.approveMembershipGive(membershipGiveId, LoginUserInfo.getLoginName());
     }
 
     @RequestMapping(value = "/give/cancel/{membershipGiveId}", method = RequestMethod.POST)

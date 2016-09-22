@@ -3,7 +3,7 @@ package com.tuotiansudai.coupon.dto;
 
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.format.annotation.DateTimeFormat;

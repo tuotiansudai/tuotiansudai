@@ -1,7 +1,7 @@
 package com.tuotiansudai.coupon.repository.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.ProductType;
 import org.joda.time.DateTime;

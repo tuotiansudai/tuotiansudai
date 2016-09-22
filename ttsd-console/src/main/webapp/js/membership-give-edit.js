@@ -52,7 +52,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                 }
             }
 
-            if (!/^d+$/.test(validPeriod)) {
+            if (!/^\d+$/.test(validPeriod)) {
                 alert("有效期必须是数字");
                 return false;
             }
@@ -83,23 +83,23 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                 var dataDto = {
                     "id": membershipGiveId,
                     "membershipLevel": membershipLevel,
-                    "validPeriod": validPeriod,
-                    "receiveStartTime": null,
-                    "receiveEndTime": null,
+                    "deadline": validPeriod,
+                    "startTime": null,
+                    "endTime": null,
                     "userGroup": userGroup,
                     "smsNotify": smsNotify,
-                    "valid": false
+                    "active": false
                 };
             } else if ("NEW_REGISTERED_USER" == userGroup) {
                 var dataDto = {
                     "id": membershipGiveId,
                     "membershipLevel": membershipLevel,
-                    "validPeriod": validPeriod,
-                    "receiveStartTime": startTime,
-                    "receiveEndTime": endTime,
+                    "deadline": validPeriod,
+                    "startTime": startTime,
+                    "endTime": endTime,
                     "userGroup": userGroup,
                     "smsNotify": smsNotify,
-                    "valid": false
+                    "active": false
                 };
             }
             var dataForm = JSON.stringify(dataDto);

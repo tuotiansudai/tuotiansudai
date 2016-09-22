@@ -30,7 +30,7 @@
             </tr>
             </thead>
             <tbody>
-                <#list membershipGiveReceiveDtos as membershipGiveReceiveDto>
+                <#list dataDto.records as membershipGiveReceiveDto>
                 <tr>
                     <td>${membershipGiveReceiveDto.loginName}</td>
                     <td>${membershipGiveReceiveDto.mobile}</td>
@@ -44,31 +44,31 @@
     <!-- pagination  -->
     <nav>
         <div>
-            <span class="bordern">总共${totalCount}条,每页显示${pageSize}条</span>
+            <span class="bordern">总共${dataDto.count!0}条,每页显示${dataDto.pageSize!10}条</span>
         </div>
-        <#if membershipGiveReceiveDtos?has_content>
-            <ul class="pagination">
-                <li>
-                    <#if hasPreviousPage>
-                    <a href="?index=${index - 1}&pageSize=${pageSize}<#if selectMobile??>&mobile=${selectMobile}</#if>" aria-label="Previous">
-                    <#else>
-                    <a href="#" aria-label="Previous">
-                    </#if>
-                    <span aria-hidden="true">&laquo; Prev</span>
-                </a>
-                </li>
-                <li><a>${index}</a></li>
-                <li>
-                    <#if hasNextPage>
-                    <a href="?index=${index + 1}&pageSize=${pageSize}<#if selectMobile??>&mobile=${selectMobile}</#if>" aria-label="Next">
-                    <#else>
-                    <a href="#" aria-label="Next">
-                    </#if>
-                    <span aria-hidden="true">Next &raquo;</span>
-                </a>
-                </li>
-            </ul>
-        </#if>
+        <ul class="pagination">
+            <li>
+                <#if dataDto.hasPreviousPage>
+                <a href="?index=${dataDto.index - 1}&pageSize=${dataDto.pageSize}<#if selectMobile??>&mobile=${selectMobile}</#if>"
+                   aria-label="Previous">
+                <#else>
+                <a href="#" aria-label="Previous">
+                </#if>
+                <span aria-hidden="true">&laquo; Prev</span>
+            </a>
+            </li>
+            <li><a>${index!1}</a></li>
+            <li>
+                <#if dataDto.hasNextPage>
+                <a href="?index=${dataDto.index + 1}&pageSize=${dataDto.pageSize}<#if selectMobile??>&mobile=${selectMobile}</#if>"
+                   aria-label="Next">
+                <#else>
+                <a href="#" aria-label="Next">
+                </#if>
+                <span aria-hidden="true">Next &raquo;</span>
+            </a>
+            </li>
+        </ul>
     </nav>
     <!-- pagination -->
 </div>

@@ -1,6 +1,6 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.repository.model.UserBillBusinessType;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.repository.model.UserBillPaginationView;
 import com.tuotiansudai.service.UserBillService;

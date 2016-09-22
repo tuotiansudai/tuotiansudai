@@ -1,30 +1,336 @@
 package com.tuotiansudai.membership.service;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.smsDto.SmsUserReceiveMembershipDto;
 import com.tuotiansudai.membership.dto.MembershipGiveDto;
 import com.tuotiansudai.membership.dto.MembershipGiveReceiveDto;
+import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
+import com.tuotiansudai.membership.repository.mapper.MembershipGiveMapper;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.repository.model.*;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.PaginationUtil;
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
+import java.text.MessageFormat;
+import java.util.*;
 
-public interface MembershipGiveService {
-    void createAndEditMembershipGive(MembershipGiveDto membershipGiveDto, long importUsersId);
+@Service
+public class MembershipGiveService {
 
-    MembershipGiveDto getMembershipGiveDtoById(long membershipGiveId);
+    static Logger logger = Logger.getLogger(MembershipGiveService.class);
 
-    List<MembershipGiveDto> getMembershipGiveDtos(int index, int pageSize);
+    @Autowired
+    private MembershipGiveMapper membershipGiveMapper;
 
-    long getMembershipGiveCount();
+    @Autowired
+    private MembershipMapper membershipMapper;
 
-    BaseDto<BaseDataDto> approveMembershipGive(long id, String validLoginName);
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
 
-    BaseDto<BaseDataDto> cancelMembershipGive(long id, String validLoginName);
+    @Autowired
+    private MembershipExperienceBillMapper membershipExperienceBillMapper;
 
-    BaseDto<BaseDataDto> importGiveUsers(long importUsersId, InputStream inputStream);
+    @Autowired
+    private UserMapper userMapper;
 
-    List<MembershipGiveReceiveDto> getMembershipGiveReceiveDtosByMobile(long membershipGiveId, String mobile, int index,
-                                                                        int pageSize);
+    @Autowired
+    private AccountMapper accountMapper;
 
-    long getCountMembershipGiveReceiveDtosByMobile(long membershipGiveId, String mobile);
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
+    @Autowired
+    private ImportService importService;
+
+    public void createAndEditMembershipGive(MembershipGiveDto membershipGiveDto, long importUsersId) {
+        long membershipGiveId = membershipGiveDto.getId();
+
+        MembershipGiveModel membershipGiveModel = membershipGiveMapper.findById(membershipGiveId);
+
+        if (null != membershipGiveModel) {
+            editMembershipGive(membershipGiveModel, membershipGiveDto, importUsersId);
+        } else {
+            createMembershipGive(membershipGiveDto, importUsersId);
+        }
+    }
+
+    public MembershipGiveDto getMembershipGiveDtoById(long membershipGiveId) {
+        MembershipGiveModel membershipGiveModel = membershipGiveMapper.findById(membershipGiveId);
+        if (null == membershipGiveModel) {
+            return null;
+        } else {
+            MembershipModel membershipModel = membershipMapper.findById(membershipGiveModel.getMembershipId());
+            if (null == membershipModel) {
+                return null;
+            } else {
+                MembershipGiveDto membershipGiveDto = new MembershipGiveDto(membershipGiveModel);
+                membershipGiveDto.setMembershipLevel(membershipModel.getLevel());
+                return membershipGiveDto;
+            }
+        }
+    }
+
+    public BasePaginationDataDto<MembershipGiveDto> getMembershipGiveDtos(int index, int pageSize) {
+        long totalCount = membershipGiveMapper.findAllCount();
+        List<MembershipGiveModel> membershipGiveModels = membershipGiveMapper.findPagination(PaginationUtil.calculateOffset(index, pageSize, totalCount), pageSize);
+
+        final Map<Long, Integer> idLevelMap = getIdLevelMap();
+        List<MembershipGiveDto> membershipGiveDtos = Lists.transform(membershipGiveModels, new Function<MembershipGiveModel, MembershipGiveDto>() {
+            @Override
+            public MembershipGiveDto apply(MembershipGiveModel membershipGiveModel) {
+                MembershipGiveDto membershipGiveDto = new MembershipGiveDto(membershipGiveModel);
+                membershipGiveDto.setMembershipLevel(idLevelMap.get(membershipGiveModel.getMembershipId()));
+                return membershipGiveDto;
+            }
+        });
+        return new BasePaginationDataDto<>(index, pageSize, totalCount, membershipGiveDtos);
+    }
+
+    public BasePaginationDataDto<MembershipGiveReceiveDto> getMembershipGiveReceiveDtosByMobile(long membershipGiveId, String mobile,
+                                                                                                int index, int pageSize) {
+        UserModel userModel = userMapper.findByMobile(mobile);
+        String loginName = null;
+        if (null != userModel) {
+            loginName = userModel.getLoginName();
+        }
+
+        long totalCount = userMembershipMapper.findCountGiveMembershipsByLoginNameAndGiveId(membershipGiveId, loginName);
+
+        List<UserMembershipModel> userMembershipModels = userMembershipMapper.findGiveMembershipsByLoginNameAndGiveId(membershipGiveId, loginName, PaginationUtil.calculateOffset(index, pageSize, totalCount), pageSize);
+        List<MembershipGiveReceiveDto> membershipGiveReceiveDtos = Lists.transform(userMembershipModels, new Function<UserMembershipModel, MembershipGiveReceiveDto>() {
+            @Override
+            public MembershipGiveReceiveDto apply(UserMembershipModel userMembershipModel) {
+                MembershipGiveReceiveDto membershipGiveReceiveDto = new MembershipGiveReceiveDto();
+                membershipGiveReceiveDto.setLoginName(userMembershipModel.getLoginName());
+                membershipGiveReceiveDto.setMobile(userMapper.findByLoginName(userMembershipModel.getLoginName()).getMobile());
+                membershipGiveReceiveDto.setReceiveTime(userMembershipModel.getCreatedTime());
+                return membershipGiveReceiveDto;
+            }
+        });
+
+        return new BasePaginationDataDto<>(index, pageSize, totalCount, membershipGiveReceiveDtos);
+    }
+
+    public void newUserReceiveMembership(String loginName) {
+        List<MembershipGiveModel> membershipGiveModels = membershipGiveMapper.findAllCurrentNewUserGivePlans();
+        giveUsersMemberships(Lists.newArrayList(loginName), membershipGiveModels);
+
+        String mobile = userMapper.findByLoginName(loginName).getMobile();
+        for (MembershipGiveModel membershipGiveModel : membershipGiveModels) {
+            if (membershipGiveModel.isSmsNotify()) {
+                sendReceiveMembershipSmsNotify(mobile, membershipGiveModel, MembershipUserGroup.NEW_REGISTERED_USER);
+            }
+        }
+    }
+
+    @Transactional
+    public BaseDto<BaseDataDto> approveMembershipGive(long id, String activeBy) {
+        MembershipGiveModel membershipGiveModel = membershipGiveMapper.findById(id);
+        if (null == membershipGiveModel) {
+            return new BaseDto<>(new BaseDataDto(false, "会员发放计划不存在"));
+        }
+        if (membershipGiveModel.isActive()) {
+            return new BaseDto<>(new BaseDataDto(false, "会员发放计划已生效"));
+        }
+
+        if (membershipGiveModel.getUserGroup().equals(MembershipUserGroup.IMPORT_USER)) {
+            List<String> importUsers = importService.getImportStrings(ImportService.redisMembershipGiveReceivers, membershipGiveModel.getId());
+            if (0 == importUsers.size()) {
+                return new BaseDto<>(new BaseDataDto(false, "导入用户名单未导入或已丢失"));
+            }
+            List<String> mobiles = new ArrayList<>();
+            for (String loginName : importUsers) {
+                UserModel userModel = userMapper.findByLoginName(loginName);
+                if (null == userModel) {
+                    return new BaseDto<>(new BaseDataDto(false, "导入用户名单中含有不存在的用户名,需要重新导入"));
+                }
+                mobiles.add(userModel.getMobile());
+            }
+            giveUsersMemberships(importUsers, Lists.newArrayList(membershipGiveModel));
+            for (String mobile : mobiles) {
+                sendReceiveMembershipSmsNotify(mobile, membershipGiveModel, MembershipUserGroup.IMPORT_USER);
+            }
+        }
+
+        membershipGiveModel.setActive(true);
+        membershipGiveModel.setActiveBy(activeBy);
+        membershipGiveModel.setUpdatedBy(activeBy);
+        membershipGiveModel.setUpdatedTime(new Date());
+
+        membershipGiveMapper.update(membershipGiveModel);
+
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    public BaseDto<BaseDataDto> cancelMembershipGive(long id, String validLoginName) {
+        MembershipGiveModel membershipGiveModel = membershipGiveMapper.findById(id);
+        if (null == membershipGiveModel) {
+            return new BaseDto<>(new BaseDataDto(false, "会员发放计划不存在"));
+        }
+        if (!membershipGiveModel.isActive()) {
+            return new BaseDto<>(new BaseDataDto(false, "会员发放计划未生效"));
+        }
+        if (!membershipGiveModel.getUserGroup().equals(MembershipUserGroup.NEW_REGISTERED_USER)) {
+            return new BaseDto<>(new BaseDataDto(false, "只有新注册用户的会员发放计划可以取消"));
+        }
+
+        membershipGiveModel.setActive(false);
+        membershipGiveModel.setActiveBy(validLoginName);
+        membershipGiveModel.setUpdatedBy(validLoginName);
+        membershipGiveModel.setUpdatedTime(new Date());
+
+        membershipGiveMapper.update(membershipGiveModel);
+
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    public BaseDto<BaseDataDto> importGiveUsers(long importUsersId, InputStream inputStream) {
+        if (null == inputStream) {
+            return new BaseDto<>(new BaseDataDto(false, "没有导入名单"));
+        }
+        long newImportUsersId;
+        try {
+            newImportUsersId = importService.importStrings(ImportService.redisMembershipGiveReceivers, importUsersId, inputStream);
+        } catch (IOException e) {
+            return new BaseDto<>(new BaseDataDto(false, "用户导入失败"));
+        } catch (IllegalArgumentException e) {
+            return new BaseDto<>(new BaseDataDto(false, "无法存储导入名单"));
+        } finally {
+            try {
+                inputStream.close();
+            } catch (Exception e) {
+                logger.error("[MembershipGiveServiceImpl][importGiveUsers] importUsers stream close fail!");
+            }
+        }
+        return new BaseDto<>(new BaseDataDto(true, String.valueOf(newImportUsersId)));
+    }
+
+    private void createMembershipGive(MembershipGiveDto membershipGiveDto, long importUsersId) {
+        MembershipModel membershipModel = membershipMapper.findByLevel(membershipGiveDto.getMembershipLevel());
+        MembershipGiveModel membershipGiveModel = new MembershipGiveModel(membershipGiveDto, membershipModel);
+        membershipGiveMapper.create(membershipGiveModel);
+
+        List<String> importUsers = importService.getImportStrings(ImportService.redisMembershipGiveReceivers, importUsersId);
+        redisWrapperClient.hdelSeri(ImportService.redisMembershipGiveReceivers, String.valueOf(importUsersId));
+        if (membershipGiveDto.getUserGroup().equals(MembershipUserGroup.IMPORT_USER)) {
+            redisWrapperClient.hsetSeri(ImportService.redisMembershipGiveReceivers, String.valueOf(membershipGiveModel.getId()), importUsers);
+        }
+    }
+
+    private void editMembershipGive(MembershipGiveModel originMembershipGiveModel, MembershipGiveDto membershipGiveDto, long importUsersId) {
+        if (originMembershipGiveModel.isActive()) {
+            return;
+        }
+
+        MembershipModel membershipModel = membershipMapper.findByLevel(membershipGiveDto.getMembershipLevel());
+
+        originMembershipGiveModel.setMembershipId(membershipModel.getId());
+        originMembershipGiveModel.setDeadline(membershipGiveDto.getDeadline());
+        if (StringUtils.isEmpty(membershipGiveDto.getStartTime())) {
+            originMembershipGiveModel.setStartTime(null);
+        } else {
+            originMembershipGiveModel.setStartTime(DateTime.parse(membershipGiveDto.getStartTime()).toDate());
+        }
+        if (StringUtils.isEmpty(membershipGiveDto.getEndTime())) {
+            originMembershipGiveModel.setEndTime(null);
+        } else {
+            originMembershipGiveModel.setEndTime(DateTime.parse(membershipGiveDto.getEndTime()).toDate());
+        }
+        originMembershipGiveModel.setUserGroup(membershipGiveDto.getUserGroup());
+        originMembershipGiveModel.setSmsNotify(membershipGiveDto.isSmsNotify());
+        originMembershipGiveModel.setUpdatedTime(new Date());
+        originMembershipGiveModel.setUpdatedBy(membershipGiveDto.getUpdatedBy());
+
+        membershipGiveMapper.update(originMembershipGiveModel);
+
+        List<String> importUsers = importService.getImportStrings(ImportService.redisMembershipGiveReceivers, importUsersId);
+        redisWrapperClient.hdelSeri(ImportService.redisMembershipGiveReceivers, String.valueOf(importUsersId));
+        if (membershipGiveDto.getUserGroup().equals(MembershipUserGroup.IMPORT_USER)) {
+            redisWrapperClient.hsetSeri(ImportService.redisMembershipGiveReceivers, String.valueOf(originMembershipGiveModel.getId()), importUsers);
+        }
+    }
+
+    private Map<Long, Integer> getIdLevelMap() {
+        List<MembershipModel> membershipModels = membershipMapper.findAllMembership();
+        Map<Long, Integer> map = new HashMap<>();
+        for (MembershipModel membershipModel : membershipModels) {
+            map.put(membershipModel.getId(), membershipModel.getLevel());
+        }
+        return map;
+    }
+
+    private List<UserMembershipModel> combineUserMembershipModels(List<String> loginNames, List<MembershipGiveModel> membershipGiveModels) {
+        List<UserMembershipModel> userMembershipModels = new ArrayList<>();
+        for (String loginName : loginNames) {
+            for (MembershipGiveModel membershipGiveModel : membershipGiveModels) {
+                userMembershipModels.add(new UserMembershipModel(loginName, membershipGiveModel.getMembershipId(),
+                        DateTime.now().withTimeAtStartOfDay().plusDays(1).plusDays(membershipGiveModel.getDeadline()).plusSeconds(-1).toDate(),
+                        UserMembershipType.GIVEN, membershipGiveModel.getId()));
+            }
+        }
+        return userMembershipModels;
+    }
+
+    private List<MembershipExperienceBillModel> combineMembershipExperienceBillModels(List<String> loginNames, List<MembershipGiveModel> membershipGiveModels) {
+        Map<Long, Integer> map = getIdLevelMap();
+        List<MembershipExperienceBillModel> membershipExperienceBillModels = new ArrayList<>();
+        for (String loginName : loginNames) {
+            for (MembershipGiveModel membershipGiveModel : membershipGiveModels) {
+                long totalExperience = 0;
+                AccountModel accountModel = accountMapper.findByLoginName(loginName);
+                if (null != accountModel) {
+                    totalExperience = accountModel.getMembershipPoint();
+                }
+                membershipExperienceBillModels.add(new MembershipExperienceBillModel(loginName, 0L, totalExperience, new Date(),
+                        MessageFormat.format("获赠期限为{0}天的V{1}会员", membershipGiveModel.getDeadline(), map.get(membershipGiveModel.getMembershipId()))));
+            }
+        }
+        return membershipExperienceBillModels;
+    }
+
+    private void giveUsersMemberships(List<String> users, List<MembershipGiveModel> membershipGiveModels) {
+        List<UserMembershipModel> userMembershipModels = combineUserMembershipModels(users, membershipGiveModels);
+        List<MembershipExperienceBillModel> membershipExperienceBillModels = combineMembershipExperienceBillModels(users, membershipGiveModels);
+
+        if (userMembershipModels.size() != 0 && membershipExperienceBillModels.size() != 0) {
+            userMembershipMapper.createMass(userMembershipModels);
+            membershipExperienceBillMapper.createMass(membershipExperienceBillModels);
+        }
+    }
+
+    private void sendReceiveMembershipSmsNotify(String mobile, MembershipGiveModel membershipGiveModel, MembershipUserGroup membershipUserGroup) {
+        Map<Long, Integer> idLevelMap = getIdLevelMap();
+        switch (membershipUserGroup) {
+            case IMPORT_USER:
+                smsWrapperClient.sendImportUserReceiveMembership(new SmsUserReceiveMembershipDto(mobile, idLevelMap.get(membershipGiveModel.getMembershipId())));
+                break;
+            case NEW_REGISTERED_USER:
+                smsWrapperClient.sendNewUserReceiveMembership(new SmsUserReceiveMembershipDto(mobile, idLevelMap.get(membershipGiveModel.getMembershipId())));
+                break;
+            default:
+                break;
+        }
+    }
 }

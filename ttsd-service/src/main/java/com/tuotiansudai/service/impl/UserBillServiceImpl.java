@@ -7,8 +7,8 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.UserBillPaginationItemDataDto;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
-import com.tuotiansudai.repository.model.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.repository.model.UserBillPaginationView;
@@ -18,7 +18,8 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserBillServiceImpl implements UserBillService {

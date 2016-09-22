@@ -2,7 +2,7 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.SmsFatalNotifyDto;
+import com.tuotiansudai.dto.smsDto.SmsFatalNotifyDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;

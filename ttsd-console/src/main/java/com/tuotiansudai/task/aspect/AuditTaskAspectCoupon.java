@@ -4,7 +4,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.task.OperationTask;

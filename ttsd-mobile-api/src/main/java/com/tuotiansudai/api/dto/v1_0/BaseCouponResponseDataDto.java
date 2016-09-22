@@ -3,18 +3,15 @@ package com.tuotiansudai.api.dto.v1_0;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.text.DecimalFormat;
 import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 public class BaseCouponResponseDataDto {
 

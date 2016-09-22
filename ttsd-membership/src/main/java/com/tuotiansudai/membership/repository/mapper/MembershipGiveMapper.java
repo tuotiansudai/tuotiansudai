@@ -12,7 +12,7 @@ public interface MembershipGiveMapper {
 
     MembershipGiveModel findById(@Param(value = "id") long id);
 
-    List<MembershipGiveModel> findSome(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+    List<MembershipGiveModel> findPagination(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
     long findAllCount();
 

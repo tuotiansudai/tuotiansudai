@@ -40,23 +40,23 @@
             </tr>
             </thead>
             <tbody>
-                <#list membershipGiveDtos as membershipGiveDto>
+                <#list dataDto.records as membershipGiveDto>
                 <tr>
                     <td>V${membershipGiveDto.membershipLevel}</td>
-                    <td>${membershipGiveDto.validPeriod}天</td>
-                    <td>${(membershipGiveDto.receiveStartTime?date)!"-"}
-                        至 ${(membershipGiveDto.receiveEndTime?date)!"-"}</td>
+                    <td>${membershipGiveDto.deadline}天</td>
+                    <td>${(membershipGiveDto.startTime?date)!"-"}
+                        至 ${(membershipGiveDto.endTime?date)!"-"}</td>
                     <td>${membershipGiveDto.userGroup.getDescription()}</td>
                     <td class="edit-list">
 
                         <@security.authorize access="hasAnyAuthority('OPERATOR','OPERATOR_ADMIN','ADMIN')">
                             <a href="/membership-manage/give/edit-view/${membershipGiveDto.id?c}"
-                               class="edit-btn <#if !membershipGiveDto.valid>active</#if>">编辑</a>
+                               class="edit-btn <#if !membershipGiveDto.active>active</#if>">编辑</a>
                         </@security.authorize>
                     </td>
                     <td>
                         <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                            <#if membershipGiveDto.valid>
+                            <#if membershipGiveDto.active>
                                 <#if membershipGiveDto.userGroup == "IMPORT_USER">
                                     <input type="checkbox" name="valid" checked="checked"
                                            data-type="${membershipGiveDto.userGroup}" disabled/>
@@ -82,31 +82,29 @@
     <!-- pagination  -->
     <nav>
         <div>
-            <span class="bordern">总共${totalCount}条,每页显示${pageSize}条</span>
+            <span class="bordern">总共${dataDto.count!0}条,每页显示${dataDto.pageSize!10}条</span>
         </div>
-        <#if membershipGiveDtos?has_content>
-            <ul class="pagination">
-                <li>
-                    <#if hasPreviousPage>
-                    <a href="?index=${index-1}&pageSize=${pageSize}" aria-label="Previous">
-                    <#else>
-                    <a href="#" aria-label="Previous">
-                    </#if>
-                    <span aria-hidden="true">&laquo; Prev</span>
-                </a>
-                </li>
-                <li><a>${index}</a></li>
-                <li>
-                    <#if hasNextPage>
-                    <a href="?index=${index+1}&pageSize=${pageSize}" aria-label="Next">
-                    <#else>
-                    <a href="#" aria-label="Next">
-                    </#if>
-                    <span aria-hidden="true">Next &raquo;</span>
-                </a>
-                </li>
-            </ul>
-        </#if>
+        <ul class="pagination">
+            <li>
+                <#if dataDto.hasPreviousPage>
+                <a href="?index=${dataDto.index - 1}&pageSize=${dataDto.pageSize!10}" aria-label="Previous">
+                <#else>
+                <a href="#" aria-label="Previous">
+                </#if>
+                <span aria-hidden="true">&laquo; Prev</span>
+            </a>
+            </li>
+            <li><a>${dataDto.index!1}</a></li>
+            <li>
+                <#if dataDto.hasNextPage>
+                <a href="?index=${dataDto.index + 1}&pageSize=${dataDto.pageSize!10}" aria-label="Next">
+                <#else>
+                <a href="#" aria-label="Next">
+                </#if>
+                <span aria-hidden="true">Next &raquo;</span>
+            </a>
+            </li>
+        </ul>
     </nav>
     <!-- pagination -->
 </div>

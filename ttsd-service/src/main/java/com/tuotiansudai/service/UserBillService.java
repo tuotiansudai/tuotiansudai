@@ -2,7 +2,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.model.UserBillBusinessType;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.repository.model.UserBillPaginationView;
 

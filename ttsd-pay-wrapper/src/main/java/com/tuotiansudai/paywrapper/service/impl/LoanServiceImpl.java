@@ -8,8 +8,9 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.smsDto.InvestSmsNotifyDto;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
@@ -386,7 +387,10 @@ public class LoanServiceImpl implements LoanService {
             UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
             LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
             InvestNotifyInfo notifyInfo = new InvestNotifyInfo(investModel, loanModel, userModel);
-            InvestSmsNotifyDto dto = new InvestSmsNotifyDto(notifyInfo);
+            InvestSmsNotifyDto dto = new InvestSmsNotifyDto();
+            dto.setLoanName(notifyInfo.getLoanName());
+            dto.setMobile(notifyInfo.getMobile());
+            dto.setAmount(AmountConverter.convertCentToString(notifyInfo.getAmount()));
             smsWrapperClient.sendInvestNotify(dto);
         }
     }

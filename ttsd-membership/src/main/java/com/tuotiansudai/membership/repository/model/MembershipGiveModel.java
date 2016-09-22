@@ -2,6 +2,7 @@ package com.tuotiansudai.membership.repository.model;
 
 import com.tuotiansudai.membership.dto.MembershipGiveDto;
 import org.joda.time.DateTime;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -9,34 +10,38 @@ import java.util.Date;
 public class MembershipGiveModel implements Serializable {
     private long id;
     private long membershipId;
-    private int validPeriod;
-    private Date receiveStartTime;
-    private Date receiveEndTime;
+    private int deadline;
+    private Date startTime;
+    private Date endTime;
     private MembershipUserGroup userGroup;
     private boolean smsNotify;
-    private boolean valid;
-    private String validLoginName;
+    private boolean active;
+    private String activeBy;
     private Date createdTime;
-    private String createdLoginName;
+    private String createdBy;
     private Date updatedTime;
-    private String updatedLoginName;
+    private String updatedBy;
 
     public MembershipGiveModel() {
     }
 
     public MembershipGiveModel(MembershipGiveDto membershipGiveDto, MembershipModel membershipModel) {
         this.membershipId = membershipModel.getId();
-        this.validPeriod = membershipGiveDto.getValidPeriod();
-        this.receiveStartTime = DateTime.parse(membershipGiveDto.getReceiveStartTime()).toDate();
-        this.receiveEndTime = DateTime.parse(membershipGiveDto.getReceiveEndTime()).toDate();
+        this.deadline = membershipGiveDto.getDeadline();
+        if (!StringUtils.isEmpty(membershipGiveDto.getStartTime())) {
+            this.startTime = DateTime.parse(membershipGiveDto.getStartTime()).toDate();
+        }
+        if (!StringUtils.isEmpty(membershipGiveDto.getEndTime())) {
+            this.endTime = DateTime.parse(membershipGiveDto.getEndTime()).toDate();
+        }
         this.userGroup = membershipGiveDto.getUserGroup();
         this.smsNotify = membershipGiveDto.isSmsNotify();
-        this.valid = membershipGiveDto.isValid();
-        this.validLoginName = membershipGiveDto.getValidLoginName();
+        this.active = membershipGiveDto.isActive();
+        this.activeBy = membershipGiveDto.getActiveBy();
         this.createdTime = new Date();
-        this.createdLoginName = membershipGiveDto.getCreatedLoginName();
+        this.createdBy = membershipGiveDto.getCreatedBy();
         this.updatedTime = new Date();
-        this.updatedLoginName = membershipGiveDto.getCreatedLoginName();
+        this.updatedBy = membershipGiveDto.getUpdatedBy();
     }
 
     public long getId() {
@@ -55,28 +60,28 @@ public class MembershipGiveModel implements Serializable {
         this.membershipId = membershipId;
     }
 
-    public int getValidPeriod() {
-        return validPeriod;
+    public int getDeadline() {
+        return deadline;
     }
 
-    public void setValidPeriod(int validPeriod) {
-        this.validPeriod = validPeriod;
+    public void setDeadline(int deadline) {
+        this.deadline = deadline;
     }
 
-    public Date getReceiveStartTime() {
-        return receiveStartTime;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setReceiveStartTime(Date receiveStartTime) {
-        this.receiveStartTime = receiveStartTime;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
-    public Date getReceiveEndTime() {
-        return receiveEndTime;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void setReceiveEndTime(Date receiveEndTime) {
-        this.receiveEndTime = receiveEndTime;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public MembershipUserGroup getUserGroup() {
@@ -95,20 +100,20 @@ public class MembershipGiveModel implements Serializable {
         this.smsNotify = smsNotify;
     }
 
-    public boolean isValid() {
-        return valid;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setValid(boolean valid) {
-        this.valid = valid;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
-    public String getValidLoginName() {
-        return validLoginName;
+    public String getActiveBy() {
+        return activeBy;
     }
 
-    public void setValidLoginName(String validLoginName) {
-        this.validLoginName = validLoginName;
+    public void setActiveBy(String activeBy) {
+        this.activeBy = activeBy;
     }
 
     public Date getCreatedTime() {
@@ -119,12 +124,12 @@ public class MembershipGiveModel implements Serializable {
         this.createdTime = createdTime;
     }
 
-    public String getCreatedLoginName() {
-        return createdLoginName;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreatedLoginName(String createdLoginName) {
-        this.createdLoginName = createdLoginName;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Date getUpdatedTime() {
@@ -135,11 +140,11 @@ public class MembershipGiveModel implements Serializable {
         this.updatedTime = updatedTime;
     }
 
-    public String getUpdatedLoginName() {
-        return updatedLoginName;
+    public String getUpdatedBy() {
+        return updatedBy;
     }
 
-    public void setUpdatedLoginName(String updatedLoginName) {
-        this.updatedLoginName = updatedLoginName;
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 }

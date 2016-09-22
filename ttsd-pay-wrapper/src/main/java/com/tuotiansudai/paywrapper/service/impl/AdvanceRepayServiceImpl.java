@@ -8,6 +8,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AdvanceRepayJob;
 import com.tuotiansudai.job.JobType;

@@ -8,15 +8,15 @@ import java.text.SimpleDateFormat;
 public class MembershipGiveDto {
     private long id;
     private int membershipLevel;
-    private int validPeriod;
-    private String receiveStartTime;
-    private String receiveEndTime;
+    private int deadline;
+    private String startTime;
+    private String endTime;
     private MembershipUserGroup userGroup;
     private boolean smsNotify;
-    private boolean valid;
-    private String validLoginName;
-    private String createdLoginName;
-    private String updatedLoginName;
+    private boolean active;
+    private String activeBy;
+    private String createdBy;
+    private String updatedBy;
 
     public MembershipGiveDto() {
     }
@@ -25,19 +25,19 @@ public class MembershipGiveDto {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         this.id = membershipGiveModel.getId();
 //        private int membershipLevel;
-        this.validPeriod = membershipGiveModel.getValidPeriod();
-        if (null != membershipGiveModel.getReceiveStartTime()) {
-            this.receiveStartTime = simpleDateFormat.format(membershipGiveModel.getReceiveStartTime());
+        this.deadline = membershipGiveModel.getDeadline();
+        if (null != membershipGiveModel.getStartTime()) {
+            this.startTime = simpleDateFormat.format(membershipGiveModel.getStartTime());
         }
-        if (null != membershipGiveModel.getReceiveEndTime()) {
-            this.receiveEndTime = simpleDateFormat.format(membershipGiveModel.getReceiveEndTime());
+        if (null != membershipGiveModel.getEndTime()) {
+            this.endTime = simpleDateFormat.format(membershipGiveModel.getEndTime());
         }
         this.userGroup = membershipGiveModel.getUserGroup();
         this.smsNotify = membershipGiveModel.isSmsNotify();
-        this.valid = membershipGiveModel.isValid();
-        this.validLoginName = membershipGiveModel.getValidLoginName();
-        this.createdLoginName = membershipGiveModel.getCreatedLoginName();
-        this.updatedLoginName = membershipGiveModel.getUpdatedLoginName();
+        this.active = membershipGiveModel.isActive();
+        this.activeBy = membershipGiveModel.getActiveBy();
+        this.createdBy = membershipGiveModel.getCreatedBy();
+        this.updatedBy = membershipGiveModel.getUpdatedBy();
     }
 
     public long getId() {
@@ -56,28 +56,28 @@ public class MembershipGiveDto {
         this.membershipLevel = membershipLevel;
     }
 
-    public int getValidPeriod() {
-        return validPeriod;
+    public int getDeadline() {
+        return deadline;
     }
 
-    public void setValidPeriod(int validPeriod) {
-        this.validPeriod = validPeriod;
+    public void setDeadline(int deadline) {
+        this.deadline = deadline;
     }
 
-    public String getReceiveStartTime() {
-        return receiveStartTime;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setReceiveStartTime(String receiveStartTime) {
-        this.receiveStartTime = receiveStartTime;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public String getReceiveEndTime() {
-        return receiveEndTime;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setReceiveEndTime(String receiveEndTime) {
-        this.receiveEndTime = receiveEndTime;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public MembershipUserGroup getUserGroup() {
@@ -96,35 +96,35 @@ public class MembershipGiveDto {
         this.smsNotify = smsNotify;
     }
 
-    public boolean isValid() {
-        return valid;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setValid(boolean valid) {
-        this.valid = valid;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
-    public String getValidLoginName() {
-        return validLoginName;
+    public String getActiveBy() {
+        return activeBy;
     }
 
-    public void setValidLoginName(String validLoginName) {
-        this.validLoginName = validLoginName;
+    public void setActiveBy(String activeBy) {
+        this.activeBy = activeBy;
     }
 
-    public String getCreatedLoginName() {
-        return createdLoginName;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreatedLoginName(String createdLoginName) {
-        this.createdLoginName = createdLoginName;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public String getUpdatedLoginName() {
-        return updatedLoginName;
+    public String getUpdatedBy() {
+        return updatedBy;
     }
 
-    public void setUpdatedLoginName(String updatedLoginName) {
-        this.updatedLoginName = updatedLoginName;
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 }

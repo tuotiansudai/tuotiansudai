@@ -10,7 +10,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
@@ -23,7 +23,8 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.when;
 
 
 public class MobileAppExchangeServiceTest extends ServiceTestBase{

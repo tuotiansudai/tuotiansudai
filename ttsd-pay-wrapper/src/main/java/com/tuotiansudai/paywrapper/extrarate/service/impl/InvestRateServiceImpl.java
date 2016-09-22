@@ -1,12 +1,12 @@
 package com.tuotiansudai.paywrapper.extrarate.service.impl;
 
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.paywrapper.extrarate.service.InvestRateService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.model.InvestExtraRateModel;
 import com.tuotiansudai.repository.model.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
-import com.tuotiansudai.repository.model.UserBillBusinessType;
 import com.tuotiansudai.util.AmountTransfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

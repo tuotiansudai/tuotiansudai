@@ -7,6 +7,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;

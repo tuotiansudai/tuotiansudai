@@ -17,6 +17,7 @@ import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;

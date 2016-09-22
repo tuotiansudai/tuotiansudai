@@ -4,7 +4,7 @@ package com.tuotiansudai.web.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.UserCouponService;
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
 import com.tuotiansudai.service.ExperienceLoanDetailService;
 import com.tuotiansudai.spring.LoginUserInfo;

@@ -13,6 +13,8 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanOutDto;
+import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;

@@ -1,6 +1,6 @@
 package com.tuotiansudai.point.repository.model;
 
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.enums.CouponType;
 
 public enum ItemType {
     PHYSICAL("实体商品", null),

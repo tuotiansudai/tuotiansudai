@@ -1,7 +1,7 @@
 package com.tuotiansudai.paywrapper.aspect;
 
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.SmsCancelTransferLoanNotifyDto;
+import com.tuotiansudai.dto.smsDto.SmsCancelTransferLoanNotifyDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;

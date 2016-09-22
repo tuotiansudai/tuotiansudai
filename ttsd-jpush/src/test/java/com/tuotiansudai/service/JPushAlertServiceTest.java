@@ -8,10 +8,10 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
 import com.tuotiansudai.jpush.repository.model.*;
-import com.tuotiansudai.jpush.service.JPushScheduleAlertService;
 import com.tuotiansudai.jpush.service.impl.JPushAlertServiceImpl;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -23,7 +23,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +38,7 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.anyMap;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)

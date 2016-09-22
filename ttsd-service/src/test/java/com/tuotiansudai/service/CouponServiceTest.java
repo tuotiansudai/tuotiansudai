@@ -12,6 +12,7 @@ import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;

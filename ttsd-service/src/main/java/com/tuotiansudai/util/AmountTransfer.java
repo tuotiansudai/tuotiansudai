@@ -1,10 +1,10 @@
 package com.tuotiansudai.util;
 
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import org.springframework.beans.factory.annotation.Autowired;
