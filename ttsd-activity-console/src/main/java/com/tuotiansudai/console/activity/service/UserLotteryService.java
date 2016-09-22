@@ -70,11 +70,11 @@ public class UserLotteryService{
         return userMapper.findUserModelByMobile(mobile,0, Integer.MAX_VALUE).size();
     }
 
-    public List<UserLotteryPrizeView> findUserLotteryPrizeViews(String mobile,String selectPrize,PrizeType prizeType,Date startTime,Date endTime,Integer index,Integer pageSize){
+    public List<UserLotteryPrizeView> findUserLotteryPrizeViews(String mobile,LotteryPrize selectPrize,PrizeType prizeType,Date startTime,Date endTime,Integer index,Integer pageSize){
         return userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize,prizeType, startTime, endTime, index, pageSize);
     }
 
-    public int findUserLotteryPrizeCountViews(String mobile,String selectPrize,PrizeType prizeType,Date startTime,Date endTime){
+    public int findUserLotteryPrizeCountViews(String mobile,LotteryPrize selectPrize,PrizeType prizeType,Date startTime,Date endTime){
         return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, selectPrize, prizeType,startTime, endTime);
     }
 

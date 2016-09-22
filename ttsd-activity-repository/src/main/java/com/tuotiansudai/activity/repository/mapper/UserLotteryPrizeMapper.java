@@ -18,7 +18,7 @@ public interface UserLotteryPrizeMapper {
 
 
     List<UserLotteryPrizeView> findUserLotteryPrizeViews(@Param(value = "mobile") String mobile,
-                                                         @Param(value = "lotteryPrize") String lotteryPrize,
+                                                         @Param(value = "lotteryPrize") LotteryPrize lotteryPrize,
                                                          @Param(value = "prizeType") PrizeType prizeType,
                                                          @Param(value = "startTime") Date startTime,
                                                          @Param(value = "endTime") Date endTime,
@@ -26,7 +26,7 @@ public interface UserLotteryPrizeMapper {
                                                          @Param(value = "pageSize") Integer pageSize);
 
     int findUserLotteryPrizeCountViews(@Param(value = "mobile") String mobile,
-                                       @Param(value = "lotteryPrize") String LotteryPrize,
+                                       @Param(value = "lotteryPrize") LotteryPrize lotteryPrize,
                                        @Param(value = "prizeType") PrizeType prizeType,
                                        @Param(value = "startTime") Date startTime,
                                        @Param(value = "endTime") Date endTime);

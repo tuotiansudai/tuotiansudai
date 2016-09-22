@@ -173,6 +173,8 @@ public class PointBillServiceImpl implements PointBillService {
                 return MessageFormat.format("投资项目：{0}", loanModel.getName());
             case LOTTERY:
                 return PointBusinessType.LOTTERY.getDescription();
+            case ACTIVITY:
+                return PointBusinessType.ACTIVITY.getDescription();
         }
 
         return null;

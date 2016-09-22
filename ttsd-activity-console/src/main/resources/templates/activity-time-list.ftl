@@ -23,7 +23,7 @@
                     <select class="selectpicker" name="prizeType">
                         <#list prizeTypes as prizeType>
                             <option value="${prizeType}" <#if prizeTypes?? && prizeType==selectPrize>selected</#if>>
-                            ${prizeType.description}
+                                ${prizeType.description}
                             </option>
                         </#list>
                     </select>

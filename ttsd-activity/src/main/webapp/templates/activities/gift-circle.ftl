@@ -1,6 +1,6 @@
 <div class="leader-container <#if activityType= 'luxury'></#if><#if activityType= 'travel'>tour-theme</#if>"  id="awardCom"><!--旅游：tour-theme  -->
     <div class="leader-list">
-    <input type="hidden" val="${activityType}" id="themeType">
+    <input type="hidden" value="${activityType}" id="themeType">
         <div class="lottery-circle">
             <h3>我的抽奖机会：<span class="lottery-time">${drawTime}</span>次</h3>
             <div class="circle-shade">
