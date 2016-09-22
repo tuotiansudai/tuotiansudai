@@ -216,6 +216,14 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             });
         };
 
+        $('.jq-checkbox label').click(function () {
+            if ($('.jq-index').prop('checked')) {
+                $('.jq-index').val('1');
+            } else {
+                $('.jq-index').val('0');
+            }
+        });
+
         $('.jq-activity-checkbox label').click(function () {
             if ($('.jq-activity').prop('checked')) {
                 $('.jq-activity').val('1');
@@ -388,6 +396,12 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 var showOnHome = true;
                 if (showOnHomeInputVal == '0') {
                     showOnHome = false;
+                }
+
+                var activityInputVal =  $('.jq-activity').val();
+                var activity = false;
+                if (activityInputVal == '1') {
+                    activity = true;
                 }
 
                 var value = $('.jq-name').val();
