@@ -29,7 +29,7 @@
 
                 <div class="imageUrlImage" style="margin-top: 10px">
                     <#if product?? && product.imageUrl??>
-                        <img style="width:100%" src="/${product.imageUrl!}" alt="缩略图" width="480" height="390"/>
+                        <img style="width:100%" src="${staticServer}${product.imageUrl!}" alt="缩略图" width="480" height="390"/>
                     </#if>
                 </div>
             </div>

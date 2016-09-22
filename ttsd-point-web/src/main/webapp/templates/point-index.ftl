@@ -150,7 +150,7 @@
                             <a href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail">
                                 <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
 
-                                <p><img src="/${virtualProduct.imageUrl}" width="160" height="100"></p>
+                                <p><img src="${staticServer}${virtualProduct.imageUrl}" width="160" height="100"></p>
                                 <p class="convert-btn">
                                     <span class="name-text">${virtualProduct.name!"0"}</span>
                                     <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
@@ -170,7 +170,7 @@
                             <a href="/point-shop/${virtualProduct.id?c}/${virtualProduct.itemType.name()}/detail">
                                 <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
 
-                                <p><img src="/${virtualProduct.imageUrl}" width="160" height="100"></p>
+                                <p><img src="${staticServer}${virtualProduct.imageUrl}" width="160" height="100"></p>
                                 <p class="convert-btn">
                                     <span class="name-text">${virtualProduct.name}</span>
                                     <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
@@ -210,7 +210,7 @@
                                 <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
 
                                 <p class="mater-img picture-item">
-                                    <img src="/${physicalProduct.imageUrl}" width="160" height="100"/>
+                                    <img src="${staticServer}${physicalProduct.imageUrl}" width="160" height="100"/>
                                 </p>
 
                                 <p class="convert-btn">
@@ -231,7 +231,7 @@
                                 <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
 
                                 <p class="mater-img picture-item">
-                                    <img src="/${physicalProduct.imageUrl}" width="160" height="100"/>
+                                    <img src="${staticServer}${physicalProduct.imageUrl}" width="160" height="100"/>
                                 </p>
 
                                 <p class="convert-btn">

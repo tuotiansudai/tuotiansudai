@@ -18,12 +18,12 @@
 
     <div>
         <p>展示图</p>
-        <img src="/${articleContent.getShowPicture()}" alt="展示图"/>
+        <img src="${staticServer}${articleContent.getShowPicture()}" alt="展示图"/>
     </div>
 
     <div>
         <p>缩略图</p>
-        <img src="/${articleContent.getThumbPicture()}" alt="缩略图"/>
+        <img src="${staticServer}${articleContent.getThumbPicture()}" alt="缩略图"/>
     </div>
 </div>
 

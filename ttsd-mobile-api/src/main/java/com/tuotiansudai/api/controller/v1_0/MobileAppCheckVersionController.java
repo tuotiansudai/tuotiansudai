@@ -27,7 +27,7 @@ import java.io.InputStream;
 @Controller
 public class MobileAppCheckVersionController extends MobileAppBaseController {
 
-    private static final String APP_VERSION_CHECK_URL = "https://tuotiansudai.com/app/version.json";
+    private static final String APP_VERSION_CHECK_URL = "https://static.tuotiansudai.com/app/version.json";
     private static final String VERSION_CONFIG_FILE = "version.json";
     private static final String APP_VERSION_INFO_REDIS_KEY = "app:version:info";
     private static final int APP_VERSION_INFO_EXPIRE_SECONDS = 60 * 60;
