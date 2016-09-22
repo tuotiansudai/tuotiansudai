@@ -719,7 +719,7 @@
         from invest
         where status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
         <if test="loanId != null and loanId != '' ">
-            loan_id = #{loanId}
+            and loan_id = #{loanId}
         </if>
     </select>
 
