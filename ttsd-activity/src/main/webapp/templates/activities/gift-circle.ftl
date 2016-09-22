@@ -1,17 +1,11 @@
-<div class="leader-container <#if activityType= 'luxury'></#if><#if activityType= 'travel'>tour-theme</#if><#if activityType= 'national'>national-day-theme</#if>"   id="awardCom"><!--旅游：tour-theme，国庆：national-day-theme  -->
+<div class="leader-container <#if activityType= 'luxury'></#if><#if activityType= 'travel'>tour-theme</#if>"  id="awardCom"><!--旅游：tour-theme  -->
     <div class="leader-list">
     <input type="hidden" value="${activityType}" id="themeType">
         <div class="lottery-circle">
             <h3>我的抽奖机会：<span class="lottery-time">${drawTime}</span>次</h3>
             <div class="circle-shade">
-                <div class="pointer-img" id="pointer" data-islogin="true">
-                    <img src="${staticServer}/activity/images/sign/actor/circle/pointer.png" alt="pointer" width="100%"/>
-                </div>
-                <div class="rotate-btn" id="rotate">
-                    <img src="${staticServer}/activity/images/sign/actor/circle/luxury-gift-new.png" alt="turntable" width="100%" class="luxury-img"/>
-                    <img src="${staticServer}/activity/images/sign/actor/circle/tour-gift.png" alt="pointer" width="100%" class="tour-img"/>
-                    <img src="${staticServer}/activity/images/sign/actor/circle/national-day-gift.png" alt="pointer" width="100%" class="national-img"/>
-                </div>
+                <div class="pointer-img" id="pointer" data-islogin="true"></div>
+                <div class="rotate-btn" id="rotate"></div>
             </div>
         </div>
         <div class="lottery-detail">
@@ -108,7 +102,8 @@
     </div>
 </div>
 
-<div class="tip-list <#if activityType= 'luxury'></#if><#if activityType= 'travel'>tour-theme</#if><#if activityType= 'national'>national-day-theme</#if>" id="tipList"><!--旅游:tour-theme,国庆：national-day-theme   -->
+<div class="tip-list <#if activityType= 'luxury'></#if><#if activityType= 'travel'>tour-theme</#if>" id="tipList"><!--旅游:tour-theme  -->
+
     <script id="tipListTpl" type="text/html">
     <div class="tip-dom">
         <div class="close-btn go-close"></div>
