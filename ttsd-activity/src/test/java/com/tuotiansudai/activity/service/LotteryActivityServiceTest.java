@@ -124,7 +124,7 @@ public class LotteryActivityServiceTest {
 
     private UserLotteryPrizeModel getUserLotteryPrizeModel(String loginName,String mobile,String userName){
         UserLotteryPrizeModel userLotteryPrizeModel = new UserLotteryPrizeModel();
-        userLotteryPrizeModel.setPrize(LotteryPrize.INTEREST_COUPON_2.name());
+        userLotteryPrizeModel.setPrize(LotteryPrize.INTEREST_COUPON_2);
         userLotteryPrizeModel.setLotteryTime(DateTime.now().toDate());
         userLotteryPrizeModel.setLoginName(loginName);
         userLotteryPrizeModel.setMobile(mobile);

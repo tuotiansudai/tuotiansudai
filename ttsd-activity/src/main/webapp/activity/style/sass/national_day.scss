@@ -116,7 +116,7 @@ body {
           position: relative;
           .progress-percent {
             height: 100%;
-            background: url("/activity/images/national-day/bg-progress.jpg") left top repeat-x;
+            background: url("../../images/national-day/bg-progress.jpg") left top repeat-x;
             width: 50%;
             display: inline-block;
             border-radius: 20px;
@@ -178,55 +178,75 @@ body {
           text-align: center;
           position: relative;
           padding-top: 70px;
-          &.step-one {
-            background: url("/activity/images/national-day/icon-step1.png") center top no-repeat;
-          }
-          &.step-two {
-            background: url("/activity/images/national-day/icon-step2.png") center top no-repeat;
-          }
-          &.step-three {
-            background: url("/activity/images/national-day/icon-step3.png") center top no-repeat;
-          }
-          &.step-four {
-            background: url("/activity/images/national-day/icon-step4.png") center 12px no-repeat;
-          }
-          &.step-five {
-            background: url("/activity/images/national-day/icon-step5.png") center top no-repeat;
-          }
-          span {
+          em.arrow {
+            position: absolute;
+            width: 55px;
+            height: 20px;
             display: inline-block;
-            font-size:16px;
-            color: #fb781d;
-            border:1px solid #fb781d;
-            padding: 0 10px;
+            background: url("../../images/national-day/line-arrow.png") center top no-repeat;
+            right: -30px;
+            top: 25px;
 
           }
+          .icon-text {
+            color: #fb781d;
+            border:1px solid #fb781d;
+            display: inline-block;
+            line-height: 27px;
+            width: 70px;
+            font-size:16px;
+          }
+          &.step-one {
+            background: url("../../images/national-day/icon-step1.png") center top no-repeat;
+          }
+          &.step-two {
+            background: url("../../images/national-day/icon-step2.png") center top no-repeat;
+          }
+          &.step-three {
+            background: url("../../images/national-day/icon-step3.png") center top no-repeat;
+          }
+          &.step-four {
+            background: url("../../images/national-day/icon-step4.png") center 12px no-repeat;
+          }
+          &.step-five {
+            background: url("../../images/national-day/icon-step5.png") center top no-repeat;
+          }
+
           &.finished {
-            span {
+            .icon-text {
               background: #fb781d;
               color: #fff;
             }
           }
 
           &.active {
-            span {
-              background: #ce2607;
-              color: #f9dfb3;
-            }
+
             &.step-one {
-              background: url("/activity/images/national-day/icon-step1-h.png") center top no-repeat;
+              background: url("../../images/national-day/icon-step1-h.png") center top no-repeat;
             }
             &.step-two {
-              background: url("/activity/images/national-day/icon-step2-h.png") center top no-repeat;
+              background: url("../../images/national-day/icon-step2-h.png") center top no-repeat;
             }
             &.step-three {
-              background: url("/activity/images/national-day/icon-step3-h.png") center top no-repeat;
+              background: url("../../images/national-day/icon-step3-h.png") center top no-repeat;
             }
             &.step-four {
-              background: url("/activity/images/national-day/icon-step4-h.png") center 12px no-repeat;
+              background: url("../../images/national-day/icon-step4-h.png") center 12px no-repeat;
             }
             &.step-five {
-              background: url("/activity/images/national-day/icon-step5-h.png") center top no-repeat;
+              background: url("../../images/national-day/icon-step5-h.png") center top no-repeat;
+            }
+
+            em.arrow {
+              background: url("../../images/national-day/line-arrow-current.png") center top no-repeat;
+            }
+            .icon-text {
+              color: #f9dfb3;
+              background: #ce2607;
+              border:1px solid #ce2607;
+              a {
+                color: #f9dfb3;
+              }
             }
           }
         }
@@ -251,11 +271,139 @@ body {
       }
       .ms-code {
         margin-top:20px;
+        img {
+          border:1px solid #9e330a;
+        }
         span {
           display: inline-block;
           font-weight: bold;
           padding-top:10px;
           padding-bottom:30px;
+        }
+      }
+    }
+  }
+}
+
+.national-day-theme {
+  .leader-container{
+    float: none;
+    margin:0 auto;
+    background: red;
+    .leader-list {
+      .lottery-detail {
+        h3 {
+          background: #ffee9a;
+          border:1px solid #69260c;
+          border-radius:34px;
+          color: #69260c;
+        }
+        .gift-record {
+          background: #71cfcf;
+          border-radius: 20px 20px 0 0;
+          overflow: hidden;
+          border: 1px solid #69260c;
+          border-bottom-width: 0px;
+          box-sizing: border-box;
+          li {
+            background: #facc50;
+            color: #fff;
+            width:50%;
+            &:nth-child(1) {
+              span {
+                display: block;
+                border-right:1px solid #69260c;
+              }
+            }
+            &.active {
+              background: #ffee9a;
+              color: #69260c;
+            }
+          }
+        }
+        .record-list {
+          background: #ffee9a;
+          border: 1px solid #69260c;
+          width:100%;
+          box-sizing: border-box;
+          border-radius: 0px 0px 20px 20px;
+          .record-model {
+            display: block;
+          }
+        }
+      }
+      .lottery-circle {
+        width:570px;
+        .circle-shade {
+          margin: 0 0 40px -10px;
+          background: url("/activity/images/sign/actor/circle/bg-national-circle.png") no-repeat center;
+          background-size: 100%;
+          .rotate-btn{
+            background: url("/activity/images/sign/actor/circle/national-day-gift.png") no-repeat center;
+            background-size: contain;
+          }
+        }
+      }
+    }
+  }
+
+  .tip-list{
+    .tip-dom{
+      width:460px;
+      height:370px;
+      background:url("/activity/images/national-day/national-bg.png") no-repeat center;
+      background-size: 100%;
+      border-radius: 21px;
+      border:1px solid #69260c;
+      box-sizing:border-box;
+      overflow: hidden;
+      .text-tip{
+        width:100%;
+        height:240px;
+        margin:0;
+        padding-top:0px;
+        .login-text {
+          font-size:30px;
+          padding-top: 60px;
+        }
+        .success-text {
+          font-size: 40px;
+          padding-top: 30px;
+        }
+        .reward-text {
+          font-size:30px;
+        }
+        p{
+          color:#ffea00;
+          line-height: 51px;
+          &.des-text{
+            color:#fff;
+            font-size:24px;
+            padding:0 30px;
+            line-height: 36px;
+          }
+        }
+      }
+      .close-btn{
+        width: 15px;
+        height: 15px;
+        top: 10px;
+        right: 10px;
+        background:url("/activity/images/national-day/close-btn.png") no-repeat center;
+        background-size:100%;
+      }
+      .btn-list{
+        height:130px;
+        background:#fff;
+        a{
+          width:182px;
+          height: 54px;
+          line-height: 54px;
+          font-size: 26px;
+          margin:33px 10px 0;
+          color:#992900;
+          background:url("../../images/national-day/btn-bg.png") no-repeat center;
+          background-size: 100%;
         }
       }
     }
@@ -377,10 +525,10 @@ body {
         }
       }
     }
-
   }
-  .leader-container {
-    &.national-day-theme {
+
+  .national-day-theme {
+    .leader-container {
       .leader-list {
         .lottery-circle {
           width:100%;
@@ -407,7 +555,9 @@ body {
           }
         }
       }
+
     }
   }
+
 
 }

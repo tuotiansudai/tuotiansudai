@@ -19,7 +19,7 @@
 
                 <div class="form-group">
                     <label>活动类型</label>
-                    <select class="selectpicker" name="prizeType" onchange="switchPrize()">
+                    <select class="selectpicker" name="prizeType"">
                         <#list prizeTypes as prizeType>
                             <option value="${prizeType}" <#if prizeTypes?? && prizeType==selectPrizeType>selected</#if>>
                             ${prizeType.description}

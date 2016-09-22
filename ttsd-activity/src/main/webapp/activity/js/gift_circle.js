@@ -3,7 +3,7 @@
  * [user]:xuqiang
  * [date]:2016-08-24
  */
-define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, rotate, layer,tpl) {
+define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, layer,tpl) {
     var bRotate = false,
         $pointer = $('#pointer'),
         $rotate = $('#rotate'),
@@ -30,7 +30,6 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         }else if($('#themeType').val() == 'national'){
             url = '/activity/national/draw?mobile='+mobile;
         }
-
         if (bRotate) return;
         $.ajax({
             url: url,
@@ -58,6 +57,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
                     case 'RED_ENVELOPE_50':
                         rotateFn(5, 300, '50元现金红包',data.prizeType);
                         break;
+
                     case 'MANGO_CARD_100':
                         rotateFn(6, 347, '100元芒果卡',data.prizeType);
                         break;
@@ -115,6 +115,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
             }
         })
     }
+
     //close btn
     $('body').on('click', '.go-close', function(event) {
         event.preventDefault();

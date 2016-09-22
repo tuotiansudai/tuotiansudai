@@ -13,7 +13,7 @@
         <result column="user_name" property="userName"></result>
         <result column="prize" property="prize"></result>
         <result column="lottery_time" property="lotteryTime"></result>
-        <result column="prize_type" property="prizeType"></result>
+        <result column="activity_category" property="activityCategory"></result>
     </resultMap>
 
     <resultMap id="userLotteryPrizeView" type="com.tuotiansudai.activity.repository.model.UserLotteryPrizeView">
@@ -24,8 +24,8 @@
     </resultMap>
 
     <insert id="create" parameterType="userLotteryPrizeModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `edxactivity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`user_name`,`prize`,`lottery_time`,`prize_type`)
-        VALUES(#{id},#{mobile},#{loginName},#{userName},#{prize},#{lotteryTime},#{prizeType});
+        INSERT INTO `edxactivity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`user_name`,`prize`,`lottery_time`,`activity_category`)
+        VALUES(#{id},#{mobile},#{loginName},#{userName},#{prize},#{lotteryTime},#{activityCategory});
 
     </insert>
 
@@ -38,7 +38,7 @@
         `user_name` = #{user_name},
         `prize` = #{prize},
         `lottery_time` = #{lotteryTime},
-        `prize_type` = #{prizeType}
+        `activity_category` = #{activityCategory}
         WHERE `id` = #{id}
     </update>
 
@@ -57,8 +57,8 @@
             <if test="endTime != null">
                 <![CDATA[ and p.lottery_time <= #{endTime} ]]>
             </if>
-            <if test="prizeType != null">
-                and prize_type = #{prizeType}
+            <if test="activityCategory != null">
+                and activity_category = #{activityCategory}
             </if>
         </where>
         order by p.lottery_time DESC
@@ -80,8 +80,8 @@
             <if test="endTime != null">
                 <![CDATA[ and p.lottery_time <= #{endTime} ]]>
             </if>
-            <if test="prizeType != null">
-                and prize_type = #{prizeType}
+            <if test="activityCategory != null">
+                and activity_category = #{activityCategory}
             </if>
         </where>
     </select>
@@ -100,8 +100,8 @@
                 </foreach>
             </if>
 
-            <if test="prizeType != null">
-                and prize_type = #{prizeType}
+            <if test="activityCategory != null">
+                and activity_category = #{activityCategory}
             </if>
         </where>
         order by lottery_time DESC

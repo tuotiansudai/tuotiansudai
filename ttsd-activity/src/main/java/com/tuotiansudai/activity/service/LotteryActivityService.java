@@ -102,7 +102,7 @@ public class LotteryActivityService {
             lotteryTime ++;
         }
 
-        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(),null,PrizeType.AUTUMN_PRIZE,null,null);
+        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(),null,ActivityCategory.AUTUMN_PRIZE,null,null);
         if(lotteryTime > 0){
             lotteryTime -= userTime;
         }
@@ -137,12 +137,12 @@ public class LotteryActivityService {
         userMapper.lockByLoginName(userModel.getLoginName());
 
         LotteryPrize lotteryPrize = getDrawPrize(drawType);
-        if(lotteryPrize.getActivityCategory().equals(ActivityCategory.VIRTUAL)){
+        if(lotteryPrize.getActivityCategory().equals(PrizeType.VIRTUAL)){
             couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize.name(), DateTime.now().toDate(), PrizeType.AUTUMN_PRIZE));
+        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), ActivityCategory.AUTUMN_PRIZE));
         return new DrawLotteryResultDto(0,lotteryPrize.name(),lotteryPrize.getActivityCategory().name());
     }
 
@@ -188,7 +188,7 @@ public class LotteryActivityService {
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile,LotteryPrize activityType){
         List<LotteryPrize> lotteryPrizes = activityType.equals(LotteryPrize.TOURISM) ? Lists.newArrayList(LotteryPrize.TOURISM,LotteryPrize.MANGO_CARD_100) : Lists.newArrayList(LotteryPrize.PORCELAIN_CUP,LotteryPrize.LUXURY);
 
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, lotteryPrizes,PrizeType.AUTUMN_PRIZE);
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, lotteryPrizes,ActivityCategory.AUTUMN_PRIZE);
         for(UserLotteryPrizeView view : userLotteryPrizeViews){
             view.setMobile(randomUtils.encryptWebMiddleMobile(view.getMobile()));
         }

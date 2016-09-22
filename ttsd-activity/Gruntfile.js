@@ -43,7 +43,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true, // Enable dynamic expansion.
                     cwd: '', // Src matches are relative to this path.
-                    src: ['<%= meta.baseJsPath %>/*.js'], // Actual pattern(s) to match.
+                    src: ['<%= meta.baseJsPath %>/*.js','<%= meta.baseJsPath %>/module/*.js'], // Actual pattern(s) to match.
                     dest: '<%= meta.baseJsMinPath %>/', // Destination path prefix.
                     ext: '.min.js', // Dest filepaths will have this extension.
                     extDot: 'first', // Extensions in filenames begin after the first dot
@@ -72,7 +72,7 @@ module.exports = function(grunt) {
                 options: {
                     target: ['<%=meta.baseImagePath %>/**/*.*'],
                     fixDirLevel: false,
-                    maxBytes: 1024 * 8   //小于8k的图片会生成base64 ,并且需要是相对路径
+                    maxBytes: 1024 * 5   //小于5k的图片会生成base64 ,并且需要是相对路径
                 }
             }
         },
@@ -161,7 +161,7 @@ module.exports = function(grunt) {
                     }
                 ]
             }
-        },
+        }
     });
 
     //转化成base64

@@ -2,8 +2,9 @@ package com.tuotiansudai.activity.dto;
 
 
 public enum PrizeType {
-    AUTUMN_PRIZE("旅游奢侈品活动"),
-    NATIONAL_PRIZE("国庆活动");
+    CONCRETE("真实奖品"),
+    VIRTUAL("虚拟奖品"),
+    MEMBERSHIP("会员");
 
     PrizeType(String description) {
         this.description = description;

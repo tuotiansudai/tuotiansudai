@@ -1,5 +1,7 @@
 package com.tuotiansudai.activity.repository.model;
 
+import com.tuotiansudai.activity.dto.ActivityCategory;
+import com.tuotiansudai.activity.dto.LotteryPrize;
 import com.tuotiansudai.activity.dto.PrizeType;
 
 import java.io.Serializable;
@@ -15,21 +17,21 @@ public class UserLotteryPrizeModel implements Serializable {
 
     private String userName;
 
-    private String prize;
+    private LotteryPrize prize;
 
     private Date lotteryTime;
 
-    private PrizeType prizeType;
+    private ActivityCategory activityCategory;
 
     public UserLotteryPrizeModel() {}
 
-    public UserLotteryPrizeModel(String mobile, String loginName,String userName, String prize, Date lotteryTime,PrizeType prizeType) {
+    public UserLotteryPrizeModel(String mobile, String loginName,String userName, LotteryPrize prize, Date lotteryTime,ActivityCategory prizeType) {
         this.mobile = mobile;
         this.loginName = loginName;
         this.userName = userName;
         this.prize = prize;
         this.lotteryTime = lotteryTime;
-        this.prizeType = prizeType;
+        this.activityCategory = prizeType;
     }
 
     public long getId() {
@@ -56,11 +58,11 @@ public class UserLotteryPrizeModel implements Serializable {
         this.loginName = loginName;
     }
 
-    public String getPrize() {
+    public LotteryPrize getPrize() {
         return prize;
     }
 
-    public void setPrize(String prize) {
+    public void setPrize(LotteryPrize prize) {
         this.prize = prize;
     }
 
@@ -80,11 +82,11 @@ public class UserLotteryPrizeModel implements Serializable {
         this.userName = userName;
     }
 
-    public PrizeType getPrizeType() {
-        return prizeType;
+    public ActivityCategory getActivityCategory() {
+        return activityCategory;
     }
 
-    public void setPrizeType(PrizeType prizeType) {
-        this.prizeType = prizeType;
+    public void setActivityCategory(ActivityCategory activityCategory) {
+        this.activityCategory = activityCategory;
     }
 }

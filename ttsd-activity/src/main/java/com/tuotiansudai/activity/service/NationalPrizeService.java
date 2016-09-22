@@ -3,6 +3,7 @@ package com.tuotiansudai.activity.service;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.activity.dto.ActivityCategory;
 import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.dto.LotteryPrize;
 import com.tuotiansudai.activity.dto.PrizeType;
@@ -121,7 +122,7 @@ public class NationalPrizeService {
             lotteryTime ++;
         }
 
-        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, PrizeType.NATIONAL_PRIZE, null, null);
+        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.NATIONAL_PRIZE, null, null);
         if(lotteryTime > 0){
             lotteryTime -= userTime;
         }
@@ -156,17 +157,18 @@ public class NationalPrizeService {
         userMapper.lockByLoginName(userModel.getLoginName());
 
         LotteryPrize nationalPrize = getLotteryPrize();
-        String prizeType = "physical";
+        PrizeType prizeType = PrizeType.CONCRETE;
         if(nationalPrize.equals(LotteryPrize.RED_INVEST_15) || nationalPrize.equals(LotteryPrize.RED_INVEST_50)){
             couponAssignmentService.assignUserCoupon(mobile, getCouponId(nationalPrize));
-            prizeType = "virtual";
+            prizeType = PrizeType.VIRTUAL;
         }else if(nationalPrize.equals(LotteryPrize.MEMBERSHIP_V5)){
+            prizeType = PrizeType.MEMBERSHIP;
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", nationalPrize.name(), DateTime.now().toDate(), PrizeType.NATIONAL_PRIZE));
-        return new DrawLotteryResultDto(0,nationalPrize.name(),prizeType);
+        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", nationalPrize, DateTime.now().toDate(), ActivityCategory.NATIONAL_PRIZE));
+        return new DrawLotteryResultDto(0,nationalPrize.name(),prizeType.name());
     }
 
     private long getCouponId(LotteryPrize lotteryPrize){
@@ -183,7 +185,7 @@ public class NationalPrizeService {
         int random = (int) (Math.random() * 100000000);
         int mod = random % 100;
         if (mod >= 0 && mod <= 2){
-            return LotteryPrize.MEMBERSHIP_V5;
+            return LotteryPrize.FLOWER_CUP;
         } else if (mod >= 3 && mod <= 5){
             return LotteryPrize.CINEMA_TICKET;
         } else if (mod >= 6 && mod <= 9){
@@ -207,7 +209,7 @@ public class NationalPrizeService {
     }
 
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile){
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, null, PrizeType.NATIONAL_PRIZE);
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, null, ActivityCategory.NATIONAL_PRIZE);
         for(UserLotteryPrizeView view : userLotteryPrizeViews){
             view.setMobile(randomUtils.encryptWebMiddleMobile(view.getMobile()));
         }
@@ -224,7 +226,8 @@ public class NationalPrizeService {
         long amount = 0l;
         long count = 0l;
         for(InvestModel investModel : investModels){
-            if(loanDetailsMapper.getLoanDetailsByLoanId(investModel.getLoanId()).isActivity()){
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(investModel.getLoanId());
+            if(loanDetailsModel != null && loanDetailsModel.isActivity()){
                 amount += investModel.getAmount();
                 count ++;
             }
@@ -237,7 +240,7 @@ public class NationalPrizeService {
     private void createUserMembershipModel(String loginName, int level) {
         UserMembershipModel userMembershipModel = new UserMembershipModel(loginName,
                 membershipMapper.findByLevel(level).getId(),
-                DateTime.now().plusMonths(1).toDate(),
+                DateTime.now().plusMonths(1).withTime(23,59,59,59).toDate(),
                 new Date(),
                 UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel);

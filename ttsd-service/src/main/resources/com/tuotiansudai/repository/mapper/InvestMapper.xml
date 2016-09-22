@@ -48,6 +48,9 @@
         <result column="extra_rate" property="extraRate"/>
         <result column="extra_actual_interest" property="extraActualInterest"/>
         <result column="invest_status" property="investStatus"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="identity_number" property="identityNumber"/>
     </resultMap>
 
     <resultMap id="heroRankingView" type="HeroRankingView">
@@ -246,6 +249,9 @@
         loan.name AS loan_name,
         loan.periods AS loan_periods,
         invest.login_name AS investor_login_name,
+        (SELECT province FROM user WHERE login_name = invest.login_name) AS province,
+        (SELECT city FROM user WHERE login_name = invest.login_name) AS city,
+        (SELECT identity_number FROM account WHERE login_name = invest.login_name) AS identity_number,
         (SELECT user_name FROM account WHERE login_name = invest.login_name) AS investor_username,
         (SELECT mobile FROM user WHERE login_name = invest.login_name) AS investor_mobile,
         (SELECT GROUP_CONCAT(role ORDER BY role SEPARATOR ', ') FROM user_role WHERE login_name = invest.login_name) AS
@@ -719,7 +725,7 @@
         from invest
         where status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
         <if test="loanId != null and loanId != '' ">
-            loan_id = #{loanId}
+            and loan_id = #{loanId}
         </if>
     </select>
 

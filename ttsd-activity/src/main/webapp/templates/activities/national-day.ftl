@@ -1,6 +1,9 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.national_day}" pageJavascript="${js.national_day}" activeNav="" activeLeftNav="" title="拓荒计划_旅游活动_拓天速贷" keywords="拓荒计划,免费旅游,旅游活动投资,拓天速贷" description="拓天速贷金秋拓荒计划,多条旅游线路免费玩,你旅游我买单,邀请好友注册也可获得免费旅游大奖.">
-
+    <@global.isNotAnonymous>
+    <div style="display: none" class="login-name" data-login-name='<@global.security.authentication property="principal.username" />'></div>
+    <div style="display: none" class="mobile" id="MobileNumber" data-mobile='<@global.security.authentication property="principal.mobile" />'></div>
+    </@global.isNotAnonymous>
 <div class="tour-slide" id="tourSlide">
     <ul class="page-width button-area">
         <li><a href="javascript:void(0);">&nbsp;</a></li>
@@ -21,13 +24,13 @@
             如活动结束后，所有国庆专享标未筹满1949000元，则参与本活动的用户每人将获得50元投资红包，红包适用于180天及以上标的，需投资10000元激活！</P>
 
             <dl class="invest-percent-box clearfix">
-                <dt>目前专享标共投资：${allInvestAmount}元</dt>
+                <dt>目前专享标共投资：<em class="total-invest">${allInvestAmount}</em>元</dt>
                 <dd class="progress-bar">
                     <span class="progress-percent" style="width: ${investScale}%"></span>
                 </dd>
                 <dd class="count-total">
                     <span class="fl">已有<em>${userCount}</em>人参与</span>
-                    <span class="fr">总额度：1，949，000元</span>
+                    <span class="fr">总额度：1,949,000元</span>
                 </dd>
 
             </dl>
@@ -52,7 +55,7 @@
             </div>
 
             <div class="tc">
-                <a href="#" class="btn-normal-day">马上投资国庆专享标！</a>
+                <a href="/loan-list" class="btn-normal-day" target="_blank">马上投资国庆专享标！</a>
             </div>
         </div>
     </div>
@@ -74,7 +77,7 @@
             </dl>
 
             <div class="tc">
-                <a href="#" class="btn-normal-day">去投资赚积分</a>
+                <a href="/loan-list" class="btn-normal-day" target="_blank">去投资赚积分</a>
             </div>
         </div>
 
@@ -88,7 +91,7 @@
             </dl>
 
             <div class="tc">
-                <a href="#" class="btn-normal-day">去投资赚积分</a>
+                <a href="/referrer/refer-list" class="btn-normal-day" target="_blank">邀请好友赚积分</a>
             </div>
         </div>
 
@@ -106,6 +109,7 @@
 
         <ul class="steps-list clearfix">
             <li class="<#if steps[0] == 1>active</#if><#if steps[0] == 2>finished</#if> step-one">
+                <em class="arrow"></em>
                 <#if steps[0] == 1>
                     <div class="icon-text"><a href="/register/user">去注册</a></div></#if>
                 <#if steps[0] == 2>
@@ -119,7 +123,7 @@
                     <div class="icon-text"><a href="/register/account">去认证</a></div></#if>
                 <#if steps[1] == 2>
                     <div class="icon-text">已认证</div></#if>
-                <div class="step-icon"></div>
+
             </li>
             <li class="<#if steps[2] == 1>active</#if><#if steps[2] == 2>finished</#if> step-three">
                 <em class="arrow"></em>
@@ -129,7 +133,7 @@
                     <div class="icon-text"><a href="/bind-card">去绑卡</a></div></#if>
                 <#if steps[2] == 2>
                     <div class="icon-text">已绑卡</div></#if>
-                <div class="step-icon"></div>
+
             </li>
 
             <li class="<#if steps[3] == 1>active</#if> step-four">
@@ -138,7 +142,7 @@
                     <div class="icon-text">充值</div></#if>
                 <#if steps[3] == 1>
                     <div class="icon-text"><a href="/recharge">去充值</a></div></#if>
-                <div class="step-icon"></div>
+
             </li>
 
             <li class="<#if steps[4] == 1>active</#if> step-five">
@@ -152,18 +156,23 @@
                         <a href="/loan-list" class="icon-text autumn-luxury-invest-channel">去投资</a>
                     </@global.isNotAnonymous>
                 </#if>
-                <div class="step-icon"></div>
+
             </li>
             </ul>
 
         <p class="notice tc"><em>活动期间，</em><i>2、</i>每推荐一名好友注册也可获得一次抽奖机会；好友投资，还可再得一次抽奖机会。邀请越多机会越多。</p>
 
     <div class="tc">
-        <a href="#" class="btn-normal-day">立即邀请好友赢抽奖机会</a>
+        <a href="/referrer/refer-list" class="btn-normal-day" target="_blank">立即邀请好友赢抽奖机会</a>
     </div>
-        <#include "gift-circle.ftl"/>
+
         <!-- <#assign activityPrizeType = 'national-day-theme'/> -->
+        <div class="national-day-theme" id="nationalDayCircle">
+            <#include "gift-circle.ftl"/>
+        </div>
+
     </div>
+</div>
 
 <div class="section-outer">
     <div class="section-three-title"></div>
@@ -190,11 +199,7 @@
         </div>
     </div>
 </div>
+
+</div>
 </@global.main>
-
-
-
-
-
-
 

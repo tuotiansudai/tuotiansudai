@@ -3,8 +3,7 @@
  * [user]:xuqiang
  * [date]:2016-08-24
  */
-require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension', 'circle','commonFun','register_common'], function ($, layer, tpl) {
-    $(function () {
+require(['jquery', 'layerWrapper', 'template', 'drawCircle', 'jquery.ajax.extension','commonFun','register_common'], function ($, layer, tpl,drawCircle) {
         if ($(window).width() < 700) {
             $('.product-img').each(function (index, el) {
                 $(this).find('img').height($(this).siblings('.product-info').height());
@@ -58,6 +57,55 @@ require(['jquery', 'layerWrapper', 'template', 'jquery.ajax.extension', 'circle'
                 url: '/activity/autumn/luxury/invest?loginName=' + loginName,
                 type: 'POST'
             });
+        });
+
+    //以下为抽奖转盘
+    var $pointer = $('#pointer');
+    var $MobileNumber=$('#MobileNumber'),
+        travelAllList='/activity/autumn/luxury-all-list',  //中奖记录接口地址
+        travelUserList='/activity/autumn/luxury-user-list',   //我的奖品接口地址
+        myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';
+
+    var drawCircle=new drawCircle(travelAllList,travelUserList,drawURL,myMobileNumber);
+
+    //渲染中奖记录
+    drawCircle.GiftRecord();
+
+    //渲染我的奖品
+    drawCircle.MyGift(travelUserList,myMobileNumber);
+
+    //开始抽奖
+    $pointer.on('click', function(event) {
+        drawCircle.beginLotteryDraw(function(data) {
+            //抽奖接口成功后奖品指向位置
+            if (data.returnCode == 0) {
+                switch (data.prize) {
+                    case 'PORCELAIN_CUP':
+                        drawCircle.rotateFn(337, '青花瓷杯子',data.prizeType);
+                        break;
+                    case 'INTEREST_COUPON_2':
+                        drawCircle.rotateFn(56, '0.2%加息券',data.prizeType);
+                        break;
+                    case 'LUXURY':
+                        drawCircle.rotateFn(116, '奢侈品大奖',data.prizeType);
+                        break;
+                    case 'RED_ENVELOPE_100':
+                        drawCircle.rotateFn(160, '100元现金红包',data.prizeType);
+                        break;
+                    case 'INTEREST_COUPON_5':
+                        drawCircle.rotateFn(230, '0.5%加息券',data.prizeType);
+                        break;
+                    case 'RED_ENVELOPE_50':
+                        drawCircle.rotateFn(300, '50元现金红包',data.prizeType);
+                        break;
+                }
+            } else if (data.returnCode == 2) {
+                $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'nologin'})).show().find('.tip-dom').show();
+            } else if(data.returnCode == 3){
+                $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'timeout'})).show().find('.tip-dom').show();
+            } else {
+                $('#tipList').html(tpl('tipListTpl', {tiptext:data.message,istype:'notimes'})).show().find('.tip-dom').show();
+            }
         });
     });
 });
