@@ -69,19 +69,6 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             }
         });
 
-        //根据活动类型来显示标的所属活动是否可以编辑
-        $('.jq-activity-type').change(function () {
-            var value =  $('.jq-activity-type').val();
-            if("ACTIVITY" == value){
-                $('.jq-activity-desc').prop('disabled',false);
-            }
-            else{
-                $('.jq-activity-desc').val("");
-                $('.jq-activity-desc').prop('disabled',true);
-            }
-
-        });
-
         //添加申请材料
         $('.btn-upload').click(function () {
             $('.upload-box').append(_html);
@@ -228,6 +215,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 uploadFile.push(obj);
             });
         };
+
         $('.jq-checkbox label').click(function () {
             if ($('.jq-index').prop('checked')) {
                 $('.jq-index').val('1');
@@ -408,6 +396,12 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 var showOnHome = true;
                 if (showOnHomeInputVal == '0') {
                     showOnHome = false;
+                }
+
+                var activityInputVal =  $('.jq-activity').val();
+                var activity = false;
+                if (activityInputVal == '1') {
+                    activity = true;
                 }
 
                 var value = $('.jq-name').val();

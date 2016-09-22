@@ -85,7 +85,7 @@ public class PointServiceImpl implements PointService {
         if(nowDate.before(activityNationalEndTime) && nowDate.after(activityNationalStartTime) && loanDetailsModel.isActivity()){
             UserModel userModel = userMapper.findByLoginName(loginName);
             if(userModel.getRegisterTime().before(activityNationalEndTime) && userModel.getRegisterTime().after(activityNationalStartTime) && !Strings.isNullOrEmpty(userModel.getReferrer())){
-                pointBillService.createPointBill(userModel.getReferrer(), investId, PointBusinessType.ACTIVITY, (long) (point * 0.1));
+                pointBillService.createPointBill(userModel.getReferrer(), investId, PointBusinessType.ACTIVITY, (long) (point * 3.0));
             }
 
             point *= 2;

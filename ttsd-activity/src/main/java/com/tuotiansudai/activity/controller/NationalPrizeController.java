@@ -36,7 +36,7 @@ public class NationalPrizeController {
     @Autowired
     private BindBankCardService bindBankCardService;
 
-    private static final float NATIONAL_SUM_AMOUNT = 194900000;
+    private static final float NATIONAL_SUM_AMOUNT = 1000;
 
     private static NumberFormat numberFormat = NumberFormat.getInstance();
 
@@ -48,7 +48,7 @@ public class NationalPrizeController {
         long userInvestAmount = (long)param.get("investAmount");
         modelAndView.addObject("myPoint",nationalPrizeService.getMyActivityPoint(loginName));
         modelAndView.addObject("allInvestAmount", AmountConverter.convertCentToString(userInvestAmount).replaceAll("\\.00", ""));
-        modelAndView.addObject("investScale", numberFormat.format((float) userInvestAmount / NATIONAL_SUM_AMOUNT * 100));
+        modelAndView.addObject("investScale", userInvestAmount >= NATIONAL_SUM_AMOUNT ? "100" : numberFormat.format((float) userInvestAmount / NATIONAL_SUM_AMOUNT * 100));
         modelAndView.addObject("userCount", param.get("investCount"));
         modelAndView.addObject("drawTime", nationalPrizeService.getDrawPrizeTime(LoginUserInfo.getMobile()));
         modelAndView.addObject("steps", generateSteps(loginName));
