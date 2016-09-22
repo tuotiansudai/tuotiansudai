@@ -37,6 +37,7 @@ var require = {
         'superslide': staticServer+'/activity/js/libs/jquery.SuperSlide.2.1.1',
         'logintip': staticServer+'/activity/js/dest/login_tip.min',
         'circle': staticServer+'/activity/js/dest/gift_circle.min',
+        'drawCircle': staticServer+'/activity/js/dest/gift_circle_draw.min',
         'endTime': staticServer+'/activity/js/dest/actor_time.min',
         'register_common': staticServer+'/activity/js/dest/register_common.min'
     },

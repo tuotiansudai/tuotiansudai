@@ -1,4 +1,4 @@
-<div class="leader-container <#if activityType= 'luxury'></#if><#if activityType= 'travel'>tour-theme</#if>"  id="awardCom"><!--旅游：tour-theme，国庆：national-day-theme  -->
+<div class="leader-container <#if activityType= 'luxury'></#if><#if activityType= 'travel'>tour-theme</#if>"  id="awardCom"><!--旅游：tour-theme  -->
     <div class="leader-list">
     <input type="hidden" val="${activityType}" id="themeType">
         <div class="lottery-circle">
@@ -102,7 +102,7 @@
     </div>
 </div>
 
-<div class="tip-list <#if activityType= 'luxury'></#if><#if activityType= 'travel'>tour-theme</#if>" id="tipList"><!--旅游:tour-theme,国庆：national-day-theme   -->
+<div class="tip-list <#if activityType= 'luxury'></#if><#if activityType= 'travel'>tour-theme</#if>" id="tipList"><!--旅游:tour-theme  -->
 
     <script id="tipListTpl" type="text/html">
     <div class="tip-dom">
