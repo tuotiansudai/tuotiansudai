@@ -116,7 +116,7 @@ body {
           position: relative;
           .progress-percent {
             height: 100%;
-            background: url("/activity/images/national-day/bg-progress.jpg") left top repeat-x;
+            background: url("../../images/national-day/bg-progress.jpg") left top repeat-x;
             width: 50%;
             display: inline-block;
             border-radius: 20px;
@@ -178,55 +178,75 @@ body {
           text-align: center;
           position: relative;
           padding-top: 70px;
-          &.step-one {
-            background: url("/activity/images/national-day/icon-step1.png") center top no-repeat;
-          }
-          &.step-two {
-            background: url("/activity/images/national-day/icon-step2.png") center top no-repeat;
-          }
-          &.step-three {
-            background: url("/activity/images/national-day/icon-step3.png") center top no-repeat;
-          }
-          &.step-four {
-            background: url("/activity/images/national-day/icon-step4.png") center 12px no-repeat;
-          }
-          &.step-five {
-            background: url("/activity/images/national-day/icon-step5.png") center top no-repeat;
-          }
-          span {
+          em.arrow {
+            position: absolute;
+            width: 55px;
+            height: 20px;
             display: inline-block;
-            font-size:16px;
-            color: #fb781d;
-            border:1px solid #fb781d;
-            padding: 0 10px;
+            background: url("../../images/national-day/line-arrow.png") center top no-repeat;
+            right: -30px;
+            top: 25px;
 
           }
+          .icon-text {
+            color: #fb781d;
+            border:1px solid #fb781d;
+            display: inline-block;
+            line-height: 27px;
+            width: 70px;
+            font-size:16px;
+          }
+          &.step-one {
+            background: url("../../images/national-day/icon-step1.png") center top no-repeat;
+          }
+          &.step-two {
+            background: url("../../images/national-day/icon-step2.png") center top no-repeat;
+          }
+          &.step-three {
+            background: url("../../images/national-day/icon-step3.png") center top no-repeat;
+          }
+          &.step-four {
+            background: url("../../images/national-day/icon-step4.png") center 12px no-repeat;
+          }
+          &.step-five {
+            background: url("../../images/national-day/icon-step5.png") center top no-repeat;
+          }
+
           &.finished {
-            span {
+            .icon-text {
               background: #fb781d;
               color: #fff;
             }
           }
 
           &.active {
-            span {
-              background: #ce2607;
-              color: #f9dfb3;
-            }
+
             &.step-one {
-              background: url("/activity/images/national-day/icon-step1-h.png") center top no-repeat;
+              background: url("../../images/national-day/icon-step1-h.png") center top no-repeat;
             }
             &.step-two {
-              background: url("/activity/images/national-day/icon-step2-h.png") center top no-repeat;
+              background: url("../../images/national-day/icon-step2-h.png") center top no-repeat;
             }
             &.step-three {
-              background: url("/activity/images/national-day/icon-step3-h.png") center top no-repeat;
+              background: url("../../images/national-day/icon-step3-h.png") center top no-repeat;
             }
             &.step-four {
-              background: url("/activity/images/national-day/icon-step4-h.png") center 12px no-repeat;
+              background: url("../../images/national-day/icon-step4-h.png") center 12px no-repeat;
             }
             &.step-five {
-              background: url("/activity/images/national-day/icon-step5-h.png") center top no-repeat;
+              background: url("../../images/national-day/icon-step5-h.png") center top no-repeat;
+            }
+
+            em.arrow {
+              background: url("../../images/national-day/line-arrow-current.png") center top no-repeat;
+            }
+            .icon-text {
+              color: #f9dfb3;
+              background: #ce2607;
+              border:1px solid #ce2607;
+              a {
+                color: #f9dfb3;
+              }
             }
           }
         }

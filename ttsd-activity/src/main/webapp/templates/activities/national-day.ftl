@@ -21,13 +21,13 @@
             如活动结束后，所有国庆专享标未筹满1949000元，则参与本活动的用户每人将获得50元投资红包，红包适用于180天及以上标的，需投资10000元激活！</P>
 
             <dl class="invest-percent-box clearfix">
-                <dt>目前专享标共投资：${allInvestAmount}元</dt>
+                <dt>目前专享标共投资：<em class="total-invest">${allInvestAmount}</em>元</dt>
                 <dd class="progress-bar">
                     <span class="progress-percent" style="width: ${investScale}%"></span>
                 </dd>
                 <dd class="count-total">
                     <span class="fl">已有<em>${userCount}</em>人参与</span>
-                    <span class="fr">总额度：1，949，000元</span>
+                    <span class="fr">总额度：1,949,000元</span>
                 </dd>
 
             </dl>
@@ -106,6 +106,7 @@
 
         <ul class="steps-list clearfix">
             <li class="<#if steps[0] == 1>active</#if><#if steps[0] == 2>finished</#if> step-one">
+                <em class="arrow"></em>
                 <#if steps[0] == 1>
                     <div class="icon-text"><a href="/register/user">去注册</a></div></#if>
                 <#if steps[0] == 2>
@@ -119,7 +120,7 @@
                     <div class="icon-text"><a href="/register/account">去认证</a></div></#if>
                 <#if steps[1] == 2>
                     <div class="icon-text">已认证</div></#if>
-                <div class="step-icon"></div>
+
             </li>
             <li class="<#if steps[2] == 1>active</#if><#if steps[2] == 2>finished</#if> step-three">
                 <em class="arrow"></em>
@@ -129,7 +130,7 @@
                     <div class="icon-text"><a href="/bind-card">去绑卡</a></div></#if>
                 <#if steps[2] == 2>
                     <div class="icon-text">已绑卡</div></#if>
-                <div class="step-icon"></div>
+
             </li>
 
             <li class="<#if steps[3] == 1>active</#if> step-four">
@@ -138,7 +139,7 @@
                     <div class="icon-text">充值</div></#if>
                 <#if steps[3] == 1>
                     <div class="icon-text"><a href="/recharge">去充值</a></div></#if>
-                <div class="step-icon"></div>
+
             </li>
 
             <li class="<#if steps[4] == 1>active</#if> step-five">
@@ -152,7 +153,7 @@
                         <a href="/loan-list" class="icon-text autumn-luxury-invest-channel">去投资</a>
                     </@global.isNotAnonymous>
                 </#if>
-                <div class="step-icon"></div>
+
             </li>
             </ul>
 

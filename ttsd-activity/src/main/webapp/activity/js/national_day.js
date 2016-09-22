@@ -2,7 +2,8 @@ require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonF
 
     var $nationalDayFrame=$('#nationalDayFrame'),
         $tourSlide=$('#tourSlide'),
-        $nationalDayCircle=$('#nationalDayCircle');
+        $nationalDayCircle=$('#nationalDayCircle'),
+        $allInvestAmount=$nationalDayFrame.find('.invest-percent-box em.total-invest');
     var browser = commonFun.browserRedirect();
     if (browser == 'mobile') {
         var urlObj=commonFun.parseURL(location.href);
@@ -28,6 +29,25 @@ require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonF
             $('.seizeSeat',$nationalDayFrame).hide();
         }
     }
+
+    var allInvestAmount=$.trim($allInvestAmount.text());
+
+    function addSeparator(str){
+        var re = /(?=(?!\b)(\d{3})+$)/g;
+        return str.replace(re, ',');
+    }
+    //给数字加上逗号分隔
+    var allAmountInteger=allInvestAmount.split('.')[0];
+    if(allInvestAmount.split('.')[1]) {
+        var allAmountDecimal='.'+allInvestAmount.split('.')[1];
+    }
+    else {
+        allAmountDecimal='';
+    }
+
+
+    var realInvestAmount=addSeparator(allAmountInteger);
+    $allInvestAmount.text(realInvestAmount+allAmountDecimal);
 
     $('.button-area',$tourSlide).find('li').on('click',function(event) {
         var $this=$(this),

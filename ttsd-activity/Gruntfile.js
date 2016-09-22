@@ -72,7 +72,7 @@ module.exports = function(grunt) {
                 options: {
                     target: ['<%=meta.baseImagePath %>/**/*.*'],
                     fixDirLevel: false,
-                    maxBytes: 1024 * 8   //小于8k的图片会生成base64 ,并且需要是相对路径
+                    maxBytes: 1024 * 5   //小于5k的图片会生成base64 ,并且需要是相对路径
                 }
             }
         },
