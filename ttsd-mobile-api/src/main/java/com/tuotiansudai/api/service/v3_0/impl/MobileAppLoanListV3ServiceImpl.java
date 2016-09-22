@@ -15,6 +15,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.ExperienceLoanDetailService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,9 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
+
+    @Autowired
+    private ExperienceLoanDetailService experienceLoanDetailService;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -148,20 +152,13 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             loanResponseDataDto.setLoanId("" + loan.getId());
             LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
 
-            String loanName = "";
-            if(loanDetailsModelActivity != null){
-                if(loanDetailsModelActivity.isActivity()){
-                    loanName = loan.getName()+("(活动专享)");
-                }
-                else{
-                    loanName = loan.getName();
-                }
-            }
-            else {
-                loanName = loan.getName();
-            }
+
             loanResponseDataDto.setLoanName(loan.getName());
             loanResponseDataDto.setActivityType(loan.getActivityType().name());
+
+            loanResponseDataDto.setActivityDesc(loanDetailsModelActivity != null ? loanDetailsModelActivity.getActivityDesc() : "");
+            loanResponseDataDto.setPledgeType(loan.getPledgeType());
+
             loanResponseDataDto.setDuration(String.valueOf(loan.getDuration()));
             loanResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
             loanResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
@@ -184,7 +181,12 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             loanResponseDataDto.setMinInvestMoneyCent(String.valueOf(loan.getMinInvestAmount()));
             loanResponseDataDto.setCardinalNumberCent(String.valueOf(loan.getInvestIncreasingAmount()));
             loanResponseDataDto.setMaxInvestMoneyCent(String.valueOf(loan.getMaxInvestAmount()));
-            loanResponseDataDto.setInvestedMoneyCent(String.valueOf(investMapper.sumSuccessInvestAmount(loan.getId())));
+            if (loan.getProductType().equals(ProductType.EXPERIENCE)) {
+                ExperienceLoanDto experienceLoanDto = experienceLoanDetailService.findExperienceLoanDtoDetail(loan.getId(), loginName);
+                loanResponseDataDto.setInvestedMoneyCent(String.valueOf(loan.getLoanAmount() - AmountConverter.convertStringToCent(experienceLoanDto.getInvestAmount())));
+            } else {
+                loanResponseDataDto.setInvestedMoneyCent(String.valueOf(investMapper.sumSuccessInvestAmount(loan.getId())));
+            }
             loanResponseDataDto.setLoanMoneyCent(String.valueOf(loan.getLoanAmount()));
 
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
@@ -200,7 +202,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
 
             if (ProductType.EXPERIENCE != loan.getProductType()) {
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
-                loanResponseDataDto.setExtraSource(loanDetailsModel.getExtraSource());
+                loanResponseDataDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : "");
             }
 
             loanDtoList.add(loanResponseDataDto);

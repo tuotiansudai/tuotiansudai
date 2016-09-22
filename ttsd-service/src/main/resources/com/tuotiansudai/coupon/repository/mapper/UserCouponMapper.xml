@@ -87,7 +87,7 @@
         select * from user_coupon where id = #{id}
     </select>
 
-    <select id="lockById" resultMap="userCouponResultMap" parameterType="long">
+    <select id="lockById" resultMap="userCouponResultMap" parameterType="long" useCache="false">
         select * from user_coupon where id = #{id} for update
     </select>
 

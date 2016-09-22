@@ -89,10 +89,17 @@
                     <div class="loan-info-frame fl">
                         <div class="loan-top">
                             <span class="l-title fl">${loanItem.name}
-                                <#if loanItem.activity?string("true","false") == "true">(活动专享)</#if>
+                                <#if loanItem.productType == 'EXPERIENCE'><i class="new-tip">仅限使用体验金投资</i></#if>
+                            </span>
 
-                                <#if loanItem.productType == 'EXPERIENCE'><i
-                                    class="new-tip">仅限使用体验金投资</i></#if></span>
+                            <#if loanItem.activity?string("true","false") == "true">
+                                <span class="arrow-tag-normal">
+                                    <i class="ic-left"></i>
+                                    <em>${loanItem.activityDesc!}</em>
+                                    <i class="ic-right"></i>
+                                </span>
+                            </#if>
+
                             <span class="l-way fr">${loanItem.type.getName()}</span>
                         </div>
                         <div class="loan-info-dl">

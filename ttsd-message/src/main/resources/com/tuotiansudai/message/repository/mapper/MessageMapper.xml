@@ -61,7 +61,7 @@
         select * from message where event_type = #{eventType} and status = 'APPROVED' and expired_time > now() and deleted = 0;
     </select>
 
-    <select id="lockById" parameterType="long" resultMap="messageResultMap">
+    <select id="lockById" parameterType="long" resultMap="messageResultMap" useCache="false">
         select * from message where id = #{id} for update;
     </select>
 
