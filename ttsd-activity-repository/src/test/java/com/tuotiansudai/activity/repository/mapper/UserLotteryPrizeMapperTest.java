@@ -42,7 +42,7 @@ public class UserLotteryPrizeMapperTest extends BaseMapperTest{
     }
 
     private UserLotteryPrizeModel getUserLotteryPrizeModel(String loginName,String mobile,LotteryPrize lotteryPrize){
-        return new UserLotteryPrizeModel(mobile,loginName,null,lotteryPrize.name(), DateTime.now().toDate(), ActivityCategory.AUTUMN_PRIZE);
+        return new UserLotteryPrizeModel(mobile,loginName,null,lotteryPrize, DateTime.now().toDate(), ActivityCategory.AUTUMN_PRIZE);
     }
 
 
