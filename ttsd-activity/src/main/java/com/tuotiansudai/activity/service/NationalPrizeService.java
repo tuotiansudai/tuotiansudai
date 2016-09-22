@@ -3,9 +3,9 @@ package com.tuotiansudai.activity.service;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.activity.dto.ActivityCategory;
 import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.dto.LotteryPrize;
-import com.tuotiansudai.activity.dto.PrizeType;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
@@ -121,7 +121,7 @@ public class NationalPrizeService {
             lotteryTime ++;
         }
 
-        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, PrizeType.NATIONAL_PRIZE, null, null);
+        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.NATIONAL_PRIZE, null, null);
         if(lotteryTime > 0){
             lotteryTime -= userTime;
         }
@@ -165,7 +165,7 @@ public class NationalPrizeService {
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", nationalPrize.name(), DateTime.now().toDate(), PrizeType.NATIONAL_PRIZE));
+        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", nationalPrize.name(), DateTime.now().toDate(), ActivityCategory.NATIONAL_PRIZE));
         return new DrawLotteryResultDto(0,nationalPrize.name(),prizeType);
     }
 
@@ -207,7 +207,7 @@ public class NationalPrizeService {
     }
 
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile){
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, null, PrizeType.NATIONAL_PRIZE);
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, null, ActivityCategory.NATIONAL_PRIZE);
         for(UserLotteryPrizeView view : userLotteryPrizeViews){
             view.setMobile(randomUtils.encryptWebMiddleMobile(view.getMobile()));
         }

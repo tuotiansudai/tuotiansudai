@@ -1,8 +1,8 @@
 package com.tuotiansudai.activity.repository.mapper;
 
 
+import com.tuotiansudai.activity.dto.ActivityCategory;
 import com.tuotiansudai.activity.dto.LotteryPrize;
-import com.tuotiansudai.activity.dto.PrizeType;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import org.apache.commons.collections4.CollectionUtils;
@@ -42,7 +42,7 @@ public class UserLotteryPrizeMapperTest extends BaseMapperTest{
     }
 
     private UserLotteryPrizeModel getUserLotteryPrizeModel(String loginName,String mobile,LotteryPrize lotteryPrize){
-        return new UserLotteryPrizeModel(mobile,loginName,null,lotteryPrize.name(), DateTime.now().toDate(), PrizeType.AUTUMN_PRIZE);
+        return new UserLotteryPrizeModel(mobile,loginName,null,lotteryPrize.name(), DateTime.now().toDate(), ActivityCategory.AUTUMN_PRIZE);
     }
 
 

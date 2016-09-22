@@ -4,6 +4,7 @@ package com.tuotiansudai.console.activity.service;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.dto.ActivityCategory;
 import com.tuotiansudai.activity.dto.LotteryPrize;
 import com.tuotiansudai.activity.dto.PrizeType;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
@@ -50,7 +51,7 @@ public class UserLotteryService{
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.endTime}\")}")
     private Date activityAutumnEndTime;
 
-    public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile,final PrizeType prizeType,Integer index,Integer pageSize) {
+    public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile,final ActivityCategory prizeType,Integer index,Integer pageSize) {
         List<UserModel> userModels = userMapper.findUserModelByMobile(mobile,index, pageSize);
 
         Iterator<UserLotteryTimeView> transform = Iterators.transform(userModels.iterator(), new Function<UserModel, UserLotteryTimeView>() {
@@ -70,11 +71,11 @@ public class UserLotteryService{
         return userMapper.findUserModelByMobile(mobile,null, null).size();
     }
 
-    public List<UserLotteryPrizeView> findUserLotteryPrizeViews(String mobile,LotteryPrize selectPrize,PrizeType prizeType,Date startTime,Date endTime,Integer index,Integer pageSize){
+    public List<UserLotteryPrizeView> findUserLotteryPrizeViews(String mobile,LotteryPrize selectPrize,ActivityCategory prizeType,Date startTime,Date endTime,Integer index,Integer pageSize){
         return userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize,prizeType, startTime, endTime, index, pageSize);
     }
 
-    public int findUserLotteryPrizeCountViews(String mobile,LotteryPrize selectPrize,PrizeType prizeType,Date startTime,Date endTime){
+    public int findUserLotteryPrizeCountViews(String mobile,LotteryPrize selectPrize,ActivityCategory prizeType,Date startTime,Date endTime){
         return userLotteryPrizeMapper.findUserLotteryPrizeCountViews(mobile, selectPrize, prizeType,startTime, endTime);
     }
 

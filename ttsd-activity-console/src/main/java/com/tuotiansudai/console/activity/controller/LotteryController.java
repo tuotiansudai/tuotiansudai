@@ -2,6 +2,7 @@ package com.tuotiansudai.console.activity.controller;
 
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.dto.ActivityCategory;
 import com.tuotiansudai.activity.dto.LotteryPrize;
 import com.tuotiansudai.activity.dto.PrizeType;
 import com.tuotiansudai.console.activity.service.UserLotteryService;
@@ -27,12 +28,12 @@ public class LotteryController {
 
     @RequestMapping(value = "/user-time-list", method = RequestMethod.GET)
     public ModelAndView userLotteryList(@RequestParam(name = "mobile", required = false) String mobile,
-                                        @RequestParam(name = "prizeType", required = false) PrizeType prizeType,
+                                        @RequestParam(name = "prizeType", required = false) ActivityCategory prizeType,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                         @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) throws IOException {
         ModelAndView modelAndView = new ModelAndView("/activity-time-list");
         int lotteryCount = userLotteryService.findUserLotteryTimeCountViews(mobile);
-        prizeType = prizeType == null ? PrizeType.AUTUMN_PRIZE : prizeType;
+        prizeType = prizeType == null ? ActivityCategory.AUTUMN_PRIZE : prizeType;
         modelAndView.addObject("lotteryCount", lotteryCount);
         modelAndView.addObject("lotteryList", userLotteryService.findUserLotteryTimeViews(mobile, prizeType, (index - 1) * pageSize, pageSize));
         modelAndView.addObject("index", index);
@@ -53,13 +54,13 @@ public class LotteryController {
     public ModelAndView userPrizeList(@RequestParam(name = "mobile", required = false) String mobile,
                                       @RequestParam(name = "selectPrize", required = false) LotteryPrize autumnPrize,
                                       @RequestParam(name = "selectNational", required = false) LotteryPrize NationalPrize,
-                                      @RequestParam(name = "prizeType", required = false ,defaultValue = "AUTUMN_PRIZE") PrizeType prizeType,
+                                      @RequestParam(name = "prizeType", required = false ,defaultValue = "AUTUMN_PRIZE") ActivityCategory prizeType,
                                       @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                       @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                       @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/activity-prize-list");
-        LotteryPrize lotteryPrize = prizeType.equals(PrizeType.AUTUMN_PRIZE) ? autumnPrize : NationalPrize;
+        LotteryPrize lotteryPrize = prizeType.equals(ActivityCategory.AUTUMN_PRIZE) ? autumnPrize : NationalPrize;
         int lotteryCount = userLotteryService.findUserLotteryPrizeCountViews(mobile, lotteryPrize, prizeType, startTime, endTime);
         modelAndView.addObject("lotteryCount", lotteryCount);
         modelAndView.addObject("prizeList", userLotteryService.findUserLotteryPrizeViews(mobile, lotteryPrize, prizeType, startTime, endTime, (index - 1) * pageSize, pageSize));
