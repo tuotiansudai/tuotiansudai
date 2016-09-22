@@ -27,8 +27,6 @@ import java.util.Map;
 @Controller
 @RequestMapping(path = "/activity/national")
 public class NationalPrizeController {
-    private static Logger logger = Logger.getLogger(NationalPrizeController.class);
-
     @Autowired
     private NationalPrizeService nationalPrizeService;
 
@@ -49,19 +47,12 @@ public class NationalPrizeController {
         Map param = nationalPrizeService.getNationalActivityInvestAmountAndCount();
         long userInvestAmount = (long)param.get("investAmount");
         modelAndView.addObject("myPoint",nationalPrizeService.getMyActivityPoint(loginName));
-        logger.error("myPoint=============================================");
         modelAndView.addObject("allInvestAmount", AmountConverter.convertCentToString(userInvestAmount).replaceAll("\\.00", ""));
-        logger.error("allInvestAmount=============================================");
         modelAndView.addObject("investScale", numberFormat.format((float) userInvestAmount / NATIONAL_SUM_AMOUNT * 100));
-        logger.error("investScale=============================================");
         modelAndView.addObject("userCount", param.get("investCount"));
-        logger.error("userCount=============================================");
         modelAndView.addObject("drawTime", nationalPrizeService.getDrawPrizeTime(LoginUserInfo.getMobile()));
-        logger.error("drawTime=============================================");
         modelAndView.addObject("steps", generateSteps(loginName));
-        logger.error("steps=============================================");
         modelAndView.addObject("activityType","national");
-        logger.error("activityType=============================================");
         return modelAndView;
     }
 

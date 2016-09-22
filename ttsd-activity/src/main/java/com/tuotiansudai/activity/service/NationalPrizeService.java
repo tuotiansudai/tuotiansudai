@@ -224,7 +224,8 @@ public class NationalPrizeService {
         long amount = 0l;
         long count = 0l;
         for(InvestModel investModel : investModels){
-            if(loanDetailsMapper.getLoanDetailsByLoanId(investModel.getLoanId()).isActivity()){
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(investModel.getLoanId());
+            if(loanDetailsModel != null && loanDetailsModel.isActivity()){
                 amount += investModel.getAmount();
                 count ++;
             }
