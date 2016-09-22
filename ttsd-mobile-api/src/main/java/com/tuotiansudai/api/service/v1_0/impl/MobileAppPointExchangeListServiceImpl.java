@@ -4,9 +4,9 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointExchangeListService;
-import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class MobileAppPointExchangeListServiceImpl implements MobileAppPointExch
     @Autowired
     private CouponMapper couponMapper;
     @Autowired
-    private CouponExchangeMapper couponExchangeMapper;
+    private ProductMapper productMapper;
 
     @Override
     public BaseResponseDto generatePointExchangeList(PointExchangeListRequestDto pointExchangeListRequestDto) {
@@ -43,7 +43,7 @@ public class MobileAppPointExchangeListServiceImpl implements MobileAppPointExch
             pointExchangeRecordResponseDataDto = Lists.transform(couponModels, new Function<CouponModel, PointExchangeRecordResponseDataDto>() {
                 @Override
                 public PointExchangeRecordResponseDataDto apply(CouponModel input) {
-                    return new PointExchangeRecordResponseDataDto(input, couponExchangeMapper.findByCouponId(input.getId()).getExchangePoint());
+                    return new PointExchangeRecordResponseDataDto(input, productMapper.findByCouponId(input.getId()).getPoints());
                 }
             });
         }
