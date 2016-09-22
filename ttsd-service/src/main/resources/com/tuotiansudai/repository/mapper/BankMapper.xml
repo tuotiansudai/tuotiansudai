@@ -33,7 +33,7 @@
     </update>
 
     <select id="findBankList" resultMap="bankResultMap">
-        select * from bank order by single_day_amount desc, single_amount desc
+        select * from bank order by single_amount desc, id asc
     </select>
 
     <select id="findByBankCode" parameterType="java.lang.String" resultMap="bankResultMap">
