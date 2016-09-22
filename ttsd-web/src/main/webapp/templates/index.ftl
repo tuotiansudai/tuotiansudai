@@ -180,9 +180,14 @@
 
                                 <div class="loan-info-frame fl">
                                     <div class="loan-top">
-                                        <span class="l-title fl">${loan.name}
-
-                                        </span>
+                                        <span class="l-title fl">${loan.name}</span>
+                                        <#if loan.activity?string("true","false") == "true">
+                                            <span class="arrow-tag-normal">
+                                                <i class="ic-left"></i>
+                                                <em> ${loan.activityDesc!}</em>
+                                                <i class="ic-right"></i>
+                                            </span>
+                                        </#if>
                                     </div>
                                     <div class="loan-info-dl">
                                         <dl>
@@ -302,9 +307,14 @@
                             <li data-url="/loan/${(loan.id?string.computer)!}" class="clearfix">
                                 <div class="loan-info-frame fl">
                                     <div class="loan-top">
-                                        <span class="l-title fl">${loan.name}
-                                            <#if loan.activity?string("true","false") == "true">(活动专享)</#if>
-                                        </span>
+                                        <span class="l-title fl">${loan.name}</span>
+                                        <#if loan.activity?string("true","false") == "true">
+                                            <span class="arrow-tag-normal">
+                                                <i class="ic-left"></i>
+                                                <em> ${loan.activityDesc!}</em>
+                                                <i class="ic-right"></i>
+                                            </span>
+                                        </#if>
 
                                     </div>
                                     <div class="loan-info-dl">
@@ -461,8 +471,16 @@
                                     <i class="new-user"></i>
                                 </#if>
                                 <div class="pad-m" title="BLQ001" data-url="/loan/${(loan.id?string.computer)!}">
-                                    <h2 class="pr-title">${loan.name}</h2>
-
+                                    <h2 class="pr-title">
+                                        <span class="fl">${loan.name}</span>
+                                        <#if loan.activity?string("true","false") == "true">
+                                            <span class="arrow-tag-normal">
+                                                <i class="ic-left"></i>
+                                                <em> ${loan.activityDesc!}</em>
+                                                <i class="ic-right"></i>
+                                            </span>
+                                        </#if>
+                                    </h2>
                                     <div class="pr-square tc">
                                         <div class="pr-square-in">
                                             <i>预期年化收益</i>
@@ -528,8 +546,15 @@
                                     <i class="${loan.productType.name()?lower_case}"></i>
                                 </#if>
                                 <div class="pad-m" title="BLQ001" data-url="/loan/${(loan.id?string.computer)!}">
-                                    <h2 class="pr-title">${loan.name}
-                                        <#if loan.activity?string("true","false") == "true">(活动专享)</#if>
+                                    <h2 class="pr-title">
+                                        <span class="fl">${loan.name}</span>
+                                        <#if loan.activity?string("true","false") == "true">
+                                            <span class="arrow-tag-normal">
+                                                <i class="ic-left"></i>
+                                                <em> ${loan.activityDesc!}</em>
+                                                <i class="ic-right"></i>
+                                            </span>
+                                        </#if>
                                     </h2>
 
                                     <div class="pr-square tc">

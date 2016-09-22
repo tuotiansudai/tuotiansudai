@@ -50,6 +50,7 @@ public class CreateHouseLoanDto extends AbstractCreateLoanDto {
         this.declaration = loanDetailsModel.getDeclaration();
         this.extraSource = loanDetailsModel.getExtraSource();
         this.activity = loanDetailsModel.isActivity();
+        this.activityDesc = loanDetailsModel.getActivityDesc();
         //LoanerDetailsDto
         this.loanerLoginName = loanerDetailsModel.getLoginName();
         this.loanerUserName = loanerDetailsModel.getUserName();

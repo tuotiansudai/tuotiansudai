@@ -512,6 +512,42 @@
   }
 }
 
+/*国庆专享标*/
+.arrow-tag-normal {
+  display: inline-block;
+  height: 22px;
+  overflow: hidden;
+  vertical-align: middle;
+  margin-left: 10px;
+  margin-top: 13px;
+  float: left;
+  .ic-left {
+    border:11px solid transparent;
+    border-right:11px solid #ff5400;
+    font-size: 0;
+    display: inline-block;
+    float: left;
+    margin-left:-11px;
+  }
+  em {
+    height:22px;
+    line-height: 22px;
+    background: #ff5400;
+    color: #fff;
+    padding:0 0px 0 10px;
+    display: inline-block;
+    float: left;
+    font-size:12px;
+  }
+  .ic-right {
+    border:11px solid #ff5400;
+    border-right:11px solid transparent;
+    font-size: 0;
+    display: inline-block;
+    float: left;
+  }
+}
+
 /********************** Responsive Page ****************************/
 
 @media screen and (max-width: 700px) {

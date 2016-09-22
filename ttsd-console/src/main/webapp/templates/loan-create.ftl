@@ -52,12 +52,7 @@
                         <option value="车辆抵押借款">车辆抵押借款</option>
                     </select>
                 </div>
-                <div class="checkbox jq-activity-checkbox">
-                    <label>
-                        <input type="checkbox" class="jq-activity" value="0">
-                        活动专享
-                    </label>
-                </div>
+
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">代理用户: </label>
@@ -144,16 +139,27 @@
                 <label class="col-sm-2 control-label">活动类型: </label>
 
                 <div class="col-sm-4">
-                    <select class="selectpicker ">
-                        <#list activityTypes as activityType>
-                            <#if activityType.name() != 'PROMOTION'>
-                                <option value="${activityType.name()}">
-                                ${activityType.getActivityTypeName()}
-                                </option>
-                            </#if>
-                        </#list>
-                    </select>
-                    <input type="hidden" class="jq-impact-type"/>
+                    <div class="item-invest">
+                        <select class="selectpicker ">
+                            <#list activityTypes as activityType>
+                                <#if activityType.name() != 'PROMOTION'>
+                                    <option value="${activityType.name()}">
+                                    ${activityType.getActivityTypeName()}
+                                    </option>
+                                </#if>
+                            </#list>
+                        </select>
+                        <input type="hidden" class="jq-impact-type"/>
+                    </div>
+                    <div class="item-invest" style="margin-left:10px">
+                        <span class="checkbox jq-activity-checkbox" style="padding-top:0">
+                            <label>
+                                <input type="checkbox" class="jq-activity" value="0" style="top:8px">
+                                活动专享
+                            </label>
+                        </span>
+                    </div>
+
                 </div>
             </div>
             <div class="form-group">
@@ -237,6 +243,16 @@
                 </div>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">标的所属活动: </label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control jq-activity-desc" disabled
+                       placeholder="" maxlength="4">
+            </div>
+        </div>
+
         <h3><span>借款人基本信息</span></h3>
         <hr class="top-line">
         <div>
