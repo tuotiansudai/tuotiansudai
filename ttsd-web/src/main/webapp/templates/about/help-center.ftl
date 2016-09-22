@@ -19,7 +19,7 @@
         </ul>
     </div>
     <div class="model-group">
-        <h3>常见问题</h3>
+        <h3>所有问题</h3>
         <ul class="model-list-item">
             <li>
                 <a href="/about/account">

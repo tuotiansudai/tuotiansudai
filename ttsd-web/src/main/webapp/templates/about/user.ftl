@@ -90,7 +90,7 @@
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
                     <p class="single-title">3、如何提高会员等级？</p>
-                    <p class="single-answer">答：方式一：投资，投资额越高，所获得的成长值（投资金额1：1转化为成长值，不足1元的舍去不计）越高，每达到规定的成长值，会员等级会提高；<br />方式二：购买，25元/月，180元/年（暂未开放）。</p>
+                    <p class="single-answer">答：方式一：投资，投资额越高，所获得的成长值（按照投资金额年化1：1转化为成长值，不足1元的舍去不计）越高，每达到规定的成长值，会员等级会提高；<br />方式二：购买，25元/月，180元/年（暂未开放）。</p>
                 </li>
             </ul>
             <ul class="list-group">

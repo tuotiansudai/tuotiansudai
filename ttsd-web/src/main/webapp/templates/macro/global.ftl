@@ -44,7 +44,6 @@
         {"title":"媒体报道", "url":"/about/media"},
         {"title":"推荐奖励", "url":"/about/refer-reward"},
         {"title":"服务费用", "url":"/about/service-fee"},
-        {"title":"常见问题", "url":"/about/qa"},
         {"title":"联系我们", "url":"/about/contact"},
         {"title":"运营数据", "url":"/about/operational"}
     ]},
