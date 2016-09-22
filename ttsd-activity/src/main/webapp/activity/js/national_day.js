@@ -45,7 +45,6 @@ require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonF
         allAmountDecimal='';
     }
 
-
     var realInvestAmount=addSeparator(allAmountInteger);
     $allInvestAmount.text(realInvestAmount+allAmountDecimal);
 

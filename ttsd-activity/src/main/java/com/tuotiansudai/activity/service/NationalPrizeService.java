@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.dto.ActivityCategory;
 import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.dto.LotteryPrize;
+import com.tuotiansudai.activity.dto.PrizeType;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
@@ -156,17 +157,18 @@ public class NationalPrizeService {
         userMapper.lockByLoginName(userModel.getLoginName());
 
         LotteryPrize nationalPrize = getLotteryPrize();
-        String prizeType = "physical";
+        PrizeType prizeType = PrizeType.CONCRETE;
         if(nationalPrize.equals(LotteryPrize.RED_INVEST_15) || nationalPrize.equals(LotteryPrize.RED_INVEST_50)){
             couponAssignmentService.assignUserCoupon(mobile, getCouponId(nationalPrize));
-            prizeType = "virtual";
+            prizeType = PrizeType.VIRTUAL;
         }else if(nationalPrize.equals(LotteryPrize.MEMBERSHIP_V5)){
+            prizeType = PrizeType.MEMBERSHIP;
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", nationalPrize.name(), DateTime.now().toDate(), ActivityCategory.NATIONAL_PRIZE));
-        return new DrawLotteryResultDto(0,nationalPrize.name(),prizeType);
+        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", nationalPrize, DateTime.now().toDate(), ActivityCategory.NATIONAL_PRIZE));
+        return new DrawLotteryResultDto(0,nationalPrize.name(),prizeType.name());
     }
 
     private long getCouponId(LotteryPrize lotteryPrize){
@@ -183,7 +185,7 @@ public class NationalPrizeService {
         int random = (int) (Math.random() * 100000000);
         int mod = random % 100;
         if (mod >= 0 && mod <= 2){
-            return LotteryPrize.MEMBERSHIP_V5;
+            return LotteryPrize.FLOWER_CUP;
         } else if (mod >= 3 && mod <= 5){
             return LotteryPrize.CINEMA_TICKET;
         } else if (mod >= 6 && mod <= 9){

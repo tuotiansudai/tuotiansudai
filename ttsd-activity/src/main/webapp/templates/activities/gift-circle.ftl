@@ -116,7 +116,7 @@
             <p class="success-text">恭喜您！</p>
             <p class="reward-text">{{tiptext}}！</p>
             <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
-        {{else if istype=='membership'}}
+        {{else if istype=='MEMBERSHIP'}}
             <p class="success-text">恭喜您！</p>
             <p class="reward-text">{{tiptext}}！</p>
             <p class="des-text">奖品即时生效，赶快去投资吧！</p>
@@ -135,8 +135,9 @@
             {{if istype=='CONCRETE'}}
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             {{else if istype=='VIRTUAL'}}
+                <a href="/my-treasure" class="go-on">去查看</a>
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
-            {{else if istype=='membership'}}
+            {{else if istype=='MEMBERSHIP'}}
                 <a href="/loan-list" class="go-on">去投资</a>
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             {{else if istype=='nologin'}}

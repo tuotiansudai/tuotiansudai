@@ -51,7 +51,7 @@ public class CouponInvestServiceImpl implements CouponInvestService {
         }
 
         for (Long userCouponId : userCouponIds) {
-            UserCouponModel userCouponModel = userCouponMapper.lockById(userCouponId);
+            UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
             userCouponModel.setStatus(InvestStatus.WAIT_PAY);
             userCouponModel.setInvestId(investId);
             userCouponModel.setLoanId(investMapper.findById(investId).getLoanId());
