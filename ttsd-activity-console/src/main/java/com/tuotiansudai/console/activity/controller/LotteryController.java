@@ -44,7 +44,7 @@ public class LotteryController {
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
         modelAndView.addObject("mobile", mobile);
-        modelAndView.addObject("prizeTypes", Lists.newArrayList(PrizeType.values()));
+        modelAndView.addObject("prizeTypes", Lists.newArrayList(ActivityCategory.values()));
         modelAndView.addObject("selectPrize", prizeType == null ? "" : prizeType);
         return modelAndView;
     }
@@ -76,7 +76,7 @@ public class LotteryController {
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("selectPrizeType", prizeType == null ? "" : prizeType);
-        modelAndView.addObject("prizeTypes", Lists.newArrayList(PrizeType.values()));
+        modelAndView.addObject("prizeTypes", Lists.newArrayList(ActivityCategory.values()));
         modelAndView.addObject("lotteryPrizes", getActivityPrize(ActivityCategory.AUTUMN_PRIZE));
         modelAndView.addObject("nationalPrizes", getActivityPrize(ActivityCategory.NATIONAL_PRIZE));
         return modelAndView;
