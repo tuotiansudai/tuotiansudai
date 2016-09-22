@@ -2,7 +2,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="activity-lottery-list.js" headLab="activity-manage" sideLab="lottery" title="抽奖数据统计">
 
-<div class="col-md-10">
+<div class="col-md-10" style="height: 80%">
     <div class="panel panel-default">
         <div class="panel-body">
             <a class="btn btn-default " href="/activity-console/activity-manage/user-time-list" role="button">抽奖机会统计</a>

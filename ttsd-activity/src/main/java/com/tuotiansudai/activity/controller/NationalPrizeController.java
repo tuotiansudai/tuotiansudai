@@ -10,6 +10,7 @@ import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ import java.util.List;
 @Controller
 @RequestMapping(path = "/activity/national")
 public class NationalPrizeController {
+    private static Logger logger = Logger.getLogger(NationalPrizeController.class);
 
     @Autowired
     private NationalPrizeService nationalPrizeService;
@@ -40,17 +42,24 @@ public class NationalPrizeController {
     private static NumberFormat numberFormat = NumberFormat.getInstance();
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView travelPrize() {
+    public ModelAndView national() {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/national-day", "responsive", true);
         long userInvestAmount = nationalPrizeService.getAllActivityInvestAmount();
         modelAndView.addObject("myPoint",nationalPrizeService.getMyActivityPoint(loginName));
-        modelAndView.addObject("allInvestAmount",AmountConverter.convertCentToString(userInvestAmount).replaceAll("\\.00", ""));
-        modelAndView.addObject("investScale",numberFormat.format((float) userInvestAmount / NATIONAL_SUM_AMOUNT * 100));
-        modelAndView.addObject("userCount",nationalPrizeService.getAllActivityUserCount());
+        logger.error("myPoint=============================================");
+        modelAndView.addObject("allInvestAmount", AmountConverter.convertCentToString(userInvestAmount).replaceAll("\\.00", ""));
+        logger.error("allInvestAmount=============================================");
+        modelAndView.addObject("investScale", numberFormat.format((float) userInvestAmount / NATIONAL_SUM_AMOUNT * 100));
+        logger.error("investScale=============================================");
+        modelAndView.addObject("userCount", nationalPrizeService.getAllActivityUserCount());
+        logger.error("userCount=============================================");
         modelAndView.addObject("drawTime", nationalPrizeService.getDrawPrizeTime(LoginUserInfo.getMobile()));
+        logger.error("drawTime=============================================");
         modelAndView.addObject("steps", generateSteps(loginName));
+        logger.error("steps=============================================");
         modelAndView.addObject("activityType","national");
+        logger.error("activityType=============================================");
         return modelAndView;
     }
 
@@ -68,7 +77,7 @@ public class NationalPrizeController {
 
     @ResponseBody
     @RequestMapping(value = "/all-list", method = RequestMethod.GET)
-    public List<UserLotteryPrizeView> getPrizeLuxuryRecordByAll() {
+    public List<UserLotteryPrizeView> getPrizeRecordByAll() {
         return nationalPrizeService.findDrawLotteryPrizeRecord(null);
     }
 

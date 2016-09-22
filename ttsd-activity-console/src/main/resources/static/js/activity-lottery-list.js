@@ -9,8 +9,8 @@ require(['jquery', 'underscore', 'jquery-ui', 'bootstrap', 'bootstrapSelect', 'b
             $("#nationalDiv").show();
             $("#autumnPrizeDiv").hide();
         }else{
-            $("select[name='nationalDiv']").hide();
-            $("select[name='autumnPrizeDiv']").show();
+            $("#nationalDiv").hide();
+            $("#autumnPrizeDiv").show();
         }
     });
 
