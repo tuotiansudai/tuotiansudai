@@ -35,6 +35,6 @@ public class LoginController {
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
 
-        this.captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false).getId());
+        this.captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession().getId());
     }
 }

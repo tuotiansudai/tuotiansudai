@@ -63,7 +63,7 @@ public class RetrievePasswordController {
         int captchaHeight = 30;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
-        captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false).getId());
+        captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession().getId());
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/verify", method = RequestMethod.GET)
