@@ -111,7 +111,7 @@
         {{if istype=='CONCRETE'}}
             <p class="success-text">恭喜您！</p>
             <p class="reward-text">{{tiptext}}！</p>
-            <p class="des-text">拓天客服将会在7个工作日内<br/>联系您发放奖品</p>
+            <p class="des-text">拓天客服将会在7个工作日内联系您发放奖品</p>
         {{else if istype=='VIRTUAL'}}
             <p class="success-text">恭喜您！</p>
             <p class="reward-text">{{tiptext}}！</p>

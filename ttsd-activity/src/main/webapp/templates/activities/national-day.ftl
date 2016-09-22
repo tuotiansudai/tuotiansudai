@@ -18,7 +18,10 @@
         <#include '../register.ftl' />
     </div>
  <div class="section-outer">
-        <div class="section-one-title"><a name="actegory01"></a> </div>
+        <div class="section-title">
+            <img src="${staticServer}/activity/images/national-day/title001.png">
+        </div>
+        <div class="dotted-line-title"></div>
         <div class="section-inner">
             <p class="notice">如活动结束后，所有国庆专享标筹满1949000元，则参与本活动的全部用户将按投资比例瓜分10000元红包，红包适用于180天及以上标的，投资50元即可激活！<br/>
             如活动结束后，所有国庆专享标未筹满1949000元，则参与本活动的用户每人将获得50元投资红包，红包适用于180天及以上标的，需投资10000元激活！</P>
@@ -61,7 +64,10 @@
     </div>
 
 <div class="section-outer">
-    <div class="section-two-title"></div>
+    <div class="section-title">
+        <img src="${staticServer}/activity/images/national-day/title002.png">
+    </div>
+    <div class="dotted-line-title"></div>
     <div class="section-inner">
         <div class="bg-box-normal tc">
             <span class="my-integral">我的积分：${myPoint}</span>
@@ -103,7 +109,10 @@
     </div>
 
 <div class="section-outer">
-    <div class="section-three-title"></div>
+    <div class="section-title">
+        <img src="${staticServer}/activity/images/national-day/title003.png">
+    </div>
+    <div class="dotted-line-title"></div>
     <div class="section-inner clearfix">
         <p class="notice tc"><em>活动期间，</em><i>1、</i>新用户在平台完成注册、实名认证、绑卡、充值、投资均可获得一次抽奖机会。</p>
 
@@ -175,7 +184,7 @@
 </div>
 
 <div class="section-outer">
-    <div class="section-three-title"></div>
+
     <div class="section-inner clearfix">
         <dl class="activity-explain">
             <dt> <em><全民加薪节&emsp;&emsp;瓜分万元奖池></em>活动说明：</dt>
