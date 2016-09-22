@@ -39,20 +39,6 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             }
         });
 
-        //根据活动类型来显示标的所属活动是否可以编辑
-        $('.jq-activity-type').change(function () {
-            var value =  $('.jq-activity-type').val();
-            if("ACTIVITY" == value){
-                $('.jq-activity-desc').prop('disabled',false);
-            }
-            else{
-                $('.jq-activity-desc').val("");
-                $('.jq-activity-desc').prop('disabled',true);
-            }
-
-        });
-
-
         function initSelect() {
             var _selectAll = $('.jq-form select');
             var _selectOption = $('select option');
@@ -220,13 +206,6 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 uploadFile.push(obj);
             });
         };
-        $('.jq-checkbox label').click(function () {
-            if ($('.jq-index').prop('checked')) {
-                $('.jq-index').val('1');
-            } else {
-                $('.jq-index').val('0');
-            }
-        });
 
         $('.jq-activity-checkbox label').click(function () {
             if ($('.jq-activity').prop('checked')) {
