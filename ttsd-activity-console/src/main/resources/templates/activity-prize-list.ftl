@@ -41,6 +41,7 @@
 
                 </div>
                 <div class="form-group" style="display:none;" id="nationalDiv">
+                    <label>奖品</label>
                     <select class="selectpicker" name="selectNational">
                         <option value="" <#if !(nationalPrizes??)>selected</#if>>全部</option>
                         <#list nationalPrizes as national>
