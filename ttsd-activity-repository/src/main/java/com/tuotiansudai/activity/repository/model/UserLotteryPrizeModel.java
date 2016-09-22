@@ -20,7 +20,7 @@ public class UserLotteryPrizeModel implements Serializable {
 
     private Date lotteryTime;
 
-    private ActivityCategory prizeType;
+    private ActivityCategory activityCategory;
 
     public UserLotteryPrizeModel() {}
 
@@ -30,7 +30,7 @@ public class UserLotteryPrizeModel implements Serializable {
         this.userName = userName;
         this.prize = prize;
         this.lotteryTime = lotteryTime;
-        this.prizeType = prizeType;
+        this.activityCategory = prizeType;
     }
 
     public long getId() {
@@ -81,11 +81,11 @@ public class UserLotteryPrizeModel implements Serializable {
         this.userName = userName;
     }
 
-    public ActivityCategory getPrizeType() {
-        return prizeType;
+    public ActivityCategory getActivityCategory() {
+        return activityCategory;
     }
 
-    public void setPrizeType(ActivityCategory prizeType) {
-        this.prizeType = prizeType;
+    public void setActivityCategory(ActivityCategory activityCategory) {
+        this.activityCategory = activityCategory;
     }
 }
