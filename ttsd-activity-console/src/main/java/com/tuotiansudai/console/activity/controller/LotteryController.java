@@ -77,18 +77,19 @@ public class LotteryController {
         modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("selectPrizeType", prizeType == null ? "" : prizeType);
         modelAndView.addObject("prizeTypes", Lists.newArrayList(PrizeType.values()));
-        modelAndView.addObject("lotteryPrizes", getAutumnPrize());
-        modelAndView.addObject("nationalPrizes", getNationalPrize());
+        modelAndView.addObject("lotteryPrizes", getActivityPrize(ActivityCategory.AUTUMN_PRIZE));
+        modelAndView.addObject("nationalPrizes", getActivityPrize(ActivityCategory.NATIONAL_PRIZE));
         return modelAndView;
     }
 
-    private List getAutumnPrize(){
-        return Lists.newArrayList(LotteryPrize.TOURISM, LotteryPrize.MANGO_CARD_100, LotteryPrize.LUXURY, LotteryPrize.PORCELAIN_CUP,
-                LotteryPrize.RED_ENVELOPE_100, LotteryPrize.RED_ENVELOPE_50, LotteryPrize.INTEREST_COUPON_5, LotteryPrize.INTEREST_COUPON_2);
-    }
-
-    private List getNationalPrize(){
-        return Lists.newArrayList(LotteryPrize.MEMBERSHIP_V5, LotteryPrize.RED_INVEST_15, LotteryPrize.RED_INVEST_50, LotteryPrize.TELEPHONE_FARE_10,
-                LotteryPrize.IQIYI_MEMBERSHIP, LotteryPrize.CINEMA_TICKET, LotteryPrize.FLOWER_CUP, LotteryPrize.IPHONE_7);
+    private List getActivityPrize(ActivityCategory activityCategory){
+        List list = Lists.newArrayList();
+        LotteryPrize[] lotteryPrizes = LotteryPrize.values();
+        for(LotteryPrize lotteryPrize : lotteryPrizes){
+            if(activityCategory.equals(lotteryPrize.getActivityCategory())){
+                list.add(lotteryPrize);
+            }
+        }
+        return list;
     }
 }
