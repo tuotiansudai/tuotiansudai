@@ -4,9 +4,7 @@ package com.tuotiansudai.api.dto.v2_0;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.InvestStatus;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.repository.model.InvestAchievement;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 
@@ -47,6 +45,10 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
     private String productNewType;
 
     private String extraRate;
+
+    private String activityDesc;
+
+    private PledgeType pledgeType;
 
     public String getLoanId() {
         return loanId;
@@ -184,7 +186,7 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
 
     }
 
-    public UserInvestRecordResponseDataDto(InvestModel invest, LoanModel loan) {
+    public UserInvestRecordResponseDataDto(InvestModel invest, LoanModel loan, LoanDetailsModel loanDetailsModel) {
         InvestStatus investStatus = InvestStatus.convertInvestStatus(invest.getStatus());
         this.loanId = String.valueOf(invest.getLoanId());
         this.loanName = loan.getName();
@@ -194,6 +196,23 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
         this.investStatus = investStatus;
         this.investStatusDesc = investStatus.getMessage();
         this.achievements = invest.getAchievements();
+        this.activityDesc = loanDetailsModel != null ? loanDetailsModel.getActivityDesc() : "";
+        this.pledgeType = loan.getPledgeType();
     }
 
+    public String getActivityDesc() {
+        return activityDesc;
+    }
+
+    public void setActivityDesc(String activityDesc) {
+        this.activityDesc = activityDesc;
+    }
+
+    public PledgeType getPledgeType() {
+        return pledgeType;
+    }
+
+    public void setPledgeType(PledgeType pledgeType) {
+        this.pledgeType = pledgeType;
+    }
 }

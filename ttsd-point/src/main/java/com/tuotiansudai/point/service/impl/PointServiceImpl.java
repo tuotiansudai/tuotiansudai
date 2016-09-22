@@ -2,9 +2,7 @@ package com.tuotiansudai.point.service.impl;
 
 
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
@@ -31,9 +29,6 @@ public class PointServiceImpl implements PointService {
     private CouponMapper couponMapper;
 
     @Autowired
-    private CouponExchangeMapper couponExchangeMapper;
-
-    @Autowired
     private PointBillService pointBillService;
 
     @Autowired
@@ -49,12 +44,6 @@ public class PointServiceImpl implements PointService {
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
         couponMapper.create(couponModel);
-
-        CouponExchangeModel couponExchangeModel = new CouponExchangeModel();
-        couponExchangeModel.setCouponId(couponModel.getId());
-        couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
-        couponExchangeMapper.create(couponExchangeModel);
-
     }
 
     @Override

@@ -366,22 +366,26 @@ public class ExportServiceImpl implements ExportService {
             row.add(record.getLoanName());
             row.add(String.valueOf(record.getLoanPeriods()));
             row.add(record.getInvestorLoginName());
+            row.add(record.isInvestorStaff() ? "是" : "否");
             row.add(record.getInvestorUserName());
             row.add(record.getInvestorMobile());
-            row.add(record.isInvestorStaff() ? "是" : "否");
+            row.add(record.getBirthday());
+            row.add(record.getProvince());
+            row.add(record.getCity());
             row.add(record.getReferrerLoginName());
+            row.add(record.getReferrerLoginName() != null ? record.isReferrerStaff() ? "是" : "否" : "");
             row.add(record.getReferrerUserName());
             row.add(record.getReferrerMobile());
-            row.add(record.getReferrerLoginName() != null ? record.isReferrerStaff() ? "是" : "否" : "");
-            row.add(record.getChannel());
+
+            row.add(record.getChannel() != null ? record.getChannel() : "");
             row.add(record.getSource().name());
             row.add(new DateTime(record.getInvestTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(record.isAutoInvest() ? "是" : "否");
             row.add(record.getInvestAmount());
-            row.add(record.getCouponDetail());
-            row.add(record.getCouponActualInterest());
-            row.add(record.getExtraDetail());
-            row.add(record.getExtraActualInterest());
+
+            row.add((record.getCouponDetail() == null ? "-" : record.getCouponDetail()) + "/" + (record.getCouponActualInterest() == null ? "-" : record.getCouponActualInterest()));
+            row.add(record.getExtraDetail() + "/" + record.getExtraActualInterest());
+
             row.add(record.getInvestStatus().getDescription());
             rows.add(row);
         }

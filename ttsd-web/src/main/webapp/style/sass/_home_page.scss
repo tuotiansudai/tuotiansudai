@@ -130,7 +130,26 @@
       }
     }
   }
-
+  .loan-top {
+    .l-title {
+      font-size: 20px;
+      color: #4e4e4e;
+      display: inline-block;
+      text-align: left;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      float: left;
+      .new-tip {
+        margin-left: 10px;
+        font-size: 12px;
+        color: #ff9c1b;
+        border: 1px solid #ff9c1b;
+        padding: 2px 5px;
+        border-radius: 20px;
+      }
+    }
+  }
   .notice-list {
     width: 100%;
     height: 40px;
@@ -364,17 +383,6 @@
                 height: auto;
                 overflow: auto;
                 line-height: 50px;
-
-                .l-title {
-                  font-size: 20px;
-                  color: #4e4e4e;
-                  display: inline-block;
-                  width: 300px;
-                  text-align: left;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                }
               }
               .loan-info-dl {
                 float:left;
@@ -603,16 +611,6 @@
                 overflow: auto;
                 line-height: 50px;
 
-                .l-title {
-                  font-size: 20px;
-                  color: #4e4e4e;
-                  display: inline-block;
-                  width: 300px;
-                  text-align: left;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                }
                 .l-way {
                   font-size: 12px;
                   color: #b3b3b3;
@@ -988,24 +986,7 @@
             float: left;
             width: 100%;
             line-height: 50px;
-            .l-title {
-              font-size: 20px;
-              color: #4e4e4e;
-              display: inline-block;
-              width: 300px;
-              text-align: left;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              .new-tip {
-                margin-left: 10px;
-                font-size: 12px;
-                color: #ff9c1b;
-                border: 1px solid #ff9c1b;
-                padding: 2px 5px;
-                border-radius: 20px;
-              }
-            }
+
           }
           .loan-info-dl {
             float: left;
@@ -1376,6 +1357,15 @@
                 margin-left: 15px;
                 color: #4c4c4c;
                 padding-left:20px;
+                .arrow-tag-normal {
+                  margin-top: 2px;
+                  .ic-left {
+                    margin-left: -10px;
+                  }
+                  em {
+                    font-size: 11px;
+                  }
+                }
               }
               .pr-square {
                 width: 54%;

@@ -1,3 +1,10 @@
+.test {
+  background: url("../../images/icons/icon-shop.png") no-repeat;
+}
+
+.color2 {
+  color: red;
+}
 @import 'variables';
 @mixin user-select($bool) {
   -webkit-user-select: $bool;

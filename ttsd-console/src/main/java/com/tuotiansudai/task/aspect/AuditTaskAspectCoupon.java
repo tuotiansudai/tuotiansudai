@@ -2,9 +2,9 @@ package com.tuotiansudai.task.aspect;
 
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.task.OperationTask;
@@ -31,7 +31,7 @@ public class AuditTaskAspectCoupon {
     AccountService accountService;
 
     @Autowired
-    private CouponExchangeMapper couponExchangeMapper;
+    private ProductMapper productMapper;
 
     static Logger logger = Logger.getLogger(AuditTaskAspectCoupon.class);
 
@@ -81,7 +81,7 @@ public class AuditTaskAspectCoupon {
             task.setSender(senderLoginName);
 
             String operateURL;
-            if (couponExchangeMapper.findByCouponId(couponDto.getId()) != null && couponDto.getUserGroup() == UserGroup.EXCHANGER) {
+            if (productMapper.findByCouponId(couponDto.getId()) != null && couponDto.getUserGroup() == UserGroup.EXCHANGER) {
                 operateURL = "/point-manage/coupon-exchange-manage";
             } else {
                 if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {

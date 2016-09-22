@@ -3,7 +3,6 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
-import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
@@ -197,7 +196,6 @@ public class PointManageController {
     @RequestMapping(value = "/coupon-exchange/{id:^\\d+$}/edit", method = RequestMethod.GET)
     public ModelAndView edit(@PathVariable long id) {
         CouponModel couponModel = couponService.findCouponById(id);
-        CouponExchangeModel couponExchangeModel = couponService.findCouponExchangeByCouponId(id);
         ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(couponModel);
         ProductModel productModel = productService.findProductByCouponId(id);
         exchangeCouponDto.setSeq(productModel.getSeq());
