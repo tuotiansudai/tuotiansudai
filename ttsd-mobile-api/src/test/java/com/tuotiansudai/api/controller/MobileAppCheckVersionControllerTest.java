@@ -34,7 +34,7 @@ public class MobileAppCheckVersionControllerTest extends ControllerTestBase {
                 "        \"version\": \"1.5\",\n" +
                 "        \"versionCode\": 11,\n" +
                 "        \"forceUpgrade\": false,\n" +
-                "        \"url\": \"https://tuotiansudai.com/app/tuotiansudai.apk\",\n" +
+                "        \"url\": \"https://static.tuotiansudai.com/app/tuotiansudai.apk\",\n" +
                 "        \"message\": \"1，拓天助手修改为个人中心；\\n2，新增账户信息模块；\\n3，新增服务费用、常见问题、意见反馈；\\n4，合并密码修改，优化修改流程；\\n5，交互优化；\\n6，新增8家银行快捷支付；\\n7，推荐人二维码扫描注册。\"\n" +
                 "    },\n" +
                 "    \"ios\": {\n" +

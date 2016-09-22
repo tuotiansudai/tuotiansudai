@@ -7,7 +7,7 @@ function jump() {
     var u = navigator.userAgent.toLowerCase();
     if (!is_weixin()) {
         if (u.indexOf('android') > -1) {
-            location.href = "/app/tuotiansudai.apk";
+            location.href = "https://static.tuotiansudai.com/app/tuotiansudai.apk";
         } else if (u.indexOf('iphone') > -1 || u.indexOf('ipad') > -1) {
             location.href = "http://itunes.apple.com/us/app/id1039233966";
         }
