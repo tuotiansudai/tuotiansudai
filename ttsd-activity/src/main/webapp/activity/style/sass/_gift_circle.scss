@@ -65,11 +65,12 @@ $width:700px;
           margin-top: -125px;
           z-index: 8;
           background: url("/activity/images/sign/actor/circle/pointer.png") no-repeat center;
+          background-size: contain;
           @media (max-width:$width) {
-            width: 50px;
+            width: 55px;
             height: 100px;
-            margin-top:-50px;
-            margin-left: -25px;
+            margin-top: -56px;
+            margin-left: -27px;
           }
         }
         .rotate-btn{
@@ -81,10 +82,10 @@ $width:700px;
           margin-top:-225px;
           margin-left:-226px;
           background: url("/activity/images/sign/actor/circle/luxury-gift-new.png") no-repeat center;
+          background-size: contain;
           @media (max-width:$width) {
             width: 210px;
             height: 210px;
-            background-size: 100%;
             margin-top:-105px;
             margin-left: -105px;
           }
@@ -228,6 +229,7 @@ $width:700px;
           background-size:100%;
           .rotate-btn{
             background: url("/activity/images/sign/actor/circle/tour-gift.png") no-repeat center;
+            background-size: contain;
           }
         }
       }
