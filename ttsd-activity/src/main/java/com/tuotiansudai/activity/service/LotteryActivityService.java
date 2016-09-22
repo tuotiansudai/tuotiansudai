@@ -3,6 +3,7 @@ package com.tuotiansudai.activity.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.dto.ActivityCategory;
 import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.dto.LotteryPrize;
 import com.tuotiansudai.activity.dto.PrizeType;
@@ -136,13 +137,13 @@ public class LotteryActivityService {
         userMapper.lockByLoginName(userModel.getLoginName());
 
         LotteryPrize lotteryPrize = getDrawPrize(drawType);
-        if(lotteryPrize.getType().equals("virtual")){
+        if(lotteryPrize.getActivityCategory().equals(ActivityCategory.VIRTUAL)){
             couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(),accountModel != null ? accountModel.getUserName() : "", lotteryPrize.name(), DateTime.now().toDate(), PrizeType.AUTUMN_PRIZE));
-        return new DrawLotteryResultDto(0,lotteryPrize.name(),lotteryPrize.getType());
+        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize.name(), DateTime.now().toDate(), PrizeType.AUTUMN_PRIZE));
+        return new DrawLotteryResultDto(0,lotteryPrize.name(),lotteryPrize.getActivityCategory().name());
     }
 
     private long getCouponId(LotteryPrize lotteryPrize){

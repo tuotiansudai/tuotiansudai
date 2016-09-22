@@ -240,7 +240,7 @@ public interface InvestMapper {
     List<InvestModel> findByLoanIdAndLoginName(@Param(value = "loanId") long loanId,
                                                @Param(value = "loginName") String loginName);
 
-    List<InvestModel> countSuccessInvestByInvestTime(@Param(value = "loanId") long loanId,
+    List<InvestModel> countSuccessInvestByInvestTime(@Param(value = "loanId") Long loanId,
                                                      @Param(value = "startTime") Date startTime,
                                                      @Param(value = "endTime") Date endTime);
 
@@ -254,13 +254,5 @@ public interface InvestMapper {
     List<InvestModel> findSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
                                                 @Param(value = "startTime") Date startTime,
                                                 @Param(value = "endTime") Date endTime);
-
-    long findSumInvestAmountByActivityTypeAndInvestTime(@Param(value = "activity") boolean activity,
-                                                        @Param(value = "startTime") Date startTime,
-                                                        @Param(value = "endTime") Date endTime);
-
-    int findSumUserCountByActivityTypeAndInvestTime(@Param(value = "activity") boolean activity,
-                                                    @Param(value = "startTime") Date startTime,
-                                                    @Param(value = "endTime") Date endTime);
 
 }

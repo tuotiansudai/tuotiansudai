@@ -2,6 +2,7 @@ package com.tuotiansudai.activity.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.dto.LotteryPrize;
 import com.tuotiansudai.activity.dto.PrizeType;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class NationalPrizeService {
@@ -69,6 +71,9 @@ public class NationalPrizeService {
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.startTime}\")}")
     private Date activityNationalStartTime;
@@ -116,7 +121,7 @@ public class NationalPrizeService {
             lotteryTime ++;
         }
 
-        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(),null, PrizeType.NATIONAL_PRIZE,null,null);
+        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, PrizeType.NATIONAL_PRIZE, null, null);
         if(lotteryTime > 0){
             lotteryTime -= userTime;
         }
@@ -210,15 +215,23 @@ public class NationalPrizeService {
     }
 
     public String getMyActivityPoint(String loginName){
-        return String.valueOf(pointBillMapper.findSumPointByLoginNameAndBusinessType(loginName,activityNationalStartTime,activityNationalEndTime,Lists.newArrayList(PointBusinessType.ACTIVITY)));
+        return String.valueOf(pointBillMapper.findSumPointByLoginNameAndBusinessType(loginName, activityNationalStartTime, activityNationalEndTime, Lists.newArrayList(PointBusinessType.ACTIVITY)));
     }
 
-    public long getAllActivityInvestAmount(){
-        return investMapper.findSumInvestAmountByActivityTypeAndInvestTime(true, activityNationalStartTime, activityNationalEndTime);
-    }
-
-    public String getAllActivityUserCount(){
-        return String.valueOf(investMapper.findSumUserCountByActivityTypeAndInvestTime(true, activityNationalStartTime, activityNationalEndTime));
+    public Map getNationalActivityInvestAmountAndCount(){
+        List<InvestModel> investModels = investMapper.countSuccessInvestByInvestTime(null, activityNationalStartTime, activityNationalEndTime);
+        Map<String,Object> param = Maps.newConcurrentMap();
+        long amount = 0l;
+        long count = 0l;
+        for(InvestModel investModel : investModels){
+            if(loanDetailsMapper.getLoanDetailsByLoanId(investModel.getLoanId()).isActivity()){
+                amount += investModel.getAmount();
+                count ++;
+            }
+        }
+        param.put("investAmount",amount);
+        param.put("investCount",count);
+        return param;
     }
 
     private void createUserMembershipModel(String loginName, int level) {

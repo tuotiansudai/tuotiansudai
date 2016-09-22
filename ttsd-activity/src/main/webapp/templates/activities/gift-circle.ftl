@@ -113,11 +113,11 @@
     <div class="tip-dom">
         <div class="close-btn go-close"></div>
         <div class="text-tip">
-        {{if istype=='real'}}
+        {{if istype=='CONCRETE'}}
             <p>恭喜您！</p>
             <p>{{tiptext}}！</p>
             <p class="des-text">拓天客服将会在7个工作日内联系您发放奖品</p>
-        {{else if istype=='virtual'}}
+        {{else if istype=='VIRTUAL'}}
             <p>恭喜您！</p>
             <p>{{tiptext}}！</p>
             <p class="des-text">奖品已发放至“我的宝藏”当中。</p>
@@ -137,9 +137,9 @@
         {{/if}}
         </div>
         <div class="btn-list">
-            {{if istype=='real'}}
+            {{if istype=='CONCRETE'}}
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
-            {{else if istype=='virtual'}}
+            {{else if istype=='VIRTUAL'}}
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             {{else if istype=='membership'}}
                 <a href="/loan-list" class="go-on">去投资</a>

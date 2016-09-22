@@ -201,7 +201,10 @@
                 mobile like CONCAT('%', #{mobile}, '%')
             </if>
         </where>
-        order by register_time desc limit #{index}, #{pageSize}
+        order by register_time desc
+        <if test="index != null and pageSize != null">
+            limit #{index}, #{pageSize}
+        </if>
     </select>
 
     <select id="findUsersByRegisterTime" parameterType="map" resultMap="userResultMap">

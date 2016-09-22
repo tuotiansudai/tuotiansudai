@@ -67,7 +67,7 @@ public class UserLotteryService{
     }
 
     public int findUserLotteryTimeCountViews(String mobile){
-        return userMapper.findUserModelByMobile(mobile,0, Integer.MAX_VALUE).size();
+        return userMapper.findUserModelByMobile(mobile,null, null).size();
     }
 
     public List<UserLotteryPrizeView> findUserLotteryPrizeViews(String mobile,LotteryPrize selectPrize,PrizeType prizeType,Date startTime,Date endTime,Integer index,Integer pageSize){

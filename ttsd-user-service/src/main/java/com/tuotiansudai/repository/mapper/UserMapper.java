@@ -47,8 +47,8 @@ public interface UserMapper {
     List<String> findAllByRole(Map<String, Object> params);
 
     List<UserModel> findUserModelByMobile(@Param(value = "mobile") String mobile,
-                                        @Param(value = "index") int index,
-                                        @Param(value = "pageSize") int pageSize);
+                                        @Param(value = "index") Integer index,
+                                        @Param(value = "pageSize") Integer pageSize);
 
     List<UserModel> findUsersByRegisterTime(@Param(value = "startTime") Date startTime,
                                             @Param(value = "endTime") Date endTime);

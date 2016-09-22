@@ -717,7 +717,10 @@
     <select id="countSuccessInvestByInvestTime" parameterType="map" resultMap="investResultMap">
         select *
         from invest
-        where loan_id = #{loanId} and status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
+        where status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
+        <if test="loanId != null and loanId != '' ">
+            loan_id = #{loanId}
+        </if>
     </select>
 
     <select id="findWebTransferableApplicationPaginationByLoginName" useCache="false" parameterType="map"
@@ -898,25 +901,6 @@
         select *
         from invest
         where status = 'SUCCESS' and login_name = #{loginName} and created_time BETWEEN #{startTime} and #{endTime}
-    </select>
-
-    <select id="findSumInvestAmountByActivityTypeAndInvestTime" parameterType="map" resultType="long">
-        select IFNULL(SUM(amount),0) from loan_details l join invest i on l.loan_id = i.loan_id where i.status = 'SUCCESS'
-        and l.activity = #{activity}
-        <if test="startTime != null &amp;&amp; endTime != null">
-            and i.created_time between #{startTime} and #{endTime}
-        </if>
-    </select>
-
-    <select id="findSumUserCountByActivityTypeAndInvestTime" parameterType="map" resultType="int">
-        select count(1) from(
-            select login_name from loan_details l join invest i on l.loan_id = i.loan_id where i.status = 'SUCCESS'
-            and l.activity = #{activity}
-            <if test="startTime != null &amp;&amp; endTime != null">
-                and i.created_time between #{startTime} and #{endTime}
-            </if>
-            GROUP BY i.login_name
-        ) t
     </select>
 
 </mapper>

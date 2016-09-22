@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(path = "/activity/national")
@@ -45,14 +46,15 @@ public class NationalPrizeController {
     public ModelAndView national() {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/national-day", "responsive", true);
-        long userInvestAmount = nationalPrizeService.getAllActivityInvestAmount();
+        Map param = nationalPrizeService.getNationalActivityInvestAmountAndCount();
+        long userInvestAmount = (long)param.get("investAmount");
         modelAndView.addObject("myPoint",nationalPrizeService.getMyActivityPoint(loginName));
         logger.error("myPoint=============================================");
         modelAndView.addObject("allInvestAmount", AmountConverter.convertCentToString(userInvestAmount).replaceAll("\\.00", ""));
         logger.error("allInvestAmount=============================================");
         modelAndView.addObject("investScale", numberFormat.format((float) userInvestAmount / NATIONAL_SUM_AMOUNT * 100));
         logger.error("investScale=============================================");
-        modelAndView.addObject("userCount", nationalPrizeService.getAllActivityUserCount());
+        modelAndView.addObject("userCount", param.get("investCount"));
         logger.error("userCount=============================================");
         modelAndView.addObject("drawTime", nationalPrizeService.getDrawPrizeTime(LoginUserInfo.getMobile()));
         logger.error("drawTime=============================================");
