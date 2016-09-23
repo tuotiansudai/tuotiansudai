@@ -126,7 +126,7 @@ public class InvestController {
         int captchaHeight = 38;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
-        captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false).getId());
+        captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession().getId());
     }
 
     @RequestMapping(path = "/no-password-invest/send-captcha", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")

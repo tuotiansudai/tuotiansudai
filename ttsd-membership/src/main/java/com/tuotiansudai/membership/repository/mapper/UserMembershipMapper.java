@@ -44,4 +44,5 @@ public interface UserMembershipMapper {
                                          @Param(value = "index") int index,
                                          @Param(value = "pageSize") int pageSize);
 
+    List<UserMembershipModel> findExpiredUserMembership(@Param(value = "expiredDate") Date expiredDate);
 }

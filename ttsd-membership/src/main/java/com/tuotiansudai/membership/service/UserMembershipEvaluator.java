@@ -48,16 +48,28 @@ public class UserMembershipEvaluator {
     }
 
     public MembershipModel evaluate(String loginName) {
-        return membershipMapper.findById(this.evaluateUserMembership(loginName, new Date()).getMembershipId());
+        UserMembershipModel userMembershipModel = this.evaluateUserMembership(loginName, new Date());
+        if (userMembershipModel == null) {
+            return null;
+        }
+        return membershipMapper.findById(userMembershipModel.getMembershipId());
     }
 
     public MembershipModel evaluateSpecifiedDate(String loginName, Date date) {
-        return membershipMapper.findById(this.evaluateUserMembership(loginName, date).getMembershipId());
+        UserMembershipModel userMembershipModel = this.evaluateUserMembership(loginName, date);
+        if (userMembershipModel == null) {
+            return null;
+        }
+        return membershipMapper.findById(userMembershipModel.getMembershipId());
     }
 
 
     public UserMembershipModel evaluateUserMembership(String loginName, final Date date) {
         List<UserMembershipModel> userMembershipModels = userMembershipMapper.findByLoginName(loginName);
+
+        if (CollectionUtils.isEmpty(userMembershipModels)) {
+            return null;
+        }
 
         UnmodifiableIterator<UserMembershipModel> filter = Iterators.filter(userMembershipModels.iterator(), new Predicate<UserMembershipModel>() {
             @Override

@@ -101,7 +101,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-
+        when(userMembershipEvaluator.evaluateSpecifiedDate(anyString(), any(Date.class))).thenReturn(new MembershipModel(0, 1, 0, 0.1));
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
 
@@ -185,7 +185,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(couponMapper.findById(anyLong())).thenReturn(new CouponModel());
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-
+        when(userMembershipEvaluator.evaluateSpecifiedDate(anyString(), any(Date.class))).thenReturn(new MembershipModel(0, 1, 0, 0.1));
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
 

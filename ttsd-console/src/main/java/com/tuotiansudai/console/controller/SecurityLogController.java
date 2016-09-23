@@ -5,7 +5,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.UserOpLogView;
 import com.tuotiansudai.repository.model.UserOpType;
 import com.tuotiansudai.service.AuditLogService;
-import com.tuotiansudai.service.LoginLogService;
+import com.tuotiansudai.console.service.LoginLogService;
 import com.tuotiansudai.service.UserOpLogService;
 import com.tuotiansudai.task.OperationType;
 import org.joda.time.DateTime;

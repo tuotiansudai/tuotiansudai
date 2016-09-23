@@ -1,14 +1,7 @@
 package com.tuotiansudai.message.aspect;
 
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.message.util.UserMessageEventGenerator;
-import com.tuotiansudai.repository.mapper.RechargeMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.mapper.WithdrawMapper;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -17,6 +10,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.Map;
 
@@ -25,15 +20,6 @@ import java.util.Map;
 public class MessageEventAspect {
 
     private static Logger logger = Logger.getLogger(MessageEventAspect.class);
-
-    @Autowired
-    private RechargeMapper rechargeMapper;
-
-    @Autowired
-    private WithdrawMapper withdrawMapper;
-
-    @Autowired
-    private TransferApplicationMapper transferApplicationMapper;
 
     @Autowired
     private UserMessageEventGenerator userMessageEventGenerator;
@@ -82,6 +68,10 @@ public class MessageEventAspect {
     public void loginSuccessPointcut() {
     }
 
+    @Pointcut("execution(* *..SignInClient.refresh(..))")
+    public void refreshSuccessPointcut() {
+    }
+
     @Pointcut("execution(* *..CouponAssignmentService.assign(..))")
     public void assignCouponPointcut() {
     }
@@ -89,30 +79,34 @@ public class MessageEventAspect {
 
     @AfterReturning(value = "registerUserPointcut()", returning = "returnValue")
     public void afterReturningRegisterUser(JoinPoint joinPoint, boolean returnValue) {
-        RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
-        logger.info(MessageFormat.format("[Message Event Aspect] after register user({0}) pointcut start", registerUserDto.getLoginName()));
+        Object registerUserDto = joinPoint.getArgs()[0];
         try {
             if (returnValue) {
-                userMessageEventGenerator.generateRegisterUserSuccessEvent(registerUserDto.getLoginName());
-                logger.info(MessageFormat.format("[Message Event Aspect] after register user({0}) pointcut finished", registerUserDto.getLoginName()));
+                Class<?> aClass = registerUserDto.getClass();
+                Method method = aClass.getMethod("getLoginName");
+                String loginName = (String) method.invoke(registerUserDto);
+                userMessageEventGenerator.generateRegisterUserSuccessEvent(loginName);
+                logger.info(MessageFormat.format("[Message Event Aspect] after register user({0}) pointcut finished", loginName));
             }
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[Message Event Aspect] after register user({0}) pointcut is fail", registerUserDto.getLoginName()), e);
+            logger.error(e.getLocalizedMessage(), e);
         }
 
     }
 
     @AfterReturning(value = "registerAccountPointcut()", returning = "returnValue")
     public void afterReturningRegisterAccount(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
-        RegisterAccountDto registerAccountDto = (RegisterAccountDto) joinPoint.getArgs()[0];
-        logger.info(MessageFormat.format("[Message Event Aspect] after register account({0}) pointcut start", registerAccountDto.getLoginName()));
+        Object registerAccountDto = joinPoint.getArgs()[0];
         try {
             if (returnValue.getData().getStatus()) {
-                userMessageEventGenerator.generateRegisterAccountSuccessEvent(registerAccountDto.getLoginName());
-                logger.info(MessageFormat.format("[Message Event Aspect] after register account({0}) pointcut finished", registerAccountDto.getLoginName()));
+                Class<?> aClass = registerAccountDto.getClass();
+                Method method = aClass.getMethod("getLoginName");
+                String loginName = (String) method.invoke(registerAccountDto);
+                userMessageEventGenerator.generateRegisterAccountSuccessEvent(loginName);
+                logger.info(MessageFormat.format("[Message Event Aspect] after register account({0}) pointcut finished", loginName));
             }
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[Message Event Aspect] after register account({0}) pointcut is fail", registerAccountDto.getLoginName()), e);
+            logger.error(e.getLocalizedMessage(), e);
         }
     }
 
@@ -123,11 +117,8 @@ public class MessageEventAspect {
         long orderId = Long.parseLong(paramsMap.get("order_id"));
         logger.info(MessageFormat.format("[Message Event Aspect] after recharge({0}) pointcut start", String.valueOf(orderId)));
         try {
-            RechargeModel rechargeModel = rechargeMapper.findById(orderId);
-            if (rechargeModel != null && RechargeStatus.SUCCESS == rechargeModel.getStatus()) {
-                userMessageEventGenerator.generateRechargeSuccessEvent(rechargeModel.getLoginName(), rechargeModel.getAmount());
-                logger.info(MessageFormat.format("[Message Event Aspect] after recharge({0}) pointcut finished", String.valueOf(orderId)));
-            }
+            userMessageEventGenerator.generateRechargeSuccessEvent(orderId);
+            logger.info(MessageFormat.format("[Message Event Aspect] after recharge({0}) pointcut finished", String.valueOf(orderId)));
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Message Event Aspect] after recharge({0}) pointcut is fail", String.valueOf(orderId)), e);
         }
@@ -140,11 +131,8 @@ public class MessageEventAspect {
         long orderId = Long.parseLong(paramsMap.get("order_id"));
         logger.info(MessageFormat.format("[Message Event Aspect] after withdraw({0}) pointcut start", String.valueOf(orderId)));
         try {
-            WithdrawModel withdrawModel = withdrawMapper.findById(orderId);
-            if (withdrawModel != null && WithdrawStatus.SUCCESS == withdrawModel.getStatus()) {
-                userMessageEventGenerator.generateWithdrawSuccessEvent(withdrawModel.getLoginName(), withdrawModel.getAmount());
-                logger.info(MessageFormat.format("[Message Event Aspect] after withdraw({0}) pointcut finished", String.valueOf(orderId)));
-            }
+            userMessageEventGenerator.generateWithdrawSuccessEvent(orderId);
+            logger.info(MessageFormat.format("[Message Event Aspect] after withdraw({0}) pointcut finished", String.valueOf(orderId)));
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Message Event Aspect] after withdraw({0}) pointcut is fail", String.valueOf(orderId)), e);
         }
@@ -152,14 +140,15 @@ public class MessageEventAspect {
 
     @AfterReturning(value = "investSuccessPointcut()")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
-        InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
-        long investId = investModel.getId();
-        logger.info(MessageFormat.format("[Message Event Aspect] after invest success({0}) pointcut start", String.valueOf(investId)));
+        Object investModel = joinPoint.getArgs()[0];
         try {
-            userMessageEventGenerator.generateInvestSuccessEvent(investModel.getLoginName(), investModel.getLoanId(), investModel.getAmount());
+            Class<?> aClass = investModel.getClass();
+            Method method = aClass.getMethod("getId");
+            long investId = (long) method.invoke(investModel);
+            userMessageEventGenerator.generateInvestSuccessEvent(investId);
             logger.info(MessageFormat.format("[Message Event Aspect] after invest success({0}) pointcut finished", String.valueOf(investId)));
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[Message Event Aspect] after invest success({0}) pointcut is fail", String.valueOf(investId)), e);
+            logger.error(e.getLocalizedMessage(), e);
         }
     }
 
@@ -168,8 +157,7 @@ public class MessageEventAspect {
         long investId = (Long) joinPoint.getArgs()[0];
         logger.info(MessageFormat.format("[Message Event Aspect] after transfer success({0}) pointcut start", String.valueOf(investId)));
         try {
-            TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investId);
-            userMessageEventGenerator.generateTransferSuccessEvent(transferApplicationModel.getLoginName(), transferApplicationModel.getId());
+            userMessageEventGenerator.generateTransferSuccessEvent(investId);
             logger.info(MessageFormat.format("[Message Event Aspect] after transfer success({0}) pointcut finished", String.valueOf(investId)));
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Message Event Aspect] after transfer success({0}) pointcut is fail", String.valueOf(investId)), e);
@@ -204,21 +192,24 @@ public class MessageEventAspect {
 
     @AfterReturning(value = "rewardReferrerSuccessPointcut()")
     public void afterReturningRewardReferrer(JoinPoint joinPoint) {
-        LoanModel loanModel = (LoanModel) joinPoint.getArgs()[0];
-        logger.info(MessageFormat.format("[Message Event Aspect] after reward referrer success({0}) pointcut start", String.valueOf(loanModel.getId())));
+        Object loanModel = joinPoint.getArgs()[0];
         try {
-            userMessageEventGenerator.generateRecommendAwardSuccessEvent(loanModel.getId());
-            logger.info(MessageFormat.format("[Message Event Aspect] after reward referrer success({0}) pointcut finished", String.valueOf(loanModel.getId())));
+            Class<?> aClass = loanModel.getClass();
+            Method method = aClass.getMethod("getId");
+            long loanId = (long) method.invoke(loanModel);
+            userMessageEventGenerator.generateRecommendAwardSuccessEvent(loanId);
+            logger.info(MessageFormat.format("[Message Event Aspect] after reward referrer success({0}) pointcut finished", String.valueOf(loanId)));
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[Message Event Aspect] after reward referrer success({0}) pointcut is fail", String.valueOf(loanModel.getId())), e);
+            logger.error(e.getLocalizedMessage(), e);
         }
     }
 
-    @AfterReturning(value = "loginSuccessPointcut()", returning = "signInResult")
+    @AfterReturning(value = "loginSuccessPointcut() || refreshSuccessPointcut()", returning = "signInResult")
     public void afterReturningUserLogin(JoinPoint joinPoint, SignInResult signInResult) {
         try {
             if (signInResult != null && signInResult.isResult()) {
                 userMessageEventGenerator.generateCouponExpiredAlertEvent(signInResult.getUserInfo().getLoginName());
+                userMessageEventGenerator.generateMembershipExpiredEvent(signInResult.getUserInfo().getLoginName());
                 logger.info(MessageFormat.format("[Message Event Aspect] after login success({0}) pointcut finished", signInResult.getUserInfo().getLoginName()));
             }
         } catch (Exception e) {
@@ -227,13 +218,20 @@ public class MessageEventAspect {
     }
 
     @AfterReturning(value = "assignCouponPointcut()", returning = "returnValue")
-    public void afterReturningAssignCoupon(JoinPoint joinPoint, UserCouponModel returnValue) {
-        logger.info(MessageFormat.format("[Message Event Aspect] after user({0}) assign user coupon({1}) pointcut start", returnValue.getLoginName(), String.valueOf(returnValue.getId())));
+    public void afterReturningAssignCoupon(JoinPoint joinPoint, Object returnValue) throws InvocationTargetException {
+        if (returnValue == null) {
+            return;
+        }
+
+        long userCouponId;
         try {
-            userMessageEventGenerator.generateAssignCouponSuccessEvent(returnValue);
-            logger.info(MessageFormat.format("[Message Event Aspect] after user({0}) assign user coupon({1}) pointcut finished", returnValue.getLoginName(), String.valueOf(returnValue.getId())));
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("[Message Event Aspect] after user({0}) assign user coupon({1}) pointcut is fail", returnValue.getLoginName(), String.valueOf(returnValue.getId())));
+            Class<?> aClass = returnValue.getClass();
+            Method method = aClass.getMethod("getId");
+            userCouponId = (long) method.invoke(returnValue);
+            userMessageEventGenerator.generateAssignCouponSuccessEvent(userCouponId);
+            logger.info(MessageFormat.format("[Message Event Aspect] assign user coupon({0}) pointcut finished", String.valueOf(userCouponId)));
+        } catch (NoSuchMethodException | IllegalAccessException e) {
+            logger.error(e.getLocalizedMessage(), e);
         }
     }
 }

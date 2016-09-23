@@ -47,6 +47,8 @@ public class LoanItemDto {
 
     private boolean activity;
 
+    private String activityDesc;
+
     public long getId() {
         return id;
     }
@@ -197,5 +199,13 @@ public class LoanItemDto {
 
     public void setActivity(boolean activity) {
         this.activity = activity;
+    }
+
+    public String getActivityDesc() {
+        return activityDesc;
+    }
+
+    public void setActivityDesc(String activityDesc) {
+        this.activityDesc = activityDesc;
     }
 }
