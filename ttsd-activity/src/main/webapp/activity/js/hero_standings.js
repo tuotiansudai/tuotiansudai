@@ -81,7 +81,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 				layer.msg('请求失败，请重试！');
 			});
 		}
-		heroRank('2016-09-27');
+		heroRank(todayDate);
         
 
 
