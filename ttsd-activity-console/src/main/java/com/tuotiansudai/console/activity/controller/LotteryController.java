@@ -28,12 +28,11 @@ public class LotteryController {
 
     @RequestMapping(value = "/user-time-list", method = RequestMethod.GET)
     public ModelAndView userLotteryList(@RequestParam(name = "mobile", required = false) String mobile,
-                                        @RequestParam(name = "prizeType", required = false) ActivityCategory prizeType,
+                                        @RequestParam(name = "prizeType",  defaultValue = "AUTUMN_PRIZE",required = false) ActivityCategory prizeType,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                         @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) throws IOException {
         ModelAndView modelAndView = new ModelAndView("/activity-time-list");
         int lotteryCount = userLotteryService.findUserLotteryTimeCountViews(mobile);
-        prizeType = prizeType == null ? ActivityCategory.AUTUMN_PRIZE : prizeType;
         modelAndView.addObject("lotteryCount", lotteryCount);
         modelAndView.addObject("lotteryList", userLotteryService.findUserLotteryTimeViews(mobile, prizeType, (index - 1) * pageSize, pageSize));
         modelAndView.addObject("index", index);

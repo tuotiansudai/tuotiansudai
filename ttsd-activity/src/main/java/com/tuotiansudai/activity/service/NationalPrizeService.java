@@ -213,7 +213,7 @@ public class NationalPrizeService {
     }
 
     public String getMyActivityPoint(String loginName){
-        return String.valueOf(pointBillMapper.findSumPointByLoginNameAndBusinessType(loginName, activityNationalStartTime, activityNationalEndTime, Lists.newArrayList(PointBusinessType.ACTIVITY)));
+        return String.valueOf(pointBillMapper.findSumPointByLoginNameAndBusinessType(loginName, activityNationalStartTime, activityNationalEndTime, null));
     }
 
     public Map getNationalActivityInvestAmountAndCount(){
@@ -221,11 +221,15 @@ public class NationalPrizeService {
         Map<String,Object> param = Maps.newConcurrentMap();
         long amount = 0l;
         long count = 0l;
+        Map<String,String> userMap = Maps.newConcurrentMap();
         for(InvestModel investModel : investModels){
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(investModel.getLoanId());
             if(loanDetailsModel != null && loanDetailsModel.isActivity()){
                 amount += investModel.getAmount();
-                count ++;
+                if(userMap.get(investModel.getLoginName()) == null){
+                    userMap.put(investModel.getLoginName(),investModel.getLoginName());
+                    count ++;
+                }
             }
         }
         param.put("investAmount",amount);
