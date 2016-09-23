@@ -513,7 +513,10 @@ $width:700px;
             float: left;
             width: 100%;
             position: relative;
-
+            @media (max-width: $width) {
+              width:90%;
+              margin:0 5%;
+            }
             table {
               width: 100%;
               position: absolute;
