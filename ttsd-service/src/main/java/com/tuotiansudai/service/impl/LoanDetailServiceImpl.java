@@ -81,6 +81,8 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${invest.achievement.start.time}\")}")
     private Date achievementStartTime;
 
+    public static int DAYS_OF_YEAR = 365;
+
     @Override
     public LoanDetailDto getLoanDetail(String loginName, long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -103,6 +105,14 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     @Override
     public BaseDto<BasePaginationDataDto> getInvests(final String loginName, long loanId, int index, int pageSize) {
         long count = investMapper.findCountByStatus(loanId, InvestStatus.SUCCESS);
+        LoanModel loanModel = loanMapper.findById(loanId);
+        List<InvestRecordsView> investModelRecords = null;
+        if(loanModel.getStatus().equals(LoanStatus.RAISING) || loanModel.getStatus().equals(LoanStatus.RECHECK)){
+            investModelRecords = investMapper.findSuccessInvestRecords(loanId, DAYS_OF_YEAR);
+        }else{
+
+        }
+
         List<InvestModel> investModels = investMapper.findByStatus(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
         List<LoanDetailInvestPaginationItemDto> records = Lists.newArrayList();
 
@@ -138,7 +148,6 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         BasePaginationDataDto<LoanDetailInvestPaginationItemDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);
 
         // TODO:fake
-        LoanModel loanModel = loanMapper.findById(loanId);
         if (loanId == 41650602422768L && loanModel.getStatus() == LoanStatus.REPAYING) {
             LoanDetailInvestPaginationItemDto fakeItem = new LoanDetailInvestPaginationItemDto();
             fakeItem.setMobile("186****9367");
