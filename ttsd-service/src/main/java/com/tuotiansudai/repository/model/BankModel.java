@@ -16,6 +16,8 @@ public class BankModel implements Serializable {
 
     private String imageUrl;
 
+    private Integer seq;
+
     private long singleAmount;
 
     private long singleDayAmount;
@@ -35,6 +37,7 @@ public class BankModel implements Serializable {
         this.id = bankDto.getId();
         this.name = bankDto.getName();
         this.bankCode = bankDto.getBankCode();
+        this.seq = bankDto.getSeq();
         this.imageUrl = bankDto.getImageUrl();
         this.singleAmount = AmountConverter.convertStringToCent(bankDto.getSingleAmount());
         this.singleDayAmount = AmountConverter.convertStringToCent(bankDto.getSingleDayAmount());
@@ -70,6 +73,14 @@ public class BankModel implements Serializable {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public Integer getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Integer seq) {
+        this.seq = seq;
     }
 
     public void setImageUrl(String imageUrl) {

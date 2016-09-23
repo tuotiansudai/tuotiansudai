@@ -17,6 +17,8 @@ public class BankDto extends BaseDataDto implements Serializable {
 
     private String bankCode;
 
+    private Integer seq;
+
     private String imageUrl;
 
     @NotEmpty
@@ -40,6 +42,7 @@ public class BankDto extends BaseDataDto implements Serializable {
     public BankDto(BankModel bankModel){
         this.id = bankModel.getId();
         this.name = bankModel.getName();
+        this.seq = bankModel.getSeq();
         this.bankCode = bankModel.getBankCode();
         this.imageUrl = bankModel.getImageUrl();
         this.singleAmount = AmountConverter.convertCentToString(bankModel.getSingleAmount());
@@ -60,6 +63,14 @@ public class BankDto extends BaseDataDto implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Integer seq) {
+        this.seq = seq;
     }
 
     public String getBankCode() {

@@ -11,6 +11,7 @@
                 <tr>
                     <th rowspan="2">名称</th>
                     <th rowspan="2">简称</th>
+                    <th rowspan="2">顺序</th>
                     <th rowspan="2">图片</th>
                     <th colspan="2">快捷支付限额（元）</th>
                     <th rowspan="2">操作</th>
@@ -26,6 +27,7 @@
                         <tr>
                             <td>${bank.name!}</td>
                             <td>${bank.bankCode!}</td>
+                            <td>${bank.seq!}</td>
                             <td><span class="webImg"><img id="webUrl" src="${bank.imageUrl!}"/></span></td>
                             <td>${bank.singleAmount}</td>
                             <td>${bank.singleDayAmount}</td>
