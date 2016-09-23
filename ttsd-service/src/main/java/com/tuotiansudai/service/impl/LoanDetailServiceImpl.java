@@ -106,44 +106,31 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     public BaseDto<BasePaginationDataDto> getInvests(final String loginName, long loanId, int index, int pageSize) {
         long count = investMapper.findCountByStatus(loanId, InvestStatus.SUCCESS);
         LoanModel loanModel = loanMapper.findById(loanId);
-        List<InvestRecordsView> investModelRecords = null;
+        List<InvestRecordsView> investModelRecords;
         if(loanModel.getStatus().equals(LoanStatus.RAISING) || loanModel.getStatus().equals(LoanStatus.RECHECK)){
-            investModelRecords = investMapper.findSuccessInvestRecords(loanId, DAYS_OF_YEAR);
+            investModelRecords = investMapper.findSuccessInvestRecordsByRaising(loanId, DAYS_OF_YEAR,(index - 1) * pageSize, pageSize);
         }else{
-
+            investModelRecords = investMapper.findSuccessInvestRecordsByAfterRaising(loanId,(index - 1) * pageSize, pageSize);
         }
 
-        List<InvestModel> investModels = investMapper.findByStatus(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
         List<LoanDetailInvestPaginationItemDto> records = Lists.newArrayList();
-
-        if (CollectionUtils.isNotEmpty(investModels)) {
-            records = Lists.transform(investModels, new Function<InvestModel, LoanDetailInvestPaginationItemDto>() {
+        if(CollectionUtils.isNotEmpty(investModelRecords)){
+            records = Lists.transform(investModelRecords, new Function<InvestRecordsView, LoanDetailInvestPaginationItemDto>() {
                 @Override
-                public LoanDetailInvestPaginationItemDto apply(InvestModel input) {
+                public LoanDetailInvestPaginationItemDto apply(InvestRecordsView input) {
                     LoanDetailInvestPaginationItemDto item = new LoanDetailInvestPaginationItemDto();
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());
                     item.setMobile(randomUtils.encryptMobile(loginName, input.getLoginName(), Source.WEB));
-
-
-                    long amount = 0;
-                    List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getId());
-                    for (InvestRepayModel investRepayModel : investRepayModels) {
-                        amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
-                    }
-
-                    if (CollectionUtils.isEmpty(investRepayModels)) {
-                        amount = investService.estimateInvestIncome(input.getLoanId(), loginName, input.getAmount());
-                    }
-
-                    item.setExpectedInterest(AmountConverter.convertCentToString(amount));
+                    item.setExpectedInterest(AmountConverter.convertCentToString(input.getExpectedInterest()));
                     item.setCreatedTime(input.getTradingTime() == null ? input.getCreatedTime() : input.getTradingTime());
                     item.setAchievements(input.getAchievements());
                     return item;
                 }
             });
         }
+
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         BasePaginationDataDto<LoanDetailInvestPaginationItemDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);
 

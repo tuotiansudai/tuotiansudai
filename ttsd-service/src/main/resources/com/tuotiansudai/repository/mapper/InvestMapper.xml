@@ -918,7 +918,7 @@
         where status = 'SUCCESS' and login_name = #{loginName} and created_time BETWEEN #{startTime} and #{endTime}
     </select>
 
-    <select id="findSuccessInvestRecords" parameterType="map" resultMap="investRecordsView">
+    <select id="findSuccessInvestRecordsByRaising" parameterType="map" resultMap="investRecordsView">
         SELECT
         *,
         truncate(IFNULL((expectedInterest - expectedInterest * membershipFee),
@@ -951,6 +951,32 @@
         JOIN loan l ON i.loan_id = l.id
         WHERE i.status = 'SUCCESS'
         AND i.loan_id = #{loanId}) interest) records
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findSuccessInvestRecordsByAfterRaising" parameterType="map" resultMap="investRecordsView">
+        SELECT
+            i.id,
+            i.source,
+            i.is_auto_invest,
+            i.created_time,
+            i.login_name,
+            i.trading_time,
+            (record.expected_interest - record.expected_fee) AS expectedInterest
+        FROM
+            (SELECT
+                i.id,
+                    SUM(expected_interest) AS expected_interest,
+                    SUM(expected_fee) AS expected_fee
+            FROM
+                invest i
+            JOIN invest_repay r ON i.id = r.invest_id
+            WHERE
+                i.loan_id = #{loanId} AND i.status = 'SUCCESS'
+            GROUP BY i.id) record
+                LEFT JOIN
+            invest i ON record.id = i.id
+            limit #{index}, #{pageSize}
     </select>
 
 </mapper>

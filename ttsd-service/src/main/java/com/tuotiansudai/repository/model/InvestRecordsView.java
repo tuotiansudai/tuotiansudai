@@ -1,19 +1,22 @@
 package com.tuotiansudai.repository.model;
 
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class InvestRecordsView {
+public class InvestRecordsView implements Serializable{
     private String loginName;
 
-    private String amount;
+    private long amount;
 
     private Source source;
 
-    private String expectedInterest;
+    private long expectedInterest;
 
     private Date createdTime;
+
+    private Date tradingTime;
 
     private boolean autoInvest;
 
@@ -27,28 +30,12 @@ public class InvestRecordsView {
         this.loginName = loginName;
     }
 
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
     public Source getSource() {
         return source;
     }
 
     public void setSource(Source source) {
         this.source = source;
-    }
-
-    public String getExpectedInterest() {
-        return expectedInterest;
-    }
-
-    public void setExpectedInterest(String expectedInterest) {
-        this.expectedInterest = expectedInterest;
     }
 
     public Date getCreatedTime() {
@@ -73,5 +60,29 @@ public class InvestRecordsView {
 
     public void setAchievements(List<InvestAchievement> achievements) {
         this.achievements = achievements;
+    }
+
+    public Date getTradingTime() {
+        return tradingTime;
+    }
+
+    public void setTradingTime(Date tradingTime) {
+        this.tradingTime = tradingTime;
+    }
+
+    public long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(long amount) {
+        this.amount = amount;
+    }
+
+    public long getExpectedInterest() {
+        return expectedInterest;
+    }
+
+    public void setExpectedInterest(long expectedInterest) {
+        this.expectedInterest = expectedInterest;
     }
 }

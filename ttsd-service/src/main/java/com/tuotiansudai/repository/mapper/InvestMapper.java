@@ -248,15 +248,21 @@ public interface InvestMapper {
                                                    @Param("productTypeList") List<ProductType> productTypeList);
 
     long countInvestorSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
-                                               @Param(value = "startTime") Date startTime,
-                                               @Param(value = "endTime") Date endTime);
-
-    List<InvestModel> findSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
                                                 @Param(value = "startTime") Date startTime,
                                                 @Param(value = "endTime") Date endTime);
 
+    List<InvestModel> findSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
+                                                    @Param(value = "startTime") Date startTime,
+                                                    @Param(value = "endTime") Date endTime);
 
-    List<InvestRecordsView> findSuccessInvestRecords(@Param(value = "loanId") long loanId,
-                                                     @Param(value = "day") int day);
+
+    List<InvestRecordsView> findSuccessInvestRecordsByRaising(@Param(value = "loanId") long loanId,
+                                                     @Param(value = "day") int day,
+                                                     @Param(value = "index") Integer index,
+                                                     @Param(value = "pageSize") Integer pageSize);
+
+    List<InvestRecordsView> findSuccessInvestRecordsByAfterRaising(@Param(value = "loanId") long loanId,
+                                                                   @Param(value = "index") Integer index,
+                                                                   @Param(value = "pageSize") Integer pageSize);
 
 }
