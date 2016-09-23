@@ -7,6 +7,7 @@ import com.tuotiansudai.api.service.v1_0.impl.MobileAppFundManagementServiceImpl
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -25,9 +26,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -71,6 +74,7 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase {
         when(pointService.getAvailablePoint(anyString())).thenReturn(1700l);
         when(referrerManageMapper.findReferInvestTotalAmount("", null, null, null, null)).thenReturn(1700l);
         when(userMembershipEvaluator.evaluate(anyString())).thenReturn(new MembershipModel());
+        when(userMembershipEvaluator.evaluateUserMembership(anyString(), any(Date.class))).thenReturn(new UserMembershipModel());
         List<UserCouponView> userCouponViews = new ArrayList<>();
         userCouponViews.add(new UserCouponView());
         when(userCouponService.getUnusedUserCoupons(anyString())).thenReturn(userCouponViews);
