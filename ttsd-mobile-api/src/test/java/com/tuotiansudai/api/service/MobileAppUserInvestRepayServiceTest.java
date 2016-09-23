@@ -14,6 +14,7 @@ import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -75,7 +76,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
     private CouponMapper couponMapper;
 
     @Mock
-    private UserMembershipService userMembershipService;
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     @Mock
     private InvestExtraRateMapper investExtraRateMapper;
@@ -100,7 +101,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-
+        when(userMembershipEvaluator.evaluateSpecifiedDate(anyString(), any(Date.class))).thenReturn(new MembershipModel(0, 1, 0, 0.1));
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
 
@@ -132,7 +133,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(investService.findById(anyLong())).thenReturn(investModel);
         when(loanService.findLoanById(anyLong())).thenReturn(loanModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
-        when(userMembershipService.getMembershipLevelByLoginNameAndInvestTime(anyString(), any(Date.class))).thenReturn(String.valueOf(1));
+        when(userMembershipEvaluator.evaluateSpecifiedDate(anyString(), any(Date.class))).thenReturn(new MembershipModel(0, 1, 0, 0.1));
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 
@@ -184,7 +185,7 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(couponMapper.findById(anyLong())).thenReturn(new CouponModel());
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-
+        when(userMembershipEvaluator.evaluateSpecifiedDate(anyString(), any(Date.class))).thenReturn(new MembershipModel(0, 1, 0, 0.1));
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
 

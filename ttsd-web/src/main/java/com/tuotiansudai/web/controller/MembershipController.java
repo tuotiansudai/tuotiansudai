@@ -15,7 +15,6 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.HeroRankingService;
-import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +42,6 @@ public class MembershipController {
     private AccountService accountService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private MembershipExperienceBillService membershipExperienceBillService;
 
     @Autowired
@@ -64,7 +60,7 @@ public class MembershipController {
             MembershipModel nextLevelMembershipModel = membershipModel.getLevel() == 5 ? membershipModel : userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
             AccountModel accountModel = accountService.findByLoginName(loginName);
             long membershipPoint = accountModel == null ? 0 : accountModel.getMembershipPoint();
-            UserMembershipModel userMembershipModel = userMembershipService.findByLoginNameByMembershipId(loginName, membershipModel.getId());
+            UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
             modelAndView.addObject("mobile", LoginUserInfo.getMobile());
             modelAndView.addObject("membershipLevel", membershipModel.getLevel());
             modelAndView.addObject("membershipNextLevel", nextLevelMembershipModel.getLevel());
@@ -72,7 +68,7 @@ public class MembershipController {
             modelAndView.addObject("membershipPoint", membershipPoint);
             modelAndView.addObject("progressBarPercent", userMembershipService.getProgressBarPercent(loginName));
             modelAndView.addObject("membershipType",userMembershipModel != null ? userMembershipModel.getType().name() : "");
-            modelAndView.addObject("leftDays", userMembershipService.getExpireDayByLoginName(loginName));
+            modelAndView.addObject("leftDays", userMembershipService.getMembershipExpireDay(loginName));
         }
         return modelAndView;
 
@@ -125,7 +121,7 @@ public class MembershipController {
 
     @ResponseBody
     @RequestMapping(value = "/receive", method = RequestMethod.GET)
-    public BaseDto<GivenMembershipDto> receive(HttpServletRequest httpServletRequest) throws ParseException {
+    public BaseDto<GivenMembershipDto> receive() throws ParseException {
         BaseDto<GivenMembershipDto> dto = new BaseDto<>();
         try {
             String loginName = LoginUserInfo.getLoginName();
@@ -140,5 +136,4 @@ public class MembershipController {
         }
         return dto;
     }
-
 }

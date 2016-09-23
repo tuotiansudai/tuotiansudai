@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDetailDto;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipInvestService;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -37,7 +38,7 @@ public class LoanDetailController {
     private UserCouponService userCouponService;
 
     @Autowired
-    private MembershipInvestService membershipInvestService;
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -48,7 +49,7 @@ public class LoanDetailController {
         if (loanDetail == null) {
             return new ModelAndView("/error/404");
         }
-        MembershipModel membershipModel = membershipInvestService.getCurMaxMembership(LoginUserInfo.getLoginName());
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(LoginUserInfo.getLoginName());
         ModelAndView modelAndView = new ModelAndView("/loan", "responsive", true);
         modelAndView.addObject("loan", loanDetail);
         modelAndView.addObject("coupons", userCouponService.getInvestUserCoupons(LoginUserInfo.getLoginName(), loanId));

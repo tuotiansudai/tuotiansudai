@@ -12,6 +12,7 @@ public class InvestRequestDto extends BaseParamDto {
     private String investMoney;
 
     private String loanId;
+
     @Deprecated
     private String password;
 

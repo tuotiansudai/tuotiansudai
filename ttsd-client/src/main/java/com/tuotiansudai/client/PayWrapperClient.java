@@ -32,104 +32,108 @@ public class PayWrapperClient extends BaseClient {
     @Value("${pay.application.context}")
     protected String applicationContext;
 
-    private String registerPath = "/register";
+    private final static String registerPath = "/register";
 
-    private String systemRechargePath = "/system-recharge";
+    private final static String systemRechargePath = "/system-recharge";
 
-    private String rechargePath = "/recharge";
+    private final static String membershipPurchasePath = "/membership-purchase";
 
-    private String bindCardPath = "/bind-card";
+    private final static String rechargePath = "/recharge";
 
-    private String replaceCardPath = "/bind-card/replace";
+    private final static String bindCardPath = "/bind-card";
 
-    private String loanPath = "/loan";
+    private final static String replaceCardPath = "/bind-card/replace";
 
-    private String loanOutPath = "/loan/loan-out";
+    private final static String loanPath = "/loan";
 
-    private String withdrawPath = "/withdraw";
+    private final static String loanOutPath = "/loan/loan-out";
 
-    private String investPath = "/invest";
+    private final static String withdrawPath = "/withdraw";
 
-    private String autoInvestPath = "/auto-invest";
+    private final static String investPath = "/invest";
 
-    private String autoRepayPath = "/auto-repay";
+    private final static String autoInvestPath = "/auto-invest";
 
-    private String agreementPath = "/agreement";
+    private final static String autoRepayPath = "/auto-repay";
 
-    private String repayPath = "/repay";
+    private final static String agreementPath = "/agreement";
 
-    private String cancelLoanPath = "/loan/{0}/cancel";
+    private final static String repayPath = "/repay";
 
-    private String resetUmpayPassword = "/reset-umpay-password";
+    private final static String cancelLoanPath = "/loan/{0}/cancel";
 
-    private String purchase="/invest-transfer/purchase";
+    private final static String resetUmpayPassword = "/reset-umpay-password";
 
-    private String noPasswordPurchase = "/invest-transfer/no-password-purchase";
+    private final static String purchase="/invest-transfer/purchase";
 
-    private String noPasswordInvestPath = "/no-password-invest";
+    private final static String noPasswordPurchase = "/invest-transfer/no-password-purchase";
 
-    private String transferCashPath = "/transfer-cash";
+    private final static String noPasswordInvestPath = "/no-password-invest";
 
-    private String transfer = "/transfer-cash";
+    private final static String transferCashPath = "/transfer-cash";
 
-    public BaseDto<PayDataDto> transferCash(TransferCashDto transferCashDto) {
+    public BaseDto<PayDataDto> transferCash(Object transferCashDto) {
         return syncExecute(transferCashDto, transferCashPath, "POST");
     }
 
-    public boolean resetUmpayPassword(ResetUmpayPasswordDto resetUmpayPasswordDto) {
+    public boolean resetUmpayPassword(Object resetUmpayPasswordDto) {
         BaseDto<PayDataDto> baseDto = syncExecute(resetUmpayPasswordDto, resetUmpayPassword, "POST");
         return baseDto.isSuccess();
     }
 
-    public BaseDto<PayDataDto> register(RegisterAccountDto dto) {
-        return syncExecute(dto, registerPath, "POST");
+    public BaseDto<PayDataDto> register(Object registerAccountDto) {
+        return syncExecute(registerAccountDto, registerPath, "POST");
     }
 
-    public BaseDto<PayFormDataDto> recharge(RechargeDto dto) {
-        return asyncExecute(dto, rechargePath, "POST");
+    public BaseDto<PayFormDataDto> recharge(Object rechargeDto) {
+        return asyncExecute(rechargeDto, rechargePath, "POST");
     }
 
-    public BaseDto<PayFormDataDto> systemRecharge(SystemRechargeDto dto) {
-        return asyncExecute(dto, systemRechargePath, "POST");
+    public BaseDto<PayFormDataDto> systemRecharge(Object systemRechargeDto) {
+        return asyncExecute(systemRechargeDto, systemRechargePath, "POST");
     }
 
-    public BaseDto<PayFormDataDto> withdraw(WithdrawDto dto) {
-        return asyncExecute(dto, withdrawPath, "POST");
+    public BaseDto<PayFormDataDto> membershipPurchase(Object membershipPurchaseDto) {
+        return asyncExecute(membershipPurchaseDto, membershipPurchasePath, "POST");
     }
 
-    public BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto) {
-        return asyncExecute(dto, bindCardPath, "POST");
+    public BaseDto<PayFormDataDto> withdraw(Object withdrawDto) {
+        return asyncExecute(withdrawDto, withdrawPath, "POST");
     }
 
-    public BaseDto<PayFormDataDto> replaceBankCard(BindBankCardDto dto) {
-        return asyncExecute(dto, replaceCardPath, "POST");
+    public BaseDto<PayFormDataDto> bindBankCard(Object bindBankCardDto) {
+        return asyncExecute(bindBankCardDto, bindCardPath, "POST");
     }
 
-    public BaseDto<PayFormDataDto> invest(InvestDto dto) {
-        return asyncExecute(dto, investPath, "POST");
+    public BaseDto<PayFormDataDto> replaceBankCard(Object bindBankCardDto) {
+        return asyncExecute(bindBankCardDto, replaceCardPath, "POST");
     }
 
-    public BaseDto<PayDataDto> cancelLoan(Long loanId) {
-        return syncExecute(null, MessageFormat.format(cancelLoanPath, loanId.toString()), "POST");
+    public BaseDto<PayFormDataDto> invest(Object investDto) {
+        return asyncExecute(investDto, investPath, "POST");
     }
 
-    public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {
-        return asyncExecute(dto, agreementPath, "POST");
+    public BaseDto<PayDataDto> cancelLoan(long loanId) {
+        return syncExecute(null, MessageFormat.format(cancelLoanPath, String.valueOf(loanId)), "POST");
     }
 
-    public BaseDto<PayFormDataDto> repay(RepayDto dto) {
-        return asyncExecute(dto, repayPath, "POST");
+    public BaseDto<PayFormDataDto> agreement(Object agreementDto) {
+        return asyncExecute(agreementDto, agreementPath, "POST");
+    }
+
+    public BaseDto<PayFormDataDto> repay(Object repayDto) {
+        return asyncExecute(repayDto, repayPath, "POST");
     }
 
     public BaseDto<PayDataDto> autoInvest(long loanId) {
         return syncExecute(String.valueOf(loanId), autoInvestPath, "POST");
     }
 
-    public BaseDto<PayFormDataDto> purchase(InvestDto investDto) {
+    public BaseDto<PayFormDataDto> purchase(Object investDto) {
         return asyncExecute(investDto, purchase, "POST");
     }
 
-    public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
+    public BaseDto<PayDataDto> noPasswordPurchase(Object investDto) {
         return syncExecute(investDto, noPasswordPurchase, "POST");
     }
 
@@ -137,12 +141,12 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanRepayId), autoRepayPath, "POST");
     }
 
-    public BaseDto<PayDataDto> createLoan(LoanDto dto) {
-        return syncExecute(dto, loanPath, "POST");
+    public BaseDto<PayDataDto> createLoan(Object loanDto) {
+        return syncExecute(loanDto, loanPath, "POST");
     }
 
-    public BaseDto<PayDataDto> updateLoan(LoanDto dto) {
-        return syncExecute(dto, loanPath, "PUT");
+    public BaseDto<PayDataDto> updateLoan(Object loanDto) {
+        return syncExecute(loanDto, loanPath, "PUT");
     }
 
     public BaseDto<PayDataDto> investCallback() {
@@ -153,12 +157,12 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(null, "/job/async_invest_transfer_notify", "POST");
     }
 
-    public BaseDto<PayDataDto> loanOut(LoanOutDto dto) {
-        return syncExecute(dto, loanOutPath, "POST");
+    public BaseDto<PayDataDto> loanOut(Object loanOutDto) {
+        return syncExecute(loanOutDto, loanOutPath, "POST");
     }
 
-    public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
-        return syncExecute(dto, noPasswordInvestPath, "POST");
+    public BaseDto<PayDataDto> noPasswordInvest(Object investDto) {
+        return syncExecute(investDto, noPasswordInvestPath, "POST");
     }
 
     public BaseDto<PayDataDto> checkLoanAmount(long loanId) {

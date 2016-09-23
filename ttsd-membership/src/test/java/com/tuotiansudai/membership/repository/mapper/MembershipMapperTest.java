@@ -42,18 +42,6 @@ public class MembershipMapperTest {
     }
 
     @Test
-    public void testFindAllLevels() throws Exception {
-        List<Integer> levels = membershipMapper.findAllLevels();
-        assertThat(levels.size(), is(6));
-        assertThat(levels.get(0), is(0));
-        assertThat(levels.get(1), is(1));
-        assertThat(levels.get(2), is(2));
-        assertThat(levels.get(3), is(3));
-        assertThat(levels.get(4), is(4));
-        assertThat(levels.get(5), is(5));
-    }
-
-    @Test
     public void shouldMembershipByLevel(){
         MembershipModel membershipModel = createMembership();
         MembershipModel membershipModel1 = membershipMapper.findByLevel(membershipModel.getLevel());

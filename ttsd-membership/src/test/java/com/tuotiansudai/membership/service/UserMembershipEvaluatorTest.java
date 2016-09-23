@@ -1,10 +1,8 @@
 package com.tuotiansudai.membership.service;
 
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -30,12 +28,6 @@ public class UserMembershipEvaluatorTest {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
-    private MembershipMapper membershipMapper;
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;

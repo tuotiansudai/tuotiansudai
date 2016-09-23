@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="main-layout">
-        <h3 class="info-title"><i></i>${message} </h3>
+        <h3 class="info-title"><i></i>${message}</h3>
         <ul class="info-detail">
         <#if service == 'ptp_mer_bind_card'>
             <li><span class="title">银行卡号:</span><em class="col-info"><#if cardNumber??>${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</#if></em></li>

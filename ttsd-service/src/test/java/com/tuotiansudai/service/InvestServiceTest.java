@@ -221,29 +221,28 @@ public class InvestServiceTest {
 
     @Test
     public void testCalculateMembershipPreference() throws Exception {
-        UserMembershipModel userMembershipModel = new UserMembershipModel("testUser", membershipMapper.findByLevel(5).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
-        userMembershipMapper.create(userMembershipModel);
-        long preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
-        assertEquals(7, preference);
-        userMembershipModel.setMembershipId(membershipMapper.findByLevel(4).getId());
-        userMembershipMapper.update(userMembershipModel);
-        preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
-        assertEquals(5, preference);
-        userMembershipModel.setMembershipId(membershipMapper.findByLevel(3).getId());
-        userMembershipMapper.update(userMembershipModel);
-        preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
-        assertEquals(5, preference);
-        userMembershipModel.setMembershipId(membershipMapper.findByLevel(2).getId());
-        userMembershipMapper.update(userMembershipModel);
-        preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
-        assertEquals(3, preference);
-        userMembershipModel.setMembershipId(membershipMapper.findByLevel(1).getId());
-        userMembershipMapper.update(userMembershipModel);
-        preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
-        assertEquals(0, preference);
-        userMembershipModel.setMembershipId(membershipMapper.findByLevel(0).getId());
-        userMembershipMapper.update(userMembershipModel);
-        preference = investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L);
-        assertEquals(0, preference);
+        UserMembershipModel userMembershipModel0 = new UserMembershipModel("testUser", membershipMapper.findByLevel(0).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        userMembershipMapper.create(userMembershipModel0);
+        assertEquals(0, investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L));
+
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel("testUser", membershipMapper.findByLevel(1).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        userMembershipMapper.create(userMembershipModel1);
+        assertEquals(0, investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L));
+
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel("testUser", membershipMapper.findByLevel(2).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        userMembershipMapper.create(userMembershipModel2);
+        assertEquals(3, investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L));
+
+        UserMembershipModel userMembershipModel3 = new UserMembershipModel("testUser", membershipMapper.findByLevel(3).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        userMembershipMapper.create(userMembershipModel3);
+        assertEquals(5, investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L));
+
+        UserMembershipModel userMembershipModel4 = new UserMembershipModel("testUser", membershipMapper.findByLevel(4).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        userMembershipMapper.create(userMembershipModel4);
+        assertEquals(5, investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L));
+
+        UserMembershipModel userMembershipModel5 = new UserMembershipModel("testUser", membershipMapper.findByLevel(4).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
+        userMembershipMapper.create(userMembershipModel5);
+        assertEquals(5, investService.calculateMembershipPreference("testUser", LOAN_ID, 10000L));
     }
 }
