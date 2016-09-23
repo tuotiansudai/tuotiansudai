@@ -213,7 +213,7 @@ public class NationalPrizeService {
     }
 
     public String getMyActivityPoint(String loginName){
-        return String.valueOf(pointBillMapper.findSumPointByLoginNameAndBusinessType(loginName, activityNationalStartTime, activityNationalEndTime, null));
+        return String.valueOf(pointBillMapper.findSumPointByLoginNameAndBusinessType(loginName, null, null, null));
     }
 
     public Map getNationalActivityInvestAmountAndCount(){

@@ -69,6 +69,9 @@ require(['jquery', 'template', 'moment','pagination', 'daterangepicker', 'jquery
 							case 'LOTTERY':
 								item.businessType = '抽奖';
 								break;
+							case 'ACTIVITY':
+								item.businessType = '活动奖励';
+								break;
 						}
 					});
 				}
