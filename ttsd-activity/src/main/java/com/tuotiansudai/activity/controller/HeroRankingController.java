@@ -35,13 +35,12 @@ public class HeroRankingController {
     private LoanMapper loanMapper;
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView loadPageData(@RequestParam(value = "activityCategory",defaultValue = "HERO_RANKING") ActivityCategory activityCategory) {
+    public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
-        Map param = heroRankingService.obtainHeroRankingAndInvestAmountByLoginName(activityCategory, new Date(), loginName);
-        Integer investRanking = (Integer) param.get("investRanking");
+        Map param = heroRankingService.obtainHeroRankingAndInvestAmountByLoginName(ActivityCategory.HERO_RANKING, new Date(), loginName);
+        Integer investRanking = Integer.parseInt(String.valueOf(param.get("investRanking")));
         String investAmount = param.get("investAmount").toString();
-
-        ModelAndView modelAndView = new ModelAndView(activityCategory.equals(ActivityCategory.HERO_RANKING) ? "/activities/hero-ranking" : "", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/hero-ranking", "responsive", true);
         modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
         modelAndView.addObject("yesterdayTime", DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1));
         Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(loginName);
@@ -51,6 +50,25 @@ public class HeroRankingController {
         modelAndView.addObject("mysteriousPrizeDto", heroRankingService.obtainMysteriousPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         return modelAndView;
     }
+
+    @RequestMapping(value = "/new" ,method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView loadNewPageData() {
+        String loginName = LoginUserInfo.getLoginName();
+        Map param = heroRankingService.obtainHeroRankingAndInvestAmountByLoginName(ActivityCategory.HERO_RANKING, new Date(), loginName);
+        Integer investRanking = Integer.parseInt(String.valueOf(param.get("investRanking")));
+        String investAmount = param.get("investAmount").toString();
+        ModelAndView modelAndView = new ModelAndView("/activities/hero-standings", "responsive", true);
+        modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
+        modelAndView.addObject("yesterdayTime", DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1));
+        Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(loginName);
+        modelAndView.addObject("investRanking", investRanking);
+        modelAndView.addObject("investAmount", investAmount);
+        modelAndView.addObject("referRanking", referRanking);
+        modelAndView.addObject("mysteriousPrizeDto", heroRankingService.obtainMysteriousPrizeDto(new DateTime().toString("yyyy-MM-dd")));
+        return modelAndView;
+    }
+
+
 
     @RequestMapping(value = "/referrer-invest/{tradingTime}", method = RequestMethod.GET)
     @ResponseBody

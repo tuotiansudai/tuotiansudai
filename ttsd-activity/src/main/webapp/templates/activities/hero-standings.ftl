@@ -18,12 +18,16 @@
             </div>
             <div class="rank-number-group">
                 <div class="date-time-item">2016-09-25</div>
-                <div class="my-rank-item">我的排名：登陆后查看</div>
+                <div class="my-rank-item">
+                    <@global.isAnonymous>我的排名：登陆后查看</@global.isAnonymous>
+                    <@global.isNotAnonymous><#if investRanking == 0>未参加排行<#else>${investRanking}</#if></@global.isNotAnonymous>
+                </div>
                 <div class="login-item">
                     <a href="javascript:void(0)" class="login-btn show-login">登陆查看我的排名</a>
                 </div>
                 <div class="today-item">
-                    我的今日投资额：500000.00元
+                    <@global.isAnonymous></@global.isAnonymous>
+                    <@global.isNotAnonymous>我的今日投资额：${investAmount}元</@global.isNotAnonymous>
                 </div>
             </div>
             <div class="gift-group">
@@ -40,8 +44,8 @@
                 <div class="gift-center-item">
                     <div class="center-bubble animate-bounce-up">
                         <div class="max-gift-picture">
-                            <h3>iphone 6s</h3>
-                            <img src="${staticServer}/activity/images/hero-standings/phone.png">
+                            <h3><#if mysteriousPrizeDto??>${mysteriousPrizeDto.prizeName}</#if></h3>
+                            <img src="<#if mysteriousPrizeDto??>${mysteriousPrizeDto.imageUrl}</#if>">
                         </div>
                     </div>
                     <div class="text-des-item max-text">

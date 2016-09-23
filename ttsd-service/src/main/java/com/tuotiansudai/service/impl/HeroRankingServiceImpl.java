@@ -100,7 +100,9 @@ public class HeroRankingServiceImpl implements HeroRankingService {
         tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         long count = transferApplicationMapper.findCountTransferApplicationByApplicationTime(loginName, tradingTime, activityPeriod.get(0));
         if (count > 0) {
-            return null;
+            return Maps.newHashMap(ImmutableMap.<String, String>builder().
+                    put("investRanking", "0").
+                    put("investAmount","0").build());
         }
 
         int investRanking = 0;
@@ -114,7 +116,9 @@ public class HeroRankingServiceImpl implements HeroRankingService {
                 }
             }) + 1;
 
-            investAmount = AmountConverter.convertCentToString(heroRankingViews.get(investRanking - 1).getSumAmount());
+            if (investRanking > 0) {
+                investAmount = AmountConverter.convertCentToString(heroRankingViews.get(investRanking - 1).getSumAmount());
+            }
         }
         return Maps.newHashMap(ImmutableMap.<String, String>builder().
                 put("investRanking", String.valueOf(investRanking)).
