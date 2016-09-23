@@ -21,55 +21,55 @@
 
     <select id="findByLoginName" parameterType="string" resultMap="userFundResultMap">
         select
-              (select balance from `account` where login_name = 'sidneygao') as balance,
+              (select balance from account where login_name = #{loginName}) as balance,
 
-              (select ifnull(sum(invest_repay.actual_interest), 0) - ifnull(sum(invest_repay.`actual_fee`), 0)
+              (select ifnull(sum(invest_repay.actual_interest), 0) - ifnull(sum(invest_repay.actual_fee), 0)
               from invest_repay join invest on invest_repay.invest_id= invest.id
-              where invest_repay.is_transferred is false and invest.`login_name` = 'sidneygao' and `invest_repay`.`status` = 'COMPLETE')
+              where invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'COMPLETE')
               +
-              (select ifnull(sum(coupon_repay.repay_amount), 0)
-              from `coupon_repay`
-              where is_transferred is false and `login_name` = 'sidneygao' and status = 'COMPLETE') as actual_total_interest,
+              (select ifnull(sum(actual_interest), 0) - ifnull(sum(actual_fee), 0)
+              from coupon_repay
+              where is_transferred is false and login_name = #{loginName} and status = 'COMPLETE') as actual_total_interest,
 
-              (select ifnull(sum(`invest_extra_rate`.`repay_amount`), 0)
-              from `invest_extra_rate` where `login_name` = 'sidneygao' and is_transfer is false) as actual_total_extra_interest,
+              (select ifnull(sum(invest_extra_rate.actual_interest), 0) - ifnull(sum(invest_extra_rate.actual_fee), 0)
+              from invest_extra_rate where login_name = #{loginName} and is_transfer is false) as actual_total_extra_interest,
 
-              (select ifnull(sum(amount), 0) from `invest_referrer_reward`
-              where `referrer_login_name` = 'sidneygao' and status = 'SUCCESS') as refer_reward_amount,
+              (select ifnull(sum(amount), 0) from invest_referrer_reward
+              where referrer_login_name = #{loginName} and status = 'SUCCESS') as refer_reward_amount,
 
-              (select ifnull(sum(user_coupon.`actual_interest`), 0)
-              from `user_coupon` join coupon on `user_coupon`.`coupon_id` = coupon.id
-              where user_coupon.`login_name` = 'sidneygao' and user_coupon.status = 'SUCCESS' and coupon.coupon_type = 'RED_ENVELOPE') as red_envelope_amount,
+              (select ifnull(sum(user_coupon.actual_interest), 0) - ifnull(sum(user_coupon.actual_fee), 0)
+              from user_coupon join coupon on user_coupon.coupon_id = coupon.id
+              where user_coupon.login_name = #{loginName} and user_coupon.status = 'SUCCESS' and coupon.coupon_type = 'RED_ENVELOPE') as red_envelope_amount,
 
-              (select ifnull(sum(invest_repay.`corpus`), 0)
+              (select ifnull(sum(invest_repay.corpus), 0)
               from invest_repay join invest on invest_repay.invest_id = invest.id
-              where invest.`login_name` = 'sidneygao' and `invest_repay`.`status` = 'REPAYING') as expected_total_corpus,
+              where invest.login_name = #{loginName} and invest_repay.status = 'REPAYING') as expected_total_corpus,
 
-              (select ifnull(sum(invest_repay.`expected_interest`), 0) - sum(invest_repay.`expected_fee`)
+              (select ifnull(sum(invest_repay.expected_interest), 0) - sum(invest_repay.expected_fee)
               from invest_repay join invest on invest_repay.invest_id = invest.id
-              where `login_name` = 'sidneygao' and `invest_repay`.`status`= 'REPAYING')
+              where login_name = #{loginName} and invest_repay.status= 'REPAYING')
               +
               (select ifnull(sum(coupon_repay.expected_interest), 0) - ifnull(sum(coupon_repay.expected_fee), 0)
-              from `coupon_repay`
-              where `login_name` = 'sidneygao' and status = 'REPAYING') as expected_total_interest,
+              from coupon_repay
+              where login_name = #{loginName} and status = 'REPAYING') as expected_total_interest,
 
               (select ifnull(sum(expected_interest), 0) - ifnull(sum(expected_fee), 0)
-              from `invest_extra_rate`
-              where `login_name` = 'sidneygao' and is_transfer is false and actual_repay_date is null) as expected_total_extra_interest,
+              from invest_extra_rate
+              where login_name = #{loginName} and is_transfer is false and actual_repay_date is null) as expected_total_extra_interest,
 
               (select ifnull(sum(invest.amount), 0)
               from invest join loan on invest.loan_id = loan.id
-              where invest.`login_name` = 'sidneygao' and invest.status = 'SUCCESS' and loan.status = 'RAISING') as invest_froze_amount,
+              where invest.login_name = #{loginName} and invest.status = 'SUCCESS' and loan.status = 'RAISING') as invest_froze_amount,
 
               (select ifnull(sum(amount), 0)
-              from `withdraw` where `login_name` = 'sidneygao' and status = 'APPLY_SUCCESS') as withdraw_froze_amount,
+              from withdraw where login_name = #{loginName} and status = 'APPLY_SUCCESS') as withdraw_froze_amount,
 
               (select count(1)
-              from `invest_repay` join invest on `invest_repay`.`invest_id`= invest.id
-              where invest.`login_name` = 'sidneygao'
-              and invest.`transfer_status` != 'SUCCESS'
-              and((`invest_repay`.`status` = 'REPAYING' and date_format(`invest_repay`.`repay_date`, '%Y-%m-%d') between date_format(now(), '%Y-%m-01') and LAST_DAY(now()))
-                  or(`invest_repay`.`status` = 'COMPLETE' and date_format(`invest_repay`.`actual_repay_date`, '%Y-%m-%d') between date_format(now(), '%Y-%m-01') and LAST_DAY(now())))) as current_month_invest_repay_count
+              from invest_repay join invest on invest_repay.invest_id= invest.id
+              where invest.login_name = #{loginName}
+              and invest.transfer_status != 'SUCCESS'
+              and((invest_repay.status = 'REPAYING' and date_format(invest_repay.repay_date, '%Y-%m-%d') between date_format(now(), '%Y-%m-01') and LAST_DAY(now()))
+                  or(invest_repay.status = 'COMPLETE' and date_format(invest_repay.actual_repay_date, '%Y-%m-%d') between date_format(now(), '%Y-%m-01') and LAST_DAY(now())))) as current_month_invest_repay_count
 
         from dual;
     </select>

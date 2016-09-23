@@ -5,6 +5,10 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.UserFundResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppUserFundV2Service;
 import com.tuotiansudai.coupon.service.UserCouponService;
+<<<<<<< 5c63829fb337576219b2615de6d299352cca697d
+=======
+import com.tuotiansudai.membership.repository.model.MembershipModel;
+>>>>>>> implement query
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserFundMapper;
@@ -35,7 +39,8 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
-        int membershipLevel = userMembershipEvaluator.evaluate(loginName).getLevel();
+        MembershipModel evaluate = userMembershipEvaluator.evaluate(loginName);
+        int membershipLevel = evaluate != null ? evaluate.getLevel() : 0;
         long balance = accountModel != null ? accountModel.getBalance() : 0;
         long point = accountModel != null ? accountModel.getPoint() : 0;
         long membershipPoint = accountModel != null ? accountModel.getMembershipPoint() : 0;
