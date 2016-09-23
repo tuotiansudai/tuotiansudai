@@ -7,6 +7,9 @@
     </div>
     <div class="hero-content-group">
         <div class="wp clearfix">
+            <div class="reg-tag-current" style="display: none">
+                <#include '../register.ftl' />
+            </div>
             <div class="actor-intro-group">
                 <i class="left-bubble animate-twink"></i>
                 <i class="right-bubble animate-twink"></i>
@@ -81,70 +84,40 @@
                                     <th>奖励</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>133****4567</td>
-                                    <td>500,000.00</td>
-                                    <td>神秘大奖</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>133****4567</td>
-                                    <td>500,000.00</td>
-                                    <td>200元京东卡</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>133****4567</td>
-                                    <td>500,000.00</td>
-                                    <td>100元京东卡</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>133****4567</td>
-                                    <td>500,000.00</td>
-                                    <td>100元京东卡</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>133****4567</td>
-                                    <td>500,000.00</td>
-                                    <td>100元京东卡</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>133****4567</td>
-                                    <td>500,000.00</td>
-                                    <td>100元京东卡</td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td>133****4567</td>
-                                    <td>500,000.00</td>
-                                    <td>100元京东卡</td>
-                                </tr>
-                                <tr>
-                                    <td>8</td>
-                                    <td>133****4567</td>
-                                    <td>500,000.00</td>
-                                    <td>100元京东卡</td>
-                                </tr>
-                                <tr>
-                                    <td>9</td>
-                                    <td>133****4567</td>
-                                    <td>500,000.00</td>
-                                    <td>100元京东卡</td>
-                                </tr>
-                                <tr>
-                                    <td>10</td>
-                                    <td>133****4567</td>
-                                    <td>500,000.00</td>
-                                    <td>100元京东卡</td>
-                                </tr>
+                            <input type="hidden" value="<#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if>" id="TodayAwards">
+                            <tbody id="investRanking-tbody">
                             </tbody>
                         </table>
-                        <ul class="table-bg-item">
+                        <script type="text/template" id="tplTable">
+                            <% for(var i = 0; i < records.length; i++) { %>
+                            <% var item = records[i];
+                            var reward;
+                            if(type=='invest') {
+                                if(i==0) {
+                                    reward='神秘大奖';
+                                }
+                                else if(i>0 && i<3) {
+                                    reward='200元京东卡';
+                                }
+                                else {
+                                    reward='100元京东卡';
+                                }
+                            }
+                            else if(type=='referrer') {
+                                reward='100元红包';
+                            }
+
+                            %>
+                            <tr>
+                                <td><%=i+1%></td>
+                                <td><%=item.loginName%></td>
+                                <td><%=item.centSumAmount%></td>
+                                <td><%=reward%></td>
+                            </tr>
+                            <% } %>
+
+                        </script>
+                        <ul class="table-bg-item" id="bgItem">
                             <li></li>
                             <li></li>
                             <li></li>
@@ -157,9 +130,16 @@
                             <li></li>
                             <li></li>
                         </ul>
-                        <div class="change-btn-item">
-                            <div class="prev-btn" data-prev-day="">前一天</div>
-                            <div class="next-btn" data-next-day="">后一天</div>
+                        <script type="text/template" id="bgtplTable">
+                            <% for(var i = 0; i < records.length; i++) { %>
+                            <li>
+                            </li>
+                            <% } %>
+
+                        </script>
+                        <div class="change-btn-item" id="investRanking-button">
+                            <div class="change-btn prev-btn" id="heroPre">前一天</div>
+                            <div class="change-btn next-btn" id="heroNext">后一天</div>
                         </div>
                         <div class="get-rank-item">
                             <a href="/loan-list">立即投资抢排行</a>
