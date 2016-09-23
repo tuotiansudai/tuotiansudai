@@ -1,12 +1,11 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.spring.security.CaptchaHelper;
+import com.tuotiansudai.util.CaptchaGenerator;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,6 +38,6 @@ public class LoginController {
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
 
-        this.captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false).getId());
+        this.captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession().getId());
     }
 }
