@@ -34,7 +34,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 		}
 
 
-		$investRankingButton.find('.button-small').on('click',function(event) {
+		$investRankingButton.find('.change-btn').on('click',function(event) {
 			var dateSpilt=$TodayAwards.val(),
 				currDate;
 			if(/heroPre/.test(event.target.id)) {
