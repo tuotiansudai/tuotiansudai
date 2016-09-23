@@ -334,7 +334,12 @@ body {
           box-sizing: border-box;
           border-radius: 0px 0px 20px 20px;
           .record-model {
-            display: block;
+            li {
+              color: #69260c;
+              span{
+                color: #69260c;
+              }
+            }
           }
         }
       }

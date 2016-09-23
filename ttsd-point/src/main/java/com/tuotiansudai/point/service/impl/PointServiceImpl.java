@@ -68,7 +68,7 @@ public class PointServiceImpl implements PointService {
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         int duration = loanModel.getDuration();
         long point = new BigDecimal((investModel.getAmount()*duration/InterestCalculator.DAYS_OF_YEAR)).divide(new BigDecimal(100), 0, BigDecimal.ROUND_DOWN).longValue();
-        point = getNationalRewardsPoint(investModel.getLoginName(),point,loanModel.getId(),investModel.getId());
+        point = getNationalRewardsPoint(investModel.getLoginName(),point,investModel.getId());
         pointBillService.createPointBill(investModel.getLoginName(), investModel.getId(), PointBusinessType.INVEST, point);
         logger.debug(MessageFormat.format("{0} has obtained point {1}", investModel.getId(), point));
     }
@@ -79,10 +79,9 @@ public class PointServiceImpl implements PointService {
         return accountModel != null ? accountModel.getPoint() : 0;
     }
 
-    private long getNationalRewardsPoint(String loginName,long point,long loanId,long investId){
+    private long getNationalRewardsPoint(String loginName,long point,long investId){
         Date nowDate = DateTime.now().toDate();
-        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanId);
-        if(nowDate.before(activityNationalEndTime) && nowDate.after(activityNationalStartTime) && loanDetailsModel.isActivity()){
+        if(nowDate.before(activityNationalEndTime) && nowDate.after(activityNationalStartTime)){
             UserModel userModel = userMapper.findByLoginName(loginName);
             if(userModel.getRegisterTime().before(activityNationalEndTime) && userModel.getRegisterTime().after(activityNationalStartTime) && !Strings.isNullOrEmpty(userModel.getReferrer())){
                 pointBillService.createPointBill(userModel.getReferrer(), investId, PointBusinessType.ACTIVITY, (long) (point * 3.0));

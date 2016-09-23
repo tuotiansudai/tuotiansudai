@@ -127,7 +127,7 @@ public class NationalPrizeService {
 
     public DrawLotteryResultDto drawLotteryPrize(String mobile){
         logger.debug(mobile + " is drawing the lottery prize.");
-mobile = "13651020524";
+
         Date nowDate = DateTime.now().toDate();
         if(!nowDate.before(activityNationalEndTime) || !nowDate.after(activityNationalStartTime)){
             return new DrawLotteryResultDto(3);//不在活动时间范围内！
@@ -213,7 +213,7 @@ mobile = "13651020524";
     }
 
     public String getMyActivityPoint(String loginName){
-        return String.valueOf(pointBillMapper.findSumPointByLoginNameAndBusinessType(loginName, activityNationalStartTime, activityNationalEndTime, Lists.newArrayList(PointBusinessType.ACTIVITY)));
+        return String.valueOf(pointBillMapper.findSumPointByLoginNameAndBusinessType(loginName, activityNationalStartTime, activityNationalEndTime, null));
     }
 
     public Map getNationalActivityInvestAmountAndCount(){

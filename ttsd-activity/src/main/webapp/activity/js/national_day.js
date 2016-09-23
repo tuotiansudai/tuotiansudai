@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonFun','register_common','circle'], function ($, _,tpl,layer,drawCircle) {
+require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonFun','register_common'], function ($, _,tpl,layer,drawCircle) {
 
     var $nationalDayFrame=$('#nationalDayFrame'),
         $tourSlide=$('#tourSlide'),

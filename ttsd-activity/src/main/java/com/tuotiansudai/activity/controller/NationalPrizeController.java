@@ -42,7 +42,7 @@ public class NationalPrizeController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView national() {
-        String loginName = "doujiashun";
+        String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/national-day", "responsive", true);
         Map param = nationalPrizeService.getNationalActivityInvestAmountAndCount();
         long userInvestAmount = (long)param.get("investAmount");
@@ -50,7 +50,7 @@ public class NationalPrizeController {
         modelAndView.addObject("allInvestAmount", AmountConverter.convertCentToString(userInvestAmount).replaceAll("\\.00", ""));
         modelAndView.addObject("investScale", userInvestAmount >= NATIONAL_SUM_AMOUNT ? "100" : numberFormat.format((float) userInvestAmount / NATIONAL_SUM_AMOUNT * 100));
         modelAndView.addObject("userCount", param.get("investCount"));
-        modelAndView.addObject("drawTime", nationalPrizeService.getDrawPrizeTime("13651020524"));
+        modelAndView.addObject("drawTime", nationalPrizeService.getDrawPrizeTime(LoginUserInfo.getMobile()));
         modelAndView.addObject("steps", generateSteps(loginName));
         modelAndView.addObject("activityType","national");
         return modelAndView;
