@@ -32,6 +32,7 @@ public class BankMapperTest {
 
         BankModel bankModel = new BankModel();
         bankModel.setId(1001L);
+        bankModel.setSeq(1);
         bankModel.setSingleAmount(10000);
         bankModel.setSingleDayAmount(100000);
         bankModel.setUpdatedBy("test");
