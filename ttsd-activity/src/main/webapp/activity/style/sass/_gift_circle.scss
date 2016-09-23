@@ -360,15 +360,15 @@ $width:700px;
   }
   &.tour-theme{
     .tip-dom{
-      background:url("/activity/images/sign/actor/circle/tour-tip.png") no-repeat center;
+      background:url("/activity/images/sign/actor/circle/tour-tip.png") no-repeat center top;
       background-size:100%;
       .close-btn{
-        background:url("/activity/images/sign/actor/circle/close-tour.png") no-repeat center;
+        background:url("/activity/images/sign/actor/circle/close-tour.png") no-repeat center top;
         background-size:100%;
       }
       .btn-list{
         a{
-          background:url("/activity/images/sign/actor/circle/tour-btn.png") no-repeat center;
+          background:url("/activity/images/sign/actor/circle/tour-btn.png") no-repeat center top;
           background-size: 100%;
         }
       }

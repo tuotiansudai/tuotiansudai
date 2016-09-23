@@ -76,18 +76,24 @@ body {
     display: none;
   }
   .section-outer {
-    .section-one-title {
-      min-height: 106px;
-      background: url("/activity/images/national-day/title01.png") center top no-repeat;
+    background: url("/activity/images/national-day/line-top-col.png") center top no-repeat;
+    padding-top:18px;
+    .dotted-line-title {
+      overflow: hidden;
+      height:18px;
+      margin: 0px 40px 0px 40px;
+      background: url("/activity/images/national-day/line-dotted.png") left top no-repeat;
     }
-    .section-two-title {
-      min-height: 106px;
-      background: url("/activity/images/national-day/title02.png") center top no-repeat;
+    .section-title {
+      text-align: center;
+      margin: 0px 40px 0px 40px;
+      background: #fcebbf;
+      border:2px solid #8a301b;
+      border-top-width: 0;
+      border-bottom-width: 0;
+      padding:10px;
     }
-    .section-three-title {
-      min-height: 106px;
-      background: url("/activity/images/national-day/title03.png") center top no-repeat;
-    }
+
     .section-inner {
       margin: 0px 40px 30px 40px;
       background: #fcebbf;
@@ -351,7 +357,7 @@ body {
     .tip-dom{
       width:460px;
       height:370px;
-      background:url("/activity/images/national-day/national-bg.png") no-repeat center;
+      background:url("/activity/images/national-day/national-bg.png") no-repeat center top;
       background-size: 100%;
       border-radius: 21px;
       border:1px solid #69260c;
@@ -379,7 +385,7 @@ body {
           &.des-text{
             color:#fff;
             font-size:24px;
-            padding:0 30px;
+            padding:0 50px;
             line-height: 36px;
           }
         }
@@ -439,25 +445,28 @@ body {
       padding:0 10px;
     }
     .section-outer {
-      .section-one-title {
-        min-height: 54px;
-        background: url(/activity/images/national-day/title01-app.png) center top no-repeat;
-        background-size: cover;
-      }
+      background: url("../../images/national-day/line-top-app.png") center top no-repeat;
+      background-size: 98%;
+      padding-top: 4px;
+      margin-bottom: 10px;
 
-      .section-two-title {
-        min-height: 54px;
-        background: url(/activity/images/national-day/title01-app.png) center top no-repeat;
-        background-size: cover;
+      .section-title {
+        margin: 0px 10px;
+        img {
+          width:83%;
+        }
       }
-
-      .section-three-title {
-        min-height: 54px;
-        background: url(/activity/images/national-day/title01-app.png) center top no-repeat;
-        background-size: cover;
+      .dotted-line-title {
+        height: 9px;
+        margin: -1px 10px;
+        background: url("../../images/national-day/icon-dotted-app.png") left top no-repeat;
+        background-size: contain;
+        border: 2px solid #8a301b;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
       }
       .section-inner {
-        margin: 0px 10px 10px 10px;
+        margin: 0px 10px;
         padding: 0px;
         .notice {
           padding:10px;
@@ -556,6 +565,46 @@ body {
         }
       }
 
+    }
+    .tip-list {
+      .tip-dom {
+        width:80%;
+        height: 192px;
+        .text-tip {
+          height:auto;
+          p{
+            line-height: 30px;
+            &.des-text {
+              font-size:12px;
+              padding:0 20px;
+            }
+          }
+          .login-text {
+            font-size: 15px;
+            padding-top: 10px;
+          }
+          .success-text {
+            font-size:20px;
+          }
+          .reward-text {
+            font-size: 15px;
+          }
+        }
+        .btn-list {
+          height: 32%;
+          background: #fff;
+          position: absolute;
+          bottom: 0;
+          float: none;
+          a {
+            width: 94px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 13px;
+            margin: 10px 10px 0;
+        }
+        }
+      }
     }
   }
 
