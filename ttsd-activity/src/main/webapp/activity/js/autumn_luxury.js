@@ -64,6 +64,7 @@ require(['jquery', 'layerWrapper', 'template', 'drawCircle', 'jquery.ajax.extens
     var $MobileNumber=$('#MobileNumber'),
         travelAllList='/activity/autumn/luxury-all-list',  //中奖记录接口地址
         travelUserList='/activity/autumn/luxury-user-list',   //我的奖品接口地址
+        drawURL='/activity/autumn/luxury-draw',    //抽奖的接口链接
         myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';
 
     var drawCircle=new drawCircle(travelAllList,travelUserList,drawURL,myMobileNumber);

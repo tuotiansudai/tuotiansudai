@@ -12,10 +12,12 @@ require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonF
         }
     }
     else {
-        fixMenuJump();
-        $(window).on('scroll',function() {
-            fixMenuJump();
-        });
+
+        //取消菜单固定在顶端
+        //fixMenuJump();
+        //$(window).on('scroll',function() {
+        //    fixMenuJump();
+        //});
     }
 
     function fixMenuJump() {
@@ -48,20 +50,20 @@ require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonF
     var realInvestAmount=addSeparator(allAmountInteger);
     $allInvestAmount.text(realInvestAmount+allAmountDecimal);
 
-    $('.button-area',$tourSlide).find('li').on('click',function(event) {
-        var $this=$(this),
-            num=$this.index();
-        $tourSlide.addClass('fixed-menu');
-        $('.seizeSeat',$nationalDayFrame).show();
-        var contentOffset = $('.section-outer',$nationalDayFrame).eq(num).offset().top;
-        if(num==0) {
-            $(window).scrollTop(600);
-        }
-        else {
-            $(window).scrollTop(contentOffset-137);
-        }
-
-    });
+    //$('.button-area',$tourSlide).find('li').on('click',function(event) {
+    //    var $this=$(this),
+    //        num=$this.index();
+    //    $tourSlide.addClass('fixed-menu');
+    //    $('.seizeSeat',$nationalDayFrame).show();
+    //    var contentOffset = $('.section-outer',$nationalDayFrame).eq(num).offset().top;
+    //    if(num==0) {
+    //        $(window).scrollTop(600);
+    //    }
+    //    else {
+    //        $(window).scrollTop(contentOffset-137);
+    //    }
+    //
+    //});
 
     //以下为抽奖转盘
     var $pointer = $('#pointer');

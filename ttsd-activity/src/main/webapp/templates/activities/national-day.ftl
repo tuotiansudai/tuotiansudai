@@ -5,11 +5,11 @@
     <div style="display: none" class="mobile" id="MobileNumber" data-mobile='<@global.security.authentication property="principal.mobile" />'></div>
     </@global.isNotAnonymous>
 <div class="tour-slide" id="tourSlide">
-    <ul class="page-width button-area">
-        <li><a href="javascript:void(0);">&nbsp;</a></li>
-        <li><a href="javascript:void(0);">&nbsp;</a></li>
-        <li><a href="javascript:void(0);">&nbsp;</a></li>
-    </ul>
+    <#--<ul class="page-width button-area">-->
+        <#--<li><a href="javascript:void(0);">&nbsp;</a></li>-->
+        <#--<li><a href="javascript:void(0);">&nbsp;</a></li>-->
+        <#--<li><a href="javascript:void(0);">&nbsp;</a></li>-->
+    <#--</ul>-->
 </div>
 
 <div class="national-day-frame" id="nationalDayFrame">
