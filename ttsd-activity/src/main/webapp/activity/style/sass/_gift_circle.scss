@@ -164,28 +164,26 @@ $width:700px;
             display:block;
           }
           &.user-record{
-            padding:10px 30px;
+            padding:10px 20px;
+            width:100%;
             @media (max-width:$width) {
               padding:10px;
             }
             li{
-              float:left;
-              width:100%;
               font-size:14px;
               color:#fff;
               line-height:30px;
             }
           }
           &.own-record{
-            padding:10px 30px;
+            padding:10px 20px;
+            width:100%;
             overflow:hidden;
             overflow-y:scroll;
             @media (max-width:$width) {
               padding:10px 0;
             }
             li{
-              float:left;
-              width:100%;
               &.empty-text{
                 text-align:center;
                 line-height:480px;

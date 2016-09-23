@@ -425,9 +425,9 @@ body {
 
 @media screen and (max-width: 700px) {
   .tour-slide  {
-    height: 380px;
+    height: 190px;
     background: url("/activity/images/national-day/bar-national-app.jpg") center top no-repeat;
-    background-size: cover;
+    background-size: contain;
    .button-area {
      display: none;
    }
@@ -466,7 +466,7 @@ body {
       .dotted-line-title {
         height: 9px;
         margin: -1px 10px;
-        background: url("../../images/national-day/icon-dotted-app.png") left top no-repeat;
+        background: url("../../images/national-day/icon-dotted-app.png") left top repeat-x;
         background-size: contain;
         border: 2px solid #8a301b;
         border-top-width: 0px;
