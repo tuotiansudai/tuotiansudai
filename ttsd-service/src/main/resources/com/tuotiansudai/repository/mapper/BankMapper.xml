@@ -11,6 +11,7 @@
         <result column="name" property="name"/>
         <result column="bank_code" property="bankCode"/>
         <result column="image_url" property="imageUrl"/>
+        <result column="seq" property="seq"/>
         <result column="single_amount" property="singleAmount"/>
         <result column="single_day_amount" property="singleDayAmount"/>
         <result column="created_by" property="createdBy"/>
@@ -25,6 +26,7 @@
 
     <update id="update" parameterType="BankModel">
         update bank set
+          seq = #{seq},
           single_amount = #{singleAmount},
           single_day_amount = #{singleDayAmount},
           updated_by = #{updatedBy},
@@ -33,7 +35,7 @@
     </update>
 
     <select id="findBankList" resultMap="bankResultMap">
-        select * from bank order by single_amount desc, id asc
+        select * from bank order by seq, id asc
     </select>
 
     <select id="findByBankCode" parameterType="java.lang.String" resultMap="bankResultMap">
