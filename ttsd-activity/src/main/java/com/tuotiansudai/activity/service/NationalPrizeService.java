@@ -127,7 +127,7 @@ public class NationalPrizeService {
 
     public DrawLotteryResultDto drawLotteryPrize(String mobile){
         logger.debug(mobile + " is drawing the lottery prize.");
-
+mobile = "13651020524";
         Date nowDate = DateTime.now().toDate();
         if(!nowDate.before(activityNationalEndTime) || !nowDate.after(activityNationalStartTime)){
             return new DrawLotteryResultDto(3);//不在活动时间范围内！
@@ -221,11 +221,15 @@ public class NationalPrizeService {
         Map<String,Object> param = Maps.newConcurrentMap();
         long amount = 0l;
         long count = 0l;
+        Map<String,String> userMap = Maps.newConcurrentMap();
         for(InvestModel investModel : investModels){
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(investModel.getLoanId());
             if(loanDetailsModel != null && loanDetailsModel.isActivity()){
                 amount += investModel.getAmount();
-                count ++;
+                if(userMap.get(investModel.getLoginName()) == null){
+                    userMap.put(investModel.getLoginName(),investModel.getLoginName());
+                    count ++;
+                }
             }
         }
         param.put("investAmount",amount);

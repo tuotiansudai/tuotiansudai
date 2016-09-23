@@ -47,6 +47,8 @@
                             1个月爱奇艺会员
                         {{else if $value.prize=='CINEMA_TICKET'}}
                             电影票一张
+                        {{else if $value.prize=='FLOWER_CUP'}}
+                            青花瓷杯子
                         {{/if}}
                         .</li>
                     {{/each}}
@@ -87,6 +89,8 @@
                                 1个月爱奇艺会员
                             {{else if $value.prize=='CINEMA_TICKET'}}
                                 电影票一张
+                            {{else if $value.prize=='FLOWER_CUP'}}
+                                青花瓷杯子
                             {{/if}}
                         </span>
                         <span class="award-time">{{$value.lotteryTime}}</span>
