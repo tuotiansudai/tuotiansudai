@@ -3,7 +3,7 @@
 <@global.main pageCss="" pageJavascript="membership-give-list.js" headLab="membership-manage" sideLab="membershipGiveList" title="会员发放管理">
 
 <!-- content area begin -->
-<div class="col-md-10">
+<div class="col-md-10" id="membershipList">
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -46,7 +46,13 @@
                     <td>${membershipGiveDto.deadline}天</td>
                     <td>${(membershipGiveDto.startTime?date)!"-"}
                         至 ${(membershipGiveDto.endTime?date)!"-"}</td>
-                    <td>${membershipGiveDto.userGroup.getDescription()}</td>
+                    <td><#if (membershipGiveDto.userGroup) == "IMPORT_USER">
+                        <span class="import-user-list"
+                              data-id="${membershipGiveDto.id}"> ${membershipGiveDto.userGroup.getDescription()}</span>
+                    <#else>
+                    ${membershipGiveDto.userGroup.getDescription()}
+                    </#if>
+                    </td>
                     <td class="edit-list">
 
                         <@security.authorize access="hasAnyAuthority('OPERATOR','OPERATOR_ADMIN','ADMIN')">
@@ -109,4 +115,5 @@
     <!-- pagination -->
 </div>
 <!-- content area end -->
+
 </@global.main>

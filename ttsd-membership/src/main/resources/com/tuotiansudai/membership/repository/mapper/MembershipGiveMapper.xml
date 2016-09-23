@@ -70,7 +70,7 @@
     </select>
 
     <select id="findPagination" resultMap="MembershipGiveResultMap">
-        SELECT * FROM `aa`.`membership_give` LIMIT #{index}, #{pageSize}
+        SELECT * FROM `aa`.`membership_give` ORDER BY created_time DESC LIMIT #{index}, #{pageSize}
     </select>
 
     <select id="findAllCount" resultType="java.lang.Long">

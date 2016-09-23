@@ -10,7 +10,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
         $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
 
         //导入用户按钮
-        $importBtn.click(function () {
+        $importBtn.change(function () {
             if ("IMPORT_USER" == $('.jq-userGroup').val()) {
                 var file = $(this).find('input').get(0).files[0];
                 var formData = new FormData();
@@ -46,7 +46,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
 
             if ("NEW_REGISTERED_USER" == userGroup) {
                 if (null == startTime || "" == startTime ||
-                    null == endTime || "" == startTime) {
+                    null == endTime || "" == endTime) {
                     alert("新注册用户必须填写开始领取时间和结束领取时间");
                     return false;
                 }

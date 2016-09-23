@@ -13,10 +13,7 @@ import com.tuotiansudai.membership.repository.model.MembershipExperienceBillMode
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.MembershipUserGroup;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
-import com.tuotiansudai.membership.service.MembershipExperienceBillService;
-import com.tuotiansudai.membership.service.MembershipGiveService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.membership.service.UserMembershipService;
+import com.tuotiansudai.membership.service.*;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -56,6 +53,9 @@ public class MembershipController {
 
     @Autowired
     private MembershipGiveService membershipGiveService;
+
+    @Autowired
+    private ImportService importService;
 
     @RequestMapping(value = "/membership-list", method = RequestMethod.GET)
     public ModelAndView membershipList(@RequestParam(value = "index", required = true, defaultValue = "1") int index,
@@ -182,6 +182,9 @@ public class MembershipController {
                                             HttpServletRequest httpServletRequest) {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
         MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
+        if (null == multipartFile) {
+            return new BaseDto<>();
+        }
         if (!multipartFile.getOriginalFilename().endsWith(".csv")) {
             return new BaseDto<>(new BaseDataDto(false, "上传失败!文件必须是csv格式"));
         }
@@ -216,5 +219,12 @@ public class MembershipController {
     @ResponseBody
     public BaseDto<BaseDataDto> cancelMembershipGive(@PathVariable long membershipGiveId) {
         return membershipGiveService.cancelMembershipGive(membershipGiveId, LoginUserInfo.getLoginName());
+    }
+
+    @RequestMapping(value = "/give/importUsersList/{importUsersId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> getImportUsersList(@PathVariable long importUsersId) {
+        List<String> importUsers = importService.getImportStrings(ImportService.redisMembershipGiveReceivers, importUsersId);
+        return importUsers;
     }
 }

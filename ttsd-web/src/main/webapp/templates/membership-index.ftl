@@ -14,7 +14,8 @@
                 <div class="text">
                     <p><span class="orange font20">您好！${mobile!}</span>
                         <#if membershipType == 'GIVEN'>
-                            <span class="font14">会员有效期还有：<strong class="font22">${leftDays?string('0')}</strong>天</span>
+                            <span class="font14">会员有效期还有：<strong
+                                    class="font22">${(leftDays-1)?string('0')}</strong>天</span>
                         </#if>
                     </p>
                     <p class="font14">我的成长值：<strong class="font22">${membershipPoint!}</strong></p>

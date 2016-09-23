@@ -718,3 +718,12 @@ td.td {
 .edit-btn.active {
     display: block;
 }
+
+.pop-user-list-box {
+    margin: 10px;
+}
+
+.pop-user-list-box li {
+    float: left;
+    width: 33%;
+}

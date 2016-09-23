@@ -20,7 +20,7 @@ public class ReceiveMembershipAspect {
     @Autowired
     MembershipGiveService membershipGiveService;
 
-    @AfterReturning(value = "execution(public boolean *.UserService.registerUser(..))", returning = "returnValue")
+    @AfterReturning(value = "execution(public boolean *.registerUser(..))", returning = "returnValue")
     public void registerUserPointcut(JoinPoint joinPoint, boolean returnValue) throws Throwable {
         if (!returnValue) {
             return;

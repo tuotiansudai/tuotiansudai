@@ -3,8 +3,9 @@
 
 <div class="col-md-10">
     <form action="/membership-manage/give/edit-view" method="post" class="form-horizontal form-list">
-        <input type="text" id="membershipGiveId" hidden="hidden" value="${(membershipGiveId?c)!"0"}">
-        <input type="text" id="importUsersId" hidden="hidden" class="importUsersId" value="${(membershipGiveId?c)!"0"}">
+        <input type="text" id="membershipGiveId" hidden="hidden" value="${(membershipGiveDto.id?c)!"0"}">
+        <input type="text" id="importUsersId" hidden="hidden" class="importUsersId"
+               value="${(membershipGiveDto.id?c)!"0"}">
 
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
@@ -13,7 +14,7 @@
                 <select class="selectpicker b-width jq-userGroup">
                     <#list userGroups as userGroup>
                         <option value="${userGroup.name()}"
-                                <#if originUserGroup?? && originUserGroup.name() == userGroup.name()>selected</#if>>${userGroup.getDescription()}</option>
+                                <#if membershipGiveDto?? && membershipGiveDto.userGroup.name() == userGroup.name()>selected</#if>>${userGroup.getDescription()}</option>
                     </#list>
                 </select>
             </div>
