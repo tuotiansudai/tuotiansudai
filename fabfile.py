@@ -377,13 +377,19 @@ def remove_old_logs():
     execute(remove_point_logs)
 
 
+def restart_logstash_process():
+    run("ps aux | grep logstash | awk 'NR==1{print $2}' | xargs kill -9")
+    run("rm -rf /var/log/logstash/*")
+    run("service logstash start")
+
+
 @roles('pay')
 @parallel
 def restart_logstash_service_for_pay():
     """
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
-    run("service logstash restart")
+    restart_logstash_process()
 
 
 @roles('worker')
@@ -392,7 +398,7 @@ def restart_logstash_service_for_worker():
     """
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
-    run("service logstash restart")
+    restart_logstash_process()
 
 
 @roles('cms')
@@ -401,7 +407,7 @@ def restart_logstash_service_for_cms():
     """
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
-    run("service logstash restart")
+    restart_logstash_process()
 
 
 @roles('portal')
@@ -410,7 +416,7 @@ def restart_logstash_service_for_portal():
     """
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
-    run("service logstash restart")
+    restart_logstash_process()
 
 
 @roles('api')
@@ -419,7 +425,7 @@ def restart_logstash_service_for_api():
     """
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
-    run("service logstash restart")
+    restart_logstash_process()
 
 
 @roles('activity')
@@ -428,7 +434,7 @@ def restart_logstash_service_for_activity():
     """
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
-    run("service logstash restart")
+    restart_logstash_process()
 
 
 @roles('ask')
@@ -437,7 +443,7 @@ def restart_logstash_service_for_ask():
     """
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
-    run("service logstash restart")
+    restart_logstash_process()
 
 
 @roles('signin')
@@ -446,7 +452,7 @@ def restart_logstash_service_for_sign_in():
     """
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
-    run("service logstash restart")
+    restart_logstash_process()
 
 
 @roles('point')
@@ -455,7 +461,7 @@ def restart_logstash_service_for_point():
     """
     Restart logstash service in case it stops pushing logs due to unknow reason
     """
-    run("service logstash restart")
+    restart_logstash_process()
 
 
 def restart_logstash(service):
