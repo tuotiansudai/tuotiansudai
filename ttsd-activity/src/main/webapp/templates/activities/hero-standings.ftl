@@ -123,17 +123,7 @@
 
                         </script>
                         <ul class="table-bg-item" id="bgItem">
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
+
                         </ul>
                         <script type="text/template" id="bgtplTable">
                             <% for(var i = 0; i < records.length; i++) { %>

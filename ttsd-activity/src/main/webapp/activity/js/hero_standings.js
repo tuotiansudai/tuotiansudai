@@ -73,7 +73,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 					$('#bgItem').show();
 					data.type='invest';
 					$('#investRanking-tbody').html(ListRender(data));
-					$('#bgItem').html(ListRender(data));
+					$('#bgItem').html(bgListRender(data));
 				}
 
 			})
