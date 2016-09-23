@@ -28,4 +28,6 @@ public interface HeroRankingService {
     MysteriousPrizeDto obtainMysteriousPrizeDto(String prizeDate);
 
     GivenMembership receiveMembership(String loginName);
+
+    List<String> getActivityTime();
 }

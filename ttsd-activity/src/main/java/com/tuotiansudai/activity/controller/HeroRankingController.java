@@ -65,6 +65,9 @@ public class HeroRankingController {
         modelAndView.addObject("investAmount", investAmount);
         modelAndView.addObject("referRanking", referRanking);
         modelAndView.addObject("mysteriousPrizeDto", heroRankingService.obtainMysteriousPrizeDto(new DateTime().toString("yyyy-MM-dd")));
+        List<String> activityTime = heroRankingService.getActivityTime();
+        modelAndView.addObject("activityStartTime",activityTime.get(0));
+        modelAndView.addObject("activityEndTime",activityTime.get(1));
         return modelAndView;
     }
 

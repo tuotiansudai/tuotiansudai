@@ -25,6 +25,7 @@ import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.http.client.utils.DateUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -32,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +73,8 @@ public class HeroRankingServiceImpl implements HeroRankingService {
     private AccountMapper accountMapper;
 
     private int lifeSecond = 5184000;
+
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
     @Override
     public List<HeroRankingView> obtainHeroRanking(Date tradingTime) {
@@ -224,6 +228,14 @@ public class HeroRankingServiceImpl implements HeroRankingService {
 
     private List getActivityPeriod(ActivityCategory activityCategory){
         return activityCategory.equals(ActivityCategory.HERO_RANKING) ? heroRankingActivityPeriod : newHeroRankingActivityPeriod;
+    }
+
+    @Override
+    public List<String> getActivityTime(){
+        Date startTime = DateTime.parse(newHeroRankingActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date endTime = DateTime.parse(newHeroRankingActivityPeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+
+        return Lists.newArrayList(sdf.format(startTime),sdf.format(endTime));
     }
 
 }

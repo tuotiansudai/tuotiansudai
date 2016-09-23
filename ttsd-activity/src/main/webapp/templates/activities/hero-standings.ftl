@@ -25,9 +25,12 @@
                     <@global.isAnonymous>我的排名：登陆后查看</@global.isAnonymous>
                     <@global.isNotAnonymous><#if investRanking == 0>未参加排行<#else>${investRanking}</#if></@global.isNotAnonymous>
                 </div>
-                <div class="login-item">
-                    <a href="javascript:void(0)" class="login-btn show-login">登陆查看我的排名</a>
-                </div>
+                <@global.isAnonymous>
+                    <div class="login-item">
+                        <a href="javascript:void(0)" class="login-btn show-login">登陆查看我的排名</a>
+                    </div>
+                </@global.isAnonymous>
+
                 <div class="today-item">
                     <@global.isAnonymous></@global.isAnonymous>
                     <@global.isNotAnonymous>我的今日投资额：${investAmount}元</@global.isNotAnonymous>
