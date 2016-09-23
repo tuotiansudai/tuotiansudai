@@ -23,7 +23,7 @@ public class AutumnService {
     private UserMapper userMapper;
 
     public Map getAllFamilyMap(Date activityMinAutumnStartTime, Date activityMinAutumnEndTime) {
-        List<UserModel> userModels = userMapper.findUsersByRegisterTime(activityMinAutumnStartTime, activityMinAutumnEndTime);
+        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityMinAutumnStartTime, activityMinAutumnEndTime,null);
 
         Map<String, List<String>> allFamily = new LinkedHashMap<>();
 

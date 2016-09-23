@@ -207,8 +207,12 @@
         </if>
     </select>
 
-    <select id="findUsersByRegisterTime" parameterType="map" resultMap="userResultMap">
-        select * from user where register_time between #{startTime} and #{endTime} order by register_time
+    <select id="findUsersByRegisterTimeOrReferrer" parameterType="map" resultMap="userResultMap">
+        select * from user where register_time between #{startTime} and #{endTime}
+        <if test="referrer != null and referrer != ''">
+            and referrer = #{referrer}
+        </if>
+        order by register_time
     </select>
 
 </mapper>
