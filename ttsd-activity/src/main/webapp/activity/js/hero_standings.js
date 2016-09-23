@@ -64,7 +64,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 						$contentRanking=$('#investRanking-tbody').parents('table');
 
 					if(_.isNull(data.records) || data.records.length==0) {
-						$nodataInvest.html('<span class="date-over">活动已结束</span>');
+						$nodataInvest.html('<span class="date-over">暂无数据</span>');
 						$contentRanking.hide();
 						$('#bgItem').hide();
 						return;
