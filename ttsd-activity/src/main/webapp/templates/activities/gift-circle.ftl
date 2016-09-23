@@ -1,4 +1,4 @@
-<div class="leader-container <#if activityType= 'luxury'></#if><#if activityType= 'travel'>tour-theme</#if>"  id="awardCom"><!--旅游：tour-theme  -->
+<div class="leader-container"  id="awardCom"><!--旅游：tour-theme  -->
     <div class="leader-list">
     <input type="hidden" value="${activityType}" id="themeType">
         <div class="lottery-circle">
@@ -102,7 +102,7 @@
     </div>
 </div>
 
-<div class="tip-list <#if activityType= 'luxury'></#if><#if activityType= 'travel'>tour-theme</#if>" id="tipList"><!--旅游:tour-theme  -->
+<div class="tip-list" id="tipList"><!--旅游:tour-theme  -->
 
     <script id="tipListTpl" type="text/html">
     <div class="tip-dom">
@@ -128,7 +128,7 @@
             <p class="des-text">赢取机会后再来抽奖吧！</p>
         {{else if istype=='timeout'}}
             <p class="login-text">不在活动时间内~</p>
-            <p class="des-text">不在活动时间内！</p>
+            <#--<p class="des-text">不在活动时间内！</p>-->
         {{/if}}
         </div>
         <div class="btn-list">

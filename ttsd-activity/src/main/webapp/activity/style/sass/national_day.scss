@@ -368,9 +368,11 @@ body {
         height:240px;
         margin:0;
         padding-top:0px;
+        float: none;
         .login-text {
           font-size:30px;
           padding-top: 60px;
+          padding-left: 0;
         }
         .success-text {
           font-size: 40px;
@@ -569,7 +571,7 @@ body {
     .tip-list {
       .tip-dom {
         width:80%;
-        height: 192px;
+        height: 220px;
         .text-tip {
           height:auto;
           p{
@@ -581,7 +583,7 @@ body {
           }
           .login-text {
             font-size: 15px;
-            padding-top: 10px;
+            padding-top: 30px;
           }
           .success-text {
             font-size:20px;
@@ -596,6 +598,7 @@ body {
           position: absolute;
           bottom: 0;
           float: none;
+          width:100%;
           a {
             width: 94px;
             height: 40px;

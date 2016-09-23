@@ -272,8 +272,10 @@
                     </@global.isNotAnonymous>
                 </p>
             </div>
-            <#assign prizeType = 'luxury'/>
-            <#include "gift-circle.ftl"/>
+            <div class="luxury-draw-theme">
+                <#assign prizeType = 'luxury'/>
+                <#include "gift-circle.ftl"/>
+            </div>
         </div>
         <div class="luxury-item hack clearfix foot-last">
             <div class="actor-info-text">

@@ -237,7 +237,7 @@
             </div>
         </div>
 
-        <div class="lottery-draw fl">
+        <div class="lottery-draw tour-theme ">
             <#assign prizeType = 'travel'/>
             <#include "gift-circle.ftl"/>
         </div>
