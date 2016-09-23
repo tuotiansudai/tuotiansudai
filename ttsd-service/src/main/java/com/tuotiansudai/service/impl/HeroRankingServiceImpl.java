@@ -77,21 +77,23 @@ public class HeroRankingServiceImpl implements HeroRankingService {
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
     @Override
-    public List<HeroRankingView> obtainHeroRanking(Date tradingTime) {
+    public List<HeroRankingView> obtainHeroRanking(ActivityCategory activityCategory,Date tradingTime) {
         if (tradingTime == null) {
             logger.debug("tradingTime is null");
             return null;
         }
         tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
 
-        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(tradingTime, heroRankingActivityPeriod.get(0), heroRankingActivityPeriod.get(1));
+        List<String> activityPeriod = getActivityPeriod(activityCategory);
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(tradingTime, activityPeriod.get(0), activityPeriod.get(1));
 
         return CollectionUtils.isNotEmpty(heroRankingViews) && heroRankingViews.size() > 10 ? heroRankingViews.subList(0, 10) : heroRankingViews;
     }
 
     @Override
-    public List<HeroRankingView> obtainHeroRankingReferrer(Date tradingTime) {
-        return investMapper.findHeroRankingByReferrer(tradingTime, heroRankingActivityPeriod.get(0), heroRankingActivityPeriod.get(1), 0, 10);
+    public List<HeroRankingView> obtainHeroRankingReferrer(ActivityCategory activityCategory,Date tradingTime) {
+        List<String> activityPeriod = getActivityPeriod(activityCategory);
+        return investMapper.findHeroRankingByReferrer(tradingTime, activityPeriod.get(0), activityPeriod.get(1), 0, 10);
     }
 
     @Override
@@ -167,8 +169,9 @@ public class HeroRankingServiceImpl implements HeroRankingService {
     }
 
     @Override
-    public Integer findHeroRankingByReferrerLoginName(final String loginName) {
-        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByReferrer(new Date(), heroRankingActivityPeriod.get(0), heroRankingActivityPeriod.get(1), 0, 20);
+    public Integer findHeroRankingByReferrerLoginName(ActivityCategory activityCategory,final String loginName) {
+        List<String> activityPeriod = getActivityPeriod(activityCategory);
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByReferrer(new Date(), activityPeriod.get(0), activityPeriod.get(1), 0, 20);
         if (CollectionUtils.isEmpty(heroRankingViews)) {
             return null;
         }

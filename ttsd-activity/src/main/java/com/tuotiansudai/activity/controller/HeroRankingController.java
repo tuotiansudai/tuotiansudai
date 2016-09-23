@@ -43,7 +43,7 @@ public class HeroRankingController {
         ModelAndView modelAndView = new ModelAndView("/activities/hero-ranking", "responsive", true);
         modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
         modelAndView.addObject("yesterdayTime", DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1));
-        Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(loginName);
+        Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(ActivityCategory.HERO_RANKING,loginName);
         modelAndView.addObject("investRanking", investRanking);
         modelAndView.addObject("investAmount", investAmount);
         modelAndView.addObject("referRanking", referRanking);
@@ -54,13 +54,13 @@ public class HeroRankingController {
     @RequestMapping(value = "/new" ,method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loadNewPageData() {
         String loginName = LoginUserInfo.getLoginName();
-        Map param = heroRankingService.obtainHeroRankingAndInvestAmountByLoginName(ActivityCategory.HERO_RANKING, new Date(), loginName);
+        Map param = heroRankingService.obtainHeroRankingAndInvestAmountByLoginName(ActivityCategory.NEW_HERO_RANKING, new Date(), loginName);
         Integer investRanking = Integer.parseInt(String.valueOf(param.get("investRanking")));
         String investAmount = param.get("investAmount").toString();
         ModelAndView modelAndView = new ModelAndView("/activities/hero-standings", "responsive", true);
         modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
         modelAndView.addObject("yesterdayTime", DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1));
-        Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(loginName);
+        Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(ActivityCategory.NEW_HERO_RANKING,loginName);
         modelAndView.addObject("investRanking", investRanking);
         modelAndView.addObject("investAmount", investAmount);
         modelAndView.addObject("referRanking", referRanking);
@@ -81,10 +81,11 @@ public class HeroRankingController {
 
     @RequestMapping(value = "/invest/{tradingTime}", method = RequestMethod.GET)
     @ResponseBody
-    public BasePaginationDataDto<HeroRankingView> obtainHeroRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
+    public BasePaginationDataDto<HeroRankingView> obtainHeroRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime,
+                                                                    @RequestParam(value = "activityCategory",defaultValue = "HERO_RANKING") ActivityCategory activityCategory) {
         final String loginName = LoginUserInfo.getLoginName();
         BasePaginationDataDto<HeroRankingView> baseListDataDto = new BasePaginationDataDto<>();
-        List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(tradingTime);
+        List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(activityCategory,tradingTime);
 
         if (heroRankingViews != null) {
             for (HeroRankingView heroRankingView : heroRankingViews) {

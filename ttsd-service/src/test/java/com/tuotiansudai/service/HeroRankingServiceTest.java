@@ -150,7 +150,7 @@ public class HeroRankingServiceTest {
         investModel3.setAmount(3000);
         investModel3.setTradingTime(new DateTime("2016-07-07").toDate());
         investMapper.create(investModel3);
-        List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(new DateTime(2016, 7, 7, 0, 0, 0).toDate());
+        List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(ActivityCategory.HERO_RANKING,new DateTime(2016, 7, 7, 0, 0, 0).toDate());
 
         assertEquals(3,heroRankingViews.size());
         assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
@@ -275,7 +275,7 @@ public class HeroRankingServiceTest {
         MysteriousPrizeDto mysteriousPrizeDtoReturn = (MysteriousPrizeDto)redisWrapperClient.hgetSeri(MYSTERIOUSREDISKEY,now);
         assertEquals(mysteriousPrizeDto.getImageUrl(),mysteriousPrizeDtoReturn.getImageUrl());
         assertEquals(mysteriousPrizeDto.getPrizeName(),mysteriousPrizeDtoReturn.getPrizeName());
-        redisWrapperClient.hdelSeri(MYSTERIOUSREDISKEY,now);
+        redisWrapperClient.hdelSeri(MYSTERIOUSREDISKEY, now);
 
 
     }
@@ -305,8 +305,8 @@ public class HeroRankingServiceTest {
     public void shouldReceiveMembershipIsEqualsNoRegister() throws ParseException {
         List<String> date = Lists.newArrayList();
         date.add(sdf.format(new Date()));
-        date.add(sdf.format(DateUtils.addMonths(new Date(),1)));
-        ReflectionTestUtils.setField(heroRankingService, "heroRankingActivityPeriod" ,date);
+        date.add(sdf.format(DateUtils.addMonths(new Date(), 1)));
+        ReflectionTestUtils.setField(heroRankingService, "heroRankingActivityPeriod", date);
         UserModel fakeUser = getFakeUser("testReceive");
         GivenMembership GivenMembership = heroRankingService.receiveMembership(fakeUser.getLoginName());
         assertThat(GivenMembership.NO_REGISTER,is(GivenMembership));
@@ -316,8 +316,8 @@ public class HeroRankingServiceTest {
     public void shouldReceiveMembershipIsEqualsAlreadyReceived(){
         List<String> date = Lists.newArrayList();
         date.add(sdf.format(new Date()));
-        date.add(sdf.format(DateUtils.addMonths(new Date(),1)));
-        ReflectionTestUtils.setField(heroRankingService, "heroRankingActivityPeriod" ,date);
+        date.add(sdf.format(DateUtils.addMonths(new Date(), 1)));
+        ReflectionTestUtils.setField(heroRankingService, "heroRankingActivityPeriod", date);
         UserModel fakeUser = getFakeUser("testReceive");
         accountMapper.create(new AccountModel(fakeUser.getLoginName(), "username", "11234", "", "", new Date()));
         UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), createMembership(1).getId(), new DateTime().plusDays(130).toDate() , UserMembershipType.GIVEN);
@@ -338,9 +338,9 @@ public class HeroRankingServiceTest {
         InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 100, fakeUser.getLoginName(), new Date(), Source.WEB, null,0);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
-        accountMapper.create(new AccountModel(fakeUser.getLoginName(), "username", "11234", "", "", DateUtils.addDays(new Date(),-1)));
+        accountMapper.create(new AccountModel(fakeUser.getLoginName(), "username", "11234", "", "", DateUtils.addDays(new Date(), -1)));
         GivenMembership GivenMembership = heroRankingService.receiveMembership(fakeUser.getLoginName());
-        assertThat(GivenMembership.ALREADY_REGISTER_NOT_INVEST_1000,is(GivenMembership));
+        assertThat(GivenMembership.ALREADY_REGISTER_NOT_INVEST_1000, is(GivenMembership));
     }
 
     @Test

@@ -15,11 +15,11 @@ public interface HeroRankingService {
 
     BasePaginationDataDto<HeroRankingView> findHeroRankingByReferrer(Date tradingTime, String loginName, int index, int pageSize);
 
-    Integer findHeroRankingByReferrerLoginName(String loginName);
+    Integer findHeroRankingByReferrerLoginName(ActivityCategory activityCategory,String loginName);
 
-    List<HeroRankingView> obtainHeroRanking(Date tradingTime);
+    List<HeroRankingView> obtainHeroRanking(ActivityCategory activityCategory,Date tradingTime);
 
-    List<HeroRankingView> obtainHeroRankingReferrer(Date tradingTime);
+    List<HeroRankingView> obtainHeroRankingReferrer(ActivityCategory activityCategory,Date tradingTime);
 
     Map obtainHeroRankingAndInvestAmountByLoginName(ActivityCategory activityCategory,Date tradingTime, String loginName);
 

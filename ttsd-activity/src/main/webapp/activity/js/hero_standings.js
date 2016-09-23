@@ -20,7 +20,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
         }
 
 
-		todayDate.replace(/-/gi,'')>=parseInt($('#startTime').val())?$heroNext.hide():false;
+		todayDate.replace(/-/gi,'')>=$('#startTime').val()?$heroNext.hide():false;
 
 		//获取前一天或者后一天的日期
 		function GetDateStr(date,AddDayCount) {
@@ -44,9 +44,9 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 				currDate=GetDateStr(dateSpilt,1); //后一天
 			}
 			
-			currDate.replace(/-/gi,'')>=parseInt($('#startTime').val())?$heroNext.hide():$heroNext.show();
+			currDate.replace(/-/gi,'')>=$('#startTime').val()?$heroNext.hide():$heroNext.show();
 			
-			currDate.replace(/-/gi,'')<=parseInt($('#endTime').val())?$heroPre.hide():$heroPre.show();
+			currDate.replace(/-/gi,'')<=$('#endTime').val()?$heroPre.hide():$heroPre.show();
 			heroRank(currDate);
 		});
 
@@ -54,7 +54,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 		//英豪榜排名,今日投资排行
 		function heroRank(date) {
 			$.ajax({
-				url: '/activity/hero-ranking/invest/' + date,
+				url: '/activity/hero-ranking/invest/' + date + '?activityCategory=NEW_HERO_RANKING',
 				type: 'GET',
 				dataType: 'json'
 			})
@@ -81,7 +81,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 				layer.msg('请求失败，请重试！');
 			});
 		}
-		heroRank(todayDate);
+		heroRank('2016-09-27');
         
 
 
