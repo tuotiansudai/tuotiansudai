@@ -88,8 +88,8 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
                         return;
 
                     }
-                    if(this.height > 250){
-                        defer.reject('图片长宽应为250px!');
+                    if(this.height > 310){
+                        defer.reject('图片长宽应为310px!');
                         return;
                     }
                     defer.resolve(file);

@@ -1,7 +1,6 @@
 package com.tuotiansudai.service;
 
 
-import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.MysteriousPrizeDto;
 import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.repository.model.HeroRankingView;
@@ -16,4 +15,8 @@ public interface HeroRankingService {
     void saveMysteriousPrize(MysteriousPrizeDto MysteriousPrizeDto);
 
     GivenMembership receiveMembership(String loginName);
+
+    List<HeroRankingView> obtainHeroRanking(Date tradingTime);
+
+    MysteriousPrizeDto obtainMysteriousPrizeDto(String prizeDate);
 }

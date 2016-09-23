@@ -118,4 +118,22 @@ public class HeroRankingServiceImpl implements HeroRankingService {
         userMembershipMapper.create(userMembershipModel);
     }
 
+    @Override
+    public List<HeroRankingView> obtainHeroRanking(Date tradingTime) {
+        if (tradingTime == null) {
+            logger.debug("tradingTime is null");
+            return null;
+        }
+        tradingTime = new DateTime(tradingTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+
+        List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(tradingTime, heroRankingActivityPeriod.get(0), heroRankingActivityPeriod.get(1));
+
+        return CollectionUtils.isNotEmpty(heroRankingViews) && heroRankingViews.size() > 10 ? heroRankingViews.subList(0, 10) : heroRankingViews;
+    }
+
+    @Override
+    public MysteriousPrizeDto obtainMysteriousPrizeDto(String prizeDate) {
+        return (MysteriousPrizeDto) redisWrapperClient.hgetSeri(MYSTERIOUSREDISKEY, prizeDate);
+    }
+
 }
