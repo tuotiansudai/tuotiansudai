@@ -8,10 +8,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
@@ -24,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class PointServiceImpl implements PointService {
@@ -45,7 +43,7 @@ public class PointServiceImpl implements PointService {
     private UserMapper userMapper;
 
     @Autowired
-    private LoanDetailsMapper loanDetailsMapper;
+    private InvestMapper investMapper;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.startTime}\")}")
     private Date activityNationalStartTime;
@@ -83,7 +81,8 @@ public class PointServiceImpl implements PointService {
         Date nowDate = DateTime.now().toDate();
         if(nowDate.before(activityNationalEndTime) && nowDate.after(activityNationalStartTime)){
             UserModel userModel = userMapper.findByLoginName(loginName);
-            if(userModel.getRegisterTime().before(activityNationalEndTime) && userModel.getRegisterTime().after(activityNationalStartTime) && !Strings.isNullOrEmpty(userModel.getReferrer())){
+            List<InvestModel> successInvestModels = investMapper.findSuccessInvestByInvestTime(loginName, activityNationalStartTime, activityNationalEndTime);
+            if(successInvestModels.size() < 2 && userModel.getRegisterTime().before(activityNationalEndTime) && userModel.getRegisterTime().after(activityNationalStartTime) && !Strings.isNullOrEmpty(userModel.getReferrer())){
                 pointBillService.createPointBill(userModel.getReferrer(), investId, PointBusinessType.ACTIVITY, (long) (point * 3.0));
             }
 
