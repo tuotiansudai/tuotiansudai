@@ -171,7 +171,13 @@ public class HeroRankingServiceImpl implements HeroRankingService {
             return GivenMembership.NO_REGISTER;
         }
 
-        if (userMembershipMapper.findByLoginNameByType(loginName, UserMembershipType.GIVEN) != null) {
+        List<UserMembershipModel> userMembershipModels = userMembershipMapper.findByLoginName(loginName);
+        if (Iterators.tryFind(userMembershipModels.iterator(), new Predicate<UserMembershipModel>() {
+            @Override
+            public boolean apply(UserMembershipModel input) {
+                return input.getType() == UserMembershipType.GIVEN;
+            }
+        }).isPresent()) {
             return GivenMembership.ALREADY_RECEIVED;
         }
 
@@ -194,7 +200,6 @@ public class HeroRankingServiceImpl implements HeroRankingService {
         UserMembershipModel userMembershipModel = new UserMembershipModel(loginName,
                 membershipMapper.findByLevel(level).getId(),
                 DateTime.now().plusMonths(1).toDate(),
-                new Date(),
                 UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel);
     }

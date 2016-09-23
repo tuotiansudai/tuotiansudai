@@ -9,7 +9,7 @@ import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.InvestCallbackJob;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
@@ -93,7 +93,7 @@ public class InvestServiceImpl implements InvestService {
     private InvestAchievementService investAchievementService;
 
     @Autowired
-    private UserMembershipMapper userMembershipMapper;
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
     private UserMapper userMapper;
@@ -134,7 +134,7 @@ public class InvestServiceImpl implements InvestService {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
         String loginName = dto.getLoginName();
-        double rate = userMembershipMapper.findRateByLoginName(loginName);
+        double rate = userMembershipEvaluator.evaluate(loginName).getFee();
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
         investMapper.create(investModel);
@@ -172,7 +172,7 @@ public class InvestServiceImpl implements InvestService {
         baseDto.setData(payDataDto);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        double rate = userMembershipMapper.findRateByLoginName(loginName);
+        double rate = userMembershipEvaluator.evaluate(loginName).getFee();
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
         try {

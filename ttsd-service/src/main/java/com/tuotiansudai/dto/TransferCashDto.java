@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
-public class TransferCashDto implements Serializable{
+public class TransferCashDto implements Serializable {
 
     @NotEmpty
     private String loginName;

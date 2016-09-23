@@ -499,7 +499,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     public long calculateMembershipPreference(String loginName, long loanId, long investAmount) {
-        long preference = 0;
+        long preference;
         UserMembershipModel userMembershipModel = userMembershipMapper.findCurrentMaxByLoginName(loginName);
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
         LoanModel loanModel = loanMapper.findById(loanId);
