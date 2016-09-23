@@ -20,7 +20,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
         }
 
 
-		todayDate.replace(/-/gi,'')>=20160927?$heroNext.hide():false;
+		todayDate.replace(/-/gi,'')>=parseInt($('#startTime').val())?$heroNext.hide():false;
 
 		//获取前一天或者后一天的日期
 		function GetDateStr(date,AddDayCount) {
@@ -44,9 +44,9 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 				currDate=GetDateStr(dateSpilt,1); //后一天
 			}
 			
-			currDate.replace(/-/gi,'')>=20160927?$heroNext.hide():$heroNext.show();
+			currDate.replace(/-/gi,'')>=parseInt($('#startTime').val())?$heroNext.hide():$heroNext.show();
 			
-			currDate.replace(/-/gi,'')<=20161021?$heroPre.hide():$heroPre.show();
+			currDate.replace(/-/gi,'')<=parseInt($('#endTime').val())?$heroPre.hide():$heroPre.show();
 			heroRank(currDate);
 		});
 
@@ -81,7 +81,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 				layer.msg('请求失败，请重试！');
 			});
 		}
-		heroRank('2016-09-27');
+		heroRank(todayDate);
         
 
 

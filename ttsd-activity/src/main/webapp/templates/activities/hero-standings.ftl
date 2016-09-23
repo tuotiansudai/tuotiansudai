@@ -88,6 +88,8 @@
                                 </tr>
                             </thead>
                             <input type="hidden" value="<#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if>" id="TodayAwards">
+                            <input type="hidden" value="${activityStartTime}" id="startTime">
+                            <input type="hidden" value="${activityEndTime}" id="endTime">
                             <tbody id="investRanking-tbody">
                             </tbody>
                         </table>
