@@ -53,9 +53,6 @@ public class NationalPrizeService {
     private InvestMapper investMapper;
 
     @Autowired
-    private ReferrerRelationMapper referrerRelationMapper;
-
-    @Autowired
     private CouponAssignmentService couponAssignmentService;
 
     @Autowired
@@ -98,9 +95,8 @@ public class NationalPrizeService {
             lotteryTime ++;
         }
 
-        List<ReferrerRelationModel> referrerRelationModels = referrerRelationMapper.findByReferrerLoginNameAndLevel(userModel.getLoginName(), 1);
-        for(ReferrerRelationModel referrerRelationModel : referrerRelationModels){
-            UserModel referrerUserModel = userMapper.findByLoginName(referrerRelationModel.getLoginName());
+        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityNationalStartTime, activityNationalEndTime, userModel.getLoginName());
+        for(UserModel referrerUserModel : userModels){
             if(referrerUserModel.getRegisterTime().before(activityNationalEndTime) && referrerUserModel.getRegisterTime().after(activityNationalStartTime)){
                 lotteryTime ++;
                 if(investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), activityNationalStartTime, activityNationalEndTime) > 0){
