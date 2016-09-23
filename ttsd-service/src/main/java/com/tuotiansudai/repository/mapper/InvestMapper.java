@@ -255,7 +255,6 @@ public interface InvestMapper {
                                                     @Param(value = "startTime") Date startTime,
                                                     @Param(value = "endTime") Date endTime);
 
-
     List<InvestRecordsView> findSuccessInvestRecordsByRaising(@Param(value = "loanId") long loanId,
                                                      @Param(value = "day") int day,
                                                      @Param(value = "index") Integer index,
