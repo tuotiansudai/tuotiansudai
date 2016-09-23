@@ -176,15 +176,14 @@ $width:700px;
             }
           }
           &.own-record{
-            padding:10px 30px;
+            padding:10px 20px;
+            width:100%;
             overflow:hidden;
             overflow-y:scroll;
             @media (max-width:$width) {
               padding:10px 0;
             }
             li{
-              float:left;
-              width:100%;
               &.empty-text{
                 text-align:center;
                 line-height:480px;
