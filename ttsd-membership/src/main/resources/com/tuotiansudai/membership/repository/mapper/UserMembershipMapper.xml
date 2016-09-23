@@ -34,7 +34,7 @@
         value(#{loginName}, #{membershipId}, #{expiredTime}, #{createdTime}, #{type}, #{membershipGiveId})
     </insert>
 
-    <insert id="createMass" parameterType="UserMembershipModel">
+    <insert id="createBatch" parameterType="UserMembershipModel">
         INSERT INTO `aa`.`user_membership` (login_name, membership_id, expired_time, created_time, type,
         membership_give_id)
         VALUES

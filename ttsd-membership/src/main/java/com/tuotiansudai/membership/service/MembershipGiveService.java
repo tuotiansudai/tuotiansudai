@@ -315,8 +315,8 @@ public class MembershipGiveService {
         List<MembershipExperienceBillModel> membershipExperienceBillModels = combineMembershipExperienceBillModels(users, membershipGiveModels);
 
         if (userMembershipModels.size() != 0 && membershipExperienceBillModels.size() != 0) {
-            userMembershipMapper.createMass(userMembershipModels);
-            membershipExperienceBillMapper.createMass(membershipExperienceBillModels);
+            userMembershipMapper.createBatch(userMembershipModels);
+            membershipExperienceBillMapper.createBatch(membershipExperienceBillModels);
         }
     }
 

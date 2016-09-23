@@ -20,7 +20,7 @@
         value(#{loginName}, #{experience}, #{totalExperience}, #{createdTime}, #{description})
     </insert>
 
-    <insert id="createMass" parameterType="MembershipExperienceBillModel">
+    <insert id="createBatch" parameterType="MembershipExperienceBillModel">
         INSERT INTO `aa`.`membership_experience_bill` (login_name, experience, total_experience, created_time, description)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">

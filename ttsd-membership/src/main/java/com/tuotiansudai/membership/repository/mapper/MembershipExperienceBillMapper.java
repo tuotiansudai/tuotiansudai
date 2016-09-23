@@ -12,7 +12,7 @@ public interface MembershipExperienceBillMapper {
 
     void create(MembershipExperienceBillModel membershipExperienceBillModel);
 
-    void createMass(List<MembershipExperienceBillModel> membershipExperienceBillModels);
+    void createBatch(List<MembershipExperienceBillModel> membershipExperienceBillModels);
 
     void update(MembershipExperienceBillModel membershipExperienceBillModel);
 
