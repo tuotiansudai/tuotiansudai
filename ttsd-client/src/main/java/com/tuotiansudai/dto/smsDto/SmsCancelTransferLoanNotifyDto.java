@@ -1,4 +1,4 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.dto.smsDto;
 
 import org.hibernate.validator.constraints.NotEmpty;
 

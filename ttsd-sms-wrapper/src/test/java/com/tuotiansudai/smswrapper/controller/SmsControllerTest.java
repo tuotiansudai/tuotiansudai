@@ -3,8 +3,8 @@ package com.tuotiansudai.smswrapper.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.tuotiansudai.dto.SmsCaptchaDto;
-import com.tuotiansudai.dto.SmsFatalNotifyDto;
+import com.tuotiansudai.dto.smsDto.SmsCaptchaDto;
+import com.tuotiansudai.dto.smsDto.SmsFatalNotifyDto;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import org.junit.After;
 import org.junit.Before;
@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

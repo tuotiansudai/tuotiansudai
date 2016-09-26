@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;

@@ -1,8 +1,7 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.dto.smsDto;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 public class SmsFatalNotifyDto implements Serializable {

@@ -3,8 +3,8 @@ package com.tuotiansudai.task.aspect;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
-import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.task.OperationTask;
@@ -90,8 +90,7 @@ public class AuditTaskAspectCoupon {
                     operateURL = "/activity-manage/red-envelopes";
                 } else if (couponDto.getCouponType() == CouponType.BIRTHDAY_COUPON) {
                     operateURL = "/activity-manage/birthday-coupons";
-                }
-                else{
+                } else {
                     operateURL = "/activity-manage/coupons";
                 }
             }

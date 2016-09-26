@@ -8,14 +8,13 @@ import com.tuotiansudai.api.dto.v1_0.CouponAlertResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppCouponAlertServiceImpl;
 import com.tuotiansudai.coupon.dto.CouponAlertDto;
 import com.tuotiansudai.coupon.service.impl.CouponAlertServiceImpl;
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.enums.CouponType;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class MobileAppCouponAlertServiceTest extends ServiceTestBase {

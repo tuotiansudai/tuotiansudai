@@ -4,20 +4,17 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.CouponAlertDto;
 import com.tuotiansudai.coupon.service.CouponAlertService;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(path = "/activity")
