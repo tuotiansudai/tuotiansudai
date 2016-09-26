@@ -68,6 +68,12 @@ public class HeroRankingController {
         List<String> activityTime = heroRankingService.getActivityTime();
         modelAndView.addObject("activityStartTime",activityTime.get(0));
         modelAndView.addObject("activityEndTime",activityTime.get(1));
+
+        if(DateTime.parse(param.get("activityEndTime").toString(), org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(DateTime.now().toDate())){
+            modelAndView.addObject("activityStatus","true");
+        }else{
+            modelAndView.addObject("activityStatus","false");
+        }
         return modelAndView;
     }
 
@@ -89,11 +95,11 @@ public class HeroRankingController {
 
         if (heroRankingViews != null) {
             for (HeroRankingView heroRankingView : heroRankingViews) {
-//                if(activityCategory.equals(ActivityCategory.NEW_HERO_RANKING)){
-//                    heroRankingView.setLoginName(randomUtils.encryptNewMobile(loginName, heroRankingView.getLoginName()));
-//                }else{
-//                    heroRankingView.setLoginName(randomUtils.encryptMobile(loginName, heroRankingView.getLoginName()));
-//                }
+                if(activityCategory.equals(ActivityCategory.NEW_HERO_RANKING)){
+                    heroRankingView.setLoginName(randomUtils.encryptNewMobile(loginName, heroRankingView.getLoginName()));
+                }else{
+                    heroRankingView.setLoginName(randomUtils.encryptMobile(loginName, heroRankingView.getLoginName()));
+                }
             }
 
             //TODO:fake

@@ -87,16 +87,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
         List<String> activityPeriod = getActivityPeriod(activityCategory);
         List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(tradingTime, activityPeriod.get(0), activityPeriod.get(1));
 
-//        return CollectionUtils.isNotEmpty(heroRankingViews) && heroRankingViews.size() > 10 ? heroRankingViews.subList(0, 10) : heroRankingViews;
-        for(int i = 0; i < 10 ; i ++){
-            HeroRankingView heroRankingView = new HeroRankingView();
-            heroRankingView.setLoginName("test" + i);
-            heroRankingView.setMobile("1521000649" + i);
-            heroRankingView.setSumAmount(Long.parseLong(String.valueOf(i)));
-            heroRankingView.setUserName("user" + i);
-            heroRankingViews.add(heroRankingView);
-        }
-        return heroRankingViews;
+        return CollectionUtils.isNotEmpty(heroRankingViews) && heroRankingViews.size() > 10 ? heroRankingViews.subList(0, 10) : heroRankingViews;
 
     }
 
@@ -118,6 +109,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
         if (count > 0) {
             return Maps.newHashMap(ImmutableMap.<String, String>builder().
                     put("investRanking", "0").
+                    put("activityEndTime", newHeroRankingActivityPeriod.get(1)).
                     put("investAmount","0").build());
         }
 
@@ -138,6 +130,7 @@ public class HeroRankingServiceImpl implements HeroRankingService {
         }
         return Maps.newHashMap(ImmutableMap.<String, String>builder().
                 put("investRanking", String.valueOf(investRanking)).
+                put("activityEndTime", newHeroRankingActivityPeriod.get(1)).
                 put("investAmount",investAmount).build());
     }
 

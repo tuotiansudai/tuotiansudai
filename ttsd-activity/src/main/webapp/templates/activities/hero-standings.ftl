@@ -142,7 +142,7 @@
                             </div>
                         </div>
                         <div class="get-rank-item">
-                            <#if currentTime > activityEndTime>
+                            <#if activityStatus == "false">
                                 <a href="javascript:void(0)" class="disabled">立即投资抢排行</a>
                             <#else>
                                 <a href="/loan-list" class="disabled">立即投资抢排行</a>
