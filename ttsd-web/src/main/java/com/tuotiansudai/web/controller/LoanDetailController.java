@@ -77,7 +77,7 @@ public class LoanDetailController {
         return "";
     }
 
-    @RequestMapping(value = "/{loanId:^\\d+$}/invests", method = RequestMethod.GET)
+    @RequestMapping(value = "/{loanId:^(?!1$)\\d+$}/invests", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BasePaginationDataDto> getInvestList(@PathVariable long loanId,
                                                         @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
