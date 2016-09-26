@@ -80,8 +80,8 @@ public class LoanDetailController {
     @RequestMapping(value = "/{loanId:^\\d+$}/invests", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BasePaginationDataDto> getInvestList(@PathVariable long loanId,
-                                                        @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                                        @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                                        @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         return loanDetailService.getInvests(LoginUserInfo.getLoginName(), loanId, index, pageSize);
     }
 }
