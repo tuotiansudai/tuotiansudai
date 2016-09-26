@@ -25,7 +25,7 @@ public class AboutController {
     @Autowired
     private OperationDataService operationDataService;
 
-    @RequestMapping(path = "/{item:^assurance|risk-flow|company|contact|guide|notice|media|notice-detail|service-fee|qa|refer-reward|team|operational$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^assurance|risk-flow|company|contact|guide|notice|media|notice-detail|service-fee|qa|refer-reward|team|operational|help-center|account|user|money|product|other$}", method = RequestMethod.GET)
     public ModelAndView about(@PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/about/" + item);
         modelAndView.addObject("responsive", true);

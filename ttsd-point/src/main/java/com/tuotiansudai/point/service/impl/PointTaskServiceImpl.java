@@ -215,24 +215,26 @@ public class PointTaskServiceImpl implements PointTaskService {
         List<PointTaskDto> data = Lists.newArrayList();
         List<UserPointTaskModel> userPointTaskModels = userPointTaskMapper.findByLoginName(loginName);
         for (UserPointTaskModel userPointTaskModel : userPointTaskModels) {
-            PointTaskDto pointTaskDto = new PointTaskDto();
-            pointTaskDto.setPoint(userPointTaskModel.getPoint());
-            pointTaskDto.setCompleted(true);
-            PointTask pointTask = userPointTaskModel.getPointTask().getName();
-            switch (pointTask) {
-                case EACH_SUM_INVEST:
-                    pointTaskDto.setTitle(MessageFormat.format(pointTask.getTitle(), AmountConverter.convertCentToString(SUM_INVEST_5000_AMOUNT)));
-                    break;
-                case FIRST_SINGLE_INVEST:
-                    pointTaskDto.setTitle(MessageFormat.format(pointTask.getTitle(), AmountConverter.convertCentToString(FIRST_INVEST_10000_AMOUNT)));
-                    break;
-                case EACH_RECOMMEND:
-                    pointTaskDto.setTitle(pointTask.getTitle());
-                    break;
-                default:
-                    pointTaskDto.setTitle(pointTask.getTitle());
+            if (ADVANCED_TASKS.contains(userPointTaskModel.getPointTask().getName())) {
+                PointTaskDto pointTaskDto = new PointTaskDto();
+                pointTaskDto.setPoint(userPointTaskModel.getPoint());
+                pointTaskDto.setCompleted(true);
+                PointTask pointTask = userPointTaskModel.getPointTask().getName();
+                switch (pointTask) {
+                    case EACH_SUM_INVEST:
+                        pointTaskDto.setTitle(MessageFormat.format(pointTask.getTitle(), AmountConverter.convertCentToString(SUM_INVEST_5000_AMOUNT)));
+                        break;
+                    case FIRST_SINGLE_INVEST:
+                        pointTaskDto.setTitle(MessageFormat.format(pointTask.getTitle(), AmountConverter.convertCentToString(FIRST_INVEST_10000_AMOUNT)));
+                        break;
+                    case EACH_RECOMMEND:
+                        pointTaskDto.setTitle(pointTask.getTitle());
+                        break;
+                    default:
+                        pointTaskDto.setTitle(pointTask.getTitle());
+                }
+                data.add(pointTaskDto);
             }
-            data.add(pointTaskDto);
         }
 
         return data;

@@ -5,6 +5,7 @@ import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.util.AmountConverter;
 
+import java.util.Date;
 import java.util.List;
 
 public class ProductDetailResponseDto extends BaseResponseDataDto {
@@ -22,13 +23,19 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
 
     private String leftCount;
 
-    public ProductDetailResponseDto(long productId, String imageUrl, String name, long points, GoodsType goodsType, long leftCount) {
+    private int seq;
+
+    private Date updatedTime;
+
+    public ProductDetailResponseDto(long productId, String imageUrl, String name, long points, GoodsType goodsType, long leftCount,int seq,Date updatedTime) {
         this.productId = String.valueOf(productId);
         this.imageUrl = imageUrl;
         this.points = String.valueOf(points);
         this.name = name.replaceAll("\\.00", "");
         this.goodsType = goodsType.name();
         this.leftCount = String.valueOf(leftCount);
+        this.seq = seq;
+        this.updatedTime = updatedTime;
     }
 
     public ProductDetailResponseDto(ExchangeCouponView exchangeCouponView, String bannerServer) {
@@ -36,6 +43,8 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
         this.imageUrl = bannerServer + exchangeCouponView.getImageUrl();
         this.points = String.valueOf(exchangeCouponView.getExchangePoint());
         this.leftCount = String.valueOf(exchangeCouponView.getTotalCount() - exchangeCouponView.getIssuedCount());
+        this.seq = exchangeCouponView.getSeq();
+        this.updatedTime = exchangeCouponView.getUpdatedTime();
         switch (exchangeCouponView.getCouponType()) {
             case RED_ENVELOPE:
                 this.name = AmountConverter.convertCentToString(exchangeCouponView.getAmount()) + "元现金红包";
@@ -50,6 +59,22 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
 
     }
 
+
+    public int getSeq() {
+        return seq;
+    }
+
+    public void setSeq(int seq) {
+        this.seq = seq;
+    }
+
+    public Date getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
+    }
 
     public String getProductId() {
         return productId;

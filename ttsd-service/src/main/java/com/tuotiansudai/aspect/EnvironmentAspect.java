@@ -27,8 +27,7 @@ public class EnvironmentAspect {
             return true;
         }
 
-        if(Environment.PRODUCTION != environment && proceedingJoinPoint.getArgs().length == 2
-                && proceedingJoinPoint.getArgs()[1].equals(fakeCaptcha)){
+        if(Environment.PRODUCTION != environment && proceedingJoinPoint.getArgs()[0].equals(fakeCaptcha)){
             return true;
         }
 

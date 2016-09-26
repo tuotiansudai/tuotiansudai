@@ -4,11 +4,11 @@ package com.tuotiansudai.point.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
@@ -30,7 +30,7 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private CouponExchangeMapper couponExchangeMapper;
+    private ProductMapper productMapper;
 
     @Autowired
     private CouponMapper couponMapper;
@@ -51,7 +51,7 @@ public class PointExchangeServiceImpl implements PointExchangeService {
             @Override
             public ExchangeCouponDto apply(CouponModel input) {
                 ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(input);
-                exchangeCouponDto.setExchangePoint(couponExchangeMapper.findByCouponId(input.getId()).getExchangePoint());
+                exchangeCouponDto.setExchangePoint(productMapper.findByCouponId(input.getId()).getPoints());
                 return exchangeCouponDto;
             }
         });
@@ -60,7 +60,7 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     @Override
     @Transactional
     public boolean exchangeableCoupon(long couponId, String loginName) {
-        long exchangePoint = couponExchangeMapper.findByCouponId(couponId).getExchangePoint();
+        long exchangePoint = productMapper.findByCouponId(couponId).getPoints();
         long availablePoint = accountMapper.findByLoginName(loginName).getPoint();
         CouponModel couponModel = couponMapper.lockById(couponId);
         return availablePoint >= exchangePoint && couponModel.getIssuedCount() < couponModel.getTotalCount();

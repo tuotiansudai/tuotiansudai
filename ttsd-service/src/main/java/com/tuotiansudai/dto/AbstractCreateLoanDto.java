@@ -50,6 +50,7 @@ public abstract class AbstractCreateLoanDto implements Serializable {
     protected String declaration;
     protected String extraSource;
     protected boolean activity;
+    protected String activityDesc;
 
     //LoanerDetailsDto
     protected String loanerLoginName;
@@ -123,6 +124,7 @@ public abstract class AbstractCreateLoanDto implements Serializable {
         loanDetailsDto.setDeclaration(declaration);
         loanDetailsDto.setExtraSource(extraSource);
         loanDetailsDto.setActivity(activity);
+        loanDetailsDto.setActivityDesc(activityDesc);
         return loanDetailsDto;
     }
 
@@ -550,5 +552,13 @@ public abstract class AbstractCreateLoanDto implements Serializable {
 
     public void setActivity(boolean activity) {
         this.activity = activity;
+    }
+
+    public String getActivityDesc() {
+        return activityDesc;
+    }
+
+    public void setActivityDesc(String activityDesc) {
+        this.activityDesc = activityDesc;
     }
 }

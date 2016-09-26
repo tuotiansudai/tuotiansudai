@@ -4,7 +4,9 @@
         <#if activeNav??>
             <ul id="TopMainMenuList">
                 <#list mainMenus as menu>
-                    <li><a <#if menu.title==activeNav>class="active"</#if> href="${menu.url}" onclick="cnzzPush.trackClick('${menu.category}','${menu.title}')">${menu.title}</a></li>
+                    <#if menu.navigation?? && menu.navigation="true">
+                        <li><a <#if menu.title==activeNav>class="active"</#if> href="${menu.url}" onclick="cnzzPush.trackClick('${menu.category}','${menu.title}')">${menu.title}</a></li>
+                    </#if>
                 </#list>
                 <li class="top-membership"><a href="/membership">会员中心</a> </li>
                 <li class="top-activity">

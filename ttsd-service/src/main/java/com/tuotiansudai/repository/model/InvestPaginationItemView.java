@@ -30,6 +30,9 @@ public class InvestPaginationItemView implements Serializable {
     private double extraRate;
     private long extraActualInterest;
     private InvestStatus investStatus;
+    private String province;
+    private String city;
+    private String identityNumber;
 
     public List<Role> getInvestorRoleList() {
         List<Role> roles = new ArrayList<>();
@@ -219,5 +222,29 @@ public class InvestPaginationItemView implements Serializable {
 
     public void setInvestStatus(InvestStatus investStatus) {
         this.investStatus = investStatus;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
     }
 }

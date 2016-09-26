@@ -9,7 +9,7 @@
     </ul>
     <div class="main-banner">
         <div class="page-width">
-            <img src="${staticServer}/images/sign/assure/newer-bar.jpg" alt="风控流程">
+            <img src="${staticServer}/images/sign/assure/newer-bar2.jpg" alt="风控流程">
         </div>
     </div>
     <div class="section-box-one bg-white clearfix pad-box">
@@ -93,13 +93,13 @@
             <p>每笔抵押贷都有超额的房产或车辆作为抵押物，风控严谨，变现力强，适用于有资金需求的小微企业、个体以及有出借需求的个人及家庭。</p>
             <ul class="mortgage-list">
                 <li><span>新手专享30天项目 <br/>
-                    预计年化收益10%</span></li>
+                    预期年化收益10%</span></li>
                 <li><span>90天短期项目<br/>
-                    预计年化收益11%</span></li>
+                    预期年化收益11%</span></li>
                 <li><span>180天中期项目<br/>
-                    预计年化收益12%</span></li>
+                    预期年化收益12%</span></li>
                 <li><span>360天长期项目<br/>
-                    预计年化收益13%</span></li>
+                    预期年化收益13%</span></li>
             </ul>
     <div class="tc">
         <a href="/loan-list" class="btn-guide">立刻投资</a>
@@ -134,7 +134,7 @@
             <div class="column-title-ac"><i></i>关注拓天<i></i> </div>
             <div class="code-ma tc">
                 <span>
-                    <img src="${staticServer}/images/sign/assure/weixin-img.png"> <br/>
+                    <img src="${staticServer}/images/sign/assure/weixin-code.png"> <br/>
                     拓天速贷微信订阅号
                 </span>
                 <span>
