@@ -44,7 +44,7 @@
             <div class="col-sm-2">
                 <div class='input-group date' id='datetimepicker1'>
                     <input type='text' class="form-control jq-start-date"
-                           value="${(membershipGiveDto.startTime?date)!}"/>
+                           value="${(membershipGiveDto.startTime?datetime)!}"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"/>
                         </span>
@@ -53,7 +53,8 @@
             <div class="line-size">-</div>
             <div class="col-sm-2">
                 <div class='input-group date' id='datetimepicker2'>
-                    <input type='text' class="form-control jq-end-date" value="${(membershipGiveDto.endTime?date)!}"/>
+                    <input type='text' class="form-control jq-end-date"
+                           value="${(membershipGiveDto.endTime?datetime)!}"/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"/>
                     </span>

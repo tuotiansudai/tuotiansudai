@@ -44,8 +44,8 @@
                 <tr>
                     <td>V${membershipGiveDto.membershipLevel}</td>
                     <td>${membershipGiveDto.deadline}天</td>
-                    <td>${(membershipGiveDto.startTime?date)!"-"}
-                        至 ${(membershipGiveDto.endTime?date)!"-"}</td>
+                    <td>${(membershipGiveDto.startTime?datetime)!"-"}
+                        至 ${(membershipGiveDto.endTime?datetime)!"-"}</td>
                     <td><#if (membershipGiveDto.userGroup) == "IMPORT_USER">
                         <span class="import-user-list"
                               data-id="${membershipGiveDto.id}"> ${membershipGiveDto.userGroup.getDescription()}</span>

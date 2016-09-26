@@ -29,10 +29,10 @@ public class MembershipGiveModel implements Serializable {
         this.membershipId = membershipModel.getId();
         this.deadline = membershipGiveDto.getDeadline();
         if (!StringUtils.isEmpty(membershipGiveDto.getStartTime())) {
-            this.startTime = DateTime.parse(membershipGiveDto.getStartTime()).toDate();
+            this.startTime = DateTime.parse(membershipGiveDto.getStartTime().replace(' ', 'T')).toDate();
         }
         if (!StringUtils.isEmpty(membershipGiveDto.getEndTime())) {
-            this.endTime = DateTime.parse(membershipGiveDto.getEndTime()).toDate();
+            this.endTime = DateTime.parse(membershipGiveDto.getEndTime().replace(' ', 'T')).toDate();
         }
         this.userGroup = membershipGiveDto.getUserGroup();
         this.smsNotify = membershipGiveDto.isSmsNotify();

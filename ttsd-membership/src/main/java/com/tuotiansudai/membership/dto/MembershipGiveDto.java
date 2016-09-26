@@ -22,7 +22,7 @@ public class MembershipGiveDto {
     }
 
     public MembershipGiveDto(MembershipGiveModel membershipGiveModel) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.id = membershipGiveModel.getId();
 //        private int membershipLevel;
         this.deadline = membershipGiveModel.getDeadline();
