@@ -1,6 +1,14 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 body {
-  //background: #a1e9f8 url("/activity/images/autumn-tour/bg-yun.png") center 775px no-repeat;
+  background: #00a6e1 url("/activity/images/autumn-tour/bg-yun.png") center 775px no-repeat;
   overflow-x: hidden;
+  color: #005e80;
+  font-size: 14px;
 }
 .main-frame {
   width: 100%;
@@ -11,6 +19,101 @@ body {
   height: 527px;
   background: url("/activity/images/share-reward/bar-share-top.jpg") center top no-repeat;
 }
+.bg-column-normal {
+  background: #e5f8ff;
+  border:1px dashed #99e4ff;
+  position: relative;
+  min-height: 150px;
+  padding: 90px 30px 30px 30px;
+  margin-bottom:10px;
+
+  .bg-column-title {
+    width: 303px;
+    height: 80px;
+    position: absolute;
+    background: url("../../images/share-reward/bg-title.png") center top no-repeat;
+    left: -12px;
+    top: 0;
+    span {
+      display: inline-block;
+      width:100%;
+      height:50px;
+      margin-top: 13px;
+      margin-left: 30px;
+      &.title-word01 {
+        background: url("../../images/share-reward/title-word.png") -15px -15px no-repeat;
+      }
+      &.title-word02 {
+        background: url("../../images/share-reward/title-word.png") -15px -90px no-repeat;
+      }
+      &.title-word03 {
+        background: url("../../images/share-reward/title-word.png") -15px -155px no-repeat;
+      }
+      &.title-word04 {
+        background: url("../../images/share-reward/title-word.png") -15px -225px no-repeat;
+      }
+    }
+  }
+
+}
 .share-reward-container {
+  margin:0px auto;
+  padding-top:20px;
+
+  .invite-box-friend {
+    font-size: 22px;
+    dl {
+      dt,dd  {
+        display: inline-block;
+      }
+    }
+    .input-invite {
+      width:410px;
+      height: 35px;
+      background: #e5f8ff;
+      border:1px solid #00a6e1;
+      color: #4d4d4d;
+    }
+    .btn-copy-link {
+      width: 93px;
+      height:35px;
+      background: #d5f4ff;
+      border:1px solid #00a6e1;
+      color: #005e80;
+      font-size:16px;
+      vertical-align: middle;
+      margin-left: -7px;
+    }
+    &.non-anonymous {
+      dl {
+        width:410px;
+        float: left;
+        dt,dd  {
+          display: block;
+
+        }
+        dt {
+          .btn-copy-link {
+            margin-top:5px;
+          }
+        }
+      }
+.weixin-code {
+  float: right;
+  width:130px;
+  margin-right:180px;
+  img {
+    border:1px solid #0caae3;
+    display: block;
+  }
+  span {
+    display: block;
+    font-size: 14px;
+    text-align: center;
+  }
+}
+    }
+  }
+
 
 }
