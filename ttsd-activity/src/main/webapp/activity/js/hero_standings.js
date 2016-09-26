@@ -45,7 +45,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 			if(currDate.replace(/-/gi,'')>=$('#startTime').val() || currDate.replace(/-/gi,'')<=$('#endTime').val()){
 				heroRank(currDate);
 			}
-			
+			$TodayAwards.val(currDate);
 			
 		});
 
