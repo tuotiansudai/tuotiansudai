@@ -59,17 +59,6 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 			})
 			.done(function(data) {
 				if(data.status) {
-					var $nodataInvest=$('.table-list-item'),
-						$contentRanking=$('#investRanking-tbody').parents('table');
-
-					if(_.isNull(data.records) || data.records.length==0) {
-						$nodataInvest.find('.table-content').html('<span class="date-over">暂无数据</span>');
-						$contentRanking.hide();
-						$('#bgItem').hide();
-						return;
-					}
-					$contentRanking.show();
-					$('#bgItem').show();
 					data.type='invest';
 					$('#investRanking-tbody').html(ListRender(data));
 					$('#bgItem').html(bgListRender(data));

@@ -569,6 +569,10 @@ $width:700px;
                 }
                 tbody>tr {
                   &:nth-child(1) {
+                    td.no-data{
+                      background:none!important;
+                      text-indent:0!important;
+                    }
                     td:nth-child(1) {
                       text-indent: -20em;
                       background: url('/activity/images/hero-standings/rank-one.png') no-repeat center;

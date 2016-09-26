@@ -120,6 +120,8 @@
                                     <td><%=reward%></td>
                                 </tr>
                                 <% } %>
+                            
+                                
 
                             </script>
                             <ul class="table-bg-item" id="bgItem">
@@ -131,6 +133,7 @@
                                 <li>
                                 </li>
                                 <% } %>
+                                
 
                             </script>
                             <div class="change-btn-item" id="investRanking-button">
