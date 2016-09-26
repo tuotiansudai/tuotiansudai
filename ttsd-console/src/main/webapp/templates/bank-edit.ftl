@@ -29,6 +29,18 @@
         </div>
 
         <div class="form-group">
+            <label class="col-sm-1 control-label" style="width: 10%">顺序:</label>
+
+            <div class="col-sm-4 ">
+                <div class="int-item">
+                    <input type="text" class="form-control seq" id="seq" name="seq" datatype="n" value="<#if bank??>${bank.seq!}</#if>" errormsg="顺序只能为数字,按照从小到大排序">
+                    <span>(数字越小排序越靠前)</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group">
             <label class="col-sm-1 control-label" style="width: 10%">快捷支付限额:</label>
             <div class="col-sm-4">
                 <div class="int-item">
