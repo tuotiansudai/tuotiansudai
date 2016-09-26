@@ -95,4 +95,5 @@ require(['jquery', 'template', 'moment','pagination', 'daterangepicker', 'jquery
 			$(".date-filter .select-item").removeClass("current");
 		});
 	});
+
 })
