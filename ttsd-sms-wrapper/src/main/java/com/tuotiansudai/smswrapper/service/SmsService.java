@@ -2,9 +2,9 @@ package com.tuotiansudai.smswrapper.service;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.dto.smsDto.InvestSmsNotifyDto;
-import com.tuotiansudai.dto.smsDto.SmsCouponNotifyDto;
-import com.tuotiansudai.dto.smsDto.SmsFatalNotifyDto;
+import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
+import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 
 import java.util.List;
 

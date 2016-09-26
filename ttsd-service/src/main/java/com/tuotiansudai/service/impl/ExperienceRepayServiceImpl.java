@@ -5,7 +5,7 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.dto.smsDto.ExperienceRepayNotifyDto;
+import com.tuotiansudai.dto.sms.ExperienceRepayNotifyDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;

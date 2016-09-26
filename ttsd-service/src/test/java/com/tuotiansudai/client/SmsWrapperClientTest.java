@@ -4,7 +4,7 @@ import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.dto.smsDto.SmsCaptchaDto;
+import com.tuotiansudai.dto.sms.SmsCaptchaDto;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -2,7 +2,7 @@ package com.tuotiansudai.smswrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.dto.smsDto.*;
+import com.tuotiansudai.dto.sms.*;
 import com.tuotiansudai.smswrapper.service.SmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
