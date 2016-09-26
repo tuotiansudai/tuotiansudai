@@ -73,6 +73,9 @@ require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonF
         drawURL='/activity/national/draw',    //抽奖的接口链接
         myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
+    var $GiftRecord=$('#GiftRecord'),
+        $MyGift=$('#MyGift');
+
     var drawCircle=new drawCircle(travelAllList,travelUserList,drawURL,myMobileNumber);
 
     //渲染中奖记录
@@ -122,7 +125,29 @@ require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonF
         });
     });
 
+    //中奖记录,我的奖品超过10条数据滚动
 
+    drawCircle.scrollList($GiftRecord);
+    drawCircle.scrollList($MyGift);
+
+    //scroll award record list
+    var scrollTimer;
+
+    $GiftRecord.hover(function() {
+        clearInterval(scrollTimer);
+    }, function() {
+        scrollTimer = setInterval(function() {
+            drawCircle.scrollList($GiftRecord);
+        }, 2000);
+    }).trigger("mouseout");
+
+    $MyGift.hover(function() {
+        clearInterval(scrollTimer);
+    }, function() {
+        scrollTimer = setInterval(function() {
+            drawCircle.scrollList($MyGift);
+        }, 2000);
+    }).trigger("mouseout");
 
 });
 

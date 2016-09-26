@@ -60,7 +60,6 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
                     $('#MyGift').html(tpl('MyGiftTpl', {gift:data}));
                 });
         }
-
     }
 
     //转盘旋转
@@ -86,6 +85,20 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
         })
     }
 
+    giftCircleDraw.prototype.scrollList=function(domName) {
+        var $self=domName;
+        var lineHeight = $self.find("li:first").height();
+        if ($self.find('li').length > 10) {
+            $self.animate({
+                "margin-top": -lineHeight + "px"
+            }, 600, function() {
+                $self.css({
+                    "margin-top": "0px"
+                }).find("li:first").appendTo($self);
+            })
+        }
+    }
+
     //change award record btn
     $RecordBtn.on('click', function(event) {
         var $self = $(this),
@@ -107,30 +120,6 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
         $parent.hide();
         $tipDom.hide();
     });
-
-    //scroll award record list
-    var scrollTimer;
-    $(".user-record").hover(function() {
-        clearInterval(scrollTimer);
-    }, function() {
-        scrollTimer = setInterval(function() {
-            scrollNews($("#recordList"));
-        }, 2000);
-    }).trigger("mouseout");
-
-    function scrollNews(obj) {
-        var $self = obj.find("ul.user-record");
-        var lineHeight = $self.find("li:first").height();
-        if ($self.find('li').length > 10) {
-            $self.animate({
-                "margin-top": -lineHeight + "px"
-            }, 600, function() {
-                $self.css({
-                    "margin-top": "0px"
-                }).find("li:first").appendTo($self);
-            })
-        }
-    }
 
     return giftCircleDraw;
 });
