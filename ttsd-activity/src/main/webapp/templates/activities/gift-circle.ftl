@@ -145,9 +145,9 @@
                 <a href="/loan-list" class="go-on">去投资</a>
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             {{else if istype=='nologin'}}
-                <a href="/login?redirect=/activity/autumn/" class="go-on">去登录</a>
+                <a href="/login?redirect=/activity/national" >去登录</a>
             {{else if istype=='notimes'}}
-                <a href="javascript:void(0)" class="go-on go-close">知道了</a>
+                <a href="javascript:void(0)" class="go-close">知道了</a>
             {{/if}}
         </div>
     </div>

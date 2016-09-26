@@ -101,6 +101,9 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
         var $self = $(this),
             $parent = $self.parents('.tip-list'),
             $tipDom = $parent.find('.tip-dom');
+        if($self.hasClass('go-on')) {
+            window.location.reload();
+        }
         $parent.hide();
         $tipDom.hide();
     });
