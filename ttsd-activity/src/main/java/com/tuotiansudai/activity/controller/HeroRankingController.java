@@ -68,11 +68,13 @@ public class HeroRankingController {
         List<String> activityTime = heroRankingService.getActivityTime();
         modelAndView.addObject("activityStartTime",activityTime.get(0));
         modelAndView.addObject("activityEndTime",activityTime.get(1));
-
-        if(DateTime.parse(param.get("activityEndTime").toString(), org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(DateTime.now().toDate())){
+        Date activityEndTime = DateTime.parse(param.get("activityEndTime").toString(), org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        if(activityEndTime.after(DateTime.now().toDate())){
             modelAndView.addObject("activityStatus","true");
+            modelAndView.addObject("currentTime", DateTime.now().toDate());
         }else{
             modelAndView.addObject("activityStatus","false");
+            modelAndView.addObject("currentTime", activityEndTime);
         }
         return modelAndView;
     }
