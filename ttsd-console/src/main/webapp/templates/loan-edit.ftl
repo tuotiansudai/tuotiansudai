@@ -169,7 +169,8 @@
 
                 <div class="col-sm-4">
                     <div class="item-invest">
-                        <select class="selectpicker " <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>>
+                        <select class="selectpicker "
+                                <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>>
                             <#list activityTypes as activityType>
                                 <#if activityType.name() != 'PROMOTION'>
                                     <option value="${activityType.name()}"
@@ -184,7 +185,8 @@
                     <div class="item-invest" style="margin-left:10px">
                         <span class="checkbox jq-activity-checkbox" style="padding-top:0">
                             <label>
-                                <input type="checkbox" class="jq-activity" style="top:8px" <#if loanInfo.activity>checked</#if>
+                                <input type="checkbox" class="jq-activity" style="top:8px"
+                                       <#if loanInfo.activity>checked</#if>
                                        <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>>
                                 活动专享
                             </label>
@@ -331,9 +333,12 @@
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">标的所属活动: </label>
+
                 <div class="col-sm-4">
-                    <input type="text" class="form-control jq-activity-desc" <#if loanInfo.activity?string("true","false") == "true"> value="${loanInfo.activityDesc}" <#else> disabled value="" </#if>
-                           placeholder=""  maxlength="4">
+                    <input type="text"
+                           class="form-control jq-activity-desc" <#if loanInfo.activity?string("true","false") == "true">
+                           value="${loanInfo.activityDesc}" <#else> disabled value="" </#if>
+                           placeholder="" maxlength="4">
                 </div>
             </div>
 

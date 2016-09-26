@@ -1,12 +1,11 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.dto.smsDto;
 
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.enums.CouponType;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
-import java.util.Date;
 
 public class SmsCouponNotifyDto implements Serializable {
 
