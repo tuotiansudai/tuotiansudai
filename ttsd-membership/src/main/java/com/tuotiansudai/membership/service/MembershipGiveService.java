@@ -251,12 +251,12 @@ public class MembershipGiveService {
         if (StringUtils.isEmpty(membershipGiveDto.getStartTime())) {
             originMembershipGiveModel.setStartTime(null);
         } else {
-            originMembershipGiveModel.setStartTime(DateTime.parse(membershipGiveDto.getStartTime()).toDate());
+            originMembershipGiveModel.setStartTime(DateTime.parse(membershipGiveDto.getStartTime().replace(' ', 'T')).toDate());
         }
         if (StringUtils.isEmpty(membershipGiveDto.getEndTime())) {
             originMembershipGiveModel.setEndTime(null);
         } else {
-            originMembershipGiveModel.setEndTime(DateTime.parse(membershipGiveDto.getEndTime()).toDate());
+            originMembershipGiveModel.setEndTime(DateTime.parse(membershipGiveDto.getEndTime().replace(' ', 'T')).toDate());
         }
         originMembershipGiveModel.setUserGroup(membershipGiveDto.getUserGroup());
         originMembershipGiveModel.setSmsNotify(membershipGiveDto.isSmsNotify());
