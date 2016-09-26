@@ -3,9 +3,13 @@ package com.tuotiansudai.smswrapper.service.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
+import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.dto.smsDto.InvestSmsNotifyDto;
+import com.tuotiansudai.dto.smsDto.SmsCouponNotifyDto;
+import com.tuotiansudai.dto.smsDto.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.*;
@@ -97,5 +101,15 @@ public class SmsServiceImpl implements SmsService {
     @Override
     public BaseDto<SmsDataDto> cancelTransferLoan(String mobile, String transferLoanName) {
         return smsClient.sendSMS(TransferLoanNotifyMapper.class, mobile, SmsTemplate.SMS_CANCEL_TRANSFER_LOAN, transferLoanName, "");
+    }
+
+    @Override
+    public BaseDto<SmsDataDto> importUserGetGiveMembership(String mobile, int level) {
+        return smsClient.sendSMS(MembershipGiveNotifyMapper.class, mobile, SmsTemplate.SMS_IMPORT_RECEIVE_MEMBERSHIP, String.valueOf(level), "");
+    }
+
+    @Override
+    public BaseDto<SmsDataDto> newUserGetGiveMembership(String mobile, int level) {
+        return smsClient.sendSMS(MembershipGiveNotifyMapper.class, mobile, SmsTemplate.SMS_NEW_USER_RECEIVE_MEMBERSHIP, String.valueOf(level), "");
     }
 }

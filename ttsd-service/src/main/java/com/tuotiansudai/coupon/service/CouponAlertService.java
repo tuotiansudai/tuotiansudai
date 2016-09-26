@@ -1,7 +1,7 @@
 package com.tuotiansudai.coupon.service;
 
 import com.tuotiansudai.coupon.dto.CouponAlertDto;
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.enums.CouponType;
 
 import java.util.List;
 

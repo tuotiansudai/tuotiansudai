@@ -1,6 +1,8 @@
 package com.tuotiansudai.smswrapper.controller;
 
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.dto.smsDto.*;
 import com.tuotiansudai.smswrapper.service.SmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -78,5 +80,17 @@ public class SmsController {
     @ResponseBody
     public BaseDto<SmsDataDto> cancelTransferLoan(@RequestBody SmsCancelTransferLoanNotifyDto notifyDto) {
         return smsService.cancelTransferLoan(notifyDto.getMobile(), notifyDto.getTransferLoanName());
+    }
+
+    @RequestMapping(value = "/import-user-receive-membership", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> importUserReceiveMembership(@RequestBody SmsUserReceiveMembershipDto notifyDto) {
+        return smsService.importUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
+    }
+
+    @RequestMapping(value = "/new-user-receive-membership", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> newUserReceiveMembership(@RequestBody SmsUserReceiveMembershipDto notifyDto) {
+        return smsService.newUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
     }
 }

@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.controller.v1_0.MobileAppExchangeController;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppExchangeService;
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -13,7 +13,6 @@ import org.mockito.Mock;
 
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
