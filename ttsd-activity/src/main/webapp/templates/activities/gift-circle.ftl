@@ -16,121 +16,89 @@
             </ul>
             <div class="record-list" id="recordList">
                 <ul class="record-model user-record active" id="GiftRecord">
-
-                        <li>12333</li>
-                        <li>12333</li>
-                        <li>12333</li>
-                        <li>12333</li>
-                        <li>12333</li>
-                        <li>12333</li>
-                        <li>12333</li>
-                        <li>12333</li>
-                        <li>12333</li>
-                        <li>12333</li>
-                        <li>12333</li>
-                        <li>12333</li>
-                        <li>12333</li>
-                        <li>12333</li>
-                        <li>12333</li>
-
-                    <#--<script id="GiftRecordTpl" type="text/html">-->
-                    <#--{{each record}}-->
-                        <#--<li>恭喜 {{$value.mobile}} 抽中了-->
-                        <#--{{if $value.prize=='TOURISM'}}-->
-                            <#--华东旅游大奖-->
-                        <#--{{else if $value.prize=='MANGO_CARD_100'}}-->
-                            <#--100元芒果卡-->
-                        <#--{{else if $value.prize=='LUXURY'}}-->
-                            <#--奢侈品大奖-->
-                        <#--{{else if $value.prize=='PORCELAIN_CUP'}}-->
-                            <#--青花瓷杯子-->
-                        <#--{{else if $value.prize=='RED_ENVELOPE_100'}}-->
-                            <#--100元现金红包-->
-                        <#--{{else if $value.prize=='RED_ENVELOPE_50'}}-->
-                            <#--50元现金红包-->
-                        <#--{{else if $value.prize=='INTEREST_COUPON_5'}}-->
-                            <#--0.5%加息券-->
-                        <#--{{else if $value.prize=='INTEREST_COUPON_2'}}-->
-                            <#--0.2%加息券-->
-                        <#--{{else if $value.prize=='MEMBERSHIP_V5'}}-->
-                            <#--1个月V5会员-->
-                        <#--{{else if $value.prize=='RED_INVEST_15'}}-->
-                            <#--15元投资红包-->
-                        <#--{{else if $value.prize=='RED_INVEST_50'}}-->
-                            <#--50元投资红包-->
-                        <#--{{else if $value.prize=='TELEPHONE_FARE_10'}}-->
-                            <#--10元话费-->
-                        <#--{{else if $value.prize=='IQIYI_MEMBERSHIP'}}-->
-                            <#--1个月爱奇艺会员-->
-                        <#--{{else if $value.prize=='CINEMA_TICKET'}}-->
-                            <#--电影票一张-->
-                        <#--{{else if $value.prize=='FLOWER_CUP'}}-->
-                            <#--青花瓷杯子-->
-                        <#--{{/if}}-->
-                        <#--.</li>-->
-                    <#--{{/each}}-->
-                    <#--</script>-->
+                    <script id="GiftRecordTpl" type="text/html">
+                    {{each record}}
+                        <li>恭喜 {{$value.mobile}} 抽中了
+                        {{if $value.prize=='TOURISM'}}
+                            华东旅游大奖
+                        {{else if $value.prize=='MANGO_CARD_100'}}
+                            100元芒果卡
+                        {{else if $value.prize=='LUXURY'}}
+                            奢侈品大奖
+                        {{else if $value.prize=='PORCELAIN_CUP'}}
+                            青花瓷杯子
+                        {{else if $value.prize=='RED_ENVELOPE_100'}}
+                            100元现金红包
+                        {{else if $value.prize=='RED_ENVELOPE_50'}}
+                            50元现金红包
+                        {{else if $value.prize=='INTEREST_COUPON_5'}}
+                            0.5%加息券
+                        {{else if $value.prize=='INTEREST_COUPON_2'}}
+                            0.2%加息券
+                        {{else if $value.prize=='MEMBERSHIP_V5'}}
+                            1个月V5会员
+                        {{else if $value.prize=='RED_INVEST_15'}}
+                            15元投资红包
+                        {{else if $value.prize=='RED_INVEST_50'}}
+                            50元投资红包
+                        {{else if $value.prize=='TELEPHONE_FARE_10'}}
+                            10元话费
+                        {{else if $value.prize=='IQIYI_MEMBERSHIP'}}
+                            1个月爱奇艺会员
+                        {{else if $value.prize=='CINEMA_TICKET'}}
+                            电影票一张
+                        {{else if $value.prize=='FLOWER_CUP'}}
+                            青花瓷杯子
+                        {{/if}}
+                        .</li>
+                    {{/each}}
+                    </script>
                 </ul>
                 <ul class="record-model own-record" id="MyGift">
-                    <li>wwww12333</li>
-                    <li>ww12333</li>
-                    <li>ww12333</li>
-                    <li>w12333</li>
-                    <li>ww12333</li>
-                    <li>12333</li>
-                    <li>w12333</li>
-                    <li>w12333</li>
-                    <li>12333</li>
-                    <li>w12333</li>
-                    <li>1w2333</li>
-                    <li>12333</li>
-                    <li>1w2333</li>
-                    <li>1w2333</li>
-                    <li>1w2333</li>
-                    <#--<script id="MyGiftTpl" type="text/html">-->
-                    <#--{{if gift}}-->
-                    <#--{{each gift}}-->
-                    <#--<li>-->
-                        <#--<span class="award-name">-->
-                            <#--{{if $value.prize=='TOURISM'}}-->
-                                <#--华东旅游大奖-->
-                            <#--{{else if $value.prize=='MANGO_CARD_100'}}-->
-                                <#--100元芒果卡-->
-                            <#--{{else if $value.prize=='LUXURY'}}-->
-                                <#--奢侈品大奖-->
-                            <#--{{else if $value.prize=='PORCELAIN_CUP'}}-->
-                                <#--青花瓷杯子-->
-                            <#--{{else if $value.prize=='RED_ENVELOPE_100'}}-->
-                                <#--100元现金红包-->
-                            <#--{{else if $value.prize=='RED_ENVELOPE_50'}}-->
-                                <#--50元现金红包-->
-                            <#--{{else if $value.prize=='INTEREST_COUPON_5'}}-->
-                                <#--0.5%加息券-->
-                            <#--{{else if $value.prize=='INTEREST_COUPON_2'}}-->
-                                <#--0.2%加息券-->
-                            <#--{{else if $value.prize=='MEMBERSHIP_V5'}}-->
-                                <#--1个月V5会员-->
-                            <#--{{else if $value.prize=='RED_INVEST_15'}}-->
-                                <#--15元投资红包-->
-                            <#--{{else if $value.prize=='RED_INVEST_50'}}-->
-                                <#--50元投资红包-->
-                            <#--{{else if $value.prize=='TELEPHONE_FARE_10'}}-->
-                                <#--10元话费-->
-                            <#--{{else if $value.prize=='IQIYI_MEMBERSHIP'}}-->
-                                <#--1个月爱奇艺会员-->
-                            <#--{{else if $value.prize=='CINEMA_TICKET'}}-->
-                                <#--电影票一张-->
-                            <#--{{else if $value.prize=='FLOWER_CUP'}}-->
-                                <#--青花瓷杯子-->
-                            <#--{{/if}}-->
-                        <#--</span>-->
-                        <#--<span class="award-time">{{$value.lotteryTime}}</span>-->
-                    <#--</li>-->
-                    <#--{{/each}}-->
-                    <#--{{else}}-->
-                    <#--<li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>-->
-                    <#--{{/if}}-->
-                    <#--</script>-->
+                    <script id="MyGiftTpl" type="text/html">
+                    {{if gift}}
+                    {{each gift}}
+                    <li>
+                        <span class="award-name">
+                            {{if $value.prize=='TOURISM'}}
+                                华东旅游大奖
+                            {{else if $value.prize=='MANGO_CARD_100'}}
+                                100元芒果卡
+                            {{else if $value.prize=='LUXURY'}}
+                                奢侈品大奖
+                            {{else if $value.prize=='PORCELAIN_CUP'}}
+                                青花瓷杯子
+                            {{else if $value.prize=='RED_ENVELOPE_100'}}
+                                100元现金红包
+                            {{else if $value.prize=='RED_ENVELOPE_50'}}
+                                50元现金红包
+                            {{else if $value.prize=='INTEREST_COUPON_5'}}
+                                0.5%加息券
+                            {{else if $value.prize=='INTEREST_COUPON_2'}}
+                                0.2%加息券
+                            {{else if $value.prize=='MEMBERSHIP_V5'}}
+                                1个月V5会员
+                            {{else if $value.prize=='RED_INVEST_15'}}
+                                15元投资红包
+                            {{else if $value.prize=='RED_INVEST_50'}}
+                                50元投资红包
+                            {{else if $value.prize=='TELEPHONE_FARE_10'}}
+                                10元话费
+                            {{else if $value.prize=='IQIYI_MEMBERSHIP'}}
+                                1个月爱奇艺会员
+                            {{else if $value.prize=='CINEMA_TICKET'}}
+                                电影票一张
+                            {{else if $value.prize=='FLOWER_CUP'}}
+                                青花瓷杯子
+                            {{/if}}
+                        </span>
+                        <span class="award-time">{{$value.lotteryTime}}</span>
+                    </li>
+                    {{/each}}
+                    {{else}}
+                    <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
+                    {{/if}}
+                    </script>
                 </ul>
             </div>
         </div>
