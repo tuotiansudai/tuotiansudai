@@ -11,6 +11,7 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -84,7 +85,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         LoanModel fakeLoanModel2 = createFakeLoanModel(myUserFund.getLoginName(), LoanStatus.RAISING);
         createFakeInvest(fakeLoanModel2.getId(), 2, myUserFund.getLoginName(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
 
-        CouponModel fakeInterestCoupon = createFakeCoupon(myUserFund.getLoginName(), CouponType.INTEREST_COUPON, 0, 1);
+        CouponModel fakeInterestCoupon = createFakeCoupon(myUserFund.getLoginName(), CouponType.INTEREST_COUPON, 0);
         UserCouponModel userInterestCouponModel = new UserCouponModel(myUserFund.getLoginName(), fakeInterestCoupon.getId(), new Date(), new Date());
         userCouponMapper.create(userInterestCouponModel);
         userInterestCouponModel.setInvestId(fakeInvest1.getId());
@@ -103,7 +104,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         couponRepayModel2.setStatus(RepayStatus.REPAYING);
         couponRepayMapper.update(couponRepayModel2);
 
-        CouponModel fakeRedEnvelopeCoupon = createFakeCoupon(myUserFund.getLoginName(), CouponType.RED_ENVELOPE, 10, 0);
+        CouponModel fakeRedEnvelopeCoupon = createFakeCoupon(myUserFund.getLoginName(), CouponType.RED_ENVELOPE, 10);
         UserCouponModel userRedEnvelopeCouponModel = new UserCouponModel(myUserFund.getLoginName(), fakeRedEnvelopeCoupon.getId(), new Date(), new Date());
         userCouponMapper.create(userRedEnvelopeCouponModel);
         userRedEnvelopeCouponModel.setInvestId(fakeInvest1.getId());
@@ -223,7 +224,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         return fakeInvestRepayModel;
     }
 
-    private CouponModel createFakeCoupon(String loginName, CouponType couponType, long amount, double rate) {
+    private CouponModel createFakeCoupon(String loginName, CouponType couponType, long amount) {
         CouponModel couponModel = new CouponModel();
         couponModel.setAmount(amount);
         couponModel.setActivatedBy(loginName);
