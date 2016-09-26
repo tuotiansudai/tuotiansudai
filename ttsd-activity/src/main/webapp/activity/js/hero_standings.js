@@ -20,7 +20,6 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
         }
 
 
-		todayDate.replace(/-/gi,'')>=$('#startTime').val()?$heroNext.hide():false;
 
 		//获取前一天或者后一天的日期
 		function GetDateStr(date,AddDayCount) {
@@ -39,18 +38,15 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 				currDate;
 			if(/heroPre/.test(event.target.id)) {
 				currDate=GetDateStr(dateSpilt,-1); //前一天
-				$heroNext.show();
 			}
 			else if(/heroNext/.test(event.target.id)){
 				currDate=GetDateStr(dateSpilt,1); //后一天
-				currDate.replace(/-/gi,'')>=todayDate.replace(/-/gi,'')?$heroNext.hide():$heroNext.show();
+			}
+			if(currDate.replace(/-/gi,'')>=$('#startTime').val() || currDate.replace(/-/gi,'')<=$('#endTime').val()){
+				heroRank(currDate);
 			}
 			
 			
-			// currDate.replace(/-/gi,'')>=todayDate.replace(/-/gi,'')?$heroNext.hide():$heroNext.show();
-			
-			// currDate.replace(/-/gi,'')<=todayDate.replace(/-/gi,'')?$heroPre.hide():$heroPre.show();
-			heroRank(currDate);
 		});
 
 

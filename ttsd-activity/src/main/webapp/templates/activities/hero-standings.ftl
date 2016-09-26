@@ -111,9 +111,6 @@
                                         reward='100元红包';
                                     }
                                 }
-                                else if(type=='referrer') {
-                                    reward='100元红包';
-                                }
 
                                 %>
                                 <tr>
