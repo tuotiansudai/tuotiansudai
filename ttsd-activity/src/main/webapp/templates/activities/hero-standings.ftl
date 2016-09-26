@@ -20,7 +20,7 @@
                 </p>
             </div>
             <div class="rank-number-group">
-                <div class="date-time-item">2016-09-25</div>
+                <div class="date-time-item"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></div>
                 <div class="my-rank-item">
                     <@global.isAnonymous>我的排名：登陆后查看</@global.isAnonymous>
                     <@global.isNotAnonymous><#if investRanking == 0>未参加排行<#else>我的排名：${investRanking}</#if></@global.isNotAnonymous>
