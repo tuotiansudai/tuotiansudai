@@ -41,12 +41,13 @@ public class ImportService {
              BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
             String line;
             while (null != (line = bufferedReader.readLine())) {
+                line = (line.trim() + ",");
                 stringBuilder.append(line);
             }
         }
 
         List<String> Strings = Lists.newArrayList();
-        for (String string : Splitter.on(',').splitToList(stringBuilder.toString())) {
+        for (String string : Splitter.on(',').trimResults().splitToList(stringBuilder.toString())) {
             if (!StringUtils.isEmpty(string)) {
                 Strings.add(string);
             }

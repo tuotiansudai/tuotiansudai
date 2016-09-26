@@ -6,8 +6,8 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
         //渲染select表单
         $selectDom.selectpicker();
 
-        $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
-        $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
+        $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'});
+        $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'});
 
         //导入用户按钮
         $importBtn.change(function () {
