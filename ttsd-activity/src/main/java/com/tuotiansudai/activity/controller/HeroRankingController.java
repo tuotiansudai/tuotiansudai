@@ -89,11 +89,11 @@ public class HeroRankingController {
 
         if (heroRankingViews != null) {
             for (HeroRankingView heroRankingView : heroRankingViews) {
-                if(activityCategory.equals(ActivityCategory.NEW_HERO_RANKING)){
-                    heroRankingView.setLoginName(randomUtils.encryptNewMobile(loginName, heroRankingView.getLoginName()));
-                }else{
-                    heroRankingView.setLoginName(randomUtils.encryptMobile(loginName, heroRankingView.getLoginName()));
-                }
+//                if(activityCategory.equals(ActivityCategory.NEW_HERO_RANKING)){
+//                    heroRankingView.setLoginName(randomUtils.encryptNewMobile(loginName, heroRankingView.getLoginName()));
+//                }else{
+//                    heroRankingView.setLoginName(randomUtils.encryptMobile(loginName, heroRankingView.getLoginName()));
+//                }
             }
 
             //TODO:fake

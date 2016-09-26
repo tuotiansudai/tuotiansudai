@@ -78,66 +78,75 @@
                 <div class="rank-table-item">
                     <h3>今日投资英豪榜</h3>
                     <div class="table-list-item">
-                        <table>
-                            <thead>
+                        <div class="table-content">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>排名</th>
+                                        <th>用户</th>
+                                        <th>投资额</th>
+                                        <th>奖励</th>
+                                    </tr>
+                                </thead>
+                                <input type="hidden" value="<#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if>" id="TodayAwards">
+                                <input type="hidden" value="${activityStartTime}" id="startTime">
+                                <input type="hidden" value="${activityEndTime}" id="endTime">
+                                <tbody id="investRanking-tbody">
+                                </tbody>
+                            </table>
+                            <script type="text/template" id="tplTable">
+                                <% for(var i = 0; i < records.length; i++) { %>
+                                <% var item = records[i];
+                                var reward;
+                                if(type=='invest') {
+                                    if(i==0) {
+                                        reward='神秘大奖';
+                                    }
+                                    else if(i>0 && i<2) {
+                                        reward='200元京东卡';
+                                    }
+                                    else if(i>1 && i<3){
+                                        reward='100元京东卡';
+                                    }else{
+                                        reward='100元红包';
+                                    }
+                                }
+                                else if(type=='referrer') {
+                                    reward='100元红包';
+                                }
+
+                                %>
                                 <tr>
-                                    <th>排名</th>
-                                    <th>用户</th>
-                                    <th>投资额</th>
-                                    <th>奖励</th>
+                                    <td><%=i+1%></td>
+                                    <td><%=item.loginName%></td>
+                                    <td><%=item.centSumAmount%></td>
+                                    <td><%=reward%></td>
                                 </tr>
-                            </thead>
-                            <input type="hidden" value="<#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if>" id="TodayAwards">
-                            <input type="hidden" value="${activityStartTime}" id="startTime">
-                            <input type="hidden" value="${activityEndTime}" id="endTime">
-                            <tbody id="investRanking-tbody">
-                            </tbody>
-                        </table>
-                        <script type="text/template" id="tplTable">
-                            <% for(var i = 0; i < records.length; i++) { %>
-                            <% var item = records[i];
-                            var reward;
-                            if(type=='invest') {
-                                if(i==0) {
-                                    reward='神秘大奖';
-                                }
-                                else if(i>0 && i<3) {
-                                    reward='200元京东卡';
-                                }
-                                else {
-                                    reward='100元京东卡';
-                                }
-                            }
-                            else if(type=='referrer') {
-                                reward='100元红包';
-                            }
+                                <% } %>
 
-                            %>
-                            <tr>
-                                <td><%=i+1%></td>
-                                <td><%=item.loginName%></td>
-                                <td><%=item.centSumAmount%></td>
-                                <td><%=reward%></td>
-                            </tr>
-                            <% } %>
+                            </script>
+                            <ul class="table-bg-item" id="bgItem">
 
-                        </script>
-                        <ul class="table-bg-item" id="bgItem">
+                            </ul>
+                            <script type="text/template" id="bgtplTable">
+                                <li></li>
+                                <% for(var i = 0; i < records.length; i++) { %>
+                                <li>
+                                </li>
+                                <% } %>
 
-                        </ul>
-                        <script type="text/template" id="bgtplTable">
-                            <% for(var i = 0; i < records.length; i++) { %>
-                            <li>
-                            </li>
-                            <% } %>
-
-                        </script>
-                        <div class="change-btn-item" id="investRanking-button">
-                            <div class="change-btn prev-btn" id="heroPre">前一天</div>
-                            <div class="change-btn next-btn" id="heroNext">后一天</div>
+                            </script>
+                            <div class="change-btn-item" id="investRanking-button">
+                                <div class="change-btn prev-btn" id="heroPre">前一天</div>
+                                <div class="change-btn next-btn" id="heroNext">后一天</div>
+                            </div>
                         </div>
                         <div class="get-rank-item">
-                            <a href="/loan-list">立即投资抢排行</a>
+                            <#if currentTime > activityEndTime>
+                                <a href="javascript:void(0)" class="disabled">立即投资抢排行</a>
+                            <#else>
+                                <a href="/loan-list" class="disabled">立即投资抢排行</a>
+                            </#if>
                         </div>
                     </div>
                 </div>

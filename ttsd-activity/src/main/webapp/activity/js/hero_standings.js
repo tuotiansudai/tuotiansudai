@@ -39,14 +39,17 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 				currDate;
 			if(/heroPre/.test(event.target.id)) {
 				currDate=GetDateStr(dateSpilt,-1); //前一天
+				$heroNext.show();
 			}
 			else if(/heroNext/.test(event.target.id)){
 				currDate=GetDateStr(dateSpilt,1); //后一天
+				currDate.replace(/-/gi,'')>=todayDate.replace(/-/gi,'')?$heroNext.hide():$heroNext.show();
 			}
 			
-			currDate.replace(/-/gi,'')>=$('#startTime').val()?$heroNext.hide():$heroNext.show();
 			
-			currDate.replace(/-/gi,'')<=$('#endTime').val()?$heroPre.hide():$heroPre.show();
+			// currDate.replace(/-/gi,'')>=todayDate.replace(/-/gi,'')?$heroNext.hide():$heroNext.show();
+			
+			// currDate.replace(/-/gi,'')<=todayDate.replace(/-/gi,'')?$heroPre.hide():$heroPre.show();
 			heroRank(currDate);
 		});
 
@@ -64,7 +67,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 						$contentRanking=$('#investRanking-tbody').parents('table');
 
 					if(_.isNull(data.records) || data.records.length==0) {
-						$nodataInvest.html('<span class="date-over">暂无数据</span>');
+						$nodataInvest.find('.table-content').html('<span class="date-over">暂无数据</span>');
 						$contentRanking.hide();
 						$('#bgItem').hide();
 						return;

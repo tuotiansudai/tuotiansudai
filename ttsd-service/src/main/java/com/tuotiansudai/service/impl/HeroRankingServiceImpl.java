@@ -87,7 +87,17 @@ public class HeroRankingServiceImpl implements HeroRankingService {
         List<String> activityPeriod = getActivityPeriod(activityCategory);
         List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(tradingTime, activityPeriod.get(0), activityPeriod.get(1));
 
-        return CollectionUtils.isNotEmpty(heroRankingViews) && heroRankingViews.size() > 10 ? heroRankingViews.subList(0, 10) : heroRankingViews;
+//        return CollectionUtils.isNotEmpty(heroRankingViews) && heroRankingViews.size() > 10 ? heroRankingViews.subList(0, 10) : heroRankingViews;
+        for(int i = 0; i < 10 ; i ++){
+            HeroRankingView heroRankingView = new HeroRankingView();
+            heroRankingView.setLoginName("test" + i);
+            heroRankingView.setMobile("1521000649" + i);
+            heroRankingView.setSumAmount(Long.parseLong(String.valueOf(i)));
+            heroRankingView.setUserName("user" + i);
+            heroRankingViews.add(heroRankingView);
+        }
+        return heroRankingViews;
+
     }
 
     @Override
