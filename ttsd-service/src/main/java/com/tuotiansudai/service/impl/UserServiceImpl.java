@@ -78,6 +78,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
     public static String SHA = "SHA";
 
     private final static int LOGIN_NAME_LENGTH = 8;
@@ -156,6 +159,14 @@ public class UserServiceImpl implements UserService {
         userModel.setSalt(salt);
         userModel.setPassword(encodePassword);
         userModel.setLastModifiedTime(new Date());
+
+        if(Strings.isNullOrEmpty(redisWrapperClient.get(dto.getMobile()))){
+            redisWrapperClient.set(dto.getMobile(), dto.getMobile());
+        }
+        else{
+            return false;
+        }
+
         this.userMapper.create(userModel);
 
         UserRoleModel userRoleModel = new UserRoleModel();
@@ -173,6 +184,7 @@ public class UserServiceImpl implements UserService {
         UserMembershipModel userMembershipModel = new UserMembershipModel(userModel.getLoginName(), membershipModel.getId(), new DateTime().withDate(9999, 12, 31).withTime(23, 59, 59, 0).toDate(), UserMembershipType.UPGRADE);
         userMembershipMapper.create(userMembershipModel);
 
+        redisWrapperClient.del(dto.getMobile());
         return true;
     }
 
