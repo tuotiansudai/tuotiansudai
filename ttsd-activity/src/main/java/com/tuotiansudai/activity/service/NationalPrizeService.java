@@ -213,6 +213,9 @@ public class NationalPrizeService {
     }
 
     public String getMyActivityPoint(String loginName){
+        if(Strings.isNullOrEmpty(loginName)){
+            return String.valueOf(0);
+        }
         return String.valueOf(pointBillMapper.findSumPointByLoginNameAndBusinessType(loginName, null, null, null));
     }
 
