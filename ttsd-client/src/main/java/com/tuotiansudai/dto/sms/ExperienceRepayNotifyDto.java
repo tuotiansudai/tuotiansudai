@@ -1,25 +1,24 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.dto.sms;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.List;
 
-public class RepayNotifyDto implements Serializable {
+public class ExperienceRepayNotifyDto implements Serializable {
 
     @NotEmpty
-    @Pattern(regexp = "^\\d{11}$")
-    private String mobile;
+    private List<String> mobiles;
 
     @NotEmpty
     private String repayAmount;
 
-    public String getMobile() {
-        return mobile;
+    public List<String> getMobiles() {
+        return mobiles;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setMobiles(List<String> mobiles) {
+        this.mobiles = mobiles;
     }
 
     public String getRepayAmount() {

@@ -1,4 +1,4 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.enums;
 
 public enum UserBillBusinessType {
     RECHARGE_SUCCESS("充值成功"),

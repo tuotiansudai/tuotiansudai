@@ -1,6 +1,6 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-import com.tuotiansudai.repository.model.UserBillBusinessType;
+import com.tuotiansudai.enums.UserBillBusinessType;
 
 public class UserBillRecordResponseDataDto extends BaseResponseDataDto{
     private String time;

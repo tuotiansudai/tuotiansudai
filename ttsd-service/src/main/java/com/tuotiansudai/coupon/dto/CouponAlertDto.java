@@ -1,7 +1,7 @@
 package com.tuotiansudai.coupon.dto;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.enums.CouponType;
 
 import java.io.Serializable;
 import java.util.Date;

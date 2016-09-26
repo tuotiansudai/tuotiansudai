@@ -15,6 +15,8 @@ public interface UserMembershipMapper {
 
     void create(UserMembershipModel userMembershipModel);
 
+    void createBatch(List<UserMembershipModel> userMembershipModels);
+
     void update(UserMembershipModel userMembershipModel);
 
     UserMembershipModel findById(long id);
@@ -61,4 +63,12 @@ public interface UserMembershipMapper {
                                          @Param(value = "pageSize") int pageSize);
 
     long findByLoginNameOrInvestTime(@Param(value = "loginName") String loginName, @Param(value = "investTime") Date investTime);
+
+    List<UserMembershipModel> findGiveMembershipsByLoginNameAndGiveId(@Param(value = "membershipGiveId") long membershipGiveId,
+                                                                      @Param(value = "loginName") String loginName,
+                                                                      @Param(value = "index") int index,
+                                                                      @Param(value = "pageSize") int pageSize);
+
+    long findCountGiveMembershipsByLoginNameAndGiveId(@Param(value = "membershipGiveId") long membershipGiveId,
+                                                      @Param(value = "loginName") String loginName);
 }
