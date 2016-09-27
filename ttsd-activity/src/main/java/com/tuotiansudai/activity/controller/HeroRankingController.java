@@ -2,6 +2,7 @@ package com.tuotiansudai.activity.controller;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.ActivityCategory;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
@@ -13,14 +14,12 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/activity/hero-ranking")
@@ -38,17 +37,49 @@ public class HeroRankingController {
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
-
+        Map param = heroRankingService.obtainHeroRankingAndInvestAmountByLoginName(ActivityCategory.HERO_RANKING, new Date(), loginName);
+        Integer investRanking = Integer.parseInt(String.valueOf(param.get("investRanking")));
+        String investAmount = param.get("investAmount").toString();
         ModelAndView modelAndView = new ModelAndView("/activities/hero-ranking", "responsive", true);
         modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
         modelAndView.addObject("yesterdayTime", DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1));
-        Integer investRanking = heroRankingService.obtainHeroRankingByLoginName(new Date(), loginName);
-        Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(loginName);
+        Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(ActivityCategory.HERO_RANKING,loginName);
         modelAndView.addObject("investRanking", investRanking);
+        modelAndView.addObject("investAmount", investAmount);
         modelAndView.addObject("referRanking", referRanking);
         modelAndView.addObject("mysteriousPrizeDto", heroRankingService.obtainMysteriousPrizeDto(new DateTime().toString("yyyy-MM-dd")));
         return modelAndView;
     }
+
+    @RequestMapping(value = "/new" ,method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView loadNewPageData() {
+        String loginName = LoginUserInfo.getLoginName();
+        Map param = heroRankingService.obtainHeroRankingAndInvestAmountByLoginName(ActivityCategory.NEW_HERO_RANKING, new Date(), loginName);
+        Integer investRanking = Integer.parseInt(String.valueOf(param.get("investRanking")));
+        String investAmount = param.get("investAmount").toString();
+        ModelAndView modelAndView = new ModelAndView("/activities/hero-standings", "responsive", true);
+        modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
+        modelAndView.addObject("yesterdayTime", DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1));
+        Integer referRanking = heroRankingService.findHeroRankingByReferrerLoginName(ActivityCategory.NEW_HERO_RANKING,loginName);
+        modelAndView.addObject("investRanking", investRanking);
+        modelAndView.addObject("investAmount", investAmount);
+        modelAndView.addObject("referRanking", referRanking);
+        modelAndView.addObject("mysteriousPrizeDto", heroRankingService.obtainMysteriousPrizeDto(new DateTime().toString("yyyy-MM-dd")));
+        List<String> activityTime = heroRankingService.getActivityTime();
+        modelAndView.addObject("activityStartTime",activityTime.get(0));
+        modelAndView.addObject("activityEndTime",activityTime.get(1));
+        Date activityEndTime = DateTime.parse(param.get("activityEndTime").toString(), org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        if(activityEndTime.after(DateTime.now().toDate())){
+            modelAndView.addObject("activityStatus","true");
+            modelAndView.addObject("currentTime", DateTime.now().toDate());
+        }else{
+            modelAndView.addObject("activityStatus","false");
+            modelAndView.addObject("currentTime", activityEndTime);
+        }
+        return modelAndView;
+    }
+
+
 
     @RequestMapping(value = "/referrer-invest/{tradingTime}", method = RequestMethod.GET)
     @ResponseBody
@@ -58,14 +89,19 @@ public class HeroRankingController {
 
     @RequestMapping(value = "/invest/{tradingTime}", method = RequestMethod.GET)
     @ResponseBody
-    public BasePaginationDataDto<HeroRankingView> obtainHeroRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
+    public BasePaginationDataDto<HeroRankingView> obtainHeroRanking(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime,
+                                                                    @RequestParam(value = "activityCategory",defaultValue = "HERO_RANKING") ActivityCategory activityCategory) {
         final String loginName = LoginUserInfo.getLoginName();
         BasePaginationDataDto<HeroRankingView> baseListDataDto = new BasePaginationDataDto<>();
-        List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(tradingTime);
+        List<HeroRankingView> heroRankingViews = heroRankingService.obtainHeroRanking(activityCategory,tradingTime);
 
         if (heroRankingViews != null) {
             for (HeroRankingView heroRankingView : heroRankingViews) {
-                heroRankingView.setLoginName(randomUtils.encryptMobile(loginName, heroRankingView.getLoginName()));
+                if(activityCategory.equals(ActivityCategory.NEW_HERO_RANKING)){
+                    heroRankingView.setLoginName(randomUtils.encryptNewMobile(loginName, heroRankingView.getLoginName()));
+                }else{
+                    heroRankingView.setLoginName(randomUtils.encryptMobile(loginName, heroRankingView.getLoginName()));
+                }
             }
 
             //TODO:fake
@@ -82,5 +118,7 @@ public class HeroRankingController {
         baseListDataDto.setStatus(true);
         return baseListDataDto;
     }
+
+
 
 }
