@@ -6,7 +6,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.dto.smsDto.RepayNotifyDto;
+import com.tuotiansudai.dto.sms.RepayNotifyDto;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.LoanRepayNotifyModel;
 import com.tuotiansudai.service.impl.LoanRepayServiceImpl;

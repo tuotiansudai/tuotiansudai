@@ -359,7 +359,7 @@ body {
       margin-top: 110px;
     }
   }
-  .lottery-draw {
+  .tour-theme {
     .lottery-right {
       width:340px;
       .chance-number {
@@ -385,7 +385,90 @@ body {
         padding-top:10px;
       }
     }
+    .leader-container {
+        background:none;
+        margin:30px 0 0 0;
+        .leader-list{
+          padding:40px 0 0 0;
+          .lottery-circle{
+            h3{
+              background:#e6fbff;
+              color:#146566;
+              width: 60%;
+              margin:10% 20%;
+              border:1px solid #009289;
+              border-radius: 10px;
+              box-sizing:border-box;
+            }
+            .circle-shade{
+              background: url("/activity/images/sign/actor/circle/tour-bg.png") no-repeat center;
+              background-size:100%;
+              .rotate-btn{
+                background: url("/activity/images/sign/actor/circle/tour-gift.png") no-repeat center;
+                background-size: contain;
+              }
+            }
+          }
+          .lottery-detail{
+            float:left;
+            width:340px;
+            height:520px;
+            margin-top:30px;
 
+            h3{
+              background:#e6fbff;
+              color:#146566;
+              border:1px solid #009289;
+              border-radius: 20px;
+              box-sizing:border-box;
+            }
+            .gift-record{
+              background:#71cfcf;
+              border-bottom:1px solid #009289;
+              border-radius: 20px 20px 0 0;
+              overflow:hidden;
+              li{
+                background:#71cfcf;
+                color:#3f8f89;
+                &.active{
+                  color:#ed702c;
+                  background:#e6fbff;
+                  border-radius: 20px 20px 0 0;
+                  box-sizing: border-box;
+                }
+              }
+            }
+            .record-list{
+              background:#e6fbff;
+              .record-model{
+                &.user-record{
+                  li{
+                    color:#ed702c;
+                  }
+                }
+                &.own-record{
+                  li{
+                    span{
+                      color:#ed702c;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+    .tip-list {
+      .tip-dom {
+        background:#fffdee url("/activity/images/sign/actor/circle/tour-tip.jpg") no-repeat center top;
+        background-size: contain;
+      }
+      .close-btn {
+        background: url(/activity/images/sign/actor/circle/close-tour.png) no-repeat center top;
+        background-size: contain;
+      }
+    }
   }
 
 .activity-rule {
@@ -409,6 +492,7 @@ body {
   }
 }
 
+
 @media (max-width: 700px) {
 
   * {
@@ -422,20 +506,6 @@ body {
   }
   .lottery-draw {
     float: none;
-  }
-  .leader-container {
-    float: none;
-    &.tour-theme .leader-list {
-      padding:0;
-      width: 100%;
-      .lottery-circle {
-        margin-top:0;
-        h3 {
-          float: none;
-          margin: 0 auto 30px auto;
-        }
-      }
-    }
   }
 
   .tour-slide  {
@@ -626,5 +696,32 @@ body {
         padding: 10px 20px;
       }
     }
+
+    .tour-theme {
+      .leader-container {
+        float: none;
+        .leader-list {
+          padding:0;
+          width: 100%;
+          .lottery-circle {
+            margin-top:0;
+            float: none;
+            height: auto;
+            overflow: auto;
+            h3 {
+              float: none;
+              margin: 0 auto 30px auto;
+            }
+          }
+          .lottery-detail{
+            float: none;
+            width:100%;
+            height:auto;
+          }
+        }
+      }
+    }
   }
+
+
 }

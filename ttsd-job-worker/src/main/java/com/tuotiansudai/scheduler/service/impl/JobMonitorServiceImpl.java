@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.Environment;
-import com.tuotiansudai.dto.smsDto.SmsFatalNotifyDto;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.job.InvestCallbackJob;
 import com.tuotiansudai.job.InvestTransferCallbackJob;
 import com.tuotiansudai.scheduler.repository.mapper.ExecutionLogMapper;

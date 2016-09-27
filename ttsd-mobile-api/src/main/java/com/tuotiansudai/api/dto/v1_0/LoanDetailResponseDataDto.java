@@ -49,7 +49,6 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String extraSource;
     private String activityDesc;
 
-
     public String getLoanId() {
         return loanId;
     }

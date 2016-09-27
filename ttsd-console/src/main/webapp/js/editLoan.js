@@ -215,6 +215,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 uploadFile.push(obj);
             });
         };
+
         $('.jq-checkbox label').click(function () {
             if ($('.jq-index').prop('checked')) {
                 $('.jq-index').val('1');
@@ -296,7 +297,6 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     showErrorMessage('请选择借款项目名称', $('.jq-name', curform));
                     return false;
                 }
-
                 var activityDesc = $('.jq-activity-desc', curform).val();
                 if ($('.jq-activity').prop('checked') && activityDesc.trim() == "") {
                     showErrorMessage('您选择了活动专享,标的所属活动必须填写', $('.jq-activity-desc', curform));
@@ -403,6 +403,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 if (activityInputVal == '1') {
                     activity = true;
                 }
+
                 var value = $('.jq-name').val();
                 var url = API_FORM + operate;
                 if ("房产抵押借款" == value) {

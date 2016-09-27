@@ -13,6 +13,7 @@
         <result column="user_name" property="userName"></result>
         <result column="prize" property="prize"></result>
         <result column="lottery_time" property="lotteryTime"></result>
+        <result column="activity_category" property="activityCategory"></result>
     </resultMap>
 
     <resultMap id="userLotteryPrizeView" type="com.tuotiansudai.activity.repository.model.UserLotteryPrizeView">
@@ -23,8 +24,8 @@
     </resultMap>
 
     <insert id="create" parameterType="userLotteryPrizeModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `edxactivity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`user_name`,`prize`,`lottery_time`)
-        VALUES(#{id},#{mobile},#{loginName},#{userName},#{prize},#{lotteryTime});
+        INSERT INTO `edxactivity`.`user_lottery_prize`(`id`,`mobile`,`login_name`,`user_name`,`prize`,`lottery_time`,`activity_category`)
+        VALUES(#{id},#{mobile},#{loginName},#{userName},#{prize},#{lotteryTime},#{activityCategory});
 
     </insert>
 
@@ -36,7 +37,8 @@
         `login_name` = #{login_name},
         `user_name` = #{user_name},
         `prize` = #{prize},
-        `lottery_time` = #{lotteryTime}
+        `lottery_time` = #{lotteryTime},
+        `activity_category` = #{activityCategory}
         WHERE `id` = #{id}
     </update>
 
@@ -46,14 +48,17 @@
             <if test="mobile !=null and mobile !='' ">
                 and p.mobile like '${mobile}%'
             </if>
-            <if test="lotteryPrize !=null and lotteryPrize.description !='' ">
-                and p.prize like '${lotteryPrize}%'
+            <if test="lotteryPrize !=null ">
+                and p.prize = '${lotteryPrize}'
             </if>
             <if test="startTime != null">
                 and p.lottery_time >= #{startTime}
             </if>
             <if test="endTime != null">
                 <![CDATA[ and p.lottery_time <= #{endTime} ]]>
+            </if>
+            <if test="activityCategory != null">
+                and activity_category = #{activityCategory}
             </if>
         </where>
         order by p.lottery_time DESC
@@ -66,14 +71,17 @@
             <if test="mobile !=null and mobile !='' ">
                 and p.mobile like '${mobile}%'
             </if>
-            <if test="lotteryPrize !=null and lotteryPrize.description !='' ">
-                and p.prize like '${lotteryPrize}%'
+            <if test="lotteryPrize !=null ">
+                and p.prize = '${lotteryPrize}'
             </if>
             <if test="startTime != null">
                 and p.lottery_time >= #{startTime}
             </if>
             <if test="endTime != null">
                 <![CDATA[ and p.lottery_time <= #{endTime} ]]>
+            </if>
+            <if test="activityCategory != null">
+                and activity_category = #{activityCategory}
             </if>
         </where>
     </select>
@@ -90,6 +98,10 @@
                 <foreach collection="lotteryPrizes" item="prize" open="(" separator="," close=")">
                     #{prize}
                 </foreach>
+            </if>
+
+            <if test="activityCategory != null">
+                and activity_category = #{activityCategory}
             </if>
         </where>
         order by lottery_time DESC
