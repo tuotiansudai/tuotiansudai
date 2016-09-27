@@ -12,7 +12,7 @@ module.exports = function(grunt) {
             baseCssMinPath: 'src/main/webapp/activity/style/dest',
             baseJsPath: 'src/main/webapp/activity/js',
             baseJsMinPath: 'src/main/webapp/activity/js/dest',
-            baseImagePath:'src/main/webapp/activity/images',
+            baseImagePath: 'src/main/webapp/activity/images',
         },
         clean: {
             css: {
@@ -110,7 +110,7 @@ module.exports = function(grunt) {
                 //如果scss有import别的scss文件，不要加newer,不然监听不到import里文件的变化
                 //tasks: ['newer:sass']
             },
-            dataUri:{
+            dataUri: {
                 files: [
                     '<%= meta.baseCssPath %>/*.css'
                 ],
@@ -157,7 +157,7 @@ module.exports = function(grunt) {
                         expand: true,
                         cwd: '<%=meta.baseImagePath%>/',
                         src: ['**/*.{png,jpg,jpeg}'],   // 优化 img 目录下所有 png/jpg/jpeg 图片
-                        dest:'<%=meta.baseImagePath%>/' // 优化后的图片保存位置，覆盖旧图片，并且不作提示
+                        dest: '<%=meta.baseImagePath%>/' // 优化后的图片保存位置，覆盖旧图片，并且不作提示
                     }
                 ]
             }
