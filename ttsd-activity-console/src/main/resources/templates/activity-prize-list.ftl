@@ -2,7 +2,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="activity-lottery-list.js" headLab="activity-manage" sideLab="lottery" title="抽奖数据统计">
 
-<div class="col-md-10">
+<div class="col-md-10" style="height: 80%">
     <div class="panel panel-default">
         <div class="panel-body">
             <a class="btn btn-default " href="/activity-console/activity-manage/user-time-list" role="button">抽奖机会统计</a>
@@ -18,6 +18,17 @@
                 </div>
 
                 <div class="form-group">
+                    <label>活动类型</label>
+                    <select class="selectpicker" name="prizeType"">
+                        <#list prizeTypes as prizeType>
+                            <option value="${prizeType}" <#if prizeTypes?? && prizeType==selectPrizeType>selected</#if>>
+                            ${prizeType.description}
+                            </option>
+                        </#list>
+                    </select>
+                </div>
+
+                <div class="form-group" id = "autumnPrizeDiv">
                     <label>奖品</label>
                     <select class="selectpicker" name="selectPrize">
                         <option value="" <#if !(lotteryPrizes??)>selected</#if>>全部</option>
@@ -27,8 +38,19 @@
                                 </option>
                         </#list>
                     </select>
-                </div>
 
+                </div>
+                <div class="form-group" style="display:none;" id="nationalDiv">
+                    <label>奖品</label>
+                    <select class="selectpicker" name="selectNational">
+                        <option value="" <#if !(nationalPrizes??)>selected</#if>>全部</option>
+                        <#list nationalPrizes as national>
+                            <option value="${national}" <#if nationalPrizes?? && national==selectPrize>selected</#if>>
+                            ${national.description}
+                            </option>
+                        </#list>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label>获奖时间</label>
                     <div class='input-group date' id='datetimepicker1'>
@@ -78,7 +100,7 @@
                 <ul class="pagination pull-left">
                     <li>
                         <#if hasPreviousPage >
-                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&index=${index-1}&pageSize=${pageSize}">
+                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&prizeType=${selectPrizeType!}&selectPrize=${selectPrize}$selectPrize=${selectPrize}&index=${index-1}&pageSize=${pageSize}">
                         <#else>
                         <a href="#">
                         </#if>
@@ -88,7 +110,7 @@
                     <li><a>${index}</a></li>
                     <li>
                         <#if hasNextPage>
-                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&index=${index+1}&pageSize=${pageSize}">
+                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&prizeType=${selectPrizeType!}&selectPrize=${selectPrize}$selectPrize=${selectPrize}&index=${index+1}&pageSize=${pageSize}">
                         <#else>
                         <a href="#">
                         </#if>

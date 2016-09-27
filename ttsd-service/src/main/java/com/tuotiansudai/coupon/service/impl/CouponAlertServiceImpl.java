@@ -14,7 +14,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAlertService;
-import com.tuotiansudai.dto.smsDto.SmsCouponNotifyDto;
+import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import org.apache.commons.collections4.CollectionUtils;

@@ -315,7 +315,6 @@
                                                 <i class="ic-right"></i>
                                             </span>
                                         </#if>
-
                                     </div>
                                     <div class="loan-info-dl">
                                         <dl>

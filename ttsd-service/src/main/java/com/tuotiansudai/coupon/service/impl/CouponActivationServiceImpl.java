@@ -9,7 +9,7 @@ import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.util.UserCollector;
-import com.tuotiansudai.dto.smsDto.SmsCouponNotifyDto;
+import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.job.CouponNotifyJob;
 import com.tuotiansudai.job.JobType;
