@@ -206,6 +206,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 uploadFile.push(obj);
             });
         };
+
         $('.jq-checkbox label').click(function () {
             if ($('.jq-index').prop('checked')) {
                 $('.jq-index').val('1');

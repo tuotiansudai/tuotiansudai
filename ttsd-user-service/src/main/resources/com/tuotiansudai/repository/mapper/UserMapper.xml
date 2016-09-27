@@ -201,11 +201,18 @@
                 mobile like CONCAT('%', #{mobile}, '%')
             </if>
         </where>
-        order by register_time desc limit #{index}, #{pageSize}
+        order by register_time desc
+        <if test="index != null and pageSize != null">
+            limit #{index}, #{pageSize}
+        </if>
     </select>
 
-    <select id="findUsersByRegisterTime" parameterType="map" resultMap="userResultMap">
-        select * from user where register_time between #{startTime} and #{endTime} order by register_time
+    <select id="findUsersByRegisterTimeOrReferrer" parameterType="map" resultMap="userResultMap">
+        select * from user where register_time between #{startTime} and #{endTime}
+        <if test="referrer != null and referrer != ''">
+            and referrer = #{referrer}
+        </if>
+        order by register_time
     </select>
 
 </mapper>

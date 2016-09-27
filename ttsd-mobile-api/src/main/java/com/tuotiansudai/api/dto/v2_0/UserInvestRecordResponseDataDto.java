@@ -182,6 +182,22 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
         this.extraRate = extraRate;
     }
 
+    public String getActivityDesc() {
+        return activityDesc;
+    }
+
+    public void setActivityDesc(String activityDesc) {
+        this.activityDesc = activityDesc;
+    }
+
+    public PledgeType getPledgeType() {
+        return pledgeType;
+    }
+
+    public void setPledgeType(PledgeType pledgeType) {
+        this.pledgeType = pledgeType;
+    }
+
     public UserInvestRecordResponseDataDto() {
 
     }
@@ -198,21 +214,5 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
         this.achievements = invest.getAchievements();
         this.activityDesc = loanDetailsModel != null ? loanDetailsModel.getActivityDesc() : "";
         this.pledgeType = loan.getPledgeType();
-    }
-
-    public String getActivityDesc() {
-        return activityDesc;
-    }
-
-    public void setActivityDesc(String activityDesc) {
-        this.activityDesc = activityDesc;
-    }
-
-    public PledgeType getPledgeType() {
-        return pledgeType;
-    }
-
-    public void setPledgeType(PledgeType pledgeType) {
-        this.pledgeType = pledgeType;
     }
 }

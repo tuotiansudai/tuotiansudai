@@ -3,7 +3,7 @@
  * [user]:xuqiang
  * [date]:2016-08-24
  */
-define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, rotate, layer,tpl) {
+define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, layer,tpl) {
     var bRotate = false,
         $pointer = $('#pointer'),
         $rotate = $('#rotate'),
@@ -27,8 +27,9 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         var url = '/activity/autumn/luxury-draw?mobile='+mobile;
         if($('#themeType').val() == 'travel'){
             url = '/activity/autumn/travel-draw?mobile='+mobile;
+        }else if($('#themeType').val() == 'national'){
+            url = '/activity/national/draw?mobile='+mobile;
         }
-
         if (bRotate) return;
         $.ajax({
             url: url,
@@ -56,8 +57,30 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
                     case 'RED_ENVELOPE_50':
                         rotateFn(5, 300, '50元现金红包',data.prizeType);
                         break;
+
                     case 'MANGO_CARD_100':
                         rotateFn(6, 347, '100元芒果卡',data.prizeType);
+                        break;
+                    case 'RED_INVEST_15':
+                        rotateFn(7, 30, '15元投资红包',data.prizeType);
+                        break;
+                    case 'RED_INVEST_50':
+                        rotateFn(8, 120, '50元投资红包',data.prizeType);
+                        break;
+                    case 'TELEPHONE_FARE_10':
+                        rotateFn(9, 265, '10元话费',data.prizeType);
+                        break;
+                    case 'IQIYI_MEMBERSHIP':
+                        rotateFn(10, 80, '1个月爱奇艺会员',data.prizeType);
+                        break;
+                    case 'CINEMA_TICKET':
+                        rotateFn(11, 310, '电影票一张',data.prizeType);
+                        break;
+                    case 'FLOWER_CUP':
+                        rotateFn(12, 170, '青花瓷杯子',data.prizeType);
+                        break;
+                    case 'MEMBERSHIP_V5':
+                        rotateFn(13, 347, '1个月V5会员',data.prizeType);
                         break;
                 }
             } else if (data.returnCode == 2) {
@@ -81,6 +104,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
             animateTo: angles + 1800,
             duration: 8000,
             callback: function() {
+                console.log(type);
                 $('#tipList').html(tpl('tipListTpl', {tiptext:'抽中了'+txt,istype:type})).show().find('.tip-dom').show();
                 bRotate = !bRotate;
                 $('.lottery-time').each(function(index,el){
@@ -91,6 +115,7 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
             }
         })
     }
+
     //close btn
     $('body').on('click', '.go-close', function(event) {
         event.preventDefault();
@@ -130,6 +155,8 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         var url = '/activity/autumn/luxury-all-list';
         if($('#themeType').val() == 'travel'){
             url = '/activity/autumn/travel-all-list';
+        }else if($('#themeType').val() == 'national'){
+            url = '/activity/national/all-list';
         }
         $.ajax({
             url: url,
@@ -147,6 +174,8 @@ define(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquer
         var url = '/activity/autumn/luxury-user-list?mobile='+mobile;
         if($('#themeType').val() == 'travel'){
             url = '/activity/autumn/travel-user-list?mobile='+mobile;
+        }else if($('#themeType').val() == 'national'){
+            url = '/activity/national/user-list?mobile='+mobile;
         }
         $.ajax({
             url: url,

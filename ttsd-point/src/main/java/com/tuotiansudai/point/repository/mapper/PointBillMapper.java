@@ -16,15 +16,15 @@ public interface PointBillMapper {
     List<PointBillModel> findByLoginName(String loginName);
 
     long findCountPointBillPagination(@Param(value = "loginName") String loginName,
-                                   @Param(value = "startTime") Date startTime,
-                                   @Param(value = "endTime") Date endTime,
+                                      @Param(value = "startTime") Date startTime,
+                                      @Param(value = "endTime") Date endTime,
                                       @Param(value = "businessTypes") List<PointBusinessType> businessTypes);
 
     List<PointBillModel> findPointBillPagination(@Param(value = "loginName") String loginName,
-                                                        @Param(value = "index") int index,
-                                                        @Param(value = "pageSize") int pageSize,
-                                                        @Param(value = "startTime") Date startTime,
-                                                        @Param(value = "endTime") Date endTime,
+                                                 @Param(value = "index") int index,
+                                                 @Param(value = "pageSize") int pageSize,
+                                                 @Param(value = "startTime") Date startTime,
+                                                 @Param(value = "endTime") Date endTime,
                                                  @Param(value = "businessTypes") List<PointBusinessType> businessTypes);
 
     long findCountPointBillByLoginName(@Param(value = "loginName") String loginName);
@@ -36,4 +36,9 @@ public interface PointBillMapper {
     PointBillModel findLatestSignInPointBillByLoginName(@Param(value = "loginName") String loginName);
 
     long findUserTotalPoint(@Param(value = "loginName") String loginName);
+
+    long findSumPointByLoginNameAndBusinessType(@Param(value = "loginName") String loginName,
+                                                @Param(value = "startTime") Date startTime,
+                                                @Param(value = "endTime") Date endTime,
+                                                @Param(value = "businessTypes") List<PointBusinessType> businessTypes);
 }

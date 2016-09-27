@@ -33,7 +33,6 @@ public class LoanResponseDataDto {
     private String activityDesc;
     private PledgeType pledgeType;
 
-
     public String getLoanId() {
         return loanId;
     }

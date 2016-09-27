@@ -70,8 +70,6 @@
                         <option value="车辆抵押借款" <#if loanInfo.projectName == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
                     </select>
                 </div>
-
-
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">代理用户: </label>
