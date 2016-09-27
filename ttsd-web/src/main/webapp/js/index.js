@@ -145,7 +145,6 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
                     });
                     $('.image-captcha img').trigger('click');
                 }
-
             }
         );
     });
@@ -205,36 +204,45 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
 
             $(form).find('input[name="bookingAmount"]').val(amount);
             var data = $(form).serialize();
-            //form.submit();
+            
+
             $.ajax({
-                url: '/booking-loan/invest?' + data,
+                url: '/isLogin',
                 //data:data,
                 type: 'GET',
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8'
             })
-                .done(function (response) {
-                    if (response.data.status) {
-                        layer.closeAll();
-
-                        layer.open({
-                            type: 1,
-                            title: '&nbsp',
-                            area: ['400px', '185px'],
-                            content: '<div class="success-info-tip"> <i class="icon-tip"></i> <div class="detail-word"><h2>恭喜您预约成功！</h2> 当有可投项目时，客服人员会在第一时间与您联系，请您耐心等候并保持电话畅通。</div> </div>'
-                        });
-
-                        //layer.msg('', {
-                        //    time: 6000,
-                        //    icon: 1,
-                        //    tips: [1, '#efbf5c']
-                        //});
-                    }
-                })
                 .fail(function (response) {
-                    layer.alert('接口错误');
-                });
-            return false;
+                    if ("" == response.responseText) {
+                        $.ajax({
+                            url: '/booking-loan/invest?' + data,
+                            //data:data,
+                            type: 'GET',
+                            dataType: 'json',
+                            contentType: 'application/json; charset=UTF-8'
+                        })
+                        .done(function (response) {
+                            if (response.data.status) {
+                                layer.closeAll();
+
+                                layer.open({
+                                    type: 1,
+                                    title: '&nbsp',
+                                    area: ['400px', '185px'],
+                                    content: '<div class="success-info-tip"> <i class="icon-tip"></i> <div class="detail-word"><h2>恭喜您预约成功！</h2> 当有可投项目时，客服人员会在第一时间与您联系，请您耐心等候并保持电话畅通。</div> </div>'
+                                });
+                            }
+                        })
+                        .fail(function (response) {
+                            layer.alert('接口错误');
+                        });
+                        return false;
+                    } else {
+                        location.href='/login';
+                    }
+                }
+            );
         }
     });
 
