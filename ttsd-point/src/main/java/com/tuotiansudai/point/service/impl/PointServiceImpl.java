@@ -83,7 +83,7 @@ public class PointServiceImpl implements PointService {
             UserModel userModel = userMapper.findByLoginName(loginName);
             List<InvestModel> successInvestModels = investMapper.findSuccessInvestByInvestTime(loginName, activityNationalStartTime, activityNationalEndTime);
             if(successInvestModels.size() < 2 && userModel.getRegisterTime().before(activityNationalEndTime) && userModel.getRegisterTime().after(activityNationalStartTime) && !Strings.isNullOrEmpty(userModel.getReferrer())){
-                pointBillService.createPointBill(userModel.getReferrer(), investId, PointBusinessType.ACTIVITY, (long) (point * 3.0));
+                pointBillService.createPointBill(userModel.getReferrer(), investId, PointBusinessType.ACTIVITY, (long) (point * 0.1));
             }
 
             point *= 2;
