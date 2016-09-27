@@ -10,15 +10,18 @@
             <span class="title-word01"></span>
         </div>
 
-        <#--<div class="invite-box-friend anonymous">-->
-            <#--<dl>-->
-                <#--<dt>向好友发送您的邀请链接：</dt>-->
-                <#--<dd><input type="text" class="input-invite" value="https://tuotiansudai.com/register/user?referrer=cg007008">-->
-                    <#--<button type="button" class="btn-copy-link">复制链接</button>-->
-                <#--</dd>-->
-            <#--</dl>-->
-        <#--</div>-->
+        <@global.isAnonymous>
+        <div class="invite-box-friend anonymous">
+            <dl>
+                <dt>向好友发送您的邀请链接：</dt>
+                <dd><input type="text" class="input-invite" value="https://tuotiansudai.com/register/user?referrer=cg007008">
+                    <button type="button" class="btn-copy-link">复制链接</button>
+                </dd>
+            </dl>
+        </div>
+            </@global.isAnonymous>
 
+    <@global.isNotAnonymous>
         <div class="invite-box-friend clearfix non-anonymous">
             <dl>
                 <dd>
@@ -32,6 +35,7 @@
                 <span>微信扫码邀请好友</span>
             </div>
         </div>
+    </@global.isNotAnonymous>
 
     </div>
 
@@ -43,26 +47,32 @@
         <div class="border-dashed-square earn-commission clearfix">
             <div class="arrow-step"></div>
             <div class="arrow-step"></div>
-            <dl class="earn-list">
+            <dl class="earn-list clearfix">
                 <dd>
                     <em class="icon-tag"></em>
-                    <span>
+                    <span class="btn-bar">
                         <i class="arr-left"></i><b>发送邀请链接给好友</b><i class="arr-right"></i>
                     </span>
                 </dd>
                 <dd>
                     <em class="icon-tag"></em>
-                    <span>
+                    <span class="btn-bar">
                         <i class="arr-left"></i><b>好友注册并购买</b><i class="arr-right"></i>
                     </span>
                 </dd>
                 <dd>
                     <em class="icon-tag"></em>
-                    <span>
+                    <span class="btn-bar">
                         <i class="arr-left"></i><b>您获得好友投资本金预期年化收益的1%</b><i class="arr-right"></i>
                     </span>
                 </dd>
+
             </dl>
+
+            <div class="mobile-btn-bar">
+                  发送邀请链接给好友，好友注册并购买， <br/>
+                     您获得好友投资本金预期年化收益的1%
+            </div>
 
         </div>
 
@@ -84,6 +94,9 @@
                     <span>好友获得投资本金预期年化收益的1%</span>
                 </div>
             </div>
+
+            <p class="for-mobile">好友邀请其他人注册并购买，您获得投资本金预期年化收益的1%
+                好友获得投资本金预期年化收益的1%</p>
 
             </div>
      </div>
@@ -108,6 +121,9 @@
                 <em class="icon-tag"></em>
                 <span>您获得奖励246.57元</span>
             </div>
+
+            <p class="for-mobile">您邀请了好友悟空，悟空注册并投资了90天的标的10万元
+                您获得奖励246.57元。</p>
         </div>
 
         <div class="border-dashed-square reward-rules-normal clearfix">
@@ -126,9 +142,11 @@
                 <em class="icon-tag"></em>
                 <span>您和悟空都可以获得奖励246.57元</span>
             </div>
+            <p class="for-mobile">悟空邀请了好友八戒，八戒注册并投资了90天的标的10万元
+                您和悟空都可以获得奖励246.57元</p>
         </div>
 
-        <div class="border-dashed-square reward-rules-normal clearfix tl">
+        <div class="border-dashed-square reward-rules-normal clearfix">
 
             <div class="invite-group two">
                 <em class="icon-tag"></em>
@@ -139,7 +157,7 @@
                 <em class="icon-tag"></em>
                 <span>您获得奖励=246X2X5=2460元</span>
             </div>
-
+            <p class="for-mobile">八戒和悟空又这样投资了5次，您获得奖励=246X2X5=2460元</p>
         </div>
 
         <div class="invite-box-friend anonymous">

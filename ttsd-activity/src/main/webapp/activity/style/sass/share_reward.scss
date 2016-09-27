@@ -10,6 +10,9 @@ body {
   color: #005e80;
   font-size: 14px;
 }
+.for-mobile {
+  display: none;
+}
 .main-frame {
   width: 100%;
   margin: 0 auto;
@@ -38,21 +41,20 @@ body {
     span {
       display: inline-block;
       width:100%;
-      height:50px;
-      margin-top: 13px;
       margin-left: 30px;
-      background: url("/activity/images/share-reward/title-word.png") no-repeat;
+      height: 32px;
+      margin-top: 21px;
       &.title-word01 {
-        background-position: -15px -15px;
+        background: url("/activity/images/share-reward/title01.png") no-repeat left top;
       }
       &.title-word02 {
-        background-position: -15px -84px;
+        background: url("/activity/images/share-reward/title02.png") no-repeat left top;
       }
       &.title-word03 {
-        background-position: -15px -150px;
+        background: url("/activity/images/share-reward/title03.png") no-repeat left top;
       }
       &.title-word04 {
-        background-position: -15px -217px;
+        background: url("/activity/images/share-reward/title04.png") no-repeat left top;
       }
     }
   }
@@ -132,69 +134,74 @@ body {
   padding-top:20px;
 
   .icon-tag {
-    width:150px;
+    width: 136px;
     height:155px;
     display: inline-block;
-    background: url("/activity/images/share-reward/icon-sign.png") no-repeat;
+
   }
 
   .earn-commission {
     position: relative;
+    span.btn-bar {
+      display: block;
+      i{
+        display: inline-block;
+        width:40px;
+        height:60px;
+        border-top:30px solid #29a0cc;
+        border-bottom:30px solid #29a0cc;
+        &.arr-left {
+          border-left:20px solid transparent;
+          border-right:20px solid #29a0cc;
+        }
+        &.arr-right {
+          border-left:20px solid #29a0cc;
+          border-right:20px solid transparent;
+        }
+      }
+      b {
+        display: inline-block;
+        background: #29a0cc;
+        height:60px;
+        text-align: center;
+        width:180px;
+        vertical-align: top;
+        color: #fff;
+        font-weight: normal;
+        line-height: 20px;
+        padding-top: 20px;
+      }
+    }
     .earn-list {
       dd {
         width:33%;
         float:left;
         text-align: center;
-
-        span {
-          display: block;
-          i{
-            display: inline-block;
-            width:40px;
-            height:60px;
-            border-top:30px solid #29a0cc;
-            border-bottom:30px solid #29a0cc;
-            &.arr-left {
-              border-left:20px solid transparent;
-              border-right:20px solid #29a0cc;
-            }
-            &.arr-right {
-              border-left:20px solid #29a0cc;
-              border-right:20px solid transparent;
-            }
-          }
-          b {
-            display: inline-block;
-            background: #29a0cc;
-            height:60px;
-            text-align: center;
-            width:180px;
-            vertical-align: top;
-            color: #fff;
-            font-weight: normal;
-            line-height: 20px;
-            padding-top: 20px;
-          }
-        }
         &:nth-child(1) {
           em {
-            background-position: 0 0;
+            background: url("/activity/images/share-reward/icon-t01.png") no-repeat left top;
+           background-size: 100%;
           }
         }
         &:nth-child(2) {
           em {
-            background-position: 0 -155px;
+            background: url("/activity/images/share-reward/icon-t02.png") no-repeat left top;
+            background-size: 100%;
           }
         }
         &:nth-child(3) {
           em {
-            background-position: 0 -316px;
+            background: url("/activity/images/share-reward/icon-t03.png") no-repeat left top;
+            background-size: 100%;
           }
           b {
             padding-top: 10px;
           }
         }
       }
+    }
+    .mobile-btn-bar {
+      display: none;
     }
     .arrow-step {
       position: absolute;
@@ -234,7 +241,7 @@ body {
           top: 90px;
           text-align: center;
           em {
-            background-position: 0 -640px;
+            background: url("/activity/images/share-reward/icon-t05.png") no-repeat left top;
           }
 
         }
@@ -245,7 +252,7 @@ body {
             display: inline-block;
           }
           em {
-            background-position: 0 -479px;
+            background: url("/activity/images/share-reward/icon-t13.png") no-repeat left top;
             vertical-align: middle;
           }
 
@@ -257,7 +264,7 @@ body {
             display: inline-block;
           }
           em {
-            background-position: 0 -475px;
+            background: url("/activity/images/share-reward/icon-t13.png") no-repeat left top;
             vertical-align: middle;
           }
         }
@@ -267,12 +274,10 @@ body {
   }
 
   .reward-rules {
-    text-align: center;
+
     .reward-rules-normal {
-      &.tl {
-        text-align: left;
-        padding-left: 52px;
-      }
+      padding-left: 100px;
+
       .arrow-step {
         display: inline-block;
       }
@@ -283,37 +288,35 @@ body {
         span {
           display: block;
         }
-        .icon-tag {
-          height: 122px;
-        }
+
         &.one {
           em {
-            background-position: -172px 0;
+            background: url("/activity/images/share-reward/icon-t06.png") no-repeat left center;
           }
         }
         &.two {
           em {
-            background-position: -172px -140px;
+            background: url("/activity/images/share-reward/icon-t07.png") no-repeat left center;
           }
         }
         &.three {
           em {
-            background-position: -172px -273px;
+            background: url("/activity/images/share-reward/icon-t08.png") no-repeat left center;
           }
         }
         &.four {
           em {
-            background-position: -172px -408px;
+            background: url("/activity/images/share-reward/icon-t09.png") no-repeat left center;
           }
         }
         &.five {
            em {
-             background-position: -172px -546px;
+             background: url("/activity/images/share-reward/icon-t10.png") no-repeat left center;
            }
          }
         &.six {
           em {
-            background-position: -172px -687px;
+            background: url("/activity/images/share-reward/icon-t11.png") no-repeat left center;
           }
         }
       }
@@ -323,6 +326,7 @@ body {
   .recommended-ranking {
     .border-dashed-square {
       padding: 0;
+      margin-bottom:10px;
       .table tr {
         td {
           padding:15px 10px;
@@ -360,33 +364,58 @@ body {
     background: url("/activity/images/share-reward/bar-share-top.png") center top no-repeat;
     background-size: contain;
   }
+  .border-dashed-square {
+    padding:10px;
+  }
+  .for-mobile {
+    display: block;
+    text-align: center;
+    font-size:12px;
+    color: #005e80;
+    margin:0 auto;
+    margin-bottom: 0;
+    width: 93%;
+    line-height: 20px;
 
+  }
+  .arrow-step {
+    width: 24px;
+    height: 10px;
+    background-size: 100%;
+  }
   .bg-column-normal {
-    padding: 60px 15px 15px 15px;
+    padding: 60px 10px 10px 10px;
     .bg-column-title {
       height: 55px;
       width:50%;
       left: -7px;
       span {
         display: inline-block;
-        width: 89%;
+        width: 90%;
         height: 29px;
         margin-top: 13px;
         margin-left: 20px;
-        background: url(/activity/images/share-reward/title-word.png) no-repeat;
-        background-size: 90%;
         &.title-word01 {
-          background-position:-12px -14px;
+          background: url("../../images/share-reward/title01.png") no-repeat left top;
+          background-size: 60%;
+
         }
         &.title-word02 {
-          background-position: -12px -91px;
+          background: url("../../images/share-reward/title02.png") no-repeat left top;
+          background-size: 55%;
+
         }
         &.title-word03 {
-          background-position: -12px -103px;
-          background-size: 100%;
+          background: url("../../images/share-reward/title03.png") no-repeat left top;
+          background-size: 77%;
+          margin-top: 18px;
+
         }
         &.title-word04 {
-          background-position: -12px -150px;
+          background: url("../../images/share-reward/title04.png") no-repeat left top;
+          background-size: 77%;
+          margin-top: 18px;
+
         }
       }
 
@@ -424,5 +453,146 @@ body {
   }
   .share-reward-container {
     padding: 0px 10px;
+    .icon-tag {
+      width: 80%;
+      height: 98px;
+      background-size: 100%;
+      overflow: hidden;
+    }
+    .earn-commission {
+      .arrow-step {
+        top: 54px;
+        &:nth-child(1) {
+          left: 29%;
+        }
+        &:nth-child(2) {
+          left: 62%;
+        }
+      }
+      .earn-list {
+        dd {
+          &:nth-child(1) {
+            text-align: left;
+          }
+          &:nth-child(2) {
+            text-align: center;
+
+
+          }
+          &:nth-child(3) {
+            text-align: right;
+
+          }
+          .btn-bar {
+            display: none;
+          }
+        }
+      }
+      .mobile-btn-bar {
+        display: block;
+        background: url(../../images/share-reward/bg-button.png) no-repeat left center;
+        background-size: 100%;
+        height: 50px;
+        font-size: 10px;
+        line-height: 16px;
+        text-align: center;
+        padding-top: 10px;
+        color: #fff;
+      }
+    }
+
+    .earn-commission2  {
+      height:270px;
+      .arrow-step {
+        left: 40%;
+        &:nth-child(1) {
+          top:54px;
+        }
+        &:nth-child(2) {
+          top:153px;
+        }
+      }
+      .invite-group-list {
+
+        .invite-group {
+          width:34%;
+
+          &:nth-child(1) {
+            left: 5%;
+            top:56px;
+            em {
+              background: url("/activity/images/share-reward/icon-t05.png") no-repeat left top;
+              background-size: 90%;
+            }
+            span {
+              display: none;
+            }
+          }
+          &:nth-child(2) {
+            left: 57%;
+            em {
+              background: url("/activity/images/share-reward/icon-t13.png") no-repeat left top;
+              background-size: 90%;
+            }
+            span {
+              display: none;
+            }
+          }
+          &:nth-child(3) {
+            left: 57%;
+            top:112px;
+            em {
+              background: url("/activity/images/share-reward/icon-t13.png") no-repeat left top;
+              background-size: 90%;
+            }
+            span {
+              display: none;
+            }
+          }
+        }
+
+      }
+      .for-mobile {
+        position: absolute;
+        bottom:10px;
+
+      }
+    }
+
+    .reward-rules {
+      .reward-rules-normal {
+        padding-left:0;
+        text-align: center;
+        .invite-group {
+          width:27%;
+          span {
+            display: none!important;
+          }
+          em {
+            background-size: 100%!important;
+          }
+        }
+      }
+    }
+
+    .recommended-ranking {
+      .border-dashed-square .table tr td {
+        font-size:12px;
+      }
+      .note {
+        font-size: 12px;
+      }
+    }
+
+    .activity-rules {
+      padding:20px;
+      margin-top:10px;
+      b {
+        font-size: 15px;
+      }
+      p {
+        font-size:11px;
+      }
+    }
   }
 }
