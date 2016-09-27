@@ -43,8 +43,8 @@
                     <tr>
                         <td width="30%">您在活动期间投资专享标（万元）</td>
                         <td width="24%">1</td>
-                        <td width="24%">2</td>
-                        <td >10</td>
+                        <td width="24%">5</td>
+                        <td>10</td>
                     </tr>
                     <tr>
                         <td>您获得红包(50元即可激活)</td>
