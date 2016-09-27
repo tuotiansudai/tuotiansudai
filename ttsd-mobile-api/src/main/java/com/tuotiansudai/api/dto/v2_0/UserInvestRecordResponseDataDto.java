@@ -3,6 +3,7 @@ package com.tuotiansudai.api.dto.v2_0;
 
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.InvestStatus;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
@@ -181,24 +182,6 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
         this.extraRate = extraRate;
     }
 
-    public UserInvestRecordResponseDataDto() {
-
-    }
-
-    public UserInvestRecordResponseDataDto(InvestModel invest, LoanModel loan,  LoanDetailsModel loanDetailsModel) {
-        InvestStatus investStatus = InvestStatus.convertInvestStatus(invest.getStatus());
-        this.loanId = String.valueOf(invest.getLoanId());
-        this.loanName = loan.getName();
-        this.investId = String.valueOf(invest.getId());
-        this.investAmount = AmountConverter.convertCentToString(invest.getAmount());
-        this.investTime = new DateTime(invest.getTradingTime() == null ? invest.getCreatedTime() : invest.getTradingTime()).toString("yyyy-MM-dd");
-        this.investStatus = investStatus;
-        this.investStatusDesc = investStatus.getMessage();
-        this.achievements = invest.getAchievements();
-        this.activityDesc = loanDetailsModel != null?loanDetailsModel.getActivityDesc():"";
-        this.pledgeType = loan.getPledgeType();
-    }
-
     public String getActivityDesc() {
         return activityDesc;
     }
@@ -213,5 +196,23 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
 
     public void setPledgeType(PledgeType pledgeType) {
         this.pledgeType = pledgeType;
+    }
+
+    public UserInvestRecordResponseDataDto() {
+
+    }
+
+    public UserInvestRecordResponseDataDto(InvestModel invest, LoanModel loan, LoanDetailsModel loanDetailsModel) {
+        InvestStatus investStatus = InvestStatus.convertInvestStatus(invest.getStatus());
+        this.loanId = String.valueOf(invest.getLoanId());
+        this.loanName = loan.getName();
+        this.investId = String.valueOf(invest.getId());
+        this.investAmount = AmountConverter.convertCentToString(invest.getAmount());
+        this.investTime = new DateTime(invest.getTradingTime() == null ? invest.getCreatedTime() : invest.getTradingTime()).toString("yyyy-MM-dd");
+        this.investStatus = investStatus;
+        this.investStatusDesc = investStatus.getMessage();
+        this.achievements = invest.getAchievements();
+        this.activityDesc = loanDetailsModel != null ? loanDetailsModel.getActivityDesc() : "";
+        this.pledgeType = loan.getPledgeType();
     }
 }

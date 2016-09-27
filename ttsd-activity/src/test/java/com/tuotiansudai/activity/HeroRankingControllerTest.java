@@ -3,10 +3,7 @@ package com.tuotiansudai.activity;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.controller.HeroRankingController;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.HeroRankingView;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.util.RandomUtils;
 import org.junit.Before;
@@ -78,7 +75,7 @@ public class HeroRankingControllerTest {
         LoanModel loanModel = new LoanModel();
         loanModel.setStatus(LoanStatus.COMPLETE);
 
-        when(heroRankingService.obtainHeroRanking(any(Date.class))).thenReturn(heroRankingViews);
+        when(heroRankingService.obtainHeroRanking(any(ActivityCategory.class),any(Date.class))).thenReturn(heroRankingViews);
         when(randomUtils.encryptMobile(anyString(),anyString(),any(Source.class))).thenReturn(heroRankingView.getLoginName());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 

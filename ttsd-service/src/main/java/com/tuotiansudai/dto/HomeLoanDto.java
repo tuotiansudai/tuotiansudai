@@ -167,11 +167,15 @@ public class HomeLoanDto {
         this.extraSource = extraSource;
     }
 
-    public boolean getActivity() {
-        return activity;
-    }
-
     public String getActivityDesc() {
         return activityDesc;
+    }
+
+    public void setActivityDesc(String activityDesc) {
+        this.activityDesc = activityDesc;
+    }
+
+    public boolean getActivity() {
+        return activity;
     }
 }

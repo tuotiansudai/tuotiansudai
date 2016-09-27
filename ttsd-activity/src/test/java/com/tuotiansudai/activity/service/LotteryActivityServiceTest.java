@@ -120,7 +120,6 @@ public class LotteryActivityServiceTest {
         ReflectionTestUtils.setField(lotteryActivityService, "activityAutumnEndTime", activityAutumnEndTime);
         DrawLotteryResultDto drawLotteryResultDto = lotteryActivityService.drawLotteryPrize("", null);
         assertTrue(!drawLotteryResultDto.getStatus());
-        assertEquals(drawLotteryResultDto.getMessage(), "您还未登陆，请登陆后再来抽奖吧！");
     }
 
     private UserLotteryPrizeModel getUserLotteryPrizeModel(String loginName,String mobile,String userName){

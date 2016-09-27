@@ -8,6 +8,7 @@ import com.google.common.collect.Ordering;
 import com.google.common.primitives.Ints;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import org.joda.time.DateTime;

@@ -134,14 +134,14 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         Iterator<ProductDetailResponseDto> virtualList = Iterators.transform(virtualProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
             @Override
             public ProductDetailResponseDto apply(ProductModel input) {
-                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000,input.getSeq(),input.getUpdatedTime());
+                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime());
             }
         });
 
         Iterator<ProductDetailResponseDto> physicals = Iterators.transform(physicalsProducts.iterator(), new Function<ProductModel, ProductDetailResponseDto>() {
             @Override
             public ProductDetailResponseDto apply(ProductModel input) {
-                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000,input.getSeq(),input.getUpdatedTime());
+                return new ProductDetailResponseDto(input.getId(), bannerServer + input.getImageUrl(), input.getName(), input.getPoints(), input.getType(), 1000, input.getSeq(), input.getUpdatedTime());
             }
         });
 
@@ -188,15 +188,15 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
         ProductModel productModel = productMapper.findById(Long.parseLong(productDetailRequestDto.getProductId()));
 
-        ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(productModel.getId(), bannerServer + productModel.getImageUrl(), productModel.getName(), productModel.getPoints(), productModel.getType(), productModel.getTotalCount() - productModel.getUsedCount(),productModel.getSeq(),productModel.getUpdatedTime());
-        if(productModel.getType().equals(GoodsType.COUPON)){
+        ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(productModel.getId(), bannerServer + productModel.getImageUrl(), productModel.getName(), productModel.getPoints(), productModel.getType(), productModel.getTotalCount() - productModel.getUsedCount(), productModel.getSeq(), productModel.getUpdatedTime());
+        if (productModel.getType().equals(GoodsType.COUPON)) {
             ExchangeCouponView exchangeCouponView = couponMapper.findExchangeableCouponViewById(productModel.getCouponId());
             productDetailResponseDto.setLeftCount(exchangeCouponView != null ? String.valueOf(exchangeCouponView.getTotalCount() - exchangeCouponView.getIssuedCount()) : String.valueOf(productModel.getTotalCount()));
         }
         List<String> description = Lists.newArrayList();
         CouponModel couponModel = couponMapper.findById(productModel.getCouponId());
         if (productModel.getType() == GoodsType.COUPON && couponModel != null) {
-            description.add(couponModel.getInvestLowerLimit() > 0 ? MessageFormat.format("投资满{0}元即可使用;", couponModel.getInvestLowerLimit()/100) : "");
+            description.add(couponModel.getInvestLowerLimit() > 0 ? MessageFormat.format("投资满{0}元即可使用;", couponModel.getInvestLowerLimit() / 100) : "");
             description.add(MessageFormat.format("{0}天产品可用;", couponModel.getProductTypes().toString().replaceAll("_", "")));
             description.add(MessageFormat.format("有效期限:{0}天。", couponModel.getDeadline()));
         } else {
@@ -226,7 +226,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         ProductModel productModel = productMapper.lockById(Long.parseLong(productDetailRequestDto.getProductId().trim()));
         AccountModel accountModel = accountMapper.lockByLoginName(productDetailRequestDto.getBaseParam().getUserId());
         long leftCount = productDetailRequestDto.getNum() + productModel.getUsedCount();
-        if(productModel.getType().equals(GoodsType.COUPON)){
+        if (productModel.getType().equals(GoodsType.COUPON)) {
             ExchangeCouponView exchangeCouponView = couponMapper.findExchangeableCouponViewById(productModel.getCouponId());
             leftCount = productDetailRequestDto.getNum() + (exchangeCouponView != null ? exchangeCouponView.getIssuedCount() : 0l);
         }
@@ -266,10 +266,10 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         accountMapper.update(accountModel);
 
         if (productModel.getType().equals(GoodsType.COUPON)) {
-            for(int i = 0; i < num; i++){
+            for (int i = 0; i < num; i++) {
                 couponAssignmentService.assignUserCoupon(loginName, productModel.getCouponId());
             }
-        }else{
+        } else {
             productModel.setUsedCount(productModel.getUsedCount() + num);
             productMapper.update(productModel);
         }

@@ -93,4 +93,22 @@
     <select id="findUserTotalPoint" parameterType="string" resultType="long">
         SELECT  IFNULL(SUM(point),0) FROM point_bill WHERE point > 0 AND login_name = #{loginName}
     </select>
+
+    <select id="findSumPointByLoginNameAndBusinessType" parameterType="map" resultType="long">
+        select IFNULL(SUM(point),0) from point_bill
+        <where>
+            <if test="loginName != null and loginName != ''">
+                and login_name = #{loginName}
+            </if>
+            <if test="businessTypes != null and businessTypes.size() > 0">
+                and business_type IN
+                <foreach collection="businessTypes" item="businessType" open="(" separator="," close=")">
+                    #{businessType}
+                </foreach>
+            </if>
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and created_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+    </select>
 </mapper>

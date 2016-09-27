@@ -1,27 +1,34 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.membership.dto.MembershipGiveDto;
+import com.tuotiansudai.membership.dto.MembershipGiveReceiveDto;
 import com.tuotiansudai.membership.dto.UserMembershipItemDto;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.MembershipUserGroup;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
-import com.tuotiansudai.membership.service.MembershipExperienceBillService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.membership.service.UserMembershipService;
+import com.tuotiansudai.membership.service.*;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -44,8 +51,13 @@ public class MembershipController {
     @Autowired
     private UserMembershipMapper userMembershipMapper;
 
+    @Autowired
+    private MembershipGiveService membershipGiveService;
+
+    @Autowired
+    private ImportService importService;
+
     @RequestMapping(value = "/membership-list", method = RequestMethod.GET)
-    @ResponseBody
     public ModelAndView membershipList(@RequestParam(value = "index", required = true, defaultValue = "1") int index,
                                        @RequestParam(value = "pageSize", required = true, defaultValue = "10") int pageSize,
                                        @RequestParam(value = "loginName", required = false, defaultValue = "") String loginName,
@@ -85,7 +97,6 @@ public class MembershipController {
     }
 
     @RequestMapping(value = "/membership-detail", method = RequestMethod.GET)
-    @ResponseBody
     public ModelAndView membershipDetail(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                          @RequestParam(value = "loginName") String loginName) {
@@ -116,5 +127,104 @@ public class MembershipController {
         modelAndView.addObject("loginName", loginName);
 
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/give/edit-view", method = RequestMethod.GET)
+    public ModelAndView membershipDetail() {
+        ModelAndView modelAndView = new ModelAndView("/membership-give-edit");
+        modelAndView.addObject("userGroups", MembershipUserGroup.values());
+        modelAndView.addObject("membershipLevels", Lists.newArrayList(userMembershipService.getAllLevels()));
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/give/edit-view/{membershipGiveId}", method = RequestMethod.GET)
+    public ModelAndView membershipDetail(@PathVariable long membershipGiveId) {
+        ModelAndView modelAndView = new ModelAndView("/membership-give-edit");
+
+        MembershipGiveDto membershipGiveDto = membershipGiveService.getMembershipGiveDtoById(membershipGiveId);
+        modelAndView.addObject("membershipGiveDto", membershipGiveDto);
+
+        modelAndView.addObject("userGroups", MembershipUserGroup.values());
+        modelAndView.addObject("membershipLevels", Lists.newArrayList(userMembershipService.getAllLevels()));
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/give/{membershipGiveId}/details", method = RequestMethod.GET)
+    public ModelAndView membershipGiveReceiveDetails(@PathVariable long membershipGiveId,
+                                                     @RequestParam(value = "mobile", defaultValue = "") String mobile,
+                                                     @RequestParam(value = "index", defaultValue = "1") int index,
+                                                     @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        ModelAndView modelAndView = new ModelAndView("/membership-give-receive-detail");
+        BasePaginationDataDto<MembershipGiveReceiveDto> basePaginationDataDto = membershipGiveService.getMembershipGiveReceiveDtosByMobile(membershipGiveId, mobile, index, pageSize);
+
+        modelAndView.addObject("dataDto", basePaginationDataDto);
+        modelAndView.addObject("selectMobile", mobile);
+        modelAndView.addObject("selectGiveId", membershipGiveId);
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/give/edit", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> editMembershipGive(@RequestBody MembershipGiveDto membershipGiveDto,
+                                                   @RequestParam(value = "importUsersId") long importUsersId) {
+        membershipGiveDto.setCreatedBy(LoginUserInfo.getLoginName());
+        membershipGiveService.createAndEditMembershipGive(membershipGiveDto, importUsersId);
+
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    @RequestMapping(value = "/give/import-users/{importUsersId}", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> importUsers(@PathVariable long importUsersId,
+                                            HttpServletRequest httpServletRequest) {
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
+        MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
+        if (null == multipartFile) {
+            return new BaseDto<>();
+        }
+        if (!multipartFile.getOriginalFilename().endsWith(".csv")) {
+            return new BaseDto<>(new BaseDataDto(false, "上传失败!文件必须是csv格式"));
+        }
+
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            baseDto = membershipGiveService.importGiveUsers(importUsersId, inputStream);
+        } catch (IOException e) {
+            baseDto.setData(new BaseDataDto(false, "上传文件失败"));
+        }
+        return baseDto;
+    }
+
+    @RequestMapping(value = "/give/list", method = RequestMethod.GET)
+    public ModelAndView getMembershipGives(@RequestParam(value = "index", defaultValue = "1") int index,
+                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        ModelAndView modelAndView = new ModelAndView("/membership-give-list");
+        BasePaginationDataDto<MembershipGiveDto> basePaginationDataDto = membershipGiveService.getMembershipGiveDtos(index, pageSize);
+
+        modelAndView.addObject("dataDto", basePaginationDataDto);
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/give/approve/{membershipGiveId}", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> approveMembershipGive(@PathVariable long membershipGiveId) {
+        return membershipGiveService.approveMembershipGive(membershipGiveId, LoginUserInfo.getLoginName());
+    }
+
+    @RequestMapping(value = "/give/cancel/{membershipGiveId}", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> cancelMembershipGive(@PathVariable long membershipGiveId) {
+        return membershipGiveService.cancelMembershipGive(membershipGiveId, LoginUserInfo.getLoginName());
+    }
+
+    @RequestMapping(value = "/give/importUsersList/{importUsersId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> getImportUsersList(@PathVariable long importUsersId) {
+        List<String> importUsers = importService.getImportStrings(ImportService.redisMembershipGiveReceivers, importUsersId);
+        return importUsers;
     }
 }
