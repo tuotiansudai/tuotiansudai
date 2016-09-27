@@ -61,6 +61,7 @@
 
         <intercept-url pattern="/isLogin" access="permitAll()"/>
 
+        <intercept-url pattern="/login/captcha" access="permitAll()"/>
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
         <intercept-url pattern="/logout/" access="not isAnonymous()"/>
 
