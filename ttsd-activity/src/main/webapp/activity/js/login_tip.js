@@ -23,7 +23,11 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
             },
             success: function(data) {
                 if (data.status) {
-                    window.location.reload();
+                    if($('.show-login').length>0){
+                        window.location.href='/referrer/refer-list';
+                    }else{
+                        window.location.reload();
+                    }
                 } else {
                     refreshCaptcha();
                     $loginSubmitElement.removeClass('loading');
