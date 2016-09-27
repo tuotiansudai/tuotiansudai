@@ -90,7 +90,7 @@ public class UserMessageEventGenerator {
         if (recharge == null) {
             return;
         }
-        long amount = (long) recharge.get("amount");
+        long amount = ((BigInteger) recharge.get("amount")).longValue();
         String loginName = (String) recharge.get("login_name");
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.RECHARGE_SUCCESS);
         //充值成功：您已成功充值 {0} 元，及时<a href="/loan-list">投资赚取更多</a>哦。
@@ -110,7 +110,7 @@ public class UserMessageEventGenerator {
         if (withdraw == null) {
             return;
         }
-        long amount = (long) withdraw.get("amount");
+        long amount = ((BigInteger) withdraw.get("amount")).longValue();
         String loginName = (String) withdraw.get("login_name");
 
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.WITHDRAW_SUCCESS);
