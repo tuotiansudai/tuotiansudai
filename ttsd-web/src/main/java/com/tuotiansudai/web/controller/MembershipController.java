@@ -69,6 +69,7 @@ public class MembershipController {
             modelAndView.addObject("progressBarPercent", userMembershipService.getProgressBarPercent(loginName));
             modelAndView.addObject("membershipType",userMembershipModel != null ? userMembershipModel.getType().name() : "");
             modelAndView.addObject("leftDays", userMembershipService.getMembershipExpireDay(loginName));
+            modelAndView.addObject("expiredDate", userMembershipModel.getExpiredTime());
         }
         return modelAndView;
 

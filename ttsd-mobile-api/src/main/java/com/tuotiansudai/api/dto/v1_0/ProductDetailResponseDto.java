@@ -27,7 +27,7 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
 
     private Date updatedTime;
 
-    public ProductDetailResponseDto(long productId, String imageUrl, String name, long points, GoodsType goodsType, long leftCount,int seq,Date updatedTime) {
+    public ProductDetailResponseDto(long productId, String imageUrl, String name, long points, GoodsType goodsType, long leftCount, int seq, Date updatedTime) {
         this.productId = String.valueOf(productId);
         this.imageUrl = imageUrl;
         this.points = String.valueOf(points);

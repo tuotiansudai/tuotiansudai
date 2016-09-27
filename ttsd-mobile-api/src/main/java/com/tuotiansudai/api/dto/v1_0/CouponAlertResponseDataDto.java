@@ -2,7 +2,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 
 import com.tuotiansudai.coupon.dto.CouponAlertDto;
-import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.text.SimpleDateFormat;

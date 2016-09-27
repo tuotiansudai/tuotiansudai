@@ -88,5 +88,4 @@ public class UserMembershipEvaluator {
             }
         }.max(filter);
     }
-
 }

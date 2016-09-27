@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class MembershipExperienceBillService {
 
-    private static Logger logger = Logger.getLogger(MembershipInvestService.class);
+    private static Logger logger = Logger.getLogger(MembershipExperienceBillService.class);
 
     @Autowired
     private MembershipExperienceBillMapper membershipExperienceBillMapper;

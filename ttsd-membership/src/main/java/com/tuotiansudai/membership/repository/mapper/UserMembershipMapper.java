@@ -15,6 +15,8 @@ public interface UserMembershipMapper {
 
     void create(UserMembershipModel userMembershipModel);
 
+    void createBatch(List<UserMembershipModel> userMembershipModels);
+
     UserMembershipModel findById(long id);
 
     List<UserMembershipModel> findByLoginName(String loginName);
@@ -45,4 +47,12 @@ public interface UserMembershipMapper {
                                          @Param(value = "pageSize") int pageSize);
 
     List<UserMembershipModel> findExpiredUserMembership(@Param(value = "expiredDate") Date expiredDate);
+
+    List<UserMembershipModel> findGiveMembershipsByLoginNameAndGiveId(@Param(value = "membershipGiveId") long membershipGiveId,
+                                                                      @Param(value = "loginName") String loginName,
+                                                                      @Param(value = "index") int index,
+                                                                      @Param(value = "pageSize") int pageSize);
+
+    long findCountGiveMembershipsByLoginNameAndGiveId(@Param(value = "membershipGiveId") long membershipGiveId,
+                                                      @Param(value = "loginName") String loginName);
 }

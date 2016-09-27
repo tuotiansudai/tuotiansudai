@@ -13,9 +13,9 @@ public class UserMembershipModel implements Serializable{
     private Date expiredTime;
     private Date createdTime;
     private UserMembershipType type;
+    private Long membershipGiveId;
 
     public UserMembershipModel(){
-
     }
 
     public UserMembershipModel(String loginName, long membershipId, Date expiredTime, UserMembershipType type) {
@@ -24,6 +24,11 @@ public class UserMembershipModel implements Serializable{
         this.expiredTime = expiredTime;
         this.createdTime = new Date();
         this.type = type;
+    }
+
+    public UserMembershipModel(String loginName, long membershipId, Date expiredTime, UserMembershipType type, long membershipGiveId) {
+        this(loginName, membershipId, expiredTime, type);
+        this.membershipGiveId = membershipGiveId;
     }
 
     public static UserMembershipModel createUpgradeUserMembershipModel(String loginName, long membershipId) {
@@ -76,5 +81,13 @@ public class UserMembershipModel implements Serializable{
 
     public void setType(UserMembershipType type) {
         this.type = type;
+    }
+
+    public Long getMembershipGiveId() {
+        return membershipGiveId;
+    }
+
+    public void setMembershipGiveId(Long membershipGiveId) {
+        this.membershipGiveId = membershipGiveId;
     }
 }
