@@ -10,6 +10,138 @@
             <span class="title-word01"></span>
         </div>
 
+        <#--<div class="invite-box-friend anonymous">-->
+            <#--<dl>-->
+                <#--<dt>向好友发送您的邀请链接：</dt>-->
+                <#--<dd><input type="text" class="input-invite" value="https://tuotiansudai.com/register/user?referrer=cg007008">-->
+                    <#--<button type="button" class="btn-copy-link">复制链接</button>-->
+                <#--</dd>-->
+            <#--</dl>-->
+        <#--</div>-->
+
+        <div class="invite-box-friend clearfix non-anonymous">
+            <dl>
+                <dd>
+                    <input type="text" class="input-invite" value="https://tuotiansudai.com/register/user?referrer=cg007008">
+                </dd>
+                <dt class="clearfix">向好友发送您的邀请链接：  <button type="button" class="btn-copy-link fr">复制链接</button></dt>
+            </dl>
+
+            <div class="weixin-code">
+                <img src="${staticServer}/activity/images/share-reward/wei-code.png">
+                <span>微信扫码邀请好友</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="bg-column-normal">
+        <div class="bg-column-title">
+            <span class="title-word02"></span>
+        </div>
+
+        <div class="border-dashed-square earn-commission clearfix">
+            <div class="arrow-step"></div>
+            <div class="arrow-step"></div>
+            <dl class="earn-list">
+                <dd>
+                    <em class="icon-tag"></em>
+                    <span>
+                        <i class="arr-left"></i><b>发送邀请链接给好友</b><i class="arr-right"></i>
+                    </span>
+                </dd>
+                <dd>
+                    <em class="icon-tag"></em>
+                    <span>
+                        <i class="arr-left"></i><b>好友注册并购买</b><i class="arr-right"></i>
+                    </span>
+                </dd>
+                <dd>
+                    <em class="icon-tag"></em>
+                    <span>
+                        <i class="arr-left"></i><b>您获得好友投资本金预期年化收益的1%</b><i class="arr-right"></i>
+                    </span>
+                </dd>
+            </dl>
+
+        </div>
+
+        <div class="border-dashed-square earn-commission2 clearfix">
+            <div class="arrow-step"></div>
+            <div class="arrow-step"></div>
+
+            <div class="invite-group-list">
+                <div class="invite-group">
+                    <em class="icon-tag"></em>
+                    <span>好友邀请其他人注册并购买</span>
+                </div>
+                <div class="invite-group">
+                    <em class="icon-tag"></em>
+                    <span>您获得投资本金预期年化收益的1%</span>
+                </div>
+                <div class="invite-group">
+                    <em class="icon-tag"></em>
+                    <span>好友获得投资本金预期年化收益的1%</span>
+                </div>
+            </div>
+
+            </div>
+     </div>
+
+    <div class="bg-column-normal reward-rules">
+        <div class="bg-column-title">
+            <span class="title-word03"></span>
+        </div>
+        <div class="border-dashed-square reward-rules-normal clearfix">
+
+            <div class="invite-group one">
+                <em class="icon-tag"></em>
+                <span>您邀请了好友悟空</span>
+            </div>
+            <div class="arrow-step"></div>
+            <div class="invite-group two">
+                <em class="icon-tag"></em>
+                <span>悟空注册并投资了90天的标的10万元</span>
+            </div>
+            <div class="arrow-step"></div>
+            <div class="invite-group three">
+                <em class="icon-tag"></em>
+                <span>您获得奖励246.57元</span>
+            </div>
+        </div>
+
+        <div class="border-dashed-square reward-rules-normal clearfix">
+
+            <div class="invite-group four">
+                <em class="icon-tag"></em>
+                <span>悟空邀请了好友八戒</span>
+            </div>
+            <div class="arrow-step"></div>
+            <div class="invite-group two">
+                <em class="icon-tag"></em>
+                <span>八戒注册并投资了90天的标的10万元</span>
+            </div>
+            <div class="arrow-step"></div>
+            <div class="invite-group five">
+                <em class="icon-tag"></em>
+                <span>您和悟空都可以获得奖励246.57元</span>
+            </div>
+        </div>
+
+        <div class="border-dashed-square reward-rules-normal clearfix tl">
+
+            <div class="invite-group two">
+                <em class="icon-tag"></em>
+                <span>八戒和悟空又这样投资了5次</span>
+            </div>
+            <div class="arrow-step"></div>
+            <div class="invite-group six">
+                <em class="icon-tag"></em>
+                <span>您获得奖励=246X2X5=2460元</span>
+            </div>
+
+        </div>
+
         <div class="invite-box-friend anonymous">
             <dl>
                 <dt>向好友发送您的邀请链接：</dt>
@@ -18,28 +150,56 @@
                 </dd>
             </dl>
         </div>
-
-        <#--<div class="invite-box-friend clearfix non-anonymous">-->
-            <#--<dl>-->
-                <#--<dd>-->
-                    <#--<input type="text" class="input-invite" value="https://tuotiansudai.com/register/user?referrer=cg007008">-->
-                <#--</dd>-->
-                <#--<dt class="clearfix">向好友发送您的邀请链接：  <button type="button" class="btn-copy-link fr">复制链接</button></dt>-->
-            <#--</dl>-->
-
-            <#--<div class="weixin-code">-->
-                <#--<img src="${staticServer}/activity/images/share-reward/wei-code.png">-->
-                <#--<span>微信扫码邀请好友</span>-->
-            <#--</div>-->
-        <#--</div>-->
-
     </div>
 
-    <div class="bg-column-normal">
+    <div class="bg-column-normal recommended-ranking">
         <div class="bg-column-title">
-            <span class="title-word02"></span>
+            <span class="title-word04"></span>
         </div>
-     </div>
+
+        <div class="border-dashed-square  clearfix">
+            <table class="table">
+                <tr>
+                    <td>01</td>
+                    <td>156****8605</td>
+                    <td>推荐好友投资获得奖励已超过12,000元</td>
+                </tr>
+                <tr>
+                    <td>02</td>
+                    <td>156****8605</td>
+                    <td>推荐好友投资获得奖励已超过12,000元</td>
+                </tr>
+                <tr>
+                    <td>03</td>
+                    <td>156****8605</td>
+                    <td>推荐好友投资获得奖励已超过12,000元</td>
+                </tr>
+                <tr>
+                    <td>04</td>
+                    <td>156****8605</td>
+                    <td>推荐好友投资获得奖励已超过12,000元</td>
+                </tr>
+                <tr>
+                    <td>05</td>
+                    <td>156****8605</td>
+                    <td>推荐好友投资获得奖励已超过12,000元</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="note tc">说明：此排行提取的数据为2016/8/25之前的用户投资奖励</div>
+    </div>
+
+    <div class="border-dashed-square activity-rules">
+        <b>活动规则</b>
+        <p>
+            >您要进行实名认证后才能享受推荐奖励； <br/>
+            >推荐的好友及好友推荐的用户进行投资时，您可以获得奖励；<br/>
+            >奖励额度为推荐的好友投资本金预期年化收益的1%，奖励计算方法：您的奖励=被推荐人投资金额X（1% / 365 X 标的期限）；<br/>
+            >奖励在好友投资项目放款后，一次性以现金形式直接发放至您的账户，你可以在“我的账户”中查询；<br/>
+            >活动遵守拓天速贷法律声明，最终解释权归拓天速贷平台所有
+        </p>
+    </div>
 </div>
 
 <#--<#include "login-tip.ftl" />-->

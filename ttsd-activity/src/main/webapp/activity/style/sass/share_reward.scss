@@ -5,7 +5,7 @@
 }
 
 body {
-  background: #00a6e1 url("/activity/images/autumn-tour/bg-yun.png") center 775px no-repeat;
+  background: #00a6e1 url("/activity/images/share-reward/bg-body.png") center 120px no-repeat;
   overflow-x: hidden;
   color: #005e80;
   font-size: 14px;
@@ -17,7 +17,7 @@ body {
 
 .tour-slide  {
   height: 527px;
-  background: url("/activity/images/share-reward/bar-share-top.jpg") center top no-repeat;
+  background: url("/activity/images/share-reward/bar-share-top.png") center top no-repeat;
 }
 .bg-column-normal {
   background: #e5f8ff;
@@ -31,7 +31,8 @@ body {
     width: 303px;
     height: 80px;
     position: absolute;
-    background: url("../../images/share-reward/bg-title.png") center top no-repeat;
+    background: url("../../images/share-reward/bg-title.png") left top no-repeat;
+    background-size: contain;
     left: -12px;
     top: 0;
     span {
@@ -40,80 +41,388 @@ body {
       height:50px;
       margin-top: 13px;
       margin-left: 30px;
+      background: url("/activity/images/share-reward/title-word.png") no-repeat;
       &.title-word01 {
-        background: url("../../images/share-reward/title-word.png") -15px -15px no-repeat;
+        background-position: -15px -15px;
       }
       &.title-word02 {
-        background: url("../../images/share-reward/title-word.png") -15px -90px no-repeat;
+        background-position: -15px -84px;
       }
       &.title-word03 {
-        background: url("../../images/share-reward/title-word.png") -15px -155px no-repeat;
+        background-position: -15px -150px;
       }
       &.title-word04 {
-        background: url("../../images/share-reward/title-word.png") -15px -225px no-repeat;
+        background-position: -15px -217px;
       }
     }
   }
 
 }
+
+.arrow-step {
+  width:100px;
+  height: 40px;
+  background: url("../../images/share-reward/step-arrow.png") center top no-repeat;
+}
+.border-dashed-square {
+  border:1px dashed #29a0cc;
+  padding:25px;
+  border-radius: 10px;
+  margin-bottom:30px;
+}
+
+.invite-box-friend {
+  font-size: 22px;
+  text-align: left;
+  dl {
+    dt,dd  {
+      display: inline-block;
+    }
+  }
+  .input-invite {
+    width:410px;
+    height: 35px;
+    background: #e5f8ff;
+    border:1px solid #00a6e1;
+    color: #4d4d4d;
+  }
+  .btn-copy-link {
+    width: 93px;
+    height:35px;
+    background: #d5f4ff;
+    border:1px solid #00a6e1;
+    color: #005e80;
+    font-size:16px;
+    vertical-align: middle;
+    margin-left: -7px;
+  }
+  &.non-anonymous {
+    dl {
+      width:410px;
+      float: left;
+      dt,dd  {
+        display: block;
+
+      }
+      dt {
+        .btn-copy-link {
+          margin-top:5px;
+        }
+      }
+    }
+    .weixin-code {
+      float: right;
+      width:130px;
+      margin-right:180px;
+      img {
+        border:1px solid #0caae3;
+        display: block;
+      }
+      span {
+        display: block;
+        font-size: 14px;
+        text-align: center;
+      }
+    }
+  }
+}
+
 .share-reward-container {
   margin:0px auto;
   padding-top:20px;
 
-  .invite-box-friend {
-    font-size: 22px;
-    dl {
-      dt,dd  {
-        display: inline-block;
-      }
-    }
-    .input-invite {
-      width:410px;
-      height: 35px;
-      background: #e5f8ff;
-      border:1px solid #00a6e1;
-      color: #4d4d4d;
-    }
-    .btn-copy-link {
-      width: 93px;
-      height:35px;
-      background: #d5f4ff;
-      border:1px solid #00a6e1;
-      color: #005e80;
-      font-size:16px;
-      vertical-align: middle;
-      margin-left: -7px;
-    }
-    &.non-anonymous {
-      dl {
-        width:410px;
-        float: left;
-        dt,dd  {
-          display: block;
+  .icon-tag {
+    width:150px;
+    height:155px;
+    display: inline-block;
+    background: url("/activity/images/share-reward/icon-sign.png") no-repeat;
+  }
 
+  .earn-commission {
+    position: relative;
+    .earn-list {
+      dd {
+        width:33%;
+        float:left;
+        text-align: center;
+
+        span {
+          display: block;
+          i{
+            display: inline-block;
+            width:40px;
+            height:60px;
+            border-top:30px solid #29a0cc;
+            border-bottom:30px solid #29a0cc;
+            &.arr-left {
+              border-left:20px solid transparent;
+              border-right:20px solid #29a0cc;
+            }
+            &.arr-right {
+              border-left:20px solid #29a0cc;
+              border-right:20px solid transparent;
+            }
+          }
+          b {
+            display: inline-block;
+            background: #29a0cc;
+            height:60px;
+            text-align: center;
+            width:180px;
+            vertical-align: top;
+            color: #fff;
+            font-weight: normal;
+            line-height: 20px;
+            padding-top: 20px;
+          }
         }
-        dt {
-          .btn-copy-link {
-            margin-top:5px;
+        &:nth-child(1) {
+          em {
+            background-position: 0 0;
+          }
+        }
+        &:nth-child(2) {
+          em {
+            background-position: 0 -155px;
+          }
+        }
+        &:nth-child(3) {
+          em {
+            background-position: 0 -316px;
+          }
+          b {
+            padding-top: 10px;
           }
         }
       }
-.weixin-code {
-  float: right;
-  width:130px;
-  margin-right:180px;
-  img {
-    border:1px solid #0caae3;
-    display: block;
-  }
-  span {
-    display: block;
-    font-size: 14px;
-    text-align: center;
-  }
-}
+    }
+    .arrow-step {
+      position: absolute;
+      top:80px;
+      &:nth-child(1) {
+        left: 260px;
+      }
+      &:nth-child(2) {
+        left: 560px;
+      }
+
     }
   }
 
+  .earn-commission2 {
+    position: relative;
+    height:362px;
+    .arrow-step {
+      position: absolute;
+      left: 306px;
+      &:nth-child(1) {
+        top: 70px;
+      }
+      &:nth-child(2) {
+        top: 258px;
+      }
+    }
+    .invite-group-list {
+      .invite-group {
+        display: inline-block;
+        position: absolute;
+        span {
+          display: block;
+        }
+        &:nth-child(1) {
+          left:120px;
+          top: 90px;
+          text-align: center;
+          em {
+            background-position: 0 -640px;
+          }
 
+        }
+        &:nth-child(2) {
+          left: 450px;
+          top: 7px;
+          span {
+            display: inline-block;
+          }
+          em {
+            background-position: 0 -479px;
+            vertical-align: middle;
+          }
+
+        }
+        &:nth-child(3) {
+          left: 450px;
+          top: 186px;
+          span {
+            display: inline-block;
+          }
+          em {
+            background-position: 0 -475px;
+            vertical-align: middle;
+          }
+        }
+      }
+    }
+
+  }
+
+  .reward-rules {
+    text-align: center;
+    .reward-rules-normal {
+      &.tl {
+        text-align: left;
+        padding-left: 52px;
+      }
+      .arrow-step {
+        display: inline-block;
+      }
+      .invite-group {
+        text-align: center;
+        vertical-align: middle;
+        display: inline-block;
+        span {
+          display: block;
+        }
+        .icon-tag {
+          height: 122px;
+        }
+        &.one {
+          em {
+            background-position: -172px 0;
+          }
+        }
+        &.two {
+          em {
+            background-position: -172px -140px;
+          }
+        }
+        &.three {
+          em {
+            background-position: -172px -273px;
+          }
+        }
+        &.four {
+          em {
+            background-position: -172px -408px;
+          }
+        }
+        &.five {
+           em {
+             background-position: -172px -546px;
+           }
+         }
+        &.six {
+          em {
+            background-position: -172px -687px;
+          }
+        }
+      }
+    }
+  }
+
+  .recommended-ranking {
+    .border-dashed-square {
+      padding: 0;
+      .table tr {
+        td {
+          padding:15px 10px;
+          color: #005e80;
+          font-size: 24px;
+          border-width: 0;
+        }
+        &:nth-child(2n) {
+          background: #b2ebff;
+        }
+      }
+
+    }
+  }
+
+  .activity-rules {
+    margin-top:30px;
+    border:1px dashed #d5f4ff;
+    border-radius:30px;
+    padding: 15px 50px;
+    b {
+      font-size: 20px;
+    }
+    p {
+      color: #d5f4ff;
+    }
+    color: #d5f4ff;
+  }
+
+}
+
+@media screen and (max-width: 800px) {
+  .tour-slide  {
+    height: 270px;
+    background: url("/activity/images/share-reward/bar-share-top.png") center top no-repeat;
+    background-size: contain;
+  }
+
+  .bg-column-normal {
+    padding: 60px 15px 15px 15px;
+    .bg-column-title {
+      height: 55px;
+      width:50%;
+      left: -7px;
+      span {
+        display: inline-block;
+        width: 89%;
+        height: 29px;
+        margin-top: 13px;
+        margin-left: 20px;
+        background: url(/activity/images/share-reward/title-word.png) no-repeat;
+        background-size: 90%;
+        &.title-word01 {
+          background-position:-12px -14px;
+        }
+        &.title-word02 {
+          background-position: -12px -91px;
+        }
+        &.title-word03 {
+          background-position: -12px -103px;
+          background-size: 100%;
+        }
+        &.title-word04 {
+          background-position: -12px -150px;
+        }
+      }
+
+    }
+  }
+  .invite-box-friend {
+    font-size: 14px;
+    clear:left;
+    dl {
+      dt {
+        line-height: 40px;
+      }
+      dd {
+        width:100%;
+      }
+    }
+    .input-invite {
+      width:100%;
+    }
+    .btn-copy-link {
+      margin-left:0;
+      margin-top: 10px;
+    }
+    &.non-anonymous {
+      width: 100%;
+      clear: both;
+      dl {
+        width:100%;
+        clear:both;
+      }
+      .weixin-code {
+        display: none;
+      }
+    }
+  }
+  .share-reward-container {
+    padding: 0px 10px;
+  }
 }
