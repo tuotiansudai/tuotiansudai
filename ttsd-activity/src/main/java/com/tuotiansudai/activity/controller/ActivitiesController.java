@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,5 +52,14 @@ public class ActivitiesController {
         boolean newbieCouponAlert = couponAlert != null && couponAlert.getCouponIds().size() > 0;
         modelAndView.addObject("couponAlert", newbieCouponAlert);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/isLogin", method = RequestMethod.GET)
+    public ModelAndView isLogin() {
+        if(!StringUtils.isEmpty(LoginUserInfo.getLoginName())) {
+            return null;
+        } else {
+            return new ModelAndView("/csrf");
+        }
     }
 }
