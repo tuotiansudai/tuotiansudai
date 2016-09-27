@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
@@ -16,7 +15,10 @@ import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.*;
+import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.service.ReferrerRelationService;
+import com.tuotiansudai.service.SmsCaptchaService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import com.tuotiansudai.util.RandomStringGenerator;
@@ -26,7 +28,6 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,9 +78,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     public static String SHA = "SHA";
 
