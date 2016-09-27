@@ -22,6 +22,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 
 
         $historyTime.text()>=$TodayAwards.val()?$heroNext.hide():$heroNext.show();
+        $historyTime.text().replace(/-/gi,'')==$('#startTime').val()?$heroPre.hide():$heroPre.show();
 		//获取前一天或者后一天的日期
 		function GetDateStr(date,AddDayCount) {
 			var dd = new Date(date);
