@@ -81,8 +81,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    private final static String mobileIsExistKey = "register:mobile{0}:exist";
-
     public static String SHA = "SHA";
 
     private final static int LOGIN_NAME_LENGTH = 8;
@@ -162,14 +160,11 @@ public class UserServiceImpl implements UserService {
         userModel.setPassword(encodePassword);
         userModel.setLastModifiedTime(new Date());
 
-        if(Strings.isNullOrEmpty(redisWrapperClient.get(MessageFormat.format(mobileIsExistKey, dto.getMobile())))){
-            redisWrapperClient.setex(MessageFormat.format(mobileIsExistKey, dto.getMobile()), 10, dto.getMobile());
-        }
-        else{
+
+        if(this.userMapper.create(userModel) == 0 ) {
+            logger.debug(MessageFormat.format("[CREATE USER:login_name-{0},mobile-{1} has registered]",userModel.getLoginName(),userModel.getMobile()));
             return false;
         }
-
-        this.userMapper.create(userModel);
 
         UserRoleModel userRoleModel = new UserRoleModel();
         userRoleModel.setLoginName(userModel.getLoginName().toLowerCase());
