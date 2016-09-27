@@ -54,7 +54,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 			}
 				
 			$historyTime.text().replace(/-/gi,'')>=$TodayAwards.val().replace(/-/gi,'')?$heroNext.hide():$heroNext.show();
-			$historyTime.text().replace(/-/gi,'')>=$('#startTime').val()?$heroPre.show():$heroPre.hide();
+			$historyTime.text().replace(/-/gi,'')==$('#startTime').val()?$heroPre.hide():$heroPre.show();
 			
 			
 		});
