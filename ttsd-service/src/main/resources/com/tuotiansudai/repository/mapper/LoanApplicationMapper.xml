@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.LoanApplicationMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="LoanApplicationResultMap" type="LoanApplicationModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="region" property="region"/>
+        <result column="amount" property="amount"/>
+        <result column="period" property="period"/>
+        <result column="pledge_type" property="pledgeType"/>
+        <result column="pledge_info" property="pledgeInfo"/>
+        <result column="comment" property="comment"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_by" property="updatedBy"/>
+        <result column="updated_time" property="updatedTime"/>
+    </resultMap>
+
+    <resultMap id="LoanApplicationViewResultMap" type="LoanApplicationView" extends="LoanApplicationResultMap">
+        <result column="mobile" property="mobile"/>
+        <result column="user_name" property="userName"/>
+    </resultMap>
+
+    <insert id="create" parameterType="LoanApplicationModel">
+        INSERT INTO `aa`.`loan_application`
+        (id, login_name, region, amount, period, pledge_type, pledge_info, comment, created_time, updated_by, updated_time)
+        VALUES
+        (#{id}, #{loginName}, #{region}, #{amount}, #{period}, #{pledgeType}, #{pledgeInfo}, #{comment}, #{createdTime},
+        #{updatedBy}, #{updatedTime})
+    </insert>
+
+    <update id="update" parameterType="LoanApplicationModel">
+        UPDATE
+        `aa`.`loan_application`
+        SET
+        <if test="loginName != null and loginName != ''">
+            login_name = #{loginName},
+        </if>
+        <if test="region != null">
+            region = #{region},
+        </if>
+        <if test="pledgeType != null">
+            pledge_type = #{pledgeType},
+        </if>
+        <if test="pledgeInfo != null and pledgeInfo != ''">
+            pledge_info = #{pledgeInfo},
+        </if>
+        <if test="createdTime != null">
+            created_time = #{createdTime},
+        </if>
+        <if test="updatedBy != null and updatedBy != ''">
+            updated_by = #{updatedBy},
+        </if>
+        <if test="updatedTime != null">
+            updatedTime = #{updatedTime},
+        </if>
+        comment = #{comment},
+        amount = #{amount},
+        period = #{period}
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="findById" resultMap="LoanApplicationViewResultMap">
+        SELECT
+          *
+        FROM
+          `aa`.`loan_application`
+        WHERE
+          id = #{id}
+    </select>
+
+    <select id="findViewPagination" resultMap="LoanApplicationViewResultMap">
+        SELECT
+          *,
+          (SELECT mobile FROM `aa`.`user` WHERE login_name = (SELECT login_name FROM `aa`.`loan_application` WHERE id = #{id})) AS mobile,
+          (SELECT user_name FROM `aa`.`account` WHERE login_name = (SELECT login_name FROM `aa`.`loan_application` WHERE id = #{id})) AS user_name
+        FROM
+          `aa`.`loan_application`
+        ORDER BY created_time DESC
+        LIMIT #{index}, #{pageSize}
+    </select>
+
+    <select id="findCount">
+        SELECT
+          COUNT(1)
+        FROM
+          `aa`.`loan_application`
+    </select>
+
+</mapper>
