@@ -22,12 +22,12 @@
             <div class="rank-number-group">
                 <div class="date-time-item"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></div>
                 <div class="my-rank-item">
-                    <@global.isAnonymous>我的排名：登陆后查看</@global.isAnonymous>
+                    <@global.isAnonymous>我的排名：登录后查看</@global.isAnonymous>
                     <@global.isNotAnonymous><#if investRanking == 0>未参加排行<#else>我的排名：${investRanking}</#if></@global.isNotAnonymous>
                 </div>
                 <@global.isAnonymous>
                     <div class="login-item">
-                        <a href="javascript:void(0)" class="login-btn show-login">登陆查看我的排名</a>
+                        <a href="javascript:void(0)" class="login-btn show-login">登录查看我的排名</a>
                     </div>
                 </@global.isAnonymous>
 
@@ -74,9 +74,9 @@
             </div>
             <div class="rank-list-group">
                 <i class="left-bubble animate-twink"></i>
-                <i class="right-bubble animate-twink"></i>
+                <i class="right-bubble animate-twinking"></i>
                 <div class="rank-table-item">
-                    <h3>今日投资英豪榜</h3>
+                    <h3><span id="historyTime"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></span>投资英豪榜</h3>
                     <div class="table-list-item">
                         <div class="table-content">
                             <table>

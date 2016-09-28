@@ -100,4 +100,21 @@ public class BaseParam {
     public void setChannel(String channel) {
         this.channel = channel;
     }
+
+    @Override
+    public String toString() {
+        return "BaseParam{" +
+                "userId='" + userId + '\'' +
+                ", phoneNum='" + phoneNum + '\'' +
+                ", token='" + token + '\'' +
+                ", platform='" + platform + '\'' +
+                ", appVersion='" + appVersion + '\'' +
+                ", osVersion='" + osVersion + '\'' +
+                ", deviceId='" + deviceId + '\'' +
+                ", deviceModel='" + deviceModel + '\'' +
+                ", screenW='" + screenW + '\'' +
+                ", screenH='" + screenH + '\'' +
+                ", channel='" + channel + '\'' +
+                '}';
+    }
 }

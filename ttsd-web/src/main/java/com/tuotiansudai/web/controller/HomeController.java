@@ -19,6 +19,7 @@ import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.TransferService;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -78,5 +79,14 @@ public class HomeController {
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationItemList = transferService.findAllTransferApplicationPaginationList(null, 0, 0, 1, 2);
         modelAndView.addObject("transferApplications", transferApplicationItemList.getRecords());
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/isLogin", method = RequestMethod.GET)
+    public ModelAndView isLogin() {
+        if(!StringUtils.isEmpty(LoginUserInfo.getLoginName())) {
+            return null;
+        } else {
+            return new ModelAndView("/csrf");
+        }
     }
 }
