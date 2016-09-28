@@ -8,11 +8,13 @@ sign-in:
   links:
     - "redis-server"
 web:
-  image: "leoshi/ttsd-tomcat8-java7:UTC8"
+  image: "andreptb/tomcat:8-jdk8"
   ports:
     - "20002:8080"
   volumes:
-    - ./ttsd-web/war:/webapps
+    - ./ttsd-web/war:/usr/local/tomcat/webapps
+    - /var/log/tuotian/web:/usr/local/tomcat/logs
+    - /var/log/tuotian/web:/var/log/tomcat
   links:
     - "pay-wrapper"
     - "sms-wrapper"
@@ -20,11 +22,13 @@ web:
     - "static-server"
     - "sign-in"
 console:
-  image: "leoshi/ttsd-tomcat8-java7:UTC8"
+  image: "andreptb/tomcat:8-jdk8"
   ports:
     - "20003:8080"
   volumes:
-    - ./ttsd-console/war:/webapps
+    - ./ttsd-console/war:/usr/local/tomcat/webapps
+    - /var/log/tuotian/console:/usr/local/tomcat/logs
+    - /var/log/tuotian/console:/var/log/tomcat
   links:
     - "pay-wrapper"
     - "sms-wrapper"
@@ -32,59 +36,71 @@ console:
     - "static-server"
     - "sign-in"
 activity-console:
-  image: "leoshi/ttsd-tomcat8-java7:UTC8"
+  image: "andreptb/tomcat:8-jdk8"
   ports:
     - "20019:8080"
   volumes:
-    - ./ttsd-activity-console/war:/webapps
+    - ./ttsd-activity-console/war:/usr/local/tomcat/webapps
+    - /var/log/tuotian/activity-console:/usr/local/tomcat/logs
+    - /var/log/tuotian/activity-console:/var/log/tomcat
   links:
     - "redis-server"
     - "sign-in"
 pay-wrapper:
-  image: "leoshi/ttsd-tomcat8-java7:UTC8"
+  image: "andreptb/tomcat:8-jdk8"
   ports:
     - "20004:8080"
   volumes:
-    - ./ttsd-pay-wrapper/war:/webapps
     - /workspace/ump_sign/:/workspace/ump_sign
+    - ./ttsd-pay-wrapper/war:/usr/local/tomcat/webapps
+    - /var/log/tuotian/pay-wrapper:/usr/local/tomcat/logs
+    - /var/log/tuotian/pay-wrapper:/var/log/tomcat
   links:
     - "sms-wrapper"
     - "redis-server"
 sms-wrapper:
-  image: "leoshi/ttsd-tomcat8-java7:UTC8"
+  image: "andreptb/tomcat:8-jdk8"
   ports:
     - "20005:8080"
   volumes:
-    - ./ttsd-sms-wrapper/war:/webapps
+    - ./ttsd-sms-wrapper/war:/usr/local/tomcat/webapps
+    - /var/log/tuotian/sms-wrapper:/usr/local/tomcat/logs
+    - /var/log/tuotian/sms-wrapper:/var/log/tomcat
   links:
     - "redis-server"
 mobile-api:
-  image: "leoshi/ttsd-tomcat8-java7:UTC8"
+  image: "andreptb/tomcat:8-jdk8"
   ports:
     - "20006:8080"
   volumes:
-    - ./ttsd-mobile-api/war:/webapps
+    - ./ttsd-mobile-api/war:/usr/local/tomcat/webapps
+    - /var/log/tuotian/mobile-api:/usr/local/tomcat/logs
+    - /var/log/tuotian/mobile-api:/var/log/tomcat
   links:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
     - "sign-in"
 activity:
-  image: "leoshi/ttsd-tomcat8-java7:UTC8"
+  image: "andreptb/tomcat:8-jdk8"
   ports:
     - "20007:8080"
   volumes:
-    - ./ttsd-activity/war:/webapps
+    - ./ttsd-activity/war:/usr/local/tomcat/webapps
+    - /var/log/tuotian/activity:/usr/local/tomcat/logs
+    - /var/log/tuotian/activity:/var/log/tomcat
   links:
     - "redis-server"
     - "static-server"
     - "sign-in"
 point:
-  image: "leoshi/ttsd-tomcat8-java7:UTC8"
+  image: "andreptb/tomcat:8-jdk8"
   ports:
     - "20018:8080"
   volumes:
-    - ./ttsd-point-web/war:/webapps
+    - ./ttsd-point-web/war:/usr/local/tomcat/webapps
+    - /var/log/tuotian/point-web:/usr/local/tomcat/logs
+    - /var/log/tuotian/point-web:/var/log/tomcat
   links:
     - "redis-server"
     - "static-server"
@@ -101,28 +117,28 @@ redis-server:
     - "20016:7006"
     - "20017:7007"
 worker-all:
-  image: "leoshi/ttsd-java7:UTC8"
+  image: "isuper/java-oracle:jdk_8"
   volumes:
-    - ./ttsd-job-worker/build/distributions:/workspace/tuotian
-  command: bash -c "./ttsd-job-worker-all/bin/ttsd-job-worker"
+    - ./ttsd-job-worker/build/distributions:/root
+  command: bash -c "/root/ttsd-job-worker-all/bin/ttsd-job-worker"
   links:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
 worker-invest:
-  image: "leoshi/ttsd-java7:UTC8"
+  image: "isuper/java-oracle:jdk_8"
   volumes:
-    - ./ttsd-job-worker/build/distributions:/workspace/tuotian
-  command: bash -c "./ttsd-job-worker-invest/bin/ttsd-job-worker"
+    - ./ttsd-job-worker/build/distributions:/root
+  command: bash -c "/root/ttsd-job-worker-invest/bin/ttsd-job-worker"
   links:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
 worker-jpush:
-  image: "leoshi/ttsd-java7:UTC8"
+  image: "isuper/java-oracle:jdk_8"
   volumes:
-    - ./ttsd-job-worker/build/distributions:/workspace/tuotian
-  command: bash -c "./ttsd-job-worker-jpush/bin/ttsd-job-worker"
+    - ./ttsd-job-worker/build/distributions:/root
+  command: bash -c "/root/ttsd-job-worker-jpush/bin/ttsd-job-worker"
   links:
     - "redis-server"
 static-server:
@@ -153,11 +169,13 @@ nginx-server_console:
     - "console"
     - "activity-console"
 ask:
-  image: "leoshi/ttsd-tomcat8-java7:UTC8"
+  image: "andreptb/tomcat:8-jdk8"
   ports:
     - "20009:8080"
   volumes:
-    - ./ttsd-ask-web/war:/webapps
+    - ./ttsd-ask-web/war:/usr/local/tomcat/webapps
+    - /var/log/tuotian/ask-web:/usr/local/tomcat/logs
+    - /var/log/tuotian/ask-web:/var/log/tomcat
   links:
     - "redis-server"
     - "static-server"
