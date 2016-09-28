@@ -95,10 +95,6 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanResponseDataDto.setLoanId("" + loan.getId());
 
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
-
-
-
-
             loanResponseDataDto.setLoanName(loan.getName());
             loanResponseDataDto.setActivityType(loan.getActivityType().name());
             loanResponseDataDto.setActivityDesc(loanDetailsModel != null ? loanDetailsModel.getActivityDesc() : "");

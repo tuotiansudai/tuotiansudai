@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.enums.CouponType;
+
 public enum PreferenceType {
 
     INVEST_BENEFIT("投资奖励", null),

@@ -238,19 +238,19 @@ public class LoanDetailDto extends BaseDataDto {
         this.extraSource = extraSource;
     }
 
-    public boolean isActivity() {
-        return activity;
-    }
-
-    public void setActivity(boolean activity) {
-        this.activity = activity;
-    }
-
     public String getActivityDesc() {
         return activityDesc;
     }
 
     public void setActivityDesc(String activityDesc) {
         this.activityDesc = activityDesc;
+    }
+
+    public boolean isActivity() {
+        return activity;
+    }
+
+    public void setActivity(boolean activity) {
+        this.activity = activity;
     }
 }

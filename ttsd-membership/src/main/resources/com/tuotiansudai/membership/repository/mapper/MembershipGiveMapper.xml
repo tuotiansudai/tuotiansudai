@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.membership.repository.mapper.MembershipGiveMapper">
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="MembershipGiveResultMap" type="MembershipGiveModel">
+        <id column="id" property="id"/>
+        <result column="membership_id" property="membershipId"/>
+        <result column="deadline" property="deadline"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="user_group" property="userGroup"/>
+        <result column="sms_notify" property="smsNotify"/>
+        <result column="active" property="active"/>
+        <result column="active_by" property="activeBy"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="updated_time" property="updatedTime"/>
+        <result column="updated_by" property="updatedBy"/>
+    </resultMap>
+
+    <insert id="create" parameterType="MembershipGiveModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `aa`.`membership_give` (membership_id, deadline, start_time, end_time, user_group, sms_notify,
+        active,
+        active_by, created_time, created_by, updated_time, updated_by)
+        VALUES (#{membershipId}, #{deadline}, #{startTime}, #{endTime}, #{userGroup}, #{smsNotify}, #{active},
+        #{activeBy},
+        #{createdTime}, #{createdBy}, #{updatedTime}, #{updatedBy})
+    </insert>
+
+    <update id="update" parameterType="MembershipGiveModel">
+        UPDATE `aa`.`membership_give`
+        SET
+        membership_id = #{membershipId},
+        deadline = #{deadline},
+        <if test="startTime != null">
+            start_time = #{startTime},
+        </if>
+        <if test="endTime != null">
+            end_time = #{endTime},
+        </if>
+        <if test="userGroup != null">
+            user_group = #{userGroup},
+        </if>
+        <if test="activeBy != null and activeBy != ''">
+            active_by = #{activeBy},
+        </if>
+        <if test="createdTime != null">
+            created_time = #{createdTime},
+        </if>
+        <if test="createdBy != null and createdBy != ''">
+            created_by = #{createdBy},
+        </if>
+        <if test="updatedTime != null">
+            updated_time = #{updatedTime},
+        </if>
+        <if test="updatedBy != null and updatedBy != ''">
+            updated_by = #{updatedBy},
+        </if>
+        sms_notify = #{smsNotify},
+        active = #{active}
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="findById" resultMap="MembershipGiveResultMap">
+        SELECT * FROM `aa`.`membership_give` WHERE id = #{id}
+    </select>
+
+    <select id="findPagination" resultMap="MembershipGiveResultMap">
+        SELECT * FROM `aa`.`membership_give` ORDER BY created_time DESC LIMIT #{index}, #{pageSize}
+    </select>
+
+    <select id="findAllCount" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM `aa`.`membership_give`
+    </select>
+
+    <select id="findAllCurrentNewUserGivePlans" resultMap="MembershipGiveResultMap">
+        SELECT * FROM `aa`.`membership_give`
+        WHERE
+        start_time &lt; now() AND
+        now() &lt; end_time AND
+        user_group = 'NEW_REGISTERED_USER' AND
+        active = 1
+    </select>
+
+</mapper>

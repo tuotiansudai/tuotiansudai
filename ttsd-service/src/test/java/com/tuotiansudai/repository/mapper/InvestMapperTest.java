@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.repository.model.TransferableInvestView;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -50,6 +51,8 @@ public class InvestMapperTest {
     private TransferApplicationMapper transferApplicationMapper;
     @Autowired
     private AccountMapper accountMapper;
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
     private List<String> heroRankingActivityPeriod;
@@ -375,7 +378,7 @@ public class InvestMapperTest {
         UserModel investorModel = createUser("investorModelRound5Test");
         UserModel loanerModel = createUser("loanerModelRound5Test");
         LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId, LoanStatus.REPAYING);
-        InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS,TransferStatus.TRANSFERABLE);
+        InvestModel investModel = createInvest(investorModel.getLoginName(), loanId, InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
         loanRepayMapper.create(Lists.newArrayList(loanRepayModel));
         InvestRepayModel investRepayModel = getFakeInvestRepayModel(investModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
@@ -547,21 +550,21 @@ public class InvestMapperTest {
         investMapper.create(investModel3);
 
         List<HeroRankingView> heroRankingViews = investMapper.findHeroRankingByTradingTime(new DateTime("2016-07-05").toDate(),heroRankingActivityPeriod.get(0),heroRankingActivityPeriod.get(1));
-        assertEquals(3,heroRankingViews.size());
+        assertEquals(3, heroRankingViews.size());
         assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
         assertEquals(investModel3.getAmount(), heroRankingViews.get(0).getSumAmount());
         assertEquals(accountModel3.getUserName(), heroRankingViews.get(0).getUserName());
-        assertEquals(investor3.getMobile(),heroRankingViews.get(0).getMobile());
+        assertEquals(investor3.getMobile(), heroRankingViews.get(0).getMobile());
 
-        assertEquals(investModel1.getLoginName(),heroRankingViews.get(1).getLoginName());
-        assertEquals(investModel1.getAmount(),heroRankingViews.get(1).getSumAmount());
-        assertEquals(accountModel1.getUserName(),heroRankingViews.get(1).getUserName());
-        assertEquals(investor1.getMobile(),heroRankingViews.get(1).getMobile());
+        assertEquals(investModel1.getLoginName(), heroRankingViews.get(1).getLoginName());
+        assertEquals(investModel1.getAmount(), heroRankingViews.get(1).getSumAmount());
+        assertEquals(accountModel1.getUserName(), heroRankingViews.get(1).getUserName());
+        assertEquals(investor1.getMobile(), heroRankingViews.get(1).getMobile());
 
-        assertEquals(investModel2.getLoginName(),heroRankingViews.get(2).getLoginName());
-        assertEquals(investModel2.getAmount(),heroRankingViews.get(2).getSumAmount());
-        assertEquals(accountModel2.getUserName(),heroRankingViews.get(2).getUserName());
-        assertEquals(investor2.getMobile(),heroRankingViews.get(2).getMobile());
+        assertEquals(investModel2.getLoginName(), heroRankingViews.get(2).getLoginName());
+        assertEquals(investModel2.getAmount(), heroRankingViews.get(2).getSumAmount());
+        assertEquals(accountModel2.getUserName(), heroRankingViews.get(2).getUserName());
+        assertEquals(investor2.getMobile(), heroRankingViews.get(2).getMobile());
 
     }
 
@@ -855,7 +858,7 @@ public class InvestMapperTest {
         investModel2.setTransferInvestId(investModel2.getId());
         investMapper.create(investModel2);
 
-        long count = investMapper.countInvestorSuccessInvestByInvestTime(User_ID2,DateUtils.addMonths(DateTime.now().toDate(), -1), DateUtils.addMonths(DateTime.now().toDate(), 1));
-        assertEquals(count,1);
+        long count = investMapper.countInvestorSuccessInvestByInvestTime(User_ID2, DateUtils.addMonths(DateTime.now().toDate(), -1), DateUtils.addMonths(DateTime.now().toDate(), 1));
+        assertEquals(count, 1);
     }
 }

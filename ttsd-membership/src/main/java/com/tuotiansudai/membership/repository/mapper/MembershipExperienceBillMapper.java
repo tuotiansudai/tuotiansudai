@@ -12,6 +12,8 @@ public interface MembershipExperienceBillMapper {
 
     void create(MembershipExperienceBillModel membershipExperienceBillModel);
 
+    void createBatch(List<MembershipExperienceBillModel> membershipExperienceBillModels);
+
     void update(MembershipExperienceBillModel membershipExperienceBillModel);
 
     MembershipExperienceBillModel findById(long id);

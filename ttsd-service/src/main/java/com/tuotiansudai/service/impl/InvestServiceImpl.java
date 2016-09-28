@@ -14,6 +14,7 @@ import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
@@ -272,7 +273,7 @@ public class InvestServiceImpl implements InvestService {
 
         long extraRateInterest = 0;
         long extraRateFee = 0;
-        if (!Strings.isNullOrEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB.name())) {
+        if (loanDetailsModel != null && !Strings.isNullOrEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB.name())) {
             extraRateInterest = getExtraRate(loanId, amount, loanModel.getDuration());
             extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }

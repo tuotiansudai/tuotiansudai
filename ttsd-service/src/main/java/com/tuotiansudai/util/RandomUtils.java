@@ -75,6 +75,14 @@ public class RandomUtils {
         return encryptAppMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
     }
 
+    public String encryptNewMobile(String loginName, String encryptLoginName) {
+        if (encryptLoginName.equalsIgnoreCase(loginName)) {
+            return "您的位置";
+        }
+
+        return encryptWebMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
+    }
+
     public String encryptMobile(String loginName, String encryptLoginName, Source source) {
         if (encryptLoginName.equalsIgnoreCase(loginName)) {
             return userMapper.findByLoginName(loginName).getMobile();
