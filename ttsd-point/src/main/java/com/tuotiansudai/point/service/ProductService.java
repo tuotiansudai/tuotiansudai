@@ -11,6 +11,7 @@ import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ItemType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.repository.model.UserAddressModel;
+import com.tuotiansudai.repository.model.ProductType;
 
 import java.util.List;
 
@@ -59,4 +60,6 @@ public interface ProductService {
     List<ExchangeCouponDto> findCouponExchanges(int index, int pageSize);
 
     int findCouponExchangeCount();
+
+    List<String> getProductDescription(long investLowerLimit,List<ProductType> productTypes,Integer deadline);
 }
