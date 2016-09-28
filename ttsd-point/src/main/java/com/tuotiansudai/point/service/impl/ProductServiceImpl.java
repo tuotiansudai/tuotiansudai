@@ -442,7 +442,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<String> getProductDescription(long investLowerLimit,List<ProductType> productTypes,Integer deadline){
         List<String> description = Lists.newArrayList();
-        description.add(investLowerLimit > 0 ? MessageFormat.format("投资满{0}元即可使用;", AmountConverter.convertCentToString(investLowerLimit)) : "");
+        description.add(investLowerLimit > 0 ? MessageFormat.format("投资满{0}元即可使用;", AmountConverter.convertCentToString(investLowerLimit)) : "0");
         description.add(MessageFormat.format("{0}天产品可用;", productTypes.toString().replaceAll("_", "")));
         description.add(MessageFormat.format("有效期限:{0}天。", deadline));
         return description;
