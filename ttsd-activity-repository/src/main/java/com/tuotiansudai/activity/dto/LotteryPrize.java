@@ -10,7 +10,7 @@ public enum LotteryPrize{
     INTEREST_COUPON_5("0.5%加息券",PrizeType.VIRTUAL,ActivityCategory.AUTUMN_PRIZE),
     INTEREST_COUPON_2("0.2%加息券",PrizeType.VIRTUAL,ActivityCategory.AUTUMN_PRIZE),
 
-    MEMBERSHIP_V5("一个月V5会员体验",PrizeType.VIRTUAL,ActivityCategory.NATIONAL_PRIZE),
+    MEMBERSHIP_V5("一个月V5会员体验",PrizeType.MEMBERSHIP,ActivityCategory.NATIONAL_PRIZE),
     RED_INVEST_15("15元投资红包",PrizeType.VIRTUAL,ActivityCategory.NATIONAL_PRIZE),
     RED_INVEST_50("50元投资红包",PrizeType.VIRTUAL,ActivityCategory.NATIONAL_PRIZE),
     TELEPHONE_FARE_10("10元话费",PrizeType.CONCRETE,ActivityCategory.NATIONAL_PRIZE),
