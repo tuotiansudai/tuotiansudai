@@ -25,6 +25,8 @@ import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -115,6 +117,8 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
                 dto.setTransferStatus(invest.getTransferStatus().name());
                 LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(invest.getLoanId());
                 dto.setLeftPeriod(loanRepayModel == null ? "0" : String.valueOf(investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(invest.getId(), loanRepayModel.getPeriod())));
+                int leftDay = Days.daysBetween(new DateTime().withTimeAtStartOfDay().toLocalDateTime(), new DateTime(investRepayMapper.findByInvestIdAndPeriod(invest.getId(), loanModel.getPeriods()).getRepayDate()).toLocalDateTime()).getDays();
+                dto.setLeftDays(String.valueOf(leftDay > 0 ? leftDay : 0));
                 list.add(dto);
             }
         }
