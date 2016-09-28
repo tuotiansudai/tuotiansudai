@@ -51,7 +51,7 @@
                     <div class="center-bubble animate-bounce-up">
                         <div class="max-gift-picture">
                             <h3><#if mysteriousPrizeDto??>${mysteriousPrizeDto.prizeName}</#if></h3>
-                            <img src="<#if mysteriousPrizeDto??>${mysteriousPrizeDto.imageUrl}</#if>">
+                            <img src="<#if mysteriousPrizeDto??>${staticServer}${mysteriousPrizeDto.imageUrl}</#if>">
                         </div>
                     </div>
                     <div class="text-des-item max-text">

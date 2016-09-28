@@ -58,7 +58,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     @Autowired
     private PointBillMapper pointBillMapper;
 
-    @Value("${web.banner.server}")
+    @Value("${mobile.static.server}")
     private String bannerServer;
 
     @Autowired

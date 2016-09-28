@@ -63,7 +63,7 @@
 				<div class="order-table">
 					<div class="order-picture">
                         <p class="mater-img picture-item">
-                            <img src="/${productShowItem.imageUrl}" width="140" height="114"/>
+                            <img src="${staticServer}${productShowItem.imageUrl}" width="140" height="114"/>
                         </p>
 					</div>
 					<div class="order-name">
