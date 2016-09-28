@@ -120,6 +120,7 @@ worker-all:
   image: "isuper/java-oracle:jdk_8"
   volumes:
     - ./ttsd-job-worker/build/distributions:/root
+    - /var/log/tuotian/worker-all:/var/log/job-worker
   command: bash -c "/root/ttsd-job-worker-all/bin/ttsd-job-worker"
   links:
     - "pay-wrapper"
@@ -129,6 +130,7 @@ worker-invest:
   image: "isuper/java-oracle:jdk_8"
   volumes:
     - ./ttsd-job-worker/build/distributions:/root
+    - /var/log/tuotian/worker-invest:/var/log/job-worker
   command: bash -c "/root/ttsd-job-worker-invest/bin/ttsd-job-worker"
   links:
     - "pay-wrapper"
@@ -138,6 +140,7 @@ worker-jpush:
   image: "isuper/java-oracle:jdk_8"
   volumes:
     - ./ttsd-job-worker/build/distributions:/root
+    - /var/log/tuotian/worker-invest:/var/log/job-worker
   command: bash -c "/root/ttsd-job-worker-jpush/bin/ttsd-job-worker"
   links:
     - "redis-server"
