@@ -1,3 +1,4 @@
+@import "login_tip";
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -10,12 +11,50 @@ body {
   color: #005e80;
   font-size: 14px;
 }
+.pop-personal-win {
+  border-radius: 14px!important;
+  background-color: transparent!important;
+  box-shadow: none!important;
+}
 .for-mobile {
   display: none;
 }
 .main-frame {
   width: 100%;
   margin: 0 auto;
+}
+
+.pop-layer-out {
+  background: url("/activity/images/share-reward/bg-pop-window.png") left bottom no-repeat;
+  width:550px;
+  height: 410px;
+  border-radius: 10px;
+  position: relative;
+  padding: 160px 60px 10px 60px;
+  text-align: center;
+  .btn-to-close {
+    background: url("../../images/share-reward/btn-close.png") left top no-repeat;
+    width:48px;
+    height:109px;
+    background-size: 100%;
+    position: absolute;
+    right: 0;
+    top:0;
+    cursor: pointer;
+  }
+  p {
+    color: #fff85f;
+    font-size: 28px;
+
+  }
+  a.btn-to-identification {
+    display: inline-block;
+    width: 193px;
+    height: 44px;
+    position: absolute;
+    bottom: 20px;
+    left: 180px;
+  }
 }
 
 .tour-slide  {
@@ -89,8 +128,10 @@ body {
     color: #4d4d4d;
   }
   .btn-copy-link {
+    display: inline-block;
     width: 93px;
     height:35px;
+    text-align: center;
     background: #d5f4ff;
     border:1px solid #00a6e1;
     color: #005e80;

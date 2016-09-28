@@ -3,7 +3,7 @@
 
 <div class="tour-slide"></div>
 
-<div class="share-reward-container page-width">
+<div class="share-reward-container page-width" id="shareRewardContainer">
 
     <div class="bg-column-normal">
         <div class="bg-column-title">
@@ -14,27 +14,44 @@
         <div class="invite-box-friend anonymous">
             <dl>
                 <dt>向好友发送您的邀请链接：</dt>
-                <dd><input type="text" class="input-invite" value="https://tuotiansudai.com/register/user?referrer=cg007008">
-                    <button type="button" class="btn-copy-link">复制链接</button>
+                <dd><input type="text" class="input-invite" disabled value="https://tuotiansudai.com/register/user?referrer=cg007008">
+                    <a class="btn-copy-link show-login" href="javascript:void(0);">复制链接</a>
                 </dd>
             </dl>
         </div>
-            </@global.isAnonymous>
+      </@global.isAnonymous>
+
 
     <@global.isNotAnonymous>
-        <div class="invite-box-friend clearfix non-anonymous">
-            <dl>
-                <dd>
-                    <input type="text" class="input-invite" value="https://tuotiansudai.com/register/user?referrer=cg007008">
-                </dd>
-                <dt class="clearfix">向好友发送您的邀请链接：  <button type="button" class="btn-copy-link fr">复制链接</button></dt>
-            </dl>
 
-            <div class="weixin-code">
-                <img src="${staticServer}/activity/images/share-reward/wei-code.png">
-                <span>微信扫码邀请好友</span>
+        <@global.role hasRole="'USER'">
+           <#--已登录未认证-->
+            <div class="invite-box-friend no-identification">
+                <dl>
+                    <dt>向好友发送您的邀请链接：</dt>
+                    <dd><input type="text" class="input-invite" disabled value="https://tuotiansudai.com/register/user?referrer=cg007008">
+                        <a class="btn-copy-link to-identification" href="javascript:void(0);" >复制链接</a>
+                    </dd>
+                </dl>
             </div>
-        </div>
+        </@global.role>
+
+        <@global.role hasRole="'INVESTOR'">
+            <div class="invite-box-friend clearfix non-anonymous yes-identification">
+                <dl>
+                    <dd>
+                        <input type="text" class="input-invite" id="clipboard_text" value="https://tuotiansudai.com/register/user?referrer=cg007008">
+                    </dd>
+                    <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-copy-link fr copy-button" data-clipboard-target="clipboard_text">复制链接</a></dt>
+                </dl>
+
+                <div class="weixin-code">
+                    <img src="${staticServer}/activity/images/share-reward/wei-code.png">
+                    <span>微信扫码邀请好友</span>
+                </div>
+            </div>
+
+        </@global.role>
     </@global.isNotAnonymous>
 
     </div>
@@ -220,5 +237,13 @@
     </div>
 </div>
 
-<#--<#include "login-tip.ftl" />-->
+<div class="pop-layer-out">
+    <div class="btn-to-close"></div>
+    <p>您的好友可能猜不到你是谁
+        先来进行实名认证吧！</p>
+
+    <a href="/register/account?redirect=/activity/share-reward"  class="btn-to-identification"></a>
+</div>
+
+<#include "login-tip.ftl" />
 </@global.main>
