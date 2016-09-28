@@ -10,6 +10,16 @@
             <span class="title-word01"></span>
         </div>
 
+
+        <div class="invite-box-friend no-identification">
+            <dl>
+                <dt>向好友发送您的邀请链接：</dt>
+                <dd><input type="text" class="input-invite" disabled value="https://tuotiansudai.com/register/user?referrer=cg007008">
+                    <a class="btn-copy-link to-identification" href="javascript:void(0);" >复制链接</a>
+                </dd>
+            </dl>
+        </div>
+
         <@global.isAnonymous>
         <div class="invite-box-friend anonymous">
             <dl>
