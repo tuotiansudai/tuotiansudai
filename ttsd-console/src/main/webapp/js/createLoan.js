@@ -206,6 +206,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 uploadFile.push(obj);
             });
         };
+
         $('.jq-checkbox label').click(function () {
             if ($('.jq-index').prop('checked')) {
                 $('.jq-index').val('1');
@@ -217,11 +218,11 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
         $('.jq-activity-checkbox label').click(function () {
             if ($('.jq-activity').prop('checked')) {
                 $('.jq-activity').val('1');
-                $('.jq-activity-desc').prop('disabled',false);
+                $('.jq-activity-desc').prop('disabled', false);
             } else {
                 $('.jq-activity').val('0');
                 $('.jq-activity-desc').val("");
-                $('.jq-activity-desc').prop('disabled',true);
+                $('.jq-activity-desc').prop('disabled', true);
             }
         });
         //自动完成提示

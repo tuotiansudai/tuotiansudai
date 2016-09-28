@@ -197,20 +197,20 @@ body{
 }
 
 .recharge-plat{
-   .close-text {
-     text-align: center;
-     float: left;
-     width: 100%;
-     margin-top: 40px;
-     span {
-       padding: 10px 25px;
-       color: #fff;
-       background: #ff7200;
-       border-radius: 5px;
-       cursor: pointer;
-     }
-   }
- }
+  .close-text {
+    text-align: center;
+    float: left;
+    width: 100%;
+    margin-top: 40px;
+    span {
+      padding: 10px 25px;
+      color: #fff;
+      background: #ff7200;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+}
 .repay-layer-pop {
   .layui-layer-title {
     font-size: 15px;
@@ -220,7 +220,7 @@ body{
     .bottom-note {
       font-size: 14px;
       color: #666;
-    } 
+    }
     .summary-top {
       padding-bottom:10px;
       color: #333;

@@ -23,7 +23,11 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
             },
             success: function(data) {
                 if (data.status) {
-                    window.location.reload();
+                    if($('.show-login').length>0){
+                        window.location.href='/referrer/refer-list';
+                    }else{
+                        window.location.reload();
+                    }
                 } else {
                     refreshCaptcha();
                     $loginSubmitElement.removeClass('loading');
@@ -82,12 +86,32 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
     .on('click', '.show-login', function(event) {
         event.preventDefault();
         refreshCaptcha();
-        layer.open({
-            type: 1,
-            title: false,
-            closeBtn: 0,
-            area: ['auto', 'auto'],
-            content: $('#loginTip')
-        });
+        $.ajax({
+            url: '/activity/isLogin',
+            //data:data,
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json; charset=UTF-8'
+        })
+            .fail(function (response) {
+                if (response.responseText != "") {
+                    $("meta[name='_csrf']").remove();
+                    $('head').append($(response.responseText));
+                    var token = $("meta[name='_csrf']").attr("content");
+                    var header = $("meta[name='_csrf_header']").attr("content");
+                    $(document).ajaxSend(function (e, xhr, options) {
+                        xhr.setRequestHeader(header, token);
+                    });
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        area: ['auto', 'auto'],
+                        content: $('#loginTip')
+                    });
+                }
+
+            }
+        );
     });
 });

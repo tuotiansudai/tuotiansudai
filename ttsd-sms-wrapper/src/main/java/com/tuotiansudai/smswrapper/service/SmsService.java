@@ -1,6 +1,10 @@
 package com.tuotiansudai.smswrapper.service;
 
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
+import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 
 import java.util.List;
 
@@ -27,4 +31,8 @@ public interface SmsService {
     BaseDto<SmsDataDto> experienceRepayNotify(List<String> mobiles, String repayAmount);
 
     BaseDto<SmsDataDto> cancelTransferLoan(String mobile, String TransferLoanName);
+
+    BaseDto<SmsDataDto> importUserGetGiveMembership(String mobile, int level);
+
+    BaseDto<SmsDataDto> newUserGetGiveMembership(String mobile, int level);
 }

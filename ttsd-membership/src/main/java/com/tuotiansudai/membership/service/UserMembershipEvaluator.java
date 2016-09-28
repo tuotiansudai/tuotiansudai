@@ -1,9 +1,52 @@
 package com.tuotiansudai.membership.service;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Ordering;
+import com.google.common.collect.UnmodifiableIterator;
+import com.google.common.primitives.Ints;
+import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public interface UserMembershipEvaluator {
+import java.util.Date;
+import java.util.List;
 
-    MembershipModel evaluate(String loginName);
+@Service
+public class UserMembershipEvaluator {
+
+    @Autowired
+    private MembershipMapper membershipMapper;
+
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
+    public MembershipModel evaluate(String loginName) {
+        List<UserMembershipModel> userMembershipModels = userMembershipMapper.findByLoginName(loginName);
+
+        if (CollectionUtils.isEmpty(userMembershipModels)) {
+            return null;
+        }
+
+        UnmodifiableIterator<UserMembershipModel> filter = Iterators.filter(userMembershipModels.iterator(), new Predicate<UserMembershipModel>() {
+            @Override
+            public boolean apply(UserMembershipModel input) {
+                return input.getExpiredTime().after(new Date());
+            }
+        });
+
+        UserMembershipModel max = new Ordering<UserMembershipModel>() {
+            @Override
+            public int compare(UserMembershipModel left, UserMembershipModel right) {
+                return Ints.compare(membershipMapper.findById(left.getMembershipId()).getLevel(), membershipMapper.findById(right.getMembershipId()).getLevel());
+            }
+        }.max(filter);
+
+        return membershipMapper.findById(max.getMembershipId());
+    }
 
 }

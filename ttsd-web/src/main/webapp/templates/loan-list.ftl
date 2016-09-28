@@ -99,7 +99,6 @@
                                     <i class="ic-right"></i>
                                 </span>
                             </#if>
-
                             <span class="l-way fr">${loanItem.type.getName()}</span>
                         </div>
                         <div class="loan-info-dl">
