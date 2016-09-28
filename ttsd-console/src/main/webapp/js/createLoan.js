@@ -206,6 +206,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 uploadFile.push(obj);
             });
         };
+
         $('.jq-checkbox label').click(function () {
             if ($('.jq-index').prop('checked')) {
                 $('.jq-index').val('1');
@@ -217,8 +218,11 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
         $('.jq-activity-checkbox label').click(function () {
             if ($('.jq-activity').prop('checked')) {
                 $('.jq-activity').val('1');
+                $('.jq-activity-desc').prop('disabled', false);
             } else {
                 $('.jq-activity').val('0');
+                $('.jq-activity-desc').val("");
+                $('.jq-activity-desc').prop('disabled', true);
             }
         });
         //自动完成提示
@@ -280,6 +284,13 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 var projectName = $('.jq-name', curform).val();
                 if (projectName == '') {
                     showErrorMessage('请选择借款项目名称', $('.jq-name', curform));
+                    return false;
+                }
+
+                var activityDesc = $('.jq-activity-desc', curform).val();
+                if ($('.jq-activity').prop('checked') && activityDesc.trim() == "") {
+                    showErrorMessage('您选择了活动专享,标的所属活动必须填写', $('.jq-activity-desc', curform));
+                    $('.jq-activity-desc').prop('disabled', false);
                     return false;
                 }
 
@@ -413,6 +424,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "extraRateIds": getExtraRateIds(),
                         "extraSource": getExtraSource(),
                         "activity": activity,
+                        "activityDesc": $('.jq-activity-desc').val(),
 
                         "declaration": $('.jq-loan-declaration').val(),
 
@@ -461,6 +473,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         "extraRateIds": getExtraRateIds(),
                         "extraSource": getExtraSource(),
                         "activity": activity,
+                        "activityDesc": $('.jq-activity-desc').val(),
 
                         "declaration": $('.jq-loan-declaration').val(),
 

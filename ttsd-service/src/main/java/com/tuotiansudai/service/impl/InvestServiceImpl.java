@@ -1,9 +1,6 @@
 package com.tuotiansudai.service.impl;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
+import com.google.common.base.*;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
@@ -17,6 +14,7 @@ import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
@@ -30,6 +28,7 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -40,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -87,9 +87,6 @@ public class InvestServiceImpl implements InvestService {
     private CouponRepayMapper couponRepayMapper;
 
     @Autowired
-    private LoanRepayMapper loanRepayMapper;
-
-    @Autowired
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
@@ -119,15 +116,22 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private UserCouponService userCouponService;
 
+    @Autowired
+    private UserBirthdayUtil userBirthdayUtil;
+
     @Override
+    @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
+        accountMapper.lockByLoginName(investDto.getLoginName());
         investDto.setNoPassword(false);
         this.checkInvestAvailable(investDto);
         return payWrapperClient.invest(investDto);
     }
 
     @Override
+    @Transactional
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException {
+        accountMapper.lockByLoginName(investDto.getLoginName());
         investDto.setNoPassword(true);
         this.checkInvestAvailable(investDto);
         return payWrapperClient.noPasswordInvest(investDto);
@@ -199,20 +203,52 @@ public class InvestServiceImpl implements InvestService {
             throw new InvestException(InvestExceptionType.MORE_THAN_MAX_INVEST_AMOUNT);
         }
 
-        UserCouponDto maxBenefitUserCoupon = userCouponService.getMaxBenefitUserCoupon(investDto.getLoginName(), loanId, investAmount);
+        this.checkUserCouponIsAvailable(investDto);
+    }
+
+    // 验证优惠券是否可用
+    private void checkUserCouponIsAvailable(InvestDto investDto) throws InvestException {
+        long loanId = Long.parseLong(investDto.getLoanId());
+        LoanModel loanModel = loanMapper.findById(loanId);
+        String loginName = investDto.getLoginName();
+        long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
+
+        UserCouponDto maxBenefitUserCoupon = userCouponService.getMaxBenefitUserCoupon(loginName, loanId, investAmount);
         if (maxBenefitUserCoupon != null && CollectionUtils.isEmpty(investDto.getUserCouponIds())) {
             throw new InvestException(InvestExceptionType.NONE_COUPON_SELECTED);
         }
 
-        // 验证优惠券是否可用
         List<Long> userCouponIds = investDto.getUserCouponIds();
         if (CollectionUtils.isNotEmpty(userCouponIds)) {
+            List<UserCouponModel> notSharedCoupons = Lists.newArrayList();
             for (long userCouponId : userCouponIds) {
-                UserCouponModel userCouponModel = userCouponMapper.lockById(userCouponId);
+                UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
+                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 Date usedTime = userCouponModel.getUsedTime();
-                if (usedTime != null && new DateTime(usedTime).plusSeconds(couponLockSeconds).isAfter(new DateTime())) {
+                if ((usedTime != null && new DateTime(usedTime).plusSeconds(couponLockSeconds).isAfter(new DateTime()))
+                        || !loginName.equalsIgnoreCase(userCouponModel.getLoginName())
+                        || InvestStatus.SUCCESS == userCouponModel.getStatus()
+                        || (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !userBirthdayUtil.isBirthMonth(loginName))
+                        || userCouponModel.getEndTime().before(new Date())
+                        || !couponModel.getProductTypes().contains(loanModel.getProductType())
+                        || (couponModel.getInvestLowerLimit() > 0 && investAmount < couponModel.getInvestLowerLimit())) {
+                    logger.error(MessageFormat.format("user({0}) use user coupon ({1}) is unusable", loginName, String.valueOf(userCouponId)));
                     throw new InvestException(InvestExceptionType.COUPON_IS_UNUSABLE);
                 }
+                if (!couponModel.isShared()) {
+                    notSharedCoupons.add(userCouponModel);
+                }
+            }
+
+            if (notSharedCoupons.size() > 1) {
+                String notSharedUserCouponIds = Joiner.on(",").join(Lists.transform(notSharedCoupons, new Function<UserCouponModel, String>() {
+                    @Override
+                    public String apply(UserCouponModel input) {
+                        return String.valueOf(input.getId());
+                    }
+                }));
+                logger.error(MessageFormat.format("user({0}) used more then one not shared coupons({1})", loginName, notSharedUserCouponIds));
+                throw new InvestException(InvestExceptionType.COUPON_IS_UNUSABLE);
             }
         }
     }
@@ -237,7 +273,7 @@ public class InvestServiceImpl implements InvestService {
 
         long extraRateInterest = 0;
         long extraRateFee = 0;
-        if (!Strings.isNullOrEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB.name())) {
+        if (loanDetailsModel != null && !Strings.isNullOrEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB.name())) {
             extraRateInterest = getExtraRate(loanId, amount, loanModel.getDuration());
             extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }

@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.dto.MysteriousPrizeDto;
+import com.tuotiansudai.repository.model.ActivityCategory;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.service.HeroRankingService;
 import org.joda.time.DateTime;
@@ -31,9 +32,9 @@ public class HeroRankingController {
             tradingTime = new Date();
         }
 
-        List<HeroRankingView> heroRankingViewReferrerList = heroRankingService.obtainHeroRankingReferrer(tradingTime);
+        List<HeroRankingView> heroRankingViewReferrerList = heroRankingService.obtainHeroRankingReferrer(ActivityCategory.NEW_HERO_RANKING,tradingTime);
 
-        List<HeroRankingView> heroRankingViewInvestList = heroRankingService.obtainHeroRanking(tradingTime);
+        List<HeroRankingView> heroRankingViewInvestList = heroRankingService.obtainHeroRanking(ActivityCategory.NEW_HERO_RANKING,tradingTime);
 
         long avgInvestAmount = 0;
 

@@ -7,12 +7,15 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.*;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.CouponUserGroupModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -20,7 +23,10 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -62,9 +68,6 @@ public class CouponServiceImpl implements CouponService {
     private CouponUserGroupMapper couponUserGroupMapper;
 
     @Autowired
-    private CouponExchangeMapper couponExchangeMapper;
-
-    @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
@@ -94,13 +97,6 @@ public class CouponServiceImpl implements CouponService {
             couponUserGroupModel.setUserGroup(couponModel.getUserGroup());
             couponUserGroupModel.setUserGroupItems(couponModel.getUserGroup() == UserGroup.AGENT ? couponModel.getAgents() : couponModel.getChannels());
             couponUserGroupMapper.create(couponUserGroupModel);
-        }
-        if (exchangeCouponDto.getExchangePoint() != null && exchangeCouponDto.getExchangePoint() > 0) {
-            CouponExchangeModel couponExchangeModel = new CouponExchangeModel();
-            couponExchangeModel.setCouponId(couponModel.getId());
-            couponExchangeModel.setSeq(exchangeCouponDto.getSeq());
-            couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
-            couponExchangeMapper.create(couponExchangeModel);
         }
         return exchangeCouponDto;
 
@@ -180,13 +176,6 @@ public class CouponServiceImpl implements CouponService {
             if (couponUserGroupModel != null) {
                 couponUserGroupMapper.delete(couponUserGroupModel.getId());
             }
-        }
-        if (exchangeCouponDto.getExchangePoint() != null && exchangeCouponDto.getExchangePoint() > 0) {
-
-            CouponExchangeModel couponExchangeModel = couponExchangeMapper.findByCouponId(exchangeCouponDto.getId());
-            couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
-            couponExchangeModel.setSeq(exchangeCouponDto.getSeq());
-            couponExchangeMapper.update(couponExchangeModel);
         }
 
     }
@@ -371,13 +360,6 @@ public class CouponServiceImpl implements CouponService {
         }
 
         return totalInterest;
-    }
-
-
-
-    @Override
-    public CouponExchangeModel findCouponExchangeByCouponId(long couponId) {
-        return couponExchangeMapper.findByCouponId(couponId);
     }
 
     @Override

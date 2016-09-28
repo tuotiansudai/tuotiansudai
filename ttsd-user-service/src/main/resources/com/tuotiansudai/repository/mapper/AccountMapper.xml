@@ -38,7 +38,7 @@
         select * from account where pay_user_id = #{payUserId}
     </select>
 
-    <select useCache="false" id="lockByLoginName" parameterType="string" resultMap="accountResultMap">
+    <select id="lockByLoginName" parameterType="string" resultMap="accountResultMap" useCache="false">
         select * from account where login_name = #{loginName} for update
     </select>
 

@@ -123,7 +123,7 @@
         ORDER BY seq ASC, updated_time DESC
     </select>
 
-    <select id="lockById" parameterType="long" resultMap="productResultMap">
+    <select id="lockById" parameterType="long" resultMap="productResultMap" useCache="false">
         select * from product where id = #{id} for update
     </select>
 </mapper>

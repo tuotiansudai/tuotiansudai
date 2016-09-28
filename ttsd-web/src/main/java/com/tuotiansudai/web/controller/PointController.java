@@ -1,25 +1,20 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.constraints.Min;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping(path = "/point")
@@ -38,9 +33,6 @@ public class PointController {
 
     @Autowired
     private PointExchangeService pointExchangeService;
-
-    @Autowired
-    private CouponService couponService;
 
     @Autowired
     private PointBillService pointBillService;
@@ -69,47 +61,5 @@ public class PointController {
         baseDto.setData(baseDataDto);
         baseDto.setSuccess(true);
         return baseDto;
-    }
-
-    @RequestMapping(value = "/{couponId}/exchange", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDataDto exchangeCoupon(@PathVariable long couponId) {
-        BaseDataDto baseDataDto = new BaseDataDto();
-        long exchangePoint = couponService.findCouponExchangeByCouponId(couponId).getExchangePoint();
-        boolean sufficient = pointExchangeService.exchangeableCoupon(couponId, LoginUserInfo.getLoginName());
-        CouponModel couponModel = couponService.findCouponById(couponId);
-        boolean couponExchangeable = couponModel.getIssuedCount() < couponModel.getTotalCount();
-        if (sufficient && pointExchangeService.exchangeCoupon(couponId, LoginUserInfo.getLoginName(), exchangePoint)) {
-            baseDataDto.setStatus(true);
-        } else {
-            baseDataDto.setStatus(false);
-            if (!sufficient) {
-                if (!couponExchangeable) {
-                    baseDataDto.setMessage("coupon exchangeable insufficient");
-                } else {
-                    baseDataDto.setMessage("point insufficient");
-                }
-            }
-        }
-        return baseDataDto;
-    }
-
-    @RequestMapping(value = "/point-list", method = RequestMethod.GET)
-    public ModelAndView investList() {
-        return new ModelAndView("/point-bill-list");
-    }
-
-    @RequestMapping(value = "/point-bill-list-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
-    @ResponseBody
-    public BaseDto<BasePaginationDataDto> pointBillListData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                                            @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                                            @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                                            @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                                            @RequestParam(name = "businessType", required = false) List<PointBusinessType> businessType) {
-        BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPagination(LoginUserInfo.getLoginName(), index, pageSize, startTime, endTime, businessType);
-        BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
-        dto.setData(dataDto);
-
-        return dto;
     }
 }

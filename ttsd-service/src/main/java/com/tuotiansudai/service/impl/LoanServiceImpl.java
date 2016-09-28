@@ -9,6 +9,8 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.job.AutoInvestJob;
 import com.tuotiansudai.job.DeadlineFundraisingJob;
 import com.tuotiansudai.job.FundraisingStartJob;
@@ -739,16 +741,19 @@ public class LoanServiceImpl implements LoanService {
                 double rate = extraLoanRateMapper.findMaxRateByLoanId(loanModel.getId());
                 String extraSource = "";
                 boolean activity = false;
+                String activityDesc = "";
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
                 if(loanDetailsModel != null){
                     extraSource = loanDetailsModel.getExtraSource();
                     activity = loanDetailsModel.isActivity();
+                    activityDesc = loanDetailsModel.getActivityDesc();
                 }
                 if (rate > 0) {
                     loanItemDto.setExtraRate(rate * 100);
                     loanItemDto.setExtraSource(extraSource);
                 }
                 loanItemDto.setActivity(activity);
+                loanItemDto.setActivityDesc(activityDesc);
                 return loanItemDto;
             }
         });

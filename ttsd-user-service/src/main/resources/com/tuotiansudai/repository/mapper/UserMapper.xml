@@ -46,7 +46,7 @@
     </resultMap>
 
     <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user (login_name, password, mobile, email, register_time, last_modified_time, referrer, status, salt, channel, source, sign_in_count)
+        insert ignore into user (login_name, password, mobile, email, register_time, last_modified_time, referrer, status, salt, channel, source, sign_in_count)
         value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source}, #{signInCount})
     </insert>
 
@@ -68,7 +68,7 @@
         select * from user where login_name = #{loginName}
     </select>
 
-    <select id="lockByLoginName" parameterType="string" resultMap="userResultMap">
+    <select id="lockByLoginName" parameterType="string" resultMap="userResultMap" useCache="false">
         select * from user where login_name = #{loginName} for update
     </select>
 
@@ -201,11 +201,18 @@
                 mobile like CONCAT('%', #{mobile}, '%')
             </if>
         </where>
-        order by register_time desc limit #{index}, #{pageSize}
+        order by register_time desc
+        <if test="index != null and pageSize != null">
+            limit #{index}, #{pageSize}
+        </if>
     </select>
 
-    <select id="findUsersByRegisterTime" parameterType="map" resultMap="userResultMap">
-        select * from user where register_time between #{startTime} and #{endTime} order by register_time
+    <select id="findUsersByRegisterTimeOrReferrer" parameterType="map" resultMap="userResultMap">
+        select * from user where register_time between #{startTime} and #{endTime}
+        <if test="referrer != null and referrer != ''">
+            and referrer = #{referrer}
+        </if>
+        order by register_time
     </select>
 
 </mapper>

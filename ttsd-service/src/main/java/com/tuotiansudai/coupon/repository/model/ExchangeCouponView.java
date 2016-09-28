@@ -1,7 +1,5 @@
 package com.tuotiansudai.coupon.repository.model;
 
-import com.tuotiansudai.coupon.dto.CouponDto;
-
 public class ExchangeCouponView extends CouponModel {
 
     private Long exchangePoint;
@@ -16,14 +14,8 @@ public class ExchangeCouponView extends CouponModel {
         super();
     }
 
-    public ExchangeCouponView(CouponDto couponDto) {
-        super(couponDto);
-    }
-
-    public ExchangeCouponView(CouponModel couponModel, long exchangePoint, int seq) {
+    public ExchangeCouponView(CouponModel couponModel) {
         super(couponModel);
-        this.exchangePoint = exchangePoint;
-        this.seq = seq;
     }
 
     public Long getExchangePoint() {

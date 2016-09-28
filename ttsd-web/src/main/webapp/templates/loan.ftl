@@ -6,10 +6,14 @@
         <div class="loan-model bg-w">
             <div class="news-share bg-w">
                 <h2 class="hd clearfix title-block <#if loan.activityType == 'NEWBIE'>new</#if>">
-                    <div class="fl title">${loan.name}
-                        <#if loan.activity?string("true","false") == "true">(活动专享)</#if>
-
-                    </div>
+                    <div class="fl title">${loan.name}</div>
+                    <#if loan.activity?string("true","false") == "true">
+                        <span class="arrow-tag-normal">
+                            <i class="ic-left"></i>
+                            <em>${loan.activityDesc!}</em>
+                            <i class="ic-right"></i>
+                        </span>
+                    </#if>
                     <#if loan.extraSource?? && loan.extraSource == "MOBILE">
                         <div class="fl orange extra-rate">
                             <i class="fa fa-mobile"></i>

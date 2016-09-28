@@ -2,7 +2,6 @@ package com.tuotiansudai.coupon.service;
 
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
-import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
@@ -45,8 +44,6 @@ public interface CouponService {
     int findBirthdayCouponsCount();
 
     long estimateCouponExpectedInterest(String loginName, long loanId, List<Long> couponIds, long amount);
-
-    CouponExchangeModel findCouponExchangeByCouponId(long couponId);
 
     long findExperienceInvestAmount(List<InvestModel> investModelList);
 

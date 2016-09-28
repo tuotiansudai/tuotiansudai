@@ -1,27 +1,27 @@
 package com.tuotiansudai.point.service.impl;
 
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class PointServiceImpl implements PointService {
@@ -29,9 +29,6 @@ public class PointServiceImpl implements PointService {
 
     @Autowired
     private CouponMapper couponMapper;
-
-    @Autowired
-    private CouponExchangeMapper couponExchangeMapper;
 
     @Autowired
     private PointBillService pointBillService;
@@ -42,6 +39,18 @@ public class PointServiceImpl implements PointService {
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.startTime}\")}")
+    private Date activityNationalStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.endTime}\")}")
+    private Date activityNationalEndTime;
+
     @Override
     @Transactional
     public void createCouponAndExchange(String loginName, ExchangeCouponDto exchangeCouponDto) {
@@ -49,19 +58,15 @@ public class PointServiceImpl implements PointService {
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
         couponMapper.create(couponModel);
-
-        CouponExchangeModel couponExchangeModel = new CouponExchangeModel();
-        couponExchangeModel.setCouponId(couponModel.getId());
-        couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
-        couponExchangeMapper.create(couponExchangeModel);
-
     }
 
     @Override
     @Transactional
     public void obtainPointInvest(InvestModel investModel) {
-        int duration = loanMapper.findById(investModel.getLoanId()).getDuration();
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+        int duration = loanModel.getDuration();
         long point = new BigDecimal((investModel.getAmount()*duration/InterestCalculator.DAYS_OF_YEAR)).divide(new BigDecimal(100), 0, BigDecimal.ROUND_DOWN).longValue();
+        point = getNationalRewardsPoint(investModel.getLoginName(),point,investModel.getId());
         pointBillService.createPointBill(investModel.getLoginName(), investModel.getId(), PointBusinessType.INVEST, point);
         logger.debug(MessageFormat.format("{0} has obtained point {1}", investModel.getId(), point));
     }
@@ -72,4 +77,17 @@ public class PointServiceImpl implements PointService {
         return accountModel != null ? accountModel.getPoint() : 0;
     }
 
+    private long getNationalRewardsPoint(String loginName,long point,long investId){
+        Date nowDate = DateTime.now().toDate();
+        if(nowDate.before(activityNationalEndTime) && nowDate.after(activityNationalStartTime)){
+            UserModel userModel = userMapper.findByLoginName(loginName);
+            List<InvestModel> successInvestModels = investMapper.findSuccessInvestByInvestTime(loginName, activityNationalStartTime, activityNationalEndTime);
+            if(successInvestModels.size() < 2 && userModel.getRegisterTime().before(activityNationalEndTime) && userModel.getRegisterTime().after(activityNationalStartTime) && !Strings.isNullOrEmpty(userModel.getReferrer())){
+                pointBillService.createPointBill(userModel.getReferrer(), investId, PointBusinessType.ACTIVITY, (long) (point * 0.1));
+            }
+
+            point *= 2;
+        }
+        return point;
+    }
 }
