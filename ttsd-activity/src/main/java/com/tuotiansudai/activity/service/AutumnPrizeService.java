@@ -16,9 +16,7 @@ import com.tuotiansudai.activity.repository.model.UserLuxuryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.MobileEncoder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
@@ -46,9 +44,6 @@ public class AutumnPrizeService {
 
     @Autowired
     private UserLuxuryPrizeMapper userLuxuryPrizeMapper;
-
-    @Autowired
-    private InvestMapper investMapper;
 
     @Value(value = "activity.autumn.travel.invest")
     private String activityAutumnTravelInvestKey;
