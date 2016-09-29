@@ -33,23 +33,12 @@
                     <select class="selectpicker" name="selectPrize">
                         <option value="" <#if !(lotteryPrizes??)>selected</#if>>全部</option>
                         <#list lotteryPrizes as prize>
-                                <option value="${prize}" <#if lotteryPrizes?? && prize==selectPrize>selected</#if>>
-                                    ${prize.description}
+                                <option value="${prize}" <#if lotteryPrizes?? && prize.lotteryPrize==selectPrize>selected</#if>>
+                                    ${prize.lotteryPrizeName}
                                 </option>
                         </#list>
                     </select>
 
-                </div>
-                <div class="form-group" style="display:none;" id="nationalDiv">
-                    <label>奖品</label>
-                    <select class="selectpicker" name="selectNational">
-                        <option value="" <#if !(nationalPrizes??)>selected</#if>>全部</option>
-                        <#list nationalPrizes as national>
-                            <option value="${national}" <#if nationalPrizes?? && national==selectPrize>selected</#if>>
-                            ${national.description}
-                            </option>
-                        </#list>
-                    </select>
                 </div>
                 <div class="form-group">
                     <label>获奖时间</label>

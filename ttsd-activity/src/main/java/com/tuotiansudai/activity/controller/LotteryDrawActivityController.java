@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "activity/point-draw")
-public class PointDrawActivityController {
+public class LotteryDrawActivityController {
 
 }
