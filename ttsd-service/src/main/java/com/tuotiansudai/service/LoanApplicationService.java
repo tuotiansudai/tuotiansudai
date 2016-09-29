@@ -13,6 +13,7 @@ import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -40,13 +41,18 @@ public class LoanApplicationService {
         return new BaseDto<>(new BaseDataDto(true));
     }
 
-    public BaseDto<BaseDataDto> update(LoanApplicationView loanApplicationView) {
+    public BaseDto<BaseDataDto> comment(LoanApplicationView loanApplicationView) {
         LoanApplicationModel loanApplicationModel = loanApplicationMapper.findById(loanApplicationView.getId());
         if (null == loanApplicationModel) {
             return new BaseDto<>(new BaseDataDto(false, "该借款申请不存在"));
         }
-        loanApplicationModel.updateByView(loanApplicationView);
+
+        loanApplicationModel.setComment(loanApplicationView.getComment());
+        loanApplicationModel.setUpdatedBy(loanApplicationView.getUpdatedBy());
+        loanApplicationModel.setUpdatedTime(new Date());
+
         loanApplicationMapper.update(loanApplicationModel);
+
         return new BaseDto<>(new BaseDataDto(true));
     }
 

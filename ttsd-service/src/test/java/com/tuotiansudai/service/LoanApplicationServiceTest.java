@@ -133,7 +133,7 @@ public class LoanApplicationServiceTest {
     }
 
     @Test
-    public void testUpdate() throws Exception {
+    public void testComment() throws Exception {
         prepareData();
         LoanApplicationModel loanApplicationModel = createLoanApplicationModel("user1");
         List<LoanApplicationView> loanApplicationViews = loanApplicationMapper.findViewPagination(0, 1);
@@ -150,24 +150,24 @@ public class LoanApplicationServiceTest {
         loanApplicationView.setUpdatedBy("user2");
         loanApplicationView.setCreatedTime(DateTime.parse("2019-1-1").toDate());
         loanApplicationView.setUpdatedTime(DateTime.parse("2020-1-1").toDate());
-        BaseDto<BaseDataDto> baseDto = loanApplicationService.update(loanApplicationView);
+        BaseDto<BaseDataDto> baseDto = loanApplicationService.comment(loanApplicationView);
         assertEquals(true, baseDto.getData().getStatus());
 
         loanApplicationViews = loanApplicationMapper.findViewPagination(0, 1);
         assertEquals(1, loanApplicationViews.size());
         LoanApplicationView updateLoanApplicationView = loanApplicationViews.get(0);
         assertEquals(loanApplicationModel.getLoginName(), updateLoanApplicationView.getLoginName());
-        assertEquals(loanApplicationView.getRegion(), updateLoanApplicationView.getRegion());
-        assertEquals(loanApplicationView.getAmount(), updateLoanApplicationView.getAmount());
-        assertEquals(loanApplicationView.getPeriod(), updateLoanApplicationView.getPeriod());
-        assertEquals(loanApplicationView.getPledgeType(), updateLoanApplicationView.getPledgeType());
-        assertEquals(loanApplicationView.getPledgeInfo(), updateLoanApplicationView.getPledgeInfo());
+        assertEquals(loanApplicationModel.getRegion(), updateLoanApplicationView.getRegion());
+        assertEquals(loanApplicationModel.getAmount(), updateLoanApplicationView.getAmount());
+        assertEquals(loanApplicationModel.getPeriod(), updateLoanApplicationView.getPeriod());
+        assertEquals(loanApplicationModel.getPledgeType(), updateLoanApplicationView.getPledgeType());
+        assertEquals(loanApplicationModel.getPledgeInfo(), updateLoanApplicationView.getPledgeInfo());
         assertEquals(loanApplicationView.getComment(), updateLoanApplicationView.getComment());
         assertEquals(loanApplicationView.getUpdatedBy(), updateLoanApplicationView.getUpdatedBy());
         assertEquals(loanApplicationModel.getCreatedTime(), updateLoanApplicationView.getCreatedTime());
 
         loanApplicationView.setId(loanApplicationView.getId() + 100L);
-        baseDto = loanApplicationService.update(loanApplicationView);
+        baseDto = loanApplicationService.comment(loanApplicationView);
         assertEquals(false, baseDto.getData().getStatus());
         assertEquals("该借款申请不存在", baseDto.getData().getMessage());
     }

@@ -35,19 +35,6 @@ public class LoanApplicationModel implements Serializable {
         this.updatedTime = new Date();
     }
 
-    public void updateByView(LoanApplicationView loanApplicationView) {
-//        loginName
-        this.region = loanApplicationView.getRegion();
-        this.amount = loanApplicationView.getAmount();
-        this.period = loanApplicationView.getPeriod();
-        this.pledgeType = loanApplicationView.getPledgeType();
-        this.pledgeInfo = loanApplicationView.getPledgeInfo();
-        this.comment = loanApplicationView.getComment();
-//        createdTime;
-        this.updatedBy = loanApplicationView.getUpdatedBy();
-        this.updatedTime = new Date();
-    }
-
     public long getId() {
         return id;
     }

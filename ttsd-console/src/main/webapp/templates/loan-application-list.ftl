@@ -62,17 +62,19 @@
                     ${loanApplicationView.period!}
                     </td>
                     <td>
-                    ${loanApplicationView.pledgeType!}
+                    ${loanApplicationView.pledgeType.getDescription()!}
                     </td>
                     <td>
                     ${loanApplicationView.pledgeInfo!}
                     </td>
                     <td>
-                    ${loanApplicationView.comment!}
+                        <span class="loanApplication-comment">${loanApplicationView.comment!}</span>
                     </td>
                     <td>
                         <@security.authorize access="hasAnyAuthority('OPERATOR','OPERATOR_ADMIN','ADMIN')">
-                            备注
+                            <input type="button" class="loanApplication-comment" value="添加备注"
+                                   data-loanApplication-id="${loanApplicationView.id?c}"
+                                    >
                         </@security.authorize>
                     </td>
                 </tr>
@@ -111,5 +113,29 @@
     <!-- pagination -->
 </div>
 <!-- content area end -->
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">添加备注</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="loanApplicationId" id="loanApplicationId"/>
+                备注信息：<br/>
+                <textarea class="form-control" name="comment" id="comment" rows="3"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="update()">提交</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+<!-- 模态框（Modal）end -->
 
 </@global.main>
