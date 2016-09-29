@@ -12,6 +12,8 @@ require(['jquery', 'underscore', 'jquery-ui', 'bootstrap', 'bootstrapSelect', 'b
             dataType: 'json'
         }).done(function(data) {
             var $autumnPrizeDiv=$("#autumnPrizeDiv"),
+                selectPrize=$("#selectPrize"),
+                selectStatus = "",
                 optionList=[];
 
             for(var i=0;i<data.length;i++)
@@ -19,7 +21,13 @@ require(['jquery', 'underscore', 'jquery-ui', 'bootstrap', 'bootstrapSelect', 'b
                 if(i == 0){
                     optionList.push("<option value=''>全部</option>");
                 }
-                optionList.push("<option value="+data[i].lotteryPrize+">"+data[i].lotteryPrizeName+"</option>");
+
+                if(selectPrize.val() == data[i].lotteryPrizeName){
+                    selectStatus = "selected";
+                }
+
+                optionList.push("<option "+selectStatus+" value="+data[i].lotteryPrize+">"+data[i].lotteryPrizeName+"</option>");
+                selectStatus = "";
             }
             $autumnPrizeDiv.find('select').empty().append(optionList.join(''));
 

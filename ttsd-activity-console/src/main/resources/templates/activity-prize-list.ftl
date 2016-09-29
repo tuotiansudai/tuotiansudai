@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div class="table-responsive" style="height:200px;">
         <form action="/activity-console/activity-manage/user-prize-list" method="get" class="form-inline query-build" id ="prizeFrom">
                 <div class="form-group">
                     <label>用户手机号</label>
@@ -27,13 +27,13 @@
                         </#list>
                     </select>
                 </div>
-
+                <input type="hidden" value="${selectPrize}" id = "selectPrize">
                 <div class="form-group" id = "autumnPrizeDiv">
                     <label>奖品</label>
                     <select class="selectpicker" name="selectPrize">
                         <option value="" <#if !(lotteryPrizes??)>selected</#if>>全部</option>
                         <#list lotteryPrizes as prize>
-                                <option value="${prize}" <#if lotteryPrizes?? && prize.lotteryPrize==selectPrize>selected</#if>>
+                                <option value="${prize.lotteryPrize}" <#if lotteryPrizes?? && prize.lotteryPrize==selectPrize>selected</#if>>
                                     ${prize.lotteryPrizeName}
                                 </option>
                         </#list>
