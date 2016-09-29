@@ -8,7 +8,7 @@
         <#list loanTitleRelationModels as loanTitleRelationModel>
         var initialPreview = [];
             <#list loanTitleRelationModel.applicationMaterialUrls?split(",") as title>
-            initialPreview.push("<img src='${title}' class='file-preview-image' alt='${title}' title='${title}'>");
+            initialPreview.push("<img src='${staticServer}${title}' class='file-preview-image' alt='${title}' title='${title}'>");
             </#list>
         rereq['${loanTitleRelationModel.titleId?string.computer}'] = initialPreview;
         </#list>

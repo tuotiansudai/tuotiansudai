@@ -5,7 +5,7 @@
     <div class="wp-img">
         <img src="${staticServer}/activity/images/sign/actor/download/download-top-new.png" alt="" width="100%">
         <a href="https://itunes.apple.com/cn/app/ta-tian-su-dai/id1039233966?mt=8" class="ios" target="_blank"></a>
-        <a href="/app/tuotiansudai.apk" class="android"></a>
+        <a href="${staticServer}/app/tuotiansudai.apk" class="android"></a>
     </div>
     <div class="download-one">
         <div class="step-one">
@@ -45,7 +45,7 @@
     <div class="wp-img">
         <img src="${staticServer}/activity/images/sign/actor/download/download-phone-topnew.png" alt="" width="100%">
         <a href="https://itunes.apple.com/cn/app/ta-tian-su-dai/id1039233966?mt=8" class="ios" target="_blank"></a>
-        <a href="/app/tuotiansudai.apk" class="android" target="_blank"></a>
+        <a href="${staticServer}/app/tuotiansudai.apk" class="android" target="_blank"></a>
     </div>
     <div class="download-one">
        <img src="${staticServer}/activity/images/sign/actor/download/phone-one.png" alt="" width="100%">

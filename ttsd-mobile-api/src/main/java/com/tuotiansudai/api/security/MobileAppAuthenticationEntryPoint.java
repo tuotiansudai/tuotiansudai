@@ -26,8 +26,6 @@ public class MobileAppAuthenticationEntryPoint implements AuthenticationEntryPoi
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        log.debug(MessageFormat.format("[Authentication Entry Point] uri: {0} body: {1}", request.getRequestURI(), new BufferedRequestWrapper(request).getInputStreamString()));
-
         LoginResponseDataDto loginResponseDataDto = new LoginResponseDataDto();
         BaseResponseDto<LoginResponseDataDto> dto = new BaseResponseDto<>(ReturnMessage.UNAUTHORIZED);
         dto.setData(loginResponseDataDto);
