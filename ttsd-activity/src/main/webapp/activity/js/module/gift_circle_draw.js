@@ -1,19 +1,19 @@
 define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, layer,tpl) {
-    var $RecordBtn = $('.gift-record li');
-
-    var $giftCircleFrame=$('.gift-circle-frame');
+    var $giftCircleFrame=$('.gift-circle-frame'),
+        textTip=$('.text-tip',$giftCircleFrame),
+        btnList=$('.btn-list',$giftCircleFrame);
 
     //allListURL： 中奖纪录的接口链接
     //userListURL：我的奖品的接口链接
     //drawURL：抽奖的接口链接
     //mobileNumber：当前登录用户的手机号
 
-    function giftCircleDraw(allListURL,userListURL,drawURL,mobileNumber) {
+    function giftCircleDraw(allListURL,userListURL,drawURL,paramData) {
         this.bRotate=false;
         this.allListURL=allListURL;
         this.userListURL=userListURL;
         this.drawURL=drawURL;
-        this.mobileNumber=mobileNumber;
+        this.paramData=paramData;
         //开始抽奖
         //url:抽奖接口路径
         //category:活动类型
@@ -21,7 +21,8 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
         this.beginLotteryDraw=function(callback) {
             if (this.bRotate) return;
             $.ajax({
-                url: this.drawURL+'?mobile='+this.mobileNumber,
+                url: this.drawURL,
+                data:this.paramData,
                 type: 'POST',
                 dataType: 'json'
             })
@@ -39,6 +40,7 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
         this.GiftRecord=function() {
             $.ajax({
                 url: this.allListURL,
+                data:this.paramData,
                 type: 'GET',
                 dataType: 'json'
             })
@@ -54,7 +56,8 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
 
         this.MyGift=function() {
             $.ajax({
-                url: this.userListURL+'?mobile='+mobileNumber,
+                url: this.userListURL,
+                data:this.paramData,
                 type: 'GET',
                 dataType: 'json'
             })
@@ -68,7 +71,7 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
     //angles:奖项对应的角度，
     //text:提示文字
     //urls:中奖记录和我的奖品的接口对象
-    giftCircleDraw.prototype.rotateFn=function(angles, txt,type) {
+    giftCircleDraw.prototype.rotateFn=function(angles,tipMessage,dom) {
         this.bRotate = !this.bRotate;
         $('.rotate-btn',$giftCircleFrame).stopRotate();
         $('.rotate-btn',$giftCircleFrame).rotate({
@@ -76,13 +79,13 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
             animateTo: angles + 1800,
             duration: 8000,
             callback: function() {
-                $('.tip-list',$giftCircleFrame).html(tpl('tipListTpl', {tiptext:'抽中了'+txt,istype:type})).show().find('.tip-dom').show();
+                this.tipWindowPop(tipMessage,dom);
                 this.bRotate = !this.bRotate;
                 this.GiftRecord();
                 this.MyGift();
-                $('.lottery-time',$giftCircleFrame).each(function(index,el){
-                    $(this).text()>1?$(this).text(function(index,num){return parseInt(num)-1}):$(this).text('0');
-                });
+                //$('.lottery-time',$giftCircleFrame).each(function(index,el){
+                //    $(this).text()>1?$(this).text(function(index,num){return parseInt(num)-1}):$(this).text('0');
+                //});
             }
         })
     }
@@ -100,6 +103,24 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
             })
         }
     }
+
+    //接口调成功以后的弹框显示
+    giftCircleDraw.prototype.tipWindowPop=function(tipMessage,dom) {
+        dom.find('.text-tip').empty().html(tipMessage.info);
+        dom.find('.btn-list').empty().html(tipMessage.button);
+        if(tipMessage.area.length==0) {
+            tipMessage.area=['460px', '370px'];
+        }
+        layer.open({
+            type: 1,
+            title: false,
+            area: tipMessage.area,
+            shade: 0.8,
+            closeBtn: 0,
+            shadeClose: true,
+            content: dom
+        });
+    }
     //tab switch
     giftCircleDraw.prototype.PrizeSwitch=function(menuCls,contentCls) {
         menuCls.on('click',function(index) {
@@ -108,29 +129,6 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
         contentCls.eq(index).show().siblings().hide();
         });
     }
-
-    //change award record btn
-
-    //$RecordBtn.on('click', function(event) {
-    //    var $self = $(this),
-    //        index = $self.index();
-    //    $self.addClass('active').siblings('li').removeClass('active');
-    //    $('#recordList').find('.record-model:eq(' + index + ')').addClass('active')
-    //        .siblings('.record-model').removeClass('active');
-    //});
-
-    //close btn
-    $('body').on('click', '.go-close', function(event) {
-        event.preventDefault();
-        var $self = $(this),
-            $parent = $self.parents('.tip-list'),
-            $tipDom = $parent.find('.tip-dom');
-        if($self.hasClass('go-on')) {
-            window.location.reload();
-        }
-        $parent.hide();
-        $tipDom.hide();
-    });
 
     return giftCircleDraw;
 });

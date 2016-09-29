@@ -62,6 +62,11 @@
 
     </div>
 
+    <div class="tip-list" style="display: none">
+        <div class="close-btn go-close"></div>
+        <div class="text-tip"></div>
+        <div class="btn-list"></div>
+    </div>
 
 </div>
 </@global.main>

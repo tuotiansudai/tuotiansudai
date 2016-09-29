@@ -22,23 +22,12 @@
             </ul>
             <div class="record-list">
                 <ul class="record-model user-record" style="display: block">
-                    <li>恭喜130****7149抽中了新马泰七日游</li>
-                    <li>恭喜130****7149抽中了新马泰七日游</li>
-                    <li>恭喜130****7149抽中了新马泰七日游</li>
-                    <li>恭喜130****7149抽中了新马泰七日游</li>
-                    <li>恭喜130****7149抽中了新马泰七日游</li>
-                    <li>恭喜130****7149抽中了新马泰七日游</li>
-                    <li>恭喜130****7149抽中了新马泰七日游</li>
-                    <li>恭喜130****7149抽中了新马泰七日游</li>
-                    <li>恭喜130****7149抽中了新马泰七日游</li>
-                    <li>恭喜130****7149抽中了新马泰七日游</li>
+
                 </ul>
                 <ul class="record-model own-record">
                 </ul>
             </div>
         </div>
     </div>
-
-    <div class="tip-list"></div>
 
 </div>
