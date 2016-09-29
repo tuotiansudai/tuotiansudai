@@ -1,6 +1,8 @@
 define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, layer,tpl) {
     var $RecordBtn = $('.gift-record li');
 
+    var $giftCircleFrame=$('.gift-circle-frame');
+
     //allListURL： 中奖纪录的接口链接
     //userListURL：我的奖品的接口链接
     //drawURL：抽奖的接口链接
@@ -41,7 +43,7 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
                 dataType: 'json'
             })
                 .done(function(data) {
-                    $('#GiftRecord').html(tpl('GiftRecordTpl', {record:data}));
+                    //$('#GiftRecord').html(tpl('GiftRecordTpl', {record:data}));
                 });
         }
 
@@ -57,7 +59,7 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
                 dataType: 'json'
             })
                 .done(function(data) {
-                    $('#MyGift').html(tpl('MyGiftTpl', {gift:data}));
+                    //$('#MyGift').html(tpl('MyGiftTpl', {gift:data}));
                 });
         }
     }
@@ -68,17 +70,17 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
     //urls:中奖记录和我的奖品的接口对象
     giftCircleDraw.prototype.rotateFn=function(angles, txt,type) {
         this.bRotate = !this.bRotate;
-        $('#rotate').stopRotate();
-        $('#rotate').rotate({
+        $('.rotate-btn',$giftCircleFrame).stopRotate();
+        $('.rotate-btn',$giftCircleFrame).rotate({
             angle: 0,
             animateTo: angles + 1800,
             duration: 8000,
             callback: function() {
-                $('#tipList').html(tpl('tipListTpl', {tiptext:'抽中了'+txt,istype:type})).show().find('.tip-dom').show();
+                $('.tip-list',$giftCircleFrame).html(tpl('tipListTpl', {tiptext:'抽中了'+txt,istype:type})).show().find('.tip-dom').show();
                 this.bRotate = !this.bRotate;
                 this.GiftRecord();
                 this.MyGift();
-                $('.lottery-time').each(function(index,el){
+                $('.lottery-time',$giftCircleFrame).each(function(index,el){
                     $(this).text()>1?$(this).text(function(index,num){return parseInt(num)-1}):$(this).text('0');
                 });
             }
@@ -98,15 +100,24 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
             })
         }
     }
+    //tab switch
+    giftCircleDraw.prototype.PrizeSwitch=function(menuCls,contentCls) {
+        menuCls.on('click',function(index) {
+            var $this=$(this),
+                index=$this.index();
+        contentCls.eq(index).show().siblings().hide();
+        });
+    }
 
     //change award record btn
-    $RecordBtn.on('click', function(event) {
-        var $self = $(this),
-            index = $self.index();
-        $self.addClass('active').siblings('li').removeClass('active');
-        $('#recordList').find('.record-model:eq(' + index + ')').addClass('active')
-            .siblings('.record-model').removeClass('active');
-    });
+
+    //$RecordBtn.on('click', function(event) {
+    //    var $self = $(this),
+    //        index = $self.index();
+    //    $self.addClass('active').siblings('li').removeClass('active');
+    //    $('#recordList').find('.record-model:eq(' + index + ')').addClass('active')
+    //        .siblings('.record-model').removeClass('active');
+    //});
 
     //close btn
     $('body').on('click', '.go-close', function(event) {

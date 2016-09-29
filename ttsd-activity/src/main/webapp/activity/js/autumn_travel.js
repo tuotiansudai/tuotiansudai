@@ -53,7 +53,7 @@ var $autumnTravelPage=$('#autumnTravelPage'),
     });
 
     //以下为抽奖转盘
-    var $pointer = $('#pointer');
+    var $pointer = $('.pointer-img',$autumnTravelPage);
     var $MobileNumber=$('#MobileNumber'),
         travelAllList='/activity/autumn/travel-all-list',  //中奖记录接口地址
         travelUserList='/activity/autumn/travel-user-list',   //我的奖品接口地址

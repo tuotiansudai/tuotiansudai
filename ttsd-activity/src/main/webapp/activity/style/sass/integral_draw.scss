@@ -1,0 +1,265 @@
+@charset "utf-8";
+@import 'register_png';
+
+/*IE8+*/
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+body {
+  background: #e3e2c0 url("/activity/images/integral-draw/bg-integral.jpg") center 475px no-repeat;
+  overflow-x: hidden;
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+.tour-slide  {
+  height: 446px;
+  background: url("/activity/images/integral-draw/bar-top-pc.jpg") center top no-repeat;
+}
+.br {
+  display: block;
+}
+
+.integral-draw-frame {
+  width:1040px;
+  margin: 0 auto;
+  padding: 0 20px 60px 20px;
+  .button-col {
+    margin-top:30px;
+    .btn-to-invest {
+      background: #e34758;
+      padding:10px 38px;
+      text-align: center;
+      color: #fff;
+      font-size:24px;
+      display: inline-block;
+      border-radius: 30px;
+    }
+  }
+
+  .good-news-frame {
+    margin-top:40px;
+    .good-news-box {
+      width:480px;
+      height:275px;
+      background: #fffeea;
+      padding: 10px 30px;
+      color: #854b23;
+      font-size:16px;
+      i {
+        color: #e7844e;
+      }
+      b {
+        font-size: 24px;
+        display: block;
+        text-align: center;
+      }
+      &:nth-child(1) {
+         float: left;
+       }
+      &:nth-child(2) {
+        float: right;
+      }
+
+    }
+  }
+
+  .title-column-top {
+    height:134px;
+    width:510px;
+    display: inline-block;
+    text-align: center;
+    margin-bottom:30px;
+
+    &.title-one {
+      background: url("/activity/images/integral-draw/title-column-one.png") center top no-repeat;
+      background-size: 100%;
+    }
+    &.title-two {
+      background: url("/activity/images/integral-draw/title-column-two.png") center top no-repeat;
+      background-size: 100%;
+    }
+  }
+  .luck-draw-frame-one {
+    margin-top: 150px;
+    text-align: center;
+  }
+  .luck-draw-frame-two {
+    margin-top: 68px;
+    text-align: center;
+  }
+  .activity-note-tip {
+    background: #fffeea;
+    border-radius: 34px;
+    color: #854b23;
+    font-size: 13px;
+    padding: 30px;
+    margin-top: 90px;
+    b {
+      font-size: 20px;
+      display: inline-block;
+      padding-bottom:10px;
+    }
+    p {
+      color: #854b23;
+    }
+
+  }
+
+  //抽奖
+  .gift-circle-frame {
+    position: relative;
+    .draw-instructions {
+      position: absolute;
+      bottom:0px;
+      left:200px;
+      color: #e7844e;
+    }
+    .gift-circle-out {
+      float: left;
+      background: url(/activity/images/sign/actor/circle/bg-national-circle.png) no-repeat center;
+      background-size: 100%;
+      width: 550px;
+      height: 550px;
+      position: relative;
+      margin-top: 5px;
+      .rotate-btn {
+        width: 452px;
+        height: 451px;
+        position: absolute;
+        left:0;
+        right:0;
+        top:0;
+        bottom:0;
+        margin: auto;
+        background: url(/activity/images/sign/actor/circle/national-day-gift.png) no-repeat center;
+        background-size: contain;
+      }
+      .pointer-img {
+        width: 135px;
+        height: 190px;
+        cursor: pointer;
+        position: absolute;
+        left:0;
+        right:0;
+        top:0;
+        bottom:0;
+        margin: auto;
+        z-index: 8;
+        background: url(/activity/images/sign/actor/circle/pointer.png) no-repeat center;
+        background-size: contain;
+      }
+
+    }
+
+    .gift-circle-detail {
+      width: 410px;
+      float: right;
+      position: relative;
+      h3 {
+        height: 80px;
+        line-height: 80px;
+        border-radius: 40px;
+        background: #e34758;
+        color: #fbe9ca;
+        font-size: 28px;
+      }
+      //装饰
+      .trim-strip {
+        height:60px;
+        width:100%;
+        position: absolute;
+        top:56px;
+        .icon-square {
+          width:16px;
+          height: 16px;
+          border-radius:50%;
+          background: #c43631;
+          position: absolute;
+
+          &:nth-child(1) {
+            top:0px;
+            left:42px;
+          }
+          &:nth-child(2) {
+            top:45px;
+            left:42px;
+          }
+          &:nth-child(3) {
+            top:0px;
+            right:42px;
+          }
+          &:nth-child(4) {
+            top:45px;
+            right:42px;
+          }
+        }
+        .icon-vertical-line {
+          width:6px;
+          height:48px;
+          border-radius:6px;
+          background: #f6ddb3;
+          position: absolute;
+          &:nth-child(5) {
+            left: 47px;
+            top: 7px;
+          }
+          &:nth-child(6) {
+            right:47px;
+            top: 7px;
+          }
+        }
+      }
+
+      .gift-info-box {
+        background: #e34758;
+        height:480px;
+        color: #fffee3;
+        margin-top: 26px;
+        border-radius: 42px;
+        padding: 30px;
+        .gift-record {
+          border:1px solid #fa877d;
+          background: #cc404f;
+          border-top-left-radius: 20px;
+          border-top-right-radius: 20px;
+          border-bottom-width: 0;
+          font-size:18px;
+          color: #fff;
+          overflow: hidden;
+          li {
+            width:50%;
+            float: left;
+            height:47px;
+            line-height: 47px;
+            background: #a3313c;
+            color: rgba(251,233,202,0.5);
+            text-align: center;
+            &.active {
+              background: none;
+              color: #fff;
+            }
+          }
+        }
+        .record-list{
+          background: #cc404f;
+          border:1px solid #fa877d;
+          height: 373px;
+          border-top-width: 0;
+          border-bottom-left-radius: 20px;
+          border-bottom-right-radius: 20px;
+          ul.record-model {
+            display: block;
+            padding-top: 10px;
+            text-align: left;
+            padding-left: 30px;
+            line-height: 35px;
+          }
+        }
+      }
+    }
+  }
+}
