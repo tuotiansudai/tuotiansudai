@@ -9,46 +9,49 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
         drawURL='/activity/national/draw',    //抽奖的接口链接
         myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
-    var $GiftRecord=$('#GiftRecord'),
-        $MyGift=$('#MyGift');
+    var $GiftRecordOne=$('.one-thousand-points .user-record',$integralDrawPage),
+        $MyGiftOne=$('.one-thousand-points .own-record',$integralDrawPage),
 
-    var drawCircle=new drawCircle(travelAllList,travelUserList,drawURL,myMobileNumber);
+        $GiftRecordTen=$('.ten-thousand-points .user-record',$integralDrawPage),
+        $MyGiftTen=$('.ten-thousand-points .own-record',$integralDrawPage);
+
+    var drawCircleOne=new drawCircle(travelAllList,travelUserList,drawURL,myMobileNumber);
 
     //渲染中奖记录
-    drawCircle.GiftRecord();
+    drawCircleOne.GiftRecord();
 
     //渲染我的奖品
-    drawCircle.MyGift(travelUserList,myMobileNumber);
+    drawCircleOne.MyGift(travelUserList,myMobileNumber);
 
     //开始抽奖
     $pointer.on('click', function(event) {
-        drawCircle.beginLotteryDraw(function(data) {
+        drawCircleOne.beginLotteryDraw(function(data) {
             //抽奖接口成功后奖品指向位置
             if (data.returnCode == 0) {
                 switch (data.prize) {
                     case 'MANGO_CARD_100':
-                        drawCircle.rotateFn(347, '100元芒果卡',data.prizeType);
+                        drawCircleOne.rotateFn(347, '100元芒果卡',data.prizeType);
                         break;
                     case 'RED_INVEST_15':
-                        drawCircle.rotateFn(30, '15元投资红包',data.prizeType);
+                        drawCircleOne.rotateFn(30, '15元投资红包',data.prizeType);
                         break;
                     case 'RED_INVEST_50':
-                        drawCircle.rotateFn(120, '50元投资红包',data.prizeType);
+                        drawCircleOne.rotateFn(120, '50元投资红包',data.prizeType);
                         break;
                     case 'TELEPHONE_FARE_10':
-                        drawCircle.rotateFn(265, '10元话费',data.prizeType);
+                        drawCircleOne.rotateFn(265, '10元话费',data.prizeType);
                         break;
                     case 'IQIYI_MEMBERSHIP':
-                        drawCircle.rotateFn(80, '1个月爱奇艺会员',data.prizeType);
+                        drawCircleOne.rotateFn(80, '1个月爱奇艺会员',data.prizeType);
                         break;
                     case 'CINEMA_TICKET':
-                        drawCircle.rotateFn(310, '电影票一张',data.prizeType);
+                        drawCircleOne.rotateFn(310, '电影票一张',data.prizeType);
                         break;
                     case 'FLOWER_CUP':
-                        drawCircle.rotateFn(170, '青花瓷杯子',data.prizeType);
+                        drawCircleOne.rotateFn(170, '青花瓷杯子',data.prizeType);
                         break;
                     case 'MEMBERSHIP_V5':
-                        drawCircle.rotateFn(347, '1个月V5会员',data.prizeType);
+                        drawCircleOne.rotateFn(347, '1个月V5会员',data.prizeType);
                         break;
                 }
             } else if (data.returnCode == 2) {
@@ -63,25 +66,25 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
 
     //中奖记录,我的奖品超过10条数据滚动
 
-    drawCircle.scrollList($GiftRecord);
-    drawCircle.scrollList($MyGift);
+    drawCircleOne.scrollList($GiftRecordOne);
+    drawCircleOne.scrollList($MyGiftOne);
 
     //scroll award record list
     var scrollTimer;
 
-    $GiftRecord.hover(function() {
+    $GiftRecordOne.hover(function() {
         clearInterval(scrollTimer);
     }, function() {
         scrollTimer = setInterval(function() {
-            drawCircle.scrollList($GiftRecord);
+            drawCircleOne.scrollList($GiftRecordOne);
         }, 2000);
     }).trigger("mouseout");
 
-    $MyGift.hover(function() {
+    $MyGiftOne.hover(function() {
         clearInterval(scrollTimer);
     }, function() {
         scrollTimer = setInterval(function() {
-            drawCircle.scrollList($MyGift);
+            drawCircleOne.scrollList($MyGiftOne);
         }, 2000);
     }).trigger("mouseout");
 
