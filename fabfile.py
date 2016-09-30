@@ -378,7 +378,7 @@ def remove_old_logs():
 
 
 def restart_logstash_process():
-    run("ps aux | grep logstash | awk 'NR==1{print $2}' | xargs kill -9")
+    run("ps aux | grep '[l]ogstash' | awk '{print $2}' | xargs kill -9")
     run("rm -rf /var/log/logstash/*")
     run("service logstash start")
 
