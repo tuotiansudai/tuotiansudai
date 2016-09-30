@@ -1,5 +1,6 @@
-@import "gift_circle";
+@charset "utf-8";
 @import "register_common";
+@import 'module/gift_circle_draw';
 
 body {
   background: #a1e9f8 url("/activity/images/autumn-tour/bg-yun.png") center 775px no-repeat;
@@ -489,6 +490,23 @@ body {
   }
   .mobile {
     display: none;
+  }
+
+  //抽奖
+  .gift-circle-frame {
+    .gift-circle-out {
+      background: url(/activity/images/integral-draw/bg-integral-circle.jpg) no-repeat center;
+      .rotate-btn{
+        background: url(/activity/images/integral-draw/integral-draw-one.jpg) no-repeat center;
+      }
+      .pointer-img {
+        background: url(/activity/images/integral-draw/pointer.png) no-repeat center;
+      }
+    }
+  }
+  //弹框
+  .tip-list {
+    background: url(/activity/images/integral-draw/bg-pop-point.jpg) no-repeat left top;
   }
 }
 

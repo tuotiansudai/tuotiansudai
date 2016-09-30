@@ -1,17 +1,18 @@
-define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, layer,tpl) {
+define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
 
     //allListURL： 中奖纪录的接口链接
     //userListURL：我的奖品的接口链接
     //drawURL：抽奖的接口链接
     //paramData：接口传数据
 
-    function giftCircleDraw(allListURL,userListURL,drawURL,paramData,tipList) {
+    function giftCircleDraw(allListURL,userListURL,drawURL,paramData,tipList,giftCircleFrame) {
         this.bRotate=false;
         this.allListURL=allListURL;
         this.userListURL=userListURL;
         this.drawURL=drawURL;
         this.paramData=paramData;
         this.tipList=tipList;
+        this.giftCircleFrame=giftCircleFrame;
         //开始抽奖
         this.beginLotteryDraw=function(callback) {
             if (this.bRotate) return;
@@ -30,6 +31,7 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
         }
         //中奖记录
         this.GiftRecord=function() {
+            var thisFun=this;
             $.ajax({
                 url: this.allListURL,
                 data:this.paramData,
@@ -37,12 +39,25 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
                 dataType: 'json'
             })
                 .done(function(data) {
-                    //$('#GiftRecord').html(tpl('GiftRecordTpl', {record:data}));
+                    //console.log('中奖记录'+data);
+                    var UlList=[];
+                    var data=[
+                        {"mobile":"137****7702","userName":null,"prize":"TELEPHONE_FARE_10","lotteryTime":"2016-09-29 16:09:05"},
+                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_50","lotteryTime":"2016-09-29 16:05:44"},
+                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-29 15:56:41"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 16:36:57"},{"mobile":"188****0000","userName":null,"prize":"CINEMA_TICKET","lotteryTime":"2016-09-26 16:35:40"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 16:35:29"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_50","lotteryTime":"2016-09-26 16:27:12"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 16:26:09"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 15:57:48"},{"mobile":"185****2517","userName":null,"prize":"MEMBERSHIP_V5","lotteryTime":"2016-09-26 14:57:24"},{"mobile":"185****2517","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 14:46:07"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_50","lotteryTime":"2016-09-26 12:09:01"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 12:08:49"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 11:06:40"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 11:06:28"},{"mobile":"188****0000","userName":null,"prize":"MEMBERSHIP_V5","lotteryTime":"2016-09-26 11:06:12"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 11:05:48"}];
+
+                    for(var i=0,len=data.length;i<len;i++) {
+                        UlList.push('<li>恭喜'+data[i].mobile+'抽中了'+data[i].prize+'</li>');
+                    }
+
+                    thisFun.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
+                    thisFun.hoverScrollList(thisFun.giftCircleFrame.find('.user-record'));
                 });
         }
 
         //我的奖品
         this.MyGift=function() {
+            var thisFun=this;
             $.ajax({
                 url: this.userListURL,
                 data:this.paramData,
@@ -50,7 +65,19 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
                 dataType: 'json'
             })
                 .done(function(data) {
-                    //$('#MyGift').html(tpl('MyGiftTpl', {gift:data}));
+                    var UlList=[];
+                    var data=[
+                        {"mobile":"137****7702","userName":null,"prize":"TELEPHONE_FARE_10","lotteryTime":"2016-09-29 16:09:05"},
+                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_50","lotteryTime":"2016-09-29 16:05:44"},
+                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-29 15:56:41"}
+                    ];
+
+                    for(var i=0,len=data.length;i<len;i++) {
+                        UlList.push('<li>恭喜'+data[i].mobile+'抽中了'+data[i].prize+'</li>');
+                    }
+                    thisFun.giftCircleFrame.find('.own-record').empty().append(UlList.join(''));
+                    thisFun.scrollList(thisFun.giftCircleFrame.find('.own-record'));
+                    thisFun.hoverScrollList(thisFun.giftCircleFrame.find('.own-record'));
                 });
         }
     }
@@ -59,45 +86,47 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
     //angles:奖项对应的角度，
     //Drawplate:转盘的dom
     //data:抽奖成功后返回的数据
-    giftCircleDraw.prototype.rotateFn=function(Drawplate,angles,data) {
-        this.bRotate = !this.bRotate;
-        Drawplate.stopRotate();
-        Drawplate.rotate({
+    giftCircleDraw.prototype.rotateFn=function(angles,tipMessage) {
+        var thisFun=this;
+        thisFun.bRotate = !this.bRotate;
+        thisFun.giftCircleFrame.find('.rotate-btn').stopRotate();
+        thisFun.giftCircleFrame.find('.rotate-btn').rotate({
             angle: 0,
-            animateTo: angles + 1800,
+            animateTo: angles +1800,
             duration: 8000,
-            callback: function(data) {
-
-                this.tipWindowPop(tipMessage,dom);
-                this.bRotate = !this.bRotate;
-                this.GiftRecord();
-                this.MyGift();
+            callback: function() {
+                thisFun.GiftRecord();
+                thisFun.MyGift();
+                thisFun.bRotate = !thisFun.bRotate;
+                thisFun.tipWindowPop(tipMessage);
             }
         })
     }
 
     giftCircleDraw.prototype.scrollList=function(domName) {
-        var $self=domName,
-            scrollTimer;
+        var $self=domName;
         var lineHeight = $self.find("li:first").height();
         if ($self.find('li').length > 10) {
+            console.log('pop');
             $self.animate({
                 "margin-top": -lineHeight + "px"
             }, 600, function() {
                 $self.css({
                     "margin-top": "0px"
                 }).find("li:first").appendTo($self);
-            })
-
-            domName.hover(function() {
-                clearInterval(scrollTimer);
-            }, function() {
-                scrollTimer = setInterval(function() {
-                    domName.scrollList(domName);
-                }, 2000);
-            }).trigger("mouseout");
+            });
         }
-
+    }
+    giftCircleDraw.prototype.hoverScrollList=function(domName) {
+        var thisFun=this,
+            scrollTimer;
+        domName.hover(function() {
+            clearInterval(scrollTimer);
+        }, function() {
+            scrollTimer = setInterval(function() {
+                thisFun.scrollList(domName);
+            }, 2000);
+        }).trigger("mouseout");
     }
 
     //接口调成功以后的弹框显示
@@ -118,7 +147,9 @@ define(['jquery', 'rotate', 'layerWrapper','template'], function($, rotate, laye
         });
     }
     //tab switch
-    giftCircleDraw.prototype.PrizeSwitch=function(menuCls,contentCls) {
+    giftCircleDraw.prototype.PrizeSwitch=function() {
+        var menuCls=this.giftCircleFrame.find('.gift-record').find('li'),
+            contentCls=this.giftCircleFrame.find('.record-list ul');
         menuCls.on('click',function(index) {
             var $this=$(this),
                 index=$this.index();
