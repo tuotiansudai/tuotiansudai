@@ -125,7 +125,9 @@ module.exports = function(grunt) {
                 files: [
                     ['<%= meta.baseJsPath %>/*.js']
                 ],
-                tasks: ['newer:clean:js', 'newer:uglify']
+                tasks: ['clean:js', 'uglify']
+                //tasks: ['newer:clean:js', 'newer:uglify']
+                //如果需要监听其他的min文件，去掉newer
             }
         },
         connect: {

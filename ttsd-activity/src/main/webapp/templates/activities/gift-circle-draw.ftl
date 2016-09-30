@@ -3,7 +3,6 @@
             <div class="pointer-img"></div>
             <div class="rotate-btn"></div>
     </div>
-    <div class="draw-instructions">每次抽奖消耗1000积分</div>
     <div class="gift-circle-detail">
         <h3><span class="my-category">我的积分：</span><span class="my-property">310000</h3>
 
@@ -21,11 +20,8 @@
                 <li><span>我的奖品</span></li>
             </ul>
             <div class="record-list">
-                <ul class="record-model user-record" style="display: block">
-
-                </ul>
-                <ul class="record-model own-record">
-                </ul>
+                <ul class="record-model user-record" style="display: block"></ul>
+                <ul class="record-model own-record"></ul>
             </div>
         </div>
     </div>

@@ -242,6 +242,10 @@ body {
             background: #a3313c;
             color: rgba(251,233,202,0.5);
             text-align: center;
+            span {
+              display: block;
+              cursor: pointer;
+            }
             &.active {
               background: none;
               color: #fff;

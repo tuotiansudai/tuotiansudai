@@ -31,7 +31,7 @@
         <div class="title-column-top title-one"></div>
         <div class="one-thousand-points">
             <#include "gift-circle-draw.ftl"/>
-
+            <div class="draw-instructions">每次抽奖消耗1000积分</div>
             <div class="button-col">
                 <a href="#" class="btn-to-invest">立即投资赚积分</a>
             </div>
@@ -43,6 +43,7 @@
         <div class="title-column-top title-two"></div>
         <div class="ten-thousand-points">
             <#include "gift-circle-draw.ftl"/>
+            <div class="draw-instructions">每次抽奖消耗10000积分</div>
             <div class="button-col">
                 <a href="#" class="btn-to-invest">立即投资赚积分</a>
             </div>
