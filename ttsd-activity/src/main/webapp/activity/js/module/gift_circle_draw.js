@@ -42,9 +42,12 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
                     //console.log('中奖记录'+data);
                     var UlList=[];
                     var data=[
-                        {"mobile":"137****7702","userName":null,"prize":"TELEPHONE_FARE_10","lotteryTime":"2016-09-29 16:09:05"},
-                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_50","lotteryTime":"2016-09-29 16:05:44"},
-                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-29 15:56:41"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 16:36:57"},{"mobile":"188****0000","userName":null,"prize":"CINEMA_TICKET","lotteryTime":"2016-09-26 16:35:40"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 16:35:29"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_50","lotteryTime":"2016-09-26 16:27:12"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 16:26:09"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 15:57:48"},{"mobile":"185****2517","userName":null,"prize":"MEMBERSHIP_V5","lotteryTime":"2016-09-26 14:57:24"},{"mobile":"185****2517","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 14:46:07"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_50","lotteryTime":"2016-09-26 12:09:01"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 12:08:49"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 11:06:40"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 11:06:28"},{"mobile":"188****0000","userName":null,"prize":"MEMBERSHIP_V5","lotteryTime":"2016-09-26 11:06:12"},{"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-26 11:05:48"}];
+                        {"mobile":"137****7702","userName":null,"prize":"TELEPHONE_FARE_10","prizeValue":"rtrt","lotteryTime":"2016-09-29 16:09:05"},
+                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_50","prizeValue":"rtrt","lotteryTime":"2016-09-29 16:05:44"},
+                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_15","prizeValue":"rtrt","lotteryTime":"2016-09-29 15:56:41"},
+                        {"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","prizeValue":"rtrt","lotteryTime":"2016-09-26 16:36:57"},
+                        {"mobile":"188****0000","userName":null,"prize":"CINEMA_TICKET","prizeValue":"rtrt","lotteryTime":"2016-09-26 16:35:40"},
+                        {"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","prizeValue":"rtrt","lotteryTime":"2016-09-26 16:35:29"}];
 
                     for(var i=0,len=data.length;i<len;i++) {
                         UlList.push('<li>恭喜'+data[i].mobile+'抽中了'+data[i].prize+'</li>');
@@ -67,13 +70,13 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
                 .done(function(data) {
                     var UlList=[];
                     var data=[
-                        {"mobile":"137****7702","userName":null,"prize":"TELEPHONE_FARE_10","lotteryTime":"2016-09-29 16:09:05"},
-                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_50","lotteryTime":"2016-09-29 16:05:44"},
-                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_15","lotteryTime":"2016-09-29 15:56:41"}
+                        {"mobile":"137****7702","userName":null,"prize":"TELEPHONE_FARE_10","prizeValue":"rtrt","lotteryTime":"2016-09-29 16:09:05"},
+                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_50","prizeValue":"rtrt","lotteryTime":"2016-09-29 16:05:44"},
+                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_15","prizeValue":"rtrt","lotteryTime":"2016-09-29 15:56:41"}
                     ];
 
                     for(var i=0,len=data.length;i<len;i++) {
-                        UlList.push('<li>恭喜'+data[i].mobile+'抽中了'+data[i].prize+'</li>');
+                        UlList.push('<li>恭喜'+data[i].mobile+'抽中了'+data[i].prizeValue+'</li>');
                     }
                     thisFun.giftCircleFrame.find('.own-record').empty().append(UlList.join(''));
                     thisFun.scrollList(thisFun.giftCircleFrame.find('.own-record'));
