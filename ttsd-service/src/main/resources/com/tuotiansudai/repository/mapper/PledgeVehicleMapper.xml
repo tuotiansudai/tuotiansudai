@@ -26,7 +26,7 @@
         (#{id}, #{loanId}, #{pledgeLocation}, #{estimateAmount}, #{loanAmount}, #{brand}, #{model})
     </insert>
 
-    <select id="getPledgeVehicleDetailByLoanId" resultMap="PledgeVehicleResultMap">
+    <select id="getByLoanId" resultMap="PledgeVehicleResultMap">
         SELECT
         *
         FROM

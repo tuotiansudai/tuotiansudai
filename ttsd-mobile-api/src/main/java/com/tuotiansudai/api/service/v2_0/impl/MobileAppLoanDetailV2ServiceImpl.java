@@ -100,7 +100,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         LoanDetailV2ResponseDataDto dataDto = new LoanDetailV2ResponseDataDto();
         dataDto.setLoanId(loanModel.getId());
         dataDto.setLoanType(loanModel.getProductType() != null ? loanModel.getProductType().getProductLine() : "");
-        LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
+        LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getByLoanId(loanModel.getId());
         dataDto.setLoanName(loanModel.getName());
         dataDto.setActivityDesc(loanDetailsModelActivity != null ? loanDetailsModelActivity.getActivityDesc() : "");
         dataDto.setPledgeType(loanModel.getPledgeType());
@@ -146,7 +146,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
         dataDto.setBaseRatePercent(decimalFormat.format(loanModel.getBaseRate() * 100));
         dataDto.setActivityRatePercent(decimalFormat.format(loanModel.getActivityRate() * 100));
-        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
         if (loanDetailsModel != null) {
             dataDto.setDeclaration(loanDetailsModel.getDeclaration());
             dataDto.setExtraSource((Source.WEB.name().equals(loanDetailsModel.getExtraSource())) ? loanDetailsModel.getExtraSource() : "");
@@ -167,17 +167,17 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         if (loanModel.getRaisingCompleteTime() != null) {
             dataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loanModel.getRaisingCompleteTime()));
         }
-        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanModel.getId());
+        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanModel.getId());
         if (loanerDetailsModel != null) {
             dataDto.setLoaner(new LoanerDto(loanerDetailsModel));
             switch (loanModel.getPledgeType()) {
                 case HOUSE:
-                    PledgeHouseModel pledgeHouseModel = pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanModel.getId());
+                    PledgeHouseModel pledgeHouseModel = pledgeHouseMapper.getByLoanId(loanModel.getId());
                     if (pledgeHouseModel != null) {
                         dataDto.setPledgeHouse(new PledgeHouseDto(pledgeHouseModel));
                     }
                 case VEHICLE:
-                    PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanModel.getId());
+                    PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getByLoanId(loanModel.getId());
                     if (pledgeVehicleModel != null) {
                         dataDto.setPledgeVehicle(new PledgeVehicleDto(pledgeVehicleModel));
                     }

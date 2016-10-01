@@ -34,6 +34,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
 import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
+import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -90,6 +91,9 @@ public class LoanServiceImpl implements LoanService {
     private ReferrerRewardService referrerRewardService;
 
     @Autowired
+    private UMPayRealTimeStatusService umPayRealTimeStatusService;
+
+    @Autowired
     private AmountTransfer amountTransfer;
 
     @Autowired
@@ -106,28 +110,63 @@ public class LoanServiceImpl implements LoanService {
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
+        BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
+
         LoanModel loanModel = loanMapper.findById(loanId);
-        String loanerId = accountMapper.findByLoginName(loanModel.getAgentLoginName()).getPayUserId();
+        String payUserId = accountMapper.findByLoginName(loanModel.getAgentLoginName()).getPayUserId();
         MerBindProjectRequestModel merBindProjectRequestModel = new MerBindProjectRequestModel(
-                loanerId,
+                payUserId,
                 String.valueOf(loanModel.getLoanAmount()),
                 String.valueOf(loanModel.getId()),
-                String.valueOf(loanModel.getId())
-        );
+                String.valueOf(loanModel.getId()));
+
+        MerUpdateProjectRequestModel merUpdateProjectPreheatRequestModel = new MerUpdateProjectRequestModel(String.valueOf(loanModel.getId()),
+                String.valueOf(loanModel.getLoanAmount()),
+                loanModel.getName(),
+                LoanStatus.PREHEAT.getCode());
+
+        MerUpdateProjectRequestModel merUpdateProjectRaisingRequestModel = new MerUpdateProjectRequestModel(String.valueOf(loanModel.getId()),
+                String.valueOf(loanModel.getLoanAmount()),
+                loanModel.getName(),
+                LoanStatus.RAISING.getCode());
         try {
-            MerBindProjectResponseModel responseModel = paySyncClient.send(MerBindProjectMapper.class,
+            MerBindProjectResponseModel createLoanResponseModel = paySyncClient.send(MerBindProjectMapper.class,
                     merBindProjectRequestModel,
                     MerBindProjectResponseModel.class);
-            payDataDto.setStatus(responseModel.isSuccess());
-            payDataDto.setCode(responseModel.getRetCode());
-            payDataDto.setMessage(responseModel.getRetMsg());
+
+            if (!createLoanResponseModel.isSuccess()) {
+                payDataDto.setCode(createLoanResponseModel.getRetCode());
+                payDataDto.setMessage(createLoanResponseModel.getRetMsg());
+                return baseDto;
+            }
+
+            MerUpdateProjectResponseModel openLoanPhaseOneResponseModel = paySyncClient.send(MerUpdateProjectMapper.class,
+                    merUpdateProjectPreheatRequestModel,
+                    MerUpdateProjectResponseModel.class);
+
+            if (!openLoanPhaseOneResponseModel.isSuccess()) {
+                payDataDto.setCode(openLoanPhaseOneResponseModel.getRetCode());
+                payDataDto.setMessage(openLoanPhaseOneResponseModel.getRetMsg());
+                return baseDto;
+            }
+
+            MerUpdateProjectResponseModel openLoanPhaseTwoResponseModel = paySyncClient.send(MerUpdateProjectMapper.class,
+                    merUpdateProjectRaisingRequestModel,
+                    MerUpdateProjectResponseModel.class);
+
+            if (!openLoanPhaseTwoResponseModel.isSuccess()) {
+                payDataDto.setCode(openLoanPhaseTwoResponseModel.getRetCode());
+                payDataDto.setMessage(openLoanPhaseTwoResponseModel.getRetMsg());
+                return baseDto;
+            }
+
+            payDataDto.setStatus(true);
+
         } catch (PayException e) {
             payDataDto.setStatus(false);
             logger.error(e.getLocalizedMessage(), e);
         }
-        baseDto.setData(payDataDto);
         return baseDto;
     }
 
@@ -155,9 +194,8 @@ public class LoanServiceImpl implements LoanService {
 
     @Transactional
     public BaseDto<PayDataDto> updateLoanStatus(long loanId, LoanStatus loanStatus) {
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
-        baseDto.setData(payDataDto);
+        BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
 
         LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel.getStatus() == loanStatus) {
@@ -207,7 +245,7 @@ public class LoanServiceImpl implements LoanService {
 
         if(redisWrapperClient.setnx(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId, "1")) {
             try {
-                ProjectTransferResponseModel umPayReturn = doLoanOut(loanId);
+                ProjectTransferResponseModel umPayReturn = this.doLoanOut(loanId);
                 payDataDto.setStatus(umPayReturn.isSuccess());
                 payDataDto.setCode(umPayReturn.getRetCode());
                 payDataDto.setMessage(umPayReturn.getRetMsg());
@@ -260,6 +298,11 @@ public class LoanServiceImpl implements LoanService {
         long investAmountTotal = computeInvestAmountTotal(successInvestList);
         if (investAmountTotal <= 0) {
             throw new PayException("invest amount should great than 0");
+        }
+
+        BaseDto<PayDataDto> checkLoanAmount = umPayRealTimeStatusService.checkLoanAmount(loanId);
+        if (!checkLoanAmount.getData().getStatus()) {
+            throw new PayException(MessageFormat.format("标的(loanId={0})借款金额与投资金额不一致", String.valueOf(loanId)));
         }
 
         logger.debug("标的放款：发起联动优势放款请求，标的ID:" + loanId + "，代理人:" + agentPayUserId + "，放款金额:" + investAmountTotal);

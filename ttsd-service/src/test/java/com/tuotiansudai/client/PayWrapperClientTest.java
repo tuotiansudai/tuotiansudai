@@ -41,21 +41,6 @@ public class PayWrapperClientTest {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private LoanTitleMapper loanTitleMapper;
-
-    @Autowired
-    private LoanTitleRelationMapper loanTitleRelationMapper;
-
     @Before
     public void setUp() throws Exception {
         this.server = new MockWebServer();
@@ -94,84 +79,5 @@ public class PayWrapperClientTest {
         assertTrue(actualBaseDto.getData().getStatus());
         assertThat(actualBaseDto.getData().getCode(), is(dataDto.getCode()));
         assertThat(actualBaseDto.getData().getMessage(), is(dataDto.getMessage()));
-    }
-
-    @Test
-    public void shouldCreateLoanTest() throws Exception {
-        createMockUser("xiangjie");
-
-        LoanTitleModel loanTitleModel = new LoanTitleModel();
-        long titleId = idGenerator.generate();
-        loanTitleModel.setId(titleId);
-        loanTitleModel.setType(LoanTitleType.BASE_TITLE_TYPE);
-        loanTitleModel.setTitle("房产证");
-        loanTitleMapper.create(loanTitleModel);
-
-        LoanDto loanDto = new LoanDto();
-        loanDto.setId(idGenerator.generate());
-        loanDto.setLoanerLoginName("xiangjie");
-        loanDto.setLoanerUserName("借款人");
-        loanDto.setLoanerIdentityNumber("111111111111111111");
-        loanDto.setAgentLoginName("xiangjie");
-        loanDto.setLoanAmount("5000.00");
-        loanDto.setMaxInvestAmount("999.00");
-        loanDto.setMinInvestAmount("1.00");
-        loanDto.setFundraisingEndTime(new Date());
-        loanDto.setFundraisingStartTime(new Date());
-        loanDto.setProjectName("店铺资金周转更新");
-        loanDto.setActivityRate("12.00");
-        loanDto.setBasicRate("16.00");
-        loanDto.setShowOnHome(true);
-        loanDto.setPeriods(30);
-        loanDto.setActivityType(ActivityType.NORMAL);
-        loanDto.setContractId(123);
-        loanDto.setDescriptionHtml("asdfasdf");
-        loanDto.setDescriptionText("asdfasd");
-        loanDto.setInvestIncreasingAmount("1");
-        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
-        loanDto.setCreatedTime(new Date());
-        loanDto.setLoanStatus(LoanStatus.RECHECK);
-        loanDto.setProductType(ProductType._30);
-        loanDto.setPledgeType(PledgeType.HOUSE);
-        LoanModel loanModel = new LoanModel(loanDto);
-        loanMapper.create(loanModel);
-        List<LoanTitleRelationModel> loanTitleRelationModelList = Lists.newArrayList();
-        for (int i = 0; i < 5; i++) {
-            LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
-            loanTitleRelationModel.setId(idGenerator.generate());
-            loanTitleRelationModel.setLoanId(loanDto.getId());
-            loanTitleRelationModel.setTitleId(titleId);
-            loanTitleRelationModel.setApplicationMaterialUrls("www.baidu.com,www.google.com");
-            loanTitleRelationModelList.add(loanTitleRelationModel);
-        }
-        loanTitleRelationMapper.create(loanTitleRelationModelList);
-        MockResponse mockResponse = new MockResponse();
-        BaseDto baseDto = new BaseDto();
-        PayDataDto dataDto = new PayDataDto();
-        dataDto.setStatus(true);
-        dataDto.setCode("0000");
-        dataDto.setMessage("success");
-        baseDto.setData(dataDto);
-        mockResponse.setBody(objectMapper.writeValueAsString(baseDto));
-        server.enqueue(mockResponse);
-        payWrapperClient.setHost(server.getHostName());
-        payWrapperClient.setPort(String.valueOf(server.getPort()));
-        payWrapperClient.setApplicationContext("");
-        BaseDto<PayDataDto> actualBaseDto = payWrapperClient.createLoan(loanDto);
-        assertTrue(actualBaseDto.isSuccess());
-        assertTrue(actualBaseDto.getData().getStatus());
-    }
-
-    private UserModel createMockUser(String loginName) {
-        UserModel userModelTest = new UserModel();
-        userModelTest.setLoginName(loginName);
-        userModelTest.setPassword("123abc");
-        userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("139" + RandomStringUtils.randomNumeric(8));
-        userModelTest.setRegisterTime(new Date());
-        userModelTest.setStatus(UserStatus.ACTIVE);
-        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        userMapper.create(userModelTest);
-        return userModelTest;
     }
 }

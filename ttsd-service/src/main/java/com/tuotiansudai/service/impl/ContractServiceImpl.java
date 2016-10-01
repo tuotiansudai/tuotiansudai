@@ -107,7 +107,7 @@ public class ContractServiceImpl implements ContractService {
         UserModel investorModel = userMapper.findByLoginName(investorLoginName);
         AccountModel investorAccount = accountMapper.findByLoginName(investorLoginName);
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
-        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanId);
+        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
         dataModel.put("agentMobile", agentModel.getMobile());
         dataModel.put("agentIdentityNumber", agentAccount.getIdentityNumber());
         dataModel.put("investorMobile", investorModel.getMobile());
@@ -181,7 +181,7 @@ public class ContractServiceImpl implements ContractService {
 
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
         if (null != loanModel) {
-            dataModel.put("loanerUserName", loanerDetailsMapper.getLoanerDetailByLoanId(loanModel.getId()).getUserName());
+            dataModel.put("loanerUserName", loanerDetailsMapper.getByLoanId(loanModel.getId()).getUserName());
             dataModel.put("loanerIdentityNumber", loanModel.getLoanerIdentityNumber());
             dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
             dataModel.put("totalRate", loanModel.getBaseRate() + loanModel.getActivityRate());

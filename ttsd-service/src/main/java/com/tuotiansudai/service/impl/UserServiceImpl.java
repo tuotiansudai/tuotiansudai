@@ -297,7 +297,7 @@ public class UserServiceImpl implements UserService {
             editUserDto.setBankCardNumber(bankCard.getCardNumber());
         }
 
-        if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.STAFF.name()) != null) {
+        if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.STAFF) != null) {
             editUserDto.setReferrerStaff(true);
         }
         return editUserDto;

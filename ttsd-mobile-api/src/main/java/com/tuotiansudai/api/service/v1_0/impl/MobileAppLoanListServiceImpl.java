@@ -107,7 +107,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setLoanId("" + loan.getId());
             loanResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().getProductLine() : "");
             loanResponseDataDto.setLoanTypeName(loan.getProductType() != null ? loan.getProductType().getProductLineName() : "");
-            LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+            LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getByLoanId(loan.getId());
             loanResponseDataDto.setLoanName(loan.getName());
             loanResponseDataDto.setActivityDesc(loanDetailsModelActivity != null ? loanDetailsModelActivity.getActivityDesc() : "");
             loanResponseDataDto.setPledgeType(loan.getPledgeType());
@@ -161,7 +161,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
                 loanResponseDataDto.setExtraRates(fillExtraRate(extraLoanRateModels));
             }
 
-            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
             if(loanDetailsModel != null)
             {
                 loanResponseDataDto.setExtraSource("WEB".equals(loanDetailsModel.getExtraSource())?loanDetailsModel.getExtraSource():"");

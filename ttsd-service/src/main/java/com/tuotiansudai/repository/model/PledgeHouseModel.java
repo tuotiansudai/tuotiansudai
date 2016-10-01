@@ -1,8 +1,10 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.LoanCreatePledgeHouseRequestDto;
 import com.tuotiansudai.dto.PledgeHouseDto;
 
 public class PledgeHouseModel extends AbstractPledgeDetail {
+    private String loanAmount;
     private String square;
     private String propertyCardId;
     private String estateRegisterId;
@@ -12,8 +14,9 @@ public class PledgeHouseModel extends AbstractPledgeDetail {
         super();
     }
 
-    public PledgeHouseModel(long loanId, String pledgeLocation, String estimateAmount, String pledgeLoanAmount, String square, String propertyCardId, String estateRegisterId, String authenticAct) {
-        super(loanId, pledgeLocation, estimateAmount, pledgeLoanAmount);
+    public PledgeHouseModel(long loanId, String pledgeLocation, String estimateAmount, String loanAmount, String square, String propertyCardId, String estateRegisterId, String authenticAct) {
+        super(loanId, pledgeLocation, estimateAmount);
+        this.loanAmount = loanAmount;
         this.square = square;
         this.propertyCardId = propertyCardId;
         this.estateRegisterId = estateRegisterId;
@@ -29,6 +32,25 @@ public class PledgeHouseModel extends AbstractPledgeDetail {
         this.propertyCardId = pledgeHouseDto.getPropertyCardId();
         this.estateRegisterId = pledgeHouseDto.getEstateRegisterId();
         this.authenticAct = pledgeHouseDto.getAuthenticAct();
+    }
+
+    public PledgeHouseModel(long loanId, LoanCreatePledgeHouseRequestDto pledgeHouse) {
+        this.loanId = loanId;
+        this.pledgeLocation = pledgeHouse.getPledgeLocation();
+        this.estimateAmount = pledgeHouse.getEstimateAmount();
+        this.loanAmount = pledgeHouse.getPledgeLoanAmount();
+        this.square = pledgeHouse.getSquare();
+        this.propertyCardId = pledgeHouse.getPropertyCardId();
+        this.estateRegisterId = pledgeHouse.getEstateRegisterId();
+        this.authenticAct = pledgeHouse.getAuthenticAct();
+    }
+
+    public String getLoanAmount() {
+        return loanAmount;
+    }
+
+    public void setLoanAmount(String loanAmount) {
+        this.loanAmount = loanAmount;
     }
 
     public String getSquare() {

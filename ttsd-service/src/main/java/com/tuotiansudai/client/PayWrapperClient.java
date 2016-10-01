@@ -6,6 +6,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.LoanStatus;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,10 +42,6 @@ public class PayWrapperClient extends BaseClient {
     private String bindCardPath = "/bind-card";
 
     private String replaceCardPath = "/bind-card/replace";
-
-    private String loanPath = "/loan";
-
-    private String loanOutPath = "/loan/loan-out";
 
     private String withdrawPath = "/withdraw";
 
@@ -137,12 +134,12 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanRepayId), autoRepayPath, "POST");
     }
 
-    public BaseDto<PayDataDto> createLoan(LoanDto dto) {
-        return syncExecute(dto, loanPath, "POST");
+    public BaseDto<PayDataDto> createLoan(long loanId) {
+        return syncExecute(null, MessageFormat.format("/loan/{0}", String.valueOf(loanId)), "POST");
     }
 
-    public BaseDto<PayDataDto> updateLoan(LoanDto dto) {
-        return syncExecute(dto, loanPath, "PUT");
+    public BaseDto<PayDataDto> updateLoan(long loanId, LoanStatus loanStatus) {
+        return syncExecute(null, MessageFormat.format("/loan/{0}/status/{1}", String.valueOf(loanId), loanStatus.name()), "PUT");
     }
 
     public BaseDto<PayDataDto> investCallback() {
@@ -153,16 +150,12 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(null, "/job/async_invest_transfer_notify", "POST");
     }
 
-    public BaseDto<PayDataDto> loanOut(LoanOutDto dto) {
-        return syncExecute(dto, loanOutPath, "POST");
+    public BaseDto<PayDataDto> loanOut(long loanId) {
+        return syncExecute(null, MessageFormat.format("/loan/{0}/loan-out", String.valueOf(loanId)), "POST");
     }
 
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
         return syncExecute(dto, noPasswordInvestPath, "POST");
-    }
-
-    public BaseDto<PayDataDto> checkLoanAmount(long loanId) {
-        return syncExecute(null, MessageFormat.format("/real-time/loan/{0}/check-amount", String.valueOf(loanId)), "GET");
     }
 
     public BaseDto<PayDataDto> loanOutSuccessNotify(long loanId){

@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.LoanCreateBaseRequestDto;
+import com.tuotiansudai.dto.LoanCreateRequestDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.util.AmountConverter;
 
@@ -181,6 +183,60 @@ public class LoanModel implements Serializable {
     private long unpaidAmount;
 
     public LoanModel() {
+    }
+
+    public LoanModel(long loanId, LoanCreateRequestDto loanCreateRequestDto) {
+        LoanCreateBaseRequestDto baseRequestDto = loanCreateRequestDto.getLoan();
+        this.id = loanId;
+        this.name = baseRequestDto.getName();
+        this.agentLoginName = baseRequestDto.getAgent();
+        this.productType = baseRequestDto.getProductType();
+        this.pledgeType = baseRequestDto.getPledgeType();
+        this.type = baseRequestDto.getLoanType();
+        this.activityType = baseRequestDto.getActivityType();
+        this.loanAmount = AmountConverter.convertStringToCent(baseRequestDto.getLoanAmount());
+        this.baseRate = Double.parseDouble(rateStrDivideOneHundred(baseRequestDto.getBaseRate()));
+        this.activityRate = Double.parseDouble(rateStrDivideOneHundred(baseRequestDto.getActivityRate()));
+        this.fundraisingStartTime = baseRequestDto.getFundraisingStartTime();
+        this.fundraisingEndTime = baseRequestDto.getFundraisingEndTime();
+        this.investIncreasingAmount = AmountConverter.convertStringToCent(baseRequestDto.getInvestIncreasingAmount());
+        this.maxInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMaxInvestAmount());
+        this.minInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMinInvestAmount());
+        this.periods = baseRequestDto.getLoanType().getLoanPeriodUnit() == LoanPeriodUnit.DAY ? 1 : baseRequestDto.getProductType().getPeriods();
+        this.duration = baseRequestDto.getProductType().getDuration();
+        this.status = loanCreateRequestDto.getLoan().getStatus();
+        this.createdLoginName = baseRequestDto.getCreatedBy();
+        this.contractId = baseRequestDto.getContractId();
+        this.loanerLoginName = "";
+        this.loanerUserName = "";
+        this.loanerIdentityNumber = "";
+        this.descriptionHtml = "";
+        this.descriptionText = "";
+        this.showOnHome = true;
+    }
+
+    public LoanModel updateLoan(LoanCreateRequestDto loanCreateRequestDto) {
+        LoanCreateBaseRequestDto baseRequestDto = loanCreateRequestDto.getLoan();
+        this.name = baseRequestDto.getName();
+        this.agentLoginName = baseRequestDto.getAgent();
+        this.productType = baseRequestDto.getProductType();
+        this.pledgeType = baseRequestDto.getPledgeType();
+        this.type = baseRequestDto.getLoanType();
+        this.activityType = baseRequestDto.getActivityType();
+        this.loanAmount = AmountConverter.convertStringToCent(baseRequestDto.getLoanAmount());
+        this.baseRate = Double.parseDouble(rateStrDivideOneHundred(baseRequestDto.getBaseRate()));
+        this.activityRate = Double.parseDouble(rateStrDivideOneHundred(baseRequestDto.getActivityRate()));
+        this.fundraisingStartTime = baseRequestDto.getFundraisingStartTime();
+        this.fundraisingEndTime = baseRequestDto.getFundraisingEndTime();
+        this.investIncreasingAmount = AmountConverter.convertStringToCent(baseRequestDto.getInvestIncreasingAmount());
+        this.minInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMinInvestAmount());
+        this.maxInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMaxInvestAmount());
+        this.periods = baseRequestDto.getLoanType().getLoanPeriodUnit() == LoanPeriodUnit.DAY ? 1 : baseRequestDto.getProductType().getPeriods();
+        this.duration = baseRequestDto.getProductType().getDuration();
+        this.contractId = baseRequestDto.getContractId();
+        this.status = baseRequestDto.getStatus();
+        this.updateTime = new Date();
+        return this;
     }
 
     public LoanModel(LoanDto loanDto) {

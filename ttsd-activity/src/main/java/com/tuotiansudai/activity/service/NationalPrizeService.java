@@ -17,7 +17,6 @@ import com.tuotiansudai.membership.repository.model.MembershipLevel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
-import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.RandomUtils;
@@ -226,7 +225,7 @@ public class NationalPrizeService {
         long count = 0l;
         Map<String,String> userMap = Maps.newConcurrentMap();
         for(InvestModel investModel : investModels){
-            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(investModel.getLoanId());
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(investModel.getLoanId());
             if(loanDetailsModel != null && loanDetailsModel.isActivity()){
                 amount += investModel.getAmount();
                 if(userMap.get(investModel.getLoginName()) == null){

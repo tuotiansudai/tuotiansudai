@@ -1,0 +1,21 @@
+<div class="form-group">
+    <label class="col-sm-2 control-label"></label>
+
+    <div class="col-sm-8">
+        <div class="row col-file-box">
+            <div class="select-box loan-title">
+                <select class="selectpicker col-sm-5 loan-title-selector">
+                    {{each _data}}
+                    <option value="{{$value.id}}">{{$value.title}}</option>
+                    {{/each}}
+                </select>
+
+                <input type="hidden" class="jq-txt" value="{{_data[0]['id']}}"/>
+            </div>
+            <input type="text" name="file-name[]" class="files-input form-control" placeholder="请输入资料名称"/>
+            <button type="button" class="btn btn-default jq-add">添加</button>
+            <button type="button" class="btn btn-danger jq-delete">删除</button>
+        </div>
+        <input type="file" multiple="multiple" class="file-loading upload"/>
+    </div>
+</div>

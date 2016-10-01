@@ -176,13 +176,13 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         InvestorDto investorDto = new InvestorDto(accountMapper.findByLoginName(loginName), this.isRemindNoPassword(loginName), this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount));
 
         LoanDetailDto loanDto = new LoanDetailDto(loanModel,
-                loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId()),
+                loanDetailsMapper.getByLoanId(loanModel.getId()),
                 investedAmount,
                 loanTitleMapper.findAll(),
                 loanTitleRelationMapper.findByLoanId(loanModel.getId()),
                 investorDto);
 
-        LoanerDetailsModel loanerDetail = loanerDetailsMapper.getLoanerDetailByLoanId(loanModel.getId());
+        LoanerDetailsModel loanerDetail = loanerDetailsMapper.getByLoanId(loanModel.getId());
         if (loanerDetail != null) {
             loanDto.setLoanerDetail(ImmutableMap.<String, String>builder()
                     .put("借款人", MessageFormat.format("{0}某", loanerDetail.getUserName().substring(0, 1)))
@@ -196,7 +196,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .build());
         }
 
-        PledgeHouseModel pledgeHouseDetail = pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanModel.getId());
+        PledgeHouseModel pledgeHouseDetail = pledgeHouseMapper.getByLoanId(loanModel.getId());
         if (pledgeHouseDetail != null) {
             loanDto.setPledgeHouseDetail(ImmutableMap.<String, String>builder()
                     .put("抵押物所在地", pledgeHouseDetail.getPledgeLocation())
@@ -209,7 +209,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .build());
         }
 
-        PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanModel.getId());
+        PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getByLoanId(loanModel.getId());
         if (pledgeVehicleModel != null) {
             loanDto.setPledgeVehicleDetail(ImmutableMap.<String, String>builder()
                     .put("抵押物所在地", pledgeVehicleModel.getPledgeLocation())

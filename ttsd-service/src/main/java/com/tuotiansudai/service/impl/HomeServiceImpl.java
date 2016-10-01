@@ -63,7 +63,7 @@ public class HomeServiceImpl implements HomeService {
                 }
 
                 List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loan.getId());
-                LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+                LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
                 String extraSource = "";
                 boolean activity = false;
                 String activityDesc = "";
