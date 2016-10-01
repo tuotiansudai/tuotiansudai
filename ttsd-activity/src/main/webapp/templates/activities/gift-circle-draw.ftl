@@ -20,10 +20,9 @@
                 <li><span>我的奖品</span></li>
             </ul>
             <div class="record-list">
-                <ul class="record-model user-record" style="display: block"></ul>
-                <ul class="record-model own-record"></ul>
+                <ul class="record-model user-record" ></ul>
+                <ul class="record-model own-record" style="display: none"></ul>
             </div>
         </div>
     </div>
-
 </div>

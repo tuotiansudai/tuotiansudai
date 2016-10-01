@@ -1,3 +1,11 @@
+@charset "utf-8";
+@mixin transform-scale ($sizing) {
+  transform:scale($sizing);
+  -ms-transform:scale($sizing);
+  -moz-transform:scale($sizing);
+  -webkit-transform:scale($sizing);
+  -o-transform:scale($sizing);
+}
 //抽奖
 .gift-circle-frame {
   position: relative;
@@ -214,5 +222,58 @@
       display: inline-block;
       margin: 30px;
     }
+  }
+}
+@media screen and (max-width: 700px) {
+  .gift-circle-frame {
+    .gift-circle-out {
+      @include  transform-scale(0.5);
+      margin-left: -77px;
+      margin-top: -136px;
+      float: none;
+    }
+    .gift-circle-detail {
+      width:100%;
+      float: none;
+      margin-top: -100px;
+
+      h3 {
+        height:45px;
+        line-height: 45px;
+        font-size: 18px;
+      }
+      .trim-strip {
+        top:25px;
+      }
+      .gift-info-box {
+        border-radius: 22px;
+        padding: 20px 10px;
+        height:auto;
+        .gift-record {
+          font-size:14px;
+        }
+        .record-list {
+          height: auto;
+          max-height:352px;
+          ul.record-model {
+            padding-left:10px;
+            line-height: 19px;
+            font-size:11px;
+            li {
+              padding-bottom:8px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .layui-layer {
+    @include transform-scale(0.6);
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .gift-circle-frame .gift-circle-out {
+    margin-left: -123px;
   }
 }

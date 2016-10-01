@@ -14,6 +14,10 @@
     <div class="good-news-frame clearfix">
 
         <div class="good-news-box">
+            <em></em>
+            <em></em>
+            <em></em>
+            <em></em>
             <b>好消息</b>
             <p>
                 亲爱的用户： <br/>
@@ -22,6 +26,10 @@
         </div>
 
         <div class="good-news-box">
+            <em></em>
+            <em></em>
+            <em></em>
+            <em></em>
             <b>小贴士</b>
             <p>为了公平起见，积分商城将于10月22日开始新一轮的兑换规则。为此，平台将于10月21日24时对之前的积分进行清零。还等什么？赶快来参与抽奖狂欢趴吧！</p>
         </div>
