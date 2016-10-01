@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanTitleModel;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,9 @@ public interface LoanService {
      * @function 获取所有的标题
      */
     List<LoanTitleModel> findAllTitles();
+
+    @Transactional
+    BaseDto<BaseDataDto> createLoan(LoanCreateRequestDto loanCreateRequestDto);
 
     /**
      * @function 创建标的

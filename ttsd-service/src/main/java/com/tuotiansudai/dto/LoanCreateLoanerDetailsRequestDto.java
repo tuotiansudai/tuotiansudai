@@ -1,0 +1,89 @@
+package com.tuotiansudai.dto;
+
+import com.tuotiansudai.repository.model.Gender;
+import com.tuotiansudai.repository.model.Marriage;
+import org.hibernate.validator.constraints.NotEmpty;
+
+public class LoanCreateLoanerDetailsRequestDto {
+
+    @NotEmpty
+    private String userName;
+    @NotEmpty
+    private String identityNumber;
+    @NotEmpty
+    private Gender gender;
+    @NotEmpty
+    private int age;
+    @NotEmpty
+    private Marriage marriage;
+    @NotEmpty
+    private String region;
+    @NotEmpty
+    private String income;
+    @NotEmpty
+    private String employmentStatus;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Marriage getMarriage() {
+        return marriage;
+    }
+
+    public void setMarriage(Marriage marriage) {
+        this.marriage = marriage;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getIncome() {
+        return income;
+    }
+
+    public void setIncome(String income) {
+        this.income = income;
+    }
+
+    public String getEmploymentStatus() {
+        return employmentStatus;
+    }
+
+    public void setEmploymentStatus(String employmentStatus) {
+        this.employmentStatus = employmentStatus;
+    }
+}

@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 
+import com.tuotiansudai.dto.LoanCreateLoanerDetailsRequestDto;
 import com.tuotiansudai.dto.LoanerDetailsDto;
 
 import java.io.Serializable;
@@ -34,7 +35,7 @@ public class LoanerDetailsModel implements Serializable {
         this.employmentStatus = employmentStatus;
     }
 
-    public LoanerDetailsModel(LoanerDetailsDto loanerDetailsDto) {
+    public LoanerDetailsModel( LoanerDetailsDto loanerDetailsDto) {
         this.loanId = loanerDetailsDto.getLoanId();
         this.loginName = loanerDetailsDto.getLoanerLoginName();
         this.userName = loanerDetailsDto.getLoanerUserName();
@@ -45,6 +46,19 @@ public class LoanerDetailsModel implements Serializable {
         this.region = loanerDetailsDto.getLoanerRegion();
         this.income = loanerDetailsDto.getLoanerIncome();
         this.employmentStatus = loanerDetailsDto.getLoanerEmploymentStatus();
+    }
+
+    public LoanerDetailsModel(long loanId, LoanCreateLoanerDetailsRequestDto loanerDetails) {
+        this.loanId = loanId;
+        this.loginName = "";
+        this.userName = loanerDetails.getUserName();
+        this.gender = loanerDetails.getGender();
+        this.age = loanerDetails.getAge();
+        this.identityNumber = loanerDetails.getIdentityNumber();
+        this.marriage = loanerDetails.getMarriage();
+        this.region = loanerDetails.getRegion();
+        this.income = loanerDetails.getIncome();
+        this.employmentStatus = loanerDetails.getEmploymentStatus();
     }
 
     public long getId() {

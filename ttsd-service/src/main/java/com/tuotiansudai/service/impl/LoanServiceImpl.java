@@ -42,28 +42,22 @@ public class LoanServiceImpl implements LoanService {
     static Logger logger = Logger.getLogger(LoanServiceImpl.class);
 
     @Autowired
-    private LoanTitleMapper loanTitleMapper;
-
-    @Autowired
-    private LoanMapper loanMapper;
+    private IdGenerator idGenerator;
 
     @Autowired
     private AccountMapper accountMapper;
 
     @Autowired
+    private LoanTitleMapper loanTitleMapper;
+
+    @Autowired
     private LoanTitleRelationMapper loanTitleRelationMapper;
 
     @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
     private InvestMapper investMapper;
-
-    @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
-    private PayWrapperClient payWrapperClient;
-
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
 
     @Value("${console.auto.invest.delay.minutes}")
     private int autoInvestDelayMinutes;
@@ -93,10 +87,16 @@ public class LoanServiceImpl implements LoanService {
     private LoanerDetailsMapper loanerDetailsMapper;
 
     @Autowired
+    private LoanerEnterpriseDetailsMapper loanerEnterpriseDetailsMapper;
+
+    @Autowired
     private PledgeHouseMapper pledgeHouseMapper;
 
     @Autowired
     private PledgeVehicleMapper pledgeVehicleMapper;
+
+    @Autowired
+    private PledgeEnterpriseMapper pledgeEnterpriseMapper;
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
@@ -104,7 +104,11 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private ExtraLoanRateRuleMapper extraLoanRateRuleMapper;
 
+    @Autowired
+    private PayWrapperClient payWrapperClient;
 
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
     /**
      * @param loanTitleDto
      * @function 创建标题
@@ -112,11 +116,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public LoanTitleModel createTitle(LoanTitleDto loanTitleDto) {
-        LoanTitleModel loanTitleModel = new LoanTitleModel();
-        long id = idGenerator.generate();
-        loanTitleModel.setId(id);
-        loanTitleModel.setTitle(loanTitleDto.getTitle());
-        loanTitleModel.setType(LoanTitleType.NEW_TITLE_TYPE);
+        LoanTitleModel loanTitleModel = new LoanTitleModel(idGenerator.generate(), LoanTitleType.NEW_TITLE_TYPE, loanTitleDto.getTitle());
         loanTitleMapper.create(loanTitleModel);
         return loanTitleModel;
     }
@@ -191,6 +191,47 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    @Transactional
+    public BaseDto<BaseDataDto> createLoan(LoanCreateRequestDto loanCreateRequestDto) {
+        long loanId = idGenerator.generate();
+
+        for (LoanTitleRelationModel loanTitleRelationModel : loanCreateRequestDto.getLoan().getLoanTitles()) {
+            loanTitleRelationModel.setId(idGenerator.generate());
+            loanTitleRelationModel.setLoanId(loanId);
+        }
+
+        loanMapper.create(new LoanModel(loanId, loanCreateRequestDto));
+        if (CollectionUtils.isNotEmpty(loanCreateRequestDto.getLoan().getLoanTitles())) {
+            loanTitleRelationMapper.create(loanCreateRequestDto.getLoan().getLoanTitles());
+        }
+
+        loanDetailsMapper.create(new LoanDetailsModel(loanId, loanCreateRequestDto.getLoanDetails()));
+        this.updateExtraRate(loanId, loanCreateRequestDto.getLoanDetails().getExtraRateIds());
+
+        if (loanCreateRequestDto.getLoanerDetails() != null) {
+            loanerDetailsMapper.create(new LoanerDetailsModel(loanId, loanCreateRequestDto.getLoanerDetails()));
+        }
+
+        if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
+            loanerEnterpriseDetailsMapper.create(new LoanerEnterpriseDetailsModel(loanId, loanCreateRequestDto.getLoanerEnterpriseDetails()));
+        }
+
+        if (loanCreateRequestDto.getPledgeHouse() != null) {
+            pledgeHouseMapper.create(new PledgeHouseModel(loanId, loanCreateRequestDto.getPledgeHouse()));
+        }
+
+        if (loanCreateRequestDto.getPledgeVehicle() != null) {
+            pledgeVehicleMapper.create(new PledgeVehicleModel(loanId, loanCreateRequestDto.getPledgeVehicle()));
+        }
+
+        if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
+            pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
+        }
+
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<BaseDataDto> createLoan(LoanDto loanDto, LoanDetailsDto loanDetailsDto, LoanerDetailsDto loanerDetailsDto,
                                            AbstractPledgeDetailsDto pledgeDetailsDto) {
@@ -221,33 +262,32 @@ public class LoanServiceImpl implements LoanService {
             pledgeVehicleMapper.create(new PledgeVehicleModel((PledgeVehicleDto) pledgeDetailsDto));
         }
 
+        updateExtraRate(loanId, loanDto.getExtraRateIds());
+
         baseDto.getData().setMessage(String.valueOf(loanId));
-        updateExtraRate(loanDto, loanId);
         return baseDto;
     }
 
-    private void updateExtraRate(LoanDto loanDto, final long loanId) {
+    private void updateExtraRate(final long loanId, List<Long> extraRateIds) {
         LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel.getStatus() != LoanStatus.WAITING_VERIFY) {
             return;
-        } else {
-            extraLoanRateMapper.deleteByLoanId(loanId);
-            List<Long> extraRateIds = loanDto.getExtraRateIds();
-            if (CollectionUtils.isNotEmpty(extraRateIds)) {
-                extraLoanRateMapper.create(Lists.transform(extraRateIds, new Function<Long, ExtraLoanRateModel>() {
-                    @Override
-                    public ExtraLoanRateModel apply(Long input) {
-                        ExtraLoanRateModel extraLoanRateModel = new ExtraLoanRateModel();
-                        ExtraLoanRateRuleModel extraLoanRateRuleModel = extraLoanRateRuleMapper.findById(input);
-                        extraLoanRateModel.setLoanId(loanId);
-                        extraLoanRateModel.setExtraRateRuleId(input);
-                        extraLoanRateModel.setMaxInvestAmount(extraLoanRateRuleModel.getMaxInvestAmount());
-                        extraLoanRateModel.setMinInvestAmount(extraLoanRateRuleModel.getMinInvestAmount());
-                        extraLoanRateModel.setRate(extraLoanRateRuleModel.getRate());
-                        return extraLoanRateModel;
-                    }
-                }));
-            }
+        }
+        extraLoanRateMapper.deleteByLoanId(loanId);
+        if (CollectionUtils.isNotEmpty(extraRateIds)) {
+            extraLoanRateMapper.create(Lists.transform(extraRateIds, new Function<Long, ExtraLoanRateModel>() {
+                @Override
+                public ExtraLoanRateModel apply(Long input) {
+                    ExtraLoanRateModel extraLoanRateModel = new ExtraLoanRateModel();
+                    ExtraLoanRateRuleModel extraLoanRateRuleModel = extraLoanRateRuleMapper.findById(input);
+                    extraLoanRateModel.setLoanId(loanId);
+                    extraLoanRateModel.setExtraRateRuleId(input);
+                    extraLoanRateModel.setMaxInvestAmount(extraLoanRateRuleModel.getMaxInvestAmount());
+                    extraLoanRateModel.setMinInvestAmount(extraLoanRateRuleModel.getMinInvestAmount());
+                    extraLoanRateModel.setRate(extraLoanRateRuleModel.getRate());
+                    return extraLoanRateModel;
+                }
+            }));
         }
     }
 
@@ -434,7 +474,7 @@ public class LoanServiceImpl implements LoanService {
         } else {
             return null;
         }
-        createLoanDto.setExtraSource(loanDetailsModel != null?loanDetailsModel.getExtraSource():"");
+        createLoanDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : "");
         return createLoanDto;
     }
 
@@ -526,7 +566,7 @@ public class LoanServiceImpl implements LoanService {
             }
             loanTitleRelationMapper.create(loanTitleRelationModelList);
         }
-        updateExtraRate(loanDto, loanModel.getId());
+        updateExtraRate(loanModel.getId(), loanDto.getExtraRateIds());
     }
 
     @Override
@@ -668,7 +708,7 @@ public class LoanServiceImpl implements LoanService {
                 loanListDto.setExtraLoanRateModels(fillExtraLoanRate(extraLoanRateModels));
             }
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
-            loanListDto.setExtraSource(loanDetailsModel != null?loanDetailsModel.getExtraSource():"");
+            loanListDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : "");
             loanListDtos.add(loanListDto);
         }
         return loanListDtos;
@@ -743,7 +783,7 @@ public class LoanServiceImpl implements LoanService {
                 boolean activity = false;
                 String activityDesc = "";
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
-                if(loanDetailsModel != null){
+                if (loanDetailsModel != null) {
                     extraSource = loanDetailsModel.getExtraSource();
                     activity = loanDetailsModel.isActivity();
                     activityDesc = loanDetailsModel.getActivityDesc();
