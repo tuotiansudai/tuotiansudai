@@ -33,7 +33,7 @@
 
                 <div class="today-item">
                     <@global.isAnonymous></@global.isAnonymous>
-                    <@global.isNotAnonymous><#if investAmount == '0'>未参加排行<#else>我的今日投资额：${investAmount}元</#if></@global.isNotAnonymous>
+                    <@global.isNotAnonymous>我的今日投资额：${investAmount}元</@global.isNotAnonymous>
                 </div>
             </div>
             <div class="gift-group">
