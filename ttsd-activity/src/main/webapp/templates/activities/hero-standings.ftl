@@ -23,7 +23,7 @@
                 <div class="date-time-item"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></div>
                 <div class="my-rank-item">
                     <@global.isAnonymous>我的排名：登录后查看</@global.isAnonymous>
-                    <@global.isNotAnonymous><#if investRanking == 0>未参加排行<#else>我的排名：${investRanking}</#if></@global.isNotAnonymous>
+                    <@global.isNotAnonymous><#if investRanking &gt; 20>未参加排行<#else>我的排名：${investRanking}</#if></@global.isNotAnonymous>
                 </div>
                 <@global.isAnonymous>
                     <div class="login-item">
