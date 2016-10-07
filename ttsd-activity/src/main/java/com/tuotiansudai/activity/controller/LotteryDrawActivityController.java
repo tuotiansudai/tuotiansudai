@@ -30,7 +30,7 @@ public class LotteryDrawActivityController {
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loadPageData() {
-        ModelAndView modelAndView = new ModelAndView("/activities/hero-ranking", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/integral-draw", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
         modelAndView.addObject("myPoint", accountService.getUserPointByLoginName(loginName));
         return modelAndView;
