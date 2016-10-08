@@ -9,6 +9,8 @@ sign-in:
     - "redis-server"
 web:
   image: "andreptb/tomcat:8-jdk8"
+  environment:
+    - "TZ=Asia/Shanghai"
   ports:
     - "20002:8080"
   volumes:
@@ -23,6 +25,8 @@ web:
     - "sign-in"
 console:
   image: "andreptb/tomcat:8-jdk8"
+  environment:
+    - "TZ=Asia/Shanghai"
   ports:
     - "20003:8080"
   volumes:
@@ -37,6 +41,8 @@ console:
     - "sign-in"
 activity-console:
   image: "andreptb/tomcat:8-jdk8"
+  environment:
+    - "TZ=Asia/Shanghai"
   ports:
     - "20019:8080"
   volumes:
@@ -48,6 +54,8 @@ activity-console:
     - "sign-in"
 pay-wrapper:
   image: "andreptb/tomcat:8-jdk8"
+  environment:
+    - "TZ=Asia/Shanghai"
   ports:
     - "20004:8080"
   volumes:
@@ -60,6 +68,8 @@ pay-wrapper:
     - "redis-server"
 sms-wrapper:
   image: "andreptb/tomcat:8-jdk8"
+  environment:
+    - "TZ=Asia/Shanghai"
   ports:
     - "20005:8080"
   volumes:
@@ -70,6 +80,8 @@ sms-wrapper:
     - "redis-server"
 mobile-api:
   image: "andreptb/tomcat:8-jdk8"
+  environment:
+    - "TZ=Asia/Shanghai"
   ports:
     - "20006:8080"
   volumes:
@@ -83,6 +95,8 @@ mobile-api:
     - "sign-in"
 activity:
   image: "andreptb/tomcat:8-jdk8"
+  environment:
+    - "TZ=Asia/Shanghai"
   ports:
     - "20007:8080"
   volumes:
@@ -95,6 +109,8 @@ activity:
     - "sign-in"
 point:
   image: "andreptb/tomcat:8-jdk8"
+  environment:
+    - "TZ=Asia/Shanghai"
   ports:
     - "20018:8080"
   volumes:
@@ -118,6 +134,8 @@ redis-server:
     - "20017:7007"
 worker-all:
   image: "isuper/java-oracle:jdk_8"
+  environment:
+    - "TZ=Asia/Shanghai"
   volumes:
     - ./ttsd-job-worker/build/distributions:/opt
     - /var/log/tuotian/worker-all:/var/log/job-worker
@@ -128,6 +146,8 @@ worker-all:
     - "redis-server"
 worker-invest:
   image: "isuper/java-oracle:jdk_8"
+  environment:
+    - "TZ=Asia/Shanghai"
   volumes:
     - ./ttsd-job-worker/build/distributions:/opt
     - /var/log/tuotian/worker-invest:/var/log/job-worker
@@ -138,6 +158,8 @@ worker-invest:
     - "redis-server"
 worker-jpush:
   image: "isuper/java-oracle:jdk_8"
+  environment:
+    - "TZ=Asia/Shanghai"
   volumes:
     - ./ttsd-job-worker/build/distributions:/opt
     - /var/log/tuotian/worker-jpush:/var/log/job-worker
@@ -173,6 +195,8 @@ nginx-server_console:
     - "activity-console"
 ask:
   image: "andreptb/tomcat:8-jdk8"
+  environment:
+    - "TZ=Asia/Shanghai"
   ports:
     - "20009:8080"
   volumes:
