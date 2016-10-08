@@ -2,7 +2,8 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
 
     var $integralDrawPage=$('#integralDrawPage'),
         $oneThousandPoints=$('.one-thousand-points',$integralDrawPage),
-        $tenThousandPoints=$('.ten-thousand-points',$integralDrawPage);
+        $tenThousandPoints=$('.ten-thousand-points',$integralDrawPage),
+        $myPropertyPoint=$('.gift-circle-detail .my-property',$integralDrawPage);
     //以下为抽奖转盘
     var $MobileNumber=$('#MobileNumber'),
         pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
@@ -13,6 +14,7 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
     $oneThousandPoints.find('.gift-circle-out').after($('.draw-instructions',$oneThousandPoints));
     $tenThousandPoints.find('.gift-circle-out').after($('.draw-instructions',$tenThousandPoints));
 
+    $myPropertyPoint.text(myPoint);
     var tipMessage={
         info:'',
         button:'',
@@ -28,9 +30,7 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
     });
 
     //************************1000积分抽好礼*****************************/
-    var $GiftRecordOne=$('.user-record',$oneThousandPoints),
-        $MyGiftOne=$('.own-record',$oneThousandPoints),
-        $pointerOne = $('.pointer-img',$oneThousandPoints);
+    var $pointerOne = $('.pointer-img',$oneThousandPoints);
 
     var tipList=$('.tip-list',$integralDrawPage);
 

@@ -138,12 +138,21 @@ body {
       background-size: 100%;
     }
   }
+  .gift-circle-frame  .draw-instructions{
+      position: absolute;
+      bottom:0px;
+      left:200px;
+      color: #e7844e;
+  }
   .luck-draw-frame-one {
     margin-top: 150px;
     text-align: center;
-    .gift-circle-frame .gift-circle-out .rotate-btn{
-      background: url(/activity/images/integral-draw/integral-draw-one.jpg) no-repeat center;
+    .gift-circle-frame  {
+      .gift-circle-out .rotate-btn{
+        background: url(/activity/images/integral-draw/integral-draw-one.jpg) no-repeat center;
+      }
     }
+
   }
   .luck-draw-frame-two {
     margin-top: 68px;
@@ -205,6 +214,16 @@ body {
   .integral-draw-frame {
     padding: 0 10px 10px 10px;
     width:100%;
+
+    .gift-circle-frame  .draw-instructions{
+      position: absolute;
+      bottom: auto;
+      left: auto;
+      top: 277px;
+      width: 100%;
+      text-align: center;
+    }
+
     .button-col {
       .btn-to-invest {
         font-size: 15px;
@@ -246,8 +265,8 @@ body {
     }
     .luck-draw-frame-two {
       margin-top:20px;
-      .gift-circle-frame .gift-circle-out {
-        float: none;
+      .gift-circle-frame .gift-circle-out{
+          float: none;
       }
     }
     .activity-note-tip {
@@ -261,6 +280,7 @@ body {
       }
     }
   }
+
 }
 
 @media screen and (max-width: 400px) {

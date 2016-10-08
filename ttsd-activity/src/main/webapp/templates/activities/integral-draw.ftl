@@ -4,6 +4,9 @@
 <div style="display: none" class="login-name" data-login-name='<@global.security.authentication property="principal.username" />'></div>
 <div style="display: none" class="mobile" id="MobileNumber" data-mobile='<@global.security.authentication property="principal.mobile" />'></div>
 </@global.isNotAnonymous>
+<script type="text/javascript">
+    var myPoint='${myPoint}';
+</script>
 <div class="tour-slide">
 </div>
 <div class="integral-draw-frame" id="integralDrawPage">

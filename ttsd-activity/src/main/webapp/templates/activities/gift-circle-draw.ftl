@@ -4,7 +4,7 @@
             <div class="rotate-btn"></div>
     </div>
     <div class="gift-circle-detail">
-        <h3><span class="my-category">我的积分：</span><span class="my-property">${myPoint}</h3>
+        <h3><span class="my-category">我的积分：</span><span class="my-property"></h3>
 
         <div class="trim-strip">
             <i class="icon-square"></i>
