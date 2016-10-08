@@ -23,9 +23,7 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
     $('body').on('click', '.go-close', function(event) {
         event.preventDefault();
         var $self = $(this);
-        if($self.hasClass('go-on')) {
-            window.location.reload();
-        }
+        window.location.reload();
         layer.closeAll();
     });
 

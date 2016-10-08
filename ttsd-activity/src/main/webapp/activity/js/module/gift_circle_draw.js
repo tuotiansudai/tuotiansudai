@@ -41,7 +41,7 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
                 .done(function(data) {
                     //console.log('中奖记录'+data);
                     var UlList=[];
-                    var data=[
+                    var data=data || [
                         {"mobile":"137****7702","userName":null,"prize":"TELEPHONE_FARE_10","prizeValue":"rtrt","lotteryTime":"2016-09-29 16:09:05"},
                         {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_50","prizeValue":"rtrt","lotteryTime":"2016-09-29 16:05:44"},
                         {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_15","prizeValue":"rtrt","lotteryTime":"2016-09-29 15:56:41"},
@@ -69,7 +69,7 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
             })
                 .done(function(data) {
                     var UlList=[];
-                    var data=[
+                    var data=data || [
                         {"mobile":"137****7702","userName":null,"prize":"TELEPHONE_FARE_10","prizeValue":"rtrt","lotteryTime":"2016-09-29 16:09:05"},
                         {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_50","prizeValue":"rtrt","lotteryTime":"2016-09-29 16:05:44"},
                         {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_15","prizeValue":"rtrt","lotteryTime":"2016-09-29 15:56:41"}
