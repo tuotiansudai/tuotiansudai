@@ -41,16 +41,8 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
                 .done(function(data) {
                     //console.log('中奖记录'+data);
                     var UlList=[];
-                    var data=data || [
-                        {"mobile":"137****7702","userName":null,"prize":"TELEPHONE_FARE_10","prizeValue":"rtrt","lotteryTime":"2016-09-29 16:09:05"},
-                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_50","prizeValue":"rtrt","lotteryTime":"2016-09-29 16:05:44"},
-                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_15","prizeValue":"rtrt","lotteryTime":"2016-09-29 15:56:41"},
-                        {"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","prizeValue":"rtrt","lotteryTime":"2016-09-26 16:36:57"},
-                        {"mobile":"188****0000","userName":null,"prize":"CINEMA_TICKET","prizeValue":"rtrt","lotteryTime":"2016-09-26 16:35:40"},
-                        {"mobile":"188****0000","userName":null,"prize":"RED_INVEST_15","prizeValue":"rtrt","lotteryTime":"2016-09-26 16:35:29"}];
-
                     for(var i=0,len=data.length;i<len;i++) {
-                        UlList.push('<li>恭喜'+data[i].mobile+'抽中了'+data[i].prize+'</li>');
+                        UlList.push('<li>恭喜'+data[i].mobile+'抽中了'+data[i].prizeValue+'</li>');
                     }
 
                     thisFun.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
@@ -69,11 +61,6 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
             })
                 .done(function(data) {
                     var UlList=[];
-                    var data=data || [
-                        {"mobile":"137****7702","userName":null,"prize":"TELEPHONE_FARE_10","prizeValue":"rtrt","lotteryTime":"2016-09-29 16:09:05"},
-                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_50","prizeValue":"rtrt","lotteryTime":"2016-09-29 16:05:44"},
-                        {"mobile":"182****5693","userName":null,"prize":"RED_INVEST_15","prizeValue":"rtrt","lotteryTime":"2016-09-29 15:56:41"}
-                    ];
 
                     for(var i=0,len=data.length;i<len;i++) {
                         UlList.push('<li>恭喜'+data[i].mobile+'抽中了'+data[i].prizeValue+'</li>');
