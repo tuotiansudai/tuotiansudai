@@ -805,7 +805,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 .done(function(response) {
                     var data=response.data;
                     if (data.status) {
-                        var info='<i class="fa fa-times-circle"></i>V'+data.level+'会员，专享服务费'+data.rate+'折优惠，已多赚'+data.amount+'元';
+                        var info='V'+data.level+'会员，专享服务费'+data.rate+'折优惠，已多赚'+data.amount+'元';
 
                         layer.tips(info, $expected, {
                             tips: [1, '#ff7200'],

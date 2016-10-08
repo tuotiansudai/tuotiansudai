@@ -8,11 +8,11 @@
                     <li>
                         <a href="${banner.url}" data-name="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"
                            <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
-                            <img src="${banner.webImageUrl}" alt="${banner.title}" class="pc-img">
+                            <img src="${staticServer}${banner.webImageUrl}" alt="${banner.title}" class="pc-img">
                         </a>
                         <a href="${banner.url}" data-name="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_self"
                            <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
-                            <img src="${banner.appImageUrl}" alt="${banner.title}" class="iphone-img">
+                            <img src="${staticServer}${banner.appImageUrl}" alt="${banner.title}" class="iphone-img">
                         </a>
 
                     </li>

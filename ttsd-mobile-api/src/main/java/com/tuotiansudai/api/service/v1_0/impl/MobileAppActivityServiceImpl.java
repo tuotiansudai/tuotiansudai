@@ -24,8 +24,9 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
     @Autowired
     ActivityMapper activityMapper;
 
-    @Value("${web.server}")
-    private String domainName;
+    @Value("${web.static.server}")
+    private String staticServer;
+
 
     @Override
     public ActivityCenterResponseDto getAppActivityCenterResponseData(ActivityCenterRequestDto requestDto) {
@@ -58,7 +59,7 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
         }
         for (ActivityModel activityModel : activityModels) {
             ActivityCenterDataDto activityCenterDataDto = new ActivityCenterDataDto(activityModel);
-            activityCenterDataDto.setImageUrl(domainName + "/" + activityModel.getAppPictureUrl());
+            activityCenterDataDto.setImageUrl(staticServer + activityModel.getAppPictureUrl());
             activityCenterDataDtos.add(activityCenterDataDto);
         }
         ActivityCenterResponseDto activityCenterResponseDto = new ActivityCenterResponseDto();

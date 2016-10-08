@@ -28,6 +28,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.MessageFormat;
 import java.util.List;
 
 @Component
@@ -57,6 +58,11 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
                 ? Source.valueOf(baseParamDto.getBaseParam().getPlatform().toUpperCase()) : null;
 
         SignInResult verifyTokenResult = signInClient.verifyToken(token, source);
+        if (verifyTokenResult == null || !verifyTokenResult.isResult()) {
+            logger.error(MessageFormat.format("app verify token failed (url={0} baseParam={1})",
+                    bufferedRequestWrapper.getRequestURI(),
+                    baseParamDto != null && baseParamDto.getBaseParam() != null ? baseParamDto.getBaseParam().toString() : ""));
+        }
 
         if (verifyTokenResult != null && verifyTokenResult.isResult()) {
             List<GrantedAuthority> grantedAuthorities = Lists.transform(verifyTokenResult.getUserInfo().getRoles(), new Function<String, GrantedAuthority>() {

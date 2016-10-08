@@ -62,20 +62,9 @@ public class ProductShowItemDto {
                 this.pictureDescription = String.valueOf(exchangeCouponView.getRate() * 100);
                 break;
         }
-        this.description = generateCouponDescription(exchangeCouponView);
         this.leftCount = exchangeCouponView.getTotalCount() - exchangeCouponView.getIssuedCount();
         this.points = exchangeCouponView.getExchangePoint();
         this.updatedTime = exchangeCouponView.getUpdatedTime();
-    }
-
-    private String generateCouponDescription(ExchangeCouponView exchangeCouponView) {
-        List<String> productTypeNames = new ArrayList<>();
-        for (ProductType productType : exchangeCouponView.getProductTypes()) {
-            productTypeNames.add(productType.getName());
-        }
-        String productTypeString = Joiner.on(",").join(productTypeNames);
-        return MessageFormat.format("投资满{0}元即可使用;\n{1}产品可用;\n有效期限:{2}天;", exchangeCouponView.getInvestLowerLimit()/100,
-                productTypeString, exchangeCouponView.getDeadline());
     }
 
     public long getId() {
