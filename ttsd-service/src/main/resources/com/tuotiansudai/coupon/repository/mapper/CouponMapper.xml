@@ -223,7 +223,7 @@
           c.*
         FROM
           coupon c
-        JOIN product p
+        JOIN edxpoint.product p
         ON c.`id` = p.`coupon_id`
         ORDER BY p.seq asc
         LIMIT #{index},#{pageSize}
@@ -234,7 +234,7 @@
           IFNULL(count(*), 0)
         FROM
           coupon c
-        JOIN product p
+        JOIN edxpoint.product p
         ON c.`id` = p.`coupon_id` ;
     </select>
 
@@ -245,7 +245,7 @@
         AND `active` is TRUE
         AND `coupon_type` IN ('INVEST_COUPON','INTEREST_COUPON')
         AND `end_time` >= now()
-        AND EXISTS (SELECT 1 FROM product WHERE `coupon`.`id` = `product`.`coupon_id`)
+        AND EXISTS (SELECT 1 FROM edxpoint.product WHERE `coupon`.`id` = `product`.`coupon_id`)
         ORDER BY `created_time` desc, `id` desc
         <if test="index != null and pageSize != null">
             LIMIT #{index},#{pageSize}
@@ -258,7 +258,7 @@
          IFNULL(count(1), 0)
         FROM
         coupon c
-        JOIN product p
+        JOIN edxpoint.product p
         ON c.`id` = p.`coupon_id`
         AND c.`total_count` > c.`issued_count`
         AND c.`coupon_Type` IN ('INVEST_COUPON','INTEREST_COUPON')
@@ -283,10 +283,10 @@
         `deleted` is FALSE AND
         `coupon_type` IN ('INVEST_COUPON','INTEREST_COUPON', 'RED_ENVELOPE') AND
         now() between `start_time` and `end_time` AND EXISTS
-        (SELECT 1 FROM product WHERE `coupon`.`id` = `product`.`coupon_id`)
+        (SELECT 1 FROM edxpoint.product WHERE `coupon`.`id` = `product`.`coupon_id`)
         ) coupon
         JOIN
-        product
+        edxpoint.product
         ON
         coupon.id = product.coupon_id
         ORDER BY `seq` asc, `updated_time` desc
@@ -305,10 +305,10 @@
         `deleted` is FALSE AND
         `coupon_type` IN ('INVEST_COUPON','INTEREST_COUPON', 'RED_ENVELOPE') AND
         now() between `start_time` and `end_time` AND EXISTS
-        (SELECT 1 FROM product WHERE `coupon`.`id` = `product`.`coupon_id`)
+        (SELECT 1 FROM edxpoint.product WHERE `coupon`.`id` = `product`.`coupon_id`)
         ) coupon
         JOIN
-        product
+        edxpoint.product
         ON
         coupon.id = product.coupon_id
     </select>
@@ -322,7 +322,7 @@
         id = #{id}
         ) coupon
         JOIN
-        product
+        edxpoint.product
         ON
         coupon.id = product.coupon_id
     </select>

@@ -104,7 +104,7 @@
     </select>
 
     <select id="findByCouponId" resultMap="productResultMap">
-        SELECT * FROM `aa`.`product` WHERE coupon_id = #{couponId}
+        SELECT * FROM product WHERE coupon_id = #{couponId}
     </select>
 
     <select id="findAllProductsByGoodsType" resultMap="productResultMap">
