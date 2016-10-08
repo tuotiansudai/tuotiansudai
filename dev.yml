@@ -119,9 +119,9 @@ redis-server:
 worker-all:
   image: "isuper/java-oracle:jdk_8"
   volumes:
-    - ./ttsd-job-worker/build/distributions:/root
+    - ./ttsd-job-worker/build/distributions:/opt
     - /var/log/tuotian/worker-all:/var/log/job-worker
-  command: bash -c "/root/ttsd-job-worker-all/bin/ttsd-job-worker"
+  command: bash -c "/opt/ttsd-job-worker-all/bin/ttsd-job-worker"
   links:
     - "pay-wrapper"
     - "sms-wrapper"
@@ -129,9 +129,9 @@ worker-all:
 worker-invest:
   image: "isuper/java-oracle:jdk_8"
   volumes:
-    - ./ttsd-job-worker/build/distributions:/root
+    - ./ttsd-job-worker/build/distributions:/opt
     - /var/log/tuotian/worker-invest:/var/log/job-worker
-  command: bash -c "/root/ttsd-job-worker-invest/bin/ttsd-job-worker"
+  command: bash -c "/opt/ttsd-job-worker-invest/bin/ttsd-job-worker"
   links:
     - "pay-wrapper"
     - "sms-wrapper"
@@ -139,9 +139,9 @@ worker-invest:
 worker-jpush:
   image: "isuper/java-oracle:jdk_8"
   volumes:
-    - ./ttsd-job-worker/build/distributions:/root
+    - ./ttsd-job-worker/build/distributions:/opt
     - /var/log/tuotian/worker-jpush:/var/log/job-worker
-  command: bash -c "/root/ttsd-job-worker-jpush/bin/ttsd-job-worker"
+  command: bash -c "/opt/ttsd-job-worker-jpush/bin/ttsd-job-worker"
   links:
     - "redis-server"
 static-server:
