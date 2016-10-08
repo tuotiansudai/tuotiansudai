@@ -133,37 +133,37 @@ redis-server:
     - "20016:7006"
     - "20017:7007"
 worker-all:
-  image: "isuper/java-oracle:jdk_8"
+  image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
   volumes:
-    - ./ttsd-job-worker/build/distributions:/opt
+    - ./ttsd-job-worker/build/distributions:/opt/worker
     - /var/log/tuotian/worker-all:/var/log/job-worker
-  command: bash -c "/opt/ttsd-job-worker-all/bin/ttsd-job-worker"
+  command: bash -c "/opt/worker/ttsd-job-worker-all/bin/ttsd-job-worker"
   links:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
 worker-invest:
-  image: "isuper/java-oracle:jdk_8"
+  image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
   volumes:
-    - ./ttsd-job-worker/build/distributions:/opt
+    - ./ttsd-job-worker/build/distributions:/opt/worker
     - /var/log/tuotian/worker-invest:/var/log/job-worker
-  command: bash -c "/opt/ttsd-job-worker-invest/bin/ttsd-job-worker"
+  command: bash -c "/opt/worker/ttsd-job-worker-invest/bin/ttsd-job-worker"
   links:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
 worker-jpush:
-  image: "isuper/java-oracle:jdk_8"
+  image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
   volumes:
-    - ./ttsd-job-worker/build/distributions:/opt
+    - ./ttsd-job-worker/build/distributions:/opt/worker
     - /var/log/tuotian/worker-jpush:/var/log/job-worker
-  command: bash -c "/opt/ttsd-job-worker-jpush/bin/ttsd-job-worker"
+  command: bash -c "/opt/worker/ttsd-job-worker-jpush/bin/ttsd-job-worker"
   links:
     - "redis-server"
 static-server:
