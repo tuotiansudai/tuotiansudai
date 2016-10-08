@@ -45,7 +45,7 @@
                     <select class="selectpicker" name="selectNational">
                         <option value="" <#if !(nationalPrizes??)>selected</#if>>全部</option>
                         <#list nationalPrizes as national>
-                            <option value="${national}" <#if nationalPrizes?? && national==selectPrize>selected</#if>>
+                            <option value="${national}" <#if nationalPrizes?? && national==selectNational>selected</#if>>
                             ${national.description}
                             </option>
                         </#list>
