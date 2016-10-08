@@ -41,9 +41,9 @@
                         <td style="text-align:center;vertical-align:middle;">${promotion.startTime?string('yyyy-MM-dd')!} 至 ${promotion.endTime?string('yyyy-MM-dd')!}</td>
                         <td style="text-align:center;vertical-align:middle;"><#if "APPROVED" == promotion.status>已生效<#else>未生效</#if></td>
                         <td style="text-align:center;vertical-align:middle;">
-                            <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                            <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">
                                 <#if "APPROVED" == promotion.status>
-                                    <button class="btn-link promotion-delete" data-link="/activity-console/activity-manage/promotion/${promotion.id?c}" data-operator="rejection">驳回</button> |
+                                    <button class="btn-link promotion-delete" data-link="" data-operator=""></button>
                                 <#else>
                                     <button class="btn-link promotion-delete" data-link="/activity-console/activity-manage/promotion/${promotion.id?c}" data-operator="approved">通过</button> |
                                     <button class="btn-link promotion-delete" data-link="/activity-console/activity-manage/promotion/${promotion.id?c}" data-operator="rejection">驳回</button> |
