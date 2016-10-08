@@ -88,14 +88,14 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
                 if(data.prizeType=='CONCRETE') {
                     tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>';
                     tipMessage.info='<p class="success-text">恭喜您！</p>' +
-                        '<p class="reward-text">'+data.message+'！</p>' +
+                        '<p class="reward-text">抽中了'+data.prizeValue+'！</p>' +
                         '<p class="des-text">拓天客服将会在7个工作日内联系您发放奖品</p>';
 
                 }
                 else if(data.prizeType=='VIRTUAL') {
                     tipMessage.button='<a href="/my-treasure" class="go-on">去查看</a><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>';
                     tipMessage.info='<p class="success-text">恭喜您！</p>' +
-                        '<p class="reward-text">'+data.message+'！</p>' +
+                        '<p class="reward-text">'+data.prizeValue+'！</p>' +
                         '<p class="des-text">奖品已发放至“我的宝藏”当中。</p>'
                 }
 
@@ -191,7 +191,7 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
                 if(data.prizeType=='CONCRETE') {
                     tipMessage.button='<a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>';
                     tipMessage.info='<p class="success-text">恭喜您！</p>' +
-                        '<p class="reward-text">'+data.message+'！</p>' +
+                        '<p class="reward-text">抽中了'+data.prizeValue+'！</p>' +
                         '<p class="des-text">拓天客服将会在7个工作日内联系您发放奖品</p>';
 
 
@@ -199,7 +199,7 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
                 else if(data.prizeType=='VIRTUAL') {
                     tipMessage.button='<a href="/my-treasure" class="go-on">去查看</a><a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>';
                     tipMessage.info='<p class="success-text">恭喜您！</p>' +
-                        '<p class="reward-text">'+data.message+'！</p>' +
+                        '<p class="reward-text">'+data.prizeValue+'！</p>' +
                         '<p class="des-text">奖品已发放至“我的宝藏”当中。</p>'
                 }
 
