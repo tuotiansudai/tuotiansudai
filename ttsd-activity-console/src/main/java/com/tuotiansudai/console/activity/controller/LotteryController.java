@@ -71,7 +71,7 @@ public class LotteryController {
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
         modelAndView.addObject("mobile", mobile);
-        modelAndView.addObject("selectPrize", autumnPrize == null ? "" : autumnPrize);
+        modelAndView.addObject("selectPrize", lotteryPrize);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("selectPrizeType", prizeType == null ? "" : prizeType);
