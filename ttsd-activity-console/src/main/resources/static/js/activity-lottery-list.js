@@ -13,6 +13,6 @@ require(['jquery', 'underscore', 'jquery-ui', 'bootstrap', 'bootstrapSelect', 'b
             $("#nationalDiv").hide();
             $("#autumnPrizeDiv").show();
         }
-    });
+    }).trigger('change');
 
 });
