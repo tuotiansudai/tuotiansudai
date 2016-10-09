@@ -1,9 +1,9 @@
-package com.tuotiansudai.console.controller;
+package com.tuotiansudai.console.activity.controller;
 
+import com.tuotiansudai.console.activity.service.HeroRankingService;
 import com.tuotiansudai.dto.MysteriousPrizeDto;
 import com.tuotiansudai.repository.model.ActivityCategory;
 import com.tuotiansudai.repository.model.HeroRankingView;
-import com.tuotiansudai.service.HeroRankingService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/activity-manage")
+@RequestMapping(value = "/activity-console/activity-manage")
 public class HeroRankingController {
 
     @Autowired
@@ -61,7 +61,4 @@ public class HeroRankingController {
         heroRankingService.saveMysteriousPrize(mysteriousPrizeDto);
         return mysteriousPrizeDto;
     }
-
-
-
 }
