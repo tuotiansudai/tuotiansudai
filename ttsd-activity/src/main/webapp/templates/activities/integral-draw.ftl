@@ -13,7 +13,7 @@
     <div class="reg-tag-current" style="display: none">
         <#include '../register.ftl' />
     </div>
-
+    <a href="javascript:void(0)" class="show-login"></a>
     <div class="good-news-frame clearfix">
 
         <div class="good-news-box">
@@ -73,10 +73,9 @@
         </p>
 
     </div>
-
-
-
 </div>
+
+    <#include "login-tip.ftl" />
 </@global.main>
 
 
