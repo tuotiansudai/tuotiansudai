@@ -52,7 +52,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     private double defaultFee;
 
     @Override
-    public BaseResponseDto generateIndexLoan(String loginName) {
+    public BaseResponseDto generateIndexLoan(String loginName,String appVersion) {
         List<LoanModel> loanModels = Lists.newArrayList();
         List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360, ProductType.EXPERIENCE);
         List<ProductType> noContainExperienceCondition = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
@@ -80,17 +80,20 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
 
         BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
         LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
-        loanListResponseDataDto.setLoanList(convertLoanDto(loginName, loanModels));
+        loanListResponseDataDto.setLoanList(convertLoanDto(loginName, loanModels,appVersion));
         dto.setData(loanListResponseDataDto);
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return dto;
     }
 
-    private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList) {
+    private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList,String appVersion) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         for (LoanModel loan : loanList) {
+            if("3.1.1".equals(appVersion) && loan.getPledgeType() == PledgeType.ENTERPRISE){
+                continue;
+            }
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
 

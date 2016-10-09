@@ -4,5 +4,5 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 
 
 public interface MobileAppLoanListV2Service {
-    BaseResponseDto generateIndexLoan(String loginName);
+    BaseResponseDto generateIndexLoan(String loginName,String appVersion);
 }

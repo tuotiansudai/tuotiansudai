@@ -66,6 +66,12 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
     private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Autowired
+    private LoanerEnterpriseDetailsMapper loanerEnterpriseDetailsMapper;
+
+    @Autowired
+    private PledgeEnterpriseMapper pledgeEnterpriseMapper;
+
+    @Autowired
     private RandomUtils randomUtils;
 
     @Value(value = "${pay.interest.fee}")
@@ -181,6 +187,16 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
                     if (pledgeVehicleModel != null) {
                         dataDto.setPledgeVehicle(new PledgeVehicleDto(pledgeVehicleModel));
                     }
+            }
+        }
+        if(loanModel.getPledgeType() == PledgeType.ENTERPRISE){
+            LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
+            if(loanerEnterpriseDetailsModel != null){
+                dataDto.setEnterprise(new EnterpriseDto(loanerEnterpriseDetailsModel));
+            }
+            PledgeEnterpriseModel pledgeEnterpriseModel = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
+            if(pledgeEnterpriseModel != null){
+                dataDto.setPledgeEnterpriseDto(new PledgeEnterpriseDto(pledgeEnterpriseModel));
             }
         }
 
