@@ -11,11 +11,11 @@ class Deployment(object):
 
     def deploy(self, env):
         self._env = env
-        self.clean()
-        self.jcversion()
-        self.compile()
-        self.build_and_unzip_worker()
-        self.mk_static_package()
+        # self.clean()
+        # self.jcversion()
+        # self.compile()
+        # self.build_and_unzip_worker()
+        # self.mk_static_package()
         self.init_docker()
 
     def clean(self):
