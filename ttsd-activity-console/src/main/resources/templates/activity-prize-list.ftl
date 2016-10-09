@@ -45,7 +45,7 @@
                     <select class="selectpicker" name="selectNational">
                         <option value="" <#if !(nationalPrizes??)>selected</#if>>全部</option>
                         <#list nationalPrizes as national>
-                            <option value="${national}" <#if nationalPrizes?? && national==selectPrize>selected</#if>>
+                            <option value="${national}" <#if nationalPrizes?? && national==selectNational>selected</#if>>
                             ${national.description}
                             </option>
                         </#list>
@@ -100,7 +100,7 @@
                 <ul class="pagination pull-left">
                     <li>
                         <#if hasPreviousPage >
-                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&prizeType=${selectPrizeType!}&selectPrize=${selectPrize}$selectPrize=${selectPrize}&index=${index-1}&pageSize=${pageSize}">
+                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&prizeType=${selectPrizeType!}&selectPrize=${selectPrize}&selectNational=${selectNational}&index=${index-1}&pageSize=${pageSize}">
                         <#else>
                         <a href="#">
                         </#if>
@@ -110,7 +110,7 @@
                     <li><a>${index}</a></li>
                     <li>
                         <#if hasNextPage>
-                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&prizeType=${selectPrizeType!}&selectPrize=${selectPrize}$selectPrize=${selectPrize}&index=${index+1}&pageSize=${pageSize}">
+                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&prizeType=${selectPrizeType!}&selectPrize=${selectPrize}&selectNational=${selectNational}&index=${index+1}&pageSize=${pageSize}">
                         <#else>
                         <a href="#">
                         </#if>

@@ -223,7 +223,7 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
         .on('mouseenter', '.extra-rate', function () {//extra-rate icon event
             var num = $(this).data('benefit');
             layer.closeAll('tips');
-            layer.tips('活动加息' + num + '%', $(this), {
+            layer.tips('投资奖励' + num + '%', $(this), {
             tips: [1, '#efbf5c'],
             time: 2000,
             tipsMore: true,
