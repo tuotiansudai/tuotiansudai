@@ -91,7 +91,14 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
             }
         })
     }
-
+    giftCircleDraw.prototype.beginLuckDraw=function(callback) {
+        var self=this;
+        self.giftCircleFrame.find('.pointer-img').on('click', function(event) {
+            self.beginLotteryDraw(function(data) {
+                callback && callback(data);
+            });
+        })
+    }
     giftCircleDraw.prototype.scrollList=function(domName) {
         var $self=domName;
         var lineHeight = $self.find("li:first").height();
@@ -120,9 +127,6 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
 
     //接口调成功以后的弹框显示
     giftCircleDraw.prototype.tipWindowPop=function(tipMessage) {
-        //console.log(this.tipList);
-        //this.tipList.find('.text-tip').empty().html(tipMessage.info);
-        //this.tipList.find('.btn-list').empty().html(tipMessage.button);
         if(tipMessage.area.length==0) {
             tipMessage.area=['460px', '370px'];
         }
@@ -133,6 +137,7 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
             shade: 0.8,
             closeBtn: 0,
             shadeClose: true,
+            skin:'layer-gift-draw',
             content: '<div class="tip-list">' +
                 '<div class="close-btn go-close"></div>' +
                 '<div class="text-tip">'+tipMessage.info+'</div>' +

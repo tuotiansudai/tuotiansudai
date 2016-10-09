@@ -60,6 +60,10 @@
       background: #e34758;
       color: #fbe9ca;
       font-size: 28px;
+      .show-login {
+        color: #fff;
+        text-decoration: underline;
+      }
     }
     //装饰
     .trim-strip {
@@ -262,8 +266,8 @@
       }
     }
   }
-  .layui-layer {
-    @include transform-scale(0.6);
+  .layer-gift-draw {
+    @include transform-scale(0.7);
   }
 }
 

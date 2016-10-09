@@ -1,6 +1,7 @@
 @charset "utf-8";
-@import 'register_png';
+@import "module/register_common";
 @import 'module/gift_circle_draw';
+@import "module/login_tip";
 
 @mixin transform-rotate ($sizing) {
   transform:rotate($sizing);
@@ -23,7 +24,7 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.layui-layer {
+.layer-gift-draw {
   border-radius: 20px!important;
   overflow: hidden!important;
 }

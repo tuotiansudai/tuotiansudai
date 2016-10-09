@@ -26,6 +26,7 @@ require(['jquery', 'underscore', 'jquery-ui', 'bootstrap', 'bootstrapSelect', 'b
                     selectStatus = "selected";
                 }
 
+
                 optionList.push("<option "+selectStatus+" value="+data[i].lotteryPrize+">"+data[i].lotteryPrizeName+"</option>");
                 selectStatus = "";
             }

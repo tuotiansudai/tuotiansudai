@@ -4,7 +4,15 @@
             <div class="rotate-btn"></div>
     </div>
     <div class="gift-circle-detail">
-        <h3><span class="my-category">我的积分：</span><span class="my-property"></h3>
+        <h3><span class="my-category">我的积分：</span>
+            <#--登录后查看-->
+<@global.isNotAnonymous>
+    <span class="my-property"></span>
+</@global.isNotAnonymous>
+<@global.isAnonymous>
+    <a href="javascript:void(0)" class="show-login">登录后查看</a>
+</@global.isAnonymous>
+        </h3>
 
         <div class="trim-strip">
             <i class="icon-square"></i>
