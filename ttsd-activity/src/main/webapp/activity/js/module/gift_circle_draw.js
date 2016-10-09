@@ -5,13 +5,12 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
     //drawURL：抽奖的接口链接
     //paramData：接口传数据
 
-    function giftCircleDraw(allListURL,userListURL,drawURL,paramData,tipList,giftCircleFrame) {
+    function giftCircleDraw(allListURL,userListURL,drawURL,paramData,giftCircleFrame) {
         this.bRotate=false;
         this.allListURL=allListURL;
         this.userListURL=userListURL;
         this.drawURL=drawURL;
         this.paramData=paramData;
-        this.tipList=tipList;
         this.giftCircleFrame=giftCircleFrame;
         //开始抽奖
         this.beginLotteryDraw=function(callback) {
@@ -121,8 +120,9 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
 
     //接口调成功以后的弹框显示
     giftCircleDraw.prototype.tipWindowPop=function(tipMessage) {
-        this.tipList.find('.text-tip').empty().html(tipMessage.info);
-        this.tipList.find('.btn-list').empty().html(tipMessage.button);
+        //console.log(this.tipList);
+        //this.tipList.find('.text-tip').empty().html(tipMessage.info);
+        //this.tipList.find('.btn-list').empty().html(tipMessage.button);
         if(tipMessage.area.length==0) {
             tipMessage.area=['460px', '370px'];
         }
@@ -133,7 +133,10 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
             shade: 0.8,
             closeBtn: 0,
             shadeClose: true,
-            content: this.tipList
+            content: '<div class="tip-list">' +
+                '<div class="close-btn go-close"></div>' +
+                '<div class="text-tip">'+tipMessage.info+'</div>' +
+                '<div class="btn-list">'+tipMessage.button+'</div></div>'
         });
     }
     //tab switch
@@ -147,6 +150,13 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
         contentCls.eq(index).show().siblings().hide();
         });
     }
+
+    $('body').on('click', '.go-close', function(event) {
+        event.preventDefault();
+        var $self = $(this);
+        window.location.reload();
+        layer.closeAll();
+    });
 
     return giftCircleDraw;
 });
