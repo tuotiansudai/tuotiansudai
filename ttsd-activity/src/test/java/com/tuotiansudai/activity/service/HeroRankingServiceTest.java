@@ -10,6 +10,7 @@ import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -25,6 +26,7 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-session.xml"})
@@ -143,6 +145,12 @@ public class HeroRankingServiceTest {
         assertEquals(accountModel2.getUserName(), heroRankingViews.get(2).getUserName());
         assertEquals(investor2.getMobile(), heroRankingViews.get(2).getMobile());
 
+    }
+
+    @Test
+    public void shouldValidActivityTimeIsNotNullIsOk(){
+        List<String> activityTime = heroRankingService.getActivityTime();
+        assertTrue(activityTime.size() > 1);
     }
 
     private LoanModel createLoan(String userId, long loanId, ActivityType activityType, LoanStatus loanStatus) {
