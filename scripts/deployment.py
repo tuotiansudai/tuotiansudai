@@ -11,11 +11,11 @@ class Deployment(object):
 
     def deploy(self, env):
         self._env = env
-        self.clean()
-        self.jcversion()
-        self.compile()
-        self.build_and_unzip_worker()
-        self.mk_static_package()
+        # self.clean()
+        # self.jcversion()
+        # self.compile()
+        # self.build_and_unzip_worker()
+        # self.mk_static_package()
         self.init_docker()
 
     def clean(self):
@@ -85,8 +85,8 @@ class Deployment(object):
         sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml rm -f"'.format(suoder, self._dockerCompose))
 
     def _start_new_container(self, sudoer):
-        sh('{0} {1} -f dev.yml up -d'.format(sudoer, self._dockerCompose))
+        sh('sudo /usr/local/bin/docker-compose -f dev.yml up -d')
 
     def jcversion(self):
         print "Starting jcmin..."
-        sh('{0} jcversion'.format(self._paver))
+        sh('/usr/bin/paver jcversion')
