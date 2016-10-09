@@ -7,17 +7,20 @@ module.exports = function(grunt) {
         meta: {
             basePath: '../',
             baseSassPath: 'src/main/webapp/style/sass',
-            baseCssPath: 'src/main/webapp/style',
+            baseCssPath: 'src/main/webapp/style/css',
+            base64CssPath: 'src/main/webapp/style/base64',
             baseCssMinPath: 'src/main/webapp/style/dest',
             baseJsPath: 'src/main/webapp/js',
-            baseJsMinPath: 'src/main/webapp/js/dest'
+            baseJsMinPath: 'src/main/webapp/js/dest',
+            baseImagePath: 'src/main/webapp/activity/images'
         },
         clean: {
             css: {
                 files: [{
                     dot: true,
                     src: [
-                        '<%= meta.baseCssPath %>/*.css',
+                        '<%= meta.baseCssPath %>/*',
+                        '<%= meta.base64CssPath %>/*',
                         '<%= meta.baseCssPath %>/*.map',
                         '<%= meta.baseCssMinPath %>/*'
                     ]
@@ -30,14 +33,6 @@ module.exports = function(grunt) {
                         '<%= meta.baseJsMinPath %>/*'
                     ]
                 }]
-            },
-            base64: {
-                files: [{
-                    dot: true,
-                    src: [
-                        '<%= meta.baseCssPath %>/base64'
-                    ]
-                }]
             }
         },
         uglify: {
@@ -48,7 +43,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true, // Enable dynamic expansion.
                     cwd: '', // Src matches are relative to this path.
-                    src: ['<%= meta.baseJsPath %>/*.js'], // Actual pattern(s) to match.
+                    src: ['<%= meta.baseJsPath %>/*.js','<%= meta.baseJsPath %>/module/*.js'], // Actual pattern(s) to match.
                     dest: '<%= meta.baseJsMinPath %>/', // Destination path prefix.
                     ext: '.min.js', // Dest filepaths will have this extension.
                     extDot: 'first', // Extensions in filenames begin after the first dot
@@ -62,7 +57,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true, // Enable dynamic expansion.
                     cwd: '', // Src matches are relative to this path.
-                    src: ['<%= meta.baseSassPath %>/*.scss'], // Actual pattern(s) to match.
+                    src: ['<%= meta.baseSassPath %>/*.scss','<%= meta.baseSassPath %>/module/*.scss'], // Actual pattern(s) to match.
                     dest: '<%= meta.baseCssPath %>/', // Destination path prefix.
                     ext: '.css', // Dest filepaths will have this extension.
                     extDot: 'first', // Extensions in filenames begin after the first dot
@@ -70,23 +65,24 @@ module.exports = function(grunt) {
                 }]
             }
         },
+        dataUri: {
+            dist: {
+                src: ['<%= meta.baseCssPath %>/*.css'],
+                dest: '<%= meta.base64CssPath %>',
+                options: {
+                    target: ['<%=meta.baseImagePath %>/**/*.*'],
+                    fixDirLevel: false,
+                    maxBytes: 1024 * 5   //小于5k的图片会生成base64 ,并且需要是相对路径
+                }
+            }
+        },
+
         cssmin: {
             dist: {
                 files: [{
                     expand: true, // Enable dynamic expansion.
                     cwd: '', // Src matches are relative to this path.
-                    src: ['<%= meta.baseCssPath %>/*.css'], // Actual pattern(s) to match.
-                    dest: '<%= meta.baseCssMinPath %>/', // Destination path prefix.
-                    ext: '.min.css', // Dest filepaths will have this extension.
-                    extDot: 'first', // Extensions in filenames begin after the first dot
-                    flatten: true
-                }]
-            },
-            base64: {
-                files: [{
-                    expand: true, // Enable dynamic expansion.
-                    cwd: '', // Src matches are relative to this path.
-                    src: ['<%= meta.baseCssPath %>/base64/*.css'], // Actual pattern(s) to match.
+                    src: ['<%= meta.base64CssPath %>/*.css'], // Actual pattern(s) to match.
                     dest: '<%= meta.baseCssMinPath %>/', // Destination path prefix.
                     ext: '.min.css', // Dest filepaths will have this extension.
                     extDot: 'first', // Extensions in filenames begin after the first dot
@@ -99,19 +95,25 @@ module.exports = function(grunt) {
                 files: [
                     '<%= meta.baseSassPath %>/**/*.scss'
                 ],
-                tasks: ['newer:clean:css', 'newer:sass']
+                tasks: ['clean:css', 'sass']
+            },
+            dataUri: {
+                files: [
+                    '<%= meta.baseCssPath %>/*.css'
+                ],
+                tasks: ['dataUri']
             },
             cssmin: {
-                files: [
-                    ['<%= meta.baseCssPath %>/*.css']
-                ],
-                tasks: ['newer:cssmin:dist']
+                files: ['<%= meta.base64CssPath %>/*.css'],
+                tasks: ['cssmin']
             },
             uglify: {
                 files: [
                     ['<%= meta.baseJsPath %>/*.js']
                 ],
-                tasks: ['newer:clean:js', 'newer:uglify']
+                tasks: ['clean:js', 'uglify']
+                //tasks: ['newer:clean:js', 'newer:uglify']
+                //如果需要监听其他的min文件，去掉newer
             }
         },
         connect: {
@@ -130,25 +132,55 @@ module.exports = function(grunt) {
                 }
             }
         },
-        dataUri: {
+        imagemin: {
+            /* 压缩图片大小 */
             dist: {
-                src: ['<%= meta.baseCssPath %>/*.css'],
-                dest: '<%= meta.baseCssPath %>/base64',
                 options: {
-                    target: ['./src/main/webapp/images/**/*.*'],
-                    fixDirLevel: false,
-                    maxBytes: 1024 * 8,
-                    baseDir: './src/main/webapp'
-                }
+                    // cache:false,
+                    optimizationLevel: 5,
+                    progressive: true
+                },
+                files: [
+                    {
+                        expand: true,
+                        cwd: '<%=meta.baseImagePath%>/',
+                        src: ['**/*.{png,jpg,jpeg}'],   // 优化 img 目录下所有 png/jpg/jpeg 图片
+                        dest: '<%=meta.baseImagePath%>/' // 优化后的图片保存位置，覆盖旧图片，并且不作提示
+                    }
+                ]
             }
         }
     });
 
+    //转化成base64
+    grunt.registerTask('base64', ['dataUri', 'newer:cssmin']);
+
+    //压缩图片，需要压缩图片的时候单独执行 grunt imagemin
+
+    //grunt.registerTask('imagemin', ['newer:imagemin']);
+
     // 默认被执行的任务列表。
-    grunt.registerTask('default', ['clean', 'uglify', 'sass', 'cssmin:dist', 'connect', 'watch']);
+    // 默认被执行的任务列表。
+    grunt.registerTask('default', [
+        'clean',
+        'uglify',
+        'sass',
+        'cssmin',
+        'base64',
+        'connect',
+        'watch'
+    ]);
+
     grunt.registerTask('base64', ['dataUri', 'cssmin:base64', 'clean:base64']);
 
-    grunt.registerTask('dev',['newer:clean','newer:uglify','newer:sass','connect','watch:sass']);
-    //'newer:uglify',
+    /* 前端人员开发的时候用，最后发布的时候执行一次 grunt */
+    grunt.registerTask('dev',
+        [
+            'newer:clean',
+            'newer:uglify',
+            'newer:sass',
+            'connect',
+            'watch:sass'
+        ]);
 
 };
