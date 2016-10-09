@@ -25,29 +25,29 @@ class Deployment(object):
 
     def compile(self):
         print "Compiling..."
-        sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity war'.format(
+        sh('{} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity war'.format(
                 self._gradle))
         sh('cp /workspace/new_version_config/signin_service/settings_local.py ./signin_service/')
 
     def build_and_unzip_worker(self):
         print "Making worker build..."
-        sh('cd ./ttsd-job-worker && {0} distZip'.format(self._gradle))
-        sh('cd ./ttsd-job-worker && {0} -Pwork=invest distZip'.format(self._gradle))
-        sh('cd ./ttsd-job-worker && {0} -Pwork=jpush distZip'.format(self._gradle))
+        sh('cd ./ttsd-job-worker && {} distZip'.format(self._gradle))
+        sh('cd ./ttsd-job-worker && {} -Pwork=invest distZip'.format(self._gradle))
+        sh('cd ./ttsd-job-worker && {} -Pwork=jpush distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker/build/distributions && unzip \*.zip')
 
     def mkwar(self):
         print "Making war..."
         if self._env == 'QA' :
-            sh('{0} war'.format(self._gradle))
+            sh('{} war'.format(self._gradle))
         else :
-            sh('{0} ttsd-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-activity:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-pay-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-console:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-mobile-api:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-sms-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-point-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{} ttsd-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{} ttsd-activity:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{} ttsd-pay-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{} ttsd-console:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{} ttsd-mobile-api:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{} ttsd-sms-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{} ttsd-point-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
         self.build_and_unzip_worker()
 
     def mk_static_package(self):
@@ -81,12 +81,12 @@ class Deployment(object):
         self._start_new_container(sudoer)
 
     def _remove_old_container(self, suoder):
-        sh('{0} {1} -f dev.yml stop'.format(suoder, self._dockerCompose))
-        sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml rm -f"'.format(suoder, self._dockerCompose))
+        sh('{} {} -f dev.yml stop'.format(suoder, self._dockerCompose))
+        sh('{} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {} -f dev.yml rm -f"'.format(suoder, self._dockerCompose))
 
     def _start_new_container(self, sudoer):
-        sh('{0} {1} -f dev.yml up -d'.format(sudoer, self._dockerCompose))
+        sh('{} {} -f dev.yml up -d'.format(sudoer, self._dockerCompose))
 
     def jcversion(self):
         print "Starting jcmin..."
-        sh('{0} jcversion'.format(self._paver))
+        sh('{} jcversion'.format(self._paver))
