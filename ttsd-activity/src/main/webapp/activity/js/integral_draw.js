@@ -20,17 +20,9 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
         button:'',
         area:[]
     };
-    $('body').on('click', '.go-close', function(event) {
-        event.preventDefault();
-        var $self = $(this);
-        window.location.reload();
-        layer.closeAll();
-    });
 
     //************************1000积分抽好礼*****************************/
     var $pointerOne = $('.pointer-img',$oneThousandPoints);
-
-    var tipList=$('.tip-list',$integralDrawPage);
 
     var scrollTimer;
     var oneData={
@@ -42,9 +34,8 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
     //pointUserList:我的奖品接口地址
     //drawURL:抽奖的接口链接
     //oneData:接口参数
-    //tipList:弹框dom
     //$oneThousandPoints:抽奖模版dom
-    var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,tipList,$oneThousandPoints);
+    var drawCircleOne=new drawCircle(pointAllList,pointUserList,drawURL,oneData,$oneThousandPoints);
 
     //渲染中奖记录
     drawCircleOne.GiftRecord();
@@ -131,10 +122,7 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
 
     //************************10000积分抽好礼*****************************/
 
-   var $GiftRecordTen=$('.user-record',$tenThousandPoints),
-        $MyGiftTen=$('.own-record',$tenThousandPoints),
-        $pointerTen = $('.pointer-img',$tenThousandPoints),
-        $rotateBtnTen=$('.rotate-btn',$tenThousandPoints);
+   var $pointerTen = $('.pointer-img',$tenThousandPoints);
     var scrollTimer2;
     var tenData={
         "mobile":myMobileNumber,
@@ -144,9 +132,8 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
     //pointUserList:我的奖品接口地址
     //drawURL:抽奖的接口链接
     //oneData:接口参数
-    //tipList:弹框dom
     //$oneThousandPoints:抽奖模版dom
-    var drawCircleTen=new drawCircle(pointAllList,pointUserList,drawURL,tenData,tipList,$tenThousandPoints);
+    var drawCircleTen=new drawCircle(pointAllList,pointUserList,drawURL,tenData,$tenThousandPoints);
 
     //渲染中奖记录
     drawCircleTen.GiftRecord();

@@ -158,6 +158,10 @@ body {
     margin-top: 68px;
     text-align: center;
     .gift-circle-frame {
+      .draw-instructions{
+        right:200px;
+        left:auto;
+      }
       .gift-circle-out {
         float: right;
         .rotate-btn{
@@ -197,10 +201,11 @@ body {
       }
     }
   }
-  //弹框
-  .tip-list {
-    background: url(/activity/images/integral-draw/bg-pop-point.jpg) no-repeat left top;
-  }
+
+}
+//弹框
+.tip-list {
+  background: url(/activity/images/integral-draw/bg-pop-point.jpg) no-repeat left top;
 }
 @media screen and (max-width: 700px) {
   body {
@@ -265,8 +270,15 @@ body {
     }
     .luck-draw-frame-two {
       margin-top:20px;
-      .gift-circle-frame .gift-circle-out{
+
+      .gift-circle-frame {
+        .gift-circle-out{
           float: none;
+        }
+        .draw-instructions{
+          right:auto;
+          left:auto;
+        }
       }
     }
     .activity-note-tip {
