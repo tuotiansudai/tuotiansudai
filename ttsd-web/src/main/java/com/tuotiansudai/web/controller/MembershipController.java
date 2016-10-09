@@ -4,15 +4,12 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.GivenMembershipDto;
-import com.tuotiansudai.membership.repository.model.MembershipExperienceBillDto;
-import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.*;
 import com.tuotiansudai.membership.service.MembershipExperienceBillService;
+import com.tuotiansudai.membership.service.MembershipGiveService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -49,6 +46,9 @@ public class MembershipController {
 
     @Autowired
     private HeroRankingService heroRankingService;
+
+    @Autowired
+    private MembershipGiveService membershipGiveService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() {
@@ -126,7 +126,7 @@ public class MembershipController {
         BaseDto<GivenMembershipDto> dto = new BaseDto<>();
         try {
             String loginName = LoginUserInfo.getLoginName();
-            GivenMembership givenMembership = heroRankingService.receiveMembership(loginName);
+            GivenMembership givenMembership = membershipGiveService.receiveMembership(loginName);
             dto.setData(new GivenMembershipDto(givenMembership.getDescription(),givenMembership.getUrl(),givenMembership.getBtnName()));
             dto.setSuccess(true);
         } catch (Exception e) {
