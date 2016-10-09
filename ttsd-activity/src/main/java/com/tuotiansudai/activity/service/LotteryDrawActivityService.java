@@ -80,7 +80,7 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(2);//"该用户不存在！"
         }
 
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        AccountModel accountModel = accountMapper.lockByLoginName(userModel.getLoginName());
         if(accountModel == null){
             return new DrawLotteryResultDto(4);//您还未实名认证，请实名认证后再来抽奖吧！
         }

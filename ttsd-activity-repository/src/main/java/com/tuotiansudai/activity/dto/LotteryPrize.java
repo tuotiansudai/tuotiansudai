@@ -25,8 +25,8 @@ public enum LotteryPrize{
     PHONE_CHARGE_20("20元话费",PrizeType.CONCRETE,ActivityCategory.POINT_DRAW_10000,15),
     HEADREST("车家两用U型头枕",PrizeType.CONCRETE,ActivityCategory.POINT_DRAW_10000,5),
     IQIYI_MEMBERSHIP_30("爱奇艺会员月卡",PrizeType.CONCRETE,ActivityCategory.POINT_DRAW_10000,10),
-    RED_ENVELOPE_50_POINT_DRAW("50元投资红包",PrizeType.CONCRETE,ActivityCategory.POINT_DRAW_10000,30),
-    INTEREST_COUPON_5_POINT_DRAW("0.5%加息券",PrizeType.CONCRETE,ActivityCategory.POINT_DRAW_10000,30),
+    RED_ENVELOPE_50_POINT_DRAW("50元投资红包",PrizeType.VIRTUAL,ActivityCategory.POINT_DRAW_10000,30),
+    INTEREST_COUPON_5_POINT_DRAW("0.5%加息券",PrizeType.VIRTUAL,ActivityCategory.POINT_DRAW_10000,30),
 
     MEMBERSHIP_V5("一个月V5会员体验",PrizeType.MEMBERSHIP,ActivityCategory.NATIONAL_PRIZE,25),
     RED_INVEST_15("15元投资红包",PrizeType.VIRTUAL,ActivityCategory.NATIONAL_PRIZE,30),

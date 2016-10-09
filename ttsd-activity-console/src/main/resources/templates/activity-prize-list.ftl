@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div class="table-responsive" style="height:200px;">
+    <div class="table-responsive" style="height:500px;">
         <form action="/activity-console/activity-manage/user-prize-list" method="get" class="form-inline query-build" id ="prizeFrom">
                 <div class="form-group">
                     <label>用户手机号</label>
