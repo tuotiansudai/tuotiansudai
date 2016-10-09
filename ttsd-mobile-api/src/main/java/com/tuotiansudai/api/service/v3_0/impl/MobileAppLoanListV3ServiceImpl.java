@@ -148,6 +148,9 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         for (LoanModel loan : loanList) {
+            if("3.1.1".equals(appVersion) && loan.getPledgeType() == PledgeType.ENTERPRISE){
+                continue;
+            }
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
             LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
