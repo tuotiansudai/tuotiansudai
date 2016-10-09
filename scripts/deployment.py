@@ -11,11 +11,11 @@ class Deployment(object):
 
     def deploy(self, env):
         self._env = env
-        self.clean()
-        self.jcversion()
-        self.compile()
-        self.build_and_unzip_worker()
-        self.mk_static_package()
+        # self.clean()
+        # self.jcversion()
+        # self.compile()
+        # self.build_and_unzip_worker()
+        # self.mk_static_package()
         self.init_docker()
 
     def clean(self):
@@ -82,6 +82,7 @@ class Deployment(object):
 
     def _remove_old_container(self, suoder):
         sh('{0} {1} -f dev.yml stop'.format(suoder, self._dockerCompose))
+        print "suoder:" + suoder + ", self._dockerCompose:" + self._dockerCompose
         sh('sudo /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && /usr/local/bin/docker-compose -f dev.yml rm -f"')
 
     def _start_new_container(self, sudoer):
