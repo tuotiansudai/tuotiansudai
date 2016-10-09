@@ -81,14 +81,12 @@ class Deployment(object):
         self._start_new_container(sudoer)
 
     def _remove_old_container(self, suoder):
-        print "suoder:" + suoder + ", self._dockerCompose:" + self._dockerCompose
-        sh('{0} {1} -f dev.yml stop'.format(suoder, self._dockerCompose))
-        print "aaaa"
+        sh('sudo /usr/local/bin/docker-compose -f dev.yml stop')
         sh('sudo /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && /usr/local/bin/docker-compose -f dev.yml rm -f"')
 
     def _start_new_container(self, sudoer):
-        sh('{0} {1} -f dev.yml up -d'.format(sudoer, self._dockerCompose))
+        sh('sudo /usr/local/bin/docker-compose -f dev.yml up -d')
 
     def jcversion(self):
         print "Starting jcmin..."
-        sh('{0} jcversion'.format(self._paver))
+        sh('/usr/bin/paver jcversion')
