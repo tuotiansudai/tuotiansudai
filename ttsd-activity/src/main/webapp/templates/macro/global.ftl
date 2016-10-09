@@ -7,6 +7,12 @@
     </@security.authorize>
 </#macro>
 
+<#macro noRole hasNoRole>
+    <@security.authorize access="!hasAuthority(${hasNoRole})">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
 <#macro isAnonymous>
     <@security.authorize access="!isAuthenticated()">
         <#nested>

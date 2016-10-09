@@ -1,6 +1,5 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.share_reward}" pageJavascript="${js.share_reward}" activeNav="" activeLeftNav="" title="推荐奖励_拓天速贷" keywords="拓天速贷,推荐奖励,P2P理财,短期理财,短期投资,拓天速贷2级推荐机制" description="拓天速贷针对老用户推出2级推荐机制的推荐奖励,可以让您的财富快速升值.">
-
 <div class="tour-slide"></div>
 
 <div class="share-reward-container page-width" id="shareRewardContainer">
@@ -10,21 +9,11 @@
             <span class="title-word01"></span>
         </div>
 
-
-        <div class="invite-box-friend no-identification">
-            <dl>
-                <dt>向好友发送您的邀请链接：</dt>
-                <dd><input type="text" class="input-invite" disabled value="https://tuotiansudai.com/register/user?referrer=cg007008">
-                    <a class="btn-copy-link to-identification" href="javascript:void(0);" >复制链接</a>
-                </dd>
-            </dl>
-        </div>
-
         <@global.isAnonymous>
         <div class="invite-box-friend anonymous">
             <dl>
                 <dt>向好友发送您的邀请链接：</dt>
-                <dd><input type="text" class="input-invite" disabled value="https://tuotiansudai.com/register/user?referrer=cg007008">
+                <dd><input type="text" class="input-invite" disabled value="https://tuotiansudai.com/activity/landing-page?referrer=">
                     <a class="btn-copy-link show-login" href="javascript:void(0);">复制链接</a>
                 </dd>
             </dl>
@@ -34,23 +23,24 @@
 
     <@global.isNotAnonymous>
 
-        <@global.role hasRole="'USER'">
+        <@global.noRole hasNoRole="'INVESTOR'">
            <#--已登录未认证-->
             <div class="invite-box-friend no-identification">
                 <dl>
                     <dt>向好友发送您的邀请链接：</dt>
-                    <dd><input type="text" class="input-invite" disabled value="https://tuotiansudai.com/register/user?referrer=cg007008">
-                        <a class="btn-copy-link to-identification" href="javascript:void(0);" >复制链接</a>
+                    <dd><input type="text" class="input-invite" disabled value="https://tuotiansudai.com/activity/landing-page?referrer=<@global.security.authentication property='principal.mobile' />">
+                        <a class="btn-copy-link to-identification" href="javascript:void(0);" data-clipboard-target="clipboard_text">复制链接</a>
                     </dd>
                 </dl>
             </div>
-        </@global.role>
+        </@global.noRole>
 
-        <@global.role hasRole="'INVESTOR'">
+        <@global.role hasRole="'INVESTOR','LOANER'">
+        <#--已登录已认证-->
             <div class="invite-box-friend clearfix non-anonymous yes-identification">
                 <dl>
                     <dd>
-                        <input type="text" class="input-invite" id="clipboard_text" value="https://tuotiansudai.com/register/user?referrer=cg007008">
+                        <input type="text" class="input-invite" id="clipboard_text" value="https://tuotiansudai.com/activity/landing-page?referrer=<@global.security.authentication property='principal.mobile' />">
                     </dd>
                     <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-copy-link fr copy-button" data-clipboard-target="clipboard_text">复制链接</a></dt>
                 </dl>

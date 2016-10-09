@@ -1,7 +1,7 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.refer_list}" activeNav="我的账户" activeLeftNav="推荐管理" title="推荐管理">
+<@global.main pageCss="${css.refer_list}" pageJavascript="${js.refer_list}" activeNav="我的账户" activeLeftNav="推荐管理" title="推荐管理">
 <div class="content-container invest-list-content">
-    <h4 class="column-title"><em class="tc">推荐管理</em></h4>
+    <h4 class="column-title"><em class="tc">推荐送现金</em></h4>
 
         <p class="notice">
             用户在平台采用2级推荐机制，每级奖励金额为被推荐人投资本金预期年化收益的1％，推荐奖励在放款后一次性发放。详细推荐奖励细则请点 <a href="/about/refer-reward">此处链接</a>。<br/>
