@@ -654,7 +654,127 @@
                 </div>
             </div>
         </div>
+        <div class="page-width clearfix margin-top25">
+            <h3 class="label-title media-hide">
+                <span class="hot-product"></span>
+                <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多>></a>
+            </h3>
 
+            <div class="loan-list-index fl">
+                <ul class="loan-box-inner loan-btn">
+                    <#list enterpriseLoans as loan>
+                        <#if loan.activityType != "NEWBIE">
+                            <li data-url="/loan/${(loan.id?string.computer)!}" class="clearfix">
+                                <div class="loan-info-frame fl">
+                                    <div class="loan-top">
+                                        <span class="l-title fl">${loan.name}</span>
+                                        <#if loan.activity?string("true","false") == "true">
+                                            <span class="arrow-tag-normal">
+                                                <i class="ic-left"></i>
+                                                <em> ${loan.activityDesc!}</em>
+                                                <i class="ic-right"></i>
+                                            </span>
+                                        </#if>
+                                    </div>
+                                    <div class="loan-info-dl">
+                                        <dl>
+                                            <dt>预期年化收益</dt>
+                                            <dd>
+                                                <em class="active"><@percentInteger>${loan.baseRate}</@percentInteger>
+                                                    <@percentFraction>${loan.baseRate}</@percentFraction>
+                                                    <#if (loan.extraRate > 0)>
+                                                        ~ <@percentInteger>${loan.baseRate + (loan.extraRate * 100)}</@percentInteger><@percentFraction>${loan.extraRate * 100}</@percentFraction>
+                                                    </#if>
+                                                    <#if (loan.activityRate > 0) >
+                                                        +<@percentInteger>${loan.activityRate}</@percentInteger>
+                                                        <@percentFraction>${loan.activityRate}</@percentFraction>
+                                                    </#if>
+                                                </em>
+                                                <i>%
+                                                </i>
+                                                <#if loan.extraSource?? && loan.extraSource == "MOBILE" >
+                                                    <i class="fa fa-mobile"></i>
+                                                </#if>
+                                            </dd>
+                                        </dl>
+
+                                        <dl>
+                                            <dt>项目期限</dt>
+                                            <dd><em>${loan.duration}</em>天
+
+                                            </dd>
+                                        </dl>
+                                        <dl>
+                                            <dt>项目总额</dt>
+                                            <dd><em><@amount>${loan.amount}</@amount></em>元</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+
+                                <div class="loan-process project-schedule now-active">
+                                    <#if loan.status== 'PREHEAT'>
+                                        <div class="time-item preheat"
+                                             data-time="${loan.preheatSeconds?string.computer}">
+                                            <#if loan.preheatSeconds lte 1800>
+                                                <i class="time-clock"></i><strong
+                                                    class="minute_show">00</strong><em>:</em><strong
+                                                    class="second_show">00</strong>以后可投资
+                                            <#else>
+                                            ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
+                                            </#if>
+                                        </div>
+                                        <div class="rest-amount wait-invest will">
+                                            <i class="btn-wait-invest btn-normal">预热中</i>
+                                        </div>
+
+                                        <div class="pro">
+                                            <div class="p-title">
+                                                <span class="fl">项目进度</span>
+                                                <span class="point fr">${loan.progress?string("0.00")} %</span>
+                                            </div>
+                                            <div class="process-percent">
+                                                <div class="percent" style="width:${loan.progress}%"></div>
+                                            </div>
+                                            <div class="rest-amount">
+                                                <span>可投额度：<i>${loan.availableInvestAmount}</i>元</span>
+                                                <i class="btn-invest btn-normal">马上投资</i>
+                                            </div>
+                                        </div>
+                                    </#if>
+                                    <#if loan.status== 'RAISING'>
+                                        <div class="p-title">
+                                            <span class="fl">项目进度</span>
+                                            <span class="point fr">${loan.progress?string("0.00")} %</span>
+                                        </div>
+                                        <div class="process-percent">
+                                            <div class="percent" style="width:${loan.progress}%"></div>
+                                        </div>
+                                        <div class="rest-amount">
+                                            <span>可投额度：<i>${loan.availableInvestAmount}</i>元</span>
+                                            <i class="btn-invest btn-normal">马上投资</i>
+                                        </div>
+                                    </#if>
+                                    <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loan.status)>
+                                        <div class="p-title">
+                                            <span class="fl">项目进度</span>
+                                            <span class="point fr">${loan.progress?string("0.00")} %</span>
+                                        </div>
+                                        <div class="process-percent">
+                                            <div class="percent" style="width:${loan.progress}%"></div>
+                                        </div>
+                                        <div class="rest-amount finish-invest">
+                                            <span class="give-progress">还款进度：${loan.completedPeriods}/${loan.periods}
+                                                期</span>
+                                            <button class="btn-normal" disabled>已售罄</button>
+                                        </div>
+                                    </#if>
+                                </div>
+                            </li>
+                        </#if>
+                    </#list>
+                </ul>
+            </div>
+        </div>
     <#--转让项目-->
         <div class="page-width project-transfer-frame margin-top25 media-hide">
             <h3 class="label-title">
