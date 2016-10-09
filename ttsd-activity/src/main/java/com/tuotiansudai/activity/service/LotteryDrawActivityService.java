@@ -109,7 +109,7 @@ public class LotteryDrawActivityService {
             ex.printStackTrace();
         }
 
-        return new DrawLotteryResultDto(0,lotteryPrize.name(),lotteryPrize.getPrizeType().name(),lotteryPrize.getDescription());
+        return new DrawLotteryResultDto(0,lotteryPrize.name(),lotteryPrize.getPrizeType().name(),lotteryPrize.getDescription(),String.valueOf(accountModel.getPoint()));
     }
 
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecordByMobile(String mobile,ActivityCategory activityCategory){

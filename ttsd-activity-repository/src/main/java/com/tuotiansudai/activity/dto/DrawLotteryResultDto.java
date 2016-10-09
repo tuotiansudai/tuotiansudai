@@ -12,6 +12,14 @@ public class DrawLotteryResultDto extends BaseDataDto {
         this.prizeValue = prizeValue;
     }
 
+    public DrawLotteryResultDto(int returnCode,String prize,String prizeType,String prizeValue,String myPoint){
+        this.returnCode = returnCode;
+        this.prize = prize;
+        this.prizeType = prizeType;
+        this.prizeValue = prizeValue;
+        this.myPoint = myPoint;
+    }
+
     public DrawLotteryResultDto(int returnCode){
         this.returnCode = returnCode;
     }
@@ -23,6 +31,8 @@ public class DrawLotteryResultDto extends BaseDataDto {
     private String prizeType;
 
     private String prizeValue;
+
+    private String myPoint;
 
     public int getReturnCode() {
         return returnCode;
@@ -54,5 +64,13 @@ public class DrawLotteryResultDto extends BaseDataDto {
 
     public void setPrizeValue(String prizeValue) {
         this.prizeValue = prizeValue;
+    }
+
+    public String getMyPoint() {
+        return myPoint;
+    }
+
+    public void setMyPoint(String myPoint) {
+        this.myPoint = myPoint;
     }
 }

@@ -2,7 +2,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="activity-lottery-list.js" headLab="activity-manage" sideLab="lottery" title="抽奖数据统计">
 
-<div class="col-md-10" style="height: 80%">
+<div class="col-md-10">
     <div class="panel panel-default">
         <div class="panel-body">
             <a class="btn btn-default " href="/activity-console/activity-manage/user-time-list" role="button">抽奖机会统计</a>
@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div class="table-responsive" style="height:500px;">
+    <div class="table-responsive">
         <form action="/activity-console/activity-manage/user-prize-list" method="get" class="form-inline query-build" id ="prizeFrom">
                 <div class="form-group">
                     <label>用户手机号</label>
@@ -89,22 +89,22 @@
                 <ul class="pagination pull-left">
                     <li>
                         <#if hasPreviousPage >
-                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&prizeType=${selectPrizeType!}&selectPrize=${selectPrize}&selectNational=${selectNational}&index=${index-1}&pageSize=${pageSize}">
+                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&prizeType=${selectPrizeType!}&selectPrize=${selectPrize}&index=${index-1}&pageSize=${pageSize}">
                         <#else>
                         <a href="#">
                         </#if>
                         <span>« Prev</span>
-                    </a>
+                        </a>
                     </li>
                     <li><a>${index}</a></li>
                     <li>
                         <#if hasNextPage>
-                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&prizeType=${selectPrizeType!}&selectPrize=${selectPrize}&selectNational=${selectNational}&index=${index+1}&pageSize=${pageSize}">
+                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&prizeType=${selectPrizeType!}&selectPrize=${selectPrize}&index=${index+1}&pageSize=${pageSize}">
                         <#else>
                         <a href="#">
                         </#if>
                         <span>Next »</span>
-                    </a>
+                        </a>
                     </li>
                 </ul>
             </nav>
