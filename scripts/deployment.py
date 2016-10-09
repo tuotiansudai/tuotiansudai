@@ -81,8 +81,9 @@ class Deployment(object):
         self._start_new_container(sudoer)
 
     def _remove_old_container(self, suoder):
-        sh('{0} {1} -f dev.yml stop'.format(suoder, self._dockerCompose))
         print "suoder:" + suoder + ", self._dockerCompose:" + self._dockerCompose
+        sh('{0} {1} -f dev.yml stop'.format(suoder, self._dockerCompose))
+        print "aaaa"
         sh('sudo /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && /usr/local/bin/docker-compose -f dev.yml rm -f"')
 
     def _start_new_container(self, sudoer):
