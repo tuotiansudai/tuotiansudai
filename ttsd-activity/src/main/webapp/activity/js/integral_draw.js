@@ -53,6 +53,7 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
             var angleNum=0;
+            $myPropertyPoint.text(data.myPoint);
             switch (data.prize) {
                 case 'BICYCLE_XM':  //平衡车
                     angleNum=45*1-20;
@@ -107,7 +108,7 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
             //tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
             //drawCircleOne.tipWindowPop(tipMessage);
 
-            $('.show-login',$integralDrawPage).trigger('click');  //弹框登录
+            $('.no-login-text',$integralDrawPage).trigger('click');  //弹框登录
 
         } else if(data.returnCode == 3){
             //不在活动时间范围内！
@@ -149,6 +150,7 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
         //抽奖接口成功后奖品指向位置
         if (data.returnCode == 0) {
             var angleNum=0;
+            $myPropertyPoint.text(data.myPoint);
             switch (data.prize) {
                 case 'IPHONE7_128G':  //iPhone 7手机128G
                     angleNum=45*1-20;
@@ -204,7 +206,7 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
             //tipMessage.info='<p class="login-text">您还未登录~</p><p class="des-text">请登录后再来抽奖吧！</p>',
             //    tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
             //drawCircleTen.tipWindowPop(tipMessage);
-            $('.show-login',$integralDrawPage).trigger('click');  //弹框登录
+            $('.no-login-text',$integralDrawPage).trigger('click');  //弹框登录
 
         } else if(data.returnCode == 3){
             //不在活动时间范围内！
