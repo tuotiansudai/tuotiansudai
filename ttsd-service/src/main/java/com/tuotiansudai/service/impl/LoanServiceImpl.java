@@ -48,6 +48,7 @@ public class LoanServiceImpl implements LoanService {
     private InvestMapper investMapper;
 
     @Autowired
+
     private LoanRepayMapper loanRepayMapper;
 
     @Autowired

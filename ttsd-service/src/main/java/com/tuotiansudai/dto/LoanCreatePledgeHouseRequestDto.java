@@ -1,5 +1,6 @@
 package com.tuotiansudai.dto;
 
+
 import com.tuotiansudai.repository.model.PledgeHouseModel;
 import org.hibernate.validator.constraints.NotEmpty;
 

@@ -27,4 +27,5 @@
     <delete id="deleteByLoanId">
         delete from loaner_enterprise_details where loan_id = #{loanId}
     </delete>
+
 </mapper>

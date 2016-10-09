@@ -31,43 +31,13 @@ import static org.junit.Assert.*;
 public class LoanServiceTest {
 
     @Autowired
-    private LoanService loanService;
-
-    @Autowired
     private IdGenerator idGenerator;
-
-    @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
-    private LoanDetailsMapper loanDetailsMapper;
-
-    @Autowired
-    private LoanerDetailsMapper loanerDetailsMapper;
-
-    @Autowired
-    private PledgeHouseMapper pledgeHouseMapper;
-
-    @Autowired
-    private PledgeVehicleMapper pledgeVehicleMapper;
 
     @Autowired
     private LoanTitleMapper loanTitleMapper;
 
     @Autowired
-    private LoanTitleRelationMapper loanTitleRelationMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private UserRoleMapper userRoleMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private RandomUtils randomUtils;
@@ -221,11 +191,6 @@ public class LoanServiceTest {
 
         UserModel userModel2 = createUserByUserId("loginName2", "13444444444");
         assertEquals(fakeUser.getMobile().substring(0,3)+"****" + fakeUser.getMobile().substring(7), randomUtils.encryptMobile(userModel2.getLoginName(), investModel1.getLoginName(), investModel1.getId(),Source.WEB));
-    }
-
-    private String getDefaultkey(){
-        redisWrapperClient.set("webmobile:1000002:ttdblvjing:showinvestorname","13333333333");
-        return redisWrapperClient.get("webmobile:1000002:ttdblvjing:showinvestorname");
     }
 
     private UserModel createUserByUserId(String userId, String mobile) {

@@ -1,9 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
 import com.tuotiansudai.dto.LoanCreateDetailsRequestDto;
-import com.tuotiansudai.dto.LoanDetailsDto;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.Serializable;
