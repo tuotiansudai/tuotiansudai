@@ -60,10 +60,7 @@
     <select id="findExchangeableProductsCount" resultType="long">
         SELECT COUNT(id) FROM product p
         WHERE p.active = 1
-        <![CDATA[
-        AND p.end_time >= now()
-        AND p.start_time <= now()
-        ]]>
+        AND DATE_FORMAT(now(),'%Y-%m-%d') between p.start_time and p.end_time
         <if test="type != null">
             AND p.type = #{type}
         </if>
@@ -72,10 +69,7 @@
     <select id="findExchangeableProductsList" resultMap="productResultMap">
         SELECT * FROM product p
         WHERE p.active = 1
-        <![CDATA[
-        AND p.end_time >= now()
-        AND p.start_time <= now()
-        ]]>
+        AND DATE_FORMAT(now(),'%Y-%m-%d') between p.start_time and  p.end_time
         <if test="type != null">
             AND p.type = #{type}
         </if>
@@ -110,10 +104,7 @@
     <select id="findAllProductsByGoodsType" resultMap="productResultMap">
         SELECT * FROM product p
         where active = 1
-        <![CDATA[
-        AND p.end_time >= now()
-        AND p.start_time <= now()
-        ]]>
+        AND DATE_FORMAT(now(),'%Y-%m-%d') between p.start_time and  p.end_time
         <if test="goodsTypes != null ">
             and type IN
             <foreach collection="goodsTypes" item="goodsType" open="(" separator="," close=")">
