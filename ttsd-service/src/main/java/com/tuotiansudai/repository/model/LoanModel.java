@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.LoanCreateBaseRequestDto;
+import com.tuotiansudai.dto.LoanCreateRequestDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.util.AmountConverter;
 
@@ -181,6 +183,36 @@ public class LoanModel implements Serializable {
     private long unpaidAmount;
 
     public LoanModel() {
+    }
+
+    public LoanModel(long loanId, LoanCreateRequestDto loanCreateRequestDto) {
+        LoanCreateBaseRequestDto baseRequestDto = loanCreateRequestDto.getLoan();
+        this.id = loanId;
+        this.name = baseRequestDto.getName();
+        this.baseRate = Double.parseDouble(rateStrDivideOneHundred(baseRequestDto.getBaseRate()));
+        this.activityRate = Double.parseDouble(rateStrDivideOneHundred(baseRequestDto.getActivityRate()));
+        this.activityType = baseRequestDto.getActivityType();
+        this.productType = baseRequestDto.getProductType();
+        this.agentLoginName = baseRequestDto.getAgent();
+        this.loanerLoginName = "";
+        this.loanerUserName = loanCreateRequestDto.getLoanerDetails().getUserName();
+        this.loanerIdentityNumber = loanCreateRequestDto.getLoanerDetails().getIdentityNumber();;
+        this.contractId = baseRequestDto.getContractId();
+        this.descriptionHtml = "";
+        this.descriptionText = "";
+        this.pledgeType = baseRequestDto.getPledgeType();
+        this.fundraisingStartTime = baseRequestDto.getFundraisingStartTime();
+        this.fundraisingEndTime = baseRequestDto.getFundraisingEndTime();
+        this.investIncreasingAmount = AmountConverter.convertStringToCent(baseRequestDto.getInvestIncreasingAmount());
+        this.maxInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMaxInvestAmount());
+        this.minInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMinInvestAmount());
+        this.periods = baseRequestDto.getLoanType().getLoanPeriodUnit() == LoanPeriodUnit.DAY ? 1 : baseRequestDto.getProductType().getPeriods();
+        this.duration = baseRequestDto.getProductType().getDuration();
+        this.showOnHome = true;
+        this.type = baseRequestDto.getLoanType();
+        this.loanAmount = AmountConverter.convertStringToCent(baseRequestDto.getLoanAmount());
+        this.status = LoanStatus.WAITING_VERIFY;
+        this.createdLoginName = baseRequestDto.getCreatedBy();
     }
 
     public LoanModel(LoanDto loanDto) {

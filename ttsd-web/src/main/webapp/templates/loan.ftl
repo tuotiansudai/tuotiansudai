@@ -352,30 +352,61 @@
                         </div>
                         <div class="container-fluid danger-control">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="container-fluid table">
-                                        <div class="row">
-                                            <div class="col-xs-6 bg">身份认证</div>
-                                            <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
-                                            <div class="col-xs-6 bg">手机认证</div>
-                                            <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
-                                            <div class="col-xs-6 br-b bg">婚姻状况认证</div>
-                                            <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                <#if loan.pledgeType == 'ENTERPRISE'>
+                                    <div class="col-md-6">
+                                        <div class="container-fluid table">
+                                            <div class="row">
+                                                <div class="col-xs-6 bg">法人核证</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 bg">法人征信</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">股东持股</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">验资报告</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="container-fluid table">
-                                        <div class="row">
-                                            <div class="col-xs-6 bg">房产认证</div>
-                                            <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
-                                            <div class="col-xs-6 bg">住址信息认证</div>
-                                            <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
-                                            <div class="col-xs-6 br-b bg">收入证明</div>
-                                            <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                    <div class="col-md-6">
+                                        <div class="container-fluid table">
+                                            <div class="row">
+                                                <div class="col-xs-6 bg">公司对公账单</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 bg">银行流水查证</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">账务报表审计</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">税务缴纳</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                <#else>
+                                    <div class="col-md-6">
+                                        <div class="container-fluid table">
+                                            <div class="row">
+                                                <div class="col-xs-6 bg">身份认证</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 bg">手机认证</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">婚姻状况认证</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="container-fluid table">
+                                            <div class="row">
+                                                <div class="col-xs-6 bg">房产认证</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 bg">住址信息认证</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">收入证明</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </#if>
                             </div>
                         </div> <#-- .danger-control end tag -->
                         <div class="subtitle">

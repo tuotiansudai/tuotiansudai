@@ -74,10 +74,7 @@ public class LoanServiceTest {
 
     @Before
     public void createLoanTitle(){
-        LoanTitleModel loanTitleModel = new LoanTitleModel();
-        loanTitleModel.setId(idGenerator.generate());
-        loanTitleModel.setTitle("身份证");
-        loanTitleModel.setType(LoanTitleType.BASE_TITLE_TYPE);
+        LoanTitleModel loanTitleModel = new LoanTitleModel(idGenerator.generate(), LoanTitleType.BASE_TITLE_TYPE, "身份证");
         loanTitleMapper.create(loanTitleModel);
     }
 
@@ -193,46 +190,6 @@ public class LoanServiceTest {
             return loanService.createLoan(loanDto, loanDetailsDto, loanerDetailsDto, pledgeVehicleDto);
         }
         return null;
-    }
-
-    @Test
-    public void testCreateLoan() throws Exception {
-        long loanId = 0;
-        //test success House
-        BaseDto<BaseDataDto> baseDto = createLoan(PledgeType.HOUSE, DateTime.parse("2011-1-1").toDate(),
-                DateTime.parse("2011-1-2").toDate(), 100, 10000);
-        assertEquals(true, baseDto.getData().getStatus());
-        loanId = Long.valueOf(baseDto.getData().getMessage());
-        assertNotNull(loanMapper.findById(loanId));
-        assertTrue(loanTitleRelationMapper.findByLoanId(loanId).size() > 0);
-        assertNotNull(loanDetailsMapper.getLoanDetailsByLoanId(loanId));
-        assertNotNull(loanerDetailsMapper.getLoanerDetailByLoanId(loanId));
-        assertNotNull(pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanId));
-        //test success Vehicle
-        baseDto = createLoan(PledgeType.VEHICLE, DateTime.parse("2011-1-1").toDate(), DateTime.parse("2011-1-2").toDate(),
-                100, 10000);
-        assertEquals(true, baseDto.getData().getStatus());
-        loanId = Long.valueOf(baseDto.getData().getMessage());
-        assertNotNull(loanMapper.findById(loanId));
-        assertTrue(loanTitleRelationMapper.findByLoanId(loanId).size() > 0);
-        assertNotNull(loanDetailsMapper.getLoanDetailsByLoanId(loanId));
-        assertNotNull(loanerDetailsMapper.getLoanerDetailByLoanId(loanId));
-        assertNotNull(pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanId));
-        //建标时，起投时间晚于结束时间
-        baseDto = createLoan(PledgeType.HOUSE, DateTime.parse("2011-2-1").toDate(), DateTime.parse("2011-1-1").toDate(),
-                100, 10000);
-        assertEquals(false, baseDto.getData().getStatus());
-        assertEquals("筹款启动时间不得晚于筹款截止时间", baseDto.getData().getMessage());
-        //投资最大金额小于投资最小金额
-        baseDto = createLoan(PledgeType.HOUSE, DateTime.parse("2011-2-1").toDate(), DateTime.parse("2011-1-1").toDate(),
-                10000, 100);
-        assertEquals(false, baseDto.getData().getStatus());
-        assertEquals("最小投资金额不得大于最大投资金额", baseDto.getData().getMessage());
-        //投资金额小于投资最大金额
-        baseDto = createLoan(PledgeType.HOUSE, DateTime.parse("2011-2-1").toDate(), DateTime.parse("2011-3-1").toDate(),
-                9999999, 99999999);
-        assertEquals(false, baseDto.getData().getStatus());
-        assertEquals("最大投资金额不得大于预计出借金额", baseDto.getData().getMessage());
     }
 
     @Test

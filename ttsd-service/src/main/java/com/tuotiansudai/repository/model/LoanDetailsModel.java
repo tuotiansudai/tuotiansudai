@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.google.common.base.Joiner;
+import com.tuotiansudai.dto.LoanCreateDetailsRequestDto;
 import com.tuotiansudai.dto.LoanDetailsDto;
 
 import java.io.Serializable;
@@ -29,6 +31,14 @@ public class LoanDetailsModel implements Serializable {
         this.extraSource = loanDetailsDto.getExtraSource();
         this.activity = loanDetailsDto.isActivity();
         this.activityDesc = loanDetailsDto.getActivityDesc();
+    }
+
+    public LoanDetailsModel(long loanId, LoanCreateDetailsRequestDto loanDetails) {
+        this.loanId = loanId;
+        this.declaration = loanDetails.getDeclaration();
+        this.extraSource = Joiner.on(",").join(loanDetails.getExtraSource());
+        this.activity = loanDetails.isActivity();
+        this.activityDesc = loanDetails.getActivityDesc();
     }
 
     public long getId() {

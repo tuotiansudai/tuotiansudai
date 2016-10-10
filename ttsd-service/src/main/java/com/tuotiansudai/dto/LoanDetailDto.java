@@ -62,6 +62,8 @@ public class LoanDetailDto extends BaseDataDto {
 
     private Map<String, String> loanerDetail;
 
+    private PledgeType pledgeType;
+
     private Map<String, String> pledgeHouseDetail;
 
     private Map<String, String> pledgeVehicleDetail;
@@ -100,6 +102,7 @@ public class LoanDetailDto extends BaseDataDto {
         this.extraSource = loanDetails == null ? null :loanDetails.getExtraSource();
         this.activity = loanDetails == null ? false : loanDetails.isActivity();
         this.activityDesc = loanDetails == null ? "" : loanDetails.getActivityDesc();
+        this.pledgeType = loanModel.getPledgeType();
     }
 
     public long getId() {
@@ -208,6 +211,14 @@ public class LoanDetailDto extends BaseDataDto {
 
     public void setLoanerDetail(Map<String, String> loanerDetail) {
         this.loanerDetail = loanerDetail;
+    }
+
+    public PledgeType getPledgeType() {
+        return pledgeType;
+    }
+
+    public void setPledgeType(PledgeType pledgeType) {
+        this.pledgeType = pledgeType;
     }
 
     public void setPledgeHouseDetail(Map<String, String> pledgeHouseDetail) {

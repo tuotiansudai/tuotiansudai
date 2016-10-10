@@ -41,10 +41,10 @@ public class LoanController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan() {
         ModelAndView modelAndView = new ModelAndView("/loan-create");
-        modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
-        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
-        modelAndView.addObject("sources", Lists.newArrayList(Source.WEB, Source.MOBILE));
+        modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
+        modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         return modelAndView;
     }
@@ -61,22 +61,11 @@ public class LoanController {
         return loanService.createTitle(loanTitleDto);
     }
 
-    @RequestMapping(value = "/create/house", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> createLoan(@RequestBody CreateHouseLoanDto createLoanDto) {
-        createLoanDto.setCreatedLoginName(LoginUserInfo.getLoginName());
-        createLoanDto.setPledgeType(PledgeType.HOUSE);
-        return loanService.createLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
-                createLoanDto.getPledgeDetailsDto());
-    }
-
-    @RequestMapping(value = "/create/vehicle", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<BaseDataDto> createLoan(@RequestBody CreateVehicleLoanDto createLoanDto) {
-        createLoanDto.setCreatedLoginName(LoginUserInfo.getLoginName());
-        createLoanDto.setPledgeType(PledgeType.VEHICLE);
-        return loanService.createLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
-                createLoanDto.getPledgeDetailsDto());
+    public BaseDto<BaseDataDto> createLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
+        loanCreateRequestDto.getLoan().setCreatedBy(LoginUserInfo.getLoginName());
+        return loanService.createLoan(loanCreateRequestDto);
     }
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
