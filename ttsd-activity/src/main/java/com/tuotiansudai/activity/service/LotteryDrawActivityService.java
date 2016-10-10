@@ -64,6 +64,7 @@ public class LotteryDrawActivityService {
     private List<String> activityTime = Lists.newArrayList();
 
     public DrawLotteryResultDto drawLotteryResultDto(String mobile,ActivityCategory activityCategory){
+        mobile = "18888376666";
         Date nowDate = DateTime.now().toDate();
         Date activityStartTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date activityEndTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
@@ -80,8 +81,11 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(2);//"该用户不存在！"
         }
 
-        accountMapper.lockByLoginName(userModel.getLoginName());
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        AccountModel accountModel = accountMapper.lockByLoginName(userModel.getLoginName());
+        while(accountModel == null){
+            accountModel = accountMapper.lockByLoginName(userModel.getLoginName());
+        }
+
         if(accountModel == null){
             return new DrawLotteryResultDto(4);//您还未实名认证，请实名认证后再来抽奖吧！
         }
