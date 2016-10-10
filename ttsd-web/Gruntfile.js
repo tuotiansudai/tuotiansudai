@@ -57,7 +57,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true, // Enable dynamic expansion.
                     cwd: '', // Src matches are relative to this path.
-                    src: ['<%= meta.baseSassPath %>/*.scss','<%= meta.baseSassPath %>/module/*.scss'], // Actual pattern(s) to match.
+                    src: ['<%= meta.baseSassPath %>/**/*.scss'], // Actual pattern(s) to match.
                     dest: '<%= meta.baseCssPath %>/', // Destination path prefix.
                     ext: '.css', // Dest filepaths will have this extension.
                     extDot: 'first', // Extensions in filenames begin after the first dot
@@ -96,6 +96,9 @@ module.exports = function(grunt) {
                     '<%= meta.baseSassPath %>/**/*.scss'
                 ],
                 tasks: ['clean:css', 'sass']
+                //如果scss文件没有import别的scss文件，可以加newer，效率快
+                //如果scss有import别的scss文件，不要加newer,不然监听不到import里文件的变化
+                //tasks: ['newer:sass']
             },
             dataUri: {
                 files: [
@@ -109,7 +112,7 @@ module.exports = function(grunt) {
             },
             uglify: {
                 files: [
-                    ['<%= meta.baseJsPath %>/*.js']
+                    ['<%= meta.baseJsPath %>/*.js','<%= meta.baseJsPath %>/module/*.js']
                 ],
                 tasks: ['clean:js', 'uglify']
                 //tasks: ['newer:clean:js', 'newer:uglify']
@@ -171,8 +174,6 @@ module.exports = function(grunt) {
         'watch'
     ]);
 
-    grunt.registerTask('base64', ['dataUri', 'cssmin:base64', 'clean:base64']);
-
     /* 前端人员开发的时候用，最后发布的时候执行一次 grunt */
     grunt.registerTask('dev',
         [
@@ -180,7 +181,8 @@ module.exports = function(grunt) {
             'newer:uglify',
             'newer:sass',
             'connect',
-            'watch:sass'
+            'watch:sass',
+            'watch:uglify'
         ]);
 
 };
