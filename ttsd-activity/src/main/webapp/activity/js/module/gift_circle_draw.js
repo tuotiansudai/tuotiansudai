@@ -30,7 +30,6 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
         }
         //中奖记录
         this.GiftRecord=function() {
-            var thisFun=this;
             $.ajax({
                 url: this.allListURL,
                 data:this.paramData,
@@ -44,14 +43,13 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
                         UlList.push('<li>恭喜'+data[i].mobile+'抽中了'+data[i].prizeValue+'</li>');
                     }
 
-                    thisFun.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
-                    thisFun.hoverScrollList(thisFun.giftCircleFrame.find('.user-record'));
-                });
+                    this.giftCircleFrame.find('.user-record').empty().append(UlList.join(''));
+                    this.hoverScrollList(this.giftCircleFrame.find('.user-record'));
+                }.bind(this));
         }
 
         //我的奖品
         this.MyGift=function() {
-            var thisFun=this;
             $.ajax({
                 url: this.userListURL,
                 data:this.paramData,
@@ -60,14 +58,12 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
             })
                 .done(function(data) {
                     var UlList=[];
-
                     for(var i=0,len=data.length;i<len;i++) {
-                        UlList.push('<li>恭喜'+data[i].mobile+'抽中了'+data[i].prizeValue+'</li>');
+                        UlList.push('<li>'+data[i].prizeValue+'<time>'+data[i].lotteryTime+'</time></li>');
                     }
-                    thisFun.giftCircleFrame.find('.own-record').empty().append(UlList.join(''));
-                    thisFun.scrollList(thisFun.giftCircleFrame.find('.own-record'));
-                    thisFun.hoverScrollList(thisFun.giftCircleFrame.find('.own-record'));
-                });
+                    this.giftCircleFrame.find('.own-record').empty().append(UlList.join(''));
+                    this.hoverScrollList(this.giftCircleFrame.find('.own-record'));
+                }.bind(this));
         }
     }
 
@@ -103,7 +99,6 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
         var $self=domName;
         var lineHeight = $self.find("li:first").height();
         if ($self.find('li').length > 10) {
-            console.log('pop');
             $self.animate({
                 "margin-top": -lineHeight + "px"
             }, 600, function() {
