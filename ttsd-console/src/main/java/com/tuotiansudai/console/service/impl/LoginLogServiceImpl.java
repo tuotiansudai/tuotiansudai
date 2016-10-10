@@ -1,4 +1,4 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.console.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -6,7 +6,8 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoginLogPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.LoginLogMapper;
 import com.tuotiansudai.repository.model.LoginLogModel;
-import com.tuotiansudai.service.LoginLogService;
+import com.tuotiansudai.console.service.LoginLogService;
+import com.tuotiansudai.util.PaginationUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,12 +29,7 @@ public class LoginLogServiceImpl implements LoginLogService {
         String loginLogTableName = this.getLoginLogTableName(new DateTime(year, month, 1, 0, 0).toDate());
         long count = loginLogMapper.count(mobile, success, loginLogTableName);
 
-        List<LoginLogModel> data = Lists.newArrayList();
-        if (count > 0 ) {
-            int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
-            index = index > totalPages ? totalPages : index;
-            data = loginLogMapper.getPaginationData(mobile, success, (index - 1) * pageSize, pageSize, loginLogTableName);
-        }
+        List<LoginLogModel> data = loginLogMapper.getPaginationData(mobile, success, PaginationUtil.calculateOffset(index, pageSize, count), pageSize, loginLogTableName);
 
         List<LoginLogPaginationItemDataDto> records = Lists.transform(data, new Function<LoginLogModel, LoginLogPaginationItemDataDto>() {
             @Override
@@ -42,13 +38,7 @@ public class LoginLogServiceImpl implements LoginLogService {
             }
         });
 
-        return new BasePaginationDataDto<>(index, pageSize, count, records);
-    }
-
-    @Override
-    public long countSuccessTimesOnDate(String loginName, Date date) {
-        String loginLogTableName = this.getLoginLogTableName(date);
-        return loginLogMapper.countSuccessTimesOnDate(loginName, date, loginLogTableName);
+        return new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, records);
     }
 
     private String getLoginLogTableName(Date date) {

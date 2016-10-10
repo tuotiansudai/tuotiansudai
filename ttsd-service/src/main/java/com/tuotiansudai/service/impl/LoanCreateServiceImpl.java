@@ -3,7 +3,6 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.job.AutoInvestJob;
 import com.tuotiansudai.job.DeadlineFundraisingJob;
@@ -24,7 +23,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -83,9 +81,6 @@ public class LoanCreateServiceImpl implements LoanCreateService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
-
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
 
     @Override
     public LoanTitleModel createTitle(LoanTitleDto loanTitleDto) {

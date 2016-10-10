@@ -18,19 +18,18 @@
     </select>
 
     <select id="findByLevel" resultMap="membershipResultMap" parameterType="long">
-        SELECT * FROM `aa`.`membership` WHERE level = #{level}
+        SELECT * FROM `membership` where level = #{level}
     </select>
 
-    <select id="findAllLevels" resultType="java.lang.Integer">
-        SELECT `level` FROM `aa`.`membership`
-    </select>
-    
     <select id="findByExperience" resultMap="membershipResultMap" parameterType="long">
-        select * from membership where experience &lt;= #{experience} order by experience desc limit 1;
+        select * from membership
+        where experience &lt;= #{experience}
+        order by experience desc
+        limit 1;
     </select>
 
     <select id="findAllMembership" resultMap="membershipResultMap" parameterType="long">
-        select * from membership;
+        select * from membership order by level;
     </select>
 
 </mapper>

@@ -1,7 +1,9 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 public class InvestResponseDataDto extends BaseResponseDataDto {
+
     private String requestData;
+
     private String url;
 
     public String getRequestData() {

@@ -500,8 +500,8 @@ public class InvestServiceImpl implements InvestService {
     }
 
     public long calculateMembershipPreference(String loginName, long loanId, long investAmount) {
-        long preference = 0;
-        UserMembershipModel userMembershipModel = userMembershipMapper.findCurrentMaxByLoginName(loginName);
+        long preference;
+        UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
         LoanModel loanModel = loanMapper.findById(loanId);
         long interest = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);

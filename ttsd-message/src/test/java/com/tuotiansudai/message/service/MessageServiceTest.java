@@ -9,7 +9,6 @@ import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -38,9 +37,6 @@ public class MessageServiceTest {
 
     @Autowired
     private MessageService messageService;
-
-    @Mock
-    private IdGenerator idGenerator;
 
     @Test
     public void shouldFindMessageList() throws Exception {

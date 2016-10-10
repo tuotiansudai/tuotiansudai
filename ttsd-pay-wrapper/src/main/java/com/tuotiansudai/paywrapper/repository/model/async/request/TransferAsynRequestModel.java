@@ -1,5 +1,9 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.util.MobileFrontCallbackService;
+
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,20 +26,35 @@ public class TransferAsynRequestModel extends BaseAsyncRequestModel {
 
     private String amount;
 
-    public TransferAsynRequestModel(){
+    public TransferAsynRequestModel() {
 
     }
-    public TransferAsynRequestModel(String orderId,String payUserId,String amount){
+
+    public static TransferAsynRequestModel createMembershipPurchaseRequestModel(String orderId, String payUserId, String amount, Source source) {
+        String retUrl = MessageFormat.format("{0}/callback/{1}", getCallbackMobileHost(), MobileFrontCallbackService.MEMBERSHIP_PURCHASE.getServiceName());
+        String notifyUrl = MessageFormat.format("{0}/{1}", getCallbackBackHost(), "membership-purchase-notify");
+        TransferAsynRequestModel asynRequestModel = new TransferAsynRequestModel(orderId, payUserId, amount, retUrl, notifyUrl);
+        if (Lists.newArrayList(Source.ANDROID, Source.IOS).contains(source)) {
+            asynRequestModel.setSourceV("HTML5");
+        }
+        return asynRequestModel;
+    }
+
+    public static TransferAsynRequestModel createSystemRechargeRequestModel(String orderId, String payUserId, String amount) {
+        String retUrl = MessageFormat.format("{0}/finance-manage/system-bill", getCallbackConsoleHost());
+        String notifyUrl = MessageFormat.format("{0}/{1}", getCallbackBackHost(), "system_recharge_notify");
+        return new TransferAsynRequestModel(orderId, payUserId, amount, retUrl, notifyUrl);
+    }
+
+    private TransferAsynRequestModel(String orderId, String payUserId, String amount, String retUrl, String notifyUrl) {
         this.service = "transfer_asyn";
         this.orderId = orderId;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.particUserId = payUserId;
         this.amount = amount;
-        this.retUrl = MessageFormat.format("{0}/finance-manage/system-bill", CALLBACK_HOST_PROPS.get("pay.callback.console.host"));
-        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "system_recharge_notify");
+        this.retUrl = retUrl;
+        this.notifyUrl = notifyUrl;
     }
-
-
 
     @Override
     public Map<String, String> generatePayRequestData() {
@@ -49,6 +68,4 @@ public class TransferAsynRequestModel extends BaseAsyncRequestModel {
         payRequestData.put("amount", this.amount);
         return payRequestData;
     }
-
-
 }
