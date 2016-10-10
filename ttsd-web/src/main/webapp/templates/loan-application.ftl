@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.want_loan}" pageJavascript="${js.want_loan}" activeNav="我要借款" activeLeftNav="" title="拓天速贷公司介绍_拓天理念_拓天资质_拓天速贷" keywords="拓天速贷,拓天速贷公司,拓天资质,拓天价值" description="拓天速贷以透明、公平、高效为原则,为有贷款需求的小微企业及有投资需求的个人提供规范、安全、专业的互联网金融信息服务.">
+<@global.main pageCss="${css.loan_application}" pageJavascript="${js.loan_application}" activeNav="我要借款" activeLeftNav="" title="拓天速贷公司介绍_拓天理念_拓天资质_拓天速贷" keywords="拓天速贷,拓天速贷公司,拓天资质,拓天价值" description="拓天速贷以透明、公平、高效为原则,为有贷款需求的小微企业及有投资需求的个人提供规范、安全、专业的互联网金融信息服务.">
 <div class="want-loan-group">
     <div class="loan-top-group">
         <img src="${staticServer}/images/wantloan/top-images.png"  width="100%">
@@ -14,28 +14,32 @@
                     <div class="model-item">
                         <p class="icon-one"></p>
                         <p class="name-text">额度高</p>
-                        <p>有车有房都能借比想象简单</p>
+
+                        <p>有车有房都能借<br/>比想象简单</p>
                     </div>
                 </li>
                 <li>
                     <div class="model-item">
                         <p class="icon-two"></p>
                         <p class="name-text">门槛低</p>
-                        <p>房照住车照开钱到账无压力</p>
+
+                        <p>房照住车照开<br/>钱到账无压力</p>
                     </div>
                 </li>
                 <li>
                     <div class="model-item">
                         <p class="icon-three"></p>
                         <p class="name-text">速度快</p>
-                        <p>30s申请最快24h放款</p>
+
+                        <p>30s申请<br/>最快24h放款</p>
                     </div>
                 </li>
                 <li>
                     <div class="model-item">
                         <p class="icon-four"></p>
                         <p class="name-text">利息低</p>
-                        <p>远低于民间利息借款轻松还</p>
+
+                        <p>远低于民间利息<br/>借款轻松还</p>
                     </div>
                 </li>
             </ul>
@@ -50,12 +54,16 @@
                 <li class="home-loan-item">
                     <h3>抵押房产借款</h3>
                     <i class="icon-home"></i>
-                    <p class="loan-btn loan-tip" data-holder="请填写房产信息（200字以内）" data-title="房抵">我要借款</p>
+
+                    <p class="loan-btn loan-tip" data-holder="请填写房产信息（200字以内）" data-title="房抵" data-type="HOUSE">
+                        我要借款</p>
                 </li>
                 <li class="car-loan-item">
                     <h3>抵押车辆借款</h3>
                     <i class="icon-car"></i>
-                    <p class="loan-btn loan-tip" data-holder="请填写车辆信息（200字以内）" data-title="车抵">我要借款</p>
+
+                    <p class="loan-btn loan-tip" data-holder="请填写车辆信息（200字以内）" data-title="车抵" data-type="VEHICLE">
+                        我要借款</p>
                 </li>
             </ul>
         </div>
@@ -91,7 +99,7 @@
     <div class="content-group">
         <div class="wp">
             <div class="title-group">
-                <i class="border-item"></i>申请需要哪些流程？
+                <i class="border-item"></i>常见问题
             </div>
             <div class="step-problem-group">
                 <div class="problem-item">
@@ -106,16 +114,17 @@
                         <li>
                             <p>
                                 <i class="circle-icon"></i>
-                                <span>借款需要什么材料？</span>
+                                <span>贷款审核需要多长时间？</span>
                             </p>
                             <p class="info-text">借款资料提交成功后，工作人员会在１－３个工作日内进行审核。提交申请后，借款最快可当天到账。</p>
                         </li>
                         <li>
                             <p>
                                 <i class="circle-icon"></i>
-                                <span>借款需要什么材料？</span>
+                                <span>还款方式有哪些？</span>
                             </p>
-                            <p class="info-text">目前根据不同的借款产品支持按月付息到期还本和到期还本付息的还款方式</p>
+
+                            <p class="info-text">目前根据不同的借款产品支持按月付息到期还本和到期还本付息的还款方式。</p>
                         </li>
                     </ul>
                 </div>
@@ -137,28 +146,29 @@
     <div class="home-tip-group" id="homeTip">
         <form action="#" method="post" class="loan-form" id="loanForm">
             <div class="form-input-item">
-                <input type="text" class="int-item" name="userName" id="userName" value="" placeholder="请输入姓名" />
+                <input type="text" class="int-item" name="userName" id="userName" value="${userName}" readonly/>
             </div>
             <div class="form-input-item">
-                <input type="text" class="int-item" name="userPhone" id="userPhone" value="" placeholder="请输入手机号" />
+                <input type="text" class="int-item" name="userPhone" id="userPhone" value="${mobile}" readonly/>
             </div>
             <div class="form-input-item">
                 <input type="text" class="int-item area-bg" name="placeText" id="placeText" value="北京" placeholder="请选择城市" readonly />
                 <ul class="area-list-group">
-                    <li>北京</li>
-                    <li>山西</li>
-                    <li>成都</li>
-                    <li>上海</li>
+                    <#list regions as region>
+                        <li>${region}</li>
+                    </#list>
                 </ul>
             </div>
             <div class="form-input-item">
-                <input type="text" class="int-item" name="moneyText" id="moneyText" placeholder="请输入借款金额（万元）" />
+                <input type="text" class="int-item input-box" name="moneyText" id="moneyText"
+                       placeholder="请输入借款金额（万元）"/>
             </div>
             <div class="form-input-item">
-                <input type="text" class="int-item" name="monthText" id="monthText" placeholder="请输入借款周期（月）" />
+                <input type="text" class="int-item input-box" name="monthText" id="monthText" placeholder="请输入借款周期（月）"/>
             </div>
             <div class="form-input-item">
-                <textarea class="int-item" placeholder="请填写房产信息（200字以内）" id="infoText" name="infoText"></textarea>
+                <textarea class="int-item input-box" placeholder="请填写房产信息（200字以内）" id="infoText"
+                          name="infoText"></textarea>
             </div>
             <div class="form-input-item text-c">
                 <input type="submit" class="submit-btn" value="提交申请" />
