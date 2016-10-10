@@ -10,7 +10,7 @@
     <h2 class="column-title"><em>推荐奖励</em></h2>
 
     <div class="refer-reward-box tc">
-        <img src="${staticServer}/images/sign/aboutus/bar-share-top.jpg" alt="推荐奖励">
+        <img src="${staticServer}/images/sign/refer-list/bar-share-top.jpg" alt="推荐奖励">
         <a href="/activity/share-reward" class="detail-button">查看详细规则>></a>
     </div>
 
