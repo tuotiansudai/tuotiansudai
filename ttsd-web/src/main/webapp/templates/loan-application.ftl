@@ -50,12 +50,12 @@
                 <li class="home-loan-item">
                     <h3>抵押房产借款</h3>
                     <i class="icon-home"></i>
-                    <p class="loan-btn">我要借款</p>
+                    <p class="loan-btn loan-tip" data-holder="请填写房产信息（200字以内）" data-title="房抵">我要借款</p>
                 </li>
                 <li class="car-loan-item">
                     <h3>抵押车辆借款</h3>
                     <i class="icon-car"></i>
-                    <p class="loan-btn">我要借款</p>
+                    <p class="loan-btn loan-tip" data-holder="请填写车辆信息（200字以内）" data-title="车抵">我要借款</p>
                 </li>
             </ul>
         </div>
@@ -133,5 +133,47 @@
             </div>
         </div>
     </div>
+    <input type="hidden" value="" id="pledgeType">
+    <div class="home-tip-group" id="homeTip">
+        <form action="#" method="post" class="loan-form" id="loanForm">
+            <div class="form-input-item">
+                <input type="text" class="int-item" name="userName" id="userName" value="" placeholder="请输入姓名" />
+            </div>
+            <div class="form-input-item">
+                <input type="text" class="int-item" name="userPhone" id="userPhone" value="" placeholder="请输入手机号" />
+            </div>
+            <div class="form-input-item">
+                <input type="text" class="int-item area-bg" name="placeText" id="placeText" value="北京" placeholder="请选择城市" readonly />
+                <ul class="area-list-group">
+                    <li>北京</li>
+                    <li>山西</li>
+                    <li>成都</li>
+                    <li>上海</li>
+                </ul>
+            </div>
+            <div class="form-input-item">
+                <input type="text" class="int-item" name="moneyText" id="moneyText" placeholder="请输入借款金额（万元）" />
+            </div>
+            <div class="form-input-item">
+                <input type="text" class="int-item" name="monthText" id="monthText" placeholder="请输入借款周期（月）" />
+            </div>
+            <div class="form-input-item">
+                <textarea class="int-item" placeholder="请填写房产信息（200字以内）" id="infoText" name="infoText"></textarea>
+            </div>
+            <div class="form-input-item text-c">
+                <input type="submit" class="submit-btn" value="提交申请" />
+            </div>
+        </form>
+    </div>
+    <div class="is-user" id="isUser">
+        <p class="tip-text">亲，实名认证后才能借款哦~</p>
+        <p><a href="/register/account">实名认证</a></p>
+    </div>
+    <div class="success-tip" id="successTip">
+        <p class="tip-text">提交成功！</p>
+        <p>亲的借款申请已经提交，我们会尽快处理，<br />请您保持电话畅通哦~</p>
+        <p><a href="javascript:void(0)" class="close-btn">确定</a></p>
+    </div>
 </div>
+<#include "login-tip.ftl" />
 </@global.main>

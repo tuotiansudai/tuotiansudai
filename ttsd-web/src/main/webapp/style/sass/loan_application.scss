@@ -1,3 +1,4 @@
+@import "login_tip";
 .main-frame{
 	width:100%;
 	margin:0 auto;
@@ -143,7 +144,7 @@
 					box-shadow: 0 4px #db4900;
 					position: relative;
 					cursor:pointer;
-					&:hover{
+					&:hover,&:active{
 						box-shadow: 0 2px #db4900;
 						top: 2px;
 					}
@@ -223,6 +224,7 @@
 								font-size:14px;
 								color:#999;
 								padding-left:30px;
+								box-sizing:border-box;
 							}
 							.circle-icon{
 								display:inline-block;
@@ -241,6 +243,130 @@
 						}
 					}
 				}
+			}
+		}
+	}
+	.home-tip-group{
+		float:left;
+		width:100%;
+		display:none;
+		.loan-form{
+			float:left;
+			width:100%;
+			padding:20px 100px;
+			box-sizing:border-box;
+			.form-input-item{
+				float:left;
+				width:100%;
+				box-sizing:border-box;
+				position: relative;
+				&.text-c{
+					text-align:center;
+				}
+				.int-item{
+					float:left;
+					width:100%;
+					margin-top:20px;
+					padding: 6px;
+					font-size: 14px;
+					box-sizing:border-box;
+					&.area-bg{
+						background:#fafafa;
+					}
+				}
+				.submit-btn{
+					display:inline-block;
+					width:240px;
+					height:40px;
+					line-height:40px;
+					text-align:center;
+					color:#fff;
+					background:#ff6900;
+					margin-top:40px;
+					padding:0;
+					border:none;
+					cursor:pointer;
+				}
+				label.error{
+					width:100%;
+					position: absolute;
+					bottom:-22px;
+					left:0;
+				}
+				.area-list-group{
+					position: absolute;
+					top:52px;
+					left:0;
+					width:100%;
+					background:#fafafa;
+					border:1px solid #ccc;
+					box-sizing:border-box;
+					z-index:9;
+					display:none;
+					li{
+						float:left;
+						width:100%;
+						height:35px;
+						line-height:35px;
+						text-indent: 2em;
+						cursor: pointer;
+						&:hover{
+							background:#fff;
+							-webkit-transition: all .5s ease;
+							-moz-transition: all .5s ease;
+							transition: all .5s ease;
+						}
+					}
+				}
+			}
+		}
+	}
+	.is-user{
+		float:left;
+		width:100%;
+		display:none;
+		p{
+			font-size:14px;
+			color:#4c4c4c;
+			text-align:center;
+			&.tip-text{
+				margin-top:35px;
+			}
+			a{
+				display:inline-block;
+				width:150px;
+				height:40px;
+				line-height:40px;
+				color:#fff;
+				text-align:center;
+				font-size:14px;
+				background:#ff752a;
+				margin-top:15px;
+			}
+		}
+	}
+	.success-tip{
+		float:left;
+		width:100%;
+		display:none;
+		p{
+			font-size:14px;
+			color:#4c4c4c;
+			text-align:center;
+			&.tip-text{
+				font-size:20px;
+				color:#4c4c4c;
+			}
+			a{
+				display:inline-block;
+				width:150px;
+				height:40px;
+				line-height:40px;
+				color:#fff;
+				text-align:center;
+				font-size:14px;
+				background:#ff752a;
+				margin-top:15px;
 			}
 		}
 	}
