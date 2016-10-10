@@ -229,6 +229,7 @@
     }
   }
 }
+
 @media screen and (max-width: 700px) {
   .gift-circle-frame {
     .gift-circle-out {
@@ -259,21 +260,38 @@
         }
         .record-list {
           height: auto;
-          height:256px;
+          height:250px;
           ul.record-model {
             padding-left:10px;
             line-height: 19px;
             font-size:11px;
             li {
-              padding-bottom:8px;
+              height:30px;
             }
           }
         }
       }
     }
   }
+
+  @-webkit-keyframes bounceIn2{
+    100%{opacity:1;
+      -webkit-transform:scale(0.7) !important;
+      transform:scale(0.7)!important;
+    }
+  }
+  @keyframes bounceIn2{
+    100%{opacity:1;
+      -webkit-transform:scale(0.7)!important;
+      -ms-transform:scale(0.7);
+      transform:scale(0.7);
+    }
+  }
+
   .layer-gift-draw {
     @include transform-scale(0.7);
+    -webkit-animation-name:bounceIn2!important;animation-name:bounceIn2!important;
+
   }
 }
 
