@@ -159,7 +159,6 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
     $('body').on('click', '.go-close', function(event) {
         event.preventDefault();
         var $self = $(this);
-        window.location.reload();
         layer.closeAll();
     });
 
