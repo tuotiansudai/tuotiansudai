@@ -18,8 +18,6 @@ spike.py
 **/gradle/
 **/classes/
 **/node_modules/
-ttsd-web/src/main/webapp/style/*.css.map
-ttsd-web/src/main/webapp/style/*.css
 ttsd-web/src/main/webapp/style/css/*.css
 ttsd-web/src/main/webapp/style/css/*.css.map
 ttsd-web/src/main/webapp/style/base64/*.css
