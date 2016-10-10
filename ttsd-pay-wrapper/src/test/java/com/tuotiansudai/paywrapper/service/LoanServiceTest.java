@@ -38,16 +38,22 @@ import static org.mockito.Mockito.*;
 @ContextConfiguration(locations = {"classpath:applicationContext.xml","classpath:dispatcher-servlet.xml"})
 @Transactional
 public class LoanServiceTest {
+
     @InjectMocks
     private LoanServiceImpl loanService;
+
     @Autowired
     private IdGenerator idGenerator;
+
     @Mock
     private LoanMapper loanMapper;
+
     @Mock
     private AccountMapper accountMapper;
+
     @Mock
     private PayGateWrapper payGateWrapper;
+
     @Mock
     private PaySyncClient paySyncClient;
 
@@ -61,7 +67,7 @@ public class LoanServiceTest {
     public void shouldCreateLoanIsSuccess() throws ReqDataException, PayException {
         long id = idGenerator.generate();
         UserModel loanerModel = createFakeUser("loanerLoginName");
-        LoanModel loanModel = fakeLoanModel(loanerModel);
+        LoanModel loanModel = fakeLoanModel();
         AccountModel accountModel = this.getFakeAccount(loanerModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
@@ -96,35 +102,9 @@ public class LoanServiceTest {
         return model;
     }
 
-    private LoanModel fakeLoanModel(UserModel userModel){
+    private LoanModel fakeLoanModel(){
         LoanModel loanModel = new LoanModel();
-        loanModel.setAgentLoginName(userModel.getLoginName());
-        loanModel.setBaseRate(16.00);
-        long id = idGenerator.generate();
-        loanModel.setId(id);
-        loanModel.setName("店铺资金周转");
-        loanModel.setActivityRate(12);
-        loanModel.setShowOnHome(true);
-        loanModel.setPeriods(3);
-        loanModel.setActivityType(ActivityType.NORMAL);
-        loanModel.setContractId(123);
-        loanModel.setDescriptionHtml("asdfasdf");
-        loanModel.setDescriptionText("asdfasd");
-        loanModel.setFundraisingEndTime(new Date());
-        loanModel.setFundraisingStartTime(new Date());
-        loanModel.setInvestIncreasingAmount(1);
-        loanModel.setLoanAmount(100000L);
-        loanModel.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);
-        loanModel.setMaxInvestAmount(100000000000L);
-        loanModel.setMinInvestAmount(1);
-        loanModel.setCreatedTime(new Date());
-        loanModel.setStatus(LoanStatus.RAISING);
-        loanModel.setLoanerLoginName(userModel.getLoginName());
-        loanModel.setLoanerUserName("借款人");
-        loanModel.setLoanerIdentityNumber("111111111111111111");
+
         return loanModel;
     }
-
-
-
 }

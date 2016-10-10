@@ -78,14 +78,17 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
         var fundraisingStartTimeElement = $('#fundraisingStartTime');
         var fundraisingEndTimeElement = $('#fundraisingEndTime');
         fundraisingStartTimeElement.datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
-            minDate: new Date()
-        });
-        fundraisingEndTimeElement.datetimepicker({
             format: 'YYYY-MM-DD HH:mm'
         });
-        fundraisingStartTimeElement.on('dp.change', function (e) {
+        fundraisingEndTimeElement.datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            useCurrent: false
+        });
+        fundraisingStartTimeElement.on("dp.change", function (e) {
             fundraisingEndTimeElement.data("DateTimePicker").minDate(e.date);
+        });
+        fundraisingEndTimeElement.on("dp.change", function (e) {
+            fundraisingStartTimeElement.data("DateTimePicker").maxDate(e.date);
         });
 
         //初始化数据

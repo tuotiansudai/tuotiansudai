@@ -316,7 +316,7 @@
 
             <label class="col-sm-1 control-label">复审人员:</label>
             <div class="col-sm-2">
-                <p class="form-control-static">${loan.loan.recheckLoginName}</p>
+                <p class="form-control-static">${loan.loan.recheckLoginName!}</p>
             </div>
         </div>
         </#if>

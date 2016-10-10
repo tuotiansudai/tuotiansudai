@@ -44,7 +44,7 @@ public class LoanController {
         ModelAndView modelAndView = new ModelAndView("/loan-create");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
-        modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
+        modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE));
         modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         return modelAndView;
@@ -76,9 +76,9 @@ public class LoanController {
             return new ModelAndView("/index");
         }
         ModelAndView modelAndView = new ModelAndView("/loan-edit");
-        modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
         modelAndView.addObject("productTypes", Lists.newArrayList(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360)));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
+        modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE));
         modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
         modelAndView.addObject("loan", loanCreateService.getEditLoanDetails(loanId));
         modelAndView.addObject("extraLoanRates", extraLoanRateMapper.findByLoanId(loanId));

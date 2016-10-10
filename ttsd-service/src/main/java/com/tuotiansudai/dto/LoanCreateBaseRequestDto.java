@@ -75,6 +75,8 @@ public class LoanCreateBaseRequestDto {
 
     private String recheckLoginName;
 
+    private Date raisingCompleteTime;
+
     public LoanCreateBaseRequestDto() {
     }
 
@@ -101,6 +103,7 @@ public class LoanCreateBaseRequestDto {
         this.verifyLoginName = loanModel.getVerifyLoginName();
         this.recheckTime = loanModel.getRecheckTime();
         this.recheckLoginName = loanModel.getRecheckLoginName();
+        this.raisingCompleteTime = loanModel.getRaisingCompleteTime();
     }
 
     public Long getId() {
@@ -285,5 +288,13 @@ public class LoanCreateBaseRequestDto {
 
     public void setRecheckLoginName(String recheckLoginName) {
         this.recheckLoginName = recheckLoginName;
+    }
+
+    public Date getRaisingCompleteTime() {
+        return raisingCompleteTime;
+    }
+
+    public void setRaisingCompleteTime(Date raisingCompleteTime) {
+        this.raisingCompleteTime = raisingCompleteTime;
     }
 }
