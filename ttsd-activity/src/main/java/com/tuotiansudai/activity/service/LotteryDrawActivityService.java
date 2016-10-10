@@ -80,7 +80,8 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(2);//"该用户不存在！"
         }
 
-        AccountModel accountModel = accountMapper.lockByLoginName(userModel.getLoginName());
+        accountMapper.lockByLoginName(userModel.getLoginName());
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
         if(accountModel == null){
             return new DrawLotteryResultDto(4);//您还未实名认证，请实名认证后再来抽奖吧！
         }
@@ -88,8 +89,6 @@ public class LotteryDrawActivityService {
         if(accountModel.getPoint() < activityCategory.getPoint()){
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
-
-        userMapper.lockByLoginName(userModel.getLoginName());
 
         LotteryPrize lotteryPrize = lotteryDrawPrize(activityCategory);
         if(lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)){
