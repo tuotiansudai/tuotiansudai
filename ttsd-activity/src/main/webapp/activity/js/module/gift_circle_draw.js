@@ -125,7 +125,12 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
         if(tipMessage.area.length==0) {
             tipMessage.area=['460px', '370px'];
         }
-        layer.open({
+
+        var shade={};
+        if($('.layui-layer-shade').length) {
+            shade={shade: 0};
+        }
+        var option=$.extend({},{
             type: 1,
             title: false,
             area: tipMessage.area,
@@ -134,10 +139,11 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
             shadeClose: true,
             skin:'layer-gift-draw',
             content: '<div class="tip-list">' +
-                '<div class="close-btn go-close"></div>' +
-                '<div class="text-tip">'+tipMessage.info+'</div>' +
-                '<div class="btn-list">'+tipMessage.button+'</div></div>'
-        });
+            '<div class="close-btn go-close"></div>' +
+            '<div class="text-tip">'+tipMessage.info+'</div>' +
+            '<div class="btn-list">'+tipMessage.button+'</div></div>'
+        },shade);
+        layer.open(option);
     }
     //tab switch
     giftCircleDraw.prototype.PrizeSwitch=function() {
