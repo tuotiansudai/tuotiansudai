@@ -39,6 +39,8 @@ import java.util.List;
 @Service
 public class LotteryDrawActivityService {
 
+    private static Logger logger = Logger.getLogger(LotteryDrawActivityService.class);
+
     @Autowired
     private UserMapper userMapper;
 
@@ -63,7 +65,7 @@ public class LotteryDrawActivityService {
     @Value("#{'${activity.point.draw.period}'.split('\\~')}")
     private List<String> activityTime = Lists.newArrayList();
 
-    public DrawLotteryResultDto drawLotteryResultDto(String mobile,ActivityCategory activityCategory){
+    public synchronized DrawLotteryResultDto drawLotteryResultDto(String mobile,ActivityCategory activityCategory){
         mobile = "18888376666";
         Date nowDate = DateTime.now().toDate();
         Date activityStartTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
@@ -82,9 +84,6 @@ public class LotteryDrawActivityService {
         }
 
         AccountModel accountModel = accountMapper.lockByLoginName(userModel.getLoginName());
-        while(accountModel == null){
-            accountModel = accountMapper.lockByLoginName(userModel.getLoginName());
-        }
 
         if(accountModel == null){
             return new DrawLotteryResultDto(4);//您还未实名认证，请实名认证后再来抽奖吧！
@@ -95,15 +94,16 @@ public class LotteryDrawActivityService {
         }
 
         LotteryPrize lotteryPrize = lotteryDrawPrize(activityCategory);
-        if(lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)){
-            couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
-        }else if(lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)){
-            createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
-        }
 
         if(activityCategory.equals(ActivityCategory.POINT_DRAW_1000) || activityCategory.equals(ActivityCategory.POINT_DRAW_10000)){
             accountModel.setPoint(accountModel.getPoint() - activityCategory.getPoint());
             accountMapper.update(accountModel);
+        }
+
+        if(lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)){
+            couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
+        }else if(lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)){
+            createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         }
 
         try {
