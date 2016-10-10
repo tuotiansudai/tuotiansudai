@@ -160,6 +160,11 @@
           text-align: left;
           padding-left: 30px;
           line-height: 35px;
+          li {
+            time {
+              float: right;
+            }
+          }
         }
       }
     }
@@ -253,7 +258,7 @@
         }
         .record-list {
           height: auto;
-          max-height:352px;
+          height:256px;
           ul.record-model {
             padding-left:10px;
             line-height: 19px;
