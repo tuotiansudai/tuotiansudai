@@ -24,22 +24,18 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.RandomUtils;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class LotteryDrawActivityService {
-
-    private static Logger logger = Logger.getLogger(LotteryDrawActivityService.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -65,6 +61,7 @@ public class LotteryDrawActivityService {
     @Value("#{'${activity.point.draw.period}'.split('\\~')}")
     private List<String> activityTime = Lists.newArrayList();
 
+    @Transactional
     public synchronized DrawLotteryResultDto drawLotteryResultDto(String mobile,ActivityCategory activityCategory){
         Date nowDate = DateTime.now().toDate();
         Date activityStartTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
