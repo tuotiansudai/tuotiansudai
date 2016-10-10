@@ -11,7 +11,6 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +42,6 @@ public class MembershipController {
 
     @Autowired
     private UserMembershipService userMembershipService;
-
-    @Autowired
-    private HeroRankingService heroRankingService;
 
     @Autowired
     private MembershipGiveService membershipGiveService;
