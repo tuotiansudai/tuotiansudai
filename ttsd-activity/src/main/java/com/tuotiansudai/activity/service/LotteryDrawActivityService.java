@@ -66,7 +66,6 @@ public class LotteryDrawActivityService {
     private List<String> activityTime = Lists.newArrayList();
 
     public synchronized DrawLotteryResultDto drawLotteryResultDto(String mobile,ActivityCategory activityCategory){
-        mobile = "18888376666";
         Date nowDate = DateTime.now().toDate();
         Date activityStartTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date activityEndTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
