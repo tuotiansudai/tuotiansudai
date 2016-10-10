@@ -56,7 +56,7 @@
         from promotion
         where status = 'APPROVED'
         and deleted = 0
-        and now() BETWEEN start_time and end_time
+        and DATE_FORMAT(now(),'%Y-%m-%d') BETWEEN start_time and end_time
         order by seq, start_time desc
     </select>
 
