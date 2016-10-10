@@ -23,7 +23,7 @@
     <#local mainMenus=[
     {"title":"首页", "url":"/","category":"16顶部导航","navigation":"true"},
     {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","navigation":"true"},
-    {"title":"我要借款", "url":"/want-loan","category":"19顶部导航","navigation":"true"},
+    {"title":"我要借款", "url":"/loan-application","category":"19顶部导航","navigation":"true"},
     {"title":"我的账户", "url":"/account", "category":"18顶部导航","navigation":"true","leftNavs":[
     {"title":"账户总览", "url":"/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
     {"title":"我的投资", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
