@@ -68,12 +68,12 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', '
 			},
 			messages: {
 				moneyText: {
-					required: '请输入借款金额',
+					required: '请填写借款金额',
 					digits: '请输入不小于1的整数',
 					min: '请输入不小于1的整数'
 				},
 				monthText: {
-					required: '请输入借款周期',
+					required: '请填写借款周期',
 					digits: '请输入不小于1的整数',
 					min: '请输入不小于1的整数'
 				},
