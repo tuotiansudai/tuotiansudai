@@ -52,24 +52,34 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', '
 			debug: true,
 			rules: {
 				moneyText: {
-					required: true
+					required: true,
+					digits: true,
+					min: 1
 				},
 				monthText: {
-					required: true
+					required: true,
+					digits: true,
+					min: 1
 				},
 				infoText: {
-					required: true
+					required: true,
+					maxlength: 200
 				}
 			},
 			messages: {
 				moneyText: {
-					required: '请输入借款金额'
+					required: '请输入借款金额',
+					digits: '请输入不小于1的整数',
+					min: '请输入不小于1的整数'
 				},
 				monthText: {
-					required: '请输入借款周期'
+					required: '请输入借款周期',
+					digits: '请输入不小于1的整数',
+					min: '请输入不小于1的整数'
 				},
 				infoText: {
-					required: '请填写信息'
+					required: '请填写信息',
+					maxlength: '字数限制200字以内'
 				}
 			},
 			submitHandler: function(form) {

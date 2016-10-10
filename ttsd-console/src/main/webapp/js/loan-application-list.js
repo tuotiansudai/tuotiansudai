@@ -3,7 +3,7 @@ require(['jquery', 'jquery-ui', 'layer', 'layer-extend', 'layerWrapper', 'bootst
         e.preventDefault();
         var $self = $(this),
             loanApplicationId = $self.attr('data-loanApplication-id'),
-            comment = $self.parents('.table').find('.loanApplication-comment').text();
+            comment = $self.parents('tr').find('.loanApplication-comment').text();
         //向模态框中传值
         $('#loanApplicationId').val(loanApplicationId);
         $('#comment').val(comment);
