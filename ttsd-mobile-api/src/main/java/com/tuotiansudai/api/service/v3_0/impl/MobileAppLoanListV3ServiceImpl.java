@@ -6,7 +6,9 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.ExtraRateListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.LoanResponseDataDto;
+import com.tuotiansudai.api.security.MobileAppCurrentRequest;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
+import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -55,8 +57,11 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
+    @Autowired
+    private AppVersionUtil appVersionUtil;
+
     @Override
-    public BaseResponseDto generateIndexLoan(String loginName,String appVersion) {
+    public BaseResponseDto generateIndexLoan(String loginName) {
         List<ProductType> noContainExperienceLoans = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
         List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType.EXPERIENCE, ProductType._30, ProductType._90, ProductType._180, ProductType._360);
 
@@ -136,7 +141,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
 
         BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
         LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
-        loanListResponseDataDto.setLoanList(convertLoanDto(loginName, Lists.newArrayList(loanModel),appVersion));
+        loanListResponseDataDto.setLoanList(convertLoanDto(loginName, Lists.newArrayList(loanModel)));
         dto.setData(loanListResponseDataDto);
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -144,11 +149,12 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
         return dto;
     }
 
-    private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList,String appVersion) {
+    private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+        String appVersion = MobileAppCurrentRequest.getAppVersion();
         for (LoanModel loan : loanList) {
-            if("3.1.1".equals(appVersion) && loan.getPledgeType() == PledgeType.ENTERPRISE){
+            if(!StringUtils.isEmpty(appVersion) && !appVersionUtil.isRightAppVersion(appVersion) && loan.getPledgeType() == PledgeType.ENTERPRISE){
                 continue;
             }
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();

@@ -3,7 +3,9 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.security.MobileAppCurrentRequest;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
+import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
 import com.tuotiansudai.coupon.service.CouponService;
@@ -17,6 +19,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,6 +55,9 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
+    @Autowired
+    private AppVersionUtil appVersionUtil;
+
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateLoanList(LoanListRequestDto loanListRequestDto) {
         BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
@@ -65,7 +71,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
 
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
-            loanDtoList = convertLoanDto(loanModels,loanListRequestDto.getBaseParam().getUserId(),loanListRequestDto.getBaseParam().getAppVersion());
+            loanDtoList = convertLoanDto(loanModels,loanListRequestDto.getBaseParam().getUserId());
         }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -85,13 +91,16 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         return dto;
     }
 
-    private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList,String loginName,String appVersion) {
+    private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList,String loginName) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+        String appVersion = MobileAppCurrentRequest.getAppVersion();
         for (LoanModel loan : loanList) {
-            if("3.1.1".equals(appVersion) && loan.getPledgeType() == PledgeType.ENTERPRISE){
+
+            if(StringUtils.isNotEmpty(appVersion) && !appVersionUtil.isRightAppVersion(appVersion) && loan.getPledgeType() == PledgeType.ENTERPRISE){
                 continue;
             }
+
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
             loanResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().getProductLine() : "");
