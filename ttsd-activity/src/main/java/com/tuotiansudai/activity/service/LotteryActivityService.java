@@ -143,7 +143,7 @@ public class LotteryActivityService {
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
         userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), ActivityCategory.AUTUMN_PRIZE));
-        return new DrawLotteryResultDto(0,lotteryPrize.name(),lotteryPrize.getActivityCategory().name());
+        return new DrawLotteryResultDto(0,lotteryPrize.name(),lotteryPrize.getActivityCategory().name(),lotteryPrize.getDescription());
     }
 
     private long getCouponId(LotteryPrize lotteryPrize){

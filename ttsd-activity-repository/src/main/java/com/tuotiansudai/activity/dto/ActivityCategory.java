@@ -2,14 +2,19 @@ package com.tuotiansudai.activity.dto;
 
 
 public enum ActivityCategory {
-    AUTUMN_PRIZE("旅游奢侈品活动"),
-    NATIONAL_PRIZE("国庆活动");
+    AUTUMN_PRIZE("旅游奢侈品活动",1),
+    NATIONAL_PRIZE("国庆活动",1),
+    POINT_DRAW_1000("1000积分抽奖",1000),
+    POINT_DRAW_10000("10000积分抽奖",10000);
 
-    ActivityCategory(String description) {
+    ActivityCategory(String description,int point) {
         this.description = description;
+        this.point = point;
     }
 
     String description;
+
+    int point;
 
     public String getDescription() {
         return description;
@@ -17,5 +22,13 @@ public enum ActivityCategory {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
     }
 }
