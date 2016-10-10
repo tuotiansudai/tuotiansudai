@@ -1,8 +1,8 @@
-@import 'variables';
-@import 'coupon_alert';
+@import 'common/variables';
+@import 'common/coupon_alert';
 @import 'index_png';
 @import 'home_page';
-@import "login_tip";
+@import "module/login_tip";
 
 .layui-layer-tips .layui-layer-content{
   width:235px;
