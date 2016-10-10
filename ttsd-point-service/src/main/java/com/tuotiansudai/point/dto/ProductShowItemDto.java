@@ -42,29 +42,29 @@ public class ProductShowItemDto {
     }
 
     public ProductShowItemDto(ExchangeCouponView exchangeCouponView) {
-        this.id = exchangeCouponView.getId();
+        this.id = exchangeCouponView.getCouponModel().getId();
         this.seq = exchangeCouponView.getSeq();
         this.imageUrl = exchangeCouponView.getImageUrl();
-        switch (exchangeCouponView.getCouponType()) {
+        switch (exchangeCouponView.getCouponModel().getCouponType()) {
             case RED_ENVELOPE:
                 this.itemType = ItemType.RED_ENVELOPE;
-                this.name = AmountConverter.convertCentToString(exchangeCouponView.getAmount()) + "元现金红包";
-                this.pictureDescription = String.valueOf(exchangeCouponView.getAmount());
+                this.name = AmountConverter.convertCentToString(exchangeCouponView.getCouponModel().getAmount()) + "元现金红包";
+                this.pictureDescription = String.valueOf(exchangeCouponView.getCouponModel().getAmount());
                 break;
             case INVEST_COUPON:
                 this.itemType = ItemType.INVEST_COUPON;
-                this.name = AmountConverter.convertCentToString(exchangeCouponView.getAmount()) + "元投资体验券";
-                this.pictureDescription = String.valueOf(exchangeCouponView.getAmount());
+                this.name = AmountConverter.convertCentToString(exchangeCouponView.getCouponModel().getAmount()) + "元投资体验券";
+                this.pictureDescription = String.valueOf(exchangeCouponView.getCouponModel().getAmount());
                 break;
             case INTEREST_COUPON:
                 this.itemType = ItemType.INTEREST_COUPON;
-                this.name = exchangeCouponView.getRate() * 100 + "%加息券";
-                this.pictureDescription = String.valueOf(exchangeCouponView.getRate() * 100);
+                this.name = exchangeCouponView.getCouponModel().getRate() * 100 + "%加息券";
+                this.pictureDescription = String.valueOf(exchangeCouponView.getCouponModel().getRate() * 100);
                 break;
         }
-        this.leftCount = exchangeCouponView.getTotalCount() - exchangeCouponView.getIssuedCount();
+        this.leftCount = exchangeCouponView.getCouponModel().getTotalCount() - exchangeCouponView.getCouponModel().getIssuedCount();
         this.points = exchangeCouponView.getExchangePoint();
-        this.updatedTime = exchangeCouponView.getUpdatedTime();
+        this.updatedTime = exchangeCouponView.getCouponModel().getUpdatedTime();
     }
 
     public long getId() {
