@@ -180,16 +180,16 @@ public class LoanServiceImpl implements LoanService {
             investDto.setLoginName(investModel.getLoginName());
             investDto.setAmount(String.valueOf(investModel.getAmount()));
             try {
-                if (this.cancelPayBack(investDto,investModel.getId()).isSuccess()) {
+                if (this.cancelPayBack(investDto, investModel.getId()).isSuccess()) {
                     logger.debug(investModel.getId() + " cancel payBack is success!");
                 } else {
                     logger.debug(investModel.getId() + " cancel payBack is fail!");
                 }
             } catch (Exception e) {
-                logger.error(e.getLocalizedMessage(),e);
+                logger.error(e.getLocalizedMessage(), e);
             }
         }
-        return  this.updateLoanStatus(loanId,LoanStatus.CANCEL);
+        return this.updateLoanStatus(loanId, LoanStatus.CANCEL);
     }
 
     @Transactional
@@ -214,13 +214,13 @@ public class LoanServiceImpl implements LoanService {
                 MerUpdateProjectResponseModel responseModel = paySyncClient.send(MerUpdateProjectMapper.class,
                         merUpdateProjectRequestModel,
                         MerUpdateProjectResponseModel.class);
-                updateSuccess =  responseModel.isSuccess();
+                updateSuccess = responseModel.isSuccess();
                 payDataDto.setCode(responseModel.getRetCode());
                 payDataDto.setMessage(responseModel.getRetMsg());
             }
 
             if (updateSuccess) {
-                if(Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.CANCEL).contains(loanStatus)) {
+                if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.CANCEL).contains(loanStatus)) {
                     loanModel.setRecheckTime(new Date());
                 }
                 loanModel.setStatus(loanStatus);
@@ -243,7 +243,7 @@ public class LoanServiceImpl implements LoanService {
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
 
-        if(redisWrapperClient.setnx(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId, "1")) {
+        if (redisWrapperClient.setnx(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId, "1")) {
             try {
                 ProjectTransferResponseModel umPayReturn = this.doLoanOut(loanId);
                 payDataDto.setStatus(umPayReturn.isSuccess());
@@ -273,7 +273,7 @@ public class LoanServiceImpl implements LoanService {
             throw new PayException("loan is not exists [" + loanId + "]");
         }
 
-        if (LoanStatus.REPAYING == loan.getStatus()){
+        if (LoanStatus.REPAYING == loan.getStatus()) {
             logger.warn("loan has already been outed. [" + loanId + "]");
             ProjectTransferResponseModel umPayReturn = new ProjectTransferResponseModel();
             umPayReturn.setRetCode(AutoLoanOutJob.ALREADY_OUT);
@@ -281,7 +281,7 @@ public class LoanServiceImpl implements LoanService {
             return umPayReturn;
         }
 
-        if (LoanStatus.RECHECK != loan.getStatus()){
+        if (LoanStatus.RECHECK != loan.getStatus()) {
             throw new PayException("loan is not ready for recheck [" + loanId + "]");
         }
 
@@ -454,24 +454,25 @@ public class LoanServiceImpl implements LoanService {
             }
         }
     }
+
     private void processLoanStatusForLoanOut(LoanModel loan) {
         BaseDto<PayDataDto> dto = updateLoanStatus(loan.getId(), LoanStatus.REPAYING);
-        if(dto.getData().getStatus()){
+        if (dto.getData().getStatus()) {
             LoanModel loan4Update = new LoanModel();
             loan4Update.setId(loan.getId());
             loan4Update.setRecheckTime(new Date());
             loanMapper.update(loan4Update);
-        }else{
-            logger.error("update loan status failed : "+dto.getData().getMessage());
+        } else {
+            logger.error("update loan status failed : " + dto.getData().getMessage());
         }
     }
 
-    private BaseDto<PayDataDto> cancelPayBack(InvestDto dto,long investId) {
+    private BaseDto<PayDataDto> cancelPayBack(InvestDto dto, long investId) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCancelPayBackRequest(dto.getLoanId(),
-                MessageFormat.format(CANCEL_INVEST_PAY_BACK_ORDER_ID_TEMPLATE,String.valueOf(investId),String.valueOf(System.currentTimeMillis())),
+                MessageFormat.format(CANCEL_INVEST_PAY_BACK_ORDER_ID_TEMPLATE, String.valueOf(investId), String.valueOf(System.currentTimeMillis())),
                 accountModel.getPayUserId(), String.valueOf(dto.getAmount()));
         try {
             ProjectTransferResponseModel responseModel = paySyncClient.send(ProjectTransferMapper.class, requestModel, ProjectTransferResponseModel.class);

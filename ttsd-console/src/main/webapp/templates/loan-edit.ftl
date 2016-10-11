@@ -51,9 +51,7 @@
                     <div class="col-sm-4">
                         <select name="loanType" class="selectpicker b-width" <#if !(["PREHEAT", "WAITING_VERIFY", "RAISING"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>>
                             <#list loanTypes as loanType>
-                                <#list loanTypes as loanType>
-                                    <option value="${loanType.name()}" <#if loanType==loan.loan.loanType>selected="selected"</#if>>${loanType.getName()}</option>
-                                </#list>
+                                <option value="${loanType.name()}" <#if loanType==loan.loan.loanType>selected="selected"</#if>>${loanType.getName()}</option>
                             </#list>
                         </select>
                     </div>
@@ -169,7 +167,7 @@
                         <div class='input-group date' id='fundraisingStartTime'>
                             <input name="fundraisingStartTime" type='text' class="form-control" datatype="date" errormsg="筹款启动时间需要正确填写"
                                    value="${(loan.loan.fundraisingStartTime?string('yyyy-MM-dd HH:mm'))!}"
-                                   <#if !(["PREHEAT", "WAITING_VERIFY", "RAISING"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>/>
+                                   <#if "WAITING_VERIFY" != loan.loan.status>disabled="disabled"</#if>/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -184,7 +182,7 @@
                         <div class='input-group date' id='fundraisingEndTime'>
                             <input name="fundraisingEndTime" type='text' class="form-control" datatype="date" errormsg="筹款截止时间需要正确填写"
                                    value="${(loan.loan.fundraisingEndTime?string('yyyy-MM-dd HH:mm'))!}"
-                                   <#if !(["PREHEAT", "WAITING_VERIFY", "RAISING"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>/>
+                                   <#if !(["WAITING_VERIFY", "PREHEAT", "RAISING", "RECHECK"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -235,7 +233,7 @@
                 <div class="col-sm-2 checkbox" id="extraSource">
                     <#list extraSources as source>
                         <label>
-                            <input name="extraSource" type="checkbox" value="${source.name()}" <#if loan.loanDetails.extraSource?seq_contains(source)>checked="checked"</#if>>${source.name()}</input>
+                            <input name="extraSource" type="checkbox" value="${source.name()}" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if> <#if loan.loanDetails.extraSource?seq_contains(source)>checked="checked"</#if>>${source.name()}</input>
                         </label>
                     </#list>
                 </div>
@@ -333,31 +331,46 @@
                 <input name="contractId" type="hidden" value="${loan.loan.contractId?c}"/><!-- 默认合同ID -->
 
                 <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
-                    <button type="button" class="btn jq-btn-form btn-primary" data-url="/project-manage/loan/update">保存</button>
+                    <button type="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/update">保存</button>
                 </@security.authorize>
 
                 <#if loan.loan.status == "WAITING_VERIFY">
                     <@security.authorize access="hasAnyAuthority('OPERATOR')">
-                        <button type="button" class="btn jq-btn-form btn-primary" data-url="/project-manage/loan/apply-audit">提交审核</button>
+                        <button type="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/apply-audit">提交审核</button>
                     </@security.authorize>
 
                     <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                        <button type="button" class="btn jq-btn-form btn-primary" data-url="/project-manage/loan/open">审核通过</button>
+                        <button type="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/open">审核通过</button>
                         <button type="button" class="btn jq-btn-refuse btn-danger" data-url="/refuse?taskId=PROJECT-${loan.loan.id?c}">审核拒绝</button>
                     </@security.authorize>
                 </#if>
 
                 <#if loan.loan.status == "RECHECK">
                     <#if loan.loan.raisingCompleteTime??>
-                        <button TYPE="button" class="btn jq-btn-form btn-primary" data-url="/project-manage/loan/recheck">放款</button>
+                        <button TYPE="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/recheck">放款</button>
                     <#else>
-                        <button TYPE="button" class="btn jq-btn-form btn-primary" data-url="/project-manage/loan/delay">延期</button>
-                        <button TYPE="button" class="btn jq-btn-form btn-primary" data-url="/project-manage/loan/cancel">流标</button>
+                        <button TYPE="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/delay">延期</button>
+                        <button TYPE="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/cancel">流标</button>
                     </#if>
                 </#if>
             </div>
         </div>
     </form>
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5>确认修改？</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-default btn-submit">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- content area end -->
 </@global.main>

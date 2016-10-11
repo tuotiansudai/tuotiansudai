@@ -29,7 +29,7 @@
                     <div class="col-sm-2">
                         <input name="agent" type="text" class="form-control ui-autocomplete-input" datatype="*"
                                autocomplete="off"
-                               placeholder="" errormsg="代理用户不能为空">
+                               errormsg="代理用户不能为空">
                     </div>
                 </div>
 
@@ -38,9 +38,8 @@
 
                     <div class="col-sm-3">
                         <select name="loanType" class="selectpicker b-width">
-                            <option value="">请选择</option>
                             <#list loanTypes as loanType>
-                                <option value="${loanType.name()}">${loanType.getName()}</option>
+                                <option value="${loanType.name()}" <#if loanType_index == 0 >selected="selected"</#if>>${loanType.getName()}</option>
                             </#list>
                         </select>
                     </div>
@@ -53,7 +52,7 @@
                         <select name="productType" class="selectpicker">
                             <option value="">请选择</option>
                             <#list productTypes as productType>
-                                <option value="${productType.name()}">${productType.getDuration()}</option>
+                                <option value="${productType.name()}" <#if productType_index == 0 >selected="selected"</#if>>${productType.getDuration()}</option>
                             </#list>
                         </select>
                     </div>
@@ -64,8 +63,7 @@
                     <label class="col-sm-2 control-label">预计出借金额（元）: </label>
 
                     <div class="col-sm-3">
-                        <input name="loanAmount" type="text" class="form-control jq-money" placeholder=""
-                               datatype="money_fl"
+                        <input name="loanAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
                                errormsg="预计出借金额需要正确填写">
                     </div>
                 </div>
@@ -74,8 +72,7 @@
                     <label class="col-sm-2 control-label">单笔最小投资金额（元）: </label>
 
                     <div class="col-sm-3">
-                        <input name="minInvestAmount" type="text" class="form-control jq-money" value="50.00"
-                               datatype="money_fl"
+                        <input name="minInvestAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
                                errormsg="单笔最小投资金额需要正确填写">
                     </div>
                 </div>
@@ -84,8 +81,7 @@
                     <label class="col-sm-2 control-label">投资递增金额（元）: </label>
 
                     <div class="col-sm-3">
-                        <input name="investIncreasingAmount" type="text" class="form-control jq-money" value="50.00"
-                               datatype="money_fl"
+                        <input name="investIncreasingAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
                                errormsg="投资递增金额需要正确填写">
                     </div>
                 </div>
@@ -94,8 +90,7 @@
                     <label class="col-sm-2 control-label">个人最大投资金额（元）: </label>
 
                     <div class="col-sm-3">
-                        <input name="maxInvestAmount" type="text" class="form-control jq-money" value="999999.00"
-                               datatype="money_fl"
+                        <input name="maxInvestAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
                                errormsg="个人最大投资金额需要正确填写">
                     </div>
                 </div>
@@ -106,9 +101,7 @@
                     <div class="col-sm-2">
                         <select name="activityType" class="selectpicker">
                             <#list activityTypes as activityType>
-                                <option value="${activityType.name()}">
-                                ${activityType.getActivityTypeName()}
-                                </option>
+                                <option value="${activityType.name()}" <#if activityType_index == 0 >selected="selected"</#if>>${activityType.getActivityTypeName()}</option>
                             </#list>
                         </select>
                     </div>
@@ -134,8 +127,7 @@
                     <label class="col-sm-2 control-label">基本利率（%）: </label>
 
                     <div class="col-sm-3">
-                        <input name="baseRate" type="text" class="form-control jq-money"
-                               datatype="money_fl" errormsg="基本利率需要正确填写">
+                        <input name="baseRate" type="text" class="form-control rate" datatype="/^[1-9]\d*(\.\d{1,2})?$/" errormsg="基本利率需要正确填写">
                     </div>
                 </div>
 
@@ -143,11 +135,8 @@
                     <label class="col-sm-2 control-label">活动利率（%）: </label>
 
                     <div class="col-sm-3">
-                        <input name="activityRate" type="text" class="form-control jq-money" datatype="money_fl"
+                        <input name="activityRate" type="text" class="form-control rate" datatype="/^\d+(\.\d{1,2})?$/" value="0.0"
                                errormsg="活动利率需要正确填写">
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-control-static">适用于所有标(0 表示无),站点前端以(基本利率%+加息利率%)方式展现,如(10%+2%)。</div>
                     </div>
                 </div>
 
@@ -243,19 +232,26 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label"></label>
-            <div class="col-sm-4 form-error">
-            </div>
-        </div>
-
-        <div class="form-group">
             <label class="col-sm-2 control-label">操作: </label>
             <div class="col-sm-4">
-                <button type="button" class="btn jq-btn-form btn-primary" data-url="/project-manage/loan/create">保存</button>
+                <button type="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/create">保存</button>
             </div>
         </div>
-
     </form>
+    <!-- Modal -->
+    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5>确认提交？</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-default btn-submit">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- content area end -->
 </@global.main>

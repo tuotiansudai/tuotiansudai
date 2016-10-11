@@ -25,17 +25,13 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
         var pledgeTypeElement = $('input[name="pledgeType"]'); //标的抵押类型Element
         var extraElement = $('#extra'); //加息开关
         var extraRuleElement = $('.extra-rate'); //加息开关
-        var extraSourceElement = $('.extra-source'); //加息开关
-
-        var formErrorElement = $('.form-error');
-
+        var extraSourceElement = $('.extra-source'); //extraSource
+        var $formSubmitBtn = $('.form-submit-btn');
+        var $currentFormSubmitBtn;
         var sectionOneElement = $('#section-one'); //项目信息Section
         var sectionTwoElement = $('#section-two'); //房产车辆抵押借款人信息Section 或 税易经营性借款企业借款人信息Section
         var sectionThreeElement = $('#section-three'); //抵押物信息信息Section
-
         var loanTitleTemplateHtml;
-
-
 
         //修改section
         var changeSection = function () {
@@ -196,7 +192,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
 
         var uploadFile = []; //存放上传资料
         // 循环上传图片分配对应位置
-        var indexPic = function () {
+        var initUploadImagesData = function () {
             uploadFile = [];
             var _url = '';
             var _parent = $('.upload-box');
@@ -233,40 +229,45 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
             }
         });
 
-        // 充值金额保留小数点后2位
-        var rep = /^\d+$/;
-        var rep_point = /^([0-9]+\.[0-9]{2})[0-9]*$/;
-        var rep_point1 = /^[0-9]+\.[0-9]$/;
-        $('.jq-money').blur(function () {
-            var _this = $(this)
-            var text = _this.val();
-            var num = text.replace(rep_point, "$1");
-            if (rep.test(text)) {
-                _this.val(text + '.00').removeClass('Validform_error');
-            } else if (rep_point.test(text)) {
-                _this.val(num).removeClass('Validform_error');
-            } else if (rep_point1.test(text)) {
-                _this.val(text + '0').removeClass('Validform_error');
-            } else {
-                _this.val('').addClass('Validform_error');
+
+        $('input.amount,input.rate').blur(function() {
+            var self = $(this);
+            var value = self.val().trim();
+            if (!$.isNumeric(value)) {
+                self.val('');
+                return false;
             }
+
+            var nums = value.split('.');
+            var integer = nums[0] === '' ? 0 : parseInt(nums[0]);
+            var fraction = nums.length > 1 && nums[1] !== '' ? parseInt(nums[1].substr(0, 2)) : 0;
+            self.val(integer + '.' + fraction);
+
         });
 
-        var formFlag = false;
-        $(".jq-form").Validform({
-            btnSubmit: '.jq-btn-form',
+        var fromValid = true;
+        $("form").Validform({
+            btnSubmit: '.form-submit-btn',
             tipSweep: true,
             focusOnError: false,
             tiptype: function (msg, o, cssctl) {
-                if (o.type == 3) {
-                    var msg = o.obj.attr('errormsg') || msg;
-                    showErrorMessage(msg, o.obj);
+                //msg：提示信息;
+                //o:{obj:*,type:*,curform:*},
+                //obj指向的是当前验证的表单元素（或表单对象，验证全部验证通过，提交表单时o.obj为该表单对象），
+                //type指示提示的状态，值为1、2、3、4， 1：正在检测/提交数据，2：通过验证，3：验证失败，4：提示ignore状态,
+                //curform为当前form对象;
+                //cssctl:内置的提示信息样式控制函数，该函数需传入两个参数：显示提示信息的对象 和 当前提示的状态（既形参o中的type）;
+                var $ele = $(o.obj);
+                var invalid = o.type === 3;
+                if (invalid) { // 3校验失败
+                    var errorMessage = $ele.attr('errormsg') || "请检查输入是否正确";
+                    showErrorMessage(errorMessage, $ele);
                 }
             },
-            //beforeSubmit
-            beforeCheck: function (curform) {
-                $('.form-error').html('');
-
+            beforeCheck: function(form) {
+                clearErrorMessage();
+            },
+            beforeSubmit: function (curform) {
                 if (!loanTypeElement.val()) {
                     showErrorMessage('请选择标的类型', loanTypeElement);
                     return false;
@@ -277,131 +278,116 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     return false;
                 }
 
-                var activityDesc = $('.jq-activity-desc', curform).val();
-                if ($('.jq-activity').prop('checked') && activityDesc.trim() == "") {
-                    showErrorMessage('您选择了活动专享,标的所属活动必须填写', $('.jq-activity-desc', curform));
-                    $('.jq-activity-desc').prop('disabled', false);
+                if (parseFloat($('input[name="baseRate"]')) === 0) {
+                    showErrorMessage('基本利率不能为0', $('input[name="baseRate"]'));
                     return false;
                 }
 
-                var duration = $('.jq-duration', curform).val();
-                if (duration == '') {
-                    showErrorMessage('请选择借款期限', $('.jq-duration', curform));
+                var activityDesc = $('input[name="activityDesc"]');
+                if ($('input[name="activity"]').prop('checked') && activityDesc.val().trim() === '') {
+                    showErrorMessage('标的所属活动必须填写', activityDesc);
                     return false;
                 }
 
-                var loanAmount = parseFloat($('.jq-pay', curform).val());
-                if (loanAmount <= 0) {
-                    showErrorMessage('预计出借金额应大于0', $('.jq-pay', curform));
+                if (parseFloat($('input[name="minInvestAmount"]').val()) > parseFloat($('input[name="maxInvestAmount"]'))) {
+                    showErrorMessage('最小投资金额不得大于最大投资金额', $('input[name="minInvestAmount"]'));
                     return false;
                 }
-                var increasingPay = parseFloat($('.jq-add-pay', curform).val());
-                if (increasingPay <= 0) {
-                    showErrorMessage('投资递增金额应大于0', $('.jq-add-pay', curform));
+                if (parseFloat($('input[name="loanAmount"]')) < parseFloat($('input[name="maxInvestAmount"]'))) {
+                    showErrorMessage('最大投资金额不得大于预计出借金额', $('input[name="maxInvestAmount"]'));
                     return false;
                 }
-                var minPay = parseFloat($('.jq-min-pay', curform).val());
-                if (minPay <= 0) {
-                    showErrorMessage('最小投资金额应大于0', $('.jq-min-pay', curform));
-                    return false;
-                }
-                var maxPay = parseFloat($('.jq-max-pay', curform).val());
-                if (minPay > maxPay) {
-                    showErrorMessage('最小投资金额不得大于最大投资金额', $('.jq-min-pay', curform));
-                    return false;
-                }
-                if (loanAmount < maxPay) {
-                    showErrorMessage('最大投资金额不得大于预计出借金额', $('.jq-max-pay', curform));
-                    return false;
-                }
+
                 if (extraElement.length > 0 && extraElement.is(':checked')) {
                     if ($('input[name="extraSource"]:checked').length <= 0) {
-                        showErrorMessage("投资奖励渠道必须选择");
+                        showErrorMessage("投资奖励渠道必须选择", $('input[name="extraSource"]'));
                         return false;
                     }
                 }
             },
-            callback: function (form) {
-                formFlag = true;
+            callback:function(data){
                 return false;
             }
         });
 
-        //显示警告提示
-        var currentErrorObj = null;
+        var showErrorMessage = function (message, $ele) {
+            fromValid = false;
+            var $error = $('<span class="alert alert-danger" role="alert"></span>');
+            $error.html(message);
+            $ele.parents('.form-group').addClass("has-error").append($error);
+            $ele.focus();
+        };
 
-        function showErrorMessage(msg, obj) {
-            currentErrorObj = obj;
-            var htm = '<div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <span class="txt">建标失败：' + msg + '</span></div>';
-            $('.form-error').append(htm);
-        }
+        var clearErrorMessage = function() {
+            fromValid = true;
+            $('.alert-danger').remove();
+            $('.form-group').removeClass('has-error');
+        };
 
-        //关闭警告提示
-        $('.form-error').on('click', function () {
-            $('.jq-btn-form').removeAttr('disabled');
-            if (!!currentErrorObj) {
-                currentErrorObj.focus();
+        $('#confirm-modal').find('.btn-submit').click(function () {
+            $formSubmitBtn.attr('disabled', 'disabled');
+            initUploadImagesData();
+
+            var value = loanNameElement.val();
+            var url = $currentFormSubmitBtn.data("url");
+            var requestData = {};
+
+            if ("房产抵押借款" == value) {
+                requestData = generateRequestParams({
+                    'loan': loanParam,
+                    'loanDetails': loanDetailsParam,
+                    'loanerDetails': loanerDetailsParam,
+                    'pledgeHouse': pledgeHouseParam
+                });
             }
+            if ("车辆抵押借款" == value) {
+                requestData = generateRequestParams({
+                    'loan': loanParam,
+                    'loanDetails': loanDetailsParam,
+                    'loanerDetails': loanerDetailsParam,
+                    'pledgeVehicle': pledgeVehicleParam
+                });
+            }
+            if ("税易经营性借款" == value) {
+                requestData = generateRequestParams({
+                    'loan': loanParam,
+                    'loanDetails': loanDetailsParam,
+                    'loanerEnterpriseDetails': loanerEnterpriseDetailsParam,
+                    'pledgeEnterprise': pledgeEnterpriseParam
+                });
+            }
+
+            $.ajax(
+                {
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify(requestData),
+                    contentType: 'application/json; charset=UTF-8'
+                }
+            ).done(function (res) {
+                $currentFormSubmitBtn.removeAttr('disabled');
+                if (res.data.status) {
+                    fromValid = true;
+                    location.href = '/project-manage/loan-list';
+                } else {
+                    fromValid = false;
+                    var msg = res.data.message || '服务端校验失败';
+                    showErrorMessage(msg);
+                }
+            }).fail(function () {
+                $currentFormSubmitBtn.removeAttr('disabled');
+            })
         });
 
         //提交表单
-        $('.jq-btn-form').click(function () {
-            if (!confirm("确认要执行此操作吗?")) {
-                return;
+        $formSubmitBtn.click(function () {
+            $currentFormSubmitBtn = $(this);
+            if (fromValid) {
+                $('#confirm-modal').modal('show');
             }
-            if (formFlag) {
-                $(this).attr('disabled', 'disabled');
-                indexPic();
 
-                var value = loanNameElement.val();
-                var url = $(this).data("url");
-                var requestData = {};
-
-                if ("房产抵押借款" == value) {
-                    requestData = generateRequestParams({
-                        'loan': loanParam,
-                        'loanDetails': loanDetailsParam,
-                        'loanerDetails': loanerDetailsParam,
-                        'pledgeHouse': pledgeHouseParam
-                    });
-                }
-                if ("车辆抵押借款" == value) {
-                    requestData = generateRequestParams({
-                        'loan': loanParam,
-                        'loanDetails': loanDetailsParam,
-                        'loanerDetails': loanerDetailsParam,
-                        'pledgeVehicle': pledgeVehicleParam
-                    });
-                }
-                if ("税易经营性借款" == value) {
-                    requestData = generateRequestParams({
-                        'loan': loanParam,
-                        'loanDetails': loanDetailsParam,
-                        'loanerEnterpriseDetails': loanerEnterpriseDetailsParam,
-                        'pledgeEnterprise': pledgeEnterpriseParam
-                    });
-                }
-                $.ajax({
-                        url: url,
-                        type: 'POST',
-                        dataType: 'json',
-                        data: JSON.stringify(requestData),
-                        contentType: 'application/json; charset=UTF-8'
-                    })
-                    .done(function (res) {
-                        if (res.data.status) {
-                            formFlag = true;
-                            location.href = '/project-manage/loan-list';
-                        } else {
-                            formFlag = false;
-                            var msg = res.data.message || '服务端校验失败';
-                            showErrorMessage(msg);
-                        }
-                    })
-                    .fail(function () {
-                        $('.jq-btn-form').removeAttr('disabled');
-                    })
-            }
+            return false;
         });
 
         var uncheckedExtraRate = function () {
@@ -416,14 +402,14 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
         };
 
         var checkedExtraRate = function () {
-            formErrorElement.html('');
+            clearErrorMessage();
             if (pledgeTypeElement.val() === 'ENTERPRISE') {
-                showErrorMessage('项目不支持');
+                showErrorMessage('项目不支持', extraElement);
                 extraElement.prop('checked', false);
                 return;
             }
             if (['_90', '_180', '_360'].indexOf(productTypeElement.val()) === -1) {
-                showErrorMessage('借款期限未选择或选择为30天，不能操作此选项');
+                showErrorMessage('借款期限未选择或选择为30天，不能操作此选项', extraElement);
                 extraElement.prop('checked', false);
                 return;
             }
@@ -450,11 +436,11 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                         extraRuleElement.removeClass('hidden');
                         extraSourceElement.removeClass('hidden');
                     } else {
-                        showErrorMessage('服务端校验失败');
+                        showErrorMessage('服务端校验失败', extraElement);
                     }
                 })
                 .fail(function () {
-                    showErrorMessage('服务端操作失败');
+                    showErrorMessage('服务端操作失败', extraElement);
                 });
         };
 

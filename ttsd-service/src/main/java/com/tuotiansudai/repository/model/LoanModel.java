@@ -190,6 +190,8 @@ public class LoanModel implements Serializable {
         this.id = loanId;
         this.name = baseRequestDto.getName();
         this.agentLoginName = baseRequestDto.getAgent();
+        this.loanerUserName = loanCreateRequestDto.getLoanerDetails() != null ? loanCreateRequestDto.getLoanerDetails().getUserName() : "";
+        this.loanerIdentityNumber = loanCreateRequestDto.getLoanerDetails() != null ? loanCreateRequestDto.getLoanerDetails().getIdentityNumber() : "";
         this.productType = baseRequestDto.getProductType();
         this.pledgeType = baseRequestDto.getPledgeType();
         this.type = baseRequestDto.getLoanType();
@@ -208,8 +210,6 @@ public class LoanModel implements Serializable {
         this.createdLoginName = baseRequestDto.getCreatedBy();
         this.contractId = baseRequestDto.getContractId();
         this.loanerLoginName = "";
-        this.loanerUserName = "";
-        this.loanerIdentityNumber = "";
         this.descriptionHtml = "";
         this.descriptionText = "";
         this.showOnHome = true;
@@ -219,6 +219,8 @@ public class LoanModel implements Serializable {
         LoanCreateBaseRequestDto baseRequestDto = loanCreateRequestDto.getLoan();
         this.name = baseRequestDto.getName();
         this.agentLoginName = baseRequestDto.getAgent();
+        this.loanerUserName = loanCreateRequestDto.getLoanerDetails() != null ? loanCreateRequestDto.getLoanerDetails().getUserName() : "";
+        this.loanerIdentityNumber = loanCreateRequestDto.getLoanerDetails() != null ? loanCreateRequestDto.getLoanerDetails().getIdentityNumber() : "";
         this.productType = baseRequestDto.getProductType();
         this.pledgeType = baseRequestDto.getPledgeType();
         this.type = baseRequestDto.getLoanType();

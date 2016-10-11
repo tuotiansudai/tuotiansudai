@@ -24,7 +24,7 @@
         <label class="col-sm-2 control-label">借款人年龄: </label>
 
         <div class="col-sm-4">
-            <input name="age" value="${loan.loanerDetails.age}" type="text" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" errormsg="借款人年龄填写有误">
+            <input name="age" value="${loan.loanerDetails.age}" type="text" class="form-control ui-autocomplete-input" datatype="n1-3" autocomplete="off" errormsg="借款人年龄填写有误" maxlength="3">
         </div>
     </div>
 
