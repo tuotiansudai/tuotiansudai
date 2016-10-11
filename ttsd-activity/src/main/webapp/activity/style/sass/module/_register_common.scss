@@ -1,4 +1,5 @@
 @import 'register_png';
+
 .register-common-frame {
   .landing-phone-section-header {
     display: none;
@@ -38,8 +39,8 @@
       background: rgba(255, 255, 255, 0.8);
       height: auto;
       overflow: auto;
-      margin: 15px;
       margin-top:0;
+      margin-bottom: 15px;
       .register-user-form {
         padding: 10px 20px;
       }

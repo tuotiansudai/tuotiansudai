@@ -245,7 +245,7 @@ def build_versioning_file_mapping(path):
         file_name = full_path_file.split('/')[-1]
         name_parts = file_name.split('.')
         if len(name_parts) == 4:  # config.77248946.min.js
-            key, value = "{}.min".format(name_parts[0]), '.'.join(name_parts[:-1])
+            key, value = "{0}.min".format(name_parts[0]), '.'.join(name_parts[:-1])
             name2path[key] = value
     return name2path
 
@@ -254,7 +254,7 @@ def replace_versioned_config_file(name2path, path):
     import re
 
     try:
-        with open('{}{}.js'.format(path, name2path.get('config.min')), 'r+') as config_file:
+        with open('{0}{1}.js'.format(path, name2path.get('config.min')), 'r+') as config_file:
             content = config_file.read()
             for key, value in name2path.items():
                 content = re.sub(key, value, content)

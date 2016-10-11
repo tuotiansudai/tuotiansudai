@@ -47,6 +47,9 @@ a:hover {
     font-size:0;
 }
 
+.table-responsive {
+    overflow-x: inherit;
+}
 .top-menu {
     background: url(/images/nav_bg.jpg) repeat-x;
 }
