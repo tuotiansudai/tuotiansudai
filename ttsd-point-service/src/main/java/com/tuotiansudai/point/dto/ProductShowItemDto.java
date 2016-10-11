@@ -1,22 +1,17 @@
 package com.tuotiansudai.point.dto;
 
-import com.google.common.base.Joiner;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
-import com.tuotiansudai.point.repository.model.ItemType;
+import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
-import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class ProductShowItemDto {
 
     private long id;
     private int seq;
-    private ItemType itemType;
+    private GoodsType goodsType;
     private String name;
     private String description;
     private String imageUrl;
@@ -28,10 +23,10 @@ public class ProductShowItemDto {
     public ProductShowItemDto() {
     }
 
-    public ProductShowItemDto(ProductModel productModel, ItemType itemType, String pictureDescription) {
+    public ProductShowItemDto(ProductModel productModel, GoodsType goodsType, String pictureDescription) {
         this.id = productModel.getId();
         this.seq = productModel.getSeq();
-        this.itemType = itemType;
+        this.goodsType = goodsType;
         this.name = productModel.getName();
         this.description = productModel.getDescription();
         this.imageUrl = productModel.getImageUrl();
@@ -41,23 +36,23 @@ public class ProductShowItemDto {
         this.updatedTime = productModel.getUpdatedTime();
     }
 
-    public ProductShowItemDto(ExchangeCouponView exchangeCouponView) {
-        this.id = exchangeCouponView.getCouponModel().getId();
+    public ProductShowItemDto(ExchangeCouponView exchangeCouponView, long productId) {
+        this.id = productId;
         this.seq = exchangeCouponView.getSeq();
         this.imageUrl = exchangeCouponView.getImageUrl();
         switch (exchangeCouponView.getCouponModel().getCouponType()) {
             case RED_ENVELOPE:
-                this.itemType = ItemType.RED_ENVELOPE;
+                this.goodsType = GoodsType.COUPON;
                 this.name = AmountConverter.convertCentToString(exchangeCouponView.getCouponModel().getAmount()) + "元现金红包";
                 this.pictureDescription = String.valueOf(exchangeCouponView.getCouponModel().getAmount());
                 break;
             case INVEST_COUPON:
-                this.itemType = ItemType.INVEST_COUPON;
+                this.goodsType = GoodsType.COUPON;
                 this.name = AmountConverter.convertCentToString(exchangeCouponView.getCouponModel().getAmount()) + "元投资体验券";
                 this.pictureDescription = String.valueOf(exchangeCouponView.getCouponModel().getAmount());
                 break;
             case INTEREST_COUPON:
-                this.itemType = ItemType.INTEREST_COUPON;
+                this.goodsType = GoodsType.COUPON;
                 this.name = exchangeCouponView.getCouponModel().getRate() * 100 + "%加息券";
                 this.pictureDescription = String.valueOf(exchangeCouponView.getCouponModel().getRate() * 100);
                 break;
@@ -83,12 +78,12 @@ public class ProductShowItemDto {
         this.seq = seq;
     }
 
-    public ItemType getItemType() {
-        return itemType;
+    public GoodsType getGoodsType() {
+        return goodsType;
     }
 
-    public void setItemType(ItemType itemType) {
-        this.itemType = itemType;
+    public void setGoodsType(GoodsType goodsType) {
+        this.goodsType = goodsType;
     }
 
     public String getName() {

@@ -26,7 +26,7 @@
     </select>
 
     <update id="update" parameterType="UserAddressModel">
-        UPDATE `aa`.`user_address`
+        UPDATE user_address
         SET contact = #{contact},
         mobile = #{mobile},
         address = #{address}
@@ -35,7 +35,7 @@
     </update>
 
     <select id="findByLoginNameAndId" resultMap="userAddressResultMap">
-        SELECT *FROM `aa`.`user_address`
+        SELECT * FROM user_address
         WHERE id = #{id}
         AND login_name = #{loginName}
     </select>

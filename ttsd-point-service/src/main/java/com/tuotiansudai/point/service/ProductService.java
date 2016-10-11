@@ -8,7 +8,6 @@ import com.tuotiansudai.point.dto.ProductDto;
 import com.tuotiansudai.point.dto.ProductOrderDto;
 import com.tuotiansudai.point.dto.ProductShowItemDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
-import com.tuotiansudai.point.repository.model.ItemType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.repository.model.UserAddressModel;
 import com.tuotiansudai.repository.model.ProductType;
@@ -29,9 +28,9 @@ public interface ProductService {
 
     List<ProductShowItemDto> findAllProductsByGoodsTypes(List<GoodsType> goodsTypes);
 
-    ProductShowItemDto findProductShowItemDto(long id, ItemType itemType);
+    ProductShowItemDto findProductShowItemDto(long id, GoodsType goodsType);
 
-    BaseDto<BaseDataDto> buyProduct(String loginName, long id, ItemType itemType, int amount, Long addressId);
+    BaseDto<BaseDataDto> buyProduct(String loginName, long id, GoodsType goodsType, int amount, Long addressId);
 
     List<UserAddressModel> getUserAddressesByLoginName(String loginName);
 

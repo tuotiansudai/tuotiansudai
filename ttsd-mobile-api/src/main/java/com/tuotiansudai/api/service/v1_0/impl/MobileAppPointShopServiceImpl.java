@@ -11,6 +11,8 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
@@ -259,34 +261,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             return new BaseResponseDto<>(ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getCode(), ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getMsg());
         }
 
-        return buyProduct(productModel, userAddressModels, accountModel, productDetailRequestDto.getBaseParam().getPhoneNum(), productDetailRequestDto.getBaseParam().getUserId(), productDetailRequestDto.getNum(), points);
-    }
-
-    @Transactional
-    private BaseResponseDto buyProduct(ProductModel productModel, List<UserAddressModel> userAddressModels, AccountModel accountModel, String mobile, String loginName, int num, long points) {
-        UserAddressModel userAddressModel;
-        if (productModel.getType().equals(GoodsType.PHYSICAL)) {
-            userAddressModel = userAddressModels.get(0);
-        } else {
-            userAddressModel = new UserAddressModel(loginName, loginName, mobile, "", loginName);
-        }
-
-        ProductOrderModel productOrderModel = new ProductOrderModel(productModel.getId(), productModel.getPoints(), num, points, userAddressModel.getContact(), userAddressModel.getMobile(), userAddressModel.getAddress(), false, null, loginName);
-        productOrderMapper.create(productOrderModel);
-
-        accountModel.setPoint(accountModel.getPoint() - points);
-        accountMapper.update(accountModel);
-
-        if (productModel.getType().equals(GoodsType.COUPON)) {
-            for (int i = 0; i < num; i++) {
-                couponAssignmentService.assignUserCoupon(loginName, productModel.getCouponId());
-            }
-        } else {
-            productModel.setUsedCount(productModel.getUsedCount() + num);
-            productMapper.update(productModel);
-        }
-
-        pointBillMapper.create(new PointBillModel(loginName, productModel.getId(), (-points), PointBusinessType.EXCHANGE, ""));
+        productService.buyProduct(accountModel.getLoginName(), Long.parseLong(productDetailRequestDto.getProductId()), productModel.getType(), productDetailRequestDto.getNum(), userAddressModels.get(0).getId());
         return new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
     }
 
