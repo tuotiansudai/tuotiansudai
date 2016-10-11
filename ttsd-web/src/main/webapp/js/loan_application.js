@@ -54,12 +54,14 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', '
 				moneyText: {
 					required: true,
 					digits: true,
-					min: 1
+					min: 1,
+					max: 100000000
 				},
 				monthText: {
 					required: true,
 					digits: true,
-					min: 1
+					min: 1,
+					max: 1000
 				},
 				infoText: {
 					required: true,
@@ -70,12 +72,14 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', '
 				moneyText: {
 					required: '请填写借款金额',
 					digits: '请输入不小于1的整数',
-					min: '请输入不小于1的整数'
+					min: '请输入不小于1的整数',
+					max: '请输入不大于1亿的整数'
 				},
 				monthText: {
 					required: '请填写借款周期',
 					digits: '请输入不小于1的整数',
-					min: '请输入不小于1的整数'
+					min: '请输入不小于1的整数',
+					max: '请输入不大于1千的整数'
 				},
 				infoText: {
 					required: '请填写信息',
@@ -149,7 +153,11 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', '
 				btn: 0,
 				area: ['500px', '510px'],
 				title: [title, 'padding:0;text-align:center'],
-				content: $('#homeTip')
+				content: $('#homeTip'),
+				cancel: function () {
+					$('#loanForm').find('label.error').hide();
+					$('#placeText').val('北京');
+				}
 			});
 		}
 	});
