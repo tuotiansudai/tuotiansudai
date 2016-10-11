@@ -71,7 +71,7 @@ public class LoanApplicationServiceTest {
     private LoanApplicationModel createLoanApplicationModel(String loginName) {
         LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
         loanApplicationModel.setLoginName(loginName);
-        loanApplicationModel.setRegion(LoanApplicationRegion.北京);
+        loanApplicationModel.setRegion(LoanApplicationRegion.BEI_JING);
         loanApplicationModel.setAmount(1);
         loanApplicationModel.setPeriod(2);
         loanApplicationModel.setPledgeType(PledgeType.HOUSE);
@@ -88,7 +88,7 @@ public class LoanApplicationServiceTest {
     private LoanApplicationDto fakeLoanApplicationDto(String loginName, int amount, int period) {
         LoanApplicationDto loanApplicationDto = new LoanApplicationDto();
         loanApplicationDto.setLoginName(loginName);
-        loanApplicationDto.setRegion(LoanApplicationRegion.北京);
+        loanApplicationDto.setRegion(LoanApplicationRegion.BEI_JING);
         loanApplicationDto.setAmount(amount);
         loanApplicationDto.setPeriod(period);
         loanApplicationDto.setPledgeType(PledgeType.HOUSE);
@@ -141,7 +141,7 @@ public class LoanApplicationServiceTest {
         LoanApplicationView loanApplicationView = loanApplicationViews.get(0);
 
         loanApplicationView.setLoginName("user2");
-        loanApplicationView.setRegion(LoanApplicationRegion.承德);
+        loanApplicationView.setRegion(LoanApplicationRegion.CHENG_DE);
         loanApplicationView.setAmount(33);
         loanApplicationView.setPeriod(44);
         loanApplicationView.setPledgeType(PledgeType.VEHICLE);

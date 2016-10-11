@@ -61,7 +61,7 @@ public class LoanApplicationMapperTest {
     private LoanApplicationModel createLoanApplicationModel(String loginName) {
         LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
         loanApplicationModel.setLoginName(loginName);
-        loanApplicationModel.setRegion(LoanApplicationRegion.北京);
+        loanApplicationModel.setRegion(LoanApplicationRegion.BEI_JING);
         loanApplicationModel.setAmount(1);
         loanApplicationModel.setPeriod(2);
         loanApplicationModel.setPledgeType(PledgeType.HOUSE);
@@ -103,7 +103,7 @@ public class LoanApplicationMapperTest {
         LoanApplicationModel loanApplicationModel = loanApplicationMapper.findById(originLoanApplicationModel1.getId());
         assertNotNull(loanApplicationModel);
         loanApplicationModel.setLoginName("user2");
-        loanApplicationModel.setRegion(LoanApplicationRegion.承德);
+        loanApplicationModel.setRegion(LoanApplicationRegion.CHENG_DE);
         loanApplicationModel.setAmount(2);
         loanApplicationModel.setPeriod(3);
         loanApplicationModel.setPledgeType(PledgeType.VEHICLE);

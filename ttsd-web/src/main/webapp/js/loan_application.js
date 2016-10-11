@@ -89,7 +89,7 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', '
 			submitHandler: function(form) {
 				var _data = {
 					loginName: null,
-					region: $('#placeText').val(),
+					region: $('#placeText').attr("data-value"),
 					amount: $('#moneyText').val(),
 					period: $('#monthText').val(),
 					pledgeInfo: $('#infoText').val(),
@@ -134,9 +134,10 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', '
 			event.preventDefault();
 			var $self = $(this),
 				text = $self.text(),
+				value = $self.attr('data-value'),
 				$parent = $self.parent(),
 				$areaInt = $('#placeText');
-			$('#placeText').val(text);
+			$('#placeText').val(text).attr('data-value', value);
 			$parent.slideUp('fast');
 		}).on('click', '.close-btn', function(event) {
 			event.preventDefault();

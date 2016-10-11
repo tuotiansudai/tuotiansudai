@@ -152,10 +152,11 @@
                 <input type="text" class="int-item" name="userPhone" id="userPhone" value="${mobile!}" readonly/>
             </div>
             <div class="form-input-item">
-                <input type="text" class="int-item area-bg" name="placeText" id="placeText" value="北京" placeholder="请选择城市" readonly />
+                <input type="text" class="int-item area-bg" name="placeText" id="placeText" value="北京"
+                       placeholder="请选择城市" data-value="BEI_JING" readonly/>
                 <ul class="area-list-group">
                     <#list regions as region>
-                        <li>${region}</li>
+                        <li data-value="${region}">${region.description}</li>
                     </#list>
                 </ul>
             </div>
