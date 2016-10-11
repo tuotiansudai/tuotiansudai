@@ -1,6 +1,7 @@
 require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
     (function () {
-        var $registerForm = $('.register-user-form'),
+        var $landingContainerBox=$('#landingContainerBox');
+        var $registerForm = $('.register-user-form',$landingContainerBox),
             $phoneDom = $('#mobile'),
             $fetchCaptcha = $('.fetch-captcha'),
             $changecode = $('.img-change'),
@@ -17,6 +18,29 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'pla
         if (bCategory == 'mobile') {
             $webRegister.empty();
             $mobileRegister.empty().append($landingTop);
+        }
+
+        var urlObj=commonFun.parseURL(location.href),
+            referNum=urlObj.params.referrer;
+
+        if(referNum) {
+            //有推荐人
+            var getMobile=commonFun.uncompile(referNum);
+            $('input[name="referrer"]',$landingContainerBox).val(getMobile);
+            //通过手机号得到用户名
+            //    $.ajax({
+            //        url:"eee",
+            //        type:'GET',
+            //        data:'',
+            //        dataType: 'json',
+            //    }).done(function(data) {
+            //        var userName="";
+            //
+            //    });
+        }
+        else {
+            //无推荐人
+            $('.refer-person-info',$landingContainerBox).hide();
         }
 
         $('input[type="text"],input[type="password"]', $registerForm).placeholder();

@@ -1,18 +1,23 @@
-require(['jquery','layerWrapper','logintip','copyclip'], function($,layer) {
+require(['jquery','layerWrapper','commonFun','logintip','copyclip','md5'], function($,layer) {
 
 	var $shareReward=$('#shareRewardContainer'),
 		$inviteFriend=$('.invite-box-friend',$shareReward),
 		$popWid=$('.pop-layer-out'),
 		$toIdentification=$('.to-identification',$shareReward),
-		$copyButton=$('.copy-button',$shareReward),
-		$copyLinkbox=$('.input-invite',$shareReward);
+		$copyButton=$('.copy-button',$shareReward);
 
 	$('.btn-to-close',$popWid).on('click',function() {
 		layer.closeAll();
 	});
-		//已登录已认证,复功能
-		var client = new ZeroClipboard($copyButton);
-		var copyLinkVal=$('.copy-link',$copyLinkbox).text();
+	if($copyButton.length) {
+		//已登录已认证,复制功能
+		var client = new ZeroClipboard($copyButton),
+			$clipboardText=$('#clipboard_text');
+		var mobile=$clipboardText.data('mobile')+'',
+			md5Mobile=$.md5(mobile);
+		var md5String=commonFun.compile(md5Mobile,mobile);
+		$clipboardText.val('https://tuotiansudai.com/activity/landing-page?referrer='+md5String);
+
 		client.on( "ready", function( readyEvent ) {
 			client.on( "aftercopy", function( event ) {
 				// event.data["text/plain"]
@@ -21,6 +26,7 @@ require(['jquery','layerWrapper','logintip','copyclip'], function($,layer) {
 			} );
 		} );
 
+	}
 
 	//已登录未认证,去认证
 	$toIdentification.on('click',function() {

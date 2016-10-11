@@ -9,6 +9,32 @@ Array.prototype.contains = function (obj) {
     return false;
 };
 commonFun={
+    //加密
+    compile:function (strId,realId)
+    {
+        var realId=realId+'';
+        var strIdObj=strId.split(''),
+            realLen=realId.length;
+        for(var i=0;i<11;i++) {
+            strIdObj[2*i+2]=realId[i]?realId[i]:'a';
+        }
+        return strIdObj.join('');
+
+    },
+    //解密
+    uncompile:function (strId)
+    {
+        var strId=strId+'';
+        var strIdObj=strId.split(''),
+            realId=[];
+        for(var i=0;i<11;i++) {
+            realId[i]=strIdObj[2*i+2];
+        }
+
+        var stringRealId=realId.join(''),
+            getNum=stringRealId.match(/\d/gi);
+        return getNum.join('');
+    },
     /* init radio style */
     initRadio:function($radio,$radioLabel) {
         var numRadio=$radio.length;
