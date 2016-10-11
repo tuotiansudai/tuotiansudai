@@ -8,7 +8,7 @@
             <span class="date-time-item">有效期至：${expiredDate?string("yyyy-MM-dd")!}</span>
             <div class="info clearfix">
                 <div class="avatar fl">
-                    <img src="${staticServer}/images/sign/head.png"/>
+                    <img src="${staticServer}/images/sign/head_20161011.png"/>
                     <i class="vip-no-bg vip-${membershipLevel!}"></i>
                 </div>
                 <div class="text">
@@ -347,7 +347,7 @@
         <div class="user-info-block page-width no-login">
             <div class="info clearfix">
                 <div class="avatar fl">
-                    <img src="${staticServer}/images/sign/head.png"/>
+                    <img src="${staticServer}/images/sign/head_20161011.png"/>
                 </div>
                 <div class="text">
                     亲，成为会员可享受多种特权哦~ <br/>
