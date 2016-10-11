@@ -4,6 +4,7 @@ var require = {
         'text': staticServer + '/js/libs/text-2.0.14',
         'jquery': staticServer + '/js/libs/jquery-1.11.3.min',
         'copyclip': staticServer+'/js/libs/zeroclip/ZeroClipboard.min',
+        'md5': staticServer+'/js/libs/jQuery.md5',
         'csrf': staticServer + '/js/libs/csrf',
         'jqueryPage': staticServer + '/js/libs/jquery.page',
         'jquery.validate': staticServer + '/js/libs/jquery.validate-1.14.0.min',
@@ -56,7 +57,8 @@ var require = {
         'rotate':['jquery'],
         'fancybox':['jquery'],
         'placeholder': ['jquery'],
-        'superslide': ['jquery']
+        'superslide': ['jquery'],
+        'md5':['jquery']
     },
 
     config: {

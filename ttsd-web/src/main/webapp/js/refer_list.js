@@ -1,8 +1,9 @@
-require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension','copyclip'],
+require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension','copyclip','commonFun','md5'],
     function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer) {
 
         var $investListContent=$('#investListContent'),
-            $copyButton=$('.copy-button',$investListContent);
+            $copyButton=$('.copy-button',$investListContent),
+            $clipboardText=$('#clipboard_text');
         var $searchBox=$('#search-box'),
             dataPickerElement = $('#date-picker'),
             loginName = $("#loginName"),
@@ -13,12 +14,17 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
             $searchContent=$('.search-content-tab');
 
         /*复制链接*/
-        var client = new ZeroClipboard($copyButton);
+        var client = new ZeroClipboard($copyButton),
+            mobile=$clipboardText.data('mobile')+'',
+            md5Mobile=$.md5(mobile);
+        var md5String=commonFun.compile(md5Mobile,mobile);
+        $clipboardText.val('https://tuotiansudai.com/activity/landing-page?referrer='+md5String);
+
         client.on( "ready", function( readyEvent ) {
             client.on( "aftercopy", function( event ) {
                 layer.msg('复制成功');
             } );
-        } );
+        });
 
 
         var paginationElement = paginationElementRelation;
