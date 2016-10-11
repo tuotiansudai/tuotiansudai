@@ -12,7 +12,7 @@ module.exports = function(grunt) {
             baseCssMinPath: 'src/main/webapp/style/dest',
             baseJsPath: 'src/main/webapp/js',
             baseJsMinPath: 'src/main/webapp/js/dest',
-            baseImagePath: 'src/main/webapp/activity/images'
+            baseImagePath: 'src/main/webapp/images'
         },
         clean: {
             css: {
@@ -70,7 +70,7 @@ module.exports = function(grunt) {
                 src: ['<%= meta.baseCssPath %>/*.css'],
                 dest: '<%= meta.base64CssPath %>',
                 options: {
-                    target: ['<%=meta.baseImagePath %>/**/*.*'],
+                    target: ['<%=meta.baseImagePath %>/**/**/*.*'],
                     fixDirLevel: false,
                     maxBytes: 1024 * 5   //小于5k的图片会生成base64 ,并且需要是相对路径
                 }

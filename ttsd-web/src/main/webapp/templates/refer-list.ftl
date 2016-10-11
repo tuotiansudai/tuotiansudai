@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.refer_list}" pageJavascript="${js.refer_list}" activeNav="我的账户" activeLeftNav="推荐管理" title="推荐管理">
-<div class="content-container invest-list-content">
+<div class="content-container invest-list-content" id="investListContent">
     <h4 class="column-title"><em class="tc">推荐送现金</em></h4>
 
        <div class="bar-top-img">
@@ -14,7 +14,6 @@
             <div class="invite-title"><i></i><span>微信邀请好友</span></div>
             <div class="tc wechat-code">
                 <img src="${staticServer}/images/sign/refer-list/weixin-code.png" alt="推荐送现金">
-
                 <span>将扫码后的页面<br/>
                 分享给好友即可邀请</span>
             </div>

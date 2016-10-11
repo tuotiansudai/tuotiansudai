@@ -1,6 +1,8 @@
-require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension'],
+require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension','copyclip'],
     function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer) {
 
+        var $investListContent=$('#investListContent'),
+            $copyButton=$('.copy-button',$investListContent);
         var $searchBox=$('#search-box'),
             dataPickerElement = $('#date-picker'),
             loginName = $("#loginName"),
@@ -9,6 +11,15 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
             $btnSearch=$('.btn-search',$searchBox),
             $btnReset=$('.btn-reset',$searchBox),
             $searchContent=$('.search-content-tab');
+
+        /*复制链接*/
+        var client = new ZeroClipboard($copyButton);
+        client.on( "ready", function( readyEvent ) {
+            client.on( "aftercopy", function( event ) {
+                layer.msg('复制成功');
+            } );
+        } );
+
 
         var paginationElement = paginationElementRelation;
         var template = referRelationTemplate;

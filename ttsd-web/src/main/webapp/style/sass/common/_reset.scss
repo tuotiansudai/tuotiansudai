@@ -51,6 +51,7 @@ a{
   &:hover{
     color:nth($linkColor,2);
   }
+  outline: none;
 }
 .fl {
   float: nth($baseFloat, 1);
