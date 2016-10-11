@@ -36,6 +36,7 @@
                       class="form-control ui-autocomplete-input"
                       datatype="*"
                       autocomplete="off"
+                      maxlength="100"
                       errormsg="企业借款用途描述不能为空">${loan.loanerEnterpriseDetails.purpose}</textarea>
         </div>
     </div>
