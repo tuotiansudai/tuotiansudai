@@ -33,7 +33,7 @@ public class AppVersionUtil {
             try {
                 Resource resourceService = new ClassPathResource("/ttsd-env.properties");
                 Properties properties = PropertiesLoaderUtils.loadProperties(resourceService);
-                if (properties != properties) {
+                if (properties != null) {
                     serverAppVersion = properties.getProperty("mobile.app.version");
                 }
             } catch (IOException e) {
