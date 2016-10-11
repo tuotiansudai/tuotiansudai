@@ -146,10 +146,10 @@
     <div class="home-tip-group" id="homeTip">
         <form action="#" method="post" class="loan-form" id="loanForm">
             <div class="form-input-item">
-                <input type="text" class="int-item" name="userName" id="userName" value="${userName}" readonly/>
+                <input type="text" class="int-item" name="userName" id="userName" value="${userName!}" readonly/>
             </div>
             <div class="form-input-item">
-                <input type="text" class="int-item" name="userPhone" id="userPhone" value="${mobile}" readonly/>
+                <input type="text" class="int-item" name="userPhone" id="userPhone" value="${mobile!}" readonly/>
             </div>
             <div class="form-input-item">
                 <input type="text" class="int-item area-bg" name="placeText" id="placeText" value="北京" placeholder="请选择城市" readonly />
