@@ -6,13 +6,34 @@ require(['jquery', 'underscore', 'jquery-ui', 'bootstrap', 'bootstrapSelect', 'b
 
     $("select[name='prizeType']").change(function (){
         var self = $(this);
-        if(self.val() == 'NATIONAL_PRIZE'){
-            $("#nationalDiv").show();
-            $("#autumnPrizeDiv").hide();
-        }else{
-            $("#nationalDiv").hide();
-            $("#autumnPrizeDiv").show();
-        }
-    });
+        $.ajax({
+            url: '/activity-console/activity-manage/category?activityCategory=' + self.val(),
+            type: 'GET',
+            dataType: 'json'
+        }).done(function(data) {
+            var $autumnPrizeDiv=$("#autumnPrizeDiv"),
+                selectPrize=$("#selectPrize"),
+                selectStatus = "",
+                optionList=[];
 
+            for(var i=0;i<data.length;i++)
+            {
+                if(i == 0){
+                    optionList.push("<option value=''>全部</option>");
+                }
+
+                if(selectPrize.val() == data[i].lotteryPrizeName){
+                    selectStatus = "selected";
+                }
+
+
+                optionList.push("<option "+selectStatus+" value="+data[i].lotteryPrize+">"+data[i].lotteryPrizeName+"</option>");
+                selectStatus = "";
+            }
+            $autumnPrizeDiv.find('select').empty().append(optionList.join(''));
+
+            $autumnPrizeDiv.find('select').change().selectpicker('refresh');
+
+        });
+    });
 });

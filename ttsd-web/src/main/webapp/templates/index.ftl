@@ -733,8 +733,8 @@
                         感恩豪礼滚滚来</a>
                         <time>2016-03-14</time>
                     </li>
-                    <li><i>●</i><a rel="nofollow" href="http://roll-sohu.com/money/20160201/n1963.html"
-                                   onclick="cnzzPush.trackClick('41首页','媒体报道模块','现金红包')" target="_blank">拓天速贷：新年贺岁嗨翻天，全民领取888元现金红包</a>
+                    <li><i>●</i><a rel="nofollow" href="http://www.greatchinese.com.cn/news/hyxw/20160907/15431.html"
+                                   onclick="cnzzPush.trackClick('41首页','媒体报道模块','唯一运营商')" target="_blank">拓天伟业成建设银行“税易-助保贷”唯一运营商</a>
                         <time>2016-02-01</time>
                     </li>
                     <li><i>●</i><a rel="nofollow"
