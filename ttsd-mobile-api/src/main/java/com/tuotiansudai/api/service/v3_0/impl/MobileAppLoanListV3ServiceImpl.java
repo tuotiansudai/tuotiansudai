@@ -6,7 +6,6 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.ExtraRateListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.LoanResponseDataDto;
-import com.tuotiansudai.api.security.MobileAppCurrentRequest;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
 import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
@@ -56,9 +55,6 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
-
-    @Autowired
-    private AppVersionUtil appVersionUtil;
 
     @Override
     public BaseResponseDto generateIndexLoan(String loginName) {
@@ -152,9 +148,8 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
     private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
-        String appVersion = MobileAppCurrentRequest.getAppVersion();
         for (LoanModel loan : loanList) {
-            if(!StringUtils.isEmpty(appVersion) && !appVersionUtil.isRightAppVersion(appVersion) && loan.getPledgeType() == PledgeType.ENTERPRISE){
+            if(AppVersionUtil.compareVersion() < 0&& loan.getPledgeType() == PledgeType.ENTERPRISE){
                 continue;
             }
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();

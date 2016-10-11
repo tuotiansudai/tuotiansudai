@@ -3,7 +3,6 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.security.MobileAppCurrentRequest;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
 import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
@@ -19,7 +18,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,9 +52,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
-
-    @Autowired
-    private AppVersionUtil appVersionUtil;
 
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateLoanList(LoanListRequestDto loanListRequestDto) {
@@ -94,10 +89,9 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList,String loginName) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
-        String appVersion = MobileAppCurrentRequest.getAppVersion();
         for (LoanModel loan : loanList) {
 
-            if(StringUtils.isNotEmpty(appVersion) && !appVersionUtil.isRightAppVersion(appVersion) && loan.getPledgeType() == PledgeType.ENTERPRISE){
+            if(AppVersionUtil.compareVersion() < 0 && loan.getPledgeType() == PledgeType.ENTERPRISE){
                 continue;
             }
 

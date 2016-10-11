@@ -7,7 +7,6 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.ExtraRateListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.LoanResponseDataDto;
-import com.tuotiansudai.api.security.MobileAppCurrentRequest;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
@@ -21,7 +20,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExperienceLoanDetailService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -53,9 +51,6 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
-
-    @Autowired
-    private AppVersionUtil appVersionUtil;
 
     @Override
     public BaseResponseDto generateIndexLoan(String loginName) {
@@ -96,9 +91,8 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     private List<LoanResponseDataDto> convertLoanDto(String loginName, List<LoanModel> loanList) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
-        String appVersion = MobileAppCurrentRequest.getAppVersion();
         for (LoanModel loan : loanList) {
-            if(StringUtils.isNotEmpty(appVersion) && !appVersionUtil.isRightAppVersion(appVersion) && loan.getPledgeType() == PledgeType.ENTERPRISE){
+            if(AppVersionUtil.compareVersion() < 0 && loan.getPledgeType() == PledgeType.ENTERPRISE){
                 continue;
             }
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
