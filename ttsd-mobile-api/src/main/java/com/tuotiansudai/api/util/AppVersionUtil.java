@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.util;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
@@ -72,6 +73,7 @@ public class AppVersionUtil {
 
     private static String getAppVersion() {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         HttpServletRequest request = CurrentRequest.getCurrentRequest();
         try {
             BufferedRequestWrapper bufferedRequestWrapper = new BufferedRequestWrapper(request);
