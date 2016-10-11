@@ -1,5 +1,5 @@
-@import "login_tip";
-@import "register_common";
+@import "module/login_tip";
+@import "module/register_common";
 $width:700px;
 @mixin mobilehide () {
   @media (max-width: $width) {
