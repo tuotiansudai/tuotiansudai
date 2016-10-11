@@ -15,7 +15,6 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
         refreshCaptcha();
     });
 
-
     var submitLoginForm = function() {
         $loginFormElement.ajaxSubmit({
             beforeSubmit: function(arr, $form, options) {
@@ -23,7 +22,10 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
             },
             success: function(data) {
                 if (data.status) {
-                    window.location.reload();
+                    if($('.show-login').length>0){
+                        window.location.reload();
+                    }
+
                 } else {
                     refreshCaptcha();
                     $loginSubmitElement.removeClass('loading');

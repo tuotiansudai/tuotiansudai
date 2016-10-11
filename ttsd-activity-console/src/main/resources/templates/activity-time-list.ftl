@@ -12,7 +12,6 @@
 
     <div class="table-responsive">
         <form action="/activity-console/activity-manage/user-time-list" method="get" class="form-inline query-build" id="lotteryTimeForm">
-
                 <div class="form-group">
                     <label>用户手机号</label>
                     <input id="login-name" name="mobile" id="mobile" class="form-control" value="${mobile!}"/>
@@ -59,7 +58,7 @@
                 <ul class="pagination pull-left">
                     <li>
                         <#if hasPreviousPage >
-                        <a href="/activity-console/activity-manage/user-time-list?mobile=${mobile!}&prizeType=NATIONAL_PRIZE&index=${index-1}&pageSize=${pageSize}">
+                        <a href="/activity-console/activity-manage/user-time-list?mobile=${mobile!}&prizeType=${selectPrize}&index=${index-1}&pageSize=${pageSize}">
                         <#else>
                         <a href="#">
                         </#if>
@@ -69,7 +68,7 @@
                     <li><a>${index}</a></li>
                     <li>
                         <#if hasNextPage>
-                        <a href="/activity-console/activity-manage/user-time-list?mobile=${mobile!}&prizeType=NATIONAL_PRIZE&index=${index+1}&pageSize=${pageSize}">
+                        <a href="/activity-console/activity-manage/user-time-list?mobile=${mobile!}&prizeType=${selectPrize}&index=${index+1}&pageSize=${pageSize}">
                         <#else>
                         <a href="#">
                         </#if>

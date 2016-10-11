@@ -23,7 +23,7 @@
                 <div class="date-time-item"><#if currentTime??>${currentTime?string('yyyy-MM-dd')}</#if></div>
                 <div class="my-rank-item">
                     <@global.isAnonymous>我的排名：登录后查看</@global.isAnonymous>
-                    <@global.isNotAnonymous><#if investRanking == 0>未参加排行<#else>我的排名：${investRanking}</#if></@global.isNotAnonymous>
+                    <@global.isNotAnonymous><#if investRanking &gt; 20 || investRanking == 0>未参加排行<#else>我的排名：${investRanking}</#if></@global.isNotAnonymous>
                 </div>
                 <@global.isAnonymous>
                     <div class="login-item">
@@ -51,7 +51,7 @@
                     <div class="center-bubble animate-bounce-up">
                         <div class="max-gift-picture">
                             <h3><#if mysteriousPrizeDto??>${mysteriousPrizeDto.prizeName}</#if></h3>
-                            <img src="<#if mysteriousPrizeDto??>${mysteriousPrizeDto.imageUrl}</#if>">
+                            <img src="<#if mysteriousPrizeDto??>${staticServer}${mysteriousPrizeDto.imageUrl}</#if>">
                         </div>
                     </div>
                     <div class="text-des-item max-text">

@@ -60,7 +60,7 @@ require(['jquery', 'layerWrapper', 'template', 'drawCircle', 'jquery.ajax.extens
         });
 
     //以下为抽奖转盘
-    var $pointer = $('#pointer');
+    var $pointer = $('.pointer-img');
     var $MobileNumber=$('#MobileNumber'),
         travelAllList='/activity/autumn/luxury-all-list',  //中奖记录接口地址
         travelUserList='/activity/autumn/luxury-user-list',   //我的奖品接口地址

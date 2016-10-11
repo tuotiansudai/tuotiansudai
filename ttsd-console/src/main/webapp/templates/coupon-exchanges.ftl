@@ -71,7 +71,7 @@
                     <td>
                         1-${exchangeCoupon.seq?string('0')!}
                     </td>
-                    <td><img src="/${exchangeCoupon.imageUrl}" width="100px" height="50px"></td>
+                    <td><img src="${staticServer}${exchangeCoupon.imageUrl}" width="100px" height="50px"></td>
                     <td>
                         <#if exchangeCoupon.couponType == 'INVEST_COUPON' ||  exchangeCoupon.couponType == 'RED_ENVELOPE'>
                         ${exchangeCoupon.amount}

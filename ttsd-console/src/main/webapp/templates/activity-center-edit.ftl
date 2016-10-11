@@ -63,7 +63,7 @@
 
                     <div class="appPictureImage">
                         <#if dto??&&dto.appPictureUrl??>
-                            <img style="width:100%" src="/${dto.appPictureUrl!}" alt="活动图(移动端)"/>
+                            <img style="width:100%" src="${staticServer}${dto.appPictureUrl!}" alt="活动图(移动端)"/>
                         </#if>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
 
                     <div class="webPictureImage">
                         <#if dto??&&dto.webPictureUrl??>
-                            <img style="width:100%" src="/${dto.webPictureUrl!}" alt="活动图(PC端)"/>
+                            <img style="width:100%" src="${staticServer}${dto.webPictureUrl!}" alt="活动图(PC端)"/>
                         </#if>
                     </div>
                 </div>

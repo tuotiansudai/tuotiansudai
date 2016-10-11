@@ -16,6 +16,7 @@ import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
 import com.tuotiansudai.point.repository.model.*;
+import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.commons.collections.CollectionUtils;
@@ -57,8 +58,11 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     @Autowired
     private PointBillMapper pointBillMapper;
 
-    @Value("${web.banner.server}")
+    @Value("${mobile.static.server}")
     private String bannerServer;
+
+    @Autowired
+    private ProductService productService;
 
     @Override
     public BaseResponseDto updateUserAddress(UserAddressRequestDto userAddressRequestDto) {
@@ -196,9 +200,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         List<String> description = Lists.newArrayList();
         CouponModel couponModel = couponMapper.findById(productModel.getCouponId());
         if (productModel.getType() == GoodsType.COUPON && couponModel != null) {
-            description.add(couponModel.getInvestLowerLimit() > 0 ? MessageFormat.format("投资满{0}元即可使用;", couponModel.getInvestLowerLimit() / 100) : "");
-            description.add(MessageFormat.format("{0}天产品可用;", couponModel.getProductTypes().toString().replaceAll("_", "")));
-            description.add(MessageFormat.format("有效期限:{0}天。", couponModel.getDeadline()));
+            description.addAll(productService.getProductDescription(couponModel.getInvestLowerLimit(),couponModel.getProductTypes(),couponModel.getDeadline()));
         } else {
             description.add(productModel.getDescription());
         }

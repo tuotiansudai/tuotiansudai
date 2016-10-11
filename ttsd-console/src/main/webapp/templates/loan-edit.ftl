@@ -8,7 +8,7 @@
         <#list loanTitleRelationModels as loanTitleRelationModel>
         var initialPreview = [];
             <#list loanTitleRelationModel.applicationMaterialUrls?split(",") as title>
-            initialPreview.push("<img src='${title}' class='file-preview-image' alt='${title}' title='${title}'>");
+            initialPreview.push("<img src='${staticServer}${title}' class='file-preview-image' alt='${title}' title='${title}'>");
             </#list>
         rereq['${loanTitleRelationModel.titleId?string.computer}'] = initialPreview;
         </#list>
@@ -183,7 +183,7 @@
                     <div class="item-invest" style="margin-left:10px">
                         <span class="checkbox jq-activity-checkbox" style="padding-top:0">
                             <label>
-                                <input type="checkbox" class="jq-activity" style="top:8px"
+                                <input type="checkbox" class="jq-activity" style="top:8px" value="<#if loanInfo.activity>1<#else>0</#if>"
                                        <#if loanInfo.activity>checked</#if>
                                        <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>>
                                 活动专享
