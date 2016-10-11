@@ -240,7 +240,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
 
             var nums = value.split('.');
             var integer = nums[0] === '' ? 0 : parseInt(nums[0]);
-            var fraction = nums.length > 1 && nums[1] !== '' ? parseInt(nums[1].substr(0, 2)) : 0;
+            var fraction = nums.length > 1 && nums[1] !== '' ? nums[1].substr(0, 2) : '0';
             self.val(integer + '.' + fraction);
 
         });

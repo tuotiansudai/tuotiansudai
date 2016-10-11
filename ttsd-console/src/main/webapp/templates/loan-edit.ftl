@@ -23,7 +23,7 @@
             <div>
                 <input name="id" type="hidden" value="${loan.loan.id?c}"/>
                 <input name="pledgeType" type="hidden" value="${loan.loan.pledgeType}"/>
-                <input name="status" type="hidden" value="WAITING_VERIFY"/>
+                <input name="status" type="hidden" value="${loan.loan.status}"/>
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">借款项目名称:</label>
@@ -75,7 +75,7 @@
                     <label class="col-sm-2 control-label">预计出借金额（元）:</label>
 
                     <div class="col-sm-4">
-                        <input name="loanAmount" type="text" class="form-control jq-money" datatype="money_fl"
+                        <input name="loanAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
                                errormsg="预计出借金额需要正确填写" value="${loan.loan.loanAmount}" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                     <label class="col-sm-2 control-label">最小投资金额（元）:</label>
 
                     <div class="col-sm-4">
-                        <input name="minInvestAmount" type="text" class="form-control jq-money" datatype="money_fl"
+                        <input name="minInvestAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
                                errormsg="最小投资金额需要正确填写"
                                value="${loan.loan.minInvestAmount}">
                     </div>
@@ -93,7 +93,7 @@
                     <label class="col-sm-2 control-label">投资递增金额（元）:</label>
 
                     <div class="col-sm-4">
-                        <input name="investIncreasingAmount" type="text" class="form-control jq-money" datatype="money_fl"
+                        <input name="investIncreasingAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
                                errormsg="投资递增金额需要正确填写"
                                value="${loan.loan.investIncreasingAmount}">
                     </div>
@@ -103,7 +103,7 @@
                     <label class="col-sm-2 control-label">个人最大投资金额（元）:</label>
 
                     <div class="col-sm-4">
-                        <input name="maxInvestAmount" type="text" class="form-control jq-money" datatype="money_fl"
+                        <input name="maxInvestAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
                                errormsg="单笔最大投资金额需要正确填写" value="${loan.loan.maxInvestAmount}">
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                     <label class="col-sm-2 control-label">基本利率（%）:</label>
 
                     <div class="col-sm-4">
-                        <input name="baseRate" type="text" class="form-control jq-money" datatype="money_fl" <#if !(["PREHEAT", "WAITING_VERIFY", "RAISING"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                        <input name="baseRate" type="text" class="form-control rate" datatype="/^[1-9]\d*(\.\d{1,2})?$/" <#if !(["PREHEAT", "WAITING_VERIFY", "RAISING"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
                                errormsg="基本利率需要正确填写" value="${((loan.loan.baseRate?number)*100)?string('0.00')}">
                     </div>
                 </div>
@@ -151,12 +151,8 @@
                     <label class="col-sm-2 control-label">活动利率（%）:</label>
 
                     <div class="col-sm-4">
-                        <input name="activityRate" type="text" class="form-control jq-money" datatype="money_fl" <#if !(["PREHEAT", "WAITING_VERIFY", "RAISING"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                        <input name="activityRate" type="text" class="form-control rate" datatype="/^[1-9]\d*(\.\d{1,2})?$/" <#if !(["PREHEAT", "WAITING_VERIFY", "RAISING"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
                                errormsg="活动利率需要正确填写" value="${((loan.loan.activityRate?number)*100)?string('0.00')}">
-                    </div>
-
-                    <div class="col-sm-6">
-                        <div class="form-control-static">适用于所有标(0 表示无),站点前端以(基本利率%+加息利率%)方式展现,如(10%+2%)。</div>
                     </div>
                 </div>
 
@@ -270,10 +266,9 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label"></label>
                 <div class="col-sm-4">
-                    <input name="declaration" value="${loan.loanDetails.declaration}" type="text" class="form-control ui-autocomplete-input"
+                    <input name="declaration" value="${loan.loanDetails.declaration}" type="text" class="form-control"
                            datatype="*"
-                           autocomplete="off"
-                           placeholder="" errormsg="声明不能为空">
+                           errormsg="声明不能为空">
                 </div>
             </div>
         </div>
