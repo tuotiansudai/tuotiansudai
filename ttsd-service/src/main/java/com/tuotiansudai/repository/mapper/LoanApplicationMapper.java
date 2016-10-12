@@ -1,7 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.LoanApplicationModel;
-import com.tuotiansudai.repository.model.LoanApplicationView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +14,7 @@ public interface LoanApplicationMapper {
 
     LoanApplicationModel findById(@Param(value = "id") long id);
 
-    List<LoanApplicationView> findViewPagination(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+    List<LoanApplicationModel> findPagination(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
     long findCount();
 }

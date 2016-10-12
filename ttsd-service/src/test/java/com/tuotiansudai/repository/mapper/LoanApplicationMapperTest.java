@@ -61,6 +61,8 @@ public class LoanApplicationMapperTest {
     private LoanApplicationModel createLoanApplicationModel(String loginName) {
         LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
         loanApplicationModel.setLoginName(loginName);
+        loanApplicationModel.setMobile("18612341234");
+        loanApplicationModel.setUserName("userName");
         loanApplicationModel.setRegion(LoanApplicationRegion.BEI_JING);
         loanApplicationModel.setAmount(1);
         loanApplicationModel.setPeriod(2);
@@ -83,6 +85,8 @@ public class LoanApplicationMapperTest {
         LoanApplicationModel findLoanApplicationModel = loanApplicationMapper.findById(loanApplicationModel.getId());
         assertNotNull(findLoanApplicationModel);
         assertEquals(loanApplicationModel.getLoginName(), findLoanApplicationModel.getLoginName());
+        assertEquals(loanApplicationModel.getMobile(), findLoanApplicationModel.getMobile());
+        assertEquals(loanApplicationModel.getUserName(), findLoanApplicationModel.getUserName());
         assertEquals(loanApplicationModel.getRegion(), findLoanApplicationModel.getRegion());
         assertEquals(loanApplicationModel.getAmount(), findLoanApplicationModel.getAmount());
         assertEquals(loanApplicationModel.getPeriod(), findLoanApplicationModel.getPeriod());
@@ -103,6 +107,8 @@ public class LoanApplicationMapperTest {
         LoanApplicationModel loanApplicationModel = loanApplicationMapper.findById(originLoanApplicationModel1.getId());
         assertNotNull(loanApplicationModel);
         loanApplicationModel.setLoginName("user2");
+        loanApplicationModel.setMobile("12311112222");
+        loanApplicationModel.setUserName("userNameUpdate");
         loanApplicationModel.setRegion(LoanApplicationRegion.CHENG_DE);
         loanApplicationModel.setAmount(2);
         loanApplicationModel.setPeriod(3);
@@ -117,6 +123,8 @@ public class LoanApplicationMapperTest {
 
         LoanApplicationModel updateLoanApplicationModel1 = loanApplicationMapper.findById(originLoanApplicationModel1.getId());
         assertEquals(loanApplicationModel.getLoginName(), updateLoanApplicationModel1.getLoginName());
+        assertEquals(loanApplicationModel.getMobile(), updateLoanApplicationModel1.getMobile());
+        assertEquals(loanApplicationModel.getUserName(), updateLoanApplicationModel1.getUserName());
         assertEquals(loanApplicationModel.getRegion(), updateLoanApplicationModel1.getRegion());
         assertEquals(loanApplicationModel.getAmount(), updateLoanApplicationModel1.getAmount());
         assertEquals(loanApplicationModel.getPeriod(), updateLoanApplicationModel1.getPeriod());
@@ -129,6 +137,8 @@ public class LoanApplicationMapperTest {
 
         LoanApplicationModel findLoanApplicationModel2 = loanApplicationMapper.findById(originLoanApplicationModel2.getId());
         assertEquals(originLoanApplicationModel2.getLoginName(), findLoanApplicationModel2.getLoginName());
+        assertEquals(originLoanApplicationModel2.getMobile(), findLoanApplicationModel2.getMobile());
+        assertEquals(originLoanApplicationModel1.getUserName(), findLoanApplicationModel2.getUserName());
         assertEquals(originLoanApplicationModel2.getRegion(), findLoanApplicationModel2.getRegion());
         assertEquals(originLoanApplicationModel2.getAmount(), findLoanApplicationModel2.getAmount());
         assertEquals(originLoanApplicationModel2.getPeriod(), findLoanApplicationModel2.getPeriod());
@@ -147,26 +157,28 @@ public class LoanApplicationMapperTest {
         LoanApplicationModel originLoanApplicationModel2 = createLoanApplicationModel("user2");
         assertEquals(2L, loanApplicationMapper.findCount());
 
-        List<LoanApplicationView> loanApplicationViews = loanApplicationMapper.findViewPagination(0, 10);
+        List<LoanApplicationModel> loanApplicationViews = loanApplicationMapper.findPagination(0, 10);
         assertEquals(2, loanApplicationViews.size());
-        for (LoanApplicationView loanApplicationView : loanApplicationViews) {
-            if (loanApplicationView.getId() == originLoanApplicationModel1.getId()) {
-                assertEquals(originLoanApplicationModel1.getLoginName(), loanApplicationView.getLoginName());
-            } else if (loanApplicationView.getId() == originLoanApplicationModel2.getId()) {
-                assertEquals(originLoanApplicationModel2.getLoginName(), loanApplicationView.getLoginName());
+        for (LoanApplicationModel loanApplicationMobile : loanApplicationViews) {
+            if (loanApplicationMobile.getId() == originLoanApplicationModel1.getId()) {
+                assertEquals(originLoanApplicationModel1.getLoginName(), loanApplicationMobile.getLoginName());
+            } else if (loanApplicationMobile.getId() == originLoanApplicationModel2.getId()) {
+                assertEquals(originLoanApplicationModel2.getLoginName(), loanApplicationMobile.getLoginName());
             }
-            assertEquals(originLoanApplicationModel1.getRegion(), loanApplicationView.getRegion());
-            assertEquals(originLoanApplicationModel1.getAmount(), loanApplicationView.getAmount());
-            assertEquals(originLoanApplicationModel1.getPeriod(), loanApplicationView.getPeriod());
-            assertEquals(originLoanApplicationModel1.getPledgeType(), loanApplicationView.getPledgeType());
-            assertEquals(originLoanApplicationModel1.getPledgeInfo(), loanApplicationView.getPledgeInfo());
-            assertEquals(originLoanApplicationModel1.getComment(), loanApplicationView.getComment());
-            assertEquals(originLoanApplicationModel1.getCreatedTime(), loanApplicationView.getCreatedTime());
-            assertEquals(originLoanApplicationModel1.getUpdatedBy(), loanApplicationView.getUpdatedBy());
-            assertEquals(originLoanApplicationModel1.getUpdatedTime(), loanApplicationView.getUpdatedTime());
+            assertEquals(originLoanApplicationModel1.getMobile(), loanApplicationMobile.getMobile());
+            assertEquals(originLoanApplicationModel1.getUserName(), loanApplicationMobile.getUserName());
+            assertEquals(originLoanApplicationModel1.getRegion(), loanApplicationMobile.getRegion());
+            assertEquals(originLoanApplicationModel1.getAmount(), loanApplicationMobile.getAmount());
+            assertEquals(originLoanApplicationModel1.getPeriod(), loanApplicationMobile.getPeriod());
+            assertEquals(originLoanApplicationModel1.getPledgeType(), loanApplicationMobile.getPledgeType());
+            assertEquals(originLoanApplicationModel1.getPledgeInfo(), loanApplicationMobile.getPledgeInfo());
+            assertEquals(originLoanApplicationModel1.getComment(), loanApplicationMobile.getComment());
+            assertEquals(originLoanApplicationModel1.getCreatedTime(), loanApplicationMobile.getCreatedTime());
+            assertEquals(originLoanApplicationModel1.getUpdatedBy(), loanApplicationMobile.getUpdatedBy());
+            assertEquals(originLoanApplicationModel1.getUpdatedTime(), loanApplicationMobile.getUpdatedTime());
         }
 
-        loanApplicationViews = loanApplicationMapper.findViewPagination(0, 1);
+        loanApplicationViews = loanApplicationMapper.findPagination(0, 1);
         assertEquals(1, loanApplicationViews.size());
     }
 }
