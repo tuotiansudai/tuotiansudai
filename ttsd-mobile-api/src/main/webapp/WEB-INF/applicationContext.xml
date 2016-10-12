@@ -66,8 +66,8 @@
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="jdbcUrl"
                   value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxpoint?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="${common.jdbc.username}"/>
-        <property name="password" value="${common.jdbc.password}"/>
+        <property name="username" value="${point.jdbc.username}"/>
+        <property name="password" value="${point.jdbc.password}"/>
         <property name="minimumIdle" value="${mobile.point.minimumIdle}"/>
         <property name="maximumPoolSize" value="${mobile.point.maximumPoolSize}"/>
         <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
