@@ -44,7 +44,7 @@ public class LoanApplicationServiceTest {
     private UserModel createUserModel(String loginName) {
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginName);
-        userModel.setMobile(String.valueOf(random.nextLong()));
+        userModel.setMobile(String.valueOf(random.nextLong()).substring(0, 10));
         userModel.setPassword("password");
         userModel.setSalt("salt");
         userModel.setRegisterTime(new Date());
@@ -71,6 +71,8 @@ public class LoanApplicationServiceTest {
     private LoanApplicationModel createLoanApplicationModel(String loginName) {
         LoanApplicationModel loanApplicationModel = new LoanApplicationModel();
         loanApplicationModel.setLoginName(loginName);
+        loanApplicationModel.setMobile("18612341234");
+        loanApplicationModel.setUserName("userName");
         loanApplicationModel.setRegion(LoanApplicationRegion.BEI_JING);
         loanApplicationModel.setAmount(1);
         loanApplicationModel.setPeriod(2);
@@ -118,9 +120,9 @@ public class LoanApplicationServiceTest {
         baseDto = loanApplicationService.create(loanApplicationDto);
         assertEquals(true, baseDto.getData().getStatus());
 
-        List<LoanApplicationView> loanApplicationViews = loanApplicationMapper.findViewPagination(0, 1);
+        List<LoanApplicationModel> loanApplicationViews = loanApplicationMapper.findPagination(0, 1);
         assertEquals(1, loanApplicationViews.size());
-        LoanApplicationView loanApplicationView = loanApplicationViews.get(0);
+        LoanApplicationModel loanApplicationView = loanApplicationViews.get(0);
         assertEquals(loanApplicationDto.getLoginName(), loanApplicationView.getLoginName());
         assertEquals(loanApplicationDto.getRegion(), loanApplicationView.getRegion());
         assertEquals(loanApplicationDto.getAmount(), loanApplicationView.getAmount());
@@ -136,11 +138,13 @@ public class LoanApplicationServiceTest {
     public void testComment() throws Exception {
         prepareData();
         LoanApplicationModel loanApplicationModel = createLoanApplicationModel("user1");
-        List<LoanApplicationView> loanApplicationViews = loanApplicationMapper.findViewPagination(0, 1);
+        List<LoanApplicationModel> loanApplicationViews = loanApplicationMapper.findPagination(0, 1);
         assertEquals(1, loanApplicationViews.size());
-        LoanApplicationView loanApplicationView = loanApplicationViews.get(0);
+        LoanApplicationModel loanApplicationView = loanApplicationViews.get(0);
 
         loanApplicationView.setLoginName("user2");
+        loanApplicationView.setMobile("22222");
+        loanApplicationView.setUserName("userName2");
         loanApplicationView.setRegion(LoanApplicationRegion.CHENG_DE);
         loanApplicationView.setAmount(33);
         loanApplicationView.setPeriod(44);
@@ -153,9 +157,10 @@ public class LoanApplicationServiceTest {
         BaseDto<BaseDataDto> baseDto = loanApplicationService.comment(loanApplicationView);
         assertEquals(true, baseDto.getData().getStatus());
 
-        loanApplicationViews = loanApplicationMapper.findViewPagination(0, 1);
+        loanApplicationViews = loanApplicationMapper.findPagination(0, 1);
         assertEquals(1, loanApplicationViews.size());
-        LoanApplicationView updateLoanApplicationView = loanApplicationViews.get(0);
+        LoanApplicationModel updateLoanApplicationView = loanApplicationViews.get(0);
+        assertEquals(loanApplicationModel.getId(), updateLoanApplicationView.getId());
         assertEquals(loanApplicationModel.getLoginName(), updateLoanApplicationView.getLoginName());
         assertEquals(loanApplicationModel.getRegion(), updateLoanApplicationView.getRegion());
         assertEquals(loanApplicationModel.getAmount(), updateLoanApplicationView.getAmount());
@@ -178,7 +183,7 @@ public class LoanApplicationServiceTest {
         createLoanApplicationModel("user1");
         createLoanApplicationModel("user2");
 
-        BasePaginationDataDto<LoanApplicationView> basePaginationDataDto = loanApplicationService.getPagination(1, 10);
+        BasePaginationDataDto<LoanApplicationModel> basePaginationDataDto = loanApplicationService.getPagination(1, 10);
         assertEquals(2, basePaginationDataDto.getRecords().size());
     }
 }

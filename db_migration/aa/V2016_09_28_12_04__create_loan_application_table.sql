@@ -2,6 +2,10 @@ CREATE TABLE `aa`.`loan_application` (
   `id`           BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `login_name`   VARCHAR(25)         NOT NULL
   COMMENT '借款申请人登录名',
+  `mobile`    VARCHAR(11) NOT NULL
+  COMMENT '借款申请人电话',
+  `user_name` VARCHAR(50) NOT NULL
+  COMMENT '借款申请人用户名',
   `region`       VARCHAR(15)         NOT NULL
   COMMENT '借款申请人所在地区',
   `amount`       INT UNSIGNED        NOT NULL
