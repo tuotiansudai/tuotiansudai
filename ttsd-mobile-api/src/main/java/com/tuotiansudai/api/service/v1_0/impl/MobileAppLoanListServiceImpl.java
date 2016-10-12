@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
-import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
 import com.tuotiansudai.coupon.service.CouponService;
@@ -90,10 +89,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         for (LoanModel loan : loanList) {
-
-            if(AppVersionUtil.compareVersion() < 0 && loan.getPledgeType() == PledgeType.ENTERPRISE){
-                continue;
-            }
 
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());

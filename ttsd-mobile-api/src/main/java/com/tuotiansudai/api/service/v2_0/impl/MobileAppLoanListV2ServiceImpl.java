@@ -8,7 +8,6 @@ import com.tuotiansudai.api.dto.v2_0.ExtraRateListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
-import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -92,9 +91,6 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         for (LoanModel loan : loanList) {
-            if(AppVersionUtil.compareVersion() < 0 && loan.getPledgeType() == PledgeType.ENTERPRISE){
-                continue;
-            }
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
 
