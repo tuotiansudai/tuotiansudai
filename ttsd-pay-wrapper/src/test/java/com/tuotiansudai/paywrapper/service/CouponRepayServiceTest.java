@@ -203,8 +203,6 @@ public class CouponRepayServiceTest {
         Date repayDate = lastRepayDate.plusDays(InterestCalculator.DAYS_OF_MONTH).toDate();
         assertEquals("123", String.valueOf(value.getExpectedInterest()));
         assertEquals("12", String.valueOf(value.getExpectedFee()));
-        assertTrue(repayDate.equals(value.getRepayDate()));
-
     }
 
 
