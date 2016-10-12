@@ -218,6 +218,14 @@ public class LoanCreateServiceImpl implements LoanCreateService {
             return new BaseDto<>(new BaseDataDto(false, "最大投资金额不得大于预计出借金额"));
         }
 
+        if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getInvestIncreasingAmount()) > AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getLoanAmount())) {
+            return new BaseDto<>(new BaseDataDto(false, "投资递增金额不得大于预计出借金额"));
+        }
+
+        if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getInvestIncreasingAmount()) > AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount())) {
+            return new BaseDto<>(new BaseDataDto(false, "投资递增金额不得大于最大投资金额"));
+        }
+
         if (loanCreateRequestDto.getLoan().getFundraisingEndTime().before(loanCreateRequestDto.getLoan().getFundraisingStartTime())) {
             return new BaseDto<>(new BaseDataDto(false, "筹款启动时间不得晚于筹款截止时间"));
         }

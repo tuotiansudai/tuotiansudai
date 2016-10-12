@@ -289,12 +289,28 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     return false;
                 }
 
-                if (parseFloat($('input[name="minInvestAmount"]').val()) > parseFloat($('input[name="maxInvestAmount"]'))) {
-                    showErrorMessage('最小投资金额不得大于最大投资金额', $('input[name="minInvestAmount"]'));
+                var $loanAmount = $('input[name="loanAmount"]');
+                var $minInvestAmount = $('input[name="minInvestAmount"]');
+                var $maxInvestAmount = $('input[name="maxInvestAmount"]');
+                var $investIncreasingAmount = $('input[name="investIncreasingAmount"]');
+
+                if (parseFloat($minInvestAmount.val()) > parseFloat($maxInvestAmount.val())) {
+                    showErrorMessage('最小投资金额不得大于最大投资金额', $minInvestAmount);
                     return false;
                 }
-                if (parseFloat($('input[name="loanAmount"]')) < parseFloat($('input[name="maxInvestAmount"]'))) {
-                    showErrorMessage('最大投资金额不得大于预计出借金额', $('input[name="maxInvestAmount"]'));
+
+                if (parseFloat($loanAmount.val()) < parseFloat($maxInvestAmount.val())) {
+                    showErrorMessage('最大投资金额不得大于预计出借金额', $maxInvestAmount);
+                    return false;
+                }
+
+                if (parseFloat($maxInvestAmount.val()) < parseFloat($investIncreasingAmount.val())) {
+                    showErrorMessage('投资递增金额不得大于最大投资金额', $investIncreasingAmount);
+                    return false;
+                }
+
+                if (parseFloat($loanAmount.val()) < parseFloat($investIncreasingAmount.val())) {
+                    showErrorMessage('投资递增金额不得大于预计出借金额', $investIncreasingAmount);
                     return false;
                 }
 
@@ -373,7 +389,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                 } else {
                     fromValid = false;
                     var msg = res.data.message || '服务端校验失败';
-                    showErrorMessage(msg);
+                    showErrorMessage(msg, $currentFormSubmitBtn);
                 }
             }).fail(function () {
                 $currentFormSubmitBtn.removeAttr('disabled');

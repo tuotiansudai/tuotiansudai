@@ -63,7 +63,7 @@
                     <label class="col-sm-2 control-label">预计出借金额（元）: </label>
 
                     <div class="col-sm-3">
-                        <input name="loanAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
+                        <input name="loanAmount" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
                                errormsg="预计出借金额需要正确填写">
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                     <label class="col-sm-2 control-label">单笔最小投资金额（元）: </label>
 
                     <div class="col-sm-3">
-                        <input name="minInvestAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
+                        <input name="minInvestAmount" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
                                errormsg="单笔最小投资金额需要正确填写">
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                     <label class="col-sm-2 control-label">投资递增金额（元）: </label>
 
                     <div class="col-sm-3">
-                        <input name="investIncreasingAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
+                        <input name="investIncreasingAmount" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
                                errormsg="投资递增金额需要正确填写">
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                     <label class="col-sm-2 control-label">个人最大投资金额（元）: </label>
 
                     <div class="col-sm-3">
-                        <input name="maxInvestAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
+                        <input name="maxInvestAmount" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
                                errormsg="个人最大投资金额需要正确填写">
                     </div>
                 </div>
@@ -127,7 +127,7 @@
                     <label class="col-sm-2 control-label">基本利率（%）: </label>
 
                     <div class="col-sm-3">
-                        <input name="baseRate" type="text" class="form-control rate" datatype="/^[1-9]\d*(\.\d{1,2})?$/" errormsg="基本利率需要正确填写">
+                        <input name="baseRate" type="text" class="form-control rate" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/" errormsg="基本利率需要正确填写">
                     </div>
                 </div>
 

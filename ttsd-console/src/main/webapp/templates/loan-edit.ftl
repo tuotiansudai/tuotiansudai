@@ -49,7 +49,7 @@
                     <label class="col-sm-2 control-label">标的类型:</label>
 
                     <div class="col-sm-4">
-                        <select name="loanType" class="selectpicker b-width" <#if !(["PREHEAT", "WAITING_VERIFY", "RAISING"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>>
+                        <select name="loanType" class="selectpicker b-width" <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>>
                             <#list loanTypes as loanType>
                                 <option value="${loanType.name()}" <#if loanType==loan.loan.loanType>selected="selected"</#if>>${loanType.getName()}</option>
                             </#list>
@@ -61,7 +61,7 @@
                     <label class="col-sm-2 control-label">借款期限（天）:</label>
 
                     <div class="col-sm-4">
-                        <select name="productType" class="selectpicker b-width" <#if !(["PREHEAT", "WAITING_VERIFY", "RAISING"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>>
+                        <select name="productType" class="selectpicker b-width" <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>>
                             <#list productTypes as productType>
                                 <option value="${productType.name()}" <#if productType == loan.loan.productType>selected="selected"</#if>>
                                 ${productType.getDuration()}
@@ -75,7 +75,7 @@
                     <label class="col-sm-2 control-label">预计出借金额（元）:</label>
 
                     <div class="col-sm-4">
-                        <input name="loanAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
+                        <input name="loanAmount" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
                                errormsg="预计出借金额需要正确填写" value="${loan.loan.loanAmount}" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                     <label class="col-sm-2 control-label">最小投资金额（元）:</label>
 
                     <div class="col-sm-4">
-                        <input name="minInvestAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
+                        <input name="minInvestAmount" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
                                errormsg="最小投资金额需要正确填写"
                                value="${loan.loan.minInvestAmount}">
                     </div>
@@ -93,7 +93,7 @@
                     <label class="col-sm-2 control-label">投资递增金额（元）:</label>
 
                     <div class="col-sm-4">
-                        <input name="investIncreasingAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
+                        <input name="investIncreasingAmount" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
                                errormsg="投资递增金额需要正确填写"
                                value="${loan.loan.investIncreasingAmount}">
                     </div>
@@ -103,7 +103,7 @@
                     <label class="col-sm-2 control-label">个人最大投资金额（元）:</label>
 
                     <div class="col-sm-4">
-                        <input name="maxInvestAmount" type="text" class="form-control amount" datatype="/^[1-9]\d*(\.\d{1,2})?$/"
+                        <input name="maxInvestAmount" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
                                errormsg="单笔最大投资金额需要正确填写" value="${loan.loan.maxInvestAmount}">
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                     <label class="col-sm-2 control-label">基本利率（%）:</label>
 
                     <div class="col-sm-4">
-                        <input name="baseRate" type="text" class="form-control rate" datatype="/^[1-9]\d*(\.\d{1,2})?$/" <#if !(["PREHEAT", "WAITING_VERIFY", "RAISING"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                        <input name="baseRate" type="text" class="form-control rate" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/" <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
                                errormsg="基本利率需要正确填写" value="${((loan.loan.baseRate?number)*100)?string('0.00')}">
                     </div>
                 </div>
@@ -151,7 +151,7 @@
                     <label class="col-sm-2 control-label">活动利率（%）:</label>
 
                     <div class="col-sm-4">
-                        <input name="activityRate" type="text" class="form-control rate" datatype="/^[1-9]\d*(\.\d{1,2})?$/" <#if !(["PREHEAT", "WAITING_VERIFY", "RAISING"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                        <input name="activityRate" type="text" class="form-control rate" datatype="/^\d+(\.\d{1,2})?$/" <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
                                errormsg="活动利率需要正确填写" value="${((loan.loan.activityRate?number)*100)?string('0.00')}">
                     </div>
                 </div>
@@ -193,8 +193,8 @@
                 <div class="col-sm-4 checkbox">
                     <label for="extra">
                         <input type="checkbox" id="extra"
-                            <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>
-                            <#if extraLoanRates?has_content>checked="checked"</#if>>选中后此标的采用投资奖励
+                                <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                                <#if extraLoanRates?has_content>checked="checked"</#if>>选中后此标的采用投资奖励
                     </label>
                 </div>
             </div>
@@ -229,7 +229,7 @@
                 <div class="col-sm-2 checkbox" id="extraSource">
                     <#list extraSources as source>
                         <label>
-                            <input name="extraSource" type="checkbox" value="${source.name()}" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if> <#if loan.loanDetails.extraSource?seq_contains(source)>checked="checked"</#if>>${source.name()}</input>
+                            <input name="extraSource" type="checkbox" value="${source.name()}" <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if> <#if loan.loanDetails.extraSource?seq_contains(source)>checked="checked"</#if>>${source.name()}</input>
                         </label>
                     </#list>
                 </div>
