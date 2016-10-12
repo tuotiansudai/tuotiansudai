@@ -221,7 +221,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                             loanModel, couponModel, currentRepayDate, lastRepayDate);
                     long expectedFee = new BigDecimal(expectedCouponInterest).setScale(0, BigDecimal.ROUND_DOWN)
                             .multiply(new BigDecimal(successInvestModel.getInvestFeeRate())).longValue();
-
+                    lastRepayDate = currentRepayDate;
                     try {
                         couponRepayMapper.create(new CouponRepayModel(successInvestModel.getLoginName(),
                                 couponModel.getId(),
