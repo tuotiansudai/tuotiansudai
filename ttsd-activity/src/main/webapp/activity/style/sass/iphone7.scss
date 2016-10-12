@@ -1,0 +1,85 @@
+@import "module/login_tip";
+$width:700px;
+@mixin mobilehide () {
+  @media (max-width: $width) {
+    display: none;
+  }
+}
+@mixin PChide () {
+  @media (min-width: $width + 1px) {
+    display: none;
+  }
+}
+.full-screen {
+  width: 100%;
+  margin: 0;
+}
+
+
+.hero-standings-container {
+  float: left;
+  width: 100%;
+  padding-bottom: 30px;
+  .top-intro-img {
+    float: left;
+    width: 100%;
+    .top-img{
+      @include mobilehide();
+    }
+    .top-img-phone{
+      @include PChide();
+    }
+  }
+  .hero-content-group {
+    float: left;
+    width: 100%;
+
+    .wp {
+      width: 1080px;
+      margin: 0 auto;
+      @media (max-width: $width) {
+        width:100%;
+        padding:0 10px;
+        box-sizing:border-box;
+      }
+      &:after {
+        clear: both;
+        display: block;
+      }
+      .rule-list-group {
+        float: left;
+        width: 100%;
+        margin-top: 20px;
+        background: #be282d;
+        border-radius: 20px;
+        padding: 30px 60px;
+        box-sizing: border-box;
+        @media (max-width: $width) {
+          padding:10px;
+          margin-bottom:20px;
+        }
+        .rule-item {
+          float: left;
+          width: 100%;
+
+          dt {
+            font-size: 20px;
+            color: #ffe500;
+            margin-bottom: 20px;
+            @media (max-width: $width) {
+              margin-bottom: 10px;
+            }
+          }
+          dd {
+            font-size: 12px;
+            color: #ffe500;
+            line-height:30px;
+            @media (max-width: $width) {
+              line-height:25px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
