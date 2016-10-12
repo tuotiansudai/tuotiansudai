@@ -179,4 +179,14 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return dto;
     }
+
+    @Override
+    public BaseResponseDto isReplacing(BaseParamDto baseParamDto){
+        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        String loginName = baseParamDto.getBaseParam().getUserId();
+        baseResponseDto.setData(new BankCardIsReplacingResponseDto(bindBankCardService.isReplacing(loginName),bindBankCardService.isManual(loginName)));
+        baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+        baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        return baseResponseDto;
+    }
 }
