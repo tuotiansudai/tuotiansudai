@@ -1,0 +1,373 @@
+@import "login_tip";
+.main-frame{
+	width:100%;
+	margin:0 auto;
+}
+.want-loan-group{
+	float:left;
+	width:100%;
+	.wp{
+		width:1000px;
+		margin:0 auto;
+		&:after{
+			clear:both;
+		}
+	}
+	.loan-top-group{
+		float:left;
+		width:100%;
+	}
+	.content-group{
+		float:left;
+		width:100%;
+		padding-bottom:50px;
+		&.white-bg{
+			background:#fff;
+		}
+		.title-group{
+			float:left;
+			width:100%;
+			font-size:24px;
+			color:#4c4c4c;
+			line-height:30px;
+			box-sizing:border-box;
+			padding-left:20px;
+			margin:30px 0 50px;
+			position: relative;
+			.border-item{
+				position: absolute;
+				top:50%;
+				left:0;
+				width:10px;
+				height:30px;
+				margin-top:-15px;
+				border-radius:5px;
+				background:#8bbeff;
+			}
+		}
+		.intro-group{
+			float:left;
+			width:100%;
+			li{
+				float:left;
+				width:25%;
+				text-align:center;
+				.model-item{
+					display:inline-block;
+					width:100px;
+					p{
+						float:left;
+						width:100%;
+						font-size:14px;
+						color:#999999;
+						margin-bottom:0;
+						text-align:center;
+						&.icon-one{
+							width:100px;
+							height:100px;
+							background:url('/images/wantloan/icon-one.png') no-repeat center;
+							background-size:100%;
+						}
+						&.icon-two{
+							width:100px;
+							height:100px;
+							background:url('/images/wantloan/icon-two.png') no-repeat center;
+							background-size:100%;
+						}
+						&.icon-three{
+							width:100px;
+							height:100px;
+							background:url('/images/wantloan/icon-three.png') no-repeat center;
+							background-size:100%;
+						}
+						&.icon-four{
+							width:100px;
+							height:100px;
+							background:url('/images/wantloan/icon-four.png') no-repeat center;
+							background-size:100%;
+						}
+						&.name-text{
+							font-size:20px;
+							color:#ff5400;
+							margin-top:10px;
+						}
+					}
+				}
+			}
+		}
+		.project-list-group{
+			float:left;
+			width:100%;
+			li{
+				width:350px;
+				height:auto;
+				background:#fff;
+				border:1px solid #e6e6e6;
+				margin:0 60px;
+				padding:30px 65px;
+				box-sizing:border-box;
+				&:hover{
+					box-shadow: 0 0 15px 2px #e6e6e6;
+					-webkit-transition: all .5s ease;
+					-moz-transition: all .5s ease;
+					transition: all .5s ease;
+				}
+				&.home-loan-item{
+					float:left;
+				}
+				&.car-loan-item{
+					float:right;
+				}
+				h3{
+					font-size:20px;
+					color:#ff5400;
+					text-align:center;
+				}
+				i{
+					width:100%;
+					height:250px;
+					display:inline-block;
+					&.icon-home{
+						background:url('/images/wantloan/icon-home.png') no-repeat center;
+					}
+					&.icon-car{
+						background:url('/images/wantloan/icon-car.png') no-repeat center;
+					}
+				}
+				.loan-btn{
+					margin-bottom:0;
+					background:#ff5400;
+					color:#fff;
+					text-align:center;
+					line-height:56px;
+					height:56px;
+					box-shadow: 0 4px #db4900;
+					position: relative;
+					cursor:pointer;
+					&:hover,&:active{
+						box-shadow: 0 2px #db4900;
+						top: 2px;
+					}
+				}
+			}
+		}
+		.step-list-group{
+			float:left;
+			width:100%;
+			li{
+				float:left;
+				width:25%;
+				text-align:center;
+				box-sizing:border-box;
+				position: relative;
+				.icon-line{
+					position: absolute;
+					top:50%;
+					right:-25px;
+					width:45px;
+					height:45px;
+					margin-top:-45px;
+					background:url('/images/wantloan/line-icon.png') no-repeat center;
+					background-size:100%;
+				}
+				p{
+					display:inline-block;
+					margin-bottom:0;
+					&.step-one{
+						width:100%;
+						height:120px;
+						background:url('/images/wantloan/step-one.png') no-repeat center;
+					}
+					&.step-two{
+						width:100%;
+						height:120px;
+						background:url('/images/wantloan/step-two.png') no-repeat center;
+					}
+					&.step-three{
+						width:100%;
+						height:120px;
+						background:url('/images/wantloan/step-three.png') no-repeat center;
+					}
+					&.step-four{
+						width:100%;
+						height:120px;
+						background:url('/images/wantloan/step-four.png') no-repeat center;
+					}
+					&.step-name{
+						width:100%;
+						font-size:18px;
+						color:#ff5400;
+						text-align:center;
+					}
+				}
+			}
+		}
+		.step-problem-group{
+			float:left;
+			width:100%;
+			background:#fff;
+			.problem-item{
+				float:left;
+				width:50%;
+				.problem-list{
+					float:left;
+					width:100%;
+					padding:20px 30px;
+					box-sizing:border-box;
+					li{
+						float:left;
+						width:100%;
+						p{
+							float:left;
+							width:100%;
+							&.info-text{
+								font-size:14px;
+								color:#999;
+								padding-left:30px;
+								box-sizing:border-box;
+							}
+							.circle-icon{
+								display:inline-block;
+								width:15px;
+								height:15px;
+								margin-right:15px;
+								border-radius:15px;
+								box-shadow:0 0 5px 0 #ffb759;
+								background:#ff9c1b;
+							}
+							span{
+								display:inline-block;
+								font-size:20px;
+								color:#4d4d4d;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	.home-tip-group{
+		float:left;
+		width:100%;
+		display:none;
+		.loan-form{
+			float:left;
+			width:100%;
+			padding:20px 100px;
+			box-sizing:border-box;
+			.form-input-item{
+				float:left;
+				width:100%;
+				box-sizing:border-box;
+				position: relative;
+				&.text-c{
+					text-align:center;
+				}
+				.int-item{
+					float:left;
+					width:100%;
+					margin-top:20px;
+					padding: 6px;
+					font-size: 14px;
+					box-sizing:border-box;
+					&.area-bg{
+						background:#fafafa;
+					}
+				}
+				.submit-btn{
+					display:inline-block;
+					width:240px;
+					height:40px;
+					line-height:40px;
+					text-align:center;
+					color:#fff;
+					background:#ff6900;
+					margin-top:40px;
+					padding:0;
+					border:none;
+					cursor:pointer;
+				}
+				label.error{
+					width:100%;
+					position: absolute;
+					bottom:-22px;
+					left:0;
+				}
+				.area-list-group{
+					position: absolute;
+					top:52px;
+					left:0;
+					width:100%;
+					background:#fafafa;
+					border:1px solid #ccc;
+					box-sizing:border-box;
+					z-index:9;
+					display:none;
+					li{
+						float:left;
+						width:100%;
+						height:35px;
+						line-height:35px;
+						text-indent: 2em;
+						cursor: pointer;
+						&:hover{
+							background:#fff;
+							-webkit-transition: all .5s ease;
+							-moz-transition: all .5s ease;
+							transition: all .5s ease;
+						}
+					}
+				}
+			}
+		}
+	}
+	.is-user{
+		float:left;
+		width:100%;
+		display:none;
+		p{
+			font-size:14px;
+			color:#4c4c4c;
+			text-align:center;
+			&.tip-text{
+				margin-top:35px;
+			}
+			a{
+				display:inline-block;
+				width:150px;
+				height:40px;
+				line-height:40px;
+				color:#fff;
+				text-align:center;
+				font-size:14px;
+				background:#ff752a;
+				margin-top:15px;
+			}
+		}
+	}
+	.success-tip{
+		float:left;
+		width:100%;
+		display:none;
+		p{
+			font-size:14px;
+			color:#4c4c4c;
+			text-align:center;
+			&.tip-text{
+				font-size:20px;
+				color:#4c4c4c;
+			}
+			a{
+				display:inline-block;
+				width:150px;
+				height:40px;
+				line-height:40px;
+				color:#fff;
+				text-align:center;
+				font-size:14px;
+				background:#ff752a;
+				margin-top:15px;
+			}
+		}
+	}
+}
