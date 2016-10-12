@@ -6,9 +6,10 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanApplicationMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanApplicationModel;
-import com.tuotiansudai.repository.model.LoanApplicationView;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class LoanApplicationService {
     @Autowired
     LoanApplicationMapper loanApplicationMapper;
 
+    @Autowired
+    UserMapper userMapper;
+
     public BaseDto<BaseDataDto> create(LoanApplicationDto loanApplicationDto) {
         AccountModel accountModel = accountMapper.findByLoginName(loanApplicationDto.getLoginName());
         if (null == accountModel) {
@@ -37,28 +41,31 @@ public class LoanApplicationService {
             return new BaseDto<>(new BaseDataDto(false, "借款期限必须是大于等于1的整数"));
         }
         LoanApplicationModel loanApplicationModel = new LoanApplicationModel(loanApplicationDto);
+        UserModel userModel = userMapper.findByLoginName(loanApplicationDto.getLoginName());
+        loanApplicationModel.setMobile(userModel.getMobile());
+        loanApplicationModel.setUserName(accountModel.getUserName());
         loanApplicationMapper.create(loanApplicationModel);
         return new BaseDto<>(new BaseDataDto(true));
     }
 
-    public BaseDto<BaseDataDto> comment(LoanApplicationView loanApplicationView) {
-        LoanApplicationModel loanApplicationModel = loanApplicationMapper.findById(loanApplicationView.getId());
-        if (null == loanApplicationModel) {
+    public BaseDto<BaseDataDto> comment(LoanApplicationModel loanApplicationModel) {
+        LoanApplicationModel dbLoanApplicationModel = loanApplicationMapper.findById(loanApplicationModel.getId());
+        if (null == dbLoanApplicationModel) {
             return new BaseDto<>(new BaseDataDto(false, "该借款申请不存在"));
         }
 
-        loanApplicationModel.setComment(loanApplicationView.getComment());
-        loanApplicationModel.setUpdatedBy(loanApplicationView.getUpdatedBy());
-        loanApplicationModel.setUpdatedTime(new Date());
+        dbLoanApplicationModel.setComment(loanApplicationModel.getComment());
+        dbLoanApplicationModel.setUpdatedBy(loanApplicationModel.getUpdatedBy());
+        dbLoanApplicationModel.setUpdatedTime(new Date());
 
-        loanApplicationMapper.update(loanApplicationModel);
+        loanApplicationMapper.update(dbLoanApplicationModel);
 
         return new BaseDto<>(new BaseDataDto(true));
     }
 
-    public BasePaginationDataDto<LoanApplicationView> getPagination(int index, int pageSize) {
+    public BasePaginationDataDto<LoanApplicationModel> getPagination(int index, int pageSize) {
         long count = loanApplicationMapper.findCount();
-        List<LoanApplicationView> loanApplicationViews = loanApplicationMapper.findViewPagination(PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        return new BasePaginationDataDto<>(index, pageSize, count, loanApplicationViews);
+        List<LoanApplicationModel> loanApplicationModels = loanApplicationMapper.findPagination(PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        return new BasePaginationDataDto<>(index, pageSize, count, loanApplicationModels);
     }
 }

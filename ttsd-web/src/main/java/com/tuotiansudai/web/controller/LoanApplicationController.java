@@ -55,9 +55,6 @@ public class LoanApplicationController {
     @ResponseBody
     public BaseDto<BaseDataDto> create(@RequestBody LoanApplicationDto loanApplicationDto) {
         String loginName = LoginUserInfo.getLoginName();
-        if (StringUtils.isEmpty(loginName)) {
-            return new BaseDto<>(new BaseDataDto(false, "未登录"));
-        }
         loanApplicationDto.setLoginName(loginName);
         return loanApplicationService.create(loanApplicationDto);
     }
