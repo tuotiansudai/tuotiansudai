@@ -9,7 +9,7 @@
 </script>
 <div class="content-container account-overview">
     <div class="bRadiusBox spad bg-w clearfix">
-        <img src="${staticServer}/images/sign/profile.jpg" class="fl accountImg">
+        <img src="${staticServer}/images/sign/profile_20161011.jpg" class="fl accountImg">
         <div class="profile-box">
             <span><em>您好：${mobile!}</em></span>
             <span class="vip vip${userMembershipLevel!}"></span>

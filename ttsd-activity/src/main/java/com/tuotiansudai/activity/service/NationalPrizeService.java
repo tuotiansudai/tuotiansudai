@@ -163,7 +163,7 @@ public class NationalPrizeService {
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
         userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", nationalPrize, DateTime.now().toDate(), ActivityCategory.NATIONAL_PRIZE));
-        return new DrawLotteryResultDto(0,nationalPrize.name(),prizeType.name());
+        return new DrawLotteryResultDto(0,nationalPrize.name(),prizeType.name(),nationalPrize.getDescription());
     }
 
     private long getCouponId(LotteryPrize lotteryPrize){
