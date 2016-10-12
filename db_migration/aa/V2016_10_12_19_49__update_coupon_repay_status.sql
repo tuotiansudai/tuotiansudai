@@ -1,10 +1,9 @@
 BEGIN;
 
-UPDATE coupon_repay
+UPDATE coupon_repay coupon join invest_repay invest on coupon.invest_id = invest.invest_id and coupon.period = invest.period
 SET
-    status = 'REPAYING'
+    coupon.status = invest.status
 WHERE
-    actual_repay_date IS NULL
-        OR repay_date < actual_repay_date;
+	coupon.status = 'OVERDUE';
 
 COMMIT;
