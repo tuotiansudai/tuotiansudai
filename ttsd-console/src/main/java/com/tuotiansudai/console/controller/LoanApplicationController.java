@@ -30,8 +30,8 @@ public class LoanApplicationController {
 
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
     @ResponseBody
-    BaseDto<BaseDataDto> commentLoanApplication(@RequestBody LoanApplicationModel loanApplicationView) {
-        loanApplicationView.setUpdatedBy(LoginUserInfo.getLoginName());
-        return loanApplicationService.comment(loanApplicationView);
+    BaseDto<BaseDataDto> commentLoanApplication(@RequestBody LoanApplicationModel loanApplicationModel) {
+        loanApplicationModel.setUpdatedBy(LoginUserInfo.getLoginName());
+        return loanApplicationService.comment(loanApplicationModel);
     }
 }
