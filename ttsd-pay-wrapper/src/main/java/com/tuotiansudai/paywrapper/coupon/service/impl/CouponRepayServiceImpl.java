@@ -200,7 +200,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
         for (int period = 1; period <= totalPeriods; period++) {
             int currentPeriodDuration = isPeriodUnitDay ? loanModel.getDuration() : InterestCalculator.DAYS_OF_MONTH;
-            DateTime currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration);
+            DateTime currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration * currentPeriodDuration);
             for (InvestModel successInvestModel : successInvestModels) {
                 List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(successInvestModel.getId(), COUPON_TYPE_LIST);
                 for (UserCouponModel userCouponModel : userCouponModels) {
