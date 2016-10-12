@@ -318,6 +318,4 @@ public class PointManageController {
         modelAndView.addObject("loginName", loginName);
         return modelAndView;
     }
-
-
 }
