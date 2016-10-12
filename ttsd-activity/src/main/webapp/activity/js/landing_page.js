@@ -28,15 +28,21 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'pla
             var getMobile=commonFun.uncompile(referNum);
             $('input[name="referrer"]',$landingContainerBox).val(getMobile);
             //通过手机号得到用户名
-            //    $.ajax({
-            //        url:"eee",
-            //        type:'GET',
-            //        data:'',
-            //        dataType: 'json',
-            //    }).done(function(data) {
-            //        var userName="";
-            //
-            //    });
+                $.ajax({
+                    url:"/activity/get-realRealName?mobile="+getMobile,
+                    type:'GET',
+                    dataType: 'json',
+                }).done(function(data) {
+                    //姓名的第一个字母用*替换
+                    String.prototype.replaceFirst=function(value) {
+                        var len=this.length,
+                            string=this.substring(1,len);
+                        return value+string;
+                    }
+                    var showName=data.replaceFirst('*');
+                    $('.refer-name',$landingContainerBox).text(showName);
+
+                });
         }
         else {
             //无推荐人

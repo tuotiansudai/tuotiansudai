@@ -15,8 +15,10 @@ require(['jquery','layerWrapper','commonFun','logintip','copyclip','md5'], funct
 			$clipboardText=$('#clipboard_text');
 		var mobile=$clipboardText.data('mobile')+'',
 			md5Mobile=$.md5(mobile);
-		var md5String=commonFun.compile(md5Mobile,mobile);
-		$clipboardText.val('https://tuotiansudai.com/activity/landing-page?referrer='+md5String);
+		var md5String=commonFun.compile(md5Mobile,mobile),
+			origin=location.origin;
+
+		$clipboardText.val(origin+'/activity/landing-page?referrer='+md5String);
 
 		client.on( "ready", function( readyEvent ) {
 			client.on( "aftercopy", function( event ) {
@@ -25,7 +27,6 @@ require(['jquery','layerWrapper','commonFun','logintip','copyclip','md5'], funct
 
 			} );
 		} );
-
 	}
 
 	//已登录未认证,去认证
