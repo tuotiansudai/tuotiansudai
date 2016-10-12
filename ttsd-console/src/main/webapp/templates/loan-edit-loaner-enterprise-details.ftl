@@ -5,8 +5,8 @@
         <label class="col-sm-2 control-label">公司法人: </label>
 
         <div class="col-sm-3">
-            <input name="juristicPerson" value="${loan.loanerEnterpriseDetails.juristicPerson}" type="text" class="form-control ui-autocomplete-input"
-                                     datatype="*" autocomplete="off" errormsg="公司法人不能为空">
+            <input name="juristicPerson" value="${loan.loanerEnterpriseDetails.juristicPerson}" type="text" class="form-control"
+                                     datatype="*" errormsg="公司法人不能为空">
         </div>
     </div>
 
@@ -14,8 +14,8 @@
         <label class="col-sm-2 control-label">公司最高持股人: </label>
 
         <div class="col-sm-3">
-            <input name="shareholder" value="${loan.loanerEnterpriseDetails.shareholder}" type="text" class="form-control ui-autocomplete-input"
-                                     datatype="*" autocomplete="off" errormsg="公司最高持股人不能为空">
+            <input name="shareholder" value="${loan.loanerEnterpriseDetails.shareholder}" type="text" class="form-control"
+                                     datatype="*" errormsg="公司最高持股人不能为空">
         </div>
     </div>
 
@@ -23,8 +23,8 @@
         <label class="col-sm-2 control-label">公司所在地: </label>
 
         <div class="col-sm-3">
-            <input name="address" value="${loan.loanerEnterpriseDetails.address}" type="text" class="form-control ui-autocomplete-input" datatype="*"
-                                     autocomplete="off" errormsg="公司所在地不能为空">
+            <input name="address" value="${loan.loanerEnterpriseDetails.address}" type="text" class="form-control" datatype="*"
+                                      errormsg="公司所在地不能为空">
         </div>
     </div>
 
@@ -33,9 +33,8 @@
 
         <div class="col-sm-3">
             <textarea name="purpose"
-                      class="form-control ui-autocomplete-input"
+                      class="form-control"
                       datatype="*"
-                      autocomplete="off"
                       maxlength="100"
                       errormsg="企业借款用途描述不能为空">${loan.loanerEnterpriseDetails.purpose}</textarea>
         </div>

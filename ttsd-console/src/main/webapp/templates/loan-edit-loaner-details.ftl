@@ -5,7 +5,7 @@
         <label class="col-sm-2 control-label">借款人姓名: </label>
 
         <div class="col-sm-4">
-            <input name="userName" value="${loan.loanerDetails.userName}" type="text" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" errormsg="借款人姓名不能为空">
+            <input name="userName" value="${loan.loanerDetails.userName}" type="text" class="form-control" datatype="*" errormsg="借款人姓名不能为空">
         </div>
     </div>
 
@@ -24,7 +24,7 @@
         <label class="col-sm-2 control-label">借款人年龄: </label>
 
         <div class="col-sm-4">
-            <input name="age" value="${loan.loanerDetails.age}" type="text" class="form-control ui-autocomplete-input" datatype="n1-3" autocomplete="off" errormsg="借款人年龄填写有误" maxlength="3">
+            <input name="age" value="${loan.loanerDetails.age}" type="text" class="form-control" datatype="n1-3" errormsg="借款人年龄填写有误" maxlength="3">
         </div>
     </div>
 
@@ -32,7 +32,7 @@
         <label class="col-sm-2 control-label">借款人身份证号: </label>
 
         <div class="col-sm-4">
-            <input name="identityNumber" value="${loan.loanerDetails.identityNumber}" type="text" class="form-control ui-autocomplete-input" datatype="idcard" autocomplete="off" errormsg="借款人身份证号填写有误">
+            <input name="identityNumber" value="${loan.loanerDetails.identityNumber}" type="text" class="form-control" datatype="idcard" errormsg="借款人身份证号填写有误">
         </div>
     </div>
     <div class="form-group">
@@ -52,21 +52,21 @@
         <label class="col-sm-2 control-label">借款人所在地区: </label>
 
         <div class="col-sm-4">
-            <input name="region" value="${loan.loanerDetails.region}" type="text" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" errormsg="借款人所在地区不能为空">
+            <input name="region" value="${loan.loanerDetails.region}" type="text" class="form-control" datatype="*" errormsg="借款人所在地区不能为空">
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">借款人年收入: </label>
 
         <div class="col-sm-4">
-            <input name="income" value="${loan.loanerDetails.income}" type="text" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" errormsg="借款人年收入不能为空">
+            <input name="income" value="${loan.loanerDetails.income}" type="text" class="form-control" datatype="*" errormsg="借款人年收入不能为空">
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">借款人从业情况: </label>
 
         <div class="col-sm-4">
-            <input name="employmentStatus" value="${loan.loanerDetails.employmentStatus}" type="text" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" errormsg="借款人从业情况不能为空">
+            <input name="employmentStatus" value="${loan.loanerDetails.employmentStatus}" type="text" class="form-control" datatype="*" errormsg="借款人从业情况不能为空">
         </div>
     </div>
 </div>
