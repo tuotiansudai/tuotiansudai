@@ -87,7 +87,7 @@ public class HomeServiceImpl implements HomeService {
                 long investAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
 
                 List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
-                LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
+                LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
                 String extraSource = "";
                 boolean activity = false;
                 String activityDesc = "";
