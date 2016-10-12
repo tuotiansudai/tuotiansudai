@@ -192,7 +192,11 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         if(loanModel.getPledgeType() == PledgeType.ENTERPRISE){
             LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
             if(loanerEnterpriseDetailsModel != null){
-                dataDto.setEnterprise(new EnterpriseDto(loanerEnterpriseDetailsModel));
+                EnterpriseDto enterpriseDto = new EnterpriseDto(loanerEnterpriseDetailsModel);
+                enterpriseDto.setShareholder(StringUtils.leftPad(StringUtils.left(enterpriseDto.getShareholder(),1),2,"某"));
+                enterpriseDto.setJuristicPerson(StringUtils.leftPad(StringUtils.left(enterpriseDto.getJuristicPerson(),1),2,"某"));
+
+                dataDto.setEnterprise(enterpriseDto);
             }
             PledgeEnterpriseModel pledgeEnterpriseModel = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
             if(pledgeEnterpriseModel != null){
