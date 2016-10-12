@@ -13,19 +13,19 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
             $btnReset=$('.btn-reset',$searchBox),
             $searchContent=$('.search-content-tab');
 
-        /*复制链接*/
         var client = new ZeroClipboard($copyButton),
             mobile=$clipboardText.data('mobile')+'',
             md5Mobile=$.md5(mobile);
-        var md5String=commonFun.compile(md5Mobile,mobile);
-        $clipboardText.val('https://tuotiansudai.com/activity/landing-page?referrer='+md5String);
+        var md5String=commonFun.compile(md5Mobile,mobile),
+            origin=location.origin;
+        $clipboardText.val(origin+'/activity/landing-page?referrer='+md5String);
 
+        /*复制链接*/
         client.on( "ready", function( readyEvent ) {
             client.on( "aftercopy", function( event ) {
                 layer.msg('复制成功');
             } );
         });
-
 
         var paginationElement = paginationElementRelation;
         var template = referRelationTemplate;
