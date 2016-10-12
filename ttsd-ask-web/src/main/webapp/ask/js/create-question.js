@@ -286,18 +286,24 @@ if($createQuestion.length) {
         $(this).checkFrom();
     });
 
-    $formSubmit.on('click',function() {
+    $formSubmit.on('click',function(event) {
+        var value=$formQuestion.find('textarea').val();
+        event.preventDefault();
+        var temp=value.replace(/\n/g,'<br/>');
+        $formQuestion.find('textarea').val(temp);
             $.ajax({
                     url: "/question",
                     data: $formQuestion.serialize(),
+                //data:"question=sdsds&addition="+temp+"&tags=SECURITIES&captcha=69548",
                     type: 'POST',
                     beforeSend:function(xhr) {
                         $formSubmit.prop('disabled',true);
                     }
                 }).done(function(responseData) {
                      var response=responseData.data;
+
                     if (response.status) {
-                        location.href='question/my-questions';
+                        //location.href='question/my-questions';
                     }
                     else {
                         refreshCaptcha();
