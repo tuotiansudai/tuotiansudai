@@ -93,4 +93,10 @@ public class SmsController {
     public BaseDto<SmsDataDto> newUserReceiveMembership(@RequestBody SmsUserReceiveMembershipDto notifyDto) {
         return smsService.newUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
     }
+
+    @RequestMapping(value = "/platform-balance-low-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> platformBalanceLowNotify(@RequestBody SmsUserReceiveMembershipDto notifyDto) {
+        return smsService.newUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
+    }
 }
