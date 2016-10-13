@@ -18,17 +18,28 @@
                 </div>
 
                 <div class="form-group">
+                    <label>活动类型</label>
+                    <select class="selectpicker" name="prizeType"">
+                        <#list prizeTypes as prizeType>
+                            <option value="${prizeType}" <#if prizeTypes?? && prizeType==selectPrizeType>selected</#if>>
+                            ${prizeType.description}
+                            </option>
+                        </#list>
+                    </select>
+                </div>
+                <input type="hidden" value="${selectPrize}" id = "selectPrize">
+                <div class="form-group" id = "autumnPrizeDiv">
                     <label>奖品</label>
                     <select class="selectpicker" name="selectPrize">
                         <option value="" <#if !(lotteryPrizes??)>selected</#if>>全部</option>
                         <#list lotteryPrizes as prize>
-                                <option value="${prize}" <#if lotteryPrizes?? && prize==selectPrize>selected</#if>>
-                                    ${prize.description}
+                                <option value="${prize.lotteryPrize}" <#if lotteryPrizes?? && prize.lotteryPrize==selectPrize>selected</#if>>
+                                    ${prize.lotteryPrizeName}
                                 </option>
                         </#list>
                     </select>
-                </div>
 
+                </div>
                 <div class="form-group">
                     <label>获奖时间</label>
                     <div class='input-group date' id='datetimepicker1'>
@@ -78,22 +89,22 @@
                 <ul class="pagination pull-left">
                     <li>
                         <#if hasPreviousPage >
-                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&index=${index-1}&pageSize=${pageSize}">
+                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&prizeType=${selectPrizeType!}&selectPrize=${selectPrize}&index=${index-1}&pageSize=${pageSize}">
                         <#else>
                         <a href="#">
                         </#if>
                         <span>« Prev</span>
-                    </a>
+                        </a>
                     </li>
                     <li><a>${index}</a></li>
                     <li>
                         <#if hasNextPage>
-                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&index=${index+1}&pageSize=${pageSize}">
+                        <a href="/activity-console/activity-manage/user-prize-list?mobile=${mobile!}&prizeType=${selectPrizeType!}&selectPrize=${selectPrize}&index=${index+1}&pageSize=${pageSize}">
                         <#else>
                         <a href="#">
                         </#if>
                         <span>Next »</span>
-                    </a>
+                        </a>
                     </li>
                 </ul>
             </nav>

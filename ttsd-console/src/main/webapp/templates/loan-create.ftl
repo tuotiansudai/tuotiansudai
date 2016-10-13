@@ -231,6 +231,8 @@
                 </div>
             </div>
 
+
+
             <div class="form-group extra-source hidden">
                 <label class="col-sm-2 control-label">投资奖励来源:</label>
 

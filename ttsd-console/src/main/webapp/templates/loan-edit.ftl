@@ -8,7 +8,7 @@
         <#list loanTitleRelationModels as loanTitleRelationModel>
         var initialPreview = [];
             <#list loanTitleRelationModel.applicationMaterialUrls?split(",") as title>
-            initialPreview.push("<img src='${title}' class='file-preview-image' alt='${title}' title='${title}'>");
+            initialPreview.push("<img src='${staticServer}${title}' class='file-preview-image' alt='${title}' title='${title}'>");
             </#list>
         rereq['${loanTitleRelationModel.titleId?string.computer}'] = initialPreview;
         </#list>
@@ -70,8 +70,6 @@
                         <option value="车辆抵押借款" <#if loanInfo.projectName == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
                     </select>
                 </div>
-
-
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">代理用户: </label>
@@ -185,7 +183,7 @@
                     <div class="item-invest" style="margin-left:10px">
                         <span class="checkbox jq-activity-checkbox" style="padding-top:0">
                             <label>
-                                <input type="checkbox" class="jq-activity" style="top:8px"
+                                <input type="checkbox" class="jq-activity" style="top:8px" value="<#if loanInfo.activity>1<#else>0</#if>"
                                        <#if loanInfo.activity>checked</#if>
                                        <#if loanInfo.loanStatus!="PREHEAT" && loanInfo.loanStatus!= "WAITING_VERIFY" && loanInfo.loanStatus!= "RAISING">disabled="disabled"</#if>>
                                 活动专享

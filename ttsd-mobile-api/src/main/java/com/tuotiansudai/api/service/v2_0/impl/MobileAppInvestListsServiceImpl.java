@@ -85,12 +85,14 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
         if (CollectionUtils.isNotEmpty(investModels)) {
             for (InvestModel investModel : investModels) {
                 LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(investModel.getLoanId());
                 UserInvestRecordResponseDataDto dto = new UserInvestRecordResponseDataDto(investModel, loanModel, loanDetailsModel);
 
                 if(loanStatus.equals(LoanStatus.REPAYING) && loanModel.getProductType().equals(ProductType.EXPERIENCE)){
-                    dto.setInvestAmount(AmountConverter.convertCentToString(couponMapper.findById(userCouponMapper.findByInvestId(investModel.getId()).get(0).getCouponId()).getAmount()));
+                    List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(investModel.getId());
+                    if(CollectionUtils.isNotEmpty(userCouponModelList)){
+                        dto.setInvestAmount(AmountConverter.convertCentToString(couponMapper.findById(userCouponModelList.get(0).getCouponId()).getAmount()));
+                    }
                 }
 
                 InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());

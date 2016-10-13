@@ -8,11 +8,11 @@
                     <li>
                         <a href="${banner.url}" data-name="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"
                            <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
-                            <img src="${banner.webImageUrl}" alt="${banner.title}" class="pc-img">
+                            <img src="${staticServer}${banner.webImageUrl}" alt="${banner.title}" class="pc-img">
                         </a>
                         <a href="${banner.url}" data-name="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_self"
                            <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
-                            <img src="${banner.appImageUrl}" alt="${banner.title}" class="iphone-img">
+                            <img src="${staticServer}${banner.appImageUrl}" alt="${banner.title}" class="iphone-img">
                         </a>
 
                     </li>
@@ -315,7 +315,6 @@
                                                 <i class="ic-right"></i>
                                             </span>
                                         </#if>
-
                                     </div>
                                     <div class="loan-info-dl">
                                         <dl>
@@ -734,8 +733,8 @@
                         感恩豪礼滚滚来</a>
                         <time>2016-03-14</time>
                     </li>
-                    <li><i>●</i><a rel="nofollow" href="http://roll-sohu.com/money/20160201/n1963.html"
-                                   onclick="cnzzPush.trackClick('41首页','媒体报道模块','现金红包')" target="_blank">拓天速贷：新年贺岁嗨翻天，全民领取888元现金红包</a>
+                    <li><i>●</i><a rel="nofollow" href="http://www.greatchinese.com.cn/news/hyxw/20160907/15431.html"
+                                   onclick="cnzzPush.trackClick('41首页','媒体报道模块','唯一运营商')" target="_blank">拓天伟业成建设银行“税易-助保贷”唯一运营商</a>
                         <time>2016-02-01</time>
                     </li>
                     <li><i>●</i><a rel="nofollow"

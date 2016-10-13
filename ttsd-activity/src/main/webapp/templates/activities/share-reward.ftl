@@ -71,7 +71,7 @@
                     <a href="/referrer/refer-list">立即推荐</a>
                 </#if>
                 <#else>
-                    <a href="javascript:void(0)" class="show-login">立即推荐</a>
+                    <a href="javascript:void(0)" class="share-login show-login">立即推荐</a>
                 </#if>
             <#else>
                 <#if isLogin?? && !isLogin>

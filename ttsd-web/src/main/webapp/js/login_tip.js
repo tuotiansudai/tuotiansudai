@@ -67,8 +67,8 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
                 minlength: '验证码不正确'
             }
         },
-        errorPlacement: function(error, element) {  
-            error.appendTo(element.parent());  
+        errorPlacement: function (error, element) {
+            error.appendTo(element.parent());
         },
         submitHandler: function(form) {
             submitLoginForm();
@@ -82,12 +82,32 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
     .on('click', '.show-login', function(event) {
         event.preventDefault();
         refreshCaptcha();
-        layer.open({
-            type: 1,
-            title: false,
-            closeBtn: 0,
-            area: ['auto', 'auto'],
-            content: $('#loginTip')
-        });
+            $.ajax({
+                url: '/isLogin',
+                //data:data,
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            })
+                .fail(function (response) {
+                    if (response.responseText != "") {
+                        $("meta[name='_csrf']").remove();
+                        $('head').append($(response.responseText));
+                        var token = $("meta[name='_csrf']").attr("content");
+                        var header = $("meta[name='_csrf_header']").attr("content");
+                        $(document).ajaxSend(function (e, xhr, options) {
+                            xhr.setRequestHeader(header, token);
+                        });
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            closeBtn: 0,
+                            area: ['auto', 'auto'],
+                            content: $('#loginTip')
+                        });
+                    }
+
+                }
+            );
     });
 });

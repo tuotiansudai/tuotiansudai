@@ -639,7 +639,6 @@
             )
         GROUP BY login_name , account.user_name , user.mobile
         ORDER BY sumAmount DESC , MAX(invest.trading_time)
-        LIMIT 0 , 20;
     </select>
 
     <select id="findHeroRankingByReferrer" parameterType="map" resultMap="heroRankingView">
@@ -723,7 +722,10 @@
     <select id="countSuccessInvestByInvestTime" parameterType="map" resultMap="investResultMap">
         select *
         from invest
-        where loan_id = #{loanId} and status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
+        where status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
+        <if test="loanId != null and loanId != '' ">
+            and loan_id = #{loanId}
+        </if>
     </select>
 
     <select id="findWebTransferableApplicationPaginationByLoginName" useCache="false" parameterType="map"

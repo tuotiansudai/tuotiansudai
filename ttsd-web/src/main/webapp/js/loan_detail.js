@@ -340,20 +340,42 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         //click invest submit btn
         $investSubmit.on('click', function(event) {
             event.preventDefault();
-            if (isInvestor) {
-                noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
-                return;
-            }
-            if(isAuthentication){
-                location.href = '/register/account';
-            }
-            layer.open({
-              type: 1,
-              title: false,
-              closeBtn: 0,
-              area:['auto','auto'],
-              content: $('#loginTip') 
-            });
+
+            $.ajax({
+                url: '/isLogin',
+                //data:data,
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).fail(function (response) {
+                    if (response.responseText != "") {
+                        $("meta[name='_csrf']").remove();
+                        $('head').append($(response.responseText));
+                        var token = $("meta[name='_csrf']").attr("content");
+                        var header = $("meta[name='_csrf_header']").attr("content");
+                        $(document).ajaxSend(function (e, xhr, options) {
+                            xhr.setRequestHeader(header, token);
+                        });
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            closeBtn: 0,
+                            area: ['auto', 'auto'],
+                            content: $('#loginTip')
+                        });
+                        $('.image-captcha img').trigger('click');
+                    } else {
+                        if (isInvestor) {
+                            noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
+                            return;
+                        }
+                        if (isAuthentication) {
+                            location.href = '/register/account';
+                        }
+                    }
+
+                }
+            );
         });
 
         $useExperienceTicket.click(function(event) {
@@ -783,7 +805,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 .done(function(response) {
                     var data=response.data;
                     if (data.status) {
-                        var info='<i class="fa fa-times-circle"></i>V'+data.level+'会员，专享服务费'+data.rate+'折优惠，已多赚'+data.amount+'元';
+                        var info='V'+data.level+'会员，专享服务费'+data.rate+'折优惠，已多赚'+data.amount+'元';
 
                         layer.tips(info, $expected, {
                             tips: [1, '#ff7200'],

@@ -1,6 +1,5 @@
 package com.tuotiansudai.web.controller;
 
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.service.CouponAlertService;
@@ -20,9 +19,9 @@ import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.TransferService;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,9 +60,6 @@ public class HomeController {
     @Autowired
     private TransferService transferService;
 
-    @Value("${web.banner.server}")
-    private String bannerServer;
-
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/index", "responsive", true);
@@ -77,18 +73,20 @@ public class HomeController {
         List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(experienceLoanId, beginTime, endTime);
         ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId), investModelList.size() % 100, couponService.findExperienceInvestAmount(investModelList));
         modelAndView.addObject("experienceLoanDto", experienceLoanDto);
-        List<BannerModel> bannerModelList = Lists.transform(bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB), new Function<BannerModel, BannerModel>() {
-            @Override
-            public BannerModel apply(BannerModel input) {
-                input.setAppImageUrl(bannerServer + input.getAppImageUrl());
-                input.setWebImageUrl(bannerServer + input.getWebImageUrl());
-                return input;
-            }
-        });
+        List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB);
         modelAndView.addObject("bannerList", bannerModelList);
         //债权转让列表显示前两项
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationItemList = transferService.findAllTransferApplicationPaginationList(null, 0, 0, 1, 2);
         modelAndView.addObject("transferApplications", transferApplicationItemList.getRecords());
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/isLogin", method = RequestMethod.GET)
+    public ModelAndView isLogin() {
+        if(!StringUtils.isEmpty(LoginUserInfo.getLoginName())) {
+            return null;
+        } else {
+            return new ModelAndView("/csrf");
+        }
     }
 }
