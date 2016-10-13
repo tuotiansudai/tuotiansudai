@@ -190,10 +190,11 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                 })
                 $('.give-number').val('0');
                 $('.smsAlert').prop('disabled',false);
-            } else if (userGroup == 'FIRST_INVEST_ACHIEVEMENT' || userGroup == 'MAX_AMOUNT_ACHIEVEMENT' || userGroup == 'LAST_INVEST_ACHIEVEMENT'
-                || userGroup == 'MEMBERSHIP_V0' || userGroup == 'MEMBERSHIP_V1' || userGroup == 'MEMBERSHIP_V2'
-                || userGroup == 'MEMBERSHIP_V3' || userGroup == 'MEMBERSHIP_V4' || userGroup == 'MEMBERSHIP_V5') {
+            } else if (userGroup == 'FIRST_INVEST_ACHIEVEMENT' || userGroup == 'MAX_AMOUNT_ACHIEVEMENT' || userGroup == 'LAST_INVEST_ACHIEVEMENT') {
                 $('.give-number').val('').prop('readonly', false);
+            } else if(userGroup == 'MEMBERSHIP_V0' || userGroup == 'MEMBERSHIP_V1' || userGroup == 'MEMBERSHIP_V2'
+                    || userGroup == 'MEMBERSHIP_V3' || userGroup == 'MEMBERSHIP_V4' || userGroup == 'MEMBERSHIP_V5'){
+                $('.give-number').val('').prop('readonly', true);
             } else {
                 $('#file-in').trigger('click');
                 $('.file-btn').show();
