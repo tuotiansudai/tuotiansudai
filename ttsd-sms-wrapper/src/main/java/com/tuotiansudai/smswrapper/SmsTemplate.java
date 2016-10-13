@@ -17,7 +17,7 @@ public enum SmsTemplate {
 
     SMS_FATAL_NOTIFY_TEMPLATE(8455, "%s 警报：%s"),
 
-    SMS_PLATFORM_BALANCE_LOW_NOTIFY_TEMPLATE(3032242, "系统账户余额不足 %s 元，请立刻充值！"),
+    SMS_PLATFORM_BALANCE_LOW_NOTIFY_TEMPLATE(3032242, "系统账户余额已不足 %s 元，请立刻充值！"),
 
     SMS_COUPON_NOTIFY_TEMPLATE(6487, "尊敬的拓天速贷客户，恭喜您获得%s，有效期%s，请及时投资体验。"),
 

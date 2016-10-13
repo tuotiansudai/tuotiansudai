@@ -11,7 +11,7 @@ public class PlatformBalanceLowNotifyDto implements Serializable {
     private List<String> mobiles;
 
     @NotEmpty
-    private Double warningLine;
+    private String warningLine;
 
     public List<String> getMobiles() {
         return mobiles;
@@ -21,11 +21,11 @@ public class PlatformBalanceLowNotifyDto implements Serializable {
         this.mobiles = mobiles;
     }
 
-    public Double getWarningLine() {
+    public String getWarningLine() {
         return warningLine;
     }
 
-    public void setWarningLine(Double warningLine) {
+    public void setWarningLine(String warningLine) {
         this.warningLine = warningLine;
     }
 }

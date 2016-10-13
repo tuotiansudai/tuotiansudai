@@ -96,7 +96,7 @@ public class SmsController {
 
     @RequestMapping(value = "/platform-balance-low-notify", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<SmsDataDto> platformBalanceLowNotify(@RequestBody SmsUserReceiveMembershipDto notifyDto) {
-        return smsService.newUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
+    public BaseDto<SmsDataDto> platformBalanceLowNotify(@RequestBody PlatformBalanceLowNotifyDto notifyDto) {
+        return smsService.platformBalanceLowNotify(notifyDto.getMobiles(), notifyDto.getWarningLine());
     }
 }

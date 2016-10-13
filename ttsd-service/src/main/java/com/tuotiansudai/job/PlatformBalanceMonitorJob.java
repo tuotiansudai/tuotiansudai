@@ -30,7 +30,7 @@ public class PlatformBalanceMonitorJob implements Job {
     private List<String> mobileList;
 
     @Value("${platform.balance.notify.warning.line}")
-    private Double warningLine; // 5000
+    private String warningLine; // 5000
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -41,7 +41,7 @@ public class PlatformBalanceMonitorJob implements Job {
             Map<String, String> data = umPayRealTimeStatusService.getPlatformStatus();
             String balance = data.get("账户余额");
 
-            if (StringUtils.isNotEmpty(balance) && Double.parseDouble(balance) <= warningLine) {
+            if (StringUtils.isNotEmpty(balance) && Double.parseDouble(balance) <= Double.parseDouble(warningLine)) {
 
                 PlatformBalanceLowNotifyDto notifyDto = new PlatformBalanceLowNotifyDto();
                 notifyDto.setMobiles(mobileList);
