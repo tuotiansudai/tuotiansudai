@@ -12,7 +12,6 @@
 
     <div class="table-responsive">
         <form action="/activity-console/activity-manage/user-time-list" method="get" class="form-inline query-build" id="lotteryTimeForm">
-
                 <div class="form-group">
                     <label>用户手机号</label>
                     <input id="login-name" name="mobile" id="mobile" class="form-control" value="${mobile!}"/>

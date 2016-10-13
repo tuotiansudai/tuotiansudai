@@ -179,6 +179,13 @@
                     {"name":"questionManage","text":"提问管理","link":"/ask-manage/questions","role":"'ADMIN', 'ASK_ADMIN'"},
                     {"name":"answerManage","text":"回答管理","link":"/ask-manage/answers","role":"'ADMIN', 'ASK_ADMIN'"}
                 ]
+            },
+        {
+        "name":"platform-loan",
+        "header":{"text":"平台借款"},
+        "sidebar":[
+        {"name":"platform-loan-list","text":"借款申请信息","link":"/loan-application/list","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"}
+        ]
             }
         ]
 >

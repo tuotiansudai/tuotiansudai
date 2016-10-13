@@ -59,8 +59,7 @@ var require = {
         'rotate':['jquery'],
         'fancybox':['jquery'],
         'placeholder': ['jquery'],
-        'superslide': ['jquery'],
-        'circle':['jquery']
+        'superslide': ['jquery']
     },
     config: {
         text: {

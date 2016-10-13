@@ -66,7 +66,7 @@ require(['jquery', 'underscore', 'template','layerWrapper','drawCircle','commonF
     //});
 
     //以下为抽奖转盘
-    var $pointer = $('#pointer');
+    var $pointer = $('.pointer-img',$nationalDayFrame);
     var $MobileNumber=$('#MobileNumber'),
         travelAllList='/activity/national/all-list',  //中奖记录接口地址
         travelUserList='/activity/national/user-list',   //我的奖品接口地址
