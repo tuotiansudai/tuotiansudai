@@ -75,7 +75,7 @@
 
     </div>
 </div>
-
+<#--<div class="shade-body-mask"></div>-->
     <#include "login-tip.ftl" />
 </@global.main>
 
