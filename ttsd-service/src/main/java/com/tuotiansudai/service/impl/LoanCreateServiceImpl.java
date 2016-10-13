@@ -1,6 +1,7 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -165,36 +166,49 @@ public class LoanCreateServiceImpl implements LoanCreateService {
 
         loanMapper.update(loanModel.updateLoan(loanCreateRequestDto));
 
+        if (Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(loanModel.getStatus())) {
+            this.updateExtraRate(loanId, loanCreateRequestDto.getLoanDetails().getExtraRateRuleIds());
+        } else {
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
+            if (!Strings.isNullOrEmpty(loanDetailsModel.getExtraSource())) {
+                loanCreateRequestDto.getLoanDetails().setExtraSource(Lists.transform(Lists.newArrayList(loanDetailsModel.getExtraSource().split(",")), new Function<String, Source>() {
+                    @Override
+                    public Source apply(String input) {
+                        return Source.valueOf(input);
+                    }
+                }));
+            }
+        }
+
         loanDetailsMapper.deleteByLoanId(loanId);
         loanDetailsMapper.create(new LoanDetailsModel(loanId, loanCreateRequestDto.getLoanDetails()));
 
-        if (loanModel.getStatus() == LoanStatus.WAITING_VERIFY) {
-            this.updateExtraRate(loanId, loanCreateRequestDto.getLoanDetails().getExtraRateRuleIds());
-        }
+        if (LoanStatus.WAITING_VERIFY == loanModel.getStatus()) {
+            loanerDetailsMapper.deleteByLoanId(loanId);
+            loanerEnterpriseDetailsMapper.deleteByLoanId(loanId);
 
-        loanerDetailsMapper.deleteByLoanId(loanId);
-        loanerEnterpriseDetailsMapper.deleteByLoanId(loanId);
-        if (loanCreateRequestDto.getLoanerDetails() != null) {
-            loanerDetailsMapper.create(new LoanerDetailsModel(loanId, loanCreateRequestDto.getLoanerDetails()));
-        }
+            if (loanCreateRequestDto.getLoanerDetails() != null) {
+                loanerDetailsMapper.create(new LoanerDetailsModel(loanId, loanCreateRequestDto.getLoanerDetails()));
+            }
 
-        if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
-            loanerEnterpriseDetailsMapper.create(new LoanerEnterpriseDetailsModel(loanId, loanCreateRequestDto.getLoanerEnterpriseDetails()));
-        }
+            if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
+                loanerEnterpriseDetailsMapper.create(new LoanerEnterpriseDetailsModel(loanId, loanCreateRequestDto.getLoanerEnterpriseDetails()));
+            }
 
-        pledgeHouseMapper.deleteByLoanId(loanId);
-        pledgeVehicleMapper.deleteByLoanId(loanId);
-        pledgeEnterpriseMapper.deleteByLoanId(loanId);
-        if (loanCreateRequestDto.getPledgeHouse() != null) {
-            pledgeHouseMapper.create(new PledgeHouseModel(loanId, loanCreateRequestDto.getPledgeHouse()));
-        }
+            pledgeHouseMapper.deleteByLoanId(loanId);
+            pledgeVehicleMapper.deleteByLoanId(loanId);
+            pledgeEnterpriseMapper.deleteByLoanId(loanId);
+            if (loanCreateRequestDto.getPledgeHouse() != null) {
+                pledgeHouseMapper.create(new PledgeHouseModel(loanId, loanCreateRequestDto.getPledgeHouse()));
+            }
 
-        if (loanCreateRequestDto.getPledgeVehicle() != null) {
-            pledgeVehicleMapper.create(new PledgeVehicleModel(loanId, loanCreateRequestDto.getPledgeVehicle()));
-        }
+            if (loanCreateRequestDto.getPledgeVehicle() != null) {
+                pledgeVehicleMapper.create(new PledgeVehicleModel(loanId, loanCreateRequestDto.getPledgeVehicle()));
+            }
 
-        if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
-            pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
+            if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
+                pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
+            }
         }
 
         if (fundraisingEndTimeChanged) {
