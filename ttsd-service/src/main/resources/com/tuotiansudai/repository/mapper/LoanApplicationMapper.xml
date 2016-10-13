@@ -9,6 +9,8 @@
     <resultMap id="LoanApplicationResultMap" type="LoanApplicationModel">
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="user_name" property="userName"/>
         <result column="region" property="region"/>
         <result column="amount" property="amount"/>
         <result column="period" property="period"/>
@@ -20,16 +22,13 @@
         <result column="updated_time" property="updatedTime"/>
     </resultMap>
 
-    <resultMap id="LoanApplicationViewResultMap" type="LoanApplicationView" extends="LoanApplicationResultMap">
-        <result column="mobile" property="mobile"/>
-        <result column="user_name" property="userName"/>
-    </resultMap>
-
     <insert id="create" parameterType="LoanApplicationModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`loan_application`
-        (id, login_name, region, amount, period, pledge_type, pledge_info, comment, created_time, updated_by, updated_time)
+        (id, login_name, mobile, user_name, region, amount, period, pledge_type, pledge_info, comment, created_time,
+        updated_by, updated_time)
         VALUES
-        (#{id}, #{loginName}, #{region}, #{amount}, #{period}, #{pledgeType}, #{pledgeInfo}, #{comment}, #{createdTime},
+        (#{id}, #{loginName}, #{mobile}, #{userName}, #{region}, #{amount}, #{period}, #{pledgeType}, #{pledgeInfo},
+        #{comment}, #{createdTime},
         #{updatedBy}, #{updatedTime})
     </insert>
 
@@ -39,6 +38,12 @@
         SET
         <if test="loginName != null and loginName != ''">
             login_name = #{loginName},
+        </if>
+        <if test="mobile != null and mobile != ''">
+            mobile = #{mobile},
+        </if>
+        <if test="userName != null and userName != ''">
+            user_name = #{userName},
         </if>
         <if test="region != null">
             region = #{region},
@@ -65,7 +70,7 @@
         id = #{id}
     </update>
 
-    <select id="findById" resultMap="LoanApplicationViewResultMap">
+    <select id="findById" resultMap="LoanApplicationResultMap">
         SELECT
           *
         FROM
@@ -74,11 +79,9 @@
           id = #{id}
     </select>
 
-    <select id="findViewPagination" resultMap="LoanApplicationViewResultMap">
+    <select id="findPagination" resultMap="LoanApplicationResultMap">
         SELECT
-          *,
-        (SELECT mobile FROM `aa`.`user` WHERE login_name = `loan_application`.login_name) AS mobile,
-        (SELECT user_name FROM `aa`.`account` WHERE login_name = `loan_application`.login_name) AS user_name
+        *
         FROM
           `aa`.`loan_application`
         ORDER BY created_time DESC
