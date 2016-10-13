@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.message.repository.mapper.UserMessageMetaMapper">
+
+    <select id="findLoanNameById" parameterType="long" resultType="string">
+        select name from loan where id = ${id}
+    </select>
+
+    <select id="findLoanByLoanRepayId" parameterType="long" resultType="hashmap">
+        select loan.id, loan.name from loan join loan_repay where loan.id = loan_repay.loan_id and loan_repay.id = #{loanRepayId}
+    </select>
+
+    <select id="findSuccessInvestorByLoanId" parameterType="long" resultType="string">
+        select login_name
+        from invest
+        where loan_id = #{loanId} and status = 'SUCCESS' and transfer_status != 'SUCCESS'
+    </select>
+
+    <select id="findInvestReferrerRewardByLoanId" parameterType="long" resultType="hashmap">
+        select (select mobile from user where user.login_name = invest.login_name) as mobile,
+        invest_referrer_reward.referrer_login_name as referrer,
+        invest_referrer_reward.amount as amount
+        from invest_referrer_reward
+        join invest on invest_referrer_reward.invest_id = invest.id
+        where invest.loan_id = #{loanId}
+        and invest.status = 'SUCCESS'
+        and invest.transfer_status != 'SUCCESS'
+        and invest_referrer_reward.status = 'SUCCESS'
+    </select>
+
+    <select id="findCouponWillExpire" parameterType="string" resultType="hashmap">
+        select coupon.coupon_type  as type,
+        coupon.amount as amount,
+        coupon.rate as rate
+        from user_coupon
+        join coupon on user_coupon.coupon_id = coupon.id
+        where user_coupon.login_name = #{loginName}
+        and user_coupon.status != 'SUCCESS'
+        and datediff(user_coupon.end_time, now()) = 5
+    </select>
+
+    <select id="findAssignUserCoupon" parameterType="long" resultType="hashmap">
+        select
+        user_coupon.login_name as login_name,
+        coupon.coupon_type  as type,
+        coupon.amount as amount,
+        coupon.rate as rate,
+        user_coupon.start_time as start_time,
+        user_coupon.end_time as end_time
+        from user_coupon
+        join coupon on user_coupon.coupon_id = coupon.id
+        where user_coupon.id = #{userCouponId}
+    </select>
+
+    <select id="findRechargeById" parameterType="long" resultType="hashmap">
+        select amount, login_name
+        from recharge
+        where id = #{id} and status = 'SUCCESS'
+    </select>
+
+    <select id="findWithdrawById" parameterType="long" resultType="hashmap">
+        select amount, login_name
+        from withdraw
+        where id = #{id} and status = 'SUCCESS'
+    </select>
+
+    <select id="findInvestById" parameterType="long" resultType="hashmap">
+        select login_name, amount, loan_id
+        from invest
+        where id = #{id}
+    </select>
+
+    <select id="findTransferApplicationByInvestId" parameterType="long" resultType="hashmap">
+        select id, name, login_name
+        from transfer_application
+        where invest_id = #{investId} and status = 'SUCCESS'
+    </select>
+
+    <select id="isExpiredLevelFiveMembershipExisted" parameterType="string" resultType="boolean">
+        select count(1) > 0
+        from user_membership join membership on user_membership.membership_id = membership.id
+        where user_membership.login_name = #{loginName}
+        and user_membership.type = 'PURCHASED'
+        and membership.level = 5
+        and now() > user_membership.expired_time
+        and not exists
+        (select 1
+        from user_message
+        join message on user_message.message_id = message.id
+        and user_message.login_name = #{loginName}
+        and message.event_type = 'MEMBERSHIP_EXPIRED'
+        where user_message.created_time > user_membership.expired_time)
+    </select>
+</mapper>
