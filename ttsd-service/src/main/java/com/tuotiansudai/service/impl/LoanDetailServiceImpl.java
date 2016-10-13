@@ -230,8 +230,8 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
         if (pledgeEnterpriseModel != null && loanerEnterpriseDetailsModel != null) {
             loanDto.setPledgeEnterpriseDetail(ImmutableMap.<String, String>builder()
-                    .put("公司法人", loanerEnterpriseDetailsModel.getJuristicPerson())
-                    .put("公司最高持股人", loanerEnterpriseDetailsModel.getShareholder())
+                    .put("公司法人", MessageFormat.format("{0}某", loanerEnterpriseDetailsModel.getJuristicPerson().substring(0, 1)))
+                    .put("公司最高持股人", MessageFormat.format("{0}某", loanerEnterpriseDetailsModel.getShareholder().substring(0, 1)))
                     .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
                     .put("担保方式", pledgeEnterpriseModel.getGuarantee())
                     .put("抵押物估值", pledgeEnterpriseModel.getEstimateAmount())
