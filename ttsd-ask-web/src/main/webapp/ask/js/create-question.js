@@ -289,12 +289,15 @@ if($createQuestion.length) {
     $formSubmit.on('click',function(event) {
         var value=$formQuestion.find('textarea').val();
         event.preventDefault();
-        var temp=value.replace(/\n/g,'<br/>');
+
+        //var temp=value.replace(/\r\n/g,'\\r\\n');
+        var temp=value.replace(/\n/g,'\\n');
+        var temp=temp.replace(/\r/g,'\\r');
         $formQuestion.find('textarea').val(temp);
+
             $.ajax({
                     url: "/question",
                     data: $formQuestion.serialize(),
-                //data:"question=sdsds&addition="+temp+"&tags=SECURITIES&captcha=69548",
                     type: 'POST',
                     beforeSend:function(xhr) {
                         $formSubmit.prop('disabled',true);
@@ -303,7 +306,7 @@ if($createQuestion.length) {
                      var response=responseData.data;
 
                     if (response.status) {
-                        //location.href='question/my-questions';
+                        location.href='question/my-questions';
                     }
                     else {
                         refreshCaptcha();
@@ -313,21 +316,21 @@ if($createQuestion.length) {
                                     return;
                                 }
                                 if(response.isQuestionSensitiveValid && !response.isAdditionSensitiveValid) {
-                                    $addition.next().show().text('您输入的内容不能包含敏感词');  
+                                    $addition.next().show().text('您输入的内容不能包含敏感词');
                                 }
-                            
+
                         }
                         else {
                             $captcha.parent().find('.error').show().text('验证码错误');
                         }
-                        
-                        
+
+
                     }
                 })
                 .fail(function(data) {
                         comm.popWindow('','您输入的内容不能包含特殊符号',{ width:'300px'});
                 })
-                .complete(function(data) { 
+                .complete(function(data) {
                    $formSubmit.prop('disabled',false);
                 });
 
