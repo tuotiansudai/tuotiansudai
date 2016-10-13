@@ -104,12 +104,12 @@ require(['jquery', 'underscore','drawCircle','commonFun','register_common','logi
         }
         else if (data.returnCode == 2) {
             //未登录
-            //tipMessage.info='<p class="login-text">您还未登录~</p><p class="des-text">请登录后再来抽奖吧！</p>',
-            //tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
-            ////drawCircleOne.tipWindowPop(tipMessage);
+            tipMessage.info='<p class="login-text">您还未登录~</p><p class="des-text">请登录后再来抽奖吧！</p>',
+            tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
             //drawCircleOne.tipWindowPop(tipMessage);
+            drawCircleOne.tipWindowPop(tipMessage);
 
-            $('.no-login-text',$integralDrawPage).trigger('click');  //弹框登录
+            //$('.no-login-text',$integralDrawPage).trigger('click');  //弹框登录
 
         } else if(data.returnCode == 3){
             //不在活动时间范围内！

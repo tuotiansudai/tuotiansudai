@@ -93,18 +93,12 @@ commonFun={
             var scrollHeight=document.body.scrollTop || document.documentElement.scrollTop,
                 pTop=$(window).height()-$popWindow.height(),
                 pLeft=$(window).width()-$popWindow.width();
-            $popWindow.css({'top':pTop/2+scrollHeight,left:pLeft/2});
+            $popWindow.css({'top':pTop/2,left:pLeft/2});
             $shade.height($('body').height());
             $('body').append($popWindow).append($shade);
         }
         adjustPOS();
-        $(window).resize(function() {
-            adjustPOS();
-        });
-        var mousewheel = document.all?"mousewheel":"DOMMouseScroll";
-        $(window).bind('mousewheel',function() {
-            adjustPOS();
-        })
+
 
         $('.close-btn,.go-close',$popWindow).on('click',function() {
             $popWindow.remove();
