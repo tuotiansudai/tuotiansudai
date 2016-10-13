@@ -194,7 +194,6 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                 || userGroup == 'MEMBERSHIP_V0' || userGroup == 'MEMBERSHIP_V1' || userGroup == 'MEMBERSHIP_V2'
                 || userGroup == 'MEMBERSHIP_V3' || userGroup == 'MEMBERSHIP_V4' || userGroup == 'MEMBERSHIP_V5') {
                 $('.give-number').val('').prop('readonly', false);
-                $('.give-number').val('').prop('readonly', false);
             } else {
                 $('#file-in').trigger('click');
                 $('.file-btn').show();
