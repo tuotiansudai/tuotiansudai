@@ -235,4 +235,21 @@
         </if>
     </select>
 
+    <select id="findCountMembershipByLevel" resultType="java.lang.Long">
+        SELECT
+        COUNT(1)
+        FROM
+        (SELECT
+        MAX(m.level) AS level, login_name
+        FROM
+        user_membership u
+        JOIN membership m ON u.membership_id = m.id
+        WHERE
+        expired_time > NOW()
+        GROUP BY login_name
+        ORDER BY level) membership
+        WHERE
+        level = #{level}
+    </select>
+
 </mapper>

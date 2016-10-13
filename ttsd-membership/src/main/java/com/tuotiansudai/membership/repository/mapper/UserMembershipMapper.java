@@ -71,4 +71,8 @@ public interface UserMembershipMapper {
 
     long findCountGiveMembershipsByLoginNameAndGiveId(@Param(value = "membershipGiveId") long membershipGiveId,
                                                       @Param(value = "loginName") String loginName);
+
+
+    long findCountMembershipByLevel(@Param(value = "level") long level);
+
 }

@@ -6,8 +6,11 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
 import com.tuotiansudai.console.service.UserServiceConsole;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.membership.repository.model.MembershipGiveModel;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.dto.UserItemDataDto;
@@ -70,6 +73,9 @@ public class UserController {
 
     @Autowired
     private AuditLogService auditLogService;
+
+    @Autowired
+    private UserMembershipService userMembershipService;
 
     @Value("${web.server}")
     private String webServer;
@@ -236,6 +242,24 @@ public class UserController {
     @ResponseBody
     public long queryUserByChannel(@PathVariable String channel) {
         return userServiceConsole.findUsersCountByChannel(channel);
+    }
+
+    @RequestMapping(value = "/userMembership/count", method = RequestMethod.GET)
+    @ResponseBody
+    public long queryUserMembershipByLevelCount(@RequestParam(value = "userGroup") UserGroup userGroup) {
+        long level = 0;
+        if(userGroup.equals(UserGroup.MEMBERSHIP_V1)){
+            level = 1;
+        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V2)){
+            level = 2;
+        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V3)){
+            level = 3;
+        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V4)){
+            level = 4;
+        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V5)){
+            level = 5;
+        }
+        return userMembershipService.findCountMembershipByLevel(level);
     }
 
 }

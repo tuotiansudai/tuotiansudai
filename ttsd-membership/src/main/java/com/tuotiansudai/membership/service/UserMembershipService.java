@@ -10,6 +10,7 @@ import com.tuotiansudai.membership.repository.model.UserMembershipItemView;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.ibatis.annotations.Param;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,10 @@ public class UserMembershipService {
 
     @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
     private List<String> heroRankingActivityPeriod;
+
+    public long findCountMembershipByLevel(long level){
+        return userMembershipMapper.findCountMembershipByLevel(level);
+    }
 
     public MembershipModel getMembershipByLevel(int level) {
         return membershipMapper.findByLevel(level);

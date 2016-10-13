@@ -194,7 +194,9 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                 $('.give-number').val('').prop('readonly', false);
             } else if(userGroup == 'MEMBERSHIP_V0' || userGroup == 'MEMBERSHIP_V1' || userGroup == 'MEMBERSHIP_V2'
                     || userGroup == 'MEMBERSHIP_V3' || userGroup == 'MEMBERSHIP_V4' || userGroup == 'MEMBERSHIP_V5'){
-                $('.give-number').val('').prop('readonly', true);
+                $.get('/user-manage/userMembership/count?userGroup='+userGroup,function(data) {
+                    $('.give-number').val(parseInt(data)).prop('readonly', true);
+                })
             } else {
                 $('#file-in').trigger('click');
                 $('.file-btn').show();
