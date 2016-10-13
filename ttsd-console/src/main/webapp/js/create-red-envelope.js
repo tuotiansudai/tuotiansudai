@@ -167,7 +167,9 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                     }
                 })
                 $('.give-number').val('0');
-            } else if (userGroup == 'FIRST_INVEST_ACHIEVEMENT' || userGroup == 'MAX_AMOUNT_ACHIEVEMENT' || userGroup == 'LAST_INVEST_ACHIEVEMENT') {
+            } else if (userGroup == 'FIRST_INVEST_ACHIEVEMENT' || userGroup == 'MAX_AMOUNT_ACHIEVEMENT' || userGroup == 'LAST_INVEST_ACHIEVEMENT'
+                || userGroup == 'MEMBERSHIP_V0' || userGroup == 'MEMBERSHIP_V1' || userGroup == 'MEMBERSHIP_V2'
+                || userGroup == 'MEMBERSHIP_V3' || userGroup == 'MEMBERSHIP_V4' || userGroup == 'MEMBERSHIP_V5') {
                 $('.give-number').val('').prop('readonly', false);
             } else {
                 $('#file-in').trigger('click');
