@@ -1,4 +1,4 @@
-require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','register_common','logintip'], function ($, _,layer,drawCircle) {
+require(['jquery', 'underscore','drawCircle','commonFun','register_common','logintip'], function ($, _,drawCircle) {
 
     var $integralDrawPage=$('#integralDrawPage'),
         $oneThousandPoints=$('.one-thousand-points',$integralDrawPage),
@@ -106,6 +106,7 @@ require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','registe
             //未登录
             //tipMessage.info='<p class="login-text">您还未登录~</p><p class="des-text">请登录后再来抽奖吧！</p>',
             //tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
+            ////drawCircleOne.tipWindowPop(tipMessage);
             //drawCircleOne.tipWindowPop(tipMessage);
 
             $('.no-login-text',$integralDrawPage).trigger('click');  //弹框登录
