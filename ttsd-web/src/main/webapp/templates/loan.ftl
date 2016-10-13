@@ -325,6 +325,15 @@
                             </div>
                         </#if>
 
+                        <#if loan.basicInfo??>
+                            <div class="subtitle">
+                                <h3>借款用途描述</h3>
+                            </div>
+                            <div class="container-fluid list-block">
+                                <p>${loan.basicInfo}</p>
+                            </div>
+                        </#if>
+
                         <div class="subtitle">
                             <h3>抵押档案</h3>
                         </div>
@@ -342,6 +351,14 @@
                                     <#list ['抵押物所在地', '车辆品牌', '车辆型号', '抵押物估值', '抵押物借款金额'] as key>
                                         <#if loan.pledgeVehicleDetail[key]?? && loan.pledgeVehicleDetail[key] != ''>
                                             <div class="col-md-4">${key}：${loan.pledgeVehicleDetail[key]}</div>
+                                        </#if>
+                                    </#list>
+                                </#if>
+
+                                <#if loan.pledgeEnterpriseDetail??>
+                                    <#list ['公司法人', '公司最高持股人', '公司所在地', '担保方式', '抵押物估值', '抵押物所在地'] as key>
+                                        <#if loan.pledgeEnterpriseDetail[key]?? && loan.pledgeEnterpriseDetail[key] != ''>
+                                            <div class="col-md-4">${key}：${loan.pledgeEnterpriseDetail[key]}</div>
                                         </#if>
                                     </#list>
                                 </#if>

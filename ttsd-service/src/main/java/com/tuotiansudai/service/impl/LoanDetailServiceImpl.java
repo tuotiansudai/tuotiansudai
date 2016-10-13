@@ -44,10 +44,16 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private LoanerDetailsMapper loanerDetailsMapper;
 
     @Autowired
+    private LoanerEnterpriseDetailsMapper loanerEnterpriseDetailsMapper;
+
+    @Autowired
     private PledgeHouseMapper pledgeHouseMapper;
 
     @Autowired
     private PledgeVehicleMapper pledgeVehicleMapper;
+
+    @Autowired
+    private PledgeEnterpriseMapper pledgeEnterpriseMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -218,6 +224,20 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .put("抵押物估值", pledgeVehicleModel.getEstimateAmount())
                     .put("抵押物借款金额", pledgeVehicleModel.getLoanAmount())
                     .build());
+        }
+
+        PledgeEnterpriseModel pledgeEnterpriseModel = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
+        LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
+        if (pledgeEnterpriseModel != null && loanerEnterpriseDetailsModel != null) {
+            loanDto.setPledgeEnterpriseDetail(ImmutableMap.<String, String>builder()
+                    .put("公司法人", loanerEnterpriseDetailsModel.getJuristicPerson())
+                    .put("公司最高持股人", loanerEnterpriseDetailsModel.getShareholder())
+                    .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
+                    .put("担保方式", pledgeEnterpriseModel.getGuarantee())
+                    .put("抵押物估值", pledgeEnterpriseModel.getEstimateAmount())
+                    .put("抵押物所在地", pledgeEnterpriseModel.getPledgeLocation())
+                    .build());
+            loanDto.setBasicInfo(loanerEnterpriseDetailsModel.getPurpose());
         }
 
         if (loanModel.getActivityType() == ActivityType.NEWBIE) {
