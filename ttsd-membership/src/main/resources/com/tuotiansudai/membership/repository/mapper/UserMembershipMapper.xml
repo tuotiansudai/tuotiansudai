@@ -222,4 +222,8 @@
         and status = 'SUCCESS'
     </select>
 
+    <select id="findByLoginNameByType" resultMap="UserMembershipResultMap" parameterType="map">
+        select * from user_membership where login_name = #{loginName} and type =  #{type}
+    </select>
+
 </mapper>

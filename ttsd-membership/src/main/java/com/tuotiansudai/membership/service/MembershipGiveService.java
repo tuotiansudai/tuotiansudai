@@ -379,7 +379,6 @@ public class MembershipGiveService {
         UserMembershipModel userMembershipModel = new UserMembershipModel(loginName,
                 membershipMapper.findByLevel(level).getId(),
                 DateTime.now().plusMonths(1).toDate(),
-                new Date(),
                 UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel);
     }
