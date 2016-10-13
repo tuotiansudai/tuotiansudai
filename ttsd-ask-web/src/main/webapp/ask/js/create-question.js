@@ -163,6 +163,32 @@ $.fn.checkFrom = function () {
 
     });
 };
+
+$.fn.autoTextarea = function(options) {
+    var defaults={
+        maxHeight:null,
+        minHeight:$(this).height()
+    };
+    var opts = $.extend({},defaults,options);
+    return $(this).each(function() {
+        $(this).bind("paste cut keydown keyup focus blur",function(){
+            var height,style=this.style;
+            this.style.height = opts.minHeight + 'px';
+            if (this.scrollHeight > opts.minHeight) {
+                if (opts.maxHeight && this.scrollHeight > opts.maxHeight) {
+                    height = opts.maxHeight;
+                    style.overflowY = 'scroll';
+                } else {
+                    height = this.scrollHeight;
+                    style.overflowY = 'hidden';
+                }
+                style.height = height + 'px';
+            }
+        });
+    });
+};
+
+
 //我来回答
 if($questionDetailTag.length) {
     var $formAnswer=$('.formAnswer',$questionDetailTag),
@@ -183,6 +209,10 @@ if($questionDetailTag.length) {
         $(this).checkFrom();
     });
 
+    $formAnswer.find('textarea.answer').autoTextarea({
+        maxHeight:800,
+        minHeight:100
+    });
     $formAnswerSubmit.on('click',function(event) {
         var value=$formAnswer.find('textarea').val();
         event.preventDefault();
@@ -292,6 +322,10 @@ if($createQuestion.length) {
         $(this).checkFrom();
     });
 
+    $formQuestion.find('textarea').autoTextarea({
+        maxHeight:800,
+        minHeight:100
+    });
     $formSubmit.on('click',function(event) {
         var value=$formQuestion.find('textarea').val();
         event.preventDefault();
