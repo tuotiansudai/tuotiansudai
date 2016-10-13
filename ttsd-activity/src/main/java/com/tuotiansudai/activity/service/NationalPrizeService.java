@@ -244,7 +244,6 @@ public class NationalPrizeService {
         UserMembershipModel userMembershipModel = new UserMembershipModel(loginName,
                 membershipMapper.findByLevel(level).getId(),
                 DateTime.now().plusMonths(1).withTime(23,59,59,59).toDate(),
-                new Date(),
                 UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel);
     }

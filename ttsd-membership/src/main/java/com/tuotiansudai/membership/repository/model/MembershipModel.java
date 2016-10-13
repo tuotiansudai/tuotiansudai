@@ -5,8 +5,11 @@ import java.io.Serializable;
 public class MembershipModel implements Serializable {
 
     private long id;
+
     private int level;
+
     private long experience;
+
     private double fee;
 
     public MembershipModel() {
