@@ -56,7 +56,7 @@ public class MembershipController {
             MembershipModel nextLevelMembershipModel = membershipModel.getLevel() == 5 ? membershipModel : userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
             AccountModel accountModel = accountService.findByLoginName(loginName);
             long membershipPoint = accountModel == null ? 0 : accountModel.getMembershipPoint();
-            UserMembershipModel userMembershipModel = userMembershipService.findByLoginNameByMembershipId(loginName, membershipModel.getId());
+            UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
             modelAndView.addObject("mobile", LoginUserInfo.getMobile());
             modelAndView.addObject("membershipLevel", membershipModel.getLevel());
             modelAndView.addObject("membershipNextLevel", nextLevelMembershipModel.getLevel());
@@ -64,7 +64,7 @@ public class MembershipController {
             modelAndView.addObject("membershipPoint", membershipPoint);
             modelAndView.addObject("progressBarPercent", userMembershipService.getProgressBarPercent(loginName));
             modelAndView.addObject("membershipType",userMembershipModel != null ? userMembershipModel.getType().name() : "");
-            modelAndView.addObject("leftDays", userMembershipService.getExpireDayByLoginName(loginName));
+            modelAndView.addObject("leftDays", userMembershipService.getMembershipExpireDay(loginName));
             modelAndView.addObject("expiredDate", userMembershipModel.getExpiredTime());
         }
         return modelAndView;
@@ -118,7 +118,7 @@ public class MembershipController {
 
     @ResponseBody
     @RequestMapping(value = "/receive", method = RequestMethod.GET)
-    public BaseDto<GivenMembershipDto> receive(HttpServletRequest httpServletRequest) throws ParseException {
+    public BaseDto<GivenMembershipDto> receive() throws ParseException {
         BaseDto<GivenMembershipDto> dto = new BaseDto<>();
         try {
             String loginName = LoginUserInfo.getLoginName();
@@ -133,5 +133,4 @@ public class MembershipController {
         }
         return dto;
     }
-
 }

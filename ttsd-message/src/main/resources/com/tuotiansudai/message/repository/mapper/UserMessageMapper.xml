@@ -46,7 +46,7 @@
 
     <select id="findMessagesByLoginName" parameterType="map" resultMap="userMessageResultMap">
         select u.* from user_message u
-        inner join message m on u.message_id = m.id
+        join message m on u.message_id = m.id
         where login_name = #{loginName}
         <if test="channels != null">
             and find_in_set(#{channels},m.channels)

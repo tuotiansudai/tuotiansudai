@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipInvestService;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
@@ -48,7 +49,7 @@ public class InvestController {
     private SmsCaptchaService smsCaptchaService;
 
     @Autowired
-    private MembershipInvestService membershipInvestService;
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes) {
@@ -220,7 +221,7 @@ public class InvestController {
                                                                     @RequestParam(value = "investAmount") String investAmount) {
         String loginName = LoginUserInfo.getLoginName();
         MembershipPreferenceDto membershipPreferenceDto = new MembershipPreferenceDto(true);
-        MembershipModel membershipModel = membershipInvestService.getCurMaxMembership(loginName);
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         if (StringUtils.isEmpty(loginName) || null == membershipModel) {
             membershipPreferenceDto.setValid(false);
         } else {

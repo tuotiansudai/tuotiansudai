@@ -15,6 +15,8 @@ public class UserLotteryPrizeView implements Serializable {
 
     private Date lotteryTime;
 
+    private String prizeValue;
+
     public String getMobile() {
         return mobile;
     }
@@ -45,5 +47,13 @@ public class UserLotteryPrizeView implements Serializable {
 
     public void setLotteryTime(Date lotteryTime) {
         this.lotteryTime = lotteryTime;
+    }
+
+    public String getPrizeValue() {
+        return prizeValue;
+    }
+
+    public void setPrizeValue(String prizeValue) {
+        this.prizeValue = prizeValue;
     }
 }
