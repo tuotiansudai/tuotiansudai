@@ -344,25 +344,6 @@ public class HeroRankingServiceTest {
     }
 
     @Test
-    public void shouldReceiveMembershipIsEqualsAlreadyRegisterAlreadyInvest1000(){
-        List<String> date = Lists.newArrayList();
-        date.add(sdf.format(new Date()));
-        date.add(sdf.format(DateUtils.addMonths(new Date(),1)));
-        ReflectionTestUtils.setField(heroRankingService, "heroRankingActivityPeriod" ,date);
-        UserModel fakeUser = getFakeUser("testReceive");
-        long loanId = idGenerator.generate();
-        createLoanByUserId(fakeUser.getLoginName(),loanId);
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1000000, fakeUser.getLoginName(), new Date(), Source.WEB, null,0);
-        model.setStatus(InvestStatus.SUCCESS);
-        investMapper.create(model);
-        accountMapper.create(new AccountModel(fakeUser.getLoginName(), "username", "11234", "", "", DateUtils.addDays(new Date(),-1)));
-        GivenMembership GivenMembership = heroRankingService.receiveMembership(fakeUser.getLoginName());
-        UserMembershipModel userMembershipModel = userMembershipMapper.findActiveByLoginName(fakeUser.getLoginName());
-        assertThat(GivenMembership.ALREADY_REGISTER_ALREADY_INVEST_1000,is(GivenMembership));
-        assertNotNull(userMembershipModel);
-    }
-
-    @Test
     public void shouldReceiveMembershipIsEqualsAlreadyStartActivityRegister(){
         List<String> date = Lists.newArrayList();
         date.add(sdf.format(new Date()));

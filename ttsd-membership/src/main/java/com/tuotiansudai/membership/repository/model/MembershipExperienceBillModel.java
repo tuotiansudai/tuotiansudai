@@ -16,11 +16,11 @@ public class MembershipExperienceBillModel implements Serializable{
 
     }
 
-    public MembershipExperienceBillModel(String loginName, long experience, long totalExperience, Date createdTime, String description) {
+    public MembershipExperienceBillModel(String loginName, long experience, long totalExperience, String description) {
         this.loginName = loginName;
         this.experience = experience;
         this.totalExperience = totalExperience;
-        this.createdTime = createdTime;
+        this.createdTime = new Date();
         this.description = description;
     }
 

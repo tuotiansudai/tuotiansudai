@@ -18,6 +18,7 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
     private String point;
     private String rewardAmount;
     private String membershipLevel;
+    private String membershipExpiredDate;
     private String membershipPoint;
     private String availableMoneyCent;
 
@@ -145,6 +146,14 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
 
     public void setMembershipPoint(String membershipPoint) {
         this.membershipPoint = membershipPoint;
+    }
+
+    public String getMembershipExpiredDate() {
+        return membershipExpiredDate;
+    }
+
+    public void setMembershipExpiredDate(String membershipExpiredDate) {
+        this.membershipExpiredDate = membershipExpiredDate;
     }
 
     public String getAvailableMoneyCent() {

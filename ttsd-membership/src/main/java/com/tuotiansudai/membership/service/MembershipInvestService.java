@@ -6,13 +6,14 @@ import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.text.MessageFormat;
 
 @Service
 public class MembershipInvestService {
@@ -20,40 +21,42 @@ public class MembershipInvestService {
     private static Logger logger = Logger.getLogger(MembershipInvestService.class);
 
     @Autowired
-    MembershipExperienceBillMapper membershipExperienceBillMapper;
+    private MembershipExperienceBillMapper membershipExperienceBillMapper;
 
     @Autowired
-    UserMembershipMapper userMembershipMapper;
+    private AccountMapper accountMapper;
 
     @Autowired
-    MembershipMapper membershipMapper;
+    private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private MembershipMapper membershipMapper;
+
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     public void afterInvestSuccess(String loginName, long investAmount, long investId) {
-
         try {
-            long membershipPoint = userMembershipMapper.findMembershipPointByLoginName(loginName);
-            long totalPoint = membershipPoint + investAmount / 100;
-            userMembershipMapper.updateMembershipPoint(loginName, totalPoint);
+            AccountModel accountModel = accountMapper.findByLoginName(loginName);
+            long investMembershipPoint = investAmount / 100;
+            accountModel.setMembershipPoint(accountModel.getMembershipPoint() + investMembershipPoint);
+            accountMapper.update(accountModel);
 
-            MembershipExperienceBillModel billModel = new MembershipExperienceBillModel(loginName, investAmount / 100, totalPoint, new Date(), "您投资了" + investId + "项目" + String.format("%.2f", investAmount / 100D) + "元");
+            MembershipExperienceBillModel billModel = new MembershipExperienceBillModel(loginName,
+                    investMembershipPoint,
+                    accountModel.getMembershipPoint(),
+                    MessageFormat.format("您投资了{0}项目{1}元", String.valueOf(investId), AmountConverter.convertCentToString(investAmount)));
+
             membershipExperienceBillMapper.create(billModel);
 
-            Integer level = userMembershipMapper.findRealLevelByLoginName(loginName);
-            MembershipModel newMembership = membershipMapper.findByExperience(totalPoint);
+            int level = userMembershipEvaluator.evaluateUpgradeLevel(loginName).getLevel();
+            MembershipModel newMembership = membershipMapper.findByExperience(accountModel.getMembershipPoint());
             if (newMembership.getLevel() > level) {
-                UserMembershipModel userMembershipModel = new UserMembershipModel(loginName, newMembership.getId(), new DateTime(9999, 12, 31, 23, 59, 59).toDate(), UserMembershipType.UPGRADE);
+                UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, newMembership.getId());
                 userMembershipMapper.create(userMembershipModel);
             }
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-    }
-
-    public MembershipModel getCurMaxMembership(String loginName) {
-        UserMembershipModel userMembershipModel = userMembershipMapper.findCurrentMaxByLoginName(loginName);
-        if (null == userMembershipModel) {
-            return null;
-        }
-        return membershipMapper.findById(userMembershipModel.getMembershipId());
     }
 }

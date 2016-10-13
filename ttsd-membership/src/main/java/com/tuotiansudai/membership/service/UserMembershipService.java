@@ -2,6 +2,8 @@ package com.tuotiansudai.membership.service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
+import com.google.common.primitives.Longs;
 import com.tuotiansudai.membership.dto.UserMembershipItemDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -9,12 +11,10 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipItemView;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.ibatis.annotations.Param;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,13 +24,16 @@ import java.util.List;
 public class UserMembershipService {
 
     @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
     private MembershipMapper membershipMapper;
 
     @Autowired
     private UserMembershipMapper userMembershipMapper;
 
-    @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
-    private List<String> heroRankingActivityPeriod;
+    @Autowired
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     public long findCountMembershipByLevel(long level){
         return userMembershipMapper.findCountMembershipByLevel(level);
@@ -41,40 +44,29 @@ public class UserMembershipService {
     }
 
     public int getProgressBarPercent(String loginName) {
-        Long membershipPoint = userMembershipMapper.findMembershipPointByLoginName(loginName);
-        if (membershipPoint == null) {
-            membershipPoint = 0L;
-        }
-        int currentLevel = userMembershipMapper.findRealLevelByLoginName(loginName);
+        long membershipPoint = accountMapper.findByLoginName(loginName) != null ? accountMapper.findByLoginName(loginName).getMembershipPoint() : 0;
+        int currentLevel = userMembershipEvaluator.evaluateUpgradeLevel(loginName).getLevel();
         MembershipModel membershipModel = membershipMapper.findByLevel(currentLevel);
         MembershipModel NextLevelMembershipModel = this.getMembershipByLevel(currentLevel >= 5 ? currentLevel : (currentLevel + 1));
         double changeable = ((membershipPoint - membershipModel.getExperience()) / (double) (NextLevelMembershipModel.getExperience() - membershipModel.getExperience())) * 0.2 * 100;
         return (int) (membershipModel.getLevel() * 20 == 100 ? 100 : (membershipModel.getLevel() * 20 + changeable) > 100 ? 100 : (membershipModel.getLevel() * 20 + changeable));
     }
 
-    public int getExpireDayByLoginName(String loginName) {
-        UserMembershipModel userMembershipModel = userMembershipMapper.findActiveByLoginName(loginName);
-        if (userMembershipModel != null) {
-            return Days.daysBetween(new DateTime(), new DateTime(userMembershipModel.getExpiredTime()).plusDays(1)).getDays();
-        }
-        return 0;
-    }
+    public Integer getMembershipExpireDay(String loginName) {
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        List<UserMembershipModel> userMembershipModels = userMembershipMapper.findByLoginNameAndMembershipId(loginName, membershipModel.getId());
+        UserMembershipModel max = new Ordering<UserMembershipModel>() {
+            @Override
+            public int compare(UserMembershipModel left, UserMembershipModel right) {
+                return Longs.compare(left.getExpiredTime().getTime(), right.getExpiredTime().getTime());
+            }
+        }.max(userMembershipModels);
 
-    public UserMembershipModel findByLoginNameByMembershipId(String loginName, long membershipId) {
-        UserMembershipModel returnUserMembershipModel = new UserMembershipModel();
-        List<UserMembershipModel> userMembershipModels = userMembershipMapper.findByLoginNameByMembershipId(loginName, membershipId);
-
-        if (CollectionUtils.isEmpty(userMembershipModels)) {
+        if (new DateTime(max.getExpiredTime()).getYear() == 9999) {
             return null;
         }
 
-        for (UserMembershipModel userMembershipModel : userMembershipModels) {
-            if (userMembershipModel.getType().equals(UserMembershipType.GIVEN)) {
-                returnUserMembershipModel = userMembershipModel;
-            }
-        }
-
-        return userMembershipModels.size() == 1 ? userMembershipModels.get(0) : returnUserMembershipModel;
+        return Days.daysBetween(new DateTime(), new DateTime(max.getExpiredTime()).plusDays(1)).getDays();
     }
 
     public List<UserMembershipItemDto> getUserMembershipItems(String loginName, String mobile,
@@ -94,11 +86,12 @@ public class UserMembershipService {
     }
 
     public List<Integer> getAllLevels() {
-        return membershipMapper.findAllLevels();
-    }
-
-    public String getMembershipLevelByLoginNameAndInvestTime(String loginName, Date investTime) {
-        long level = userMembershipMapper.findByLoginNameOrInvestTime(loginName, investTime);
-        return String.valueOf(membershipMapper.findById(level).getLevel());
+        List<MembershipModel> allMembership = membershipMapper.findAllMembership();
+        return Lists.transform(allMembership, new Function<MembershipModel, Integer>() {
+            @Override
+            public Integer apply(MembershipModel input) {
+                return input.getLevel();
+            }
+        });
     }
 }

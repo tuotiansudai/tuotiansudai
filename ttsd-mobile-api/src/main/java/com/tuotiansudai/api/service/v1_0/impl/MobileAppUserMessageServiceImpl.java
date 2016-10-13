@@ -91,10 +91,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
         BaseResponseDto baseDto = new BaseResponseDto();
         baseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        UserMessageModel userMessageModel = userMessageMapper.findById(Long.parseLong(messageId));
-        userMessageModel.setRead(true);
-        userMessageModel.setReadTime(new Date());
-        userMessageMapper.update(userMessageModel);
+        userMessageServices.readMessage(Long.parseLong(messageId));
         return baseDto;
     }
 }

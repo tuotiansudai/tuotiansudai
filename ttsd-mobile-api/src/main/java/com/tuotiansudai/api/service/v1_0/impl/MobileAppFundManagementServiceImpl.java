@@ -7,6 +7,8 @@ import com.tuotiansudai.api.service.v1_0.MobileAppFundManagementService;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.point.service.PointService;
@@ -19,9 +21,11 @@ import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.service.WithdrawService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -44,8 +48,6 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
     private ReferrerManageMapper referrerManageMapper;
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
-    @Autowired
-    private UserMembershipService userMembershipService;
 
     public BaseResponseDto queryFundByUserId(String userId) {
         AccountModel accountModel = accountMapper.findByLoginName(userId);
@@ -98,6 +100,11 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
         fundManagementResponseDataDto.setRewardAmount(AmountConverter.convertCentToString(rewardAmount));
         fundManagementResponseDataDto.setMembershipLevel(String.valueOf(level));
         fundManagementResponseDataDto.setMembershipPoint(String.valueOf(accountModel == null ? 0 : accountModel.getMembershipPoint()));
+
+        UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(userId, new Date());
+        if (userMembershipModel.getType() != UserMembershipType.UPGRADE) {
+            fundManagementResponseDataDto.setMembershipExpiredDate(new DateTime(userMembershipModel.getExpiredTime()).toString("yyyy-MM-dd"));
+        }
         fundManagementResponseDataDto.setAvailableMoneyCent(String.valueOf(accountBalance));
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setData(fundManagementResponseDataDto);
