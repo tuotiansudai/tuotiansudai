@@ -216,8 +216,9 @@ if($questionDetailTag.length) {
     $formAnswerSubmit.on('click',function(event) {
         var value=$formAnswer.find('textarea').val();
         event.preventDefault();
-        var temp=value.replace(/\n/g,'\\n');
-        var temp=temp.replace(/\r/g,'\\r');
+        var temp=value.replace(/\n/g,'\\n')
+            .replace(/\r/g,'\\r')
+            .replace(/\s/g,'&nbsp;');
         $formAnswer.find('textarea').val(temp);
 
             $.ajax({
@@ -331,10 +332,11 @@ if($createQuestion.length) {
         event.preventDefault();
 
         //var temp=value.replace(/\r\n/g,'\\r\\n');
-        var temp=value.replace(/\n/g,'\\n');
-        var temp=temp.replace(/\r/g,'\\r');
-        $formQuestion.find('textarea').val(temp);
+        var temp=value.replace(/\n/g,'\\n')
+                      .replace(/\r/g,'\\r')
+                      .replace(/\s/g,'&nbsp;');
 
+        $formQuestion.find('textarea').val(temp);
             $.ajax({
                     url: "/question",
                     data: $formQuestion.serialize(),
