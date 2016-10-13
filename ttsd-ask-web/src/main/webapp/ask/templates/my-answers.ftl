@@ -31,7 +31,7 @@
                     </dd>
                     <dd>
                         <p>
-                        ${answer.answer}
+                        ${answer.answer?replace('\\n','<br/>','i')}
                         </p>
                     </dd>
                 </dl>

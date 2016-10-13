@@ -183,7 +183,13 @@ if($questionDetailTag.length) {
         $(this).checkFrom();
     });
 
-    $formAnswerSubmit.on('click',function() {
+    $formAnswerSubmit.on('click',function(event) {
+        var value=$formAnswer.find('textarea').val();
+        event.preventDefault();
+        var temp=value.replace(/\n/g,'\\n');
+        var temp=temp.replace(/\r/g,'\\r');
+        $formAnswer.find('textarea').val(temp);
+
             $.ajax({
                 url: "/answer",
                 data: $formAnswer.serialize(),
