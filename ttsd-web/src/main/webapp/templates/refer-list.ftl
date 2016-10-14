@@ -13,7 +13,8 @@
         <div class="invite-friend-inner fl">
             <div class="invite-title"><i></i><span>微信邀请好友</span></div>
             <div class="tc wechat-code">
-                <img src="${staticServer}/images/sign/refer-list/weixin-code.png" alt="推荐送现金">
+                <em class="img-code"></em>
+                <#--<img src="${staticServer}/images/sign/refer-list/weixin-code.png" alt="推荐送现金">-->
                 <span>将扫码后的页面<br/>
                 分享给好友即可邀请</span>
             </div>
@@ -23,7 +24,7 @@
             <div class="invite-title"><i></i><span>链接邀请好友</span></div>
             <dl>
                 <dd>
-                    <input type="text" class="input-invite" id="clipboard_text" data-mobile="<@global.security.authentication property='principal.mobile' />">
+                    <input type="text" class="input-invite" id="clipboard_text" disabled data-mobile="<@global.security.authentication property='principal.mobile'/>">
                 </dd>
                 <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-normal fr copy-button" data-clipboard-target="clipboard_text">复制链接</a></dt>
             </dl>

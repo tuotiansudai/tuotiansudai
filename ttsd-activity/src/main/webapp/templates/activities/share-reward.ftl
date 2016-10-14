@@ -10,7 +10,7 @@
             <span class="title-word01"></span>
         </div>
 
-        <@global.isAnonymous>
+     <@global.isAnonymous>
         <div class="invite-box-friend anonymous">
             <dl>
                 <dt>向好友发送您的邀请链接：</dt>
@@ -20,7 +20,6 @@
             </dl>
         </div>
       </@global.isAnonymous>
-
 
     <@global.isNotAnonymous>
 
@@ -41,14 +40,14 @@
             <div class="invite-box-friend clearfix non-anonymous yes-identification">
                 <dl>
                     <dd>
-                        <input type="text" class="input-invite" id="clipboard_text" data-mobile="<@global.security.authentication property='principal.mobile' />" >
+                        <input type="text" class="input-invite" id="clipboard_text1" disabled data-mobile="<@global.security.authentication property='principal.mobile' />" >
                     </dd>
-                    <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-copy-link fr copy-button" data-clipboard-target="clipboard_text">复制链接</a></dt>
+                    <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-copy-link fr copy-button" data-clipboard-target="clipboard_text1">复制链接</a></dt>
                 </dl>
 
                 <div class="weixin-code">
-                    <img src="${staticServer}/activity/images/share-reward/wei-code.png">
-                    <span>微信扫码邀请好友</span>
+                    <em class="img-code"></em>
+                    <span>将扫码后的页面<br/>分享给好友即可邀请</span>
                 </div>
             </div>
 
@@ -178,14 +177,49 @@
             <p class="for-mobile">八戒和悟空又这样投资了5次，您获得奖励=246X2X5=2460元</p>
         </div>
 
-        <div class="invite-box-friend anonymous">
-            <dl>
-                <dt>向好友发送您的邀请链接：</dt>
-                <dd><input type="text" class="input-invite" value="https://tuotiansudai.com/register/user?referrer=cg007008">
-                    <button type="button" class="btn-copy-link">复制链接</button>
-                </dd>
-            </dl>
-        </div>
+        <@global.isAnonymous>
+            <div class="invite-box-friend anonymous">
+                <dl>
+                    <dt>向好友发送您的邀请链接：</dt>
+                    <dd><input type="text" class="input-invite" disabled value="https://tuotiansudai.com/activity/landing-page?referrer=">
+                        <a class="btn-copy-link show-login" href="javascript:void(0);">复制链接</a>
+                    </dd>
+                </dl>
+            </div>
+        </@global.isAnonymous>
+
+        <@global.isNotAnonymous>
+
+            <@global.noRole hasNoRole="'INVESTOR'">
+            <#--已登录未认证-->
+                <div class="invite-box-friend no-identification">
+                    <dl>
+                        <dt>向好友发送您的邀请链接：</dt>
+                        <dd><input type="text" class="input-invite"  disabled value="https://tuotiansudai.com/activity/landing-page?referrer=<@global.security.authentication property='principal.mobile' />">
+                            <a class="btn-copy-link to-identification" href="javascript:void(0);" >复制链接</a>
+                        </dd>
+                    </dl>
+                </div>
+            </@global.noRole>
+
+            <@global.role hasRole="'INVESTOR','LOANER'">
+            <#--已登录已认证-->
+                <div class="invite-box-friend clearfix non-anonymous yes-identification">
+                    <dl>
+                        <dd>
+                            <input type="text" class="input-invite" id="clipboard_text2" disabled data-mobile="<@global.security.authentication property='principal.mobile' />" >
+                        </dd>
+                        <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-copy-link fr copy-button" data-clipboard-target="clipboard_text2">复制链接</a></dt>
+                    </dl>
+
+                    <div class="weixin-code">
+                        <em class="img-code"></em>
+                        <span>将扫码后的页面<br/>分享给好友即可邀请</span>
+                    </div>
+                </div>
+
+            </@global.role>
+        </@global.isNotAnonymous>
     </div>
 
     <div class="bg-column-normal recommended-ranking">
@@ -238,7 +272,7 @@
     </div>
 </div>
 
-<div class="pop-layer-out">
+<div class="pop-layer-out" style="display: none">
     <div class="btn-to-close"></div>
     <p>您的好友可能猜不到你是谁
         先来进行实名认证吧！</p>

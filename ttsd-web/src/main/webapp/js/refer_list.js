@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension','copyclip','commonFun','md5'],
+require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension','copyclip','commonFun','md5','qrcode'],
     function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer) {
 
         var $investListContent=$('#investListContent'),
@@ -19,6 +19,9 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
         var md5String=commonFun.compile(md5Mobile,mobile),
             origin=location.origin;
         $clipboardText.val(origin+'/activity/landing-page?referrer='+md5String);
+
+        //动态生成二维码
+        $('.img-code',$investListContent).qrcode('https://tuotiansudai.com/activity/app-share?referrerMobile='+mobile);
 
         /*复制链接*/
         client.on( "ready", function( readyEvent ) {

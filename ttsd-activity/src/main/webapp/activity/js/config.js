@@ -5,6 +5,7 @@ var require = {
         'jquery': staticServer+'/activity/js/libs/jquery-1.11.3.min',
         'copyclip': staticServer+'/activity/js/libs/zeroclip/ZeroClipboard',
         'md5': staticServer+'/activity/js/libs/jQuery.md5',
+        'qrcode': staticServer+'/activity/js/libs/jquery.qrcode.min',
         'csrf': staticServer+'/activity/js/libs/csrf',
         'jqueryPage': staticServer+'/activity/js/libs/jquery.page',
         'jquery.validate': staticServer+'/activity/js/libs/jquery.validate-1.14.0.min',
@@ -61,7 +62,8 @@ var require = {
         'fancybox':['jquery'],
         'placeholder': ['jquery'],
         'superslide': ['jquery'],
-        'md5':['jquery']
+        'md5':['jquery'],
+        'qrcode':['jquery']
     },
     config: {
         text: {

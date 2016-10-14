@@ -1,4 +1,4 @@
-require(['jquery','layerWrapper','commonFun','logintip','copyclip','md5'], function($,layer) {
+require(['jquery','layerWrapper','commonFun','logintip','copyclip','md5','qrcode'], function($,layer) {
 
 	var $shareReward=$('#shareRewardContainer'),
 		$inviteFriend=$('.invite-box-friend',$shareReward),
@@ -12,7 +12,7 @@ require(['jquery','layerWrapper','commonFun','logintip','copyclip','md5'], funct
 	if($copyButton.length) {
 		//已登录已认证,复制功能
 		var client = new ZeroClipboard($copyButton),
-			$clipboardText=$('#clipboard_text');
+			$clipboardText=$('.input-invite',$shareReward);
 		var mobile=$clipboardText.data('mobile')+'',
 			md5Mobile=$.md5(mobile);
 		var md5String=commonFun.compile(md5Mobile,mobile),
@@ -20,6 +20,10 @@ require(['jquery','layerWrapper','commonFun','logintip','copyclip','md5'], funct
 
 		$clipboardText.val(origin+'/activity/landing-page?referrer='+md5String);
 
+		//动态生成二维码
+		$('.img-code',$shareReward).qrcode('https://tuotiansudai.com/activity/app-share?referrerMobile='+mobile);
+
+		/*复制链接*/
 		client.on( "ready", function( readyEvent ) {
 			client.on( "aftercopy", function( event ) {
 				// event.data["text/plain"]
