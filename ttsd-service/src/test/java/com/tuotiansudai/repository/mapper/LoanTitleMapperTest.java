@@ -26,22 +26,13 @@ public class LoanTitleMapperTest {
 
     @Test
     public void createTitleTest(){
-        LoanTitleModel loanTitleModel = new LoanTitleModel();
-        long id = idGenerator.generate();
-        loanTitleModel.setId(id);
-        loanTitleModel.setType(LoanTitleType.BASE_TITLE_TYPE);
-        loanTitleModel.setTitle("房产证");
-        loanTitleMapper.create(loanTitleModel);
-        assertNotNull(loanTitleMapper.findById(id));
+        LoanTitleModel loanTitleModel = new LoanTitleModel(idGenerator.generate(), LoanTitleType.BASE_TITLE_TYPE, "房产证");
+        assertNotNull(loanTitleModel.getId());
     }
 
     @Test
     public void findAllTitlesTest(){
-        LoanTitleModel loanTitleModel = new LoanTitleModel();
-        long id = idGenerator.generate();
-        loanTitleModel.setId(id);
-        loanTitleModel.setType(LoanTitleType.BASE_TITLE_TYPE);
-        loanTitleModel.setTitle("房产证");
+        LoanTitleModel loanTitleModel = new LoanTitleModel(idGenerator.generate(), LoanTitleType.BASE_TITLE_TYPE, "身份证");
         loanTitleMapper.create(loanTitleModel);
         List<LoanTitleModel> loanTitleModels = loanTitleMapper.findAll();
         assertTrue(loanTitleModels.size() >= 0);

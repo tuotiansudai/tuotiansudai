@@ -36,6 +36,7 @@
     <mvc:resources mapping="/images/**" location="/images/"/>
     <mvc:resources mapping="/upload/**" location="/upload/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:resources mapping="/tpl/**" location="/tpl/"/>
 
     <bean id="freeMarkerVariablesMap" class="org.springframework.beans.factory.config.MapFactoryBean">
         <property name="sourceMap">

@@ -5,33 +5,33 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.LoanOutDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.service.LoanService;
+import com.tuotiansudai.repository.model.LoanStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping(value = "/loan")
+@RequestMapping(path = "/loan")
 public class LoanController {
     @Autowired
     private LoanService loanService;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(path = "/{loanId}", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> createLoan(@RequestBody LoanDto loanDto) {
-        return loanService.createLoan(loanDto.getId());
+    public BaseDto<PayDataDto> createLoan(@PathVariable long loanId) {
+        return loanService.createLoan(loanId);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(path = "/{loanId}/status/{status}", method = RequestMethod.PUT)
     @ResponseBody
-    public BaseDto<PayDataDto> updateLoan(@RequestBody LoanDto loanDto) {
-        return loanService.updateLoanStatus(loanDto.getId(), loanDto.getLoanStatus());
+    public BaseDto<PayDataDto> updateLoanStatus(@PathVariable long loanId, @PathVariable LoanStatus status) {
+        return loanService.updateLoanStatus(loanId, status);
     }
 
-    // 放款，只用传入loanId
     @ResponseBody
-    @RequestMapping(value = "/loan-out", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> loanOut(@RequestBody LoanOutDto loanOutDto){
-        return loanService.loanOut(loanOutDto.getLoanIdLong());
+    @RequestMapping(value = "/{loanId}/loan-out", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> loanOut(@PathVariable long loanId){
+        return loanService.loanOut(loanId);
     }
 
     @RequestMapping(value = "/{loanId}/cancel", method = RequestMethod.POST)

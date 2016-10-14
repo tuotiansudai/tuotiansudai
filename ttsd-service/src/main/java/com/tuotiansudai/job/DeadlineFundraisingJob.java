@@ -18,14 +18,19 @@ public class DeadlineFundraisingJob implements Job{
     @Autowired
     private LoanMapper loanMapper;
 
+    public final static String LOAN_ID_KEY = "LOAN_ID";
+
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("trigger DeadlineFundraisingJob");
-        long loanId = (Long)context.getJobDetail().getJobDataMap().get("loanId");
+        long loanId = (Long) context.getJobDetail().getJobDataMap().get(LOAN_ID_KEY);
+
         LoanModel loanModel = loanMapper.findById(loanId);
+
         logger.debug("loanId = " + loanId);
         logger.debug("status = " + loanModel.getStatus());
         logger.debug("fundraisingEndTime = " + loanModel.getFundraisingEndTime());
+
         if (loanModel.getStatus() == LoanStatus.RAISING) {
             loanMapper.updateStatus(loanModel.getId(), LoanStatus.RECHECK);
         }
