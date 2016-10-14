@@ -1,5 +1,6 @@
-require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper','clipboard', 'daterangepicker', 'jquery.ajax.extension','commonFun','md5','qrcode'],
+require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension','commonFun','md5','qrcode','clipboard'],
     function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer) {
+        window['Clipboard']=clipboard;
 
         var $investListContent=$('#investListContent'),
             $clipboardText=$('#clipboard_text');
@@ -23,11 +24,17 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
         $('.img-code',$investListContent).qrcode(origin+'/activity/app-share?referrerMobile='+mobile);
 
         /*复制链接*/
-        var clipboard = new Clipboard('#copyButtonBtn');
-        clipboard.on('success', function(e) {
-            layer.msg("复制成功");
-            e.clearSelection();
-        });
+        (function($) {
+            var clipboard = new Clipboard('#copyButtonBtn');
+            clipboard.on('success', function(e) {
+                layer.msg("复制成功");
+                e.clearSelection();
+            });
+            clipboard.on('error', function(e) {
+                layer.msg("复制失败");
+            });
+        })(jQuery);
+
 
         var paginationElement = paginationElementRelation;
         var template = referRelationTemplate;

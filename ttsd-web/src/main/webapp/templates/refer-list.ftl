@@ -1,6 +1,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.refer_list}" pageJavascript="${js.refer_list}" activeNav="我的账户" activeLeftNav="推荐送现金" title="推荐管理">
 <div class="content-container invest-list-content" id="investListContent">
+
     <h4 class="column-title"><em class="tc">推荐送现金</em></h4>
 
        <div class="bar-top-img">
@@ -24,9 +25,9 @@
             <div class="invite-title"><i></i><span>链接邀请好友</span></div>
             <dl>
                 <dd>
-                    <input type="text" class="input-invite" id="clipboard_text" disabled data-mobile="<@global.security.authentication property='principal.mobile'/>">
+                    <input type="text" class="input-invite" id="clipboard_text" value="123" readonly data-mobile="<@global.security.authentication property='principal.mobile'/>">
                 </dd>
-                <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-normal fr copy-button" id="copyButtonBtn" data-clipboard-action="copy"  data-clipboard-target="clipboard_text">复制链接</a></dt>
+                <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-normal fr copy-button" id="copyButtonBtn" data-clipboard-action="copy"  data-clipboard-target="#clipboard_text">复制链接</a></dt>
             </dl>
         </div>
     </div>
