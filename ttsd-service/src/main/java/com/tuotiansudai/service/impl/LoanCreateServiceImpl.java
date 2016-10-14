@@ -183,32 +183,30 @@ public class LoanCreateServiceImpl implements LoanCreateService {
         loanDetailsMapper.deleteByLoanId(loanId);
         loanDetailsMapper.create(new LoanDetailsModel(loanId, loanCreateRequestDto.getLoanDetails()));
 
-        if (LoanStatus.WAITING_VERIFY == loanModel.getStatus()) {
-            loanerDetailsMapper.deleteByLoanId(loanId);
-            loanerEnterpriseDetailsMapper.deleteByLoanId(loanId);
+        loanerDetailsMapper.deleteByLoanId(loanId);
+        loanerEnterpriseDetailsMapper.deleteByLoanId(loanId);
 
-            if (loanCreateRequestDto.getLoanerDetails() != null) {
-                loanerDetailsMapper.create(new LoanerDetailsModel(loanId, loanCreateRequestDto.getLoanerDetails()));
-            }
+        if (loanCreateRequestDto.getLoanerDetails() != null) {
+            loanerDetailsMapper.create(new LoanerDetailsModel(loanId, loanCreateRequestDto.getLoanerDetails()));
+        }
 
-            if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
-                loanerEnterpriseDetailsMapper.create(new LoanerEnterpriseDetailsModel(loanId, loanCreateRequestDto.getLoanerEnterpriseDetails()));
-            }
+        if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
+            loanerEnterpriseDetailsMapper.create(new LoanerEnterpriseDetailsModel(loanId, loanCreateRequestDto.getLoanerEnterpriseDetails()));
+        }
 
-            pledgeHouseMapper.deleteByLoanId(loanId);
-            pledgeVehicleMapper.deleteByLoanId(loanId);
-            pledgeEnterpriseMapper.deleteByLoanId(loanId);
-            if (loanCreateRequestDto.getPledgeHouse() != null) {
-                pledgeHouseMapper.create(new PledgeHouseModel(loanId, loanCreateRequestDto.getPledgeHouse()));
-            }
+        pledgeHouseMapper.deleteByLoanId(loanId);
+        pledgeVehicleMapper.deleteByLoanId(loanId);
+        pledgeEnterpriseMapper.deleteByLoanId(loanId);
+        if (loanCreateRequestDto.getPledgeHouse() != null) {
+            pledgeHouseMapper.create(new PledgeHouseModel(loanId, loanCreateRequestDto.getPledgeHouse()));
+        }
 
-            if (loanCreateRequestDto.getPledgeVehicle() != null) {
-                pledgeVehicleMapper.create(new PledgeVehicleModel(loanId, loanCreateRequestDto.getPledgeVehicle()));
-            }
+        if (loanCreateRequestDto.getPledgeVehicle() != null) {
+            pledgeVehicleMapper.create(new PledgeVehicleModel(loanId, loanCreateRequestDto.getPledgeVehicle()));
+        }
 
-            if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
-                pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
-            }
+        if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
+            pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
         }
 
         if (fundraisingEndTimeChanged) {
