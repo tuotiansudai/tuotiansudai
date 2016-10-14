@@ -111,13 +111,13 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         when(userMembershipEvaluator.evaluate(anyString())).thenReturn(membershipModel);
         LoanerDetailsModel loanerDetailsModel = new LoanerDetailsModel();
         loanerDetailsModel.setUserName("UserName");
-        when(loanerDetailsMapper.getLoanerDetailByLoanId(anyLong())).thenReturn(loanerDetailsModel);
+        when(loanerDetailsMapper.getByLoanId(anyLong())).thenReturn(loanerDetailsModel);
         LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "declaration", "", false, "");
-        when(loanDetailsMapper.getLoanDetailsByLoanId(anyLong())).thenReturn(loanDetailsModel);
+        when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(loanDetailsModel);
 
         PledgeHouseModel pledgeHouseModel = new PledgeHouseModel();
         pledgeHouseModel.setAuthenticAct("AuthenticAct");
-        when(pledgeHouseMapper.getPledgeHouseDetailByLoanId(anyLong())).thenReturn(pledgeHouseModel);
+        when(pledgeHouseMapper.getByLoanId(anyLong())).thenReturn(pledgeHouseModel);
         when(contractService.getContract(anyString(), any(HashMap.class))).thenReturn("loanDetail");
 
         InvestModel investModel1 = getFakeInvestModel(id, "loginName1");
@@ -143,9 +143,9 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
         when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
-        when(loanerDetailsMapper.getLoanerDetailByLoanId(anyLong())).thenReturn(new LoanerDetailsModel());
-        when(loanDetailsMapper.getLoanDetailsByLoanId(anyLong())).thenReturn(new LoanDetailsModel());
-        when(pledgeHouseMapper.getPledgeHouseDetailByLoanId(anyLong())).thenReturn(new PledgeHouseModel());
+        when(loanerDetailsMapper.getByLoanId(anyLong())).thenReturn(new LoanerDetailsModel());
+        when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(new LoanDetailsModel());
+        when(pledgeHouseMapper.getByLoanId(anyLong())).thenReturn(new PledgeHouseModel());
         when(contractService.getContract(anyString(),anyMap())).thenReturn("");
 
         List<LoanTitleRelationModel> loanTitleRelationModelList = Lists.newArrayList();

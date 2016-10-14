@@ -74,41 +74,9 @@ public class LoanerDetailsMapperTest {
 
         loanerDetailsMapper.create(loanerDetailsModel);
 
-        LoanerDetailsModel findLoanDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanerDetailsModel.getLoanId());
+        LoanerDetailsModel findLoanDetailsModel = loanerDetailsMapper.getByLoanId(loanerDetailsModel.getLoanId());
         assertNotNull(findLoanDetailsModel);
         assertEquals(loanerDetailsModel.getLoanId(), findLoanDetailsModel.getLoanId());
-        assertEquals(loanerDetailsModel.getAge(), findLoanDetailsModel.getAge());
-        assertEquals(loanerDetailsModel.getEmploymentStatus(), findLoanDetailsModel.getEmploymentStatus());
-        assertEquals(loanerDetailsModel.getGender(), findLoanDetailsModel.getGender());
-        assertEquals(loanerDetailsModel.getIdentityNumber(), findLoanDetailsModel.getIdentityNumber());
-        assertEquals(loanerDetailsModel.getIncome(), findLoanDetailsModel.getIncome());
-        assertEquals(loanerDetailsModel.getMarriage(), findLoanDetailsModel.getMarriage());
-        assertEquals(loanerDetailsModel.getUserName(), findLoanDetailsModel.getUserName());
-        assertEquals(loanerDetailsModel.getRegion(), findLoanDetailsModel.getRegion());
-        assertEquals(loanerDetailsModel.getLoginName(), findLoanDetailsModel.getLoginName());
-    }
-
-    @Test
-    public void testUpdateByLoanIdupdateByLoanId() throws Exception {
-        prepareData();
-        LoanerDetailsModel loanerDetailsModel = new LoanerDetailsModel(9999L, "testLoaner", "loaner", Gender.MALE, 12,
-                "123814134", Marriage.DIVORCE, "region", "income", "employment");
-        loanerDetailsMapper.create(loanerDetailsModel);
-
-        loanerDetailsModel.setLoginName("updateLoginName");
-        loanerDetailsModel.setUserName("updateUserName");
-        loanerDetailsModel.setGender(Gender.FEMALE);
-        loanerDetailsModel.setAge(123);
-        loanerDetailsModel.setIdentityNumber("324234");
-        loanerDetailsModel.setMarriage(Marriage.MARRIED);
-        loanerDetailsModel.setRegion("updateRegion");
-        loanerDetailsModel.setIncome("updateIncome");
-        loanerDetailsModel.setEmploymentStatus("updateStatus");
-
-        loanerDetailsMapper.updateByLoanId(loanerDetailsModel);
-
-        LoanerDetailsModel findLoanDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanerDetailsModel.getLoanId());
-        assertNotNull(findLoanDetailsModel);
         assertEquals(loanerDetailsModel.getAge(), findLoanDetailsModel.getAge());
         assertEquals(loanerDetailsModel.getEmploymentStatus(), findLoanDetailsModel.getEmploymentStatus());
         assertEquals(loanerDetailsModel.getGender(), findLoanDetailsModel.getGender());

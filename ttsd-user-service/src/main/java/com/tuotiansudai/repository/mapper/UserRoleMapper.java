@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,7 @@ public interface UserRoleMapper {
     List<UserRoleModel> findByMobile(String mobile);
 
     UserRoleModel findByLoginNameAndRole(@Param("loginName") String loginName,
-                                         @Param("role") String role);
+                                         @Param("role") Role role);
 
     void deleteByLoginName(@Param("loginName") String loginName);
 

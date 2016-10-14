@@ -176,7 +176,7 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <h5>确认修改？</h5>
+                <h5>确认提交？</h5>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
