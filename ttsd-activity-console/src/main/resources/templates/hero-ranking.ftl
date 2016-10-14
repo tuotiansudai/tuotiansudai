@@ -77,7 +77,7 @@
     </div>
 
     <div class="mysteriousPrize upload-image" style="display: none">
-        <form class="prize-form" action="/activity-manage/upload-image" method="post">
+        <form class="prize-form" action="/activity-console/activity-manage/upload-image" method="post">
 
             <div class="form-group clearfix">
                 <label class="col-sm-1 control-label">名称: </label>
