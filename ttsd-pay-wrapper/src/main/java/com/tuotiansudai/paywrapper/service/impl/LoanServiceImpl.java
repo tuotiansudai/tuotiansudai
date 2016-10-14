@@ -122,13 +122,9 @@ public class LoanServiceImpl implements LoanService {
                 String.valueOf(loanModel.getId()));
 
         MerUpdateProjectRequestModel merUpdateProjectPreheatRequestModel = new MerUpdateProjectRequestModel(String.valueOf(loanModel.getId()),
-                String.valueOf(loanModel.getLoanAmount()),
-                loanModel.getName(),
                 LoanStatus.PREHEAT.getCode());
 
         MerUpdateProjectRequestModel merUpdateProjectRaisingRequestModel = new MerUpdateProjectRequestModel(String.valueOf(loanModel.getId()),
-                String.valueOf(loanModel.getLoanAmount()),
-                loanModel.getName(),
                 LoanStatus.RAISING.getCode());
         try {
             MerBindProjectResponseModel createLoanResponseModel = paySyncClient.send(MerBindProjectMapper.class,
@@ -206,10 +202,7 @@ public class LoanServiceImpl implements LoanService {
         try {
             boolean updateSuccess = Strings.isNullOrEmpty(loanStatus.getCode());
             if (!updateSuccess) {
-                MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(String.valueOf(loanModel.getId()),
-                        String.valueOf(loanModel.getLoanAmount()),
-                        loanModel.getName(),
-                        loanStatus.getCode());
+                MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(String.valueOf(loanModel.getId()), loanStatus.getCode());
 
                 MerUpdateProjectResponseModel responseModel = paySyncClient.send(MerUpdateProjectMapper.class,
                         merUpdateProjectRequestModel,
