@@ -44,10 +44,16 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private LoanerDetailsMapper loanerDetailsMapper;
 
     @Autowired
+    private LoanerEnterpriseDetailsMapper loanerEnterpriseDetailsMapper;
+
+    @Autowired
     private PledgeHouseMapper pledgeHouseMapper;
 
     @Autowired
     private PledgeVehicleMapper pledgeVehicleMapper;
+
+    @Autowired
+    private PledgeEnterpriseMapper pledgeEnterpriseMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -176,13 +182,13 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         InvestorDto investorDto = new InvestorDto(accountMapper.findByLoginName(loginName), this.isRemindNoPassword(loginName), this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount));
 
         LoanDetailDto loanDto = new LoanDetailDto(loanModel,
-                loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId()),
+                loanDetailsMapper.getByLoanId(loanModel.getId()),
                 investedAmount,
                 loanTitleMapper.findAll(),
                 loanTitleRelationMapper.findByLoanId(loanModel.getId()),
                 investorDto);
 
-        LoanerDetailsModel loanerDetail = loanerDetailsMapper.getLoanerDetailByLoanId(loanModel.getId());
+        LoanerDetailsModel loanerDetail = loanerDetailsMapper.getByLoanId(loanModel.getId());
         if (loanerDetail != null) {
             loanDto.setLoanerDetail(ImmutableMap.<String, String>builder()
                     .put("借款人", MessageFormat.format("{0}某", loanerDetail.getUserName().substring(0, 1)))
@@ -196,7 +202,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .build());
         }
 
-        PledgeHouseModel pledgeHouseDetail = pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanModel.getId());
+        PledgeHouseModel pledgeHouseDetail = pledgeHouseMapper.getByLoanId(loanModel.getId());
         if (pledgeHouseDetail != null) {
             loanDto.setPledgeHouseDetail(ImmutableMap.<String, String>builder()
                     .put("抵押物所在地", pledgeHouseDetail.getPledgeLocation())
@@ -209,7 +215,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .build());
         }
 
-        PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanModel.getId());
+        PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getByLoanId(loanModel.getId());
         if (pledgeVehicleModel != null) {
             loanDto.setPledgeVehicleDetail(ImmutableMap.<String, String>builder()
                     .put("抵押物所在地", pledgeVehicleModel.getPledgeLocation())
@@ -218,6 +224,20 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .put("抵押物估值", pledgeVehicleModel.getEstimateAmount())
                     .put("抵押物借款金额", pledgeVehicleModel.getLoanAmount())
                     .build());
+        }
+
+        PledgeEnterpriseModel pledgeEnterpriseModel = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
+        LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
+        if (pledgeEnterpriseModel != null && loanerEnterpriseDetailsModel != null) {
+            loanDto.setPledgeEnterpriseDetail(ImmutableMap.<String, String>builder()
+                    .put("公司法人", MessageFormat.format("{0}某", loanerEnterpriseDetailsModel.getJuristicPerson().substring(0, 1)))
+                    .put("公司最高持股人", MessageFormat.format("{0}某", loanerEnterpriseDetailsModel.getShareholder().substring(0, 1)))
+                    .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
+                    .put("担保方式", pledgeEnterpriseModel.getGuarantee())
+                    .put("抵押物估值", pledgeEnterpriseModel.getEstimateAmount())
+                    .put("抵押物所在地", pledgeEnterpriseModel.getPledgeLocation())
+                    .build());
+            loanDto.setBasicInfo(loanerEnterpriseDetailsModel.getPurpose());
         }
 
         if (loanModel.getActivityType() == ActivityType.NEWBIE) {

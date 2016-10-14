@@ -141,13 +141,13 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                 $.get('/activity-manage/coupon/user-group/' + userGroup + '/estimate', function (data) {
                     $('.give-number').val(data);
                 })
-            } else if (userGroup == "EXCHANGER_CODE") {
+            } else if (userGroup.indexOf("EXCHANGER_CODE") > 0) {
                     $('.file-btn').find('input').val('');
                     $('.give-number').val('').prop('readonly', false);
-            } else if (userGroup == 'NEW_REGISTERED_USER') {
+            } else if (userGroup.indexOf('NEW_REGISTERED_USER') > 0) {
                     $('.file-btn').find('input').val('');
                     $('.give-number').val('').prop('readonly', false);
-            } else if (userGroup == 'AGENT') {
+            } else if (userGroup.indexOf('AGENT') > 0) {
                 $.get('/user-manage/user/agents', function(data) {
                     if (data.length > 0 ) {
                         $('.coupon-deposit').show();
@@ -157,7 +157,7 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                     }
                 })
                 $('.give-number').val('0');
-            } else if (userGroup == 'CHANNEL') {
+            } else if (userGroup.indexOf('CHANNEL') > 0) {
                 $.get('/user-manage/user/channels', function(data) {
                     if (data.length > 0) {
                         $('.coupon-deposit').show();
@@ -167,8 +167,13 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                     }
                 })
                 $('.give-number').val('0');
-            } else if (userGroup == 'FIRST_INVEST_ACHIEVEMENT' || userGroup == 'MAX_AMOUNT_ACHIEVEMENT' || userGroup == 'LAST_INVEST_ACHIEVEMENT') {
+            } else if (userGroup.indexOf('FIRST_INVEST_ACHIEVEMENT') > 0 || userGroup.indexOf('MAX_AMOUNT_ACHIEVEMENT') > 0 || userGroup.indexOf('LAST_INVEST_ACHIEVEMENT') > 0) {
                 $('.give-number').val('').prop('readonly', false);
+            } else if(userGroup.indexOf('MEMBERSHIP_V0') > 0 || userGroup.indexOf('MEMBERSHIP_V1') || userGroup.indexOf('MEMBERSHIP_V2')
+                || userGroup.indexOf('MEMBERSHIP_V3') || userGroup.indexOf('MEMBERSHIP_V4') || userGroup.indexOf('MEMBERSHIP_V5')){
+                $.get('/user-manage/userMembership/count?userGroup='+userGroup,function(data) {
+                    $('.give-number').val(parseInt(data)).prop('readonly', true);
+                })
             } else {
                 $('#file-in').trigger('click');
                 $('.file-btn').show();
