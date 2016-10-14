@@ -813,7 +813,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 }
             });
             var couponIds = queryParams.length == 0 ? 0: queryParams[0].value;
-            
+
             $.ajax({
                 url: '/get-membership-preference',
                 type: 'GET',
