@@ -49,15 +49,15 @@ public class MobileAppMembershipPerceptionServiceImpl implements MobileAppMember
         if (StringUtils.isEmpty(loanId)) {
             return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
-        List<Long> couponIds = requestDto.getUserCouponIds();
-        if(couponIds == null){
+        List<Long> userCouponIds = requestDto.getUserCouponIds();
+        if(userCouponIds == null){
             return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
 
         UserMembershipModel userMembershipModel = userMemberhshipMapper.findCurrentMaxByLoginName(loginName);
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
-        UserCouponModel userCouponModel = userCouponMapper.findById(couponIds != null ? couponIds.get(0) : 0);
-        String getMoney = AmountConverter.convertCentToString(investService.calculateMembershipPreference(loginName,  Long.parseLong(loanId), Lists.newArrayList(userCouponModel.getCouponId()), AmountConverter.convertStringToCent(amount)));
+        long couponId = userCouponIds.size() != 0 ? userCouponMapper.findById(userCouponIds.get(0)).getCouponId() : 0;
+        String getMoney = AmountConverter.convertCentToString(investService.calculateMembershipPreference(loginName, Long.parseLong(loanId), Lists.newArrayList(couponId), AmountConverter.convertStringToCent(amount)));
 
         MembershipPerceptionResponseDataDto membershipPerceptionResponseDataDto = new MembershipPerceptionResponseDataDto();
         membershipPerceptionResponseDataDto.setTip(MessageFormat.format("V{0}会员,专享服务费{1}折优惠,已经多赚{2}元",
