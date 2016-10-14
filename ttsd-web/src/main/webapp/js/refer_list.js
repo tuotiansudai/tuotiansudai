@@ -1,8 +1,7 @@
-require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension','copyclip','commonFun','md5','qrcode'],
+require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper','clipboard', 'daterangepicker', 'jquery.ajax.extension','commonFun','md5','qrcode'],
     function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer) {
 
         var $investListContent=$('#investListContent'),
-            $copyButton=$('.copy-button',$investListContent),
             $clipboardText=$('#clipboard_text');
         var $searchBox=$('#search-box'),
             dataPickerElement = $('#date-picker'),
@@ -13,8 +12,7 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
             $btnReset=$('.btn-reset',$searchBox),
             $searchContent=$('.search-content-tab');
 
-        var client = new ZeroClipboard($copyButton),
-            mobile=$clipboardText.data('mobile')+'',
+        var mobile=$clipboardText.data('mobile')+'',
             md5Mobile=$.md5(mobile);
         var md5String=commonFun.compile(md5Mobile,mobile),
             origin=location.origin;
@@ -25,10 +23,10 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
         $('.img-code',$investListContent).qrcode(origin+'/activity/app-share?referrerMobile='+mobile);
 
         /*复制链接*/
-        client.on( "ready", function( readyEvent ) {
-            client.on( "aftercopy", function( event ) {
-                layer.msg('复制成功');
-            } );
+        var clipboard = new Clipboard('#copyButtonBtn');
+        clipboard.on('success', function(e) {
+            layer.msg("复制成功");
+            e.clearSelection();
         });
 
         var paginationElement = paginationElementRelation;
