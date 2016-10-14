@@ -60,6 +60,7 @@ public class HeroRankingService {
     }
 
     public MysteriousPrizeDto obtainMysteriousPrizeDto(String prizeDate) {
+        logger.info("prizeDate: " + prizeDate);
         return (MysteriousPrizeDto) redisWrapperClient.hgetSeri(MYSTERIOUSREDISKEY, prizeDate);
     }
 
