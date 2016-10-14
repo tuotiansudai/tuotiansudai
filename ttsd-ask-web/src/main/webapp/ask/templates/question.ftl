@@ -97,7 +97,7 @@
                 </div>
                 <#list answers.data.records as answer>
                     <dl class="answers-list">
-                        <dd>${answer.answer}</dd>
+                        <dd>${answer.answer?replace('\\n','<br/>','i')?replace('\\r','<br/>','i')}</dd>
                         <dd class="date-time-answer"><span>${answer.mobile}</span>
                             <span class="datetime">${answer.createdTime?string("yyyy年MM月dd日 HH:mm")}</span>
                             <@global.isAnonymous>
