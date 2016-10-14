@@ -61,4 +61,5 @@ public interface UserMembershipMapper {
     UserMembershipModel findByLoginNameByType(@Param(value = "loginName") String loginName,
                                               @Param(value = "type") UserMembershipType type);
 
+    long findCountMembershipByLevel(@Param(value = "level") long level);
 }
