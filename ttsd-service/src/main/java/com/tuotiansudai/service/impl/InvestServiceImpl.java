@@ -12,6 +12,7 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
@@ -118,6 +119,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private UserBirthdayUtil userBirthdayUtil;
+
+    @Autowired
+    private CouponService couponService;
 
     @Override
     @Transactional
@@ -504,8 +508,9 @@ public class InvestServiceImpl implements InvestService {
         UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
         LoanModel loanModel = loanMapper.findById(loanId);
+        long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, loanId, couponIds, investAmount);
         long interest = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);
-        long originFee = new BigDecimal(interest).multiply(new BigDecimal(defaultFee)).longValue();
+        long originFee = new BigDecimal(interest + expectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
         long membershipFee = new BigDecimal(interest).multiply(new BigDecimal(membershipModel.getFee())).longValue();
         preference = originFee - membershipFee;
         return preference;

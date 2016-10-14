@@ -795,11 +795,38 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             layer.closeAll('tips');
             var value = _.compose(replace)($investInput.val()),
                 $expected=$accountInfo.find('.expected-interest-dd');
+
+
+            var queryParams = [];
+
+            $.each($('input[type="hidden"][name="userCouponIds"]'), function(index, item) {
+                queryParams.push({
+                    'name': 'couponIds',
+                    'value': $(item).data("coupon-id")
+                })
+            });
+
+            $ticketList.find('li').each(function(index, item) {
+                if ($(item).find('input[type="radio"]:checked').length > 0) {
+                    queryParams.push({
+                        'name': 'couponIds',
+                        'value': $(item).data("coupon-id")
+                    });
+                }
+            });
+
+            if (queryParams.length == 0) {
+                $couponExpectedInterest.text("");
+                return;
+            }
+
+            console.log(queryParams[0].value);
+
             $.ajax({
                 url: '/get-membership-preference',
                 type: 'GET',
                 dataType: 'json',
-                data:{"loanId":loanId,"investAmount":value},
+                data:{"loanId":loanId,"investAmount":value,"couponIds":queryParams[0].value},
                 contentType: 'application/json; charset=UTF-8'
             })
                 .done(function(response) {
