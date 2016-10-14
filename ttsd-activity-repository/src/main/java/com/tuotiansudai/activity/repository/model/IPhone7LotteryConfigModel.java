@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class IPhone7LotteryConfigModel implements Serializable {
     private long id;
-    private int period;
+    private long investAmount;
     private String lotteryNumber;
     private Date effectiveTime;
     private String createdBy;
@@ -22,12 +22,12 @@ public class IPhone7LotteryConfigModel implements Serializable {
         this.id = id;
     }
 
-    public int getPeriod() {
-        return period;
+    public long getInvestAmount() {
+        return investAmount;
     }
 
-    public void setPeriod(int period) {
-        this.period = period;
+    public void setInvestAmount(long investAmount) {
+        this.investAmount = investAmount;
     }
 
     public String getLotteryNumber() {

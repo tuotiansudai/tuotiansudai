@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -22,26 +21,20 @@ public class IPhone7LotteryConfigMapperTest extends BaseMapperTest {
         int effectiveCount = mapper.create(model);
         assertEquals(1, effectiveCount);
 
-        List<IPhone7LotteryConfigModel> modelList = mapper.findByStatus(IPhone7LotteryConfigStatus.TO_APPROVE);
-        assertNotNull(modelList);
-        assertEquals(1, modelList.size());
-
-        IPhone7LotteryConfigModel dbModel = modelList.get(0);
+        IPhone7LotteryConfigModel dbModel = mapper.findById(model.getId());
+        assertNotNull(dbModel);
         assertNotEquals(0, dbModel.getId());
         assertEquals(model.getId(), dbModel.getId());
         assertEquals(model.getLotteryNumber(), dbModel.getLotteryNumber());
-        assertEquals(model.getPeriod(), dbModel.getPeriod());
+        assertEquals(model.getInvestAmount(), dbModel.getInvestAmount());
         assertNull(dbModel.getEffectiveTime());
         assertNotNull(dbModel.getCreatedTime());
         assertEquals(model.getCreatedBy(), dbModel.getCreatedBy());
+        assertEquals(IPhone7LotteryConfigStatus.TO_APPROVE, dbModel.getStatus());
 
-        List<IPhone7LotteryConfigModel> approvedModelList = mapper.findByStatus(IPhone7LotteryConfigStatus.APPROVED);
-        assertEquals(0, approvedModelList.size());
-
-        int removeCount = mapper.removeUnApprovedConfig(model.getId());
-        assertEquals(1, removeCount);
-        List<IPhone7LotteryConfigModel> modelList2 = mapper.findByStatus(IPhone7LotteryConfigStatus.TO_APPROVE);
-        assertEquals(0, modelList2.size());
+        mapper.removeUnApprovedConfig(model.getId());
+        dbModel = mapper.findById(model.getId());
+        assertNull(dbModel);
     }
 
     @Test
@@ -50,31 +43,14 @@ public class IPhone7LotteryConfigMapperTest extends BaseMapperTest {
         String testAuditedLoginName = "auditedUser";
         IPhone7LotteryConfigModel model = generateTestModel(testLoginName);
         mapper.create(model);
-
-        List<IPhone7LotteryConfigModel> unApprovedModelList = mapper.findByStatus(IPhone7LotteryConfigStatus.TO_APPROVE);
-        assertEquals(1, unApprovedModelList.size());
-
-        List<IPhone7LotteryConfigModel> approvedModelList = mapper.findByStatus(IPhone7LotteryConfigStatus.APPROVED);
-        assertEquals(0, approvedModelList.size());
-
         mapper.approve(model.getId(), testAuditedLoginName, new Date());
+        IPhone7LotteryConfigModel dbModel = mapper.findById(model.getId());
+        assertEquals(testAuditedLoginName, dbModel.getAuditedBy());
+        assertEquals(IPhone7LotteryConfigStatus.APPROVED, dbModel.getStatus());
 
-        unApprovedModelList = mapper.findByStatus(IPhone7LotteryConfigStatus.TO_APPROVE);
-        assertEquals(0, unApprovedModelList.size());
-
-        approvedModelList = mapper.findByStatus(IPhone7LotteryConfigStatus.APPROVED);
-        assertEquals(1, approvedModelList.size());
-
-        IPhone7LotteryConfigModel approvedModel = approvedModelList.get(0);
-        assertEquals(testAuditedLoginName, approvedModel.getAuditedBy());
-        assertEquals(IPhone7LotteryConfigStatus.APPROVED, approvedModel.getStatus());
-
-        mapper.removeApprovedConfig(model.getPeriod());
-        unApprovedModelList = mapper.findByStatus(IPhone7LotteryConfigStatus.TO_APPROVE);
-        assertEquals(0, unApprovedModelList.size());
-
-        approvedModelList = mapper.findByStatus(IPhone7LotteryConfigStatus.APPROVED);
-        assertEquals(0, approvedModelList.size());
+        mapper.removeApprovedConfig(model.getInvestAmount());
+        dbModel = mapper.findById(model.getId());
+        assertNull(dbModel);
     }
 
     private IPhone7LotteryConfigModel generateTestModel(String testLoginName) {
@@ -85,7 +61,7 @@ public class IPhone7LotteryConfigMapperTest extends BaseMapperTest {
         model.setAuditedTime(new Date());
         model.setCreatedTime(new Date());
         model.setEffectiveTime(new Date());
-        model.setPeriod(3);
+        model.setInvestAmount(50);
         return model;
     }
 }

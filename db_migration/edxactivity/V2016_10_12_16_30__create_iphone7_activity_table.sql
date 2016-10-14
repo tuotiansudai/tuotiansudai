@@ -16,7 +16,7 @@ CREATE TABLE `iphone7_invest_lottery` (
 
 CREATE TABLE `iphone7_lottery_config` (
   `id`             BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `period`         INT                 NOT NULL,
+  `invest_amount`  BIGINT              NOT NULL,
   `lottery_number` VARCHAR(50)         NOT NULL,
   `effective_time` DATETIME,
   `created_by`     VARCHAR(25)         NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE `iphone7_lottery_config` (
   `audited_time`   DATETIME,
   `status`         VARCHAR(50)         NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX INDEX_IPHONE7_LOTTERY_CONFIG_PERIOD(`period`),
+  INDEX INDEX_IPHONE7_LOTTERY_CONFIG_PERIOD(`invest_amount`),
   INDEX INDEX_IPHONE7_LOTTERY_CONFIG_LOTTERY_NUMBER(`lottery_number`)
 )
   ENGINE = InnoDB

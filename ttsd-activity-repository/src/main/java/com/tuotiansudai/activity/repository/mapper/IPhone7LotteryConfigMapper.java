@@ -1,21 +1,20 @@
 package com.tuotiansudai.activity.repository.mapper;
 
 import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigModel;
-import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigStatus;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
 import java.util.List;
 
 @Mapper
-@CacheNamespace
+@CacheNamespace(implementation = com.tuotiansudai.cache.MybatisRedisCache.class)
 public interface IPhone7LotteryConfigMapper {
 
     @Insert({
             "insert into iphone7_lottery_config (",
-            "period, lottery_number, created_by, created_time, status",
+            "invest_amount, lottery_number, created_by, created_time, status",
             ") values (",
-            "#{period}, #{lotteryNumber}, #{createdBy}, #{createdTime}, 'TO_APPROVE'",
+            "#{investAmount}, #{lotteryNumber}, #{createdBy}, #{createdTime}, 'TO_APPROVE'",
             ")"
     })
     @Options(useGeneratedKeys = true)
@@ -23,7 +22,7 @@ public interface IPhone7LotteryConfigMapper {
 
     @Results(id = "iphone7LotteryConfigResultMap", value = {
             @Result(id = true, column = "id", property = "id"),
-            @Result(column = "period", property = "period"),
+            @Result(column = "invest_amount", property = "investAmount"),
             @Result(column = "lottery_number", property = "lotteryNumber"),
             @Result(column = "effective_time", property = "effectiveTime"),
             @Result(column = "created_by", property = "createdBy"),
@@ -32,11 +31,19 @@ public interface IPhone7LotteryConfigMapper {
             @Result(column = "audited_time", property = "auditedTime"),
             @Result(column = "status", property = "status")
     })
-    @Select("select * from iphone7_lottery_config where status = #{status} order by period")
-    List<IPhone7LotteryConfigModel> findByStatus(@Param("status") IPhone7LotteryConfigStatus status);
+    @Select("select * from iphone7_lottery_config order by invest_amount")
+    List<IPhone7LotteryConfigModel> list();
 
-    @Delete("delete from iphone7_lottery_config where period = #{period} and status='APPROVED'")
-    int removeApprovedConfig(@Param("period") int period);
+    @ResultMap("iphone7LotteryConfigResultMap")
+    @Select("select * from iphone7_lottery_config where id = #{id}")
+    IPhone7LotteryConfigModel findById(@Param("id") long id);
+
+    @ResultMap("iphone7LotteryConfigResultMap")
+    @Select("select * from iphone7_lottery_config where invest_amount = #{investAmount}")
+    List<IPhone7LotteryConfigModel> findByInvestAmount(@Param("investAmount") long investAmount);
+
+    @Delete("delete from iphone7_lottery_config where invest_amount = #{investAmount} and status='APPROVED'")
+    int removeApprovedConfig(@Param("investAmount") long investAmount);
 
     @Delete("delete from iphone7_lottery_config where id = #{id} and status<>'APPROVED' and status<>'EFFECTIVE'")
     int removeUnApprovedConfig(@Param("id") long id);
