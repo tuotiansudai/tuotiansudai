@@ -1,4 +1,6 @@
-require(['jquery','layerWrapper','commonFun','logintip','clipboard','md5','qrcode'], function($,layer) {
+require(['jquery','layerWrapper','clipboard','commonFun','logintip','md5','qrcode'], function($,layer,clipboard) {
+
+	window['Clipboard']=clipboard;
 
 	var $shareReward=$('#shareRewardContainer'),
 		$inviteFriend=$('.invite-box-friend',$shareReward),
@@ -23,11 +25,15 @@ require(['jquery','layerWrapper','commonFun','logintip','clipboard','md5','qrcod
 		$('.img-code',$shareReward).qrcode(origin+'/activity/app-share?referrerMobile='+mobile);
 
 		/*复制链接*/
+
 		(function($) {
 			var clipboard = new Clipboard('.copy-button');
 			clipboard.on('success', function(e) {
 				layer.msg("复制成功");
 				e.clearSelection();
+			});
+			clipboard.on('error', function(e) {
+				layer.msg("复制失败");
 			});
 		})(jQuery);
 	}
