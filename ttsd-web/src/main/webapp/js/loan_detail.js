@@ -796,9 +796,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             var value = _.compose(replace)($investInput.val()),
                 $expected=$accountInfo.find('.expected-interest-dd');
 
-
             var queryParams = [];
-
             $.each($('input[type="hidden"][name="userCouponIds"]'), function(index, item) {
                 queryParams.push({
                     'name': 'couponIds',
@@ -814,19 +812,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     });
                 }
             });
-
-            if (queryParams.length == 0) {
-                $couponExpectedInterest.text("");
-                return;
-            }
-
-            console.log(queryParams[0].value);
-
+            var couponIds = queryParams.length == 0 ? 0: queryParams[0].value;
+            
             $.ajax({
                 url: '/get-membership-preference',
                 type: 'GET',
                 dataType: 'json',
-                data:{"loanId":loanId,"investAmount":value,"couponIds":queryParams[0].value},
+                data:{"loanId":loanId,"investAmount":value,"couponIds":couponIds},
                 contentType: 'application/json; charset=UTF-8'
             })
                 .done(function(response) {
