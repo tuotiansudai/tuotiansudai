@@ -1,6 +1,9 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.repository.model.PledgeType;
+import com.tuotiansudai.repository.model.ProductType;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package com.tuotiansudai.job;
 
-import com.tuotiansudai.coupon.service.CouponActivationService;
+import coupon.service.CouponActivationService;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;

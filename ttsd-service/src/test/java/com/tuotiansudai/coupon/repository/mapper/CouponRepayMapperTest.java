@@ -1,10 +1,11 @@
 package com.tuotiansudai.coupon.repository.mapper;
 
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.mapper.BaseMapperTest;
 import com.tuotiansudai.repository.model.*;
+import coupon.repository.mapper.CouponRepayMapper;
+import coupon.repository.model.CouponModel;
+import coupon.repository.model.CouponRepayModel;
+import coupon.repository.model.UserCouponModel;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

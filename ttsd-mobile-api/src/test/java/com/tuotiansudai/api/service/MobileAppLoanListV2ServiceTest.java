@@ -43,7 +43,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase{
     public void shouldNoLoginNameGenerateIndexLoanIsOk(){
         String loginName = "testHomeFindName";
         userMapper.create(getUserModelTest(loginName));
-        LoanModel loanModel = getFakeLoan(loginName,ActivityType.NORMAL,ProductType._90,LoanStatus.RAISING);
+        LoanModel loanModel = getFakeLoan(loginName, ActivityType.NORMAL, ProductType._90, LoanStatus.RAISING);
         loanMapper.create(loanModel);
         InvestModel investModel = getInvestModel(loginName,loanModel.getId());
         investMapper.create(investModel);

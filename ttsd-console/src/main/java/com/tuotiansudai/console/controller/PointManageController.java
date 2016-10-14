@@ -2,15 +2,10 @@ package com.tuotiansudai.console.controller;
 
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.service.CouponActivationService;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.AccountItemDataDto;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.point.dto.ProductDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
@@ -20,6 +15,11 @@ import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
+import coupon.dto.ExchangeCouponDto;
+import coupon.exception.CreateCouponException;
+import coupon.repository.model.CouponModel;
+import coupon.service.CouponActivationService;
+import coupon.service.CouponService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

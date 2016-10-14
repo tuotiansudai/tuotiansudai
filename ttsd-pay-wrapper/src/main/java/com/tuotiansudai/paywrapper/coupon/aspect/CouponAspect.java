@@ -1,9 +1,5 @@
 package com.tuotiansudai.paywrapper.coupon.aspect;
 
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.job.JobType;
@@ -17,6 +13,10 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.JobManager;
+import coupon.repository.mapper.CouponMapper;
+import coupon.repository.model.CouponModel;
+import coupon.repository.model.UserGroup;
+import coupon.service.CouponAssignmentService;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;

@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.DateUtil;
-import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,8 +1,6 @@
 package com.tuotiansudai.task.aspect;
 
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.dto.CouponDto;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.repository.model.Role;
@@ -11,6 +9,8 @@ import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
+import coupon.dto.CouponDto;
+import coupon.repository.model.UserGroup;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -35,7 +35,7 @@ public class AuditTaskAspectCoupon {
 
     static Logger logger = Logger.getLogger(AuditTaskAspectCoupon.class);
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponService.createCoupon(..))")
+    @AfterReturning(value = "execution(* coupon.service.CouponService.createCoupon(..))")
     public void afterReturningCreateCoupon(JoinPoint joinPoint) {
         logger.debug("after create coupon aspect.");
         try {
@@ -48,7 +48,7 @@ public class AuditTaskAspectCoupon {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponService.editCoupon(..))")
+    @AfterReturning(value = "execution(* coupon.service.CouponService.editCoupon(..))")
     public void afterReturningEditCoupon(JoinPoint joinPoint) {
         logger.debug("after edit coupon aspect.");
         try {
@@ -101,7 +101,7 @@ public class AuditTaskAspectCoupon {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponActivationService.active(..))")
+    @AfterReturning(value = "execution(* coupon.service.CouponActivationService.active(..))")
     public void afterReturningActiveCoupon(JoinPoint joinPoint) {
         logger.debug("after active coupon aspect.");
         try {
@@ -140,7 +140,7 @@ public class AuditTaskAspectCoupon {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponService.deleteCoupon(..))")
+    @AfterReturning(value = "execution(* coupon.service.CouponService.deleteCoupon(..))")
     public void afterReturningDeleteCoupon(JoinPoint joinPoint) {
         logger.debug("after delete coupon aspect.");
         try {

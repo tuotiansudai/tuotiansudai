@@ -1,13 +1,13 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import coupon.repository.mapper.CouponMapper;
+import coupon.repository.model.CouponModel;
+import coupon.repository.model.ExchangeCouponView;
 import org.joda.time.DateTime;
 import org.junit.Ignore;
 import org.junit.Test;

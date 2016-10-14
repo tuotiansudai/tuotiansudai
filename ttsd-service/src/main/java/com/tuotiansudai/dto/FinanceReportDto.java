@@ -1,8 +1,8 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.FinanceReportItemView;
 import com.tuotiansudai.util.AmountConverter;
+import coupon.repository.model.CouponModel;
 
 import java.text.MessageFormat;
 import java.util.Date;

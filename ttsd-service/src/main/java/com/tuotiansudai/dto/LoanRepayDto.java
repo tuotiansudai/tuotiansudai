@@ -1,7 +1,6 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.RepayStatus;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 

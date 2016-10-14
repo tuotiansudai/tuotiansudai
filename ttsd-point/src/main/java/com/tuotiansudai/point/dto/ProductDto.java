@@ -1,9 +1,9 @@
 package com.tuotiansudai.point.dto;
 
 
-import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
+import coupon.dto.ExchangeCouponDto;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;

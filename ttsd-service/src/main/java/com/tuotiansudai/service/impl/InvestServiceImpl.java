@@ -3,16 +3,11 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.*;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
+import com.google.common.primitives.Ints;
+import com.google.common.primitives.Longs;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.dto.UserCouponDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.InvestException;
@@ -29,6 +24,14 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.UserBirthdayUtil;
+import coupon.dto.UserCouponDto;
+import coupon.repository.mapper.CouponMapper;
+import coupon.repository.mapper.CouponRepayMapper;
+import coupon.repository.mapper.UserCouponMapper;
+import coupon.repository.model.CouponModel;
+import coupon.repository.model.CouponRepayModel;
+import coupon.repository.model.UserCouponModel;
+import coupon.service.UserCouponService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -213,7 +216,7 @@ public class InvestServiceImpl implements InvestService {
         String loginName = investDto.getLoginName();
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
 
-        UserCouponDto maxBenefitUserCoupon = userCouponService.getMaxBenefitUserCoupon(loginName, loanId, investAmount);
+        UserCouponDto maxBenefitUserCoupon = this.getMaxBenefitUserCoupon(loginName, loanId, investAmount);
         if (maxBenefitUserCoupon != null && CollectionUtils.isEmpty(investDto.getUserCouponIds())) {
             throw new InvestException(InvestExceptionType.NONE_COUPON_SELECTED);
         }
@@ -223,12 +226,19 @@ public class InvestServiceImpl implements InvestService {
             List<UserCouponModel> notSharedCoupons = Lists.newArrayList();
             for (long userCouponId : userCouponIds) {
                 UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
+                AccountModel accountModel = accountMapper.findByLoginName(loginName);
+                String identifyNumber;
+                if (accountModel == null || Strings.isNullOrEmpty(accountModel.getIdentityNumber())) {
+                    identifyNumber = null;
+                } else {
+                    identifyNumber = accountModel.getIdentityNumber();
+                }
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 Date usedTime = userCouponModel.getUsedTime();
                 if ((usedTime != null && new DateTime(usedTime).plusSeconds(couponLockSeconds).isAfter(new DateTime()))
                         || !loginName.equalsIgnoreCase(userCouponModel.getLoginName())
                         || InvestStatus.SUCCESS == userCouponModel.getStatus()
-                        || (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !userBirthdayUtil.isBirthMonth(loginName))
+                        || (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !userBirthdayUtil.isBirthMonth(identifyNumber))
                         || userCouponModel.getEndTime().before(new Date())
                         || !couponModel.getProductTypes().contains(loanModel.getProductType())
                         || (couponModel.getInvestLowerLimit() > 0 && investAmount < couponModel.getInvestLowerLimit())) {
@@ -509,5 +519,105 @@ public class InvestServiceImpl implements InvestService {
         long membershipFee = new BigDecimal(interest).multiply(new BigDecimal(membershipModel.getFee())).longValue();
         preference = originFee - membershipFee;
         return preference;
+    }
+
+    public long estimateCouponExpectedInterest(String loginName, long loanId, List<Long> couponIds, long amount) {
+        long totalInterest = 0;
+
+        //根据loginNameName查询出当前会员的相关信息,需要判断是否为空,如果为空则安装在费率0.1计算
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        double investFeeRate = membershipModel != null ? membershipModel.getFee() : this.defaultFee;
+        LoanModel loanModel = loanMapper.findById(loanId);
+        if (loanModel != null && ProductType.EXPERIENCE == loanModel.getProductType()) {
+            investFeeRate = this.defaultFee;
+        }
+
+        for (Long couponId : couponIds) {
+            CouponModel couponModel = couponMapper.findById(couponId);
+            if (loanModel == null || couponModel == null) {
+                continue;
+            }
+            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount, investFeeRate);
+            totalInterest += expectedInterest - expectedFee;
+        }
+
+        return totalInterest;
+    }
+
+    @Override
+    public long findExperienceInvestAmount(List<InvestModel> investModelList) {
+        long amount = 0;
+        if (CollectionUtils.isNotEmpty(investModelList)) {
+            List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModelList.get(0).getId());
+            CouponModel couponModel = couponMapper.findById(userCouponModels.get(0).getCouponId());
+            amount = new BigDecimal(investModelList.size() % 100).multiply(new BigDecimal(couponModel.getAmount())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        }
+        return amount;
+    }
+
+    /**
+     * 收益相同时，选择最早即将过期的优惠券。过期时间仍然相同时，按照生日福利、红包、新手体验券、投资体验券、加息券的顺序选择，若券的类别也相同时，任选其一。
+     */
+    @Override
+    public UserCouponDto getMaxBenefitUserCoupon(String loginName, long loanId, final long amount) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
+
+        final LoanModel loanModel = loanMapper.findById(loanId);
+        if (loanModel == null || amount < loanModel.getMinInvestAmount() || amount > loanModel.getMaxInvestAmount()) {
+            return null;
+        }
+
+        List<UserCouponModel> usableUserCoupons = Lists.newArrayList(Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
+            @Override
+            public boolean apply(UserCouponModel userCouponModel) {
+                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+                boolean isShared = couponModel.isShared();
+                boolean unused = InvestStatus.SUCCESS != userCouponModel.getStatus()
+                        && userCouponModel.getEndTime().after(new Date())
+                        && (userCouponModel.getUsedTime() == null || new DateTime(userCouponModel.getUsedTime()).plusSeconds(couponLockSeconds).isBefore(new DateTime()));
+                boolean productTypeEnable = couponModel.getProductTypes().contains(loanModel.getProductType());
+                boolean isGreatThanInvestLowerLimit = couponModel.getInvestLowerLimit() <= amount;
+                return !isShared && unused && productTypeEnable && isGreatThanInvestLowerLimit;
+            }
+        }));
+
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+        double investFeeRate = membershipModel != null ? membershipModel.getFee() : this.defaultFee;
+
+        List<UserCouponModel> maxBenefitUserCoupons = Lists.newArrayList();
+        long maxBenefit = 0;
+        for (UserCouponModel usableUserCoupon : usableUserCoupons) {
+            CouponModel couponModel = couponMapper.findById(usableUserCoupon.getCouponId());
+            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount, investFeeRate);
+            long actualInterest = expectedInterest - expectedFee;
+            if (maxBenefit == actualInterest) {
+                maxBenefitUserCoupons.add(usableUserCoupon);
+            }
+            if (maxBenefit < actualInterest) {
+                maxBenefit = actualInterest;
+                maxBenefitUserCoupons = Lists.newArrayList(usableUserCoupon);
+            }
+        }
+
+        final List<CouponType> couponTypePriority = Lists.newArrayList(CouponType.BIRTHDAY_COUPON, CouponType.RED_ENVELOPE, CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON);
+
+        List<UserCouponModel> orderingMaxBenefitUserCoupons = new Ordering<UserCouponModel>() {
+            @Override
+            public int compare(UserCouponModel left, UserCouponModel right) {
+                int endTimeCompare = Longs.compare(left.getEndTime().getTime(), right.getEndTime().getTime());
+                if (endTimeCompare != 0) {
+                    return endTimeCompare;
+                }
+
+                CouponType leftCouponType = couponMapper.findById(left.getCouponId()).getCouponType();
+                CouponType rightCouponType = couponMapper.findById(right.getCouponId()).getCouponType();
+                return Ints.compare(couponTypePriority.indexOf(leftCouponType), couponTypePriority.indexOf(rightCouponType));
+            }
+        }.sortedCopy(maxBenefitUserCoupons);
+
+        return orderingMaxBenefitUserCoupons.isEmpty() ? null :
+                new UserCouponDto(couponMapper.findById(orderingMaxBenefitUserCoupons.get(0).getCouponId()), orderingMaxBenefitUserCoupons.get(0), 0);
     }
 }

@@ -2,9 +2,9 @@ package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v1_0.UserInvestListResponseDataDto;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.TransferableInvestListRequestDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppTransferApplicationV2ServiceImpl;
 import com.tuotiansudai.dto.LoanDto;
@@ -126,7 +126,7 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
 
     private InvestModel createInvest(String loginName, long loanId) {
         InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, loginName, new Date(), Source.WEB, null, 0.1);
-        model.setStatus(com.tuotiansudai.repository.model.InvestStatus.SUCCESS);
+        model.setStatus(InvestStatus.SUCCESS);
         return model;
     }
 

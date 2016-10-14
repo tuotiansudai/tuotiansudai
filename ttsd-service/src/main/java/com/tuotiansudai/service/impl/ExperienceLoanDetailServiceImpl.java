@@ -1,6 +1,5 @@
 package com.tuotiansudai.service.impl;
 
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
@@ -8,6 +7,7 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.ExperienceLoanDetailService;
+import com.tuotiansudai.service.InvestService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class ExperienceLoanDetailServiceImpl implements ExperienceLoanDetailServ
     private InvestMapper investMapper;
 
     @Autowired
-    private CouponService couponService;
+    private InvestService investService;
 
     @Override
     public ExperienceLoanDto findExperienceLoanDtoDetail(long loanId, String loginName) {
@@ -57,7 +57,7 @@ public class ExperienceLoanDetailServiceImpl implements ExperienceLoanDetailServ
         }
 
         List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanId, beginTime, endTime);
-        ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(loanId), experienceProgress, couponService.findExperienceInvestAmount(investModelList));
+        ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(loanId), experienceProgress, investService.findExperienceInvestAmount(investModelList));
         experienceLoanDto.setLoanStatus(loanStatus);
         return experienceLoanDto;
     }

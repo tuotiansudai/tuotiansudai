@@ -1,11 +1,9 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.service.MembershipInvestService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -38,9 +36,6 @@ public class InvestController {
 
     @Autowired
     private InvestService investService;
-
-    @Autowired
-    private CouponService couponService;
 
     @Autowired
     private CaptchaHelper captchaHelper;
@@ -179,7 +174,7 @@ public class InvestController {
                                                   @PathVariable long amount,
                                                   @RequestParam List<Long> couponIds) {
         String loginName = LoginUserInfo.getLoginName();
-        long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, loanId, couponIds, amount);
+        long expectedInterest = investService.estimateCouponExpectedInterest(loginName, loanId, couponIds, amount);
         return AmountConverter.convertCentToString(expectedInterest);
     }
 

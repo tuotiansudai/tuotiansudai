@@ -1,31 +1,37 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.dto.CouponDto;
-import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.CouponUserGroupModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponActivationService;
-import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ImportExcelDto;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.*;
+import coupon.dto.CouponDto;
+import coupon.dto.ExchangeCouponDto;
+import coupon.exception.CreateCouponException;
+import coupon.repository.mapper.CouponUserGroupMapper;
+import coupon.repository.model.CouponModel;
+import coupon.repository.model.CouponUserGroupModel;
+import coupon.repository.model.UserCouponModel;
+import coupon.repository.model.UserGroup;
+import coupon.service.CouponActivationService;
+import coupon.service.CouponService;
+import coupon.service.ExchangeCodeService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -74,6 +80,15 @@ public class CouponController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     @Autowired
     private UserService userService;
@@ -147,7 +162,7 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/red-envelope");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
-        long initNum = couponService.findEstimatedCount(UserGroup.ALL_USER);
+        long initNum = findEstimatedCount(UserGroup.ALL_USER);
         modelAndView.addObject("initNum", initNum);
         return modelAndView;
     }
@@ -158,7 +173,7 @@ public class CouponController {
         modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.values()));
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
-        long initNum = couponService.findEstimatedCount(UserGroup.ALL_USER);
+        long initNum = findEstimatedCount(UserGroup.ALL_USER);
         modelAndView.addObject("initNum", initNum);
         return modelAndView;
     }
@@ -216,7 +231,7 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/interest-coupon");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
-        long initNum = couponService.findEstimatedCount(UserGroup.ALL_USER);
+        long initNum = findEstimatedCount(UserGroup.ALL_USER);
         modelAndView.addObject("initNum", initNum);
         return modelAndView;
     }
@@ -294,13 +309,39 @@ public class CouponController {
         return baseDto;
     }
 
-
-
-
     @RequestMapping(value = "/coupon/user-group/{userGroup}/estimate", method = RequestMethod.GET)
     @ResponseBody
-    public long findEstimatedCount(@PathVariable UserGroup userGroup) {
-        return couponService.findEstimatedCount(userGroup);
+    public long findEstimatedCountController(@PathVariable UserGroup userGroup) {
+        return findEstimatedCount(userGroup);
+    }
+
+    private long findEstimatedCount(UserGroup userGroup) {
+        switch (userGroup) {
+            case ALL_USER:
+                return userMapper.findAllUsersByProvinces(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
+            case INVESTED_USER:
+                return investMapper.findInvestorCount();
+            case REGISTERED_NOT_INVESTED_USER:
+                return investMapper.findRegisteredNotInvestCount();
+            case STAFF:
+                return userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.STAFF).put("districtName", Lists.newArrayList()).build())).size();
+            case STAFF_RECOMMEND_LEVEL_ONE:
+                return userMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
+            case MEMBERSHIP_V0:
+                return userMembershipMapper.countMembershipByLevel(0);
+            case MEMBERSHIP_V1:
+                return userMembershipMapper.countMembershipByLevel(1);
+            case MEMBERSHIP_V2:
+                return userMembershipMapper.countMembershipByLevel(2);
+            case MEMBERSHIP_V3:
+                return userMembershipMapper.countMembershipByLevel(3);
+            case MEMBERSHIP_V4:
+                return userMembershipMapper.countMembershipByLevel(4);
+            case MEMBERSHIP_V5:
+                return userMembershipMapper.countMembershipByLevel(5);
+            default:
+                return 0;
+        }
     }
 
     @RequestMapping(value = "/interest-coupons", method = RequestMethod.GET)
@@ -382,6 +423,10 @@ public class CouponController {
                                      @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/coupon-detail");
         List<UserCouponModel> userCoupons = couponService.findCouponDetail(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime, index, pageSize);
+        for (UserCouponModel userCouponModel : userCoupons) {
+            userCouponModel.setLoanName(userCouponModel.getLoanId() != null ? loanMapper.findById(userCouponModel.getLoanId()).getName() : null);
+            userCouponModel.setInvestAmount(userCouponModel.getInvestId() != null ? investMapper.findById(userCouponModel.getInvestId()).getAmount() : null);
+        }
         int userCouponsCount = couponService.findCouponDetailCount(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime);
         CouponModel couponModel = couponService.findCouponById(couponId);
         modelAndView.addObject("userCoupons", userCoupons);
@@ -525,5 +570,4 @@ public class CouponController {
         modelAndView.addObject("pointPrizeWinnerGroupDetails", userPointPrizeMapper.findByPointPrizeId(pointPrizeId));
         return modelAndView;
     }
-
 }

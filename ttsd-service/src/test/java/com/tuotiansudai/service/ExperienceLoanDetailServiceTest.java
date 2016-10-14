@@ -1,15 +1,15 @@
 package com.tuotiansudai.service;
 
 
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.impl.ExperienceLoanDetailServiceImpl;
 import com.tuotiansudai.util.IdGenerator;
+import coupon.repository.mapper.CouponMapper;
+import coupon.repository.model.CouponModel;
+import coupon.service.CouponService;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -49,6 +49,9 @@ public class ExperienceLoanDetailServiceTest {
     private InvestMapper investMapper;
 
     @Mock
+    private InvestService investService;
+
+    @Mock
     private CouponMapper couponMapper;
 
     @Mock
@@ -82,7 +85,7 @@ public class ExperienceLoanDetailServiceTest {
         investModel1.setInvestTime(new Date());
         investModels.add(investModel1);
         long investAmount = 1000;
-        when(couponService.findExperienceInvestAmount(investModels)).thenReturn(investAmount);
+        when(investService.findExperienceInvestAmount(investModels)).thenReturn(investAmount);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investMapper.findByLoanIdAndLoginName(anyLong(), anyString())).thenReturn(investModels);
         when(investMapper.countSuccessInvestByInvestTime(loanModel.getId(), new DateTime(new Date()).withTimeAtStartOfDay().toDate(), new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate())).thenReturn(investModels);

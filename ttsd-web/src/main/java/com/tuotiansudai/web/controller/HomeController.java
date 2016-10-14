@@ -2,14 +2,11 @@ package com.tuotiansudai.web.controller;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.service.CouponAlertService;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.BannerMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.BannerModel;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
@@ -17,8 +14,10 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.TransferService;
+import coupon.service.CouponAlertService;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +45,10 @@ public class HomeController {
     private InvestMapper investMapper;
 
     @Autowired
+    private InvestService investService;
+
+    @Autowired
     private LoanMapper loanMapper;
-
-    @Autowired
-    private LoanDetailsMapper loanDetailsMapper;
-
-    @Autowired
-    private CouponService couponService;
 
     @Autowired
     private BannerMapper bannerMapper;
@@ -71,7 +67,7 @@ public class HomeController {
         Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
         Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(experienceLoanId, beginTime, endTime);
-        ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId), investModelList.size() % 100, couponService.findExperienceInvestAmount(investModelList));
+        ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId), investModelList.size() % 100, investService.findExperienceInvestAmount(investModelList));
         modelAndView.addObject("experienceLoanDto", experienceLoanDto);
         List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB);
         modelAndView.addObject("bannerList", bannerModelList);

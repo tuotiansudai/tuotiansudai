@@ -4,10 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.CouponType;
@@ -17,10 +13,14 @@ import com.tuotiansudai.job.FundraisingStartJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JobManager;
+import coupon.repository.mapper.CouponMapper;
+import coupon.repository.model.CouponModel;
+import coupon.repository.model.UserGroup;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -57,6 +57,9 @@ public class LoanServiceImpl implements LoanService {
     private InvestMapper investMapper;
 
     @Autowired
+    private InvestService investService;
+
+    @Autowired
     private IdGenerator idGenerator;
 
     @Autowired
@@ -82,9 +85,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Value("#{'${web.random.investor.list}'.split('\\|')}")
     private List<String> showRandomLoginNameList;
-
-    @Autowired
-    private CouponService couponService;
 
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
@@ -733,7 +733,7 @@ public class LoanServiceImpl implements LoanService {
                     Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
                     List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanModel.getId(), beginTime, endTime);
                     long investCount = investModelList.size() % 100;
-                    long investAmount = couponService.findExperienceInvestAmount(investModelList);
+                    long investAmount = investService.findExperienceInvestAmount(investModelList);
                     loanItemDto.setAlert(AmountConverter.convertCentToString(loanModel.getLoanAmount() - investAmount));
                     loanItemDto.setProgress(investCount);
                 }

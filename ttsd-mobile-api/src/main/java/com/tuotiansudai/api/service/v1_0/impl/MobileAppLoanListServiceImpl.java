@@ -6,7 +6,6 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
@@ -15,6 +14,7 @@ import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
@@ -38,7 +38,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     private InvestMapper investMapper;
 
     @Autowired
-    private CouponService couponService;
+    private InvestService investService;
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
@@ -136,7 +136,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
                 Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
                 Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
                 List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loan.getId(), beginTime, endTime);
-                investedAmount = couponService.findExperienceInvestAmount(investModelList);
+                investedAmount = investService.findExperienceInvestAmount(investModelList);
             } else {
                 investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());
                 //TODO:fake

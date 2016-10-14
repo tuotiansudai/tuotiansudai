@@ -2,13 +2,13 @@ package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.dto.CouponAlertDto;
-import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import coupon.dto.CouponAlertDto;
+import coupon.service.CouponAlertService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
