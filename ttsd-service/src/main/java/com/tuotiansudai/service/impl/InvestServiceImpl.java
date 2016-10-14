@@ -499,7 +499,7 @@ public class InvestServiceImpl implements InvestService {
         return rate == 0 ? 0 : new BigDecimal(duration * amount).multiply(new BigDecimal(rate)).divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 
-    public long calculateMembershipPreference(String loginName, long loanId, long investAmount) {
+    public long calculateMembershipPreference(String loginName, long loanId, List<Long> couponIds, long investAmount) {
         long preference;
         UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
