@@ -35,6 +35,10 @@ public class UserMembershipService {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    public long findCountMembershipByLevel(long level){
+        return userMembershipMapper.findCountMembershipByLevel(level);
+    }
+
     public MembershipModel getMembershipByLevel(int level) {
         return membershipMapper.findByLevel(level);
     }

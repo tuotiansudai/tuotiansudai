@@ -6,8 +6,11 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
 import com.tuotiansudai.console.service.UserServiceConsole;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.membership.repository.model.MembershipGiveModel;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.dto.UserItemDataDto;
@@ -70,6 +73,16 @@ public class UserController {
 
     @Autowired
     private AuditLogService auditLogService;
+
+    @Autowired
+    private UserMembershipService userMembershipService;
+
+    private final static long MEMBERSHIP_V0 = 0;
+    private final static long MEMBERSHIP_V1 = 1;
+    private final static long MEMBERSHIP_V2 = 2;
+    private final static long MEMBERSHIP_V3 = 3;
+    private final static long MEMBERSHIP_V4 = 4;
+    private final static long MEMBERSHIP_V5 = 5;
 
     @Value("${web.server}")
     private String webServer;
@@ -236,6 +249,24 @@ public class UserController {
     @ResponseBody
     public long queryUserByChannel(@PathVariable String channel) {
         return userServiceConsole.findUsersCountByChannel(channel);
+    }
+
+    @RequestMapping(value = "/userMembership/count", method = RequestMethod.GET)
+    @ResponseBody
+    public long queryUserMembershipByLevelCount(@RequestParam(value = "userGroup") UserGroup userGroup) {
+        long level = MEMBERSHIP_V0;
+        if(userGroup.equals(UserGroup.MEMBERSHIP_V1)){
+            level = MEMBERSHIP_V1;
+        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V2)){
+            level = MEMBERSHIP_V2;
+        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V3)){
+            level = MEMBERSHIP_V3;
+        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V4)){
+            level = MEMBERSHIP_V4;
+        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V5)){
+            level = MEMBERSHIP_V5;
+        }
+        return userMembershipService.findCountMembershipByLevel(level);
     }
 
 }
