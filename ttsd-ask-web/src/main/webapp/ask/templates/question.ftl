@@ -18,7 +18,8 @@
                     <#list question.tags as tag>
                         <span class="tag">${tag.description}</span>
                     </#list>
-                <dd>${question.addition!}</dd>
+                </dd>
+                <dd>${question.addition!?replace('\\n','<br/>','i')?replace('\\r','<br/>','i')}</dd>
                 <#if !isQuestionOwner>
                     <dd class="fr clearfix answer-button">
                         <button type="button" class="btn">我来回答</button>
