@@ -5,13 +5,13 @@ import javax.validation.constraints.Pattern;
 public class UserTransferInvestRepayRequestDto extends BaseParamDto {
 
     @Pattern(regexp = "^\\d+$")
-    private String investId;
+    private String transferApplicationId;
 
-    public String getInvestId() {
-        return investId;
+    public String getTransferApplicationId() {
+        return transferApplicationId;
     }
 
-    public void setInvestId(String investId) {
-        this.investId = investId;
+    public void setTransferApplicationId(String transferApplicationId) {
+        this.transferApplicationId = transferApplicationId;
     }
 }
