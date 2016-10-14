@@ -131,21 +131,21 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
         $('.tomorrow-prize-save,.today-prize-save').on('click', function(event) {
             event.preventDefault();
             var $self = $(this),
-                prizeDate;
+                url = "/activity-console/activity-manage/upload-image";
             if($self.hasClass("tomorrow-prize-save")){
-                prizeDate = getDateStr(1);
+                url = url + "?today=false";
             }
             if($self.hasClass("today-prize-save")){
-                prizeDate = getDateStr(0);
+                url = url + "?today=true";
             }
             if (boolFlag) {
                 if (confirm("确认提交更新?")) {
                     $.ajax({
-                        url: '/activity-console/activity-manage/upload-image',
+                        url: url,
                         type: 'POST',
                         dataType: 'json',
                         contentType: 'application/json; charset=UTF-8',
-                        data: JSON.stringify({"prizeName":$('.prize-name').val(),"imageUrl":$('.image-url').val(),"prizeDate":prizeDate})
+                        data: JSON.stringify({"prizeName":$('.prize-name').val(),"imageUrl":$('.image-url').val()})
                     }).done(function (data) {
                         boolFlag = false;
                         $('.prize-name').val('');
@@ -182,12 +182,5 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
             html += '</div>';
             $errorDom.append(html);
         }
-
-        function getDateStr(AddDayCount) {
-            var dd = new Date();
-            dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
-            return dd;
-        }
-
     });
 });

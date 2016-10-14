@@ -57,7 +57,12 @@ public class HeroRankingController {
 
     @RequestMapping(value = "/upload-image", method = RequestMethod.POST,produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public MysteriousPrizeDto uploadMysteriousPrize(@RequestBody MysteriousPrizeDto mysteriousPrizeDto){
+    public MysteriousPrizeDto uploadMysteriousPrize(@RequestBody MysteriousPrizeDto mysteriousPrizeDto,
+                                                    @RequestParam boolean today){
+        mysteriousPrizeDto.setPrizeDate(new Date());
+        if (!today) {
+            mysteriousPrizeDto.setPrizeDate(new DateTime().plusDays(1).toDate());
+        }
         heroRankingService.saveMysteriousPrize(mysteriousPrizeDto);
         return mysteriousPrizeDto;
     }
