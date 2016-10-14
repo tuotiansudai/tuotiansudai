@@ -40,9 +40,9 @@
             <div class="invite-box-friend clearfix non-anonymous yes-identification">
                 <dl>
                     <dd>
-                        <input type="text" class="input-invite" id="clipboard_text1" disabled data-mobile="<@global.security.authentication property='principal.mobile' />" >
+                        <input type="text" class="input-invite" id="clipboard_text1"  disabled data-mobile="<@global.security.authentication property='principal.mobile' />" >
                     </dd>
-                    <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-copy-link fr copy-button" data-clipboard-target="clipboard_text1">复制链接</a></dt>
+                    <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-copy-link fr copy-button" id="copy_btn2"  data-clipboard-action="copy" data-clipboard-target="#clipboard_text1" >复制链接</a></dt>
                 </dl>
 
                 <div class="weixin-code">
@@ -209,7 +209,7 @@
                         <dd>
                             <input type="text" class="input-invite" id="clipboard_text2" disabled data-mobile="<@global.security.authentication property='principal.mobile' />" >
                         </dd>
-                        <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-copy-link fr copy-button" data-clipboard-target="clipboard_text2">复制链接</a></dt>
+                        <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-copy-link fr copy-button" id="copy_btn2" data-clipboard-action="copy" data-clipboard-target="clipboard_text2">复制链接</a></dt>
                     </dl>
 
                     <div class="weixin-code">
@@ -236,23 +236,23 @@
                 </tr>
                 <tr>
                     <td>02</td>
-                    <td>156****8605</td>
-                    <td>推荐好友投资获得奖励已超过12,000元</td>
+                    <td>135****8850</td>
+                    <td>推荐好友投资获得奖励已超过11,000元</td>
                 </tr>
                 <tr>
                     <td>03</td>
-                    <td>156****8605</td>
-                    <td>推荐好友投资获得奖励已超过12,000元</td>
+                    <td>186****3390</td>
+                    <td>推荐好友投资获得奖励已超过7,000元</td>
                 </tr>
                 <tr>
                     <td>04</td>
-                    <td>156****8605</td>
-                    <td>推荐好友投资获得奖励已超过12,000元</td>
+                    <td>186****3306</td>
+                    <td>推荐好友投资获得奖励已超过6,000元</td>
                 </tr>
                 <tr>
                     <td>05</td>
-                    <td>156****8605</td>
-                    <td>推荐好友投资获得奖励已超过12,000元</td>
+                    <td>186****1006</td>
+                    <td>推荐好友投资获得奖励已超过5,600元</td>
                 </tr>
             </table>
         </div>
