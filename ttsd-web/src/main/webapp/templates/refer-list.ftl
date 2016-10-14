@@ -14,7 +14,7 @@
             <div class="invite-title"><i></i><span>微信邀请好友</span></div>
             <div class="tc wechat-code">
                 <em class="img-code"></em>
-                <#--<img src="${staticServer}/images/sign/refer-list/weixin-code.png" alt="推荐送现金">-->
+
                 <span>将扫码后的页面<br/>
                 分享给好友即可邀请</span>
             </div>

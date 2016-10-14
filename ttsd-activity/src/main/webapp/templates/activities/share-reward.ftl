@@ -230,7 +230,7 @@
         <div class="border-dashed-square  clearfix">
             <table class="table">
                 <tr>
-                    <td>01</td>
+                    <td class="pc-one-width">01</td>
                     <td>156****8605</td>
                     <td>推荐好友投资获得奖励已超过12,000元</td>
                 </tr>

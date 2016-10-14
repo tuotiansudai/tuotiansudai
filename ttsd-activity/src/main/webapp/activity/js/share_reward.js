@@ -21,7 +21,7 @@ require(['jquery','layerWrapper','commonFun','logintip','copyclip','md5','qrcode
 		$clipboardText.val(origin+'/activity/landing-page?referrer='+md5String);
 
 		//动态生成二维码
-		$('.img-code',$shareReward).qrcode('https://tuotiansudai.com/activity/app-share?referrerMobile='+mobile);
+		$('.img-code',$shareReward).qrcode(origin+'/activity/app-share?referrerMobile='+mobile);
 
 		/*复制链接*/
 		client.on( "ready", function( readyEvent ) {

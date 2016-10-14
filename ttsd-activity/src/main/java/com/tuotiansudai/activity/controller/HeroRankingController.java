@@ -1,14 +1,14 @@
 package com.tuotiansudai.activity.controller;
 
+import com.tuotiansudai.activity.service.HeroRankingService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.ActivityCategory;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.service.HeroRankingService;
-import com.tuotiansudai.util.RandomUtils;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -68,7 +68,8 @@ body {
   min-height: 150px;
   padding: 90px 30px 30px 30px;
   margin-bottom:10px;
-
+  border-radius:30px;
+  border-top-left-radius: 0px;
   .bg-column-title {
     width: 303px;
     height: 80px;
@@ -191,6 +192,7 @@ body {
     position: relative;
     span.btn-bar {
       display: block;
+      margin-right:-22px;
       i{
         display: inline-block;
         width:40px;
@@ -202,8 +204,8 @@ body {
           border-right:20px solid #29a0cc;
         }
         &.arr-right {
-          border-left:20px solid #29a0cc;
-          border-right:20px solid transparent;
+          border: 29px solid transparent;
+          border-left: 26px solid #29a0cc;
         }
       }
       b {
@@ -380,6 +382,9 @@ body {
           color: #005e80;
           font-size: 24px;
           border-width: 0;
+          &.pc-one-width {
+            width:20%;
+          }
         }
         &:nth-child(2n) {
           background: #b2ebff;
@@ -406,6 +411,9 @@ body {
 }
 
 @media screen and (max-width: 800px) {
+  .bg-column-normal {
+    border-radius: 0;
+  }
   .tour-slide  {
     height: 270px;
     background: url("/activity/images/share-reward/bar-share-top.png") center top no-repeat;
@@ -649,6 +657,9 @@ body {
     .recommended-ranking {
       .border-dashed-square .table tr td {
         font-size:12px;
+        &.pc-one-width {
+          width:auto;
+        }
       }
       .note {
         font-size: 12px;

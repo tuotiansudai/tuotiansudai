@@ -21,7 +21,8 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
         $clipboardText.val(origin+'/activity/landing-page?referrer='+md5String);
 
         //动态生成二维码
-        $('.img-code',$investListContent).qrcode('https://tuotiansudai.com/activity/app-share?referrerMobile='+mobile);
+
+        $('.img-code',$investListContent).qrcode(origin+'/activity/app-share?referrerMobile='+mobile);
 
         /*复制链接*/
         client.on( "ready", function( readyEvent ) {

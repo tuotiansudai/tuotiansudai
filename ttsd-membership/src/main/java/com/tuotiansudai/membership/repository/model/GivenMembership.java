@@ -1,4 +1,4 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.membership.repository.model;
 
 public enum GivenMembership {
     NO_TIME("7月1日00：00开放领取哦亲!","","返回"),
