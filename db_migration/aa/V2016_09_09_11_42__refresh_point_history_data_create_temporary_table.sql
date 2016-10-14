@@ -10,6 +10,7 @@ CREATE TABLE user_point_task_temp
 CREATE TABLE tmp (
   login_name VARCHAR(25) PRIMARY KEY,
   point      INT
-);
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 COMMIT;
