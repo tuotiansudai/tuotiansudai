@@ -332,7 +332,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(totalActualInterest));
         userInvestRepayResponseDataDto.setUnPaidRepay(AmountConverter.convertCentToString(totalExpectedInterest + corpus - totalActualInterest));
 
-        userInvestRepayResponseDataDto.setMembershipLevel(userMembershipService.getMembershipLevelByLoginNameAndInvestTime(userInvestRepayRequestDto.getBaseParam().getUserId(), transferApplicationModel.getTransferTime()));
+        MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(userInvestRepayRequestDto.getBaseParam().getUserId(), transferApplicationModel.getTransferTime());
+        userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(membershipModel.getLevel()));
         BaseResponseDto baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
         baseResponseDto.setData(userInvestRepayResponseDataDto);
 

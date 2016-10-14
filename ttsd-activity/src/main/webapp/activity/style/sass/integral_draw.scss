@@ -24,10 +24,11 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.layer-gift-draw {
-  border-radius: 20px!important;
-  overflow: hidden!important;
-}
+
+html,body{ overflow-y:scroll;}
+html,body{ overflow:scroll; min-height:101%;}
+html{ overflow:-moz-scrollbars-vertical;}
+
 body {
   background: #e3e2c0 url("/activity/images/integral-draw/bg-integral.jpg") center 475px no-repeat;
   overflow-x: hidden;
@@ -62,7 +63,7 @@ body {
   }
 
   .good-news-frame {
-    margin-top:40px;
+    margin-top:20px;
     .good-news-box {
       width:480px;
       height:275px;
@@ -140,9 +141,7 @@ body {
     }
   }
   .gift-circle-frame  .draw-instructions{
-      position: absolute;
-      bottom:0px;
-      left:200px;
+
       color: #e7844e;
   }
   .luck-draw-frame-one {
@@ -151,6 +150,7 @@ body {
     .gift-circle-frame  {
       .gift-circle-out .rotate-btn{
         background: url(/activity/images/integral-draw/integral-draw-one.jpg) no-repeat center;
+        background-size: 100%;
       }
     }
 
@@ -159,14 +159,11 @@ body {
     margin-top: 68px;
     text-align: center;
     .gift-circle-frame {
-      .draw-instructions{
-        right:200px;
-        left:auto;
-      }
       .gift-circle-out {
         float: right;
         .rotate-btn{
           background: url(/activity/images/integral-draw/integral-draw-two.jpg) no-repeat center;
+          background-size: 100%;
         }
       }
       .gift-circle-detail {
@@ -197,8 +194,10 @@ body {
   .gift-circle-frame {
     .gift-circle-out {
       background: url(/activity/images/integral-draw/bg-integral-circle.jpg) no-repeat center;
+      background-size: 100%;
       .pointer-img {
         background: url(/activity/images/integral-draw/pointer.png) no-repeat center;
+        background-size: 100%;
       }
     }
   }
@@ -206,29 +205,20 @@ body {
 }
 //弹框
 .tip-list {
-  background: url(/activity/images/integral-draw/bg-pop-point.jpg) no-repeat left top;
+  background: #fff url(/activity/images/integral-draw/bg-pop-point.jpg) no-repeat left top;
 }
 @media screen and (max-width: 700px) {
   body {
     background: #edecd2;
   }
   .tour-slide {
-    height: 172px;
+    height: 226px;
     background: url("/activity/images/integral-draw/bar-top-app.jpg") center top no-repeat;
     background-size: 100%;
   }
   .integral-draw-frame {
     padding: 0 10px 10px 10px;
     width:100%;
-
-    .gift-circle-frame  .draw-instructions{
-      position: absolute;
-      bottom: auto;
-      left: auto;
-      top: 277px;
-      width: 100%;
-      text-align: center;
-    }
 
     .button-col {
       .btn-to-invest {
@@ -248,13 +238,29 @@ body {
       }
     }
     .good-news-frame {
-      margin-top:0px;
+      margin-top:30px;
       .good-news-box {
         float: none;
         width: 100%;
         font-size:12px;
         height: auto;
         margin-bottom: 32px;
+        em {
+          width: 60px;
+          height: 20px;
+          &:nth-child(1) {
+            left:-8px;
+          }
+          &:nth-child(2) {
+            right:-8px;
+          }
+          &:nth-child(3) {
+            right:-8px;
+          }
+          &:nth-child(4) {
+            left:-8px;
+          }
+        }
         &:nth-child(1) {
           float: none;
         }
@@ -267,18 +273,14 @@ body {
       }
     }
     .luck-draw-frame-one{
-      margin-top:10px;
+      margin-top:0px;
     }
     .luck-draw-frame-two {
-      margin-top:20px;
+      margin-top:10px;
 
       .gift-circle-frame {
         .gift-circle-out{
           float: none;
-        }
-        .draw-instructions{
-          right:auto;
-          left:auto;
         }
       }
     }
@@ -298,12 +300,15 @@ body {
 
 @media screen and (max-width: 400px) {
   .tour-slide {
-    height: 230px;
+    height: 200px;
   }
 }
 @media screen and (max-width: 350px) {
   .tour-slide {
-    height: 200px;
+    height: 170px;
+  }
+  .integral-draw-frame .good-news-frame {
+    margin-top:20px;
   }
 }
 
