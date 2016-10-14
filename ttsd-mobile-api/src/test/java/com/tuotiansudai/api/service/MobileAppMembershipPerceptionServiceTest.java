@@ -18,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -49,7 +50,7 @@ public class MobileAppMembershipPerceptionServiceTest extends ServiceTestBase{
 
         when(userMemberhshipMapper.findCurrentMaxByLoginName(anyString())).thenReturn(userMembershipModel);
         when(membershipMapper.findById(anyLong())).thenReturn(membershipModel);
-        when(investService.calculateMembershipPreference(anyString(), anyLong(), anyLong())).thenReturn(80000L);
+        when(investService.calculateMembershipPreference(anyString(), anyLong(), anyList(), anyLong())).thenReturn(80000L);
 
         BaseResponseDto<MembershipPerceptionResponseDataDto> responseDto = mobileAppMembershipPerceptionService.getMembershipPerception(membershipPerceptionRequestDto);
 

@@ -1,11 +1,14 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.MembershipPerceptionRequestDto;
 import com.tuotiansudai.api.dto.v1_0.MembershipPerceptionResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppMembershipPerceptionService;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -32,6 +35,9 @@ public class MobileAppMembershipPerceptionServiceImpl implements MobileAppMember
     @Autowired
     private MembershipMapper membershipMapper;
 
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
     @Override
     public BaseResponseDto getMembershipPerception(MembershipPerceptionRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
@@ -50,7 +56,8 @@ public class MobileAppMembershipPerceptionServiceImpl implements MobileAppMember
 
         UserMembershipModel userMembershipModel = userMemberhshipMapper.findCurrentMaxByLoginName(loginName);
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
-        String getMoney = AmountConverter.convertCentToString(investService.calculateMembershipPreference(loginName,  Long.parseLong(loanId),  AmountConverter.convertStringToCent(amount)));
+        UserCouponModel userCouponModel = userCouponMapper.findById(couponIds != null ? couponIds.get(0) : 0);
+        String getMoney = AmountConverter.convertCentToString(investService.calculateMembershipPreference(loginName,  Long.parseLong(loanId), Lists.newArrayList(userCouponModel.getCouponId()), AmountConverter.convertStringToCent(amount)));
 
         MembershipPerceptionResponseDataDto membershipPerceptionResponseDataDto = new MembershipPerceptionResponseDataDto();
         membershipPerceptionResponseDataDto.setTip(MessageFormat.format("V{0}会员,专享服务费{1}折优惠,已经多赚{2}元",
