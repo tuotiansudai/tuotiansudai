@@ -31,6 +31,7 @@ public interface LoanMapper {
                              @Param(value = "durationEnd") int durationEnd);
 
     List<LoanModel> findLoanListMobileApp(@Param(value = "productType") ProductType productType,
+                                          @Param(value = "noContainProductType") ProductType noContainProductType,
                                           @Param(value = "status") LoanStatus status,
                                           @Param(value = "rateStart") double rateStart,
                                           @Param(value = "rateEnd") double rateEnd,

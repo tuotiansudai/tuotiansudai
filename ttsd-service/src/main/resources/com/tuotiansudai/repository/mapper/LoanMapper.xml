@@ -173,6 +173,9 @@
         <if test="productType !=null">
             and temp.product_type = #{productType}
         </if>
+        <if test="noContainProductType !=null">
+            and temp.product_type != #{noContainProductType}
+        </if>
         <if test="status != null">
             and temp.status = #{status}
         </if>
