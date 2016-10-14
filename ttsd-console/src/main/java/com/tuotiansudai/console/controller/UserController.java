@@ -77,6 +77,13 @@ public class UserController {
     @Autowired
     private UserMembershipService userMembershipService;
 
+    private final static long MEMBERSHIP_V0 = 0;
+    private final static long MEMBERSHIP_V1 = 1;
+    private final static long MEMBERSHIP_V2 = 2;
+    private final static long MEMBERSHIP_V3 = 3;
+    private final static long MEMBERSHIP_V4 = 4;
+    private final static long MEMBERSHIP_V5 = 5;
+
     @Value("${web.server}")
     private String webServer;
 
@@ -247,17 +254,17 @@ public class UserController {
     @RequestMapping(value = "/userMembership/count", method = RequestMethod.GET)
     @ResponseBody
     public long queryUserMembershipByLevelCount(@RequestParam(value = "userGroup") UserGroup userGroup) {
-        long level = 0;
+        long level = MEMBERSHIP_V0;
         if(userGroup.equals(UserGroup.MEMBERSHIP_V1)){
-            level = 1;
+            level = MEMBERSHIP_V1;
         }else if (userGroup.equals(UserGroup.MEMBERSHIP_V2)){
-            level = 2;
+            level = MEMBERSHIP_V2;
         }else if (userGroup.equals(UserGroup.MEMBERSHIP_V3)){
-            level = 3;
+            level = MEMBERSHIP_V3;
         }else if (userGroup.equals(UserGroup.MEMBERSHIP_V4)){
-            level = 4;
+            level = MEMBERSHIP_V4;
         }else if (userGroup.equals(UserGroup.MEMBERSHIP_V5)){
-            level = 5;
+            level = MEMBERSHIP_V5;
         }
         return userMembershipService.findCountMembershipByLevel(level);
     }
