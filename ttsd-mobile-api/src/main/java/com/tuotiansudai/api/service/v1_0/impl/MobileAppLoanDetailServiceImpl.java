@@ -102,7 +102,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setLoanId("" + loan.getId());
         loanDetailResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().getProductLine() : "");
 
-        LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+        LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getByLoanId(loan.getId());
         loanDetailResponseDataDto.setLoanName(loan.getName());
         loanDetailResponseDataDto.setActivityDesc(loanDetailsModelActivity != null ? loanDetailsModelActivity.getActivityDesc() : "");
         loanDetailResponseDataDto.setLoanName(loan.getName());
@@ -204,7 +204,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             loanDetailResponseDataDto.setExtraRates(fillExtraLoanRateDto(extraLoanRateModels));
         }
 
-        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
         if (loanDetailsModel != null) {
             loanDetailResponseDataDto.setExtraSource((Source.WEB.name().equals(loanDetailsModel.getExtraSource())) ? loanDetailsModel.getExtraSource() : "");
         }
@@ -288,8 +288,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     }
     private Map<String, Object> collectLoanDetailDateModel(long loanId,PledgeType pledgeType){
         Map<String, Object> dataModel = new HashMap<>();
-        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanId);
-        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanId);
+        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
         if(loanerDetailsModel != null){
             if(StringUtils.isNotEmpty(loanerDetailsModel.getUserName())){
 
@@ -304,7 +304,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         }
         switch (pledgeType){
             case HOUSE:
-                PledgeHouseModel pledgeHouseModel = (PledgeHouseModel)pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanId);
+                PledgeHouseModel pledgeHouseModel = (PledgeHouseModel)pledgeHouseMapper.getByLoanId(loanId);
                 if(pledgeHouseModel != null){
                     dataModel.put("loanAmount",pledgeHouseModel.getLoanAmount());
                     dataModel.put("estimateAmount",pledgeHouseModel.getEstimateAmount());
@@ -317,7 +317,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
                 }
                 break ;
             case VEHICLE:
-                PledgeVehicleModel pledgeVehicleModel = (PledgeVehicleModel)pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanId);
+                PledgeVehicleModel pledgeVehicleModel = (PledgeVehicleModel)pledgeVehicleMapper.getByLoanId(loanId);
                 if(pledgeVehicleModel != null){
                     dataModel.put("loanAmount",pledgeVehicleModel.getLoanAmount());
                     dataModel.put("estimateAmount",pledgeVehicleModel.getEstimateAmount());

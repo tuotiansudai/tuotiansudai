@@ -1,4 +1,4 @@
-@import 'variables';
+@import 'common/variables';
 @import "index_png";
 .home-page-container {
   .banner-box {
@@ -303,20 +303,24 @@
           display: inline-block;
           &.product-icon {
             padding-left: 38px;
-            background: url("/images/sign/home-title-new.png") -10px -10px no-repeat;
+            background: url("/images/sign/home_title_20161010.png") -10px -10px no-repeat;
           }
           &.hot-product {
             padding-left: 38px;
-            background: url("/images/sign/home-title-new.png") -10px -53px no-repeat;
+            background: url("/images/sign/home_title_20161010.png") -10px -53px no-repeat;
           }
           &.media-coverage-icon {
-            background: url("/images/sign/home-title-new.png") -10px -110px no-repeat;
+            background: url("/images/sign/home_title_20161010.png") -10px -110px no-repeat;
           }
           &.partner-icon {
-            background: url("/images/sign/home-title-new.png") -10px -153px no-repeat;
+            background: url("/images/sign/home_title_20161010.png") -10px -153px no-repeat;
           }
           &.project-transfer-icon {
-            background: url("/images/sign/home-title-new.png") -10px -233px no-repeat;
+            background: url("/images/sign/home_title_20161010.png") -10px -250px no-repeat;
+          }
+          &.enterprise-loan-icon {
+            padding-left: 38px;
+            background: url("/images/sign/home_title_20161010.png") -10px -295px no-repeat;
           }
         }
         .hot-more {

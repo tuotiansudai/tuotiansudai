@@ -13,6 +13,15 @@ public class LoanTitleModel implements Serializable {
      ***/
     private String title;
 
+    public LoanTitleModel() {
+    }
+
+    public LoanTitleModel(long id, LoanTitleType type, String title) {
+        this.id = id;
+        this.type = type;
+        this.title = title;
+    }
+
     public long getId() {
         return id;
     }

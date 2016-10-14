@@ -78,6 +78,8 @@ public class HomeController {
         //债权转让列表显示前两项
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationItemList = transferService.findAllTransferApplicationPaginationList(null, 0, 0, 1, 2);
         modelAndView.addObject("transferApplications", transferApplicationItemList.getRecords());
+        //企业贷款
+        modelAndView.addObject("enterpriseLoans", homeService.getEnterpriseLoans());
         return modelAndView;
     }
 

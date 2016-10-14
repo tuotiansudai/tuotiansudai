@@ -1,5 +1,8 @@
 package com.tuotiansudai.repository.model;
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.LoanCreateBaseRequestDto;
+import com.tuotiansudai.dto.LoanCreateRequestDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.util.AmountConverter;
 
@@ -181,6 +184,61 @@ public class LoanModel implements Serializable {
     private long unpaidAmount;
 
     public LoanModel() {
+    }
+
+    public LoanModel(long loanId, LoanCreateRequestDto loanCreateRequestDto) {
+        LoanCreateBaseRequestDto baseRequestDto = loanCreateRequestDto.getLoan();
+        this.id = loanId;
+        this.name = baseRequestDto.getName();
+        this.agentLoginName = baseRequestDto.getAgent();
+        this.loanerUserName = loanCreateRequestDto.getLoanerDetails() != null ? loanCreateRequestDto.getLoanerDetails().getUserName() : "";
+        this.loanerIdentityNumber = loanCreateRequestDto.getLoanerDetails() != null ? loanCreateRequestDto.getLoanerDetails().getIdentityNumber() : "";
+        this.productType = baseRequestDto.getProductType();
+        this.pledgeType = baseRequestDto.getPledgeType();
+        this.type = baseRequestDto.getLoanType();
+        this.activityType = baseRequestDto.getActivityType();
+        this.loanAmount = AmountConverter.convertStringToCent(baseRequestDto.getLoanAmount());
+        this.baseRate = Double.parseDouble(rateStrDivideOneHundred(baseRequestDto.getBaseRate()));
+        this.activityRate = Double.parseDouble(rateStrDivideOneHundred(baseRequestDto.getActivityRate()));
+        this.fundraisingStartTime = baseRequestDto.getFundraisingStartTime();
+        this.fundraisingEndTime = baseRequestDto.getFundraisingEndTime();
+        this.investIncreasingAmount = AmountConverter.convertStringToCent(baseRequestDto.getInvestIncreasingAmount());
+        this.maxInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMaxInvestAmount());
+        this.minInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMinInvestAmount());
+        this.periods = baseRequestDto.getLoanType().getLoanPeriodUnit() == LoanPeriodUnit.DAY ? 1 : baseRequestDto.getProductType().getPeriods();
+        this.duration = baseRequestDto.getProductType().getDuration();
+        this.status = loanCreateRequestDto.getLoan().getStatus();
+        this.createdLoginName = baseRequestDto.getCreatedBy();
+        this.contractId = baseRequestDto.getContractId();
+        this.loanerLoginName = "";
+        this.descriptionHtml = "";
+        this.descriptionText = "";
+        this.showOnHome = true;
+    }
+
+    public LoanModel updateLoan(LoanCreateRequestDto loanCreateRequestDto) {
+        LoanCreateBaseRequestDto baseRequestDto = loanCreateRequestDto.getLoan();
+        this.name = this.status == LoanStatus.WAITING_VERIFY ? baseRequestDto.getName() : this.name;
+        this.agentLoginName = this.status == LoanStatus.WAITING_VERIFY ? baseRequestDto.getAgent() : this.agentLoginName;
+        this.loanerUserName = loanCreateRequestDto.getLoanerDetails() != null ? loanCreateRequestDto.getLoanerDetails().getUserName() : "";
+        this.loanerIdentityNumber = loanCreateRequestDto.getLoanerDetails() != null ? loanCreateRequestDto.getLoanerDetails().getIdentityNumber() : "";
+        this.productType = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? baseRequestDto.getProductType() : this.productType;
+        this.pledgeType = this.status == LoanStatus.WAITING_VERIFY ? baseRequestDto.getPledgeType() : this.pledgeType;
+        this.type = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? baseRequestDto.getLoanType() : this.type;
+        this.activityType = baseRequestDto.getActivityType();
+        this.loanAmount = this.status == LoanStatus.WAITING_VERIFY ? AmountConverter.convertStringToCent(baseRequestDto.getLoanAmount()) : this.loanAmount;
+        this.baseRate = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? Double.parseDouble(rateStrDivideOneHundred(baseRequestDto.getBaseRate())) : this.baseRate;
+        this.activityRate = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? Double.parseDouble(rateStrDivideOneHundred(baseRequestDto.getActivityRate())) : this.activityRate;
+        this.fundraisingStartTime = this.status == LoanStatus.WAITING_VERIFY ? baseRequestDto.getFundraisingStartTime() : this.getFundraisingStartTime();
+        this.fundraisingEndTime = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT, LoanStatus.RAISING, LoanStatus.RECHECK).contains(this.status) ? baseRequestDto.getFundraisingEndTime() : this.getFundraisingEndTime();
+        this.investIncreasingAmount = AmountConverter.convertStringToCent(baseRequestDto.getInvestIncreasingAmount());
+        this.minInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMinInvestAmount());
+        this.maxInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMaxInvestAmount());
+        this.periods = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? (baseRequestDto.getLoanType().getLoanPeriodUnit() == LoanPeriodUnit.DAY ? 1 : baseRequestDto.getProductType().getPeriods()) : this.periods;
+        this.duration = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? baseRequestDto.getProductType().getDuration() : this.duration;
+        this.contractId = baseRequestDto.getContractId();
+        this.updateTime = new Date();
+        return this;
     }
 
     public LoanModel(LoanDto loanDto) {

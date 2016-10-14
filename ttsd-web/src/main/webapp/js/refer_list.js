@@ -1,6 +1,9 @@
-require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension'],
+require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension','copyclip','commonFun','md5','qrcode'],
     function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer) {
 
+        var $investListContent=$('#investListContent'),
+            $copyButton=$('.copy-button',$investListContent),
+            $clipboardText=$('#clipboard_text');
         var $searchBox=$('#search-box'),
             dataPickerElement = $('#date-picker'),
             loginName = $("#loginName"),
@@ -9,6 +12,24 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
             $btnSearch=$('.btn-search',$searchBox),
             $btnReset=$('.btn-reset',$searchBox),
             $searchContent=$('.search-content-tab');
+
+        var client = new ZeroClipboard($copyButton),
+            mobile=$clipboardText.data('mobile')+'',
+            md5Mobile=$.md5(mobile);
+        var md5String=commonFun.compile(md5Mobile,mobile),
+            origin=location.origin;
+        $clipboardText.val(origin+'/activity/landing-page?referrer='+md5String);
+
+        //动态生成二维码
+
+        $('.img-code',$investListContent).qrcode(origin+'/activity/app-share?referrerMobile='+mobile);
+
+        /*复制链接*/
+        client.on( "ready", function( readyEvent ) {
+            client.on( "aftercopy", function( event ) {
+                layer.msg('复制成功');
+            } );
+        });
 
         var paginationElement = paginationElementRelation;
         var template = referRelationTemplate;
