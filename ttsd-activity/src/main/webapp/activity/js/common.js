@@ -107,47 +107,28 @@ commonFun={
             segments: a.pathname.replace(/^\//,'').split('/')
         };
     },
-    popWindow:function(title,content,size) {
-        if(!$('.popWindow').length) {
-            var popW=[];
-            popW.push('<div class="popWindow">');
-            popW.push('<div class="ecope-overlay"></div>');
-            popW.push('<div class="ecope-dialog">');
-            popW.push('<div class="dg_wrapper">');
-
-            popW.push('<div class="hd"><h3>'+title+' ' +
-                '<em class="close" ></em></h3></div>');
-            popW.push('<div class="bd">sss</div>');
-
-            popW.push('</div></div></div>');
-            $('body').append(popW.join(''));
-            var $popWindow=$('.ecope-dialog'),
-                size= $.extend({width:'560px'},size);
-            $popWindow.css({
-                width:size.width
-            });
-            var adjustPOS=function() {
-                var scrollHeight=document.body.scrollTop || document.documentElement.scrollTop,
-                    pTop=$(window).height()-$popWindow.height(),
-                    pLeft=$(window).width()-$popWindow.width();
-                $popWindow.css({'top':pTop/2+scrollHeight,left:pLeft/2});
-                $popWindow.find('.bd').empty().append(content);
-            }
-            adjustPOS();
-            $(window).resize(function() {
-                adjustPOS();
-            });
-            var mousewheel = document.all?"mousewheel":"DOMMouseScroll";
-            $(window).bind('mousewheel',function() {
-                adjustPOS();
-            })
+    popWindow:function(contentHtml,area) {
+        var $shade=$('<div class="shade-body-mask"></div>');
+        var $popWindow=$(contentHtml),
+            size= $.extend({width:'460px',height:'370px'},area);
+        $popWindow.css({
+            width:size.width,
+            height:size.height
+        });
+        var adjustPOS=function() {
+            var scrollHeight=document.body.scrollTop || document.documentElement.scrollTop,
+                pTop=$(window).height()-$popWindow.height(),
+                pLeft=$(window).width()-$popWindow.width();
+            $popWindow.css({'top':pTop/2,left:pLeft/2});
+            $shade.height($('body').height());
+            $('body').append($popWindow).append($shade);
         }
-        else {
-            $('.ecope-overlay,.popWindow').show();
-        }
+        adjustPOS();
 
-        $popWindow.delegate('.close','click',function() {
-            $('.ecope-overlay,.popWindow').hide();
+
+        $('.close-btn,.go-close',$popWindow).on('click',function() {
+            $popWindow.remove();
+            $shade.remove();
         })
     },
     IdentityCodeValid:function(code) {

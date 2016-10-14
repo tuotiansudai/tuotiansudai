@@ -58,7 +58,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
 
                 BankCardResponseDto dataDto = new BankCardResponseDto();
                 dataDto.setUrl(formData.getUrl());
-                dataDto.setRequestData(CommonUtils.mapToFormData(formData.getFields(), true));
+                dataDto.setRequestData(CommonUtils.mapToFormData(formData.getFields()));
 
                 baseDto.setCode(ReturnMessage.SUCCESS.getCode());
                 baseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -86,7 +86,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
 
                 BankCardResponseDto dataDto = new BankCardResponseDto();
                 dataDto.setUrl(formData.getUrl());
-                dataDto.setRequestData(CommonUtils.mapToFormData(formData.getFields(), true));
+                dataDto.setRequestData(CommonUtils.mapToFormData(formData.getFields()));
 
                 baseDto.setCode(ReturnMessage.SUCCESS.getCode());
                 baseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -166,7 +166,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
             BankCardReplaceResponseDataDto bankCardReplaceResponseDataDto = new BankCardReplaceResponseDataDto();
             bankCardReplaceResponseDataDto.setUrl(formData.getUrl());
             try {
-                bankCardReplaceResponseDataDto.setRequestData(CommonUtils.mapToFormData(formData.getFields(), true));
+                bankCardReplaceResponseDataDto.setRequestData(CommonUtils.mapToFormData(formData.getFields()));
             } catch (UnsupportedEncodingException e) {
                 return new BaseResponseDto(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode(),ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
             }

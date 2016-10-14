@@ -60,7 +60,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
             BaseDto<PayFormDataDto> formDto = payWrapperClient.recharge(rechargeDto);
             if (formDto.getData().getStatus()) {
                 bankCardResponseDto.setUrl(formDto.getData().getUrl());
-                bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(formDto.getData().getFields(), true));
+                bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(formDto.getData().getFields()));
 
             }
         } catch (UnsupportedEncodingException e) {

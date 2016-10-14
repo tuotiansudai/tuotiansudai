@@ -1,4 +1,4 @@
-require(['jquery', 'underscore','layerWrapper','drawCircle','commonFun','register_common','logintip'], function ($, _,layer,drawCircle) {
+require(['jquery', 'underscore','drawCircle','commonFun','register_common','logintip'], function ($, _,drawCircle) {
 
     var $integralDrawPage=$('#integralDrawPage'),
         $oneThousandPoints=$('.one-thousand-points',$integralDrawPage),

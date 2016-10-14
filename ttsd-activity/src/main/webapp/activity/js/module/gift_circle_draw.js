@@ -1,4 +1,4 @@
-define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
+define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, layer) {
 
     //allListURL： 中奖纪录的接口链接
     //userListURL：我的奖品的接口链接
@@ -25,7 +25,8 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
                     callback(data);
                 })
                 .fail(function() {
-                    layer.msg('请求失败');
+                    //layer.msg('请求失败');
+                    commonFun.popWindow('错误','请求失败',{width:'260px'});
                 });
         }
         //中奖记录
@@ -123,27 +124,14 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
     //接口调成功以后的弹框显示
     giftCircleDraw.prototype.tipWindowPop=function(tipMessage) {
         if(tipMessage.area.length==0) {
-            tipMessage.area=['460px', '370px'];
+            tipMessage.area={width:'460px',height:'370px'}
         }
-
-        var shade={};
-        if($('.layui-layer-shade').length) {
-            shade={shade: 0};
-        }
-        var option=$.extend({},{
-            type: 1,
-            title: false,
-            area: tipMessage.area,
-            shade: 0.8,
-            closeBtn: 0,
-            shadeClose: true,
-            skin:'layer-gift-draw',
-            content: '<div class="tip-list">' +
+        var contentHTML='<div class="tip-out-box"><div class="tip-list">' +
             '<div class="close-btn go-close"></div>' +
             '<div class="text-tip">'+tipMessage.info+'</div>' +
-            '<div class="btn-list">'+tipMessage.button+'</div></div>'
-        },shade);
-        layer.open(option);
+            '<div class="btn-list">'+tipMessage.button+'</div></div></div>';
+        commonFun.popWindow(contentHTML);
+
     }
     //tab switch
     giftCircleDraw.prototype.PrizeSwitch=function() {
@@ -156,12 +144,6 @@ define(['jquery', 'rotate', 'layerWrapper'], function($, rotate, layer) {
         contentCls.eq(index).show().siblings().hide();
         });
     }
-
-    $('body').on('click', '.go-close', function(event) {
-        event.preventDefault();
-        var $self = $(this);
-        layer.closeAll();
-    });
 
     return giftCircleDraw;
 });
