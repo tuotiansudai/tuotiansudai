@@ -6,7 +6,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
         });
 
         $('#datepicker').on('dp.change', function(){
-            location.href = '/activity-manage/hero-ranking?tradingTime=' + $('#tradingTime').val();
+            location.href = '/activity-console/activity-manage/hero-ranking?tradingTime=' + $('#tradingTime').val();
         });
 
         $('.invest').on('click', function(){
@@ -141,7 +141,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
             if (boolFlag) {
                 if (confirm("确认提交更新?")) {
                     $.ajax({
-                        url: '/activity-manage/upload-image',
+                        url: '/activity-console/activity-manage/upload-image',
                         type: 'POST',
                         dataType: 'json',
                         contentType: 'application/json; charset=UTF-8',
