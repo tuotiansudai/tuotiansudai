@@ -11,4 +11,8 @@ public enum PledgeType {
     PledgeType(String description) {
         this.description = description;
     }
+
+    public String getDescription() {
+        return description;
+    }
 }
