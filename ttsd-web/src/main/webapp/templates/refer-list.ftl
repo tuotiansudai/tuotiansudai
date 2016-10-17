@@ -25,7 +25,7 @@
             <div class="invite-title"><i></i><span>链接邀请好友</span></div>
             <dl>
                 <dd>
-                    <input type="text" class="input-invite" id="clipboard_text" value="123" readonly data-mobile="<@global.security.authentication property='principal.mobile'/>">
+                    <input type="text" class="input-invite" id="clipboard_text" readonly data-mobile="<@global.security.authentication property='principal.mobile'/>">
                 </dd>
                 <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-normal fr copy-button" id="copyButtonBtn" data-clipboard-action="copy"  data-clipboard-target="#clipboard_text">复制链接</a></dt>
             </dl>
