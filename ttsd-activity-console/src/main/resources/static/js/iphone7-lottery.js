@@ -47,7 +47,7 @@ require(['jquery', 'layerWrapper', 'jquery-ui', 'bootstrap', 'csrf'], function (
             dataType: 'json',
             success: function (result, status, xhr) {
                 if (!!result.data.status) {
-                    layer.msg('审核成功', {}, function () {
+                    layer.msg('处理成功', {}, function () {
                         location.reload();
                     });
                 } else {

@@ -12,13 +12,17 @@ import com.tuotiansudai.console.activity.dto.IPhone7InvestLotteryWinnerDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.AuditLogMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.AuditLogModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.task.OperationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +41,9 @@ public class IPhone7LotteryService {
 
     @Autowired
     private IPhone7LotteryConfigMapper configMapper;
+
+    @Autowired
+    private AuditLogMapper auditLogMapper;
 
     public BaseDto<BasePaginationDataDto> listStat(String mobile, int pageIndex, int pageSize) {
         String loginName = null;
@@ -72,7 +79,7 @@ public class IPhone7LotteryService {
     }
 
     @Transactional(transactionManager = "transactionManager")
-    public void approveConfig(long id, String loginName) {
+    public void approveConfig(long id, String loginName, String ip) {
         IPhone7LotteryConfigModel configModel = configMapper.findById(id);
         if (configModel != null) {
             List<IPhone7LotteryConfigModel> configModels = configMapper.findByInvestAmount(configModel.getInvestAmount());
@@ -81,14 +88,17 @@ public class IPhone7LotteryService {
             }
             configMapper.removeApprovedConfig(configModel.getInvestAmount());
             configMapper.approve(id, loginName, new Date());
+
+            logOperation(configModel, true, loginName, ip);
         }
     }
 
     @Transactional(transactionManager = "transactionManager")
-    public void refuseConfig(long id, String loginName) {
+    public void refuseConfig(long id, String loginName, String ip) {
         IPhone7LotteryConfigModel configModel = configMapper.findById(id);
         if (configModel != null) {
             configMapper.refuse(id, loginName, new Date());
+            logOperation(configModel, false, loginName, ip);
         }
     }
 
@@ -99,5 +109,27 @@ public class IPhone7LotteryService {
             AccountModel accountModel = accountMapper.findByLoginName(w.getLoginName());
             return new IPhone7InvestLotteryWinnerDto(w, userModel.getMobile(), accountModel.getUserName());
         }).collect(Collectors.toList());
+    }
+
+    private void logOperation(IPhone7LotteryConfigModel configModel, boolean passed, String loginName, String ip) {
+        String auditor = accountMapper.findByLoginName(loginName).getUserName();
+        String operator = accountMapper.findByLoginName(configModel.getCreatedBy()).getUserName();
+        String operation = passed ? "通过" : "驳回";
+        String activityName = "老板出差，运营汪闭眼送iphone7";
+        String description = MessageFormat.format("{0}{1}了{2}在“{3}”活动中修改的中奖码({4}万：{5})",
+                auditor, operation, operator, activityName, configModel.getInvestAmount(), configModel.getLotteryNumber());
+        createAuditLog(loginName, configModel.getCreatedBy(),
+                OperationType.ACTIVITY, activityName, description, ip);
+    }
+
+    private void createAuditLog(String auditorLoginName, String operatorLoginName, OperationType operationType, String targetId, String description, String auditorIp) {
+        AuditLogModel log = new AuditLogModel();
+        log.setOperatorLoginName(operatorLoginName);
+        log.setAuditorLoginName(auditorLoginName);
+        log.setTargetId(targetId);
+        log.setOperationType(operationType);
+        log.setIp(auditorIp);
+        log.setDescription(description);
+        auditLogMapper.create(log);
     }
 }

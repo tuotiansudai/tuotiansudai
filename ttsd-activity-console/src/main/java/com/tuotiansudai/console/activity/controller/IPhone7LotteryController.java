@@ -3,7 +3,6 @@ package com.tuotiansudai.console.activity.controller;
 
 import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
 import com.tuotiansudai.activity.repository.mapper.IPhone7LotteryConfigMapper;
-import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryWinnerView;
 import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigModel;
 import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigStatus;
 import com.tuotiansudai.console.activity.dto.IPhone7InvestLotteryWinnerDto;
@@ -12,6 +11,8 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.RequestIPParser;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/activity-console/activity-manage")
 public class IPhone7LotteryController {
+    private static Logger logger = Logger.getLogger(IPhone7LotteryController.class);
 
     @Autowired
     private IPhone7InvestLotteryMapper mapper;
@@ -99,16 +102,20 @@ public class IPhone7LotteryController {
 
     @RequestMapping(value = "/iphone7-lottery/audit", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto submitConfig(@RequestParam(value = "id") long id, @RequestParam(value = "passed") boolean passed) {
+    public BaseDto submitConfig(@RequestParam(value = "id") long id,
+                                @RequestParam(value = "passed") boolean passed,
+                                HttpServletRequest request
+    ) {
         BaseDataDto data = new BaseDataDto();
         try {
             if (passed) {
-                service.approveConfig(id, LoginUserInfo.getLoginName());
+                service.approveConfig(id, LoginUserInfo.getLoginName(), RequestIPParser.parse(request));
             } else {
-                service.refuseConfig(id, LoginUserInfo.getLoginName());
+                service.refuseConfig(id, LoginUserInfo.getLoginName(), RequestIPParser.parse(request));
             }
             data.setStatus(true);
         } catch (Exception e) {
+            logger.error("iphone7 lottery config item refuse failed", e);
             data.setStatus(false);
             data.setMessage(e.getMessage());
         }
