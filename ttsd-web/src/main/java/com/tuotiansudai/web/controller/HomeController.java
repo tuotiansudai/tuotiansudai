@@ -81,9 +81,9 @@ public class HomeController {
         modelAndView.addObject("transferApplications", transferApplicationItemList.getRecords());
         //企业贷款
         List<HomeLoanDto> enterpriseLoans = homeService.getEnterpriseLoans();
-//        if(enterpriseLoans.size() > 0) {
-//            modelAndView.addObject("enterpriseLoans", homeService.getEnterpriseLoans());
-//        }
+        if (enterpriseLoans.size() > 0) {
+            modelAndView.addObject("enterpriseLoans", homeService.getEnterpriseLoans());
+        }
         return modelAndView;
     }
 
