@@ -50,7 +50,8 @@
 				<div class="content-item">
 					<div class="tip-item">
 						<p>
-							距离下次开奖还差<span>360548.37</span>元
+							<#--距离下次开奖还差<span>${nextLotteryInvestAmount}</span>元-->
+							距离下次开奖还差<span>500000</span>元
 						</p>
 					</div>
 					<div class="reward-progress-item progressbar" data-perc="360548.37">
@@ -65,26 +66,15 @@
 							<span>开奖号码</span>
 							<span>获奖用户</span>
 							</dt>
-							<dd>
-							<span>第一期</span>
-							<span>234234</span>
-							<span>139****7148</span>
-							</dd>
-							<dd>
-							<span>第二期</span>
-							<span>34563456</span>
-							<span>139****6008</span>
-							</dd>
-							<dd>
-							<span>第三期</span>
-							<span>7685457</span>
-							<span>139****8880</span>
-							</dd>
-							<dd>
-							<span>第四期</span>
-							<span>等待开奖</span>
-							<span>等待开奖</span>
-							</dd>
+							<#if lotteryList??>
+								<#list lotteryList as lottery>
+                                    <dd>
+                                        <span>第${lottery_index + 1}期</span>
+                                        <span>${lottery.lotteryNumber}</span>
+                                        <span>${lottery.mobile}</span>
+                                    </dd>
+								</#list>
+							</#if>
 						</dl>
 					</div>
 				</div>
@@ -95,46 +85,14 @@
 				</h3>
 				<div class="content-item dashed">
 					<ul class="my-code-group">
-						<li>
-						<span>687230</span>
-						<span>等待开奖</span>
-						</li>
-						<li>
-						<span>687230</span>
-						<span>等待开奖</span>
-						</li>
-						<li>
-						<span>687230</span>
-						<span>等待开奖</span>
-						</li>
-						<li>
-						<span>687230</span>
-						<span>等待开奖</span>
-						</li>
-						<li>
-						<span>687230</span>
-						<span>等待开奖</span>
-						</li>
-						<li>
-						<span>687230</span>
-						<span>等待开奖</span>
-						</li>
-						<li>
-						<span>687230</span>
-						<span>等待开奖</span>
-						</li>
-						<li>
-						<span>687230</span>
-						<span>等待开奖</span>
-						</li>
-						<li>
-						<span>687230</span>
-						<span>等待开奖</span>
-						</li>
-						<li>
-						<span>687230</span>
-						<span>等待开奖</span>
-						</li>
+						<#if myInvestList??>
+							<#list myInvestList as myInvest>
+                                <li>
+                                    <span>${myInvest.lotteryNumber}</span>
+                                    <span>${myInvest.status.description}</span>
+                                </li>
+							</#list>
+						</#if>
 					</ul>
 					<div class="code-btn-group">
 						<span class="prev-btn">上一页</span>

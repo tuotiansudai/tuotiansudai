@@ -5,6 +5,7 @@ import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryStatView;
 import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryWinnerView;
 import org.apache.ibatis.annotations.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -34,6 +35,22 @@ public interface IPhone7InvestLotteryMapper {
     @Select("select * from iphone7_invest_lottery where login_name=#{loginName} order by id")
     List<IPhone7InvestLotteryModel> findByLoginName(@Param("loginName") String loginName);
 
+    @Results({
+            @Result(id = true, column = "id", property = "id"),
+            @Result(column = "invest_id", property = "investId"),
+            @Result(column = "login_name", property = "loginName"),
+            @Result(column = "lottery_number", property = "lotteryNumber"),
+            @Result(column = "invest_amount", property = "investAmount"),
+            @Result(column = "lottery_time", property = "lotteryTime"),
+            @Result(column = "status", property = "status")
+    })
+    @Select("select * from iphone7_invest_lottery where login_name=#{loginName} order by id limit #{index}, #{pageSize}")
+    List<IPhone7InvestLotteryModel> findByAllLoginName(@Param("loginName") String loginName,
+                                                    @Param(value = "index") int index,
+                                                    @Param(value = "pageSize") int pageSize);
+
+    @Select("select count(id) from iphone7_invest_lottery where login_name=#{loginName}")
+    long findByLoginNameCount(@Param("loginName") String loginName);
 
     @Results({
             @Result(column = "login_name", property = "loginName"),

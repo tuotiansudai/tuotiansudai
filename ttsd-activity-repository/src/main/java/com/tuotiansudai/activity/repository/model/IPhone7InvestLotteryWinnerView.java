@@ -31,5 +31,6 @@ public class IPhone7InvestLotteryWinnerView implements Serializable {
     public void setEffectiveTime(Date effectiveTime) {
         this.effectiveTime = effectiveTime;
     }
+
 }
 

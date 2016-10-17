@@ -31,6 +31,12 @@ public interface IPhone7LotteryConfigMapper {
             @Result(column = "audited_time", property = "auditedTime"),
             @Result(column = "status", property = "status")
     })
+    @Select("select * from iphone7_lottery_config where status='APPROVED' order by invest_amount")
+    List<IPhone7LotteryConfigModel> approvedList();
+
+    @Select("select ifnull(max(invest_amount),0) from iphone7_lottery_config where status='APPROVED'")
+    int getCurrentLotteryInvestAmount();
+
     @Select("select * from iphone7_lottery_config order by invest_amount")
     List<IPhone7LotteryConfigModel> list();
 

@@ -1,5 +1,6 @@
 package com.tuotiansudai.activity.controller;
 
+import com.tuotiansudai.activity.service.Iphone7LotteryService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
 import com.tuotiansudai.dto.ranking.UserScoreDto;
@@ -21,19 +22,22 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value = "/activity")
+@RequestMapping(value = "/activity/iphone7-lottery")
 public class Iphone7ActivityController {
 
     @Autowired
+    private Iphone7LotteryService iphone7LotteryService;
 
-    @RequestMapping(value = "/iphone7-lottery", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
-
-        ModelAndView modelAndView = new ModelAndView("/activities/iphone-lottery", "responsive", true);
-
-
+        ModelAndView modelAndView = new ModelAndView("/activities/iphone7-lottery", "responsive", true);
+        modelAndView.addObject("nextLotteryInvestAmount",iphone7LotteryService.nextLotteryInvestAmount());
+        modelAndView.addObject("lotteryList", iphone7LotteryService.iphone7InvestLotteryWinnerViewList());
+        modelAndView.addObject("myInvestList", iphone7LotteryService.myInvestLotteryList("gengbeijun",1,10).getData().getRecords());
         return modelAndView;
     }
+
+
 
 }
