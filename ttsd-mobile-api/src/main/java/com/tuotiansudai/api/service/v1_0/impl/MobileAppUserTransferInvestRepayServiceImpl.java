@@ -32,7 +32,7 @@ public class MobileAppUserTransferInvestRepayServiceImpl implements MobileAppUse
     @Override
     public BaseResponseDto userTransferInvestRepay(UserTransferInvestRepayRequestDto userTransferInvestRepayRequestDto) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         BaseResponseDto<UserTransferInvestRepayResponseDataDto> responseDto = new BaseResponseDto<>();
 
         try{
