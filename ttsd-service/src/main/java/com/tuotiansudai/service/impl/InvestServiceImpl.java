@@ -508,6 +508,7 @@ public class InvestServiceImpl implements InvestService {
         long preference;
         UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
+        double investFeeRate = membershipModel != null ? membershipModel.getFee() : this.defaultFee;
         LoanModel loanModel = loanMapper.findById(loanId);
 
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
@@ -517,7 +518,7 @@ public class InvestServiceImpl implements InvestService {
             for (ExtraLoanRateModel extraLoanRateModel : extraLoanRateModels) {
                 if ((extraLoanRateModel.getMinInvestAmount() <= investAmount && investAmount < extraLoanRateModel.getMaxInvestAmount()) ||
                         (extraLoanRateModel.getMaxInvestAmount() == 0 && extraLoanRateModel.getMinInvestAmount() <= investAmount)) {
-                    extraLoanRateExpectedInterest = InterestCalculator.calculateExtraLoanRateExpectedInterest(extraLoanRateModel.getRate(), investAmount, loanModel.getDuration() );
+                    extraLoanRateExpectedInterest = InterestCalculator.calculateExtraLoanRateExpectedInterest(extraLoanRateModel.getRate(), investAmount, loanModel.getDuration(), investFeeRate);
                 }
             }
         }

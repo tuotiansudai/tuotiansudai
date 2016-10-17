@@ -219,7 +219,7 @@ public class InvestController {
     @ResponseBody
     public BaseDto<MembershipPreferenceDto> getMembershipPreference(@RequestParam(value = "loanId") long loanId,
                                                                     @RequestParam(value = "investAmount") String investAmount,
-                                                                    @RequestParam(value = "couponIds") List<Long> couponIds) {
+                                                                    @RequestParam(value = "couponIds", defaultValue = "") List<Long> couponIds) {
         String loginName = LoginUserInfo.getLoginName();
         MembershipPreferenceDto membershipPreferenceDto = new MembershipPreferenceDto(true);
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
