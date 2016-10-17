@@ -1,6 +1,7 @@
 package com.tuotiansudai.activity.repository.mapper;
 
 import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

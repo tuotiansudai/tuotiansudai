@@ -63,7 +63,7 @@ public class HomeServiceImpl implements HomeService {
                 }
 
                 List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loan.getId());
-                LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+                LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
                 String extraSource = "";
                 boolean activity = false;
                 String activityDesc = "";
@@ -73,6 +73,30 @@ public class HomeServiceImpl implements HomeService {
                     activityDesc = loanDetailsModel.getActivityDesc();
                 }
                 return new HomeLoanDto(newbieInterestCouponModel, loan, investAmount, loanRepayModels, extraLoanRateMapper.findMaxRateByLoanId(loan.getId()), extraSource, activity, activityDesc);
+            }
+        });
+    }
+
+    @Override
+    public List<HomeLoanDto> getEnterpriseLoans() {
+        List<LoanModel> loanModels = loanMapper.findHomeEnterpriseLoan();
+
+        return Lists.transform(loanModels, new Function<LoanModel, HomeLoanDto>() {
+            @Override
+            public HomeLoanDto apply(LoanModel loanModel) {
+                long investAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
+
+                List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
+                LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
+                String extraSource = "";
+                boolean activity = false;
+                String activityDesc = "";
+                if (loanDetailsModel != null) {
+                    extraSource = loanDetailsModel.getExtraSource();
+                    activity = loanDetailsModel.isActivity();
+                    activityDesc = loanDetailsModel.getActivityDesc();
+                }
+                return new HomeLoanDto(null, loanModel, investAmount, loanRepayModels, extraLoanRateMapper.findMaxRateByLoanId(loanModel.getId()), extraSource, activity, activityDesc);
             }
         });
     }

@@ -163,6 +163,32 @@ $.fn.checkFrom = function () {
 
     });
 };
+
+$.fn.autoTextarea = function(options) {
+    var defaults={
+        maxHeight:null,
+        minHeight:$(this).height()
+    };
+    var opts = $.extend({},defaults,options);
+    return $(this).each(function() {
+        $(this).bind("paste cut keydown keyup focus blur",function(){
+            var height,style=this.style;
+            this.style.height = opts.minHeight + 'px';
+            if (this.scrollHeight > opts.minHeight) {
+                if (opts.maxHeight && this.scrollHeight > opts.maxHeight) {
+                    height = opts.maxHeight;
+                    style.overflowY = 'scroll';
+                } else {
+                    height = this.scrollHeight;
+                    style.overflowY = 'hidden';
+                }
+                style.height = height + 'px';
+            }
+        });
+    });
+};
+
+
 //我来回答
 if($questionDetailTag.length) {
     var $formAnswer=$('.formAnswer',$questionDetailTag),
@@ -183,7 +209,18 @@ if($questionDetailTag.length) {
         $(this).checkFrom();
     });
 
-    $formAnswerSubmit.on('click',function() {
+    $formAnswer.find('textarea.answer').autoTextarea({
+        maxHeight:800,
+        minHeight:100
+    });
+    $formAnswerSubmit.on('click',function(event) {
+        var value=$formAnswer.find('textarea').val();
+        event.preventDefault();
+        var temp=value.replace(/\n/g,'\\n')
+            .replace(/\r/g,'\\r')
+            .replace(/\s/g,'&nbsp;');
+        $formAnswer.find('textarea').val(temp);
+
             $.ajax({
                 url: "/answer",
                 data: $formAnswer.serialize(),
@@ -286,7 +323,20 @@ if($createQuestion.length) {
         $(this).checkFrom();
     });
 
-    $formSubmit.on('click',function() {
+    $formQuestion.find('textarea').autoTextarea({
+        maxHeight:800,
+        minHeight:100
+    });
+    $formSubmit.on('click',function(event) {
+        var value=$formQuestion.find('textarea').val();
+        event.preventDefault();
+
+        //var temp=value.replace(/\r\n/g,'\\r\\n');
+        var temp=value.replace(/\n/g,'\\n')
+                      .replace(/\r/g,'\\r')
+                      .replace(/\s/g,'&nbsp;');
+
+        $formQuestion.find('textarea').val(temp);
             $.ajax({
                     url: "/question",
                     data: $formQuestion.serialize(),
@@ -296,6 +346,7 @@ if($createQuestion.length) {
                     }
                 }).done(function(responseData) {
                      var response=responseData.data;
+
                     if (response.status) {
                         location.href='question/my-questions';
                     }
@@ -307,21 +358,21 @@ if($createQuestion.length) {
                                     return;
                                 }
                                 if(response.isQuestionSensitiveValid && !response.isAdditionSensitiveValid) {
-                                    $addition.next().show().text('您输入的内容不能包含敏感词');  
+                                    $addition.next().show().text('您输入的内容不能包含敏感词');
                                 }
-                            
+
                         }
                         else {
                             $captcha.parent().find('.error').show().text('验证码错误');
                         }
-                        
-                        
+
+
                     }
                 })
                 .fail(function(data) {
                         comm.popWindow('','您输入的内容不能包含特殊符号',{ width:'300px'});
                 })
-                .complete(function(data) { 
+                .complete(function(data) {
                    $formSubmit.prop('disabled',false);
                 });
 

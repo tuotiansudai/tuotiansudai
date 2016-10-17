@@ -150,7 +150,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
-            LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+            LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getByLoanId(loan.getId());
             loanResponseDataDto.setLoanName(loan.getName());
             loanResponseDataDto.setActivityType(loan.getActivityType().name());
 
@@ -198,7 +198,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
 
             if (ProductType.EXPERIENCE != loan.getProductType()) {
-                LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+                LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
                 loanResponseDataDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : "");
             }
 

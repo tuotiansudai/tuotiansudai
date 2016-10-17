@@ -1,0 +1,13 @@
+BEGIN;
+INSERT INTO `aa`.`loan_title` VALUES (8, 'BASE_TITLE_TYPE', '营业执照');
+INSERT INTO `aa`.`loan_title` VALUES (9, 'BASE_TITLE_TYPE', '银行流水');
+INSERT INTO `aa`.`loan_title` VALUES (10, 'BASE_TITLE_TYPE', '个人资产信息');
+INSERT INTO `aa`.`loan_title` VALUES (11, 'BASE_TITLE_TYPE', '验资报告');
+INSERT INTO `aa`.`loan_title` VALUES (12, 'BASE_TITLE_TYPE', '公司章程');
+INSERT INTO `aa`.`loan_title` VALUES (13, 'BASE_TITLE_TYPE', '供销合同');
+INSERT INTO `aa`.`loan_title` VALUES (14, 'BASE_TITLE_TYPE', '年度财报');
+INSERT INTO `aa`.`loan_title` VALUES (15, 'BASE_TITLE_TYPE', '纳税申请表');
+INSERT INTO `aa`.`loan_title` VALUES (16, 'BASE_TITLE_TYPE', '租赁合同');
+INSERT INTO `aa`.`loan_title` VALUES (17, 'BASE_TITLE_TYPE', '法人身份证');
+INSERT INTO `aa`.`loan_title` VALUES (18, 'BASE_TITLE_TYPE', '股东身份证');
+COMMIT;

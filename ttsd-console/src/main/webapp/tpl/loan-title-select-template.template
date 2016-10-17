@@ -1,0 +1,5 @@
+<select class="selectpicker col-s _datam-5">
+    {{each _data}}
+    <option value="{{$value.id}}">{{$value.title}}</option>
+    {{/each}}
+</select>

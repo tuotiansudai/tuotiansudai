@@ -42,12 +42,12 @@ public class AuditTaskAspectLoan {
 
     static Logger logger = Logger.getLogger(AuditTaskAspectLoan.class);
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanService.applyAuditLoan(*))", returning = "returnValue")
-    public void afterReturningCreateLoan(JoinPoint joinPoint, Object returnValue) {
+    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanCreateService.applyAuditLoan(*))", returning = "returnValue")
+    public void afterReturningCreateLoan(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
         logger.debug("after create loan aspect.");
         try {
-            if (((BaseDto<PayDataDto>) returnValue).getData().getStatus()) {
-                long loanId = ((LoanDto) joinPoint.getArgs()[0]).getId();
+            if (returnValue.getData().getStatus()) {
+                long loanId = (long) joinPoint.getArgs()[0];
 
                 LoanModel loanModel = loanService.findLoanById(loanId);
 

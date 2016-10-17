@@ -225,7 +225,7 @@ public class NationalPrizeService {
         long count = 0l;
         Map<String,String> userMap = Maps.newConcurrentMap();
         for(InvestModel investModel : investModels){
-            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(investModel.getLoanId());
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(investModel.getLoanId());
             if(loanDetailsModel != null && loanDetailsModel.isActivity()){
                 amount += investModel.getAmount();
                 if(userMap.get(investModel.getLoginName()) == null){

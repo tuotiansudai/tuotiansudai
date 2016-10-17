@@ -1,5 +1,7 @@
 signin:
   image: "leoshi/ttsd-signin-flask"
+  environment:
+    - "TZ=Asia/Shanghai"
   volumes:
     - .:/app
     - /var/log/signin:/var/log/signin

@@ -156,7 +156,7 @@ public class MobileAppInvestListsServiceTest extends ServiceTestBase{
 
         when(couponRepayMapper.findCouponRepayByInvestIdAndPeriod(anyLong(),anyInt())).thenReturn(new CouponRepayModel());
 
-        when(loanDetailsMapper.getLoanDetailsByLoanId(anyLong())).thenReturn(new LoanDetailsModel());
+        when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(new LoanDetailsModel());
 
         UserInvestListRequestDto investListRequestDto = new UserInvestListRequestDto();
         BaseParam baseParam = new BaseParam();

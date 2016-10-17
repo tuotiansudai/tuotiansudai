@@ -1,21 +1,19 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.service.LoanCreateService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExtraLoanRateService;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -30,7 +28,7 @@ public class LoanController {
     private LoanService loanService;
 
     @Autowired
-    private LoanTitleRelationMapper loanTitleRelationMapper;
+    private LoanCreateService loanCreateService;
 
     @Autowired
     private ExtraLoanRateService extraLoanRateService;
@@ -41,10 +39,10 @@ public class LoanController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan() {
         ModelAndView modelAndView = new ModelAndView("/loan-create");
-        modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
-        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
-        modelAndView.addObject("sources", Lists.newArrayList(Source.WEB, Source.MOBILE));
+        modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE));
+        modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         return modelAndView;
     }
@@ -52,104 +50,79 @@ public class LoanController {
     @RequestMapping(value = "/titles", method = RequestMethod.GET)
     @ResponseBody
     public List<LoanTitleModel> findAllTitles() {
-        return loanService.findAllTitles();
+        return loanCreateService.findAllTitles();
     }
 
     @RequestMapping(value = "/title", method = RequestMethod.POST)
     @ResponseBody
     public LoanTitleModel addTitle(@RequestBody LoanTitleDto loanTitleDto) {
-        return loanService.createTitle(loanTitleDto);
+        return loanCreateService.createTitle(loanTitleDto);
     }
 
-    @RequestMapping(value = "/create/house", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> createLoan(@RequestBody CreateHouseLoanDto createLoanDto) {
-        createLoanDto.setCreatedLoginName(LoginUserInfo.getLoginName());
-        createLoanDto.setPledgeType(PledgeType.HOUSE);
-        return loanService.createLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
-                createLoanDto.getPledgeDetailsDto());
-    }
-
-    @RequestMapping(value = "/create/vehicle", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<BaseDataDto> createLoan(@RequestBody CreateVehicleLoanDto createLoanDto) {
-        createLoanDto.setCreatedLoginName(LoginUserInfo.getLoginName());
-        createLoanDto.setPledgeType(PledgeType.VEHICLE);
-        return loanService.createLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
-                createLoanDto.getPledgeDetailsDto());
+    public BaseDto<BaseDataDto> createLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
+        loanCreateRequestDto.getLoan().setCreatedBy(LoginUserInfo.getLoginName());
+        return loanCreateService.createLoan(loanCreateRequestDto);
     }
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView loanInfo(@PathVariable long loanId) {
-        if (!loanService.loanIsExist(loanId)) {
+    public ModelAndView loanDetails(@PathVariable long loanId) {
+        if (loanService.findLoanById(loanId) == null) {
             return new ModelAndView("/index");
         }
         ModelAndView modelAndView = new ModelAndView("/loan-edit");
-        modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
-        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("productTypes", Lists.newArrayList(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360)));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
-        modelAndView.addObject("sources", Lists.newArrayList(Source.WEB, Source.MOBILE));
-        modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
-        modelAndView.addObject("loanInfo", loanService.findCreateLoanDto(loanId));
+        modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE));
+        modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
+        modelAndView.addObject("loan", loanCreateService.getEditLoanDetails(loanId));
         modelAndView.addObject("extraLoanRates", extraLoanRateMapper.findByLoanId(loanId));
-        modelAndView.addObject("loanTitleRelationModels", loanTitleRelationMapper.findByLoanId(loanId));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/save-house", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> updateLoan(@RequestBody CreateHouseLoanDto createLoanDto) {
-        createLoanDto.setPledgeType(PledgeType.HOUSE);
-        return loanService.updateLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
-                createLoanDto.getPledgeDetailsDto());
+    public BaseDto<BaseDataDto> updateLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
+        return loanCreateService.updateLoan(loanCreateRequestDto);
     }
 
-    @RequestMapping(value = "/save-vehicle", method = RequestMethod.POST)
+    @RequestMapping(value = "/open", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> updateLoan(@RequestBody CreateVehicleLoanDto createLoanDto) {
-        createLoanDto.setPledgeType(PledgeType.VEHICLE);
-        return loanService.updateLoan(createLoanDto.getLoanDto(), createLoanDto.getLoanDetailsDto(), createLoanDto.getLoanerDetailsDto(),
-                createLoanDto.getPledgeDetailsDto());
-    }
-
-    @RequestMapping(value = "/ok", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<PayDataDto> openLoan(@RequestBody LoanDto loanDto, HttpServletRequest request) {
-        String ip = RequestIPParser.parse(request);
-        loanDto.setVerifyLoginName(LoginUserInfo.getLoginName());
-        return loanService.openLoan(loanDto, ip);
+    public BaseDto<PayDataDto> openLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
+        loanCreateRequestDto.getLoan().setVerifyLoginName(LoginUserInfo.getLoginName());
+        return loanCreateService.openLoan(loanCreateRequestDto);
     }
 
     @RequestMapping(value = "/delay", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> delayLoan(@RequestBody LoanDto loanDto) {
-        return loanService.delayLoan(loanDto);
+    public BaseDto<PayDataDto> delayLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
+        return loanCreateService.delayLoan(loanCreateRequestDto);
     }
 
     @RequestMapping(value = "/recheck", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> recheckLoan(@RequestBody LoanDto loanDto) {
-        loanDto.setRecheckLoginName(LoginUserInfo.getLoginName());
-        return loanService.loanOut(loanDto);
+    public BaseDto<PayDataDto> recheckLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
+        loanCreateRequestDto.getLoan().setRecheckLoginName(LoginUserInfo.getLoginName());
+        return loanCreateService.loanOut(loanCreateRequestDto);
     }
 
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> cancelLoan(@RequestBody LoanDto loanDto) {
-        return loanService.cancelLoan(loanDto);
+    public BaseDto<PayDataDto> cancelLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
+        return loanCreateService.cancelLoan(loanCreateRequestDto);
     }
 
     @RequestMapping(value = "/apply-audit", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> applyAuditLoan(@RequestBody LoanDto loanDto) {
-        return loanService.applyAuditLoan(loanDto);
+    public BaseDto<PayDataDto> applyAuditLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
+        return loanCreateService.applyAuditLoan(loanCreateRequestDto.getLoan().getId());
     }
 
     @RequestMapping(value = "/extra-rate-rule", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto<ExtraLoanRateRuleDto> extraRateRule(@RequestParam(value = "loanName") String loanName, @RequestParam(value = "productType") ProductType productType) {
+    public BaseDto<ExtraLoanRateRuleDto> extraRateRule(@RequestParam(value = "loanName", required = true) String loanName, @RequestParam(value = "productType", required = true) ProductType productType) {
         return extraLoanRateService.findExtraLoanRateRuleByNameAndProductType(loanName, productType);
     }
-
 }

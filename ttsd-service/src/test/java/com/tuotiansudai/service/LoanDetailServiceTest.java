@@ -117,11 +117,7 @@ public class LoanDetailServiceTest {
         loanModel.setPledgeType(PledgeType.HOUSE);
         loanModel.setLoanerIdentityNumber("111111111111111111");
         loanMapper.create(loanModel);
-        LoanTitleModel loanTitleModel = new LoanTitleModel();
-        long titleId = idGenerator.generate();
-        loanTitleModel.setId(titleId);
-        loanTitleModel.setType(LoanTitleType.BASE_TITLE_TYPE);
-        loanTitleModel.setTitle("房产证");
+        LoanTitleModel loanTitleModel = new LoanTitleModel(idGenerator.generate(), LoanTitleType.BASE_TITLE_TYPE, "身份证");
         loanTitleMapper.create(loanTitleModel);
 
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
@@ -129,7 +125,7 @@ public class LoanDetailServiceTest {
             LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
             loanTitleRelationModel.setId(idGenerator.generate());
             loanTitleRelationModel.setLoanId(id);
-            loanTitleRelationModel.setTitleId(titleId);
+            loanTitleRelationModel.setTitleId(loanTitleModel.getId());
             loanTitleRelationModel.setApplicationMaterialUrls("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
