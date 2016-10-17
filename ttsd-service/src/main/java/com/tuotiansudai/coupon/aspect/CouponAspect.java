@@ -5,6 +5,7 @@ import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SignInResult;
+import com.tuotiansudai.service.PullTopicService;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -13,6 +14,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 @Component
@@ -38,6 +40,8 @@ public class CouponAspect {
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
+    @Autowired
+    private PullTopicService pullTopicService;
 
     @Pointcut("execution(* com.tuotiansudai.service.UserService.registerUser(..))")
     public void registerUserPointcut() {
@@ -57,8 +61,11 @@ public class CouponAspect {
         try {
             if ((boolean) returnValue) {
                 RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
-                couponAssignmentService.assignUserCoupon(registerUserDto.getMobile(),
-                        Lists.newArrayList(UserGroup.ALL_USER, UserGroup.NEW_REGISTERED_USER, UserGroup.NOT_ACCOUNT_NOT_INVESTED_USER));
+                String messageBody = "broadcast message to all the consumers:{0} register success";
+                pullTopicService.broadcast(MessageFormat.format(messageBody,registerUserDto.getLoginName()));
+//                RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
+//                couponAssignmentService.assignUserCoupon(registerUserDto.getMobile(),
+//                        Lists.newArrayList(UserGroup.ALL_USER, UserGroup.NEW_REGISTERED_USER, UserGroup.NOT_ACCOUNT_NOT_INVESTED_USER));
             }
         } catch (Exception e) {
             logger.error("after user register aspect fail ", e);

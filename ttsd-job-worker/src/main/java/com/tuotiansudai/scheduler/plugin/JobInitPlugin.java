@@ -5,9 +5,11 @@ import com.tuotiansudai.job.*;
 import com.tuotiansudai.jpush.job.AutoJPushAlertBirthDayJob;
 import com.tuotiansudai.jpush.job.AutoJPushAlertBirthMonthJob;
 import com.tuotiansudai.jpush.job.AutoJPushNoInvestAlertJob;
+import com.tuotiansudai.jpush.job.SendCouponIncomeJob;
 import com.tuotiansudai.point.job.ImitateLotteryJob;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -15,6 +17,7 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerPlugin;
 
+import java.util.Date;
 import java.util.TimeZone;
 
 public class JobInitPlugin implements SchedulerPlugin {
@@ -44,6 +47,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
         if (JobType.InvestTransferCallBack.name().equalsIgnoreCase(schedulerName)) {
             createInvestTransferCallBackJobIfNotExist();
+        }
+        if (JobType.RedEnvelopeConsumer.name().equalsIgnoreCase(schedulerName)) {
+            createRedEnvelopeConsumer();
         }
         if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
             createCalculateDefaultInterest();
@@ -118,6 +124,33 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createRedEnvelopeConsumer() {
+//        try {
+//            jobManager.newJob(JobType.RedEnvelopeConsumer, RedEnvelopeJob.class)
+//                    .replaceExistingJob(true)
+//                    .runWithSchedule(SimpleScheduleBuilder
+//                            .repeatSecondlyForever(RedEnvelopeJob.RUN_INTERVAL_SECONDS)
+//                            .withMisfireHandlingInstructionIgnoreMisfires())
+//                    .withIdentity(JobType.RedEnvelopeConsumer.name(), JobType.RedEnvelopeConsumer.name())
+//                    .submit();
+//        } catch (SchedulerException e) {
+//            logger.debug(e.getLocalizedMessage(), e);
+//        }
+
+        try {
+            Date triggerTime = new DateTime().plusMinutes(RedEnvelopeJob.RUN_INTERVAL_SECONDS)
+                    .toDate();
+            jobManager.newJob(JobType.RedEnvelopeConsumer, RedEnvelopeJob.class)
+                    .replaceExistingJob(true)
+                    .addJobData(JobType.RedEnvelopeConsumer.name(), JobType.RedEnvelopeConsumer.name())
+                    .withIdentity(JobType.RedEnvelopeConsumer.name(),JobType.RedEnvelopeConsumer.name())
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("createRedEnvelopeConsumer job error", e);
         }
     }
 
