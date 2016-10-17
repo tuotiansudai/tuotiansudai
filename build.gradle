@@ -48,5 +48,9 @@ subprojects {
                 html.destination "${buildDir}/jacocoHtml"
             }
         }
+
+        testLogging {
+            events "PASSED", "STARTED", "FAILED", "SKIPPED"
+        }
     }
 }
