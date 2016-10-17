@@ -7,9 +7,9 @@ import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.HomeService;
-import coupon.repository.mapper.CouponMapper;
 import coupon.repository.model.CouponModel;
 import coupon.repository.model.UserGroup;
+import coupon.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ public class HomeServiceImpl implements HomeService {
     private InvestMapper investMapper;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private CouponService couponService;
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
@@ -38,7 +38,7 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public List<HomeLoanDto> getLoans() {
-        final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
+        final List<CouponModel> allActiveCoupons = couponService.findAllActiveCoupons();
 
         List<LoanModel> loanModels = loanMapper.findHomeLoan();
 
@@ -67,7 +67,7 @@ public class HomeServiceImpl implements HomeService {
                 String extraSource = "";
                 boolean activity = false;
                 String activityDesc = "";
-                if(loanDetailsModel != null){
+                if (loanDetailsModel != null) {
                     extraSource = loanDetailsModel.getExtraSource();
                     activity = loanDetailsModel.isActivity();
                     activityDesc = loanDetailsModel.getActivityDesc();

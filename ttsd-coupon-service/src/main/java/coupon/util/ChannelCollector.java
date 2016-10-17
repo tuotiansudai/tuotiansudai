@@ -9,25 +9,25 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
-import coupon.repository.mapper.CouponUserGroupMapper;
 import coupon.repository.model.CouponUserGroupModel;
+import coupon.service.CouponUserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ChannelCollector implements UserCollector{
+public class ChannelCollector implements UserCollector {
 
     @Autowired
-    private CouponUserGroupMapper couponUserGroupMapper;
+    private CouponUserGroupService couponUserGroupService;
 
     @Autowired
     private UserMapper userMapper;
 
     @Override
     public List<String> collect(long couponId) {
-        CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponId);
+        CouponUserGroupModel couponUserGroupModel = couponUserGroupService.findByCouponId(couponId);
         if (couponUserGroupModel == null) {
             return null;
         }
@@ -42,7 +42,7 @@ public class ChannelCollector implements UserCollector{
 
     @Override
     public boolean contains(long couponId, final String loginName) {
-        CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponId);
+        CouponUserGroupModel couponUserGroupModel = couponUserGroupService.findByCouponId(couponId);
         if (couponUserGroupModel == null) {
             return false;
         }

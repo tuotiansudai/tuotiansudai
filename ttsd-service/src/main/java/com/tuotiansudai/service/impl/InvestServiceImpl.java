@@ -25,12 +25,11 @@ import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import coupon.dto.UserCouponDto;
-import coupon.repository.mapper.CouponMapper;
-import coupon.repository.mapper.CouponRepayMapper;
-import coupon.repository.mapper.UserCouponMapper;
 import coupon.repository.model.CouponModel;
 import coupon.repository.model.CouponRepayModel;
 import coupon.repository.model.UserCouponModel;
+import coupon.service.CouponRepayService;
+import coupon.service.CouponService;
 import coupon.service.UserCouponService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -81,13 +80,10 @@ public class InvestServiceImpl implements InvestService {
     private IdGenerator idGenerator;
 
     @Autowired
-    private UserCouponMapper userCouponMapper;
+    private CouponService couponService;
 
     @Autowired
-    private CouponMapper couponMapper;
-
-    @Autowired
-    private CouponRepayMapper couponRepayMapper;
+    private CouponRepayService couponRepayService;
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
@@ -225,7 +221,7 @@ public class InvestServiceImpl implements InvestService {
         if (CollectionUtils.isNotEmpty(userCouponIds)) {
             List<UserCouponModel> notSharedCoupons = Lists.newArrayList();
             for (long userCouponId : userCouponIds) {
-                UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
+                UserCouponModel userCouponModel = userCouponService.findById(userCouponId);
                 AccountModel accountModel = accountMapper.findByLoginName(loginName);
                 String identifyNumber;
                 if (accountModel == null || Strings.isNullOrEmpty(accountModel.getIdentityNumber())) {
@@ -233,7 +229,7 @@ public class InvestServiceImpl implements InvestService {
                 } else {
                     identifyNumber = accountModel.getIdentityNumber();
                 }
-                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+                CouponModel couponModel = couponService.findById(userCouponModel.getCouponId());
                 Date usedTime = userCouponModel.getUsedTime();
                 if ((usedTime != null && new DateTime(usedTime).plusSeconds(couponLockSeconds).isAfter(new DateTime()))
                         || !loginName.equalsIgnoreCase(userCouponModel.getLoginName())
@@ -318,18 +314,18 @@ public class InvestServiceImpl implements InvestService {
 
             List<UserCouponDto> userCouponDtoList = Lists.newArrayList();
             if (investModel.getStatus() == InvestStatus.SUCCESS) {
-                List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModel.getId());
+                List<UserCouponModel> userCouponModels = userCouponService.findByInvestId(investModel.getId());
                 for (UserCouponModel userCouponModel : userCouponModels) {
-                    userCouponDtoList.add(new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel, 0));
+                    userCouponDtoList.add(new UserCouponDto(couponService.findById(userCouponModel.getCouponId()), userCouponModel, 0));
                 }
             }
 
             LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
             if (loanModel.getProductType().equals(ProductType.EXPERIENCE)) {
-                List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(investModel.getId());
+                List<UserCouponModel> userCouponModelList = userCouponService.findByInvestId(investModel.getId());
                 for (UserCouponModel userCouponModel : userCouponModelList) {
                     if (userCouponModel.getStatus().equals(InvestStatus.SUCCESS)) {
-                        investModel.setAmount(couponMapper.findById(userCouponModel.getCouponId()).getAmount());
+                        investModel.setAmount(couponService.findById(userCouponModel.getCouponId()).getAmount());
                         break;
                     }
                 }
@@ -376,16 +372,16 @@ public class InvestServiceImpl implements InvestService {
             @Override
             public InvestPaginationItemDataDto apply(InvestPaginationItemView view) {
                 InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
-                CouponModel couponModel = couponMapper.findById(view.getCouponId());
+                CouponModel couponModel = couponService.findById(view.getCouponId());
                 if (null != couponModel) {
                     long couponActualInterest = 0;
                     if (couponModel.getCouponType().equals(CouponType.RED_ENVELOPE)) {
-                        List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessByInvestId(view.getInvestId());
+                        List<UserCouponModel> userCouponModels = userCouponService.findUserCouponSuccessByInvestId(view.getInvestId());
                         for (UserCouponModel userCouponModel : userCouponModels) {
                             couponActualInterest += userCouponModel.getActualInterest();
                         }
                     } else {
-                        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(view.getInvestId());
+                        List<CouponRepayModel> couponRepayModels = couponRepayService.findByUserCouponByInvestId(view.getInvestId());
                         for (CouponRepayModel couponRepayModel : couponRepayModels) {
                             couponActualInterest += couponRepayModel.getActualInterest();
                         }
@@ -533,7 +529,7 @@ public class InvestServiceImpl implements InvestService {
         }
 
         for (Long couponId : couponIds) {
-            CouponModel couponModel = couponMapper.findById(couponId);
+            CouponModel couponModel = couponService.findById(couponId);
             if (loanModel == null || couponModel == null) {
                 continue;
             }
@@ -549,8 +545,8 @@ public class InvestServiceImpl implements InvestService {
     public long findExperienceInvestAmount(List<InvestModel> investModelList) {
         long amount = 0;
         if (CollectionUtils.isNotEmpty(investModelList)) {
-            List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investModelList.get(0).getId());
-            CouponModel couponModel = couponMapper.findById(userCouponModels.get(0).getCouponId());
+            List<UserCouponModel> userCouponModels = userCouponService.findByInvestId(investModelList.get(0).getId());
+            CouponModel couponModel = couponService.findById(userCouponModels.get(0).getCouponId());
             amount = new BigDecimal(investModelList.size() % 100).multiply(new BigDecimal(couponModel.getAmount())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }
         return amount;
@@ -561,7 +557,7 @@ public class InvestServiceImpl implements InvestService {
      */
     @Override
     public UserCouponDto getMaxBenefitUserCoupon(String loginName, long loanId, final long amount) {
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
+        List<UserCouponModel> userCouponModels = userCouponService.findByLoginName(loginName, null);
 
         final LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel == null || amount < loanModel.getMinInvestAmount() || amount > loanModel.getMaxInvestAmount()) {
@@ -571,7 +567,7 @@ public class InvestServiceImpl implements InvestService {
         List<UserCouponModel> usableUserCoupons = Lists.newArrayList(Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
             @Override
             public boolean apply(UserCouponModel userCouponModel) {
-                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+                CouponModel couponModel = couponService.findById(userCouponModel.getCouponId());
                 boolean isShared = couponModel.isShared();
                 boolean unused = InvestStatus.SUCCESS != userCouponModel.getStatus()
                         && userCouponModel.getEndTime().after(new Date())
@@ -588,7 +584,7 @@ public class InvestServiceImpl implements InvestService {
         List<UserCouponModel> maxBenefitUserCoupons = Lists.newArrayList();
         long maxBenefit = 0;
         for (UserCouponModel usableUserCoupon : usableUserCoupons) {
-            CouponModel couponModel = couponMapper.findById(usableUserCoupon.getCouponId());
+            CouponModel couponModel = couponService.findById(usableUserCoupon.getCouponId());
             long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
             long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount, investFeeRate);
             long actualInterest = expectedInterest - expectedFee;
@@ -611,13 +607,13 @@ public class InvestServiceImpl implements InvestService {
                     return endTimeCompare;
                 }
 
-                CouponType leftCouponType = couponMapper.findById(left.getCouponId()).getCouponType();
-                CouponType rightCouponType = couponMapper.findById(right.getCouponId()).getCouponType();
+                CouponType leftCouponType = couponService.findById(left.getCouponId()).getCouponType();
+                CouponType rightCouponType = couponService.findById(right.getCouponId()).getCouponType();
                 return Ints.compare(couponTypePriority.indexOf(leftCouponType), couponTypePriority.indexOf(rightCouponType));
             }
         }.sortedCopy(maxBenefitUserCoupons);
 
         return orderingMaxBenefitUserCoupons.isEmpty() ? null :
-                new UserCouponDto(couponMapper.findById(orderingMaxBenefitUserCoupons.get(0).getCouponId()), orderingMaxBenefitUserCoupons.get(0), 0);
+                new UserCouponDto(couponService.findById(orderingMaxBenefitUserCoupons.get(0).getCouponId()), orderingMaxBenefitUserCoupons.get(0), 0);
     }
 }

@@ -3,8 +3,8 @@ package coupon.util;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.util.UserBirthdayUtil;
-import coupon.repository.mapper.CouponMapper;
 import coupon.repository.model.CouponModel;
+import coupon.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class AllUserCollector implements UserCollector {
     private UserBirthdayUtil userBirthdayUtil;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private CouponService couponService;
 
     @Override
     public List<String> collect(long couponId) {
@@ -26,7 +26,7 @@ public class AllUserCollector implements UserCollector {
 
     @Override
     public boolean contains(long couponId, String loginName) {
-        CouponModel couponModel = couponMapper.findById(couponId);
+        CouponModel couponModel = couponService.findById(couponId);
         return couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON || userBirthdayUtil.isBirthMonth(loginName);
     }
 }

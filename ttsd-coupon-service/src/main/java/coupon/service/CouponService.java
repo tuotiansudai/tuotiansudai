@@ -19,7 +19,7 @@ public interface CouponService {
 
     int findNewbieAndInvestCouponsCount();
 
-    CouponModel findCouponById(long couponId);
+    CouponModel findById(long couponId);
 
     List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed, String loginName, String mobile, Date registerStartTime, Date registerEndTime, int index, int pageSize);
 
@@ -38,4 +38,8 @@ public interface CouponService {
     List<CouponDto> findBirthdayCoupons(int index, int pageSize);
 
     int findBirthdayCouponsCount();
+
+    List<CouponModel> findAllActiveCoupons();
+
+    void updateCoupon(CouponModel couponModel);
 }

@@ -5,9 +5,9 @@ import com.google.common.collect.Iterators;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;
-import coupon.repository.mapper.UserCouponMapper;
 import coupon.repository.model.UserCouponModel;
 import coupon.repository.model.UserGroup;
+import coupon.service.UserCouponService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class InvestAchievementCollector implements InvestAchievementUserCollecto
     private InvestMapper investMapper;
 
     @Autowired
-    private UserCouponMapper userCouponMapper;
+    private UserCouponService userCouponService;
 
     @Override
     public boolean contains(final long couponId,final long loanId, String loginName, final UserGroup userGroup) {
@@ -42,7 +42,7 @@ public class InvestAchievementCollector implements InvestAchievementUserCollecto
             investId = loanModel.getLastInvestAchievementId();
         }
 
-        List<UserCouponModel> userCouponModelList = userCouponMapper.findByLoginNameAndCouponId(loginName, couponId);
+        List<UserCouponModel> userCouponModelList = userCouponService.findByLoginNameAndCouponId(loginName, couponId);
         if (CollectionUtils.isNotEmpty(userCouponModelList) && Iterators.any(userCouponModelList.iterator(), new Predicate<UserCouponModel>() {
             @Override
             public boolean apply(UserCouponModel input) {

@@ -195,7 +195,7 @@ public class PointManageController {
 
     @RequestMapping(value = "/coupon-exchange/{id:^\\d+$}/edit", method = RequestMethod.GET)
     public ModelAndView edit(@PathVariable long id) {
-        CouponModel couponModel = couponService.findCouponById(id);
+        CouponModel couponModel = couponService.findById(id);
         ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(couponModel);
         ProductModel productModel = productService.findProductByCouponId(id);
         exchangeCouponDto.setSeq(productModel.getSeq());

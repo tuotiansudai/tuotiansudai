@@ -159,7 +159,7 @@ public class ExchangeCodeServiceTest {
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(true));
         assertThat(baseDataDto.getMessage(), is("恭喜您兑换成功"));
-        CouponModel couponModel = couponService.findCouponById(couponId);
+        CouponModel couponModel = couponService.findById(couponId);
         assertThat(couponModel.getIssuedCount(), is(1L));
         List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(couponId);
         assertThat(userCouponModels.get(0).getLoginName(), is("couponTest"));

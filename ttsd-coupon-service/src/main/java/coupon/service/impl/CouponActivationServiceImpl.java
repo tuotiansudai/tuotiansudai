@@ -14,10 +14,10 @@ import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AuditLogUtil;
 import com.tuotiansudai.util.JobManager;
-import coupon.repository.mapper.CouponMapper;
 import coupon.repository.model.CouponModel;
 import coupon.repository.model.UserGroup;
 import coupon.service.CouponActivationService;
+import coupon.service.CouponService;
 import coupon.service.ExchangeCodeService;
 import coupon.util.UserCollector;
 import org.apache.log4j.Logger;
@@ -86,7 +86,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     private UserMapper userMapper;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private CouponService couponService;
 
     @Autowired
     private JobManager jobManager;
@@ -106,14 +106,14 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Transactional
     @Override
     public void inactive(String loginName, long couponId, String ip) {
-        CouponModel couponModel = couponMapper.findById(couponId);
+        CouponModel couponModel = couponService.findById(couponId);
         if (!couponModel.isActive() || (couponModel.getCouponType() != CouponType.NEWBIE_COUPON && couponModel.getCouponType() != CouponType.RED_ENVELOPE && couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON)) {
             return;
         }
         couponModel.setActive(false);
         couponModel.setActivatedBy(loginName);
         couponModel.setActivatedTime(new Date());
-        couponMapper.updateCoupon(couponModel);
+        couponService.updateCoupon(couponModel);
 
         AccountModel auditor = accountMapper.findByLoginName(loginName);
         String auditorRealName = auditor == null ? loginName : auditor.getUserName();
@@ -128,17 +128,17 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Transactional
     @Override
     public void exchangeInactive(String loginName, long couponId, String ip) {
-        CouponModel couponModel = couponMapper.findById(couponId);
+        CouponModel couponModel = couponService.findById(couponId);
         couponModel.setActive(false);
         couponModel.setActivatedBy(loginName);
         couponModel.setActivatedTime(new Date());
-        couponMapper.updateCoupon(couponModel);
+        couponService.updateCoupon(couponModel);
     }
 
     @Transactional
     @Override
     public void active(String loginName, long couponId, String ip) {
-        CouponModel couponModel = couponMapper.findById(couponId);
+        CouponModel couponModel = couponService.findById(couponId);
         if (couponModel.isActive()) {
             return;
         }
@@ -146,7 +146,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         couponModel.setActive(true);
         couponModel.setActivatedBy(loginName);
         couponModel.setActivatedTime(new Date());
-        couponMapper.updateCoupon(couponModel);
+        couponService.updateCoupon(couponModel);
 
         AccountModel auditor = accountMapper.findByLoginName(loginName);
         String auditorRealName = auditor == null ? loginName : auditor.getUserName();
@@ -168,7 +168,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Override
     public void sendSms(long couponId) {
-        CouponModel couponModel = couponMapper.findById(couponId);
+        CouponModel couponModel = couponService.findById(couponId);
         List<String> loginNames = this.getCollector(couponModel.getUserGroup()).collect(couponModel.getId());
 
         SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();

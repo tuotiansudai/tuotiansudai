@@ -247,7 +247,7 @@ public class CouponServiceImpl implements CouponService {
 
 
     @Override
-    public CouponModel findCouponById(long couponId) {
+    public CouponModel findById(long couponId) {
         return couponMapper.findById(couponId);
     }
 
@@ -274,5 +274,15 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setActive(false);
         couponMapper.updateCoupon(couponModel);
         return true;
+    }
+
+    @Override
+    public List<CouponModel> findAllActiveCoupons() {
+        return couponMapper.findAllActiveCoupons();
+    }
+
+    @Override
+    public void updateCoupon(CouponModel couponModel) {
+        couponMapper.updateCoupon(couponModel);
     }
 }

@@ -7,12 +7,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
-import coupon.repository.mapper.CouponMapper;
-import coupon.repository.mapper.UserCouponMapper;
 import coupon.repository.model.CouponModel;
 import coupon.repository.model.UserCouponModel;
 import coupon.service.CouponAssignmentService;
+import coupon.service.CouponService;
 import coupon.service.ExchangeCodeService;
+import coupon.service.UserCouponService;
 import org.apache.log4j.Logger;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -32,10 +32,10 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private CouponService couponService;
 
     @Autowired
-    private UserCouponMapper userCouponMapper;
+    private UserCouponService userCouponService;
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
@@ -68,7 +68,7 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
             return false;
         }
 
-        CouponModel couponModel = couponMapper.findById(couponId);
+        CouponModel couponModel = couponService.findById(couponId);
         Date endTime = couponModel.getEndTime();
         Date now = new Date();
         int lifeSeconds = (int) ((endTime.getTime() - now.getTime()) / 1000 + ONE_MONTH_SECOND * 6); // delay 6 months
@@ -140,7 +140,7 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
     public BaseDataDto exchange(String loginName, String exchangeCode) {
         BaseDataDto baseDataDto = new BaseDataDto();
         long couponId = getValueBase31(exchangeCode);
-        CouponModel couponModel = couponMapper.findById(couponId);
+        CouponModel couponModel = couponService.findById(couponId);
         if (!checkExchangeCodeCorrect(exchangeCode, couponId, couponModel)) {
             baseDataDto.setMessage("请输入正确的兑换码");
             return baseDataDto;
@@ -170,7 +170,7 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
 
     @Override
     public boolean checkExchangeCodeDailyCount(String loginName) {
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
+        List<UserCouponModel> userCouponModels = userCouponService.findByLoginName(loginName, null);
         UnmodifiableIterator<UserCouponModel> filter = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
             @Override
             public boolean apply(UserCouponModel input) {

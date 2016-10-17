@@ -10,9 +10,9 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LatestInvestView;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.InvestRepayService;
-import coupon.repository.mapper.CouponMapper;
-import coupon.repository.mapper.UserCouponMapper;
 import coupon.repository.model.UserCouponModel;
+import coupon.service.CouponService;
+import coupon.service.UserCouponService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,24 +21,24 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class InvestRepayServiceImpl implements InvestRepayService{
+public class InvestRepayServiceImpl implements InvestRepayService {
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private UserCouponMapper userCouponMapper;
+    private UserCouponService userCouponService;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private CouponService couponService;
 
     @Override
-    public long findByLoginNameAndTimeAndSuccessInvestRepay(String loginName,Date startTime,Date endTime) {
+    public long findByLoginNameAndTimeAndSuccessInvestRepay(String loginName, Date startTime, Date endTime) {
         return investRepayMapper.findByLoginNameAndTimeAndSuccessInvestRepay(loginName, startTime, endTime);
     }
 
     @Override
-    public long findByLoginNameAndTimeAndNotSuccessInvestRepay(String loginName,Date startTime,Date endTime) {
+    public long findByLoginNameAndTimeAndNotSuccessInvestRepay(String loginName, Date startTime, Date endTime) {
         return investRepayMapper.findByLoginNameAndTimeAndNotSuccessInvestRepay(loginName, startTime, endTime);
     }
 
@@ -62,10 +62,10 @@ public class InvestRepayServiceImpl implements InvestRepayService{
             }
         });
         for (InvestRepayDataItemDto investRepayDataItemDto : investRepayDataItemDtoList) {
-            List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(loginName, investRepayDataItemDto.getInvestId());
+            List<UserCouponModel> userCouponModels = userCouponService.findBirthdaySuccessByLoginNameAndInvestId(loginName, investRepayDataItemDto.getInvestId());
             investRepayDataItemDto.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
             if (CollectionUtils.isNotEmpty(userCouponModels)) {
-                investRepayDataItemDto.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
+                investRepayDataItemDto.setBirthdayBenefit(couponService.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
             }
 
         }
@@ -76,17 +76,17 @@ public class InvestRepayServiceImpl implements InvestRepayService{
     public List<LatestInvestView> findLatestInvestByLoginName(String loginName, int startLimit, int endLimit) {
         List<LatestInvestView> latestInvestViews = investRepayMapper.findLatestInvestByLoginName(loginName, startLimit, endLimit);
         for (LatestInvestView latestInvestView : latestInvestViews) {
-            List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(loginName, latestInvestView.getInvestId());
+            List<UserCouponModel> userCouponModels = userCouponService.findBirthdaySuccessByLoginNameAndInvestId(loginName, latestInvestView.getInvestId());
             latestInvestView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
             if (CollectionUtils.isNotEmpty(userCouponModels)) {
-                latestInvestView.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
+                latestInvestView.setBirthdayBenefit(couponService.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
             }
 
             if (latestInvestView.getProductType().equals(ProductType.EXPERIENCE)) {
-                List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(latestInvestView.getInvestId());
+                List<UserCouponModel> userCouponModelList = userCouponService.findByInvestId(latestInvestView.getInvestId());
                 for (UserCouponModel userCouponModel : userCouponModelList) {
                     if (userCouponModel.getStatus().equals(InvestStatus.SUCCESS)) {
-                        latestInvestView.setInvestAmount(couponMapper.findById(userCouponModel.getCouponId()).getAmount());
+                        latestInvestView.setInvestAmount(couponService.findById(userCouponModel.getCouponId()).getAmount());
                         break;
                     }
                 }
@@ -114,6 +114,4 @@ public class InvestRepayServiceImpl implements InvestRepayService{
     public long findSumRepaidCorpusByLoginName(String loginName) {
         return investRepayMapper.findSumRepaidCorpusByLoginName(loginName);
     }
-
-
 }

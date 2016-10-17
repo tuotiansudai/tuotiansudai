@@ -41,6 +41,10 @@ public class UserCouponServiceImpl implements UserCouponService {
     @Value(value = "${web.coupon.lock.seconds}")
     private int couponLockSeconds;
 
+    public UserCouponModel findById(long id) {
+        return userCouponMapper.findById(id);
+    }
+
     @Override
     public List<UserCouponView> getUnusedUserCoupons(String loginName) {
         List<UserCouponView> unusedCoupons = userCouponMapper.findUnusedCoupons(loginName);
@@ -132,5 +136,40 @@ public class UserCouponServiceImpl implements UserCouponService {
     @Override
     public long findSumRedEnvelopeByLoginName(String loginName) {
         return userCouponMapper.findSumRedEnvelopeByLoginName(loginName);
+    }
+
+    @Override
+    public List<UserCouponModel> findBirthdaySuccessByLoginNameAndInvestId(String loginName, long investId) {
+        return userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(loginName, investId);
+    }
+
+    @Override
+    public List<UserCouponModel> findByInvestId(long investId) {
+        return userCouponMapper.findByInvestId(investId);
+    }
+
+    @Override
+    public List<UserCouponModel> findByLoginName(String loginName, List<CouponType> couponTypes) {
+        return userCouponMapper.findByLoginName(loginName, couponTypes);
+    }
+
+    @Override
+    public List<UserCouponModel> findUserCouponSuccessAndCouponTypeByInvestId(long investId, List<CouponType> couponTypeList) {
+        return userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(investId, couponTypeList);
+    }
+
+    @Override
+    public List<UserCouponModel> findUserCouponSuccessByInvestId(long investId) {
+        return userCouponMapper.findUserCouponSuccessByInvestId(investId);
+    }
+
+    @Override
+    public void update(UserCouponModel userCouponModel) {
+        userCouponMapper.update(userCouponModel);
+    }
+
+    @Override
+    public List<UserCouponModel> findByLoginNameAndCouponId(String loginName, Long couponId) {
+        return userCouponMapper.findByLoginNameAndCouponId(loginName, couponId);
     }
 }

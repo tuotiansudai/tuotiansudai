@@ -18,9 +18,9 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JobManager;
-import coupon.repository.mapper.CouponMapper;
 import coupon.repository.model.CouponModel;
 import coupon.repository.model.UserGroup;
+import coupon.service.CouponService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -81,7 +81,7 @@ public class LoanServiceImpl implements LoanService {
     private JobManager jobManager;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private CouponService couponService;
 
     @Value("#{'${web.random.investor.list}'.split('\\|')}")
     private List<String> showRandomLoginNameList;
@@ -680,7 +680,7 @@ public class LoanServiceImpl implements LoanService {
 
         List<LoanModel> loanModels = loanMapper.findLoanListWeb(name, status, rateStart, rateEnd, durationStart, durationEnd, index);
 
-        final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
+        final List<CouponModel> allActiveCoupons = couponService.findAllActiveCoupons();
 
         CouponModel newbieInterestCouponModel = null;
         for (CouponModel activeCoupon : allActiveCoupons) {

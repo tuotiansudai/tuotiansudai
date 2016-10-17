@@ -11,12 +11,12 @@ import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import coupon.dto.CouponAlertDto;
-import coupon.repository.mapper.CouponMapper;
-import coupon.repository.mapper.UserCouponMapper;
 import coupon.repository.model.CouponModel;
 import coupon.repository.model.UserCouponModel;
 import coupon.repository.model.UserGroup;
 import coupon.service.CouponAlertService;
+import coupon.service.CouponService;
+import coupon.service.UserCouponService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +36,10 @@ public class CouponAlertServiceImpl implements CouponAlertService {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
-    private CouponMapper couponMapper;
+    private CouponService couponService;
 
     @Autowired
-    private UserCouponMapper userCouponMapper;
+    private UserCouponService userCouponService;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -60,17 +60,18 @@ public class CouponAlertServiceImpl implements CouponAlertService {
                 redisWrapperClient.hset(COUPON_ALERT_KEY, loginName, objectMapper.writeValueAsString(Sets.<Long>newHashSet()));
             }
             String redisValue = redisWrapperClient.hget(COUPON_ALERT_KEY, loginName);
-            Set<Long> userCouponIds = objectMapper.readValue(redisValue, new TypeReference<Set<Long>>() {});
+            Set<Long> userCouponIds = objectMapper.readValue(redisValue, new TypeReference<Set<Long>>() {
+            });
             CouponAlertDto newbieCouponAlertDto = new CouponAlertDto();
             newbieCouponAlertDto.setCouponType(CouponType.NEWBIE_COUPON);
             CouponAlertDto redEnvelopeCouponAlertDto = new CouponAlertDto();
             redEnvelopeCouponAlertDto.setCouponType(CouponType.RED_ENVELOPE);
 
-            List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE));
+            List<UserCouponModel> userCouponModels = userCouponService.findByLoginName(loginName, Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE));
             if (CollectionUtils.isNotEmpty(userCouponModels)) {
                 for (UserCouponModel userCouponModel : userCouponModels) {
                     if (!userCouponIds.contains(userCouponModel.getCouponId())) {
-                        CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+                        CouponModel couponModel = couponService.findById(userCouponModel.getCouponId());
 
                         if (couponModel.getCouponType() == CouponType.NEWBIE_COUPON && couponModel.getUserGroup() != UserGroup.EXPERIENCE_INVEST_SUCCESS) {
                             newbieCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());

@@ -117,7 +117,7 @@ public class CouponController {
         }
         response.setContentType("application/csv");
         List<List<String>> data = Lists.newArrayList();
-        CouponModel couponModel = couponService.findCouponById(couponId);
+        CouponModel couponModel = couponService.findById(couponId);
         List<String> exchangeCodes = exchangeCodeService.getExchangeCodes(couponId);
 
         for (int i = 0; i < exchangeCodes.size(); i++) {
@@ -239,7 +239,7 @@ public class CouponController {
     @RequestMapping(value = "/coupon/{id:^\\d+$}/edit", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView edit(@PathVariable long id, Model model) {
-        CouponModel couponModel = couponService.findCouponById(id);
+        CouponModel couponModel = couponService.findById(id);
         ModelAndView modelAndView;
         switch (couponModel.getCouponType()) {
             case INTEREST_COUPON:
@@ -428,7 +428,7 @@ public class CouponController {
             userCouponModel.setInvestAmount(userCouponModel.getInvestId() != null ? investMapper.findById(userCouponModel.getInvestId()).getAmount() : null);
         }
         int userCouponsCount = couponService.findCouponDetailCount(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime);
-        CouponModel couponModel = couponService.findCouponById(couponId);
+        CouponModel couponModel = couponService.findById(couponId);
         modelAndView.addObject("userCoupons", userCoupons);
         modelAndView.addObject("isUsed", isUsed);
         modelAndView.addObject("couponId", couponId);
