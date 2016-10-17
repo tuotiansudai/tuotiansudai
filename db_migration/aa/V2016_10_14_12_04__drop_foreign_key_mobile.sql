@@ -1,0 +1,1 @@
+alter table booking_loan drop foreign key `FK_BOOKING_LOAN_LOGIN_NAME_REF_USER_LOGIN_NAME`;
