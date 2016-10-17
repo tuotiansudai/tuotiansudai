@@ -1001,6 +1001,10 @@
 
             <div class="box-radius clearfix">
                 <ul class="media-list fl">
+                    <li><i>●</i><a rel="nofollow" href="http://www.greatchinese.com.cn/news/hyxw/20160907/15431.html"
+                                   onclick="cnzzPush.trackClick('41首页','媒体报道模块','唯一运营商')" target="_blank">拓天伟业成建设银行“税易-助保贷”唯一运营商</a>
+                        <time>2016-09-07</time>
+                    </li>
                     <li><i>●</i><a rel="nofollow" href="http://economy.gmw.cn/2016-03/31/content_19527114.htm"
                                    onclick="cnzzPush.trackClick('73首页','媒体报道模块','霸道总裁')" target="_blank">拓天速贷第二期全国排行活动正式启动</a>
                         <time>2016-03-31</time>
@@ -1009,10 +1013,6 @@
                                    onclick="cnzzPush.trackClick('40首页','媒体报道模块','财富盛宴大平台')" target="_blank">拓天速贷：财富盛宴大平台
                         感恩豪礼滚滚来</a>
                         <time>2016-03-14</time>
-                    </li>
-                    <li><i>●</i><a rel="nofollow" href="http://www.greatchinese.com.cn/news/hyxw/20160907/15431.html"
-                                   onclick="cnzzPush.trackClick('41首页','媒体报道模块','唯一运营商')" target="_blank">拓天伟业成建设银行“税易-助保贷”唯一运营商</a>
-                        <time>2016-02-01</time>
                     </li>
                     <li><i>●</i><a rel="nofollow"
                                    href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c"
