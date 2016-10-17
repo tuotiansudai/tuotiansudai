@@ -24,6 +24,7 @@ import java.util.Map;
 @RequestMapping(value = "/activity")
 public class Iphone7ActivityController {
 
+    @Autowired
 
     @RequestMapping(value = "/iphone7-lottery", method = RequestMethod.GET)
     public ModelAndView loadPageData() {
