@@ -68,7 +68,7 @@ public class PullTopicServiceImpl implements PullTopicService {
     @Override
     public void processSynchRedEnvelope() {
         MNSClient client = mqClient.getMnsClient();
-        CloudQueue queue = client.getQueueRef(QUEUE_RED_ENVELOPE);
+        CloudQueue queue = client.getQueueRef(QUEUE_INVEST_COUPON);
         while (true){
             try {
                 //获取消息
