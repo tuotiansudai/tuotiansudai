@@ -21,6 +21,4 @@ public interface PrepareUserService {
     BaseDataDto register(RegisterUserDto requestDto);
 
     PrepareUserModel findPrepareUserModelByModel(String mobile);
-
-
 }

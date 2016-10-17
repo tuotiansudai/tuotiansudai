@@ -2,7 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.service.ReferrerManageService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;

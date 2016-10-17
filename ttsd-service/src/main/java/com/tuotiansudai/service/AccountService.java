@@ -1,6 +1,5 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.AccountModel;
 
 public interface AccountService {

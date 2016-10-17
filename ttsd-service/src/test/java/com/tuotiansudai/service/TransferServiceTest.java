@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
@@ -207,7 +208,7 @@ public class TransferServiceTest {
         createInvests("testuser", loanId, investId);
         createInvestRepay(investId);
         TransferApplicationModel transferApplicationModel = createTransferApplicationModel(loanId, investId, TransferStatus.TRANSFERRING);
-        TransferApplicationDetailDto  transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(transferApplicationModel.getId(), "testuser",6);
+        TransferApplicationDetailDto transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(transferApplicationModel.getId(), "testuser",6);
 
         assertThat(transferApplicationDetailDto.getNextRefundDate(), is(strToDate("2016-03-29 23:59:59")));
         assertThat(transferApplicationDetailDto.getTransferAmount(), is("900.00"));

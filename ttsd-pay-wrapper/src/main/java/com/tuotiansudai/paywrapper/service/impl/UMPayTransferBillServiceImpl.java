@@ -8,9 +8,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.TranseqSearchRe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TranseqSearchResponseModel;
 import com.tuotiansudai.paywrapper.service.UMPayTransferBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

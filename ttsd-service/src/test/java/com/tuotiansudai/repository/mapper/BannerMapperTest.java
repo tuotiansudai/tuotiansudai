@@ -1,8 +1,8 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.BannerModel;
-import com.tuotiansudai.repository.model.Source;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

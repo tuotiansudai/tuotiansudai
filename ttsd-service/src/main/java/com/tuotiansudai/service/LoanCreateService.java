@@ -1,7 +1,6 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 
 import java.util.List;

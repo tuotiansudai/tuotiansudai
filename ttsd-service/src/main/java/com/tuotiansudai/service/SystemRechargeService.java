@@ -1,11 +1,8 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.RechargeSource;
-import com.tuotiansudai.repository.model.RechargeStatus;
-
-import java.util.Date;
-import java.util.List;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.SystemRechargeDto;
 
 public interface SystemRechargeService {
 

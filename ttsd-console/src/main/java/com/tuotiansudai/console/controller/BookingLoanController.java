@@ -2,7 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.service.BookingLoanService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;

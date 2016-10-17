@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.service.ImpersonateService;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.springframework.beans.factory.annotation.Autowired;

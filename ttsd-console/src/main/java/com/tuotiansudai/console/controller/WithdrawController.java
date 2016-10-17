@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.WithdrawPaginationItemDataDto;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.WithdrawStatus;
 import com.tuotiansudai.service.WithdrawService;
 import org.springframework.beans.factory.annotation.Autowired;

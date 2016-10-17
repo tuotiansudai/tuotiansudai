@@ -9,6 +9,7 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.TransferApplicationAutoCancelJob;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -293,13 +294,8 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             index = index > totalPages ? totalPages : index;
             items = transferApplicationMapper.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, (index - 1) * pageSize, pageSize);
         }
-        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, new Function<TransferApplicationRecordDto, TransferApplicationPaginationItemDataDto>() {
-            @Override
-            public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto input) {
-                TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
-                return transferApplicationPaginationItemDataDto;
-            }
-        });
+        List<TransferApplicationPaginationItemDataDto> records;
+        records = Lists.transform(items, TransferApplicationPaginationItemDataDto::new);
 
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> dto = new BasePaginationDataDto(index, pageSize, count, records);
         dto.setStatus(true);
@@ -317,19 +313,16 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             items = transferApplicationMapper.findTransferApplicationPaginationByLoginName(transferrerLoginName, statusList, (index - 1) * pageSize, pageSize);
 
         }
-        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, new Function<TransferApplicationRecordDto, TransferApplicationPaginationItemDataDto>() {
-            @Override
-            public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto input) {
-                TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
-                if (input.getTransferStatus() == TransferStatus.TRANSFERABLE) {
-                    transferApplicationPaginationItemDataDto.setTransferStatus(isTransferable(input.getTransferApplicationId()) ? input.getTransferStatus().getDescription() : "--");
-                } else if (input.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
-                    transferApplicationPaginationItemDataDto.setTransferStatus("--");
-                } else {
-                    transferApplicationPaginationItemDataDto.setTransferStatus(input.getTransferStatus().getDescription());
-                }
-                return transferApplicationPaginationItemDataDto;
+        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, input -> {
+            TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
+            if (input.getTransferStatus() == TransferStatus.TRANSFERABLE) {
+                transferApplicationPaginationItemDataDto.setTransferStatus(isTransferable(input.getTransferApplicationId()) ? input.getTransferStatus().getDescription() : "--");
+            } else if (input.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
+                transferApplicationPaginationItemDataDto.setTransferStatus("--");
+            } else {
+                transferApplicationPaginationItemDataDto.setTransferStatus(input.getTransferStatus().getDescription());
             }
+            return transferApplicationPaginationItemDataDto;
         });
 
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> dto = new BasePaginationDataDto(index, pageSize, count, records);

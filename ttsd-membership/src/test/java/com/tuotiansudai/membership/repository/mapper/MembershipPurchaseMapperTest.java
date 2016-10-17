@@ -1,8 +1,8 @@
 package com.tuotiansudai.membership.repository.mapper;
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.apache.commons.lang.RandomStringUtils;

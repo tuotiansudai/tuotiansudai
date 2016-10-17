@@ -22,10 +22,6 @@ repositories {
 }
 
 dependencies {
-    compile(project(":ttsd-user-service")) {
-        exclude module: 'ttsd-dependency'
-    };
-
     compile(project(":ttsd-spring-extension")) {
         exclude module: 'ttsd-dependency'
     };

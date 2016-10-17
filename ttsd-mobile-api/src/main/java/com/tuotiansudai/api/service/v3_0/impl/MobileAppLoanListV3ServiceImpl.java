@@ -8,6 +8,7 @@ import com.tuotiansudai.api.dto.v3_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
 import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.dto.ExperienceLoanDto;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;

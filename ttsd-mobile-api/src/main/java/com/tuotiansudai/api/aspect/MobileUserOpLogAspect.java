@@ -4,7 +4,7 @@ import com.tuotiansudai.api.dto.v1_0.AutoInvestPlanRequestDto;
 import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.repository.mapper.UserOpLogMapper;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.UserOpLogModel;
 import com.tuotiansudai.repository.model.UserOpType;
 import org.aspectj.lang.JoinPoint;

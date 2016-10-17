@@ -1,7 +1,6 @@
 package com.tuotiansudai.util;
 
 import com.tuotiansudai.repository.model.LoanPeriodUnit;
-import com.tuotiansudai.repository.model.LoanType;
 
 import java.util.ArrayList;
 import java.util.List;

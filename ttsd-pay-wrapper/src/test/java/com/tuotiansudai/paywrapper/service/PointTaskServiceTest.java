@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;

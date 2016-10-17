@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;

@@ -1,7 +1,7 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.InvestAchievement;
-import com.tuotiansudai.repository.model.Source;
 
 import java.util.Date;
 import java.util.List;

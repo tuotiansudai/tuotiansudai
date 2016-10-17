@@ -1,7 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.AssertTrue;

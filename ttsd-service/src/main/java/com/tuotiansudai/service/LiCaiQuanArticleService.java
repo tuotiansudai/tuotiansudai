@@ -1,7 +1,11 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.ArticlePaginationDataDto;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.repository.model.ArticleSectionType;
+import com.tuotiansudai.repository.model.ArticleStatus;
 
 import java.util.Map;
 
@@ -20,7 +24,7 @@ public interface LiCaiQuanArticleService {
 
     Map<String, String> getAllComments(long articleId);
 
-    ArticlePaginationDataDto findLiCaiQuanArticleDto(String title, ArticleSectionType articleSectionType,ArticleStatus articleStatus, int size, int index);
+    ArticlePaginationDataDto findLiCaiQuanArticleDto(String title, ArticleSectionType articleSectionType, ArticleStatus articleStatus, int size, int index);
 
     long getLikeCount(long articleId);
 

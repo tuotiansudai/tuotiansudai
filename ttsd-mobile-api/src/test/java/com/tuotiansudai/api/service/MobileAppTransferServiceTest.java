@@ -12,7 +12,7 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;

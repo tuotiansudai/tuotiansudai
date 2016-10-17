@@ -32,7 +32,7 @@ public class ReferrerRelationMapperTest {
 
     @Test
     public void shouldCreateReferrerRelation() throws Exception {
-        UserModel  user1 = new UserModel();
+        UserModel user1 = new UserModel();
         user1.setId(idGenerator.generate());
         user1.setLoginName("test1");
         user1.setPassword("123");

@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.repository.mapper;
 
 import com.tuotiansudai.console.bi.dto.RoleStage;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.UserView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

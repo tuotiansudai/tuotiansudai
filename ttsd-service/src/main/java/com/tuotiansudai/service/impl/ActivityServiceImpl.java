@@ -3,11 +3,11 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.ActivityDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.mapper.ActivityMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.ActivityStatus;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ActivityService;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -33,12 +33,7 @@ public class ActivityServiceImpl implements ActivityService {
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         List<ActivityModel> activityModels = activityMapper.findActiveActivities(source, new Date(), (index - 1) * pageSize, pageSize);
-        return Lists.transform(activityModels, new Function<ActivityModel, ActivityDto>() {
-            @Override
-            public ActivityDto apply(ActivityModel model) {
-                return new ActivityDto(model);
-            }
-        });
+        return Lists.transform(activityModels, ActivityDto::new);
     }
 
     @Override

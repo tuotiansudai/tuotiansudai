@@ -3,7 +3,7 @@ package com.tuotiansudai.api.dto.v1_0;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.RechargeDto;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 
 public class BankCardRequestDto extends BaseParamDto{
 

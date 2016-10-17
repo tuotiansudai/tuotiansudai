@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.Source;
+
+import com.tuotiansudai.enums.Source;
 
 import java.io.Serializable;
 

@@ -15,10 +15,10 @@ public interface TransferService {
     BaseDto<PayDataDto> noPasswordTransferPurchase(InvestDto investDto) throws InvestException;
 
     BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findAllTransferApplicationPaginationList(List<TransferStatus> transferStatus,
-                                                                                                            double rateStart,
-                                                                                                            double tateEnd,
-                                                                                                            Integer index,
-                                                                                                            Integer pageSize);
+                                                                                                             double rateStart,
+                                                                                                             double tateEnd,
+                                                                                                             Integer index,
+                                                                                                             Integer pageSize);
     int findCountAllTransferApplicationPaginationList(List<TransferStatus> transferStatus, double rateStart, double rateEnd);
 
     TransferApplicationDetailDto getTransferApplicationDetailDto(long TransferApplicationId, String loginName, int showLoginNameLength);

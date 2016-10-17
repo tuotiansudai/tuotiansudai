@@ -1,7 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.repository.model.WithdrawStatus;
 

@@ -1,10 +1,10 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.FeedbackModel;
 import com.tuotiansudai.repository.model.FeedbackType;
-import com.tuotiansudai.repository.model.ProcessStatus;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.FeedbackProcessStatus;
 
 import java.util.Date;
 
@@ -14,13 +14,13 @@ public interface FeedbackService {
     BasePaginationDataDto<FeedbackModel> getFeedbackPagination(String loginName,
                                                                Source source,
                                                                FeedbackType type,
-                                                               ProcessStatus status,
+                                                               FeedbackProcessStatus status,
                                                                Date startTime,
                                                                Date endTime,
                                                                int index,
                                                                int pageSize);
 
-    void updateStatus(long feedbackId, ProcessStatus status);
+    void updateStatus(long feedbackId, FeedbackProcessStatus status);
 
     void updateRemark(FeedbackModel feedbackModel);
 

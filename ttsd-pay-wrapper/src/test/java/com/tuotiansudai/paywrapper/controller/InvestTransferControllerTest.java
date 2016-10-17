@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;

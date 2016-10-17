@@ -3,6 +3,7 @@ package com.tuotiansudai.api.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanDetailServiceImpl;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;

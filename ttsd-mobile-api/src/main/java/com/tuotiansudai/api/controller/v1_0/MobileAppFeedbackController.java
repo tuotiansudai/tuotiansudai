@@ -4,7 +4,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.FeedbackRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.repository.model.FeedbackType;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.service.FeedbackService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

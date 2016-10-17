@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.membership.service.MembershipPurchaseService;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;

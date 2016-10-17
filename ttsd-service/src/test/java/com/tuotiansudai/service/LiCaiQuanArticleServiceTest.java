@@ -1,14 +1,10 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.ArticleStatus;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.ArticleSectionType;
-import com.tuotiansudai.repository.model.LicaiquanArticleModel;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang.RandomStringUtils;
 import org.joda.time.DateTime;

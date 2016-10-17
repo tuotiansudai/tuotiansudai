@@ -5,19 +5,18 @@ import com.tuotiansudai.api.service.v1_0.MobileAppMembershipPurchaseService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.membership.exception.MembershipIsPurchasedException;
 import com.tuotiansudai.membership.exception.NotEnoughAmountException;
 import com.tuotiansudai.membership.repository.mapper.MembershipPriceMapper;
 import com.tuotiansudai.membership.repository.model.MembershipPriceModel;
 import com.tuotiansudai.membership.service.MembershipPurchaseService;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.text.MessageFormat;
 import java.util.List;
 
 @Service

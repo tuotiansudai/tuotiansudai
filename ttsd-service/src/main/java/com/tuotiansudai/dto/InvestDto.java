@@ -1,6 +1,6 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;

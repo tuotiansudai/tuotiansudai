@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +37,7 @@ public class FeedbackMapperTest {
         feedbackModel.setContact(fakeUser.getMobile());
         feedbackModel.setSource(Source.IOS);
         feedbackModel.setType(FeedbackType.opinion);
-        feedbackModel.setStatus(ProcessStatus.NOT_DONE);
+        feedbackModel.setStatus(FeedbackProcessStatus.NOT_DONE);
         feedbackModel.setCreatedTime(new Date());
 
         feedbackMapper.create(feedbackModel);

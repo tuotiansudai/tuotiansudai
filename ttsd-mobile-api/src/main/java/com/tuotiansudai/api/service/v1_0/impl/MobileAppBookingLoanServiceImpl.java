@@ -7,7 +7,7 @@ import com.tuotiansudai.api.service.v1_0.MobileAppBookingLoanService;
 import com.tuotiansudai.repository.mapper.BookingLoanMapper;
 import com.tuotiansudai.repository.model.BookingLoanModel;
 import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,6 @@ public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanServ
                 DateTime.now().toDate(),
                 bookingLoanRequestDto.getProductType(),
                 AmountConverter.convertStringToCent(bookingLoanRequestDto.getBookingAmount()),
-                DateTime.now().toDate(),
                 false,
                 DateTime.now().toDate());
         bookingLoanMapper.create(bookingLoanModel);

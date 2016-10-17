@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.util.AmountConverter;
-import org.joda.time.DateTime;
 
 import java.util.Date;
 

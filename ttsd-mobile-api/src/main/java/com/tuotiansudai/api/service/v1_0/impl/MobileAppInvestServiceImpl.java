@@ -10,7 +10,7 @@ import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InvestException;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;

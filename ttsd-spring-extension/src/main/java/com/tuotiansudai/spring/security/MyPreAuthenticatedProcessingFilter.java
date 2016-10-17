@@ -5,7 +5,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.SignInResult;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;

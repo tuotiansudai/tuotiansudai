@@ -2,7 +2,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 
 import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 
 import java.util.List;
 

@@ -4,7 +4,7 @@ import com.tuotiansudai.api.dto.v1_0.BannerResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppBannerService;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

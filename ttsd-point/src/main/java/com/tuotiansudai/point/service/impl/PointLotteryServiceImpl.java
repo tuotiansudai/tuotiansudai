@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.point.dto.UserPointPrizeDto;
 import com.tuotiansudai.point.repository.mapper.PointPrizeMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
@@ -15,7 +16,6 @@ import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -161,15 +161,11 @@ public class PointLotteryServiceImpl implements PointLotteryService{
     @Override
     public List<UserPointPrizeDto> findAllDrawLottery() {
         List<UserPointPrizeModel> userPointPrizeModels = userPointPrizeMapper.findAllDescCreatedTime();
-        return Lists.transform(userPointPrizeModels, new Function<UserPointPrizeModel, UserPointPrizeDto>() {
-            @Override
-            public UserPointPrizeDto apply(UserPointPrizeModel input) {
-                if (input.isReality()) {
-                    UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(randomUtils.encryptMobile(null, input.getLoginName(), Source.WEB), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
-                    return userPointPrizeDto;
-                } else {
-                    return new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
-                }
+        return Lists.transform(userPointPrizeModels, input -> {
+            if (input.isReality()) {
+                return new UserPointPrizeDto(randomUtils.encryptMobile(null, input.getLoginName(), Source.WEB), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
+            } else {
+                return new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
             }
         });
     }
@@ -177,13 +173,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
     @Override
     public List<UserPointPrizeDto> findMyDrawLottery(String loginName) {
         List<UserPointPrizeModel> userPointPrizeModels = userPointPrizeMapper.findByLoginName(loginName);
-        return Lists.transform(userPointPrizeModels, new Function<UserPointPrizeModel, UserPointPrizeDto>() {
-            @Override
-            public UserPointPrizeDto apply(UserPointPrizeModel input) {
-                UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
-                return userPointPrizeDto;
-            }
-        });
+        return Lists.transform(userPointPrizeModels, input -> new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime()));
     }
 
 }

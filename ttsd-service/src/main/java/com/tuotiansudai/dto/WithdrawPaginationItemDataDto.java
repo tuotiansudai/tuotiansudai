@@ -1,6 +1,6 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.repository.model.WithdrawPaginationView;
 import com.tuotiansudai.util.AmountConverter;

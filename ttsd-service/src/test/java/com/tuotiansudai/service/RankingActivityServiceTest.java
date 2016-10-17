@@ -5,11 +5,11 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
 import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.TianDouPrize;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.impl.RankingActivityServiceImpl;
@@ -18,7 +18,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -67,11 +64,6 @@ public class RankingActivityServiceTest {
 
         AccountModel accountModel = new AccountModel(userId, "张三", "1" + RandomStringUtils.randomNumeric(10), "payUserId", "payAccountId", new Date());
         accountMapper.create(accountModel);
-    }
-
-    @Before
-    public void init() {
-//        clearRankingDataInRedis();
     }
 
     @After

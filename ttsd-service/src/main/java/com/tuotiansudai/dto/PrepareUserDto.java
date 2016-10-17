@@ -1,9 +1,9 @@
 package com.tuotiansudai.dto;
 
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.PrepareUserModel;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 
 import java.util.Date;

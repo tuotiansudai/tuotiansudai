@@ -1,7 +1,7 @@
 package com.tuotiansudai.transfer.repository.mapper;
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;

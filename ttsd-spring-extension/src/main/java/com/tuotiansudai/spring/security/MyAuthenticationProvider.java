@@ -4,7 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.SignInResult;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.spring.MyUser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;

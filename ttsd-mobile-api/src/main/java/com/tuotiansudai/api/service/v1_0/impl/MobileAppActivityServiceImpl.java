@@ -9,7 +9,7 @@ import com.tuotiansudai.api.service.v1_0.MobileAppActivityService;
 import com.tuotiansudai.repository.mapper.ActivityMapper;
 import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.ActivityStatus;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

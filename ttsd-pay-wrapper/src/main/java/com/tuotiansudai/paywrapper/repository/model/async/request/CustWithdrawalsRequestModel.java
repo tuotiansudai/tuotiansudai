@@ -1,6 +1,6 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -22,8 +22,8 @@ public class CustWithdrawalsRequestModel extends BaseAsyncRequestModel {
     public CustWithdrawalsRequestModel() {
     }
 
-    public CustWithdrawalsRequestModel(String orderId, String userId, String amount,Source source) {
-        super(source,"cust_withdrawals");
+    public CustWithdrawalsRequestModel(String orderId, String userId, String amount, Source source) {
+        super(source, "cust_withdrawals");
         this.service = "cust_withdrawals";
         this.applyNotifyFlag = "1";
         this.orderId = orderId;

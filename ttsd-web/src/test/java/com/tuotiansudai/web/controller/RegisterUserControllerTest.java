@@ -3,7 +3,7 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;

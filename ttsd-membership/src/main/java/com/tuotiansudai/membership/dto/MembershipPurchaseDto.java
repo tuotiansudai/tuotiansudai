@@ -1,6 +1,6 @@
 package com.tuotiansudai.membership.dto;
 
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 
 public class MembershipPurchaseDto {
 

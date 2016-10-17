@@ -1,7 +1,7 @@
 package com.tuotiansudai.membership.dto;
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.util.Date;

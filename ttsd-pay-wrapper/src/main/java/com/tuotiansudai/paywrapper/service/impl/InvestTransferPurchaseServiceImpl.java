@@ -94,9 +94,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     private SystemBillService systemBillService;
 
     @Autowired
-    private UserMembershipMapper userMembershipMapper;
-
-    @Autowired
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired

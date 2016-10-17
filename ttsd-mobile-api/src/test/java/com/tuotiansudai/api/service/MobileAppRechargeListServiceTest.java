@@ -7,7 +7,7 @@ import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.RechargeModel;
 import com.tuotiansudai.repository.model.RechargeSource;
 import com.tuotiansudai.repository.model.RechargeStatus;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.mockito.InjectMocks;

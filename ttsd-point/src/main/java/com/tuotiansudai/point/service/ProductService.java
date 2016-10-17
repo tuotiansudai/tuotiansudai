@@ -61,5 +61,5 @@ public interface ProductService {
 
     int findCouponExchangeCount();
 
-    List<String> getProductDescription(long investLowerLimit,List<ProductType> productTypes,Integer deadline);
+    List<String> getProductDescription(long investLowerLimit, List<ProductType> productTypes, Integer deadline);
 }

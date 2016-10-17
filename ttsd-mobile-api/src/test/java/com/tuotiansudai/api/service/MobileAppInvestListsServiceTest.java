@@ -12,6 +12,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.service.InvestTransferService;
@@ -175,7 +176,6 @@ public class MobileAppInvestListsServiceTest extends ServiceTestBase{
         assertEquals(baseResponseDto.getData().getInvestList().get(0).isUsedCoupon(), false);
         assertEquals(baseResponseDto.getData().getInvestList().get(0).isUsedRedEnvelope(), false);
         assertEquals(baseResponseDto.getData().getInvestList().get(0).getProductNewType(), ProductType._30.name());
-
     }
 
 }

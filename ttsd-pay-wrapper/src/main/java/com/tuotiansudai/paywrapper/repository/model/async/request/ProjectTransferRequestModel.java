@@ -1,7 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.paywrapper.repository.model.*;
-import com.tuotiansudai.repository.model.Source;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -33,8 +33,8 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
-    public static ProjectTransferRequestModel newInvestRequest(String projectId, String orderId, String userId, String amount,Source source) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL,source);
+    public static ProjectTransferRequestModel newInvestRequest(String projectId, String orderId, String userId, String amount, Source source) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, source);
         if (source != null && source.equals(Source.WEB)) {
             model.retUrl = MessageFormat.format("{0}/invest-success", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
         }

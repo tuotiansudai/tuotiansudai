@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.PrepareRegisterRequestDto;
 import com.tuotiansudai.dto.PrepareUserDto;
 import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
@@ -81,14 +82,11 @@ public class PrepareUserServiceImpl implements PrepareUserService {
     }
 
     private List<PrepareUserDto> fillPrepareUser(List<PrepareUserModel> prepareUserModels) {
-        return Lists.transform(prepareUserModels, new Function<PrepareUserModel, PrepareUserDto>() {
-            @Override
-            public PrepareUserDto apply(PrepareUserModel prepareUserModel) {
-                UserModel referrerUserModel = userMapper.findByMobile(prepareUserModel.getReferrerMobile());
-                AccountModel referrerAccountModel = accountMapper.findByLoginName(referrerUserModel.getLoginName());
-                UserModel useUserModel = userMapper.findByMobile(prepareUserModel.getMobile());
-                return new PrepareUserDto(prepareUserModel, referrerAccountModel, useUserModel);
-            }
+        return Lists.transform(prepareUserModels, prepareUserModel -> {
+            UserModel referrerUserModel = userMapper.findByMobile(prepareUserModel.getReferrerMobile());
+            AccountModel referrerAccountModel = accountMapper.findByLoginName(referrerUserModel.getLoginName());
+            UserModel useUserModel = userMapper.findByMobile(prepareUserModel.getMobile());
+            return new PrepareUserDto(prepareUserModel, referrerAccountModel, useUserModel);
         });
     }
 

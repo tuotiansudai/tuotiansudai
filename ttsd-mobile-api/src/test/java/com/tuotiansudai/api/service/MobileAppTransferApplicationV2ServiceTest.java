@@ -8,6 +8,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.TransferableInvestListRequestDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppTransferApplicationV2ServiceImpl;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;

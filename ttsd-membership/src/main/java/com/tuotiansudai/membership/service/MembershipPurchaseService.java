@@ -6,6 +6,7 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.membership.dto.MembershipPurchaseDto;
 import com.tuotiansudai.membership.dto.MembershipPurchasePaginationItemDto;
 import com.tuotiansudai.membership.exception.MembershipIsPurchasedException;
@@ -18,8 +19,6 @@ import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,12 +79,7 @@ public class MembershipPurchaseService {
     public BaseDto<BasePaginationDataDto> getMembershipPurchaseList(String mobile, Integer duration, Source source, Date startTime, Date endTime, int index, int pageSize) {
         long count = membershipPurchaseMapper.countByPagination(mobile, duration, source, startTime, endTime);
         List<MembershipPurchaseModel> models = membershipPurchaseMapper.findByPagination(mobile, duration, source, startTime, endTime, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
-        List<MembershipPurchasePaginationItemDto> items = Lists.transform(models, new Function<MembershipPurchaseModel, MembershipPurchasePaginationItemDto>() {
-            @Override
-            public MembershipPurchasePaginationItemDto apply(MembershipPurchaseModel input) {
-                return new MembershipPurchasePaginationItemDto(input);
-            }
-        });
+        List<MembershipPurchasePaginationItemDto> items = Lists.transform(models, MembershipPurchasePaginationItemDto::new);
 
         BasePaginationDataDto<MembershipPurchasePaginationItemDto> paginationDataDto = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
         paginationDataDto.setStatus(true);

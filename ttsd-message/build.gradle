@@ -14,7 +14,7 @@ sourceSets {
 
 dependencies {
     compile project(':ttsd-client'),
-            project(':ttsd-user-service'),
+            project(':ttsd-aa-repository'),
             'org.apache.poi:poi:3.13'
 
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"

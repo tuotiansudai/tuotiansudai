@@ -1,7 +1,7 @@
 package com.tuotiansudai.activity.controller;
 
 import com.tuotiansudai.dto.ActivityDto;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.service.ActivityService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;

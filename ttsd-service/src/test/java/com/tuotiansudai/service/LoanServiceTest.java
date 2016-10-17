@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
@@ -100,7 +101,7 @@ public class LoanServiceTest {
         InvestModel investModel1 = new InvestModel();
         investModel1.setLoginName(fakeUser.getLoginName());
         investModel1.setId(1000002L);
-        assertEquals(fakeUser.getMobile().substring(0, 3)+"****", randomUtils.encryptMobile("loginName2", investModel1.getLoginName(), investModel1.getId(),Source.WEB).substring(0,7));
+        assertEquals(fakeUser.getMobile().substring(0, 3)+"****", randomUtils.encryptMobile("loginName2", investModel1.getLoginName(), investModel1.getId(), Source.WEB).substring(0,7));
     }
 
     @Test

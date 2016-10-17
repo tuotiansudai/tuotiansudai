@@ -3,6 +3,7 @@ package com.tuotiansudai.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.AutoInvestPlanDto;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;

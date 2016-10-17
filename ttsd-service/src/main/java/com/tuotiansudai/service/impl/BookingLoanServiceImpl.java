@@ -5,6 +5,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.BookingLoanPaginationItemDataDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BookingLoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -40,7 +41,6 @@ public class BookingLoanServiceImpl implements BookingLoanService {
                 DateTime.now().toDate(),
                 productType,
                 AmountConverter.convertStringToCent(bookingAmount),
-                DateTime.now().toDate(),
                 false,
                 DateTime.now().toDate());
         bookingLoanMapper.create(bookingLoanModel);
@@ -69,15 +69,12 @@ public class BookingLoanServiceImpl implements BookingLoanService {
         List<BookingLoanModel> bookingLoanModels = bookingLoanMapper.findBookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, (index - 1) * pageSize, pageSize);
         List<BookingLoanPaginationItemDataDto> items = Lists.newArrayList();
         if (count > 0) {
-            items = Lists.transform(bookingLoanModels, new com.google.common.base.Function<BookingLoanModel, BookingLoanPaginationItemDataDto>() {
-                @Override
-                public BookingLoanPaginationItemDataDto apply(BookingLoanModel bookingLoanModel) {
-                    BookingLoanPaginationItemDataDto bookingLoanPaginationItemDataDto = new BookingLoanPaginationItemDataDto(bookingLoanModel);
-                    String loginName = userMapper.findByMobile(bookingLoanPaginationItemDataDto.getMobile()).getLoginName();
-                    AccountModel accountModel = accountMapper.findByLoginName(loginName);
-                    bookingLoanPaginationItemDataDto.setUserName(accountModel.getUserName());
-                    return bookingLoanPaginationItemDataDto;
-                }
+            items = Lists.transform(bookingLoanModels, bookingLoanModel -> {
+                BookingLoanPaginationItemDataDto bookingLoanPaginationItemDataDto = new BookingLoanPaginationItemDataDto(bookingLoanModel);
+                String loginName = userMapper.findByMobile(bookingLoanPaginationItemDataDto.getMobile()).getLoginName();
+                AccountModel accountModel = accountMapper.findByLoginName(loginName);
+                bookingLoanPaginationItemDataDto.setUserName(accountModel.getUserName());
+                return bookingLoanPaginationItemDataDto;
             });
 
         }

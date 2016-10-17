@@ -2,9 +2,8 @@ package com.tuotiansudai.aspect;
 
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BindBankCardDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.mapper.UserOpLogMapper;
-import com.tuotiansudai.repository.model.AutoInvestPlanModel;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserOpLogModel;
 import com.tuotiansudai.repository.model.UserOpType;
 import org.aspectj.lang.JoinPoint;

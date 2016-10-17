@@ -2,10 +2,14 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.ArticlePaginationDataDto;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleCommentMapper;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
 import com.tuotiansudai.repository.model.ArticleSectionType;
+import com.tuotiansudai.repository.model.ArticleStatus;
 import com.tuotiansudai.repository.model.LicaiquanArticleCommentModel;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
@@ -56,7 +60,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
             liCaiQuanArticleDto.setCreateTime(new Date());
         } else {
             LicaiquanArticleModel licaiquanArticleModel = licaiquanArticleMapper.findArticleById(liCaiQuanArticleDto.getArticleId());
-            if(licaiquanArticleModel != null){
+            if (licaiquanArticleModel != null) {
                 liCaiQuanArticleDto.setCreateTime(new Date());
             }
             liCaiQuanArticleDto.setUpdateTime(new Date());
@@ -87,7 +91,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
         return list;
     }
 
-    private List<LiCaiQuanArticleDto> findRedisArticleDto(String title, ArticleSectionType articleSectionType,ArticleStatus articleStatus) {
+    private List<LiCaiQuanArticleDto> findRedisArticleDto(String title, ArticleSectionType articleSectionType, ArticleStatus articleStatus) {
         List<LiCaiQuanArticleDto> articleDtoList = new ArrayList<>();
         Map<byte[], byte[]> articleDtoListHkey = redisWrapperClient.hgetAllSeri(articleRedisKey);
         for (byte[] key : articleDtoListHkey.keySet()) {
@@ -96,7 +100,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
                 continue;
             }
 
-            if(articleSectionType == null && articleStatus == null){
+            if (articleSectionType == null && articleStatus == null) {
                 articleDtoList.add(liCaiQuanArticleDto);
                 continue;
             }
@@ -115,17 +119,17 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
         int count = 0;
         List<LiCaiQuanArticleDto> list;
         List<LiCaiQuanArticleDto> articleDtoList;
-        if(articleStatus != null && articleStatus.equals(ArticleStatus.PUBLISH)){
+        if (articleStatus != null && articleStatus.equals(ArticleStatus.PUBLISH)) {
             articleDtoList = Lists.newArrayList();
-        }else{
-            articleDtoList = findRedisArticleDto(title, articleSectionType,articleStatus);
+        } else {
+            articleDtoList = findRedisArticleDto(title, articleSectionType, articleStatus);
         }
 
         if (CollectionUtils.isNotEmpty(articleDtoList)) {
             count += articleDtoList.size();
         }
 
-        if(articleStatus == null || articleStatus.equals(ArticleStatus.PUBLISH)){
+        if (articleStatus == null || articleStatus.equals(ArticleStatus.PUBLISH)) {
             List<LicaiquanArticleModel> articleListItemModelList = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(title, articleSectionType, 1, 10000);
             if (CollectionUtils.isNotEmpty(articleListItemModelList)) {
                 count += articleListItemModelList.size();
@@ -169,9 +173,9 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
                 ids.add(database.getArticleId());
             }
             for (LiCaiQuanArticleDto redis : redisList) {
-               if(ids.contains(redis.getArticleId())){
-                   redis.setOriginal(true);
-               }
+                if (ids.contains(redis.getArticleId())) {
+                    redis.setOriginal(true);
+                }
             }
         }
         return list;
@@ -261,12 +265,12 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
             List<LicaiquanArticleCommentModel> commentModelList = new ArrayList<>();
             Map<String, String> comment = getAllComments(model.getId());
             redisWrapperClient.hdel(articleCommentRedisKey, String.valueOf(model.getId()));
-            for(String key: comment.keySet()){
+            for (String key : comment.keySet()) {
                 commentModelList.add(new LicaiquanArticleCommentModel(model.getId(), comment.get(key), new DateTime(key).toDate()));
             }
 
-            if(CollectionUtils.isNotEmpty(commentModelList)){
-                for(LicaiquanArticleCommentModel commentModel : commentModelList){
+            if (CollectionUtils.isNotEmpty(commentModelList)) {
+                for (LicaiquanArticleCommentModel commentModel : commentModelList) {
                     licaiquanArticleCommentMapper.createComment(commentModel);
                 }
             }
@@ -300,9 +304,9 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
     }
 
     @Override
-    public LiCaiQuanArticleDto getArticleContentByDataBase(long articleId){
+    public LiCaiQuanArticleDto getArticleContentByDataBase(long articleId) {
         LicaiquanArticleModel licaiquanArticleModel = this.licaiquanArticleMapper.findArticleById(articleId);
-        if(licaiquanArticleModel != null){
+        if (licaiquanArticleModel != null) {
             return new LiCaiQuanArticleDto(licaiquanArticleModel);
         }
         return new LiCaiQuanArticleDto();

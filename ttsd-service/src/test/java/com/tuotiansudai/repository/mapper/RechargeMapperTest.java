@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;

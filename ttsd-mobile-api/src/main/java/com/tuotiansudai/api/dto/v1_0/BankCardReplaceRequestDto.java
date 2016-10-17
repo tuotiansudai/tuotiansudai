@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.dto.BindBankCardDto;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 
 public class BankCardReplaceRequestDto extends BaseParamDto{
     private String cardNo;

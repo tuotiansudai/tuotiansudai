@@ -4,7 +4,7 @@ import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.UserItemDataDto;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.UserView;
 
 import java.util.Date;

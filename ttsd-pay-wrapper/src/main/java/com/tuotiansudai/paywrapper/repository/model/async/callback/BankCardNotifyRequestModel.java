@@ -1,6 +1,6 @@
 package com.tuotiansudai.paywrapper.repository.model.async.callback;
 
-import com.tuotiansudai.repository.model.AgreementType;
+import com.tuotiansudai.paywrapper.repository.model.AgreementType;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

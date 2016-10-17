@@ -5,16 +5,15 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.ExperienceLoanDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.BannerMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.BannerModel;
-import com.tuotiansudai.repository.model.ExperienceLoanDto;
 import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -47,9 +46,6 @@ public class HomeController {
 
     @Autowired
     private LoanMapper loanMapper;
-
-    @Autowired
-    private LoanDetailsMapper loanDetailsMapper;
 
     @Autowired
     private CouponService couponService;

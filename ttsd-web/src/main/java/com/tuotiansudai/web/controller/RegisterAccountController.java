@@ -4,7 +4,7 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;

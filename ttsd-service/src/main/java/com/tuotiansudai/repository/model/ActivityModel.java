@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.ActivityDto;
+import com.tuotiansudai.enums.Source;
 
 import java.io.Serializable;
 import java.util.Date;

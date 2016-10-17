@@ -4,8 +4,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.ask.repository.model.AnswerModel;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.Tag;
-import com.tuotiansudai.repository.model.UserModel;
-import org.hamcrest.core.Is;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

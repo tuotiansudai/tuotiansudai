@@ -3,11 +3,10 @@ package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.repository.model.TransferableInvestView;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;

@@ -13,7 +13,7 @@ import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.service.ExperienceInvestService;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;

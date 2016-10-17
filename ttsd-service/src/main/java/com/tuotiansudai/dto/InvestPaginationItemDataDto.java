@@ -1,10 +1,10 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.InvestPaginationItemView;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;

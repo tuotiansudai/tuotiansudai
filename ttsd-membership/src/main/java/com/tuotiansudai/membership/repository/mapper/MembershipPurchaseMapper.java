@@ -1,7 +1,7 @@
 package com.tuotiansudai.membership.repository.mapper;
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
-import com.tuotiansudai.repository.model.Source;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

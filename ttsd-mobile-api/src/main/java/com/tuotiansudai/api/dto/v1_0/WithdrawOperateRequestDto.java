@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.dto.WithdrawDto;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 
 public class WithdrawOperateRequestDto extends BaseParamDto {
     private double money;

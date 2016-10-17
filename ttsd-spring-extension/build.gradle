@@ -13,8 +13,7 @@ sourceSets {
 }
 
 dependencies {
-    compile project(':ttsd-user-service'),
-            project(':ttsd-client'),
+    compile project(':ttsd-client'),
             project(':ttsd-util'),
             'org.springframework.data:spring-data-redis:1.7.2.RELEASE',
             'org.springframework.session:spring-session:1.2.1.RELEASE'

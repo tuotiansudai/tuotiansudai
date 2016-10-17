@@ -1,7 +1,7 @@
 package com.tuotiansudai.membership.repository.model;
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.membership.dto.MembershipPurchaseDto;
-import com.tuotiansudai.repository.model.Source;
 
 import java.io.Serializable;
 import java.util.Date;

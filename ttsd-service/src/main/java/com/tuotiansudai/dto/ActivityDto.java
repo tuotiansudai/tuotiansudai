@@ -1,8 +1,8 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.ActivityModel;
 import com.tuotiansudai.repository.model.ActivityStatus;
-import com.tuotiansudai.repository.model.Source;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;

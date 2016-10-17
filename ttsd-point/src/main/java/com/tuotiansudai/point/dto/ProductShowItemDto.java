@@ -1,16 +1,11 @@
 package com.tuotiansudai.point.dto;
 
-import com.google.common.base.Joiner;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.point.repository.model.ItemType;
 import com.tuotiansudai.point.repository.model.ProductModel;
-import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class ProductShowItemDto {
 

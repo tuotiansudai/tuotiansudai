@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v3_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;

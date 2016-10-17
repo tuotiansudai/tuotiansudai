@@ -1,12 +1,12 @@
 package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.mapper.FeedbackMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.FeedbackModel;
 import com.tuotiansudai.repository.model.FeedbackType;
-import com.tuotiansudai.repository.model.ProcessStatus;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.FeedbackProcessStatus;
 import com.tuotiansudai.service.FeedbackService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +33,13 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedbackModel.setType(type == null ? FeedbackType.opinion : type);
         feedbackModel.setContent(content);
         feedbackModel.setCreatedTime(new Date());
-        feedbackModel.setStatus(ProcessStatus.NOT_DONE);
+        feedbackModel.setStatus(FeedbackProcessStatus.NOT_DONE);
         feedbackMapper.create(feedbackModel);
         return feedbackModel;
     }
 
     @Override
-    public BasePaginationDataDto<FeedbackModel> getFeedbackPagination(String mobile, Source source, FeedbackType type, ProcessStatus status, Date startTime, Date endTime, int index, int pageSize) {
+    public BasePaginationDataDto<FeedbackModel> getFeedbackPagination(String mobile, Source source, FeedbackType type, FeedbackProcessStatus status, Date startTime, Date endTime, int index, int pageSize) {
         int rowIndex = (index - 1) * pageSize;
         int rowLimit = pageSize;
         List<FeedbackModel> feedbackModelList = feedbackMapper.findAll(mobile, source, type, status, startTime, new DateTime(endTime).plusDays(1).toDate(), rowIndex, rowLimit);
@@ -49,7 +49,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public void updateStatus(long feedbackId, ProcessStatus status) {
+    public void updateStatus(long feedbackId, FeedbackProcessStatus status) {
         feedbackMapper.updateStatus(feedbackId, status);
     }
 

@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.ActivityDto;
 import com.tuotiansudai.repository.model.ActivityStatus;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.service.ActivityService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;

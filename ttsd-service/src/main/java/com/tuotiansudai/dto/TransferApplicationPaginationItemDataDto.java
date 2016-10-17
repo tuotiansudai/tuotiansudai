@@ -1,6 +1,6 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.util.AmountConverter;
 

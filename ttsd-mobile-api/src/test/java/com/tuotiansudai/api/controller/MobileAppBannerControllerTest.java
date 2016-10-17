@@ -4,7 +4,7 @@ import com.tuotiansudai.api.controller.v1_0.MobileAppBannerController;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppBannerService;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

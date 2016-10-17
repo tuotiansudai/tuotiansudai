@@ -1,17 +1,13 @@
 package com.tuotiansudai.console.controller;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.model.FeedbackModel;
 import com.tuotiansudai.repository.model.FeedbackType;
-import com.tuotiansudai.repository.model.ProcessStatus;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.FeedbackProcessStatus;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.service.FeedbackService;
-import com.tuotiansudai.util.CsvHeaderType;
-import com.tuotiansudai.util.ExportCsvUtil;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -22,11 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/announce-manage", method = RequestMethod.GET)
@@ -39,7 +31,7 @@ public class FeedbackController {
     public ModelAndView announceManage(@RequestParam(value = "mobile", required = false) String mobile,
                                        @RequestParam(value = "source", required = false) Source source,
                                        @RequestParam(value = "type", required = false) FeedbackType type,
-                                       @RequestParam(value = "status", required = false) ProcessStatus status,
+                                       @RequestParam(value = "status", required = false) FeedbackProcessStatus status,
                                        @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                        @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index,
@@ -55,7 +47,7 @@ public class FeedbackController {
 
         mv.addObject("sourceList", Source.values());
         mv.addObject("typeList", FeedbackType.values());
-        mv.addObject("statusList", ProcessStatus.values());
+        mv.addObject("statusList", FeedbackProcessStatus.values());
 
         mv.addObject("feedbackCount", feedbackModelPaginationData.getCount());
         mv.addObject("feedbackList", feedbackModelPaginationData.getRecords());
@@ -70,7 +62,7 @@ public class FeedbackController {
     @ResponseBody
     @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
     public String updateStatus(long feedbackId, boolean status) {
-        feedbackService.updateStatus(feedbackId, status ? ProcessStatus.DONE : ProcessStatus.NOT_DONE);
+        feedbackService.updateStatus(feedbackId, status ? FeedbackProcessStatus.DONE : FeedbackProcessStatus.NOT_DONE);
         return "true";
     }
 

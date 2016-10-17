@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
@@ -36,7 +37,6 @@ public class BookingLoanMapperTest {
                 DateTime.now().toDate(),
                 ProductType._90,
                 1000L,
-                DateTime.now().toDate(),
                 false,
                 DateTime.now().toDate());
         bookingLoanMapper.create(bookingLoanModel);

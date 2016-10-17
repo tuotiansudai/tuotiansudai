@@ -1,6 +1,6 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.repository.model.UserView;

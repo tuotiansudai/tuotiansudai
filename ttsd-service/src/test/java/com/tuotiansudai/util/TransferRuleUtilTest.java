@@ -1,6 +1,7 @@
 package com.tuotiansudai.util;
 
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;

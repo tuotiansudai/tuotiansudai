@@ -10,12 +10,10 @@ include "ttsd-service",
         'ttsd-membership',
         "ttsd-activity",
         "ttsd-message",
-        'ttsd-user-service',
         'ttsd-web-common-config',
         'ttsd-ask-web',
         'ttsd-ask-service',
         'ttsd-edxask-model',
-        'ttsd-user-service',
         'ttsd-config',
         'ttsd-client',
         'ttsd-dependency',
@@ -25,3 +23,5 @@ include "ttsd-service",
         'ttsd-util',
         'ttsd-point-web'
 
+include "ttsd-aa-model",
+        "ttsd-aa-repository"

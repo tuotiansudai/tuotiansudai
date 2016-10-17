@@ -11,7 +11,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserView;
 import com.tuotiansudai.task.OperationType;

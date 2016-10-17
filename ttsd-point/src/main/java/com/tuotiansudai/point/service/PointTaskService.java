@@ -2,7 +2,6 @@ package com.tuotiansudai.point.service;
 
 import com.tuotiansudai.point.dto.PointTaskDto;
 import com.tuotiansudai.point.repository.model.PointTask;
-import com.tuotiansudai.repository.model.InvestModel;
 
 import java.util.List;
 

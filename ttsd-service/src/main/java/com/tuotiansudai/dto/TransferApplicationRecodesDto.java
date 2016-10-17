@@ -1,7 +1,7 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.TransferStatus;
+
+import com.tuotiansudai.enums.Source;
 
 import java.util.Date;
 

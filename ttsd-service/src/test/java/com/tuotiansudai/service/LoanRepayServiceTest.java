@@ -53,7 +53,6 @@ public class LoanRepayServiceTest {
 
     @Test
     public void shouldSendLoanRepayNotifySms() {
-
         LoanRepayNotifyModel repayNotifyModel1 = this.getFakeLoanRepayNotify(100000, "loginName1", "13911111111");
         LoanRepayNotifyModel repayNotifyModel2 = this.getFakeLoanRepayNotify(200000, "loginName2", "13922222222");
         List<LoanRepayNotifyModel> repayNotifyModelList = Lists.newArrayList(repayNotifyModel1, repayNotifyModel2);

@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.repository.model.SystemBillBusinessType;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface SystemBillService {
 

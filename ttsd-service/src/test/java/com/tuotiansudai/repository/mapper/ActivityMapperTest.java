@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;

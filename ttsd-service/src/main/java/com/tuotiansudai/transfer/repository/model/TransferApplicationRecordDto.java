@@ -1,7 +1,7 @@
 package com.tuotiansudai.transfer.repository.model;
 
 
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.TransferStatus;
 
 import java.io.Serializable;

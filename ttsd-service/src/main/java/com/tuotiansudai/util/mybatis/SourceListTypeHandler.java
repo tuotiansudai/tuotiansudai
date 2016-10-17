@@ -2,7 +2,7 @@ package com.tuotiansudai.util.mybatis;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 

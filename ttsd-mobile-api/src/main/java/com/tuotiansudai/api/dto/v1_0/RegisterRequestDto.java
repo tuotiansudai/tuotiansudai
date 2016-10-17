@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;

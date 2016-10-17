@@ -1,6 +1,7 @@
 package com.tuotiansudai.transfer.dto;
 
-import com.tuotiansudai.repository.model.Source;
+
+import com.tuotiansudai.enums.Source;
 
 public class TransferApplicationDto {
 

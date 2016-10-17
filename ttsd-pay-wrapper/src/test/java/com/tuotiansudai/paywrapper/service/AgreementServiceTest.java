@@ -11,6 +11,7 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.repository.model.AgreementType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;

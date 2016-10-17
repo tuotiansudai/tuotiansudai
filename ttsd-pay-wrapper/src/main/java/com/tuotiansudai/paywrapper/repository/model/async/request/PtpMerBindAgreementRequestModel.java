@@ -1,8 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.dto.AgreementDto;
-import com.tuotiansudai.repository.model.AgreementType;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.paywrapper.repository.model.AgreementType;
 
 import java.text.MessageFormat;
 import java.util.Map;

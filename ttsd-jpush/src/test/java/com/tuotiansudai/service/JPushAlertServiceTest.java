@@ -9,6 +9,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
 import com.tuotiansudai.jpush.repository.model.*;

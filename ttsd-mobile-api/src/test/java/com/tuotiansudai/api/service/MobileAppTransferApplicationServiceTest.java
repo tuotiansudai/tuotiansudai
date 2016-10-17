@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;

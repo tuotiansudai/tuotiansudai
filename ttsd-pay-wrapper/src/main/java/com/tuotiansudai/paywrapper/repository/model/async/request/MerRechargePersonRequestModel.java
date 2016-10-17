@@ -1,6 +1,6 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;

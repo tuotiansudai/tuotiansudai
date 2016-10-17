@@ -1,9 +1,9 @@
 package com.tuotiansudai.dto;
 
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.BookingLoanModel;
 import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;

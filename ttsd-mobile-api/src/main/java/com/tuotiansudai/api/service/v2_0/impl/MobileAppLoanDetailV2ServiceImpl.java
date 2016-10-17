@@ -9,6 +9,7 @@ import com.tuotiansudai.api.dto.v2_0.*;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;

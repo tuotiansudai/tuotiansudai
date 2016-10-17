@@ -8,6 +8,7 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.point.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
@@ -324,7 +325,7 @@ public class ExportController {
     public void exportFeedBack(@RequestParam(value = "mobile", required = false) String mobile,
                                @RequestParam(value = "source", required = false) Source source,
                                @RequestParam(value = "type", required = false) FeedbackType type,
-                               @RequestParam(value = "status", required = false) ProcessStatus status,
+                               @RequestParam(value = "status", required = false) FeedbackProcessStatus status,
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.Feedback.getDescription());

@@ -5,7 +5,7 @@ import com.tuotiansudai.spring.LoginUserInfo;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferRuleDto;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.service.TransferRuleService;

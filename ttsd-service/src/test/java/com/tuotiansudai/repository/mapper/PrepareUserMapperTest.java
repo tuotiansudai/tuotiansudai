@@ -1,8 +1,8 @@
 package com.tuotiansudai.repository.mapper;
 
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.model.PrepareUserModel;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;

@@ -1,8 +1,7 @@
 apply plugin: 'war'
 
 dependencies {
-    compile project(':ttsd-user-service'),
-            project(':ttsd-point'),
+    compile project(':ttsd-point'),
             project(':ttsd-web-common-config'),
             project(':ttsd-spring-extension'),
             'org.springframework.data:spring-data-redis:1.7.1.RELEASE',

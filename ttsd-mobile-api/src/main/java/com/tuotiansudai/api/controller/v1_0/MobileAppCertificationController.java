@@ -4,7 +4,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.CertificationRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppCertificationService;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;

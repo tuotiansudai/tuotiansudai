@@ -55,25 +55,28 @@ public class InvestRepayDataItemDto {
     }
 
     public InvestRepayDataItemDto(InvestRepayModel model) {
-        if(RepayStatus.COMPLETE == model.getStatus() || RepayStatus.OVERDUE == model.getStatus()) {
+        if (RepayStatus.COMPLETE == model.getStatus() || RepayStatus.OVERDUE == model.getStatus()) {
             this.actualFee = AmountConverter.convertCentToString(model.getActualFee());
             this.actualInterest = AmountConverter.convertCentToString(model.getActualInterest());
             this.actualRepayDate = model.getActualRepayDate();
-            if(model.getRepayAmount() > 0) this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
-            if(RepayStatus.OVERDUE == model.getStatus() && model.getActualRepayDate() != null) this.overdueDay = String.valueOf((model.getActualRepayDate().getTime() - model.getRepayDate().getTime()) / (1000 * 60 * 60 * 24));
+            if (model.getRepayAmount() > 0)
+                this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
+            if (RepayStatus.OVERDUE == model.getStatus() && model.getActualRepayDate() != null)
+                this.overdueDay = String.valueOf((model.getActualRepayDate().getTime() - model.getRepayDate().getTime()) / (1000 * 60 * 60 * 24));
         }
         this.investId = model.getInvestId();
-        if(model.getDefaultInterest() > 0) this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
-        if(model.getExpectedFee() > 0) this.expectedFee = AmountConverter.convertCentToString(model.getExpectedFee());
+        if (model.getDefaultInterest() > 0)
+            this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
+        if (model.getExpectedFee() > 0) this.expectedFee = AmountConverter.convertCentToString(model.getExpectedFee());
         this.corpus = AmountConverter.convertCentToString(model.getCorpus());
         this.expectedInterest = AmountConverter.convertCentToString(model.getExpectedInterest());
         this.repayDate = model.getRepayDate();
-        if(RepayStatus.COMPLETE == model.getStatus() && model.getActualRepayDate() != null && model.getActualRepayDate().before(new DateTime(model.getRepayDate()).withTimeAtStartOfDay().toDate())){
+        if (RepayStatus.COMPLETE == model.getStatus() && model.getActualRepayDate() != null && model.getActualRepayDate().before(new DateTime(model.getRepayDate()).withTimeAtStartOfDay().toDate())) {
             this.status = "提前还款";
-        }else if(RepayStatus.OVERDUE == model.getStatus()){
+        } else if (RepayStatus.OVERDUE == model.getStatus()) {
             this.status = "逾期还款";
-        }else{
-            this.status = (RepayStatus.COMPLETE == model.getStatus() && TransferStatus.SUCCESS == model.getTransferStatus() && model.getExpectedInterest() == 0 )?model.getTransferStatus().getDescription():model.getStatus().getDescription();
+        } else {
+            this.status = (RepayStatus.COMPLETE == model.getStatus() && TransferStatus.SUCCESS == model.getTransferStatus() && model.getExpectedInterest() == 0) ? model.getTransferStatus().getDescription() : model.getStatus().getDescription();
         }
         this.period = model.getPeriod();
         this.amount = AmountConverter.convertCentToString(model.getCorpus() + model.getExpectedInterest() - model.getExpectedFee());

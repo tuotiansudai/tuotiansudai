@@ -3,7 +3,7 @@ package com.tuotiansudai.api.controller;
 import com.tuotiansudai.api.controller.v1_0.MobileAppCertificationController;
 import com.tuotiansudai.api.dto.v1_0.CertificationRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppCertificationService;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.junit.Test;
 import org.mockito.InjectMocks;

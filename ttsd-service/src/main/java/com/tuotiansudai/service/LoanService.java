@@ -1,10 +1,11 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.LoanItemDto;
+import com.tuotiansudai.dto.LoanListDto;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanTitleModel;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,7 @@ public interface LoanService {
 
     LoanModel findLoanById(long loanId);
 
-    List<LoanItemDto> findLoanItems(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd, int currentPageNo);
+    List<LoanItemDto> findLoanItems(String name, LoanStatus status, double rateStart, double rateEnd, int durationStart, int durationEnd, int currentPageNo);
 
     int findLoanListCountWeb(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd);
 

@@ -1,7 +1,7 @@
 package com.tuotiansudai.service;
 
 
-import com.tuotiansudai.repository.model.ExperienceLoanDto;
+import com.tuotiansudai.dto.ExperienceLoanDto;
 
 public interface ExperienceLoanDetailService {
 

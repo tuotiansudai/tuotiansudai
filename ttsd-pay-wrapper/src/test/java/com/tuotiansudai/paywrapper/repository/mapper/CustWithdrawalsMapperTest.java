@@ -1,7 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.mapper;
 
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.paywrapper.repository.model.async.request.CustWithdrawalsRequestModel;
-import com.tuotiansudai.repository.model.Source;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

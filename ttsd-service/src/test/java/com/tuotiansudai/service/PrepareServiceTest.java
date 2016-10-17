@@ -2,9 +2,9 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.PrepareRegisterRequestDto;
 import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.repository.mapper.BaseMapperTest;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;

@@ -6,7 +6,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.BannerDto;
 import com.tuotiansudai.repository.model.BannerModel;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.enums.Source;
 import com.tuotiansudai.service.BannerService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
