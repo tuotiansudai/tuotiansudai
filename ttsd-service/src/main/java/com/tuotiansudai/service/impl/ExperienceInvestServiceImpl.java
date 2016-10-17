@@ -141,6 +141,11 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
             return false;
         }
 
+        if (CollectionUtils.isEmpty(investDto.getUserCouponIds())) {
+            logger.error(MessageFormat.format("[Experience Invest] user({0}) is no coupons ", investDto.getLoginName()));
+            return false;
+        }
+
         if (investDto.getUserCouponIds().size() != 1) {
             logger.error(MessageFormat.format("[Experience Invest] user({0}) is using more than one coupons({1}) ",
                     investDto.getLoginName(), String.valueOf(investDto.getUserCouponIds().size())));
