@@ -12,9 +12,7 @@ import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -61,5 +59,11 @@ public class ActivitiesController {
         } else {
             return new ModelAndView("/csrf");
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/get-realRealName", method = RequestMethod.GET)
+    public String markRemind(@RequestParam(value = "mobile") String mobile) {
+        return accountService.getRealNameByMobile(mobile);
     }
 }

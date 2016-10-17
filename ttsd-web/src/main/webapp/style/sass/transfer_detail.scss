@@ -1,6 +1,6 @@
-@import 'variables';
-@import 'daterangepicker';
-@import "coupon_alert";
+@import 'common/variables';
+@import 'plugins/daterangepicker';
+@import "common/coupon_alert";
 .layui-layer-btn {
   text-align: center !important;
   .layui-layer-btn1 {

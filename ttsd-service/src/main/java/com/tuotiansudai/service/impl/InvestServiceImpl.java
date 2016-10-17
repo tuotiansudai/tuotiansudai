@@ -273,7 +273,7 @@ public class InvestServiceImpl implements InvestService {
         double investFeeRate = membershipModel != null ? membershipModel.getFee() : defaultFee;
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
 
-        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanId);
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
 
         long extraRateInterest = 0;
         long extraRateFee = 0;

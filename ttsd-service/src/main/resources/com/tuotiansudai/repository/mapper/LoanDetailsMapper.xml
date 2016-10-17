@@ -22,7 +22,7 @@
         (#{id}, #{loanId}, #{declaration}, #{extraSource}, #{activity}, #{activityDesc})
     </insert>
 
-    <select id="getLoanDetailsByLoanId" resultMap="LoanDetailsResultMap">
+    <select id="getByLoanId" resultMap="LoanDetailsResultMap">
         SELECT
         *
         FROM
@@ -43,5 +43,12 @@
         WHERE
           loan_id = #{loanId}
     </update>
+
+    <delete id="deleteByLoanId">
+        DELETE FROM
+        `aa`.`loan_details`
+        WHERE
+        loan_id = #{loanId}
+    </delete>
 
 </mapper>

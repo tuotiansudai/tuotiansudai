@@ -1,7 +1,9 @@
 package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -17,6 +19,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     public AccountModel findByLoginName(String loginName) {
         return accountMapper.findByLoginName(loginName);
@@ -49,5 +54,16 @@ public class AccountServiceImpl implements AccountService {
     public long getUserPointByLoginName(String loginName) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         return null == accountModel ? 0 : accountModel.getPoint();
+    }
+
+    @Override
+    public String getRealNameByMobile(String mobile){
+        UserModel userModel = userMapper.findByMobile(mobile);
+        if(userModel == null){
+            return mobile;
+        }
+
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        return accountModel == null ? userModel.getLoginName() : accountModel.getUserName();
     }
 }
