@@ -13,6 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -50,14 +52,19 @@ public class HeroRankingController {
 
         modelAndView.addObject("avgInvestAmount", new BigDecimal(avgInvestAmount).divide(new BigDecimal(10)).setScale(0, RoundingMode.DOWN));
 
-        modelAndView.addObject("todayMysteriousPrizeDto",heroRankingService.obtainMysteriousPrizeDto(new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd")));
-        modelAndView.addObject("tomorrowMysteriousPrizeDto",heroRankingService.obtainMysteriousPrizeDto(new DateTime().plusDays(1).withTimeAtStartOfDay().toString("yyyy-MM-dd")));
+        modelAndView.addObject("todayMysteriousPrizeDto",heroRankingService.obtainMysteriousPrizeDto(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+        modelAndView.addObject("tomorrowMysteriousPrizeDto",heroRankingService.obtainMysteriousPrizeDto(LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
         return modelAndView;
     }
 
     @RequestMapping(value = "/upload-image", method = RequestMethod.POST,produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public MysteriousPrizeDto uploadMysteriousPrize(@RequestBody MysteriousPrizeDto mysteriousPrizeDto){
+    public MysteriousPrizeDto uploadMysteriousPrize(@RequestBody MysteriousPrizeDto mysteriousPrizeDto,
+                                                    @RequestParam boolean today){
+        mysteriousPrizeDto.setPrizeDate(new Date());
+        if (!today) {
+            mysteriousPrizeDto.setPrizeDate(new DateTime().plusDays(1).toDate());
+        }
         heroRankingService.saveMysteriousPrize(mysteriousPrizeDto);
         return mysteriousPrizeDto;
     }

@@ -77,7 +77,7 @@
     </div>
 
     <div class="mysteriousPrize upload-image" style="display: none">
-        <form class="prize-form" action="/activity-manage/upload-image" method="post">
+        <form class="prize-form" action="/activity-console/activity-manage/upload-image" method="post">
 
             <div class="form-group clearfix">
                 <label class="col-sm-1 control-label">名称: </label>
@@ -119,7 +119,7 @@
                     更新后当日24:00自动生效
                     <div class="tomorrowThumbImage">
                         <#if tomorrowMysteriousPrizeDto??>
-                            <img style="width:100%" src="${staticServer}${tomorrowMysteriousPrizeDto.imageUrl!}" alt="神秘大奖缩略图">
+                            <img style="width:100%" src="/${tomorrowMysteriousPrizeDto.imageUrl!}" alt="神秘大奖缩略图">
                         </#if>
                     </div>
 
@@ -134,7 +134,7 @@
                     修改后即时发布到页面,请慎用
                     <div class="todayThumbImage">
                         <#if todayMysteriousPrizeDto??>
-                            <img style="width:100%" src="${staticServer}${todayMysteriousPrizeDto.imageUrl!}" alt="神秘大奖缩略图">
+                            <img style="width:100%" src="/${todayMysteriousPrizeDto.imageUrl!}" alt="神秘大奖缩略图">
                         </#if>
                     </div>
                 </div>
