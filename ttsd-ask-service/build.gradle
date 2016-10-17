@@ -18,7 +18,8 @@ dependencies {
             project(':ttsd-util'),
             project(':ttsd-config'),
             project(':ttsd-client'),
-            project(':ttsd-user-service')
+            project(':ttsd-user-service'),
+            project(':ttsd-ask-model')
 
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }
