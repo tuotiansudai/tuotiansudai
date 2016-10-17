@@ -4,7 +4,7 @@
     <div class="ask-question-box clearfix">
         <div class="m-title">我要提问</div>
         <div class="ask-question-con">
-            <form id="questionForm" name="questionForm" class="form-question" method="post">
+            <form id="questionForm" name="questionForm" class="form-question" method="POST">
                 <dl class="ask-question-list">
                     <dt>一句话描述您的问题</dt>
                     <dd class="clearfix">

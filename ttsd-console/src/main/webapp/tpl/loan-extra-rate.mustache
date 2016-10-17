@@ -1,0 +1,21 @@
+<label class="col-sm-2 control-label"></label>
+
+<div class="col-sm-3">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>投资金额范围（元）</th>
+            <th>投资奖励比例（%）</th>
+        </tr>
+        </thead>
+        <tbody class="extra-rate-rule">
+        {{#rules}}
+            <tr>
+                <td>{{minInvestAmount}} ≤投资额 {{#maxInvestAmount}} < {{.}} {{/maxInvestAmount}}</td>
+                <td>{{ruleRate}}</td>
+                <input name="extraRateRuleIds" type="hidden" class="extra-rate-id" value="{{ruleId}}"/>
+            </tr>
+        {{/rules}}
+        </tbody>
+    </table>
+</div>

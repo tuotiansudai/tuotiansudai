@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 public interface LoanerDetailsMapper {
     void create(LoanerDetailsModel loanerDetailsModel);
 
-    LoanerDetailsModel getLoanerDetailByLoanId(@Param(value = "loanId") long loanId);
+    LoanerDetailsModel getByLoanId(@Param(value = "loanId") long loanId);
 
     void updateByLoanId(LoanerDetailsModel loanerDetailsModel);
+
+    void deleteByLoanId(@Param(value = "loanId") long loanId);
 }

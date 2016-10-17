@@ -29,7 +29,7 @@
         #{estateRegisterId}, #{authenticAct})
     </insert>
 
-    <select id="getPledgeHouseDetailByLoanId" resultMap="PledgeHouseResultMap">
+    <select id="getByLoanId" resultMap="PledgeHouseResultMap">
         SELECT
         *
         FROM

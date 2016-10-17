@@ -2,15 +2,13 @@ package com.tuotiansudai.api.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.controller.v1_0.MobileAppAdvertisementController;
-import com.tuotiansudai.api.controller.v1_0.MobileAppBannerController;
-import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.dto.v1_0.AdvertisementPictureResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.AdvertisementResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppAdvertisementServiceImpl;
-import com.tuotiansudai.api.service.v1_0.impl.MobileAppBannerServiceImpl;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.util.RandomUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

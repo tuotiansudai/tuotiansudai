@@ -44,10 +44,6 @@ public class PayWrapperClient extends BaseClient {
 
     private final static String replaceCardPath = "/bind-card/replace";
 
-    private final static String loanPath = "/loan";
-
-    private final static String loanOutPath = "/loan/loan-out";
-
     private final static String withdrawPath = "/withdraw";
 
     private final static String investPath = "/invest";
@@ -141,12 +137,8 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanRepayId), autoRepayPath, "POST");
     }
 
-    public BaseDto<PayDataDto> createLoan(Object loanDto) {
-        return syncExecute(loanDto, loanPath, "POST");
-    }
-
-    public BaseDto<PayDataDto> updateLoan(Object loanDto) {
-        return syncExecute(loanDto, loanPath, "PUT");
+    public BaseDto<PayDataDto> createLoan(long loanId) {
+        return syncExecute(null, MessageFormat.format("/loan/{0}", String.valueOf(loanId)), "POST");
     }
 
     public BaseDto<PayDataDto> investCallback() {
@@ -157,16 +149,12 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(null, "/job/async_invest_transfer_notify", "POST");
     }
 
-    public BaseDto<PayDataDto> loanOut(Object loanOutDto) {
-        return syncExecute(loanOutDto, loanOutPath, "POST");
+    public BaseDto<PayDataDto> loanOut(long loanId) {
+        return syncExecute(null, MessageFormat.format("/loan/{0}/loan-out", String.valueOf(loanId)), "POST");
     }
 
     public BaseDto<PayDataDto> noPasswordInvest(Object investDto) {
         return syncExecute(investDto, noPasswordInvestPath, "POST");
-    }
-
-    public BaseDto<PayDataDto> checkLoanAmount(long loanId) {
-        return syncExecute(null, MessageFormat.format("/real-time/loan/{0}/check-amount", String.valueOf(loanId)), "GET");
     }
 
     public BaseDto<PayDataDto> loanOutSuccessNotify(long loanId){
