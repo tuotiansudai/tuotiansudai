@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.PledgeEnterpriseMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="abstractResultMap" type="AbstractPledgeDetail">
+        <id column="id" property="id"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="pledge_location" property="pledgeLocation"/>
+        <result column="estimate_amount" property="estimateAmount"/>
+    </resultMap>
+
+    <resultMap id="resultMap" type="PledgeEnterpriseModel" extends="abstractResultMap">
+        <result column="guarantee" property="guarantee"/>
+    </resultMap>
+
+    <insert id="create" parameterType="PledgeEnterpriseModel" useGeneratedKeys="true" keyProperty="id">
+        insert into pledge_enterprise (loan_id, pledge_location, estimate_amount, guarantee)
+        value (#{loanId}, #{pledgeLocation}, #{estimateAmount}, #{guarantee})
+    </insert>
+
+    <select id="getByLoanId" resultMap="resultMap" parameterType="map">
+        select * from pledge_enterprise where loan_id = #{loanId}
+    </select>
+
+    <update id="update" parameterType="PledgeEnterpriseModel">
+        update pledge_enterprise
+        set loan_id = #{loanId},
+        pledge_location = #{pledgeLocation},
+        estimate_amount = #{estimateAmount},
+        guarantee = #{guarantee}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByLoanId" parameterType="map">
+        delete from pledge_enterprise where loan_id = #{loanId}
+    </delete>
+</mapper>

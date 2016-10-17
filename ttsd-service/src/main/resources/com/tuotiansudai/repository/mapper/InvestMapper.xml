@@ -220,8 +220,7 @@
     </update>
 
     <select id="findWaitingInvestCountAfter" parameterType="map" resultType="int">
-        select count(*)
-        from invest
+        select count(*) from invest
         where loan_id = #{loanId}
         and status = 'WAIT_PAY'
         and created_time &gt;= #{afterTime}

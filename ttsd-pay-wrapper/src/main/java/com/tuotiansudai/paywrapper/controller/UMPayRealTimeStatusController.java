@@ -43,12 +43,6 @@ public class UMPayRealTimeStatusController {
         return payRealTimeStatusService.getLoanStatus(loanId);
     }
 
-    @RequestMapping(path = "/loan/{loanId}/check-amount", method = RequestMethod.GET)
-    @ResponseBody
-    public BaseDto<PayDataDto> checkLoanAmount(@PathVariable long loanId) {
-        return payRealTimeStatusService.checkLoanAmount(loanId);
-    }
-
     @RequestMapping(path = "/transfer/order-id/{orderId}/mer-date/{merDate}/business-type/{businessType}", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, String> getRealTimeTransferStatus(@PathVariable String orderId,

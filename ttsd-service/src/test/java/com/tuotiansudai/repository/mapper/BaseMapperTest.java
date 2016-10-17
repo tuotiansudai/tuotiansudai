@@ -68,7 +68,7 @@ public abstract class BaseMapperTest {
         fakeLoanModel.setLoanerUserName("借款人");
         fakeLoanModel.setLoanerIdentityNumber(RandomStringUtils.randomNumeric(18));
         fakeLoanModel.setAgentLoginName(loaner);
-        fakeLoanModel.setBaseRate(productType.getBaseRate());
+        fakeLoanModel.setBaseRate(0.1);
         fakeLoanModel.setPeriods(productType.getPeriods());
         fakeLoanModel.setActivityType(ActivityType.NORMAL);
         fakeLoanModel.setContractId(1);

@@ -213,9 +213,6 @@ public class LoanDto extends BaseDataDto implements Serializable {
 
     private String recheckLoginName;
 
-    /*
-        * 借款期限
-        * */
     private int duration;
 
     private List<Long> extraRateIds;
