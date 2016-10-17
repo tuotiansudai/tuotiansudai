@@ -13,6 +13,8 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
             imageCaptchaElement.attr('src', '/login/captcha?' + new Date().getTime().toString());
         };
 
+        refreshCaptcha();
+
         imageCaptchaElement.click(function () {
             refreshCaptcha();
         });
