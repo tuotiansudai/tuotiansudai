@@ -3,6 +3,7 @@ package com.tuotiansudai.coupon.service.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
@@ -14,6 +15,8 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -55,6 +58,25 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Value(value = "${web.coupon.lock.seconds}")
     private int couponLockSeconds;
+
+    @Autowired
+    private CouponAssignmentService couponAssignmentService;
+
+    private final static List<UserGroup> userGroups = Lists.newArrayList(UserGroup.ALL_USER,
+            UserGroup.INVESTED_USER,
+            UserGroup.REGISTERED_NOT_INVESTED_USER,
+            UserGroup.AGENT,
+            UserGroup.CHANNEL,
+            UserGroup.STAFF,
+            UserGroup.STAFF_RECOMMEND_LEVEL_ONE,
+            UserGroup.IMPORT_USER,
+            UserGroup.NOT_ACCOUNT_NOT_INVESTED_USER,
+            UserGroup.MEMBERSHIP_V0,
+            UserGroup.MEMBERSHIP_V1,
+            UserGroup.MEMBERSHIP_V2,
+            UserGroup.MEMBERSHIP_V3,
+            UserGroup.MEMBERSHIP_V4,
+            UserGroup.MEMBERSHIP_V5);
 
     @Override
     public List<UserCouponView> getUnusedUserCoupons(String loginName) {
@@ -212,5 +234,13 @@ public class UserCouponServiceImpl implements UserCouponService {
     @Override
     public long findSumRedEnvelopeByLoginName(String loginName){
         return userCouponMapper.findSumRedEnvelopeByLoginName(loginName);
+    }
+
+    @Override
+    public void assignUserCoupon(String loginName){
+        if(Strings.isNullOrEmpty(loginName)){
+            return;
+        }
+        couponAssignmentService.assignUserCoupon(loginName, userGroups);
     }
 }

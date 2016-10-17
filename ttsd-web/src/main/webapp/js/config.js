@@ -37,7 +37,9 @@ var require = {
         'count_down': staticServer+'/js/dest/count_down.min',
         'placeholder': staticServer + '/js/libs/jquery.enplaceholder',
         'superslide': staticServer + '/js/libs/jquery.SuperSlide.2.1.1',
-        'logintip': staticServer+'/js/dest/login_tip.min'
+        'logintip': staticServer+'/js/dest/login_tip.min',
+        /*module*/
+        'assign_coupon':staticServer+'/js/dest/assign_coupon.min'
     },
     'waitSeconds':0,
     'shim': {

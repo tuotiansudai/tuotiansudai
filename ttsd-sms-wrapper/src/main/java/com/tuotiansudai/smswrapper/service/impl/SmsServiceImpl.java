@@ -76,7 +76,7 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     public BaseDto<SmsDataDto> couponNotify(SmsCouponNotifyDto notifyDto) {
-        String couponName = (notifyDto.getCouponType() == CouponType.INTEREST_COUPON ? MessageFormat.format("+{0}%", notifyDto.getRate()) : MessageFormat.format("{0}元", notifyDto.getAmount()))
+        String couponName = (notifyDto.getCouponType() == CouponType.INTEREST_COUPON ? MessageFormat.format("+{0}%"+notifyDto.getCouponType().name(), notifyDto.getRate()) : MessageFormat.format("{0}元"+notifyDto.getCouponType().name(), notifyDto.getAmount()))
                 + notifyDto.getCouponType().getName();
 
         List<String> paramList = ImmutableList.<String>builder().add(couponName).add(notifyDto.getExpiredDate()).build();
