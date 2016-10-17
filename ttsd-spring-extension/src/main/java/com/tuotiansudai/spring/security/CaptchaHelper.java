@@ -37,7 +37,7 @@ public class CaptchaHelper {
         if (Strings.isNullOrEmpty(sessionIdOrDeviceId)) {
             return;
         }
-        redisWrapperClient.setex(this.getCaptchaRedisKey(sessionIdOrDeviceId), 60, captcha);
+        redisWrapperClient.setex(this.getCaptchaRedisKey(sessionIdOrDeviceId), 180, captcha);
     }
 
     public boolean captchaVerify(String captcha, String sessionIdOrDeviceId, String ip) {
