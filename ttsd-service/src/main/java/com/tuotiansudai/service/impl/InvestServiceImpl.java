@@ -33,6 +33,7 @@ import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.jsoup.helper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -503,14 +504,27 @@ public class InvestServiceImpl implements InvestService {
         return rate == 0 ? 0 : new BigDecimal(duration * amount).multiply(new BigDecimal(rate)).divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 
-    public long calculateMembershipPreference(String loginName, long loanId, List<Long> couponIds, long investAmount) {
+    public long calculateMembershipPreference(String loginName, long loanId, List<Long> couponIds, long investAmount, Source source) {
         long preference;
         UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
         LoanModel loanModel = loanMapper.findById(loanId);
+
+        List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
+        long extraLoanRateExpectedInterest = 0L;
+        if(CollectionUtils.isNotEmpty(extraLoanRateModels) && !StringUtils.isEmpty(loanDetailsModel) && loanDetailsModel.getExtraSource().contains(source.name())){
+            for (ExtraLoanRateModel extraLoanRateModel : extraLoanRateModels) {
+                if ((extraLoanRateModel.getMinInvestAmount() <= investAmount && investAmount < extraLoanRateModel.getMaxInvestAmount()) ||
+                        (extraLoanRateModel.getMaxInvestAmount() == 0 && extraLoanRateModel.getMinInvestAmount() <= investAmount)) {
+                    extraLoanRateExpectedInterest = InterestCalculator.calculateExtraLoanRateExpectedInterest(extraLoanRateModel.getRate(), investAmount, loanModel.getDuration() );
+                }
+            }
+        }
+
         long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, loanId, couponIds, investAmount);
         long interest = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);
-        long originFee = new BigDecimal(interest + expectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
+        long originFee = new BigDecimal(interest + expectedInterest  + extraLoanRateExpectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
         long membershipFee = new BigDecimal(interest).multiply(new BigDecimal(membershipModel.getFee())).longValue();
         preference = originFee - membershipFee;
         return preference;

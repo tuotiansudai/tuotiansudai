@@ -49,5 +49,5 @@ public interface InvestService {
 
     void markNoPasswordRemind(String loginName);
 
-    long calculateMembershipPreference(String loginName, long loanId, List<Long> couponIds,long investAmount);
+    long calculateMembershipPreference(String loginName, long loanId, List<Long> couponIds, long investAmount, Source source);
 }

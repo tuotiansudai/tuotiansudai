@@ -11,6 +11,7 @@ import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -50,7 +51,7 @@ public class MobileAppMembershipPerceptionServiceTest extends ServiceTestBase{
 
         when(userMemberhshipMapper.findCurrentMaxByLoginName(anyString())).thenReturn(userMembershipModel);
         when(membershipMapper.findById(anyLong())).thenReturn(membershipModel);
-        when(investService.calculateMembershipPreference(anyString(), anyLong(), anyList(), anyLong())).thenReturn(80000L);
+        when(investService.calculateMembershipPreference(anyString(), anyLong(), anyList(), anyLong(), Source.MOBILE)).thenReturn(80000L);
 
         BaseResponseDto<MembershipPerceptionResponseDataDto> responseDto = mobileAppMembershipPerceptionService.getMembershipPerception(membershipPerceptionRequestDto);
 

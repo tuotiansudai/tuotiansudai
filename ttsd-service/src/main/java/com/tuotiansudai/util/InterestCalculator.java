@@ -240,4 +240,10 @@ public class InterestCalculator {
                 divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 
+    public static long calculateExtraLoanRateExpectedInterest(double extraRate, long amount, int periodDuration) {
+        long totalExtraLoanRateExpectedInterest = new BigDecimal(amount).multiply(new BigDecimal(extraRate)).multiply(new BigDecimal(periodDuration)).
+                divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
+        return totalExtraLoanRateExpectedInterest;
+    }
+
 }

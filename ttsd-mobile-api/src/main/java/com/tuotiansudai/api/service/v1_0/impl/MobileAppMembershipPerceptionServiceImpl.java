@@ -13,6 +13,7 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang3.StringUtils;
@@ -57,7 +58,7 @@ public class MobileAppMembershipPerceptionServiceImpl implements MobileAppMember
         UserMembershipModel userMembershipModel = userMemberhshipMapper.findCurrentMaxByLoginName(loginName);
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
         long couponId = userCouponIds.size() != 0 ? userCouponMapper.findById(userCouponIds.get(0)).getCouponId() : 0;
-        String getMoney = AmountConverter.convertCentToString(investService.calculateMembershipPreference(loginName, Long.parseLong(loanId), Lists.newArrayList(couponId), AmountConverter.convertStringToCent(amount)));
+        String getMoney = AmountConverter.convertCentToString(investService.calculateMembershipPreference(loginName, Long.parseLong(loanId), Lists.newArrayList(couponId), AmountConverter.convertStringToCent(amount), Source.MOBILE));
 
         MembershipPerceptionResponseDataDto membershipPerceptionResponseDataDto = new MembershipPerceptionResponseDataDto();
         membershipPerceptionResponseDataDto.setTip(MessageFormat.format("V{0}会员,专享服务费{1}折优惠,已经多赚{2}元",
