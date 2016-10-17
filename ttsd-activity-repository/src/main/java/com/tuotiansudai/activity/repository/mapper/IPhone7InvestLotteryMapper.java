@@ -35,7 +35,7 @@ public interface IPhone7InvestLotteryMapper {
     List<IPhone7InvestLotteryModel> findByLoginName(@Param("loginName") String loginName);
 
 
-    @Results({
+    @Results(id = "statInvestResultMap", value = {
             @Result(column = "login_name", property = "loginName"),
             @Result(column = "invest_amount_total", property = "investAmountTotal"),
             @Result(column = "invest_count", property = "investCount"),
@@ -60,6 +60,13 @@ public interface IPhone7InvestLotteryMapper {
 
     @Select("select count(distinct login_name) from iphone7_invest_lottery")
     int statUserCount();
+
+    @ResultMap("statInvestResultMap")
+    @Select({
+            "select login_name, sum(invest_amount) as invest_amount_total, count(*) as invest_count",
+            "from iphone7_invest_lottery group by login_name"
+    })
+    List<IPhone7InvestLotteryStatView> allStatInvest();
 
     @Select("select count(*) from iphone7_invest_lottery")
     int statInvestCount();
