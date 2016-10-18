@@ -10,7 +10,6 @@ import com.tuotiansudai.console.service.UserServiceConsole;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.UserItemDataDto;
-import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.Source;
@@ -35,11 +34,7 @@ public class UserServiceConsoleImpl implements UserServiceConsole {
     private UserRoleMapper userRoleMapper;
 
     @Autowired
-    private BankCardMapper bankCardMapper;
-
-    @Autowired
     private RedisWrapperClient redisWrapperClient;
-
 
     @Override
     public BaseDto<BasePaginationDataDto<UserItemDataDto>> findAllUser(String loginName, String email, String mobile,
