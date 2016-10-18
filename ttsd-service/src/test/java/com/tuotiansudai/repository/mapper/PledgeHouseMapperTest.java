@@ -73,7 +73,7 @@ public class PledgeHouseMapperTest {
 
         pledgeHouseMapper.create(pledgeHouseModel);
 
-        PledgeHouseModel findPledgeHouseModel = (PledgeHouseModel) pledgeHouseMapper.getPledgeHouseDetailByLoanId(pledgeHouseModel.getLoanId());
+        PledgeHouseModel findPledgeHouseModel = (PledgeHouseModel) pledgeHouseMapper.getByLoanId(pledgeHouseModel.getLoanId());
         assertNotNull(findPledgeHouseModel);
         assertEquals(pledgeHouseModel.getLoanId(), findPledgeHouseModel.getLoanId());
         assertEquals(pledgeHouseModel.getEstimateAmount(), findPledgeHouseModel.getEstimateAmount());
@@ -101,7 +101,7 @@ public class PledgeHouseMapperTest {
         pledgeHouseModel.setAuthenticAct("updateAct");
 
         pledgeHouseMapper.updateByLoanId(pledgeHouseModel);
-        PledgeHouseModel findPledgeHouseModel = (PledgeHouseModel) pledgeHouseMapper.getPledgeHouseDetailByLoanId(pledgeHouseModel.getLoanId());
+        PledgeHouseModel findPledgeHouseModel = (PledgeHouseModel) pledgeHouseMapper.getByLoanId(pledgeHouseModel.getLoanId());
         assertNotNull(findPledgeHouseModel);
         assertEquals(pledgeHouseModel.getLoanId(), findPledgeHouseModel.getLoanId());
         assertEquals(pledgeHouseModel.getEstimateAmount(), findPledgeHouseModel.getEstimateAmount());
@@ -119,9 +119,9 @@ public class PledgeHouseMapperTest {
         PledgeHouseModel pledgeHouseModel = new PledgeHouseModel(9999L, "pledgeLocation", "estimateAmount", "pledgeLoanAmount",
                 "square", "propertyCardId", "estateRegisterId", "authenticAct");
         pledgeHouseMapper.create(pledgeHouseModel);
-        assertNotNull(pledgeHouseMapper.getPledgeHouseDetailByLoanId(pledgeHouseModel.getLoanId()));
+        assertNotNull(pledgeHouseMapper.getByLoanId(pledgeHouseModel.getLoanId()));
 
         pledgeHouseMapper.deleteByLoanId(pledgeHouseModel.getLoanId());
-        assertNull(pledgeHouseMapper.getPledgeHouseDetailByLoanId(pledgeHouseModel.getLoanId()));
+        assertNull(pledgeHouseMapper.getByLoanId(pledgeHouseModel.getLoanId()));
     }
 }

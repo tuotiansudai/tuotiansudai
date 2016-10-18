@@ -269,7 +269,7 @@ public class InvestServiceImpl implements InvestService {
         double investFeeRate = membershipModel != null ? membershipModel.getFee() : defaultFee;
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
 
-        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanId);
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
 
         long extraRateInterest = 0;
         long extraRateFee = 0;
@@ -500,8 +500,8 @@ public class InvestServiceImpl implements InvestService {
     }
 
     public long calculateMembershipPreference(String loginName, long loanId, long investAmount) {
-        long preference = 0;
-        UserMembershipModel userMembershipModel = userMembershipMapper.findCurrentMaxByLoginName(loginName);
+        long preference;
+        UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
         LoanModel loanModel = loanMapper.findById(loanId);
         long interest = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);

@@ -4,17 +4,13 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.GivenMembershipDto;
-import com.tuotiansudai.membership.repository.model.MembershipExperienceBillDto;
-import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.membership.repository.model.*;
 import com.tuotiansudai.membership.service.MembershipExperienceBillService;
+import com.tuotiansudai.membership.service.MembershipGiveService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.GivenMembership;
 import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.HeroRankingService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +44,7 @@ public class MembershipController {
     private UserMembershipService userMembershipService;
 
     @Autowired
-    private HeroRankingService heroRankingService;
+    private MembershipGiveService membershipGiveService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() {
@@ -60,7 +56,7 @@ public class MembershipController {
             MembershipModel nextLevelMembershipModel = membershipModel.getLevel() == 5 ? membershipModel : userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
             AccountModel accountModel = accountService.findByLoginName(loginName);
             long membershipPoint = accountModel == null ? 0 : accountModel.getMembershipPoint();
-            UserMembershipModel userMembershipModel = userMembershipService.findByLoginNameByMembershipId(loginName, membershipModel.getId());
+            UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
             modelAndView.addObject("mobile", LoginUserInfo.getMobile());
             modelAndView.addObject("membershipLevel", membershipModel.getLevel());
             modelAndView.addObject("membershipNextLevel", nextLevelMembershipModel.getLevel());
@@ -68,7 +64,7 @@ public class MembershipController {
             modelAndView.addObject("membershipPoint", membershipPoint);
             modelAndView.addObject("progressBarPercent", userMembershipService.getProgressBarPercent(loginName));
             modelAndView.addObject("membershipType",userMembershipModel != null ? userMembershipModel.getType().name() : "");
-            modelAndView.addObject("leftDays", userMembershipService.getExpireDayByLoginName(loginName));
+            modelAndView.addObject("leftDays", userMembershipService.getMembershipExpireDay(loginName));
             modelAndView.addObject("expiredDate", userMembershipModel.getExpiredTime());
         }
         return modelAndView;
@@ -122,11 +118,11 @@ public class MembershipController {
 
     @ResponseBody
     @RequestMapping(value = "/receive", method = RequestMethod.GET)
-    public BaseDto<GivenMembershipDto> receive(HttpServletRequest httpServletRequest) throws ParseException {
+    public BaseDto<GivenMembershipDto> receive() throws ParseException {
         BaseDto<GivenMembershipDto> dto = new BaseDto<>();
         try {
             String loginName = LoginUserInfo.getLoginName();
-            GivenMembership givenMembership = heroRankingService.receiveMembership(loginName);
+            GivenMembership givenMembership = membershipGiveService.receiveMembership(loginName);
             dto.setData(new GivenMembershipDto(givenMembership.getDescription(),givenMembership.getUrl(),givenMembership.getBtnName()));
             dto.setSuccess(true);
         } catch (Exception e) {
@@ -137,5 +133,4 @@ public class MembershipController {
         }
         return dto;
     }
-
 }

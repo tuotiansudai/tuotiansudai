@@ -18,9 +18,7 @@
                 <label>
                     <em class="name">验证码:</em>
                     <input class="captcha unlock" type="text" value="" name="captcha" placeholder="请输入验证码" maxlength="5"/>
-                    <em class="image-captcha">
-                        <img src="/login/captcha" alt=""/>
-                    </em>
+                    <em class="image-captcha"><img src=""/></em>
                 </label>
                 <input type="hidden" name="source" value="WEB" />
                 <i class="error fa fa-times-circle"></i>
