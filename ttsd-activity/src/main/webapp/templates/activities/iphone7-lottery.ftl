@@ -83,20 +83,27 @@
 				<img src="${staticServer}/activity/images/iphone7/my-code.png" width="90%">
 				</h3>
 				<div class="content-item dashed">
-					<ul class="my-code-group">
-						<#if myInvestList??>
-							<#list myInvestList as myInvest>
-                                <li>
-                                    <span>${myInvest.lotteryNumber}</span>
-                                    <span>${myInvest.status.description}</span>
-                                </li>
-							</#list>
-						</#if>
-					</ul>
-					<div class="code-btn-group">
-						<span class="prev-btn">上一页</span>
-						<span class="next-btn">下一页</span>
-					</div>
+					<#--<@global.isAnonymous>-->
+                        <#--请登陆查看我的抽奖码:<a href="/login" target="_blank" class="get-rank">登录</a>-->
+					<#--</@global.isAnonymous>-->
+					<#--<@global.isNotAnonymous>-->
+						<input type="hidden" value="gengbeijun" id="loginName">
+                        <ul class="my-code-group">
+							<#if myInvestList??>
+								<#list myInvestList as myInvest>
+                                    <li>
+                                        <span>${myInvest.lotteryNumber}</span>
+                                        <span>${myInvest.status.description}</span>
+                                    </li>
+								</#list>
+							</#if>
+                        </ul>
+                        <div class="code-btn-group">
+                            <span class="prev-btn">上一页</span>
+                            <span class="next-btn">下一页</span>
+                        </div>
+					<#--</@global.isNotAnonymous>-->
+
 				</div>
 			</div>
 			<div class="get-loan-group text-c">

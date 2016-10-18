@@ -12,12 +12,12 @@ require(['jquery', 'layerWrapper', 'template', 'logintip', 'jquery.ajax.extensio
 
 		function getDatelist(page){
 			$.ajax({
-				url: '/path/to/file',
+				url: '/activity/iphone7-lottery/myInvestDetail',
 				type: 'POST',
 				dataType: 'json',
 				data: {
-					param1: page,
-					user:loginname
+					index: page,
+					loginName:$('#loginName').val()
 				}
 			})
 			.done(function(data) {
@@ -27,7 +27,7 @@ require(['jquery', 'layerWrapper', 'template', 'logintip', 'jquery.ajax.extensio
 			.fail(function(data) {
 				layer.msg('请求失败，请重试！');
 			});
-			
 		}
+		getDatelist(1);
 	});
 });

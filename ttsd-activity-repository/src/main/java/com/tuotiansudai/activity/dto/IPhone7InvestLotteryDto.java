@@ -10,7 +10,7 @@ public class IPhone7InvestLotteryDto {
 
     private String lotteryNumber;
 
-    private IPhone7InvestLotteryStatus status;
+    private String status;
 
     public String getLotteryNumber() {
         return lotteryNumber;
@@ -20,16 +20,16 @@ public class IPhone7InvestLotteryDto {
         this.lotteryNumber = lotteryNumber;
     }
 
-    public IPhone7InvestLotteryStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(IPhone7InvestLotteryStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
     public IPhone7InvestLotteryDto(IPhone7InvestLotteryModel iPhone7InvestLotteryModel){
         this.lotteryNumber = iPhone7InvestLotteryModel.getLotteryNumber();
-        this.status = iPhone7InvestLotteryModel.getStatus();
+        this.status = iPhone7InvestLotteryModel.getStatus() == IPhone7InvestLotteryStatus.WAITING ? IPhone7InvestLotteryStatus.WAITING.getDescription(): IPhone7InvestLotteryStatus.WINNING.getDescription();
     }
 }

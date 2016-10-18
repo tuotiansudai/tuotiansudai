@@ -64,13 +64,14 @@ public class Iphone7LotteryService {
     }
 
     public String nextLotteryInvestAmount(){
-        long totalAmount = investMapper.sumInvestAmountRanking(activityIphone7StartTime, activityIphone7EndTime);
+        long totalAmount = 1600000 * 100;//investMapper.sumInvestAmountRanking(activityIphone7StartTime, activityIphone7EndTime);
         int currentLotteryInvestAmount = iPhone7LotteryConfigMapper.getCurrentLotteryInvestAmount();
         long nextLotteryInvestAmount = totalAmount - currentLotteryInvestAmount * 1000000;
         return AmountConverter.convertCentToString(nextLotteryInvestAmount);
     }
 
-    public BaseDto<BasePaginationDataDto> myInvestLotteryList(String loginName, int index, int pageSize){
+    public BasePaginationDataDto<IPhone7InvestLotteryDto> myInvestLotteryList(String loginName, int index, int pageSize){
+
         long count = iPhone7InvestLotteryMapper.findByLoginNameCount(loginName);
         List<IPhone7InvestLotteryModel> records = Lists.newArrayList();
         if (count > 0) {
@@ -83,10 +84,14 @@ public class Iphone7LotteryService {
             return new IPhone7InvestLotteryDto(iPhone7InvestLotteryModel);
         }).collect(Collectors.toList());
 
-        BasePaginationDataDto<IPhone7InvestLotteryDto> paginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, dtoList);
-        return new BaseDto<>(paginationDataDto);
+        BasePaginationDataDto<IPhone7InvestLotteryDto> dto = new BasePaginationDataDto<>(index, pageSize, count, dtoList);
+        dto.setStatus(true);
+        return dto;
     }
 
+    public long getTotalCount(String loginName){
+        return iPhone7InvestLotteryMapper.findByLoginNameCount(loginName);
+    }
 
     @Transactional
     public void getLotteryNumber(InvestModel investModel){
