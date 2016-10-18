@@ -139,7 +139,9 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
         })
             .done(function (data) {
                 var countdown = 60;
+                var timer;
                 if (data.data.status && !data.data.isRestricted) {
+                    refreshCaptcha();
                     timer = setInterval(function () {
                         $fetchCaptcha.prop('disabled', true).text(countdown + '秒后重发');
                         countdown--;
@@ -158,7 +160,7 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
                 if (!data.data.status && !data.data.isRestricted) {
                     $('#appCaptchaErr').html('图形验证码错误');
                 }
-                refreshCaptcha();
+
             })
             .fail(function () {
                 refreshCaptcha();
