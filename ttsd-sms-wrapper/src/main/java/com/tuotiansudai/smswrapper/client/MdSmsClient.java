@@ -54,7 +54,7 @@ public class MdSmsClient implements ApplicationContextAware {
     @Value("${zucp.password}")
     private String password;
 
-    @Value("${sms.interval.second}")
+    @Value("${sms.interval.seconds}")
     private int second;
 
     @Autowired
