@@ -35,7 +35,8 @@ public abstract class BaseClient {
     private OkHttpClient okHttpClient = new OkHttpClient();
 
     protected String execute(String path, String requestJson, String method) {
-        String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
+//        String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
+        String url = "http://localhost:8099/sms/coupon-notify";
         RequestBody requestBody = RequestBody.create(JSON, !Strings.isNullOrEmpty(requestJson) ? requestJson : "");
         if ("GET".equalsIgnoreCase(method)) {
             requestBody = null;

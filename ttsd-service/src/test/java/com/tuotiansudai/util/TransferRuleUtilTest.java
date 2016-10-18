@@ -1,6 +1,7 @@
 package com.tuotiansudai.util;
 
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.job.CouponNotifyJob;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -13,6 +14,8 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -169,5 +172,12 @@ public class TransferRuleUtilTest {
     public void shouldName() throws Exception {
         System.out.println(MessageFormat.format("{0}", 1));
 
+    }
+
+    @Test
+    public void maiTest() throws Exception{
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        CouponNotifyJob couponNotifyJob = applicationContext.getBean(CouponNotifyJob.class);
+        couponNotifyJob.execute(null);
     }
 }

@@ -22,7 +22,8 @@ public class CouponNotifyJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        long couponId = (long) context.getJobDetail().getJobDataMap().get(COUPON_ID);
+        long couponId = 1098;
+//        long couponId = (long) context.getJobDetail().getJobDataMap().get(COUPON_ID);
 
         logger.info(MessageFormat.format("Send coupon notify (couponId = {0}) starting", String.valueOf(couponId)));
 

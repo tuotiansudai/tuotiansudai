@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -241,6 +242,8 @@ public class UserCouponServiceImpl implements UserCouponService {
         if(Strings.isNullOrEmpty(loginName)){
             return;
         }
+        logger.debug(MessageFormat.format("assign coupon user:{0},begin time:{1}",loginName,DateTime.now().toString()));
         couponAssignmentService.assignUserCoupon(loginName, userGroups);
+        logger.debug(MessageFormat.format("assign coupon user:{0},end time:{1}",loginName,DateTime.now().toString()));
     }
 }

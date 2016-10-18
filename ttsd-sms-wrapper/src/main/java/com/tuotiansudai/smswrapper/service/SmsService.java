@@ -35,4 +35,6 @@ public interface SmsService {
     BaseDto<SmsDataDto> importUserGetGiveMembership(String mobile, int level);
 
     BaseDto<SmsDataDto> newUserGetGiveMembership(String mobile, int level);
+
+    BaseDto<SmsDataDto> couponNotifyByMd(SmsCouponNotifyDto notifyDto);
 }
