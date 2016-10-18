@@ -170,7 +170,7 @@ class taskCenter extends React.Component {
           isShowLoading:true
 
         });
-        this.myScroll.scrollTo(0, -imgHeight, 1000);
+        this.myScroll.scrollTo(0, -imgHeight, 100);
         if(value=='ONGOING') {
             this.fetchData('/task-center/tasks',(response) => {
 
@@ -220,7 +220,7 @@ class taskCenter extends React.Component {
 	}
     componentDidUpdate() {
 
-        imagesLoaded(this.refs.mainConWrap).on('always', () => {
+        imagesLoaded(this.refs.mainConWrap).on('done', () => {
             setTimeout(() => {
             if (!this.myScroll) {
                 this.refs.mainConWrap.style.height=document.documentElement.clientHeight +'px';
@@ -255,9 +255,7 @@ class taskCenter extends React.Component {
             else {
                 this.myScroll.refresh();
             }
-          },100);
-
-
+          },50);
         });
     }
 
