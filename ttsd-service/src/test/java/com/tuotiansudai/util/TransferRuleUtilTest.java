@@ -173,11 +173,4 @@ public class TransferRuleUtilTest {
         System.out.println(MessageFormat.format("{0}", 1));
 
     }
-
-    @Test
-    public void maiTest() throws Exception{
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
-        CouponNotifyJob couponNotifyJob = applicationContext.getBean(CouponNotifyJob.class);
-        couponNotifyJob.execute(null);
-    }
 }

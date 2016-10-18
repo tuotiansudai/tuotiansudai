@@ -20,7 +20,9 @@ public class SmsController {
     @ResponseBody
     public BaseDto<SmsDataDto> sendRegisterCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {
         BaseDto<SmsDataDto> smsDateDto = smsService.sendRegisterCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
-        smsService.sendRegisterCaptchaByMd(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
+        if(!smsDateDto.isSuccess()){
+            smsService.sendRegisterCaptchaByMd(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
+        }
 
         return smsDateDto;
 

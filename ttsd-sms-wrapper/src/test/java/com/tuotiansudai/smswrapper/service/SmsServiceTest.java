@@ -112,6 +112,4 @@ public class SmsServiceTest {
         assertThat(record.getContent(), is(content));
         assertThat(record.getResultCode(), is("200"));
     }
-
-
 }
