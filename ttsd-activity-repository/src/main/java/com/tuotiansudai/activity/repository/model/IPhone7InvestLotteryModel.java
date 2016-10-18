@@ -67,6 +67,14 @@ public class IPhone7InvestLotteryModel implements Serializable {
     public void setStatus(IPhone7InvestLotteryStatus status) {
         this.status = status;
     }
+
+
+    public IPhone7InvestLotteryModel(long investId, String loginName, long investAmount, String lotteryNumber){
+        this.investId = investId;
+        this.loginName = loginName;
+        this.investAmount = investAmount;
+        this.lotteryNumber = lotteryNumber;
+    }
 }
 
 

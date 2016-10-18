@@ -54,6 +54,9 @@ public interface IPhone7LotteryConfigMapper {
     @Delete("delete from iphone7_lottery_config where id = #{id} and status<>'APPROVED' and status<>'EFFECTIVE'")
     int removeUnApprovedConfig(@Param("id") long id);
 
+    @Select("select * from iphone7_lottery_config where lottery_number = #{lotteryNumber} and status = 'EFFECTIVE'")
+    IPhone7LotteryConfigModel findByLotteryNumber(@Param("lotteryNumber") String lotteryNumber);
+
     @Update({
             "update iphone7_lottery_config set",
             "audited_by = #{auditedBy},",

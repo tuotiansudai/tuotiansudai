@@ -35,6 +35,9 @@ public interface IPhone7InvestLotteryMapper {
     @Select("select * from iphone7_invest_lottery where login_name=#{loginName} order by id")
     List<IPhone7InvestLotteryModel> findByLoginName(@Param("loginName") String loginName);
 
+    @Select("select * from iphone7_invest_lottery where lottery_number = #{lottery_number}")
+    IPhone7InvestLotteryModel findByLotteryNumber(@Param("lotteryNumber") String lotteryNumber);
+
     @Results({
             @Result(id = true, column = "id", property = "id"),
             @Result(column = "invest_id", property = "investId"),

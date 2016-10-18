@@ -14,12 +14,14 @@ public class Iphone7Aspect {
     @Autowired
     private Iphone7LotteryService iphone7LotteryService;
 
+
     @AfterReturning(value = "execution(* *..InvestService.investSuccess(..))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         logger.info("after returning invest,iphone7 aspect starting...");
 
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
         String loginName = investModel.getLoginName();
+
 
         iphone7LotteryService.getLotteryNumber(investModel);
 
