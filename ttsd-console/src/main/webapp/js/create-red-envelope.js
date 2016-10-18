@@ -169,8 +169,8 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                 $('.give-number').val('0');
             } else if (userGroup.indexOf('FIRST_INVEST_ACHIEVEMENT') > 0 || userGroup.indexOf('MAX_AMOUNT_ACHIEVEMENT') > 0 || userGroup.indexOf('LAST_INVEST_ACHIEVEMENT') > 0) {
                 $('.give-number').val('').prop('readonly', false);
-            } else if(userGroup.indexOf('MEMBERSHIP_V0') > 0 || userGroup.indexOf('MEMBERSHIP_V1') || userGroup.indexOf('MEMBERSHIP_V2')
-                || userGroup.indexOf('MEMBERSHIP_V3') || userGroup.indexOf('MEMBERSHIP_V4') || userGroup.indexOf('MEMBERSHIP_V5')){
+            } else if(userGroup.indexOf('MEMBERSHIP_V0') > 0 || userGroup.indexOf('MEMBERSHIP_V1') > 0 || userGroup.indexOf('MEMBERSHIP_V2') > 0
+                || userGroup.indexOf('MEMBERSHIP_V3') > 0 || userGroup.indexOf('MEMBERSHIP_V4') > 0 || userGroup.indexOf('MEMBERSHIP_V5') > 0){
                 $.get('/user-manage/userMembership/count?userGroup='+userGroup,function(data) {
                     $('.give-number').val(parseInt(data)).prop('readonly', true);
                 })
