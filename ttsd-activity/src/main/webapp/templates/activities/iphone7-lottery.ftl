@@ -83,26 +83,36 @@
 				<img src="${staticServer}/activity/images/iphone7/my-code.png" width="90%">
 				</h3>
 				<div class="content-item dashed">
-					<#--<@global.isAnonymous>-->
-                        <#--请登陆查看我的抽奖码:<a href="/login" target="_blank" class="get-rank">登录</a>-->
-					<#--</@global.isAnonymous>-->
-					<#--<@global.isNotAnonymous>-->
+					<@global.isAnonymous>
+                        <div class="login-group text-c">
+							<a href="javascript:void(0)" class="login-btn show-login">登录查看我的投资码</a>
+						</div>
+					</@global.isAnonymous>
+					<@global.isNotAnonymous>
 						<input type="hidden" value="gengbeijun" id="loginName">
+						<div class="code-list-item" id="codeList">
+							
+						</div>
+                        <script type="text/html" id="codeListTpl">
                         <ul class="my-code-group">
-							<#if myInvestList??>
-								<#list myInvestList as myInvest>
+							{{if records.length>0}}
+								{{each records}}
                                     <li>
-                                        <span>${myInvest.lotteryNumber}</span>
-                                        <span>${myInvest.status.description}</span>
+                                        <span>{{$value.lotteryNumber}}</span>
+                                        <span>{{$value.status}}</span>
                                     </li>
-								</#list>
-							</#if>
+								{{/each}}
+							{{/if}}
+                        
                         </ul>
+                        {{if count>10}}
                         <div class="code-btn-group">
-                            <span class="prev-btn">上一页</span>
-                            <span class="next-btn">下一页</span>
+                            <span class="prev-btn code-btn" data-page="{{index-1<=0?1:index-1}}">上一页</span>
+                            <span class="next-btn code-btn" data-page="{{index<maxPage?index+1:maxPage}}">下一页</span>
                         </div>
-					<#--</@global.isNotAnonymous>-->
+                        {{/if}}
+                        </script>
+					</@global.isNotAnonymous>
 
 				</div>
 			</div>

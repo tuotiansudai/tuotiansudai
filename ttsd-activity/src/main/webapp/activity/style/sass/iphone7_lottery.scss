@@ -388,61 +388,88 @@ $width: 700px;
               }
             }
           }
-          .my-code-group{
-            float:left;
-            width:100%;
-            li{
+          .code-list-item{
+            .my-code-group{
               float:left;
               width:100%;
-              margin-bottom: 10px;
-              background:#ffe10c;
-              border-radius:40px;
-              @media (max-width:$width) {
-                border-radius: 20px;
-              }
-              span{
+              li{
                 float:left;
-                width:50%;
-                text-align:center;
-                font-size:18px;
-                line-height:40px;
-                color:#994c00;
-                box-sizing: border-box;
-                &:nth-child(1){
-                  border-right:1px dashed #994c00;
-                }
+                width:100%;
+                margin-bottom: 10px;
+                background:#ffe10c;
+                border-radius:40px;
                 @media (max-width:$width) {
-                  font-size:12px;
+                  border-radius: 20px;
+                }
+                span{
+                  float:left;
+                  width:50%;
+                  text-align:center;
+                  font-size:18px;
+                  line-height:40px;
+                  color:#994c00;
+                  box-sizing: border-box;
+                  &:nth-child(1){
+                    border-right:1px dashed #994c00;
+                  }
+                  @media (max-width:$width) {
+                    font-size:12px;
+                    line-height:20px;
+                  }
+                }
+              }
+            }
+            .code-btn-group{
+              float:left;
+              width:100%;
+              span{
+                width:160px;
+                height:40px;
+                line-height:40px;
+                text-align:center;
+                font-size:22px;
+                color:#994c00;
+                background: #ffe10c;
+                border-radius:40px;
+                cursor:pointer;
+                @media (max-width:$width) {
+                  width:80px;
+                  height:20px;
                   line-height:20px;
+                  border-radius: 20px;
+                  font-size:12px;
+                }
+                &.prev-btn{
+                  float:left;
+                }
+                &.next-btn{
+                  float:right;
                 }
               }
             }
           }
-          .code-btn-group{
-            float:left;
-            width:100%;
-            span{
-              width:160px;
-              height:40px;
-              line-height:40px;
-              text-align:center;
-              font-size:22px;
-              color:#994c00;
-              background: #ffe10c;
-              border-radius:40px;
-              cursor:pointer;
+          .login-group {
+            float: left;
+            width: 100%;
+            margin: 30px 0;
+
+            .login-btn {
+              display: inline-block;
+              width: 400px;
+              height: 56px;
+              line-height: 56px;
+              text-align: center;
+              background: #ffe14d;
+              font-size: 26px;
+              color: #994c00;
+              border-radius: 40px;
+
               @media (max-width:$width) {
-                width:80px;
-                height:20px;
-                line-height:20px;
-                border-radius: 20px;
-                font-size:12px;
-              }
-              &.prev-btn{
-                float:left;
-              }
-              &.next-btn{
-                float:right;
+                width: 120px;
+                height: 28px;
+                line-height: 28px;
+                border-radius: 30px;
+                font-size: 14px;
               }
             }
           }
