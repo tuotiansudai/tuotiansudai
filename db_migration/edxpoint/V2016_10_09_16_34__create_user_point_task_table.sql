@@ -6,4 +6,4 @@ CREATE TABLE `user_point_task` (
   `created_time` datetime NOT NULL,
   PRIMARY KEY (`login_name`,`point_task_id`,`task_level`),
   KEY `FK_USER_POINT_TASK_REF_POINT_TASK_ID` (`point_task_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

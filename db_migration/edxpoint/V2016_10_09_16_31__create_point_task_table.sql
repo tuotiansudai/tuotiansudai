@@ -7,4 +7,4 @@ CREATE TABLE `point_task` (
   `max_level` bigint(20) unsigned NOT NULL DEFAULT '1',
   `created_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
