@@ -37,4 +37,6 @@ public interface SmsService {
     BaseDto<SmsDataDto> newUserGetGiveMembership(String mobile, int level);
 
     BaseDto<SmsDataDto> couponNotifyByMd(SmsCouponNotifyDto notifyDto);
+
+    BaseDto<SmsDataDto> sendRegisterCaptchaByMd(String mobile, String captcha, String ip);
 }

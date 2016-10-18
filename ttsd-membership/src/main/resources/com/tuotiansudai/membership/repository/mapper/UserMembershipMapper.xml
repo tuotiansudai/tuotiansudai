@@ -243,4 +243,8 @@
         level = #{level}
     </select>
 
+    <select id="findLoginNameMembershipByLevel" resultType="java.lang.String">
+        select login_name from user_membership u join membership m on u.membership_id = m.id where level = #{level}
+    </select>
+
 </mapper>

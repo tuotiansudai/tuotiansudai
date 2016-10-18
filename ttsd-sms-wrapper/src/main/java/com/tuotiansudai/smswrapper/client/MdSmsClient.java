@@ -2,6 +2,7 @@ package com.tuotiansudai.smswrapper.client;
 
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -14,8 +15,11 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +31,9 @@ import java.text.MessageFormat;
 import java.util.List;
 
 @Service
-public class MdSmsClient {
+public class MdSmsClient implements ApplicationContextAware {
+
+    private static ApplicationContext applicationContext;
 
     static Logger logger = Logger.getLogger(SmsClient.class);
 
@@ -56,6 +62,11 @@ public class MdSmsClient {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate template, String param, String restrictedIP) {
+        List<String> paramList = Lists.newArrayList(param);
+        return sendSMS(baseMapperClass, mobile, template, paramList, restrictedIP);
+    }
 
     public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, SmsTemplate smsTemplate,List<String> paramList, String restrictedIP) {
         BaseDto<SmsDataDto> dto = new BaseDto<>();
@@ -139,24 +150,22 @@ public class MdSmsClient {
     }
 
     private BaseMapper getMapperByClass(Class clazz) {
+
         String fullName = clazz.getName();
         String[] strings = fullName.split("\\.");
 
         String beanName = Introspector.decapitalize(strings[strings.length - 1]);
 
-        try {
-            return (BaseMapper) Class.forName(beanName).newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return (BaseMapper) applicationContext.getBean(beanName);
+
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        MdSmsClient.applicationContext = applicationContext;
     }
 }

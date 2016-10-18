@@ -84,8 +84,7 @@ public class SmsServiceImpl implements SmsService {
                 + notifyDto.getCouponType().getName();
 
         List<String> paramList = ImmutableList.<String>builder().add(couponName).add(notifyDto.getExpiredDate()).build();
-        return mdSmsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(),SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
-//        return smsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(),SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
+        return smsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(),SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
     }
 
     @Override
@@ -120,8 +119,15 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     public BaseDto<SmsDataDto> couponNotifyByMd(SmsCouponNotifyDto notifyDto){
-        String couponName = (notifyDto.getCouponType() == CouponType.INTEREST_COUPON ? MessageFormat.format("+{0}%"+notifyDto.getCouponType().name(), notifyDto.getRate()) : MessageFormat.format("{0}元"+notifyDto.getCouponType().name(), notifyDto.getAmount()))
+        String couponName = (notifyDto.getCouponType() == CouponType.INTEREST_COUPON ? MessageFormat.format("+{0}%", notifyDto.getRate()) : MessageFormat.format("{0}元", notifyDto.getAmount()))
                 + notifyDto.getCouponType().getName();
-        return mdSmsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(),SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, Lists.newArrayList(couponName,notifyDto.getExpiredDate()), "");
+
+        List<String> paramList = ImmutableList.<String>builder().add(couponName).add(notifyDto.getExpiredDate()).build();
+        return mdSmsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
+    }
+
+    @Override
+    public BaseDto<SmsDataDto> sendRegisterCaptchaByMd(String mobile, String captcha, String ip){
+        return mdSmsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
     }
 }

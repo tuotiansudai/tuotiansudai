@@ -181,7 +181,6 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         notifyDto.setCouponType(couponModel.getCouponType());
         notifyDto.setExpiredDate(new DateTime(couponModel.getEndTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
 
-        loginNames.add("gaoyinglong");
         for (String loginName : loginNames) {
             String mobile = userMapper.findByLoginName(loginName).getMobile();
             notifyDto.setMobile(mobile);

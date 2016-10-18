@@ -6,11 +6,13 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,9 +34,25 @@ public class MembershipUserCollector implements UserCollector {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    @Autowired
+    private UserMembershipMapper userMembershipMapper;
+
     @Override
     public List<String> collect(long couponId) {
-        return Lists.newArrayList();
+        CouponModel couponModel = couponMapper.findById(couponId);
+        Iterator memberships = mapping.entrySet().iterator();
+        Integer level = null;
+        while (memberships.hasNext()){
+            Map.Entry membership = (Map.Entry)memberships.next();
+            if(membership.getValue().equals(couponModel.getUserGroup())){
+                level = (Integer) membership.getKey();
+                break;
+            }
+        }
+
+        if(level == null) return Lists.newArrayList();
+
+        return userMembershipMapper.findLoginNameMembershipByLevel(level);
     }
 
     @Override

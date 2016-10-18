@@ -19,7 +19,11 @@ public class SmsController {
     @RequestMapping(value = "/register-captcha", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> sendRegisterCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {
-        return smsService.sendRegisterCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
+        BaseDto<SmsDataDto> smsDateDto = smsService.sendRegisterCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
+        smsService.sendRegisterCaptchaByMd(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
+
+        return smsDateDto;
+
     }
 
     @RequestMapping(value = "/no-password-invest-captcha", method = RequestMethod.POST)
@@ -55,7 +59,7 @@ public class SmsController {
     @RequestMapping(value = "/coupon-notify", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> couponNotify(@Valid @RequestBody SmsCouponNotifyDto notifyDto) {
-        return smsService.couponNotify(notifyDto);
+        return smsService.couponNotifyByMd(notifyDto);
     }
 
     @RequestMapping(value = "/birthday-notify", method = RequestMethod.POST)
