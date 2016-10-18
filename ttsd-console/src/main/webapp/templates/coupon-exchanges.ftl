@@ -52,12 +52,8 @@
                 <th>
                     使用条件
                 </th>
-                <th>
+                <th colspan="3">
                     操作
-                </th>
-                <th>
-                </th>
-                <th>
                 </th>
             </tr>
             </thead>

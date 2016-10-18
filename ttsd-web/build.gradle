@@ -4,7 +4,7 @@ apply from: 'db_migration.gradle'
 dependencies {
     compile project(':ttsd-web-common-config'),
             project(':ttsd-service'),
-            project(':ttsd-point'),
+            project(':ttsd-point-service'),
             project(':ttsd-message'),
             fileTree(dir: 'libs', include: '**/*.jar')
 
