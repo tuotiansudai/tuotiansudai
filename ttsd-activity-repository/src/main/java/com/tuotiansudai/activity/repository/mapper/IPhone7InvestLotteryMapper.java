@@ -5,7 +5,6 @@ import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryStatView;
 import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryWinnerView;
 import org.apache.ibatis.annotations.*;
 
-import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -22,7 +21,6 @@ public interface IPhone7InvestLotteryMapper {
     @Options(useGeneratedKeys = true)
     int create(IPhone7InvestLotteryModel model);
 
-
     @Results({
             @Result(id = true, column = "id", property = "id"),
             @Result(column = "invest_id", property = "investId"),
@@ -38,6 +36,9 @@ public interface IPhone7InvestLotteryMapper {
     @Select("select * from iphone7_invest_lottery where lottery_number = #{lottery_number}")
     IPhone7InvestLotteryModel findByLotteryNumber(@Param("lotteryNumber") String lotteryNumber);
 
+    @Select("select ifnull(sum(invest_amount),0) from iphone7_invest_lottery")
+    long findsumTotalAmount();
+
     @Results({
             @Result(id = true, column = "id", property = "id"),
             @Result(column = "invest_id", property = "investId"),
@@ -48,7 +49,7 @@ public interface IPhone7InvestLotteryMapper {
             @Result(column = "status", property = "status")
     })
     @Select("select * from iphone7_invest_lottery where login_name=#{loginName} order by id limit #{index}, #{pageSize}")
-    List<IPhone7InvestLotteryModel> findByAllLoginName(@Param("loginName") String loginName,
+    List<IPhone7InvestLotteryModel> findPaginationByLoginName(@Param("loginName") String loginName,
                                                     @Param(value = "index") int index,
                                                     @Param(value = "pageSize") int pageSize);
 
@@ -101,7 +102,7 @@ public interface IPhone7InvestLotteryMapper {
 
     @Update({
             "update iphone7_invest_lottery set",
-            "status = 'WINNER'",
+            "status = 'WINNING'",
             "where lottery_number = #{lotteryNumber}"
     })
     int updateByLotteryNumber(@Param("lotteryNumber") String lotteryNumber);

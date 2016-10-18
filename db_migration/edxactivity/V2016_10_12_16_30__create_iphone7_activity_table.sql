@@ -18,6 +18,7 @@ CREATE TABLE `iphone7_lottery_config` (
   `id`             BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `invest_amount`  BIGINT              NOT NULL,
   `lottery_number` VARCHAR(50)         NOT NULL,
+  `mobile`         VARCHAR(15)         NOT NULL,
   `effective_time` DATETIME,
   `created_by`     VARCHAR(25)         NOT NULL,
   `created_time`   DATETIME            NOT NULL,

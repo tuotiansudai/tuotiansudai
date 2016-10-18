@@ -12,9 +12,9 @@ public interface IPhone7LotteryConfigMapper {
 
     @Insert({
             "insert into iphone7_lottery_config (",
-            "invest_amount, lottery_number, created_by, created_time, status",
+            "invest_amount, lottery_number, mobile, created_by, created_time, status",
             ") values (",
-            "#{investAmount}, #{lotteryNumber}, #{createdBy}, #{createdTime}, 'TO_APPROVE'",
+            "#{investAmount}, #{lotteryNumber}, #{mobile}, #{createdBy}, #{createdTime}, 'TO_APPROVE'",
             ")"
     })
     @Options(useGeneratedKeys = true)
@@ -24,6 +24,7 @@ public interface IPhone7LotteryConfigMapper {
             @Result(id = true, column = "id", property = "id"),
             @Result(column = "invest_amount", property = "investAmount"),
             @Result(column = "lottery_number", property = "lotteryNumber"),
+            @Result(column = "mobile", property = "mobile"),
             @Result(column = "effective_time", property = "effectiveTime"),
             @Result(column = "created_by", property = "createdBy"),
             @Result(column = "created_time", property = "createdTime"),
@@ -32,7 +33,7 @@ public interface IPhone7LotteryConfigMapper {
             @Result(column = "status", property = "status")
     })
     @Select("select * from iphone7_lottery_config where status='EFFECTIVE' order by invest_amount")
-    List<IPhone7LotteryConfigModel> approvedList();
+    List<IPhone7LotteryConfigModel> effectiveList();
 
     @Select("select ifnull(max(invest_amount),0) from iphone7_lottery_config where status='EFFECTIVE'")
     int getCurrentLotteryInvestAmount();

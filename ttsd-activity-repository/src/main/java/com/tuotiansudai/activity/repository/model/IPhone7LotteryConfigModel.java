@@ -7,6 +7,7 @@ public class IPhone7LotteryConfigModel implements Serializable {
     private long id;
     private long investAmount;
     private String lotteryNumber;
+    private String mobile;
     private Date effectiveTime;
     private String createdBy;
     private Date createdTime;
@@ -36,6 +37,14 @@ public class IPhone7LotteryConfigModel implements Serializable {
 
     public void setLotteryNumber(String lotteryNumber) {
         this.lotteryNumber = lotteryNumber;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public Date getEffectiveTime() {
