@@ -52,7 +52,7 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
                 return;
             } else {
                 $.ajax({
-                        url: '/activity-manage/coupon/' + thisId + '/active',
+                        url: '/point-manage/exchange-coupon/' + thisId + '/active',
                         type: 'POST',
                         dataType: 'json'
                     })

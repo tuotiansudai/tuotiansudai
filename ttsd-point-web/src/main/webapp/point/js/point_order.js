@@ -42,7 +42,7 @@ require(['jquery', 'layerWrapper','template', 'jquery.validate', 'jquery.ajax.ex
 					dataType: 'json',
 					data: {
 						id: idString,
-						itemType: typeString,
+						goodsType: typeString,
 						number: $numText.val(),
 						userAddressId: $('#updatePlace').attr('data-id')
 					}

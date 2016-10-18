@@ -42,18 +42,18 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
         this.productId = String.valueOf(exchangeCouponView.getProductId());
         this.imageUrl = bannerServer + exchangeCouponView.getImageUrl();
         this.points = String.valueOf(exchangeCouponView.getExchangePoint());
-        this.leftCount = String.valueOf(exchangeCouponView.getTotalCount() - exchangeCouponView.getIssuedCount());
+        this.leftCount = String.valueOf(exchangeCouponView.getCouponModel().getTotalCount() - exchangeCouponView.getCouponModel().getIssuedCount());
         this.seq = exchangeCouponView.getSeq();
-        this.updatedTime = exchangeCouponView.getUpdatedTime();
-        switch (exchangeCouponView.getCouponType()) {
+        this.updatedTime = exchangeCouponView.getCouponModel().getUpdatedTime();
+        switch (exchangeCouponView.getCouponModel().getCouponType()) {
             case RED_ENVELOPE:
-                this.name = AmountConverter.convertCentToString(exchangeCouponView.getAmount()) + "元现金红包";
+                this.name = AmountConverter.convertCentToString(exchangeCouponView.getCouponModel().getAmount()) + "元现金红包";
                 break;
             case INVEST_COUPON:
-                this.name = AmountConverter.convertCentToString(exchangeCouponView.getAmount()) + "元投资体验券";
+                this.name = AmountConverter.convertCentToString(exchangeCouponView.getCouponModel().getAmount()) + "元投资体验券";
                 break;
             case INTEREST_COUPON:
-                this.name = exchangeCouponView.getRate() * 100 + "%加息券";
+                this.name = exchangeCouponView.getCouponModel().getRate() * 100 + "%加息券";
                 break;
         }
 
