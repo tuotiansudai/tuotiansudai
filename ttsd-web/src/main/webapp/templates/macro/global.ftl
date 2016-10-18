@@ -98,21 +98,21 @@
 <body>
 
 <#if !isAppSource>
-    <#include "../header.ftl"/>
+    <#include "../pageLayout/header.ftl"/>
 
     <#switch site>
         <#case "membership">
-            <#include "../top-membership-menus.ftl"/>
+            <#include "../pageLayout/top-membership-menus.ftl"/>
             <#break>
         <#default>
-            <#include "../top-menus.ftl"/>
+            <#include "../pageLayout/top-menus.ftl"/>
     </#switch>
 
 </#if>
 
 <div class="main-frame full-screen clearfix">
     <#if !isAppSource>
-        <#include "../left-menus.ftl"/>
+        <#include "../pageLayout/left-menus.ftl"/>
     </#if>
     <#nested>
 </div>
@@ -120,10 +120,10 @@
 <#if !isAppSource>
     <#switch site>
         <#case "membership">
-            <#include "../membership-footer.ftl"/>
+            <#include "../pageLayout/membership-footer.ftl"/>
             <#break>
         <#default>
-            <#include "../footer.ftl" />
+            <#include "../pageLayout/footer.ftl" />
     </#switch>
 </#if>
 
@@ -169,12 +169,12 @@
             location.href = "/app/download";
         };
 
-        window.$('showMainMenu').onclick=function(event) {
-            event.stopPropagation();
-            event.preventDefault();
-            this.nextElementSibling.style.display='block';
-
-        };
+//        window.$('showMainMenu').onclick=function(event) {
+//            event.stopPropagation();
+//            event.preventDefault();
+//            this.nextElementSibling.style.display='block';
+//
+//        };
 
     }
     var imgDom=window.$('iphone-app-img'),
@@ -267,7 +267,7 @@
 
 </#if>
 
-<#include "../statistic.ftl" />
+<#include "../pageLayout/statistic.ftl" />
 </body>
 </html>
 </#macro>

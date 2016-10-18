@@ -1,0 +1,132 @@
+.home-page-container {
+  .banner-box {
+    height: 350px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    .banner-img-list {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      ul{
+        float:left;
+        @media (max-width: 1920px) {
+          margin-left: -moz-calc((1920px - 100%) / 2 * -1);
+          margin-left: -webkit-calc((1920px - 100%) / 2 * -1);
+          margin-left: calc((1920px - 100%) / 2 * -1);
+        }
+        li{
+          float:left;
+          a {
+            float:left;
+            width:100%;
+            img {
+              &.pc-img{
+                height:350px;
+              }
+              &.iphone-img{
+                display:none;
+                height:150px;
+              }
+            }
+          }
+          a:first-child {
+            z-index: 1;
+          }
+        }
+      }
+    }
+    .hd{
+      width:100%;
+      position: absolute;
+      left:0;
+      bottom:5px;
+      z-index: 2;
+      .scroll-num {
+        float:left;
+        width:100%;
+        text-align:center;
+        &:hover{
+          li{
+            width:15px;
+            height:15px;
+            border-radius: 15px;
+          }
+        }
+        li {
+          display:inline-block;
+          margin-right: 15px;
+          width: 10px;
+          height: 10px;
+          text-align: center;
+          border-radius: 10px;
+          background: #fff;
+          line-height: 20px;
+          color: #666;
+          cursor: pointer;
+          &.on {
+            background: #ff7a2a;
+            color: #fff;
+          }
+        }
+      }
+    }
+    .page-width {
+      height: 100%;
+      position: relative;
+    }
+    .register-ad-box {
+      position: absolute;
+      z-index: 10;
+      top: -335px;
+      right: 0;
+      width: 300px;
+      height: 300px;
+      box-sizing: border-box;
+      padding: 50px 50px 10px;
+      opacity: 0.9;
+      background-color: white;
+      border-radius: 10px;
+      .num-text {
+        float: left;
+        width: 100%;
+        margin: 0;
+        .percent {
+          color: #ff7200;
+          font-size: 60px;
+          line-height: 1;
+          font-weight: bold;
+        }
+        .num-unit {
+          font-size: 26px;
+          color: #666;
+          font-weight: bold;
+        }
+      }
+      .h-title {
+        float: left;
+        text-align: center;
+        width: 100%;
+        color: #666;
+        font-size: 24px;
+      }
+      .btn-normal {
+        width: 100%;
+        padding: 8px 0;
+      }
+      i {
+        float: left;
+        width: 100%;
+        display: block;
+        padding-top: 15px;
+      }
+      .welcome-text {
+        float: left;
+        width: 100%;
+        position: relative;
+        margin: 0 0 10px 0;
+      }
+    }
+  }
+}
+
