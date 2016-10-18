@@ -1,38 +1,26 @@
 package com.tuotiansudai.activity.service;
 
-import com.google.common.base.Function;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.tuotiansudai.activity.dto.*;
-import com.tuotiansudai.activity.dto.ActivityCategory;
+import com.tuotiansudai.activity.dto.IPhone7InvestLotteryDto;
+import com.tuotiansudai.activity.dto.IPhone7LotteryDto;
 import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
 import com.tuotiansudai.activity.repository.mapper.IPhone7LotteryConfigMapper;
-import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
-import com.tuotiansudai.activity.repository.model.*;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryModel;
+import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigModel;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-import com.tuotiansudai.membership.repository.model.MembershipLevel;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipType;
-import com.tuotiansudai.point.repository.mapper.PointBillMapper;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
-import org.apache.commons.beanutils.converters.StringConverter;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.stream.Collector;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -89,5 +77,14 @@ public class Iphone7LotteryService {
         BasePaginationDataDto<IPhone7InvestLotteryDto> paginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, dtoList);
         return new BaseDto<>(paginationDataDto);
     }
+
+
+    @Transactional
+    public void getLotteryNumber(InvestModel investModel){
+        
+
+    }
+
+
 
 }

@@ -50,11 +50,10 @@
 				<div class="content-item">
 					<div class="tip-item">
 						<p>
-							<#--距离下次开奖还差<span>${nextLotteryInvestAmount}</span>元-->
-							距离下次开奖还差<span>500000</span>元
+							距离下次开奖还差<span>${nextLotteryInvestAmount}</span>元
 						</p>
 					</div>
-					<div class="reward-progress-item progressbar" data-perc="360548.37">
+					<div class="reward-progress-item progressbar" data-perc="${nextLotteryInvestAmount}">
 						<div class="bar color4">
 							<span></span>
 						</div>
