@@ -342,7 +342,7 @@ public class LoanServiceImpl implements LoanService {
         logger.debug("标的放款：生成还款计划，标的ID:" + loanId);
         try {
             repayGeneratorService.generateRepay(loanId);
-        } catch (Exception e) {
+        }catch (Exception e) {
             logger.error(MessageFormat.format("生成还款计划失败 (loanId = {0})", String.valueOf(loanId)), e);
             return false;
         }
