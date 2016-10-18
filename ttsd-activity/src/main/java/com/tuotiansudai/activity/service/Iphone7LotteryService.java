@@ -103,14 +103,20 @@ public class Iphone7LotteryService {
         iPhone7InvestLotteryMapper.create(model);
 
         long totalAmount = investMapper.sumInvestAmountRanking(activityIphone7StartTime, activityIphone7EndTime);
-        //if(totalAmount > )
 
-
-
-
-
+        List<IPhone7LotteryConfigModel> iphone7LotteryConfigModelList = iPhone7LotteryConfigMapper.findAllApproved();
+        for(IPhone7LotteryConfigModel iPhone7LotteryConfigModel: iphone7LotteryConfigModelList){
+            if(totalAmount >= iphone7LotteryConfigModel.getId()){
+                //开奖
+                //1.更新配置表的信息
+                iPhone7LotteryConfigMapper.effective(iphone7LotteryConfigModel.getId());
+                //2.查询已获得的抽奖码中是否有中奖数据
+                IPhone7InvestLotteryModel iPhone7InvestLotteryModelWinner = iPhone7InvestLotteryMapper.findByLotteryNumber(iPhone7LotteryConfigModel.getLotteryNumber());
+                if(iPhone7InvestLotteryModelWinner != null){
+                    iPhone7InvestLotteryMapper.updateByLotteryNumber(iphone7LotteryConfigModel.getLotteryNumber());
+                }
+            }
+        }
     }
-
-
 
 }

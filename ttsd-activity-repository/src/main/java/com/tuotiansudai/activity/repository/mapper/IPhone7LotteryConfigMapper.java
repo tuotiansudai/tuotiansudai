@@ -31,10 +31,10 @@ public interface IPhone7LotteryConfigMapper {
             @Result(column = "audited_time", property = "auditedTime"),
             @Result(column = "status", property = "status")
     })
-    @Select("select * from iphone7_lottery_config where status='APPROVED' order by invest_amount")
+    @Select("select * from iphone7_lottery_config where status='EFFECTIVE' order by invest_amount")
     List<IPhone7LotteryConfigModel> approvedList();
 
-    @Select("select ifnull(max(invest_amount),0) from iphone7_lottery_config where status='APPROVED'")
+    @Select("select ifnull(max(invest_amount),0) from iphone7_lottery_config where status='EFFECTIVE'")
     int getCurrentLotteryInvestAmount();
 
     @Select("select * from iphone7_lottery_config order by invest_amount")
@@ -57,6 +57,9 @@ public interface IPhone7LotteryConfigMapper {
     @Select("select * from iphone7_lottery_config where lottery_number = #{lotteryNumber} and status = 'EFFECTIVE'")
     IPhone7LotteryConfigModel findByLotteryNumber(@Param("lotteryNumber") String lotteryNumber);
 
+    @Select("select * from iphone7_lottery_config where status = 'APPROVED' order by invest_amount")
+    List<IPhone7LotteryConfigModel> findAllApproved();
+
     @Update({
             "update iphone7_lottery_config set",
             "audited_by = #{auditedBy},",
@@ -74,4 +77,12 @@ public interface IPhone7LotteryConfigMapper {
             "where id = #{id}"
     })
     int approve(@Param("id") long id, @Param("auditedBy") String auditedBy, @Param("auditedTime") Date auditedTime);
+
+    @Update({
+            "update iphone7_lottery_config set",
+            "effective_time = now(),",
+            "status = 'EFFECTIVE'",
+            "where id = #{id}"
+    })
+    int effective(@Param("id") long id);
 }

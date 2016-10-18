@@ -23,9 +23,9 @@ public class Iphone7ActivityController {
         ModelAndView modelAndView = new ModelAndView("/activities/iphone7-lottery", "responsive", true);
         modelAndView.addObject("nextLotteryInvestAmount",iphone7LotteryService.nextLotteryInvestAmount());
         modelAndView.addObject("lotteryList", iphone7LotteryService.iphone7InvestLotteryWinnerViewList());
+        modelAndView.addObject("loginName", loginName);
         return modelAndView;
     }
-
 
     @RequestMapping(value="/myInvestDetail", method = RequestMethod.POST)
     @ResponseBody
@@ -38,7 +38,4 @@ public class Iphone7ActivityController {
         dto.setData(dataDto);
         return dto;
     }
-
-
-
 }

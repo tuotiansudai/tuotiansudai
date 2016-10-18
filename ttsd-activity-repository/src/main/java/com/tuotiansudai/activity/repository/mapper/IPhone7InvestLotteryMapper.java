@@ -98,4 +98,12 @@ public interface IPhone7InvestLotteryMapper {
             "order by b.effective_time"
     })
     List<IPhone7InvestLotteryWinnerView> listWinner();
+
+    @Update({
+            "update iphone7_invest_lottery set",
+            "status = 'WINNER'",
+            "where lottery_number = #{lotteryNumber}"
+    })
+    int updateByLotteryNumber(@Param("lotteryNumber") String lotteryNumber);
+
 }
