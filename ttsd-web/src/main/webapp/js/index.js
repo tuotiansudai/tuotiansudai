@@ -3,18 +3,21 @@ require(['jquery','imageShowSlide-v1', 'underscore', 'layerWrapper', 'superslide
         var $homePageContainer = $('#homePageContainer'),
             $imgScroll = $('.banner-img-list', $homePageContainer),
             $registerBox = $('.register-ad-box', $homePageContainer),
-            $productFrame = $('#productFrame');
+            $productFrame = $('#productFrame'),
+            $bannerImg = $imgScroll.find('li');
 
         //首页大图轮播
         //(function(){
-        //    var imgCount=$('.imgList',$homePageContainer).find('li').length;
-        //    var runimg=new imageShowSlide('bannerBox','30',imgCount);
-        //    runimg.info();
-        //
+            var imgCount=$imgScroll.find('li').length;
+            var runimg=new imageShowSlide('bannerBox','30',imgCount);
+            runimg.info();
+
+            //var screenWid = $(window).width(); //screen width
+            //var leftWid = (1920 - screenWid) / 2;   //1920图片宽度
+            //$imgScroll.find('img').css({
+            //    'margin-left': '-' + leftWid + 'px'
+            //});
+
         //})();
-
-
-
-
 
 });

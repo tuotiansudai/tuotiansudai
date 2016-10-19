@@ -3,8 +3,8 @@ define([], function () {
         this.minRange = Number(minRange);
         this.count=count;  //存放图片个数
         this.bigbox= document.getElementById(bigboxID), //最外层容器
-        this.ready_moved = true;
-        this.imglist= this.bigbox.getElementsByTagName("li");
+            this.ready_moved = true;
+        this.imglist= this.bigbox.getElementsByTagName("ul")[0].children;
     }
     runImg.prototype = {
         boxul: null, //子容器ul
@@ -16,7 +16,6 @@ define([], function () {
         play: null, //控制自动播放
         $: function(obj) {
             if (typeof(obj) == "string") {
-                console.log(obj);
                 if (obj.indexOf("#") >= 0) {
                     obj = obj.replace("#", "");
                     if (document.getElementById(obj)) {
@@ -34,26 +33,21 @@ define([], function () {
         },
         //初始化
         info: function() {
-            //this.bigbox = this.$(id);
-
             var ul = this.$("ul");
             for (var j = 1; j <= this.count; j++) {
                 var li = this.$("li");
-                li.innerHTML = j;
+                //li.innerHTML = j;
                 ul.appendChild(li);
             }
             this.bigbox.appendChild(ul);
             this.boxul = this.bigbox.getElementsByTagName("ul");
             this.boxul[1].className = "countNum";
-            console.log(this.boxul);
-
             this.numlist = this.boxul[1].getElementsByTagName("li");
 
             for (var j = 0; j < this.count; j++) {
                 this.alpha(j, 0);
             }
             this.alpha(0, 100);
-
             this.numlist[0].className = "current";
             this.action();
         },
@@ -84,7 +78,7 @@ define([], function () {
             }
             this.numlist[this.index].className = "current";
 
-            for (var j = 0; j < this.imglist.length; j++) {
+            for (var j = 0; j < this.count; j++) {
                 this.alpha(j, 0);
             }
             this.alpha(this.prev, 100); //设置上一张的透明度为100
@@ -117,7 +111,7 @@ define([], function () {
             this.play = setInterval(function() {
                 this.prev = this.index;
                 this.index++;
-                if (this.index > this.imglist.length - 1) {
+                if (this.index > this.count - 1) {
                     this.index = 0
                 };
                 this.imgshow();
@@ -229,7 +223,6 @@ define([], function () {
             this.autoplay(this.index); //触摸离开以后再开始循环播放图片
         }
     }
-
     return runImg;
 });
 

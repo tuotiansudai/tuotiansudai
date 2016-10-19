@@ -39,6 +39,7 @@ var require = {
         'superslide': staticServer + '/js/libs/jquery.SuperSlide.2.1.1',
         'logintip': staticServer+'/js/dest/login_tip.min',
         /*module*/
+        'global_page': staticServer+'/js/dest/global_page.min',
         'imageShowSlide-v1': staticServer+'/js/dest/image-show-slider.min'
     },
     'waitSeconds':0,

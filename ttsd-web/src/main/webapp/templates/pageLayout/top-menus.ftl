@@ -7,17 +7,17 @@
             <em></em>
             <a href="javascript:" class="text" onclick="cnzzPush.trackClick('13顶部导航','手机APP')"><i>手机APP</i>
                 投资更便利</a>
-            <div id="iphone-app-img" class="img-app-pc-top"></div>
+            <div id="iphone-app-img" class="img-app-pc-top hide"></div>
         </div>
 
     </div>
 
 <#if activeNav??>
     <#--<i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>-->
-    <ul id="TopMainMenuList" class="nav-menu page-width">
+    <ul id="TopMainMenuList" class="nav-menu page-width clearfix">
         <#list mainMenus as menu>
             <#if menu.navigation?? && menu.navigation="true">
-                <li><a <#if menu.title==activeNav>class="active"</#if> href="${menu.url}"
+                <li <#if menu.title==activeNav>class="active"</#if>><a  href="${menu.url}"
                        onclick="cnzzPush.trackClick('${menu.category}','${menu.title}')">${menu.title}</a></li>
             </#if>
         </#list>
