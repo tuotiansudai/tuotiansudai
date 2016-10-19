@@ -89,29 +89,16 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         return dto;
     }
 
-    @Override
-    public BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(BaseParamDto baseParamDto) {
-        BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
-        LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
-        List<LoanModel> loanModels = loanMapper.findHomeLoan();
-        List<LoanResponseDataDto> loanDtoList = convertLoanDto(loanModels,baseParamDto.getBaseParam().getUserId());
-        loanListResponseDataDto.setLoanList(loanDtoList);
-        dto.setData(loanListResponseDataDto);
-        dto.setCode(ReturnMessage.SUCCESS.getCode());
-        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        return dto;
-    }
-
-
     private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList,String loginName) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         for (LoanModel loan : loanList) {
+
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
             loanResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().getProductLine() : "");
             loanResponseDataDto.setLoanTypeName(loan.getProductType() != null ? loan.getProductType().getProductLineName() : "");
-            LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+            LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getByLoanId(loan.getId());
             loanResponseDataDto.setLoanName(loan.getName());
             loanResponseDataDto.setActivityDesc(loanDetailsModelActivity != null ? loanDetailsModelActivity.getActivityDesc() : "");
             loanResponseDataDto.setPledgeType(loan.getPledgeType());
@@ -165,7 +152,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
                 loanResponseDataDto.setExtraRates(fillExtraRate(extraLoanRateModels));
             }
 
-            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loan.getId());
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
             if(loanDetailsModel != null)
             {
                 loanResponseDataDto.setExtraSource("WEB".equals(loanDetailsModel.getExtraSource())?loanDetailsModel.getExtraSource():"");

@@ -4,8 +4,11 @@ import com.tuotiansudai.paywrapper.client.PayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.service.impl.LoanServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -25,9 +28,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
@@ -35,96 +41,78 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml","classpath:dispatcher-servlet.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
 @Transactional
 public class LoanServiceTest {
+
     @InjectMocks
     private LoanServiceImpl loanService;
-    @Autowired
-    private IdGenerator idGenerator;
+
     @Mock
     private LoanMapper loanMapper;
+
     @Mock
     private AccountMapper accountMapper;
+
     @Mock
     private PayGateWrapper payGateWrapper;
+
     @Mock
     private PaySyncClient paySyncClient;
 
 
     @Before
-    public void init(){
+    public void init() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
     public void shouldCreateLoanIsSuccess() throws ReqDataException, PayException {
-        long id = idGenerator.generate();
-        UserModel loanerModel = createFakeUser("loanerLoginName");
-        LoanModel loanModel = fakeLoanModel(loanerModel);
-        AccountModel accountModel = this.getFakeAccount(loanerModel);
+        LoanModel loanModel = this.fakeLoanModel();
+        AccountModel accountModel = this.getFakeAccount();
+
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+
         MerBindProjectResponseModel merBindProjectResponseModel = new MerBindProjectResponseModel();
-        merBindProjectResponseModel.setMerCheckDate(new Date().toString());
-        merBindProjectResponseModel.setProjectAccountId("ProjectAccountId");
         merBindProjectResponseModel.setRetCode("0000");
-        merBindProjectResponseModel.setRetMsg("成功");
+        MerUpdateProjectResponseModel merUpdateProjectResponseModel = new MerUpdateProjectResponseModel();
+        merUpdateProjectResponseModel.setRetCode("0000");
+
         when(paySyncClient.send(eq(MerBindProjectMapper.class), any(MerBindProjectRequestModel.class), eq(MerBindProjectResponseModel.class))).thenReturn(merBindProjectResponseModel);
-        loanService.createLoan(id);
+        when(paySyncClient.send(eq(MerUpdateProjectMapper.class), any(MerUpdateProjectRequestModel.class), eq(MerUpdateProjectResponseModel.class))).thenReturn(merUpdateProjectResponseModel);
+
+        loanService.createLoan(fakeLoanModel().getId());
 
         ArgumentCaptor<MerBindProjectRequestModel> merBindProjectRequestModelArgumentCaptor = ArgumentCaptor.forClass(MerBindProjectRequestModel.class);
+        ArgumentCaptor<MerUpdateProjectRequestModel> merUpdateProjectRequestModelArgumentCaptor = ArgumentCaptor.forClass(MerUpdateProjectRequestModel.class);
         verify(paySyncClient, times(1)).send(eq(MerBindProjectMapper.class), merBindProjectRequestModelArgumentCaptor.capture(), eq(MerBindProjectResponseModel.class));
+        verify(paySyncClient, times(2)).send(eq(MerUpdateProjectMapper.class), merUpdateProjectRequestModelArgumentCaptor.capture(), eq(MerUpdateProjectResponseModel.class));
 
-        assertEquals(merBindProjectRequestModelArgumentCaptor.getValue().getProjectName(),merBindProjectRequestModelArgumentCaptor.getValue().getProjectId());
-    }
-    protected AccountModel getFakeAccount(UserModel userModel) {
-        AccountModel fakeAccount = new AccountModel(userModel.getLoginName(), userModel.getLoginName(), "ID", "payUserId", "payAccountId", new Date());
-        fakeAccount.setBalance(1000000);
-        return fakeAccount;
-    }
+        MerBindProjectRequestModel merBindProjectRequestModelArgumentCaptorValue = merBindProjectRequestModelArgumentCaptor.getValue();
+        assertThat(merBindProjectRequestModelArgumentCaptorValue.getLoanUserId(), is(accountModel.getPayUserId()));
+        assertThat(merBindProjectRequestModelArgumentCaptorValue.getProjectAmount(), is(String.valueOf(loanModel.getLoanAmount())));
+        assertThat(merBindProjectRequestModelArgumentCaptorValue.getProjectId(), is(String.valueOf(loanModel.getId())));
+        assertThat(merBindProjectRequestModelArgumentCaptorValue.getProjectName(), is(String.valueOf(loanModel.getId())));
 
-    private UserModel createFakeUser(String loginName) {
-        UserModel model = new UserModel();
-        model.setLoginName(loginName);
-        model.setPassword("password");
-        model.setEmail("loginName@abc.com");
-        model.setMobile("12900000000");
-        model.setRegisterTime(new Date());
-        model.setStatus(UserStatus.ACTIVE);
-        model.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        return model;
+        List<MerUpdateProjectRequestModel> merUpdateProjectRequestModelArgumentCaptorAllValues = merUpdateProjectRequestModelArgumentCaptor.getAllValues();
+        assertThat(merUpdateProjectRequestModelArgumentCaptorAllValues.get(0).getProjectId(), is(String.valueOf(loanModel.getId())));
+        assertThat(merUpdateProjectRequestModelArgumentCaptorAllValues.get(0).getProjectState(), is("0"));
+
+        assertThat(merUpdateProjectRequestModelArgumentCaptorAllValues.get(1).getProjectId(), is(String.valueOf(loanModel.getId())));
+        assertThat(merUpdateProjectRequestModelArgumentCaptorAllValues.get(1).getProjectState(), is("1"));
     }
 
-    private LoanModel fakeLoanModel(UserModel userModel){
+
+    protected AccountModel getFakeAccount() {
+        return new AccountModel("loginName", "username", "identityNumber", "payUserId", "payAccountId", new Date());
+    }
+
+    private LoanModel fakeLoanModel() {
         LoanModel loanModel = new LoanModel();
-        loanModel.setAgentLoginName(userModel.getLoginName());
-        loanModel.setBaseRate(16.00);
-        long id = idGenerator.generate();
-        loanModel.setId(id);
-        loanModel.setName("店铺资金周转");
-        loanModel.setActivityRate(12);
-        loanModel.setShowOnHome(true);
-        loanModel.setPeriods(3);
-        loanModel.setActivityType(ActivityType.NORMAL);
-        loanModel.setContractId(123);
-        loanModel.setDescriptionHtml("asdfasdf");
-        loanModel.setDescriptionText("asdfasd");
-        loanModel.setFundraisingEndTime(new Date());
-        loanModel.setFundraisingStartTime(new Date());
-        loanModel.setInvestIncreasingAmount(1);
-        loanModel.setLoanAmount(100000L);
-        loanModel.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);
-        loanModel.setMaxInvestAmount(100000000000L);
-        loanModel.setMinInvestAmount(1);
-        loanModel.setCreatedTime(new Date());
-        loanModel.setStatus(LoanStatus.RAISING);
-        loanModel.setLoanerLoginName(userModel.getLoginName());
-        loanModel.setLoanerUserName("借款人");
-        loanModel.setLoanerIdentityNumber("111111111111111111");
+        loanModel.setId(0);
+        loanModel.setAgentLoginName("agent");
+        loanModel.setLoanAmount(1);
         return loanModel;
     }
-
-
-
 }

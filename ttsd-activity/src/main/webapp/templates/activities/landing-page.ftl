@@ -1,7 +1,7 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.landing_page}" pageJavascript="${js.landing_page}" activeNav="" activeLeftNav="" title="新手福利_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取588红包大奖和3%的新手加息券.">
-
-<div class="landing-container">
+<div id="landingContainerBox">
+<div class="landing-container" >
     <div class="landing-header">
         <a href="/">访问首页</a>
     </div>
@@ -10,6 +10,7 @@
         <div class="landing-top">
             <div class="landing-inner">
                 <div class="register-box">
+                    <div class="refer-person-info">您的好友<span class="refer-name">秀伟</span>邀请您领取投资大礼包</div>
                     <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
                         <ul class="reg-list tl register-step-one">
                             <li>
@@ -55,6 +56,7 @@
                         <li id="agreementInputErr" class="height"></li>
                         <li  class="tc">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <input type="hidden" name="referrer" value="" >
                             <input type="submit" class="register-user" value="立即注册">
                         </li>
                         <li class="tc mobile-agreement">
@@ -269,6 +271,7 @@
             </div>
         </#if>
     </div>
+</div>
 </div>
 <div class="image-captcha-dialog" style="display: none;">
     <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">

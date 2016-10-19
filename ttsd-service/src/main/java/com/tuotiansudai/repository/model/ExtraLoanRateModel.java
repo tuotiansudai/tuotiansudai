@@ -20,6 +20,18 @@ public class ExtraLoanRateModel implements Serializable {
 
     private Date createdTime = new Date();
 
+    public ExtraLoanRateModel() {
+    }
+
+    public ExtraLoanRateModel(long loanId, long extraRateRuleId, long minInvestAmount, long maxInvestAmount, double rate) {
+        this.loanId = loanId;
+        this.extraRateRuleId = extraRateRuleId;
+        this.minInvestAmount = minInvestAmount;
+        this.maxInvestAmount = maxInvestAmount;
+        this.rate = rate;
+        this.createdTime = new Date();
+    }
+
     public long getId() {
         return id;
     }

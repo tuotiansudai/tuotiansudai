@@ -59,7 +59,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         when(userMembershipEvaluator.evaluate(anyString())).thenReturn(membershipModel);
         when(couponService.findExperienceInvestAmount(any(List.class))).thenReturn(1000l);
         when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
-        when(loanDetailsMapper.getLoanDetailsByLoanId(anyLong())).thenReturn(null);
+        when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(null);
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testLoan");

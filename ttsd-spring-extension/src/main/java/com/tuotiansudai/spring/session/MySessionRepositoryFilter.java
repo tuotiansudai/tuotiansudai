@@ -278,8 +278,10 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
 
         @Override
         public HttpSessionWrapper getSession(boolean create) {
+            Object signInNewSessionId = this.getRequest().getAttribute("newSessionId");
             HttpSessionWrapper currentSession = getCurrentSession();
-            if (currentSession != null) {
+
+            if (currentSession != null && signInNewSessionId == null) {
                 return currentSession;
             }
             String requestedSessionId = getRequestedSessionId();
@@ -306,7 +308,8 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
                 return null;
             }
 
-            String newSessionId = this.getRequest().getAttribute("newSessionId") != null ? (String) this.getRequest().getAttribute("newSessionId") : null;
+
+            String newSessionId = signInNewSessionId != null ? (String) signInNewSessionId : null;
 
             S session;
 
