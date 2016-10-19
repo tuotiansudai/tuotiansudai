@@ -1,4 +1,6 @@
-require(['jquery','layerWrapper','commonFun','logintip','copyclip','md5','qrcode'], function($,layer) {
+require(['jquery','layerWrapper','clipboard','commonFun','logintip','md5','qrcode'], function($,layer,clipboard) {
+
+	window['Clipboard']=clipboard;
 
 	var $shareReward=$('#shareRewardContainer'),
 		$inviteFriend=$('.invite-box-friend',$shareReward),
@@ -11,8 +13,7 @@ require(['jquery','layerWrapper','commonFun','logintip','copyclip','md5','qrcode
 	});
 	if($copyButton.length) {
 		//已登录已认证,复制功能
-		var client = new ZeroClipboard($copyButton),
-			$clipboardText=$('.input-invite',$shareReward);
+		var $clipboardText=$('.input-invite',$shareReward);
 		var mobile=$clipboardText.data('mobile')+'',
 			md5Mobile=$.md5(mobile);
 		var md5String=commonFun.compile(md5Mobile,mobile),
@@ -24,13 +25,17 @@ require(['jquery','layerWrapper','commonFun','logintip','copyclip','md5','qrcode
 		$('.img-code',$shareReward).qrcode(origin+'/activity/app-share?referrerMobile='+mobile);
 
 		/*复制链接*/
-		client.on( "ready", function( readyEvent ) {
-			client.on( "aftercopy", function( event ) {
-				// event.data["text/plain"]
-				layer.msg('复制成功');
 
-			} );
-		} );
+		(function($) {
+			var clipboard = new Clipboard('.copy-button');
+			clipboard.on('success', function(e) {
+				layer.msg("复制成功");
+				e.clearSelection();
+			});
+			clipboard.on('error', function(e) {
+				layer.msg("复制失败");
+			});
+		})(jQuery);
 	}
 
 	//已登录未认证,去认证
