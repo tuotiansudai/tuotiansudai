@@ -93,19 +93,19 @@ public class Iphone7LotteryService {
         logger.debug(MessageFormat.format("currentTotalInvestAmount: {0} ", totalAmount));
 
         List<IPhone7LotteryConfigModel> iphone7LotteryConfigModelList = iPhone7LotteryConfigMapper.findAllApproved();
-        for(IPhone7LotteryConfigModel iPhone7LotteryConfigModel: iphone7LotteryConfigModelList){
-            if(totalAmount >= iphone7LotteryConfigModel.getInvestAmount() * 1000000){
-                logger.debug(MessageFormat.format("lottery start ...... totalAmount:{0}", totalAmount));
-                iPhone7LotteryConfigMapper.effective(iphone7LotteryConfigModel.getId());
-                logger.debug(MessageFormat.format("ConfigMapper has update ......configId:{0}", iphone7LotteryConfigModel.getId()));
-                IPhone7InvestLotteryModel iPhone7InvestLotteryModelWinner = iPhone7InvestLotteryMapper.findByLotteryNumber(iPhone7LotteryConfigModel.getLotteryNumber());
-                if(iPhone7InvestLotteryModelWinner != null){
-                    logger.debug(MessageFormat.format("lottery lotteryNumber:{0}", iphone7LotteryConfigModel.getLotteryNumber()));
-                    iPhone7InvestLotteryMapper.updateByLotteryNumber(iphone7LotteryConfigModel.getLotteryNumber());
-                }
-                logger.debug(MessageFormat.format("lottery end ...... totalAmount:{0}", totalAmount));
+    for(IPhone7LotteryConfigModel iPhone7LotteryConfigModel: iphone7LotteryConfigModelList){
+        if(totalAmount >= iphone7LotteryConfigModel.getInvestAmount() * 1000000){
+            logger.debug(MessageFormat.format("lottery start ...... totalAmount:{0}", totalAmount));
+            iPhone7LotteryConfigMapper.effective(iphone7LotteryConfigModel.getId());
+            logger.debug(MessageFormat.format("ConfigMapper has update ......configId:{0}", iphone7LotteryConfigModel.getId()));
+            IPhone7InvestLotteryModel iPhone7InvestLotteryModelWinner = iPhone7InvestLotteryMapper.findByLotteryNumber(iPhone7LotteryConfigModel.getLotteryNumber());
+            if(iPhone7InvestLotteryModelWinner != null){
+                logger.debug(MessageFormat.format("lottery lotteryNumber:{0}", iphone7LotteryConfigModel.getLotteryNumber()));
+                iPhone7InvestLotteryMapper.updateByLotteryNumber(iphone7LotteryConfigModel.getLotteryNumber());
             }
+            logger.debug(MessageFormat.format("lottery end ...... totalAmount:{0}", totalAmount));
         }
     }
+}
 
 }
