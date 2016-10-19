@@ -32,6 +32,7 @@ def migrate():
     local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=job_worker ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxask ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxactivity ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxpoint ttsd-config:flywayMigrate')
 
 
 def mk_war():
