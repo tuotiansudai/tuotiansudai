@@ -24,12 +24,11 @@ require(['jquery', 'layerWrapper', 'jquery-ui', 'bootstrap', 'csrf'], function (
         return false;
     });
 
-    function addConfig(investAmount, lotteryNumber) {
-        console.log(arguments);
+    function addConfig(investAmount, lotteryNumber, mobile) {
         $.ajax({
             url: '/activity-console/activity-manage/iphone7-lottery/config',
             type: 'POST',
-            data: {'investAmount': investAmount, 'lotteryNumber': lotteryNumber},
+            data: {'investAmount': investAmount, 'lotteryNumber': lotteryNumber, 'mobile': mobile},
             dataType: 'json',
             success: function (result, status, xhr) {
                 location.reload();
@@ -79,6 +78,7 @@ require(['jquery', 'layerWrapper', 'jquery-ui', 'bootstrap', 'csrf'], function (
     $('.config-item-submit-btn').click(function (e) {
         var investAmount = parseInt($('#investAmount').val());
         var lotteryNumber = $('#lotteryNumber').val();
+        var mobile = $('#mobile').val();
         if (isNaN(investAmount) || investAmount % 50 != 0) {
             showErrorMessage("抽奖阶段必须为50万的整数倍");
             return;
@@ -87,7 +87,11 @@ require(['jquery', 'layerWrapper', 'jquery-ui', 'bootstrap', 'csrf'], function (
             showErrorMessage("中奖号码必须是6位数字");
             return;
         }
-        addConfig(investAmount, lotteryNumber);
+        if (mobile.length != 11 || isNaN(parseInt(mobile))) {
+            showErrorMessage("手机号必须是11位数字");
+            return;
+        }
+        addConfig(investAmount, lotteryNumber, mobile);
     });
 
     $('.config-item-approve-btn').click(function (e) {

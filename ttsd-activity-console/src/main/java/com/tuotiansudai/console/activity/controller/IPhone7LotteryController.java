@@ -90,10 +90,12 @@ public class IPhone7LotteryController {
     @RequestMapping(value = "/iphone7-lottery/config", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto submitConfig(@RequestParam(value = "investAmount") int investAmount,
-                                @RequestParam(value = "lotteryNumber") String lotteryNumber) {
+                                @RequestParam(value = "lotteryNumber") String lotteryNumber,
+                                @RequestParam(value = "mobile") String mobile) {
         IPhone7LotteryConfigModel configModel = new IPhone7LotteryConfigModel();
         configModel.setInvestAmount(investAmount);
         configModel.setLotteryNumber(lotteryNumber);
+        configModel.setMobile(mobile);
         configModel.setCreatedBy(LoginUserInfo.getLoginName());
         configModel.setCreatedTime(new Date());
         configMapper.create(configModel);
@@ -102,7 +104,7 @@ public class IPhone7LotteryController {
 
     @RequestMapping(value = "/iphone7-lottery/audit", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto submitConfig(@RequestParam(value = "id") long id,
+    public BaseDto auditConfig(@RequestParam(value = "id") long id,
                                 @RequestParam(value = "passed") boolean passed,
                                 HttpServletRequest request
     ) {

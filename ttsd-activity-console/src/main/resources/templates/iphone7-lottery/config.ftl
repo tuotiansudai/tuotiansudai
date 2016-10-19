@@ -19,6 +19,12 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-2 control-label">手机号</label>
+                <div class="col-sm-4">
+                    <input name="mobile" id="mobile" class="form-control" maxlength="11"/>
+                </div>
+            </div>
+            <div class="form-group">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-4 text-danger error-message">
                 </div>
@@ -36,6 +42,7 @@
             <tr>
                 <th>抽奖阶段</th>
                 <th>抽奖号码</th>
+                <th>手机号</th>
                 <th>状态</th>
                 <th>审核人</th>
                 <th>审核时间</th>
@@ -46,6 +53,7 @@
                 <tr>
                     <td>${configItem.investAmount}万</td>
                     <td>${configItem.lotteryNumber}</td>
+                    <td>${configItem.mobile}</td>
                     <td>${configItem.status.description}</td>
                     <td>${configItem.auditedBy}</td>
                     <td>${configItem.auditedTime?string("yyyy-MM-dd HH:mm:ss")}</td>
@@ -60,6 +68,7 @@
             <tr>
                 <th>抽奖阶段</th>
                 <th>抽奖号码</th>
+                <th>手机号</th>
                 <th>提交人</th>
                 <th>提交时间</th>
                 <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
@@ -72,6 +81,7 @@
                 <tr>
                     <td>${configItem.investAmount}万元</td>
                     <td>${configItem.lotteryNumber}</td>
+                    <td>${configItem.mobile}</td>
                     <td>${configItem.createdBy}</td>
                     <td>${configItem.createdTime?string("yyyy-MM-dd HH:mm:ss")}</td>
                     <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">

@@ -116,8 +116,9 @@ public class IPhone7LotteryService {
         String operator = accountMapper.findByLoginName(configModel.getCreatedBy()).getUserName();
         String operation = passed ? "通过" : "驳回";
         String activityName = "老板出差，运营汪闭眼送iphone7";
-        String description = MessageFormat.format("{0}{1}了{2}在“{3}”活动中修改的中奖码({4}万：{5})",
-                auditor, operation, operator, activityName, configModel.getInvestAmount(), configModel.getLotteryNumber());
+        String description = MessageFormat.format("{0}{1}了{2}在“{3}”活动中修改的中奖配置({4}万：{5}, 手机号:{6})",
+                auditor, operation, operator, activityName, configModel.getInvestAmount(),
+                configModel.getLotteryNumber(), configModel.getMobile());
         createAuditLog(loginName, configModel.getCreatedBy(),
                 OperationType.ACTIVITY, activityName, description, ip);
     }
