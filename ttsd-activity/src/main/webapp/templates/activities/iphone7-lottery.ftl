@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.iphone7_lottery}" pageJavascript="${js.iphone7_lottery}" activeNav="" activeLeftNav="" title="iphone7_英豪榜活动_拓天速贷" keywords="拓天英豪榜,英豪榜活动,投资排行榜,拓天速贷" description="拓天速贷投资排行榜活动,狂欢大轰趴,连嗨三周半,打响排行保卫战,拓天英豪榜投资活动每日神秘大奖悬赏最具实力的投资人.">
+<@global.main pageCss="${css.iphone7_lottery}" pageJavascript="${js.iphone7_lottery}" activeNav="" activeLeftNav="" title="iphone7活动_活动中心_拓天速贷" keywords="投资活动,APP投资,iphone7,拓天速贷" description="参与拓天速贷'厚惠有7'投资活动的用户即可获得128Giphone7一部，使用APP投资还可获得投资红包大奖">
 <div class="activity-container">
 	<div class="top-intro-img">
 		<img src="${staticServer}/activity/images/iphone7/top-intro.png" alt="英豪榜" width="100%" class="top-img">
