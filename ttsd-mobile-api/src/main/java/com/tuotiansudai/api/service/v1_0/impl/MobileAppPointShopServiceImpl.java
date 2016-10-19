@@ -7,10 +7,12 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointShopService;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
@@ -50,7 +52,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     private AccountMapper accountMapper;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private CouponService couponService;
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
@@ -124,7 +126,15 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
     @Override
     public BaseResponseDto findPointHome(BaseParamDto baseParamDto) {
-        List<ExchangeCouponView> exchangeCoupons = couponMapper.findExchangeableCouponViews(0, Integer.MAX_VALUE);
+        List<ExchangeCouponView> exchangeCoupons = Lists.newArrayList();
+
+        List<ProductModel> couponProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON));
+        for(ProductModel productModel: couponProducts){
+            CouponModel couponModel = couponService.findCouponById(productModel.getCouponId());
+            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getSeq(),productModel.getImageUrl(),productModel.getId(), couponModel);
+            exchangeCoupons.add(exchangeCouponView);
+        }
+
         List<ProductModel> virtualProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.VIRTUAL));
         List<ProductModel> physicalsProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.PHYSICAL));
 
@@ -194,11 +204,12 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
         ProductDetailResponseDto productDetailResponseDto = new ProductDetailResponseDto(productModel.getId(), bannerServer + productModel.getImageUrl(), productModel.getName(), productModel.getPoints(), productModel.getType(), productModel.getTotalCount() - productModel.getUsedCount(), productModel.getSeq(), productModel.getUpdatedTime());
         if (productModel.getType().equals(GoodsType.COUPON)) {
-            ExchangeCouponView exchangeCouponView = couponMapper.findExchangeableCouponViewById(productModel.getCouponId());
-            productDetailResponseDto.setLeftCount(exchangeCouponView != null ? String.valueOf(exchangeCouponView.getTotalCount() - exchangeCouponView.getIssuedCount()) : String.valueOf(productModel.getTotalCount()));
+            CouponModel couponModel = couponService.findExchangeableCouponById(productModel.getCouponId());
+            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
+            productDetailResponseDto.setLeftCount(exchangeCouponView != null ? String.valueOf(exchangeCouponView.getCouponModel() != null ? (exchangeCouponView.getCouponModel().getTotalCount() - exchangeCouponView.getCouponModel().getIssuedCount()) : "0") : String.valueOf(productModel.getTotalCount()));
         }
         List<String> description = Lists.newArrayList();
-        CouponModel couponModel = couponMapper.findById(productModel.getCouponId());
+        CouponModel couponModel = couponService.findCouponById(productModel.getCouponId());
         if (productModel.getType() == GoodsType.COUPON && couponModel != null) {
             description.addAll(productService.getProductDescription(couponModel.getInvestLowerLimit(),couponModel.getProductTypes(),couponModel.getDeadline()));
         } else {
@@ -229,8 +240,9 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         AccountModel accountModel = accountMapper.lockByLoginName(productDetailRequestDto.getBaseParam().getUserId());
         long leftCount = productDetailRequestDto.getNum() + productModel.getUsedCount();
         if (productModel.getType().equals(GoodsType.COUPON)) {
-            ExchangeCouponView exchangeCouponView = couponMapper.findExchangeableCouponViewById(productModel.getCouponId());
-            leftCount = productDetailRequestDto.getNum() + (exchangeCouponView != null ? exchangeCouponView.getIssuedCount() : 0l);
+            CouponModel couponModel = couponService.findExchangeableCouponById(productModel.getCouponId());
+            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
+            leftCount = productDetailRequestDto.getNum() + (exchangeCouponView != null ? (exchangeCouponView.getCouponModel() != null ? exchangeCouponView.getCouponModel().getIssuedCount() : 0l) : 0l);
         }
         if (leftCount > productModel.getTotalCount()) {
             logger.info(MessageFormat.format("Insufficient product (userId = {0},totalCount = {1},usedCount = {2})", productDetailRequestDto.getBaseParam().getUserId(), productModel.getTotalCount(), productModel.getUsedCount()));
@@ -249,34 +261,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             return new BaseResponseDto<>(ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getCode(), ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getMsg());
         }
 
-        return buyProduct(productModel, userAddressModels, accountModel, productDetailRequestDto.getBaseParam().getPhoneNum(), productDetailRequestDto.getBaseParam().getUserId(), productDetailRequestDto.getNum(), points);
-    }
-
-    @Transactional
-    private BaseResponseDto buyProduct(ProductModel productModel, List<UserAddressModel> userAddressModels, AccountModel accountModel, String mobile, String loginName, int num, long points) {
-        UserAddressModel userAddressModel;
-        if (productModel.getType().equals(GoodsType.PHYSICAL)) {
-            userAddressModel = userAddressModels.get(0);
-        } else {
-            userAddressModel = new UserAddressModel(loginName, loginName, mobile, "", loginName);
-        }
-
-        ProductOrderModel productOrderModel = new ProductOrderModel(productModel.getId(), productModel.getPoints(), num, points, userAddressModel.getContact(), userAddressModel.getMobile(), userAddressModel.getAddress(), false, null, loginName);
-        productOrderMapper.create(productOrderModel);
-
-        accountModel.setPoint(accountModel.getPoint() - points);
-        accountMapper.update(accountModel);
-
-        if (productModel.getType().equals(GoodsType.COUPON)) {
-            for (int i = 0; i < num; i++) {
-                couponAssignmentService.assignUserCoupon(loginName, productModel.getCouponId());
-            }
-        } else {
-            productModel.setUsedCount(productModel.getUsedCount() + num);
-            productMapper.update(productModel);
-        }
-
-        pointBillMapper.create(new PointBillModel(loginName, productModel.getId(), (-points), PointBusinessType.EXCHANGE, ""));
+        productService.buyProduct(accountModel.getLoginName(), Long.parseLong(productDetailRequestDto.getProductId()), productModel.getType(), productDetailRequestDto.getNum(), userAddressModels.get(0).getId());
         return new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
     }
 

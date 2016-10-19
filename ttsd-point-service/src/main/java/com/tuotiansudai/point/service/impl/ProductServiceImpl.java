@@ -4,10 +4,10 @@ package com.tuotiansudai.point.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.point.dto.ProductDto;
@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private CouponService couponService;
 
     @Autowired
     private UserMapper userMapper;
@@ -66,22 +66,11 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public void createProduct(ProductDto productDto) {
         if("COUPON" == productDto.getType().name()){
-            CouponModel couponModel = couponMapper.findById(productDto.getCouponId());
-            switch (couponModel.getCouponType()) {
-                case RED_ENVELOPE:
-                    productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元现金红包");
-                    productDto.setDescription(String.valueOf(couponModel.getAmount()));
-                    break;
-                case INVEST_COUPON:
-                    productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元投资体验券");
-                    productDto.setDescription(String.valueOf(couponModel.getAmount()));
-                    break;
-                case INTEREST_COUPON:
-                    productDto.setName(couponModel.getRate()*100 + "%加息券");
-                    productDto.setDescription(String.valueOf(couponModel.getRate() * 100));
-                    break;
-            }
+            ProductDto convertProductDto  = convertProductDtoToCouponType(productDto);
+            productDto.setName(convertProductDto.getName());
+            productDto.setDescription(convertProductDto.getDescription());
         }
+
         ProductModel productModel = new ProductModel(productDto);
         productModel.setActive(false);
         productModel.setCreatedBy(productDto.getLoginName());
@@ -100,7 +89,6 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductModel> findProductsList(GoodsType goodsType, int index, int pageSize) {
         return productMapper.findExchangeableProductsList(goodsType, (index - 1) * pageSize, pageSize);
     }
-
 
     @Override
     public long findAllProductsCount(GoodsType goodsType) {
@@ -194,28 +182,38 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public BaseDataDto updateProduct(ProductDto productDto) {
+
         if("COUPON" == productDto.getType().name()){
-            CouponModel couponModel = couponMapper.findById(productDto.getCouponId());
-            switch (couponModel.getCouponType()) {
-                case RED_ENVELOPE:
-                    productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元现金红包");
-                    productDto.setDescription(String.valueOf(couponModel.getAmount()));
-                    break;
-                case INVEST_COUPON:
-                    productDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元投资体验券");
-                    productDto.setDescription(String.valueOf(couponModel.getAmount()));
-                    break;
-                case INTEREST_COUPON:
-                    productDto.setName(couponModel.getRate()*100 + "%加息券");
-                    productDto.setDescription(String.valueOf(couponModel.getRate() * 100));
-                    break;
-            }
+            ProductDto convertProductDto  = convertProductDtoToCouponType(productDto);
+            productDto.setName(convertProductDto.getName());
+            productDto.setDescription(convertProductDto.getDescription());
         }
+
         ProductModel productModel = new ProductModel(productDto);
         productModel.setUpdatedBy(productDto.getLoginName());
         productModel.setUpdatedTime(new Date());
         productMapper.update(productModel);
         return new BaseDataDto(true, null);
+    }
+
+    private ProductDto convertProductDtoToCouponType(ProductDto productDto){
+        ProductDto convertProductDto = new ProductDto();
+        CouponModel couponModel = couponService.findCouponById(productDto.getCouponId());
+        switch (couponModel.getCouponType()) {
+            case RED_ENVELOPE:
+                convertProductDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元现金红包");
+                convertProductDto.setDescription(String.valueOf(couponModel.getAmount()));
+                break;
+            case INVEST_COUPON:
+                convertProductDto.setName(AmountConverter.convertCentToString(couponModel.getAmount()) + "元投资体验券");
+                convertProductDto.setDescription(String.valueOf(couponModel.getAmount()));
+                break;
+            case INTEREST_COUPON:
+                convertProductDto.setName(couponModel.getRate()*100 + "%加息券");
+                convertProductDto.setDescription(String.valueOf(couponModel.getRate() * 100));
+                break;
+        }
+        return convertProductDto;
     }
 
     private List<ProductShowItemDto> findAllProductsByGoodsType(GoodsType goodsType) {
@@ -227,7 +225,7 @@ public class ProductServiceImpl implements ProductService {
                 productShowItemDtos = Lists.transform(productModels, new Function<ProductModel, ProductShowItemDto>() {
                     @Override
                     public ProductShowItemDto apply(ProductModel productModel) {
-                        return new ProductShowItemDto(productModel, ItemType.VIRTUAL, "");
+                        return new ProductShowItemDto(productModel, GoodsType.VIRTUAL, "");
                     }
                 });
                 break;
@@ -236,7 +234,7 @@ public class ProductServiceImpl implements ProductService {
                 productShowItemDtos = Lists.transform(productModels, new Function<ProductModel, ProductShowItemDto>() {
                     @Override
                     public ProductShowItemDto apply(ProductModel productModel) {
-                        return new ProductShowItemDto(productModel, ItemType.PHYSICAL, "");
+                        return new ProductShowItemDto(productModel, GoodsType.PHYSICAL, "");
                     }
                 });
                 break;
@@ -245,7 +243,16 @@ public class ProductServiceImpl implements ProductService {
                 final int index = 0;
                 final int pageSize = 100;
 
-                List<ExchangeCouponView> exchangeCouponDtos = couponMapper.findExchangeableCouponViews(index, pageSize);
+                List<ProductModel> productModelList = productMapper.findExchangeableProductsList(goodsType, index, pageSize);
+                List<ExchangeCouponView> exchangeCouponDtos = Lists.newArrayList();
+
+                for(ProductModel productModel:productModelList){
+                    CouponModel couponModel = couponService.findExchangeableCouponById(productModel.getCouponId());
+                    ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
+                    exchangeCouponDtos.add(exchangeCouponView);
+
+                }
+
                 productShowItemDtos = Lists.transform(exchangeCouponDtos, new Function<ExchangeCouponView, ProductShowItemDto>() {
                     @Override
                     public ProductShowItemDto apply(ExchangeCouponView exchangeCouponView) {
@@ -289,20 +296,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductShowItemDto findProductShowItemDto(long id, ItemType itemType) {
+    public ProductShowItemDto findProductShowItemDto(long id, GoodsType goodsType) {
         ProductShowItemDto productShowItemDto = null;
-        switch (itemType) {
+        switch (goodsType) {
             case PHYSICAL:
             case VIRTUAL:
                 ProductModel productModel = productMapper.findById(id);
                 if (null != productModel) {
-                    productShowItemDto = new ProductShowItemDto(productModel, itemType, "");
+                    productShowItemDto = new ProductShowItemDto(productModel, goodsType, "");
                 }
                 break;
-            case INTEREST_COUPON:
-            case INVEST_COUPON:
-            case RED_ENVELOPE:
-                ExchangeCouponView exchangeCouponView = couponMapper.findExchangeableCouponViewById(id);
+            case COUPON:
+                ProductModel productModelCoupon = productMapper.findById(id);
+                CouponModel couponModel = couponService.findCouponById(productModelCoupon.getCouponId());
+                ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModelCoupon.getPoints(), productModelCoupon.getSeq(), productModelCoupon.getImageUrl(), id, couponModel);
                 if (null != exchangeCouponView) {
                     productShowItemDto = convertProductShowItemDto(exchangeCouponView);
                 }
@@ -314,16 +321,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private ProductOrderModel generateOrder(AccountModel accountModel, ProductShowItemDto productShowItemDto, int amount, UserAddressModel userAddressModel) {
-        if (productShowItemDto.getItemType().equals(ItemType.PHYSICAL)) {
+        if (productShowItemDto.getGoodsType().equals(GoodsType.PHYSICAL)) {
             return new ProductOrderModel(productShowItemDto.getId(), productShowItemDto.getPoints(), amount, productShowItemDto.getPoints() * amount,
                     userAddressModel.getContact(), userAddressModel.getMobile(), userAddressModel.getAddress(), false, null, accountModel.getLoginName());
-        } else if (productShowItemDto.getItemType().equals(ItemType.VIRTUAL)){
+        } else if (productShowItemDto.getGoodsType().equals(GoodsType.VIRTUAL)){
             UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
             return new ProductOrderModel(productShowItemDto.getId(), productShowItemDto.getPoints(), amount, productShowItemDto.getPoints() * amount,
                     accountModel.getUserName(), userModel.getMobile(), "", false, null, accountModel.getLoginName());
         } else {
             UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
-            ProductModel productModel = productMapper.findByCouponId(productShowItemDto.getId());
+            ProductModel productModel = productMapper.findById(productShowItemDto.getId());
             return new ProductOrderModel(productModel.getId(), productShowItemDto.getPoints(), amount, productShowItemDto.getPoints() * amount,
                     accountModel.getUserName(), userModel.getMobile(), "", false, null, accountModel.getLoginName());
         }
@@ -331,13 +338,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public synchronized BaseDto<BaseDataDto> buyProduct(String loginName, long id, ItemType itemType, int amount, Long addressId) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+    public BaseDto<BaseDataDto> buyProduct(String loginName, long id, GoodsType goodsType, int amount, Long addressId) {
+        ProductModel productModel = productMapper.lockById(id);
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (null == accountModel) {
             return new BaseDto<>(new BaseDataDto(false, "该账户未实名认证，不能购买商品"));
         }
 
-        ProductShowItemDto productShowItemDto = findProductShowItemDto(id, itemType);
+        ProductShowItemDto productShowItemDto = findProductShowItemDto(id, goodsType);
         if (null == productShowItemDto) {
             return new BaseDto<>(new BaseDataDto(false, "该商品或该商品类型不存在"));
         }
@@ -349,7 +357,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         UserAddressModel userAddressModel = null;
-        if (ItemType.PHYSICAL == itemType) {
+        if (GoodsType.PHYSICAL == goodsType) {
             if (null == addressId) {
                 return new BaseDto<>(new BaseDataDto(false, "地址不存在"));
             }
@@ -365,20 +373,20 @@ public class ProductServiceImpl implements ProductService {
 
         pointBillService.createPointBill(loginName, productShowItemDto.getId(), PointBusinessType.EXCHANGE, (-totalPrice), productShowItemDto.getName());
         logger.info(MessageFormat.format("[ProductServiceImpl][buyProduct] User:{0} buy product {1} product type {2}, amount:{3}, use point {4}",
-                accountModel.getLoginName(), productShowItemDto.getId(), productShowItemDto.getItemType().getDescription(), amount, totalPrice));
+                accountModel.getLoginName(), productShowItemDto.getId(), productShowItemDto.getGoodsType().getDescription(), amount, totalPrice));
 
         productOrderMapper.create(productOrderModel);
-        if (itemType.equals(ItemType.RED_ENVELOPE) || itemType.equals(ItemType.INTEREST_COUPON) || itemType.equals(ItemType.INVEST_COUPON)) {
+        if (goodsType.equals(GoodsType.COUPON)) {
             for (int i = 0; i < amount; ++i) {
-                couponAssignmentService.assignUserCoupon(loginName, id);
+                couponAssignmentService.assignUserCoupon(loginName, productModel.getCouponId());
             }
             logger.info(MessageFormat.format("[ProductServiceImpl][buyProduct] User:{0} buy coupon {1} product type {2}.amount{3}. coupon has been assigned",
-                    accountModel.getLoginName(), productShowItemDto.getId(), productShowItemDto.getItemType().getDescription(), amount));
-        } else if (itemType.equals(ItemType.PHYSICAL) || itemType.equals(ItemType.VIRTUAL)) {
-            ProductModel productModel = productMapper.findById(id);
-            productModel.setUsedCount(productModel.getUsedCount() + amount);
-            productMapper.update(productModel);
+                    accountModel.getLoginName(), productShowItemDto.getId(), productShowItemDto.getGoodsType().getDescription(), amount));
+
         }
+
+        productModel.setUsedCount(productModel.getUsedCount() + amount);
+        productMapper.update(productModel);
 
         return new BaseDto<>(new BaseDataDto(true));
     }
@@ -421,7 +429,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ExchangeCouponDto> findCouponExchanges(int index, int pageSize) {
-        List<CouponModel> couponModels = couponMapper.findCouponExchanges((index - 1) * pageSize, pageSize);
+
+        List<ProductModel> productModelList = productMapper.findAllProducts(GoodsType.COUPON, (index - 1) * pageSize, pageSize);
+        List<CouponModel> couponModels = Lists.newArrayList();
+        for(ProductModel productModel: productModelList){
+            CouponModel couponModel = couponService.findCouponById(productModel.getCouponId());
+            couponModels.add(couponModel);
+        }
         return Lists.transform(couponModels, new Function<CouponModel, ExchangeCouponDto>() {
             @Override
             public ExchangeCouponDto apply(CouponModel input) {
@@ -436,7 +450,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public int findCouponExchangeCount() {
-        return couponMapper.findCouponExchangeCount();
+        return (int)productMapper.findAllProductsCount(GoodsType.COUPON);
     }
 
     @Override
@@ -449,8 +463,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private ProductShowItemDto convertProductShowItemDto(ExchangeCouponView exchangeCouponView){
-        ProductShowItemDto productShowItemDto = new ProductShowItemDto(exchangeCouponView);
-        List<String> descriptions = getProductDescription(exchangeCouponView.getInvestLowerLimit(), exchangeCouponView.getProductTypes(), exchangeCouponView.getDeadline());
+
+        ProductShowItemDto productShowItemDto = new ProductShowItemDto(exchangeCouponView, exchangeCouponView.getProductId());
+        List<String> descriptions = getProductDescription(exchangeCouponView.getCouponModel().getInvestLowerLimit(), exchangeCouponView.getCouponModel().getProductTypes(), exchangeCouponView.getCouponModel().getDeadline());
         String descriptionString = "";
         for(String description : descriptions){
             descriptionString += description + "\n";

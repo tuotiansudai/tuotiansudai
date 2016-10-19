@@ -372,4 +372,9 @@ public class CouponServiceImpl implements CouponService {
         }
         return amount;
     }
+
+    @Override
+    public CouponModel findExchangeableCouponById(long couponId){
+        return couponMapper.findExchangeableCouponById(couponId);
+    }
 }

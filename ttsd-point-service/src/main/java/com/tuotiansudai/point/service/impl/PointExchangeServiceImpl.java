@@ -1,9 +1,6 @@
 package com.tuotiansudai.point.service.impl;
 
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
@@ -45,19 +42,6 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     private PointBillService pointBillService;
 
     @Override
-    public List<ExchangeCouponDto> findExchangeableCouponList() {
-        List<CouponModel> couponModels = couponMapper.findExchangeableCoupons(null, null);
-        return Lists.transform(couponModels, new Function<CouponModel, ExchangeCouponDto>() {
-            @Override
-            public ExchangeCouponDto apply(CouponModel input) {
-                ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(input);
-                exchangeCouponDto.setExchangePoint(productMapper.findByCouponId(input.getId()).getPoints());
-                return exchangeCouponDto;
-            }
-        });
-    }
-
-    @Override
     @Transactional
     public boolean exchangeableCoupon(long couponId, String loginName) {
         long exchangePoint = productMapper.findByCouponId(couponId).getPoints();
@@ -76,11 +60,6 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     }
 
     @Override
-    public long findProductOrderListByLoginNameCount(String loginName) {
-        return productOrderMapper.findProductOrderListByLoginNameCount(loginName);
-    }
-
-    @Override
     @Transactional
     public boolean exchangeCoupon(long couponId, String loginName, long exchangePoint) {
         try {
@@ -92,6 +71,5 @@ public class PointExchangeServiceImpl implements PointExchangeService {
             return false;
         }
     }
-
 
 }
