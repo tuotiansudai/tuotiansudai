@@ -2,6 +2,7 @@ package com.tuotiansudai.point.service.impl;
 
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -50,6 +51,9 @@ public class PointServiceImpl implements PointService {
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.endTime}\")}")
     private Date activityNationalEndTime;
+
+    @Value("#{'${activity.concrete.period}'.split('\\~')}")
+    private List<String> activityConcretePeriod = Lists.newArrayList();
 
     @Override
     @Transactional
