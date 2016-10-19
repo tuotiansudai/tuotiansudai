@@ -56,12 +56,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException(signInResult.getMessage());
         }
 
-        List<GrantedAuthority> grantedAuthorities = Lists.transform(signInResult.getUserInfo().getRoles(), new Function<String, GrantedAuthority>() {
-            @Override
-            public GrantedAuthority apply(String role) {
-                return new SimpleGrantedAuthority(role);
-            }
-        });
+        List<GrantedAuthority> grantedAuthorities = Lists.transform(signInResult.getUserInfo().getRoles(), (Function<String, GrantedAuthority>) SimpleGrantedAuthority::new);
 
         UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(
                 new MyUser(signInResult.getToken(), signInResult.getUserInfo().getLoginName(), authentication.getCredentials().toString(), true, true, true, true, grantedAuthorities, signInResult.getUserInfo().getMobile()),
