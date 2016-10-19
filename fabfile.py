@@ -34,7 +34,6 @@ def migrate():
     local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxactivity ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxpoint ttsd-config:flywayMigrate')
 
-
 def mk_war():
     local('/usr/local/bin/paver jcversion')
     local('/opt/gradle/latest/bin/gradle ttsd-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
