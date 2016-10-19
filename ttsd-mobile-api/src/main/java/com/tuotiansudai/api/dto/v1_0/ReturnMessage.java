@@ -69,6 +69,7 @@ public enum ReturnMessage {
 
     /******绑卡失败******/
     BIND_CARD_FAIL("0026","绑卡失败"),
+    BIND_CARD_LIMIT_FAIL("0203","暂不支持该银行卡"),
     /******绑卡失败******/
 
     /******签约失败******/
