@@ -84,8 +84,8 @@
         <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxpoint?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${point.jdbc.username}"/>
         <property name="password" value="${point.jdbc.password}"/>
-        <property name="minimumIdle" value="${point.aa.minimumIdle}"/>
-        <property name="maximumPoolSize" value="${point.aa.maximumPoolSize}"/>
+        <property name="minimumIdle" value="${pay.point.minimumIdle}"/>
+        <property name="maximumPoolSize" value="${pay.point.maximumPoolSize}"/>
         <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
         <property name="dataSourceProperties">
             <props>
