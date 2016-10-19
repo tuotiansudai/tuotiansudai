@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -27,6 +28,7 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -241,5 +243,17 @@ public class UserMembershipMapperTest {
         List<UserMembershipModel> actualExpiredUserMembership3 = userMembershipMapper.findExpiredUserMembership(new DateTime().minusDays(1).toDate());
         assertThat(actualExpiredUserMembership3.size(), is(1));
         assertThat(actualExpiredUserMembership3.get(0).getId(), is(userMembershipModel2.getId()));
+    }
+
+    @Test
+    public void shouldFindLoginNameMembershipByLevelIsOk(){
+        UserModel fakeUser = this.createFakeUser("expiredMembership", RandomStringUtils.randomNumeric(11), new Date());
+        UserMembershipModel userMembershipModel1 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(5).getId(), new DateTime().toDate(), UserMembershipType.PURCHASED);
+        UserMembershipModel userMembershipModel2 = new UserMembershipModel(fakeUser.getLoginName(), membershipMapper.findByLevel(5).getId(), new DateTime().minusDays(1).toDate(), UserMembershipType.PURCHASED);
+        userMembershipMapper.create(userMembershipModel1);
+        userMembershipMapper.create(userMembershipModel2);
+
+        List<String> loginNames = userMembershipMapper.findLoginNameMembershipByLevel(5);
+        assertTrue(CollectionUtils.isNotEmpty(loginNames));
     }
 }

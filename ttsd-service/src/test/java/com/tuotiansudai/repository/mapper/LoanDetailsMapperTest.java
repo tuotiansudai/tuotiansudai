@@ -72,22 +72,9 @@ public class LoanDetailsMapperTest {
         LoanDetailsModel loanDetailsModel = new LoanDetailsModel(9999L, "testDescription", "", false, "");
 
         loanDetailsMapper.create(loanDetailsModel);
-        LoanDetailsModel findLoanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanDetailsModel.getLoanId());
+        LoanDetailsModel findLoanDetailsModel = loanDetailsMapper.getByLoanId(loanDetailsModel.getLoanId());
         assertNotNull(findLoanDetailsModel);
         assertEquals(loanDetailsModel.getLoanId(), findLoanDetailsModel.getLoanId());
-        assertEquals(loanDetailsModel.getDeclaration(), findLoanDetailsModel.getDeclaration());
-    }
-
-    @Test
-    public void testUpdateByLoanId() throws Exception {
-        prepareData();
-        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(9999L, "testDescription", "", false, "");
-        loanDetailsMapper.create(loanDetailsModel);
-
-        loanDetailsModel.setDeclaration("update");
-        loanDetailsMapper.updateByLoanId(loanDetailsModel);
-        LoanDetailsModel findLoanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanDetailsModel.getLoanId());
-        assertNotNull(findLoanDetailsModel);
         assertEquals(loanDetailsModel.getDeclaration(), findLoanDetailsModel.getDeclaration());
     }
 }

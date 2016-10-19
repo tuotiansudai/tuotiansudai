@@ -55,4 +55,13 @@ public interface UserMembershipMapper {
 
     long findCountGiveMembershipsByLoginNameAndGiveId(@Param(value = "membershipGiveId") long membershipGiveId,
                                                       @Param(value = "loginName") String loginName);
+
+    long sumSuccessInvestAmountByLoginName(@Param(value = "loanId") Long loanId, @Param(value = "loginName") String loginName);
+
+    UserMembershipModel findByLoginNameByType(@Param(value = "loginName") String loginName,
+                                              @Param(value = "type") UserMembershipType type);
+
+    long findCountMembershipByLevel(@Param(value = "level") long level);
+
+    List<String> findLoginNameMembershipByLevel(@Param(value = "level") long level);
 }

@@ -108,6 +108,10 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     private PledgeType pledgeType;
 
+    private EnterpriseDto enterprise;
+
+    private PledgeEnterpriseDto pledgeEnterpriseDto;
+
     public Long getLoanId() {
         return loanId;
     }
@@ -490,5 +494,21 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     public void setPledgeType(PledgeType pledgeType) {
         this.pledgeType = pledgeType;
+    }
+
+    public EnterpriseDto getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(EnterpriseDto enterprise) {
+        this.enterprise = enterprise;
+    }
+
+    public PledgeEnterpriseDto getPledgeEnterpriseDto() {
+        return pledgeEnterpriseDto;
+    }
+
+    public void setPledgeEnterpriseDto(PledgeEnterpriseDto pledgeEnterpriseDto) {
+        this.pledgeEnterpriseDto = pledgeEnterpriseDto;
     }
 }

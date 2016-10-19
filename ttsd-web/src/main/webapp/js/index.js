@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down', 'jquery.validate', 'autoNumeric', 'logintip'], function ($, _, layer) {
+require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.extension', 'commonFun', 'coupon-alert', 'red-envelope-float', 'count_down', 'jquery.validate', 'autoNumeric', 'logintip','assign_coupon'], function ($, _, layer) {
     var $bannerBox = $('.banner-box'),
         $imgScroll = $('.banner-img-list', $bannerBox),
         $registerBox = $('.register-ad-box', $bannerBox),
@@ -311,4 +311,5 @@ require(['jquery', 'underscore', 'layerWrapper', 'superslide', 'jquery.ajax.exte
         }
         return result;
     }
+
 });

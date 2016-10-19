@@ -3,6 +3,9 @@ var require = {
     'paths': {
         'text': staticServer + '/js/libs/text-2.0.14',
         'jquery': staticServer + '/js/libs/jquery-1.11.3.min',
+        'copyclip': staticServer+'/js/libs/zeroclip/ZeroClipboard.min',
+        'md5': staticServer+'/js/libs/jQuery.md5',
+        'qrcode': staticServer+'/js/libs/jquery.qrcode.min',
         'csrf': staticServer + '/js/libs/csrf',
         'jqueryPage': staticServer + '/js/libs/jquery.page',
         'jquery.validate': staticServer + '/js/libs/jquery.validate-1.14.0.min',
@@ -34,7 +37,9 @@ var require = {
         'count_down': staticServer+'/js/dest/count_down.min',
         'placeholder': staticServer + '/js/libs/jquery.enplaceholder',
         'superslide': staticServer + '/js/libs/jquery.SuperSlide.2.1.1',
-        'logintip': staticServer+'/js/dest/login_tip.min'
+        'logintip': staticServer+'/js/dest/login_tip.min',
+        /*module*/
+        'assign_coupon':staticServer+'/js/dest/assign_coupon.min'
     },
     'waitSeconds':0,
     'shim': {
@@ -55,7 +60,9 @@ var require = {
         'rotate':['jquery'],
         'fancybox':['jquery'],
         'placeholder': ['jquery'],
-        'superslide': ['jquery']
+        'superslide': ['jquery'],
+        'md5':['jquery'],
+        'qrcode':['jquery']
     },
 
     config: {

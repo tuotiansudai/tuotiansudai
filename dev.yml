@@ -11,6 +11,7 @@ web:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20002:8080"
   volumes:
@@ -27,6 +28,7 @@ console:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20003:8080"
   volumes:
@@ -43,6 +45,7 @@ activity-console:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20019:8080"
   volumes:
@@ -56,6 +59,7 @@ pay-wrapper:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20004:8080"
   volumes:
@@ -70,6 +74,7 @@ sms-wrapper:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20005:8080"
   volumes:
@@ -82,6 +87,7 @@ mobile-api:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20006:8080"
   volumes:
@@ -97,6 +103,7 @@ activity:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20007:8080"
   volumes:
@@ -111,6 +118,7 @@ point:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20018:8080"
   volumes:
@@ -136,6 +144,7 @@ worker-all:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-job-worker/build/distributions:/opt/worker
     - /var/log/tuotian/worker-all:/var/log/job-worker
@@ -148,6 +157,7 @@ worker-invest:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-job-worker/build/distributions:/opt/worker
     - /var/log/tuotian/worker-invest:/var/log/job-worker
@@ -160,6 +170,7 @@ worker-jpush:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-job-worker/build/distributions:/opt/worker
     - /var/log/tuotian/worker-jpush:/var/log/job-worker
@@ -197,6 +208,7 @@ ask:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
   ports:
     - "20009:8080"
   volumes:
