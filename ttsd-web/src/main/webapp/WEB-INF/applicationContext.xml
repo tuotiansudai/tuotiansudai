@@ -86,6 +86,7 @@
         <property name="dataSource" ref="jobHikariCPDataSource"/>
     </bean>
 
+    <!-- define the SqlSessionFactory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage"
@@ -97,13 +98,9 @@
         <property name="typeAliasesPackage" value="com.tuotiansudai.point.repository.model"/>
     </bean>
 
-    <!-- define the SqlSessionFactory -->
-    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg index="0" ref="sqlSessionFactory"/>
-    </bean>
-
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <property name="basePackage"
                   value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.membership.repository.mapper,com.tuotiansudai.message.repository.mapper"/>
     </bean>
