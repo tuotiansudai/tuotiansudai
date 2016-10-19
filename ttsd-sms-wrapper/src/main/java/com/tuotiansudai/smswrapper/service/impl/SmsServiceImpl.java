@@ -40,9 +40,17 @@ public class SmsServiceImpl implements SmsService {
     @Value("${common.environment}")
     private Environment environment;
 
+    @Value("${sms.sending.platform}")
+    private String platform;
+
+
     @Override
     public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, String ip) {
-        return smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
+        BaseDto<SmsDataDto> smsDateDto = smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
+        if(!smsDateDto.isSuccess() && platform.equals("zucp")){
+            smsDateDto = this.sendRegisterCaptchaByMd(mobile, captcha,ip);
+        }
+        return smsDateDto;
     }
 
     @Override
@@ -123,7 +131,11 @@ public class SmsServiceImpl implements SmsService {
                 + notifyDto.getCouponType().getName();
 
         List<String> paramList = ImmutableList.<String>builder().add(couponName).add(notifyDto.getExpiredDate()).build();
-        return mdSmsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
+        if(platform.equals("zucp")){
+            return mdSmsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
+        }
+
+        return smsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
     }
 
     @Override
