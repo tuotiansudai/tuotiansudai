@@ -1,0 +1,10 @@
+apply plugin: 'java'
+
+dependencies {
+    compile project(':ttsd-dependency'),
+            project(":ttsd-config"),
+            project(":ttsd-user-service"),
+            project(":ttsd-util"),
+            project(":ttsd-service"),
+            project(":ttsd-client")
+}

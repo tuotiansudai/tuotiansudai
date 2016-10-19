@@ -8,11 +8,11 @@ import com.tuotiansudai.api.dto.v1_0.LoanStatus;
 import com.tuotiansudai.api.dto.v2_0.*;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanDetailV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -42,7 +42,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
     private InvestMapper investMapper;
 
     @Autowired
-    private CouponService couponService;
+    private InvestService investService;
 
     @Autowired
     private LoanerDetailsMapper loanerDetailsMapper;
@@ -144,7 +144,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
             Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
             List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loanModel.getId(), beginTime, endTime);
-            investedAmount = couponService.findExperienceInvestAmount(investModelList);
+            investedAmount = investService.findExperienceInvestAmount(investModelList);
             dataDto.setVerifyTime(new DateTime().withTimeAtStartOfDay().toString("yyyy-MM-dd HH:mm:ss"));
         } else {
             investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());

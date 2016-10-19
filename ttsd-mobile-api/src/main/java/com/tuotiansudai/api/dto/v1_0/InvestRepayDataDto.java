@@ -1,8 +1,8 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.util.AmountConverter;
+import coupon.repository.model.CouponRepayModel;
 
 import java.text.SimpleDateFormat;
 

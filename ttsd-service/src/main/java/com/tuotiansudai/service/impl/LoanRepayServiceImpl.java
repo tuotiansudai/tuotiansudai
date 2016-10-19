@@ -5,8 +5,6 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanRepayDataItemDto;
@@ -20,6 +18,8 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanRepayService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.DateUtil;
+import coupon.repository.model.CouponRepayModel;
+import coupon.service.CouponRepayService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.log4j.Logger;
@@ -64,7 +64,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
     private PayWrapperClient payWrapperClient;
 
     @Autowired
-    private CouponRepayMapper couponRepayMapper;
+    private CouponRepayService couponRepayService;
 
     @Override
     public BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> findLoanRepayPagination(int index, int pageSize, Long loanId,
@@ -165,11 +165,11 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             loanMapper.update(loanModel);
         }
         logger.debug(MessageFormat.format("loanRepayId:{0} couponRepay status to overdue", loanRepayModel.getId()));
-        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findCouponRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
+        List<CouponRepayModel> couponRepayModels = couponRepayService.findCouponRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
         for (CouponRepayModel couponRepayModel : couponRepayModels) {
             if (couponRepayModel.getRepayDate().before(new Date())) {
                 couponRepayModel.setStatus(RepayStatus.OVERDUE);
-                couponRepayMapper.update(couponRepayModel);
+                couponRepayService.update(couponRepayModel);
             }
         }
     }

@@ -1,11 +1,6 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -14,6 +9,11 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import coupon.repository.mapper.CouponMapper;
+import coupon.repository.mapper.UserCouponMapper;
+import coupon.repository.model.CouponModel;
+import coupon.repository.model.UserCouponModel;
+import coupon.repository.model.UserGroup;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;

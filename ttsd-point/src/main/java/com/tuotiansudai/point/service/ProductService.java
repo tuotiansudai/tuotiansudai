@@ -1,7 +1,6 @@
 package com.tuotiansudai.point.service;
 
 
-import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.point.dto.ProductDto;
@@ -12,6 +11,7 @@ import com.tuotiansudai.point.repository.model.ItemType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.repository.model.UserAddressModel;
 import com.tuotiansudai.repository.model.ProductType;
+import coupon.dto.ExchangeCouponDto;
 
 import java.util.List;
 

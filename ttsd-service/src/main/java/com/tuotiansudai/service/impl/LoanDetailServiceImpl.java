@@ -5,9 +5,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
@@ -17,6 +14,9 @@ import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.RandomUtils;
+import coupon.repository.model.CouponModel;
+import coupon.repository.model.UserGroup;
+import coupon.service.CouponService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
@@ -74,7 +74,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private LoanTitleRelationMapper loanTitleRelationMapper;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private CouponService couponService;
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
@@ -242,7 +242,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
         if (loanModel.getActivityType() == ActivityType.NEWBIE) {
             double newbieInterestCouponRate = 0;
-            final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
+            final List<CouponModel> allActiveCoupons = couponService.findAllActiveCoupons();
             for (CouponModel activeCoupon : allActiveCoupons) {
                 if (activeCoupon.getCouponType() == CouponType.INTEREST_COUPON
                         && activeCoupon.getUserGroup() == UserGroup.NEW_REGISTERED_USER

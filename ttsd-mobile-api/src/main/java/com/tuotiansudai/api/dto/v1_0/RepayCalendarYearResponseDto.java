@@ -1,8 +1,8 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
+import coupon.repository.model.CouponRepayModel;
 
 public class RepayCalendarYearResponseDto extends BaseResponseDataDto {
 

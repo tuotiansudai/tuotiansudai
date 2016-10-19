@@ -3,10 +3,9 @@ package com.tuotiansudai.api.dto.v1_0;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
+import coupon.repository.model.UserCouponView;
 
 import java.text.DecimalFormat;
 import java.util.Date;

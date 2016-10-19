@@ -6,12 +6,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
@@ -21,6 +15,12 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
+import coupon.repository.model.CouponModel;
+import coupon.repository.model.CouponRepayModel;
+import coupon.repository.model.UserCouponModel;
+import coupon.service.CouponRepayService;
+import coupon.service.CouponService;
+import coupon.service.UserCouponService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -57,13 +57,13 @@ public class RepayServiceImpl implements RepayService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private UserCouponMapper userCouponMapper;
+    private UserCouponService userCouponService;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private CouponService couponService;
 
     @Autowired
-    private CouponRepayMapper couponRepayMapper;
+    private CouponRepayService couponRepayService;
 
     @Autowired
     private MembershipMapper membershipMapper;
@@ -77,13 +77,13 @@ public class RepayServiceImpl implements RepayService {
 
     private final static String BIRTHDAY_COUPON_MESSAGE = "您已享受生日福利";
 
-    private final static Map<String,String> membershipMessage = new HashMap(){{
-        put("0","平台收取收益和奖励的10%作为服务费");
-        put("1","平台收取收益和奖励的10%作为服务费");
-        put("2","平台收取收益和奖励的10%作为服务费,v2会员享受服务费9折优惠");
-        put("3","平台收取收益和奖励的10%作为服务费,v3会员享受服务费8折优惠");
-        put("4","平台收取收益和奖励的10%作为服务费,v4会员享受服务费8折优惠");
-        put("5","平台收取收益和奖励的10%作为服务费,v5会员享受服务费7折优惠");
+    private final static Map<String, String> membershipMessage = new HashMap() {{
+        put("0", "平台收取收益和奖励的10%作为服务费");
+        put("1", "平台收取收益和奖励的10%作为服务费");
+        put("2", "平台收取收益和奖励的10%作为服务费,v2会员享受服务费9折优惠");
+        put("3", "平台收取收益和奖励的10%作为服务费,v3会员享受服务费8折优惠");
+        put("4", "平台收取收益和奖励的10%作为服务费,v4会员享受服务费8折优惠");
+        put("5", "平台收取收益和奖励的10%作为服务费,v5会员享受服务费7折优惠");
     }};
 
     @Override
@@ -182,15 +182,15 @@ public class RepayServiceImpl implements RepayService {
         if (CollectionUtils.isNotEmpty(investRepayModels)) {
             long sumActualInterest = 0l;
             long sumExpectedInterest = 0l;
-            for(InvestRepayModel investRepayModel : investRepayModels){
+            for (InvestRepayModel investRepayModel : investRepayModels) {
                 long expectedAmount = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
                 long expectedFee = investRepayModel.getExpectedFee();
                 long actualFee = investRepayModel.getActualFee();
                 long repayAmount = investRepayModel.getRepayAmount();
                 long couponExpectedInterest = 0l;
                 InvestRepayDataItemDto investRepayDataItemDto = new InvestRepayDataItemDto(investRepayModel);
-                CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayDataItemDto.getInvestId(), investRepayDataItemDto.getPeriod());
-                if(couponRepayModel != null){
+                CouponRepayModel couponRepayModel = couponRepayService.findByUserCouponByInvestIdAndPeriod(investRepayDataItemDto.getInvestId(), investRepayDataItemDto.getPeriod());
+                if (couponRepayModel != null) {
                     couponExpectedInterest = couponRepayModel.getExpectedInterest();
                     expectedFee += couponRepayModel.getExpectedFee();
                     expectedAmount += (couponExpectedInterest - couponRepayModel.getExpectedFee());
@@ -232,18 +232,18 @@ public class RepayServiceImpl implements RepayService {
             dataDto.setRecords(records);
         }
 
-        List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(investId, Lists.newArrayList(CouponType.RED_ENVELOPE));
+        List<UserCouponModel> userCouponModels = userCouponService.findUserCouponSuccessAndCouponTypeByInvestId(investId, Lists.newArrayList(CouponType.RED_ENVELOPE));
         dataDto.setRedInterest(AmountConverter.convertCentToString(CollectionUtils.isNotEmpty(userCouponModels) ? userCouponModels.get(0).getExpectedInterest() : 0l));
 
-        userCouponModels = userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(investId, Lists.newArrayList(CouponType.INTEREST_COUPON,CouponType.INVEST_COUPON,CouponType.BIRTHDAY_COUPON));
-        for(UserCouponModel userCouponModel : userCouponModels){
-            CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-            switch (couponModel.getCouponType()){
+        userCouponModels = userCouponService.findUserCouponSuccessAndCouponTypeByInvestId(investId, Lists.newArrayList(CouponType.INTEREST_COUPON, CouponType.INVEST_COUPON, CouponType.BIRTHDAY_COUPON));
+        for (UserCouponModel userCouponModel : userCouponModels) {
+            CouponModel couponModel = couponService.findById(userCouponModel.getCouponId());
+            switch (couponModel.getCouponType()) {
                 case INVEST_COUPON:
-                    dataDto.setCouponMessage(MessageFormat.format(INVEST_COUPON_MESSAGE,AmountConverter.convertCentToString(couponModel.getAmount())));
+                    dataDto.setCouponMessage(MessageFormat.format(INVEST_COUPON_MESSAGE, AmountConverter.convertCentToString(couponModel.getAmount())));
                     break;
                 case INTEREST_COUPON:
-                    dataDto.setCouponMessage(MessageFormat.format(INTEREST_COUPON_MESSAGE,covertRate(String.format("%.2f",couponModel.getRate() * 100))));
+                    dataDto.setCouponMessage(MessageFormat.format(INTEREST_COUPON_MESSAGE, covertRate(String.format("%.2f", couponModel.getRate() * 100))));
                     break;
                 case BIRTHDAY_COUPON:
                     dataDto.setCouponMessage(BIRTHDAY_COUPON_MESSAGE);
@@ -252,23 +252,23 @@ public class RepayServiceImpl implements RepayService {
         }
 
         final InvestModel investModel = investMapper.findById(investId);
-        List<MembershipModel> membershipModels =  membershipMapper.findAllMembership();
+        List<MembershipModel> membershipModels = membershipMapper.findAllMembership();
         Optional<MembershipModel> membershipModelOptional = Iterators.tryFind(membershipModels.iterator(), new Predicate<MembershipModel>() {
             @Override
             public boolean apply(MembershipModel input) {
-                return input.getFee() == investModel.getInvestFeeRate() ;
+                return input.getFee() == investModel.getInvestFeeRate();
             }
         });
 
-        if(membershipModelOptional.isPresent()){
+        if (membershipModelOptional.isPresent()) {
             dataDto.setLevelMessage(membershipMessage.get(String.valueOf(membershipModelOptional.get().getLevel())));
-        }else{
+        } else {
             dataDto.setLevelMessage(membershipMessage.get(String.valueOf(0)));
         }
         return baseDto;
     }
 
-    private static String covertRate(String rate){
+    private static String covertRate(String rate) {
         return rate.indexOf(".00") != -1 ? rate.replaceAll("\\.00", "") : String.valueOf(Double.parseDouble(rate));
     }
 }

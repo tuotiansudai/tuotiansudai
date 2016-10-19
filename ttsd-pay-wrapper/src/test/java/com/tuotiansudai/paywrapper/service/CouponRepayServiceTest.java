@@ -1,12 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -24,6 +18,12 @@ import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
+import coupon.repository.mapper.CouponMapper;
+import coupon.repository.mapper.CouponRepayMapper;
+import coupon.repository.mapper.UserCouponMapper;
+import coupon.repository.model.CouponModel;
+import coupon.repository.model.CouponRepayModel;
+import coupon.repository.model.UserCouponModel;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +42,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;

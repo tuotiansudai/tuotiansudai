@@ -2,18 +2,19 @@ package com.tuotiansudai.web.controller;
 
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.dto.UserCouponDto;
-import com.tuotiansudai.coupon.service.CouponAlertService;
-import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDetailDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
+import coupon.dto.UserCouponDto;
+import coupon.service.CouponAlertService;
+import coupon.service.UserCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,9 @@ public class LoanDetailController {
 
     @Autowired
     private CouponAlertService couponAlertService;
+
+    @Autowired
+    private InvestService investService;
 
     @Autowired
     private UserCouponService userCouponService;
@@ -53,7 +57,7 @@ public class LoanDetailController {
         modelAndView.addObject("loan", loanDetail);
         modelAndView.addObject("coupons", userCouponService.getInvestUserCoupons(LoginUserInfo.getLoginName(), loanId));
         modelAndView.addObject("maxBenefitUserCoupon",
-                this.userCouponService.getMaxBenefitUserCoupon(LoginUserInfo.getLoginName(), loanId, AmountConverter.convertStringToCent(loanDetail.getInvestor().getMaxAvailableInvestAmount())));
+                investService.getMaxBenefitUserCoupon(LoginUserInfo.getLoginName(), loanId, AmountConverter.convertStringToCent(loanDetail.getInvestor().getMaxAvailableInvestAmount())));
         modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE)));
         modelAndView.addObject("extraLoanRates", loanDetailService.getExtraLoanRate(loanId));
         boolean membershipPreferenceValid = false;
@@ -70,7 +74,7 @@ public class LoanDetailController {
     @RequestMapping(value = "/{loanId:^\\d+$}/amount/{amount:^\\d+$}/max-benefit-user-coupon", method = RequestMethod.GET)
     @ResponseBody
     public String getMaxBenefitUserCoupon(@PathVariable long loanId, @PathVariable long amount) {
-        UserCouponDto maxBenefitUserCoupon = userCouponService.getMaxBenefitUserCoupon(LoginUserInfo.getLoginName(), loanId, amount);
+        UserCouponDto maxBenefitUserCoupon = investService.getMaxBenefitUserCoupon(LoginUserInfo.getLoginName(), loanId, amount);
         if (maxBenefitUserCoupon != null) {
             return String.valueOf(maxBenefitUserCoupon.getId());
         }

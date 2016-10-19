@@ -3,7 +3,6 @@ package com.tuotiansudai.api.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanListServiceImpl;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
@@ -12,7 +11,9 @@ import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.IdGenerator;
+import coupon.service.CouponService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -40,6 +41,8 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
     @Mock
     private CouponService couponService;
     @Mock
+    private InvestService investService;
+    @Mock
     private ExtraLoanRateMapper extraLoanRateMapper;
     @Mock
     private LoanDetailsMapper loanDetailsMapper;
@@ -49,7 +52,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
 
         MembershipModel membershipModel = new MembershipModel(3,2,50000,0.09);
         List<LoanModel> loanModels = Lists.newArrayList();
-        loanModels.add(getFakeLoanModel("test1",ProductType._30));
+        loanModels.add(getFakeLoanModel("test1", ProductType._30));
         loanModels.add(getFakeLoanModel("test2", ProductType.EXPERIENCE));
         LoanModel loanModelNovice = getFakeLoanModel("test3",ProductType._180);
         loanModelNovice.setActivityType(ActivityType.NEWBIE);
@@ -57,7 +60,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         when(loanMapper.findLoanListCountMobileApp(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble())).thenReturn(2);
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(10000L);
         when(userMembershipEvaluator.evaluate(anyString())).thenReturn(membershipModel);
-        when(couponService.findExperienceInvestAmount(any(List.class))).thenReturn(1000l);
+        when(investService.findExperienceInvestAmount(any(List.class))).thenReturn(1000l);
         when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
         when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(null);
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();

@@ -4,6 +4,7 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.*;
+import coupon.dto.UserCouponDto;
 
 import java.util.Date;
 import java.util.List;
@@ -50,4 +51,10 @@ public interface InvestService {
     void markNoPasswordRemind(String loginName);
 
     long calculateMembershipPreference(String loginName, long loanId, long investAmount);
+
+    long estimateCouponExpectedInterest(String loginName, long loanId, List<Long> couponIds, long amount);
+
+    long findExperienceInvestAmount(List<InvestModel> investModelList);
+
+    UserCouponDto getMaxBenefitUserCoupon(String loginName, long loanId, long amount);
 }

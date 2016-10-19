@@ -2,21 +2,24 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppInvestCouponService;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.UserBirthdayUtil;
+import coupon.repository.mapper.CouponMapper;
+import coupon.repository.mapper.UserCouponMapper;
+import coupon.repository.model.CouponModel;
+import coupon.repository.model.UserCouponModel;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -50,6 +53,9 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
 
     @Autowired
     private UserBirthdayUtil userBirthdayUtil;
@@ -107,7 +113,14 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
 
         for (UserCouponModel item : userCouponModels) {
             CouponModel couponModel = couponMapper.findById(item.getCouponId());
-            if (!couponModel.getProductTypes().contains(loanProductType) || CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()) && !userBirthdayUtil.isBirthMonth(item.getLoginName())) {
+            AccountModel accountModel = accountMapper.findByLoginName(item.getLoginName());
+            String identifyNumber;
+            if (accountModel == null || Strings.isNullOrEmpty(accountModel.getIdentityNumber())) {
+                identifyNumber = null;
+            } else {
+                identifyNumber = accountModel.getIdentityNumber();
+            }
+            if (!couponModel.getProductTypes().contains(loanProductType) || CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()) && !userBirthdayUtil.isBirthMonth(identifyNumber)) {
                 unavailableCoupons.add(item);
             }
         }

@@ -1,16 +1,16 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.util.IdGenerator;
+import coupon.repository.mapper.CouponMapper;
+import coupon.repository.mapper.UserCouponMapper;
+import coupon.repository.model.CouponModel;
+import coupon.repository.model.UserCouponModel;
+import coupon.repository.model.UserGroup;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

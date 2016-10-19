@@ -1,13 +1,13 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.model.UserCouponView;
-import com.tuotiansudai.coupon.service.CouponAlertService;
-import com.tuotiansudai.coupon.service.ExchangeCodeService;
-import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.spring.LoginUserInfo;
+import coupon.repository.model.UserCouponView;
+import coupon.service.CouponAlertService;
+import coupon.service.ExchangeCodeService;
+import coupon.service.UserCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;

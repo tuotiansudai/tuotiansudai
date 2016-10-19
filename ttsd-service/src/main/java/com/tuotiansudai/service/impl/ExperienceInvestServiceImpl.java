@@ -2,12 +2,6 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
@@ -19,6 +13,12 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExperienceInvestService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
+import coupon.repository.model.CouponModel;
+import coupon.repository.model.UserCouponModel;
+import coupon.repository.model.UserGroup;
+import coupon.service.CouponAssignmentService;
+import coupon.service.CouponService;
+import coupon.service.UserCouponService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -49,10 +49,10 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private CouponMapper couponMapper;
+    private CouponService couponService;
 
     @Autowired
-    private UserCouponMapper userCouponMapper;
+    private UserCouponService userCouponService;
 
     @Autowired
     private IdGenerator idGenerator;
@@ -75,10 +75,10 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
             return dto;
         }
 
-        UserCouponModel userCouponModel = userCouponMapper.findById(investDto.getUserCouponIds().get(0));
-        CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+        UserCouponModel userCouponModel = userCouponService.findById(investDto.getUserCouponIds().get(0));
+        CouponModel couponModel = couponService.findById(userCouponModel.getCouponId());
         couponModel.setUsedCount(couponModel.getUsedCount() + 1);
-        couponMapper.updateCoupon(couponModel);
+        couponService.updateCoupon(couponModel);
 
         InvestModel investModel = this.generateInvest(investDto, couponModel);
 
@@ -86,7 +86,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         userCouponModel.setInvestId(investModel.getId());
         userCouponModel.setUsedTime(new Date());
         userCouponModel.setStatus(InvestStatus.SUCCESS);
-        userCouponMapper.update(userCouponModel);
+        userCouponService.update(userCouponModel);
 
         couponAssignmentService.assignUserCoupon(investDto.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_INVEST_SUCCESS));
 
@@ -153,7 +153,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         }
 
         long userCouponId = investDto.getUserCouponIds().get(0);
-        UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
+        UserCouponModel userCouponModel = userCouponService.findById(userCouponId);
         if (userCouponModel == null) {
             logger.error(MessageFormat.format("[Experience Invest] user({0}) is using a nonexistent user coupon({1}) ",
                     investDto.getLoginName(), String.valueOf(userCouponId)));
@@ -166,7 +166,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
             return false;
         }
 
-        CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+        CouponModel couponModel = couponService.findById(userCouponModel.getCouponId());
         if (couponModel.getProductTypes().contains(loanModel.getProductType()) && investAmount < couponModel.getInvestLowerLimit()) {
             logger.error(MessageFormat.format("[Experience Invest] user({0}) invest amount({1}) with a using invalid({2}, {3}) user coupon({4})",
                     investDto.getLoginName(),

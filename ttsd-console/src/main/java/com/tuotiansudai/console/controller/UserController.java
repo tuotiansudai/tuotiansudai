@@ -4,25 +4,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
-import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
 import com.tuotiansudai.console.service.UserServiceConsole;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.membership.repository.model.MembershipGiveModel;
-import com.tuotiansudai.membership.service.UserMembershipService;
-import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.exception.BaseException;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.spring.security.SignInClient;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.RequestIPParser;
+import coupon.repository.model.UserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -255,15 +253,15 @@ public class UserController {
     @ResponseBody
     public long queryUserMembershipByLevelCount(@RequestParam(value = "userGroup") UserGroup userGroup) {
         long level = MEMBERSHIP_V0;
-        if(userGroup.equals(UserGroup.MEMBERSHIP_V1)){
+        if (userGroup.equals(UserGroup.MEMBERSHIP_V1)) {
             level = MEMBERSHIP_V1;
-        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V2)){
+        } else if (userGroup.equals(UserGroup.MEMBERSHIP_V2)) {
             level = MEMBERSHIP_V2;
-        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V3)){
+        } else if (userGroup.equals(UserGroup.MEMBERSHIP_V3)) {
             level = MEMBERSHIP_V3;
-        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V4)){
+        } else if (userGroup.equals(UserGroup.MEMBERSHIP_V4)) {
             level = MEMBERSHIP_V4;
-        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V5)){
+        } else if (userGroup.equals(UserGroup.MEMBERSHIP_V5)) {
             level = MEMBERSHIP_V5;
         }
         return userMembershipService.findCountMembershipByLevel(level);

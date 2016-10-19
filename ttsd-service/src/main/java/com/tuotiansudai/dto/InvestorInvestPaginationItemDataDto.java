@@ -3,9 +3,9 @@ package com.tuotiansudai.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Ints;
-import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
+import coupon.dto.UserCouponDto;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Date;

@@ -1,11 +1,5 @@
 package com.tuotiansudai.service.impl;
 
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.FinanceReportDto;
 import com.tuotiansudai.enums.CouponType;
@@ -16,6 +10,12 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.FinanceReportService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.ExportCsvUtil;
+import coupon.repository.model.CouponModel;
+import coupon.repository.model.CouponRepayModel;
+import coupon.repository.model.UserCouponModel;
+import coupon.service.CouponRepayService;
+import coupon.service.CouponService;
+import coupon.service.UserCouponService;
 import org.apache.log4j.Logger;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -32,22 +32,22 @@ public class FinanceReportServiceImpl implements FinanceReportService {
     static Logger logger = Logger.getLogger(FinanceReportServiceImpl.class);
 
     @Autowired
-    FinanceReportMapper financeReportMapper;
+    private FinanceReportMapper financeReportMapper;
 
     @Autowired
-    InvestReferrerRewardMapper investReferrerRewardMapper;
+    private InvestReferrerRewardMapper investReferrerRewardMapper;
 
     @Autowired
-    InvestRepayMapper investRepayMapper;
+    private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    CouponMapper couponMapper;
+    private CouponService couponService;
 
     @Autowired
-    UserCouponMapper userCouponMapper;
+    private UserCouponService userCouponService;
 
     @Autowired
-    CouponRepayMapper couponRepayMapper;
+    private CouponRepayService couponRepayService;
 
     private List<FinanceReportDto> combineFinanceReportDtos(List<FinanceReportItemView> financeReportItemViews) {
         List<FinanceReportDto> financeReportDtos = new ArrayList<>();
@@ -91,16 +91,16 @@ public class FinanceReportServiceImpl implements FinanceReportService {
             }
 
             //Set Coupon Detail
-            CouponModel couponModel = couponMapper.findById(financeReportItemView.getCouponId());
+            CouponModel couponModel = couponService.findById(financeReportItemView.getCouponId());
             if (null != couponModel) {
                 long couponActualInterest = 0;
                 if (couponModel.getCouponType().equals(CouponType.RED_ENVELOPE)) {
-                    List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessByInvestId(financeReportItemView.getInvestId());
+                    List<UserCouponModel> userCouponModels = userCouponService.findUserCouponSuccessByInvestId(financeReportItemView.getInvestId());
                     for (UserCouponModel userCouponModel : userCouponModels) {
                         couponActualInterest += userCouponModel.getActualInterest();
                     }
                 } else {
-                    List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(financeReportItemView.getInvestId());
+                    List<CouponRepayModel> couponRepayModels = couponRepayService.findByUserCouponByInvestId(financeReportItemView.getInvestId());
                     for (CouponRepayModel couponRepayModel : couponRepayModels) {
                         couponActualInterest += couponRepayModel.getActualInterest();
                     }

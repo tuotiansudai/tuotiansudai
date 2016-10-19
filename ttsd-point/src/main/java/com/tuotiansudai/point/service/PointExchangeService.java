@@ -1,12 +1,9 @@
 package com.tuotiansudai.point.service;
 
-import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
-import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
+import coupon.dto.ExchangeCouponDto;
 
-import java.util.Date;
 import java.util.List;
 
 public interface PointExchangeService {

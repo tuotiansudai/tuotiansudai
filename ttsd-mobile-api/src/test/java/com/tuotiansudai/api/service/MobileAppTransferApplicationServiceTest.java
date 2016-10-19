@@ -11,6 +11,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
@@ -358,7 +359,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     private InvestModel createInvest(String loginName, long loanId) {
         InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, loginName, new Date(), Source.WEB, null, 0.1);
-        model.setStatus(com.tuotiansudai.repository.model.InvestStatus.SUCCESS);
+        model.setStatus(InvestStatus.SUCCESS);
         return model;
     }
 

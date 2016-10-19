@@ -2,10 +2,10 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
+import coupon.repository.model.CouponModel;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
