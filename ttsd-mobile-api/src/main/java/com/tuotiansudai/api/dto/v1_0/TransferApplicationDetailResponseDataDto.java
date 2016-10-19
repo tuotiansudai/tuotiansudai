@@ -2,6 +2,8 @@ package com.tuotiansudai.api.dto.v1_0;
 
 
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -21,11 +23,12 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
     private String baseRate;
     private String activityRate;
     private int leftPeriod;
+    private String leftDays;
     private String deadline;
     private String expecedInterest;
     private String transferStatus;
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public String getTransferApplicationId() {
         return transferApplicationId;
@@ -155,6 +158,14 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
         this.transferStatus = transferStatus;
     }
 
+    public String getLeftDays() {
+        return leftDays;
+    }
+
+    public void setLeftDays(String leftDays) {
+        this.leftDays = leftDays;
+    }
+
     public TransferApplicationDetailResponseDataDto(TransferApplicationDetailDto transferApplicationDetailDto) {
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         this.transferApplicationId = String.valueOf(transferApplicationDetailDto.getId());
@@ -173,5 +184,7 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
         this.expecedInterest = transferApplicationDetailDto.getExpecedInterest();
         this.deadline = sdf.format(transferApplicationDetailDto.getDeadLine());
         this.transferStatus = transferApplicationDetailDto.getTransferStatus().name();
+        int leftDay = Days.daysBetween(new DateTime().withTimeAtStartOfDay().toLocalDateTime(), new DateTime(transferApplicationDetailDto.getDeadLine()).toLocalDateTime()).getDays();
+        this.leftDays = String.valueOf(leftDay > 0 ? leftDay : 0);
     }
 }

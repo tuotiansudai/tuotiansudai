@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import java.text.DecimalFormat;
 
@@ -21,6 +22,7 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
     private String activityRate;
     private TransferStatus transferStatus;
     private String leftPeriod;
+    private String leftDays;
 
     public String getTransferApplicationId() {
         return transferApplicationId;
@@ -111,6 +113,14 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
         this.leftPeriod = leftPeriod;
     }
 
+    public String getLeftDays() {
+        return leftDays;
+    }
+
+    public void setLeftDays(String leftDays) {
+        this.leftDays = leftDays;
+    }
+
     public TransferApplicationRecordResponseDataDto() {
 
     }
@@ -128,6 +138,8 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
         this.activityRate = decimalFormat.format(transferApplicationRecordDto.getActivityRate() * 100);
         this.transferStatus = transferApplicationRecordDto.getTransferStatus();
         this.leftPeriod = String.valueOf(transferApplicationRecordDto.getLeftPeriod());
+        int leftDay = Days.daysBetween(new DateTime().withTimeAtStartOfDay().toLocalDateTime(), new DateTime(transferApplicationRecordDto.getDeadLine()).toLocalDateTime()).getDays();
+        this.leftDays = String.valueOf(leftDay > 0 ? leftDay : 0);
     }
 
     public TransferApplicationRecordResponseDataDto(TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto) {
@@ -141,5 +153,7 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
         this.activityRate = decimalFormat.format(transferApplicationPaginationItemDataDto.getActivityRate());
         this.transferStatus = TransferStatus.valueOf(transferApplicationPaginationItemDataDto.getTransferStatus());
         this.leftPeriod = String.valueOf(transferApplicationPaginationItemDataDto.getLeftPeriod());
+        int leftDay = Days.daysBetween(new DateTime().withTimeAtStartOfDay().toLocalDateTime(), new DateTime(transferApplicationPaginationItemDataDto.getDeadLine()).toLocalDateTime()).getDays();
+        this.leftDays = String.valueOf(leftDay > 0 ? leftDay : 0);
     }
 }
