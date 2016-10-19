@@ -96,6 +96,10 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
             }
         },
         beforeCheck: function ($promotionForm) {
+
+
+
+
             $errorDom.html('');
         },
         callback: function ($promotionForm) {

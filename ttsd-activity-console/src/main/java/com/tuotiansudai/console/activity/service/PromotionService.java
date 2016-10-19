@@ -1,13 +1,12 @@
 package com.tuotiansudai.console.activity.service;
 
+import com.tuotiansudai.activity.dto.PromotionDto;
 import com.tuotiansudai.activity.dto.PromotionStatus;
 import com.tuotiansudai.activity.repository.mapper.PromotionMapper;
 import com.tuotiansudai.activity.repository.model.PromotionModel;
-import com.tuotiansudai.console.activity.dto.PromotionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -26,13 +25,7 @@ public class PromotionService {
     }
 
     public void create(String loginName, PromotionDto promotionDto){
-        PromotionModel promotionModel = new PromotionModel();
-        promotionModel.setName(promotionDto.getName());
-        promotionModel.setImageUrl(promotionDto.getImageUrl());
-        promotionModel.setLinkUrl(promotionDto.getLinkUrl());
-        promotionModel.setStartTime(promotionDto.getStartTime());
-        promotionModel.setEndTime(promotionDto.getEndTime());
-        promotionModel.setSeq(promotionDto.getSeq());
+        PromotionModel promotionModel = new PromotionModel(promotionDto);
         promotionModel.setCreatedBy(loginName);
         promotionModel.setCreatedTime(new Date());
         promotionModel.setStatus(PromotionStatus.TO_APPROVED);
@@ -49,13 +42,7 @@ public class PromotionService {
     }
 
     public void updatePromotion(String loginName, PromotionDto promotionDto){
-        PromotionModel promotionModel = promotionMapper.findById(promotionDto.getId());
-        promotionModel.setName(promotionDto.getName());
-        promotionModel.setImageUrl(promotionDto.getImageUrl());
-        promotionModel.setLinkUrl(promotionDto.getLinkUrl());
-        promotionModel.setStartTime(promotionDto.getStartTime());
-        promotionModel.setEndTime(promotionDto.getEndTime());
-        promotionModel.setSeq(promotionDto.getSeq());
+        PromotionModel promotionModel = new PromotionModel(promotionDto);
         promotionModel.setUpdatedBy(loginName);
         promotionModel.setUpdatedTime(new Date());
         promotionMapper.update(promotionModel);

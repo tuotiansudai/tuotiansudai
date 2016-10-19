@@ -1,9 +1,8 @@
-package com.tuotiansudai.console.activity.dto;
+package com.tuotiansudai.activity.dto;
 
 import com.tuotiansudai.activity.repository.model.PromotionModel;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.Valid;
 import java.util.Date;
 
 public class PromotionDto {

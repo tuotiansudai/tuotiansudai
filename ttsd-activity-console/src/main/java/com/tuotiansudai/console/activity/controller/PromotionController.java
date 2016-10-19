@@ -1,8 +1,8 @@
 package com.tuotiansudai.console.activity.controller;
 
+import com.tuotiansudai.activity.dto.PromotionDto;
 import com.tuotiansudai.activity.dto.PromotionStatus;
 import com.tuotiansudai.activity.repository.model.PromotionModel;
-import com.tuotiansudai.console.activity.dto.PromotionDto;
 import com.tuotiansudai.console.activity.service.PromotionService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
