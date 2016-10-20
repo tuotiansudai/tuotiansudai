@@ -523,10 +523,19 @@ public class InvestServiceImpl implements InvestService {
             }
         }
 
-        long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, loanId, couponIds, investAmount);
+        long expectedInterest = 0;
+        //红包和投资体验券不计算在内
+        for (Long couponId : couponIds) {
+            CouponModel couponModel = couponMapper.findById(couponId);
+            if (loanModel == null || couponModel == null) {
+                continue;
+            }else {
+                expectedInterest = (couponModel.getCouponType() == CouponType.INTEREST_COUPON || couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) ? couponService.estimateCouponExpectedInterest(loginName, loanId, couponIds, investAmount) : 0;
+            }
+        }
         long interest = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);
         long originFee = new BigDecimal(interest + expectedInterest  + extraLoanRateExpectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
-        long membershipFee = new BigDecimal(interest).multiply(new BigDecimal(membershipModel.getFee())).longValue();
+        long membershipFee = new BigDecimal(interest + expectedInterest  + extraLoanRateExpectedInterest).multiply(new BigDecimal(membershipModel.getFee())).longValue();
         preference = originFee - membershipFee;
         return preference;
     }
