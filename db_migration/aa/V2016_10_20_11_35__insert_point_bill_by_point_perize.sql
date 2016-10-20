@@ -1,6 +1,6 @@
 BEGIN;
 
-insert into aa.point_bill(login_name,point,business_type,note,created_time)
+insert into edxpoint.point_bill(login_name,point,business_type,note,created_time)
 select login_name,
 		case activity_category
 			when 'POINT_DRAW_1000' then 1000
