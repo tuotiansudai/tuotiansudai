@@ -74,6 +74,16 @@
                                     </dd>
 								</#list>
 							</#if>
+                            <dd>
+								<span>
+									<#if (lotteryList?size > 0)> 第${lotteryList?size + 1}期
+									<#else>
+										第1期
+									</#if>
+								</span>
+                                <span class="enpty-info">等待开奖</span>
+                                <span class="enpty-info">等待开奖</span>
+                            </dd>
 						</dl>
 					</div>
 				</div>

@@ -7,16 +7,14 @@ require(['jquery', 'layerWrapper', 'template', 'logintip', 'jquery.ajax.extensio
 	$(function() {
 		//
 		$.ajax({
-			url: '/path/to/file',
+			url: '/activity/iphone7-lottery/getDate',
 			type: 'POST',
-			dataType: 'json',
-			data: {
-				param1: 'value1'
-			}
+			dataType: 'json'
 		})
 		.done(function(data) {
-			if(data==true){
+			if(data.status==false){
 				$('#moneyTip').find('p').text('活动已结束');
+				$('.reward-list-item').find('.enpty-info').text('活动已结束');
 				$('.get-loan-btn').attr('href','javascript:void(0)').addClass('disabled').text('活动已结束');
 			}
 		})

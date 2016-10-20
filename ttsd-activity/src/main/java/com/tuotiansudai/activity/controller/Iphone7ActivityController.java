@@ -2,6 +2,7 @@ package com.tuotiansudai.activity.controller;
 
 import com.tuotiansudai.activity.dto.IPhone7InvestLotteryDto;
 import com.tuotiansudai.activity.service.Iphone7LotteryService;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -19,7 +20,7 @@ public class Iphone7ActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView loadPageData() {
-        String loginName = "gengbeijun";LoginUserInfo.getLoginName();
+        String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/iphone7-lottery", "responsive", true);
         modelAndView.addObject("nextLotteryInvestAmount",iphone7LotteryService.nextLotteryInvestAmount());
         modelAndView.addObject("lotteryList", iphone7LotteryService.iphone7InvestLotteryWinnerViewList());
@@ -40,7 +41,10 @@ public class Iphone7ActivityController {
     }
 
     @RequestMapping(value = "/getDate")
-    public boolean isExpireDate(){
-        return iphone7LotteryService.isExpiryDate();
+    @ResponseBody
+    public BaseDataDto isExpireDate(){
+        BaseDataDto dto = new BaseDataDto();
+        dto.setStatus(iphone7LotteryService.isExpiryDate());
+        return dto;
     }
 }

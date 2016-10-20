@@ -510,6 +510,7 @@ $width: 700px;
           &.disabled{
             background:#ccc;
             color:#666;
+            cursor: no-drop;
           }
         }
       }
