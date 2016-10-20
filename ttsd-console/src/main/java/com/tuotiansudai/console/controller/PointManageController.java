@@ -169,14 +169,28 @@ public class PointManageController {
         return baseDto;
     }
 
-
-
     @RequestMapping(value = "/exchange-coupon/{couponId:^\\d+$}/inactive", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> inactiveExchangeCoupon(@PathVariable long couponId, HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         String ip = RequestIPParser.parse(request);
         couponActivationService.exchangeInactive(loginName, couponId, ip);
+        productService.inactive(productService.findProductByCouponId(couponId).getId(), loginName);
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(true);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+
+        return baseDto;
+    }
+
+    @RequestMapping(value = "/exchange-coupon/{couponId:^\\d+$}/active", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> activeExchangeCoupon(@PathVariable long couponId, HttpServletRequest request) {
+        String loginName = LoginUserInfo.getLoginName();
+        String ip = RequestIPParser.parse(request);
+        couponActivationService.active(loginName, couponId, ip);
+        productService.active(productService.findProductByCouponId(couponId).getId(), loginName);
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(true);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
@@ -304,6 +318,4 @@ public class PointManageController {
         modelAndView.addObject("loginName", loginName);
         return modelAndView;
     }
-
-
 }
