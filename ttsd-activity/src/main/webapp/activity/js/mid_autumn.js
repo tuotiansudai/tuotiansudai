@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'layerWrapper','copyclip','commonFun', 'placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
+require(['jquery', 'underscore', 'layerWrapper','clipboard','commonFun', 'placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
 
         var $registerForm = $('.register-user-form'),
             $phoneDom = $('#mobile'),
@@ -7,18 +7,7 @@ require(['jquery', 'underscore', 'layerWrapper','copyclip','commonFun', 'placeho
             $appCaptcha = $('#appCaptcha'),
             $copyLinkbox=$('#copyLinkBox');
 
-    var client = new ZeroClipboard( document.getElementById("copy-button") );
         var bCategory = commonFun.browserRedirect();
-        var copyLinkVal=$('.copy-link',$copyLinkbox).text();
-
-    client.on( "ready", function( readyEvent ) {
-        client.on( "aftercopy", function( event ) {
-            // event.data["text/plain"]
-            layer.msg('复制成功');
-
-        } );
-    } );
-
 
     $('input[type="text"],input[type="password"]', $registerForm).placeholder();
         //form validate
