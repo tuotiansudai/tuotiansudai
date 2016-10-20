@@ -224,7 +224,9 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
     public void shouldMyAddressIsNullIsFault() {
         String loginName = "findPointHomeUser";
         getUserModelTest(loginName);
-        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 100, 0l);
+        CouponModel couponModel = fakeCouponModel(loginName);
+        couponMapper.create(couponModel);
+        ProductModel productModel = getProductModel(loginName, GoodsType.COUPON, 100, couponModel.getId());
         ProductDetailRequestDto productDetailRequestDto = new ProductDetailRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
@@ -233,7 +235,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
         AccountModel accountModel = new AccountModel(loginName, loginName, "identityNumber", "payUserId", "payAccountId", new Date());
-        accountModel.setPoint(1000l);
+        accountModel.setPoint(100000l);
         accountMapper.create(accountModel);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
         assertEquals(baseResponseDto.getCode(), ReturnMessage.SUCCESS.getCode());
