@@ -111,7 +111,7 @@ public class LotteryDrawActivityService {
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         }
 
-        pointBillMapper.create(new PointBillModel(userModel.getLoginName(),null,activityCategory.getPoint(), PointBusinessType.ACTIVITY, MessageFormat.format(NOTE, lotteryPrize.getDescription())));
+        pointBillMapper.create(new PointBillModel(userModel.getLoginName(),null,(-activityCategory.getPoint()), PointBusinessType.ACTIVITY, MessageFormat.format(NOTE, lotteryPrize.getDescription())));
         userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
 
         return new DrawLotteryResultDto(0,lotteryPrize.name(),lotteryPrize.getPrizeType().name(),lotteryPrize.getDescription(),String.valueOf(accountModel.getPoint()));

@@ -3,8 +3,8 @@ BEGIN;
 insert into edxpoint.point_bill(login_name,point,business_type,note,created_time)
 select login_name,
 		case activity_category
-			when 'POINT_DRAW_1000' then 1000
-			when 'POINT_DRAW_10000' then 10000 end,
+			when 'POINT_DRAW_1000' then -1000
+			when 'POINT_DRAW_10000' then -10000 end,
 		'ACTIVITY',
 		case prize
 			when 'MASK' then '抽中防雾霾骑行口罩'
