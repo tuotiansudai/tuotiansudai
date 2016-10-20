@@ -38,6 +38,7 @@ public interface IPhone7LotteryConfigMapper {
     @Select("select ifnull(max(invest_amount),0) from iphone7_lottery_config where status='EFFECTIVE'")
     int getCurrentLotteryInvestAmount();
 
+    @ResultMap("iphone7LotteryConfigResultMap")
     @Select("select * from iphone7_lottery_config order by invest_amount")
     List<IPhone7LotteryConfigModel> list();
 
@@ -55,9 +56,11 @@ public interface IPhone7LotteryConfigMapper {
     @Delete("delete from iphone7_lottery_config where id = #{id} and status<>'APPROVED' and status<>'EFFECTIVE'")
     int removeUnApprovedConfig(@Param("id") long id);
 
+    @ResultMap("iphone7LotteryConfigResultMap")
     @Select("select * from iphone7_lottery_config where lottery_number = #{lotteryNumber} and status = 'EFFECTIVE'")
-    IPhone7LotteryConfigModel findByLotteryNumber(@Param("lotteryNumber") String lotteryNumber);
+    IPhone7LotteryConfigModel findEffictiveConfigByLotteryNumber(@Param("lotteryNumber") String lotteryNumber);
 
+    @ResultMap("iphone7LotteryConfigResultMap")
     @Select("select * from iphone7_lottery_config where status = 'APPROVED' order by invest_amount")
     List<IPhone7LotteryConfigModel> findAllApproved();
 

@@ -21,7 +21,7 @@ public interface IPhone7InvestLotteryMapper {
     @Options(useGeneratedKeys = true)
     int create(IPhone7InvestLotteryModel model);
 
-    @Results({
+    @Results(id = "iphone7InvestLotteryResultMap", value = {
             @Result(id = true, column = "id", property = "id"),
             @Result(column = "invest_id", property = "investId"),
             @Result(column = "login_name", property = "loginName"),
@@ -33,25 +33,18 @@ public interface IPhone7InvestLotteryMapper {
     @Select("select * from iphone7_invest_lottery where login_name=#{loginName} order by id")
     List<IPhone7InvestLotteryModel> findByLoginName(@Param("loginName") String loginName);
 
-    @Select("select * from iphone7_invest_lottery where lottery_number = #{lottery_number}")
+    @ResultMap("iphone7InvestLotteryResultMap")
+    @Select("select * from iphone7_invest_lottery where lottery_number = #{lotteryNumber}")
     IPhone7InvestLotteryModel findByLotteryNumber(@Param("lotteryNumber") String lotteryNumber);
 
     @Select("select ifnull(sum(invest_amount),0) from iphone7_invest_lottery")
     long findsumTotalAmount();
 
-    @Results({
-            @Result(id = true, column = "id", property = "id"),
-            @Result(column = "invest_id", property = "investId"),
-            @Result(column = "login_name", property = "loginName"),
-            @Result(column = "lottery_number", property = "lotteryNumber"),
-            @Result(column = "invest_amount", property = "investAmount"),
-            @Result(column = "lottery_time", property = "lotteryTime"),
-            @Result(column = "status", property = "status")
-    })
+    @ResultMap("iphone7InvestLotteryResultMap")
     @Select("select * from iphone7_invest_lottery where login_name=#{loginName} order by id limit #{index}, #{pageSize}")
     List<IPhone7InvestLotteryModel> findPaginationByLoginName(@Param("loginName") String loginName,
-                                                    @Param(value = "index") int index,
-                                                    @Param(value = "pageSize") int pageSize);
+                                                              @Param(value = "index") int index,
+                                                              @Param(value = "pageSize") int pageSize);
 
     @Select("select count(id) from iphone7_invest_lottery where login_name=#{loginName}")
     long findByLoginNameCount(@Param("loginName") String loginName);
@@ -98,6 +91,7 @@ public interface IPhone7InvestLotteryMapper {
             "where b.status = 'EFFECTIVE'",
             "order by b.effective_time"
     })
+    @Options(useCache = false)
     List<IPhone7InvestLotteryWinnerView> listWinner();
 
     @Update({
@@ -106,5 +100,4 @@ public interface IPhone7InvestLotteryMapper {
             "where lottery_number = #{lotteryNumber}"
     })
     int updateByLotteryNumber(@Param("lotteryNumber") String lotteryNumber);
-
 }
