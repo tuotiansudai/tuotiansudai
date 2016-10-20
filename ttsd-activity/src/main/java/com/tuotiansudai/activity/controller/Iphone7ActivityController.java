@@ -38,4 +38,9 @@ public class Iphone7ActivityController {
         dto.setData(dataDto);
         return dto;
     }
+
+    @RequestMapping(value = "/getDate")
+    public boolean isExpireDate(){
+        return iphone7LotteryService.isExpiryDate();
+    }
 }
