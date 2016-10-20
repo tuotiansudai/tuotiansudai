@@ -26,6 +26,7 @@ public class BannerServiceImpl implements BannerService {
         bannerModel.setActivatedBy(loginName);
         bannerModel.setActivatedTime(new Date());
         bannerModel.setDeleted(false);
+        bannerModel.setAppUrl(bannerDto.getAppUrl());
         bannerMapper.create(bannerModel);
     }
 
