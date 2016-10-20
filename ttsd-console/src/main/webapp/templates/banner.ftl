@@ -64,11 +64,20 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-1 control-label" style="width: 10%">链接:</label>
+            <label class="col-sm-1 control-label" style="width: 10%">WEB链接:</label>
 
             <div class="col-sm-4">
                 <input type="text" class="form-control" name="url" placeholder=""
-                       value="<#if banner??>${banner.url!}</#if>" datatype="*" errormsg="链接不能为空">
+                       value="<#if banner??>${banner.url!}</#if>" datatype="*" errormsg="WEB链接不能为空">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-1 control-label" style="width: 10%">APP链接:</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control" name="url" placeholder=""
+                       value="<#if banner??>${banner.appUrl!}</#if>" datatype="*" errormsg="APP链接不能为空">
             </div>
         </div>
 

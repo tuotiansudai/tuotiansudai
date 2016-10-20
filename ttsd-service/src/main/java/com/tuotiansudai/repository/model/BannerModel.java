@@ -19,6 +19,8 @@ public class BannerModel implements Serializable {
 
     private String url;
 
+    private String appUrl;
+
     private String title;
 
     private String content;
@@ -197,6 +199,14 @@ public class BannerModel implements Serializable {
 
     public void setSharedUrl(String sharedUrl) {
         this.sharedUrl = sharedUrl;
+    }
+
+    public String getAppUrl() {
+        return appUrl;
+    }
+
+    public void setAppUrl(String appUrl) {
+        this.appUrl = appUrl;
     }
 
     public BannerModel() {
