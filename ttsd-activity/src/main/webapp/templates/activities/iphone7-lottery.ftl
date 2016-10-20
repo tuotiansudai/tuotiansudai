@@ -14,7 +14,7 @@
 				</h3>
 				<div class="content-item">
 					<p>
-						10月18日-10月28日老板出差,运营汪们私自决定,趁机做一次惊天地泣鬼神的大活动
+						10月26日-11月4日老板出差,运营汪们私自决定,趁机做一次惊天地泣鬼神的大活动
 					</p>
 					<p>
 						<img src="${staticServer}/activity/images/iphone7/actor-text.png">
@@ -48,7 +48,7 @@
 				<img src="${staticServer}/activity/images/iphone7/reward-info.png" width="90%">
 				</h3>
 				<div class="content-item">
-					<div class="tip-item">
+					<div class="tip-item" id="moneyTip">
 						<p>
 							距离下次开奖还差<span>${nextLotteryInvestAmount}</span>元
 						</p>
@@ -102,6 +102,8 @@
                                         <span>{{$value.status}}</span>
                                     </li>
 								{{/each}}
+							{{else}}
+							<li>暂无投资码，赶紧去投资吧~</li>
 							{{/if}}
                         
                         </ul>

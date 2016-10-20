@@ -507,6 +507,10 @@ $width: 700px;
             border-radius: 30px;
             font-size: 14px;
           }
+          &.disabled{
+            background:#ccc;
+            color:#666;
+          }
         }
       }
       .rule-list-group {
