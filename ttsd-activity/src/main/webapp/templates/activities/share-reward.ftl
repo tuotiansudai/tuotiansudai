@@ -29,7 +29,7 @@
                 <dl>
                     <dt>向好友发送您的邀请链接：</dt>
                     <dd><input type="text" class="input-invite"  disabled value="您的好友还不知道您是谁，先来实名认证吧">
-                        <a class="btn-copy-link to-identification" href="javascript:void(0);" >复制链接</a>
+                        <a class="btn-copy-link to-identification" href="javascript:void(0);" >实名认证</a>
                     </dd>
                 </dl>
             </div>
