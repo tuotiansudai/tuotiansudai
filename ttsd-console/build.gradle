@@ -3,7 +3,7 @@ apply plugin: 'war'
 dependencies {
     compile project(':ttsd-web-common-config'),
             project(':ttsd-service'),
-            project(':ttsd-point'),
+            project(':ttsd-point-service'),
             project(':ttsd-message'),
             project(':ttsd-jpush'),
             project(':ttsd-ask-service'),

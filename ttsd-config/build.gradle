@@ -114,6 +114,11 @@ flyway {
         user = properties.getProperty("activity.jdbc.username")
         password = properties.getProperty("activity.jdbc.password")
     }
+
+    if ('edxpoint'.equals(defaultDatabase)) {
+        user = properties.getProperty("point.jdbc.username")
+        password = properties.getProperty("point.jdbc.password")
+    }
 }
 
 task flywayAA(type: FlywayMigrateTask) {
@@ -240,6 +245,27 @@ task flywayActivity(type: FlywayMigrateTask) {
     extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxactivity?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("activity.jdbc.username")
     extension.password = properties.getProperty("activity.jdbc.password")
+}
+
+task flywayPoint(type: FlywayMigrateTask) {
+    def properties = getEnvProperties()
+    def defaultHost = properties.getProperty("common.jdbc.host")
+    def defaultPort = properties.getProperty("common.jdbc.port")
+    extension = new FlywayExtension()
+    if (project.hasProperty('dbhost')) {
+        defaultHost = dbhost;
+    }
+    if (project.hasProperty('dbport')) {
+        defaultPort = dbport;
+    }
+    extension.outOfOrder = true
+    extension.validateOnMigrate = false
+    extension.locations = ["filesystem:db_migration/edxpoint"]
+    extension.schemas = ["edxpoint"]
+
+    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxpoint?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.user = properties.getProperty("point.jdbc.username")
+    extension.password = properties.getProperty("point.jdbc.password")
 }
 
 def getEnvProperties() {
