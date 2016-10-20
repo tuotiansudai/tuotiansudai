@@ -1,22 +1,4 @@
-//adjustMobileHideHack();
-//function adjustMobileHideHack() {
-//
-//    //this function will be remove when all pages are responsive
-//    var bodyDom=document.getElementsByTagName("body")[0],
-//        userAgent = navigator.userAgent.toLowerCase(),
-//        metaTags=document.getElementsByTagName('meta'),
-//        metaLen=metaTags.length,isResponse=false,isPC=false,i=0;
-//    isPC = !(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1);
-//    for(;i<metaLen;i++) {
-//        if(metaTags[i].getAttribute('name')=='viewport') {
-//            isResponse=true;
-//        }
-//    }
-//    bodyDom.className=(!isResponse&&!isPC)?'page-width':'';
-//}
-
 function globalFun() {
-
     this.$=function(obj) {
         if (typeof(obj) == "string") {
             if (obj.indexOf("#") >= 0) {
@@ -50,6 +32,14 @@ function globalFun() {
             return 'pc';
         }
     }
+    //绑定监听事件
+    this.addEventHandler=function(target,type,fn) {
+        if(target.addEventListener){
+            target.addEventListener(type,fn);
+        }else{
+            target.attachEvent("on"+type,fn);
+        }
+    }
     this.hasClass=function(obj, cls) {
         return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
     }
@@ -76,7 +66,15 @@ globalFun.prototype={
     init:function() {
         this.$('#closeDownloadBox').addEventListener('click',this.closeDownLoadBox.bind(this),false);
         this.$('#btnExperience').addEventListener('click',this.toExperience.bind(this),false);
-        this.$('#iphone-app-pop').addEventListener('click',this.showAppCode.bind(this),false);
+        this.$('#getMore').addEventListener('click',this.moreFriendLinks.bind(this),false);
+        //显示手机app二维码
+        document.addEventListener('click',function(event) {
+            var target = event.target;
+            if(event.target.offsetParent) {
+                var offsetID=event.target.offsetParent.id;
+                this.showAppCode(offsetID);
+            }
+        }.bind(this),false);
     },
     //判断是否为viewport
     isViewPort:function() {
@@ -109,69 +107,27 @@ globalFun.prototype={
         e.preventDefault();
         location.href = "/app/download";
     },
-    showAppCode:function() {
-        var obg=this.$('#iphone-app-img');
-        this.toggleClass(obg,'hide');
-
+    //是否显示隐藏app扫描码
+    showAppCode:function(id) {
+        var objBox=this.$('#'+id);
+        if(objBox && id=='iphone-app-pop') {
+               var obg=this.$('#'+id).children[2];
+                this.toggleClass(obg,'hide');
+        }
+        else {
+            this.addClass(this.$('#iphone-app-img'),'hide');
+        }
+    },
+    moreFriendLinks:function(event) {
+        var objBtn=event.currentTarget,
+            ulLIst=objBtn.previousElementSibling,
+            ulHeight='30px';
+        this.toggleClass(objBtn,"active");
+        ulHeight=this.hasClass(objBtn,"active")?'auto':'30px';
+        ulLIst.style.height=ulHeight;
     }
-
 }
 
 var globalFun=new globalFun();
 globalFun.init();
-
-//window.$ = function(id) {
-//    return document.getElementById(id);
-//};
-//
-//
-//var imgDom=window.$('iphone-app-img'),
-//    TopMainMenuList=window.$('TopMainMenuList');
-//
-//if (window.$('iphone-app-pop')) {
-//    window.$('iphone-app-pop').onclick=function(event) {
-//        if(imgDom.style.display == "block") {
-//            imgDom.style.display='none';
-//        }
-//        else {
-//            imgDom.style.display='block';
-//        }
-//        if (event.stopPropagation) {
-//            event.stopPropagation();
-//        }
-//        else if (window.event) {
-//            window.event.cancelBubble = true;
-//        }
-//    };
-//}
-
-//document.getElementsByTagName("body")[0].onclick=function(e) {
-//    var userAgent = navigator.userAgent.toLowerCase(),
-//        event = e || window.event,
-//        target = event.srcElement || event.target;
-//    if(target.tagName=='LI' ) {
-//        return;
-//    }
-//    imgDom.style.display='none';
-//    if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
-//
-//        //判断是否为viewport
-//        var metaTags=document.getElementsByTagName('meta'),
-//            metaLen=metaTags.length,i=0;
-//        for(;i<metaLen;i++) {
-//            if(metaTags[i].getAttribute('name')=='viewport') {
-//                TopMainMenuList.style.display='none';
-//            }
-//        }
-//    }
-//
-//};
-//
-//
-//if(window.$('getMore')){
-//    document.getElementById('getMore').onclick=function(){
-//        var obj = document. getElementById('getMore');
-//        toggleClass(obj,"active");
-//    }
-//}
 

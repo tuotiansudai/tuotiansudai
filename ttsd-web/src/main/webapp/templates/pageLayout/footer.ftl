@@ -47,9 +47,9 @@
                 </#list>
             </#if>
         </ul>
-        <div class="get-more" id="getMore">
+        <span class="get-more" id="getMore">
             更多<i class="fa fa-chevron-down" aria-hidden="true"></i><i class="fa fa-chevron-up" aria-hidden="true"></i>
-        </div>
+        </span>
     </div>
     <div class="copyright page-width">
         <div class="fl">
