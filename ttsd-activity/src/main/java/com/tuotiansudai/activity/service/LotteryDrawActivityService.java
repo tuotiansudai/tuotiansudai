@@ -19,6 +19,9 @@ import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipLevel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.point.repository.mapper.PointBillMapper;
+import com.tuotiansudai.point.repository.model.PointBillModel;
+import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -31,6 +34,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -58,8 +62,13 @@ public class LotteryDrawActivityService {
     @Autowired
     private RandomUtils randomUtils;
 
+    @Autowired
+    private PointBillMapper pointBillMapper;
+
     @Value("#{'${activity.point.draw.period}'.split('\\~')}")
     private List<String> activityTime = Lists.newArrayList();
+
+    private final String NOTE = "抽中{0}";
 
     @Transactional
     public synchronized DrawLotteryResultDto drawLotteryResultDto(String mobile,ActivityCategory activityCategory){
@@ -102,11 +111,8 @@ public class LotteryDrawActivityService {
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         }
 
-        try {
-            userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
+        pointBillMapper.create(new PointBillModel(userModel.getLoginName(),null,activityCategory.getPoint(), PointBusinessType.ACTIVITY, MessageFormat.format(NOTE, lotteryPrize.getDescription())));
+        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
 
         return new DrawLotteryResultDto(0,lotteryPrize.name(),lotteryPrize.getPrizeType().name(),lotteryPrize.getDescription(),String.valueOf(accountModel.getPoint()));
     }
