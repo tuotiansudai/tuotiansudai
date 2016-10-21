@@ -44,7 +44,7 @@ public class Iphone7ActivityController {
     @ResponseBody
     public BaseDataDto isExpireDate(){
         BaseDataDto dto = new BaseDataDto();
-        dto.setStatus(iphone7LotteryService.isExpiryDate());
+        dto.setStatus(iphone7LotteryService.isNotExpiryDate());
         return dto;
     }
 }
