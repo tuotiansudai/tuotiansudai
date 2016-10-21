@@ -7,17 +7,30 @@ require(['jquery','imageShowSlide-v1', 'underscore', 'layerWrapper', 'superslide
             $bannerImg = $imgScroll.find('li');
 
         //首页大图轮播
-        //(function(){
+        (function(){
             var imgCount=$imgScroll.find('li').length;
-            var runimg=new imageShowSlide('bannerBox','30',imgCount);
-            runimg.info();
+            if(imgCount>0) {
+                var runimg=new imageShowSlide('bannerBox','30',imgCount);
+                runimg.info();
+            }
+        })();
 
-            //var screenWid = $(window).width(); //screen width
-            //var leftWid = (1920 - screenWid) / 2;   //1920图片宽度
-            //$imgScroll.find('img').css({
-            //    'margin-left': '-' + leftWid + 'px'
-            //});
+        //最新公告
+        (function(){
+        var box=document.getElementById("noticeList"),
+            can=true,
+            scrollTop;
+        box.innerHTML+=box.innerHTML;
+        box.onmouseover=function(){can=false};
+        box.onmouseout=function(){can=true};
+        new function (){
+            var stop=box.scrollTop%40==0&&!can;
+            if(!stop){
 
-        //})();
+                box.scrollTop++;
+            }
+            setTimeout(arguments.callee,box.scrollTop%40?10:1500);
+        };
+        })();
 
 });

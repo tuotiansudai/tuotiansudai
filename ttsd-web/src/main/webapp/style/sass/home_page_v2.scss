@@ -1,9 +1,65 @@
+$normalColor:#666;
+$keyColor:#ff9c1b;
+$pointColor:#ff5400;
+
 .full-screen {
   width:100%;
   margin-top: 0;
-  border-top: 1px solid #ff9c1b;
+  border-top: 1px solid $keyColor;
+
 }
+.bg-screen {
+  background: #fff;
+}
+
 .home-page-container {
+  .icon-title {
+    width:6px;
+    height:18px;
+    border-radius: 10px;
+    background:$keyColor;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 15px;
+    margin-bottom: 3px;
+  }
+  .main-column-title {
+    font-size:20px;
+    color: #333;
+    margin-top:20px;
+    margin-bottom:10px;
+    .hot-more {
+      float: right;
+      font-size: 14px;
+      color: #808080;
+      line-height: 45px;
+      &:hover {
+       text-decoration: underline;
+       color: #ff752a;
+      }
+    }
+  }
+  .btn-normal {
+    font-size: 18px;
+  }
+
+  .percent-number {
+    color: $pointColor;
+    display: block;
+    text-decoration: none;
+    font-size:20px;
+    i {
+      font-size: 30px;
+    }
+    .sign-plus {
+      display: inline-block;
+      margin: 5px;
+    }
+  }
+  .duration-day {
+    font-size: 30px;
+    color: #4c4c4c;
+  }
   .banner-box {
     height: 350px;
     width: 100%;
@@ -79,9 +135,11 @@
       height: 300px;
       box-sizing: border-box;
       padding: 50px 50px 10px;
-      opacity: 0.9;
-      background-color: white;
-      border-radius: 10px;
+      background-color: rgba(0,0,0,0.4);
+      color:#fff;
+      i a {
+        color:#ff752a;
+      }
       .num-text {
         float: left;
         width: 100%;
@@ -94,15 +152,14 @@
         }
         .num-unit {
           font-size: 26px;
-          color: #666;
           font-weight: bold;
+          color: #fff;
         }
       }
       .h-title {
         float: left;
         text-align: center;
         width: 100%;
-        color: #666;
         font-size: 24px;
       }
       .btn-normal {
@@ -123,6 +180,152 @@
       }
     }
   }
+
+  .notice-container {
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      border-bottom: 1px solid #e6e6e6;
+      overflow: hidden;
+      h3 {
+        float: left;
+        width: 134px;
+        font-size: 16px;
+        text-align: center;
+        border-right: 1px solid #e6e6e6;
+        color: #999;
+        background: url(../../images/homepage/icon-notice.png) left center no-repeat;
+      }
+      .notice-text {
+        margin-left: 134px;
+        ul{
+          float:left;
+          width:735px;
+          padding-left: 40px;
+          a {
+            color: #b2b2b2;
+            &:hover {
+              color: #ff752a;
+            }
+          }
+        }
+        .text-href {
+          color: #808080;
+          float: right;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  .main-advantage {
+    padding:15px 0;
+    dl {
+      text-align: center;
+      font-size: 14px;
+      color: #4d4d4d;
+      dd {
+        width: 36%;
+        display: inline-block;
+        min-height:88px;
+        text-align: left;
+        a {
+          display: inline-block;
+          padding-left:90px;
+        }
+        &.guide {
+          background: url(/images/homepage/icon-guide.png) left center no-repeat;
+        }
+        &.risk {
+          background: url(/images/homepage/icon-risk.png) left center no-repeat;
+        }
+        &.assurance {
+          width:27%;
+          background: url(/images/homepage/icon-assurce.png) left center no-repeat;
+        }
+        b {
+          font-size: 20px;
+          display: block;
+        }
+        span {
+          color: #999;
+          display: inline-block;
+          line-height: 20px;
+        }
+      }
+    }
+  }
+
+  .newer-exclusive-box {
+    .newer-experience {
+      width:340px;
+      background: #fff;
+      float: left;
+      margin-right:10px;
+      position: relative;
+      .tag-icon {
+        width:56px;
+        height:75px;
+        display: inline-block;
+        position: absolute;
+        top:-5px;
+        right:0;
+        background:#fff url(../../images/homepage/icon-newer.png) right 0 no-repeat;
+
+      }
+      &.hack-newbie {
+        .tag-icon {
+          background: #fff url(../../images/homepage/icon-newuse.png) right 0 no-repeat;
+        }
+      }
+      .con-inner {
+        padding:18px 28px;
+      }
+      .newer-title {
+        color: #333;
+        font-size: 20px;
+        font-weight: normal;
+        span {
+          color: #ff9c1b;
+          font-size:14px;
+        }
+      }
+
+      .loan-info {
+        color:$normalColor;
+        margin-top:28px;
+        margin-bottom:28px;
+        li {
+          line-height: 30px;
+          float: left;
+          &:nth-child(1) {
+            width:150px;
+            border-right:1px solid #e6e6e6;
+          }
+          &:nth-child(2) {
+            margin-left: 38px;
+          }
+
+          em {
+            font-size: 30px;
+            color: #4c4c4c;
+          }
+
+        }
+      }
+    }
+  }
+  .book-invest-box {
+    padding:20px 30px 20px 25px;
+    .book-info {
+      display: inline-block;
+      padding-top: 7px;
+      background: url("../../images/homepage/clock-tip-s.png") left 10px no-repeat;
+      display: inline-block;
+      padding-left: 30px;
+    }
+  }
+
 }
 
 @media screen and (max-width: 700px) {
