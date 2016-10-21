@@ -27,6 +27,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.RandomUtils;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,8 @@ import java.util.List;
 
 @Service
 public class LotteryDrawActivityService {
+
+    static Logger logger = Logger.getLogger(LotteryDrawActivityService.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -111,8 +114,12 @@ public class LotteryDrawActivityService {
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         }
 
-        pointBillMapper.create(new PointBillModel(userModel.getLoginName(),null,(-activityCategory.getPoint()), PointBusinessType.ACTIVITY, MessageFormat.format(NOTE, lotteryPrize.getDescription())));
-        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
+        try{
+            pointBillMapper.create(new PointBillModel(userModel.getLoginName(),null,(-activityCategory.getPoint()), PointBusinessType.ACTIVITY, MessageFormat.format(NOTE, lotteryPrize.getDescription())));
+            userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
+        }catch (Exception e){
+            logger.error(MessageFormat.format("draw is fail, mobile:{0},activity:{1}",mobile,activityCategory.getDescription()));
+        }
 
         return new DrawLotteryResultDto(0,lotteryPrize.name(),lotteryPrize.getPrizeType().name(),lotteryPrize.getDescription(),String.valueOf(accountModel.getPoint()));
     }
