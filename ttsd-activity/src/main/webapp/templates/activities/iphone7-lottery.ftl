@@ -7,6 +7,9 @@
 	</div>
 	<div class="actor-content-group">
 		<div class="wp clearfix">
+            <div class="reg-tag-current" style="display: none;margin-top:10px;">
+				<#include '../register.ftl' />
+            </div>
 			<div class="model-group text-c">
 				<i class="icon-laba"></i>
 				<h3>
@@ -113,7 +116,7 @@
                                     </li>
 								{{/each}}
 							{{else}}
-							<li>暂无投资码，赶紧去投资吧~</li>
+							<li><span class="no-data">暂无投资码，赶紧去投资吧~</span></li>
 							{{/if}}
                         
                         </ul>

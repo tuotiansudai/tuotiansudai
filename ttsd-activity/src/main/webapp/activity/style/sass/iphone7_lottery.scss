@@ -1,4 +1,5 @@
 @import "module/login_tip";
+@import "module/register_common";
 $width: 700px;
 
 @mixin mobilehide () {
@@ -411,6 +412,11 @@ $width: 700px;
                   box-sizing: border-box;
                   &:nth-child(1){
                     border-right:1px dashed #994c00;
+                  }
+                  &.no-data{
+                    border-right:0;
+                    width:100%;
+                    text-align:center;
                   }
                   @media (max-width:$width) {
                     font-size:12px;

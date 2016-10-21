@@ -3,9 +3,18 @@
  * [author]:xuqiang
  * [date]:2016-10-20
  */
-require(['jquery', 'layerWrapper', 'template', 'logintip', 'jquery.ajax.extension'], function($, layer, tpl) {
+require(['jquery', 'layerWrapper', 'template', 'logintip', 'jquery.ajax.extension','commonFun','register_common'], function($, layer, tpl) {
 	$(function() {
-		//
+		var browser = commonFun.browserRedirect();
+
+		if (browser == 'mobile') {
+
+			var urlObj=commonFun.parseURL(location.href);
+			if(urlObj.params.tag=='yes') {
+				$('.reg-tag-current').show();
+			}
+		}
+
 		$.ajax({
 			url: '/activity/iphone7-lottery/getDate',
 			type: 'POST',

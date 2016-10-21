@@ -58,7 +58,7 @@ public class Iphone7LotteryAspect {
             lotteryNumber = String.valueOf((int)((Math.random() * 9 + 1) * 100000));
         }
 
-        IPhone7InvestLotteryModel model = new IPhone7InvestLotteryModel(investModel.getId(), investModel.getLoginName(), investModel.getAmount(), String.valueOf(lotteryNumber));
+        IPhone7InvestLotteryModel model = new IPhone7InvestLotteryModel(investModel.getId(), investModel.getLoginName(), investModel.getAmount(), lotteryNumber);
         iPhone7InvestLotteryMapper.create(model);
         redisWrapperClient.hset(redisKey, lotteryNumber, lotteryNumber);
         logger.debug(MessageFormat.format("invest success: investId_{0},amount_{1},lotteryNumber_{2}",investModel.getId(), investModel.getAmount(), lotteryNumber));

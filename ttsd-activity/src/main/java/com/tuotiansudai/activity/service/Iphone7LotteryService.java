@@ -49,7 +49,7 @@ public class Iphone7LotteryService {
     public String nextLotteryInvestAmount(){
         long totalAmount = investMapper.sumInvestAmountRanking(activityIphone7StartTime, activityIphone7EndTime);
         int currentLotteryInvestAmount = iPhone7LotteryConfigMapper.getCurrentLotteryInvestAmount();
-        long nextLotteryInvestAmount = (totalAmount - currentLotteryInvestAmount * 1000000) <= 0 ? 50000000 : (totalAmount - currentLotteryInvestAmount * 1000000);
+        long nextLotteryInvestAmount = (totalAmount - currentLotteryInvestAmount * 1000000) <= 0 ? 50000000 : (50000000 - (totalAmount - currentLotteryInvestAmount * 1000000));
         return AmountConverter.convertCentToString(nextLotteryInvestAmount);
     }
 
@@ -62,15 +62,14 @@ public class Iphone7LotteryService {
             records = iPhone7InvestLotteryMapper.findPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
         }
 
-        //List<IPhone7InvestLotteryDto> dtoList = records.stream().map(IPhone7InvestLotteryDto::new).collect(Collectors.toList());
-        List<IPhone7InvestLotteryDto> dtoList = records.stream().map(iPhone7InvestLotteryModel -> new IPhone7InvestLotteryDto(iPhone7InvestLotteryModel, isExpiryDate())).collect(Collectors.toList());
+        List<IPhone7InvestLotteryDto> dtoList = records.stream().map(iPhone7InvestLotteryModel -> new IPhone7InvestLotteryDto(iPhone7InvestLotteryModel, isNotExpiryDate())).collect(Collectors.toList());
 
         BasePaginationDataDto<IPhone7InvestLotteryDto> dto = new BasePaginationDataDto<>(index, pageSize, count, dtoList);
         dto.setStatus(true);
         return dto;
     }
 
-    public boolean isExpiryDate(){
+    public boolean isNotExpiryDate(){
         Date nowDate = DateTime.now().toDate();
         return activityIphone7StartTime.before(nowDate) && activityIphone7EndTime.after(nowDate);
     }

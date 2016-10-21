@@ -58,7 +58,7 @@ public class IPhone7LotteryService {
         }
 
         pageIndex = pageIndex < 1 ? 1 : pageIndex;
-        pageSize = pageSize < 0 ? 10 : pageSize;
+        pageSize = pageSize <= 0 ? 10 : pageSize;
 
         int rowIndex = (pageIndex - 1) * pageSize;
 

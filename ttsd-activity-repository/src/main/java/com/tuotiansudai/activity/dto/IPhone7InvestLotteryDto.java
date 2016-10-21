@@ -31,8 +31,8 @@ public class IPhone7InvestLotteryDto {
         this.status = status;
     }
 
-    public IPhone7InvestLotteryDto(IPhone7InvestLotteryModel iPhone7InvestLotteryModel, boolean isExpire){
+    public IPhone7InvestLotteryDto(IPhone7InvestLotteryModel iPhone7InvestLotteryModel, boolean isNotExpire){
         this.lotteryNumber = iPhone7InvestLotteryModel.getLotteryNumber();
-        this.status = iPhone7InvestLotteryModel.getStatus() == IPhone7InvestLotteryStatus.WAITING ? isExpire ? IPhone7InvestLotteryStatus.WAITING.getDescription() : "未中奖" : IPhone7InvestLotteryStatus.WINNING.getDescription();
+        this.status = iPhone7InvestLotteryModel.getStatus() == IPhone7InvestLotteryStatus.WAITING ? isNotExpire ? IPhone7InvestLotteryStatus.WAITING.getDescription() : "未中奖" : IPhone7InvestLotteryStatus.WINNING.getDescription();
     }
 }
