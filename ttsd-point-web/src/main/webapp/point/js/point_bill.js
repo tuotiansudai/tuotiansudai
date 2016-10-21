@@ -72,6 +72,9 @@ require(['jquery', 'template', 'moment','pagination', 'daterangepicker', 'jquery
 							case 'ACTIVITY':
 								item.businessType = '活动奖励';
 								break;
+							case 'POINT_CLEAR':
+								item.businessType = '积分到期清零';
+								break;
 						}
 					});
 				}
