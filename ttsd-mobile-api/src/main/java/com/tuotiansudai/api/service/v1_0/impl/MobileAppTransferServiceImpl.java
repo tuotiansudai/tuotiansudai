@@ -28,7 +28,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 
 @Service
-public class MobileAppTransferServiceImpl implements MobileAppTransferService{
+public class MobileAppTransferServiceImpl implements MobileAppTransferService {
 
     static Logger logger = Logger.getLogger(MobileAppTransferServiceImpl.class);
 
@@ -52,20 +52,20 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
 
     @Override
     public BaseResponseDto getTransferee(TransferTransfereeRequestDto transferTransfereeRequestDto) {
-        BaseResponseDto dto = new BaseResponseDto();
+        BaseResponseDto<TransferTransfereeResponseDataDto> dto = new BaseResponseDto<>();
         Integer index = transferTransfereeRequestDto.getIndex();
         Integer pageSize = transferTransfereeRequestDto.getPageSize();
-        if (index == null || pageSize == null || index.intValue() <=0 || pageSize.intValue() <=0) {
-            return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(),ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+        if (index == null || pageSize == null || index <= 0 || pageSize <= 0) {
+            return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferTransfereeRequestDto.getTransferApplicationId());
         InvestModel investModel = null;
         if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS && transferApplicationModel.getInvestId() != null) {
             investModel = investMapper.findById(transferApplicationModel.getInvestId());
         }
-        TransferTransfereeRecordResponseDataDto transferTransfereeRecordResponseDataDto = new TransferTransfereeRecordResponseDataDto(investModel != null ? randomUtils.encryptMobile(transferTransfereeRequestDto.getBaseParam().getUserId(), investModel.getLoginName(), investModel.getId(),Source.MOBILE) : "",
+        TransferTransfereeRecordResponseDataDto transferTransfereeRecordResponseDataDto = new TransferTransfereeRecordResponseDataDto(investModel != null ? randomUtils.encryptMobile(transferTransfereeRequestDto.getBaseParam().getUserId(), investModel.getLoginName(), investModel.getId(), Source.MOBILE) : "",
                 transferApplicationModel.getTransferAmount(), transferApplicationModel.getTransferTime());
-        TransferTransfereeResponseDataDto transferTransfereeResponseDataDto =  new TransferTransfereeResponseDataDto(transferTransfereeRequestDto.getIndex(), transferTransfereeRequestDto.getPageSize(),
+        TransferTransfereeResponseDataDto transferTransfereeResponseDataDto = new TransferTransfereeResponseDataDto(transferTransfereeRequestDto.getIndex(), transferTransfereeRequestDto.getPageSize(),
                 Lists.newArrayList(transferTransfereeRecordResponseDataDto).size(), Lists.newArrayList(transferTransfereeRecordResponseDataDto));
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -82,7 +82,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
         String message = "";
         try {
             BaseDto<PayDataDto> payDataDto = transferService.noPasswordTransferPurchase(investDto);
-            if(payDataDto.getData() != null){
+            if (payDataDto.getData() != null) {
                 code = payDataDto.getData().getCode() != null ? payDataDto.getData().getCode() : ReturnMessage.SUCCESS.getCode();
                 message = payDataDto.getData().getMessage() != null ? payDataDto.getData().getMessage() : ReturnMessage.SUCCESS.getMsg();
             }
@@ -101,6 +101,13 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
         InvestDto investDto = convertInvestDto(transferPurchaseRequestDto);
         try {
             BaseDto<PayFormDataDto> formDto = transferService.transferPurchase(investDto);
+            if (!formDto.isSuccess()) {
+                logger.error("[MobileAppTransferServiceImpl][transferPurchase] pay wrapper may fail to connect.");
+
+                responseDto.setCode(ReturnMessage.FAIL.getCode());
+                responseDto.setMessage(ReturnMessage.FAIL.getMsg());
+                return responseDto;
+            }
             if (formDto.getData().getStatus()) {
                 PayFormDataDto formDataDto = formDto.getData();
                 String requestData = CommonUtils.mapToFormData(formDataDto.getFields());

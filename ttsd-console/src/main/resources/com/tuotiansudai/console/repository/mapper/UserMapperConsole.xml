@@ -25,6 +25,7 @@
         <result column="register_time" property="registerTime"/>
         <result column="is_referrer_staff" property="isReferrerStaff"/>
         <result column="last_bill_time" property="lastBillTime"/>
+        <result column="fast_pay" property="fastPay"/>
     </resultMap>
 
     <select id="findAllUser" parameterType="map" resultMap="userViewResultMap">
@@ -45,7 +46,10 @@
         IF(exists (select 1 from auto_invest_plan au where u.login_name = au.login_name and enabled is TRUE), "0", "1") as auto_invest_status,
         IF(exists (select 1 from user_role referrer_role where referrer_role.login_name = u.referrer and referrer_role.role = 'STAFF'), TRUE, FALSE) as is_referrer_staff,
         IF(exists (select 1 from user_role where user_role.login_name = u.login_name and user_role.role = 'STAFF'), TRUE, FALSE) as is_staff,
-        IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and bank_card.status = 'PASSED'), TRUE, FALSE) as is_bind_bank_card
+        IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and bank_card.status = 'PASSED'),
+        TRUE, FALSE) as is_bind_bank_card,
+        IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and bank_card.status = 'PASSED' and
+        bank_card.is_fast_pay_on = 1), TRUE, FALSE) as fast_pay
         from
         <choose>
             <when test="roleStage == null ">
@@ -116,6 +120,28 @@
             </if>
             <if test="source !=null">
                 and u.source = #{source}
+            </if>
+            <if test="userOperation != null">
+                <if test="userOperation.name() == 'BIND_CARD'">
+                    and IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and
+                    bank_card.status = 'PASSED'), TRUE, FALSE)
+                </if>
+                <if test="userOperation.name() == 'FAST_PAY'">
+                    and IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and
+                    bank_card.status = 'PASSED' and bank_card.is_fast_pay_on = 1), TRUE, FALSE)
+                </if>
+                <if test="userOperation.name() == 'RECHARGED'">
+                    and IF(exists (select 1 from recharge where recharge.login_name = u.login_name and recharge.status =
+                    'SUCCESS'), TRUE, FALSE)
+                </if>
+                <if test="userOperation.name() == 'INVESTED'">
+                    and IF(exists (select 1 from invest where invest.login_name = u.login_name and invest.status =
+                    'SUCCESS'), TRUE, FALSE)
+                </if>
+                <if test="userOperation.name() == 'MULTIPLE_INVESTED'">
+                    and (select count(1) from invest where invest.login_name = u.login_name and invest.status =
+                    'SUCCESS') > 1
+                </if>
             </if>
         </where>
         order by u.register_time desc
@@ -192,6 +218,28 @@
             </if>
             <if test="source !=null">
                 and u.source = #{source}
+            </if>
+            <if test="userOperation != null">
+                <if test="userOperation.name() == 'BIND_CARD'">
+                    and IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and
+                    bank_card.status = 'PASSED'), TRUE, FALSE)
+                </if>
+                <if test="userOperation.name() == 'FAST_PAY'">
+                    and IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and
+                    bank_card.status = 'PASSED' and bank_card.is_fast_pay_on = 1), TRUE, FALSE)
+                </if>
+                <if test="userOperation.name() == 'RECHARGED'">
+                    and IF(exists (select 1 from recharge where recharge.login_name = u.login_name and recharge.status =
+                    'SUCCESS'), TRUE, FALSE)
+                </if>
+                <if test="userOperation.name() == 'INVESTED'">
+                    and IF(exists (select 1 from invest where invest.login_name = u.login_name and invest.status =
+                    'SUCCESS'), TRUE, FALSE)
+                </if>
+                <if test="userOperation.name() == 'MULTIPLE_INVESTED'">
+                    and (select count(1) from invest where invest.login_name = u.login_name and invest.status =
+                    'SUCCESS') > 1
+                </if>
             </if>
         </where>
     </select>
