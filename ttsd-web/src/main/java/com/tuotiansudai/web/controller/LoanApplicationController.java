@@ -34,7 +34,7 @@ public class LoanApplicationController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView("loan-application","responsive", true);
 
         String mobile = LoginUserInfo.getMobile();
         if (!StringUtils.isEmpty(mobile)) {
