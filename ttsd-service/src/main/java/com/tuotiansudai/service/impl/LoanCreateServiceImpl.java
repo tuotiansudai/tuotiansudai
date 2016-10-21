@@ -446,7 +446,7 @@ public class LoanCreateServiceImpl implements LoanCreateService {
             jobManager.newJob(JobType.LoanStatusToRecheck, DeadlineFundraisingJob.class)
                     .withIdentity(JobType.LoanStatusToRecheck.name(), "Loan-" + loanModel.getId())
                     .replaceExistingJob(true)
-                    .addJobData(DeadlineFundraisingJob.LOAN_ID_KEY, loanModel.getId())
+                    .addJobData(DeadlineFundraisingJob.LOAN_ID_KEY, String.valueOf(loanModel.getId()))
                     .runOnceAt(loanModel.getFundraisingEndTime()).submit();
         } catch (SchedulerException e) {
             logger.error(e.getLocalizedMessage(), e);
