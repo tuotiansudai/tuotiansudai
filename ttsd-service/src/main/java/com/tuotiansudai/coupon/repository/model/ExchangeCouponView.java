@@ -1,6 +1,6 @@
 package com.tuotiansudai.coupon.repository.model;
 
-public class ExchangeCouponView extends CouponModel {
+public class ExchangeCouponView {
 
     private Long exchangePoint;
 
@@ -10,12 +10,10 @@ public class ExchangeCouponView extends CouponModel {
 
     private long productId;
 
+    private CouponModel couponModel;
+
     public ExchangeCouponView() {
         super();
-    }
-
-    public ExchangeCouponView(CouponModel couponModel) {
-        super(couponModel);
     }
 
     public Long getExchangePoint() {
@@ -49,4 +47,21 @@ public class ExchangeCouponView extends CouponModel {
     public void setProductId(long productId) {
         this.productId = productId;
     }
+
+    public CouponModel getCouponModel() {
+        return couponModel;
+    }
+
+    public void setCouponModel(CouponModel couponModel) {
+        this.couponModel = couponModel;
+    }
+
+    public ExchangeCouponView(Long exchangePoint, Integer seq, String imageUrl, long productId, CouponModel couponModel){
+        this.exchangePoint = exchangePoint;
+        this.seq = seq;
+        this.imageUrl = imageUrl;
+        this.productId = productId;
+        this.couponModel = couponModel;
+    }
+
 }
