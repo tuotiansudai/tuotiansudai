@@ -99,7 +99,7 @@
 						</div>
 					</@global.isAnonymous>
 					<@global.isNotAnonymous>
-						<input type="hidden" value="gengbeijun" id="loginName">
+						<input type="hidden" value="${loginName}" id="loginName">
 						<div class="code-list-item" id="codeList">
 							
 						</div>

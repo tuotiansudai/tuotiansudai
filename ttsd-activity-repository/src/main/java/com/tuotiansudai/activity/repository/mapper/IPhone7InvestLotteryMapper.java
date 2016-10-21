@@ -97,7 +97,7 @@ public interface IPhone7InvestLotteryMapper {
     @Update({
             "update iphone7_invest_lottery set",
             "status = 'WINNING'",
-            "where lottery_number = #{lotteryNumber}"
+            "where id = #{id}"
     })
-    int updateByLotteryNumber(@Param("lotteryNumber") String lotteryNumber);
+    int updateToWin(@Param("id") long id);
 }

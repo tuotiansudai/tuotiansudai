@@ -51,8 +51,6 @@ require(['jquery', 'layerWrapper', 'template', 'logintip', 'jquery.ajax.extensio
 						}
 					})
 					.done(function(data) {
-
-						console.log(data);
 						$('#codeList').html(tpl('codeListTpl',data.data));
 					})
 					.fail(function(data) {

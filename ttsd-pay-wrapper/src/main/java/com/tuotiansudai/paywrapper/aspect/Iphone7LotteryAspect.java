@@ -53,17 +53,14 @@ public class Iphone7LotteryAspect {
     @Transactional
     public void getLotteryNumber(InvestModel investModel){
         String lotteryNumber = String.valueOf((int)((Math.random() * 9 + 1) * 100000));
-        List<String> lotteryNumberList = redisWrapperClient.lrange(redisKey, 0, -1);
-        for(String existsLotteryNumber : lotteryNumberList){
-            lotteryNumber = existsLotteryNumber.equals(lotteryNumber) ? String.valueOf((int)((Math.random() * 9 + 1) * 100000)) : lotteryNumber;
+
+        while(redisWrapperClient.hexists(redisKey, lotteryNumber)){
+            lotteryNumber = String.valueOf((int)((Math.random() * 9 + 1) * 100000));
         }
 
-        IPhone7LotteryConfigModel iphone7LotteryConfigModel = iPhone7LotteryConfigMapper.findByLotteryNumber(String.valueOf(lotteryNumber));
-        IPhone7InvestLotteryModel iPhone7InvestLotteryModel = iPhone7InvestLotteryMapper.findByLotteryNumber(String.valueOf(lotteryNumber));
-        lotteryNumber = (iphone7LotteryConfigModel == null && iPhone7InvestLotteryModel == null) ? lotteryNumber : String.valueOf((int)((Math.random() * 9 + 1) * 100000));
         IPhone7InvestLotteryModel model = new IPhone7InvestLotteryModel(investModel.getId(), investModel.getLoginName(), investModel.getAmount(), String.valueOf(lotteryNumber));
         iPhone7InvestLotteryMapper.create(model);
-        redisWrapperClient.lpush(redisKey, lotteryNumber);
+        redisWrapperClient.hset(redisKey, lotteryNumber, lotteryNumber);
         logger.debug(MessageFormat.format("invest success: investId_{0},amount_{1},lotteryNumber_{2}",investModel.getId(), investModel.getAmount(), lotteryNumber));
 
         long totalAmount = investMapper.sumInvestAmountRanking(activityIphone7StartTime, activityIphone7EndTime);
@@ -71,15 +68,16 @@ public class Iphone7LotteryAspect {
 
         List<IPhone7LotteryConfigModel> iphone7LotteryConfigModelList = iPhone7LotteryConfigMapper.findAllApproved();
         iphone7LotteryConfigModelList.stream()
-                .filter(iPhone7LotteryConfigModel -> totalAmount >= iphone7LotteryConfigModel.getInvestAmount() * 1000000)
+                .filter(iPhone7LotteryConfigModel -> totalAmount >= iPhone7LotteryConfigModel.getInvestAmount() * 1000000)
                 .forEach(iPhone7LotteryConfigModel -> {
                     logger.debug(MessageFormat.format("lottery start ...... totalAmount:{0}", totalAmount));
-                    iPhone7LotteryConfigMapper.effective(iphone7LotteryConfigModel.getId());
-                    logger.debug(MessageFormat.format("ConfigMapper has update ......configId:{0}", iphone7LotteryConfigModel.getId()));
+                    iPhone7LotteryConfigMapper.effective(iPhone7LotteryConfigModel.getId());
+                    redisWrapperClient.hset(redisKey, iPhone7LotteryConfigModel.getLotteryNumber(), iPhone7LotteryConfigModel.getLotteryNumber());
+                    logger.debug(MessageFormat.format("ConfigMapper has update ......configId:{0}", iPhone7LotteryConfigModel.getId()));
                     IPhone7InvestLotteryModel iPhone7InvestLotteryModelWinner = iPhone7InvestLotteryMapper.findByLotteryNumber(iPhone7LotteryConfigModel.getLotteryNumber());
                     if (iPhone7InvestLotteryModelWinner != null) {
-                        logger.debug(MessageFormat.format("lottery lotteryNumber:{0}", iphone7LotteryConfigModel.getLotteryNumber()));
-                        iPhone7InvestLotteryMapper.updateByLotteryNumber(iphone7LotteryConfigModel.getLotteryNumber());
+                        logger.debug(MessageFormat.format("lottery lotteryNumber:{0}", iPhone7LotteryConfigModel.getLotteryNumber()));
+                        iPhone7InvestLotteryMapper.updateToWin(iPhone7InvestLotteryModelWinner.getId());
                     }
                     logger.debug(MessageFormat.format("lottery end ...... totalAmount:{0}", totalAmount));
                 });

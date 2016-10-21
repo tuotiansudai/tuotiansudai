@@ -11,7 +11,6 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,8 +22,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class Iphone7LotteryService {
-
-    private static Logger logger = Logger.getLogger(Iphone7LotteryService.class);
 
     @Autowired
     private InvestMapper investMapper;
@@ -46,14 +43,13 @@ public class Iphone7LotteryService {
 
     public List<IPhone7LotteryDto> iphone7InvestLotteryWinnerViewList(){
         List<IPhone7LotteryConfigModel> iPhone7LotteryConfigModels = iPhone7LotteryConfigMapper.effectiveList();
-        List<IPhone7LotteryDto> dtoList = iPhone7LotteryConfigModels.stream().map(iPhone7LotteryConfigModel -> new IPhone7LotteryDto(iPhone7LotteryConfigModel, randomUtils.encryptWebMiddleMobile(iPhone7LotteryConfigModel.getMobile()))).collect(Collectors.toList());
-        return dtoList;
+        return iPhone7LotteryConfigModels.stream().map(iPhone7LotteryConfigModel -> new IPhone7LotteryDto(iPhone7LotteryConfigModel, randomUtils.encryptWebMiddleMobile(iPhone7LotteryConfigModel.getMobile()))).collect(Collectors.toList());
     }
 
     public String nextLotteryInvestAmount(){
         long totalAmount = investMapper.sumInvestAmountRanking(activityIphone7StartTime, activityIphone7EndTime);
         int currentLotteryInvestAmount = iPhone7LotteryConfigMapper.getCurrentLotteryInvestAmount();
-        long nextLotteryInvestAmount = (totalAmount - currentLotteryInvestAmount * 1000000) < 0 ? 50000000 : (totalAmount - currentLotteryInvestAmount * 1000000);
+        long nextLotteryInvestAmount = (totalAmount - currentLotteryInvestAmount * 1000000) <= 0 ? 50000000 : (totalAmount - currentLotteryInvestAmount * 1000000);
         return AmountConverter.convertCentToString(nextLotteryInvestAmount);
     }
 
@@ -66,7 +62,8 @@ public class Iphone7LotteryService {
             records = iPhone7InvestLotteryMapper.findPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
         }
 
-        List<IPhone7InvestLotteryDto> dtoList = records.stream().map(IPhone7InvestLotteryDto::new).collect(Collectors.toList());
+        //List<IPhone7InvestLotteryDto> dtoList = records.stream().map(IPhone7InvestLotteryDto::new).collect(Collectors.toList());
+        List<IPhone7InvestLotteryDto> dtoList = records.stream().map(iPhone7InvestLotteryModel -> new IPhone7InvestLotteryDto(iPhone7InvestLotteryModel, isExpiryDate())).collect(Collectors.toList());
 
         BasePaginationDataDto<IPhone7InvestLotteryDto> dto = new BasePaginationDataDto<>(index, pageSize, count, dtoList);
         dto.setStatus(true);

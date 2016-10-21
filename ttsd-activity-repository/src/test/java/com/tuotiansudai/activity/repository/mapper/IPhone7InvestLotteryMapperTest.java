@@ -66,7 +66,5 @@ public class IPhone7InvestLotteryMapperTest extends BaseMapperTest {
         List<IPhone7InvestLotteryWinnerView> winners = mapper.listWinner();
         assertNotNull(winners);
 
-        int updateEffectiveCount = mapper.updateByLotteryNumber(lotteryNumber);
-        assertEquals(1, updateEffectiveCount);
     }
 }
