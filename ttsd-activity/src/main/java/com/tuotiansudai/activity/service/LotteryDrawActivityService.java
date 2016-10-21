@@ -72,8 +72,6 @@ public class LotteryDrawActivityService {
     @Value("#{'${activity.point.draw.period}'.split('\\~')}")
     private List<String> activityTime = Lists.newArrayList();
 
-    private final String NOTE = "抽中{0}";
-
     @Transactional
     public synchronized DrawLotteryResultDto drawLotteryResultDto(String mobile,ActivityCategory activityCategory){
         Date nowDate = DateTime.now().toDate();
@@ -110,7 +108,7 @@ public class LotteryDrawActivityService {
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         }
 
-        pointBillService.createPointBill(userModel.getLoginName(),null,PointBusinessType.ACTIVITY,(-activityCategory.getPoint()),MessageFormat.format(NOTE, lotteryPrize.getDescription()));
+        pointBillService.createPointBill(userModel.getLoginName(), null, PointBusinessType.ACTIVITY, (-activityCategory.getPoint()), MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
         userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
 
         return new DrawLotteryResultDto(0,lotteryPrize.name(),lotteryPrize.getPrizeType().name(),lotteryPrize.getDescription(),String.valueOf(accountModel.getPoint()));
