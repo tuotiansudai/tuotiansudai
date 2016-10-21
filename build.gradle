@@ -53,8 +53,8 @@ subprojects {
             events "PASSED", "STARTED", "FAILED", "SKIPPED"
         }
 
-        tasks.withType(Test) {
-            maxParallelForks = Runtime.runtime.availableProcessors()
-        }
+//        tasks.withType(Test) {
+//            maxParallelForks = Runtime.runtime.availableProcessors()
+//        }
     }
 }

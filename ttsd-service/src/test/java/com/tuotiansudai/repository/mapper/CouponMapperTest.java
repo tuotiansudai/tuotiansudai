@@ -103,21 +103,8 @@ public class CouponMapperTest {
 
         couponMapper.create(couponModel);
 
-        return new ExchangeCouponView(couponModel);
+        return new ExchangeCouponView();
     }
 
-    @Ignore
-    public void testFindExchangeableCouponViewById() throws Exception {
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
 
-        ExchangeCouponView exchangeCouponView = createExchangeCoupon(1000L, 20L, true, false, CouponType.INTEREST_COUPON, DateTime.parse("2099-06-30T01:20").toDate(), "legal");
-        createExchangeCoupon(3000L, 20L, true, false, CouponType.INVEST_COUPON, DateTime.parse("2099-06-30T01:20").toDate(), "legal");
-        createExchangeCoupon(4000L, 20L, true, false, CouponType.RED_ENVELOPE, DateTime.parse("2099-06-30T01:20").toDate(), "legal");
-
-        ExchangeCouponView findExchangeCouponView = couponMapper.findExchangeableCouponViewById(exchangeCouponView.getId());
-        assertEquals(exchangeCouponView.getCouponType(), findExchangeCouponView.getCouponType());
-        assertEquals(exchangeCouponView.getComment(), findExchangeCouponView.getComment());
-        assertEquals(exchangeCouponView.getTotalCount(), findExchangeCouponView.getTotalCount());
-    }
 }
