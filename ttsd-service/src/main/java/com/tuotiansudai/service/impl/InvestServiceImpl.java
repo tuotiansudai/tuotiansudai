@@ -530,13 +530,17 @@ public class InvestServiceImpl implements InvestService {
             if (loanModel == null || couponModel == null) {
                 continue;
             }else {
-                expectedInterest = (couponModel.getCouponType() == CouponType.INTEREST_COUPON || couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) ? couponService.estimateCouponExpectedInterest(loginName, loanId, couponIds, investAmount) : 0;
+                expectedInterest = (couponModel.getCouponType() == CouponType.INTEREST_COUPON || couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) ? InterestCalculator.getCouponExpectedInterest(loanModel, couponModel, investAmount, loanModel.getDuration()) : 0;
             }
         }
         long interest = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);
-        long originFee = new BigDecimal(interest + expectedInterest  + extraLoanRateExpectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
-        long membershipFee = new BigDecimal(interest + expectedInterest  + extraLoanRateExpectedInterest).multiply(new BigDecimal(membershipModel.getFee())).longValue();
-        preference = originFee - membershipFee;
+        long originFee = new BigDecimal(interest).multiply(new BigDecimal(defaultFee)).longValue();
+        long membershipFee = new BigDecimal(interest).multiply(new BigDecimal(defaultFee)).multiply(new BigDecimal(membershipModel.getFee() * 10)).longValue();
+        long originCouponFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
+        long membershipCouponFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(defaultFee)).multiply(new BigDecimal((membershipModel.getFee() * 10))).longValue();
+        long originExtraLoanRateExpectedInterest = new BigDecimal(extraLoanRateExpectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
+        long membershipExtraLoanRateExpectedInterest = new BigDecimal(extraLoanRateExpectedInterest).multiply(new BigDecimal(defaultFee)).multiply(new BigDecimal(membershipModel.getFee() * 10)).longValue();
+        preference = originFee - membershipFee + originCouponFee - membershipCouponFee + originExtraLoanRateExpectedInterest - membershipExtraLoanRateExpectedInterest ;
         return preference;
     }
 }

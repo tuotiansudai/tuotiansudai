@@ -75,7 +75,7 @@ public class InterestCalculator {
         return getCouponExpectedInterest(loanModel, couponModel, investAmount, periodDuration);
     }
 
-    private static long getCouponExpectedInterest(LoanModel loanModel, CouponModel couponModel, long investAmount, int periodDuration) {
+    public static long getCouponExpectedInterest(LoanModel loanModel, CouponModel couponModel, long investAmount, int periodDuration) {
         long expectedInterest = 0;
         switch (couponModel.getCouponType()) {
             case NEWBIE_COUPON:
@@ -241,10 +241,8 @@ public class InterestCalculator {
     }
 
     public static long calculateExtraLoanRateExpectedInterest(double extraRate, long amount, int periodDuration, double investFeeRate) {
-        long totalExtraLoanRateExpectedInterest = new BigDecimal(amount).multiply(new BigDecimal(extraRate)).multiply(new BigDecimal(periodDuration)).
+        return new BigDecimal(amount).multiply(new BigDecimal(extraRate)).multiply(new BigDecimal(periodDuration)).
                 divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
-        long expectedFee = new BigDecimal(totalExtraLoanRateExpectedInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-        return totalExtraLoanRateExpectedInterest - expectedFee;
     }
 
 }
