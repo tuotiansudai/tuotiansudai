@@ -68,7 +68,7 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
 
             long currentPeriodCorpus = 0;
             for (InvestModel successInvestModel : successInvestModels) {
-                logger.debug(MessageFormat.format("[Generate_Repay:]investRepay generate loanId:{0},investId:{1} period:{2}  end",String.valueOf(loanId),successInvestModel.getId(),period));
+                logger.debug(MessageFormat.format("[Generate_Repay:]investRepay generate loanId:{0},investId:{1} period:{2}  end",String.valueOf(loanId),String.valueOf(successInvestModel.getId()),period));
                 long expectedInvestInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, successInvestModel, lastRepayDate, currentRepayDate);
                 long expectedFee = new BigDecimal(expectedInvestInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(successInvestModel.getInvestFeeRate())).longValue();
 
@@ -82,7 +82,7 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
                         RepayStatus.REPAYING);
                 currentPeriodCorpus += investRepayModel.getCorpus();
                 investRepayModels.add(investRepayModel);
-                logger.debug(MessageFormat.format("[Generate_Repay:]investRepay generate loanId:{0},investId:{1} period:{2}  end",String.valueOf(loanId),successInvestModel.getId(),period));
+                logger.debug(MessageFormat.format("[Generate_Repay:]investRepay generate loanId:{0},investId:{1} period:{2}  end",String.valueOf(loanId),String.valueOf(successInvestModel.getId()),period));
             }
             long expectedLoanInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvestModels, lastRepayDate, currentRepayDate);
             LoanRepayModel loanRepayModel = new LoanRepayModel(idGenerator.generate(), loanModel.getId(), period, currentPeriodCorpus, expectedLoanInterest, currentRepayDate.toDate(), RepayStatus.REPAYING);
