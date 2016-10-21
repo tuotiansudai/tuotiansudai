@@ -47,7 +47,6 @@ public class PointController {
         modelAndView.addObject("newbiePointTasks", pointTaskService.getNewbiePointTasks(loginName));
         modelAndView.addObject("advancedPointTasks", pointTaskService.getAdvancedPointTasks(loginName));
         modelAndView.addObject("completedAdvancedPointTasks", pointTaskService.getCompletedAdvancedPointTasks(loginName));
-        modelAndView.addObject("exchangeCoupons", pointExchangeService.findExchangeableCouponList());
         return modelAndView;
     }
 
