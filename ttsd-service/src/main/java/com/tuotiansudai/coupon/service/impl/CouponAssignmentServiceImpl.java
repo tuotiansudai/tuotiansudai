@@ -28,6 +28,7 @@ import javax.annotation.Resource;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class CouponAssignmentServiceImpl implements CouponAssignmentService {
@@ -168,7 +169,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         if (CollectionUtils.isNotEmpty(existingUserCoupons) && couponModel.isMultiple()) {
             isAssignableCoupon = Lists.newArrayList(UserGroup.EXCHANGER, UserGroup.EXCHANGER_CODE, UserGroup.WINNER).contains(couponModel.getUserGroup())
-                    || Iterables.all(existingUserCoupons, input -> input.getStatus() == InvestStatus.SUCCESS);
+                    || existingUserCoupons.stream().allMatch(input -> input.getStatus() == InvestStatus.SUCCESS);
         }
 
         if (isAssignableCoupon) {
@@ -209,6 +210,9 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 return isInUserGroup && isAssignableCoupon;
             }
 
+            // 用户已经持有的该类型的优惠券的数量
+            int assignedCouponCount;
+
             /**
              * 检查优惠券是否可以被发送给该用户
              * 如果用户没有持有该类型的优惠券，则返回true
@@ -220,15 +224,18 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             private boolean isAssignableCoupon(final CouponModel couponModel) {
 
                 // 用户持有的该类型的优惠券（可能为多个）
-                UnmodifiableIterator<UserCouponModel> assignedUserCoupons = Iterators.filter(userCouponModels.iterator(), input -> input.getCouponId() == couponModel.getId());
-
-                // 如果用户没有持有该类型的优惠券，则该用户可以得到该优惠券，返回true
-                if (!assignedUserCoupons.hasNext()) {
-                    return true;
-                }
+                Stream<UserCouponModel> assignedUserCoupons = userCouponModels.stream().filter(input -> input.getCouponId() == couponModel.getId());
 
                 // 是否存在未使用的该类型优惠券
-                boolean isUnusedUserCouponExisted = Iterators.any(assignedUserCoupons, input -> input.getStatus() != InvestStatus.SUCCESS);
+                boolean isUnusedUserCouponExisted = assignedUserCoupons.anyMatch(input -> {
+                    assignedCouponCount++;
+                    return input.getStatus() != InvestStatus.SUCCESS;
+                });
+
+                // 如果用户没有持有该类型的优惠券，则该用户可以得到该优惠券，返回true
+                if (assignedCouponCount == 0) {
+                    return true;
+                }
 
                 // 该优惠券可以被多次领取（目前只有生日券）且 用户持有的该优惠券已经被全部使用了，则返回true，表示该优惠券还可以被该用户再次领取
                 return couponModel.isMultiple() && !isUnusedUserCouponExisted;
