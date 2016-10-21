@@ -7,7 +7,7 @@
         <form method="get" class="form-inline query-build">
             <div class="form-group">
                 <label>用户手机号</label>
-                <input id="login-name" name="mobile" id="mobile" class="form-control" value="${mobile!}"/>
+                <input name="mobile" id="mobile" class="form-control" value="${mobile!}"/>
             </div>
             <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
         </form>
@@ -60,7 +60,9 @@
                 </li>
             </ul>
         </nav>
-
+        <div class="clearfix">
+            <a class="btn btn-primary" href="/activity-console/activity-manage/export-iphone7-lottery-stat">导出全部参与用户</a>
+        </div>
     </div>
 </div>
 <!-- content area end -->
