@@ -98,7 +98,7 @@
                   data-url="/transfer-list?transferStatus=${transferStatus!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&index=${index + 1}">下一页</span>
         </div>
     </div>
-    <#include "coupon-alert.ftl" />
+    <#include "component/coupon-alert.ftl" />
 </div>
-    <#include "red-envelope-float.ftl" />
+    <#include "component/red-envelope-float.ftl" />
 </@global.main>

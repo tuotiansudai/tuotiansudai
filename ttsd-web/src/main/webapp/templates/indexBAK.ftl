@@ -316,7 +316,9 @@
                                         <dl>
                                             <dt>预期年化收益</dt>
                                             <dd>
-                                                <em class="active"><@percentInteger>${loan.baseRate}</@percentInteger>
+                                                <em class="active">
+
+                                                    <@percentInteger>${loan.baseRate}</@percentInteger>
                                                     <@percentFraction>${loan.baseRate}</@percentFraction>
                                                     <#if (loan.extraRate > 0)>
                                                         ~ <@percentInteger>${loan.baseRate + (loan.extraRate * 100)}</@percentInteger><@percentFraction>${loan.extraRate * 100}</@percentFraction>
@@ -325,6 +327,7 @@
                                                         +<@percentInteger>${loan.activityRate}</@percentInteger>
                                                         <@percentFraction>${loan.activityRate}</@percentFraction>
                                                     </#if>
+
                                                 </em>
                                                 <i>%
                                                 </i>
@@ -983,6 +986,7 @@
                             </div>
 
                             <div class="loan-process ">
+
                                 <span class="deadline"> 截止时间：${item.deadLine?string("yyyy-MM-dd")}</span>
 
                                 <div class="rest-amount">

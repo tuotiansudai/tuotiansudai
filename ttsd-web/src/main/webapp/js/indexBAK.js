@@ -183,6 +183,7 @@ require(['jquery','imageShowSlide-v1', 'underscore', 'layerWrapper', 'superslide
         event.preventDefault();
         $('.product-box-inner').removeClass('active');
     });
+
     $('input.autoNumeric').autoNumeric('init');
     $bookInvestForm.validate({
         focusInvalid: false,

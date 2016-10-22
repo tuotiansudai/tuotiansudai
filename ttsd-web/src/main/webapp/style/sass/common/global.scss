@@ -1,6 +1,6 @@
-@import 'plugins/font_awesome';
-@import 'common/reset', 'common/btn', 'common/table';
-@import 'common/page_frame', 'common/pagination';
+@import '../plugins/font_awesome';
+@import '../common/reset', 'btn', 'table';
+@import 'page_frame', 'pagination';
 
 /*layer init scroll bar style */
 .layui-layer-page .layui-layer-content {

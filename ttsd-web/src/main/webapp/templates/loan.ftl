@@ -516,8 +516,8 @@
         <input type="hidden" name="noPasswordInvest" value="true"/>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
-    <#include "coupon-alert.ftl" />
+    <#include "component/coupon-alert.ftl" />
 </div>
-    <#include "red-envelope-float.ftl" />
+    <#include "component/red-envelope-float.ftl" />
     <#include "login-tip.ftl" />
 </@global.main>

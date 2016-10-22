@@ -178,7 +178,7 @@
          </div>
 
     </div>
-    <#include "coupon-alert.ftl" />
+    <#include "component/coupon-alert.ftl" />
 </div>
-    <#include "red-envelope-float.ftl" />
+    <#include "component/red-envelope-float.ftl" />
 </@global.main>

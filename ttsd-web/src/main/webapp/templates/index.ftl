@@ -39,6 +39,9 @@
             <h3>最新公告</h3>
             <div class="notice-text scroll-top">
                 <ul id="noticeList">
+                    <li>sdsdsd</li>
+                    <li>8888</li>
+                    <li>9999</li>
                     <#list announces as announce>
                         <#if announce.id == 187>
                             <#assign category = "70首页">
@@ -88,12 +91,12 @@
         </div>
     </div>
     <div class="page-width">
-        <div class="newer-exclusive-box clearfix">
+        <div class="newer-exclusive-box clearfix" >
             <div class="main-column-title">
                 <i class="icon-title"></i>新手专享
             </div>
 
-            <div class="newer-experience clearfix">
+            <div class="newer-experience clearfix" data-url="/loan/1">
                 <i class="tag-icon"></i>
                 <div class="con-inner">
                     <b class="newer-title">新手体验标 <span>仅限使用体验金投资</span></b>
@@ -101,7 +104,7 @@
                         <li><span class="percent-number"> <i>${experienceLoanDto.baseRate}</i>%</span>预期年化收益</li>
                         <li><em>${experienceLoanDto.duration}</em>天<br>项目期限</li>
                     </ul>
-                    <a href="/loan/1" class="btn-invest btn-normal">马上投资</a>
+                    <a href="/loan/1" class="btn-invest btn-normal">立即购买</a>
                 </div>
 
             </div>
@@ -124,6 +127,7 @@
                                 <li><em class="duration-day">${loan.duration}</em>天<br>项目期限</li>
                             </ul>
                     <#if loan.status== 'RAISING'>
+                    <#--筹款-->
                         <a href="javascript:void(0)" class="btn-invest btn-normal">马上投资</a>
                     </#if>
                      <#if loan.status== 'PREHEAT'>
@@ -138,14 +142,15 @@
                          </#if>
                         </a>
                      </#if>
-                            <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loan.status)>
-                                <button class="btn-normal" disabled="">已售罄</button>
-                            </#if>
+                       <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loan.status)>
+                           <#--已售罄-->
+                           <button class="btn-normal" disabled="">已售罄</button>
+                       </#if>
                         </div>
                     </div>
                 </#if>
             </#list>
-            <img src="${staticServer}/images/homepage/hot-bag-a.png" alt="注册送588元红包" class="fr">
+            <a href="/activity/landing-page" target="_blank"><img src="${staticServer}/images/homepage/hot-bag-a.png" alt="注册送588元红包" class="fr"></a>
         </div>
 
         <#--优选债权-->
@@ -160,23 +165,163 @@
             </a>
         </div>
 
+        <div class="normal-loan">
+            <#include "component/loan-title.ftl">
+            <#list loans as loan>
+                <#include "component/loan-row.ftl">
+            </#list>
+        </div>
+
+
+        <#if enterpriseLoans??>
+            <div class="main-column-title">
+                <i class="icon-title"></i>税易经营性借款
+                <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多>></a>
+            </div>
+
+            <#include "component/loan-title.ftl">
+            <#list enterpriseLoans as loan>
+                <#include "component/loan-row.ftl">
+            </#list>
+        </#if>
+
+        <div class="main-column-title">
+            <i class="icon-title"></i>转让项目
+            <a href="/transfer-list" onclick="cnzzPush.trackClick('47首页','转让项目模块','更多')" class="hot-more">更多>></a>
+        </div>
+
         <div class="target-category-box clearfix bg-screen">
-            <div class="target-title">
+            <div class="transfer-title">
                 <span>项目名称</span>
                 <span>预期年化收益</span>
-                <span>项目期限</span>
-                <span>项目进度</span>
-            </div>
-            <div class="target-column-con">
-                <span>车辆抵押债权</span>
-                <span>11%＋1%</span>
-                <span>90天</span>
+                <span>转让价格</span>
+                <span>项目本金</span>
+                <span>剩余期数</span>
                 <span></span>
             </div>
         </div>
 
+        <#list transferApplications as loan>
+            <#include "component/transfer-row.ftl">
+        </#list>
+
+        <div class="media-coverage-box">
+            <h3 class="label-title">
+                媒体报道
+                <a href="/about/media" onclick="cnzzPush.trackClick('39首页','媒体报道模块','更多')" class="hot-more">更多>></a>
+            </h3>
+            <ul class="media-list">
+                <li><i>●</i><a rel="nofollow" href="http://www.greatchinese.com.cn/news/hyxw/20160907/15431.html"
+                               onclick="cnzzPush.trackClick('41首页','媒体报道模块','唯一运营商')" target="_blank">拓天伟业成建设银行“税易-助保贷”唯一运营商</a>
+                    <time>2016-09-07</time>
+                </li>
+                <li><i>●</i><a rel="nofollow" href="http://economy.gmw.cn/2016-03/31/content_19527114.htm"
+                               onclick="cnzzPush.trackClick('73首页','媒体报道模块','霸道总裁')" target="_blank">拓天速贷第二期全国排行活动正式启动</a>
+                    <time>2016-03-31</time>
+                </li>
+                <li><i>●</i><a rel="nofollow" href="http://fj.qq.com/a/20160314/060811.htm"
+                               onclick="cnzzPush.trackClick('40首页','媒体报道模块','财富盛宴大平台')" target="_blank">拓天速贷：财富盛宴大平台
+                    感恩豪礼滚滚来</a>
+                    <time>2016-03-14</time>
+                </li>
+                <li><i>●</i><a rel="nofollow"
+                               href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c"
+                               onclick="cnzzPush.trackClick('42首页','媒体报道模块','宝马名花有主')" target="_blank">拓天速贷：宝马名花有主，猴年豪礼来袭</a>
+                    <time>2016-01-20</time>
+                </li>
+                <li><i>●</i><a rel="nofollow" href="http://w.huanqiu.com/r/MV8wXzgyNzQ4NDZfMTM5NF8xNDUxMzAzNzYy"
+                               onclick="cnzzPush.trackClick('43首页','媒体报道模块','高效资产平台')" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
+                    <time>2015-12-28</time>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="partner-box clearfix">
+            <h3 class="label-title">
+                合作伙伴
+                <a href="/about/media" onclick="cnzzPush.trackClick('39首页','媒体报道模块','更多')" class="hot-more">更多>></a>
+            </h3>
+            <ul class="partner-list">
+                <li><a rel="nofollow" class="logo-capital" href="http://www.king-capital.com/"
+                       onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank">
+
+                </a>
+                </li>
+                <li><a rel="nofollow" class="logo-umpay" href="http://www.umpay.com/"
+                       onclick="cnzzPush.trackClick('46首页','合作伙伴模块','联动优势')" target="_blank"></a>
+                </li>
+            </ul>
+        </div>
+
     </div>
+    <div class="book-invest-frame" style="display: none">
+        <form name="bookInvest" class="book-invest-form">
+            <div class="clearfix book-table-column">
+                <div class="fl">选择项目</div>
+                <div class="fr">
+                    <table class="book-invest-table">
+                        <tr>
+                            <th></th>
+                            <th>预约项目</th>
+                            <th>预期年化收益</th>
+                        </tr>
+                        <tr>
+                            <td class="tc">
+                            <span class="init-radio-style">
+                                <input type="radio" name="productType" id="po1" value="_90" class="radio-class">
+                            </span>
+                            </td>
+                            <td class="product-type"><label for="po1">90天项目</label>
+                            </td>
+                            <td><label for="po1">11%</label></td>
+                        </tr>
+                        <tr>
+                            <td>
+                            <span class="init-radio-style">
+                                <input type="radio" name="productType" id="po2" value="_180" class="radio-class">
+                            </span>
+                            </td>
+                            <td class="product-type"><label for="po2">180天项目</label></td>
+                            <td><label for="po2">12%</label></td>
+                        </tr>
+                        <tr>
+                            <td>
+                            <span class="init-radio-style">
+                                <input type="radio" name="productType" id="po3" value="_360" class="radio-class">
+                            </span>
+                            </td>
+                            <td class="product-type"><label for="po3">360天项目</label></td>
+                            <td><label for="po3">13%</label></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <dl class="book-dl clearfix">
+                <dt>预计投资金额</dt>
+                <dd>
+                <span>
+                    <input type="text" class="form-text autoNumeric" name="bookingAmount" data-l-zero="deny"
+                           data-v-min="0.00" data-v-max="99999999999.99" placeholder="0.00" class="autoNumeric"> 元
+                </span>
+                </dd>
+            </dl>
+            <div class="tc margin-top25">
+                <button type="submit" class="btn btn-normal">确认预约</button>
+            </div>
+            <dl class="book-dl book-bottom-notice clearfix">
+                <dt>预约说明</dt>
+                <dd>1、每次预约仅能预约一个项目；<br/>
+                    2、预约设置完成时开始进入预约队列；<br/>
+                    3、预约后，当有相应标的时，我们会根据队列依次通知进行投资；<br/>
+                    4、可同时添加多笔预约，每笔预约排名互相独立，互不影响；<br/>
+                    5、每笔预约在通知投资后失效。<br/>
 
+                </dd>
+            </dl>
+        </form>
+    </div>
 </div>
-
+    <#include "login-tip.ftl" />
+    <#include "component/red-envelope-float.ftl" />
 </@global.main>

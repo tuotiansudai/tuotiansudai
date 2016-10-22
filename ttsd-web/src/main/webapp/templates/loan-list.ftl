@@ -210,7 +210,7 @@
                   data-url="/loan-list?status=${status!}&name=${name!}&productType=${productType!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}&index=${index + 1}">下一页</span>
         </div>
     </div>
-    <#include "coupon-alert.ftl" />
+    <#include "component/coupon-alert.ftl" />
 </div>
-    <#include "red-envelope-float.ftl" />
+    <#include "component/red-envelope-float.ftl" />
 </@global.main>
