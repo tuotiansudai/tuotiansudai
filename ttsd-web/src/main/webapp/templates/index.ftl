@@ -5,6 +5,12 @@
     <div class="banner-box" >
         <div id="bannerBox" class="banner-box-inner">
             <ul class="banner-img-list">
+               <li> <img src="https://static.tuotiansudai.com/upload/20160708/42441467975156254.png"
+                     data-app-img="https://static.tuotiansudai.com/upload/20160708/52421467975158264.png" alt="" ></li>
+
+                  <li>  <img src="https://static.tuotiansudai.com/upload/20160708/98591467975197628.png"
+                data-app-img="https://static.tuotiansudai.com/upload/20160708/82341467975201217.png"></li>
+
                 <#list bannerList as banner>
                     <li>
                         <a href="${banner.url}" data-name="${banner.url}"

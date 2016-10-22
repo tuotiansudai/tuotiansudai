@@ -6,49 +6,16 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper', 'coupon-alert', 'red-enve
             $productFrame = $('#productFrame'),
             $bannerImg = $imgScroll.find('li');
 
-        //首页大图轮播
+        //首页大图轮播和最新公告滚动
         (function(){
             var imgCount=$imgScroll.find('li').length;
             if(imgCount>0) {
-                var runimg=new imageShowSlide('bannerBox','30',imgCount);
+                var runimg=new imageShowSlide.runImg('bannerBox','30',imgCount);
                 runimg.info();
             }
+            var startMarquee=new imageShowSlide.startMarquee();
+            startMarquee.init();
         })();
-
-        //最新公告
-        //(function(){
-        //    var box=document.getElementById("noticeList"),
-        //        boxLI=box.getElementsByTagName('li'),
-        //        LiHeight=40,
-        //        scrollTop=box.offsetHeight,timer;
-        //     box.innerHTML += box.innerHTML;
-        //    var textMove=function() {
-        //        var moveStep=2,top=0;
-        //        timer=setInterval(function() {
-        //            //把ul里的第一个li移到ul的最后一个
-        //            if(top==LiHeight-2) {
-        //                var first=box.getElementsByTagName('li')[0];
-        //                box.appendChild(first);
-        //            }
-        //            top +=moveStep;
-        //            box.style.top= -top + 'px';
-        //
-        //            if((top==LiHeight)) {
-        //                clearInterval(timer);
-        //            }
-        //        },30);
-        //    }
-        //
-        //    var timer2 = setInterval(textMove, 2000);
-        //
-        //    box.onmouseover = function() {
-        //        clearInterval(timer2);
-        //    };
-        //    box.onmouseout = function() {
-        //        timer2 = setInterval(textMove, 2000);
-        //    };
-        //
-        //})();
 
         //点击进入相应的标的详情
         $('[data-url]',$homePageContainer).on('click',function(event) {

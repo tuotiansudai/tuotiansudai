@@ -230,7 +230,7 @@ $pointColor:#ff5400;
     .register-ad-box {
       position: absolute;
       z-index: 10;
-      top: -335px;
+      top: -324px;
       right: 0;
       width: 300px;
       height: 300px;
@@ -306,7 +306,7 @@ $pointColor:#ff5400;
           position: absolute;
           left:35px;
           top:0;
-
+          height:100%;
           a {
             color: #b2b2b2;
             &:hover {

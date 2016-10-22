@@ -1,4 +1,26 @@
 define([], function () {
+
+    function cloneObj(oldObj) { //复制对象方法
+        if (typeof(oldObj) != 'object') return oldObj;
+        if (oldObj == null) return oldObj;
+        var newObj = new Object();
+        for (var i in oldObj)
+            newObj[i] = cloneObj(oldObj[i]);
+        return newObj;
+    };
+
+    function extendObj() { //扩展对象
+        var args = arguments;
+        if (args.length < 2) return;
+        var temp = cloneObj(args[0]); //调用复制对象方法
+        for (var n = 1; n < args.length; n++) {
+            for (var i in args[n]) {
+                temp[i] = args[n][i];
+            }
+        }
+        return temp;
+    }
+
     function runImg(bigboxID,minRange,count) {
         this.minRange = Number(minRange);
         this.count=count;  //存放图片个数
@@ -223,7 +245,62 @@ define([], function () {
             this.autoplay(this.index); //触摸离开以后再开始循环播放图片
         }
     }
-    return runImg;
+
+    function startMarquee(option) {
+        //lh:行高
+        //speed：移动速度
+        //delay：停留时间
+        var defaultsOpt={
+            element:'noticeList',
+            lh:'40',
+            speed:'20',
+            delay:'1500',
+            isMove:false,
+        };
+        var IntervalT;
+        this.options = extendObj(defaultsOpt, option);
+
+        this.scrollDom = document.getElementById(this.options.element);
+        this.options.lh=this.scrollDom.clientHeight;
+
+        this.init=function() {
+            var o=this.scrollDom;
+            o.innerHTML += o.innerHTML;
+            o.style.marginTop = 0;
+            o.onmouseover = function() {
+                this.options.isMove = true;
+            }.bind(this);
+            o.onmouseout = function() {
+                this.options.isMove = false;
+            }.bind(this);
+
+            setTimeout(this.start.bind(this), this.options.delay);
+        }
+        this.start=function() {
+            var thisopt=this;
+            IntervalT = setInterval(thisopt.scrolling.bind(this), thisopt.options.speed);
+            if (!thisopt.options.isMove) {
+                thisopt.scrollDom.style.marginTop = parseInt(thisopt.scrollDom.style.marginTop) - 1 + "px";
+            }
+        }
+        this.scrolling=function() {
+            var dom=this.scrollDom;
+            if (parseInt(dom.style.marginTop) % this.options.lh != 0) {
+                dom.style.marginTop = parseInt(this.scrollDom.style.marginTop) - 1 + "px";
+                if (Math.abs(parseInt(dom.style.marginTop)) >= dom.scrollHeight / 2) {
+                    dom.style.marginTop = 0;
+                }
+            } else {
+                clearInterval(IntervalT);
+                setTimeout(this.start.bind(this), this.options.delay);
+            }
+        }.bind(this)
+    }
+
+    //var imgTextScroll={};
+    //imgTextScroll.runImg=runImg;
+    //imgTextScroll.startMarquee=startMarquee;
+    return {"runImg":runImg,"startMarquee":startMarquee};
 });
 
 
