@@ -41,8 +41,8 @@ public class PointServiceImpl implements PointService {
     @Autowired
     private LoanMapper loanMapper;
 
-    @Value("#{'${activity.concrete.period}'.split('\\~')}")
-    private List<String> activityConcretePeriod = Lists.newArrayList();
+//    @Value("#{'${activity.concrete.period}'.split('\\~')}")
+//    private List<String> activityConcretePeriod = Lists.newArrayList();
 
     @Override
     @Transactional
@@ -59,7 +59,7 @@ public class PointServiceImpl implements PointService {
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         int duration = loanModel.getDuration();
         long point = new BigDecimal((investModel.getAmount()*duration/InterestCalculator.DAYS_OF_YEAR)).divide(new BigDecimal(100), 0, BigDecimal.ROUND_DOWN).longValue();
-        point = getMaterialActivityPoint(loanModel.getProductType(),loanModel.getActivityType(), point,investModel.getId());
+//        point = getMaterialActivityPoint(loanModel.getProductType(),loanModel.getActivityType(), point,investModel.getId());
         pointBillService.createPointBill(investModel.getLoginName(), investModel.getId(), PointBusinessType.INVEST, point);
         logger.debug(MessageFormat.format("{0} has obtained point {1}", investModel.getId(), point));
     }
@@ -70,17 +70,17 @@ public class PointServiceImpl implements PointService {
         return accountModel != null ? accountModel.getPoint() : 0;
     }
 
-    private long getMaterialActivityPoint(ProductType productType,ActivityType activityType,long point,long investId){
-        if(productType.equals(ProductType.EXPERIENCE) || activityType.equals(ActivityType.NEWBIE)){
-            return point;
-        }
-        Date nowDate = DateTime.now().toDate();
-        Date activityBeginTime = DateTime.parse(activityConcretePeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        Date activityEndTime = DateTime.parse(activityConcretePeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        if(nowDate.before(activityEndTime) && nowDate.after(activityBeginTime)){
-            logger.debug(MessageFormat.format("{0} has double obtained point {1}", investId, point));
-            return point * 1000;
-        }
-        return point;
-    }
+//    private long getMaterialActivityPoint(ProductType productType,ActivityType activityType,long point,long investId){
+//        if(productType.equals(ProductType.EXPERIENCE) || activityType.equals(ActivityType.NEWBIE)){
+//            return point;
+//        }
+//        Date nowDate = DateTime.now().toDate();
+//        Date activityBeginTime = DateTime.parse(activityConcretePeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+//        Date activityEndTime = DateTime.parse(activityConcretePeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+//        if(nowDate.before(activityEndTime) && nowDate.after(activityBeginTime)){
+//            logger.debug(MessageFormat.format("{0} has double obtained point {1}", investId, point));
+//            return point * 1000;
+//        }
+//        return point;
+//    }
 }
