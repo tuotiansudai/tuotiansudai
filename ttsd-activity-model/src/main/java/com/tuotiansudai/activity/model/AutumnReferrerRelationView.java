@@ -1,4 +1,4 @@
-package com.tuotiansudai.activity.repository.autumn.model;
+package com.tuotiansudai.activity.model;
 
 import java.io.Serializable;
 

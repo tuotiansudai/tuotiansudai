@@ -114,7 +114,7 @@
 
     <bean id="activitySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="activityHikariCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.activity.repository.model"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.activity.model"/>
     </bean>
 
     <bean id="pointSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
