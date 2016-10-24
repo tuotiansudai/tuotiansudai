@@ -68,7 +68,7 @@ public class Iphone7LotteryAspect {
             lotteryNumber = String.valueOf((int)((Math.random() * 9 + 1) * 100000));
         }
 
-        IPhone7InvestLotteryModel model = new IPhone7InvestLotteryModel(investModel.getId(), investModel.getLoginName(), investModel.getAmount(), lotteryNumber);
+        IPhone7InvestLotteryModel model = new IPhone7InvestLotteryModel(investModel.getId(), investModel.getLoginName(), investModel.getAmount(), lotteryNumber, new Date());
 
         iPhone7InvestLotteryMapper.create(model);
         redisWrapperClient.hset(redisKey, lotteryNumber, lotteryNumber);

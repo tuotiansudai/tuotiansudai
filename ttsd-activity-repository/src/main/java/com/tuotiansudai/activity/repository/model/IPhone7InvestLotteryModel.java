@@ -73,11 +73,12 @@ public class IPhone7InvestLotteryModel implements Serializable {
 
     }
 
-    public IPhone7InvestLotteryModel(long investId, String loginName, long investAmount, String lotteryNumber){
+    public IPhone7InvestLotteryModel(long investId, String loginName, long investAmount, String lotteryNumber,Date lotteryTime){
         this.investId = investId;
         this.loginName = loginName;
         this.investAmount = investAmount;
         this.lotteryNumber = lotteryNumber;
+        this.lotteryTime = lotteryTime;
     }
 }
 
