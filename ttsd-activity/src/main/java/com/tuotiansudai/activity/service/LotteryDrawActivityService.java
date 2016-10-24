@@ -19,11 +19,16 @@ import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipLevel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.point.repository.mapper.PointBillMapper;
+import com.tuotiansudai.point.repository.model.PointBillModel;
+import com.tuotiansudai.point.repository.model.PointBusinessType;
+import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.RandomUtils;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +36,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class LotteryDrawActivityService {
+
+    static Logger logger = Logger.getLogger(LotteryDrawActivityService.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -57,6 +65,12 @@ public class LotteryDrawActivityService {
 
     @Autowired
     private RandomUtils randomUtils;
+
+    @Autowired
+    private PointBillMapper pointBillMapper;
+
+    @Autowired
+    private PointBillService pointBillService;
 
     @Value("#{'${activity.point.draw.period}'.split('\\~')}")
     private List<String> activityTime = Lists.newArrayList();
@@ -91,21 +105,17 @@ public class LotteryDrawActivityService {
 
         LotteryPrize lotteryPrize = lotteryDrawPrize(activityCategory);
 
-        if(activityCategory.equals(ActivityCategory.POINT_DRAW_1000) || activityCategory.equals(ActivityCategory.POINT_DRAW_10000)){
-            accountModel.setPoint(accountModel.getPoint() - activityCategory.getPoint());
-            accountMapper.update(accountModel);
-        }
-
         if(lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)){
             couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
         }else if(lotteryPrize.equals(LotteryPrize.MEMBERSHIP_V5)){
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         }
 
-        try {
+        try{
+            pointBillService.createPointBill(userModel.getLoginName(), null, PointBusinessType.ACTIVITY, (-activityCategory.getPoint()), MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
             userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
-        }catch (Exception ex){
-            ex.printStackTrace();
+        }catch (Exception e){
+            logger.error(MessageFormat.format("draw is fail, mobile:{0},activity:{1}",mobile,activityCategory.getDescription()));
         }
 
         return new DrawLotteryResultDto(0,lotteryPrize.name(),lotteryPrize.getPrizeType().name(),lotteryPrize.getDescription(),String.valueOf(accountModel.getPoint()));

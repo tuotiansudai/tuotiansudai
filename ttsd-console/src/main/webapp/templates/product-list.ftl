@@ -24,9 +24,7 @@
                 <th>已兑换数量</th>
                 <th>商品价格</th>
                 <th>商品有效期限</th>
-                <th>操作</th>
-                <th></th>
-                <th></th>
+                <th colspan="3">操作</th>
             </tr>
             </thead>
             <tbody>
