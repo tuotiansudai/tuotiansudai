@@ -79,7 +79,7 @@ public class PointServiceImpl implements PointService {
         Date activityEndTime = DateTime.parse(activityConcretePeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         if(nowDate.before(activityEndTime) && nowDate.after(activityBeginTime)){
             logger.debug(MessageFormat.format("{0} has double obtained point {1}", investId, point));
-            return point * 1000;
+            return point * 2;
         }
         return point;
     }
