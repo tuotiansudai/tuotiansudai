@@ -14,19 +14,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WithdrawDiagnosis extends UserBillBusinessDiagnosis {
-    private static Logger logger = LoggerFactory.getLogger(WithdrawDiagnosis.class);
+public class WithdrawFailDiagnosis extends UserBillBusinessDiagnosis {
+    private static Logger logger = LoggerFactory.getLogger(WithdrawFailDiagnosis.class);
 
-    protected final WithdrawMapper withdrawMapper;
+    private final WithdrawMapper withdrawMapper;
 
     @Autowired
-    public WithdrawDiagnosis(WithdrawMapper withdrawMapper) {
+    public WithdrawFailDiagnosis(WithdrawMapper withdrawMapper) {
         this.withdrawMapper = withdrawMapper;
     }
 
     @Override
     public UserBillBusinessType getSupportedBusinessType() {
-        return UserBillBusinessType.WITHDRAW_SUCCESS;
+        return UserBillBusinessType.WITHDRAW_FAIL;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class WithdrawDiagnosis extends UserBillBusinessDiagnosis {
                 // exist
                 .init(tracedObject, this::buildTracedObjectId)
                 // status
-                .check(m -> m.getStatus() == WithdrawStatus.SUCCESS,
+                .check(m -> m.getStatus() == WithdrawStatus.FAIL,
                         m -> String.format("wrong status [expect:SUCCESS, actual:%s]", m.getStatus()))
                 // unique
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectId(m)),
