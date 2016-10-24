@@ -11,15 +11,20 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.TransferStatus;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
+@Aspect
+@Component
 public class Iphone7LotteryAspect {
     private static Logger logger = Logger.getLogger(Iphone7LotteryAspect.class);
 
@@ -53,6 +58,7 @@ public class Iphone7LotteryAspect {
         }
         logger.debug("after returning invest, iphone7 aspect completed");
     }
+
 
     @Transactional
     public void getLotteryNumber(InvestModel investModel){
