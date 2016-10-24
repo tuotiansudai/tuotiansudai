@@ -247,15 +247,16 @@
         SELECT
             login_name
         FROM
-            membership m
-              JOIN
             (SELECT
-                login_name, MAX(membership_id) AS membership_id
+                login_name, MAX(m.level) AS level
             FROM
-                user_membership where expired_time &gt; now()
-            GROUP BY login_name) u ON m.id = u.membership_id
+                membership m
+            JOIN user_membership u ON m.id = u.membership_id
+            WHERE
+                expired_time &gt; NOW()
+            GROUP BY u.login_name) t
         WHERE
-            m.level = #{level}
+            level = #{level}
     </select>
 
 </mapper>
