@@ -255,7 +255,7 @@ define([], function () {
             lh:'40',
             speed:'20',
             delay:'1500',
-            isMove:false,
+            isMove:false
         };
         var IntervalT;
         this.options = extendObj(defaultsOpt, option);
@@ -297,9 +297,48 @@ define([], function () {
         }.bind(this)
     }
 
-    //var imgTextScroll={};
-    //imgTextScroll.runImg=runImg;
-    //imgTextScroll.startMarquee=startMarquee;
+    function autoNumeric() {
+
+        var inputOBJ=document.getElementsByTagName(input);
+        var filterInput=[];
+
+        var defaults={
+            element:'form-text',
+            min:'0.00',
+            max:'99999999999.99'
+        }
+        for(var i,len=inputOBJ.length;i<len;i++)  {
+            var reg=new RegExp(defaults.element,'g');
+            if(reg.test(inputOBJ[i].className)) {
+                filterInput.push(inputOBJ[i]);
+            }
+        }
+       this.options = extendObj(defaults, option);
+       this.input=filterInput;
+        //队友所有符合条件的input进行循环
+        this.init=function() {
+            this.input.addEventListener('keydown keyup blur', this.format.bind(this), false);
+        }
+        this.format=function(event) {
+            console.log(event);
+            var getVal=event.value;
+            //getVal=event.value.replace(/[^0-9.]/g,''); //只能输入数字和小数点
+            getVal = getVal.replace(/[^\d.]/g,"");  //先把非数字的都替换掉，除了数字和.
+            getVal = getVal.replace(/^\./g,""); //必须保证第一个为数字而不是.
+            getVal = getVal.replace(/\.{2,}/g,".");  //保证只有出现一个.而没有多个.
+            getVal = getVal.replace(".","$#$").replace(/\./g,"").replace("$#$",".");  //保证.只出现一次，而不能出现两次以上
+
+            if(getVal>this.options.max || getVal<this.options.min) {
+                return false;
+            }
+            else {
+                var n = parseFloat(getVal).toFixed(2);
+                var re = /(\d{1,3})(?=(\d{3})+(?:\.))/g;
+                return n.replace(re, "$1,");
+            }
+        }
+    }
+
     return {"runImg":runImg,"startMarquee":startMarquee};
 });
 

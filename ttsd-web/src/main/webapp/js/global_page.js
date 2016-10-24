@@ -13,6 +13,10 @@ function globalFun() {
             return obj;
         }
     }
+    //cnzz统计
+    this.trackClick=function(category, action, label) {
+        _czc.push(['_trackEvent', category, action, label]);
+    }
     this.browserRedirect=function () {
         var sUserAgent = navigator.userAgent.toLowerCase();
         var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
@@ -67,6 +71,8 @@ globalFun.prototype={
         this.$('#closeDownloadBox').addEventListener('click',this.closeDownLoadBox.bind(this),false);
         this.$('#btnExperience').addEventListener('click',this.toExperience.bind(this),false);
         this.$('#getMore').addEventListener('click',this.moreFriendLinks.bind(this),false);
+
+        this.$('#showMainMenu').addEventListener('touchstart',this.showMainMenu.bind(this),false); //app点击显示菜单
         //显示手机app二维码
         document.addEventListener('click',function(event) {
             var target = event.target;
@@ -75,6 +81,17 @@ globalFun.prototype={
                 this.showAppCode(offsetID);
             }
         }.bind(this),false);
+    },
+    showMainMenu:function(e) {
+        e.preventDefault();
+        var target=e.target;
+        var container= this.$('#TopMainMenuList');
+        if(container.style.WebkitTransform  == ''){
+            container.style.WebkitTransform  = 'translate(100%)';
+        } else {
+            container.style.WebkitTransform  = '';
+        }
+
     },
     //判断是否为viewport
     isViewPort:function() {
@@ -128,6 +145,7 @@ globalFun.prototype={
     }
 }
 
-var globalFun=new globalFun();
-globalFun.init();
+var cnzzPush=new globalFun();
+cnzzPush.init();
+
 

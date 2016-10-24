@@ -39,10 +39,10 @@
         </@global.isNotAnonymous>
 
         <@global.isAnonymous>
-            <li>
+            <li class="header-login">
                 <a href="/login" onclick="cnzzPush.trackClick('14顶部导航','登录')">登录</a>
             </li>
-            <li>
+            <li class="header-register">
                 <a href="/register/user<#if channel??>?channel=${channel}</#if>" onclick="cnzzPush.trackClick('15顶部导航','注册')">注册</a>
             </li>
         </@global.isAnonymous>

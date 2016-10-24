@@ -1,14 +1,21 @@
-require(['jquery','imageShowSlide-v1', 'layerWrapper', 'coupon-alert', 'red-envelope-float', 'count_down', 'jquery.validate', 'autoNumeric', 'logintip'],
+require(['jquery','imageShowSlide-v1', 'layerWrapper','commonFun', 'coupon-alert', 'red-envelope-float', 'count_down', 'jquery.validate', 'autoNumeric', 'logintip'],
     function ($,imageShowSlide,layer) {
         var $homePageContainer = $('#homePageContainer'),
             $imgScroll = $('.banner-img-list', $homePageContainer),
             $registerBox = $('.register-ad-box', $homePageContainer),
             $productFrame = $('#productFrame'),
             $bannerImg = $imgScroll.find('li');
-
+        var viewport = commonFun.browserRedirect();
         //首页大图轮播和最新公告滚动
         (function(){
             var imgCount=$imgScroll.find('li').length;
+            //如果是手机浏览器，更换手机图片
+            if(imgCount>0 && viewport=='mobile') {
+                $imgScroll.find('img').each(function(key,option) {
+                    var appUrl=option.getAttribute('data-app-img');
+                    option.setAttribute('src',appUrl);
+                });
+            }
             if(imgCount>0) {
                 var runimg=new imageShowSlide.runImg('bannerBox','30',imgCount);
                 runimg.info();
@@ -27,8 +34,18 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper', 'coupon-alert', 'red-enve
 
         //预约投资
         (function() {
-
             var $bookInvestForm = $('.book-invest-form',$homePageContainer);
+            $('input.autoNumeric',$bookInvestForm).autoNumeric('init');
+            //初始化radio
+            $bookInvestForm.find('.init-radio-style').on('click', function () {
+                var $this = $(this);
+                $bookInvestForm.find('.init-radio-style').removeClass('on');
+                $bookInvestForm.find('input:radio').prop('checked', false);
+                $this.addClass("on");
+                $this.find('input:radio').prop('checked', true);
+            });
+
+            $('input.autoNumeric',$homePageContainer).autoNumeric();
             $('.book-invest-box',$homePageContainer).on('click',function(event) {
                 event.preventDefault();
                 $.ajax({

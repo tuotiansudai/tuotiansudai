@@ -144,7 +144,7 @@
         data-main="${staticServer}${jsPath}${pageJavascript}">
 
 </script>
-<script src="${staticServer}${jsPath}${js.cnzz_statistics}" type="text/javascript" charset="utf-8"></script>
+<#--<script src="${staticServer}${jsPath}${js.cnzz_statistics}" type="text/javascript" charset="utf-8"></script>-->
 
 </#if>
 

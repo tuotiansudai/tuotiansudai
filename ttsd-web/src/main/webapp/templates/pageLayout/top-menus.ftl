@@ -9,16 +9,16 @@
                 投资更便利</a>
             <div id="iphone-app-img" class="img-app-pc-top hide"></div>
         </div>
-
+        <i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>
     </div>
 
 <#if activeNav??>
-    <#--<i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>-->
-    <ul id="TopMainMenuList" class="nav-menu page-width clearfix">
+
+    <ul id="TopMainMenuList" class="nav-menu page-width clearfix" >
         <#list mainMenus as menu>
             <#if menu.navigation?? && menu.navigation="true">
                 <li <#if menu.title==activeNav>class="active"</#if>><a  href="${menu.url}"
-                       onclick="cnzzPush.trackClick('${menu.category}','${menu.title}')">${menu.title}</a></li>
+                       onclick="cnzzPush.trackClick('${menu.category}','${menu.title}')" >${menu.title}</a></li>
             </#if>
         </#list>
         <li class="top-membership"><a href="/membership">会员中心</a> </li>
