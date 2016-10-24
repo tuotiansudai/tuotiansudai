@@ -64,6 +64,10 @@ public interface IPhone7LotteryConfigMapper {
     @Select("select * from iphone7_lottery_config where status = 'APPROVED' order by invest_amount")
     List<IPhone7LotteryConfigModel> findAllApproved();
 
+    @ResultMap("iphone7LotteryConfigResultMap")
+    @Select("select * from iphone7_lottery_config where status = 'APPROVED' or status = 'EFFECTIVE'")
+    List<IPhone7LotteryConfigModel> findApprovedConfigByLotteryNumber(String lotteryNumber);
+
     @Update({
             "update iphone7_lottery_config set",
             "audited_by = #{auditedBy},",

@@ -86,6 +86,10 @@ public class IPhone7LotteryService {
             if (configModels.stream().anyMatch(c -> c.getStatus() == IPhone7LotteryConfigStatus.EFFECTIVE)) {
                 throw new RuntimeException("此阶段已开奖完毕，不能进行修改中奖号码");
             }
+            List<IPhone7LotteryConfigModel> approvedConfigs = configMapper.findApprovedConfigByLotteryNumber(configModel.getLotteryNumber());
+            if (approvedConfigs.stream().anyMatch(c -> c.getLotteryNumber().equals(configModel.getLotteryNumber()))) {
+                throw new RuntimeException("此中奖号码已存在，不能设置重复的中奖号码");
+            }
             configMapper.removeApprovedConfig(configModel.getInvestAmount());
             configMapper.approve(id, loginName, new Date());
 
