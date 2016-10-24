@@ -43,11 +43,13 @@ public class SmsServiceImpl implements SmsService {
     @Value("${sms.sending.platform}")
     private String platform;
 
+    private final String SMS_PLATFORM = "zucp";
+
 
     @Override
     public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, String ip) {
         BaseDto<SmsDataDto> smsDateDto = smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
-        if(!smsDateDto.isSuccess() && platform.equals("zucp")){
+        if(!smsDateDto.isSuccess() && platform.equals(SMS_PLATFORM)){
             smsDateDto = this.sendRegisterCaptchaByMd(mobile, captcha,ip);
         }
         return smsDateDto;
@@ -131,7 +133,7 @@ public class SmsServiceImpl implements SmsService {
                 + notifyDto.getCouponType().getName();
 
         List<String> paramList = ImmutableList.<String>builder().add(couponName).add(notifyDto.getExpiredDate()).build();
-        if(platform.equals("zucp")){
+        if(platform.equals(SMS_PLATFORM)){
             return mdSmsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
         }
 
