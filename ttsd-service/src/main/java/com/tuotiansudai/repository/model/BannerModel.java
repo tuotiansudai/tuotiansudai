@@ -216,8 +216,8 @@ public class BannerModel implements Serializable {
     public BannerModel(BannerDto bannerDto) {
         this.id = bannerDto.getId();
         this.name = bannerDto.getName();
-        this.webImageUrl = bannerDto.getWebImageUrl();
-        this.appImageUrl = bannerDto.getAppImageUrl();
+        this.webImageUrl = bannerDto.getWebImageUrl().trim();
+        this.appImageUrl = bannerDto.getAppImageUrl().trim();
         this.url = bannerDto.getUrl();
         this.appUrl = bannerDto.getAppUrl();
         this.title = bannerDto.getTitle();
