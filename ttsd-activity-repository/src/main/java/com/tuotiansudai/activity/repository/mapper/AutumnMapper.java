@@ -1,9 +1,8 @@
 package com.tuotiansudai.activity.repository.mapper;
 
-import com.tuotiansudai.activity.repository.autumn.model.AutumnReferrerRelationView;
+import com.tuotiansudai.activity.model.AutumnReferrerRelationView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.Date;
 import java.util.List;
 
