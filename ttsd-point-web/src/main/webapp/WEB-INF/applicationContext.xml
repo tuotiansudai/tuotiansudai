@@ -20,6 +20,7 @@
     <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties" />
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
+
     <aop:aspectj-autoproxy expose-proxy="true" />
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
@@ -59,31 +60,55 @@
         </property>
     </bean>
 
+    <bean id="pointHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxpoint?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="${point.jdbc.username}"/>
+        <property name="password" value="${point.jdbc.password}"/>
+        <property name="minimumIdle" value="${point.aa.minimumIdle}"/>
+        <property name="maximumPoolSize" value="${point.aa.maximumPoolSize}"/>
+        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+            </props>
+        </property>
+    </bean>
+
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="hikariCPDataSource"/>
+        <property name="dataSource" ref="pointHikariCPDataSource"/>
     </bean>
 
     <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
         <property name="dataSource" ref="jobHikariCPDataSource"/>
     </bean>
 
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <bean id="aaSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.membership.repository.model"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.membership.repository.model"/>
     </bean>
 
-    <!-- define the SqlSessionFactory -->
-    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    <bean id="pointSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="pointHikariCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.point.repository.model"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.point.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.membership.repository.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="aaSqlSessionFactory"/>
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.membership.repository.mapper"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="pointSqlSessionFactory"/>
+        <property name="basePackage" value="com.tuotiansudai.point.repository.mapper"/>
     </bean>
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
+
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="${point.jedis.pool.maxTotal}"/>
         <property name="maxWaitMillis" value="${common.jedis.pool.maxWaitMillis}"/>

@@ -164,11 +164,11 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                 $('.file-btn').find('input').val('');
                 $('.give-number').val('').prop('readonly', false);
                 $('.smsAlert').prop({disabled: true, checked: false});
-            } else if (userGroup == 'NEW_REGISTERED_USER') {
+            } else if (userGroup == "NEW_REGISTERED_USER") {
                 $fileBtn.hide();
                 $('.file-btn').find('input').val('');
                 $('.give-number').val('').prop('readonly', false);
-            } else if (userGroup == 'AGENT') {
+            } else if (userGroup == "AGENT") {
                 $.get('/user-manage/user/agents', function(data) {
                     if (data.length > 0 ) {
                         $('.coupon-deposit').show();
@@ -179,7 +179,7 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                 })
                 $('.give-number').val('0');
                 $('.smsAlert').prop('disabled',false);
-            } else if (userGroup == 'CHANNEL') {
+            } else if (userGroup == "CHANNEL") {
                 $.get('/user-manage/user/channels', function(data) {
                     if (data.length > 0) {
                         $('.coupon-deposit').show();
@@ -190,8 +190,18 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                 })
                 $('.give-number').val('0');
                 $('.smsAlert').prop('disabled',false);
-            } else if (userGroup == 'FIRST_INVEST_ACHIEVEMENT' || userGroup == 'MAX_AMOUNT_ACHIEVEMENT' || userGroup == 'LAST_INVEST_ACHIEVEMENT') {
+            } else if (userGroup == "FIRST_INVEST_ACHIEVEMENT" || userGroup == "MAX_AMOUNT_ACHIEVEMENT" || userGroup == "LAST_INVEST_ACHIEVEMENT") {
                 $('.give-number').val('').prop('readonly', false);
+            } else if(userGroup == "MEMBERSHIP_V0" || userGroup == "MEMBERSHIP_V1" || userGroup == "MEMBERSHIP_V2"
+                    || userGroup == "MEMBERSHIP_V3" || userGroup == "MEMBERSHIP_V4" || userGroup == "MEMBERSHIP_V5"){
+                $.get('/user-manage/userMembership/count?userGroup='+userGroup,function(data) {
+                    $('.give-number').val(parseInt(data)).prop('readonly', true);
+                })
+            } else if(userGroup == "INVESTED_USER" || userGroup == "REGISTERED_NOT_INVESTED_USER" || userGroup == "STAFF"
+                || userGroup == "STAFF_RECOMMEND_LEVEL_ONE" || userGroup == "NOT_ACCOUNT_NOT_INVESTED_USER") {
+                $.get('/activity-manage/coupon/user-group/' + userGroup + '/estimate', function (data) {
+                    $('.give-number').val(data);
+                })
             } else {
                 $('#file-in').trigger('click');
                 $('.file-btn').show();

@@ -16,7 +16,7 @@ public class MobileAppShareCallbackServiceImpl implements MobileAppShareCallback
 
     @Override
     public boolean shareBannerSuccess(String loginName, ShareCallbackRequestDataDto requestDataDto) {
-        if (!Strings.isNullOrEmpty(loginName) &&  requestDataDto.getShareType() == ShareType.BANNER && Integer.parseInt(requestDataDto.getObjectId()) == 1) {
+        if (!Strings.isNullOrEmpty(loginName) && requestDataDto.getShareType() == ShareType.BANNER && "1".equals(requestDataDto.getObjectId())) {
             pointLotteryService.getLotteryOnceChance(loginName);
             return true;
         }

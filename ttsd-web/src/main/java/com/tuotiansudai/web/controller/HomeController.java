@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.HomeLoanDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.BannerMapper;
@@ -78,6 +79,11 @@ public class HomeController {
         //债权转让列表显示前两项
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationItemList = transferService.findAllTransferApplicationPaginationList(null, 0, 0, 1, 2);
         modelAndView.addObject("transferApplications", transferApplicationItemList.getRecords());
+        //企业贷款
+        List<HomeLoanDto> enterpriseLoans = homeService.getEnterpriseLoans();
+        if (enterpriseLoans.size() > 0) {
+            modelAndView.addObject("enterpriseLoans", homeService.getEnterpriseLoans());
+        }
         return modelAndView;
     }
 

@@ -7,6 +7,12 @@
     </@security.authorize>
 </#macro>
 
+<#macro noRole hasNoRole>
+    <@security.authorize access="!hasAuthority(${hasNoRole})">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
 <#macro isAnonymous>
     <@security.authorize access="!isAuthenticated()">
         <#nested>
@@ -23,6 +29,7 @@
     <#local menus=[
     {"title":"首页", "url":"/","category":"16顶部导航"},
     {"title":"我要投资", "url":"/loan-list","category":"17顶部导航"},
+    {"title":"我要借款", "url":"/loan-application","category":"19顶部导航","navigation":"true"},
     {"title":"我的账户", "url":"/account", "category":"18顶部导航","leftNavs":[
         {"title":"账户总览", "url":"/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"我的投资", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
@@ -36,7 +43,6 @@
         {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
     {"title":"问答", "url":"${askServer}","category":""},
-    {"title":"新手指引", "url":"/about/guide","category":"19顶部导航"},
     {"title":"关于我们", "url":"/about/company","category":"20顶部导航", "leftNavs":[
         {"title":"公司介绍", "url":"/about/company"},
         {"title":"团队介绍", "url":"/about/team"},

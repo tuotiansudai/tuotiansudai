@@ -36,17 +36,6 @@ public interface CouponMapper {
 
     List<CouponModel> findAllActiveCoupons();
 
-    List<CouponModel> findCouponExchanges(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+    CouponModel findExchangeableCouponById(@Param(value = "id") long id);
 
-    int findCouponExchangeCount();
-
-    List<CouponModel> findExchangeableCoupons(@Param(value = "index") Integer index, @Param(value = "pageSize") Integer pageSize);
-
-    int findCouponExchangeableCount();
-
-    List<ExchangeCouponView> findExchangeableCouponViews(@Param(value = "index") Integer index, @Param(value = "pageSize") Integer pageSize);
-
-    int findExchangeableCouponViewCount(@Param(value = "index") Integer index, @Param(value = "pageSize") Integer pageSize);
-
-    ExchangeCouponView findExchangeableCouponViewById(long id);
 }

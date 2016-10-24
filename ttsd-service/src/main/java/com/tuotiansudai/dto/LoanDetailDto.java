@@ -62,11 +62,17 @@ public class LoanDetailDto extends BaseDataDto {
 
     private Map<String, String> loanerDetail;
 
+    private PledgeType pledgeType;
+
     private Map<String, String> pledgeHouseDetail;
 
     private Map<String, String> pledgeVehicleDetail;
 
+    private Map<String, String> pledgeEnterpriseDetail;
+
     private String declaration;
+
+    private String basicInfo;
 
     private String extraSource;
 
@@ -100,6 +106,7 @@ public class LoanDetailDto extends BaseDataDto {
         this.extraSource = loanDetails == null ? null :loanDetails.getExtraSource();
         this.activity = loanDetails == null ? false : loanDetails.isActivity();
         this.activityDesc = loanDetails == null ? "" : loanDetails.getActivityDesc();
+        this.pledgeType = loanModel.getPledgeType();
     }
 
     public long getId() {
@@ -210,6 +217,14 @@ public class LoanDetailDto extends BaseDataDto {
         this.loanerDetail = loanerDetail;
     }
 
+    public PledgeType getPledgeType() {
+        return pledgeType;
+    }
+
+    public void setPledgeType(PledgeType pledgeType) {
+        this.pledgeType = pledgeType;
+    }
+
     public void setPledgeHouseDetail(Map<String, String> pledgeHouseDetail) {
         this.pledgeHouseDetail = pledgeHouseDetail;
     }
@@ -224,6 +239,22 @@ public class LoanDetailDto extends BaseDataDto {
 
     public Map<String, String> getPledgeVehicleDetail() {
         return pledgeVehicleDetail;
+    }
+
+    public Map<String, String> getPledgeEnterpriseDetail() {
+        return pledgeEnterpriseDetail;
+    }
+
+    public void setPledgeEnterpriseDetail(Map<String, String> pledgeEnterpriseDetail) {
+        this.pledgeEnterpriseDetail = pledgeEnterpriseDetail;
+    }
+
+    public String getBasicInfo() {
+        return basicInfo;
+    }
+
+    public void setBasicInfo(String basicInfo) {
+        this.basicInfo = basicInfo;
     }
 
     public String getDeclaration() {

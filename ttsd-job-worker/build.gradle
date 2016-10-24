@@ -3,7 +3,7 @@ apply plugin: 'java'
 
 dependencies {
     compile project(':ttsd-service'),
-            project(':ttsd-point'),
+            project(':ttsd-point-service'),
             project(':ttsd-jpush'),
             project(':ttsd-activity-repository')
 }
