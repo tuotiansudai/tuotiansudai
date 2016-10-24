@@ -22,6 +22,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.model.UmPayParticAccType;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
@@ -115,11 +116,16 @@ public class LoanServiceImpl implements LoanService {
 
         LoanModel loanModel = loanMapper.findById(loanId);
         String payUserId = accountMapper.findByLoginName(loanModel.getAgentLoginName()).getPayUserId();
+
+        // 如果是企业直贷，则借款人类型为02（商户），否则为01（个人）
+        String loanAccType = loanModel.getPledgeType() == PledgeType.ENTERPRISE_DIRECT ? "02" : "01";
+
         MerBindProjectRequestModel merBindProjectRequestModel = new MerBindProjectRequestModel(
                 payUserId,
                 String.valueOf(loanModel.getLoanAmount()),
                 String.valueOf(loanModel.getId()),
-                String.valueOf(loanModel.getId()));
+                String.valueOf(loanModel.getId()),
+                loanAccType);
 
         MerUpdateProjectRequestModel merUpdateProjectPreheatRequestModel = new MerUpdateProjectRequestModel(String.valueOf(loanModel.getId()),
                 LoanStatus.PREHEAT.getCode());
@@ -298,8 +304,9 @@ public class LoanServiceImpl implements LoanService {
             throw new PayException(MessageFormat.format("标的(loanId={0})借款金额与投资金额不一致", String.valueOf(loanId)));
         }
 
-        logger.debug("标的放款：发起联动优势放款请求，标的ID:" + loanId + "，代理人:" + agentPayUserId + "，放款金额:" + investAmountTotal);
-        ProjectTransferResponseModel resp = doPayRequest(loanId, agentPayUserId, investAmountTotal);
+        PledgeType pledgeType = loan.getPledgeType();
+        logger.debug("标的放款：发起联动优势放款请求，标的ID:" + loanId + (pledgeType == PledgeType.ENTERPRISE_DIRECT ? "，企业借款人:" : "，代理人:") + agentPayUserId + "，放款金额:" + investAmountTotal);
+        ProjectTransferResponseModel resp = doPayRequest(loanId, agentPayUserId, investAmountTotal, pledgeType);
 
         if (resp.isSuccess()) {
             logger.debug("标的放款：更新标的状态，标的ID:" + loanId);
@@ -342,7 +349,7 @@ public class LoanServiceImpl implements LoanService {
         logger.debug("标的放款：生成还款计划，标的ID:" + loanId);
         try {
             repayGeneratorService.generateRepay(loanId);
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error(MessageFormat.format("生成还款计划失败 (loanId = {0})", String.valueOf(loanId)), e);
             return false;
         }
@@ -365,9 +372,12 @@ public class LoanServiceImpl implements LoanService {
         return true;
     }
 
-    private ProjectTransferResponseModel doPayRequest(long loanId, String payUserId, long amount) throws PayException {
+    private ProjectTransferResponseModel doPayRequest(long loanId, String payUserId, long amount, PledgeType pledgeType) throws PayException {
+        UmPayParticAccType payParticAccType = pledgeType == PledgeType.ENTERPRISE_DIRECT ? UmPayParticAccType.MERCHANT : UmPayParticAccType.INDIVIDUAL;
+
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newLoanOutRequest(
-                String.valueOf(loanId), String.valueOf(loanId), payUserId, String.valueOf(amount));
+                String.valueOf(loanId), String.valueOf(loanId), payUserId, String.valueOf(amount), payParticAccType);
+
         ProjectTransferResponseModel responseModel = paySyncClient.send(
                 ProjectTransferMapper.class,
                 requestModel,

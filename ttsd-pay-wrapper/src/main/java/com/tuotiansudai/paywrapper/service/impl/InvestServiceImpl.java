@@ -140,7 +140,7 @@ public class InvestServiceImpl implements InvestService {
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
         LoanModel loanModel = loanMapper.findById(Long.parseLong(dto.getLoanId()));
-        if(loanModel.getPledgeType() == PledgeType.ENTERPRISE) {
+        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_AGENT || loanModel.getPledgeType() == PledgeType.ENTERPRISE_DIRECT) {
             investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
         }
         investMapper.create(investModel);
@@ -182,7 +182,7 @@ public class InvestServiceImpl implements InvestService {
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
         LoanModel loanModel = loanMapper.findById(loanId);
-        if(loanModel.getPledgeType() == PledgeType.ENTERPRISE) {
+        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_AGENT || loanModel.getPledgeType() == PledgeType.ENTERPRISE_DIRECT) {
             investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
         }
         try {

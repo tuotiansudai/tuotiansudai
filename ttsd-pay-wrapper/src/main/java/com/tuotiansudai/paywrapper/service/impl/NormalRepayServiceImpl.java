@@ -15,6 +15,7 @@ import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.model.UmPayParticAccType;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
@@ -169,12 +170,15 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         logger.info(MessageFormat.format("[Normal Repay {0}] generate repay form data is {1} + {2}",
                 String.valueOf(enabledLoanRepay.getId()), String.valueOf(enabledLoanRepay.getCorpus()), String.valueOf(actualInterest)));
 
+        PledgeType pledgeType = loanModel.getPledgeType();
+
         try {
             ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newRepayRequest(String.valueOf(loanId),
                     MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(enabledLoanRepay.getId()), String.valueOf(actualRepayDate.getTime())),
                     accountMapper.findByLoginName(loanModel.getAgentLoginName()).getPayUserId(),
                     String.valueOf(repayAmount),
-                    false);
+                    false,
+                    pledgeType == PledgeType.ENTERPRISE_DIRECT ? UmPayParticAccType.MERCHANT : UmPayParticAccType.INDIVIDUAL);
             baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
         } catch (PayException e) {
             logger.error(MessageFormat.format("[Normal Repay {0}] generate loan repay form data is failed", String.valueOf(enabledLoanRepay.getId())), e);
