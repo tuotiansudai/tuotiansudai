@@ -32,19 +32,19 @@ public class ConsoleHomeServiceImpl implements ConsoleHomeService {
     @Override
     public int userToday() {
         Date startTime = DateTime.now().withTimeAtStartOfDay().toDate();
-        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null);
+        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null, null);
     }
 
     @Override
     public int user7Days() {
         Date startTime = DateTime.now().minusDays(6).withTimeAtStartOfDay().toDate();
-        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null);
+        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null, null);
     }
 
     @Override
     public int user30Days() {
         Date startTime = DateTime.now().minusDays(29).withTimeAtStartOfDay().toDate();
-        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null);
+        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null, null);
     }
 
     @Override
