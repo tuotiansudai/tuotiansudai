@@ -1,46 +1,35 @@
-package com.tuotiansudai.api.controller.v1_0;
+package com.tuotiansudai.web.controller;
+
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
-import com.tuotiansudai.api.dto.v1_0.UserCouponRequestDto;
-import com.tuotiansudai.api.service.v1_0.MobileAppUserCouponService;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.MessageFormat;
 
-@RestController
-public class MobileAppUserCouponController extends MobileAppBaseController {
+@Controller
+@RequestMapping
+public class UserCouponController {
 
-    static Logger logger = Logger.getLogger(MobileAppUserCouponController.class);
-
-    @Autowired
-    private MobileAppUserCouponService mobileAppUserCouponService;
+    static Logger logger = Logger.getLogger(UserCouponController.class);
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
 
-    @RequestMapping(value = "/get/userCoupons", method = RequestMethod.POST)
-    public BaseResponseDto getCoupons(@RequestBody UserCouponRequestDto dto) {
-        dto.getBaseParam().setUserId(getLoginName());
-        return mobileAppUserCouponService.getUserCoupons(dto);
-    }
-
-
     @RequestMapping(value = "/assign-coupon", method = RequestMethod.POST)
-    public BaseResponseDto assignUserCoupon() {
-        String loginName = getLoginName();
-
-        logger.debug(MessageFormat.format("mobile assign coupon user:{0},begin time:{1}", loginName, DateTime.now().toString()));
+    @ResponseBody
+    public void assignUserCoupon() {
+        String loginName = LoginUserInfo.getLoginName();
+        logger.debug(MessageFormat.format("pc assign coupon user:{0},begin time:{1}", loginName, DateTime.now().toString()));
         couponAssignmentService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.INVESTED_USER,
                 UserGroup.REGISTERED_NOT_INVESTED_USER,
                 UserGroup.NOT_ACCOUNT_NOT_INVESTED_USER,
@@ -56,8 +45,6 @@ public class MobileAppUserCouponController extends MobileAppBaseController {
                 UserGroup.MEMBERSHIP_V3,
                 UserGroup.MEMBERSHIP_V4,
                 UserGroup.MEMBERSHIP_V5));
-        logger.debug(MessageFormat.format("mobile assign coupon user:{0},end time:{1}", loginName, DateTime.now().toString()));
-        return new BaseResponseDto(ReturnMessage.SUCCESS);
+        logger.debug(MessageFormat.format("pc assign coupon user:{0},end time:{1}", loginName, DateTime.now().toString()));
     }
-
 }

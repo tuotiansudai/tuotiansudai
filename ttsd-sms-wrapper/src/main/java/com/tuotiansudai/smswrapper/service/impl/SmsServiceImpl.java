@@ -11,6 +11,7 @@ import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.smswrapper.SmsTemplate;
+import com.tuotiansudai.smswrapper.client.MdSmsClient;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.*;
 import com.tuotiansudai.smswrapper.service.SmsService;
@@ -27,6 +28,9 @@ public class SmsServiceImpl implements SmsService {
     @Autowired
     private SmsClient smsClient;
 
+    @Autowired
+    private MdSmsClient mdSmsClient;
+
     @Value("#{'${sms.fatal.dev.mobile}'.split('\\|')}")
     private List<String> fatalNotifyDevMobiles;
 
@@ -36,9 +40,17 @@ public class SmsServiceImpl implements SmsService {
     @Value("${common.environment}")
     private Environment environment;
 
+    @Value("${sms.sending.platform}")
+    private String platform;
+
+
     @Override
     public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, String ip) {
-        return smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
+        BaseDto<SmsDataDto> smsDateDto = smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
+        if(!smsDateDto.isSuccess() && platform.equals("zucp")){
+            smsDateDto = this.sendRegisterCaptchaByMd(mobile, captcha,ip);
+        }
+        return smsDateDto;
     }
 
     @Override
@@ -111,5 +123,23 @@ public class SmsServiceImpl implements SmsService {
     @Override
     public BaseDto<SmsDataDto> newUserGetGiveMembership(String mobile, int level) {
         return smsClient.sendSMS(MembershipGiveNotifyMapper.class, mobile, SmsTemplate.SMS_NEW_USER_RECEIVE_MEMBERSHIP, String.valueOf(level), "");
+    }
+
+    @Override
+    public BaseDto<SmsDataDto> couponNotifyByMd(SmsCouponNotifyDto notifyDto){
+        String couponName = (notifyDto.getCouponType() == CouponType.INTEREST_COUPON ? MessageFormat.format("+{0}%", notifyDto.getRate()) : MessageFormat.format("{0}元", notifyDto.getAmount()))
+                + notifyDto.getCouponType().getName();
+
+        List<String> paramList = ImmutableList.<String>builder().add(couponName).add(notifyDto.getExpiredDate()).build();
+        if(platform.equals("zucp")){
+            return mdSmsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
+        }
+
+        return smsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
+    }
+
+    @Override
+    public BaseDto<SmsDataDto> sendRegisterCaptchaByMd(String mobile, String captcha, String ip){
+        return mdSmsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
     }
 }

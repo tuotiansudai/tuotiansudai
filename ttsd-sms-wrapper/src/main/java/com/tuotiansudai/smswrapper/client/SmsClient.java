@@ -124,6 +124,9 @@ public class SmsClient implements ApplicationContextAware {
 
             // 执行结果  {"code":200,"msg":"sendid","obj":1}
             String resultCode = getRetCode(EntityUtils.toString(response.getEntity(), "utf-8"));
+            if(resultCode.equals("200")){
+                dto.setSuccess(true);
+            }
 
             String content = template.generateContent(paramList);
 

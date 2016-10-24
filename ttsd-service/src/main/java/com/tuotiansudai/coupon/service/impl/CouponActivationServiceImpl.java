@@ -82,6 +82,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Resource(name = "experienceRepaySuccessCollector")
     private UserCollector experienceRepaySuccessCollector;
 
+    @Resource(name = "membershipUserCollector")
+    private UserCollector membershipUserCollector;
+
     @Autowired
     private UserMapper userMapper;
 
@@ -205,6 +208,12 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                 .put(UserGroup.EXCHANGER_CODE, this.exchangeCodeCollector)
                 .put(UserGroup.EXPERIENCE_INVEST_SUCCESS, this.experienceInvestSuccessCollector)
                 .put(UserGroup.EXPERIENCE_REPAY_SUCCESS, this.experienceRepaySuccessCollector)
+                .put(UserGroup.MEMBERSHIP_V0, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V1, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V2, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V3, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V4, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V5, this.membershipUserCollector)
                 .build()).get(userGroup);
     }
 

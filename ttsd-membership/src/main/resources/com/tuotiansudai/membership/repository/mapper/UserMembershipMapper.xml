@@ -243,4 +243,19 @@
         level = #{level}
     </select>
 
+    <select id="findLoginNameMembershipByLevel" resultType="java.lang.String">
+        SELECT
+            login_name
+        FROM
+            membership m
+                LEFT JOIN
+            (SELECT
+                login_name, MAX(membership_id) AS membership_id
+            FROM
+                user_membership
+            GROUP BY login_name) u ON m.id = u.membership_id
+        WHERE
+            m.level = #{level}
+    </select>
+
 </mapper>
