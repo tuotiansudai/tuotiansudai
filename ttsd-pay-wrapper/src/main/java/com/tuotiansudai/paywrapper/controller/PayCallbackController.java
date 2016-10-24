@@ -242,6 +242,26 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
+    @RequestMapping(value = "/coupon_repay_notify", method = RequestMethod.GET)
+    public ModelAndView couponRepayNotify(HttpServletRequest request) {
+
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        try {
+            String responseData = this.normalRepayService.repayCallback(paramsMap, request.getQueryString());
+            return new ModelAndView("/callback_response", "content", responseData);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Normal Repay] repay callback is failed (queryString = {0})", request.getQueryString()), e);
+        }
+        return new ModelAndView("/callback_response", "content", "");
+
+
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = membershipPurchasePayService.purchaseCallback(paramsMap, request.getQueryString());
+        //String responseData = membershipPurchasePayService.purchaseCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+
     private Map<String, String> parseRequestParameters(HttpServletRequest request) {
         Map<String, String> paramsMap = Maps.newHashMap();
         Enumeration<String> parameterNames = request.getParameterNames();

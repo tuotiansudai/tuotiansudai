@@ -130,10 +130,21 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             boolean isPaySuccess = transferAmount == 0;
             if (transferAmount > 0) {
                 try {
+
+
+
+
                     TransferRequestModel requestModel = TransferRequestModel.newRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(userCouponModel.getId()), String.valueOf(new Date().getTime())),
                             accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
                             String.valueOf(transferAmount));
+
                     TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
+
+
+
+
+
+
                     isPaySuccess = responseModel.isSuccess();
                     logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) transfer status is {2}",
                             String.valueOf(currentLoanRepayModel.getId()),
