@@ -3,7 +3,7 @@ test-db-server:
   ports:
     - "$UT_DB_PORT:3306"
   volumes:
-    - ./ut.sql:/opt/ut.sql
+    - ./scripts/ut.sql:/opt/ut.sql
   command: bash -c "/etc/init.d/mysql restart && mysql < /opt/ut.sql && /etc/init.d/mysql stop && /usr/bin/mysqld_safe"
 
 test-redis-server:
