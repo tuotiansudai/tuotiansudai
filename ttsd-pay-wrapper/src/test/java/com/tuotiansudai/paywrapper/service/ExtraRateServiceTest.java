@@ -36,8 +36,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -147,6 +146,10 @@ public class ExtraRateServiceTest {
         assertThat(userBills.get(0).getAmount(), is(actualInterest - actualFee));
         assertThat(userBills.get(0).getBusinessType(), is(UserBillBusinessType.EXTRA_RATE));
         assertThat(userBills.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
+
+        extraRateService.normalRepay(loanRepay2.getId());
+        userBills = userBillMapper.findByLoginName(investModel.getLoginName());
+        assertEquals(1, userBills.size());
     }
 
     @Test
@@ -176,6 +179,10 @@ public class ExtraRateServiceTest {
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(investModel.getLoginName());
         assertTrue(CollectionUtils.isEmpty(userBills));
+
+        extraRateService.normalRepay(loanRepay2.getId());
+        userBills = userBillMapper.findByLoginName(investModel.getLoginName());
+        assertTrue(CollectionUtils.isEmpty(userBills));
     }
 
     @Test
@@ -202,6 +209,10 @@ public class ExtraRateServiceTest {
         assertTrue(investExtraRateModel.getActualRepayDate() == null);
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(investModel.getLoginName());
+        assertTrue(CollectionUtils.isEmpty(userBills));
+
+        extraRateService.normalRepay(loanRepay1.getId());
+        userBills = userBillMapper.findByLoginName(investModel.getLoginName());
         assertTrue(CollectionUtils.isEmpty(userBills));
     }
 
@@ -236,6 +247,10 @@ public class ExtraRateServiceTest {
         assertThat(userBills.get(0).getAmount(), is(actualInterest - actualFee));
         assertThat(userBills.get(0).getBusinessType(), is(UserBillBusinessType.EXTRA_RATE));
         assertThat(userBills.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
+
+        extraRateService.normalRepay(loanRepay2.getId());
+        userBills = userBillMapper.findByLoginName(investModel.getLoginName());
+        assertEquals(1, userBills.size());
     }
 
     @Test
@@ -264,6 +279,10 @@ public class ExtraRateServiceTest {
         assertTrue(investExtraRateModel1.getActualRepayDate() == null);
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(investModel.getLoginName());
+        assertTrue(CollectionUtils.isEmpty(userBills));
+
+        extraRateService.advanceRepay(loanRepay2.getId());
+        userBills = userBillMapper.findByLoginName(investModel.getLoginName());
         assertTrue(CollectionUtils.isEmpty(userBills));
     }
 
