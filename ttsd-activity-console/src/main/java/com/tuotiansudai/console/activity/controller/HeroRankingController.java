@@ -1,8 +1,8 @@
 package com.tuotiansudai.console.activity.controller;
 
+import com.tuotiansudai.activity.model.ActivityCategory;
 import com.tuotiansudai.console.activity.service.HeroRankingService;
 import com.tuotiansudai.dto.MysteriousPrizeDto;
-import com.tuotiansudai.repository.model.ActivityCategory;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;

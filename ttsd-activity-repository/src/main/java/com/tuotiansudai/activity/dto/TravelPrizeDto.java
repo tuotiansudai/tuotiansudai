@@ -1,10 +1,9 @@
 package com.tuotiansudai.activity.dto;
 
-import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
-import com.tuotiansudai.util.AmountConverter;
+
+import com.tuotiansudai.activity.model.TravelPrizeModel;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class TravelPrizeDto implements Serializable {
 

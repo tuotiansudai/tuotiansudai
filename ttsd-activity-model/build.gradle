@@ -16,10 +16,7 @@ dependencies {
     compile project(':ttsd-dependency'),
             project(':ttsd-config'),
             project(':ttsd-util'),
-            project(':ttsd-client'),
-            project(':ttsd-activity-model'),
-            project(":ttsd-user-service")
-
+            project(':ttsd-client')
 }
 
 processResources.outputs.upToDateWhen { false }

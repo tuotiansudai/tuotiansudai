@@ -1,4 +1,4 @@
-package com.tuotiansudai.activity.dto;
+package com.tuotiansudai.activity.model;
 
 
 public enum PrizeType {

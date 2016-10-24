@@ -1,8 +1,5 @@
 package com.tuotiansudai.console.activity.dto;
 
-import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
-import com.tuotiansudai.util.AmountConverter;
-
 import java.io.Serializable;
 
 public class LuxuryPrizeRequestDto implements Serializable {

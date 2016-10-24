@@ -1,14 +1,15 @@
-package com.tuotiansudai.activity.repository.model;
+package com.tuotiansudai.activity.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-public class TravelPrizeModel implements Serializable{
+public class LuxuryPrizeModel implements Serializable{
 
-    private static final long serialVersionUID = -9089816571089615049L;
+    private static final long serialVersionUID = -4905565481181941515L;
 
     private long id;
+
+    private String brand;
 
     private String name;
 
@@ -17,6 +18,12 @@ public class TravelPrizeModel implements Serializable{
     private String image;
 
     private long investAmount;
+
+    private long tenPercentOffInvestAmount;
+
+    private long twentyPercentOffInvestAmount;
+
+    private long thirtyPercentOffInvestAmount;
 
     private String introduce;
 
@@ -36,6 +43,14 @@ public class TravelPrizeModel implements Serializable{
         this.id = id;
     }
 
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
     public String getName() {
         return name;
     }
@@ -44,13 +59,6 @@ public class TravelPrizeModel implements Serializable{
         this.name = name;
     }
 
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
 
     public String getImage() {
         return image;
@@ -66,6 +74,30 @@ public class TravelPrizeModel implements Serializable{
 
     public void setInvestAmount(long investAmount) {
         this.investAmount = investAmount;
+    }
+
+    public long getTenPercentOffInvestAmount() {
+        return tenPercentOffInvestAmount;
+    }
+
+    public void setTenPercentOffInvestAmount(long tenPercentOffInvestAmount) {
+        this.tenPercentOffInvestAmount = tenPercentOffInvestAmount;
+    }
+
+    public long getTwentyPercentOffInvestAmount() {
+        return twentyPercentOffInvestAmount;
+    }
+
+    public void setTwentyPercentOffInvestAmount(long twentyPercentOffInvestAmount) {
+        this.twentyPercentOffInvestAmount = twentyPercentOffInvestAmount;
+    }
+
+    public long getThirtyPercentOffInvestAmount() {
+        return thirtyPercentOffInvestAmount;
+    }
+
+    public void setThirtyPercentOffInvestAmount(long thirtyPercentOffInvestAmount) {
+        this.thirtyPercentOffInvestAmount = thirtyPercentOffInvestAmount;
     }
 
     public String getIntroduce() {
@@ -106,5 +138,13 @@ public class TravelPrizeModel implements Serializable{
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

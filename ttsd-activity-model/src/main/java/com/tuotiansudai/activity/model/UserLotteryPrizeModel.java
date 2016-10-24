@@ -1,8 +1,4 @@
-package com.tuotiansudai.activity.repository.model;
-
-import com.tuotiansudai.activity.dto.ActivityCategory;
-import com.tuotiansudai.activity.dto.LotteryPrize;
-import com.tuotiansudai.activity.dto.PrizeType;
+package com.tuotiansudai.activity.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -25,7 +21,7 @@ public class UserLotteryPrizeModel implements Serializable {
 
     public UserLotteryPrizeModel() {}
 
-    public UserLotteryPrizeModel(String mobile, String loginName,String userName, LotteryPrize prize, Date lotteryTime,ActivityCategory prizeType) {
+    public UserLotteryPrizeModel(String mobile, String loginName, String userName, LotteryPrize prize, Date lotteryTime, ActivityCategory prizeType) {
         this.mobile = mobile;
         this.loginName = loginName;
         this.userName = userName;

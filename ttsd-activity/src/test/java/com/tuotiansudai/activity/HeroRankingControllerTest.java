@@ -2,9 +2,13 @@ package com.tuotiansudai.activity;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.controller.HeroRankingController;
+import com.tuotiansudai.activity.model.ActivityCategory;
 import com.tuotiansudai.activity.service.HeroRankingService;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.HeroRankingView;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.RandomUtils;
 import org.junit.Before;
 import org.junit.Test;

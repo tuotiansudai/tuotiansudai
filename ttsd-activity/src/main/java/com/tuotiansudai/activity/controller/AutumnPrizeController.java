@@ -1,15 +1,10 @@
 package com.tuotiansudai.activity.controller;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
-import com.tuotiansudai.activity.dto.LotteryPrize;
-import com.tuotiansudai.activity.dto.LuxuryPrizeDto;
-import com.tuotiansudai.activity.dto.TravelPrizeDto;
-import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
+import com.tuotiansudai.activity.model.LotteryPrize;
+import com.tuotiansudai.activity.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.AutumnPrizeService;
 import com.tuotiansudai.activity.service.LotteryActivityService;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -19,13 +14,10 @@ import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 

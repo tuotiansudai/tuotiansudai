@@ -1,10 +1,8 @@
 package com.tuotiansudai.activity.repository.mapper;
 
-import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
-import org.joda.time.DateTime;
+import com.tuotiansudai.activity.model.LuxuryPrizeModel;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;

@@ -1,11 +1,9 @@
-package com.tuotiansudai.activity.repository.model;
+package com.tuotiansudai.activity.model;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserTravelPrizeModel implements Serializable{
-
-    private static final long serialVersionUID = -4735243302085648734L;
+public class UserLuxuryPrizeModel implements Serializable {
 
     private long id;
 
@@ -17,23 +15,11 @@ public class UserTravelPrizeModel implements Serializable{
 
     private String mobile;
 
-    private String userName;
-
     private long investAmount;
 
     private Date createdTime;
 
-    public UserTravelPrizeModel() {
-    }
-
-    public UserTravelPrizeModel(long prizeId, String prize, String loginName, String mobile, String userName, long investAmount) {
-        this.prizeId = prizeId;
-        this.prize = prize;
-        this.loginName = loginName;
-        this.mobile = mobile;
-        this.userName = userName;
-        this.investAmount = investAmount;
-    }
+    private String userName;
 
     public long getId() {
         return id;
@@ -49,14 +35,6 @@ public class UserTravelPrizeModel implements Serializable{
 
     public void setPrizeId(long prizeId) {
         this.prizeId = prizeId;
-    }
-
-    public String getPrize() {
-        return prize;
-    }
-
-    public void setPrize(String prize) {
-        this.prize = prize;
     }
 
     public String getLoginName() {
@@ -75,14 +53,6 @@ public class UserTravelPrizeModel implements Serializable{
         this.mobile = mobile;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public long getInvestAmount() {
         return investAmount;
     }
@@ -97,5 +67,33 @@ public class UserTravelPrizeModel implements Serializable{
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public String getPrize() {
+        return prize;
+    }
+
+    public void setPrize(String prize) {
+        this.prize = prize;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public UserLuxuryPrizeModel() {
+    }
+
+    public UserLuxuryPrizeModel(long prizeId, String prize, String loginName, String mobile, String userName, long investAmount) {
+        this.prizeId = prizeId;
+        this.prize = prize;
+        this.loginName = loginName;
+        this.mobile = mobile;
+        this.userName = userName;
+        this.investAmount = investAmount;
     }
 }

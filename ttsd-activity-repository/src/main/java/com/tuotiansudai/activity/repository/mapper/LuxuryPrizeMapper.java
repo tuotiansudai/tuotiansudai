@@ -1,10 +1,7 @@
 package com.tuotiansudai.activity.repository.mapper;
 
-import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
-import org.apache.ibatis.annotations.Param;
+import com.tuotiansudai.activity.model.LuxuryPrizeModel;
 import org.springframework.stereotype.Repository;
-
-import java.util.Date;
 import java.util.List;
 
 @Repository

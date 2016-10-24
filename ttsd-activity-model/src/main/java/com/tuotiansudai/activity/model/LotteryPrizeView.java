@@ -1,4 +1,4 @@
-package com.tuotiansudai.activity.repository.model;
+package com.tuotiansudai.activity.model;
 
 
 public class LotteryPrizeView {

@@ -2,9 +2,9 @@ package com.tuotiansudai.activity.controller;
 
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.activity.dto.ActivityCategory;
 import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
-import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
+import com.tuotiansudai.activity.model.ActivityCategory;
+import com.tuotiansudai.activity.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.spring.LoginUserInfo;

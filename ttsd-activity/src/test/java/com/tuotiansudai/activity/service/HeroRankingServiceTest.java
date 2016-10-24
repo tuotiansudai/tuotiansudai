@@ -2,6 +2,7 @@ package com.tuotiansudai.activity.service;
 
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.model.ActivityCategory;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.*;
@@ -24,9 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-session.xml"})

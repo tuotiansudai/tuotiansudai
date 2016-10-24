@@ -1,6 +1,7 @@
-package com.tuotiansudai.activity.repository.model;
+package com.tuotiansudai.activity.model;
 
-import com.tuotiansudai.activity.dto.LotteryPrize;
+
+import com.tuotiansudai.activity.model.LotteryPrize;
 
 import java.io.Serializable;
 import java.util.Date;

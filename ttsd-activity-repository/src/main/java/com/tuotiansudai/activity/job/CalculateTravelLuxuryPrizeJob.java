@@ -1,16 +1,15 @@
 package com.tuotiansudai.activity.job;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.activity.model.LuxuryPrizeModel;
+import com.tuotiansudai.activity.model.TravelPrizeModel;
+import com.tuotiansudai.activity.model.UserLuxuryPrizeModel;
+import com.tuotiansudai.activity.model.UserTravelPrizeModel;
 import com.tuotiansudai.activity.repository.mapper.LuxuryPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.TravelPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLuxuryPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.UserTravelPrizeMapper;
-import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
-import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
-import com.tuotiansudai.activity.repository.model.UserLuxuryPrizeModel;
-import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import com.tuotiansudai.client.RedisWrapperClient;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;

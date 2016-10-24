@@ -1,6 +1,6 @@
-package com.tuotiansudai.activity.dto;
+package com.tuotiansudai.activity.model;
 
-public enum LotteryPrize{
+public enum LotteryPrize {
     TOURISM("华东旅游大奖",PrizeType.CONCRETE,ActivityCategory.AUTUMN_PRIZE,0),
     MANGO_CARD_100("100元芒果卡",PrizeType.CONCRETE,ActivityCategory.AUTUMN_PRIZE,0.5),
     LUXURY("奢侈品大奖",PrizeType.CONCRETE,ActivityCategory.AUTUMN_PRIZE,0),
@@ -42,7 +42,7 @@ public enum LotteryPrize{
     ActivityCategory activityCategory;
     double rate;
 
-    LotteryPrize(String description,PrizeType prizeType,ActivityCategory activityCategory,double rate){
+    LotteryPrize(String description, PrizeType prizeType, ActivityCategory activityCategory, double rate){
         this.description = description;
         this.activityCategory = activityCategory;
         this.prizeType = prizeType;

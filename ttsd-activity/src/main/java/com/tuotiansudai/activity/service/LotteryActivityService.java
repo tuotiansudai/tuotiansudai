@@ -3,13 +3,10 @@ package com.tuotiansudai.activity.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.dto.ActivityCategory;
 import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
-import com.tuotiansudai.activity.dto.LotteryPrize;
-import com.tuotiansudai.activity.dto.PrizeType;
+import com.tuotiansudai.activity.model.*;
+import com.tuotiansudai.activity.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
-import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
-import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -188,7 +185,7 @@ public class LotteryActivityService {
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile,LotteryPrize activityType){
         List<LotteryPrize> lotteryPrizes = activityType.equals(LotteryPrize.TOURISM) ? Lists.newArrayList(LotteryPrize.TOURISM,LotteryPrize.MANGO_CARD_100) : Lists.newArrayList(LotteryPrize.PORCELAIN_CUP,LotteryPrize.LUXURY);
 
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, lotteryPrizes,ActivityCategory.AUTUMN_PRIZE);
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, lotteryPrizes, ActivityCategory.AUTUMN_PRIZE);
         for(UserLotteryPrizeView view : userLotteryPrizeViews){
             view.setMobile(randomUtils.encryptWebMiddleMobile(view.getMobile()));
         }
