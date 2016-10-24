@@ -6,7 +6,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.activity.dto.MidAutumnFamilyDto;
+import com.tuotiansudai.activity.repository.dto.MidAutumnFamilyDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;

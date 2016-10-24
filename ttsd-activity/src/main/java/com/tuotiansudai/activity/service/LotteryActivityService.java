@@ -3,9 +3,8 @@ package com.tuotiansudai.activity.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
-import com.tuotiansudai.activity.model.*;
-import com.tuotiansudai.activity.model.ActivityCategory;
+import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
+import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.repository.mapper.*;

@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.activity.repository.autumn.mapper.AutumnMapper">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.AutumnMapper">
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
-    <resultMap id="referrerRelationResultMap" type="com.tuotiansudai.activity.repository.autumn.model.AutumnReferrerRelationView">
+    <resultMap id="referrerRelationResultMap" type="com.tuotiansudai.activity.repository.model.AutumnReferrerRelationView">
         <result column="referrer_login_name" property="referrerLoginName"/>
         <result column="login_name" property="loginName"/>
         <result column="level" property="level"/>

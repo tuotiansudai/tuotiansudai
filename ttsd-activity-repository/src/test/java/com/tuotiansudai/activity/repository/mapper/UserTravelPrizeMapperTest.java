@@ -1,7 +1,7 @@
 package com.tuotiansudai.activity.repository.mapper;
 
-import com.tuotiansudai.activity.model.TravelPrizeModel;
-import com.tuotiansudai.activity.model.UserTravelPrizeModel;
+import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
+import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

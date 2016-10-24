@@ -1,10 +1,10 @@
 package com.tuotiansudai.activity.service;
 
 
-import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
-import com.tuotiansudai.activity.model.LotteryPrize;
-import com.tuotiansudai.activity.model.UserLotteryPrizeModel;
-import com.tuotiansudai.activity.model.UserLotteryPrizeView;
+import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
+import com.tuotiansudai.activity.repository.model.LotteryPrize;
+import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
+import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;

@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.activity.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.model.ActivityCategory;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.MysteriousPrizeDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;

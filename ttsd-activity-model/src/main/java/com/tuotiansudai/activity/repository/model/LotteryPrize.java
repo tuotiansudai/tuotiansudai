@@ -1,4 +1,4 @@
-package com.tuotiansudai.activity.model;
+package com.tuotiansudai.activity.repository.model;
 
 public enum LotteryPrize {
     TOURISM("华东旅游大奖",PrizeType.CONCRETE,ActivityCategory.AUTUMN_PRIZE,0),

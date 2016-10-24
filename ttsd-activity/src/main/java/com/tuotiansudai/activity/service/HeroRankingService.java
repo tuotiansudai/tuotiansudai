@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.activity.model.ActivityCategory;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.MysteriousPrizeDto;

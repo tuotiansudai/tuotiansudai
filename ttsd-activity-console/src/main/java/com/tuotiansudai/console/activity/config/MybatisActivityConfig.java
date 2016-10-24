@@ -46,7 +46,7 @@ public class MybatisActivityConfig {
     public SqlSessionFactory sqlSessionFactory(@Qualifier("hikariCPActivityDataSource") DataSource hikariCPActivityDataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(hikariCPActivityDataSource);
-        sessionFactory.setTypeAliasesPackage("com.tuotiansudai.activity.model");
+        sessionFactory.setTypeAliasesPackage("com.tuotiansudai.activity.repository.model");
         return sessionFactory.getObject();
     }
 }

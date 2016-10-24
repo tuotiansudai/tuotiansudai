@@ -2,9 +2,9 @@ package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.dto.DrawLotteryResultDto;
-import com.tuotiansudai.activity.model.LotteryPrize;
-import com.tuotiansudai.activity.model.UserLotteryPrizeView;
+import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
+import com.tuotiansudai.activity.repository.model.LotteryPrize;
+import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.AutumnPrizeService;
 import com.tuotiansudai.activity.service.LotteryActivityService;
 import com.tuotiansudai.client.RedisWrapperClient;

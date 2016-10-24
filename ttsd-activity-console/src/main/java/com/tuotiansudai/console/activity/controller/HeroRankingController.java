@@ -1,6 +1,6 @@
 package com.tuotiansudai.console.activity.controller;
 
-import com.tuotiansudai.activity.model.ActivityCategory;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.console.activity.service.HeroRankingService;
 import com.tuotiansudai.dto.MysteriousPrizeDto;
 import com.tuotiansudai.repository.model.HeroRankingView;

@@ -2,10 +2,10 @@ package com.tuotiansudai.console.activity.service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.dto.TravelPrizeDto;
-import com.tuotiansudai.activity.dto.UserPrizePaginationItemDto;
-import com.tuotiansudai.activity.model.TravelPrizeModel;
-import com.tuotiansudai.activity.model.UserTravelPrizeModel;
+import com.tuotiansudai.activity.repository.dto.TravelPrizeDto;
+import com.tuotiansudai.activity.repository.dto.UserPrizePaginationItemDto;
+import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
+import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import com.tuotiansudai.activity.repository.mapper.TravelPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.UserTravelPrizeMapper;
 import com.tuotiansudai.console.activity.dto.TravelPrizeRequestDto;

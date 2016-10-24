@@ -1,6 +1,6 @@
 package com.tuotiansudai.activity.controller;
 
-import com.tuotiansudai.activity.model.ActivityCategory;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.service.HeroRankingService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;

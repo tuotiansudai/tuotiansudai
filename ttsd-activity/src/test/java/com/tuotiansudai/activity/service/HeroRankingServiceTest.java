@@ -2,7 +2,7 @@ package com.tuotiansudai.activity.service;
 
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.model.ActivityCategory;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.*;

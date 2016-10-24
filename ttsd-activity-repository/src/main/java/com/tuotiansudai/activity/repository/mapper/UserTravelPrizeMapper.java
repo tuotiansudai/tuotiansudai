@@ -1,6 +1,6 @@
 package com.tuotiansudai.activity.repository.mapper;
 
-import com.tuotiansudai.activity.model.UserTravelPrizeModel;
+import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

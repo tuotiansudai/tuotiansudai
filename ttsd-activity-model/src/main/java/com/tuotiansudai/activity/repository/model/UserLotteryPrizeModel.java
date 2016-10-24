@@ -1,4 +1,4 @@
-package com.tuotiansudai.activity.model;
+package com.tuotiansudai.activity.repository.model;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -2,10 +2,10 @@ package com.tuotiansudai.activity.job;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.activity.model.LuxuryPrizeModel;
-import com.tuotiansudai.activity.model.TravelPrizeModel;
-import com.tuotiansudai.activity.model.UserLuxuryPrizeModel;
-import com.tuotiansudai.activity.model.UserTravelPrizeModel;
+import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
+import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
+import com.tuotiansudai.activity.repository.model.UserLuxuryPrizeModel;
+import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import com.tuotiansudai.activity.repository.mapper.LuxuryPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.TravelPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLuxuryPrizeMapper;

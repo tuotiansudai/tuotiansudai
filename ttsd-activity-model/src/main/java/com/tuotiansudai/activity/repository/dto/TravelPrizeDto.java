@@ -1,7 +1,7 @@
-package com.tuotiansudai.activity.dto;
+package com.tuotiansudai.activity.repository.dto;
 
 
-import com.tuotiansudai.activity.model.TravelPrizeModel;
+import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
 
 import java.io.Serializable;
 

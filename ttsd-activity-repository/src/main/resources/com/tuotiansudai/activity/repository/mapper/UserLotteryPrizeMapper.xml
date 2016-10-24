@@ -6,7 +6,7 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
-    <resultMap id="userLotteryPrizeModel" type="com.tuotiansudai.activity.model.UserLotteryPrizeModel">
+    <resultMap id="userLotteryPrizeModel" type="com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel">
         <id column="id" property="id"></id>
         <result column="mobile" property="mobile"></result>
         <result column="login_name" property="loginName"></result>
@@ -16,7 +16,7 @@
         <result column="activity_category" property="activityCategory"></result>
     </resultMap>
 
-    <resultMap id="userLotteryPrizeView" type="com.tuotiansudai.activity.model.UserLotteryPrizeView">
+    <resultMap id="userLotteryPrizeView" type="com.tuotiansudai.activity.repository.model.UserLotteryPrizeView">
         <result column="mobile" property="mobile"></result>
         <result column="user_name" property="userName"></result>
         <result column="prize" property="prize"></result>
