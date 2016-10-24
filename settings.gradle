@@ -24,4 +24,5 @@ include "ttsd-service",
         'ttsd-activity-repository',
         'ttsd-util',
         'ttsd-point-web'
+include 'ttsd-diagnosis'
 
