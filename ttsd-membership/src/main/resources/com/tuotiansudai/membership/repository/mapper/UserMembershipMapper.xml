@@ -248,11 +248,11 @@
             login_name
         FROM
             membership m
-                LEFT JOIN
+              JOIN
             (SELECT
                 login_name, MAX(membership_id) AS membership_id
             FROM
-                user_membership
+                user_membership where expired_time &gt; now()
             GROUP BY login_name) u ON m.id = u.membership_id
         WHERE
             m.level = #{level}
