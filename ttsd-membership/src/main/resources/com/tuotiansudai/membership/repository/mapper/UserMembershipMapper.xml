@@ -228,35 +228,44 @@
 
     <select id="findCountMembershipByLevel" resultType="java.lang.Long">
         SELECT
-        COUNT(1)
+            count(1)
         FROM
-        (SELECT
-        MAX(m.level) AS level, login_name
-        FROM
-        user_membership u
-        JOIN membership m ON u.membership_id = m.id
+            `user_membership` t1
+                JOIN
+            `membership` ON t1.`membership_id` = `membership`.id
         WHERE
-        expired_time > NOW()
-        GROUP BY login_name
-        ORDER BY level) membership
-        WHERE
-        level = #{level}
+            `expired_time` >= NOW() AND level = #{level}
+                AND level > (SELECT
+                    IFNULL(MAX(level), - 1)
+                FROM
+                    `user_membership`
+                        JOIN
+                    `membership` ON `membership_id` = `membership`.id
+                WHERE
+                    `user_membership`.`login_name` = t1.`login_name`
+                        AND `expired_time` > NOW()
+                        AND t1.`id` != `user_membership`.id)
     </select>
 
     <select id="findLoginNameMembershipByLevel" resultType="java.lang.String">
         SELECT
-            login_name
+            `login_name`
         FROM
-            (SELECT
-                login_name, MAX(m.level) AS level
-            FROM
-                membership m
-            JOIN user_membership u ON m.id = u.membership_id
-            WHERE
-                expired_time &gt; NOW()
-            GROUP BY u.login_name) t
+            `user_membership` t1
+                JOIN
+            `membership` ON t1.`membership_id` = `membership`.id
         WHERE
-            level = #{level}
+            `expired_time` >= NOW() AND level = #{level}
+                AND level > (SELECT
+                    IFNULL(MAX(level), - 1)
+                FROM
+                    `user_membership`
+                        JOIN
+                    `membership` ON `membership_id` = `membership`.id
+                WHERE
+                    `user_membership`.`login_name` = t1.`login_name`
+                        AND `expired_time` > NOW()
+                        AND t1.`id` != `user_membership`.id)
     </select>
 
 </mapper>
