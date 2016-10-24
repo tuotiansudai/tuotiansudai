@@ -78,11 +78,11 @@ public class AuditTaskAspectLoan {
     }
 
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanService.openLoan(..))", returning = "returnValue")
-    public void afterReturningOpenLoan(JoinPoint joinPoint, Object returnValue) {
+    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanCreateService.openLoan(..))", returning = "returnValue")
+    public void afterReturningOpenLoan(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
         logger.debug("after open loan aspect.");
         try {
-            if (((BaseDto<PayDataDto>) returnValue).getData().getStatus()) {
+            if (returnValue.getData().getStatus()) {
                 LoanDto loanDto = (LoanDto) joinPoint.getArgs()[0];
                 String ip = (String) joinPoint.getArgs()[1];
                 String taskId = OperationType.PROJECT + "-" + loanDto.getId();
