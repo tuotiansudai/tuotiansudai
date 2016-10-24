@@ -7,7 +7,8 @@ dependencies {
             project(':ttsd-message'),
             project(':ttsd-point-service'),
             project(':ttsd-jpush'),
-            project(':ttsd-membership')
+            project(':ttsd-membership'),
+            project(':ttsd-client')
 
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }

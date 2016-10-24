@@ -150,12 +150,14 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
                         isPaySuccess = responseModel.isSuccess();
                         isSuccess = responseModel.isSuccess();
+                        redisWrapperClient.hset(redisKey, String.valueOf(couponRepayModel.getId()), isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
                         logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) transfer status is {2}",
                                 String.valueOf(currentLoanRepayModel.getId()),
                                 String.valueOf(userCouponModel.getId()),
                                 String.valueOf(isPaySuccess)));
                     }
                 } catch (PayException e) {
+                    redisWrapperClient.hset(redisKey, String.valueOf(couponRepayModel.getId()), SyncRequestStatus.FAILURE.name());
                     logger.error(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) transfer is failed",
                             String.valueOf(currentLoanRepayModel.getId()),
                             String.valueOf(userCouponModel.getId())), e);
