@@ -108,7 +108,7 @@
                     <b class="newer-title">新手体验标 <span>仅限使用体验金投资</span></b>
                     <ul class="loan-info clearfix">
                         <li><span class="percent-number"> <i>${experienceLoanDto.baseRate}</i>%</span>预期年化收益</li>
-                        <li><em>${experienceLoanDto.duration}</em>天<br>项目期限</li>
+                        <li><em class="duration-day">${experienceLoanDto.duration}</em>天<br>项目期限</li>
                     </ul>
                     <a href="/loan/1" class="btn-invest btn-normal">立即购买</a>
                 </div>

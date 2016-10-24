@@ -11,6 +11,7 @@
         </div>
         <div class="table-row">
             <em class="percent-number">
+                <s class="app">预期年化收益</s>
             <#if loan.extraRate != 0>
             ${loan.baseRate + loan.activityRate}% ~ ${loan.baseRate + loan.activityRate + loan.extraRate * 100}%
             <#else>

@@ -98,6 +98,9 @@ $pointColor:#ff5400;
       margin: 5px;
       font-size:20px;
     }
+    .app {
+      display: none;
+    }
   }
   .duration-day {
     font-size: 30px;
@@ -413,12 +416,6 @@ $pointColor:#ff5400;
           &:nth-child(2) {
             margin-left: 38px;
           }
-
-          em {
-            font-size: 30px;
-            color: #4c4c4c;
-          }
-
         }
       }
     }
@@ -583,20 +580,104 @@ $pointColor:#ff5400;
 }
 
 @media screen and (max-width: 700px) {
+  .back-top {
+    display: none;
+  }
   .page-width {
     padding-left:6px;
     padding-right:6px;
   }
   .home-page-container {
-    .main-advantage, .register-ad-box,.notice-container {
+    .btn-normal {
+      font-size: 13px;
+      padding: 8px 0px;
+      width: 82px;
+      border: 1px solid #ff6400!important;
+      background: #fff!important;
+      color: #ff6400!important;
+      letter-spacing: 0;
+    }
+    .percent-number {
+      text-align: center;
+      font-size: 13px;
+      i {
+        font-size: 20px;
+      }
+      .app {
+        display: block;
+        text-decoration: none;
+        color: #999;
+      }
+    }
+    .duration-day {
+      font-size: 18px;
+    }
+    .main-advantage, .register-ad-box,.notice-container,.media-coverage-box,.partner-box {
       display: none;
     }
     .main-column-title {
       margin-top:10px;
+      font-size:14px;
     }
-    .newer-exclusive-box .newer-experience {
-      width:100%;
+    .hot-more {
+      font-size:12px;
     }
+    .book-invest-box {
+      padding: 5px 5px 5px 10px;
+      .book-info {
+        padding-left:0;
+        background: none;
+        width: calc(100% - 85px);
+      }
+    }
+    .newer-exclusive-box  {
+      img.fr {
+        display: none;
+      }
+      .newer-experience {
+        width:100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+        .con-inner {
+          padding:10px;
+          position: relative;
+          .btn-normal {
+            position: absolute;
+            right:5px;
+            top: 43px;
+          }
+        }
+        .newer-title {
+          font-size: 15px;
+          span {
+            font-size: 12px;
+          }
+        }
+        .tag-icon {
+          width: 30px;
+          height: 40px;
+          background-size: 100%;
+        }
+        &.hack-newbie {
+          .tag-icon {
+            background-size: 100%;
+          }
+        }
+        .loan-info {
+          margin-top: 8px;
+          margin-bottom: 5px;
+          li {
+            &:nth-child(1) {
+              width: 36%;
+            }
+            &:nth-child(2) {
+              margin-left: 20px;
+            }
+          }
+        }
+      }
+    }
+
     .banner-box {
       height:170px;
       .countNum {
@@ -607,6 +688,67 @@ $pointColor:#ff5400;
         margin:0;
         li img{
           width:100%
+        }
+      }
+    }
+
+    .target-category-box {
+      .target-title {
+        display: none;
+      }
+      display: block;
+      .target-column-con {
+        position: relative;
+        display: block;
+        height:155px;
+
+        .table-row {
+          width:auto;
+          position: absolute;
+          font-size: 15px;
+          padding:0 5px;
+          border-bottom-width: 0px;
+          &.btn-col {
+            right: 5px;
+            top: 30px;
+            padding-right: 0;
+
+          }
+          &.progress-column {
+            left: 0;
+            top: 127px;
+            width: 100%;
+            .progress-bar {
+              .p-title {
+                width: 105px;
+                font-size: 12px;
+                float: left;
+              }
+              .process-percent {
+                width: calc(100% - 184px);
+                float: left;
+                margin-top: 10px;
+                margin-left: 10px;
+              }
+              .point {
+                top:0;
+              }
+
+            }
+          }
+          &:nth-child(1) {
+            left:10px;
+            top:10px;
+          }
+          &:nth-child(2) {
+            left:10px;
+            top:40px;
+          }
+          &:nth-child(3) {
+            left: 132px;
+            top: 67px;
+          }
+
         }
       }
     }

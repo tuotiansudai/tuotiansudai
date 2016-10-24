@@ -474,6 +474,9 @@ a {
   }
   .nav-container {
     position: relative;
+    .page-width {
+      padding:0px!important;
+    }
     .img-top {
       .login-pop-app {
         display: none;
@@ -496,7 +499,7 @@ a {
       //display: none;
         background: #fff;
         position: absolute;
-        top: 68px;
+        top: 65px;
         left: -100%;
         z-index: 100;
         overflow: auto;
