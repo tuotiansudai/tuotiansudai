@@ -108,6 +108,8 @@
 
         <intercept-url pattern="/loan-application/create" access="not isAnonymous()" method="POST"/>
 
+        <intercept-url pattern="/assign-coupon" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
+
 
         <intercept-url pattern="/**" access="permitAll()"/>
 
