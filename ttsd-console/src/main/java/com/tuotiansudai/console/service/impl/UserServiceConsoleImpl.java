@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
+import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.console.service.UserServiceConsole;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -35,21 +36,14 @@ public class UserServiceConsoleImpl implements UserServiceConsole {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-
     @Override
-    public BaseDto<BasePaginationDataDto<UserItemDataDto>> findAllUser(String loginName,
-                                                                       String email,
-                                                                       String mobile,
-                                                                       Date beginTime,
-                                                                       Date endTime,
-                                                                       Source source,
-                                                                       RoleStage roleStage,
-                                                                       String referrerMobile,
-                                                                       String channel,
-                                                                       Integer index,
-                                                                       Integer pageSize) {
+    public BaseDto<BasePaginationDataDto<UserItemDataDto>> findAllUser(String loginName, String email, String mobile,
+                                                                       Date beginTime, Date endTime, Source source,
+                                                                       RoleStage roleStage, String referrerMobile,
+                                                                       String channel, UserOperation userOperation,
+                                                                       Integer index, Integer pageSize) {
         BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = new BaseDto<>();
-        List<UserView> userViews = userMapperConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, (index - 1) * pageSize, pageSize);
+        List<UserView> userViews = userMapperConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, (index - 1) * pageSize, pageSize);
         List<UserItemDataDto> userItems = Lists.newArrayList();
         for (UserView userView : userViews) {
             UserItemDataDto userItemDataDto = new UserItemDataDto(userView);
@@ -59,7 +53,7 @@ public class UserServiceConsoleImpl implements UserServiceConsole {
             userItemDataDto.setModify(redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId));
             userItems.add(userItemDataDto);
         }
-        int count = userMapperConsole.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel);
+        int count = userMapperConsole.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation);
         BasePaginationDataDto<UserItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, userItems);
         basePaginationDataDto.setStatus(true);
         baseDto.setData(basePaginationDataDto);
