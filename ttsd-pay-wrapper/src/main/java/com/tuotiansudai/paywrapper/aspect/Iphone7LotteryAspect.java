@@ -8,6 +8,7 @@ import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigModel;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.TransferStatus;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -44,10 +45,13 @@ public class Iphone7LotteryAspect {
 
     @AfterReturning(value = "execution(* *..InvestService.investSuccess(..))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
-        logger.info("after returning invest,iphone7 aspect starting...");
+        logger.debug("after returning invest,iphone7 aspect starting...");
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
-        this.getLotteryNumber(investModel);
-        logger.info("after returning invest, iphone7 aspect completed");
+        if(investModel.getTransferStatus() != TransferStatus.SUCCESS)
+        {
+            this.getLotteryNumber(investModel);
+        }
+        logger.debug("after returning invest, iphone7 aspect completed");
     }
 
     @Transactional
@@ -59,11 +63,12 @@ public class Iphone7LotteryAspect {
         }
 
         IPhone7InvestLotteryModel model = new IPhone7InvestLotteryModel(investModel.getId(), investModel.getLoginName(), investModel.getAmount(), lotteryNumber);
+
         iPhone7InvestLotteryMapper.create(model);
         redisWrapperClient.hset(redisKey, lotteryNumber, lotteryNumber);
         logger.debug(MessageFormat.format("invest success: investId_{0},amount_{1},lotteryNumber_{2}",investModel.getId(), investModel.getAmount(), lotteryNumber));
 
-        long totalAmount = investMapper.sumInvestAmountRanking(activityIphone7StartTime, activityIphone7EndTime);
+        long totalAmount = investMapper.sumInvestAmountIphone7(activityIphone7StartTime, activityIphone7EndTime);
         logger.debug(MessageFormat.format("currentTotalInvestAmount: {0} ", totalAmount));
 
         List<IPhone7LotteryConfigModel> iphone7LotteryConfigModelList = iPhone7LotteryConfigMapper.findAllApproved();
