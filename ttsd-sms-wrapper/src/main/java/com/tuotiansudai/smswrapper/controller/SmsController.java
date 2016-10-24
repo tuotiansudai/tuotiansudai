@@ -55,7 +55,7 @@ public class SmsController {
     @RequestMapping(value = "/coupon-notify", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> couponNotify(@Valid @RequestBody SmsCouponNotifyDto notifyDto) {
-        return smsService.couponNotify(notifyDto);
+        return smsService.couponNotifyByMd(notifyDto);
     }
 
     @RequestMapping(value = "/birthday-notify", method = RequestMethod.POST)

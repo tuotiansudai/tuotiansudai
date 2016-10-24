@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -124,6 +125,7 @@ public class SmsClient implements ApplicationContextAware {
 
             // 执行结果  {"code":200,"msg":"sendid","obj":1}
             String resultCode = getRetCode(EntityUtils.toString(response.getEntity(), "utf-8"));
+            dto.setSuccess(resultCode.equals(HttpStatus.OK));
 
             String content = template.generateContent(paramList);
 
