@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.UserItemDataDto;
@@ -13,7 +14,8 @@ import java.util.List;
 public interface UserServiceConsole {
 
     BaseDto<BasePaginationDataDto<UserItemDataDto>> findAllUser(String loginName, String email, String mobile, Date beginTime, Date endTime,
-                                                                Source source, RoleStage roleStage, String referrerMobile, String channel,
+                                                                Source source, RoleStage roleStage, String referrerMobile,
+                                                                String channel, UserOperation userOperation,
                                                                 Integer pageIndex, Integer pageSize);
 
     List<UserView> searchAllUsers(String loginName, String referrerMobile, String mobile, String identityNumber);
