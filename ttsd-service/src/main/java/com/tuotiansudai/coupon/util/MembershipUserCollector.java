@@ -39,14 +39,12 @@ public class MembershipUserCollector implements UserCollector {
     @Override
     public List<String> collect(long couponId) {
         CouponModel couponModel = couponMapper.findById(couponId);
-        Integer level = null;
         for (Map.Entry integerUserGroupEntry : mapping.entrySet()) {
             if(integerUserGroupEntry.getValue().equals(couponModel.getUserGroup())){
-                level = (Integer)integerUserGroupEntry.getKey();
+                return userMembershipMapper.findLoginNameMembershipByLevel((Long) integerUserGroupEntry.getKey());
             }
         }
-        if(level == null) return Lists.newArrayList();
-        return userMembershipMapper.findLoginNameMembershipByLevel(level);
+        return Lists.newArrayList();
     }
 
     @Override

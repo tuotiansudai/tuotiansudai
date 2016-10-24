@@ -23,6 +23,7 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.InterestCalculator;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +35,8 @@ import java.util.List;
 
 @Service
 public class UserCouponServiceImpl implements UserCouponService {
+
+    static Logger logger = Logger.getLogger(UserCouponServiceImpl.class);
 
     @Autowired
     private LoanMapper loanMapper;
