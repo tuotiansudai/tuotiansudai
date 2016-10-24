@@ -59,7 +59,7 @@ public abstract class AbstractRedisWrapperClient {
             logger.debug("redisPort=" + redisPort);
             logger.debug("maxTotal=" + jedisPoolConfig.getMaxTotal());
             logger.debug("maxTotal=" + jedisPoolConfig.getMaxWaitMillis());
-            jedisPool = new JedisPool(jedisPoolConfig, redisHost, redisPort);
+            jedisPool = new JedisPool(jedisPoolConfig, redisHost, redisPort,100000);
         }
         return jedisPool;
     }
