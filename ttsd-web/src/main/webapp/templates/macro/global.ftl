@@ -86,30 +86,10 @@
     <!--[if lte IE 8]>
         <link rel="stylesheet" href="${staticServer}${cssPath}ie_hack_grid.css">
     <![endif]-->
-    <script>
-        var _czc = _czc || [];
-        <#if isProduction>
-            _czc.push(["_trackEvent()", "1254796373"]);
-        <#else >
-            _czc.push(["_trackEvent()", "1257936541"]);
-        </#if>
-    </script>
+    <!-- -->
+    <#include "../cnzz.ftl"/>
     <!-- growing io -->
-    <script type='text/javascript'>
-        var _vds = _vds || [];
-        window._vds = _vds;
-        (function(){
-            _vds.push(['setAccountId', 'a1e41737f5d5de60']);
-            (function() {
-                var vds = document.createElement('script');
-                vds.type='text/javascript';
-                vds.async = true;
-                vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(vds, s);
-            })();
-        })();
-    </script>
+    <#include "../growing-io.ftl"/>
 </head>
 <body>
 
