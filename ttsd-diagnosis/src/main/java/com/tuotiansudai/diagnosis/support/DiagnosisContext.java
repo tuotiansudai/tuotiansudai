@@ -39,7 +39,6 @@ public class DiagnosisContext {
     }
 
     public DiagnosisResult getResult() {
-        return problems.size() == 0 ? DiagnosisResult.Fine :
-                new DiagnosisResult(DiagnosisResultStatus.Abnormal, problems);
+        return problems.size() == 0 ? DiagnosisResult.Fine(loginName) : DiagnosisResult.Abnormal(loginName, problems);
     }
 }
