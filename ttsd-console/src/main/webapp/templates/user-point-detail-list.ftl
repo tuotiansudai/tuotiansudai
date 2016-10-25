@@ -25,17 +25,7 @@
                 <tr>
                     <td>${userPointDetailItem.createdTime?string("yyyy-MM-dd HH:mm:ss")}  </td>
                     <td>
-                        <#if userPointDetailItem.businessType =='SIGN_IN'>
-                                签到奖励
-                        <#elseif userPointDetailItem.businessType =='TASK'>
-                                任务奖励
-                        <#elseif userPointDetailItem.businessType =='EXCHANGE'>
-                                财豆兑换
-                        <#elseif userPointDetailItem.businessType =='INVEST'>
-                                投资奖励
-                        <#else>
-                                未知
-                        </#if>
+                        ${userPointDetailItem.businessType.name()}
                     </td>
                     <td>${userPointDetailItem.point!''}</td>
                     <td>${userPointDetailItem.note!''}</td>
