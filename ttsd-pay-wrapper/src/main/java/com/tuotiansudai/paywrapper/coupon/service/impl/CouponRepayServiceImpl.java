@@ -3,20 +3,33 @@ package com.tuotiansudai.paywrapper.coupon.service.impl;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.job.CouponRepayNotifyCallbackJob;
+import com.tuotiansudai.job.InvestCallbackJob;
+import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.repository.mapper.CouponRepayNotifyRequestMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
+import com.tuotiansudai.paywrapper.repository.model.InvestNotifyProcessStatus;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.CouponRepayNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
+import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -28,6 +41,7 @@ import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +86,9 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     private PaySyncClient paySyncClient;
 
     @Autowired
+    private PayAsyncClient payAsyncClient;
+
+    @Autowired
     private AmountTransfer amountTransfer;
 
     @Autowired
@@ -79,6 +96,12 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
     @Autowired
     private CouponRepayMapper couponRepayMapper;
+
+    @Autowired
+    private CouponRepayNotifyRequestMapper couponRepayNotifyRequestMapper;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Override
     public void repay(long loanRepayId, boolean isAdvanced) {
@@ -199,16 +222,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
 
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public String couponRepayCallback(Map<String, String> paramsMap, String queryString){
-        /*TransferRequestModel requestModel = TransferRequestModel.newRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(userCouponModel.getId()), String.valueOf(new Date().getTime())),
-                accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
-                String.valueOf(transferAmount));
-*/
-        return null;
-    }
-
 
 
     @Override
@@ -298,4 +311,62 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         }
 
     }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String couponRepayCallback(Map<String, String> paramsMap, String originalQueryString){
+
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
+                paramsMap,
+                originalQueryString,
+                CouponRepayNotifyRequestMapper.class,
+                CouponRepayNotifyRequestModel.class);
+
+        if (callbackRequest == null) {
+            return null;
+        }
+        redisWrapperClient.incr(CouponRepayNotifyCallbackJob.COUPON_REPAY_JOB_TRIGGER_KEY);
+        return callbackRequest.getResponseData();
+    }
+
+
+    public BaseDto<PayDataDto> asyncCouponRepayCallback() {
+        List<CouponRepayNotifyRequestModel> todoList = couponRepayNotifyRequestMapper.getTodoList(investProcessListSize);
+
+        for (CouponRepayNotifyRequestModel model : todoList) {
+            if (updateCouponRepayNotifyRequestStatus(model)) {
+                try {
+                    ((InvestService) AopContext.currentProxy()).processOneCallback(model);
+                } catch (Exception e) {
+                    fatalLog("invest callback, processOneCallback error. investId:" + model.getOrderId(), e);
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        BaseDto<PayDataDto> asyncCouponRepayNotifyDto = new BaseDto<>();
+        PayDataDto baseDataDto = new PayDataDto();
+        baseDataDto.setStatus(true);
+        asyncCouponRepayNotifyDto.setData(baseDataDto);
+
+        return asyncCouponRepayNotifyDto;
+    }
+
+
+
+    private boolean updateCouponRepayNotifyRequestStatus(CouponRepayNotifyRequestMapper model) {
+        try {
+            redisWrapperClient.decr(Coupnre);
+            couponRepayNotifyRequestMapper.updateStatus(model.getId(), InvestNotifyProcessStatus.DONE);
+        } catch (Exception e) {
+            fatalLog("update_invest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());
+            return false;
+        }
+        return true;
+    }
+
+
+
+
 }
