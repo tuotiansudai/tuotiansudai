@@ -47,4 +47,6 @@ public interface CouponService {
 
     long findExperienceInvestAmount(List<InvestModel> investModelList);
 
+    CouponModel findExchangeableCouponById(long couponId);
+
 }
