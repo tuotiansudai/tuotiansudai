@@ -109,14 +109,14 @@
         select ifnull(count(1), 0)
         from question
         where (status not in ('UNAPPROVED', 'REJECTED') or login_name = #{loginName})
-        and tags like CONCAT(CONCAT('%', #{tag}), '%')
+        and (tags = #(tag) or tags like CONCAT(CONCAT('%,', #{tag}), '%') or tags like CONCAT(CONCAT('%', #{tag}), ',%'))
     </select>
 
     <select id="findByTag" parameterType="map" resultMap="questionResultMap">
         select *
         from question
         where (status not in ('UNAPPROVED', 'REJECTED') or login_name = #{loginName})
-        and tags like CONCAT(CONCAT('%', #{tag}), '%')
+        and (tags = #{tag} or tags like CONCAT(CONCAT('%,', #{tag}), '%') or tags like CONCAT(CONCAT('%', #{tag}), ',%'))
         order by created_time desc
         limit #{index}, #{pageSize}
     </select>

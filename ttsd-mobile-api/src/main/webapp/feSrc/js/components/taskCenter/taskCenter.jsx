@@ -160,8 +160,10 @@ class taskCenter extends React.Component {
     }
     tabHeaderClickHandler(event) {
         let value = event.target.dataset.value;
-       let top=this.myScroll.y-10;
-       let imgHeight=document.getElementById('imageTopHead').scrollHeight*1.1;
+        let top=this.myScroll.y-10;
+        let imgHeight=document.getElementById('imageTopHead').scrollHeight*1.1;
+        let tabHeaderDom=document.getElementById('tabHeaderDom'),
+            headerTop=tabHeaderDom.style.top;
         if(/active/.test(event.target.className) ) {
             return;
         }
@@ -170,7 +172,11 @@ class taskCenter extends React.Component {
           isShowLoading:true
 
         });
-        this.myScroll.scrollTo(0, -imgHeight, 1000);
+
+        if(headerTop!='5.33rem' && headerTop!='') {
+            this.myScroll.scrollTo(0, -imgHeight, 80);
+        }
+
         if(value=='ONGOING') {
             this.fetchData('/task-center/tasks',(response) => {
 
@@ -220,7 +226,7 @@ class taskCenter extends React.Component {
 	}
     componentDidUpdate() {
 
-        imagesLoaded(this.refs.mainConWrap).on('always', () => {
+        imagesLoaded(this.refs.mainConWrap).on('done', () => {
             setTimeout(() => {
             if (!this.myScroll) {
                 this.refs.mainConWrap.style.height=document.documentElement.clientHeight +'px';
@@ -255,9 +261,7 @@ class taskCenter extends React.Component {
             else {
                 this.myScroll.refresh();
             }
-          },100);
-
-
+          },5);
         });
     }
 
