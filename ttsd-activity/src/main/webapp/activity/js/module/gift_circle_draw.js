@@ -38,7 +38,6 @@ define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, lay
                 dataType: 'json'
             })
                 .done(function(data) {
-                    //console.log('中奖记录'+data);
                     var UlList=[];
                     for(var i=0,len=data.length;i<len;i++) {
                         UlList.push('<li>恭喜'+data[i].mobile+'抽中了'+data[i].prizeValue+'</li>');

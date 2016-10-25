@@ -4,19 +4,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
-import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
+import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.console.service.UserServiceConsole;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.membership.repository.model.MembershipGiveModel;
-import com.tuotiansudai.membership.service.UserMembershipService;
-import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.exception.BaseException;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.spring.security.SignInClient;
 import com.tuotiansudai.task.OperationTask;
@@ -189,13 +188,20 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ModelAndView findAllUser(String loginName, String email, String mobile,
-                                    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
-                                    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
-                                    RoleStage roleStage, String referrerMobile, String channel, @RequestParam(value = "index", defaultValue = "1", required = false) int index,
+    public ModelAndView findAllUser(@RequestParam(value = "loginName", required = false) String loginName,
+                                    @RequestParam(value = "email", required = false) String email,
+                                    @RequestParam(value = "mobile", required = false) String mobile,
+                                    @RequestParam(value = "beginTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
+                                    @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+                                    @RequestParam(value = "roleStage", required = false) RoleStage roleStage,
+                                    @RequestParam(value = "referrerMobile", required = false) String referrerMobile,
+                                    @RequestParam(value = "channel", required = false) String channel,
                                     @RequestParam(value = "source", required = false) Source source,
+                                    @RequestParam(value = "userOperation", required = false) UserOperation userOperation,
+                                    @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = userServiceConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, index, pageSize);
+        BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = userServiceConsole.findAllUser(loginName, email, mobile,
+                beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, index, pageSize);
         ModelAndView mv = new ModelAndView("/user-list");
         mv.addObject("baseDto", baseDto);
         mv.addObject("loginName", loginName);
@@ -207,6 +213,7 @@ public class UserController {
         mv.addObject("referrerMobile", referrerMobile);
         mv.addObject("channel", channel);
         mv.addObject("source", source);
+        mv.addObject("selectedUserOperation", userOperation);
         mv.addObject("pageIndex", index);
         mv.addObject("pageSize", pageSize);
         List<RoleStage> roleStageList = Lists.newArrayList(RoleStage.values());
@@ -214,6 +221,7 @@ public class UserController {
         mv.addObject("roleStageList", roleStageList);
         mv.addObject("channelList", channelList);
         mv.addObject("sourceList", Source.values());
+        mv.addObject("userOperations", UserOperation.values());
         return mv;
     }
 

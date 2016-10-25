@@ -321,7 +321,7 @@ public class LoanCreateServiceImpl implements LoanCreateService {
     }
 
     @Override
-    public BaseDto<PayDataDto> openLoan(LoanCreateRequestDto loanCreateRequestDto) {
+    public BaseDto<PayDataDto> openLoan(LoanCreateRequestDto loanCreateRequestDto, String ip) {
         PayDataDto payDataDto = new PayDataDto();
         BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
 
@@ -446,7 +446,7 @@ public class LoanCreateServiceImpl implements LoanCreateService {
             jobManager.newJob(JobType.LoanStatusToRecheck, DeadlineFundraisingJob.class)
                     .withIdentity(JobType.LoanStatusToRecheck.name(), "Loan-" + loanModel.getId())
                     .replaceExistingJob(true)
-                    .addJobData(DeadlineFundraisingJob.LOAN_ID_KEY, loanModel.getId())
+                    .addJobData(DeadlineFundraisingJob.LOAN_ID_KEY, String.valueOf(loanModel.getId()))
                     .runOnceAt(loanModel.getFundraisingEndTime()).submit();
         } catch (SchedulerException e) {
             logger.error(e.getLocalizedMessage(), e);

@@ -14,8 +14,8 @@
         <div class="invite-box-friend anonymous">
             <dl>
                 <dt>向好友发送您的邀请链接：</dt>
-                <dd><input type="text" class="input-invite" disabled value="https://tuotiansudai.com/activity/landing-page?referrer=">
-                    <a class="btn-copy-link show-login" href="javascript:void(0);">复制链接</a>
+                <dd><input type="text" class="input-invite" disabled value="您需要登录才可以邀请好友">
+                    <a class="btn-copy-link show-login" href="javascript:void(0);">去登陆</a>
                 </dd>
             </dl>
         </div>
@@ -28,8 +28,8 @@
             <div class="invite-box-friend no-identification">
                 <dl>
                     <dt>向好友发送您的邀请链接：</dt>
-                    <dd><input type="text" class="input-invite"  disabled value="https://tuotiansudai.com/activity/landing-page?referrer=<@global.security.authentication property='principal.mobile' />">
-                        <a class="btn-copy-link to-identification" href="javascript:void(0);" >复制链接</a>
+                    <dd><input type="text" class="input-invite"  disabled value="您的好友还不知道您是谁，先来实名认证吧">
+                        <a class="btn-copy-link to-identification" href="javascript:void(0);" >实名认证</a>
                     </dd>
                 </dl>
             </div>
@@ -40,9 +40,9 @@
             <div class="invite-box-friend clearfix non-anonymous yes-identification">
                 <dl>
                     <dd>
-                        <input type="text" class="input-invite" id="clipboard_text1" disabled data-mobile="<@global.security.authentication property='principal.mobile' />" >
+                        <input type="text" class="input-invite" id="clipboard_text1"  readonly data-mobile="<@global.security.authentication property='principal.mobile' />" >
                     </dd>
-                    <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-copy-link fr copy-button" data-clipboard-target="clipboard_text1">复制链接</a></dt>
+                    <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-copy-link fr copy-button" id="copy_btn2"  data-clipboard-action="copy" data-clipboard-target="#clipboard_text1" >复制链接</a></dt>
                 </dl>
 
                 <div class="weixin-code">
@@ -207,9 +207,9 @@
                 <div class="invite-box-friend clearfix non-anonymous yes-identification">
                     <dl>
                         <dd>
-                            <input type="text" class="input-invite" id="clipboard_text2" disabled data-mobile="<@global.security.authentication property='principal.mobile' />" >
+                            <input type="text" class="input-invite" id="clipboard_text2" readonly data-mobile="<@global.security.authentication property='principal.mobile' />" >
                         </dd>
-                        <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-copy-link fr copy-button" data-clipboard-target="clipboard_text2">复制链接</a></dt>
+                        <dt class="clearfix">向好友发送您的邀请链接：  <a href="javascript:void(0);" class="btn-copy-link fr copy-button" id="copy_btn2" data-clipboard-action="copy" data-clipboard-target="#clipboard_text2">复制链接</a></dt>
                     </dl>
 
                     <div class="weixin-code">

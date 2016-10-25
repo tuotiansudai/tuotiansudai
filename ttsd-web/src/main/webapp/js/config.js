@@ -3,7 +3,7 @@ var require = {
     'paths': {
         'text': staticServer + '/js/libs/text-2.0.14',
         'jquery': staticServer + '/js/libs/jquery-1.11.3.min',
-        'copyclip': staticServer+'/js/libs/zeroclip/ZeroClipboard.min',
+        'clipboard': staticServer+'/js/libs/clipboard.min',
         'md5': staticServer+'/js/libs/jQuery.md5',
         'qrcode': staticServer+'/js/libs/jquery.qrcode.min',
         'csrf': staticServer + '/js/libs/csrf',
@@ -64,7 +64,8 @@ var require = {
         'placeholder': ['jquery'],
         'superslide': ['jquery'],
         'md5':['jquery'],
-        'qrcode':['jquery']
+        'qrcode':['jquery'],
+        'clipboard':['jquery']
     },
 
     config: {
