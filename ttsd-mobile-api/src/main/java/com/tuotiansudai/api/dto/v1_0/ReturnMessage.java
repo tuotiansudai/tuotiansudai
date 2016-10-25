@@ -2,6 +2,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 public enum ReturnMessage {
     SUCCESS("0000",""),
+    FAIL("1234", "系统繁忙"),
     /******手机端注册返回码******/
     MOBILE_NUMBER_IS_NULL("0001", "手机号码为空"),
     MOBILE_NUMBER_IS_INVALID("0002","手机号码不合法"),
