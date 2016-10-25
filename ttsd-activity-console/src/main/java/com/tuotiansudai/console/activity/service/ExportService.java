@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -139,7 +140,7 @@ public class ExportService {
             return Arrays.asList(
                     userModel.getMobile(),
                     accountModel.getUserName(),
-                    String.valueOf(r.getInvestAmountTotal()/100),
+                    new DecimalFormat("0.00").format(((double) r.getInvestAmountTotal()) / 100),
                     String.valueOf(r.getInvestCount()));
         }).collect(Collectors.toList());
     }
