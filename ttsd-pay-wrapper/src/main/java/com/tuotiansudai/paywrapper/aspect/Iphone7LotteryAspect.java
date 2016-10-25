@@ -14,6 +14,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -52,7 +53,8 @@ public class Iphone7LotteryAspect {
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         logger.debug("after returning invest,iphone7 aspect starting...");
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
-        if(investModel.getTransferStatus() != TransferStatus.SUCCESS)
+        Date nowDate = DateTime.now().toDate();
+        if(investModel.getTransferStatus() != TransferStatus.SUCCESS && (activityIphone7StartTime.before(nowDate) && activityIphone7EndTime.after(nowDate)))
         {
             this.getLotteryNumber(investModel);
         }
