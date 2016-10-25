@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -11,7 +12,9 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.job.CouponRepayNotifyCallbackJob;
@@ -23,6 +26,7 @@ import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CouponRepayNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
+import com.tuotiansudai.paywrapper.repository.model.CouponRepayNotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.InvestNotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.CouponRepayNotifyRequestModel;
@@ -43,6 +47,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -102,6 +107,15 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
+    @Value("${common.environment}")
+    private Environment environment;
+
+    @Value(value = "${pay.coupon.repay.notify.process.batch.size}")
+    private int couponRepayProcessListSize;
 
     @Override
     public void repay(long loanRepayId, boolean isAdvanced) {
@@ -330,14 +344,14 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         return callbackRequest.getResponseData();
     }
 
-
+    @Override
     public BaseDto<PayDataDto> asyncCouponRepayCallback() {
-        List<CouponRepayNotifyRequestModel> todoList = couponRepayNotifyRequestMapper.getTodoList(investProcessListSize);
+        List<CouponRepayNotifyRequestModel> todoList = couponRepayNotifyRequestMapper.getTodoList(couponRepayProcessListSize);
 
         for (CouponRepayNotifyRequestModel model : todoList) {
             if (updateCouponRepayNotifyRequestStatus(model)) {
                 try {
-                    ((InvestService) AopContext.currentProxy()).processOneCallback(model);
+                    ((CouponRepayService) AopContext.currentProxy()).processOneCallback(model);
                 } catch (Exception e) {
                     fatalLog("invest callback, processOneCallback error. investId:" + model.getOrderId(), e);
                     e.printStackTrace();
@@ -353,20 +367,71 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         return asyncCouponRepayNotifyDto;
     }
 
-
-
-    private boolean updateCouponRepayNotifyRequestStatus(CouponRepayNotifyRequestMapper model) {
+    private boolean updateCouponRepayNotifyRequestStatus(CouponRepayNotifyRequestModel model) {
         try {
-            redisWrapperClient.decr(Coupnre);
-            couponRepayNotifyRequestMapper.updateStatus(model.getId(), InvestNotifyProcessStatus.DONE);
+            redisWrapperClient.decr(CouponRepayNotifyCallbackJob.COUPON_REPAY_JOB_TRIGGER_KEY);
+            couponRepayNotifyRequestMapper.updateStatus(model.getId(), CouponRepayNotifyProcessStatus.DONE);
         } catch (Exception e) {
-            fatalLog("update_invest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());
+            fatalLog("update_coupon_repay_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());
             return false;
         }
         return true;
     }
 
 
+    @Transactional
+    @Override
+    public void processOneCallback(CouponRepayNotifyRequestModel callbackRequestModel) {
 
+        String orderIdStr = callbackRequestModel.getOrderId();
+        long orderId = Long.parseLong(orderIdStr);
+        InvestModel investModel = investMapper.findById(orderId);
+        if (investModel == null) {
+            logger.error(MessageFormat.format("invest(project_transfer) callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
+            return;
+        }
+        if (investModel.getStatus() == InvestStatus.SUCCESS) {
+            logger.error(MessageFormat.format("invest callback process fail, because this invest has already succeed. (orderId = {0}, InvestId={1})", callbackRequestModel.getOrderId(), investModel.getId()));
+            return;
+        }
+
+
+    }
+
+
+
+
+
+    private void infoLog(String msg, String orderId, long amount, String loginName, long loanId) {
+        logger.info(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId);
+    }
+
+    private void errorLog(String msg, String orderId, long amount, String loginName, long loanId) {
+        errorLog(msg, orderId, amount, loginName, loanId, null);
+    }
+
+    private void errorLog(String msg, String orderId, long amount, String loginName, long loanId, Throwable e) {
+        logger.error(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId, e);
+    }
+
+    private void fatalLog(String errMsg) {
+        this.fatalLog(errMsg, null);
+    }
+
+    private void fatalLog(String msg, String orderId, long amount, String loginName, long loanId, Throwable e) {
+        String errMsg = msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId;
+        fatalLog(errMsg, e);
+    }
+
+    private void fatalLog(String errMsg, Throwable e) {
+        logger.fatal(errMsg, e);
+        sendSmsErrNotify(MessageFormat.format("{0},{1}", environment, errMsg));
+    }
+
+    private void sendSmsErrNotify(String errMsg) {
+        logger.info("sent invest fatal sms message");
+        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("投资业务错误。详细信息：{0}", errMsg));
+        smsWrapperClient.sendFatalNotify(dto);
+    }
 
 }
