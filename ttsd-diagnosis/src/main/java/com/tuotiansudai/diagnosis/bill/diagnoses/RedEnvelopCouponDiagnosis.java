@@ -52,4 +52,8 @@ public class RedEnvelopCouponDiagnosis extends UserCouponDiagnosis {
                 .fail(r -> onFail(userBillModel, context, r))
                 .success(r -> onPass(userBillModel, context, buildTracedObjectId(tracedObject)));
     }
+
+    private String buildTracedObjectId(UserCouponModel model) {
+        return "UserCoupon:" + model.getId();
+    }
 }

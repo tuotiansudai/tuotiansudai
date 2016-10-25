@@ -1,5 +1,6 @@
 package com.tuotiansudai.diagnosis.bill.diagnoses;
 
+import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.diagnosis.bill.UserBillBusinessDiagnosis;
 import com.tuotiansudai.diagnosis.support.DiagnosisContext;
 import com.tuotiansudai.diagnosis.support.SingleObjectDiagnosis;
@@ -18,10 +19,12 @@ public class InvestFeeDiagnosis extends UserBillBusinessDiagnosis {
     private static Logger logger = LoggerFactory.getLogger(InvestFeeDiagnosis.class);
 
     private final InvestRepayMapper investRepayMapper;
+    private final InvestCouponFeeDiagnosis investCouponFeeDiagnosis;
 
     @Autowired
-    public InvestFeeDiagnosis(InvestRepayMapper investRepayMapper) {
+    public InvestFeeDiagnosis(InvestRepayMapper investRepayMapper, InvestCouponFeeDiagnosis investCouponFeeDiagnosis) {
         this.investRepayMapper = investRepayMapper;
+        this.investCouponFeeDiagnosis = investCouponFeeDiagnosis;
     }
 
     @Override
@@ -32,6 +35,11 @@ public class InvestFeeDiagnosis extends UserBillBusinessDiagnosis {
     @Override
     public void diagnosis(UserBillModel userBillModel, DiagnosisContext context) {
         InvestRepayModel tracedObject = investRepayMapper.findById(userBillModel.getOrderId());
+        if (tracedObject == null) {
+            if (tryTraceCouponRepay(userBillModel, context)) {
+                return;
+            }
+        }
         SingleObjectDiagnosis
                 // exist
                 .init(tracedObject, this::buildTracedObjectId)
@@ -47,6 +55,12 @@ public class InvestFeeDiagnosis extends UserBillBusinessDiagnosis {
                 // result
                 .fail(r -> onFail(userBillModel, context, r))
                 .success(r -> onPass(userBillModel, context, buildTracedObjectId(tracedObject)));
+    }
+
+    private boolean tryTraceCouponRepay(UserBillModel userBillModel, DiagnosisContext context) {
+        CouponRepayModel tracedObject = investCouponFeeDiagnosis.findTracedObject(userBillModel);
+        investCouponFeeDiagnosis.diagnosisTracedObject(userBillModel, context, tracedObject);
+        return tracedObject != null;
     }
 
     private String buildTracedObjectId(InvestRepayModel investRepayModel) {

@@ -1,5 +1,6 @@
 package com.tuotiansudai.diagnosis.bill;
 
+import com.tuotiansudai.diagnosis.bill.diagnoses.InvestCouponFeeDiagnosis;
 import com.tuotiansudai.diagnosis.support.Diagnosis;
 import com.tuotiansudai.diagnosis.support.DiagnosisContext;
 import com.tuotiansudai.diagnosis.support.DiagnosisResult;
@@ -25,9 +26,11 @@ class UserBillDiagnosis implements Diagnosis {
     @Autowired
     public UserBillDiagnosis(UserBillMapper userBillMapper, Set<UserBillBusinessDiagnosis> diagnoses) {
         this.userBillMapper = userBillMapper;
-        diagnosisMap = diagnoses.stream().collect(Collectors.toMap(
-                UserBillBusinessDiagnosis::getSupportedBusinessType,
-                d -> d));
+        diagnosisMap = diagnoses.stream()
+                .filter(d -> !(d instanceof InvestCouponFeeDiagnosis))
+                .collect(Collectors.toMap(
+                        UserBillBusinessDiagnosis::getSupportedBusinessType,
+                        d -> d));
     }
 
     @Override
