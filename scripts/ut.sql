@@ -9,6 +9,6 @@ grant select,insert,update,delete,create,drop on edxpoint.* to sdpoint@'%' ident
 
 grant select,insert,update,delete,create,drop on edxask.* to sdask@'%' identified by 'sdask';
 
-update user set password=password('root') where user='root';
+update mysql.user set password=password('root') where user='root';
 
 flush privileges;
