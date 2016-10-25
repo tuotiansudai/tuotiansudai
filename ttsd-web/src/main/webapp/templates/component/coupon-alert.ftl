@@ -1,6 +1,6 @@
 <#if couponAlert??>
 <div class="coupon-alert">
-    <div class="coupon-model-list">
+    <div class="coupon-model-list"  id="couponAlertFrame">
         <div class="coupon-close"></div>
         <div class="coupon-text">
             <span class="text-number"><@amount>${couponAlert.amount?string.computer}</@amount></span>
@@ -14,7 +14,7 @@
             亲可以在“我的帐户－我的宝藏”中找到哦！
         </div>
         <#if (couponAlert.couponType == 'NEWBIE_COUPON')>
-            <a href="javascript:void(0)" class="coupon-link" id="getFree">开始体验</a>
+            <a href="javascript:void(0)" class="coupon-link" id="beginGetFree">开始体验</a>
         <#else>
             <a href="/my-treasure" class="coupon-link">立即使用</a>
         </#if>

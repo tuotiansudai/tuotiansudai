@@ -1,11 +1,12 @@
 <div class="target-category-box" data-url="/loan/${loan.id?c}">
     <div class="target-column-con">
         <div class="table-row">${loan.name}
+            <span class="loan-tag-vip">
+            国庆标
+            </span>
         <#if loan.activity?string("true","false") == "true">
-            <span class="arrow-tag-normal">
-                  <i class="ic-left"></i>
-                  <em> ${loan.activityDesc!}</em>
-                 <i class="ic-right"></i>
+            <span class="loan-tag-vip">
+                ${loan.activityDesc!}
             </span>
         </#if>
         </div>
@@ -41,15 +42,17 @@
         <#if loan.status== 'RAISING'>
         <#--筹款-->
             <a href="javascript:void(0)" class="btn-invest btn-normal">立即购买</a>
+
         <#elseif loan.status == 'PREHEAT'>
-            <a href="javascript:void(0)" class="btn-invest btn-normal">
-                <#if loan.preheatSeconds lte 1800>
-                    <i class="time-clock"></i><strong
-                        class="minute_show">00</strong><em>:</em><strong
-                        class="second_show">00</strong>放标
-                <#else>
-                ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
-                </#if>
+            <a href="javascript:void(0)" class="btn-invest btn-normal preheat-btn">
+                    <#if loan.preheatSeconds lte 1800>
+                        <span class="preheat" data-time="${loan.preheatSeconds?string.computer}">
+                            <i class="minute_show"></i>分
+                            <i class="second_show"></i>秒后开标
+                        </span>
+                    <#else>
+                    ${(loan.fundraisingStartTime?string("MM-dd HH时mm分"))!}开标
+                    </#if>
             </a>
         <#else>
             <button class="btn-normal" disabled="">已售罄</button>

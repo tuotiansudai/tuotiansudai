@@ -1,11 +1,12 @@
-require(['jquery','imageShowSlide-v1', 'layerWrapper','commonFun', 'coupon-alert', 'red-envelope-float', 'count_down', 'jquery.validate', 'autoNumeric', 'logintip'],
+require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envelope-float',  'jquery.validate', 'autoNumeric', 'logintip'],
     function ($,imageShowSlide,layer) {
         var $homePageContainer = $('#homePageContainer'),
             $imgScroll = $('.banner-img-list', $homePageContainer),
             $registerBox = $('.register-ad-box', $homePageContainer),
             $productFrame = $('#productFrame'),
             $bannerImg = $imgScroll.find('li');
-        var viewport = commonFun.browserRedirect();
+        var viewport = globalFun.browserRedirect();
+
         //首页大图轮播和最新公告滚动
         (function(){
             var imgCount=$imgScroll.find('li').length;
@@ -19,6 +20,7 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','commonFun', 'coupon-alert
             if(imgCount>0) {
                 var runimg=new imageShowSlide.runImg('bannerBox','30',imgCount);
                 runimg.info();
+
             }
             var startMarquee=new imageShowSlide.startMarquee();
             startMarquee.init();
@@ -31,6 +33,36 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','commonFun', 'coupon-alert
                 url=$this.data('url');
             location.href=url;
         });
+
+        //开标倒计时
+        (function() {
+            var $preheat=$('.preheat',$homePageContainer);
+            $.fn.countDown=function() {
+                var $this=$(this);
+                return $this.each(function() {
+                    var countdown=$this.data('time');
+                    if(countdown > 0) {
+                       var timer= setInterval(function () {
+                            var $minuteShow=$this.find('.minute_show'),
+                                $secondShow=$this.find('.second_show'),
+                                minute=Math.floor(countdown/60),
+                                second=countdown%60;
+                            minute=(minute <= 9)?('0' + minute):minute;
+                            second=(second <= 9)?('0' + second):second;
+                            $minuteShow.text(minute);
+                            $secondShow.text(second);
+                            countdown--;
+                        },1000);
+                    }
+                    else {
+                        clearInterval(timer);
+                    }
+
+                });
+            };
+            $preheat.countDown();
+
+        })();
 
         //预约投资
         (function() {

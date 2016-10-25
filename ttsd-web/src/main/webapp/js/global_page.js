@@ -13,10 +13,6 @@ function globalFun() {
             return obj;
         }
     }
-    //cnzz统计
-    this.trackClick=function(category, action, label) {
-        _czc.push(['_trackEvent', category, action, label]);
-    }
     this.browserRedirect=function () {
         var sUserAgent = navigator.userAgent.toLowerCase();
         var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
@@ -68,11 +64,14 @@ function globalFun() {
 
 globalFun.prototype={
     init:function() {
-        this.$('#closeDownloadBox').addEventListener('click',this.closeDownLoadBox.bind(this),false);
-        this.$('#btnExperience').addEventListener('click',this.toExperience.bind(this),false);
-        this.$('#getMore').addEventListener('click',this.moreFriendLinks.bind(this),false);
 
-        this.$('#showMainMenu').addEventListener('touchstart',this.showMainMenu.bind(this),false); //app点击显示菜单
+        this.addEventHandler(this.$('#closeDownloadBox'),'click',this.closeDownLoadBox.bind(this));
+        this.addEventHandler(this.$('#btnExperience'),'click',this.toExperience.bind(this));
+        this.addEventHandler(this.$('#getMore'),'click',this.moreFriendLinks.bind(this));
+
+        this.addEventHandler(this.$('#showMainMenu'),'click',this.showMainMenu.bind(this));
+
+
         //显示手机app二维码
         document.addEventListener('click',function(event) {
             var target = event.target;
@@ -135,6 +134,7 @@ globalFun.prototype={
             this.addClass(this.$('#iphone-app-img'),'hide');
         }
     },
+    //友情链接
     moreFriendLinks:function(event) {
         var objBtn=event.currentTarget,
             ulLIst=objBtn.previousElementSibling,
@@ -143,9 +143,21 @@ globalFun.prototype={
         ulHeight=this.hasClass(objBtn,"active")?'auto':'30px';
         ulLIst.style.height=ulHeight;
     }
+
 }
 
-var cnzzPush=new globalFun();
-cnzzPush.init();
+var globalFun=new globalFun();
+globalFun.init();
+
+//cnzz统计
+function cnzzPushConstructor() {
+    this.trackClick=function(category, action, label) {
+        var test=window.testlaney;
+        _czc.push(['_trackEvent', category, action, label]);
+    }
+}
+cnzzPush = new cnzzPushConstructor();
+
+
 
 

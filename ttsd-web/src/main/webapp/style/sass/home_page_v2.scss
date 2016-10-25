@@ -1,4 +1,5 @@
 @import "module/login_tip";
+@import 'module/coupon_alert';
 $normalColor:#666;
 $keyColor:#ff9c1b;
 $pointColor:#ff5400;
@@ -32,6 +33,17 @@ $pointColor:#ff5400;
     font-size: 12px;
     color: #808080;
   }
+}
+
+//vip loan
+.loan-tag-vip {
+  background: url("/images/homepage/icon-vip.png") left -1px no-repeat;
+  padding-left:31px;
+  height:20px;
+  line-height: 16px;
+  color: #666;
+  font-size:12px;
+  display: block;
 }
 
 .full-screen {
@@ -70,8 +82,7 @@ $pointColor:#ff5400;
     background:$keyColor;
     display: inline-block;
     vertical-align: middle;
-    margin-right: 15px;
-    margin-bottom: 3px;
+    margin:auto 15px 3px 10px;
   }
   .main-column-title {
     font-size:20px;
@@ -83,6 +94,13 @@ $pointColor:#ff5400;
     font-size: 18px;
     padding: 8px 0px;
     width: 150px;
+    &.preheat-btn {
+      background: transparent;
+      border:1px solid #ff752a;
+      font-size: 14px;
+      color: #ff752a;
+      letter-spacing: 0;
+    }
   }
 
   .percent-number {
@@ -98,9 +116,6 @@ $pointColor:#ff5400;
       margin: 5px;
       font-size:20px;
     }
-    .app {
-      display: none;
-    }
   }
   .duration-day {
     font-size: 30px;
@@ -110,13 +125,8 @@ $pointColor:#ff5400;
   .target-category-box {
     display: table;
     width:100%;
-    background: #fff;
     color: $normalColor;
-    &:nth-child(2n) {
-      .target-column-con {
-        background: #fbfbfb;
-      }
-    }
+
     .target-title,.transfer-title {
       display: table-header-group;
       span {
@@ -136,6 +146,10 @@ $pointColor:#ff5400;
       display: table-row-group;
       cursor: pointer;
       width:100%;
+      background: #fff;
+      &:hover {
+        background: rgba(255,255,255,0.5);
+      }
       .table-row {
         display: table-cell;
         border-bottom:1px solid #e6e6e6;
@@ -143,6 +157,12 @@ $pointColor:#ff5400;
         box-sizing: border-box;
         font-size:18px;
         width:20%;
+        .app {
+          display: none;
+          text-decoration: none;
+          color: #999;
+          font-size: 13px;
+        }
         &.btn-col {
           padding-left: 0;
           text-align: right;
@@ -208,13 +228,13 @@ $pointColor:#ff5400;
       left: -moz-calc((100% - 100px) / 2 );
       left: -webkit-calc((100% - 100px) / 2 );
       left: calc((100% - 100px) / 2 );
-      bottom:5px;
+      bottom: 14px;
       li{
-        width:20px;
-        height:20px;
+        width:10px;
+        height:10px;
         float:left;
         color:#fff;
-        border-radius:20px;
+        border-radius:50%;
         background:#fff;
         text-align:center;
         margin-right:15px;
@@ -429,6 +449,8 @@ $pointColor:#ff5400;
       background: url("../../images/homepage/clock-tip-s.png") left 10px no-repeat;
       display: inline-block;
       padding-left: 30px;
+      font-size:16px;
+      color:#666;
     }
   }
 
@@ -580,8 +602,11 @@ $pointColor:#ff5400;
 }
 
 @media screen and (max-width: 700px) {
+  .loan-tag-vip {
+    display: inline-block;
+  }
   .back-top {
-    display: none;
+    display: none!important;
   }
   .page-width {
     padding-left:6px;
@@ -600,13 +625,11 @@ $pointColor:#ff5400;
     .percent-number {
       text-align: center;
       font-size: 13px;
+      .sign-plus {
+        margin: 0px 3px;
+      }
       i {
         font-size: 20px;
-      }
-      .app {
-        display: block;
-        text-decoration: none;
-        color: #999;
       }
     }
     .duration-day {
@@ -680,9 +703,6 @@ $pointColor:#ff5400;
 
     .banner-box {
       height:170px;
-      .countNum {
-        display: none;
-      }
       .banner-img-list {
         width:100%;
         margin:0;
@@ -693,7 +713,7 @@ $pointColor:#ff5400;
     }
 
     .target-category-box {
-      .target-title {
+      .target-title,.transfer-title {
         display: none;
       }
       display: block;
@@ -701,13 +721,16 @@ $pointColor:#ff5400;
         position: relative;
         display: block;
         height:155px;
-
+        border-bottom:1px solid #e6e6e6;
         .table-row {
           width:auto;
           position: absolute;
           font-size: 15px;
           padding:0 5px;
           border-bottom-width: 0px;
+          .app {
+            display: block;
+          }
           &.btn-col {
             right: 5px;
             top: 30px;
@@ -739,6 +762,7 @@ $pointColor:#ff5400;
           &:nth-child(1) {
             left:10px;
             top:10px;
+            line-height: 22px;
           }
           &:nth-child(2) {
             left:10px;
@@ -750,8 +774,38 @@ $pointColor:#ff5400;
           }
 
         }
+        &.target-transfer-con {
+          s {
+            text-decoration: none;
+          }
+          .table-row {
+            &:nth-child(3) {
+              left: 8px;
+              top: 105px;
+              .app {
+                display: inline-block;
+              }
+              .number {
+                font-size:20px;
+              }
+            }
+            &:nth-child(4) {
+              display: none;
+            }
+            &:nth-child(5) {
+              left: 132px;
+              top: 42px;
+            }
+          }
+        }
       }
     }
 
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .home-page-container .banner-box {
+    height:147px;
   }
 }

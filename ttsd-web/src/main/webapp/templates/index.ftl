@@ -134,7 +134,7 @@
                             </ul>
                     <#if loan.status== 'RAISING'>
                     <#--筹款-->
-                        <a href="javascript:void(0)" class="btn-invest btn-normal">马上投资</a>
+                        <a href="javascript:void(0)" class="btn-invest btn-normal">立即购买</a>
                     </#if>
                      <#if loan.status== 'PREHEAT'>
                       <#--预热中-->
@@ -328,6 +328,7 @@
         </form>
     </div>
 </div>
+    <#include "component/coupon-alert.ftl" />
     <#include "login-tip.ftl" />
     <#include "component/red-envelope-float.ftl" />
 </@global.main>
