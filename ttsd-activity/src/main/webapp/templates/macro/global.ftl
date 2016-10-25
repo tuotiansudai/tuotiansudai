@@ -70,7 +70,9 @@
     </#if>
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
-
+    <#if !isAppSource>
+        <meta name = "format-detection" content = "telephone=no">
+    </#if>
     <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${css.global}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
