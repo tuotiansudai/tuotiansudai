@@ -36,6 +36,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CouponRepayServiceImpl implements CouponRepayService {
@@ -194,6 +195,21 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
         logger.info(MessageFormat.format("[Coupon Repay {0}] coupon repay is done", String.valueOf(loanRepayId)));
     }
+
+
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String couponRepayCallback(Map<String, String> paramsMap, String queryString){
+        /*TransferRequestModel requestModel = TransferRequestModel.newRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(userCouponModel.getId()), String.valueOf(new Date().getTime())),
+                accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
+                String.valueOf(transferAmount));
+*/
+        return null;
+    }
+
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
