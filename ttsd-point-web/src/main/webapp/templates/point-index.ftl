@@ -7,7 +7,6 @@
             <#if isLogin>
                 <div class="user-info">
                     <h3>我的积分</h3>
-
                     <p>${userPoint}</p>
                     <#if isSignIn>
                         <p><span class="already">已签到</span></p>

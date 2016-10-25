@@ -11,7 +11,8 @@
     <form action="" class="form-inline query-build">
         <div class="form-group">
             <label for="loginName">用户名</label>
-            <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}"/>
+            <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*"
+                   autocomplete="off" value="${loginName!}"/>
         </div>
         <div class="form-group">
             <label for="number">注册时间</label>
@@ -19,7 +20,7 @@
             <div class='input-group date' id='datetimepicker1'>
                 <input type='text' class="form-control" name="beginTime"
                        value="${(beginTime?string('yyyy-MM-dd HH:mm'))!}"/>
-                        <span class="input-group-addon">
+                <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
             </div>
@@ -27,7 +28,7 @@
             <div class='input-group date' id='datetimepicker2'>
                 <input type='text' class="form-control" name="endTime"
                        value="${(endTime?string('yyyy-MM-dd HH:mm'))!}"/>
-                        <span class="input-group-addon">
+                <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
             </div>
@@ -38,7 +39,8 @@
                 <option value="">全部</option>
                 <#list roleStageList as roleItem>
                     <#if roleItem.name()!='OTHERS' && roleItem.name()!='ALL'>
-                        <option value="${roleItem.name()}" <#if (roleStage.name())?has_content && roleStage.name() == roleItem.name()>selected</#if>>${roleItem.description}
+                        <option value="${roleItem.name()}"
+                                <#if (roleStage.name())?has_content && roleStage.name() == roleItem.name()>selected</#if>>${roleItem.description}
                         </option>
                     </#if>
                 </#list>
@@ -69,9 +71,20 @@
                 <option value="">全部</option>
                 <#list sourceList as sourceItem>
                     <#if sourceItem.name() != 'AUTO'>
-                        <option value="${sourceItem}" <#if (source?has_content && source.name() == sourceItem.name()) >selected</#if>>${sourceItem.name()}
+                        <option value="${sourceItem}"
+                                <#if (source?has_content && source.name() == sourceItem.name()) >selected</#if>>${sourceItem.name()}
                         </option>
                     </#if>
+                </#list>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="project">用户行为</label>
+            <select class="selectpicker" name="userOperation">
+                <option value="">全部</option>
+                <#list userOperations as userOperation>
+                    <option value="${userOperation.name()}"
+                            <#if (selectedUserOperation?? && selectedUserOperation.name() == userOperation.name()) >selected</#if>>${userOperation.description}</option>
                 </#list>
             </select>
         </div>
@@ -92,6 +105,7 @@
                 <th>手机号</th>
                 <th>电子邮件</th>
                 <th>推荐人手机</th>
+                <th>开通快捷支付</th>
                 <th>来源</th>
                 <th>渠道</th>
                 <th>注册时间</th>
@@ -120,6 +134,7 @@
                             <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                         </#if>
                     </td>
+                    <td><#if userItem.fastPay == true>是<#else>否</#if></td>
                     <td>${userItem.source!}</td>
                     <td>${userItem.channel!}</td>
                     <td>${userItem.registerTime?string('yyyy-MM-dd HH:mm')}</td>
@@ -127,9 +142,11 @@
                     <td><#list userItem.userRoles as rs> ${rs.role.description}<#if rs_has_next>,</#if> </#list></td>
                     <td>
                         <a href="/user-manage/user/${userItem.loginName}">编辑</a> |
-                        <a class="user-status-modifier" href="#" data-url="/user-manage/user/${userItem.loginName}/enable">解禁</a>
+                        <a class="user-status-modifier" href="#"
+                           data-url="/user-manage/user/${userItem.loginName}/enable">解禁</a>
                         <@security.authorize access="hasAnyAuthority('ADMIN')">
-                            <a href="/user-manage/user/${userItem.loginName}/impersonate" class="impersonate-link"> | 模拟登录</a>
+                            <a href="/user-manage/user/${userItem.loginName}/impersonate" class="impersonate-link"> |
+                                模拟登录</a>
                         </@security.authorize>
                     </td>
                 </tr>
@@ -152,7 +169,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrerMobile=${referrerMobile!}&channel=${channel!}&pageSize=${pageSize}&index=${pageIndex-1}"
+                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrerMobile=${referrerMobile!}&channel=${channel!}&userOperation=${(selectedUserOperation.name())!}&pageSize=${pageSize}&index=${pageIndex-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -163,7 +180,7 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrerMobile=${referrerMobile!}&channel=${channel!}&pageSize=${pageSize}&index=${pageIndex+1}"
+                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrerMobile=${referrerMobile!}&channel=${channel!}&userOperation=${(selectedUserOperation.name())!}&pageSize=${pageSize}&index=${pageIndex+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

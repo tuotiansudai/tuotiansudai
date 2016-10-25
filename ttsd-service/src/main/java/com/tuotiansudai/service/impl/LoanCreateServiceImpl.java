@@ -321,7 +321,7 @@ public class LoanCreateServiceImpl implements LoanCreateService {
     }
 
     @Override
-    public BaseDto<PayDataDto> openLoan(LoanCreateRequestDto loanCreateRequestDto) {
+    public BaseDto<PayDataDto> openLoan(LoanCreateRequestDto loanCreateRequestDto, String ip) {
         PayDataDto payDataDto = new PayDataDto();
         BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
 

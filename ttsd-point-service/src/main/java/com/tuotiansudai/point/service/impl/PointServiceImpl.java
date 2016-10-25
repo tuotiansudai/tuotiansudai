@@ -1,18 +1,20 @@
 package com.tuotiansudai.point.service.impl;
 
 
-import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointService;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,17 +41,8 @@ public class PointServiceImpl implements PointService {
     @Autowired
     private LoanMapper loanMapper;
 
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private InvestMapper investMapper;
-
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.startTime}\")}")
-    private Date activityNationalStartTime;
-
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.national.endTime}\")}")
-    private Date activityNationalEndTime;
+    @Value("#{'${activity.concrete.period}'.split('\\~')}")
+    private List<String> activityConcretePeriod = Lists.newArrayList();
 
     @Override
     @Transactional
@@ -66,7 +59,7 @@ public class PointServiceImpl implements PointService {
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         int duration = loanModel.getDuration();
         long point = new BigDecimal((investModel.getAmount()*duration/InterestCalculator.DAYS_OF_YEAR)).divide(new BigDecimal(100), 0, BigDecimal.ROUND_DOWN).longValue();
-        point = getNationalRewardsPoint(investModel.getLoginName(),point,investModel.getId());
+        point = getMaterialActivityPoint(loanModel.getProductType(),loanModel.getActivityType(), point,investModel.getId());
         pointBillService.createPointBill(investModel.getLoginName(), investModel.getId(), PointBusinessType.INVEST, point);
         logger.debug(MessageFormat.format("{0} has obtained point {1}", investModel.getId(), point));
     }
@@ -77,16 +70,16 @@ public class PointServiceImpl implements PointService {
         return accountModel != null ? accountModel.getPoint() : 0;
     }
 
-    private long getNationalRewardsPoint(String loginName,long point,long investId){
+    private long getMaterialActivityPoint(ProductType productType,ActivityType activityType,long point,long investId){
+        if(productType == null || productType.equals(ProductType.EXPERIENCE) || activityType.equals(ActivityType.NEWBIE)){
+            return point;
+        }
         Date nowDate = DateTime.now().toDate();
-        if(nowDate.before(activityNationalEndTime) && nowDate.after(activityNationalStartTime)){
-            UserModel userModel = userMapper.findByLoginName(loginName);
-            List<InvestModel> successInvestModels = investMapper.findSuccessInvestByInvestTime(loginName, activityNationalStartTime, activityNationalEndTime);
-            if(successInvestModels.size() < 2 && userModel.getRegisterTime().before(activityNationalEndTime) && userModel.getRegisterTime().after(activityNationalStartTime) && !Strings.isNullOrEmpty(userModel.getReferrer())){
-                pointBillService.createPointBill(userModel.getReferrer(), investId, PointBusinessType.ACTIVITY, (long) (point * 0.1));
-            }
-
-            point *= 2;
+        Date activityBeginTime = DateTime.parse(activityConcretePeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date activityEndTime = DateTime.parse(activityConcretePeriod.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        if(nowDate.before(activityEndTime) && nowDate.after(activityBeginTime)){
+            logger.debug(MessageFormat.format("{0} has double obtained point {1}", investId, point));
+            return point * 2;
         }
         return point;
     }
