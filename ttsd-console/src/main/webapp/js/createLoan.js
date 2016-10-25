@@ -51,14 +51,14 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                 sectionThreeElement.html(Mustache.render(pledgeVehicleTemplate));
             }
 
-            if ('税易经营性借款-代理模式' === loanName) {
+            if ('税易经营性借款-代理' === loanName) {
                 pledgeTypeElement.val("ENTERPRISE_AGENT");
                 agentLabel.html("代理用户:");
                 sectionTwoElement.html(Mustache.render(loanerEnterpriseDetailsTemplate));
                 sectionThreeElement.html(Mustache.render(pledgeEnterpriseTemplate));
             }
 
-            if ('税易经营性借款-直贷模式' === loanName) {
+            if ('税易经营性借款-直贷' === loanName) {
                 pledgeTypeElement.val("ENTERPRISE_DIRECT");
                 agentLabel.html("企业用户:");
                 sectionTwoElement.html(Mustache.render(loanerEnterpriseDetailsTemplate));
@@ -375,7 +375,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     'pledgeVehicle': pledgeVehicleParam
                 });
             }
-            if ("税易经营性借款-代理模式" == value || "税易经营性借款-直贷模式" == value) {
+            if ("税易经营性借款-代理" == value || "税易经营性借款-直贷" == value) {
                 requestData = generateRequestParams({
                     'loan': loanParam,
                     'loanDetails': loanDetailsParam,
