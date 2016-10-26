@@ -60,7 +60,7 @@ public class IdGenerator {
     }
 
     public synchronized long generate() {
-        long timestamp = System.currentTimeMillis();
+        long timestamp = this.timeGen();
         if (this.lastTimestamp == timestamp) {
             // 在统一毫秒内产生
             this.sequence = (this.sequence + 1) & SEQUENCE_MASK;
@@ -82,7 +82,7 @@ public class IdGenerator {
         this.lastTimestamp = timestamp;
 
         // 毫秒数 ------> 机器ID ------> 毫秒内的Sequence
-        return  timestamp - TW_EPOCH << TIMESTAMP_LEFT_SHIFT | this.workerId << WORKER_ID_SHIFT | this.sequence;
+        return System.currentTimeMillis() - TW_EPOCH << TIMESTAMP_LEFT_SHIFT | this.workerId << WORKER_ID_SHIFT | this.sequence;
     }
 
     private long tilNextMillis(final long lastTimestamp) {
@@ -95,7 +95,6 @@ public class IdGenerator {
     }
 
     private long timeGen() {
-        // return System.nanoTime() / 1000000;
-        return System.currentTimeMillis();
+        return System.nanoTime() / 1000000;
     }
 }
