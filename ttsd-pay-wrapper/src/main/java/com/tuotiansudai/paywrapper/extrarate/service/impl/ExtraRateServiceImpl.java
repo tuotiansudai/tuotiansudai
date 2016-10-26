@@ -82,10 +82,9 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                             String.valueOf(investExtraRateModel.getInvestId()),
                             investExtraRateModel.getLoginName(),
                             String.valueOf(investExtraRateModel.getAmount())), e);
-                    continue;
-                }
                 }
             }
+        }
     }
 
     private void sendExtraRateAmount(long loanRepayId, InvestExtraRateModel investExtraRateModel, long actualInterest, long actualFee) throws Exception {
@@ -113,13 +112,13 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                     TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
                     isSuccess = responseModel.isSuccess();
                     redisWrapperClient.hset(redisKey, String.valueOf(investExtraRateModel.getId()), isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
+                    logger.info(MessageFormat.format("[Extra Rate Repay loanRepay.id {0}] investExtraRateModel.id payback({1}) payback response is {2}",
+                            String.valueOf(loanRepayId), String.valueOf(investExtraRateModel.getId()), String.valueOf(isSuccess)));
                 } catch (Exception e) {
                     redisWrapperClient.hset(redisKey, String.valueOf(investExtraRateModel.getId()), SyncRequestStatus.FAILURE.name());
                     logger.error(MessageFormat.format("[Extra Rate Repay loanRepay.id {0}] investExtraRateModel.id payback({1}) payback throw exception",
                             String.valueOf(loanRepayId), String.valueOf(investExtraRateModel.getId())), e);
                 }
-                logger.info(MessageFormat.format("[Extra Rate Repay loanRepay.id {0}] investExtraRateModel.id payback({1}) payback response is {2}",
-                        String.valueOf(loanRepayId), String.valueOf(investExtraRateModel.getId()), String.valueOf(isSuccess)));
             }
         }
         if (isSuccess || amount == 0) {
@@ -145,7 +144,6 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                         String.valueOf(investExtraRateModel.getInvestId()),
                         investExtraRateModel.getLoginName(),
                         String.valueOf(investExtraRateModel.getAmount())), e);
-                continue;
             }
         }
     }
