@@ -3,7 +3,7 @@
  * [author]:xuqiang
  * [date]:2016-10-20
  */
-require(['jquery', 'layerWrapper', 'template', 'logintip','jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension','commonFun'],
+require(['jquery', 'layerWrapper', 'template', 'logintip','jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension','commonFun','register_common'],
 	function($, layer, tpl) {
 	$(function() {
 		var browser = commonFun.browserRedirect();
@@ -32,7 +32,7 @@ require(['jquery', 'layerWrapper', 'template', 'logintip','jquery.validate', 'jq
 		.fail(function() {
 			layer.msg('请求失败，请刷新页面重试！');
 		});
-		
+
 
 		$('.progressbar').each(function() {
 			var t = $(this),

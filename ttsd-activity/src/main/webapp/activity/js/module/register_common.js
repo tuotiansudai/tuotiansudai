@@ -80,9 +80,7 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
         }
     });
     var refreshCaptcha = function () {
-        $('.image-captcha img').each(function (index, el) {
-            $(this).attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
-        });
+        $('#image-captcha-image').attr('src','/register/user/image-captcha?' + new Date().getTime().toString());
     };
     refreshCaptcha();
 
