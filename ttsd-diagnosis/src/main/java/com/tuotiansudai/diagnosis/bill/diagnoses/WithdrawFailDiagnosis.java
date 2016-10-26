@@ -37,7 +37,7 @@ public class WithdrawFailDiagnosis extends UserBillBusinessDiagnosis {
                 .init(userBillModel, tracedObject, this::buildTracedObjectId)
                 // status
                 .check(m -> m.getStatus() == WithdrawStatus.FAIL,
-                        m -> String.format("wrong status [expect:SUCCESS, actual:%s]", m.getStatus()))
+                        m -> String.format("wrong status [expect:FAIL, actual:%s]", m.getStatus()))
                 // owner
                 .check(m -> userBillModel.getLoginName().equals(m.getLoginName()),
                         m -> String.format("wrong owner [expect:%s, actual:%s]", userBillModel.getLoginName(), m.getLoginName()))
