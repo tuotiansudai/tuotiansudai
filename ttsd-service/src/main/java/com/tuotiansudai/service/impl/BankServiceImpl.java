@@ -48,6 +48,19 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
+    public List<BankDto> findWebBankList() {
+        List<BankModel> bankModels = bankMapper.findWebBankList();
+
+        List<BankDto> records = Lists.transform(bankModels, new Function<BankModel, BankDto>() {
+            @Override
+            public BankDto apply(BankModel input) {
+                return new BankDto(input);
+            }
+        });
+        return records;
+    }
+
+    @Override
     public BankModel findByBankCode(String bankCode) {
         return bankMapper.findByBankCode(bankCode);
     }
