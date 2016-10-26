@@ -2,6 +2,7 @@ package com.tuotiansudai.task.aspect;
 
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoanCreateRequestDto;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -22,6 +23,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
 import java.util.Date;
 
 @Aspect
@@ -78,23 +80,23 @@ public class AuditTaskAspectLoan {
     }
 
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanService.openLoan(..))", returning = "returnValue")
-    public void afterReturningOpenLoan(JoinPoint joinPoint, Object returnValue) {
+    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanCreateService.openLoan(..))", returning = "returnValue")
+    public void afterReturningOpenLoan(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
         logger.debug("after open loan aspect.");
         try {
-            if (((BaseDto<PayDataDto>) returnValue).getData().getStatus()) {
-                LoanDto loanDto = (LoanDto) joinPoint.getArgs()[0];
+            if (returnValue.getData().getStatus()) {
+                LoanCreateRequestDto loanDto = (LoanCreateRequestDto) joinPoint.getArgs()[0];
                 String ip = (String) joinPoint.getArgs()[1];
-                String taskId = OperationType.PROJECT + "-" + loanDto.getId();
+                long loanId = loanDto.getLoan().getId();
+                String taskId = MessageFormat.format("{0}-{1}", OperationType.PROJECT.name(), String.valueOf(loanId));
 
                 if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
 
                     OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
 
                     OperationTask notify = new OperationTask();
-                    String notifyId = taskId;
 
-                    notify.setId(notifyId);
+                    notify.setId(taskId);
                     notify.setTaskType(TaskType.NOTIFY);
                     notify.setOperationType(OperationType.PROJECT);
 
@@ -111,7 +113,7 @@ public class AuditTaskAspectLoan {
                     notify.setDescription(senderRealName + " 通过了您 " + OperationType.PROJECT.getDescription() + "［" + task.getObjName() + "］的申请。");
 
                     redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
-                    redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + loanDto.getCreatedLoginName(), notifyId, notify);
+                    redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + loanService.findLoanById(loanId).getCreatedLoginName(), taskId, notify);
 
                     String description = senderRealName + " 审核通过了标的［" + task.getObjName() + "］。";
                     auditLogService.createAuditLog(senderLoginName, receiverLoginName, OperationType.PROJECT, task.getObjId(), description, ip);
