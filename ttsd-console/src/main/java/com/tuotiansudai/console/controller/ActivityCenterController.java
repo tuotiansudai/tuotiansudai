@@ -1,9 +1,9 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.dto.ActivityDto;
+import com.tuotiansudai.activity.repository.model.ActivityStatus;
 import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.dto.ActivityDto;
-import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ActivityService;
 import com.tuotiansudai.util.RequestIPParser;

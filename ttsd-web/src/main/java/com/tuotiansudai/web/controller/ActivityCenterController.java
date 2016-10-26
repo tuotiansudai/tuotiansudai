@@ -1,6 +1,6 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.dto.ActivityDto;
+import com.tuotiansudai.activity.repository.dto.ActivityDto;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ActivityService;
 import com.tuotiansudai.spring.LoginUserInfo;

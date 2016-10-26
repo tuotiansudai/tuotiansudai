@@ -2,11 +2,11 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.ActivityDto;
+import com.tuotiansudai.activity.repository.dto.ActivityDto;
+import com.tuotiansudai.activity.repository.model.ActivityModel;
+import com.tuotiansudai.activity.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.mapper.ActivityMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.ActivityModel;
-import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ActivityService;
 import org.apache.log4j.Logger;

@@ -1,20 +1,26 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.activity.repository.dto;
 
-import com.tuotiansudai.dto.ActivityDto;
+import com.tuotiansudai.activity.repository.model.ActivityModel;
+import com.tuotiansudai.activity.repository.model.ActivityStatus;
+import com.tuotiansudai.repository.model.Source;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class ActivityModel implements Serializable {
-    private Long id;
+public class ActivityDto {
+    private Long activityId;
     private String title;
+    private Long seq;
     private String webActivityUrl;
     private String appActivityUrl;
     private String description;
     private String webPictureUrl;
     private String appPictureUrl;
+    private String longTerm;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date activatedTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date expiredTime;
     private List<Source> source;
     private ActivityStatus status;
@@ -26,36 +32,40 @@ public class ActivityModel implements Serializable {
     private String shareTitle;
     private String shareContent;
     private String shareUrl;
-    private Long seq;
-    private boolean longTerm;
 
-    public ActivityModel() {
-
+    public ActivityDto() {
     }
 
-    public ActivityModel(ActivityDto activityDto) {
-        this.title = activityDto.getTitle();
-        this.webActivityUrl = activityDto.getWebActivityUrl();
-        this.appActivityUrl = activityDto.getAppActivityUrl();
-        this.description = activityDto.getDescription();
-        this.webPictureUrl = activityDto.getWebPictureUrl();
-        this.appPictureUrl = activityDto.getAppPictureUrl();
-        this.activatedTime = activityDto.getActivatedTime();
-        this.expiredTime = activityDto.getExpiredTime();
-        this.source = activityDto.getSource();
-        this.shareTitle = activityDto.getShareTitle();
-        this.shareContent = activityDto.getShareContent();
-        this.shareUrl = activityDto.getShareUrl();
-        this.seq = activityDto.getSeq();
-        this.longTerm = "longTerm".equals(activityDto.getLongTerm());
+    public ActivityDto(ActivityModel activityModel) {
+        this.activityId = activityModel.getId();
+        this.title = activityModel.getTitle();
+        this.seq = activityModel.getSeq();
+        this.webActivityUrl = activityModel.getWebActivityUrl();
+        this.appActivityUrl = activityModel.getAppActivityUrl();
+        this.description = activityModel.getDescription();
+        this.webPictureUrl = activityModel.getWebPictureUrl();
+        this.appPictureUrl = activityModel.getAppPictureUrl();
+        this.longTerm = activityModel.isLongTerm()?"longTerm":"notLongTerm";
+        this.activatedTime = activityModel.getActivatedTime();
+        this.expiredTime = activityModel.getExpiredTime();
+        this.source = activityModel.getSource();
+        this.status = activityModel.getStatus();
+        this.createdBy = activityModel.getCreatedBy();
+        this.createdTime = activityModel.getCreatedTime();
+        this.updatedBy = activityModel.getUpdatedBy();
+        this.updatedTime = activityModel.getUpdatedTime();
+        this.activatedBy = activityModel.getActivatedBy();
+        this.shareTitle = activityModel.getShareTitle();
+        this.shareContent = activityModel.getShareContent();
+        this.shareUrl = activityModel.getShareUrl();
     }
 
-    public Long getId() {
-        return id;
+    public Long getActivityId() {
+        return activityId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setActivityId(Long activityId) {
+        this.activityId = activityId;
     }
 
     public String getTitle() {
@@ -64,6 +74,14 @@ public class ActivityModel implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Long getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Long seq) {
+        this.seq = seq;
     }
 
     public String getWebActivityUrl() {
@@ -104,6 +122,14 @@ public class ActivityModel implements Serializable {
 
     public void setAppPictureUrl(String appPictureUrl) {
         this.appPictureUrl = appPictureUrl;
+    }
+
+    public String getLongTerm() {
+        return longTerm;
+    }
+
+    public void setLongTerm(String longTerm) {
+        this.longTerm = longTerm;
     }
 
     public Date getActivatedTime() {
@@ -200,21 +226,5 @@ public class ActivityModel implements Serializable {
 
     public void setShareUrl(String shareUrl) {
         this.shareUrl = shareUrl;
-    }
-
-    public Long getSeq() {
-        return seq;
-    }
-
-    public void setSeq(Long seq) {
-        this.seq = seq;
-    }
-
-    public boolean isLongTerm() {
-        return longTerm;
-    }
-
-    public void setLongTerm(boolean longTerm) {
-        this.longTerm = longTerm;
     }
 }

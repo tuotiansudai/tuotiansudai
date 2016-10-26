@@ -1,7 +1,7 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.ActivityDto;
-import com.tuotiansudai.repository.model.ActivityStatus;
+import com.tuotiansudai.activity.repository.dto.ActivityDto;
+import com.tuotiansudai.activity.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Source;
 
 import java.util.Date;

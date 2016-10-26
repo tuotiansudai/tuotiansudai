@@ -1,10 +1,10 @@
 package com.tuotiansudai.task.aspect;
 
 
+import com.tuotiansudai.activity.repository.dto.ActivityDto;
+import com.tuotiansudai.activity.repository.model.ActivityStatus;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.ActivityDto;
 import com.tuotiansudai.repository.mapper.ActivityMapper;
-import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.AuditLogService;

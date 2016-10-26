@@ -1,7 +1,9 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.ActivityDto;
+import com.tuotiansudai.activity.repository.dto.ActivityDto;
+import com.tuotiansudai.activity.repository.model.ActivityModel;
+import com.tuotiansudai.activity.repository.model.ActivityStatus;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.ActivityMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
