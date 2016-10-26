@@ -18,23 +18,38 @@
             <#if menu.navigation?? && menu.navigation="true">
                 <li <#if menu.title==activeNav>class="active"</#if>><a  href="${menu.url}"
                        onclick="cnzzPush.trackClick('${menu.category}','${menu.title}')" >${menu.title}</a>
+                <@global.isAnonymous>
+
+                </@global.isAnonymous>
+
                     <#if menu.leftNavs??>
-                    <span class="icon-has-submenu"></span>
+                        <#list menu.leftNavs as leftNav>
+                            <#if leftNav.role??>
+                                <#assign showLeftNavs=false>
+                                <@role hasRole=leftNav.role>
+                                    <#assign showLeftNavs=true>
+                                </@role>
+                            <#else>
+                                <#assign showLeftNavs=true>
+                            </#if>
+                        </#list>
+                        <#if showLeftNavs>
+                            <span class="icon-has-submenu"></span>
+                        </#if>
                         <ul class="sub-menu-list">
                             <#list menu.leftNavs as leftNav>
-                                <#--<#if leftNav.role??>-->
-                                    <#--<@role hasRole=leftNav.role>-->
-                                        <#--<li>-->
-                                           <#--<a <#if leftNav.title==activeLeftNav>class="active"</#if>-->
-                                                                    <#--href="${leftNav.url}"><i>●</i>${leftNav.title}</a>-->
-                                        <#--</li>-->
-                                    <#--</@role>-->
-                                <#--<#else>-->
-                                <#--</#if>-->
+                                <#if leftNav.role??>
+                                    <@role hasRole=leftNav.role>
+                                        <li>
+                                           <a <#if leftNav.title==activeLeftNav>class="active"</#if>
+                                                                    href="${leftNav.url}"><i>●</i>${leftNav.title}</a>
+                                        </li>
+                                    </@role>
+                                <#else>
                                     <li><a <#if leftNav.title==activeLeftNav>class="active"</#if>
                                                                 href="${leftNav.url}"> <i>●</i> ${leftNav.title}</a>
                                     </li>
-
+                            </#if>
                             </#list>
                         </ul>
                     </#if>
