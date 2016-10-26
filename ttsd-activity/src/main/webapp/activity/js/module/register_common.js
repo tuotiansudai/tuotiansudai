@@ -139,10 +139,10 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
     $fetchCaptcha.on('touchstart', function (event) {
         var $this=$(this);
         event.preventDefault();
-        $fetchCaptcha.prop('disabled', true);
         if($this.prop('disabled')) {
             return;
         }
+        $fetchCaptcha.prop('disabled', true);
         var captchaVal = $appCaptcha.val(),
             mobile = $phoneDom.val();
         $.ajax({
