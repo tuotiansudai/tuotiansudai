@@ -22,18 +22,19 @@
                     <span class="icon-has-submenu"></span>
                         <ul class="sub-menu-list">
                             <#list menu.leftNavs as leftNav>
-                                <#if leftNav.role??>
-                                    <@role hasRole=leftNav.role>
-                                        <li>
-                                           <a <#if leftNav.title==activeLeftNav>class="active"</#if>
-                                                                    href="${leftNav.url}"><i>●</i>${leftNav.title}</a>
-                                        </li>
-                                    </@role>
-                                <#else>
+                                <#--<#if leftNav.role??>-->
+                                    <#--<@role hasRole=leftNav.role>-->
+                                        <#--<li>-->
+                                           <#--<a <#if leftNav.title==activeLeftNav>class="active"</#if>-->
+                                                                    <#--href="${leftNav.url}"><i>●</i>${leftNav.title}</a>-->
+                                        <#--</li>-->
+                                    <#--</@role>-->
+                                <#--<#else>-->
+                                <#--</#if>-->
                                     <li><a <#if leftNav.title==activeLeftNav>class="active"</#if>
                                                                 href="${leftNav.url}"> <i>●</i> ${leftNav.title}</a>
                                     </li>
-                                </#if>
+
                             </#list>
                         </ul>
                     </#if>
