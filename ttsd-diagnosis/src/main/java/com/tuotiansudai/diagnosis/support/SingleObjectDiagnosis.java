@@ -38,7 +38,9 @@ public class SingleObjectDiagnosis<T> {
         if (passed) {
             passed = expect.test(t);
             if (!passed) {
-                problem = "traced UserBill #" + userBillModel.getId() + " to " + tracedObjectId + ", but " + buildErrorMessageFunction.apply(t);
+                problem = String.format("trace UserBill #%d (%s) to %s, but %s",
+                        userBillModel.getId(), userBillModel.getBusinessType(), tracedObjectId,
+                        buildErrorMessageFunction.apply(t));
             }
         }
         return this;
