@@ -10,7 +10,7 @@
         <div class="landing-top">
             <div class="landing-inner">
                 <div class="register-box">
-                    <div class="refer-person-info">您的好友<span class="refer-name">秀伟</span>邀请您领取投资大礼包</div>
+                    <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取投资大礼包</div>
                     <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
                         <ul class="reg-list tl register-step-one">
                             <li>

@@ -2,13 +2,13 @@ spring:
   datasource:
     aa:
       jdbcUrl: jdbc:mysql://192.168.33.10:3306/aa?useUnicode=true&characterEncoding=UTF-8
-      username: root
-      password:
+      username: tuotiansd
+      password: tuotiansd
       driver-class-name: com.mysql.jdbc.Driver
     activity:
       jdbcUrl: jdbc:mysql://192.168.33.10:3306/edxactivity?useUnicode=true&characterEncoding=UTF-8
-      username: root
-      password:
+      username: sdactivity
+      password: sdactivity
       driver-class-name: com.mysql.jdbc.Driver
 
   redis:

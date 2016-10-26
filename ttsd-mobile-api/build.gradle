@@ -5,7 +5,7 @@ version = '1.0'
 dependencies {
     compile project(':ttsd-web-common-config'),
             project(':ttsd-service'),
-            project(':ttsd-point'),
+            project(':ttsd-point-service'),
             project(':ttsd-message'),
             project(':ttsd-jpush'),
             'commons-httpclient:commons-httpclient:3.1',

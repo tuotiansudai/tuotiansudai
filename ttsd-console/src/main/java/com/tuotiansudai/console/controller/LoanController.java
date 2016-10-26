@@ -93,9 +93,10 @@ public class LoanController {
 
     @RequestMapping(value = "/open", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> openLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
+    public BaseDto<PayDataDto> openLoan(HttpServletRequest request,
+                                        @RequestBody LoanCreateRequestDto loanCreateRequestDto) {
         loanCreateRequestDto.getLoan().setVerifyLoginName(LoginUserInfo.getLoginName());
-        return loanCreateService.openLoan(loanCreateRequestDto);
+        return loanCreateService.openLoan(loanCreateRequestDto, RequestIPParser.parse(request));
     }
 
     @RequestMapping(value = "/delay", method = RequestMethod.POST)
