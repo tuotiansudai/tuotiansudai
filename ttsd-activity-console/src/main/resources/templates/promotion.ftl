@@ -26,10 +26,10 @@
                     </div>
                 </div>
                 <div class="col-sm-4 promotionImageUrl">
-                    <input type="file" name="imageFile" imageWidth="530" imageHeight="660"/>
+                    <input type="file" name="imageFile" imageWidth="500" imageHeight="660"/>
                 </div>
                 <div class="col-sm-4 text-danger">
-                    (图片必须是530px * 660px)
+                    (图片必须是500px * 660px)
                 </div>
             </div>
 
