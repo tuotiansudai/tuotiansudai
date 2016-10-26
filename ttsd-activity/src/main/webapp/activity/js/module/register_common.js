@@ -88,21 +88,6 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
     };
     refreshCaptcha();
 
-    //图形验证码输入后高亮显示获取验证码
-    // $appCaptcha.on('keyup', function (event) {
-    //     event.preventDefault();
-    //     //必须手机，密码，图形验证码都正确后才可显示
-    //     mobileValid=$phoneDom.hasClass('valid');
-    //     passwordValid=$('.password',$registerFrame).hasClass('valid');
-    //     if(mobileValid && passwordValid && captchaValid) {
-    //         $fetchCaptcha.prop('disabled', false);
-    //         $('#appCaptchaErr').html('');
-    //     }
-    //     else {
-    //         $fetchCaptcha.prop('disabled', true);
-    //     }
-    // });
-
     //change images code
     $changecode.on('touchstart', function (event) {
         event.preventDefault();
@@ -133,16 +118,11 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
 
     //图形验证码输入后高亮显示获取验证码
     $appCaptcha.on('keyup',function(event) {
-        console.log('ppp'+event.target.value)
         if(/^\d{5}$/.test(event.target.value)) {
             $(event.target).addClass('valid').removeClass('error');
             captchaValid=true;
             mobileValid=$phoneDom.hasClass('valid');
             passwordValid=$('.password',$registerFrame).hasClass('valid');
-
-            console.log('mobileValid'+mobileValid);
-            console.log('passwordValid'+passwordValid);
-            console.log('captchaValid'+captchaValid);
 
             if(mobileValid && passwordValid && captchaValid) {
                 console.log('ok');
@@ -189,10 +169,8 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
                 if (!data.data.status && !data.data.isRestricted) {
                     $('#appCaptchaErr').html('图形验证码错误');
                 }
-                refreshCaptcha();
             })
             .fail(function () {
-                refreshCaptcha();
                 layer.msg('请求失败，请重试！');
 
             });
