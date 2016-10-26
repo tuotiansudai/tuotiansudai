@@ -34,10 +34,13 @@ public class ReferrerRewardDiagnosis extends UserBillBusinessDiagnosis {
         InvestReferrerRewardModel tracedObject = investReferrerRewardMapper.findById(userBillModel.getOrderId());
         SingleObjectDiagnosis
                 // exist
-                .init(tracedObject, this::buildTracedObjectId)
+                .init(userBillModel, tracedObject, this::buildTracedObjectId)
                 // status
                 .check(m -> m.getStatus() == ReferrerRewardStatus.SUCCESS,
                         m -> String.format("wrong status [expect:SUCCESS, actual:%s]", m.getStatus()))
+                // owner
+                .check(m -> userBillModel.getLoginName().equals(m.getReferrerLoginName()),
+                        m -> String.format("wrong owner [expect:%s, actual:%s]", userBillModel.getLoginName(), m.getReferrerLoginName()))
                 // unique
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectId(m)),
                         m -> String.format("has already traced by UserBill#%d", context.getUserBillId(buildTracedObjectId(m))))

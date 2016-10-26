@@ -1,5 +1,7 @@
 package com.tuotiansudai.diagnosis.support;
 
+import com.tuotiansudai.repository.model.UserBillModel;
+
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -7,14 +9,16 @@ import java.util.function.Predicate;
 public class SingleObjectDiagnosis<T> {
     private final T t;
     private final String tracedObjectId;
+    private final UserBillModel userBillModel;
 
     private boolean passed = true;
     private String problem = null;
 
-    private SingleObjectDiagnosis(T t, Function<T, String> getObjectId) {
+    private SingleObjectDiagnosis(UserBillModel userBillModel, T t, Function<T, String> getObjectId) {
+        this.userBillModel = userBillModel;
         passed = (t != null);
         if (!passed) {
-            problem = "could not traced object";
+            problem = "could not traced object for UserBill #" + userBillModel.getId();
             tracedObjectId = null;
         } else {
             tracedObjectId = getObjectId.apply(t);
@@ -22,8 +26,8 @@ public class SingleObjectDiagnosis<T> {
         this.t = t;
     }
 
-    public static <T> SingleObjectDiagnosis<T> init(T t, Function<T, String> getObjectId) {
-        return new SingleObjectDiagnosis<>(t, getObjectId);
+    public static <T> SingleObjectDiagnosis<T> init(UserBillModel userBillModel, T t, Function<T, String> getObjectId) {
+        return new SingleObjectDiagnosis<>(userBillModel, t, getObjectId);
     }
 
     public SingleObjectDiagnosis<T> check(Predicate<T> expect, String errorMessage) {
@@ -34,7 +38,7 @@ public class SingleObjectDiagnosis<T> {
         if (passed) {
             passed = expect.test(t);
             if (!passed) {
-                problem = "traced to " + tracedObjectId + ", but " + buildErrorMessageFunction.apply(t);
+                problem = "traced UserBill #" + userBillModel.getId() + " to " + tracedObjectId + ", but " + buildErrorMessageFunction.apply(t);
             }
         }
         return this;

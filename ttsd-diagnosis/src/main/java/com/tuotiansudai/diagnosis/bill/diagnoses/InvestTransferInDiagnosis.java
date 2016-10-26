@@ -38,12 +38,16 @@ public class InvestTransferInDiagnosis extends UserBillBusinessDiagnosis {
     @Override
     public void diagnosis(UserBillModel userBillModel, DiagnosisContext context) {
         TransferApplicationModel tracedObject = transferApplicationMapper.findByInvestId(userBillModel.getOrderId());
+        String investLoginName = traceInvestLoginName(tracedObject);
         SingleObjectDiagnosis
                 // exist
-                .init(tracedObject, this::buildTracedObjectId)
+                .init(userBillModel, tracedObject, this::buildTracedObjectId)
                 // status
                 .check(m -> m.getStatus() == TransferStatus.SUCCESS,
                         m -> String.format("wrong status [expect:SUCCESS, actual:%s]", m.getStatus()))
+                // owner
+                .check(m -> userBillModel.getLoginName().equals(investLoginName),
+                        m -> String.format("wrong owner [expect:%s, actual:%s]", userBillModel.getLoginName(), investLoginName))
                 // unique
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectId(m)),
                         m -> String.format("has already traced by UserBill#%d", context.getUserBillId(buildTracedObjectId(m))))
@@ -55,6 +59,14 @@ public class InvestTransferInDiagnosis extends UserBillBusinessDiagnosis {
                 // result
                 .fail(r -> onFail(userBillModel, context, r))
                 .success(r -> onPass(userBillModel, context, buildTracedObjectId(tracedObject)));
+    }
+
+    private String traceInvestLoginName(TransferApplicationModel transferApplicationModel) {
+        if (transferApplicationModel != null) {
+            InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
+            return investModel == null ? null : investModel.getLoginName();
+        }
+        return null;
     }
 
     private boolean checkTransferInOutExists(TransferApplicationModel transferApplicationModel) {

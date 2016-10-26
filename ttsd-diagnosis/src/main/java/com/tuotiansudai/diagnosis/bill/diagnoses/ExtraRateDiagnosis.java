@@ -38,10 +38,13 @@ public class ExtraRateDiagnosis extends UserBillBusinessDiagnosis {
         InvestExtraRateModel tracedObject = investExtraRateExtMapper.findById(userBillModel.getOrderId());
         SingleObjectDiagnosis
                 // exist
-                .init(tracedObject, this::buildTracedObjectId)
+                .init(userBillModel, tracedObject, this::buildTracedObjectId)
                 // status
                 .check(this::checkInvestStatus,
                         m -> String.format("wrong status [expect:SUCCESS, actual:%s]", this.getInvestStatus(m)))
+                // owner
+                .check(m -> userBillModel.getLoginName().equals(m.getLoginName()),
+                        m -> String.format("wrong owner [expect:%s, actual:%s]", userBillModel.getLoginName(), m.getLoginName()))
                 // unique
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectId(m)),
                         m -> String.format("has already traced by UserBill#%d", context.getUserBillId(buildTracedObjectId(m))))

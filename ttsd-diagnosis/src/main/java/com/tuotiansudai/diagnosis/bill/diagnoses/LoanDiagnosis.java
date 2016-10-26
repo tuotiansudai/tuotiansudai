@@ -47,10 +47,13 @@ public class LoanDiagnosis extends UserBillBusinessDiagnosis {
         InvestModel tracedObject = investMapper.findById(userBillModel.getOrderId());
         SingleObjectDiagnosis
                 // exist
-                .init(tracedObject, this::buildTracedObjectIdInvest)
+                .init(userBillModel, tracedObject, this::buildTracedObjectIdInvest)
                 // status
                 .check(m -> m.getStatus() == InvestStatus.SUCCESS,
                         m -> String.format("wrong status [expect:SUCCESS, actual:%s]", m.getStatus()))
+                // owner
+                .check(m -> userBillModel.getLoginName().equals(m.getLoginName()),
+                        m -> String.format("wrong owner [expect:%s, actual:%s]", userBillModel.getLoginName(), m.getLoginName()))
                 // unique
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectIdInvest(m)),
                         m -> String.format("has already traced by UserBill#%d", context.getUserBillId(buildTracedObjectIdInvest(m))))
@@ -66,10 +69,13 @@ public class LoanDiagnosis extends UserBillBusinessDiagnosis {
         LoanModel tracedObject = loanMapper.findById(userBillModel.getOrderId());
         SingleObjectDiagnosis
                 // exist
-                .init(tracedObject, this::buildTracedObjectIdLoan)
+                .init(userBillModel, tracedObject, this::buildTracedObjectIdLoan)
                 // status
                 .check(m -> !(Arrays.asList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT, LoanStatus.CANCEL).contains(m.getStatus())),
                         m -> String.format("wrong status [expect:(RAISING|RECHECK|REPAYING|COMPLETE|OVERDUE),actual:%s]", m.getStatus()))
+                // owner
+                .check(m -> userBillModel.getLoginName().equals(m.getAgentLoginName()),
+                        m -> String.format("wrong owner [expect:%s, actual:%s]", userBillModel.getLoginName(), m.getAgentLoginName()))
                 // unique
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectIdLoan(m)),
                         m -> String.format("has already traced by UserBill#%d", context.getUserBillId(buildTracedObjectIdLoan(m))))

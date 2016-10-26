@@ -54,7 +54,7 @@ class UserBillDiagnosis implements Diagnosis {
     }
 
     private String[] extraDiagnosisUsers(String[] args) {
-        String argumentPrefix = "--loginName:";
+        String argumentPrefix = "--loginName=";
         Optional<String> loginNameArgs = Arrays.stream(args)
                 .filter(arg -> arg.startsWith(argumentPrefix) && arg.length() > argumentPrefix.length())
                 .findAny();

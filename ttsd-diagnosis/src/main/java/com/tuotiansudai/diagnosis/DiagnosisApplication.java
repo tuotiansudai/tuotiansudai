@@ -44,8 +44,8 @@ class DiagnosisApplication {
                 result.getProblems().forEach(p -> logger.info("        {}", p));
             });
             logger.info("");
-            logger.info("");
             logger.info("  Diagnosis complete!");
+            logger.info("");
             logger.info("");
         });
     }

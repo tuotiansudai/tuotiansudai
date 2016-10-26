@@ -4,7 +4,9 @@ import com.tuotiansudai.diagnosis.bill.UserBillBusinessDiagnosis;
 import com.tuotiansudai.diagnosis.support.DiagnosisContext;
 import com.tuotiansudai.diagnosis.support.SingleObjectDiagnosis;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import org.slf4j.Logger;
@@ -17,13 +19,19 @@ public class NormalRepayDiagnosis extends UserBillBusinessDiagnosis {
     private static Logger logger = LoggerFactory.getLogger(NormalRepayDiagnosis.class);
 
     private final InvestRepayMapper investRepayMapper;
-
     private final LoanRepayMapper loanRepayMapper;
+    private final InvestMapper investMapper;
+    private final LoanMapper loanMapper;
 
     @Autowired
-    public NormalRepayDiagnosis(InvestRepayMapper investRepayMapper, LoanRepayMapper loanRepayMapper) {
+    public NormalRepayDiagnosis(InvestRepayMapper investRepayMapper,
+                                LoanRepayMapper loanRepayMapper,
+                                InvestMapper investMapper,
+                                LoanMapper loanMapper) {
         this.investRepayMapper = investRepayMapper;
         this.loanRepayMapper = loanRepayMapper;
+        this.investMapper = investMapper;
+        this.loanMapper = loanMapper;
     }
 
     @Override
@@ -43,12 +51,16 @@ public class NormalRepayDiagnosis extends UserBillBusinessDiagnosis {
 
     private void diagnosisInvestRepay(UserBillModel userBillModel, DiagnosisContext context) {
         InvestRepayModel tracedObject = investRepayMapper.findById(userBillModel.getOrderId());
+        String investLoginName = traceInvestLoginName(tracedObject);
         SingleObjectDiagnosis
                 // exist
-                .init(tracedObject, this::buildTracedObjectIdInvestRepay)
+                .init(userBillModel, tracedObject, this::buildTracedObjectIdInvestRepay)
                 // status
                 .check(m -> m.getStatus() == RepayStatus.COMPLETE,
                         m -> String.format("wrong status [expect:SUCCESS, actual:%s]", m.getStatus()))
+                // owner
+                .check(m -> userBillModel.getLoginName().equals(investLoginName),
+                        m -> String.format("wrong owner [expect:%s, actual:%s]", userBillModel.getLoginName(), investLoginName))
                 // unique
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectIdInvestRepay(m)),
                         m -> String.format("has already traced by UserBill#%d", context.getUserBillId(buildTracedObjectIdInvestRepay(m))))
@@ -62,12 +74,16 @@ public class NormalRepayDiagnosis extends UserBillBusinessDiagnosis {
 
     private void diagnosisLoanRepay(UserBillModel userBillModel, DiagnosisContext context) {
         LoanRepayModel tracedObject = loanRepayMapper.findById(userBillModel.getOrderId());
+        String loanAgentLoginName = traceLoanAgentLoginName(tracedObject);
         SingleObjectDiagnosis
                 // exist
-                .init(tracedObject, this::buildTracedObjectIdLoanRepay)
+                .init(userBillModel, tracedObject, this::buildTracedObjectIdLoanRepay)
                 // status
                 .check(m -> m.getStatus() == RepayStatus.COMPLETE,
                         m -> String.format("wrong status [expect:SUCCESS, actual:%s]", m.getStatus()))
+                // owner
+                .check(m -> userBillModel.getLoginName().equals(loanAgentLoginName),
+                        m -> String.format("wrong owner [expect:%s, actual:%s]", userBillModel.getLoginName(), loanAgentLoginName))
                 // unique
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectIdLoanRepay(m)),
                         m -> String.format("has already traced by UserBill#%d", context.getUserBillId(buildTracedObjectIdLoanRepay(m))))
@@ -79,6 +95,21 @@ public class NormalRepayDiagnosis extends UserBillBusinessDiagnosis {
                 .success(r -> onPass(userBillModel, context, buildTracedObjectIdLoanRepay(tracedObject)));
     }
 
+    private String traceInvestLoginName(InvestRepayModel investRepayModel) {
+        if (investRepayModel != null) {
+            InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
+            return investModel == null ? null : investModel.getLoginName();
+        }
+        return null;
+    }
+
+    private String traceLoanAgentLoginName(LoanRepayModel loanRepayModel) {
+        if (loanRepayModel != null) {
+            LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
+            return loanModel == null ? null : loanModel.getAgentLoginName();
+        }
+        return null;
+    }
 
     private String buildTracedObjectIdInvestRepay(InvestRepayModel investRepayModel) {
         return "InvestRepay:TI:" + investRepayModel.getId();
