@@ -88,6 +88,8 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${invest.achievement.start.time}\")}")
     private Date achievementStartTime;
 
+    public static int DAYS_OF_YEAR = 365;
+
     @Override
     public LoanDetailDto getLoanDetail(String loginName, long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -110,42 +112,36 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     @Override
     public BaseDto<BasePaginationDataDto> getInvests(final String loginName, long loanId, int index, int pageSize) {
         long count = investMapper.findCountByStatus(loanId, InvestStatus.SUCCESS);
-        List<InvestModel> investModels = investMapper.findByStatus(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
-        List<LoanDetailInvestPaginationItemDto> records = Lists.newArrayList();
+        LoanModel loanModel = loanMapper.findById(loanId);
+        List<InvestRecordsView> investModelRecords;
+        if(loanModel.getStatus().equals(LoanStatus.RAISING) || loanModel.getStatus().equals(LoanStatus.RECHECK)){
+            investModelRecords = investMapper.findSuccessInvestRecordsByRaising(loanId, DAYS_OF_YEAR,(index - 1) * pageSize, pageSize);
+        }else{
+            investModelRecords = investMapper.findSuccessInvestRecordsByAfterRaising(loanId,(index - 1) * pageSize, pageSize);
+        }
 
-        if (CollectionUtils.isNotEmpty(investModels)) {
-            records = Lists.transform(investModels, new Function<InvestModel, LoanDetailInvestPaginationItemDto>() {
+        List<LoanDetailInvestPaginationItemDto> records = Lists.newArrayList();
+        if(CollectionUtils.isNotEmpty(investModelRecords)){
+            records = Lists.transform(investModelRecords, new Function<InvestRecordsView, LoanDetailInvestPaginationItemDto>() {
                 @Override
-                public LoanDetailInvestPaginationItemDto apply(InvestModel input) {
+                public LoanDetailInvestPaginationItemDto apply(InvestRecordsView input) {
                     LoanDetailInvestPaginationItemDto item = new LoanDetailInvestPaginationItemDto();
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());
                     item.setMobile(randomUtils.encryptMobile(loginName, input.getLoginName(), Source.WEB));
-
-
-                    long amount = 0;
-                    List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getId());
-                    for (InvestRepayModel investRepayModel : investRepayModels) {
-                        amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
-                    }
-
-                    if (CollectionUtils.isEmpty(investRepayModels)) {
-                        amount = investService.estimateInvestIncome(input.getLoanId(), loginName, input.getAmount());
-                    }
-
-                    item.setExpectedInterest(AmountConverter.convertCentToString(amount));
+                    item.setExpectedInterest(AmountConverter.convertCentToString(input.getExpectedInterest()));
                     item.setCreatedTime(input.getTradingTime() == null ? input.getCreatedTime() : input.getTradingTime());
                     item.setAchievements(input.getAchievements());
                     return item;
                 }
             });
         }
+
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         BasePaginationDataDto<LoanDetailInvestPaginationItemDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);
 
         // TODO:fake
-        LoanModel loanModel = loanMapper.findById(loanId);
         if (loanId == 41650602422768L && loanModel.getStatus() == LoanStatus.REPAYING) {
             LoanDetailInvestPaginationItemDto fakeItem = new LoanDetailInvestPaginationItemDto();
             fakeItem.setMobile("186****9367");
