@@ -60,6 +60,7 @@
         <intercept-url pattern="/share-callback" access="permitAll()"/>
         <intercept-url pattern="/v1.**/image-captcha" access="permitAll()"/>
         <intercept-url pattern="/v2.0/image-captcha" access="permitAll()"/>
+        <intercept-url pattern="/v2.0/get/pop-push" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
     </http>
 
