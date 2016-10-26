@@ -137,8 +137,12 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
 
     // 获取手机验证码
     $fetchCaptcha.on('touchstart', function (event) {
+        var $this=$(this);
         event.preventDefault();
         $fetchCaptcha.prop('disabled', true);
+        if($this.prop('disabled')) {
+            return;
+        }
         var captchaVal = $appCaptcha.val(),
             mobile = $phoneDom.val();
         $.ajax({
@@ -167,11 +171,13 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
 
                 if (!data.status && !data.isRestricted) {
                     $('#appCaptchaErr').html('图形验证码错误');
+                    refreshCaptcha();
                 }
             })
             .fail(function () {
                 layer.msg('请求失败，请重试！');
                 $fetchCaptcha.prop('disabled', false);
+                refreshCaptcha();
             });
     });
 
