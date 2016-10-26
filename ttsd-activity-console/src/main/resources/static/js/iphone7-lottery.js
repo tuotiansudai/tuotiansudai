@@ -18,7 +18,7 @@ require(['jquery', 'layerWrapper', 'jquery-ui', 'bootstrap', 'csrf'], function (
     }
 
     $('.user-lotteries-count').click(function (e) {
-        var lotteries = $(this).data('lotteries').split(',');
+        var lotteries = ($(this).data('lotteries')+'').split(',');
         var userName = $(this).data('username');
         showUserLotteriesList(userName, lotteries);
         return false;
