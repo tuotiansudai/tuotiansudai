@@ -78,15 +78,10 @@
     <#if pageCss?? && pageCss != "">
     <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8" />
     </#if>
-    <script>
-        var _czc = _czc || [];
-        <#if isProduction>
-            _czc.push(["_trackEvent()", "1254796373"]);
-        <#else >
-            _czc.push(["_trackEvent()", "1257936541"]);
-        </#if>
-    </script>
 
+    <#include "../cnzz.ftl"/>
+    <!-- growing io -->
+    <#include "../growing-io.ftl"/>
 </head>
 <body>
 
