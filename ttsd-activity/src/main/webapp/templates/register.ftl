@@ -29,7 +29,7 @@
                         <input type="text" id="appCaptcha" name="appCaptcha" placeholder="验证码" maxlength="5"
                                class="appCaptcha" value="">
                         <em class="image-captcha">
-                            <img src="" alt=""/>
+                            <img id="image-captcha-image" src="" alt=""/>
                         </em>
                         <span class="img-change">换一张</span>
                     </li>
