@@ -12,7 +12,6 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -40,19 +39,12 @@ public class MembershipUserCollector implements UserCollector {
     @Override
     public List<String> collect(long couponId) {
         CouponModel couponModel = couponMapper.findById(couponId);
-        Iterator memberships = mapping.entrySet().iterator();
-        Integer level = null;
-        while (memberships.hasNext()){
-            Map.Entry membership = (Map.Entry)memberships.next();
-            if(membership.getValue().equals(couponModel.getUserGroup())){
-                level = (Integer) membership.getKey();
-                break;
+        for (Map.Entry integerUserGroupEntry : mapping.entrySet()) {
+            if(integerUserGroupEntry.getValue().equals(couponModel.getUserGroup())){
+                return userMembershipMapper.findLoginNameMembershipByLevel((Long) integerUserGroupEntry.getKey());
             }
         }
-
-        if(level == null) return Lists.newArrayList();
-
-        return userMembershipMapper.findLoginNameMembershipByLevel(level);
+        return Lists.newArrayList();
     }
 
     @Override

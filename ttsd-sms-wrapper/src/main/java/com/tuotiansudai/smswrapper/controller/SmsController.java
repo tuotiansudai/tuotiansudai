@@ -19,9 +19,7 @@ public class SmsController {
     @RequestMapping(value = "/register-captcha", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> sendRegisterCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {
-        BaseDto<SmsDataDto> smsDateDto = smsService.sendRegisterCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
-        return smsDateDto;
-
+        return smsService.sendRegisterCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
     }
 
     @RequestMapping(value = "/no-password-invest-captcha", method = RequestMethod.POST)
