@@ -95,6 +95,7 @@ public class IdGenerator {
     }
 
     private long timeGen() {
-        return System.nanoTime() / 1000000;
+        // return System.nanoTime() / 1000000;
+        return System.currentTimeMillis();
     }
 }
