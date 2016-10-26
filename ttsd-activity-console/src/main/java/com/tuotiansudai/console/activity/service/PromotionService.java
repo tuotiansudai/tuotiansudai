@@ -43,6 +43,7 @@ public class PromotionService {
 
     public void updatePromotion(String loginName, PromotionDto promotionDto){
         PromotionModel promotionModel = new PromotionModel(promotionDto);
+        promotionModel.setId(promotionDto.getId());
         promotionModel.setUpdatedBy(loginName);
         promotionModel.setUpdatedTime(new Date());
         promotionMapper.update(promotionModel);
