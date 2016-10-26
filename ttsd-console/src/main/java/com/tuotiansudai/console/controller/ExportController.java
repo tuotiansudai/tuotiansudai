@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.console.service.ExportService;
 import com.tuotiansudai.console.service.InvestAchievementService;
 import com.tuotiansudai.console.service.UserServiceConsole;
@@ -232,12 +233,13 @@ public class ExportController {
                             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
                             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                             RoleStage roleStage, String referrerMobile, String channel,
+                            UserOperation userOperation,
                             @RequestParam(value = "source", required = false) Source source, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleUsers.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = userServiceConsole.findAllUser(loginName, email, mobile,
-                beginTime, endTime, source, roleStage, referrerMobile, channel, index, pageSize);
+                beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, index, pageSize);
         List<List<String>> usersData = exportService.buildUsers(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, usersData, response.getOutputStream());
     }

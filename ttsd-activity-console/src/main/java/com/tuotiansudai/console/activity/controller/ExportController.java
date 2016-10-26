@@ -25,7 +25,7 @@ public class ExportController {
     private ExportService exportService;
 
     @RequestMapping(value = "/autumn-list", method = RequestMethod.GET)
-    public ModelAndView autumnList(){
+    public ModelAndView autumnList() {
         ModelAndView modelAndView = new ModelAndView("/autumn-list");
         return modelAndView;
     }
@@ -47,5 +47,19 @@ public class ExportController {
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.AutumnActivityList, csvData, response.getOutputStream());
     }
 
+    @RequestMapping(value = "/export-iphone7-lottery-stat", method = RequestMethod.GET)
+    public void iphone7LotteryStatExport(HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.Iphone7LotteryStatHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            //logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
+
+        List<List<String>> csvData = exportService.iphone7LotteryStat();
+
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.Iphone7LotteryStatHeader, csvData, response.getOutputStream());
+    }
 
 }
