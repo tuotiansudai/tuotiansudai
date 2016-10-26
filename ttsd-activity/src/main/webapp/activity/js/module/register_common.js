@@ -11,9 +11,7 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
 
     var mobileValid=false,
         passwordValid=false,
-        captchaValid=false,
-        referrerValidBool=true,
-        agreementValid=true;
+        captchaValid=false;
 
     $('input[type="text"],input[type="password"]', $registerForm).placeholder();
 
@@ -140,7 +138,7 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
     // 获取手机验证码
     $fetchCaptcha.on('touchstart', function (event) {
         event.preventDefault();
-
+        $fetchCaptcha.prop('disabled', true);
         var captchaVal = $appCaptcha.val(),
             mobile = $phoneDom.val();
         $.ajax({
@@ -149,9 +147,10 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
             dataType: 'json',
             data: {imageCaptcha: captchaVal, mobile: mobile}
         })
-            .done(function (data) {
+            .done(function (response) {
+                var data = response.data;
                 var countdown = 60,timer;
-                if (data.data.status && !data.data.isRestricted) {
+                if (data.status && !data.isRestricted) {
                     timer = setInterval(function () {
                         $fetchCaptcha.prop('disabled', true).text(countdown + '秒后重发');
                         countdown--;
@@ -162,17 +161,17 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
                     }, 1000);
                     return;
                 }
-                if (!data.data.status && data.data.isRestricted) {
+                if (!data.status && data.isRestricted) {
                     $('#appCaptchaErr').html('短信发送频繁,请稍后再试');
                 }
 
-                if (!data.data.status && !data.data.isRestricted) {
+                if (!data.status && !data.isRestricted) {
                     $('#appCaptchaErr').html('图形验证码错误');
                 }
             })
             .fail(function () {
                 layer.msg('请求失败，请重试！');
-
+                $fetchCaptcha.prop('disabled', false);
             });
     });
 
