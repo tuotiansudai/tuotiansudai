@@ -36,7 +36,7 @@ public class DeadlineFundraisingJob implements Job{
             return;
         }
 
-        long loanId = (Long) value;
+        long loanId = Long.parseLong(String.valueOf(value)) ;
 
         LoanModel loanModel = loanMapper.findById(loanId);
 
