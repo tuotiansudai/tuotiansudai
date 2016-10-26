@@ -32,7 +32,7 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer)
 				dataType: 'json',
 				data: {
 					id: idString,
-					itemType: typeString,
+					goodsType: typeString,
 					amount: $numText.val()
 				}
 			})

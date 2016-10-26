@@ -2,6 +2,7 @@ package com.tuotiansudai.membership.service;
 
 import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,8 @@ import java.util.List;
 
 @Service
 public class MembershipExperienceBillService {
+
+    private static Logger logger = Logger.getLogger(MembershipExperienceBillService.class);
 
     @Autowired
     private MembershipExperienceBillMapper membershipExperienceBillMapper;

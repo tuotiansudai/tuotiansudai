@@ -2,6 +2,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 	$(function() {
 		var browser = commonFun.browserRedirect(),
 			$TodayAwards=$('#TodayAwards'),
+			$historyTime=$('#historyTime'),
 			$investRankingButton=$('#investRanking-button'),
 			$heroNext=$('#heroNext'),
 			$heroPre=$('#heroPre'),
@@ -20,7 +21,8 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
         }
 
 
-
+        $historyTime.text()>=$TodayAwards.val()?$heroNext.hide():$heroNext.show();
+        $historyTime.text().replace(/-/gi,'')==$('#startTime').val()?$heroPre.hide():$heroPre.show();
 		//获取前一天或者后一天的日期
 		function GetDateStr(date,AddDayCount) {
 			var dd = new Date(date);
@@ -34,18 +36,27 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 
 
 		$investRankingButton.find('.change-btn').on('click',function(event) {
-			var dateSpilt=$TodayAwards.val(),
+			var dateSpilt=$historyTime.text(),
 				currDate;
+			
 			if(/heroPre/.test(event.target.id)) {
-				currDate=GetDateStr(dateSpilt,-1); //前一天
+				if($historyTime.text().replace(/-/gi,'')>$('#startTime').val()){
+					currDate=GetDateStr(dateSpilt,-1); //前一天
+					heroRank(currDate);
+					$historyTime.text(currDate);
+				}
 			}
 			else if(/heroNext/.test(event.target.id)){
-				currDate=GetDateStr(dateSpilt,1); //后一天
+				if($historyTime.text().replace(/-/gi,'')<=$('#endTime').val()){
+					currDate=GetDateStr(dateSpilt,1); //后一天
+					heroRank(currDate);
+					$historyTime.text(currDate);
+				}
 			}
-			if(currDate.replace(/-/gi,'')>=$('#startTime').val() || currDate.replace(/-/gi,'')<=$('#endTime').val()){
-				heroRank(currDate);
-			}
-			$TodayAwards.val(currDate);
+				
+			$historyTime.text().replace(/-/gi,'')>=$TodayAwards.val().replace(/-/gi,'')?$heroNext.hide():$heroNext.show();
+			$historyTime.text().replace(/-/gi,'')==$('#startTime').val()?$heroPre.hide():$heroPre.show();
+			
 			
 		});
 

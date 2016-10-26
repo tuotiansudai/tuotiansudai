@@ -3,7 +3,9 @@ var require = {
     'paths': {
         'text': staticServer+'/activity/js/libs/text-2.0.14',
         'jquery': staticServer+'/activity/js/libs/jquery-1.11.3.min',
-        'copyclip': staticServer+'/activity/js/libs/zeroclip/ZeroClipboard',
+        'clipboard': staticServer+'/activity/js/libs/clipboard.min',
+        'md5': staticServer+'/activity/js/libs/jQuery.md5',
+        'qrcode': staticServer+'/activity/js/libs/jquery.qrcode.min',
         'csrf': staticServer+'/activity/js/libs/csrf',
         'jqueryPage': staticServer+'/activity/js/libs/jquery.page',
         'jquery.validate': staticServer+'/activity/js/libs/jquery.validate-1.14.0.min',
@@ -60,7 +62,9 @@ var require = {
         'fancybox':['jquery'],
         'placeholder': ['jquery'],
         'superslide': ['jquery'],
-        'circle':['jquery']
+        'md5':['jquery'],
+        'qrcode':['jquery'],
+        'clipboard':['jquery']
     },
     config: {
         text: {

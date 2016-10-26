@@ -57,7 +57,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true, // Enable dynamic expansion.
                     cwd: '', // Src matches are relative to this path.
-                    src: ['<%= meta.baseSassPath %>/*.scss'], // Actual pattern(s) to match.
+                    src: ['<%= meta.baseSassPath %>/**/*.scss'], // Actual pattern(s) to match.
                     dest: '<%= meta.baseCssPath %>/', // Destination path prefix.
                     ext: '.css', // Dest filepaths will have this extension.
                     extDot: 'first', // Extensions in filenames begin after the first dot
@@ -103,12 +103,12 @@ module.exports = function(grunt) {
         watch: {
             sass: {
                 files: [
-                    '<%= meta.baseSassPath %>/*.scss'
+                    '<%= meta.baseSassPath %>/**/*.scss'
                 ],
-                tasks: ['sass']
+                //tasks: ['sass']
                 //如果scss文件没有import别的scss文件，可以加newer，效率快
                 //如果scss有import别的scss文件，不要加newer,不然监听不到import里文件的变化
-                //tasks: ['newer:sass']
+                tasks: ['newer:sass']
             },
             dataUri: {
                 files: [
@@ -118,14 +118,16 @@ module.exports = function(grunt) {
             },
             cssmin: {
                 files: ['<%= meta.base64CssPath %>/*.css'],
-                tasks: ['newer:cssmin']
+                tasks: ['cssmin']
             },
 
             uglify: {
                 files: [
-                    ['<%= meta.baseJsPath %>/*.js']
+                    ['<%= meta.baseJsPath %>/*.js','<%= meta.baseJsPath %>/module/*.js']
                 ],
-                tasks: ['newer:clean:js', 'newer:uglify']
+                tasks: ['clean:js', 'uglify']
+                //tasks: ['newer:clean:js', 'newer:uglify']
+                //如果需要监听其他的min文件，去掉newer
             }
         },
         connect: {

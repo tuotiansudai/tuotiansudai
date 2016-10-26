@@ -5,12 +5,12 @@
 	<div class="wp clearfix">
 		<div class="order-top">
             您所在的位置：<a href="/point-shop">积分商城</a> > <a
-                href="/point-shop/${productShowItem.id?string('0')}/${productShowItem.itemType}/detail">${productShowItem.name!}</a>><span>订单确认</span>
+                href="/point-shop/${productShowItem.id?string('0')}/${productShowItem.goodsType}/detail">${productShowItem.name!}</a>><span>订单确认</span>
 		</div>
 	</div>
 	<div class="wp clearfix order-item">
 		<div class="container-order">
-			<#if productShowItem.itemType.name() == 'PHYSICAL'>
+			<#if productShowItem.goodsType.name() == 'PHYSICAL'>
                 <div class="order-place">
                 	<div class="address-model">
 						<h3>添加您的收货地址</h3>
@@ -63,13 +63,13 @@
 				<div class="order-table">
 					<div class="order-picture">
                         <p class="mater-img picture-item">
-                            <img src="/${productShowItem.imageUrl}" width="140" height="114"/>
+                            <img src="${staticServer}${productShowItem.imageUrl}" width="140" height="114"/>
                         </p>
 					</div>
 					<div class="order-name">
                         <p class="name-text">${productShowItem.name!}</p>
 
-						<#if productShowItem.itemType.name() == 'PHYSICAL' || productShowItem.itemType.name() == 'VIRTUAL'>
+						<#if productShowItem.goodsType.name() == 'PHYSICAL' || productShowItem.goodsType.name() == 'VIRTUAL'>
                             <p>${productShowItem.description}</p>
 						<#else>
 							<#list productShowItem.description?split("\n") as str>
@@ -115,7 +115,7 @@
                         <input type="button" value="已售罄" class="order-btn">
 					<#else>
                         <input type="button" value="立即兑换" class="order-btn" data-id="${productShowItem.id?c!0}"
-                               data-type="${productShowItem.itemType.name()}" id="orderBtn">
+                               data-type="${productShowItem.goodsType.name()}" id="orderBtn">
 					</#if>
 
 				</p>

@@ -17,6 +17,7 @@ import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.BankModel;
 import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ import java.util.List;
 
 @Service
 public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
+
+    final static Logger logger = Logger.getLogger(MobileAppRechargeServiceImpl.class);
+
     @Autowired
     private PayWrapperClient payWrapperClient;
 
@@ -45,7 +49,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
 
     @Override
     public BaseResponseDto recharge(BankCardRequestDto bankCardRequestDto) {
-        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        BaseResponseDto<BankCardResponseDto> baseResponseDto = new BaseResponseDto<>();
         RechargeDto rechargeDto = bankCardRequestDto.convertToRechargeDto();
         rechargeDto.setChannel(mobileAppChannelService.obtainChannelBySource(bankCardRequestDto.getBaseParam()));
 
@@ -58,10 +62,16 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
         BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
         try {
             BaseDto<PayFormDataDto> formDto = payWrapperClient.recharge(rechargeDto);
+            if (!formDto.isSuccess()) {
+                logger.error("[MobileAppRechargeServiceImpl][recharge] pay wrapper may fail to connect.");
+
+                baseResponseDto.setCode(ReturnMessage.FAIL.getCode());
+                baseResponseDto.setMessage(ReturnMessage.FAIL.getMsg());
+                return baseResponseDto;
+            }
             if (formDto.getData().getStatus()) {
                 bankCardResponseDto.setUrl(formDto.getData().getUrl());
-                bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(formDto.getData().getFields(), true));
-
+                bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(formDto.getData().getFields()));
             }
         } catch (UnsupportedEncodingException e) {
             return new BaseResponseDto(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode(), ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());

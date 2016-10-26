@@ -9,11 +9,10 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -29,7 +28,7 @@ public class ActivitiesController {
     @Autowired
     private AccountService accountService;
 
-    @RequestMapping(path = "/{item:^recruit|national-day|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|loan-hike$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^recruit|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|loan-hike$}", method = RequestMethod.GET)
     public ModelAndView activities(@PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
@@ -51,5 +50,20 @@ public class ActivitiesController {
         boolean newbieCouponAlert = couponAlert != null && couponAlert.getCouponIds().size() > 0;
         modelAndView.addObject("couponAlert", newbieCouponAlert);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/isLogin", method = RequestMethod.GET)
+    public ModelAndView isLogin() {
+        if(!StringUtils.isEmpty(LoginUserInfo.getLoginName())) {
+            return null;
+        } else {
+            return new ModelAndView("/csrf");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/get-realRealName", method = RequestMethod.GET)
+    public String markRemind(@RequestParam(value = "mobile") String mobile) {
+        return accountService.getRealNameByMobile(mobile);
     }
 }

@@ -340,20 +340,42 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         //click invest submit btn
         $investSubmit.on('click', function(event) {
             event.preventDefault();
-            if (isInvestor) {
-                noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
-                return;
-            }
-            if(isAuthentication){
-                location.href = '/register/account';
-            }
-            layer.open({
-              type: 1,
-              title: false,
-              closeBtn: 0,
-              area:['auto','auto'],
-              content: $('#loginTip') 
-            });
+
+            $.ajax({
+                url: '/isLogin',
+                //data:data,
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).fail(function (response) {
+                    if (response.responseText != "") {
+                        $("meta[name='_csrf']").remove();
+                        $('head').append($(response.responseText));
+                        var token = $("meta[name='_csrf']").attr("content");
+                        var header = $("meta[name='_csrf_header']").attr("content");
+                        $(document).ajaxSend(function (e, xhr, options) {
+                            xhr.setRequestHeader(header, token);
+                        });
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            closeBtn: 0,
+                            area: ['auto', 'auto'],
+                            content: $('#loginTip')
+                        });
+                        $('.image-captcha img').trigger('click');
+                    } else {
+                        if (isInvestor) {
+                            noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
+                            return;
+                        }
+                        if (isAuthentication) {
+                            location.href = '/register/account';
+                        }
+                    }
+
+                }
+            );
         });
 
         $useExperienceTicket.click(function(event) {
@@ -773,17 +795,36 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             layer.closeAll('tips');
             var value = _.compose(replace)($investInput.val()),
                 $expected=$accountInfo.find('.expected-interest-dd');
+
+            var queryParams = [];
+            $.each($('input[type="hidden"][name="userCouponIds"]'), function(index, item) {
+                queryParams.push({
+                    'name': 'couponIds',
+                    'value': $(item).data("coupon-id")
+                })
+            });
+
+            $ticketList.find('li').each(function(index, item) {
+                if ($(item).find('input[type="radio"]:checked').length > 0) {
+                    queryParams.push({
+                        'name': 'couponIds',
+                        'value': $(item).data("coupon-id")
+                    });
+                }
+            });
+            var couponIds = queryParams.length == 0 ? 0: queryParams[0].value;
+
             $.ajax({
                 url: '/get-membership-preference',
                 type: 'GET',
                 dataType: 'json',
-                data:{"loanId":loanId,"investAmount":value},
+                data:{"loanId":loanId,"investAmount":value,"couponIds":couponIds},
                 contentType: 'application/json; charset=UTF-8'
             })
                 .done(function(response) {
                     var data=response.data;
                     if (data.status) {
-                        var info='<i class="fa fa-times-circle"></i>V'+data.level+'会员，专享服务费'+data.rate+'折优惠，已多赚'+data.amount+'元';
+                        var info='V'+data.level+'会员，专享服务费'+data.rate+'折优惠，已多赚'+data.amount+'元';
 
                         layer.tips(info, $expected, {
                             tips: [1, '#ff7200'],

@@ -28,7 +28,7 @@
         #{employmentStatus})
     </insert>
 
-    <select id="getLoanerDetailByLoanId" resultMap="LoanerDetailsResultMap">
+    <select id="getByLoanId" resultMap="LoanerDetailsResultMap">
         SELECT
         *
         FROM
@@ -70,4 +70,11 @@
         WHERE
           loan_id = #{loanId}
     </update>
+
+    <delete id="deleteByLoanId">
+        DELETE FROM
+        `aa`.`loaner_details`
+        WHERE
+        loan_id = #{loanId}
+    </delete>
 </mapper>

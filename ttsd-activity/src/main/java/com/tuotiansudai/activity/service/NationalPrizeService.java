@@ -17,7 +17,6 @@ import com.tuotiansudai.membership.repository.model.MembershipLevel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
-import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.RandomUtils;
@@ -164,7 +163,7 @@ public class NationalPrizeService {
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
         userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", nationalPrize, DateTime.now().toDate(), ActivityCategory.NATIONAL_PRIZE));
-        return new DrawLotteryResultDto(0,nationalPrize.name(),prizeType.name());
+        return new DrawLotteryResultDto(0,nationalPrize.name(),prizeType.name(),nationalPrize.getDescription());
     }
 
     private long getCouponId(LotteryPrize lotteryPrize){
@@ -226,7 +225,7 @@ public class NationalPrizeService {
         long count = 0l;
         Map<String,String> userMap = Maps.newConcurrentMap();
         for(InvestModel investModel : investModels){
-            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(investModel.getLoanId());
+            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(investModel.getLoanId());
             if(loanDetailsModel != null && loanDetailsModel.isActivity()){
                 amount += investModel.getAmount();
                 if(userMap.get(investModel.getLoginName()) == null){
@@ -244,7 +243,6 @@ public class NationalPrizeService {
         UserMembershipModel userMembershipModel = new UserMembershipModel(loginName,
                 membershipMapper.findByLevel(level).getId(),
                 DateTime.now().plusMonths(1).withTime(23,59,59,59).toDate(),
-                new Date(),
                 UserMembershipType.GIVEN);
         userMembershipMapper.create(userMembershipModel);
     }

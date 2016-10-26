@@ -18,7 +18,8 @@
                     <#list question.tags as tag>
                         <span class="tag">${tag.description}</span>
                     </#list>
-                <dd>${question.addition!}</dd>
+                </dd>
+                <dd>${question.addition!?replace('\\n','<br/>','i')?replace('\\r','<br/>','i')}</dd>
                 <#if !isQuestionOwner>
                     <dd class="fr clearfix answer-button">
                         <button type="button" class="btn">我来回答</button>
@@ -96,7 +97,7 @@
                 </div>
                 <#list answers.data.records as answer>
                     <dl class="answers-list">
-                        <dd>${answer.answer}</dd>
+                        <dd>${answer.answer?replace('\\n','<br/>','i')?replace('\\r','<br/>','i')}</dd>
                         <dd class="date-time-answer"><span>${answer.mobile}</span>
                             <span class="datetime">${answer.createdTime?string("yyyy年MM月dd日 HH:mm")}</span>
                             <@global.isAnonymous>

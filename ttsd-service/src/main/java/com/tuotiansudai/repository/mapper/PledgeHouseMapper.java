@@ -9,7 +9,7 @@ public interface PledgeHouseMapper {
 
     void create(PledgeHouseModel pledgeHouseModel);
 
-    PledgeHouseModel getPledgeHouseDetailByLoanId(@Param(value = "loanId") long loanId);
+    PledgeHouseModel getByLoanId(@Param(value = "loanId") long loanId);
 
     void updateByLoanId(PledgeHouseModel pledgeHouseModel);
 

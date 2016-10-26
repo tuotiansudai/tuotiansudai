@@ -66,13 +66,19 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
     private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Autowired
+    private LoanerEnterpriseDetailsMapper loanerEnterpriseDetailsMapper;
+
+    @Autowired
+    private PledgeEnterpriseMapper pledgeEnterpriseMapper;
+
+    @Autowired
     private RandomUtils randomUtils;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
-    @Value("${web.server}")
-    private String domainName;
+    @Value("${mobile.static.server}")
+    private String staticServer;
 
     private String title = "拓天速贷引领投资热，开启互金新概念";
 
@@ -100,7 +106,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         LoanDetailV2ResponseDataDto dataDto = new LoanDetailV2ResponseDataDto();
         dataDto.setLoanId(loanModel.getId());
         dataDto.setLoanType(loanModel.getProductType() != null ? loanModel.getProductType().getProductLine() : "");
-        LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
+        LoanDetailsModel loanDetailsModelActivity = loanDetailsMapper.getByLoanId(loanModel.getId());
         dataDto.setLoanName(loanModel.getName());
         dataDto.setActivityDesc(loanDetailsModelActivity != null ? loanDetailsModelActivity.getActivityDesc() : "");
         dataDto.setPledgeType(loanModel.getPledgeType());
@@ -146,7 +152,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         dataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
         dataDto.setBaseRatePercent(decimalFormat.format(loanModel.getBaseRate() * 100));
         dataDto.setActivityRatePercent(decimalFormat.format(loanModel.getActivityRate() * 100));
-        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getLoanDetailsByLoanId(loanModel.getId());
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
         if (loanDetailsModel != null) {
             dataDto.setDeclaration(loanDetailsModel.getDeclaration());
             dataDto.setExtraSource((Source.WEB.name().equals(loanDetailsModel.getExtraSource())) ? loanDetailsModel.getExtraSource() : "");
@@ -167,20 +173,34 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         if (loanModel.getRaisingCompleteTime() != null) {
             dataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loanModel.getRaisingCompleteTime()));
         }
-        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getLoanerDetailByLoanId(loanModel.getId());
+        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanModel.getId());
         if (loanerDetailsModel != null) {
             dataDto.setLoaner(new LoanerDto(loanerDetailsModel));
             switch (loanModel.getPledgeType()) {
                 case HOUSE:
-                    PledgeHouseModel pledgeHouseModel = pledgeHouseMapper.getPledgeHouseDetailByLoanId(loanModel.getId());
+                    PledgeHouseModel pledgeHouseModel = pledgeHouseMapper.getByLoanId(loanModel.getId());
                     if (pledgeHouseModel != null) {
                         dataDto.setPledgeHouse(new PledgeHouseDto(pledgeHouseModel));
                     }
                 case VEHICLE:
-                    PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(loanModel.getId());
+                    PledgeVehicleModel pledgeVehicleModel = pledgeVehicleMapper.getByLoanId(loanModel.getId());
                     if (pledgeVehicleModel != null) {
                         dataDto.setPledgeVehicle(new PledgeVehicleDto(pledgeVehicleModel));
                     }
+            }
+        }
+        if(loanModel.getPledgeType() == PledgeType.ENTERPRISE){
+            LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
+            if(loanerEnterpriseDetailsModel != null){
+                EnterpriseDto enterpriseDto = new EnterpriseDto(loanerEnterpriseDetailsModel);
+                enterpriseDto.setShareholder(StringUtils.rightPad(StringUtils.left(enterpriseDto.getShareholder(),1),2,"某"));
+                enterpriseDto.setJuristicPerson(StringUtils.rightPad(StringUtils.left(enterpriseDto.getJuristicPerson(),1),2,"某"));
+
+                dataDto.setEnterprise(enterpriseDto);
+            }
+            PledgeEnterpriseModel pledgeEnterpriseModel = pledgeEnterpriseMapper.getByLoanId(loanModel.getId());
+            if(pledgeEnterpriseModel != null){
+                dataDto.setPledgeEnterpriseDto(new PledgeEnterpriseDto(pledgeEnterpriseModel));
             }
         }
 
@@ -260,7 +280,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             String materialUrl = loanTitleRelationModel.getApplicationMaterialUrls();
             if (StringUtils.isNotEmpty(materialUrl)) {
                 for (String url : materialUrl.split(",")) {
-                    String tempUrl = domainName + "/" + url;
+                    String tempUrl = staticServer + url;
                     imageUrlList.add(tempUrl);
                 }
             }

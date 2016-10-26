@@ -38,6 +38,6 @@ public class LoginController {
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
 
-        this.captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession(false) != null ? request.getSession(false).getId() : null);
+        this.captchaHelper.storeCaptcha(captcha.getAnswer(), request.getSession().getId());
     }
 }

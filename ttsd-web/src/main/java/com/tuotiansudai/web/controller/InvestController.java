@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipInvestService;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
@@ -48,7 +49,7 @@ public class InvestController {
     private SmsCaptchaService smsCaptchaService;
 
     @Autowired
-    private MembershipInvestService membershipInvestService;
+    private UserMembershipEvaluator userMembershipEvaluator;
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes) {
@@ -217,17 +218,18 @@ public class InvestController {
     @RequestMapping(path = "/get-membership-preference", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<MembershipPreferenceDto> getMembershipPreference(@RequestParam(value = "loanId") long loanId,
-                                                                    @RequestParam(value = "investAmount") String investAmount) {
+                                                                    @RequestParam(value = "investAmount") String investAmount,
+                                                                    @RequestParam(value = "couponIds", defaultValue = "") List<Long> couponIds) {
         String loginName = LoginUserInfo.getLoginName();
         MembershipPreferenceDto membershipPreferenceDto = new MembershipPreferenceDto(true);
-        MembershipModel membershipModel = membershipInvestService.getCurMaxMembership(loginName);
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         if (StringUtils.isEmpty(loginName) || null == membershipModel) {
             membershipPreferenceDto.setValid(false);
         } else {
             membershipPreferenceDto.setValid(true);
             membershipPreferenceDto.setLevel(membershipModel.getLevel());
             membershipPreferenceDto.setRate((int) (membershipModel.getFee() * 100));
-            membershipPreferenceDto.setAmount(AmountConverter.convertCentToString(investService.calculateMembershipPreference(loginName, loanId, AmountConverter.convertStringToCent(investAmount))));
+            membershipPreferenceDto.setAmount(AmountConverter.convertCentToString(investService.calculateMembershipPreference(loginName, loanId, couponIds, AmountConverter.convertStringToCent(investAmount), Source.WEB)));
         }
         BaseDto<MembershipPreferenceDto> baseDto = new BaseDto<>();
         baseDto.setData(membershipPreferenceDto);

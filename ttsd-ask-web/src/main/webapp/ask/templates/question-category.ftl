@@ -32,7 +32,7 @@
             <#list questions.data.records as question>
                 <dl class="answers-list">
                     <dt><a href="/question/${question.id?string.computer}" target="_blank">${question.question}</a></dt>
-                    <dd class="detail"><a href="/question/${question.id?string.computer}" target="_blank">${question.addition}</a></dd>
+                    <dd class="detail"><a href="/question/${question.id?string.computer}" target="_blank">${question.addition?replace('\\n','<br/>','i')?replace('\\r','<br/>','i')}</a></dd>
                     <dd><span>${question.mobile}</span>
                         <span class="answerNum">回答：${question.answers}</span>
                         <span class="datetime">${question.createdTime?string("yyyy年MM月dd日 HH:mm")}</span>

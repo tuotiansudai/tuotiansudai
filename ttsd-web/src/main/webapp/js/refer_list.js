@@ -1,6 +1,9 @@
-require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension'],
-    function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer) {
+require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'clipboard','daterangepicker', 'jquery.ajax.extension','commonFun','md5','qrcode'],
+    function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer,clipboard) {
+        window['Clipboard']=clipboard;
 
+        var $investListContent=$('#investListContent'),
+            $clipboardText=$('#clipboard_text');
         var $searchBox=$('#search-box'),
             dataPickerElement = $('#date-picker'),
             loginName = $("#loginName"),
@@ -9,6 +12,29 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
             $btnSearch=$('.btn-search',$searchBox),
             $btnReset=$('.btn-reset',$searchBox),
             $searchContent=$('.search-content-tab');
+
+        var mobile=$clipboardText.data('mobile')+'',
+            md5Mobile=$.md5(mobile);
+        var md5String=commonFun.compile(md5Mobile,mobile),
+            origin=location.origin;
+        $clipboardText.val(origin+'/activity/landing-page?referrer='+md5String);
+
+        //动态生成二维码
+
+        $('.img-code',$investListContent).qrcode(origin+'/activity/app-share?referrerMobile='+mobile);
+
+        /*复制链接*/
+        (function($) {
+            var clipboard = new Clipboard('#copyButtonBtn');
+            clipboard.on('success', function(e) {
+                layer.msg("复制成功");
+                e.clearSelection();
+            });
+            clipboard.on('error', function(e) {
+                layer.msg("复制失败");
+            });
+        })(jQuery);
+
 
         var paginationElement = paginationElementRelation;
         var template = referRelationTemplate;

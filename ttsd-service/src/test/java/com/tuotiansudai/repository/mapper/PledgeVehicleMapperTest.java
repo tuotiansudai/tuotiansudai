@@ -72,7 +72,7 @@ public class PledgeVehicleMapperTest {
                 "brand", "model");
 
         pledgeVehicleMapper.create(pledgeVehicleModel);
-        PledgeVehicleModel findPledgeVehicleModel = pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(pledgeVehicleModel.getLoanId());
+        PledgeVehicleModel findPledgeVehicleModel = pledgeVehicleMapper.getByLoanId(pledgeVehicleModel.getLoanId());
         assertNotNull(findPledgeVehicleModel);
         assertEquals(pledgeVehicleModel.getLoanId(), findPledgeVehicleModel.getLoanId());
         assertEquals(pledgeVehicleModel.getPledgeLocation(), findPledgeVehicleModel.getPledgeLocation());
@@ -96,7 +96,7 @@ public class PledgeVehicleMapperTest {
         pledgeVehicleModel.setBrand("updateBrand");
 
         pledgeVehicleMapper.updateByLoanId(pledgeVehicleModel);
-        PledgeVehicleModel findPledgeVehicleModel = pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(pledgeVehicleModel.getLoanId());
+        PledgeVehicleModel findPledgeVehicleModel = pledgeVehicleMapper.getByLoanId(pledgeVehicleModel.getLoanId());
         assertNotNull(findPledgeVehicleModel);
         assertEquals(pledgeVehicleModel.getLoanId(), findPledgeVehicleModel.getLoanId());
         assertEquals(pledgeVehicleModel.getPledgeLocation(), findPledgeVehicleModel.getPledgeLocation());
@@ -112,9 +112,9 @@ public class PledgeVehicleMapperTest {
         PledgeVehicleModel pledgeVehicleModel = new PledgeVehicleModel(9999L, "pledgeLocation", "estimateAmount", "loanAmount",
                 "brand", "model");
         pledgeVehicleMapper.create(pledgeVehicleModel);
-        assertNotNull(pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(pledgeVehicleModel.getLoanId()));
+        assertNotNull(pledgeVehicleMapper.getByLoanId(pledgeVehicleModel.getLoanId()));
 
         pledgeVehicleMapper.deleteByLoanId(pledgeVehicleModel.getLoanId());
-        assertNull(pledgeVehicleMapper.getPledgeVehicleDetailByLoanId(pledgeVehicleModel.getLoanId()));
+        assertNull(pledgeVehicleMapper.getByLoanId(pledgeVehicleModel.getLoanId()));
     }
 }

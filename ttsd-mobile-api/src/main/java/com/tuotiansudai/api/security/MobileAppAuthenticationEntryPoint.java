@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
-import java.text.MessageFormat;
 
 @Component
 public class MobileAppAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -26,8 +25,6 @@ public class MobileAppAuthenticationEntryPoint implements AuthenticationEntryPoi
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        log.debug(MessageFormat.format("[Authentication Entry Point] uri: {0} body: {1}", request.getRequestURI(), new BufferedRequestWrapper(request).getInputStreamString()));
-
         LoginResponseDataDto loginResponseDataDto = new LoginResponseDataDto();
         BaseResponseDto<LoginResponseDataDto> dto = new BaseResponseDto<>(ReturnMessage.UNAUTHORIZED);
         dto.setData(loginResponseDataDto);

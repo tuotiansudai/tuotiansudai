@@ -13,7 +13,8 @@ public enum MessageEventType {
     RECOMMEND_SUCCESS("推荐成功"),
     RECOMMEND_AWARD_SUCCESS("推荐奖励"),
     ASSIGN_COUPON_SUCCESS("获得优惠券"),
-    COUPON_5DAYS_EXPIRED_ALERT("优惠券5天后过期提醒");
+    COUPON_5DAYS_EXPIRED_ALERT("优惠券5天后过期提醒"),
+    MEMBERSHIP_EXPIRED("会员到期提醒");
 
     private final String description;
 

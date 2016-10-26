@@ -1,5 +1,5 @@
-@import "login_tip";
-@import "register_common";
+@import "module/login_tip";
+@import "module/register_common";
 $width:700px;
 @mixin mobilehide () {
   @media (max-width: $width) {
@@ -56,30 +56,18 @@ $width:700px;
   }
 }
 @-webkit-keyframes twinkling {
-  25% {
+  25%,75%{
     opacity: 0.5;
   }
-  50% {
-    opacity: 1;
-  }
-  75% {
-    opacity: 0.5;
-  }
-  100% {
+  50%,100% {
     opacity: 1;
   }
 }
 @keyframes twinkling {
-  25% {
+  25%,75%{
     opacity: 0.5;
   }
-  50% {
-    opacity: 1;
-  }
-  75% {
-    opacity: 0.5;
-  }
-  100% {
+  50%,100% {
     opacity: 1;
   }
 }
@@ -92,7 +80,10 @@ $width:700px;
   animation: bounce-up 3s linear infinite;
 }
 .animate-twink {
-  -webkit-animation: twinkling 3s infinite ease-in-out
+  -webkit-animation: twinkling 5s infinite ease-in-out
+}
+.animate-twinking {
+  -webkit-animation: twinkling 6s infinite ease-in-out
 }
 .full-screen {
   width: 100%;

@@ -24,9 +24,7 @@
                 <th>已兑换数量</th>
                 <th>商品价格</th>
                 <th>商品有效期限</th>
-                <th>操作</th>
-                <th></th>
-                <th></th>
+                <th colspan="3">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -35,7 +33,7 @@
                     <td>${type.description!}</td>
                     <td><#if type.name() =="VIRTUAL">1<#else>2</#if>-${product.seq?string('0')!}</td>
                     <td>${product.name}</td>
-                    <td><img src="/${product.imageUrl}" width="100px" height="50px"></td>
+                    <td><img src="${staticServer}${product.imageUrl}" width="100px" height="50px"></td>
                     <td>${product.description}</td>
                     <td>${product.totalCount?string('0')}</td>
                     <td>${product.usedCount?string('0')}</td>

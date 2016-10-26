@@ -8,16 +8,14 @@ public abstract class AbstractPledgeDetail implements Serializable {
     protected long loanId;
     protected String pledgeLocation;
     protected String estimateAmount;
-    protected String loanAmount;
 
     public AbstractPledgeDetail() {
     }
 
-    public AbstractPledgeDetail(long loanId, String pledgeLocation, String estimateAmount, String loanAmount) {
+    public AbstractPledgeDetail(long loanId, String pledgeLocation, String estimateAmount) {
         this.loanId = loanId;
         this.pledgeLocation = pledgeLocation;
         this.estimateAmount = estimateAmount;
-        this.loanAmount = loanAmount;
     }
 
     public long getId() {
@@ -50,13 +48,5 @@ public abstract class AbstractPledgeDetail implements Serializable {
 
     public void setEstimateAmount(String estimateAmount) {
         this.estimateAmount = estimateAmount;
-    }
-
-    public String getLoanAmount() {
-        return loanAmount;
-    }
-
-    public void setLoanAmount(String loanAmount) {
-        this.loanAmount = loanAmount;
     }
 }

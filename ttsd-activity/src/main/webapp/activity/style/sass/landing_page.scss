@@ -1,6 +1,6 @@
 @import 'variables';
 @import "index_png";
-@import 'register_png';
+@import 'module/register_png';
 
 $landingPhoneColorGray: #F2F2F2;
 $landingPhoneColorRed: #FC4333;
@@ -92,11 +92,18 @@ form label.error {
     height: auto;
     overflow: auto;
     margin-top: 13px;
-
+  .refer-person-info {
+    text-align: center;
+    margin-top: 25px;
+    font-size:14px;
+    span {
+      color: red;
+    }
+  }
     .register-user-form {
       width: 320px;
-      height: 420px;
-      padding: 20px 0 0 32px;
+      height: 369px;
+      padding: 15px 0 0 32px;
     }
     .register-step-one {
       margin-top: 14px;
