@@ -27,6 +27,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransf
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
@@ -65,6 +66,8 @@ public class LoanServiceImpl implements LoanService {
     private final static String CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR = "P";
 
     private final static String CANCEL_INVEST_PAY_BACK_ORDER_ID_TEMPLATE = "{0}" + CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR + "{1}";
+
+    private final static String LOAN_OUT_PAY_ID_TEMPLATE = "LOAN_OUT_PAY_ID_TEMPLATE:{0}";
 
     @Autowired
     private LoanMapper loanMapper;
@@ -236,13 +239,21 @@ public class LoanServiceImpl implements LoanService {
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
 
+        String redisKey = MessageFormat.format(LOAN_OUT_PAY_ID_TEMPLATE, String.valueOf(loanId));
+
         if (redisWrapperClient.setnx(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId, "1")) {
             try {
+                String statusString = redisWrapperClient.hget(redisKey, String.valueOf(loanId));
+                if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
+                    redisWrapperClient.hset(redisKey,String.valueOf(loanId), SyncRequestStatus.SENT.name());
+                }
                 ProjectTransferResponseModel umPayReturn = this.doLoanOut(loanId);
                 payDataDto.setStatus(umPayReturn.isSuccess());
                 payDataDto.setCode(umPayReturn.getRetCode());
                 payDataDto.setMessage(umPayReturn.getRetMsg());
+                redisWrapperClient.hset(redisKey, String.valueOf(loanId), SyncRequestStatus.SUCCESS.name());
             } catch (PayException e) {
+                redisWrapperClient.hset(redisKey,String.valueOf(loanId),SyncRequestStatus.FAILURE.name());
                 payDataDto.setStatus(false);
                 payDataDto.setMessage(e.getLocalizedMessage());
                 logger.error(e.getLocalizedMessage(), e);
