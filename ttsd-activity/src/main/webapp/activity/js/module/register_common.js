@@ -9,7 +9,14 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
 
     var bCategory = commonFun.browserRedirect();
 
+    var mobileValid=false,
+        passwordValid=false,
+        captchaValid=false,
+        referrerValidBool=true,
+        agreementValid=true;
+
     $('input[type="text"],input[type="password"]', $registerForm).placeholder();
+
     //form validate
     $registerForm.validate({
         focusInvalid: false,
@@ -37,12 +44,7 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
                 digits: true,
                 maxlength: 6,
                 minlength: 6,
-                captchaVerify: {
-                    param: function () {
-                        var mobile = $('#mobile').val();
-                        return "/register/user/mobile/" + mobile + "/captcha/{0}/verify"
-                    }
-                }
+                checkCaptcha:true
             },
             agreement: {
                 required: true
@@ -69,7 +71,7 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
                 digits: '验证码格式不正确',
                 maxlength: '验证码格式不正确',
                 minlength: '验证码格式不正确',
-                captchaVerify: '验证码不正确'
+                checkCaptcha:'验证码不正确'
             },
             agreement: {
                 required: "请同意服务协议"
@@ -86,26 +88,28 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
     };
     refreshCaptcha();
 
-    //phone focusout
-    $('#appCaptcha').on('focusout', function (event) {
-        event.preventDefault();
-        if ($phoneDom.val() != '' && /0?(13|14|15|18)[0-9]{9}/.test($phoneDom.val()) && $('#appCaptcha').val() != '') {
-            $fetchCaptcha.prop('disabled', false);
-        } else {
-            $fetchCaptcha.prop('disabled', true);
-        }
-    });
+    //图形验证码输入后高亮显示获取验证码
+    // $appCaptcha.on('keyup', function (event) {
+    //     event.preventDefault();
+    //     //必须手机，密码，图形验证码都正确后才可显示
+    //     mobileValid=$phoneDom.hasClass('valid');
+    //     passwordValid=$('.password',$registerFrame).hasClass('valid');
+    //     if(mobileValid && passwordValid && captchaValid) {
+    //         $fetchCaptcha.prop('disabled', false);
+    //         $('#appCaptchaErr').html('');
+    //     }
+    //     else {
+    //         $fetchCaptcha.prop('disabled', true);
+    //     }
+    // });
 
-    $appCaptcha.on('focus', function (event) {
-        $('#appCaptchaErr').html('');
-    });
     //change images code
-    $changecode.on('click', function (event) {
+    $changecode.on('touchstart', function (event) {
         event.preventDefault();
         refreshCaptcha();
     });
     //show protocol info
-    $('.show-agreement').on('click', function (event) {
+    $('.show-agreement').on('touchstart', function (event) {
         event.preventDefault();
         var area = ['950px', '600px'];
         if (bCategory == 'mobile') {
@@ -123,13 +127,41 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
         });
     });
 
-    $('#agreementBox').find('.close-tip').on('click', function () {
+    $('#agreementBox').find('.close-tip').on('touchstart', function () {
         layer.closeAll();
     })
-    $fetchCaptcha.on('click', function (event) {
+
+    //图形验证码输入后高亮显示获取验证码
+    $appCaptcha.on('keyup',function(event) {
+        console.log('ppp'+event.target.value)
+        if(/^\d{5}$/.test(event.target.value)) {
+            $(event.target).addClass('valid').removeClass('error');
+            captchaValid=true;
+            mobileValid=$phoneDom.hasClass('valid');
+            passwordValid=$('.password',$registerFrame).hasClass('valid');
+
+            console.log('mobileValid'+mobileValid);
+            console.log('passwordValid'+passwordValid);
+            console.log('captchaValid'+captchaValid);
+
+            if(mobileValid && passwordValid && captchaValid) {
+                console.log('ok');
+                $fetchCaptcha.prop('disabled', false);
+                $('#appCaptchaErr').html('');
+            }
+            else {
+                $fetchCaptcha.prop('disabled', true);
+                console.log('error');
+            }
+
+        }
+    });
+
+    // 获取手机验证码
+    $fetchCaptcha.on('touchstart', function (event) {
         event.preventDefault();
 
-        var captchaVal = $('#appCaptcha').val(),
+        var captchaVal = $appCaptcha.val(),
             mobile = $phoneDom.val();
         $.ajax({
             url: '/register/user/send-register-captcha',
@@ -138,16 +170,13 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
             data: {imageCaptcha: captchaVal, mobile: mobile}
         })
             .done(function (data) {
-                var countdown = 60;
-                var timer;
+                var countdown = 60,timer;
                 if (data.data.status && !data.data.isRestricted) {
-                    refreshCaptcha();
                     timer = setInterval(function () {
                         $fetchCaptcha.prop('disabled', true).text(countdown + '秒后重发');
                         countdown--;
                         if (countdown == 0) {
                             clearInterval(timer);
-                            countdown = 60;
                             $fetchCaptcha.prop('disabled', false).text('重新发送');
                         }
                     }, 1000);
@@ -160,7 +189,7 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
                 if (!data.data.status && !data.data.isRestricted) {
                     $('#appCaptchaErr').html('图形验证码错误');
                 }
-
+                refreshCaptcha();
             })
             .fail(function () {
                 refreshCaptcha();
@@ -169,10 +198,38 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
             });
     });
 
-    // phone validate
+    // 电话号码是否有效
     jQuery.validator.addMethod("isPhone", function (value, element) {
         var tel = /0?(13|14|15|18)[0-9]{9}/;
         return this.optional(element) || (tel.test(value));
     }, "请正确填写您的手机号码");
+
+    //验证码是否正确
+    jQuery.validator.addMethod("checkCaptcha", function(value, element) {
+        var mobile=$phoneDom.val();
+        var deferred = $.Deferred();
+        if(/^\d{6}$/.test(value) && mobile) {
+            $.ajax({
+                url:'/register/user/mobile/' + mobile + '/captcha/'+value+'/verify',
+                async:false,
+                dataType:"json",
+                success:function(response) {
+                    var status = response.data.status;
+                    if (status) {
+                        deferred.resolve();
+                        captchaValid=true;
+                    } else {
+                        deferred.reject();
+                        captchaValid=false;
+                    }
+                }
+            });
+        }
+        else {
+            deferred.reject();
+            captchaValid=false;
+        }
+        return deferred.state() == "resolved" ? true : false;
+    }, "验证码不正确");
 
 });
