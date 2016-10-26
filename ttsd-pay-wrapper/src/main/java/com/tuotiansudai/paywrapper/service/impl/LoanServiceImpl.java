@@ -246,12 +246,12 @@ public class LoanServiceImpl implements LoanService {
                 String statusString = redisWrapperClient.hget(redisKey, String.valueOf(loanId));
                 if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
                     redisWrapperClient.hset(redisKey,String.valueOf(loanId), SyncRequestStatus.SENT.name());
+                    ProjectTransferResponseModel umPayReturn = this.doLoanOut(loanId);
+                    payDataDto.setStatus(umPayReturn.isSuccess());
+                    payDataDto.setCode(umPayReturn.getRetCode());
+                    payDataDto.setMessage(umPayReturn.getRetMsg());
+                    redisWrapperClient.hset(redisKey, String.valueOf(loanId), SyncRequestStatus.SUCCESS.name());
                 }
-                ProjectTransferResponseModel umPayReturn = this.doLoanOut(loanId);
-                payDataDto.setStatus(umPayReturn.isSuccess());
-                payDataDto.setCode(umPayReturn.getRetCode());
-                payDataDto.setMessage(umPayReturn.getRetMsg());
-                redisWrapperClient.hset(redisKey, String.valueOf(loanId), SyncRequestStatus.SUCCESS.name());
             } catch (PayException e) {
                 redisWrapperClient.hset(redisKey,String.valueOf(loanId),SyncRequestStatus.FAILURE.name());
                 payDataDto.setStatus(false);

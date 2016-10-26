@@ -15,6 +15,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
@@ -193,8 +194,8 @@ public class LoanServiceTest {
         when(paySyncClient.send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class))).thenReturn(projectTransferResponseModel);
         when(redisWrapperClient.setnx(anyString(), anyString())).thenReturn(true);
         when(redisWrapperClient.del(anyString())).thenReturn(true);
-        when(redisWrapperClient.hget(anyString(),anyString())).thenReturn("0");
-        when(redisWrapperClient.hset(anyString(),anyString(),anyString())).thenReturn(1l);
+        when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("");
+        when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(paySyncClient.send(eq(MerUpdateProjectMapper.class), any(MerUpdateProjectRequestModel.class), eq(MerUpdateProjectResponseModel.class))).thenReturn(merUpdateProjectResponseModel);
         when(jobManager.newJob(any(JobType.class), eq(LoanOutSuccessHandleJob.class))).thenReturn(triggeredJobBuilder);
@@ -203,9 +204,12 @@ public class LoanServiceTest {
         verify(paySyncClient, times(1)).send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
         verify(paySyncClient, times(1)).send(eq(MerUpdateProjectMapper.class), any(MerUpdateProjectRequestModel.class), eq(MerUpdateProjectResponseModel.class));
         verify(redisWrapperClient,times(1)).setnx(anyString(), anyString());
-        verify(redisWrapperClient,times(1)).hset(anyString(),anyString(),anyString());
-        verify(redisWrapperClient,times(1)).hget(anyString(),anyString());
+        verify(redisWrapperClient,times(2)).hset(anyString(), anyString(), anyString());
+        verify(redisWrapperClient,times(1)).hget(anyString(), anyString());
         assertTrue(baseDto1.getData().getStatus());
 
+        when(redisWrapperClient.hget(anyString(), anyString())).thenReturn(SyncRequestStatus.SUCCESS.name());
+        baseDto1 = loanService.loanOut(loanModel.getId());
+        assertTrue(!baseDto1.getData().getStatus());
     }
 }
