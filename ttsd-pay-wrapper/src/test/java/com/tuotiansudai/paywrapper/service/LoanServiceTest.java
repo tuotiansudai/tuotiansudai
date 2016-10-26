@@ -208,8 +208,11 @@ public class LoanServiceTest {
         verify(redisWrapperClient,times(1)).hget(anyString(), anyString());
         assertTrue(baseDto1.getData().getStatus());
 
+        loanModel.setStatus(LoanStatus.RECHECK);
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn(SyncRequestStatus.SUCCESS.name());
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         baseDto1 = loanService.loanOut(loanModel.getId());
-        assertTrue(!baseDto1.getData().getStatus());
+        verify(paySyncClient, times(1)).send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
+        assertTrue(baseDto1.getData().getStatus());
     }
 }

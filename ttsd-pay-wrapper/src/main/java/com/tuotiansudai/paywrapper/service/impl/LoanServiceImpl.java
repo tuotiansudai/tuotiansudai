@@ -239,21 +239,13 @@ public class LoanServiceImpl implements LoanService {
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
 
-        String redisKey = MessageFormat.format(LOAN_OUT_PAY_ID_TEMPLATE, String.valueOf(loanId));
-
         if (redisWrapperClient.setnx(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId, "1")) {
             try {
-                String statusString = redisWrapperClient.hget(redisKey, String.valueOf(loanId));
-                if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
-                    redisWrapperClient.hset(redisKey,String.valueOf(loanId), SyncRequestStatus.SENT.name());
-                    ProjectTransferResponseModel umPayReturn = this.doLoanOut(loanId);
-                    payDataDto.setStatus(umPayReturn.isSuccess());
-                    payDataDto.setCode(umPayReturn.getRetCode());
-                    payDataDto.setMessage(umPayReturn.getRetMsg());
-                    redisWrapperClient.hset(redisKey, String.valueOf(loanId), SyncRequestStatus.SUCCESS.name());
-                }
+                ProjectTransferResponseModel umPayReturn = this.doLoanOut(loanId);
+                payDataDto.setStatus(umPayReturn.isSuccess());
+                payDataDto.setCode(umPayReturn.getRetCode());
+                payDataDto.setMessage(umPayReturn.getRetMsg());
             } catch (PayException e) {
-                redisWrapperClient.hset(redisKey,String.valueOf(loanId),SyncRequestStatus.FAILURE.name());
                 payDataDto.setStatus(false);
                 payDataDto.setMessage(e.getLocalizedMessage());
                 logger.error(e.getLocalizedMessage(), e);
@@ -310,7 +302,21 @@ public class LoanServiceImpl implements LoanService {
         }
 
         logger.debug("标的放款：发起联动优势放款请求，标的ID:" + loanId + "，代理人:" + agentPayUserId + "，放款金额:" + investAmountTotal);
-        ProjectTransferResponseModel resp = doPayRequest(loanId, agentPayUserId, investAmountTotal);
+        ProjectTransferResponseModel resp = null;
+        String redisKey = MessageFormat.format(LOAN_OUT_PAY_ID_TEMPLATE, String.valueOf(loanId));
+        String statusString = redisWrapperClient.hget(redisKey, String.valueOf(loanId));
+        if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
+            try{
+                redisWrapperClient.hset(redisKey, String.valueOf(loanId), SyncRequestStatus.SENT.name());
+                resp = doPayRequest(loanId, agentPayUserId, investAmountTotal);
+                redisWrapperClient.hset(redisKey, String.valueOf(loanId), SyncRequestStatus.SUCCESS.name());
+            } catch (PayException e) {
+                redisWrapperClient.hset(redisKey,String.valueOf(loanId),SyncRequestStatus.FAILURE.name());
+            }
+        }else{
+            resp = new ProjectTransferResponseModel();
+            resp.setRetCode(ProjectTransferResponseModel.SUCCESS_CODE);
+        }
 
         if (resp.isSuccess()) {
             logger.debug("标的放款：更新标的状态，标的ID:" + loanId);
