@@ -16,11 +16,11 @@ public abstract class UserBillBusinessDiagnosis {
 
     protected void onFail(UserBillModel userBillModel, DiagnosisContext context, SingleObjectDiagnosisResult result) {
         context.addProblem(result.getProblem());
-        logger.error("diagnosis UserBill [{}#{}] abnormal: {}", userBillModel.getBusinessType(), userBillModel.getId(), result.getProblem());
+        logger.error("  diagnosis UserBill [{}#{}] abnormal: {}", userBillModel.getBusinessType(), userBillModel.getId(), result.getProblem());
     }
 
     protected void onPass(UserBillModel userBillModel, DiagnosisContext context, String tracedObjectId) {
         context.addTracedObject(userBillModel.getId(), tracedObjectId);
-        logger.debug("diagnosis UserBill [{}#{}] fine", userBillModel.getBusinessType(), userBillModel.getId());
+        logger.debug("  diagnosis UserBill [{}#{}] fine", userBillModel.getBusinessType(), userBillModel.getId());
     }
 }

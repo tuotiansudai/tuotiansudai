@@ -49,6 +49,14 @@ public class NormalRepayDiagnosis extends UserBillBusinessDiagnosis {
         }
     }
 
+    protected long calcExpectInvestRepayAmount(InvestRepayModel investRepayModel) {
+        return investRepayModel.getCorpus() + investRepayModel.getActualInterest();
+    }
+
+    protected long calcExpectLoanRepayAmount(LoanRepayModel loanRepayModel) {
+        return loanRepayModel.getCorpus() + loanRepayModel.getActualInterest();
+    }
+
     private void diagnosisInvestRepay(UserBillModel userBillModel, DiagnosisContext context) {
         InvestRepayModel tracedObject = investRepayMapper.findById(userBillModel.getOrderId());
         String investLoginName = traceInvestLoginName(tracedObject);
@@ -65,15 +73,11 @@ public class NormalRepayDiagnosis extends UserBillBusinessDiagnosis {
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectIdInvestRepay(m)),
                         m -> String.format("has already traced by UserBill#%d", context.getUserBillId(buildTracedObjectIdInvestRepay(m))))
                 // amount
-                .check(m -> userBillModel.getAmount() == calcExpectRepayAmount(m),
-                        m -> String.format("wrong amount [expect: %d, actual: %d]", userBillModel.getAmount(), calcExpectRepayAmount(m)))
+                .check(m -> userBillModel.getAmount() == calcExpectInvestRepayAmount(m),
+                        m -> String.format("wrong amount [expect: %d, actual: %d]", userBillModel.getAmount(), calcExpectInvestRepayAmount(m)))
                 // result
                 .fail(r -> onFail(userBillModel, context, r))
                 .success(r -> onPass(userBillModel, context, buildTracedObjectIdInvestRepay(tracedObject)));
-    }
-
-    protected long calcExpectRepayAmount(InvestRepayModel investRepayModel) {
-        return investRepayModel.getCorpus() + investRepayModel.getActualInterest();
     }
 
     private void diagnosisLoanRepay(UserBillModel userBillModel, DiagnosisContext context) {
@@ -92,8 +96,8 @@ public class NormalRepayDiagnosis extends UserBillBusinessDiagnosis {
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectIdLoanRepay(m)),
                         m -> String.format("has already traced by UserBill#%d", context.getUserBillId(buildTracedObjectIdLoanRepay(m))))
                 // amount
-                .check(m -> userBillModel.getAmount() == m.getRepayAmount(),
-                        m -> String.format("wrong amount [expect: %d, actual: %d]", userBillModel.getAmount(), m.getRepayAmount()))
+                .check(m -> userBillModel.getAmount() == calcExpectLoanRepayAmount(m),
+                        m -> String.format("wrong amount [expect: %d, actual: %d]", userBillModel.getAmount(), calcExpectLoanRepayAmount(m)))
                 // result
                 .fail(r -> onFail(userBillModel, context, r))
                 .success(r -> onPass(userBillModel, context, buildTracedObjectIdLoanRepay(tracedObject)));

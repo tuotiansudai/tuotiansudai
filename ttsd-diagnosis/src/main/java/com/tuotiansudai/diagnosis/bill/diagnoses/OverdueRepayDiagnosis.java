@@ -7,6 +7,8 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanRepayModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,10 @@ import java.util.List;
 public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
     private static Logger logger = LoggerFactory.getLogger(OverdueRepayDiagnosis.class);
 
-    private InvestMapper investMapper;
-    private InvestRepayMapper investRepayMapper;
+    private final InvestMapper investMapper;
+    private final InvestRepayMapper investRepayMapper;
+    private final LoanMapper loanMapper;
+    private final LoanRepayMapper loanRepayMapper;
 
     @Autowired
     public OverdueRepayDiagnosis(InvestRepayMapper investRepayMapper,
@@ -29,10 +33,17 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
         super(investRepayMapper, loanRepayMapper, investMapper, loanMapper);
         this.investMapper = investMapper;
         this.investRepayMapper = investRepayMapper;
+        this.loanMapper = loanMapper;
+        this.loanRepayMapper = loanRepayMapper;
     }
 
     @Override
-    protected long calcExpectRepayAmount(InvestRepayModel investRepayModel) {
+    public UserBillBusinessType getSupportedBusinessType() {
+        return UserBillBusinessType.OVERDUE_REPAY;
+    }
+
+    @Override
+    protected long calcExpectInvestRepayAmount(InvestRepayModel investRepayModel) {
         // 逾期还款实际交易金额 = 当期利息 + 罚息 + 投资本金
         // 其中 当期利息 = 上期利息 + 逾期天数产生的利息
         InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
@@ -46,7 +57,16 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
     }
 
     @Override
-    public UserBillBusinessType getSupportedBusinessType() {
-        return UserBillBusinessType.OVERDUE_REPAY;
+    protected long calcExpectLoanRepayAmount(LoanRepayModel loanRepayModel) {
+        // 逾期还款实际交易金额 = 当期利息 + 罚息 + 投资本金
+        // 其中 当期利息 = 上期利息 + 逾期天数产生的利息
+        LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanRepayModel.getLoanId());
+        long overdueDefaultInterest = loanRepayModels.stream()
+                .map(LoanRepayModel::getDefaultInterest)
+                .filter(defaultInterest -> defaultInterest > 0)
+                .findAny()
+                .orElse(0L);
+        return loanModel.getLoanAmount() + loanRepayModel.getActualInterest() + overdueDefaultInterest;
     }
 }

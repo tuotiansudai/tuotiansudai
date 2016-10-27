@@ -25,9 +25,9 @@ class DiagnosisApplication {
 
     void start(String[] args) {
         logger.info("diagnosis begin, {} diagnoses will be executed", this.diagnoses.size());
-        List<List<DiagnosisResult>> totalResult = IntStream.of(this.diagnoses.size())
+        List<List<DiagnosisResult>> totalResult = IntStream.range(0, this.diagnoses.size())
                 .mapToObj(idx -> {
-                    Diagnosis diagnosis = diagnoses.get(idx - 1);
+                    Diagnosis diagnosis = diagnoses.get(idx);
                     logger.info("{}. {} begin", idx, diagnosis.getClass().getName());
                     List<DiagnosisResult> results = diagnosis.diagnosis(args);
                     logger.info("{}. {} end", idx, diagnosis.getClass().getName());
@@ -39,10 +39,12 @@ class DiagnosisApplication {
             logger.info("");
             logger.info("  Diagnosis Report: ");
             logger.info("");
-            resultList.forEach(result -> {
-                logger.info("    User {} have {} problems", result.getLoginName(), result.getProblems().size());
-                result.getProblems().forEach(p -> logger.info("        {}", p));
-            });
+            resultList.stream()
+                    .filter(result -> result.getProblems().size() > 0)
+                    .forEach(result -> {
+                        logger.info("    User {} have {} problems", result.getLoginName(), result.getProblems().size());
+                        result.getProblems().forEach(p -> logger.info("        {}", p));
+                    });
             logger.info("");
             logger.info("  Diagnosis complete!");
             logger.info("");

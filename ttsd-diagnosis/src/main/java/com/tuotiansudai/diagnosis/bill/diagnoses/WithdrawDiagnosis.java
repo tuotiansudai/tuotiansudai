@@ -36,7 +36,7 @@ public class WithdrawDiagnosis extends UserBillBusinessDiagnosis {
                 // exist
                 .init(userBillModel, tracedObject, this::buildTracedObjectId)
                 // status
-                .check(m -> m.getStatus() == WithdrawStatus.SUCCESS,
+                .check(this::checkStatus,
                         m -> String.format("wrong status [expect:SUCCESS, actual:%s]", m.getStatus()))
                 // owner
                 .check(m -> userBillModel.getLoginName().equals(m.getLoginName()),
@@ -50,6 +50,10 @@ public class WithdrawDiagnosis extends UserBillBusinessDiagnosis {
                 // on fail
                 .fail(r -> onFail(userBillModel, context, r))
                 .success(r -> onPass(userBillModel, context, buildTracedObjectId(tracedObject)));
+    }
+
+    protected boolean checkStatus(WithdrawModel withdrawModel) {
+        return withdrawModel.getStatus() == WithdrawStatus.SUCCESS;
     }
 
     protected String buildTracedObjectId(WithdrawModel withdrawModel) {

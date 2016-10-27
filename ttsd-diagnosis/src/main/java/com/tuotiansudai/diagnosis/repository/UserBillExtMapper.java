@@ -24,4 +24,7 @@ public interface UserBillExtMapper {
     })
     @Select("select * from user_bill where order_id=#{orderId} and business_type=#{businessType}")
     List<UserBillModel> findByOrderIdAndBusinessType(@Param("orderId") long orderId, @Param("businessType") UserBillBusinessType businessType);
+
+    @Select("select distinct login_name from user_bill where order_id is not null")
+    List<String> findAllLoginName();
 }

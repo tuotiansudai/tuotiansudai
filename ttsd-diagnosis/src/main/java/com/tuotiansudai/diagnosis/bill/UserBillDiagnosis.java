@@ -1,6 +1,7 @@
 package com.tuotiansudai.diagnosis.bill;
 
 import com.tuotiansudai.diagnosis.bill.diagnoses.InvestCouponFeeDiagnosis;
+import com.tuotiansudai.diagnosis.repository.UserBillExtMapper;
 import com.tuotiansudai.diagnosis.support.Diagnosis;
 import com.tuotiansudai.diagnosis.support.DiagnosisContext;
 import com.tuotiansudai.diagnosis.support.DiagnosisResult;
@@ -14,19 +15,22 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Component
 class UserBillDiagnosis implements Diagnosis {
     private static Logger logger = LoggerFactory.getLogger(UserBillDiagnosis.class);
 
     private final UserBillMapper userBillMapper;
+    private final UserBillExtMapper userBillExtMapper;
 
     private final Map<UserBillBusinessType, UserBillBusinessDiagnosis> diagnosisMap;
 
     @Autowired
-    public UserBillDiagnosis(UserBillMapper userBillMapper, Set<UserBillBusinessDiagnosis> diagnoses) {
+    public UserBillDiagnosis(UserBillMapper userBillMapper, Set<UserBillBusinessDiagnosis> diagnoses, UserBillExtMapper userBillExtMapper) {
         this.userBillMapper = userBillMapper;
-        diagnosisMap = diagnoses.stream()
+        this.userBillExtMapper = userBillExtMapper;
+        this.diagnosisMap = diagnoses.stream()
                 .filter(d -> !(d instanceof InvestCouponFeeDiagnosis))
                 .collect(Collectors.toMap(
                         UserBillBusinessDiagnosis::getSupportedBusinessType,
@@ -35,16 +39,16 @@ class UserBillDiagnosis implements Diagnosis {
 
     @Override
     public List<DiagnosisResult> diagnosis(String[] args) {
-        String[] specialsUsers = extraDiagnosisUsers(args);
-        String allUser = String.join(",", Arrays.asList(specialsUsers));
-        logger.info("diagnosis user bill for {} users [{}]", specialsUsers.length, allUser);
-        return Arrays.stream(specialsUsers)
-                .map(this::diagnosisUser)
+        List<String> specialsUsers = extraDiagnosisUsers(args);
+        int userCount = specialsUsers.size();
+        logger.info("diagnosis user bill for {} users", userCount);
+        return IntStream.range(0, specialsUsers.size())
+                .mapToObj(i -> this.diagnosisUser(i, userCount, specialsUsers.get(i)))
                 .collect(Collectors.toList());
     }
 
-    private DiagnosisResult diagnosisUser(String loginName) {
-        logger.info("diagnosis user bill for {}", loginName);
+    private DiagnosisResult diagnosisUser(int idx, int userCount, String loginName) {
+        logger.info("[{}/{}] diagnosis user bill for {}", idx, userCount, loginName);
         List<UserBillModel> userBillModelList = userBillMapper.findByLoginName(loginName);
         DiagnosisContext diagnosisContext = new DiagnosisContext(loginName);
         userBillModelList.stream()
@@ -53,13 +57,23 @@ class UserBillDiagnosis implements Diagnosis {
         return diagnosisContext.getResult();
     }
 
-    private String[] extraDiagnosisUsers(String[] args) {
+    private List<String> extraDiagnosisUsers(String[] args) {
         String argumentPrefix = "--loginName=";
-        Optional<String> loginNameArgs = Arrays.stream(args)
+        Optional<String> loginNameArgument = Arrays.stream(args)
                 .filter(arg -> arg.startsWith(argumentPrefix) && arg.length() > argumentPrefix.length())
                 .findAny();
-        return loginNameArgs.isPresent() ?
-                loginNameArgs.get().substring(argumentPrefix.length()).split(",")
-                : new String[]{};
+        List<String> userNameList = new ArrayList<>();
+        if (loginNameArgument.isPresent()) {
+            String loginNames = loginNameArgument.get().substring(argumentPrefix.length());
+            if ("all".equalsIgnoreCase(loginNames)) {
+                return findAllLoginName();
+            }
+            Collections.addAll(userNameList, loginNames.split(","));
+        }
+        return userNameList;
+    }
+
+    private List<String> findAllLoginName() {
+        return userBillExtMapper.findAllLoginName();
     }
 }
