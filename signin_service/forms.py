@@ -10,7 +10,7 @@ class LoginForm(wtforms.Form):
 
     token = wtforms.StringField('token', [wtforms.validators.required()])
     source = wtforms.StringField('source')
-    device_id = wtforms.StringField('deviceId')
+    device_id = wtforms.StringField('device_id')
 
 
 class LoginAfterRegisterForm(wtforms.Form):
@@ -18,7 +18,7 @@ class LoginAfterRegisterForm(wtforms.Form):
                                    [wtforms.validators.required(), wtforms.validators.Length(min=5, max=25)])
     token = wtforms.StringField('token', [wtforms.validators.required()])
     source = wtforms.StringField('source')
-    device_id = wtforms.StringField('deviceId')
+    device_id = wtforms.StringField('device_id')
 
 
 class SourceForm(wtforms.Form):

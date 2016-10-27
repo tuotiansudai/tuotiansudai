@@ -82,7 +82,7 @@ class TestView(TestCase):
         self.app = web.app.test_client()
 
     def test_should_login_successful(self):
-        data = {'username': 'sidneygao', 'source': 'WEB', 'deviceId': 'device_id1',
+        data = {'username': 'sidneygao', 'source': 'WEB', 'device_id': 'device_id1',
                 'token': 'fake_token', 'password': '123abc'}
         rv = self.app.post('/login/', data=data)
         response_data = json.loads(rv.data)
@@ -92,7 +92,7 @@ class TestView(TestCase):
         self.assertSetEqual({'message', 'result', 'token', 'user_info'}, set(response_data.keys()))
 
     def test_should_return_400_if_password_wrong(self):
-        data = {'username': 'sidneygao', 'source': 'WEB', 'deviceId': 'device_id1',
+        data = {'username': 'sidneygao', 'source': 'WEB', 'device_id': 'device_id1',
                 'token': 'fake_token', 'password': 'wrong_pwd'}
         rv = self.app.post('/login/', data=data)
         response_data = json.loads(rv.data)
@@ -103,7 +103,7 @@ class TestView(TestCase):
         self.assertSetEqual({'message', 'result', 'token', 'user_info'}, set(response_data.keys()))
 
     def test_should_return_400_given_login_failed_times_over_3(self):
-        data = {'username': 'sidneygao', 'source': 'WEB', 'deviceId': 'device_id1',
+        data = {'username': 'sidneygao', 'source': 'WEB', 'device_id': 'device_id1',
                 'token': 'fake_token', 'password': 'wrong_pwd'}
         for _ in range(LOGIN_FAILED_MAXIMAL_TIMES):
             rv = self.app.post('/login/', data=data)
@@ -119,7 +119,7 @@ class TestView(TestCase):
         self.assertEqual(u'用户已被禁用', response_data['message'])
 
     def test_should_active_user_given_user_was_banned(self):
-        data = {'username': 'sidneygao', 'source': 'WEB', 'deviceId': 'device_id1',
+        data = {'username': 'sidneygao', 'source': 'WEB', 'device_id': 'device_id1',
                 'token': 'fake_token', 'password': 'wrong_pwd'}
         for _ in range(LOGIN_FAILED_MAXIMAL_TIMES):
             self.app.post('/login/', data=data)
@@ -140,7 +140,7 @@ class TestView(TestCase):
         self.assertEqual('sidneygao', response_data['user_info']['login_name'])
 
     def test_should_login_successful_without_password(self):
-        data = {'username': 'sidneygao', 'source': 'WEB', 'deviceId': 'device_id1',
+        data = {'username': 'sidneygao', 'source': 'WEB', 'device_id': 'device_id1',
                 'token': 'fake_token'}
         rv = self.app.post('/login/nopassword/', data=data)
         response_data = json.loads(rv.data)
@@ -150,7 +150,7 @@ class TestView(TestCase):
         self.assertSetEqual({'message', 'result', 'token', 'user_info'}, set(response_data.keys()))
 
     def test_should_return_400_given_user_not_exist(self):
-        data = {'username': 'not_exist_user', 'source': 'WEB', 'deviceId': 'device_id1',
+        data = {'username': 'not_exist_user', 'source': 'WEB', 'device_id': 'device_id1',
                 'token': 'fake_token'}
         rv = self.app.post('/login/nopassword/', data=data)
         response_data = json.loads(rv.data)
