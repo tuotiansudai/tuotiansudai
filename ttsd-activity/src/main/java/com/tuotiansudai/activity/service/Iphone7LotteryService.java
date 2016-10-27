@@ -1,8 +1,8 @@
 package com.tuotiansudai.activity.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.dto.IPhone7InvestLotteryDto;
-import com.tuotiansudai.activity.dto.IPhone7LotteryDto;
+import com.tuotiansudai.activity.repository.dto.IPhone7InvestLotteryDto;
+import com.tuotiansudai.activity.repository.dto.IPhone7LotteryDto;
 import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
 import com.tuotiansudai.activity.repository.mapper.IPhone7LotteryConfigMapper;
 import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryModel;

@@ -1,6 +1,6 @@
 package com.tuotiansudai.activity.controller;
 
-import com.tuotiansudai.activity.dto.IPhone7InvestLotteryDto;
+import com.tuotiansudai.activity.repository.dto.IPhone7InvestLotteryDto;
 import com.tuotiansudai.activity.service.Iphone7LotteryService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;

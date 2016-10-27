@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.activity.controller;
 
 
-import com.tuotiansudai.activity.dto.AutumnExportDto;
+import com.tuotiansudai.activity.repository.dto.AutumnExportDto;
 import com.tuotiansudai.console.activity.service.ExportService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;

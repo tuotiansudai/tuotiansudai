@@ -1,4 +1,4 @@
-package com.tuotiansudai.activity.dto;
+package com.tuotiansudai.activity.repository.dto;
 
 import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryModel;
 import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryStatus;

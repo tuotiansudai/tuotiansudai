@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
 import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryStatView;
 import com.tuotiansudai.activity.service.AutumnService;
-import com.tuotiansudai.activity.dto.AutumnExportDto;
+import com.tuotiansudai.activity.repository.dto.AutumnExportDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
