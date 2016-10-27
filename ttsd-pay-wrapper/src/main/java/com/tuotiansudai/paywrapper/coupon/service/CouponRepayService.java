@@ -14,8 +14,8 @@ public interface CouponRepayService {
 
     String couponRepayCallback(Map<String, String> paramsMap, String queryString);
 
-    BaseDto<PayDataDto> asyncCouponRepayCallback(boolean isAdvanced);
+    BaseDto<PayDataDto> asyncCouponRepayCallback();
 
-    void processOneCallback(CouponRepayNotifyRequestModel callbackRequestModel, boolean isAdvance);
+    void processOneCallback(CouponRepayNotifyRequestModel callbackRequestModel);
 
 }

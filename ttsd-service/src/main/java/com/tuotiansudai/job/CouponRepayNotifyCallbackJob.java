@@ -23,7 +23,6 @@ public class CouponRepayNotifyCallbackJob implements Job {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         String trigger = redisWrapperClient.get(COUPON_REPAY_JOB_TRIGGER_KEY);

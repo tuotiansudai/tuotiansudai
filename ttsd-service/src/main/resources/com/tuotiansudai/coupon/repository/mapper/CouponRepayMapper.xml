@@ -35,6 +35,10 @@
             #{actualRepayDate}, #{isTransferred}, #{status}, now())
     </insert>
 
+    <select id="findById" resultMap="couponRepayResultMap" parameterType="java.lang.long">
+        select * from coupon_repay where id = #{id}
+    </select>
+
     <select id="findByUserCouponIdAndPeriod" resultMap="couponRepayResultMap" parameterType="map">
         select * from coupon_repay where user_coupon_id = #{userCouponId} and period = #{period}
     </select>

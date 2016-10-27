@@ -1,7 +1,5 @@
 package com.tuotiansudai.paywrapper.coupon.service.impl;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -18,24 +16,17 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.job.CouponRepayNotifyCallbackJob;
-import com.tuotiansudai.job.InvestCallbackJob;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CouponRepayNotifyRequestMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.CouponRepayNotifyProcessStatus;
-import com.tuotiansudai.paywrapper.repository.model.InvestNotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.CouponRepayNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
-import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -94,6 +85,9 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     private PayAsyncClient payAsyncClient;
 
     @Autowired
+    private PaySyncClient paySyncClient;
+
+    @Autowired
     private AmountTransfer amountTransfer;
 
     @Autowired
@@ -117,8 +111,8 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     @Value(value = "${pay.coupon.repay.notify.process.batch.size}")
     private int couponRepayProcessListSize;
 
-    /*
 
+/*
     @Override
     public void repay(long loanRepayId, boolean isAdvanced) {
         logger.debug(MessageFormat.format("[Coupon Repay {0}] coupon repay is starting...", String.valueOf(loanRepayId)));
@@ -314,7 +308,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         }
 
     }
-
     * */
 
 
@@ -369,12 +362,12 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             if (transferAmount > 0) {
                 try {
 
-                    ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCouponRepayRequest(String.valueOf(loanRepayId),
-                            MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(userCouponModel.getId()), String.valueOf(loanRepayId)),
+                    TransferRequestModel requestModel = TransferRequestModel.newRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(couponRepayModel.getId()), String.valueOf(new Date().getTime())),
                             accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
-                            String.valueOf(transferAmount));
+                            String.valueOf(transferAmount),
+                            "coupon_repay_notify");
 
-                    payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
+                    paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
 
                     logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1})",
                             String.valueOf(currentLoanRepayModel.getId()),
@@ -390,8 +383,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
         logger.info(MessageFormat.format("[Coupon Repay {0}] coupon repay is async send success", String.valueOf(loanRepayId)));
     }
-
-
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -494,15 +485,15 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncCouponRepayCallback(boolean isAdvance) {
+    public BaseDto<PayDataDto> asyncCouponRepayCallback() {
         List<CouponRepayNotifyRequestModel> todoList = couponRepayNotifyRequestMapper.getTodoList(couponRepayProcessListSize);
 
         for (CouponRepayNotifyRequestModel model : todoList) {
             if (updateCouponRepayNotifyRequestStatus(model)) {
                 try {
-                    ((CouponRepayService) AopContext.currentProxy()).processOneCallback(model, isAdvance);
+                    ((CouponRepayService) AopContext.currentProxy()).processOneCallback(model);
                 } catch (Exception e) {
-                    fatalLog("coupon repay callback, processOneCallback error. investId:" + model.getOrderId(), e);
+                    fatalLog("coupon repay callback, processOneCallback error. couponRepayId:" + model.getOrderId(), e);
                     e.printStackTrace();
                 }
             }
@@ -527,35 +518,36 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         return true;
     }
 
-
     @Transactional
     @Override
-    public void processOneCallback(CouponRepayNotifyRequestModel callbackRequestModel, boolean isAdvanced) {
+    public void processOneCallback(CouponRepayNotifyRequestModel callbackRequestModel) {
 
-        long userCouponId = Long.parseLong(callbackRequestModel.getOrderId().split(COUPON_ORDER_ID_TEMPLATE)[0]);
-        long loanRepayId = Long.parseLong(callbackRequestModel.getOrderId().split(COUPON_ORDER_ID_TEMPLATE)[1]);
+        long couponRepayId = Long.parseLong(callbackRequestModel.getOrderId().split("X")[0]);
 
-        LoanRepayModel currentLoanRepayModel = this.loanRepayMapper.findById(loanRepayId);
-        LoanModel loanModel = loanMapper.findById(currentLoanRepayModel.getLoanId());
+        CouponRepayModel couponRepayModel = couponRepayMapper.findById(couponRepayId);
+
+        InvestModel investModel = investMapper.findById(couponRepayModel.getInvestId());
+
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+
+        LoanRepayModel currentLoanRepayModel = this.loanRepayMapper.findByLoanIdAndPeriod(loanModel.getId(), couponRepayModel.getPeriod());
+
         List<LoanRepayModel> loanRepayModels = this.loanRepayMapper.findByLoanIdOrderByPeriodAsc(currentLoanRepayModel.getLoanId());
 
-        UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
+        UserCouponModel userCouponModel = userCouponMapper.findById(couponRepayModel.getUserCouponId());
 
         CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-
-        InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
-
-        CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponIdAndPeriod(userCouponId, currentLoanRepayModel.getPeriod());
 
         long investAmount = investModel.getAmount();
         long actualInterest = InterestCalculator.calculateCouponActualInterest(investAmount, couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);
         long actualFee = (long) (actualInterest * investModel.getInvestFeeRate());
         long transferAmount = actualInterest - actualFee;
+
         try {
             userCouponModel.setActualInterest(userCouponModel.getActualInterest() + actualInterest);
             userCouponModel.setActualFee(userCouponModel.getActualFee() + actualFee);
             userCouponMapper.update(userCouponModel);
-            this.updateCouponRepay(actualInterest, actualFee, investModel.getId(), couponRepayModel, loanRepayId, isAdvanced);
+            this.updateCouponRepay(actualInterest, actualFee, investModel.getId(), couponRepayModel, currentLoanRepayModel.getId(), (currentLoanRepayModel.getActualRepayDate() != null && currentLoanRepayModel.getActualRepayDate().before(currentLoanRepayModel.getRepayDate())));
             amountTransfer.transferInBalance(userCouponModel.getLoginName(),
                     userCouponModel.getId(),
                     actualInterest,
