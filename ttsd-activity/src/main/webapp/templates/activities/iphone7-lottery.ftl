@@ -7,7 +7,7 @@
 	</div>
 	<div class="actor-content-group">
 		<div class="wp clearfix">
-            <div class="reg-tag-current" style="display: none;margin-top:10px;">
+            <div class="reg-tag-current" style="display: none">
 				<#include '../register.ftl' />
             </div>
 			<div class="model-group text-c">
