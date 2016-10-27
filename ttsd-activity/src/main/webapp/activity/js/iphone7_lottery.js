@@ -3,7 +3,8 @@
  * [author]:xuqiang
  * [date]:2016-10-20
  */
-require(['jquery', 'layerWrapper', 'template', 'logintip', 'jquery.ajax.extension','commonFun','register_common'], function($, layer, tpl) {
+require(['jquery', 'layerWrapper', 'template', 'logintip','jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension','commonFun','register_common'],
+	function($, layer, tpl) {
 	$(function() {
 		var browser = commonFun.browserRedirect();
 
@@ -12,6 +13,7 @@ require(['jquery', 'layerWrapper', 'template', 'logintip', 'jquery.ajax.extensio
 			var urlObj=commonFun.parseURL(location.href);
 			if(urlObj.params.tag=='yes') {
 				$('.reg-tag-current').show();
+
 			}
 		}
 
@@ -30,7 +32,7 @@ require(['jquery', 'layerWrapper', 'template', 'logintip', 'jquery.ajax.extensio
 		.fail(function() {
 			layer.msg('请求失败，请刷新页面重试！');
 		});
-		
+
 
 		$('.progressbar').each(function() {
 			var t = $(this),
@@ -68,5 +70,6 @@ require(['jquery', 'layerWrapper', 'template', 'logintip', 'jquery.ajax.extensio
 			}
 		}
 		getDatelist(1);
+
 	});
 });
