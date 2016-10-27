@@ -157,7 +157,6 @@ public class InvestRepayMapperTest {
     }
 
     @Test
-    @Ignore
     public void shouldFindByLoginNameAndStatus() {
         InvestModel fakeInvestModel = getFakeInvestModel();
         investMapper.create(fakeInvestModel);

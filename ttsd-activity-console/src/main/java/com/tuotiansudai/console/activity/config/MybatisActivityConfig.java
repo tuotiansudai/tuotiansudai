@@ -1,13 +1,12 @@
 package com.tuotiansudai.console.activity.config;
 
+import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
-import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,18 +14,23 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
 public class MybatisActivityConfig {
 
+    @Bean(name = "hikariCPActivityConfig")
+    @ConfigurationProperties(prefix = "spring.datasource.activity")
+    public HikariConfig hikariCPActivityConfig() {
+        return new HikariConfig();
+    }
+
     @Bean
     @Primary
-    @ConfigurationProperties(prefix="spring.datasource.activity")
-    public DataSource hikariCPActivityDataSource() {
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+    public DataSource hikariCPActivityDataSource(
+            @Autowired @Qualifier("hikariCPActivityConfig") HikariConfig hikariConfig) {
+        return new HikariDataSource(hikariConfig);
     }
 
     @Bean
