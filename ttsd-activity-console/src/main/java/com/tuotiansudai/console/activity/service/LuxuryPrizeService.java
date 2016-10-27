@@ -8,7 +8,7 @@ import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLuxuryPrizeModel;
 import com.tuotiansudai.activity.repository.mapper.LuxuryPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLuxuryPrizeMapper;
-import com.tuotiansudai.console.activity.dto.LuxuryPrizeRequestDto;
+import com.tuotiansudai.activity.dto.LuxuryPrizeRequestDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.util.AmountConverter;

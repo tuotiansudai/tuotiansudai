@@ -8,7 +8,7 @@ import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import com.tuotiansudai.activity.repository.mapper.TravelPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.UserTravelPrizeMapper;
-import com.tuotiansudai.console.activity.dto.TravelPrizeRequestDto;
+import com.tuotiansudai.activity.dto.TravelPrizeRequestDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.util.AmountConverter;

@@ -1,4 +1,4 @@
-package com.tuotiansudai.console.activity.dto;
+package com.tuotiansudai.activity.dto;
 
 import java.util.Date;
 import java.util.List;

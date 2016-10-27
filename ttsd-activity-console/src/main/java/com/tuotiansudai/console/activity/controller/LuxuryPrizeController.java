@@ -1,6 +1,6 @@
 package com.tuotiansudai.console.activity.controller;
 
-import com.tuotiansudai.console.activity.dto.LuxuryPrizeRequestDto;
+import com.tuotiansudai.activity.dto.LuxuryPrizeRequestDto;
 import com.tuotiansudai.console.activity.service.LuxuryPrizeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
