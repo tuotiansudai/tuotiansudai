@@ -223,6 +223,8 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
              */
             private boolean isAssignableCoupon(final CouponModel couponModel) {
 
+                assignedCouponCount = 0;
+
                 // 用户持有的该类型的优惠券（可能为多个）
                 Stream<UserCouponModel> assignedUserCoupons = userCouponModels.stream().filter(input -> input.getCouponId() == couponModel.getId());
 
