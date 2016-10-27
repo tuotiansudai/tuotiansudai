@@ -55,39 +55,43 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId, Lists.newArrayList(CouponType.RED_ENVELOPE));
 
         for (UserCouponModel userCouponModel : userCouponModels) {
-            CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
-            long transferAmount = couponModel.getAmount();
-            boolean isSuccess = transferAmount == 0;
-            if (transferAmount > 0) {
-                TransferRequestModel requestModel = TransferRequestModel.newRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(userCouponModel.getId()), String.valueOf(new Date().getTime())),
-                        accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
-                        String.valueOf(transferAmount));
-                try {
-                    TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-                    isSuccess = responseModel.isSuccess();
-                } catch (PayException e) {
-                    logger.error(MessageFormat.format("red envelope coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
-                }
-            }
 
-            if (isSuccess) {
-                try {
-                    String detail = MessageFormat.format(SystemBillDetailTemplate.COUPON_RED_ENVELOPE_DETAIL_TEMPLATE.getTemplate(),
-                            couponModel.getCouponType().getName(),
-                            String.valueOf(userCouponModel.getId()),
-                            String.valueOf(loanId),
+            // 实际收益为0，表示这个红包还没有发给用户，现在可以发送（幂等操作）
+            if (userCouponModel.getActualInterest() == 0) {
+                CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
+                long transferAmount = couponModel.getAmount();
+                boolean isSuccess = transferAmount == 0;
+                if (transferAmount > 0) {
+                    TransferRequestModel requestModel = TransferRequestModel.newRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(userCouponModel.getId()), String.valueOf(new Date().getTime())),
+                            accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
                             String.valueOf(transferAmount));
-                    systemBillService.transferOut(userCouponModel.getId(), transferAmount, SystemBillBusinessType.COUPON_RED_ENVELOPE, detail);
+                    try {
+                        TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
+                        isSuccess = responseModel.isSuccess();
+                    } catch (PayException e) {
+                        logger.error(MessageFormat.format("red envelope coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
+                    }
+                }
 
-                    amountTransfer.transferInBalance(userCouponModel.getLoginName(),
-                            userCouponModel.getId(),
-                            transferAmount,
-                            couponModel.getCouponType().getUserBillBusinessType(), null, null);
+                if (isSuccess) {
+                    try {
+                        String detail = MessageFormat.format(SystemBillDetailTemplate.COUPON_RED_ENVELOPE_DETAIL_TEMPLATE.getTemplate(),
+                                couponModel.getCouponType().getName(),
+                                String.valueOf(userCouponModel.getId()),
+                                String.valueOf(loanId),
+                                String.valueOf(transferAmount));
+                        systemBillService.transferOut(userCouponModel.getId(), transferAmount, SystemBillBusinessType.COUPON_RED_ENVELOPE, detail);
 
-                    userCouponModel.setActualInterest(transferAmount);
-                    userCouponMapper.update(userCouponModel);
-                } catch (Exception e) {
-                    logger.error(MessageFormat.format("red envelope coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
+                        amountTransfer.transferInBalance(userCouponModel.getLoginName(),
+                                userCouponModel.getId(),
+                                transferAmount,
+                                couponModel.getCouponType().getUserBillBusinessType(), null, null);
+
+                        userCouponModel.setActualInterest(transferAmount);
+                        userCouponMapper.update(userCouponModel);
+                    } catch (Exception e) {
+                        logger.error(MessageFormat.format("red envelope coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
+                    }
                 }
             }
         }
