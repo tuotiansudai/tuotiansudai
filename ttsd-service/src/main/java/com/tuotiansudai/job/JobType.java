@@ -55,7 +55,8 @@ public enum JobType {
     SendCouponIncome("优惠券收益发放推送"),
     RedEnvelope("红包优惠发放推送"),
     MembershipExpiredAlert("会员过期提醒"),
-    CalculateTravelLuxuryPrize("生成旅游奢侈品奖品");
+    CalculateTravelLuxuryPrize("生成旅游奢侈品奖品"),
+    PlatformBalanceLowNotify("平台账户余额不足提醒");
 
     private final String description;
 

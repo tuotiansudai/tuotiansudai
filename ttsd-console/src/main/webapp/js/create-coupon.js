@@ -198,7 +198,7 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                                 $('.coupon-agent-channel').append('<label><input type="checkbox" class="channel" name="channels" value="'+data[i]+'">'+data[i]+'</label>');
                             }
                         })
-                        $('.give-number').val('0');
+                        $('.give-number').val('0').prop('readonly', false);
                     } else {
                         $('#file-in').trigger('click');
                         $('.file-btn').show();
@@ -213,7 +213,7 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
 
         $('.coupon-agent-channel').on('click','.agent', function() {
             var num = $("input.agent:checkbox:checked").length;
-            $('.give-number').val(num);
+            $('.give-number').val(num).prop('readonly', false);
         });
 
         $('.coupon-agent-channel').on('click','.channel', function() {
@@ -221,11 +221,11 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             $('.channel:checked').each(function(index,item) {
                 $.get('/user-manage/user/'+$(item).val()+'/channel',function(data) {
                     num += parseInt(data);
-                    $('.give-number').val(num);
+                    $('.give-number').val(num).prop('readonly', false);
                 })
             });
             if($('.channel:checked').length==0) {
-                $('.give-number').val('0');
+                $('.give-number').val('0').prop('readonly', false);
             }
         });
 
