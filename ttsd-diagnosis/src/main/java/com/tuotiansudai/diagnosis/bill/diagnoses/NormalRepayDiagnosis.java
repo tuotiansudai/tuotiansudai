@@ -65,11 +65,15 @@ public class NormalRepayDiagnosis extends UserBillBusinessDiagnosis {
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectIdInvestRepay(m)),
                         m -> String.format("has already traced by UserBill#%d", context.getUserBillId(buildTracedObjectIdInvestRepay(m))))
                 // amount
-                .check(m -> userBillModel.getAmount() == m.getCorpus() + m.getActualInterest(),
-                        m -> String.format("wrong amount [expect: %d, actual: %d]", userBillModel.getAmount(), m.getCorpus() + m.getActualInterest()))
+                .check(m -> userBillModel.getAmount() == calcExpectRepayAmount(m),
+                        m -> String.format("wrong amount [expect: %d, actual: %d]", userBillModel.getAmount(), calcExpectRepayAmount(m)))
                 // result
                 .fail(r -> onFail(userBillModel, context, r))
                 .success(r -> onPass(userBillModel, context, buildTracedObjectIdInvestRepay(tracedObject)));
+    }
+
+    protected long calcExpectRepayAmount(InvestRepayModel investRepayModel) {
+        return investRepayModel.getCorpus() + investRepayModel.getActualInterest();
     }
 
     private void diagnosisLoanRepay(UserBillModel userBillModel, DiagnosisContext context) {
