@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.model.FeedbackType;
 import com.tuotiansudai.repository.model.ProcessStatus;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.FeedbackService;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,10 @@ public class FeedbackServiceImpl implements FeedbackService {
     private FeedbackMapper feedbackMapper;
 
     @Override
-    public FeedbackModel create(String loginName, Source source, FeedbackType type, String content) {
+    public FeedbackModel create(String loginName, Source source, FeedbackType type, String content,String contact) {
         FeedbackModel feedbackModel = new FeedbackModel();
         feedbackModel.setLoginName(loginName);
-        feedbackModel.setContact(userMapper.findByLoginName(loginName).getMobile());
+        feedbackModel.setContact(StringUtils.isEmpty(contact)?"" : userMapper.findByLoginName(loginName).getMobile());
         feedbackModel.setSource(source);
         feedbackModel.setType(type == null ? FeedbackType.opinion : type);
         feedbackModel.setContent(content);
