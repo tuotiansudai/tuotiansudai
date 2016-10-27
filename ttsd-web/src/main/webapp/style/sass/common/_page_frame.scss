@@ -248,7 +248,7 @@ a {
     .logo {
       float: left;
       .logo-bg {
-        background: url("/images/icons/logo-index.png") left center no-repeat;
+        background: url("/images/global/logo-index.png") left center no-repeat;
         width: 420px;
         height: 50px;
         display: block;
@@ -309,7 +309,7 @@ a {
           width:15px;
           height: 8px;
           margin-left: 7px;
-          background: url("../../images/homepage/icon-sub.png") left top no-repeat;
+          background: url("../../images/global/icon-sub.png") left top no-repeat;
         }
         ul.sub-menu-list {
           display: none;
@@ -354,7 +354,7 @@ a {
             color: #ff770f;
           }
           .icon-has-submenu {
-            background: url("../../images/homepage/icon-sub-hover.png") left top no-repeat;
+            background: url("../../images/global/icon-sub-hover.png") left top no-repeat;
           }
           ul.sub-menu-list {
             display: block;
@@ -370,7 +370,7 @@ a {
           }
           .icon-has-submenu {
             //@include transition(0.5s);
-            background: url("../../images/homepage/icon-active-bottom.png") left top no-repeat;
+            background: url("../../images/global/icon-active-bottom.png") left top no-repeat;
           }
           &:hover {
             .icon-has-submenu {
