@@ -27,16 +27,17 @@
         {"title":"转让项目", "url":"/transfer-list"}
     ]},
     {"title":"我要借款", "url":"/loan-application","category":"19顶部导航","navigation":"true"},
-        {"title":"我的账户", "url":"/account", "category":"18顶部导航","navigation":"true","leftNavs":[
+
+    {"title":"我的账户", "url":"/account", "category":"18顶部导航","leftNavs":[
         {"title":"账户总览", "url":"/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"我的投资", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
         {"title":"债权转让", "url":"/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
         {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
         {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"消息中心", "url":"/message/user-messages", "role":"'USER'"},
+        {"title":"我的财豆", "url":"/point", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"自动投标", "url":"/auto-invest", "role":"'USER', 'INVESTOR'"},
-        {"title":"推荐送现金", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
     {"title":"拓天问答", "url":"${askServer}","category":"","navigation":"true"},
@@ -143,8 +144,6 @@
         data-main="${staticServer}${jsPath}${pageJavascript}">
 
 </script>
-<#--<script src="${staticServer}${jsPath}${js.cnzz_statistics}" type="text/javascript" charset="utf-8"></script>-->
-
 </#if>
 
 <#include "../pageLayout/statistic.ftl" />

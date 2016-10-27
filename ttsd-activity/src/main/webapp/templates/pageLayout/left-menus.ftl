@@ -1,4 +1,4 @@
-<#list menus as menu>
+<#list mainMenus as menu>
     <#if activeNav?? && activeNav==menu.title && menu.leftNavs??>
         <div class="swiper-container">
             <ul class="left-nav swiper-wrapper">
