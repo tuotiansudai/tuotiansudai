@@ -5,18 +5,12 @@
     <div class="banner-box" >
         <div id="bannerBox" class="banner-box-inner">
             <ul class="banner-img-list">
-               <li> <img src="https://static.tuotiansudai.com/upload/20160708/42441467975156254.png"
-                     data-app-img="https://static.tuotiansudai.com/upload/20160708/52421467975158264.png" alt="" ></li>
-
-                  <li>  <img src="https://static.tuotiansudai.com/upload/20160708/98591467975197628.png"
-                data-app-img="https://static.tuotiansudai.com/upload/20160708/82341467975201217.png"></li>
-
                 <#list bannerList as banner>
                     <li>
                         <a href="${banner.url}" data-name="${banner.url}"
                            onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"
                            <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
-                            <img src="http://ci1.tuotiansudai.com:6002//${banner.webImageUrl}" data-app-img="${staticServer}${banner.appImageUrl}" alt="${banner.title}" >
+                            <img src="${staticServer}${banner.webImageUrl}" data-app-img="${staticServer}${banner.appImageUrl}" alt="${banner.title}" >
                         </a>
                     </li>
                 </#list>
@@ -162,7 +156,7 @@
         <#--优选债权-->
         <div class="main-column-title">
             <i class="icon-title"></i>优选债权
-            <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多>></a>
+            <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多></a>
         </div>
         <div class="book-invest-box clearfix bg-screen">
             <span class="book-info">预约后当有相应项目我们会及时通知您。</span>
@@ -182,7 +176,7 @@
         <#if enterpriseLoans??>
             <div class="main-column-title">
                 <i class="icon-title"></i>税易经营性借款
-                <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多>></a>
+                <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多></a>
             </div>
 
             <#include "component/loan-title.ftl">
@@ -193,7 +187,7 @@
 
         <div class="main-column-title">
             <i class="icon-title"></i>转让项目
-            <a href="/transfer-list" onclick="cnzzPush.trackClick('47首页','转让项目模块','更多')" class="hot-more">更多>></a>
+            <a href="/transfer-list" onclick="cnzzPush.trackClick('47首页','转让项目模块','更多')" class="hot-more">更多></a>
         </div>
 
         <div class="target-category-box clearfix bg-screen">
@@ -214,7 +208,7 @@
         <div class="media-coverage-box">
             <h3 class="label-title">
                 媒体报道
-                <a href="/about/media" onclick="cnzzPush.trackClick('39首页','媒体报道模块','更多')" class="hot-more">更多>></a>
+                <a href="/about/media" onclick="cnzzPush.trackClick('39首页','媒体报道模块','更多')" class="hot-more">更多></a>
             </h3>
             <ul class="media-list">
                 <li><i>●</i><a rel="nofollow" href="http://www.greatchinese.com.cn/news/hyxw/20160907/15431.html"
@@ -246,7 +240,7 @@
         <div class="partner-box clearfix">
             <h3 class="label-title">
                 合作伙伴
-                <a href="/about/media" onclick="cnzzPush.trackClick('39首页','媒体报道模块','更多')" class="hot-more">更多>></a>
+                <a href="/about/media" onclick="cnzzPush.trackClick('39首页','媒体报道模块','更多')" class="hot-more">更多></a>
             </h3>
             <ul class="partner-list">
                 <li><a rel="nofollow" class="logo-capital" href="http://www.king-capital.com/"

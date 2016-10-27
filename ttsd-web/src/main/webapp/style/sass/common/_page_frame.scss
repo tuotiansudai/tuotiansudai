@@ -71,11 +71,8 @@ a {
               position: absolute;
               background: #ea3622;
               color: #fff;
-              top: 0;
-              right: 0;
-              transform: translate(50%, 0);
-              -webkit-transform: translate(50%, 0);
-              -moz-transform: translate(50%, 0);
+              top: -11px;
+              right: -6px;
               font-size: 12px;
               border-radius: 5px;
               height: 15px;
@@ -300,11 +297,11 @@ a {
         box-sizing: border-box;
         border-top: #fff 3px solid;
         text-align: center;
+        font-size: 16px;
         a {
           display: inline-block;
           text-align: center;
           color: #4d4d4d;
-          font-size: 15px;
         }
         .icon-has-submenu {
           display: inline-block;
@@ -320,18 +317,20 @@ a {
           top: 40px;
           background: #fff;
           li {
-            height: 43px;
-            line-height: 43px;
+            height: 40px;
+            line-height: 40px;
             border-top-width: 0;
-            font-size:14px;
             text-align: left;
             padding-left: 20px;
+            font-size: 14px;
             a {
-              color: #4d4d4d;
+              color: #808080;
             }
             i {
               display: inline-block;
               margin-right: 10px;
+              font-size: 13px;
+              vertical-align: top;
             }
             &:hover,&.active {
               background: #fff2e3;
@@ -368,6 +367,16 @@ a {
           a {
             color: #fff;
           }
+          .icon-has-submenu {
+            //@include transition(0.5s);
+            background: url("../../images/homepage/icon-active-bottom.png") left top no-repeat;
+          }
+          &:hover {
+            .icon-has-submenu {
+              @include transform-rotate(180deg);
+            }
+          }
+
         }
         &.top-membership, &.top-activity {
           display: none;

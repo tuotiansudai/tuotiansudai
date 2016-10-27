@@ -40,7 +40,7 @@
         {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
     {"title":"拓天问答", "url":"${askServer}","category":"","navigation":"true"},
-    {"title":"关于我们", "url":"/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
+    {"title":"信息纰漏", "url":"/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
         {"title":"公司介绍", "url":"/about/company"},
         {"title":"团队介绍", "url":"/about/team"},
         {"title":"拓天公告", "url":"/about/notice"},

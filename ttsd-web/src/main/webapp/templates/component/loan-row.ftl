@@ -1,9 +1,6 @@
 <div class="target-category-box" data-url="/loan/${loan.id?c}">
     <div class="target-column-con">
         <div class="table-row">${loan.name}
-            <span class="loan-tag-vip">
-            国庆标
-            </span>
         <#if loan.activity?string("true","false") == "true">
             <span class="loan-tag-vip">
                 ${loan.activityDesc!}

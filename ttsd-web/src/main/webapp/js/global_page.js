@@ -71,15 +71,9 @@ globalFun.prototype={
 
         this.addEventHandler(this.$('#showMainMenu'),'click',this.showMainMenu.bind(this));
 
+        this.addEventHandler(this.$('#iphone-app-pop'),'mouseover',this.showAppCode.bind(this));
+        this.addEventHandler(this.$('#iphone-app-pop'),'mouseleave',this.hideAppCode.bind(this));
 
-        //显示手机app二维码
-        document.addEventListener('click',function(event) {
-            var target = event.target;
-            if(event.target.offsetParent) {
-                var offsetID=event.target.offsetParent.id;
-                this.showAppCode(offsetID);
-            }
-        }.bind(this),false);
     },
     showMainMenu:function(e) {
         e.preventDefault();
@@ -123,16 +117,13 @@ globalFun.prototype={
         e.preventDefault();
         location.href = "/app/download";
     },
-    //是否显示隐藏app扫描码
-    showAppCode:function(id) {
-        var objBox=this.$('#'+id);
-        if(objBox && id=='iphone-app-pop') {
-               var obg=this.$('#'+id).children[2];
-                this.toggleClass(obg,'hide');
-        }
-        else {
-            this.addClass(this.$('#iphone-app-img'),'hide');
-        }
+    //显示app扫描码
+    showAppCode:function() {
+        this.removeClass(this.$('#iphone-app-img'),'hide');
+    },
+    //隐藏app扫描码
+    hideAppCode:function() {
+        this.addClass(this.$('#iphone-app-img'),'hide');
     },
     //友情链接
     moreFriendLinks:function(event) {
