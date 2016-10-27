@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 public class PlatformBalanceMonitorJob implements Job {
@@ -39,6 +40,12 @@ public class PlatformBalanceMonitorJob implements Job {
 
         try {
             Map<String, String> data = umPayRealTimeStatusService.getPlatformStatus();
+
+            Set<String> keys = data.keySet();
+            for (String key : keys) {
+                logger.debug("key: " + key + ", value:" + data.get(key));
+            }
+
             String balance = data.get("账户余额");
 
             logger.debug("platform balance is: " + balance);
