@@ -169,7 +169,7 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                         $('.coupon-agent-channel').append('<label><input type="checkbox" class="channel" name="channels" value="'+data[i]+'">'+data[i]+'</label>');
                     }
                 })
-                $('.give-number').val('0');
+                $('.give-number').val('0').prop('readonly', false);
             } else if (userGroup == "FIRST_INVEST_ACHIEVEMENT" || userGroup == "MAX_AMOUNT_ACHIEVEMENT" || userGroup == "LAST_INVEST_ACHIEVEMENT") {
                 $('.give-number').val('').prop('readonly', false);
             } else if(userGroup == "MEMBERSHIP_V0" || userGroup == "MEMBERSHIP_V1" || userGroup == "MEMBERSHIP_V2"
@@ -178,7 +178,7 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                     $('.give-number').val(parseInt(data)).prop('readonly', true);
                 })
             } else if(userGroup == "INVESTED_USER" || userGroup == "REGISTERED_NOT_INVESTED_USER" || userGroup == "STAFF"
-            || userGroup == "STAFF_RECOMMEND_LEVEL_ONE" || userGroup == "NOT_ACCOUNT_NOT_INVESTED_USER") {
+            || userGroup == "STAFF_RECOMMEND_LEVEL_ONE" || userGroup == "NOT_ACCOUNT_NOT_INVESTED_USER" || userGroup == "ALL_USER") {
                 $.get('/activity-manage/coupon/user-group/' + userGroup + '/estimate', function (data) {
                     $('.give-number').val(data);
                 })
@@ -203,7 +203,7 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                 })
             });
             if($('.channel:checked').length==0) {
-                $('.give-number').val('0');
+                $('.give-number').val('0').prop('readonly', false);
             }
         });
 

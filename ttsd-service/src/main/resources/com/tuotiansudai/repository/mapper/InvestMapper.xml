@@ -527,6 +527,15 @@
             and trading_time between #{startTime} and #{endTime}
     </select>
 
+    <select id="sumInvestAmountIphone7" parameterType="map" resultType="long">
+        select IFNULL(sum(amount), 0) as amount
+        from invest
+        where
+        status = 'SUCCESS'
+        and transfer_status != 'SUCCESS'
+        and trading_time between #{startTime} and #{endTime}
+    </select>
+
     <select id="sumSuccessInvestCountByLoginName" parameterType="String" resultType="int">
         select count(*)
         from invest join loan on invest.loan_id = loan.id and loan.product_type != 'EXPERIENCE'

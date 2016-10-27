@@ -23,13 +23,20 @@ public class DeadlineFundraisingJob implements Job{
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("trigger DeadlineFundraisingJob");
-        Object value = context.getJobDetail().getJobDataMap().get(LOAN_ID_KEY);
+
+        Object value;
+        try {
+            value = context.getJobDetail().getJobDataMap().get(LOAN_ID_KEY);
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return;
+        }
 
         if (value == null) {
             return;
         }
 
-        long loanId = (Long) value;
+        long loanId = Long.parseLong(String.valueOf(value)) ;
 
         LoanModel loanModel = loanMapper.findById(loanId);
 
