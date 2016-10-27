@@ -28,15 +28,15 @@
                 <div class="e-bank-recharge">
                     <b class="title">选择银行:</b>
                     <ol class="select-bank">
-                        <#list banks as bank>
+                        <#list bankList as bank>
                             <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
-                                <input id="bank-${bank}" data-name="${bank}" class="bank-checked" value="${bank}" type="radio" onclick="selectBank(this.value)" name="select_bank" <#if bank_index == 0>checked="checked"</#if>>
-                                <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
+                                <input id="bank-${bank.bankCode}" data-name="${bank.bankCode}" class="bank-checked" value="${bank.bankCode}" type="radio" onclick="selectBank(this.value)" name="select_bank" <#if bank_index == 0>checked="checked"</#if>>
+                                <label for="bank-${bank.bankCode}"><img src="${staticServer}/images/bank/${bank.bankCode}.jpg" alt=""></label>
                             </li>
                         </#list>
                     </ol>
                     <div class="recharge-form pad-m">
-                        <div class="limit-tips"><span>中国银行快捷支付限额:单笔50,000元/单日50,000元</span><i class="fa fa-question-circle text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i></div>
+                        <div class="limit-tips"><span>中国建设银行快捷支付限额:单笔30,000元/单日100,000元</span><i class="fa fa-question-circle text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i></div>
                         <form action="/bind-card" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
 
                             银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value="" autocomplete="off" />
