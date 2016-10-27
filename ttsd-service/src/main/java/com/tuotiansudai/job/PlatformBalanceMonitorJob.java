@@ -41,7 +41,9 @@ public class PlatformBalanceMonitorJob implements Job {
             Map<String, String> data = umPayRealTimeStatusService.getPlatformStatus();
             String balance = data.get("账户余额");
 
-            if (StringUtils.isNotEmpty(balance) && Double.parseDouble(balance) <= Double.parseDouble(warningLine)) {
+            logger.debug("platform balance is: " + balance);
+
+            if (Double.parseDouble(balance) <= Double.parseDouble(warningLine)) {
 
                 PlatformBalanceLowNotifyDto notifyDto = new PlatformBalanceLowNotifyDto();
                 notifyDto.setMobiles(mobileList);
