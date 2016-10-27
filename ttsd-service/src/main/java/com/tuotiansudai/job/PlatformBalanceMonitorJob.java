@@ -27,7 +27,7 @@ public class PlatformBalanceMonitorJob implements Job {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
-    @Value("${platform.balance.notify.mobileList}.split('\\|')")
+    @Value("#{'${platform.balance.notify.mobileList}'.split('\\|')}")
     private List<String> mobileList;
 
     @Value("${platform.balance.notify.warning.line}")
