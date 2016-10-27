@@ -28,6 +28,7 @@ import javax.annotation.Resource;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class CouponAssignmentServiceImpl implements CouponAssignmentService {
@@ -167,12 +168,8 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         boolean isAssignableCoupon = CollectionUtils.isEmpty(existingUserCoupons);
 
         if (CollectionUtils.isNotEmpty(existingUserCoupons) && couponModel.isMultiple()) {
-            isAssignableCoupon = Lists.newArrayList(UserGroup.EXCHANGER, UserGroup.EXCHANGER_CODE, UserGroup.WINNER).contains(couponModel.getUserGroup()) || Iterables.all(existingUserCoupons, new Predicate<UserCouponModel>() {
-                @Override
-                public boolean apply(UserCouponModel input) {
-                    return input.getStatus() == InvestStatus.SUCCESS;
-                }
-            });
+            isAssignableCoupon = Lists.newArrayList(UserGroup.EXCHANGER, UserGroup.EXCHANGER_CODE, UserGroup.WINNER).contains(couponModel.getUserGroup())
+                    || existingUserCoupons.stream().allMatch(input -> input.getStatus() == InvestStatus.SUCCESS);
         }
 
         if (isAssignableCoupon) {
@@ -182,43 +179,67 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
     }
 
+    /**
+     * 给指定的用户发放指定的 userGroup 类型的优惠券
+     *
+     * @param loginNameOrMobile 指定的用户
+     * @param userGroups        指定的userGroup
+     */
     @Override
     public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
+        // 当前可领取的优惠券
         List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
 
+        // 该用户已领取的优惠券
         final List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginNameAndCouponId(loginName, null);
 
+        // 该用户可领取的优惠券
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
             @Override
             public boolean apply(CouponModel couponModel) {
+
+                // 该优惠券在参数指定的userGroup里  且 该优惠券和该用户符合该userGroup的规则
                 boolean isInUserGroup = userGroups.contains(couponModel.getUserGroup())
                         && CouponAssignmentServiceImpl.this.getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName);
+
+                // 该优惠券是否可以被发放给该用户
                 boolean isAssignableCoupon = this.isAssignableCoupon(couponModel);
+
                 return isInUserGroup && isAssignableCoupon;
             }
 
+            // 用户已经持有的该类型的优惠券的数量
+            int assignedCouponCount;
+
+            /**
+             * 检查优惠券是否可以被发送给该用户
+             * 如果用户没有持有该类型的优惠券，则返回true
+             * 否则，如果用户持有的该类型的优惠券都被使用过了，且该优惠券可以被多次领取，则返回true
+             *
+             * @param couponModel
+             * @return
+             */
             private boolean isAssignableCoupon(final CouponModel couponModel) {
-                UnmodifiableIterator<UserCouponModel> assignedUserCoupons = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
-                    @Override
-                    public boolean apply(UserCouponModel input) {
-                        return input.getCouponId() == couponModel.getId();
-                    }
+
+                assignedCouponCount = 0;
+
+                // 用户持有的该类型的优惠券（可能为多个）
+                Stream<UserCouponModel> assignedUserCoupons = userCouponModels.stream().filter(input -> input.getCouponId() == couponModel.getId());
+
+                // 是否存在未使用的该类型优惠券
+                boolean isUnusedUserCouponExisted = assignedUserCoupons.anyMatch(input -> {
+                    assignedCouponCount++;
+                    return input.getStatus() != InvestStatus.SUCCESS;
                 });
 
-                if (!assignedUserCoupons.hasNext()) {
+                // 如果用户没有持有该类型的优惠券，则该用户可以得到该优惠券，返回true
+                if (assignedCouponCount == 0) {
                     return true;
                 }
 
-                boolean isUnusedUserCouponExisted = false;
-                while (assignedUserCoupons.hasNext()) {
-                    UserCouponModel next = assignedUserCoupons.next();
-                    if (next.getCouponId() == couponModel.getId() && next.getStatus() != InvestStatus.SUCCESS) {
-                        isUnusedUserCouponExisted = true;
-                    }
-                }
-
+                // 该优惠券可以被多次领取（目前只有生日券）且 用户持有的该优惠券已经被全部使用了，则返回true，表示该优惠券还可以被该用户再次领取
                 return couponModel.isMultiple() && !isUnusedUserCouponExisted;
             }
         }));

@@ -53,7 +53,7 @@ public class SignInClient {
                 .add("password", password)
                 .add("token", token)
                 .add("source", source.name())
-                .add("deviceId", deviceId);
+                .add("device_id", deviceId);
 
         Request.Builder request = new Request.Builder()
                 .url(MessageFormat.format("http://{0}:{1}/login/", signInHost, signInPort))
