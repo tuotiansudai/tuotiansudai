@@ -170,30 +170,15 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             return null;
         }
 
-        if (Iterators.tryFind(userRoleModels.iterator(), new Predicate<UserRoleModel>() {
-            @Override
-            public boolean apply(UserRoleModel input) {
-                return input.getRole() == Role.STAFF;
-            }
-        }).isPresent()) {
+        if (Iterators.tryFind(userRoleModels.iterator(), input -> input.getRole() == Role.STAFF).isPresent()) {
             return Role.STAFF;
         }
 
-        if (Iterators.tryFind(userRoleModels.iterator(), new Predicate<UserRoleModel>() {
-            @Override
-            public boolean apply(UserRoleModel input) {
-                return input.getRole() == Role.INVESTOR;
-            }
-        }).isPresent()) {
+        if (Iterators.tryFind(userRoleModels.iterator(), input -> input.getRole() == Role.INVESTOR).isPresent()) {
             return Role.INVESTOR;
         }
 
-        if (Iterators.tryFind(userRoleModels.iterator(), new Predicate<UserRoleModel>() {
-            @Override
-            public boolean apply(UserRoleModel input) {
-                return input.getRole() == Role.USER;
-            }
-        }).isPresent()) {
+        if (Iterators.tryFind(userRoleModels.iterator(), input -> input.getRole() == Role.USER).isPresent()) {
             return Role.USER;
         }
 

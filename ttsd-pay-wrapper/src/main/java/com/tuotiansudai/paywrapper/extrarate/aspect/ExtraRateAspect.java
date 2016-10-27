@@ -60,9 +60,12 @@ public class ExtraRateAspect {
     }
 
     @AfterReturning(value = "execution(* *..LoanService.postLoanOut(*))", returning = "returnValue")
-    public void afterReturningLoanOutInvestCalculation(JoinPoint joinPoint, Object returnValue) {
-        final long loanId = (long) joinPoint.getArgs()[0];
-        investExtraRateService.rateIncreases(loanId);
+    public void afterReturningLoanOutInvestCalculation(JoinPoint joinPoint, boolean returnValue) {
+        if (returnValue) {
+            final long loanId = (long) joinPoint.getArgs()[0];
+            investExtraRateService.rateIncreases(loanId);
+        }
+
     }
 }
 

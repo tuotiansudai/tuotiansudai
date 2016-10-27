@@ -101,22 +101,15 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
     }
 
     @Override
-    public BaseDto<PayDataDto> checkLoanAmount(long loanId) {
-        BaseDto<PayDataDto> dto = new BaseDto<>();
+    public BaseDto<PayDataDto> checkLoanAmount(long loanId, long investAmountSum) {
         PayDataDto dataDto = new PayDataDto();
-        dto.setData(dataDto);
+        BaseDto<PayDataDto> dto = new BaseDto<>(dataDto);
+
         try {
             ProjectAccountSearchResponseModel responseModel = paySyncClient.send(ProjectAccountSearchMapper.class, new ProjectAccountSearchRequestModel(String.valueOf(loanId)), ProjectAccountSearchResponseModel.class);
             dataDto.setCode(responseModel.getRetCode());
             dataDto.setMessage(responseModel.getRetMsg());
-            if (responseModel.isSuccess()) {
-                List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanId);
-                long investAmount = 0;
-                for (InvestModel successInvestModel : successInvestModels) {
-                    investAmount += successInvestModel.getAmount();
-                }
-                dataDto.setStatus(Long.parseLong(responseModel.getBalance()) == investAmount);
-            }
+            dataDto.setStatus(responseModel.isSuccess() && Long.parseLong(responseModel.getBalance()) == investAmountSum);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
