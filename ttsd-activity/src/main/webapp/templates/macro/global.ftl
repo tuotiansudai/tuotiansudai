@@ -70,21 +70,18 @@
     </#if>
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
-
+    <#if !isAppSource>
+        <meta name = "format-detection" content = "telephone=no">
+    </#if>
     <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${css.global}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
     <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8" />
     </#if>
-    <script>
-        var _czc = _czc || [];
-        <#if isProduction>
-            _czc.push(["_trackEvent()", "1254796373"]);
-        <#else >
-            _czc.push(["_trackEvent()", "1257936541"]);
-        </#if>
-    </script>
 
+    <#include "../cnzz.ftl"/>
+    <!-- growing io -->
+    <#include "../growing-io.ftl"/>
 </head>
 <body>
 

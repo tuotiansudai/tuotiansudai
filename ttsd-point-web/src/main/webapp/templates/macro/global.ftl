@@ -82,15 +82,10 @@
     <!--[if lte IE 8]>
     <link rel="stylesheet" href="${staticServer}${cssPath}ie_hack_grid.css">
     <![endif]-->
-    <script>
-        var _czc = _czc || [];
-            <#if isProduction>
-            _czc.push(["_trackEvent()", "1254796373"]);
-            <#else >
-            _czc.push(["_trackEvent()", "1257936541"]);
-            </#if>
-    </script>
 
+    <#include "../cnzz.ftl"/>
+    <!-- growing io -->
+    <#include "../growing-io.ftl"/>
 </head>
 <body>
 

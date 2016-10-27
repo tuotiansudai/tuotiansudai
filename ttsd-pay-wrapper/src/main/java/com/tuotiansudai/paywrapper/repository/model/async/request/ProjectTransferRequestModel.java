@@ -138,6 +138,32 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
+/*
+    public static TransferRequestModel newRequest(String orderId, String payUserId, String amount) {
+        TransferRequestModel model = new TransferRequestModel();
+        model.service = UmPayService.TRANSFER.getServiceName();
+        model.orderId = orderId;
+        model.particUserId = payUserId;
+        model.amount = amount;
+        model.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
+        model.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        return model;
+    }
+
+    */
+
+    public static ProjectTransferRequestModel newCouponRepayRequest(String projectId, String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
+        model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "coupon_repay_notify");
+        model.transAction = UmPayTransAction.OUT.getCode();
+        model.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
+        model.amount = amount;
+        model.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        return model;
+    }
+
+
     /**
      * 超投后返款
      *

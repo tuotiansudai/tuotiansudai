@@ -16,6 +16,7 @@ public class UserItemDataDto implements Serializable {
     private String email;
     private String mobile;
     private String referrerMobile;
+    private boolean fastPay;
     private String channel;
     private boolean staff;
     private Date registerTime;
@@ -70,6 +71,14 @@ public class UserItemDataDto implements Serializable {
 
     public void setReferrerMobile(String referrerMobile) {
         this.referrerMobile = referrerMobile;
+    }
+
+    public boolean isFastPay() {
+        return fastPay;
+    }
+
+    public void setFastPay(boolean fastPay) {
+        this.fastPay = fastPay;
     }
 
     public String getChannel() {
@@ -223,6 +232,7 @@ public class UserItemDataDto implements Serializable {
         this.referrerStaff = userView.isReferrerStaff();
         this.staff = userView.isStaff();
         this.bankCard = userView.isBindBankCard();
+        this.fastPay = userView.isFastPay();
     }
 }
 

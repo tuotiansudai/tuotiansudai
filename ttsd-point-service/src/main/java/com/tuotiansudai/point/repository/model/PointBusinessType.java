@@ -6,7 +6,7 @@ public enum PointBusinessType {
     EXCHANGE("积分兑换"),
     INVEST("投资奖励"),
     LOTTERY("抽奖"),
-    POINT_CLEAR("积分清零"),
+    POINT_CLEAR("积分到期清零"),
     ACTIVITY("活动奖励");
 
     private final String description;
