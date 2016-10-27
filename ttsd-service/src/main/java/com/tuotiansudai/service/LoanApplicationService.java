@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanApplicationModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.PaginationUtil;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ import java.util.List;
 
 @Service
 public class LoanApplicationService {
+
+    private static Logger logger = Logger.getLogger(LoanApplicationService.class);
 
     @Autowired
     AccountMapper accountMapper;
@@ -30,8 +33,7 @@ public class LoanApplicationService {
     UserMapper userMapper;
 
     public BaseDto<BaseDataDto> create(LoanApplicationDto loanApplicationDto) {
-        AccountModel accountModel = accountMapper.findByLoginName(loanApplicationDto.getLoginName());
-        if (null == accountModel) {
+        if (null == accountMapper.findByLoginName(loanApplicationDto.getLoginName())) {
             return new BaseDto<>(new BaseDataDto(false, "账户没有实名认证"));
         }
         if (loanApplicationDto.getAmount() <= 0) {
@@ -44,7 +46,11 @@ public class LoanApplicationService {
         UserModel userModel = userMapper.findByLoginName(loanApplicationDto.getLoginName());
         loanApplicationModel.setMobile(userModel.getMobile());
         loanApplicationModel.setUserName(userModel.getUserName());
-        loanApplicationMapper.create(loanApplicationModel);
+        try {
+            loanApplicationMapper.create(loanApplicationModel);
+        } catch (Exception e) {
+            logger.debug(e);
+        }
         return new BaseDto<>(new BaseDataDto(true));
     }
 
