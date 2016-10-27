@@ -188,7 +188,7 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                         $('.coupon-agent-channel').append('<label><input type="checkbox" class="channel" name="channels" value="'+data[i]+'">'+data[i]+'</label>');
                     }
                 })
-                $('.give-number').val('0');
+                $('.give-number').val('0').prop('readonly', false);
                 $('.smsAlert').prop('disabled',false);
             } else if (userGroup == "FIRST_INVEST_ACHIEVEMENT" || userGroup == "MAX_AMOUNT_ACHIEVEMENT" || userGroup == "LAST_INVEST_ACHIEVEMENT") {
                 $('.give-number').val('').prop('readonly', false);
@@ -198,7 +198,7 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                     $('.give-number').val(parseInt(data)).prop('readonly', true);
                 })
             } else if(userGroup == "INVESTED_USER" || userGroup == "REGISTERED_NOT_INVESTED_USER" || userGroup == "STAFF"
-                || userGroup == "STAFF_RECOMMEND_LEVEL_ONE" || userGroup == "NOT_ACCOUNT_NOT_INVESTED_USER") {
+                || userGroup == "STAFF_RECOMMEND_LEVEL_ONE" || userGroup == "NOT_ACCOUNT_NOT_INVESTED_USER" || userGroup == "ALL_USER") {
                 $.get('/activity-manage/coupon/user-group/' + userGroup + '/estimate', function (data) {
                     $('.give-number').val(data);
                 })
@@ -212,7 +212,7 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
 
         $('.coupon-agent-channel').on('click','.agent', function() {
             var num = $("input.agent:checkbox:checked").length;
-            $('.give-number').val(num);
+            $('.give-number').val(num).prop('readonly', false);
         });
 
         $('.coupon-agent-channel').on('click','.channel', function() {
@@ -220,11 +220,11 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
             $('.channel:checked').each(function(index,item) {
                 $.get('/user-manage/user/'+$(item).val()+'/channel',function(data) {
                     num += parseInt(data);
-                    $('.give-number').val(num);
+                    $('.give-number').val(num).prop('readonly', false);
                 })
             });
             if($('.channel:checked').length==0) {
-                $('.give-number').val('0');
+                $('.give-number').val('0').prop('readonly', false);
             }
         });
 
