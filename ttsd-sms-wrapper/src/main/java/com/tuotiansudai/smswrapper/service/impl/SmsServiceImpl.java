@@ -15,6 +15,7 @@ import com.tuotiansudai.smswrapper.client.MdSmsClient;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.*;
 import com.tuotiansudai.smswrapper.service.SmsService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ import java.util.List;
 
 @Service
 public class SmsServiceImpl implements SmsService {
+
+    static Logger logger = Logger.getLogger(SmsServiceImpl.class);
 
     @Autowired
     private SmsClient smsClient;
@@ -129,11 +132,13 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     public BaseDto<SmsDataDto> couponNotifyByMd(SmsCouponNotifyDto notifyDto){
+        logger.info(MessageFormat.format("coupon notify send. couponId:{0}",notifyDto.getCouponType()));
         String couponName = (notifyDto.getCouponType() == CouponType.INTEREST_COUPON ? MessageFormat.format("+{0}%", notifyDto.getRate()) : MessageFormat.format("{0}元", notifyDto.getAmount()))
                 + notifyDto.getCouponType().getName();
 
         List<String> paramList = ImmutableList.<String>builder().add(couponName).add(notifyDto.getExpiredDate()).build();
         if(platform.equals(SMS_PLATFORM)){
+            logger.info("coupon notify send by md platform");
             return mdSmsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
         }
 

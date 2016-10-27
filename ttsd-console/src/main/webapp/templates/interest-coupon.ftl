@@ -8,7 +8,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">加息券名称:</label>
             <div class="col-sm-4">
-                <span class="form-control">加息体验券</span>
+                <span class="form-control">加息券</span>
                 <input class="couponType" name="couponType" value="INTEREST_COUPON" type="hidden">
             </div>
         </div>
