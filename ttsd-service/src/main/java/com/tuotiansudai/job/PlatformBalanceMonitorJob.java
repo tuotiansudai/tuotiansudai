@@ -41,11 +41,6 @@ public class PlatformBalanceMonitorJob implements Job {
         try {
             Map<String, String> data = umPayRealTimeStatusService.getPlatformStatus();
 
-            Set<String> keys = data.keySet();
-            for (String key : keys) {
-                logger.debug("key: " + key + ", value:" + data.get(key));
-            }
-
             String balance = data.get("账户余额");
 
             logger.debug("platform balance is: " + balance);
