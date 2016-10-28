@@ -12,9 +12,4 @@ sourceSets {
     test.runtimeClasspath += configurations.providedCompile
 }
 
-dependencies {
-    compile project(':ttsd-service')
-    compile project(':ttsd-edxpoint-model')
-}
-
 processResources.outputs.upToDateWhen { false }
