@@ -42,7 +42,13 @@ public class PromotionService {
     }
 
     public void updatePromotion(String loginName, PromotionDto promotionDto){
-        PromotionModel promotionModel = new PromotionModel(promotionDto);
+        PromotionModel promotionModel = promotionMapper.findById(promotionDto.getId());
+        promotionModel.setName(promotionDto.getName());
+        promotionModel.setImageUrl(promotionDto.getImageUrl());
+        promotionModel.setLinkUrl(promotionDto.getLinkUrl());
+        promotionModel.setStartTime(promotionDto.getStartTime());
+        promotionModel.setEndTime(promotionDto.getEndTime());
+        promotionModel.setSeq(promotionDto.getSeq());
         promotionModel.setId(promotionDto.getId());
         promotionModel.setUpdatedBy(loginName);
         promotionModel.setUpdatedTime(new Date());

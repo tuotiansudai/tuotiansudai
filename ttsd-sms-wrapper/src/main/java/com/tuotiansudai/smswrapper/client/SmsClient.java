@@ -93,6 +93,11 @@ public class SmsClient implements ApplicationContextAware {
         return sendSMS(baseMapperClass, mobileList, template, paramList, restrictedIP);
     }
 
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, String param, String restrictedIP) {
+        List<String> paramList = Lists.newArrayList(param);
+        return sendSMS(baseMapperClass, mobileList, template, paramList, restrictedIP);
+    }
+
     public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, List<String> paramList, String restrictedIP) {
         BaseDto<SmsDataDto> dto = new BaseDto<>();
         SmsDataDto data = new SmsDataDto();
