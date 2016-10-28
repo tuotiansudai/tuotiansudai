@@ -180,7 +180,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
         notifyDto.setRate(new BigDecimal(couponModel.getRate() * 100).setScale(0, BigDecimal.ROUND_UP).toString());
         notifyDto.setCouponType(couponModel.getCouponType());
-        notifyDto.setExpiredDate(new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
+        notifyDto.setExpiredDate(DateTime.now().plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
 
         for (String loginName : loginNames) {
             String mobile = userMapper.findByLoginName(loginName).getMobile();
