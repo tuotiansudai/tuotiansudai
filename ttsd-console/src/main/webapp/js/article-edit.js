@@ -56,13 +56,13 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
                             if($self.hasClass('thumbPicture')){
                                 $('.article-thumbPicture').val(data.title);
                                 $('.thumbPictureImage').html('');
-                                $('.thumbPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
+                                $('.thumbPictureImage').append('<img style="width:100%" src="' + data.title + '" alt="缩略图">');
 
                             }
                             if($self.hasClass('showPicture')){
                                 $('.article-showPicture').val(data.title)
                                 $('.showPictureImage').html('');
-                                $('.showPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="展示图">');
+                                $('.showPictureImage').append('<img style="width:100%" src="' + data.title + '" alt="展示图">');
                             }
                         }
                     });

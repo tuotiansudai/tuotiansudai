@@ -24,6 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().sameOrigin();
         http.formLogin().loginPage("/login");
         http.authorizeRequests().antMatchers("/**").permitAll();
+
         http.addFilterAt(myPreAuthenticatedProcessingFilter, AbstractPreAuthenticatedProcessingFilter.class);
         http.exceptionHandling().accessDeniedHandler(myAccessDeniedHandler());
     }
