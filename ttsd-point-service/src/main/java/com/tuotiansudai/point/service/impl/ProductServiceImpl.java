@@ -275,21 +275,19 @@ public class ProductServiceImpl implements ProductService {
             case PHYSICAL:
             case VIRTUAL:
                 ProductModel productModel = productMapper.findById(id);
-                if (null == productModel) {
-                    break;
+                if (null != productModel) {
+                    productShowItemDto = new ProductShowItemDto(productModel, goodsType, "");
                 }
-                productShowItemDto = new ProductShowItemDto(productModel, goodsType, "");
+                break;
             case COUPON:
                 ProductModel productModelCoupon = productMapper.findById(id);
-                if (null == productModelCoupon) {
-                    break;
+                if (null != productModelCoupon) {
+                    CouponModel couponModel = couponService.findCouponById(productModelCoupon.getCouponId());
+                    if (null != couponModel) {
+                        ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModelCoupon.getPoints(), productModelCoupon.getSeq(), productModelCoupon.getImageUrl(), id, couponModel);
+                        productShowItemDto = convertProductShowItemDto(exchangeCouponView);
+                    }
                 }
-                CouponModel couponModel = couponService.findCouponById(productModelCoupon.getCouponId());
-                if (null == couponModel) {
-                    break;
-                }
-                ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModelCoupon.getPoints(), productModelCoupon.getSeq(), productModelCoupon.getImageUrl(), id, couponModel);
-                productShowItemDto = convertProductShowItemDto(exchangeCouponView);
                 break;
             default:
                 break;
