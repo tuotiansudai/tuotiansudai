@@ -2,8 +2,6 @@ package com.tuotiansudai.api.dto.v1_0;
 
 
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
-import org.joda.time.DateTime;
-import org.joda.time.Days;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -184,7 +182,5 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
         this.expecedInterest = transferApplicationDetailDto.getExpecedInterest();
         this.deadline = sdf.format(transferApplicationDetailDto.getDeadLine());
         this.transferStatus = transferApplicationDetailDto.getTransferStatus().name();
-        int leftDay = Days.daysBetween(new DateTime().withTimeAtStartOfDay().toLocalDateTime(), new DateTime(transferApplicationDetailDto.getDeadLine()).toLocalDateTime()).getDays();
-        this.leftDays = String.valueOf(leftDay > 0 ? leftDay : 0);
     }
 }

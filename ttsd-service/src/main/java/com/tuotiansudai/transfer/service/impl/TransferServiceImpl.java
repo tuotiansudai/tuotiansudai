@@ -9,14 +9,16 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.transfer.repository.model.*;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
+import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
+import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationItemDataDto;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
@@ -28,6 +30,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -119,6 +124,10 @@ public class TransferServiceImpl implements TransferService {
             @Override
             public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto transferApplicationRecordDto) {
                 TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(transferApplicationRecordDto);
+                LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
+                InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
+                long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), investRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                transferApplicationPaginationItemDataDto.setLeftDays(String.valueOf(leftDays > 0 ? leftDays : 0));
                 return transferApplicationPaginationItemDataDto;
             }
         });
