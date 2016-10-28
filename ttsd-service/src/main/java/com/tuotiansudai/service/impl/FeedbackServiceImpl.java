@@ -27,7 +27,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         UserModel userModel = userMapper.findByLoginName(loginName);
         FeedbackModel feedbackModel = new FeedbackModel();
         feedbackModel.setLoginName(loginName);
-        feedbackModel.setContact(userModel != null ? userModel.getMobile():"");
+        feedbackModel.setContact(userModel != null ? userModel.getMobile():contact);
         feedbackModel.setSource(source);
         feedbackModel.setType(type == null ? FeedbackType.opinion : type);
         feedbackModel.setContent(content);
