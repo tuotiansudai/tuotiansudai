@@ -19,7 +19,54 @@
     </@security.authorize>
 </#macro>
 
-<#macro main pageCss pageJavascript staticServer="${staticServer}" title="拓天速贷" keywords="" description="">
+<#macro main pageCss pageJavascript="" activeNav="" staticServer="${staticServer}" title="拓天速贷" keywords="" activeLeftNav=""  description="">
+    <#local mainMenus=[
+    {"title":"首页", "url":"/","category":"16顶部导航","navigation":"true"},
+    {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
+        {"title":"直投项目", "url":"/loan-list"},
+        {"title":"转让项目", "url":"/transfer-list"}
+    ]},
+    {"title":"我要借款", "url":"/loan-application","category":"19顶部导航","navigation":"true"},
+
+    {"title":"我的账户", "url":"/account", "category":"18顶部导航","navigation":"true","leftNavs":[
+        {"title":"账户总览", "url":"/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"我的投资", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
+        {"title":"债权转让", "url":"/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
+        {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
+        {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"我的财豆", "url":"/point", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"自动投标", "url":"/auto-invest", "role":"'USER', 'INVESTOR'"},
+        {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
+    ]},
+    {"title":"拓天问答", "url":"${askServer}","category":"","navigation":"true"},
+    {"title":"信息纰漏", "url":"/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
+        {"title":"公司介绍", "url":"/about/company"},
+        {"title":"团队介绍", "url":"/about/team"},
+        {"title":"拓天公告", "url":"/about/notice"},
+        {"title":"媒体报道", "url":"/about/media"},
+        {"title":"推荐奖励", "url":"/about/refer-reward"},
+        {"title":"服务费用", "url":"/about/service-fee"},
+        {"title":"联系我们", "url":"/about/contact"},
+        {"title":"运营数据", "url":"/about/operational"}
+    ]},
+    {"title":"帮助中心", "url":"/help/help-center","category":"21顶部导航", "navigation":"false","leftNavs":[
+        {"title":"注册认证", "url":"/help/account"},
+        {"title":"账户管理", "url":"/help/user"},
+        {"title":"资金相关", "url":"/help/money"},
+        {"title":"产品类型", "url":"/help/product"},
+        {"title":"其他问题", "url":"/help/other"}
+    ]}
+    ]/>
+
+    <#local membershipMenus=[
+        {"title":"我的会员", "url":"/membership","category":""},
+        {"title":"成长体系", "url":"/membership/structure","category":""},
+        {"title":"会员特权", "url":"/membership/privilege","category":""},
+        {"title":"积分商城", "url":"/point-shop","category":""},
+        {"title":"积分任务", "url":"/point-shop/task","category":""}
+    ]/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,10 +89,10 @@
     <#include "../growing-io.ftl"/>
 </head>
 <body>
-    <#include "../header.ftl"/>
+    <#include "../pageLayout/header.ftl"/>
 
 <#--top menus-->
-    <#include "../top-menu.ftl"/>
+    <#include "../pageLayout/top-menu.ftl"/>
 <#--top menus-->
 
 <#--ad image-->
@@ -90,58 +137,8 @@
     </div>
 </div>
 
-    <#include "../footer.ftl" />
+    <#include "../pageLayout/footer.ftl" />
 
-<script type="text/javascript">
-    window.$ = function(id) {
-        return document.getElementById(id);
-    };
-    var imgDom=window.$('iphone-app-img'),
-            TopMainMenuList=window.$('TopMainMenuList');
-    if (window.$('iphone-app-pop')) {
-        window.$('iphone-app-pop').onclick=function(event) {
-            if(imgDom.style.display == "block") {
-                imgDom.style.display='none';
-            }
-            else {
-                imgDom.style.display='block';
-            }
-            if (event.stopPropagation) {
-                event.stopPropagation();
-            }
-            else if (window.event) {
-                window.event.cancelBubble = true;
-            }
-        };
-    }
-
-
-    document.getElementById('showMainMenu').onclick=function(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        this.nextElementSibling.style.display='block';
-    }
-
-    document.getElementsByTagName("body")[0].onclick=function(e) {
-        var userAgent = navigator.userAgent.toLowerCase(),
-                event = e || window.event,
-                target = event.srcElement || event.target;
-
-        imgDom.style.display='none';
-        if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
-
-            //判断是否为viewport
-            var metaTags=document.getElementsByTagName('meta'),
-                    metaLen=metaTags.length,i=0;
-            for(;i<metaLen;i++) {
-                if(metaTags[i].getAttribute('name')=='viewport') {
-                    document.getElementById('TopMainMenuList').style.display='none';
-                }
-            }
-        }
-
-    };
-</script>
 <script src="${staticServer}${jsPath}${pageJavascript}" type="text/javascript"></script>
 
 </body>
