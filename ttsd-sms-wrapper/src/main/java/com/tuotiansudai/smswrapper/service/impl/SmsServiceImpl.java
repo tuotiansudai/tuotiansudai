@@ -112,7 +112,7 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     public BaseDto<SmsDataDto> experienceRepayNotify(List<String> mobiles, String repayAmount) {
-        return smsClient.sendSMS(ExperienceRepayNotifyMapper.class, mobiles, SmsTemplate.SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE, Lists.newArrayList(repayAmount), "");
+        return smsClient.sendSMS(ExperienceRepayNotifyMapper.class, mobiles, SmsTemplate.SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE, repayAmount, "");
     }
 
     @Override
@@ -146,7 +146,11 @@ public class SmsServiceImpl implements SmsService {
     }
 
     @Override
-    public BaseDto<SmsDataDto> sendRegisterCaptchaByMd(String mobile, String captcha, String ip){
+    public BaseDto<SmsDataDto> sendRegisterCaptchaByMd(String mobile, String captcha, String ip) {
         return mdSmsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
+    }
+
+    public BaseDto<SmsDataDto> platformBalanceLowNotify(List<String> mobiles, String warningLine) {
+        return smsClient.sendSMS(PlatformBalanceLowNotifyMapper.class, mobiles, SmsTemplate.SMS_PLATFORM_BALANCE_LOW_NOTIFY_TEMPLATE, warningLine, "");
     }
 }
