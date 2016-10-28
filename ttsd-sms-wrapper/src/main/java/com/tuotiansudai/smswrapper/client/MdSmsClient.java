@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.repository.mapper.BaseMapper;
@@ -15,6 +16,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.joda.time.DateTime;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +45,12 @@ public class MdSmsClient implements ApplicationContextAware {
 
     private static String SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE = "sms_ip_restricted:{0}";
 
+    private static String MD_SMS_SEND_COUNT_BY_TODAY_TEMPLATE = "md_sms_send_count_by_today:{0}";
+
+    private final static int sendSize = 10;
+
+    private final static int lifeSecond = 172800;
+
     public static final char[] DIGIT = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
     @Value("${zucp.url}")
@@ -56,6 +64,9 @@ public class MdSmsClient implements ApplicationContextAware {
 
     @Value("${sms.interval.seconds}")
     private int second;
+
+    @Value("${common.environment}")
+    private String environment;
 
     @Autowired
     private OkHttpClient httpClient;
@@ -72,6 +83,25 @@ public class MdSmsClient implements ApplicationContextAware {
         BaseDto<SmsDataDto> dto = new BaseDto<>();
         SmsDataDto data = new SmsDataDto();
         dto.setData(data);
+
+        if(Lists.<String>newArrayList(Environment.SMOKE.name(),Environment.STAGING.name(),Environment.DEV.name()).contains(environment)){
+            logger.info("[短信发送] 该环境不发送短信");
+            return dto;
+        }
+
+        if(Environment.QA.name().equals(environment)){
+            String redisKey = MessageFormat.format(this.MD_SMS_SEND_COUNT_BY_TODAY_TEMPLATE, "MD");
+            String hKey = DateTime.now().withTimeAtStartOfDay().toString("yyyyMMdd");
+            String redisValue = redisWrapperClient.hget(redisKey,hKey);
+
+            int smsSendSize = Strings.isNullOrEmpty(redisValue) ? 0 : Integer.parseInt(redisValue);
+            if(smsSendSize >= sendSize){
+                logger.error(MessageFormat.format("[短信发送] OA环境今日已经发送过10条短信 {0}",redisKey));
+                return dto;
+            }
+            smsSendSize++;
+            redisWrapperClient.hset(redisKey, hKey, String.valueOf(smsSendSize), lifeSecond);
+        }
 
         String redisKey = MessageFormat.format(SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE, restrictedIP);
 
