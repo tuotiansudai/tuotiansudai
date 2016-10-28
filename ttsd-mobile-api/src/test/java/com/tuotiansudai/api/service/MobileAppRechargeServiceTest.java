@@ -101,7 +101,7 @@ public class MobileAppRechargeServiceTest extends ServiceTestBase {
         assertEquals(bankModel.getName(), ((BankLimitResponseDataDto) baseResponseDto.getData()).getBankLimits().get(0).getBankName());
         assertEquals(AmountConverter.convertCentToString(bankModel.getSingleAmount()), ((BankLimitResponseDataDto) baseResponseDto.getData()).getBankLimits().get(0).getSingleAmount());
         assertEquals(AmountConverter.convertCentToString(bankModel.getSingleDayAmount()), ((BankLimitResponseDataDto) baseResponseDto.getData()).getBankLimits().get(0).getSingleDayAmount());
-        
+
         bankLimitRequestDto.setBankCode("");
         baseResponseDto = mobileAppRechargeService.getBankLimit(bankLimitRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
