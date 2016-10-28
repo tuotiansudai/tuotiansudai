@@ -130,12 +130,11 @@ body{
       }
       .close-text {
         text-align: center;
-
+        margin-top:40px;
         span {
-          padding: 10px 25px;
+          padding: 10px 40px;
           color: #fff;
           background: #ff7200;
-          border-radius: 5px;
           cursor: pointer;
         }
       }
