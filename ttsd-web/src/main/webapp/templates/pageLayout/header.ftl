@@ -18,7 +18,7 @@
                 <a href="/activity-center">活动中心</a>
             </li>
             <li class="header-help-center">
-                <a href="/about/help-center">帮助中心</a>
+                <a href="/help/help-center">帮助中心</a>
             </li>
         <@global.isNotAnonymous>
             <li>
@@ -31,9 +31,9 @@
             </li>
             <li class="header-message">
                 <a href="/message/user-messages">消息
-                    <span class="message-badge <@unreadMessageCount><@global.security.authentication property="principal.mobile"/></@unreadMessageCount>">
-                        <@unreadMessageCount><@global.security.authentication property="principal.mobile"/></@unreadMessageCount>
-                    </span>
+                    <#--<span class="message-badge <@unreadMessageCount><@global.security.authentication property="principal.mobile"/></@unreadMessageCount>">-->
+                        <#--<@unreadMessageCount><@global.security.authentication property="principal.mobile"/></@unreadMessageCount>-->
+                    <#--</span>-->
                 </a>
             </li>
         </@global.isNotAnonymous>

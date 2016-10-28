@@ -1,7 +1,11 @@
 @import '../common/variables';
 @import '../plugins/daterangepicker';
 @import "../module/coupon_alert";
-@import "top-sub-menu";
+
+//隐藏顶部菜单
+.swiper-container {
+  display: none;
+}
 
 .layui-layer-btn {
   text-align: center !important;

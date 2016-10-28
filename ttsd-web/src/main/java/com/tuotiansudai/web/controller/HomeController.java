@@ -65,7 +65,8 @@ public class HomeController {
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/index", "responsive", true);
         modelAndView.addObject("hello",true);
-        modelAndView.addObject("loans", homeService.getLoans());
+        modelAndView.addObject("normalLoans", homeService.getNormalLoans());
+        modelAndView.addObject("newbieLoans", homeService.getNewbieLoans());
         modelAndView.addObject("announces", announceService.getAnnouncementList(1, 3).getData().getRecords());
         modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE)));
         long experienceLoanId = 1;

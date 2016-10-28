@@ -8,6 +8,10 @@ $orange: #ee7b2f;
 $orange2: #f1a03f;
 $red: #eb4a3e;
 
+//隐藏顶部菜单
+.swiper-container {
+  display: none;
+}
 .level-layer-tips {
   .layui-layer-content {
     width:275px!important;

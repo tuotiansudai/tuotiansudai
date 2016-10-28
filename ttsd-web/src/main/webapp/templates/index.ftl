@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.home_page_v2}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" keywords="拓天速贷,互联网金融平台,P2P理财,拓天借贷,网络理财" description="拓天速贷是基于互联网的金融信息服务平台,由拓天伟业(北京)资产管理有限公司旗下的拓天伟业(北京)金融信息服务有限公司运营.">
 
 <div class="home-page-container" id="homePageContainer">
-    <div class="banner-box" >
+    <div class="banner-box">
         <div id="bannerBox" class="banner-box-inner">
             <ul class="banner-img-list">
                 <#list bannerList as banner>
@@ -10,7 +10,8 @@
                         <a href="${banner.url}" data-name="${banner.url}"
                            onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"
                            <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
-                            <img src="${staticServer}${banner.webImageUrl}" data-app-img="${staticServer}${banner.appImageUrl}" alt="${banner.title}" >
+                            <img src="${staticServer}${banner.webImageUrl}"
+                                 data-app-img="${staticServer}${banner.appImageUrl}" alt="${banner.title}">
                         </a>
                     </li>
                 </#list>
@@ -34,8 +35,8 @@
         </div>
     </div>
 
-     <div class="notice-container bg-screen" >
-            <div class="page-width clearfix">
+    <div class="notice-container bg-screen">
+        <div class="page-width clearfix">
             <h3>最新公告</h3>
             <div class="notice-text scroll-top">
                 <ul id="noticeList">
@@ -62,20 +63,20 @@
                 <a href="/about/notice" onclick="cnzzPush.trackClick('71首页','公告模块','更多')" class="text-href">更多></a>
             </div>
         </div>
-        </div>
+    </div>
     <div class="main-advantage clearfix bg-screen">
         <div class="page-width">
             <dl>
                 <dd class="guide">
                     <a href="/about/guide" onclick="cnzzPush.trackClick('28首页','安全保障模块','1')" target="_blank">
-                         <b class="clearfix">稳健收益 较低门槛</b>
+                        <b class="clearfix">稳健收益 较低门槛</b>
                         <span>最高46倍活期存款收益，<br>最低投资门槛50元</span>
                     </a>
                 </dd>
                 <dd class="risk">
                     <a href="/about/risk-flow" onclick="cnzzPush.trackClick('29首页','安全保障模块','2')" target="_blank">
                         <b class="clearfix">六重风控 审核严谨</b>
-                       <span>22道审核手续，<br>项目安全透明无死角</span>
+                        <span>22道审核手续，<br>项目安全透明无死角</span>
                     </a>
                 </dd>
                 <dd class="assurance">
@@ -88,7 +89,7 @@
         </div>
     </div>
     <div class="page-width">
-        <div class="newer-exclusive-box clearfix" >
+        <div class="newer-exclusive-box clearfix">
             <div class="main-column-title">
                 <i class="icon-title"></i>新手专享
             </div>
@@ -105,52 +106,52 @@
                 </div>
 
             </div>
-            <#list loans as loan>
-                <#if loan.activityType == "NEWBIE">
-                    <div class="newer-experience clearfix hack-newbie" data-url="/loan/${loan.id?c}">
-                        <i class="tag-icon"></i>
-                        <div class="con-inner" >
-                            <b class="newer-title">${loan.name}</b>
-                            <ul class="loan-info clearfix">
-                                <li><span class="percent-number" >
+            <#list newbieLoans as loan>
+                <div class="newer-experience clearfix hack-newbie" data-url="/loan/${loan.id?c}">
+                    <i class="tag-icon"></i>
+                    <div class="con-inner">
+                        <b class="newer-title">${loan.name}</b>
+                        <ul class="loan-info clearfix">
+                            <li><span class="percent-number">
                                     <i><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></i>
-                                        <@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
-                                    <#if (loan.newbieInterestCouponRate > 0) >
+                                <@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
+                                <#if (loan.newbieInterestCouponRate > 0) >
                                     +
                                     <i><@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger></i>
-                                   <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
-                                    </#if>
-                                        %<s class="sign-plus">+</s><i>3</i>%</span>预期年化收益</li>
-                                <li><em class="duration-day">${loan.duration}</em>天<br>项目期限</li>
-                            </ul>
-                    <#if loan.status== 'RAISING'>
-                    <#--筹款-->
-                        <a href="javascript:void(0)" class="btn-invest btn-normal">立即购买</a>
-                    </#if>
-                     <#if loan.status== 'PREHEAT'>
-                      <#--预热中-->
-                        <a href="javascript:void(0)" class="btn-invest btn-normal">
-                         <#if loan.preheatSeconds lte 1800>
-                             <i class="time-clock"></i><strong
-                                 class="minute_show">00</strong><em>:</em><strong
-                                 class="second_show">00</strong>放标
-                         <#else>
-                         ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
-                         </#if>
-                        </a>
-                     </#if>
-                       <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loan.status)>
-                           <#--已售罄-->
-                           <button class="btn-normal" disabled="">已售罄</button>
-                       </#if>
-                        </div>
+                                    <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
+                                </#if>
+                                        %<s class="sign-plus">+</s><i>3</i>%</span>预期年化收益
+                            </li>
+                            <li><em class="duration-day">${loan.duration}</em>天<br>项目期限</li>
+                        </ul>
+                        <#if loan.status== 'RAISING'>
+                        <#--筹款-->
+                            <a href="javascript:void(0)" class="btn-invest btn-normal">立即购买</a>
+                        </#if>
+                        <#if loan.status== 'PREHEAT'>
+                        <#--预热中-->
+                            <a href="javascript:void(0)" class="btn-invest btn-normal">
+                                <#if loan.preheatSeconds lte 1800>
+                                    <i class="time-clock"></i><strong
+                                        class="minute_show">00</strong><em>:</em><strong
+                                        class="second_show">00</strong>放标
+                                <#else>
+                                ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
+                                </#if>
+                            </a>
+                        </#if>
+                        <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loan.status)>
+                        <#--已售罄-->
+                            <button class="btn-normal" disabled="">已售罄</button>
+                        </#if>
                     </div>
-                </#if>
+                </div>
             </#list>
-            <a href="/activity/landing-page" target="_blank"><img src="${staticServer}/images/homepage/hot-bag-a.png" alt="注册送588元红包" class="fr"></a>
+            <a href="/activity/landing-page" target="_blank"><img src="${staticServer}/images/homepage/hot-bag-a.png"
+                                                                  alt="注册送588元红包" class="fr"></a>
         </div>
 
-        <#--优选债权-->
+    <#--优选债权-->
         <div class="main-column-title">
             <i class="icon-title"></i>优选债权
             <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多></a>
@@ -164,9 +165,9 @@
 
         <div class="normal-loan">
             <#include "component/loan-title.ftl">
-            <#list loans as loan>
-                <#include "component/loan-row.ftl">
-            </#list>
+            <#list normalLoans as loan>
+            <#include "component/loan-row.ftl">
+        </#list>
         </div>
 
 
@@ -213,7 +214,8 @@
                     <time>2016-09-07</time>
                 </li>
                 <li><i>●</i><a rel="nofollow" href="http://economy.gmw.cn/2016-03/31/content_19527114.htm"
-                               onclick="cnzzPush.trackClick('73首页','媒体报道模块','霸道总裁')" target="_blank">拓天速贷第二期全国排行活动正式启动</a>
+                               onclick="cnzzPush.trackClick('73首页','媒体报道模块','霸道总裁')"
+                               target="_blank">拓天速贷第二期全国排行活动正式启动</a>
                     <time>2016-03-31</time>
                 </li>
                 <li><i>●</i><a rel="nofollow" href="http://fj.qq.com/a/20160314/060811.htm"
@@ -227,7 +229,8 @@
                     <time>2016-01-20</time>
                 </li>
                 <li><i>●</i><a rel="nofollow" href="http://w.huanqiu.com/r/MV8wXzgyNzQ4NDZfMTM5NF8xNDUxMzAzNzYy"
-                               onclick="cnzzPush.trackClick('43首页','媒体报道模块','高效资产平台')" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
+                               onclick="cnzzPush.trackClick('43首页','媒体报道模块','高效资产平台')"
+                               target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
                     <time>2015-12-28</time>
                 </li>
             </ul>

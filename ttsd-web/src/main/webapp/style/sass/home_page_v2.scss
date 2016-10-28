@@ -780,7 +780,7 @@ $pointColor:#ff5400;
         height:155px;
         border-bottom:1px solid #e6e6e6;
         .table-row {
-          width:auto;
+          width:auto!important;
           position: absolute;
           font-size: 15px;
           padding:0 5px;
@@ -797,7 +797,7 @@ $pointColor:#ff5400;
           &.progress-column {
             left: 0;
             top: 127px;
-            width: 100%;
+            width: 100%!important;
             .progress-bar {
               .p-title {
                 width: 105px;
@@ -805,13 +805,15 @@ $pointColor:#ff5400;
                 float: left;
               }
               .process-percent {
-                width: calc(100% - 184px);
+                width: calc(100% - 215px);
                 float: left;
                 margin-top: 10px;
                 margin-left: 10px;
               }
               .point {
                 top:0;
+                left:auto;
+                margin-left:10px;
               }
 
             }
@@ -820,6 +822,7 @@ $pointColor:#ff5400;
             left:10px;
             top:10px;
             line-height: 22px;
+            padding-left:0;
           }
           &:nth-child(2) {
             left:10px;

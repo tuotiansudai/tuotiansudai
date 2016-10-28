@@ -56,7 +56,7 @@ public class HomeLoanDto {
         this.productType = loan.getProductType();
         this.activityType = loan.getActivityType();
         this.baseRate = new BigDecimal(String.valueOf(loan.getBaseRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
-        if (activityRate > 0) {
+        if (loan.getActivityRate() > 0) {
             this.activityRate = new BigDecimal(String.valueOf(loan.getActivityRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
         }
         this.periods = loan.getPeriods();

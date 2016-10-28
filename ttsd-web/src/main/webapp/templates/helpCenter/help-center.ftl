@@ -7,50 +7,50 @@
     <div class="model-group">
         <h3>常见问题</h3>
         <ul class="problem-list-item">
-            <li title="怎么使用红包、加息券？"><a href="/about/user#22">怎么使用红包、加息券？</a></li>
-            <li title="VIP会员享有哪些特权？"><a href="/about/user#32">VIP会员享有哪些特权？</a></li>
-            <li title="如何提高会员等级？"><a href="/about/user#33">如何提高会员等级？</a></li>
-            <li title="绑卡时提示该银行卡不支持，怎么回事？"><a href="/about/user#43">绑卡时提示该银行卡不支持，怎么回事？</a></li>
-            <li title="如何更换绑定的银行卡？"><a href="/about/user#45">如何更换绑定的银行卡？</a></li>
-            <li title="借款人逾期还款怎么办？"><a href="/about/money#33">借款人逾期还款怎么办？</a></li>
-            <li title="投资后能不能提前收款？"><a href="/about/money#34">投资后能不能提前收款？</a></li>
-            <li title="申请提现后，资金到账时间一般是多久？"><a href="/about/money#41">申请提现后，资金到账时间一般是多久？</a></li>
-            <li title="什么是“好友推荐赚奖励”？"><a href="/about/other#21">什么是“好友推荐赚奖励”？</a></li>
+            <li title="怎么使用红包、加息券？"><a href="/help/user#22">怎么使用红包、加息券？</a></li>
+            <li title="VIP会员享有哪些特权？"><a href="/help/user#32">VIP会员享有哪些特权？</a></li>
+            <li title="如何提高会员等级？"><a href="/help/user#33">如何提高会员等级？</a></li>
+            <li title="绑卡时提示该银行卡不支持，怎么回事？"><a href="/help/user#43">绑卡时提示该银行卡不支持，怎么回事？</a></li>
+            <li title="如何更换绑定的银行卡？"><a href="/help/user#45">如何更换绑定的银行卡？</a></li>
+            <li title="借款人逾期还款怎么办？"><a href="/help/money#33">借款人逾期还款怎么办？</a></li>
+            <li title="投资后能不能提前收款？"><a href="/help/money#34">投资后能不能提前收款？</a></li>
+            <li title="申请提现后，资金到账时间一般是多久？"><a href="/help/money#41">申请提现后，资金到账时间一般是多久？</a></li>
+            <li title="什么是“好友推荐赚奖励”？"><a href="/help/other#21">什么是“好友推荐赚奖励”？</a></li>
         </ul>
     </div>
     <div class="model-group">
         <h3>所有问题</h3>
         <ul class="model-list-item">
             <li>
-                <a href="/about/account">
+                <a href="/help/account">
                     <i class="icon icon-account"></i>
 
                     <p>注册/认证</p>
                 </a>
             </li>
             <li>
-                <a href="/about/user">
+                <a href="/help/user">
                     <i class="icon icon-user"></i>
 
                     <p>账户管理</p>
                 </a>
             </li>
             <li>
-                <a href="/about/money">
+                <a href="/help/money">
                     <i class="icon icon-money"></i>
 
                     <p>资金相关</p>
                 </a>
             </li>
             <li>
-                <a href="/about/product">
+                <a href="/help/product">
                     <i class="icon icon-product"></i>
 
                     <p>产品类型</p>
                 </a>
             </li>
             <li>
-                <a href="/about/other">
+                <a href="/help/other">
                     <i class="icon icon-other"></i>
 
                     <p>其他问题</p>

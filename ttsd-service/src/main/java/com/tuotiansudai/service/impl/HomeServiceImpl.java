@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HomeServiceImpl implements HomeService {
@@ -36,8 +37,15 @@ public class HomeServiceImpl implements HomeService {
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
-    @Override
-    public List<HomeLoanDto> getLoans() {
+    public List<HomeLoanDto> getNormalLoans() {
+        return getLoans().stream().filter(loan -> !loan.getProductType().equals(ProductType._30) && !loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
+    }
+
+    public List<HomeLoanDto> getNewbieLoans() {
+        return getLoans().stream().filter(loan -> loan.getProductType().equals(ProductType._30) || loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
+    }
+
+    private List<HomeLoanDto> getLoans() {
         final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
 
         List<LoanModel> loanModels = loanMapper.findHomeLoan();
