@@ -36,4 +36,10 @@ require(['jquery', 'underscore', 'jquery-ui', 'bootstrap', 'bootstrapSelect', 'b
 
         });
     });
+
+    $(function () {
+        $('.export-activity-prize-prize').click(function () {
+            location.href = "/activity-console/activity-manage/export-prize?"+$('#prizeFrom').serialize();
+        });
+    });
 });
