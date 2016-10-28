@@ -3,11 +3,9 @@ package com.tuotiansudai.service.impl;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.FeedbackMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.FeedbackModel;
-import com.tuotiansudai.repository.model.FeedbackType;
-import com.tuotiansudai.repository.model.ProcessStatus;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.FeedbackService;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,10 +23,11 @@ public class FeedbackServiceImpl implements FeedbackService {
     private FeedbackMapper feedbackMapper;
 
     @Override
-    public FeedbackModel create(String loginName, Source source, FeedbackType type, String content) {
+    public FeedbackModel create(String loginName, Source source, FeedbackType type, String content,String contact) {
+        UserModel userModel = userMapper.findByLoginName(loginName);
         FeedbackModel feedbackModel = new FeedbackModel();
         feedbackModel.setLoginName(loginName);
-        feedbackModel.setContact(userMapper.findByLoginName(loginName).getMobile());
+        feedbackModel.setContact(userModel != null ? userModel.getMobile():contact);
         feedbackModel.setSource(source);
         feedbackModel.setType(type == null ? FeedbackType.opinion : type);
         feedbackModel.setContent(content);
