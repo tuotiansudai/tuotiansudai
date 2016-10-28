@@ -1,5 +1,10 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.transfer_detail}" pageJavascript="${js.transfer_detail}" activeNav="我要投资" activeLeftNav="转让项目" title="标的详情">
+<style type="text/css">
+.swiper-container {
+    display: none;
+}
+</style>
 <div class="transfer-detail-content" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <div class="detail-intro">
         <div class="transfer-top">
