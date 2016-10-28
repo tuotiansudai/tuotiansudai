@@ -18,10 +18,6 @@
 
 <@global.main pageCss="${css.project_loan_list}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="" title="${title!}" keywords="${keywords!}" description="${description!}">
 <div class="loan-list-content">
-    <ul class="project-type">
-        <li class="active"><a href="/loan-list">直投项目</a></li>
-        <li><a href="/transfer-list">转让项目</a></li>
-    </ul>
     <div class="bRadiusBox bg-w">
         <ul class="wrapper-list">
             <li>

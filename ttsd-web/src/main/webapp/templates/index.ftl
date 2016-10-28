@@ -39,9 +39,6 @@
             <h3>最新公告</h3>
             <div class="notice-text scroll-top">
                 <ul id="noticeList">
-                    <li>sdsdsd</li>
-                    <li>8888</li>
-                    <li>9999</li>
                     <#list announces as announce>
                         <#if announce.id == 187>
                             <#assign category = "70首页">
@@ -323,6 +320,6 @@
     </div>
 </div>
     <#include "component/coupon-alert.ftl" />
-    <#include "login-tip.ftl" />
+    <#include "component/login-tip.ftl" />
     <#include "component/red-envelope-float.ftl" />
 </@global.main>

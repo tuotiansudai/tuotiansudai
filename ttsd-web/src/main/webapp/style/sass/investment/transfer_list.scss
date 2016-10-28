@@ -1,7 +1,7 @@
-@import 'common/variables';
-@import 'plugins/daterangepicker';
-@import "module/coupon_alert";
-
+@import '../common/variables';
+@import '../plugins/daterangepicker';
+@import "../module/coupon_alert";
+@import "top-sub-menu";
 
 .layui-layer-btn {
   text-align: center !important;
@@ -15,28 +15,9 @@
     color: #fff;
   }
 }
-.swiper-container {
-  display: none;
-}
+
 /*transfer list*/
 .transfer-list-content {
-  .project-type{
-    margin-bottom: 15px;
-    li{
-      margin:0 15px;
-      display: inline-block;
-      a{
-        font-size:18px;
-        color:#0e050a;
-      }
-      &.active{
-        border-bottom:4px solid #ff9c1b;
-        a{
-          color:#ff9c1b;
-        }
-      }
-    }
-  }
   .filter-list{
     background: #fff;
     border: 1px solid #d9d9d9;
@@ -166,7 +147,4 @@
       }
     }
   }
-}
-@media screen and (max-width:700px) {
-  
 }

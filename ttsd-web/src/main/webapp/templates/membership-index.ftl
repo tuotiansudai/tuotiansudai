@@ -529,5 +529,5 @@
         </div>
     </#if>
 </div>
-    <#include "login-tip.ftl" />
+    <#include "component/login-tip.ftl" />
 </@global.main>

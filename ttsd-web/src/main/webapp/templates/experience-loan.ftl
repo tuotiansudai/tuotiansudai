@@ -1,6 +1,7 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.experience_loan_detail}" activeNav="我要投资" activeLeftNav="" title="新手体验项目">
+<@global.main pageCss="${css.loan_detail}" pageJavascript="${js.experience_loan_detail}" activeNav="我要投资" activeLeftNav="" title="新手体验项目">
 <div class="loan-detail-content loan-detail-new" data-loan-progress="${loan.progress?string.computer}">
+
     <div class="borderBox clearfix no-border">
         <div class="loan-model">
             <div class="news-share bg-w">

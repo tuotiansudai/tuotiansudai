@@ -2,10 +2,9 @@
 @import 'plugins/daterangepicker';
 @import "module/coupon_alert";
 @import "fancybox";
-@import "grid";
+@import "common/grid";
 @import "account/mybean";
 
-@import "account/loan_detail"; //标的详情
 @import "account/loan_list";  //标的列表
 @import "account/account_overview";  //账户总览
 @import "account/personal_info";  //个人资料
