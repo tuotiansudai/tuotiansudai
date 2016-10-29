@@ -25,4 +25,5 @@ include "ttsd-service",
         'ttsd-util',
         'ttsd-point-web'
 include 'ttsd-edxpoint-model'
+include 'ttsd-edxpoint-repository'
 

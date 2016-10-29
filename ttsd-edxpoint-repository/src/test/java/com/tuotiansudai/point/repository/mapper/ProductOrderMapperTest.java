@@ -3,10 +3,6 @@ package com.tuotiansudai.point.repository.mapper;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.repository.model.ProductOrderModel;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
-import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +10,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -27,9 +24,6 @@ import static org.junit.Assert.assertThat;
 public class ProductOrderMapperTest {
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private ProductMapper productMapper;
 
     @Autowired
@@ -38,9 +32,9 @@ public class ProductOrderMapperTest {
 
     @Test
     public void shouldCreateProductOrderModel() throws Exception {
-        UserModel fakeUserModel = this.createFakeUserModel();
+        String fakeLoginName = "productorderCreateUser";
 
-        ProductModel productModel = this.createFakeProductModel(fakeUserModel.getLoginName());
+        ProductModel productModel = this.createFakeProductModel(fakeLoginName);
 
         ProductOrderModel productOrderModel = new ProductOrderModel();
         productOrderModel.setId(10001);
@@ -54,8 +48,8 @@ public class ProductOrderMapperTest {
         productOrderModel.setAddress("北京市北京市");
         productOrderModel.setConsignment(true);
         productOrderModel.setCreatedTime(new Date());
-        productOrderModel.setCreatedBy(fakeUserModel.getLoginName());
-        productOrderModel.setCreatedBy(fakeUserModel.getLoginName());
+        productOrderModel.setCreatedBy(fakeLoginName);
+        productOrderModel.setCreatedBy(fakeLoginName);
 
         productOrderMapper.create(productOrderModel);
 
@@ -64,20 +58,8 @@ public class ProductOrderMapperTest {
         assertThat(productOrderModelList.size() > 0, is(true));
     }
 
-    private UserModel createFakeUserModel() {
-        UserModel fakeUserModel = new UserModel();
-        fakeUserModel.setLoginName("productorderCreateUser");
-        fakeUserModel.setPassword("123abc");
-        fakeUserModel.setEmail("12345@abc.com");
-        fakeUserModel.setMobile("13900000000");
-        fakeUserModel.setRegisterTime(new Date());
-        fakeUserModel.setStatus(UserStatus.ACTIVE);
-        fakeUserModel.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        userMapper.create(fakeUserModel);
-        return fakeUserModel;
-    }
-
     private ProductModel createFakeProductModel(String loginName) {
+        Date laterDate = Date.from(Instant.now().plus(7, ChronoUnit.DAYS));
         ProductModel fakeProductModel = new ProductModel();
         fakeProductModel.setId(100001);
         fakeProductModel.setType(GoodsType.VIRTUAL);
@@ -87,7 +69,7 @@ public class ProductOrderMapperTest {
         fakeProductModel.setCreatedBy(loginName);
         fakeProductModel.setCreatedTime(new Date());
         fakeProductModel.setStartTime(new Date());
-        fakeProductModel.setEndTime(new DateTime().plusDays(7).toDate());
+        fakeProductModel.setEndTime(laterDate);
         fakeProductModel.setTotalCount(100);
         fakeProductModel.setUsedCount(0);
         fakeProductModel.setImageUrl("upload/images/a.png");
