@@ -37,7 +37,7 @@
         {"title":"我的财豆", "url":"/point", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"自动投标", "url":"/auto-invest", "role":"'USER', 'INVESTOR'"},
-        {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"推荐送现金", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
     {"title":"拓天问答", "url":"${askServer}","category":"","navigation":"true"},
@@ -91,9 +91,8 @@
         <link rel="stylesheet" href="${staticServer}${cssPath}ie_hack_grid.css">
     <![endif]-->
     <!-- -->
-    <#include "../cnzz.ftl"/>
-    <!-- growing io -->
-    <#include "../growing-io.ftl"/>
+    <#include "../pageLayout/cnzz.ftl"/>
+
 </head>
 <body>
 

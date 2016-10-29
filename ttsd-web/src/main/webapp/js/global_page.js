@@ -34,6 +34,9 @@ function globalFun() {
     }
     //绑定监听事件
     this.addEventHandler=function(target,type,fn) {
+        if(!target) {
+            return;
+        }
         if(target.addEventListener){
             target.addEventListener(type,fn);
         }else{
@@ -73,6 +76,9 @@ globalFun.prototype={
 
         this.addEventHandler(this.$('#iphone-app-pop'),'mouseover',this.showAppCode.bind(this));
         this.addEventHandler(this.$('#iphone-app-pop'),'mouseleave',this.hideAppCode.bind(this));
+
+        //添加growing的js
+        this.growingStatistics();
 
     },
     showMainMenu:function(e) {
@@ -133,8 +139,32 @@ globalFun.prototype={
         this.toggleClass(objBtn,"active");
         ulHeight=this.hasClass(objBtn,"active")?'auto':'30px';
         ulLIst.style.height=ulHeight;
-    }
+    },
+    // 动态插入script标签
+    createScript:function(url, callback){
+        var oScript = document.createElement('script');
+            oScript.type = 'text/javascript';
+            oScript.async = true;
+            oScript.src = url;
+        // IE9及以上浏览器，Firefox，Chrome，Opera ,
+        // IE8及以下浏览器 只支持onreadystatechange
+        oScript.onload = function(){
+            callback && callback();
+        }
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(oScript, s);
 
+       // var headEle=document.getElementsByTagName('head')[0];
+       //  headEle.appendChild(oScript);
+
+    },
+    // 添加growing的js
+    growingStatistics:function() {
+        var _vdsGrowing = [],vdsUrl;
+            _vdsGrowing.push(['setAccountId', 'a1e41737f5d5de60']);
+            vdsUrl=document.location.protocol+'//dn-growing.qbox.me/vds.js';
+        this.createScript(vdsUrl);
+    }
 }
 
 var globalFun=new globalFun();
@@ -148,6 +178,7 @@ function cnzzPushConstructor() {
     }
 }
 cnzzPush = new cnzzPushConstructor();
+
 
 
 
