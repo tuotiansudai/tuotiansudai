@@ -17,9 +17,8 @@
             <li class="header-activity-center">
                 <a href="${webServer}/activity-center">活动中心</a>
             </li>
-            <li class="login-pop-app" id="iphone-app-pop">
-                <a href="javascript:" >手机APP</a>
-                <div id="iphone-app-img" class="img-app-pc-top"></div>
+            <li class="header-help-center">
+                <a href="/help/help-center">帮助中心</a>
             </li>
         <@global.isNotAnonymous>
             <li><a class="personal-info-link" href="${webServer}/personal-info"><@global.security.authentication property="principal.mobile"/></a></li>
@@ -27,6 +26,13 @@
                 <form id="logout-form" class="logout-form" action="${webServer}/logout" method="post">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </form>
+            </li>
+            <li class="header-message">
+                <a href="/message/user-messages">消息
+                    <span class="message-badge <@unreadMessageCount><@global.security.authentication property="principal.mobile"/></@unreadMessageCount>">
+                        <@unreadMessageCount><@global.security.authentication property="principal.mobile"/></@unreadMessageCount>
+                    </span>
+                </a>
             </li>
         </@global.isNotAnonymous>
 

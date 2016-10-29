@@ -34,7 +34,9 @@ function globalFun() {
     }
     //绑定监听事件
     this.addEventHandler=function(target,type,fn) {
-        debugger
+        // if(!target) {
+        //     return;
+        // }
         if(target.addEventListener){
             target.addEventListener(type,fn);
         }else{
@@ -64,9 +66,7 @@ function globalFun() {
 }
 
 globalFun.prototype={
-    init:function() {
-
-        this.addEventHandler(this.$('#closeDownloadBox'),'click',this.closeDownLoadBox.bind(this));
+    init:function() {    this.addEventHandler(this.$('#closeDownloadBox'),'click',this.closeDownLoadBox.bind(this));
         this.addEventHandler(this.$('#btnExperience'),'click',this.toExperience.bind(this));
         this.addEventHandler(this.$('#getMore'),'click',this.moreFriendLinks.bind(this));
 
