@@ -70,6 +70,10 @@ public class LoanServiceImpl implements LoanService {
 
     private final static String LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE = "LOAN_OUT_IDEMPOTENT_CHECK:{0}";
 
+    private final static String DO_PAY_REQUEST = "DO_PAY_REQUEST";
+
+    private final static String SMS_AND_EMAIL = "SMS_AND_EMAIL";
+
     @Autowired
     private LoanMapper loanMapper;
 
@@ -302,31 +306,31 @@ public class LoanServiceImpl implements LoanService {
 
         ProjectTransferResponseModel resp = new ProjectTransferResponseModel();
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
-        String statusString = redisWrapperClient.hget(redisKey, String.valueOf(loanId));
+        String statusString = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
         if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
             try {
-                redisWrapperClient.hset(redisKey, String.valueOf(loanId), SyncRequestStatus.SENT.name());
+                redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, SyncRequestStatus.SENT.name());
                 resp = doPayRequest(loanId, agentPayUserId, investAmountTotal);
-                redisWrapperClient.hset(redisKey, String.valueOf(loanId), resp.isSuccess() ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
+                redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, resp.isSuccess() ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
             } catch (PayException e) {
-                redisWrapperClient.hset(redisKey, String.valueOf(loanId), SyncRequestStatus.FAILURE.name());
-                logger.error(MessageFormat.format("放款失败:发起放款联动优势请求失败,标的ID : {0}", String.valueOf(loanId)), e);
+                redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, SyncRequestStatus.FAILURE.name());
+                logger.error(MessageFormat.format("[标的放款]:发起放款联动优势请求失败,标的ID : {0}", String.valueOf(loanId)), e);
             }
         } else {
             resp = new ProjectTransferResponseModel();
             resp.setRetCode(ProjectTransferResponseModel.SUCCESS_CODE);
-            resp.setRetMsg(MessageFormat.format("放款失败:重复发起放款联动优势请求,标的ID : {0}", String.valueOf(loanId)));
+            resp.setRetMsg(MessageFormat.format("[标的放款]:重复发起放款联动优势请求,标的ID : {0}", String.valueOf(loanId)));
             logger.info(resp.getRetMsg());
         }
 
         if (resp.isSuccess()) {
-            logger.debug("标的放款：更新标的状态，标的ID:" + loanId);
+            logger.debug("[标的放款]：更新标的状态，标的ID:" + loanId);
             this.updateLoanStatus(loanId, LoanStatus.REPAYING);
 
-            logger.debug("标的放款：处理该标的的所有投资的账务信息，标的ID:" + loanId);
+            logger.debug("[标的放款]：处理该标的的所有投资的账务信息，标的ID:" + loanId);
             this.processInvestForLoanOut(successInvestList);
 
-            logger.debug("标的放款：把借款转给代理人账户，标的ID:" + loanId);
+            logger.debug("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
             this.processLoanAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal);
 
             // loanOutSuccessHandle(loanId);
@@ -357,28 +361,37 @@ public class LoanServiceImpl implements LoanService {
 
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
 
-        logger.debug("标的放款：生成还款计划，标的ID:" + loanId);
+        logger.debug("[标的放款]：生成还款计划，标的ID:" + loanId);
         try {
             repayGeneratorService.generateRepay(loanId);
         } catch (Exception e) {
-            logger.error(MessageFormat.format("生成还款计划失败 (loanId = {0})", String.valueOf(loanId)), e);
+            logger.error(MessageFormat.format("[标的放款]:生成还款计划失败 (loanId = {0})", String.valueOf(loanId)), e);
             return false;
         }
 
-        logger.debug("标的放款：处理推荐人奖励，标的ID:" + loanId);
+        logger.debug("[标的放款]：处理推荐人奖励，标的ID:" + loanId);
         try {
             referrerRewardService.rewardReferrer(loan, successInvestList);
         } catch (Exception e) {
-            logger.error(MessageFormat.format("发放推荐人奖励失败 (loanId = {0})", String.valueOf(loanId)), e);
+            logger.error(MessageFormat.format("[标的放款]:发放推荐人奖励失败 (loanId = {0})", String.valueOf(loanId)), e);
             return false;
         }
 
-        logger.debug("标的放款：处理短信和邮件通知，标的ID:" + loanId);
-        try {
-            //TODO 校验是否重复发送
-            processNotifyForLoanOut(loanId);
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("放款短信邮件通知失败 (loanId = {0})", String.valueOf(loanId)), e);
+        logger.debug("[标的放款]：处理短信和邮件通知，标的ID:" + loanId);
+
+        String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
+        String statusString = redisWrapperClient.hget(redisKey, SMS_AND_EMAIL);
+        if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
+            try {
+                redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.SENT.name());
+                processNotifyForLoanOut(loanId);
+                redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.SUCCESS.name());
+            } catch (Exception e) {
+                redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.FAILURE.name());
+                logger.error(MessageFormat.format("[标的放款]:放款短信邮件通知失败 (loanId = {0})", String.valueOf(loanId)), e);
+            }
+        }else {
+            logger.info(MessageFormat.format("[标的放款]:重复发送放款短信邮件通知,标的ID : {0}", String.valueOf(loanId)));
         }
 
         return true;
@@ -408,7 +421,6 @@ public class LoanServiceImpl implements LoanService {
 
         investList.forEach(invest -> {
             try {
-                //TODO: 验证user——bill是否已经存在invest
                 amountTransfer.transferOutFreeze(invest.getLoginName(),
                         invest.getId(),
                         invest.getAmount(),
@@ -434,10 +446,10 @@ public class LoanServiceImpl implements LoanService {
     private void processNotifyForLoanOut(long loanId) {
         List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
 
-        logger.debug(MessageFormat.format("标的: {0} 放款短信通知", loanId));
+        logger.debug(MessageFormat.format("[标的放款]:标的: {0} 放款短信通知", loanId));
         notifyInvestorsLoanOutSuccessfulBySMS(investModels);
 
-        logger.debug(MessageFormat.format("标的: {0} 放款邮件通知", loanId));
+        logger.debug(MessageFormat.format("[标的放款]:标的: {0} 放款邮件通知", loanId));
         notifyInvestorsLoanOutSuccessfulByEmail(investModels);
 
     }

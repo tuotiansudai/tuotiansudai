@@ -69,13 +69,35 @@ public class UserBillMapperTest {
         List<UserBillBusinessType> billBusinessTypes = Lists.newArrayList();
         billBusinessTypes.add(UserBillBusinessType.ACTIVITY_REWARD);
         billBusinessTypes.add(UserBillBusinessType.ADVANCE_REPAY);
-        params.put("userBillBusinessType",billBusinessTypes);
-        params.put("indexPage",1);
-        params.put("startTime",new Date());
-        params.put("endTime",new Date());
-        params.put("pageSize",10);
+        params.put("userBillBusinessType", billBusinessTypes);
+        params.put("indexPage", 1);
+        params.put("startTime", new Date());
+        params.put("endTime", new Date());
+        params.put("pageSize", 10);
         List<UserBillModel> list = userBillMapper.findUserBills(params);
         assertTrue(list.size() <= 10);
+    }
+
+    @Test
+    public void shouldFindUserIsAlreadyBillIsOk(){
+        UserModel fakeUser = this.getFakeUser();
+        userMapper.create(fakeUser);
+
+        UserBillModel userBillModel = new UserBillModel();
+        userBillModel.setLoginName(fakeUser.getLoginName());
+        userBillModel.setAmount(1);
+        userBillModel.setBalance(1);
+        userBillModel.setFreeze(1);
+        userBillModel.setOperationType(UserBillOperationType.FREEZE);
+        userBillModel.setBusinessType(UserBillBusinessType.RECHARGE_SUCCESS);
+        userBillModel.setOrderId(1l);
+
+        int count = userBillMapper.findUserIsAlreadyBill(fakeUser.getLoginName(),userBillModel.getOrderId(),userBillModel.getBusinessType(),userBillModel.getOperationType());
+        assertTrue(count == 0);
+        userBillMapper.create(userBillModel);
+        count = userBillMapper.findUserIsAlreadyBill(fakeUser.getLoginName(),userBillModel.getOrderId(),userBillModel.getBusinessType(),userBillModel.getOperationType());
+        assertTrue(count == 1);
+
     }
 
 }

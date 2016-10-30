@@ -74,6 +74,9 @@ public class AmountTransfer {
 
     @Transactional
     public void transferInBalance(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
+        if(!validIsAlreadyUserBill(loginName,orderId,businessType,UserBillOperationType.TI_BALANCE)){
+            return;
+        }
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {
             throw new TransferInAmountException(MessageFormat.format("{0} account is not exist", loginName));
@@ -119,6 +122,9 @@ public class AmountTransfer {
 
     @Transactional
     public void transferOutFreeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
+        if(!validIsAlreadyUserBill(loginName,orderId,businessType,UserBillOperationType.TO_FREEZE)){
+            return;
+        }
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {
             throw new TransferOutFreezeAmountException(MessageFormat.format("{0} account is not exist", loginName));
@@ -140,5 +146,9 @@ public class AmountTransfer {
 
         UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.TO_FREEZE, operatorLoginName, interventionReason);
         userBillMapper.create(userBillModel);
+    }
+
+    private boolean validIsAlreadyUserBill(String loginName,long orderId,UserBillBusinessType userBillBusinessType,UserBillOperationType userBillOperationType){
+        return userBillMapper.findUserIsAlreadyBill(loginName,orderId,userBillBusinessType,userBillOperationType) == 0;
     }
 }

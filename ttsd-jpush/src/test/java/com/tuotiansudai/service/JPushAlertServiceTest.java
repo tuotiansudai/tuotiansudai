@@ -579,4 +579,26 @@ public class JPushAlertServiceTest {
         assertEquals(String.valueOf(10003),argumentCaptorExtras.getAllValues().get(0).get("investId"));
         assertEquals(String.valueOf(loanModel.getId()),argumentCaptorExtras.getAllValues().get(0).get("loanId"));
     }
+
+    @Test
+    public void shouldAutoJPushLoanAlertIsOk(){
+        InvestModel investModel = new InvestModel();
+        List investModels = Lists.newArrayList(investModel);
+        JPushAlertModel jPushAlertModel = new JPushAlertModel();
+        jPushAlertModel.setId(1);
+        jPushAlertModel.setContent("123");
+        jPushAlertModel.setJumpTo(JumpTo.INVEST);
+        when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
+        when(jPushAlertMapper.findJPushAlertByPushType(any(PushType.class))).thenReturn(jPushAlertModel);
+        when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("");
+        when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
+        when(redisWrapperClient.hexists(anyString(), anyString())).thenReturn(true);
+        when(mobileAppJPushClient.sendPushAlertByRegistrationIds(anyString(), anyList(), anyString(), anyMap(), any(PushSource.class))).thenReturn(true);
+        jPushAlertService.autoJPushLoanAlert(1l);
+        verify(mobileAppJPushClient, times(1)).sendPushAlertByRegistrationIds(anyString(), anyList(), anyString(), anyMap(), any(PushSource.class));
+
+        when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("SUCCESS");
+        jPushAlertService.autoJPushLoanAlert(1l);
+        verify(mobileAppJPushClient,times(1)).sendPushAlertByRegistrationIds(anyString(), anyList(), anyString(), anyMap(), any(PushSource.class));
+    }
 }

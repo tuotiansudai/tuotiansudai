@@ -79,11 +79,11 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
                         investSource = "AUTO";
                     }
 
-                    if (!StringUtils.isNullOrEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(investSource))
-                    {
+                    if (!StringUtils.isNullOrEmpty(loanDetailsModel.getExtraSource()) &&
+                            loanDetailsModel.getExtraSource().contains(investSource) &&
+                            investExtraRateMapper.findByInvestId(investModel.getId()) == null) {
                         investExtraRateMapper.create(investExtraRateModel);
                     }
-
                 }
             }
         }

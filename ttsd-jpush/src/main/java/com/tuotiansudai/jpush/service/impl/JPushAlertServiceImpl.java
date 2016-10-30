@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -63,6 +64,14 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private static final String JPUSH_ID_KEY = "api:jpushId:store";
 
     private static final String NO_INVEST_LOGIN_NAME = "job:noInvest:loginName";
+
+    private final static String LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE = "LOAN_OUT_IDEMPOTENT_CHECK:{0}";
+
+    private final static String J_PUSH_RED_ENVELOPE = "J_PUSH_RED_ENVELOPE";
+
+    private final static String J_PUSH_ALERT_LOAN_OUT = "J_PUSH_ALERT_LOAN_OUT";
+
+    private final static String SUCCESS = "SUCCESS";
 
     @Autowired
     private InvestMapper investMapper;
@@ -315,13 +324,17 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 return;
             }
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
-
-            for (InvestModel investModel : investModels) {
-                List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(investModel.getAmount()));
-                loginNameMap.put(investModel.getLoginName(), amountLists);
-                autoJPushByRegistrationId(jPushAlertModel.getId(),jPushAlertModel.getContent(), loginNameMap,chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
-                loginNameMap.clear();
+            String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
+            String statusString = redisWrapperClient.hget(redisKey, J_PUSH_ALERT_LOAN_OUT);
+            if (Strings.isNullOrEmpty(statusString)) {
+                for (InvestModel investModel : investModels) {
+                    List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(investModel.getAmount()));
+                    loginNameMap.put(investModel.getLoginName(), amountLists);
+                    autoJPushByRegistrationId(jPushAlertModel.getId(),jPushAlertModel.getContent(), loginNameMap,chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
+                    loginNameMap.clear();
+                }
             }
+            redisWrapperClient.hset(redisKey, J_PUSH_ALERT_LOAN_OUT, SUCCESS);
         } else {
             logger.debug("LOAN_ALERT is disabled");
         }
@@ -335,7 +348,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
             List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(Long.parseLong(transferCashDto.getAmount())));
             loginNameMap.put(transferCashDto.getLoginName(), amountLists);
-            autoJPushByRegistrationId(jPushAlertModel.getId(),jPushAlertModel.getContent(), loginNameMap,chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
+            autoJPushByRegistrationId(jPushAlertModel.getId(), jPushAlertModel.getContent(), loginNameMap, chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
             loginNameMap.clear();
 
         } else {
@@ -733,15 +746,21 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             logger.error("RED_ENVELOPE_ALERT is disabled");
             return;
         }
-        for (UserCouponModel userCouponModel : userCouponModels) {
-            CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-            long redEnvelopeAmount = userCouponModel.getActualInterest() - userCouponModel.getActualFee();
-            Map<String, List<String>> loginNameMap = Maps.newHashMap();
-            if (redEnvelopeAmount > 0) {
-                List<String> amountLists = Lists.newArrayList(couponModel.getCouponType().getName(), AmountConverter.convertCentToString(redEnvelopeAmount));
-                loginNameMap.put(userCouponModel.getLoginName(), amountLists);
-                autoJPushByRegistrationId(jPushAlertModel.getId(), jPushAlertModel.getContent(), loginNameMap, chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
+
+        String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
+        String statusString = redisWrapperClient.hget(redisKey, J_PUSH_RED_ENVELOPE);
+        if (Strings.isNullOrEmpty(statusString)) {
+            for (UserCouponModel userCouponModel : userCouponModels) {
+                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+                long redEnvelopeAmount = userCouponModel.getActualInterest() - userCouponModel.getActualFee();
+                Map<String, List<String>> loginNameMap = Maps.newHashMap();
+                if (redEnvelopeAmount > 0) {
+                    List<String> amountLists = Lists.newArrayList(couponModel.getCouponType().getName(), AmountConverter.convertCentToString(redEnvelopeAmount));
+                    loginNameMap.put(userCouponModel.getLoginName(), amountLists);
+                    autoJPushByRegistrationId(jPushAlertModel.getId(), jPushAlertModel.getContent(), loginNameMap, chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
+                }
             }
+            redisWrapperClient.hset(redisKey, J_PUSH_RED_ENVELOPE, SUCCESS);
         }
     }
 }

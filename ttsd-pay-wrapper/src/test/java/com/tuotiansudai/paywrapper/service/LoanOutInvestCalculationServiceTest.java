@@ -68,7 +68,7 @@ public class LoanOutInvestCalculationServiceTest {
     @Test
     @Transactional
     public void loanOutInvestCalculation() {
-        UserModel userModel = createFakeUser("buildbox", "13666666666");
+        UserModel userModel = createFakeUser("buildbox123123131", "13612341234");
         LoanModel loanModel = fakeLoanModel(userModel);
         loanMapper.create(loanModel);
         LoanDetailsModel loanDetailsModel = fakeLoanLoanDetailsModel(loanModel);
@@ -102,7 +102,7 @@ public class LoanOutInvestCalculationServiceTest {
         assertThat(test2investExtraRateModel.getExpectedInterest(), is(61l));
         assertThat(test2investExtraRateModel.getExpectedFee(), is(6l));
 
-
+        loanOutInvestCalculationService.rateIncreases(loanModel.getId());
     }
 
     private UserModel createFakeUser(String loginName, String mobile) {

@@ -2,8 +2,11 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
 import com.tuotiansudai.paywrapper.client.PayGateWrapper;
@@ -23,9 +26,11 @@ import com.tuotiansudai.paywrapper.service.impl.LoanServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.util.SendCloudMailUtil;
 import com.tuotiansudai.util.quartz.SchedulerBuilder;
 import com.tuotiansudai.util.quartz.TriggeredJobBuilder;
 import com.umpay.api.exception.ReqDataException;
@@ -42,6 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
@@ -91,8 +97,20 @@ public class LoanServiceTest {
     @Mock
     private SchedulerBuilder schedulerBuilder;
 
+    @Mock
+    private RepayGeneratorService repayGeneratorService;
 
+    @Mock
+    private ReferrerRewardService referrerRewardService;
 
+    @Mock
+    private UserMapper userMapper;
+
+    @Mock
+    private SendCloudMailUtil sendCloudMailUtil;
+
+    @Mock
+    private SmsWrapperClient smsWrapperClient;
 
     @Before
     public void init() {
@@ -183,7 +201,7 @@ public class LoanServiceTest {
         doNothing().when(triggeredJobBuilder).submit();
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
-        when(umPayRealTimeStatusService.checkLoanAmount(anyLong(), )).thenReturn(baseDto);
+        when(umPayRealTimeStatusService.checkLoanAmount(anyLong(), anyLong())).thenReturn(baseDto);
         when(paySyncClient.send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class))).thenReturn(projectTransferResponseModel);
         when(redisWrapperClient.setnx(anyString(), anyString())).thenReturn(true);
         when(redisWrapperClient.del(anyString())).thenReturn(true);
@@ -207,5 +225,66 @@ public class LoanServiceTest {
         baseDto1 = loanService.loanOut(loanModel.getId());
         verify(paySyncClient, times(1)).send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
         assertTrue(baseDto1.getData().getStatus());
+    }
+
+    @Test
+    public void shouldPostLoanOutIsOk() throws PayException {
+        UserModel userModel = getUserModelTest();
+        LoanModel loanModel = getFakeLoan(userModel.getLoginName(), userModel.getLoginName(), LoanStatus.RAISING, ActivityType.NORMAL);
+        InvestModel investModel = new InvestModel();
+
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(Lists.newArrayList(investModel));
+        doNothing().when(repayGeneratorService).generateRepay(anyLong());
+        doNothing().when(referrerRewardService).rewardReferrer(any(LoanModel.class), anyList());
+        when(userMapper.findByLoginName(anyString())).thenReturn(userModel);
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(sendCloudMailUtil.sendMailByLoanOut(anyString(), anyMap())).thenReturn(true);
+        when(smsWrapperClient.sendInvestNotify(any(InvestSmsNotifyDto.class))).thenReturn(new BaseDto<>());
+        when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("");
+        when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
+
+        loanService.postLoanOut(loanModel.getId());
+        verify(smsWrapperClient, times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
+        verify(sendCloudMailUtil,times(1)).sendMailByLoanOut(anyString(), anyMap());
+
+        when(redisWrapperClient.hget(anyString(), anyString())).thenReturn(SyncRequestStatus.SUCCESS.name());
+        loanService.postLoanOut(loanModel.getId());
+        verify(smsWrapperClient,times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
+        verify(sendCloudMailUtil,times(1)).sendMailByLoanOut(anyString(), anyMap());
+
+    }
+
+    public UserModel getUserModelTest() {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName("helloworld");
+        userModelTest.setPassword("123abc");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile("13900000000");
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        return userModelTest;
+    }
+
+    private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus,ActivityType activityType) {
+        LoanModel fakeLoanModel = new LoanModel();
+        fakeLoanModel.setId(111l);
+        fakeLoanModel.setName("loanName");
+        fakeLoanModel.setLoanerLoginName(loanerLoginName);
+        fakeLoanModel.setLoanerUserName("借款人");
+        fakeLoanModel.setLoanerIdentityNumber("111111111111111111");
+        fakeLoanModel.setAgentLoginName(agentLoginName);
+        fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        fakeLoanModel.setPeriods(3);
+        fakeLoanModel.setStatus(loanStatus);
+        fakeLoanModel.setActivityType(activityType);
+        fakeLoanModel.setFundraisingStartTime(new Date());
+        fakeLoanModel.setFundraisingEndTime(new Date());
+        fakeLoanModel.setDescriptionHtml("html");
+        fakeLoanModel.setDescriptionText("text");
+        fakeLoanModel.setPledgeType(PledgeType.HOUSE);
+        fakeLoanModel.setCreatedTime(new Date());
+        return fakeLoanModel;
     }
 }
