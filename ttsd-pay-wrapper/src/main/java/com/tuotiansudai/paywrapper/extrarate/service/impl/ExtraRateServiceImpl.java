@@ -92,16 +92,40 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         }
         long amount = actualInterest - actualFee;
         boolean isSuccess = false;
-        if (amount > 0) {
+        /*if (amount > 0) {
             String orderId = investExtraRateModel.getInvestId() + "X" + System.currentTimeMillis();
+
             TransferRequestModel requestModel = TransferRequestModel.newRequest(orderId, accountModel.getPayUserId(), String.valueOf(amount));
+
+
             TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
+
+
             isSuccess = responseModel.isSuccess();
         }
         if (isSuccess || amount == 0) {
             investRateService.updateExtraRateData(investExtraRateModel, actualInterest, actualFee);
+        }*/
+        if (amount > 0) {
+            String orderId = investExtraRateModel.getInvestId() + "X" + System.currentTimeMillis();
+
+            TransferRequestModel requestModel = TransferRequestModel.newRequest(
+                    orderId,
+                    accountModel.getPayUserId(),
+                    String.valueOf(amount),
+                    "extra_rate_notify");
+
+            paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
+
+
+
         }
     }
+
+
+
+
+
 
     @Override
     public void advanceRepay(long loanRepayId) {
