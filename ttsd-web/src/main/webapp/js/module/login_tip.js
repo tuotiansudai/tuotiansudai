@@ -1,4 +1,5 @@
 define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'jquery.form'], function($, layer) {
+
     (function() {
         var $loginTipBox=$('#loginTip');
         var $loginFormElement = $('.form-login',$loginTipBox),
@@ -15,7 +16,6 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
         $imageCaptchaElement.click(function() {
             refreshCaptcha();
         });
-
 
         var submitLoginForm = function() {
             $loginFormElement.ajaxSubmit({
@@ -39,9 +39,6 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
             });
             return false;
         };
-
-
-
         $loginFormElement.validate({
             debug: true,
             rules: {
@@ -76,11 +73,12 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
             }
         });
 
-        $loginTipBox.on('click', '.close-btn', function(event) {
+        $('.close-btn',$loginTipBox).on('click',function(event) {
             event.preventDefault();
             layer.closeAll();
         })
-            .on('click', '.show-login', function(event) {
+        //判断是否登陆，如果没有登陆弹出登录框
+        $('body').on('click', '.show-login', function(event) {
                 event.preventDefault();
                 refreshCaptcha();
                 $.ajax({
@@ -92,10 +90,12 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
                 })
                     .fail(function (response) {
                             if (response.responseText != "") {
-                                $("meta[name='_csrf']").remove();
-                                $('head').append($(response.responseText));
-                                var token = $("meta[name='_csrf']").attr("content");
-                                var header = $("meta[name='_csrf_header']").attr("content");
+                                var $head=$('head');
+                                $head.find("meta[name='_csrf']").remove()
+                                    .append($(response.responseText));
+                                var token = $head.find("meta[name='_csrf']").attr("content");
+                                var header = $head.find("meta[name='_csrf_header']").attr("content");
+
                                 $(document).ajaxSend(function (e, xhr, options) {
                                     xhr.setRequestHeader(header, token);
                                 });
@@ -111,7 +111,7 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
                         }
                     );
             });
-    })();
 
+    })();
 
 });

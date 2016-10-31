@@ -327,7 +327,6 @@
                                                         +<@percentInteger>${loan.activityRate}</@percentInteger>
                                                         <@percentFraction>${loan.activityRate}</@percentFraction>
                                                     </#if>
-
                                                 </em>
                                                 <i>%
                                                 </i>

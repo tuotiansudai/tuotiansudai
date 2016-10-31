@@ -32,6 +32,7 @@ require(['jquery','imageShowSlide-v1', 'underscore', 'layerWrapper', 'superslide
             tips: 1
         });
     });
+
     var $bookInvestForm = $('.book-invest-form'),
         $projectTransfer = $('.project-transfer-frame');
 
