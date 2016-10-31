@@ -68,7 +68,14 @@ public class MdSmsClient implements ApplicationContextAware {
     @Value("${common.environment}")
     private String environment;
 
-    private OkHttpClient httpClient = new OkHttpClient();
+    private static OkHttpClient httpClient;
+
+    private OkHttpClient getHttpClient() {
+        if (httpClient == null) {
+            httpClient = new OkHttpClient();
+        }
+        return httpClient;
+    }
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -119,7 +126,7 @@ public class MdSmsClient implements ApplicationContextAware {
                     .post(okRequestBody)
                     .build();
             try {
-                Response response = httpClient.newCall(request).execute();
+                Response response = getHttpClient().newCall(request).execute();
                 String responseBody = response.body().string();
                 String resultCode = this.parseResponse(responseBody);
                 this.createSmsModel(baseMapperClass, mobile, content, resultCode);
