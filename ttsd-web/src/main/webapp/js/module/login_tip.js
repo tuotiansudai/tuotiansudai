@@ -40,7 +40,6 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
             return false;
         };
         $loginFormElement.validate({
-            debug: true,
             rules: {
                 username: {
                     required: true
@@ -69,8 +68,8 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
                 error.appendTo(element.parent());
             },
             submitHandler: function(form) {
-                // submitLoginForm();
-                form.submit();
+                submitLoginForm();
+                // form.submit();
             }
         });
 
@@ -90,24 +89,22 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
                     contentType: 'application/json; charset=UTF-8'
                 })
                     .fail(function (response) {
-                            if (response.responseText != "") {
-                                var $head=$('head');
-                                $head.find("meta[name='_csrf']").remove()
-                                    .append($(response.responseText));
-                                var token = $head.find("meta[name='_csrf']").attr("content");
-                                var header = $head.find("meta[name='_csrf_header']").attr("content");
-
-                                $(document).ajaxSend(function (e, xhr, options) {
-                                    xhr.setRequestHeader(header, token);
-                                });
-                                layer.open({
-                                    type: 1,
-                                    title: false,
-                                    closeBtn: 0,
-                                    area: ['auto', 'auto'],
-                                    content: $loginTipBox
-                                });
-                            }
+                        if (response.responseText != "") {
+                            $("meta[name='_csrf']").remove();
+                            $('head').append($(response.responseText));
+                            var token = $("meta[name='_csrf']").attr("content");
+                            var header = $("meta[name='_csrf_header']").attr("content");
+                            $(document).ajaxSend(function (e, xhr, options) {
+                                xhr.setRequestHeader(header, token);
+                            });
+                            layer.open({
+                                type: 1,
+                                title: false,
+                                closeBtn: 0,
+                                area: ['auto', 'auto'],
+                                content: $('#loginTip')
+                            });
+                        }
 
                         }
                     );
