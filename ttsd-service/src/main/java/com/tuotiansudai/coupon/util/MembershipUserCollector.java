@@ -18,13 +18,13 @@ import java.util.Map;
 @Service
 public class MembershipUserCollector implements UserCollector {
 
-    private Map<Integer, UserGroup> mapping = Maps.newHashMap( new ImmutableMap.Builder<Integer, UserGroup>()
-            .put(0, UserGroup.MEMBERSHIP_V0)
-            .put(1, UserGroup.MEMBERSHIP_V1)
-            .put(2, UserGroup.MEMBERSHIP_V2)
-            .put(3, UserGroup.MEMBERSHIP_V3)
-            .put(4, UserGroup.MEMBERSHIP_V4)
-            .put(5, UserGroup.MEMBERSHIP_V5)
+    private Map<Long, UserGroup> mapping = Maps.newHashMap( new ImmutableMap.Builder<Long, UserGroup>()
+            .put(0l, UserGroup.MEMBERSHIP_V0)
+            .put(1l, UserGroup.MEMBERSHIP_V1)
+            .put(2l, UserGroup.MEMBERSHIP_V2)
+            .put(3l, UserGroup.MEMBERSHIP_V3)
+            .put(4l, UserGroup.MEMBERSHIP_V4)
+            .put(5l, UserGroup.MEMBERSHIP_V5)
             .build());
 
     @Autowired
