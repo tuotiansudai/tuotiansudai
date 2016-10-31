@@ -69,7 +69,8 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
                 error.appendTo(element.parent());
             },
             submitHandler: function(form) {
-                submitLoginForm();
+                // submitLoginForm();
+                form.submit();
             }
         });
 

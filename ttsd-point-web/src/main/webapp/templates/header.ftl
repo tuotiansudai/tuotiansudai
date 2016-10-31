@@ -22,10 +22,10 @@
                 <div id="iphone-app-img" class="img-app-pc-top"></div>
             </li>
         <@global.isNotAnonymous>
-            <li>
+            <li class="header-login">
                 <a class="personal-info-link" href="${requestContext.getContextPath()}/personal-info"><@global.security.authentication property="principal.mobile"/></a>
             </li>
-            <li><a id="logout-link" href="javascript:void(0);" class="logout">退出</a>
+            <li class="header-register"><a id="logout-link" href="javascript:void(0);" class="logout">退出</a>
                 <form id="logout-form" class="logout-form" action="${webServer}/logout" method="post">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </form>
@@ -41,10 +41,10 @@
         </@global.isNotAnonymous>
 
         <@global.isAnonymous>
-            <li>
+            <li class="header-login">
                 <a href="${webServer}/login" onclick="cnzzPush.trackClick('14顶部导航','登录')">登录</a>
             </li>
-            <li>
+            <li class="header-register">
                 <a href="<#if channel??>${webServer}/register/user?channel=${channel}<#else>/register/user</#if>" onclick="cnzzPush.trackClick('15顶部导航','注册')">注册</a>
             </li>
         </@global.isAnonymous>
