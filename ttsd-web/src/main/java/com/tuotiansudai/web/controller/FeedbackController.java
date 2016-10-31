@@ -59,7 +59,7 @@ public class FeedbackController {
             return baseDto;
         }
 
-        feedbackService.create(LoginUserInfo.getLoginName(), Source.WEB, type, content);
+        feedbackService.create(LoginUserInfo.getLoginName(), Source.WEB, type, content,contact);
 
         return baseDto;
     }

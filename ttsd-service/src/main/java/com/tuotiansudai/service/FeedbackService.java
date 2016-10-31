@@ -9,7 +9,7 @@ import com.tuotiansudai.repository.model.Source;
 import java.util.Date;
 
 public interface FeedbackService {
-    FeedbackModel create(String loginName, Source source, FeedbackType type, String content);
+    FeedbackModel create(String loginName, Source source, FeedbackType type, String content,String contract);
 
     BasePaginationDataDto<FeedbackModel> getFeedbackPagination(String loginName,
                                                                Source source,
