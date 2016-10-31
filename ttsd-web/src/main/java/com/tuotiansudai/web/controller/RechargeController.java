@@ -51,7 +51,7 @@ public class RechargeController {
         modelAndView.addObject("banks", BankCardUtil.getRechargeBanks());
         modelAndView.addObject("isBindCard", isBindCard);
         modelAndView.addObject("isFastPayOn", isFastPayOn);
-        modelAndView.addObject("bankList", bankService.findBankList());
+        modelAndView.addObject("bankList", bankService.findWebBankList());
 
         AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
         if (accountModel != null && isBindCard) {
