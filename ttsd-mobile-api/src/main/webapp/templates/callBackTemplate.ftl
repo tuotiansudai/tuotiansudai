@@ -29,7 +29,8 @@
             <li><span class="title">投资金额</span><em class="col-info">${investAmount}元</em></li>
             <li><span class="title">所投项目</span><em class="col-info">${investName}</em></li>
             <li><span class="title">项目编号</span><em class="col-info">${loanId}</em></li>
-        <#else>
+        <#elseif service == 'ptp_mer_replace_card'>
+            <li><em class="col-info text-card">${replaceCardContent!}</em></li>
         </#if>
         </ul>
 
