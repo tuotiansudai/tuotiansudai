@@ -1,3 +1,4 @@
+<div id="redEnvelopFloatFrame">
 <div class="count-form">
 	<h3 class="hander">
 		<span>投资计算器</span>
@@ -104,4 +105,6 @@
 			<a href="javascript:void(0)" class="btn feed-close">确定</a>
 		</div>
 	</div>
+</div>
+
 </div>

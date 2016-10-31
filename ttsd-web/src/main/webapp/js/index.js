@@ -1,10 +1,7 @@
 require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envelope-float',  'jquery.validate', 'autoNumeric', 'logintip'],
     function ($,imageShowSlide,layer) {
         var $homePageContainer = $('#homePageContainer'),
-            $imgScroll = $('.banner-img-list', $homePageContainer),
-            $registerBox = $('.register-ad-box', $homePageContainer),
-            $productFrame = $('#productFrame'),
-            $bannerImg = $imgScroll.find('li');
+            $imgScroll = $('.banner-img-list', $homePageContainer);
         var viewport = globalFun.browserRedirect();
 
         //首页大图轮播和最新公告滚动
@@ -20,7 +17,6 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
             if(imgCount>0) {
                 var runimg=new imageShowSlide.runImg('bannerBox','30',imgCount);
                 runimg.info();
-
             }
             var startMarquee=new imageShowSlide.startMarquee();
             startMarquee.init();
@@ -76,8 +72,85 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
                 $this.addClass("on");
                 $this.find('input:radio').prop('checked', true);
             });
+            $bookInvestForm.validate({
+                focusInvalid: false,
+                errorPlacement: function (error, element) {
+                    layer.tips(error.text(), element, {
+                        tips: [1, '#efbf5c'],
+                        time: 3000,
+                        tipsMore: true,
+                        area: 'auto',
+                        maxWidth: '500'
+                    });
+                },
+                rules: {
+                    productType: {
+                        required: true
+                    },
+                    bookingAmount: {
+                        required: true,
+                        number: true
+                    }
+                },
+                messages: {
+                    productType: {
+                        required: "请选择您希望投资的项目"
+                    },
+                    bookingAmount: {
+                        required: "请输入预计投资金额",
+                        number: "请输入正确的投资金额"
+                    }
+
+                },
+                submitHandler: function (form) {
+                    var amount = $(form).find('input[name="bookingAmount"]').val().replace(/,/gi, '');
+
+                    $(form).find('input[name="bookingAmount"]').val(amount);
+                    var data = $(form).serialize();
+
+
+                    $.ajax({
+                        url: '/isLogin',
+                        //data:data,
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=UTF-8'
+                    })
+                        .fail(function (response) {
+                                if ("" == response.responseText) {
+                                    $.ajax({
+                                        url: '/booking-loan/invest?' + data,
+                                        //data:data,
+                                        type: 'GET',
+                                        dataType: 'json',
+                                        contentType: 'application/json; charset=UTF-8'
+                                    })
+                                        .done(function (response) {
+                                            if (response.data.status) {
+                                                layer.closeAll();
+
+                                                layer.open({
+                                                    type: 1,
+                                                    title: '&nbsp',
+                                                    area: ['400px', '185px'],
+                                                    content: '<div class="success-info-tip"> <i class="icon-tip"></i> <div class="detail-word"><h2>恭喜您预约成功！</h2> 当有可投项目时，客服人员会在第一时间与您联系，请您耐心等候并保持电话畅通。</div> </div>'
+                                                });
+                                            }
+                                        })
+                                        .fail(function (response) {
+                                            layer.alert('接口错误');
+                                        });
+                                    return false;
+                                } else {
+                                    location.href='/login';
+                                }
+                            }
+                        );
+                }
+            });
 
             $('input.autoNumeric',$homePageContainer).autoNumeric();
+            //点击我要预约按钮
             $('.book-invest-box',$homePageContainer).on('click',function(event) {
                 event.preventDefault();
                 $.ajax({
@@ -87,8 +160,7 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
                     contentType: 'application/json; charset=UTF-8'
                 })
                     .fail(function (response) {
-
-                        if ("" == response.responseText) {
+                        if (response.responseText=='') {
                             $bookInvestForm.find('.init-radio-style').removeClass('on');
                             $bookInvestForm.find('input[name="bookingAmount"]').val('');
                             layer.open({

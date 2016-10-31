@@ -12,11 +12,17 @@
             <#--转让价格-->
         <div class="table-row">
             <s class="app">转让价格</s>
-                <i class="number"><@percentInteger>${loan.transferAmount}</@percentInteger><@percentFraction>${loan.transferAmount}</@percentFraction></i>元
+                <i class="number">
+        <@percentInteger>${loan.transferAmount}</@percentInteger>
+         <@percentFraction>${loan.transferAmount}</@percentFraction>
+           </i>元
         </div>
             <#--项目本金-->
         <div class="table-row">
-            <i class="number"><@percentInteger>${loan.investAmount}</@percentInteger><@percentFraction>${loan.investAmount}</@percentFraction></i>
+            <i class="number">
+            <@percentInteger>${loan.investAmount}</@percentInteger>
+            <@percentFraction>${loan.investAmount}</@percentFraction>
+            </i>
             元
 
         </div>
