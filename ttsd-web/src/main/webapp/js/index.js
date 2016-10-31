@@ -127,11 +127,8 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
 
                     $(form).find('input[name="bookingAmount"]').val(amount);
                     var data = $(form).serialize();
-
-
                     $.ajax({
                         url: '/isLogin',
-                        //data:data,
                         type: 'GET',
                         dataType: 'json',
                         contentType: 'application/json; charset=UTF-8'

@@ -1,6 +1,4 @@
 <div class="login-tip" id="loginTip">
-    <meta name="_csrf" content="${(_csrf.token)!}"/>
-    <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <i class="close-btn"></i>
 
     <div class="login-box">

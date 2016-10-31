@@ -104,7 +104,7 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
                                     title: false,
                                     closeBtn: 0,
                                     area: ['auto', 'auto'],
-                                    content: $('#loginTip')
+                                    content: $loginTipBox
                                 });
                             }
 
