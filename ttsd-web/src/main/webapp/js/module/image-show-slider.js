@@ -138,7 +138,7 @@ define([], function () {
                     this.index = 0
                 };
                 this.imgshow();
-            }.bind(this), 5000) //循环播放图片
+            }.bind(this), 8000) //循环播放图片
         },
         //处理鼠标事件
         mouseoverout: function() {
