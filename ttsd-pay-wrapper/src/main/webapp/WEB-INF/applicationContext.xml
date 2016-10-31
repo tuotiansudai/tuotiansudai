@@ -25,7 +25,7 @@
 
     <aop:aspectj-autoproxy expose-proxy="true"/>
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven transaction-manager="transactionManager" />
     <tx:annotation-driven transaction-manager="payTransactionManager"/>
 
     <bean id="payHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
@@ -147,21 +147,23 @@
     <bean id="activityTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="activityHikariCPDataSource"/>
     </bean>
-
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage"
                   value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.jpush.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.membership.repository.model,com.tuotiansudai.message.repository.model"/>
+        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
     <bean id="pointSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="pointHikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.point.repository.model"/>
+        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
     <bean id="activitySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="activityHikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.activity.repository.model"/>
+        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->

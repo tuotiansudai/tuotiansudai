@@ -13,5 +13,7 @@ public interface BankService {
 
     BankModel findByBankCode(String bankCode);
 
+    List<BankDto> findWebBankList();
+
     List<BankDto> findBankList();
 }

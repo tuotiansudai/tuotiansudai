@@ -38,6 +38,10 @@
         select * from bank order by seq, id asc
     </select>
 
+    <select id="findWebBankList" resultMap="bankResultMap">
+        select * from bank where single_amount > 0 and single_day_amount > 0 order by seq, id asc
+    </select>
+
     <select id="findByBankCode" parameterType="java.lang.String" resultMap="bankResultMap">
         select * from bank where bank_code = #{bankCode}
     </select>

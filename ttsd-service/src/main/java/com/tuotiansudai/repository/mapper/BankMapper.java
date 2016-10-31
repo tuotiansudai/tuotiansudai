@@ -15,5 +15,7 @@ public interface BankMapper {
 
     List<BankModel> findBankList();
 
+    List<BankModel> findWebBankList();
+
     BankModel findByBankCode(@Param(value = "bankCode") String bankCode);
 }
