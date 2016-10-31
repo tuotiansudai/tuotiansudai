@@ -56,6 +56,6 @@ public class SmsClientTest {
         String mobile = "13900000000";
         BaseDto<SmsDataDto> dto = this.smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_BIRTHDAY_NOTIFY_TEMPLATE, "", "127.0.0.1");
 
-        assertTrue(!dto.getData().getStatus());
+        assertTrue(dto.isSuccess());
     }
 }
