@@ -62,6 +62,7 @@ public class MobileAppCallBackController {
             mv.addObject("investAmount", retMaps.get("investAmount"));
             mv.addObject("investName", retMaps.get("investName"));
             mv.addObject("loanId", retMaps.get("loanId"));
+            mv.addObject("replaceCardContent", retMaps.get("replaceCardContent"));
             mv.addObject("href", retMaps.get("href"));
         } else {
             String retMsg = paramsMap.get("ret_msg");
@@ -96,6 +97,7 @@ public class MobileAppCallBackController {
         String investName = "";
         String loanId = "";
         String withdrawAmount = "";
+        String replaceCardContent = "";
         if (MobileFrontCallbackService.CUST_WITHDRAWALS.getServiceName().equals(service)) {
             WithdrawModel withdrawModel = withdrawService.findById(Long.parseLong(orderId));
             bankName = BankCardUtil.getBankName(withdrawModel.getBankCard().getBankCode());
@@ -134,7 +136,8 @@ public class MobileAppCallBackController {
             message = "绑卡申请成功";
             href = MessageFormat.format("tuotian://bindcard/{0}", callBackStatus);
         } else if (MobileFrontCallbackService.PTP_MER_REPLACE_CARD.getServiceName().equals(service)) {
-            message = "您的换卡申请已提交,换卡申请最快两个小时处理完成";
+            message = "换卡申请已提交";
+            replaceCardContent =  "换卡申请最快两个小时处理完成";
             href = MessageFormat.format("tuotian://changecard/{0}", callBackStatus);
         } else if (MobileFrontCallbackService.PTP_MER_NO_PASSWORD_INVEST.getServiceName().equals(service)) {
             message = "开通无密投资成功";
@@ -153,6 +156,7 @@ public class MobileAppCallBackController {
         retMaps.put("investName", investName);
         retMaps.put("loanId", loanId);
         retMaps.put("withdrawAmount", withdrawAmount);
+        retMaps.put("replaceCardContent",replaceCardContent);
         return retMaps;
     }
 
