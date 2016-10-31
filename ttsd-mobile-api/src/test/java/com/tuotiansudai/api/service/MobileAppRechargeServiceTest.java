@@ -84,7 +84,7 @@ public class MobileAppRechargeServiceTest extends ServiceTestBase {
         bankModel.setSingleAmount(10000);
         bankModel.setSingleDayAmount(50000);
 
-        when(bankMapper.findBankList()).thenReturn(Lists.newArrayList(bankModel, bankModel));
+        when(bankMapper.findWebBankList()).thenReturn(Lists.newArrayList(bankModel, bankModel));
         when(bankMapper.findByBankCode("ICBC")).thenReturn(bankModel);
         when(rechargeMapper.findSumRechargeAmount(anyString(), anyString(), any(RechargeSource.class), any(RechargeStatus.class), anyString(), any(Role.class), any(Date.class),
                 any(Date.class))).thenReturn(5000L);

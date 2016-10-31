@@ -93,15 +93,10 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
         String bankCode = bankLimitRequestDto.getBankCode();
         BankLimitResponseDataDto bankLimitResponseDataDto = new BankLimitResponseDataDto();
         if (StringUtils.isEmpty(bankCode)) {
-            List<BankModel> bankModelList = bankMapper.findBankList();
-            List<BankLimitUnitDto> bankLimitUnitDtos = Lists.transform(bankModelList, new Function<BankModel, BankLimitUnitDto>() {
-                @Override
-                public BankLimitUnitDto apply(BankModel bankModel) {
-                    return new BankLimitUnitDto(AmountConverter.convertCentToString(bankModel.getSingleAmount()),
-                            AmountConverter.convertCentToString(bankModel.getSingleDayAmount()), bankModel.getBankCode(),
-                            bankModel.getName());
-                }
-            });
+            List<BankModel> bankModelList = bankMapper.findWebBankList();
+            List<BankLimitUnitDto> bankLimitUnitDtos = Lists.transform(bankModelList, bankModel -> new BankLimitUnitDto(AmountConverter.convertCentToString(bankModel.getSingleAmount()),
+                    AmountConverter.convertCentToString(bankModel.getSingleDayAmount()), bankModel.getBankCode(),
+                    bankModel.getName()));
 
             bankLimitResponseDataDto.setRechargeLeftAmount("");
             bankLimitResponseDataDto.setBankLimits(bankLimitUnitDtos);
