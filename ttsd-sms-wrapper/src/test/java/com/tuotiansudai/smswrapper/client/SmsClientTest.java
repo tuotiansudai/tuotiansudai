@@ -56,14 +56,6 @@ public class SmsClientTest {
         String mobile = "13900000000";
         BaseDto<SmsDataDto> dto = this.smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_BIRTHDAY_NOTIFY_TEMPLATE, "", "127.0.0.1");
 
-        RecordedRequest recordedRequest = server.takeRequest();
-        Buffer body = recordedRequest.getBody();
-
-        String requestBody = URLDecoder.decode(new String(body.readByteArray(), "UTF8"), "utf-8");
-
-        assertTrue(requestBody.contains("templateid=" + SmsTemplate.SMS_BIRTHDAY_NOTIFY_TEMPLATE.getTemplateId()));
-        assertTrue(requestBody.contains("mobiles=[\"" + mobile + "\"]"));
-        assertTrue(requestBody.contains("params=[\"\"]"));
-        assertTrue(dto.getData().getStatus());
+        assertTrue(!dto.getData().getStatus());
     }
 }

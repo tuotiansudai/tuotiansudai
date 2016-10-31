@@ -68,8 +68,7 @@ public class MdSmsClient implements ApplicationContextAware {
     @Value("${common.environment}")
     private String environment;
 
-    @Autowired
-    private OkHttpClient httpClient;
+    private OkHttpClient httpClient = new OkHttpClient();
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;

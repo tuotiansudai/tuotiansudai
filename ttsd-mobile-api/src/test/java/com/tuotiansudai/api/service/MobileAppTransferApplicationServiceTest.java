@@ -312,8 +312,13 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         baseParam.setUserId("testuer1");
         transferApplicationDetailRequestDto.setBaseParam(baseParam);
         LoanModel loanModel = createLoanByUserId("testuer1",10001);
+        InvestRepayModel investRepayModel = new InvestRepayModel();
+        investRepayModel.setRepayDate(DateTime.now().toDate());
         TransferApplicationDetailDto transferApplicationDetailDto = createTransferApplicationDetailDto(transferApplicationModel1, loanModel);
         when(transferService.getTransferApplicationDetailDto(anyLong(),anyString(), anyInt())).thenReturn(transferApplicationDetailDto);
+        when(loanMapper.findById(anyLong())).thenReturn(new LoanModel());
+        when(transferApplicationMapper.findById(anyLong())).thenReturn(new TransferApplicationModel());
+        when(investRepayMapper.findByInvestIdAndPeriod(anyLong(),anyInt())).thenReturn(investRepayModel);
 
         BaseResponseDto<TransferApplicationDetailResponseDataDto> transferApplicationDetailResponseDataDto = mobileAppTransferApplicationService.transferApplicationById(transferApplicationDetailRequestDto);
 
