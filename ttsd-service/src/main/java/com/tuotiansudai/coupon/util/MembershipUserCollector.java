@@ -18,13 +18,13 @@ import java.util.Map;
 @Service
 public class MembershipUserCollector implements UserCollector {
 
-    private Map<Long, UserGroup> mapping = Maps.newHashMap( new ImmutableMap.Builder<Long, UserGroup>()
-            .put(0l, UserGroup.MEMBERSHIP_V0)
-            .put(1l, UserGroup.MEMBERSHIP_V1)
-            .put(2l, UserGroup.MEMBERSHIP_V2)
-            .put(3l, UserGroup.MEMBERSHIP_V3)
-            .put(4l, UserGroup.MEMBERSHIP_V4)
-            .put(5l, UserGroup.MEMBERSHIP_V5)
+    private Map<Integer, UserGroup> mapping = Maps.newHashMap( new ImmutableMap.Builder<Integer, UserGroup>()
+            .put(0, UserGroup.MEMBERSHIP_V0)
+            .put(1, UserGroup.MEMBERSHIP_V1)
+            .put(2, UserGroup.MEMBERSHIP_V2)
+            .put(3, UserGroup.MEMBERSHIP_V3)
+            .put(4, UserGroup.MEMBERSHIP_V4)
+            .put(5, UserGroup.MEMBERSHIP_V5)
             .build());
 
     @Autowired
@@ -41,7 +41,7 @@ public class MembershipUserCollector implements UserCollector {
         CouponModel couponModel = couponMapper.findById(couponId);
         for (Map.Entry integerUserGroupEntry : mapping.entrySet()) {
             if(integerUserGroupEntry.getValue().equals(couponModel.getUserGroup())){
-                return userMembershipMapper.findLoginNameMembershipByLevel((Long) integerUserGroupEntry.getKey());
+                return userMembershipMapper.findLoginNameMembershipByLevel(Long.parseLong(String.valueOf(integerUserGroupEntry.getKey())));
             }
         }
         return Lists.newArrayList();
