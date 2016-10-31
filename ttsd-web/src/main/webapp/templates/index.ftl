@@ -126,13 +126,12 @@
                         <ul class="loan-info clearfix">
                             <li><span class="percent-number">
                                     <i><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></i>
-                                <@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
-                                <#if (loan.newbieInterestCouponRate > 0) >
-                                    +
+                                <@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>%
+                                <#if (loan.newbieInterestCouponRate > 0)>
+                                    <s class="sign-plus">+</s>
                                     <i><@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger></i>
                                     <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
-                                </#if>
-                                        %<s class="sign-plus">+</s><i>3</i>%</span>预期年化收益
+                                </#if>%</span>预期年化收益
                             </li>
                             <li><em class="duration-day">${loan.duration}</em>天<br>项目期限</li>
                         </ul>
@@ -254,16 +253,14 @@
         <div class="partner-box clearfix">
             <h3 class="label-title">
                 合作伙伴
-                <a href="/about/media" onclick="cnzzPush.trackClick('39首页','媒体报道模块','更多')" class="hot-more">更多></a>
             </h3>
             <ul class="partner-list">
-                <li><a rel="nofollow" class="logo-capital" href="http://www.king-capital.com/"
-                       onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank">
-
+                <li><a rel="nofollow" class="logo-capital" href="http://www.umpay.com/"
+                       onclick="cnzzPush.trackClick('46首页','合作伙伴模块','联动优势')"  target="_blank">
                 </a>
                 </li>
-                <li><a rel="nofollow" class="logo-umpay" href="http://www.umpay.com/"
-                       onclick="cnzzPush.trackClick('46首页','合作伙伴模块','联动优势')" target="_blank"></a>
+                <li><a rel="nofollow" class="logo-umpay" href="http://www.king-capital.com/"
+                       onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank"></a>
                 </li>
             </ul>
         </div>

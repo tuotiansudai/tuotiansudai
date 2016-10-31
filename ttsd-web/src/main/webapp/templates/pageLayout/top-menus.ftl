@@ -17,10 +17,7 @@
         <#list mainMenus as menu>
             <#if menu.navigation?? && menu.navigation="true">
                 <li <#if menu.title==activeNav>class="active"</#if>><a  href="${menu.url}"
-                       onclick="cnzzPush.trackClick('${menu.category}','${menu.title}')" >${menu.title}</a>
-                <@global.isAnonymous>
-
-                </@global.isAnonymous>
+                       onclick="cnzzPush.trackClick('${menu.category}','${menu.title}')" >${menu.title}
 
                     <#if menu.leftNavs??>
                         <#list menu.leftNavs as leftNav>
@@ -36,6 +33,7 @@
                         <#if showLeftNavs>
                             <span class="icon-has-submenu"></span>
                         </#if>
+                    </a>
                         <ul class="sub-menu-list">
                             <#list menu.leftNavs as leftNav>
                                 <#if leftNav.role??>

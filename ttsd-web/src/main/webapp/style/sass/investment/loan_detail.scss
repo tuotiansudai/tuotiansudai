@@ -8,6 +8,28 @@ $orange: #ee7b2f;
 $orange2: #f1a03f;
 $red: #eb4a3e;
 
+.layer-tip-loanDetail{
+  .layui-layer-btn {
+    text-align: center !important;
+    .layui-layer-btn1 {
+      padding: 3px 35px;
+      background: nth($CK1, 2) !important;
+      border-radius: 4px;
+      border: 1px solid nth($CK1, 2) !important;
+      border-color: nth($CK1, 2) !important;
+      letter-spacing: 3px;
+      color: #fff!important;
+    }
+    .layui-layer-btn0{
+      padding:3px 35px;
+      color:#808080!important;
+      border: 1px solid #dedede!important;
+      background: #f1f1f1!important;
+      border-radius: 4px;
+    }
+  }
+}
+
 //隐藏顶部菜单
 .swiper-container {
   display: none;

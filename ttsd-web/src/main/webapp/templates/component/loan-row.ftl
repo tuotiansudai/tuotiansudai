@@ -17,7 +17,7 @@
             <#else>
                 <i><@percentInteger>${loan.baseRate}</@percentInteger></i>%
                 <#if loan.activityRate != 0>
-                    <i class="sign-plus">+</i>${loan.activityRate!}%
+                    <i class="sign-plus">+</i><i>${loan.activityRate!}</i>%
                 </#if>
             </#if>
             </em>
