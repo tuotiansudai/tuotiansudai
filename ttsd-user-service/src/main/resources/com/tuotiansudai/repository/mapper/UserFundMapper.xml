@@ -25,7 +25,7 @@
 
               (select ifnull(sum(invest_repay.actual_interest), 0) - ifnull(sum(invest_repay.actual_fee), 0)
               from invest_repay join invest on invest_repay.invest_id= invest.id
-              where invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'COMPLETE')
+              where invest.loan_id != 1 and invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'COMPLETE')
               +
               (select ifnull(sum(actual_interest), 0) - ifnull(sum(actual_fee), 0)
               from coupon_repay
