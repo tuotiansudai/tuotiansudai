@@ -37,7 +37,7 @@ a {
       margin-top:5px;
     }
   }
-  .header {
+  .header-top {
     height:40px;
     margin: 0 auto;
     .service-time {
@@ -504,13 +504,7 @@ a {
     .header-download {
       display: block;
     }
-    .header-membership, .header-activity-center {
-      display: none;
-    }
-    .membership-store {
-      display: none;
-    }
-    .header {
+    .header-top {
       width:100%;
       &.page-width {
         padding:0px;
@@ -574,12 +568,6 @@ a {
         border-top: 1px solid #ccc;
         transition-delay: 0s;
         transition-duration: 0.5s;
-      &:hover,&.active {
-        color: #ff7200;
-        border-bottom-width: 0px;
-        border-top-width:0px;
-        background: #ff7200;
-      }
         li {
           margin-left: 0;
           width:50%;
@@ -589,10 +577,24 @@ a {
           .icon-has-submenu {
             display: none;
           }
+          &.active {
+            color: #ff7200;
+            border-bottom-width: 0px;
+            border-top-width:0px;
+            background: #ff7200;
+          }
+          &:hover {
+            color: #4d4d4d;
+            border-top-width:0;
+            ul.sub-menu-list {
+              display: none;
+            }
+          }
           a {
             text-align: left;
             padding-left:20px;
             display: inline-block;
+            color:#4d4d4d;
           }
           &.top-membership, &.top-activity {
             display: block;

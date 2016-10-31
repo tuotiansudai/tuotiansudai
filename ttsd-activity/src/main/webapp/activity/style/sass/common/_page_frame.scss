@@ -37,7 +37,7 @@ a {
       margin-top:5px;
     }
   }
-  .header {
+  .header-top {
     height:40px;
     margin: 0 auto;
     .service-time {
@@ -435,13 +435,7 @@ a {
     .header-download {
       display: block;
     }
-    .header-membership, .header-activity-center {
-      display: none;
-    }
-    .membership-store {
-      display: none;
-    }
-    .header {
+    .header-top {
       width:100%;
       &.page-width {
         padding:0px;
