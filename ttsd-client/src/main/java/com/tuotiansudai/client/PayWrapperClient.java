@@ -145,6 +145,14 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(null, "/job/async_invest_notify", "POST");
     }
 
+    public BaseDto<PayDataDto> normalRepayCallback() {
+        return syncExecute(null, "/job/async_normal_repay_notify", "POST");
+    }
+
+    public BaseDto<PayDataDto> advanceRepayCallback() {
+        return syncExecute(null, "/job/async_advance_repay_notify", "POST");
+    }
+
     public BaseDto<PayDataDto> investTransferCallback() {
         return syncExecute(null, "/job/async_invest_transfer_notify", "POST");
     }
