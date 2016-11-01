@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'layerWrapper', 'template', 'jquery.ajax.extension', 'commonFun', 'register_common', 'nine_lottery'], function($, _, layer, tpl) {
+require(['jquery', 'underscore', 'layerWrapper', 'template', 'jquery.ajax.extension', 'commonFun', 'register_common', 'nine_lottery','logintip'], function($, _, layer, tpl) {
     $(function() {
         var browser = commonFun.browserRedirect();
 

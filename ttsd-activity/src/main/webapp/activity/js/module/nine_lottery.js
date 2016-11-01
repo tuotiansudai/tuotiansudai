@@ -1,4 +1,4 @@
-define(['jquery', 'commonFun', 'layerWrapper'], function($, layer) {
+define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl) {
 
     var $lotteryList = $('#lotteryList'),
         scrollTimer,
@@ -47,6 +47,13 @@ define(['jquery', 'commonFun', 'layerWrapper'], function($, layer) {
             lottery.prize = -1;
             lottery.times = 0;
             lottery.click = false;
+            layer.open({
+              type: 1,
+              title:false,
+              closeBtn: 0,
+              content: $('#lotteryTip')
+            });
+            getRecord();
         } else {
             if (lottery.times < lottery.cycle) {
                 lottery.speed -= 10;
@@ -70,18 +77,60 @@ define(['jquery', 'commonFun', 'layerWrapper'], function($, layer) {
 
 
     lottery.init('lottery');
+    //get gift
     $("#lottery .lottery-btn").on('click', function(event) {
         event.preventDefault();
-        if (lottery.click) {
-            return false;
-        } else {
-            lottery.speed = 100;
-            roll();
-            lottery.click = true;
-            return false;
-        }
+        $.ajax({
+            url: '/activity/isLogin',
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json; charset=UTF-8'
+        })
+            .fail(function (response) {
+                if (response.responseText != "") {
+                    $("meta[name='_csrf']").remove();
+                    $('head').append($(response.responseText));
+                    var token = $("meta[name='_csrf']").attr("content");
+                    var header = $("meta[name='_csrf_header']").attr("content");
+                    $(document).ajaxSend(function (e, xhr, options) {
+                        xhr.setRequestHeader(header, token);
+                    });
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        area: ['auto', 'auto'],
+                        content: $('#loginTip')
+                    });
+                }else{
+                    if (lottery.click) {
+                        return false;
+                    } else {
+                        $.ajax({
+                            url: '/path/to/file',
+                            type: 'POST',
+                            dataType: 'json'
+                        })
+                        .done(function(data) {
+                            var record={
+                                list:data
+                            };
+                            $('#lotteryTip').html(tpl('lotteryTipTpl',record.list));
+                        })
+                        .fail(function() {
+                            layer.msg('抽奖失败，请重试');
+                        });
+                        lottery.speed = 100;
+                        roll();
+                        lottery.click = true;
+                    }
+                }
+            }
+        );
+        
     });
 
+    //change list
     $('h3 span', $lotteryList).on('click', function(event) {
         event.preventDefault();
         var $self = $(this),
@@ -92,7 +141,13 @@ define(['jquery', 'commonFun', 'layerWrapper'], function($, layer) {
             .siblings().removeClass('active');
     });
 
+    //close layer
+    $('#lotteryTip').on('click', '.close-item', function(event) {
+        event.preventDefault();
+        layer.closeAll();
+    });
 
+    //record scroll
     $('.record-group', $lotteryList).hover(function() {
         clearInterval(scrollTimer);
     }, function() {
@@ -117,18 +172,38 @@ define(['jquery', 'commonFun', 'layerWrapper'], function($, layer) {
 
     function getRecord(){
         $.ajax({
-            url: '/activity/national/all-list',
+            url: '/activity/point-draw/all-list',
             type: 'POST',
             dataType: 'json',
-            data: {param1: 'value1'},
+            data: {param1: 'value1'}
         })
-            .done(function(data) {
-                console.log("success");
-            })
-            .fail(function() {
-                lay.msg('请求失败，请重试！');
-            });
+        .done(function(data) {
+            var record={
+                list:data
+            };
+            $('#recordList').html(tpl('recordListTpl',record.list));
+        })
+        .fail(function() {
+            layer.msg('请求失败，请刷新页面重试');
+        });
 
+        $.ajax({
+            url: '/activity/point-draw/user-list',
+            type: 'POST',
+            dataType: 'json',
+            data: {param1: 'value1'}
+        })
+        .done(function(data) {
+            var record={
+                list:data
+            };
+            $('#myRecord').html(tpl('myRecordTpl',record.list));
+        })
+        .fail(function() {
+            layer.msg('请求失败，请刷新页面重试');
+        });
+        
     }
+    getRecord();
 
 });

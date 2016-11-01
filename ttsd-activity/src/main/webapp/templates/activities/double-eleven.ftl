@@ -188,4 +188,5 @@
         </div>
     </div>
 </div>
+<#include "login-tip.ftl" />
 </@global.main>

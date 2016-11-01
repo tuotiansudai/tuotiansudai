@@ -84,7 +84,6 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
         refreshCaptcha();
         $.ajax({
             url: '/activity/isLogin',
-            //data:data,
             type: 'GET',
             dataType: 'json',
             contentType: 'application/json; charset=UTF-8'

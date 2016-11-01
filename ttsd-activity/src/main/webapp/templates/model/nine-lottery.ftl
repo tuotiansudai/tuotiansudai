@@ -37,87 +37,58 @@
 			<span>我的奖品</span>
 		</h3>
 		<div class="record-group">
-			<ul class="record-item active">
+			<ul class="record-item active" id="recordList"></ul>
+			<script type="text/html" id="recordListTpl">
+			{{each list}}
 				<li>
-					<span class="text-item">恭喜110****7149抽中了新马泰七日游</span>
+					<span class="text-item">恭喜{{$value.mobile}}抽中了{{$value.prizeValue}}</span>
 				</li>
+			{{/each}}
+			</script>
+			
+			<ul class="record-item" id="myRecord"></ul>
+			<script type="text/html" id="myRecordTpl">
+			{{each list}}
 				<li>
-					<span class="text-item">恭喜120****7149抽中了新马泰七日游</span>
+					<span class="text-item">{{$value.prizeValue}}</span>
+					<span class="time-item">{{$value.lotteryTime}}</span>
 				</li>
-				<li>
-					<span class="text-item">恭喜130****7149抽中了新马泰七日游</span>
-				</li>
-				<li>
-					<span class="text-item">恭喜130****7149抽中了新马泰七日游</span>
-				</li>
-				<li>
-					<span class="text-item">恭喜130****7149抽中了新马泰七日游</span>
-				</li>
-				<li>
-					<span class="text-item">恭喜130****7149抽中了新马泰七日游</span>
-				</li>
-				<li>
-					<span class="text-item">恭喜130****7149抽中了新马泰七日游</span>
-				</li>
-				<li>
-					<span class="text-item">恭喜130****7149抽中了新马泰七日游</span>
-				</li>
-				<li>
-					<span class="text-item">恭喜130****7149抽中了新马泰七日游</span>
-				</li>
-				<li>
-					<span class="text-item">恭喜130****7149抽中了新马泰七日游</span>
-				</li>
-				<li>
-					<span class="text-item">恭喜130****7149抽中了新马泰七日游</span>
-				</li>
-			</ul>
-			<ul class="record-item">
-				<li>
-					<span class="text-item">新马泰七日游1</span>
-					<span class="time-item">2016-11-01</span>
-				</li>
-				<li>
-					<span class="text-item">新马泰七日游2</span>
-					<span class="time-item">2016-11-01</span>
-				</li>
-				<li>
-					<span class="text-item">新马泰七日游3</span>
-					<span class="time-item">2016-11-01</span>
-				</li>
-				<li>
-					<span class="text-item">新马泰七日游</span>
-					<span class="time-item">2016-11-01</span>
-				</li>
-				<li>
-					<span class="text-item">新马泰七日游</span>
-					<span class="time-item">2016-11-01</span>
-				</li>
-				<li>
-					<span class="text-item">新马泰七日游</span>
-					<span class="time-item">2016-11-01</span>
-				</li>
-				<li>
-					<span class="text-item">新马泰七日游</span>
-					<span class="time-item">2016-11-01</span>
-				</li>
-				<li>
-					<span class="text-item">新马泰七日游</span>
-					<span class="time-item">2016-11-01</span>
-				</li>
-				<li>
-					<span class="text-item">新马泰七日游</span>
-					<span class="time-item">2016-11-01</span>
-				</li>
-				<li>
-					<span class="text-item">新马泰七日游</span>
-					<span class="time-item">2016-11-01</span>
-				</li>
-				<li>
-					<span class="text-item">新马泰七日游</span>
-					<span class="time-item">2016-11-01</span>
-				</li>
-			</ul>
+			{{/each}}
+			</script>
+			
 		</div>
+	</div>
+	<div class="lottery-tip" id="lotteryTip">
+		<script type="text/html" id="lotteryTipTpl">
+		<i class="close-btn close-item"></i>
+		{{each list}}
+			<div class="text-list">
+			{{if $value.returnCode == 0}}
+				{{if $value.prizeType=='CONCRETE'}}
+					<p class="intro-text">抽中了{{$value.prizeValue}}</p>
+					<p class="info-text">拓天客服将会在7个工作日内联系您发放奖品！</p>
+				{{else if $value.prizeType=='VIRTUAL'}}
+					<p class="title-text"><img src="${staticServer}/activity/images/model/double-eleven/title-bg.png" width="25%"></p>
+					<p class="intro-text">抽中了{{$value.prizeValue}}</p>
+					<p class="info-text">奖品已发放至“我的宝藏”当中。</p>
+					
+			{{else if $value.returnCode == 1}}
+				<p class="no-time">您暂无抽奖机会啦～</p>
+				<p class="info-text">赢取机会后再来抽奖吧！</p>
+			{{/if}}
+			
+			</div>
+			<div class="btn-list">
+			{{if $value.returnCode == 0}}
+				{{if $value.prizeType=='CONCRETE'}}
+					<a href="javascript:void(0)" class="tip-btn close-item">继续抽奖</a>
+				{{else if $value.prizeType=='VIRTUAL'}}
+					<a href="/my-treasure" class="tip-btn">去查看</a><a href="javascript:void(0)" class="tip-btn close-item">继续抽奖</a>
+			{{else if $value.returnCode == 1}}
+				<a href="javascript:void(0)" class="tip-btn close-item">知道了</a>
+			{{/if}}
+			</div>
+		{{/each}}
+		</script>
 	</div>
 </div>

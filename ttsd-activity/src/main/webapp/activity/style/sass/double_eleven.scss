@@ -1,5 +1,6 @@
 @import "module/register_common";
 @import "module/nine_lottery";
+@import "module/login_tip";
 $width:700px;
 @mixin mobilehide () {
   @media (max-width: $width) {
