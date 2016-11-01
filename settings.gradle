@@ -23,5 +23,6 @@ include "ttsd-service",
         'ttsd-activity-console',
         'ttsd-activity-repository',
         'ttsd-util',
-        'ttsd-point-web'
+        'ttsd-point-web',
+        'ttsd-anxin-sign'
 
