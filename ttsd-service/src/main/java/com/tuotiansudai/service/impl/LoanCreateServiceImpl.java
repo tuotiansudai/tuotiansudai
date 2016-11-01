@@ -212,7 +212,6 @@ public class LoanCreateServiceImpl implements LoanCreateService {
         if (fundraisingEndTimeChanged) {
             createDeadLineFundraisingJob(loanModel);
         }
-        createFundraisingStartJob(loanModel);
 
         return new BaseDto<>(new BaseDataDto(true));
     }
@@ -340,7 +339,6 @@ public class LoanCreateServiceImpl implements LoanCreateService {
             loanModel.setStatus(LoanStatus.PREHEAT);
             loanMapper.update(loanModel);
 
-            createFundraisingStartJob(loanModel);
             createDeadLineFundraisingJob(loanModel);
         }
         return baseDto;
