@@ -98,11 +98,15 @@ define([], function () {
 
             for (var i = 0; i < this.numlist.length; i++) {
                 this.numlist[i].className = "";
+                this.imglist[i].className="";
+
             }
             this.numlist[this.index].className = "current";
+            this.imglist[this.index].className="active";
 
             for (var j = 0; j < this.count; j++) {
                 this.alpha(j, 0);
+
             }
             this.alpha(this.prev, 100); //设置上一张的透明度为100
             this.alpha(this.index, 0); // 当前的一张不要透明度
