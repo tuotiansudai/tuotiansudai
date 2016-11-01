@@ -128,7 +128,6 @@ require(['jquery','imageShowSlide-v1', 'underscore', 'layerWrapper', 'superslide
         event.preventDefault();
         $.ajax({
             url: '/isLogin',
-            //data:data,
             type: 'GET',
             dataType: 'json',
             contentType: 'application/json; charset=UTF-8'

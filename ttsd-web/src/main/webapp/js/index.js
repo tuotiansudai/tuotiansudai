@@ -78,18 +78,47 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
             //点击我要预约按钮
             $('.book-invest-box',$homePageContainer).on('click',function(event) {
                 var $this=$(this);
-                if($this.hasClass('show-login')) {
-                    return;
-                }
-                $bookInvestForm.find('.init-radio-style').removeClass('on');
-                     $bookInvestForm.find('input[name="bookingAmount"]').val('');
-                     layer.open({
-                         title: '预约投资',
-                         type: 1,
-                         skin: 'book-box-layer',
-                         area: ['680px'],
-                         content: $('.book-invest-frame',$homePageContainer)
-                       });
+                // if($this.hasClass('show-login')) {
+                //     return;
+                // }
+
+                event.preventDefault();
+                $.ajax({
+                    url: '/isLogin',
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                })
+                    .fail(function (response) {
+                            if ("" == response.responseText) {
+                                $bookInvestForm.find('.init-radio-style').removeClass('on');
+                                $bookInvestForm.find('input[name="bookingAmount"]').val('');
+                                layer.open({
+                                    title: '预约投资',
+                                    type: 1,
+                                    skin: 'book-box-layer',
+                                    area: ['680px'],
+                                    content: $('.book-invest-frame',$homePageContainer)
+                                });
+                            } else {
+                                $("meta[name='_csrf']").remove();
+                                $('head').append($(response.responseText));
+                                var token = $("meta[name='_csrf']").attr("content");
+                                var header = $("meta[name='_csrf_header']").attr("content");
+                                $(document).ajaxSend(function (e, xhr, options) {
+                                    xhr.setRequestHeader(header, token);
+                                });
+                                layer.open({
+                                    type: 1,
+                                    title: false,
+                                    closeBtn: 0,
+                                    area: ['auto', 'auto'],
+                                    content: $('#loginTip')
+                                });
+                                $('.image-captcha img').trigger('click');
+                            }
+                        }
+                    );
             });
             // 预约校验
             $bookInvestForm.validate({

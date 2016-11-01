@@ -83,14 +83,14 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
                 refreshCaptcha();
                 $.ajax({
                     url: '/isLogin',
-                    //data:data,
                     type: 'GET',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 })
                     .fail(function (response) {
                         if (response.responseText != "") {
-                            $("meta[name='_csrf']").remove();
+                            var $head=$('head');
+                            // $("meta[name='_csrf']").remove();
                             $('head').append($(response.responseText));
                             var token = $("meta[name='_csrf']").attr("content");
                             var header = $("meta[name='_csrf_header']").attr("content");

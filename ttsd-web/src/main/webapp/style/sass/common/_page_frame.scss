@@ -387,6 +387,63 @@ a {
   }
 }
 
+//point style
+.nav-container-point {
+  width: 100%;
+  background: #fff;
+  .nav {
+    width: 1000px;
+    height: 75px;
+    position: relative;
+    margin: 0 auto;
+    .logo {
+      background: url("/point/images/icons/logo-index.png") left center no-repeat;
+      width: 370px;
+      height: 50px;
+      display: block;
+      float: left;
+      margin-top: 15px;
+    }
+    .show-main-menu {
+      display: none;
+      margin-top: 25px;
+      margin-right: 10px;
+      font-size: 20px;
+    }
+    ul {
+      height: 100%;
+      float: right;
+      li {
+        float: left;
+        width: 90px;
+        margin-left: 15px;
+        position: relative;
+        a {
+          border-top: #fff 3px solid;
+          display: block;
+          height: 52px;
+          text-align: center;
+          padding-top: 20px;
+          color: #4d4d4d;
+          font-size: 15px;
+          &:hover {
+            cursor: pointer;
+            color: #428edf;
+            border-top: #428edf 3px solid;
+          }
+          &.active {
+            color: #428edf;
+            border-top: #428edf 3px solid;
+          }
+        }
+        &.top-membership, &.top-activity {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
 .main-frame {
   width: 1000px;
   height: auto;

@@ -1,4 +1,5 @@
-<div class="login-tip" id="loginTip">
+<div class="login-tip" id="loginTip" >
+    <#--data-token="${(_csrf.token)!}" data-headerName="${(_csrf.headerName)!}"-->
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <i class="close-btn"></i>
