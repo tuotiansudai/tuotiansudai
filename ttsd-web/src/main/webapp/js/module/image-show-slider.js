@@ -169,21 +169,21 @@ define([], function () {
         },
 
         bindTouchEvn:function() {
-            this.boxul[0].addEventListener('touchstart', this.touchstart.bind(this), false)
-            this.boxul[0].addEventListener('touchmove', this.touchmove.bind(this), false)
-            this.boxul[0].addEventListener('touchend', this.touchend.bind(this), false)
+            this.boxul[0].addEventListener('touchstart', this.touchstart.bind(this), false);
+            this.boxul[0].addEventListener('touchmove', this.touchmove.bind(this), false);
+            this.boxul[0].addEventListener('touchend', this.touchend.bind(this), false);
         },
         touchstart: function(e) {
             if (this.ready_moved) {
                 var touch = e.touches[0];
                 this.touchX = touch.pageX;
                 this.ready_moved = false;
+                console.log(this.play);
                 clearInterval(this.play); //触摸图片开始就终止图片的循环播放
-
             }
         },
         touchmove: function(e) {
-            e.preventDefault();
+            // e.preventDefault();
             var minRange = this.minRange;
             var touchX = this.touchX;
             var imgs_count = this.count;
@@ -216,7 +216,7 @@ define([], function () {
 
         },
         touchend: function(e) {
-            e.preventDefault();
+            // e.preventDefault();
             var minRange = this.minRange;
             var touchX = this.touchX;
             var imgs_count = this.count;
