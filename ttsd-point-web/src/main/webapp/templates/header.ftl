@@ -17,10 +17,6 @@
             <li class="header-activity-center">
                 <a href="${webServer}/activity-center">活动中心</a>
             </li>
-            <li class="login-pop-app" id="iphone-app-pop">
-                <a href="javascript:" onclick="cnzzPush.trackClick('13顶部导航','手机APP')">手机APP</a>
-                <div id="iphone-app-img" class="img-app-pc-top"></div>
-            </li>
         <@global.isNotAnonymous>
             <li class="header-login">
                 <a class="personal-info-link" href="${requestContext.getContextPath()}/personal-info"><@global.security.authentication property="principal.mobile"/></a>
@@ -30,14 +26,6 @@
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </form>
             </li>
-            <li class="header-message">
-                <a href="/message/user-messages">消息
-                    <span class="message-badge <@unreadMessageCount><@global.security.authentication property="principal.mobile"/></@unreadMessageCount>">
-                        <@unreadMessageCount><@global.security.authentication property="principal.mobile"/></@unreadMessageCount>
-                    </span>
-                </a>
-            </li>
-
         </@global.isNotAnonymous>
 
         <@global.isAnonymous>
