@@ -21,42 +21,42 @@
 
 <#macro main pageCss pageJavascript="" activeNav="" staticServer="${staticServer}" title="拓天速贷" keywords="" activeLeftNav=""  description="">
     <#local mainMenus=[
-    {"title":"首页", "url":"/","category":"16顶部导航","navigation":"true"},
-    {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
-        {"title":"直投项目", "url":"/loan-list"},
-        {"title":"转让项目", "url":"/transfer-list"}
+    {"title":"首页", "url":"${webServer}","category":"16顶部导航","navigation":"true"},
+    {"title":"我要投资", "url":"${webServer}/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
+        {"title":"直投项目", "url":"${webServer}/loan-list"},
+        {"title":"转让项目", "url":"${webServer}/transfer-list"}
     ]},
-    {"title":"我要借款", "url":"/loan-application","category":"19顶部导航","navigation":"true"},
+    {"title":"我要借款", "url":"${webServer}/loan-application","category":"19顶部导航","navigation":"true"},
 
-    {"title":"我的账户", "url":"/account", "category":"18顶部导航","navigation":"true","leftNavs":[
-        {"title":"账户总览", "url":"/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"我的投资", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
-        {"title":"债权转让", "url":"/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
-        {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
-        {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"我的财豆", "url":"/point", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"自动投标", "url":"/auto-invest", "role":"'USER', 'INVESTOR'"},
-        {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
+    {"title":"我的账户", "url":"${webServer}/account", "category":"18顶部导航","navigation":"true","leftNavs":[
+        {"title":"账户总览", "url":"${webServer}/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"我的投资", "url":"${webServer}/investor/invest-list", "role":"'USER', 'INVESTOR'"},
+        {"title":"债权转让", "url":"${webServer}/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
+        {"title":"我的借款", "url":"${webServer}/loaner/loan-list", "role":"'LOANER'"},
+        {"title":"资金管理", "url":"${webServer}/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"我的财豆", "url":"${webServer}/point", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"个人资料", "url":"${webServer}/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"自动投标", "url":"${webServer}/auto-invest", "role":"'USER', 'INVESTOR'"},
+        {"title":"推荐管理", "url":"${webServer}/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"我的宝藏", "url":"${webServer}/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
     {"title":"拓天问答", "url":"${askServer}","category":"","navigation":"true"},
-    {"title":"信息披露", "url":"/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
-        {"title":"公司介绍", "url":"/about/company"},
-        {"title":"团队介绍", "url":"/about/team"},
-        {"title":"拓天公告", "url":"/about/notice"},
-        {"title":"媒体报道", "url":"/about/media"},
-        {"title":"推荐奖励", "url":"/about/refer-reward"},
-        {"title":"服务费用", "url":"/about/service-fee"},
-        {"title":"联系我们", "url":"/about/contact"},
-        {"title":"运营数据", "url":"/about/operational"}
+    {"title":"信息披露", "url":"${webServer}/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
+        {"title":"公司介绍", "url":"${webServer}/about/company"},
+        {"title":"团队介绍", "url":"${webServer}/about/team"},
+        {"title":"拓天公告", "url":"${webServer}/about/notice"},
+        {"title":"媒体报道", "url":"${webServer}/about/media"},
+        {"title":"推荐奖励", "url":"${webServer}/about/refer-reward"},
+        {"title":"服务费用", "url":"${webServer}/about/service-fee"},
+        {"title":"联系我们", "url":"${webServer}/about/contact"},
+        {"title":"运营数据", "url":"${webServer}/about/operational"}
     ]},
-    {"title":"帮助中心", "url":"/help/help-center","category":"21顶部导航", "navigation":"false","leftNavs":[
-        {"title":"注册认证", "url":"/help/account"},
-        {"title":"账户管理", "url":"/help/user"},
-        {"title":"资金相关", "url":"/help/money"},
-        {"title":"产品类型", "url":"/help/product"},
-        {"title":"其他问题", "url":"/help/other"}
+    {"title":"帮助中心", "url":"${webServer}/help/help-center","category":"21顶部导航", "navigation":"false","leftNavs":[
+        {"title":"注册认证", "url":"${webServer}/help/account"},
+        {"title":"账户管理", "url":"${webServer}/help/user"},
+        {"title":"资金相关", "url":"${webServer}/help/money"},
+        {"title":"产品类型", "url":"${webServer}/help/product"},
+        {"title":"其他问题", "url":"/${webServer}help/other"}
     ]}
     ]/>
 
