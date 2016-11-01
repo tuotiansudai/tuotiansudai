@@ -18,7 +18,7 @@
                 <div class="login-model">
                     <p>
                         <a href="${webServer}/login?redirect=${pointServer}"
-                           class="login-btn">立即登录</a>
+                           class="login-btn">www立即登录</a>
                     </p>
 
                     <p>

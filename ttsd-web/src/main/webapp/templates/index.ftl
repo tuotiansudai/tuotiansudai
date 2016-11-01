@@ -167,7 +167,7 @@
             <i class="icon-title"></i>优选债权
             <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多></a>
         </div>
-        <div class="book-invest-box clearfix bg-screen <@global.isAnonymous>show-login</@global.isAnonymous>">
+        <div class="book-invest-box clearfix bg-screen">
             <span class="book-info">预约后当有相应项目我们会及时通知您。</span>
             <#--<@global.isAnonymous>not-anonymous</@global.isAnonymous> <@global.role hasRole="'INVESTOR'">is-user</@global.role>-->
             <a class="btn-invest fr btn-normal ">

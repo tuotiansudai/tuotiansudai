@@ -26,7 +26,7 @@
         <div class="table-row progress-column">
 
             <div class="progress-bar">
-                <span class="p-title">剩余金额：<i><@amount>${loan.availableInvestAmount}</@amount>元</i></span>
+                <span class="p-title">剩余金额：<i>${loan.availableInvestAmount}元</i></span>
 
                 <div class="process-percent">
                     <div class="percent" style="width:${loan.progress}%">
