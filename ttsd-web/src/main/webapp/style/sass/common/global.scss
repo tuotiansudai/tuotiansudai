@@ -373,6 +373,7 @@
     .content-list{
       float:left;
       width:100%;
+      min-height: 10px;
       margin-bottom:20px;
       position: relative;
       .name-text{
@@ -495,6 +496,7 @@
       width:100%;
       font-size:18px;
       color:#4d4d4d;
+      min-height: 10px;
       &.btn-model{
         margin-top:70px;
       }
