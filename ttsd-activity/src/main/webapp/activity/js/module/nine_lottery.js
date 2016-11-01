@@ -115,4 +115,20 @@ define(['jquery', 'commonFun', 'layerWrapper'], function($, layer) {
         }
     }
 
+    function getRecord(){
+        $.ajax({
+            url: '/activity/national/all-list',
+            type: 'POST',
+            dataType: 'json',
+            data: {param1: 'value1'},
+        })
+        .done(function(data) {
+            console.log("success");
+        })
+        .fail(function() {
+            lay.msg('请求失败，请重试！');
+        });
+        
+    }
+
 });
