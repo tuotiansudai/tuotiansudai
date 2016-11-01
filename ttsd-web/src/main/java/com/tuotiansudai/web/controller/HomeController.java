@@ -18,9 +18,11 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
+import com.tuotiansudai.service.impl.InvestServiceImpl;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.TransferService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,11 +30,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
 @Controller
 public class HomeController {
+
+    static Logger logger = Logger.getLogger(HomeController.class);
 
     @Autowired
     private HomeService homeService;
@@ -76,6 +81,7 @@ public class HomeController {
         ExperienceLoanDto experienceLoanDto = new ExperienceLoanDto(loanMapper.findById(experienceLoanId), investModelList.size() % 100, couponService.findExperienceInvestAmount(investModelList));
         modelAndView.addObject("experienceLoanDto", experienceLoanDto);
         List<BannerModel> bannerModelList = bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB);
+        bannerModelList.forEach(bannerModel -> logger.debug(MessageFormat.format("[index]url:{0}", bannerModel.getUrl())));
         modelAndView.addObject("bannerList", bannerModelList);
         //债权转让列表显示前两项
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationItemList = transferService.findAllTransferApplicationPaginationList(null, 0, 0, 1, 2);

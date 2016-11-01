@@ -10,14 +10,18 @@ import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.HomeService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class HomeServiceImpl implements HomeService {
+
+    static Logger logger = Logger.getLogger(HomeServiceImpl.class);
 
     @Autowired
     private LoanMapper loanMapper;
@@ -49,6 +53,8 @@ public class HomeServiceImpl implements HomeService {
         final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
 
         List<LoanModel> loanModels = loanMapper.findHomeLoan();
+
+        loanModels.forEach(loanModel -> logger.debug(MessageFormat.format("[home loan] loanId:{0}", loanModel.getId())));
 
         return Lists.transform(loanModels, new Function<LoanModel, HomeLoanDto>() {
             @Override
