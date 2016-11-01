@@ -93,26 +93,21 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
         String bankCode = bankLimitRequestDto.getBankCode();
         BankLimitResponseDataDto bankLimitResponseDataDto = new BankLimitResponseDataDto();
         if (StringUtils.isEmpty(bankCode)) {
-            List<BankModel> bankModelList = bankMapper.findBankList();
-            List<BankLimitUnitDto> bankLimitUnitDtos = Lists.transform(bankModelList, new Function<BankModel, BankLimitUnitDto>() {
-                @Override
-                public BankLimitUnitDto apply(BankModel bankModel) {
-                    return new BankLimitUnitDto(AmountConverter.convertCentToString(bankModel.getSingleAmount()),
-                            AmountConverter.convertCentToString(bankModel.getSingleDayAmount()), bankModel.getBankCode(),
-                            bankModel.getName());
-                }
-            });
+            List<BankModel> bankModelList = bankMapper.findWebBankList();
+            List<BankLimitUnitDto> bankLimitUnitDtos = Lists.transform(bankModelList, bankModel -> new BankLimitUnitDto(AmountConverter.convertCentToString(bankModel.getSingleAmount()),
+                    AmountConverter.convertCentToString(bankModel.getSingleDayAmount()), bankModel.getBankCode(),
+                    bankModel.getName()));
 
             bankLimitResponseDataDto.setRechargeLeftAmount("");
             bankLimitResponseDataDto.setBankLimits(bankLimitUnitDtos);
         } else {
             BankModel bankModel = bankMapper.findByBankCode(bankCode);
             if (null == bankModel) {
-                return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+                return new BaseResponseDto<>(ReturnMessage.BIND_CARD_LIMIT_FAIL.getCode(), ReturnMessage.BIND_CARD_LIMIT_FAIL.getMsg());
             }
             long leftAmount = getLeftRechargeAmount(bankLimitRequestDto.getBaseParam().getPhoneNum(), bankModel);
             if (leftAmount < 0) {
-                return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+                return new BaseResponseDto<>(ReturnMessage.BIND_CARD_LIMIT_FAIL.getCode(), ReturnMessage.BIND_CARD_LIMIT_FAIL.getMsg());
             } else {
                 bankLimitResponseDataDto.setRechargeLeftAmount(AmountConverter.convertCentToString(leftAmount));
                 bankLimitResponseDataDto.setBankLimits(Lists.newArrayList(new BankLimitUnitDto(AmountConverter.convertCentToString(bankModel.getSingleAmount()),

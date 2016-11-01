@@ -17,6 +17,7 @@ import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.IdGenerator;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -81,11 +82,13 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
         long loanId = idGenerator.generate();
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         InvestModel investModel = createInvest("testuser", loanId);
+        InvestRepayModel investRepayModel = createInvestRepay(investModel.getId(), 2, 0, 10, 0, new DateTime().plus(2).toDate(), RepayStatus.REPAYING);
         when(investMapper.findTransferableApplicationPaginationByLoginName(anyString(), anyInt(), anyInt())).thenReturn(Lists.newArrayList(investModel));
         when(investMapper.findCountTransferableApplicationPaginationByLoginName(anyString())).thenReturn(1L);
         when(transferRuleMapper.find()).thenReturn(transferRuleModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investService.estimateInvestIncome(anyLong(), anyString(), anyLong())).thenReturn(1000l);
+        when(investRepayMapper.findByInvestIdAndPeriod(anyLong(), anyInt())).thenReturn(investRepayModel);
         BaseResponseDto<UserInvestListResponseDataDto> baseResponseDto = mobileAppTransferApplicationV2Service.generateTransferableInvest(transferableInvestRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(String.valueOf(loanId), baseResponseDto.getData().getInvestList().get(0).getLoanId());
@@ -127,6 +130,11 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
     private InvestModel createInvest(String loginName, long loanId) {
         InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, loginName, new Date(), Source.WEB, null, 0.1);
         model.setStatus(com.tuotiansudai.repository.model.InvestStatus.SUCCESS);
+        return model;
+    }
+
+    private InvestRepayModel createInvestRepay(long investId, int period, long corpus, long expectedInterest, long expectedFee, Date repayDate, RepayStatus status) {
+        InvestRepayModel model = new InvestRepayModel(idGenerator.generate(), investId, period, corpus, expectedInterest,expectedFee, repayDate, status);
         return model;
     }
 

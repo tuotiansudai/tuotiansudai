@@ -32,7 +32,7 @@ public class FeedbackServiceTest {
         UserModel fakeUser = getFakeUser("loginname");
         userMapper.create(fakeUser);
 
-        FeedbackModel model = feedbackService.create(fakeUser.getLoginName(), Source.IOS, FeedbackType.opinion, "content");
+        FeedbackModel model = feedbackService.create(fakeUser.getLoginName(), Source.IOS, FeedbackType.opinion, "content","13700000000");
         assertNotNull(model.getId());
         assertNotNull(model.getCreatedTime());
 

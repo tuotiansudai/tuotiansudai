@@ -42,6 +42,8 @@ var require = {
         'global_page': staticServer+'/js/dest/global_page.min',
         'imageShowSlide-v1': staticServer+'/js/dest/image-show-slider.min',
         'red-envelope-float': staticServer+'/js/dest/red-envelope-float.min',
+        'assign_coupon':staticServer+'/js/dest/assign_coupon.min'
+
     },
     'waitSeconds':0,
     'shim': {
