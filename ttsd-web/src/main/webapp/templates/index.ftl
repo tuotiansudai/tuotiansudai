@@ -5,24 +5,14 @@
     <div class="banner-box">
         <div id="bannerBox" class="banner-box-inner">
             <ul class="banner-img-list">
-                <li>
-                    <a href="https://tuotiansudai.com/point-shop">
-                        <img src="https://static.tuotiansudai.com/upload/20161025/37501477361176201.jpg" data-app-img="https://static.tuotiansudai.com/upload/20161025/47501477361179312.jpg">
-                    </a>
-                </li>
-                <li>
-                    <a href="https://tuotiansudai.com/activity/iphone7-lottery">
-                        <img src="https://static.tuotiansudai.com/upload/20161026/16791477446073036.jpg" data-app-img="https://static.tuotiansudai.com/upload/20161026/81951477446076759.jpg">
-                    </a>
-                </li>
-                <#--<#list bannerList as banner>-->
-                    <#--<li>-->
-                        <#--<a href="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"-->
-                           <#--<#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>-->
-                            <#--<img src="${staticServer}/${banner.webImageUrl}" data-app-img="${staticServer}/${banner.appImageUrl}" alt="${banner.title}">-->
-                        <#--</a>-->
-                    <#--</li>-->
-                <#--</#list>-->
+                <#list bannerList as banner>
+                    <li>
+                        <a href="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"
+                           <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
+                            <img src="${staticServer}/${banner.webImageUrl}" data-app-img="${staticServer}/${banner.appImageUrl}" alt="${banner.title}">
+                        </a>
+                    </li>
+                </#list>
             </ul>
         </div>
         <div class="page-width">

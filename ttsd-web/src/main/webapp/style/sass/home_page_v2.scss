@@ -290,8 +290,13 @@ $pointColor:#ff5400;
           width:100%;
           height: 100%;
           opacity: 0;
+          z-index: 1;
+          &:nth-child(1) {
+            z-index: 2;
+          }
           a {
             width:100%;
+            height:100%;
             display: block;
             img {
               &.pc-img{
@@ -299,9 +304,9 @@ $pointColor:#ff5400;
               }
             }
           }
-          a:first-child {
-            z-index: 1;
-          }
+        &.active {
+          z-index:10;
+        }
         }
 
     }
@@ -311,6 +316,7 @@ $pointColor:#ff5400;
       left: -webkit-calc((100% - 100px) / 2 );
       left: calc((100% - 100px) / 2 );
       bottom: 14px;
+      z-index: 20;
       li{
         width:10px;
         height:10px;
