@@ -54,8 +54,13 @@ public class MyMobileSimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSucces
         super.onLogoutSuccess(request, response, authentication);
 
         String token = request.getParameter("token");
+        if (signInClient.logout(token) == null) {
+            return;
+        }
+
         SignInResult signInResult = signInClient.verifyToken(token, Source.MOBILE);
-        signInClient.logout(token);
-        jPushAlertService.delStoreJPushId(signInResult.getUserInfo().getLoginName());
+        if (signInResult != null) {
+            jPushAlertService.delStoreJPushId(signInResult.getUserInfo().getLoginName());
+        }
     }
 }
