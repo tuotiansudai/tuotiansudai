@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.TurnOffNoPasswordInvestCaptchaMapper;
@@ -26,6 +28,7 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -70,20 +73,8 @@ public class SmsServiceTest {
         String mobile = String.valueOf(new BigDecimal(Math.random() * 9 + 1).multiply(new BigDecimal(10000000000L)).longValue());
         String captcha = "9999";
 
-        this.smsService.sendRegisterCaptcha(mobile, captcha, null);
-
-        List<SmsModel> records = this.registerCaptchaMapper.findByMobile(mobile);
-
-        assert records.size() == 1;
-
-        SmsModel record = records.get(0);
-
-        assertThat(record.getMobile(), is(mobile));
-
-        List<String> paramList = ImmutableList.<String>builder().add(captcha).build();
-        String content = SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE.generateContent(paramList);
-        assertThat(record.getContent(), is(content));
-        assertThat(record.getResultCode(), is("200"));
+        BaseDto<SmsDataDto> baseDto = this.smsService.sendRegisterCaptcha(mobile, captcha, null);
+        assertTrue(baseDto.isSuccess());
     }
 
     @Test
@@ -97,19 +88,7 @@ public class SmsServiceTest {
         String mobile = String.valueOf(new BigDecimal(Math.random() * 9 + 1).multiply(new BigDecimal(10000000000L)).longValue());
         String captcha = "9999";
 
-        this.smsService.sendNoPasswordInvestCaptcha(mobile, captcha, null);
-
-        List<SmsModel> records = this.noPasswordInvestMapper.findByMobile(mobile);
-
-        assert records.size() == 1;
-
-        SmsModel record = records.get(0);
-
-        assertThat(record.getMobile(), is(mobile));
-
-        List<String> paramList = ImmutableList.<String>builder().add(captcha).build();
-        String content = SmsTemplate.SMS_NO_PASSWORD_INVEST_CAPTCHA_TEMPLATE.generateContent(paramList);
-        assertThat(record.getContent(), is(content));
-        assertThat(record.getResultCode(), is("200"));
+        BaseDto<SmsDataDto> baseDto = this.smsService.sendNoPasswordInvestCaptcha(mobile, captcha, null);
+        assertTrue(baseDto.isSuccess());
     }
 }
