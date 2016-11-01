@@ -1,0 +1,3 @@
+ALTER table `aa`.`prepare_user` DROP FOREIGN KEY `FK_REFERRER_MOBILE_REF_USER_MOBILE`;
+ALTER table `aa`.`prepare_user` DROP KEY `FK_REFERRER_MOBILE_REF_USER_MOBILE`;
+
