@@ -130,8 +130,8 @@
                                 <#if (loan.newbieInterestCouponRate > 0)>
                                     <s class="sign-plus">+</s>
                                     <i><@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger></i>
-                                    <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
-                                </#if>%</span>预期年化收益
+                                    <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>%
+                                </#if></span>预期年化收益
                             </li>
                             <li><em class="duration-day">${loan.duration}</em>天<br>项目期限</li>
                         </ul>
