@@ -113,18 +113,51 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
                             dataType: 'json'
                         })
                         .done(function(data) {
-
-                            var record={
-                                list:data
-                            };
-                            $('#lotteryTip').html(tpl('lotteryTipTpl',record.list));
+                            if(data.returnCode == 1){
+                                $('#lotteryTip').html(tpl('lotteryTipTpl',{list:data}));
+                                layer.open({
+                                  type: 1,
+                                  title:false,
+                                  closeBtn: 0,
+                                  content: $('#lotteryTip')
+                                });
+                            }else if(data.returnCode == 0){
+                                $('#lotteryTip').html(tpl('lotteryTipTpl',{list:data}));
+                                switch (data.prize) {
+                                    case 'M1_PHONE':  //锤子M1手机
+                                        lottery.prize=7;
+                                        break;
+                                    case 'HUMIDIFIER': //小熊加湿器
+                                        lottery.prize=0;
+                                        break;
+                                    case 'HAIR_DRIER':  //飞科电吹风机
+                                        lottery.prize=1;
+                                        break;
+                                    case 'IQIYI_MEMBERSHIP_REF_CARNIVAL':  //爱奇艺会员
+                                        lottery.prize=5;
+                                        break;
+                                    case 'TELEPHONE_FARE_10_REF_CARNIVAL':  //10元话费
+                                        lottery.prize=2;
+                                        break;
+                                    case 'BAMBOO_CHARCOAL_PACKAGE':  //卡通汽车竹炭包
+                                        lottery.prize=6;
+                                        break;
+                                    case 'INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL': //0.5加息券
+                                        lottery.prize=3;
+                                        break;
+                                    case 'RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL':  //50元红包
+                                        lottery.prize=4;
+                                        break;
+                                }
+                                lottery.speed = 100;
+                                roll();
+                                lottery.click = true;
+                            }
                         })
                         .fail(function() {
                             layer.msg('抽奖失败，请重试');
                         });
-                        lottery.speed = 100;
-                        roll();
-                        lottery.click = true;
+                        
                     }
                 }
             }

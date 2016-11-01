@@ -40,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class LotteryDrawActivityService {
@@ -221,6 +222,10 @@ public class LotteryDrawActivityService {
                 return 313;
             case INTEREST_COUPON_2_POINT_DRAW :
                 return 314;
+            case INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL:
+                return 310;
+            case RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL:
+                return 313;
         }
         return 0l;
     }

@@ -146,10 +146,11 @@ public class UserLotteryService{
     public List<List<String>> buildAutumnList(String mobile,LotteryPrize selectPrize,ActivityCategory prizeType,Date startTime,Date endTime) {
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, prizeType, startTime, endTime, null, null);
         List<List<String>> rows = Lists.newArrayList();
-        userLotteryPrizeViews.forEach(userLotteryPrizeView -> rows.add(Lists.newArrayList(new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd"),
-                userLotteryPrizeView.getMobile(),
+        userLotteryPrizeViews.forEach(userLotteryPrizeView -> rows.add(Lists.newArrayList(
                 userLotteryPrizeView.getUserName(),
+                userLotteryPrizeView.getMobile(),
                 userLotteryPrizeView.getLoginName(),
+                new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd"),
                 userLotteryPrizeView.getPrize().getDescription())));
         return rows;
     }
