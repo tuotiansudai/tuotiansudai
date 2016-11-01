@@ -43,13 +43,13 @@ public enum LotteryPrize{
 
     //双11狂欢
     M1_PHONE("锤子M1手机(预定)",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,0),
-    HUMIDIFIER("小熊加湿器",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,0),
-    HAIR_DRIER("飞科电吹风机",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,0),
-    IQIYI_MEMBERSHIP_REF_CARNIVAL("爱奇艺会员",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,0),
-    TELEPHONE_FARE_10_REF_CARNIVAL("10元话费",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,0),
-    BAMBOO_CHARCOAL_PACKAGE("卡通汽车竹炭包",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,0),
-    INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL("0.5加息券",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,0),
-    RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL("50元红包",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,0);
+    HUMIDIFIER("小熊加湿器",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,1),
+    HAIR_DRIER("飞科电吹风机",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,1),
+    IQIYI_MEMBERSHIP_REF_CARNIVAL("爱奇艺会员",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,5),
+    TELEPHONE_FARE_10_REF_CARNIVAL("10元话费",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,5),
+    BAMBOO_CHARCOAL_PACKAGE("卡通汽车竹炭包",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,8),
+    INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL("0.5加息券",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,41),
+    RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL("50元红包",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,39);
 
     String description;
     PrizeType prizeType;
