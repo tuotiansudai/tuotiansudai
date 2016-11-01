@@ -1,7 +1,5 @@
 package com.tuotiansudai.point.service.impl;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.point.dto.UserPointPrizeDto;
@@ -13,7 +11,6 @@ import com.tuotiansudai.point.repository.model.UserPointPrizeModel;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.DateUtil;
@@ -30,9 +27,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
-public class PointLotteryServiceImpl implements PointLotteryService{
+public class PointLotteryServiceImpl implements PointLotteryService {
 
     static Logger logger = Logger.getLogger(PointLotteryServiceImpl.class);
 
@@ -62,17 +60,14 @@ public class PointLotteryServiceImpl implements PointLotteryService{
     private CouponAssignmentService couponAssignmentService;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private AccountMapper accountMapper;
 
     @Autowired
     private RandomUtils randomUtils;
 
-    public static String redisShareTemple = "web:ranking:shared:{0}:{1}";
+    private static String redisShareTemple = "web:ranking:shared:{0}:{1}";
 
-    private static String[] telFirst="134,135,136,137,138,139,150,151,152,157,158,159,130,131,132,155,156,133,153,186,188".split(",");
+    private static String[] telFirst = "134,135,136,137,138,139,150,151,152,157,158,159,130,131,132,155,156,133,153,186,188".split(",");
 
     private static String telTemplate = "{0}****{1}";
 
@@ -120,7 +115,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
             }
 
             return winPointPrize.getName();
-        } else if (userPointPrizeModelToday.size() == 1 && !redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyyMMdd")))){
+        } else if (userPointPrizeModelToday.size() == 1 && !redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyyMMdd")))) {
             return ALREADY_LOTTERY_NOT_SHARE;
         } else {
             return ALREADY_LOTTERY_SHARE;
@@ -137,7 +132,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
                 probabilities[i] = pointPrizeModels.get(i).getProbability();
             }
         }
-        int num = new Random().nextInt(100)+1;
+        int num = new Random().nextInt(100) + 1;
         int choosePointPrize = 0;
         for (int i = 0; i < probabilities.length; i++) {
             if (num <= probabilities[i]) {
@@ -149,41 +144,34 @@ public class PointLotteryServiceImpl implements PointLotteryService{
     }
 
     @Override
-    public void getLotteryOnceChance(String loginName){
+    public void getLotteryOnceChance(String loginName) {
         SimpleDateFormat formatShortTime = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String begin = formatter.format(new Date());
         String end = formatShortTime.format(new Date()) + LAST_EXPIRY_TIME;
         int expiryTime = DateUtil.differenceSeconds(begin, end);
-        redisWrapperClient.setex(MessageFormat.format(redisShareTemple, loginName, formatShortTime.format(new Date()).replace("-","")), expiryTime, "1");
+        redisWrapperClient.setex(MessageFormat.format(redisShareTemple, loginName, formatShortTime.format(new Date()).replace("-", "")), expiryTime, "1");
     }
 
     @Override
     public List<UserPointPrizeDto> findAllDrawLottery() {
         List<UserPointPrizeModel> userPointPrizeModels = userPointPrizeMapper.findAllDescCreatedTime();
-        return Lists.transform(userPointPrizeModels, new Function<UserPointPrizeModel, UserPointPrizeDto>() {
-            @Override
-            public UserPointPrizeDto apply(UserPointPrizeModel input) {
-                if (input.isReality()) {
-                    UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(randomUtils.encryptMobile(null, input.getLoginName(), Source.WEB), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
-                    return userPointPrizeDto;
-                } else {
-                    return new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
-                }
-            }
-        });
+        return userPointPrizeModels.stream().map(input -> {
+            String loginName = input.isReality() ?
+                    randomUtils.encryptMobile(null, input.getLoginName(), Source.WEB) :
+                    input.getLoginName();
+            return new UserPointPrizeDto(loginName,
+                    pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(),
+                    input.getCreatedTime());
+        }).collect(Collectors.toList());
     }
 
     @Override
     public List<UserPointPrizeDto> findMyDrawLottery(String loginName) {
         List<UserPointPrizeModel> userPointPrizeModels = userPointPrizeMapper.findByLoginName(loginName);
-        return Lists.transform(userPointPrizeModels, new Function<UserPointPrizeModel, UserPointPrizeDto>() {
-            @Override
-            public UserPointPrizeDto apply(UserPointPrizeModel input) {
-                UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
-                return userPointPrizeDto;
-            }
-        });
+        return userPointPrizeModels.stream()
+                .map(input -> new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime()))
+                .collect(Collectors.toList());
     }
 
 }
