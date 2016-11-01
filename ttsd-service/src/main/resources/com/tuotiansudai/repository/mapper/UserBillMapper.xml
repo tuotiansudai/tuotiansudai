@@ -136,12 +136,4 @@
             </if>
         </where>
     </select>
-
-    <select id="findUserIsAlreadyBill" parameterType="map" resultType="int">
-        select count(*) from user_bill
-        where login_name = #{loginName}
-        and order_id = #{orderId}
-        and business_type = #{userBillBusinessType}
-        and operation_type = #{userBillOperationType}
-    </select>
 </mapper>

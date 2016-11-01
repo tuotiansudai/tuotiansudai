@@ -67,7 +67,6 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     private List<Double> referrerStaffRoleReward;
 
     @Override
-    @Transactional
     public void rewardReferrer(LoanModel loanModel, List<InvestModel> successInvestList) {
         int loanDuration = this.calculateLoanDuration(loanModel);
 
@@ -81,6 +80,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                         if (role != null) {
                             long reward = this.calculateReferrerReward(invest.getAmount(), loanDuration, referrerRelationModel.getLevel(), role, referrerLoginName);
                             InvestReferrerRewardModel model = new InvestReferrerRewardModel(idGenerator.generate(), invest.getId(), reward, referrerLoginName, role);
+                            investReferrerRewardMapper.create(model);
                             this.transferReferrerReward(model);
                         }
                     } catch (Exception e) {
@@ -101,7 +101,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         AccountModel accountModel = accountMapper.findByLoginName(referrerLoginName);
         if (accountModel == null) {
             model.setStatus(ReferrerRewardStatus.NO_ACCOUNT);
-            investReferrerRewardMapper.create(model);
+            investReferrerRewardMapper.update(model);
             logger.error(MessageFormat.format("referrer has no account, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
                     String.valueOf(model.getInvestId()),
                     model.getReferrerLoginName(),
@@ -130,11 +130,13 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         }
 
         try {
-            investReferrerRewardMapper.create(model);
+            investReferrerRewardMapper.update(model);
             if (model.getStatus() == ReferrerRewardStatus.SUCCESS) {
+                logger.debug(MessageFormat.format("[标的放款]:发送推荐人奖励,推荐人:{0},投资ID:{1},推荐人奖励:{2}",referrerLoginName,orderId,amount));
                 amountTransfer.transferInBalance(referrerLoginName, orderId, amount, UserBillBusinessType.REFERRER_REWARD, null, null);
                 InvestModel investModel = investMapper.findById(model.getInvestId());
                 String detail = MessageFormat.format(SystemBillDetailTemplate.REFERRER_REWARD_DETAIL_TEMPLATE.getTemplate(), referrerLoginName, investModel.getLoginName(), String.valueOf(model.getInvestId()));
+                logger.debug(MessageFormat.format("[标的放款]:记录系统奖励,投资ID:{0},推荐人奖励:{1},奖励类型:{2}",orderId,amount,SystemBillBusinessType.REFERRER_REWARD));
                 systemBillService.transferOut(orderId, amount, SystemBillBusinessType.REFERRER_REWARD, detail);
             }
         } catch (Exception e) {

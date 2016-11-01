@@ -74,6 +74,10 @@ public class LoanServiceImpl implements LoanService {
 
     private final static String SMS_AND_EMAIL = "SMS_AND_EMAIL";
 
+    private final static String TRANSFER_OUT_FREEZE = "TRANSFER_OUT_FREEZE:INVEST:{0}";
+
+    private final static String TRANSFER_IN_BALANCE = "TRANSFER_IN_BALANCE";
+
     @Autowired
     private LoanMapper loanMapper;
 
@@ -304,38 +308,42 @@ public class LoanServiceImpl implements LoanService {
 
         logger.debug("[标的放款]：发起联动优势放款请求，标的ID:" + loanId + "，代理人:" + agentPayUserId + "，放款金额:" + investAmountTotal);
 
-        ProjectTransferResponseModel resp = new ProjectTransferResponseModel();
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
-        String statusString = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
-        if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
+        String beforeSendStatus = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
+        ProjectTransferResponseModel resp = null;
+        if (Strings.isNullOrEmpty(beforeSendStatus) || beforeSendStatus.equals(SyncRequestStatus.FAILURE.name())){
             try {
                 redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, SyncRequestStatus.SENT.name());
-                resp = doPayRequest(loanId, agentPayUserId, investAmountTotal);
-                redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, resp.isSuccess() ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
+                ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newLoanOutRequest(
+                        String.valueOf(loanId), String.valueOf(loanId), agentPayUserId, String.valueOf(investAmountTotal));
+                resp = paySyncClient.send(ProjectTransferMapper.class, requestModel, ProjectTransferResponseModel.class);
+                redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, SyncRequestStatus.SUCCESS.name());
             } catch (PayException e) {
-                redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, SyncRequestStatus.FAILURE.name());
                 logger.error(MessageFormat.format("[标的放款]:发起放款联动优势请求失败,标的ID : {0}", String.valueOf(loanId)), e);
             }
-        } else {
-            resp = new ProjectTransferResponseModel();
-            resp.setRetCode(ProjectTransferResponseModel.SUCCESS_CODE);
-            resp.setRetMsg(MessageFormat.format("[标的放款]:重复发起放款联动优势请求,标的ID : {0}", String.valueOf(loanId)));
-            logger.info(resp.getRetMsg());
         }
 
-        if (resp.isSuccess()) {
+        String afterSendStatus = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
+
+        if (SyncRequestStatus.SENT.name().equals(afterSendStatus)) {
+            resp = new ProjectTransferResponseModel();
+            resp.setRetMsg(MessageFormat.format("[标的放款]:发起放款联动优势请求重复,标的ID : {0}", String.valueOf(loanId)));
+            logger.error(resp.getRetMsg());
+            return resp;
+
+        }
+
+        if (SyncRequestStatus.SUCCESS.name().equals(afterSendStatus)) {
             logger.debug("[标的放款]：更新标的状态，标的ID:" + loanId);
             this.updateLoanStatus(loanId, LoanStatus.REPAYING);
 
             logger.debug("[标的放款]：处理该标的的所有投资的账务信息，标的ID:" + loanId);
-            this.processInvestForLoanOut(successInvestList);
+            this.processInvestForLoanOut(successInvestList,loanId);
 
             logger.debug("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
             this.processLoanAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal);
 
-            // loanOutSuccessHandle(loanId);
             this.createLoanOutSuccessHandleJob(loanId);
-
         }
 
         return resp;
@@ -390,20 +398,11 @@ public class LoanServiceImpl implements LoanService {
                 redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.FAILURE.name());
                 logger.error(MessageFormat.format("[标的放款]:放款短信邮件通知失败 (loanId = {0})", String.valueOf(loanId)), e);
             }
-        }else {
+        } else {
             logger.info(MessageFormat.format("[标的放款]:重复发送放款短信邮件通知,标的ID : {0}", String.valueOf(loanId)));
         }
 
         return true;
-    }
-
-    private ProjectTransferResponseModel doPayRequest(long loanId, String payUserId, long amount) throws PayException {
-        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newLoanOutRequest(
-                String.valueOf(loanId), String.valueOf(loanId), payUserId, String.valueOf(amount));
-        return paySyncClient.send(
-                ProjectTransferMapper.class,
-                requestModel,
-                ProjectTransferResponseModel.class);
     }
 
     private long computeInvestAmountTotal(List<InvestModel> investList) {
@@ -414,20 +413,27 @@ public class LoanServiceImpl implements LoanService {
         return amount;
     }
 
-    private void processInvestForLoanOut(List<InvestModel> investList) {
+    private void processInvestForLoanOut(List<InvestModel> investList,long loanId) {
         if (CollectionUtils.isEmpty(investList)) {
             return;
         }
 
+        String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         investList.forEach(invest -> {
+            String transferKey = MessageFormat.format(TRANSFER_OUT_FREEZE,invest.getId());
             try {
-                amountTransfer.transferOutFreeze(invest.getLoginName(),
-                        invest.getId(),
-                        invest.getAmount(),
-                        UserBillBusinessType.LOAN_SUCCESS,
-                        null,
-                        null);
+                String statusString = redisWrapperClient.hget(redisKey, transferKey);
+                if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
+                    amountTransfer.transferOutFreeze(invest.getLoginName(),
+                            invest.getId(),
+                            invest.getAmount(),
+                            UserBillBusinessType.LOAN_SUCCESS,
+                            null,
+                            null);
+                    redisWrapperClient.hset(redisKey, transferKey, SyncRequestStatus.SUCCESS.name());
+                }
             } catch (AmountTransferException e) {
+                redisWrapperClient.hset(redisKey, transferKey, SyncRequestStatus.FAILURE.name());
                 logger.error("transferOutFreeze Fail while loan out, invest [" + invest.getId() + "]", e);
             }
         });
@@ -435,10 +441,15 @@ public class LoanServiceImpl implements LoanService {
 
     // 把借款转给代理人账户
     private void processLoanAccountForLoanOut(long loanId, String agentLoginName, long amount) {
+        String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         try {
-            //TODO
-            amountTransfer.transferInBalance(agentLoginName, loanId, amount, UserBillBusinessType.LOAN_SUCCESS, null, null);
+            String statusString = redisWrapperClient.hget(redisKey, TRANSFER_IN_BALANCE);
+            if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
+                amountTransfer.transferInBalance(agentLoginName, loanId, amount, UserBillBusinessType.LOAN_SUCCESS, null, null);
+                redisWrapperClient.hset(redisKey, TRANSFER_IN_BALANCE, SyncRequestStatus.SUCCESS.name());
+            }
         } catch (Exception e) {
+            redisWrapperClient.hset(redisKey, TRANSFER_IN_BALANCE, SyncRequestStatus.FAILURE.name());
             logger.error("transferInBalance Fail while loan out, loan[" + loanId + "]", e);
         }
     }

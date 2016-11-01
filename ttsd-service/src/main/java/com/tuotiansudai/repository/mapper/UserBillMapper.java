@@ -38,8 +38,4 @@ public interface UserBillMapper {
                            @Param("startTime") Date startTime,
                            @Param("endTime") Date endTime);
 
-    int findUserIsAlreadyBill(@Param("loginName") String loginName,
-                              @Param("orderId") long orderId,
-                              @Param("userBillBusinessType") UserBillBusinessType userBillBusinessType,
-                              @Param("userBillOperationType") UserBillOperationType userBillOperationType);
 }
