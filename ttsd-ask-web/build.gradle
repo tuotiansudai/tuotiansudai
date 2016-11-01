@@ -10,6 +10,6 @@ dependencies {
 }
 
 war {
-    archiveName "ask-web.war"
+    archiveName "ROOT.war"
     destinationDir = file("war")
 }
