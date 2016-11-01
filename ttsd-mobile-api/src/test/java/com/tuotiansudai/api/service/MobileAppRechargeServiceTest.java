@@ -84,7 +84,7 @@ public class MobileAppRechargeServiceTest extends ServiceTestBase {
         bankModel.setSingleAmount(10000);
         bankModel.setSingleDayAmount(50000);
 
-        when(bankMapper.findBankList()).thenReturn(Lists.newArrayList(bankModel, bankModel));
+        when(bankMapper.findWebBankList()).thenReturn(Lists.newArrayList(bankModel, bankModel));
         when(bankMapper.findByBankCode("ICBC")).thenReturn(bankModel);
         when(rechargeMapper.findSumRechargeAmount(anyString(), anyString(), any(RechargeSource.class), any(RechargeStatus.class), anyString(), any(Role.class), any(Date.class),
                 any(Date.class))).thenReturn(5000L);
@@ -101,11 +101,6 @@ public class MobileAppRechargeServiceTest extends ServiceTestBase {
         assertEquals(bankModel.getName(), ((BankLimitResponseDataDto) baseResponseDto.getData()).getBankLimits().get(0).getBankName());
         assertEquals(AmountConverter.convertCentToString(bankModel.getSingleAmount()), ((BankLimitResponseDataDto) baseResponseDto.getData()).getBankLimits().get(0).getSingleAmount());
         assertEquals(AmountConverter.convertCentToString(bankModel.getSingleDayAmount()), ((BankLimitResponseDataDto) baseResponseDto.getData()).getBankLimits().get(0).getSingleDayAmount());
-
-        bankLimitRequestDto.setBankCode("NONE_BANK");
-        when(bankMapper.findByBankCode("NONE_BANK")).thenReturn(null);
-        baseResponseDto = mobileAppRechargeService.getBankLimit(bankLimitRequestDto);
-        assertEquals(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), baseResponseDto.getCode());
 
         bankLimitRequestDto.setBankCode("");
         baseResponseDto = mobileAppRechargeService.getBankLimit(bankLimitRequestDto);

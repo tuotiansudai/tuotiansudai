@@ -81,11 +81,13 @@
     <bean id="aaSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="aaHikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model"/>
+        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.ask.repository.model"/>
+        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->
