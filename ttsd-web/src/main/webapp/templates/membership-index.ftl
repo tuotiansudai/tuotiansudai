@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 
-<@global.main pageCss="${css.membership}" pageJavascript="${js.login_tip}" activeNav="我的会员" activeLeftNav="" title="我的会员_会员福利_拓天速贷" keywords="拓天会员,拓天会员积分,拓天保障,拓天速贷" description="拓天速贷会员中心为您提供会员专享投资顾问,会员专属特权,为广大投资用户提供丰富的投资福利." site="membership">
+<@global.main pageCss="${css.membership}" pageJavascript="${js.membership}" activeNav="我的会员" activeLeftNav="" title="我的会员_会员福利_拓天速贷" keywords="拓天会员,拓天会员积分,拓天保障,拓天速贷" description="拓天速贷会员中心为您提供会员专享投资顾问,会员专属特权,为广大投资用户提供丰富的投资福利." site="membership">
 
 <div class="global-member-ship">
     <#if mobile??>
@@ -351,7 +351,7 @@
                 </div>
                 <div class="text">
                     亲，成为会员可享受多种特权哦~ <br/>
-                    了解更多请 <a href="javascript:vid(0)" class="btn-normal show-login">登录</a>
+                    了解更多请 <a href="/login" class="btn-normal show-login">登录</a>
                 </div>
             </div>
             <div class="progress">
@@ -529,5 +529,4 @@
         </div>
     </#if>
 </div>
-    <#include "component/login-tip.ftl" />
 </@global.main>
