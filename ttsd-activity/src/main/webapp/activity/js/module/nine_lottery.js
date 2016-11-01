@@ -54,6 +54,7 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
               content: $('#lotteryTip')
             });
             getRecord();
+            $('.lottery-left-group').find('h3 span').text(function(index,num){return parseInt(num)>=1?parseInt(num)-1:0});
         } else {
             if (lottery.times < lottery.cycle) {
                 lottery.speed -= 10;
@@ -107,11 +108,12 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
                         return false;
                     } else {
                         $.ajax({
-                            url: '/path/to/file',
+                            url: '/activity/point-draw/draw',
                             type: 'POST',
                             dataType: 'json'
                         })
                         .done(function(data) {
+
                             var record={
                                 list:data
                             };
@@ -174,8 +176,7 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
         $.ajax({
             url: '/activity/point-draw/all-list',
             type: 'POST',
-            dataType: 'json',
-            data: {param1: 'value1'}
+            dataType: 'json'
         })
         .done(function(data) {
             var record={
@@ -190,8 +191,7 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
         $.ajax({
             url: '/activity/point-draw/user-list',
             type: 'POST',
-            dataType: 'json',
-            data: {param1: 'value1'}
+            dataType: 'json'
         })
         .done(function(data) {
             var record={
