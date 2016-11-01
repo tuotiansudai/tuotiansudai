@@ -725,8 +725,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     }
 
     private void sendSmsErrNotify(String errMsg) {
-        logger.info("sent invest fatal sms message");
-        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("投资业务错误。详细信息：{0}", errMsg));
+        logger.info("sent normal repay fatal sms message");
+        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("正常还款业务错误。详细信息：{0}", errMsg));
         smsWrapperClient.sendFatalNotify(dto);
     }
 

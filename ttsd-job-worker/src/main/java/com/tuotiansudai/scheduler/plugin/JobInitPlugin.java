@@ -47,9 +47,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.AdvanceRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
             createAdvanceRepayCallBackJobIfNotExist();
         }
-        if (JobType.InvestCallBack.name().equalsIgnoreCase(schedulerName)) {
-            createInvestCallBackJobIfNotExist();
-        }
         if (JobType.InvestTransferCallBack.name().equalsIgnoreCase(schedulerName)) {
             createInvestTransferCallBackJobIfNotExist();
         }

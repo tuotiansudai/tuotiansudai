@@ -405,7 +405,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
     @Override
     public BaseDto<PayDataDto> asyncAdvanceRepayPaybackCallback(){
-        List<AdvanceRepayNotifyRequestModel> todoList = advanceRepayNotifyMapper.getAdvanceTodoList(100);
+        List<AdvanceRepayNotifyRequestModel> todoList = advanceRepayNotifyMapper.getAdvanceTodoList(repayProcessListSize);
         for (AdvanceRepayNotifyRequestModel model : todoList) {
             if (updateAdvanceRepayNotifyRequestStatus(model)) {
                 try {
@@ -596,8 +596,8 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
     }
 
     private void sendSmsErrNotify(String errMsg) {
-        logger.info("sent invest fatal sms message");
-        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("投资业务错误。详细信息：{0}", errMsg));
+        logger.info("sent advance repay fatal sms message");
+        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("提前还款业务错误。详细信息：{0}", errMsg));
         smsWrapperClient.sendFatalNotify(dto);
     }
 
