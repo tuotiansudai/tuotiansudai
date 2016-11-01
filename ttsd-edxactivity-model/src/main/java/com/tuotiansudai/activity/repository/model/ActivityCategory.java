@@ -2,21 +2,22 @@ package com.tuotiansudai.activity.repository.model;
 
 
 public enum ActivityCategory {
-    AUTUMN_PRIZE("旅游奢侈品活动",1),
-    NATIONAL_PRIZE("国庆活动",1),
-    POINT_DRAW_1000("1000积分抽奖",1000),
-    POINT_DRAW_10000("10000积分抽奖",10000),
-    HERO_RANKING("英雄榜",0),
-    NEW_HERO_RANKING("英豪榜",0);
+    AUTUMN_PRIZE("旅游奢侈品活动",ConsumeCategory.TASK_COUNT),
+    NATIONAL_PRIZE("国庆活动",ConsumeCategory.TASK_COUNT),
+    POINT_DRAW_1000("1000积分抽奖",ConsumeCategory.ACCOUNT_POINT_BY_1000),
+    POINT_DRAW_10000("10000积分抽奖",ConsumeCategory.ACCOUNT_POINT_BY_10000),
+    HERO_RANKING("英雄榜",null),
+    NEW_HERO_RANKING("英豪榜",null),
+    CARNIVAL_ACTIVITY("双11狂欢",ConsumeCategory.TASK_COUNT);
 
-    ActivityCategory(String description, int point) {
+    ActivityCategory(String description,ConsumeCategory consumeCategory) {
         this.description = description;
-        this.point = point;
+        this.consumeCategory = consumeCategory;
     }
 
     String description;
 
-    int point;
+    ConsumeCategory consumeCategory;
 
     public String getDescription() {
         return description;
@@ -26,11 +27,11 @@ public enum ActivityCategory {
         this.description = description;
     }
 
-    public int getPoint() {
-        return point;
+    public ConsumeCategory getConsumeCategory() {
+        return consumeCategory;
     }
 
-    public void setPoint(int point) {
-        this.point = point;
+    public void setConsumeCategory(ConsumeCategory consumeCategory) {
+        this.consumeCategory = consumeCategory;
     }
 }

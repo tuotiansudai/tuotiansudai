@@ -66,6 +66,7 @@
                     <th>中奖时间</th>
                     <th>获奖用户手机</th>
                     <th>姓名</th>
+                    <th>用户名</th>
                     <th>奖品</th>
                 </tr>
                 </thead>
@@ -76,6 +77,7 @@
                             <td>${prize.lotteryTime?string('yyyy-MM-dd HH:mm')}</td>
                             <td>${prize.mobile!}</td>
                             <td>${prize.userName!}</td>
+                            <td>${prize.loginName!}</td>
                             <td>${prize.prize.description!}</td>
                         </tr>
                         </#list>
@@ -107,6 +109,9 @@
                         </a>
                     </li>
                 </ul>
+                <@security.authorize access="hasAnyAuthority('DATA')">
+                    <button class="btn btn-default pull-left export-activity-prize-prize" type="button">导出Excel</button>
+                </@security.authorize>
             </nav>
         </div>
 </div>
