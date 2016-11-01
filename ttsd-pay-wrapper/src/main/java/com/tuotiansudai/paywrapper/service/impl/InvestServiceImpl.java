@@ -20,7 +20,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
-import com.tuotiansudai.paywrapper.repository.model.InvestNotifyProcessStatus;
+import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
@@ -279,7 +279,7 @@ public class InvestServiceImpl implements InvestService {
     private boolean updateInvestNotifyRequestStatus(InvestNotifyRequestModel model) {
         try {
             redisWrapperClient.decr(InvestCallbackJob.INVEST_JOB_TRIGGER_KEY);
-            investNotifyRequestMapper.updateStatus(model.getId(), InvestNotifyProcessStatus.DONE);
+            investNotifyRequestMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
         } catch (Exception e) {
             fatalLog("update_invest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());
             return false;

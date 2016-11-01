@@ -28,7 +28,7 @@ public class NormalRepayCallbackJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         String trigger = redisWrapperClient.get(NORMAL_REPAY_JOB_TRIGGER_KEY);
         if (trigger != null && Integer.valueOf(trigger) > 0) {
-            payWrapperClient.normalRepayCallback();
+            payWrapperClient.normalRepayInvestPayback();
         }
     }
 }

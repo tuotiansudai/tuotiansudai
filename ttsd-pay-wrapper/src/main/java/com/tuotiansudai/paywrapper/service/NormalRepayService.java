@@ -24,7 +24,4 @@ public interface NormalRepayService {
 
     BaseDto<PayDataDto> asyncNormalRepayPaybackCallback();
 
-    void processOneNormalRepayPaybackCallback(NormalRepayNotifyRequestModel callbackRequestModel);
-
-
 }
