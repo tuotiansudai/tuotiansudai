@@ -38,18 +38,6 @@
             <h3>最新公告</h3>
             <div class="notice-text scroll-top">
                 <ul id="noticeList">
-                    <li class="clearfix">
-                        <a href="/announce/1" onclick="cnzzPush.trackClick('71首页','公告模块','更多')">
-                            <span class="text-title fl">aaa</span>
-                            <span class="text-date fr">2016-06-23</span>
-                        </a>
-                    </li>
-                    <li class="clearfix">
-                        <a href="/announce/1" onclick="cnzzPush.trackClick('71首页','公告模块','更多')">
-                            <span class="text-title fl">bbbb</span>
-                            <span class="text-date fr">2016-06-23</span>
-                        </a>
-                    </li>
                     <#list announces as announce>
                         <#if announce.id == 187>
                             <#assign category = "70首页">
