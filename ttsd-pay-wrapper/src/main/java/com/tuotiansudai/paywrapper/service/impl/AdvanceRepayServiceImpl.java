@@ -13,15 +13,17 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.job.*;
+import com.tuotiansudai.job.AdvanceRepayCallbackJob;
+import com.tuotiansudai.job.AdvanceRepayJob;
+import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.job.NormalRepayJob;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.AdvanceRepayNotifyMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.NormalRepayNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
-import com.tuotiansudai.paywrapper.repository.model.RepayNotifyProcessStatus;
+import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.AdvanceRepayNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
@@ -40,7 +42,6 @@ import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
-import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -409,10 +410,11 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         for (AdvanceRepayNotifyRequestModel model : todoList) {
             if (updateAdvanceRepayNotifyRequestStatus(model)) {
                 try {
-                    ((AdvanceRepayService) AopContext.currentProxy()).processOneInvestPaybackCallback(model);
+                   if(!this.processOneInvestPaybackCallback(model)){
+                       fatalLog("advance repay callback, processOneInvestPaybackCallback fail. investRepayId:" + model.getOrderId());
+                   }
                 } catch (Exception e) {
-                    fatalLog("advance repay callback, processOneInvestPaybackCallback error. investId:" + model.getOrderId(), e);
-                    e.printStackTrace();
+                    fatalLog("advance repay callback, processOneInvestPaybackCallback error. investRepayId:" + model.getOrderId(), e);
                 }
             }
         }
@@ -428,7 +430,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
     private boolean updateAdvanceRepayNotifyRequestStatus(AdvanceRepayNotifyRequestModel model) {
         try {
             redisWrapperClient.decr(AdvanceRepayCallbackJob.ADVANCE_REPAY_JOB_TRIGGER_KEY);
-            advanceRepayNotifyMapper.updateStatus(model.getId(), RepayNotifyProcessStatus.DONE);
+            advanceRepayNotifyMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
         } catch (Exception e) {
             fatalLog("update_advance_repay_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());
             return false;
@@ -436,7 +438,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         return true;
     }
 
-    public void processOneInvestPaybackCallback(AdvanceRepayNotifyRequestModel callbackRequestModel){
+    private boolean processOneInvestPaybackCallback(AdvanceRepayNotifyRequestModel callbackRequestModel){
 
         long investRepayId = Long.parseLong(callbackRequestModel.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
         InvestRepayModel currentInvestRepay = investRepayMapper.findById(investRepayId);
@@ -456,10 +458,13 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         try {
             this.processInvestRepay(loanRepayId, currentInvestRepay);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(MessageFormat.format("[Advance Repay {0}] processInvestRepay fail ({1}) status({2})",
+                    String.valueOf(loanRepayId), String.valueOf(investRepayId), currentInvestRepay.getStatus().name()));
+           return false;
         }
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
         redisWrapperClient.hset(redisKey, String.valueOf(investRepayId), SyncRequestStatus.SUCCESS.name());
+        return true;
     }
 
 

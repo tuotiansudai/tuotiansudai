@@ -425,6 +425,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         return false;
     }
+
 /*
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -462,6 +463,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     }
 */
 
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String investPaybackCallback(Map<String, String> paramsMap, String originalQueryString) throws Exception {
@@ -490,7 +492,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
                         fatalLog("normal repay callback, processOneNormalRepayPaybackCallback fail. investRepayId:" + model.getOrderId());
                     }
                 } catch (Exception e) {
-                    fatalLog("normal repay callback, processOneNormalRepayPaybackCallback error. investId:" + model.getOrderId(), e);
+                    fatalLog("normal repay callback, processOneNormalRepayPaybackCallback error. investRepayId:" + model.getOrderId(), e);
                 }
             }
         }

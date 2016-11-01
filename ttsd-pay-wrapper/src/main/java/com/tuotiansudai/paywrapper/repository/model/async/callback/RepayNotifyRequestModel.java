@@ -2,13 +2,13 @@ package com.tuotiansudai.paywrapper.repository.model.async.callback;
 
 public class RepayNotifyRequestModel extends BaseCallbackRequestModel {
 
-    private String merCheckDate;
+    private String status;
 
-    public String getMerCheckDate() {
-        return merCheckDate;
+    public String getStatus() {
+        return status;
     }
 
-    public void setMerCheckDate(String merCheckDate) {
-        this.merCheckDate = merCheckDate;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

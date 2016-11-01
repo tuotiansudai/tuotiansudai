@@ -109,6 +109,7 @@ public class RepayBaseTest {
                 .put("order_id", String.valueOf(orderId))
                 .put("mer_date", new SimpleDateFormat("yyyyMMdd").format(new Date()))
                 .put("ret_code", "0000")
+                .put("status","NOT_DONE")
                 .build());
     }
 }

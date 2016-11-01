@@ -21,6 +21,4 @@ public interface AdvanceRepayService {
     boolean paybackInvest(long loanRepayId);
 
     BaseDto<PayDataDto> asyncAdvanceRepayPaybackCallback();
-
-    void processOneInvestPaybackCallback(AdvanceRepayNotifyRequestModel callbackRequestModel);
 }
