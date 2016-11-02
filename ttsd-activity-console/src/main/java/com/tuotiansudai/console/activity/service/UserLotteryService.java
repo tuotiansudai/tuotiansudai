@@ -1,7 +1,6 @@
 package com.tuotiansudai.console.activity.service;
 
 
-import com.google.common.base.Function;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.dto.ActivityCategory;
@@ -142,17 +141,4 @@ public class UserLotteryService{
 
         return lotteryTime;
     }
-
-    public List<List<String>> buildAutumnList(String mobile,LotteryPrize selectPrize,ActivityCategory prizeType,Date startTime,Date endTime) {
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, prizeType, startTime, endTime, null, null);
-        List<List<String>> rows = Lists.newArrayList();
-        userLotteryPrizeViews.forEach(userLotteryPrizeView -> rows.add(Lists.newArrayList(
-                userLotteryPrizeView.getUserName(),
-                userLotteryPrizeView.getMobile(),
-                userLotteryPrizeView.getLoginName(),
-                new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd"),
-                userLotteryPrizeView.getPrize().getDescription())));
-        return rows;
-    }
-
 }

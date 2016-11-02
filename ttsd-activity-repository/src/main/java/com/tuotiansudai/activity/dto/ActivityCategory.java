@@ -1,6 +1,10 @@
 package com.tuotiansudai.activity.dto;
 
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 public enum ActivityCategory {
     AUTUMN_PRIZE("旅游奢侈品活动",ConsumeCategory.TASK_COUNT),
     NATIONAL_PRIZE("国庆活动",ConsumeCategory.TASK_COUNT),
@@ -31,5 +35,15 @@ public enum ActivityCategory {
 
     public void setConsumeCategory(ConsumeCategory consumeCategory) {
         this.consumeCategory = consumeCategory;
+    }
+
+    public static List<ActivityCategory> getTaskActivityCategory(){
+        List<ActivityCategory> activityList = Lists.newArrayList();
+        Lists.newArrayList(ActivityCategory.values()).forEach(activityCategory -> {
+            if(activityCategory.getConsumeCategory() != null && activityCategory.getConsumeCategory().equals(ConsumeCategory.TASK_COUNT)){
+                activityList.add(activityCategory);
+            }
+        });
+        return activityList;
     }
 }

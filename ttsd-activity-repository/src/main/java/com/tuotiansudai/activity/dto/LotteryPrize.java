@@ -1,5 +1,10 @@
 package com.tuotiansudai.activity.dto;
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.model.LotteryPrizeView;
+
+import java.util.List;
+
 public enum LotteryPrize{
     //旅游奢侈品活动
     TOURISM("华东旅游大奖",PrizeType.CONCRETE,ActivityCategory.AUTUMN_PRIZE,0),
@@ -93,5 +98,16 @@ public enum LotteryPrize{
 
     public void setRate(double rate) {
         this.rate = rate;
+    }
+
+    public static List<LotteryPrizeView> getActivityPrize(ActivityCategory activityCategory){
+        List list = Lists.newArrayList();
+        LotteryPrize[] lotteryPrizes = LotteryPrize.values();
+        for(LotteryPrize lotteryPrize : lotteryPrizes) {
+            if (activityCategory.equals(lotteryPrize.getActivityCategory())) {
+                list.add(new LotteryPrizeView(lotteryPrize.name(), lotteryPrize.getDescription()));
+            }
+        }
+        return list;
     }
 }

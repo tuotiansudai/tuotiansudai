@@ -1,8 +1,12 @@
 package com.tuotiansudai.console.activity.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.dto.ActivityCategory;
+import com.tuotiansudai.activity.dto.LotteryPrize;
 import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
+import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryStatView;
+import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.AutumnService;
 import com.tuotiansudai.console.activity.dto.AutumnExportDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -40,6 +44,9 @@ public class ExportService {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -143,5 +150,17 @@ public class ExportService {
                     new DecimalFormat("0.00").format(((double) r.getInvestAmountTotal()) / 100),
                     String.valueOf(r.getInvestCount()));
         }).collect(Collectors.toList());
+    }
+
+    public List<List<String>> buildPrizeList(String mobile,LotteryPrize selectPrize,ActivityCategory prizeType,Date startTime,Date endTime) {
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, prizeType, startTime, endTime, null, null);
+        List<List<String>> rows = Lists.newArrayList();
+        userLotteryPrizeViews.forEach(userLotteryPrizeView -> rows.add(Lists.newArrayList(
+                userLotteryPrizeView.getUserName(),
+                userLotteryPrizeView.getMobile(),
+                userLotteryPrizeView.getLoginName(),
+                new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd"),
+                userLotteryPrizeView.getPrize().getDescription())));
+        return rows;
     }
 }
