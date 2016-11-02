@@ -170,21 +170,6 @@ function cnzzPushConstructor() {
 cnzzPush = new cnzzPushConstructor();
 // ********** cnzz统计 END **********
 
-// ********** growing 流量统计 BEGIN *********
-var _vds = _vds || [];
-window._vds = _vds;
-(function(){
-    _vds.push(['setAccountId', 'a1e41737f5d5de60']);
-    (function() {
-        var vds = document.createElement('script');
-        vds.type='text/javascript';
-        vds.async = true;
-        vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(vds, s);
-    })();
-})();
-// *********** growing 流量统计 END **********
 
 
 
