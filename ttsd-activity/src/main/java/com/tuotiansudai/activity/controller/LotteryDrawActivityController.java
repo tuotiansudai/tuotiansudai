@@ -38,16 +38,14 @@ public class LotteryDrawActivityController {
 
     @ResponseBody
     @RequestMapping(value = "/draw", method = RequestMethod.POST)
-    public DrawLotteryResultDto travelDrawPrize(@RequestParam(value = "mobile", required = false) String mobile,
-                                                @RequestParam(value = "activityCategory",defaultValue = "POINT_DRAW_1000", required = false) ActivityCategory activityCategory) {
-        return lotteryDrawActivityService.drawPrizeByPoint(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile(), activityCategory);
+    public DrawLotteryResultDto travelDrawPrize(@RequestParam(value = "activityCategory",defaultValue = "POINT_DRAW_1000", required = false) ActivityCategory activityCategory) {
+        return lotteryDrawActivityService.drawPrizeByPoint(LoginUserInfo.getMobile(), activityCategory);
     }
 
     @ResponseBody
     @RequestMapping(value = "/task-draw", method = RequestMethod.POST)
-    public DrawLotteryResultDto taskDrawPrize(@RequestParam(value = "mobile", required = false) String mobile,
-                                              @RequestParam(value = "activityCategory",defaultValue = "CARNIVAL_ACTIVITY", required = false) ActivityCategory activityCategory) {
-        return lotteryDrawActivityService.drawPrizeByCompleteTaskCount(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile(), activityCategory);
+    public DrawLotteryResultDto taskDrawPrize(@RequestParam(value = "activityCategory",defaultValue = "CARNIVAL_ACTIVITY", required = false) ActivityCategory activityCategory) {
+        return lotteryDrawActivityService.drawPrizeByCompleteTask(LoginUserInfo.getMobile(), activityCategory);
     }
 
     @ResponseBody

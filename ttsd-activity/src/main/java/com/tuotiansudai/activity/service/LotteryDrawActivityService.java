@@ -2,7 +2,6 @@ package com.tuotiansudai.activity.service;
 
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
@@ -21,8 +20,6 @@ import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipLevel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
-import com.tuotiansudai.point.repository.mapper.PointBillMapper;
-import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.*;
@@ -42,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class LotteryDrawActivityService {
@@ -100,11 +96,18 @@ public class LotteryDrawActivityService {
     private List<String> carnivalTime = Lists.newArrayList();
 
     @Transactional
-    public synchronized DrawLotteryResultDto drawPrizeByCompleteTaskCount(String mobile, ActivityCategory activityCategory){
+    public synchronized DrawLotteryResultDto drawPrizeByCompleteTask(String mobile, ActivityCategory activityCategory){
+
+        UserModel userModel = userMapper.findByMobile(mobile);
+        if(userModel == null){
+            return new DrawLotteryResultDto(1);//该用户不存在！
+        }
+
         Date nowDate = DateTime.now().toDate();
         List<String> activityTime = getActivityTime(activityCategory);
         Date activityStartTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date activityEndTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+
         if(!nowDate.before(activityEndTime) || !nowDate.after(activityStartTime)){
             return new DrawLotteryResultDto(3);//不在活动时间范围内！
         }
@@ -118,11 +121,6 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
 
-        UserModel userModel = userMapper.findByMobile(mobile);
-        if(userModel == null){
-            return new DrawLotteryResultDto(1);//该用户不存在！
-        }
-
         userMapper.lockByLoginName(userModel.getLoginName());
 
         LotteryPrize lotteryPrize = lotteryDrawPrize(activityCategory);
@@ -132,7 +130,6 @@ public class LotteryDrawActivityService {
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
         try{
-            pointBillService.createPointBill(userModel.getLoginName(), null, PointBusinessType.ACTIVITY, (-activityCategory.getConsumeCategory().getPoint()), MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
             userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
         }catch (Exception e){
             logger.error(MessageFormat.format("draw is fail, mobile:{0},activity:{1}",mobile,activityCategory.getDescription()));
@@ -143,6 +140,12 @@ public class LotteryDrawActivityService {
 
     @Transactional
     public synchronized DrawLotteryResultDto drawPrizeByPoint(String mobile, ActivityCategory activityCategory){
+
+        UserModel userModel = userMapper.findByMobile(mobile);
+        if(userModel == null){
+            return new DrawLotteryResultDto(2);//"该用户不存在！"
+        }
+
         Date nowDate = DateTime.now().toDate();
         List<String> activityTime = getActivityTime(activityCategory);
         Date activityStartTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
@@ -153,11 +156,6 @@ public class LotteryDrawActivityService {
 
         if (Strings.isNullOrEmpty(mobile)) {
             return new DrawLotteryResultDto(2);//您还未登陆，请登陆后再来抽奖吧！
-        }
-
-        UserModel userModel = userMapper.findByMobile(mobile);
-        if(userModel == null){
-            return new DrawLotteryResultDto(2);//"该用户不存在！"
         }
 
         AccountModel accountModel = accountMapper.lockByLoginName(userModel.getLoginName());
@@ -179,6 +177,7 @@ public class LotteryDrawActivityService {
         }
 
         try{
+            pointBillService.createPointBill(userModel.getLoginName(), null, PointBusinessType.ACTIVITY, (-activityCategory.getConsumeCategory().getPoint()), MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
             userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
         }catch (Exception e){
             logger.error(MessageFormat.format("draw is fail, mobile:{0},activity:{1}",mobile,activityCategory.getDescription()));

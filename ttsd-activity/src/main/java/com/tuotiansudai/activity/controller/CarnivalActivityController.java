@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/activity/carnival")
+@RequestMapping(value = "/activity")
 public class CarnivalActivityController {
 
     @Autowired
     private LotteryDrawActivityService lotteryDrawActivityService;
 
-    @RequestMapping(value = "/eleven",method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/single-carnival",method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/double-eleven", "responsive", true);

@@ -111,7 +111,6 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
                             type: 'POST',
                             dataType: 'json',
                             data:{
-                                mobile:$('#MobileNumber').val(),
                                 activityCategory:'CARNIVAL_ACTIVITY'
                             }
                         })
