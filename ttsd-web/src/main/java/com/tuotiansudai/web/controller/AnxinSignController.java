@@ -53,5 +53,4 @@ public class AnxinSignController {
         return anxinSignService.verifyCaptcha3102(loginName, captcha, isSkipAuth);
     }
 
-
 }

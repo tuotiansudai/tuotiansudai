@@ -4,10 +4,13 @@ import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.HeadVO;
 import cfca.trustsign.common.vo.cs.ProxySignVO;
 import cfca.trustsign.common.vo.request.tx3.Tx3102ReqVO;
+import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
+import cfca.trustsign.common.vo.response.tx3.Tx3102ResVO;
 import com.tuotiansudai.cfca.connector.HttpConnector;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 import com.tuotiansudai.cfca.util.SecurityUtil;
+import org.joda.time.DateTime;
 
 public class Test3102 {
     public static void main(String[] args) throws PKIException {
@@ -16,12 +19,12 @@ public class Test3102 {
 
         Tx3102ReqVO tx3102ReqVO = new Tx3102ReqVO();
         HeadVO head = new HeadVO();
-        head.setTxTime("20160102235959");
+        head.setTxTime(DateTime.now().toString("yyyyMMddHHmmss"));
 
         ProxySignVO proxySignVO = new ProxySignVO();
-        proxySignVO.setUserId("AE5F7586B154481386E109BB2C4CDF55");
+        proxySignVO.setUserId("4027A45BC12E29E9E05311016B0AA19C");
         proxySignVO.setProjectCode("003");
-        proxySignVO.setCheckCode("HKKTCH");
+        proxySignVO.setCheckCode("690051");
 
         tx3102ReqVO.setHead(head);
         tx3102ReqVO.setProxySign(proxySignVO);
