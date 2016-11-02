@@ -2,6 +2,7 @@ package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -27,7 +28,7 @@ public abstract class ServiceTestBase {
         fakeUser.setLoginName(loginName);
         fakeUser.setPassword("password");
         fakeUser.setEmail("email@tuotiansudai.com");
-        fakeUser.setMobile("18900000000");
+        fakeUser.setMobile(RandomStringUtils.randomNumeric(11));
         fakeUser.setRegisterTime(new Date());
         fakeUser.setStatus(UserStatus.ACTIVE);
         fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));

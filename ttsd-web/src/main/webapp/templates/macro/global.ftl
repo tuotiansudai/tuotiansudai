@@ -22,23 +22,27 @@
 <#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="" site='main'>
     <#local mainMenus=[
     {"title":"首页", "url":"/","category":"16顶部导航","navigation":"true"},
-    {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","navigation":"true"},
-    {"title":"我要借款", "url":"/loan-application","category":"19顶部导航","navigation":"true"},
-    {"title":"我的账户", "url":"/account", "category":"18顶部导航","navigation":"true","leftNavs":[
-    {"title":"账户总览", "url":"/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
-    {"title":"我的投资", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
-    {"title":"债权转让", "url":"/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
-    {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
-    {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
-    {"title":"消息中心", "url":"/message/user-messages", "role":"'USER'"},
-    {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
-    {"title":"安心签", "url":"/anxin-sign", "role":"'USER', 'INVESTOR', 'LOANER'"},
-    {"title":"自动投标", "url":"/auto-invest", "role":"'USER', 'INVESTOR'"},
-    {"title":"推荐送现金", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
-    {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
+    {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
+        {"title":"直投项目", "url":"/loan-list"},
+        {"title":"转让项目", "url":"/transfer-list"}
     ]},
-    {"title":"问答", "url":"${askServer}","category":"","navigation":"true"},
-    {"title":"关于我们", "url":"/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
+    {"title":"我要借款", "url":"/loan-application","category":"19顶部导航","navigation":"true"},
+
+    {"title":"我的账户", "url":"/account", "category":"18顶部导航","navigation":"true","leftNavs":[
+        {"title":"账户总览", "url":"/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"我的投资", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
+        {"title":"债权转让", "url":"/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
+        {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
+        {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"消息中心", "url":"/message/user-messages", "role":"'USER'"},
+        {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"安心签", "url":"/anxin-sign", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"自动投标", "url":"/auto-invest", "role":"'USER', 'INVESTOR'"},
+        {"title":"推荐送现金", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
+    ]},
+    {"title":"拓天问答", "url":"${askServer}","category":"","navigation":"true"},
+    {"title":"信息披露", "url":"/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
         {"title":"公司介绍", "url":"/about/company"},
         {"title":"团队介绍", "url":"/about/team"},
         {"title":"拓天公告", "url":"/about/notice"},
@@ -48,12 +52,12 @@
         {"title":"联系我们", "url":"/about/contact"},
         {"title":"运营数据", "url":"/about/operational"}
     ]},
-    {"title":"帮助中心", "url":"/about/help-center","category":"21顶部导航", "navigation":"false","leftNavs":[
-    {"title":"注册认证", "url":"/about/account"},
-    {"title":"账户管理", "url":"/about/user"},
-    {"title":"资金相关", "url":"/about/money"},
-    {"title":"产品类型", "url":"/about/product"},
-    {"title":"其他问题", "url":"/about/other"}
+    {"title":"帮助中心", "url":"/help/help-center","category":"21顶部导航", "navigation":"false","leftNavs":[
+        {"title":"注册认证", "url":"/help/account"},
+        {"title":"账户管理", "url":"/help/user"},
+        {"title":"资金相关", "url":"/help/money"},
+        {"title":"产品类型", "url":"/help/product"},
+        {"title":"其他问题", "url":"/help/other"}
     ]}
     ]/>
 
@@ -88,28 +92,27 @@
         <link rel="stylesheet" href="${staticServer}${cssPath}ie_hack_grid.css">
     <![endif]-->
     <!-- -->
-    <#include "../cnzz.ftl"/>
-    <!-- growing io -->
-    <#include "../growing-io.ftl"/>
+    <#include "../pageLayout/cnzz.ftl"/>
+
 </head>
 <body>
 
 <#if !isAppSource>
-    <#include "../header.ftl"/>
+    <#include "../pageLayout/header.ftl"/>
 
     <#switch site>
         <#case "membership">
-            <#include "../top-membership-menus.ftl"/>
+            <#include "../pageLayout/top-membership-menus.ftl"/>
             <#break>
         <#default>
-            <#include "../top-menus.ftl"/>
+            <#include "../pageLayout/top-menus.ftl"/>
     </#switch>
 
 </#if>
 
 <div class="main-frame full-screen clearfix">
     <#if !isAppSource>
-        <#include "../left-menus.ftl"/>
+        <#include "../pageLayout/left-menus.ftl"/>
     </#if>
     <#nested>
 </div>
@@ -117,10 +120,10 @@
 <#if !isAppSource>
     <#switch site>
         <#case "membership">
-            <#include "../membership-footer.ftl"/>
+            <#include "../pageLayout/membership-footer.ftl"/>
             <#break>
         <#default>
-            <#include "../footer.ftl" />
+            <#include "../pageLayout/footer.ftl" />
     </#switch>
 </#if>
 
@@ -132,127 +135,8 @@
     };
     </@security.authorize>
 
-    adjustMobileHideHack();
-    function adjustMobileHideHack() {
-
-        //this function will be remove when all pages are responsive
-        var bodyDom=document.getElementsByTagName("body")[0],
-            userAgent = navigator.userAgent.toLowerCase(),
-            metaTags=document.getElementsByTagName('meta'),
-            metaLen=metaTags.length,isResponse=false,isPC=false,i=0;
-        isPC = !(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1);
-        for(;i<metaLen;i++) {
-            if(metaTags[i].getAttribute('name')=='viewport') {
-                isResponse=true;
-            }
-        }
-        bodyDom.className=(!isResponse&&!isPC)?'page-width':'';
-    }
-
-    window.$ = function(id) {
-        return document.getElementById(id);
-    };
-
-    function phoneLoadFun() {
-
-        window.$('closeDownloadBox').onclick=function(event) {
-            event.stopPropagation();
-            event.preventDefault();
-            this.parentElement.style.display='none';
-        };
-        window.$('btnExperience').onclick=function(event) {
-            event.stopPropagation();
-            event.preventDefault();
-            location.href = "/app/download";
-        };
-
-        window.$('showMainMenu').onclick=function(event) {
-            event.stopPropagation();
-            event.preventDefault();
-            this.nextElementSibling.style.display='block';
-
-        };
-
-    }
-    var imgDom=window.$('iphone-app-img'),
-        TopMainMenuList=window.$('TopMainMenuList');
-
-    if (window.$('iphone-app-pop')) {
-        window.$('iphone-app-pop').onclick=function(event) {
-            if(imgDom.style.display == "block") {
-                imgDom.style.display='none';
-            }
-            else {
-                imgDom.style.display='block';
-            }
-            if (event.stopPropagation) {
-                event.stopPropagation();
-            }
-            else if (window.event) {
-                window.event.cancelBubble = true;
-            }
-        };
-    }
-
-    document.getElementsByTagName("body")[0].onclick=function(e) {
-        var userAgent = navigator.userAgent.toLowerCase(),
-                event = e || window.event,
-                target = event.srcElement || event.target;
-        if(target.tagName=='LI' ) {
-            return;
-        }
-        imgDom.style.display='none';
-        if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
-
-            //判断是否为viewport
-            var metaTags=document.getElementsByTagName('meta'),
-                    metaLen=metaTags.length,i=0;
-            for(;i<metaLen;i++) {
-                if(metaTags[i].getAttribute('name')=='viewport') {
-                    TopMainMenuList.style.display='none';
-                }
-            }
-        }
-
-    };
-
-    phoneLoadFun();
-    if(window.$('getMore')){
-        document.getElementById('getMore').onclick=function(){
-            var obj = document. getElementById('getMore');
-            toggleClass(obj,"active");
-        }
-    }
-
-    function hasClass(obj, cls) {
-        return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
-    }
-
-    function addClass(obj, cls) {
-        if (!this.hasClass(obj, cls)) obj.className += " " + cls;
-    }
-
-    function removeClass(obj, cls) {
-        if (hasClass(obj, cls)) {
-            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
-            obj.className = obj.className.replace(reg, ' ');
-        }
-    }
-
-    function toggleClass(obj,cls){
-        if(hasClass(obj,cls)){
-            removeClass(obj, cls);
-            document. getElementById('linkList').style.height='30px';
-        }else{
-            addClass(obj, cls);
-            document. getElementById('linkList').style.height='auto';
-        }
-    }
-
-
-
 </script>
-
+<script type="text/javascript" src="${staticServer}${jsPath}${js.global_page}"></script>
 <script src="${staticServer}${jsPath}${js.config}" type="text/javascript" charset="utf-8"></script>
 
 <#if pageJavascript?? && pageJavascript?length gt 0>
@@ -260,11 +144,9 @@
         data-main="${staticServer}${jsPath}${pageJavascript}">
 
 </script>
-<script src="${staticServer}${jsPath}${js.cnzz_statistics}" type="text/javascript" charset="utf-8"></script>
-
 </#if>
 
-<#include "../statistic.ftl" />
+<#include "../pageLayout/statistic.ftl" />
 </body>
 </html>
 </#macro>

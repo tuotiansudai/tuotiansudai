@@ -13,6 +13,6 @@
     </div>
 </div>
 
-<#include "statistic.ftl" />
+<#include "pageLayout/statistic.ftl" />
 </body>
 </html>

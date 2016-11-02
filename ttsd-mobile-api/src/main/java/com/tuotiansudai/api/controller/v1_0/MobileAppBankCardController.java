@@ -2,6 +2,7 @@ package com.tuotiansudai.api.controller.v1_0;
 
 import com.tuotiansudai.api.dto.v1_0.BankCardReplaceRequestDto;
 import com.tuotiansudai.api.dto.v1_0.BankCardRequestDto;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppBankCardService;
 import com.tuotiansudai.util.RequestIPParser;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 public class MobileAppBankCardController extends MobileAppBaseController {
@@ -61,5 +63,11 @@ public class MobileAppBankCardController extends MobileAppBaseController {
         bankCardRequestDto.setUserId(getLoginName());
         bankCardRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppBankCardService.queryStatus(bankCardRequestDto);
+    }
+
+    @RequestMapping(value = "/bankcard/is-replacing", method = RequestMethod.POST)
+    public BaseResponseDto queryIsReplacing(@Valid @RequestBody BaseParamDto baseParamDto) {
+        baseParamDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppBankCardService.isReplacing(baseParamDto);
     }
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.PromotionMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="promotionResultMap" type="promotionModel">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="imageUrl" column="image_url"/>
+        <result property="linkUrl" column="link_url"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="seq" column="seq"/>
+        <result property="status" column="status"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="deactivatedBy" column="deactivated_by"/>
+        <result property="deactivatedTime" column="deactivated_time"/>
+        <result property="deleted" column="deleted"/>
+    </resultMap>
+
+    <insert id="create" parameterType="promotionModel" useGeneratedKeys="true" keyProperty="id">
+        insert into promotion(name, image_url, link_url, start_time, end_time, seq, status, created_by, created_time, updated_by, updated_time, deactivated_by, deactivated_time, deleted)
+               value(#{name}, #{imageUrl}, #{linkUrl}, #{startTime}, #{endTime}, #{seq}, #{status}, #{createdBy}, #{createdTime}, #{updatedBy}, #{updatedTime}, #{deactivatedBy}, #{deactivatedTime}, #{deleted})
+    </insert>
+
+    <update id="update" parameterType="promotionModel">
+        update promotion set name = #{name},
+                image_url = #{imageUrl},
+                link_url = #{linkUrl},
+                start_time = #{startTime},
+                end_time = #{endTime},
+                seq = #{seq},
+                status = #{status},
+                created_by = #{createdBy},
+                created_time = #{createdTime},
+                updated_by = #{updatedBy},
+                updated_time = #{updatedTime},
+                deactivated_by = #{deactivatedBy},
+                deactivated_time = #{deactivatedTime},
+                deleted = #{deleted}
+        where id = #{id}
+    </update>
+    
+    <select id="findById" parameterType="long" resultMap="promotionResultMap">
+        select * from promotion where id = #{id}
+    </select>
+
+    <select id="findPromotionList" resultMap="promotionResultMap">
+        select *
+        from promotion
+        where status = 'APPROVED'
+        and deleted = 0
+        and DATE_FORMAT(now(),'%Y-%m-%d') BETWEEN start_time and end_time
+        order by seq, start_time desc
+    </select>
+
+    <select id="findAll" resultMap="promotionResultMap">
+        select *
+        from promotion
+        where deleted = 0
+        order by seq, start_time desc
+    </select>
+
+</mapper>
