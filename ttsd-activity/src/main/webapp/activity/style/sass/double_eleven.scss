@@ -527,6 +527,18 @@ $width:700px;
                     }
                   }
                 }
+                &.active{
+                  p{
+                    &.tip-info{
+                      visibility: hidden;
+                    }
+                    &.time-text{
+                      span{
+                        font-size:40px;
+                      }
+                    }
+                  }
+                }
                 p{
                   float:left;
                   width:100%;
@@ -594,7 +606,7 @@ $width:700px;
                     @media (max-width:$width) {
                       margin-top:25px;
                     }
-                    span{
+                    a{
                       display:inline-block;
                       width:260px;
                       height:48px;
@@ -623,19 +635,31 @@ $width:700px;
               width:100%;
               font-size:20px;
               color:#ffff99;
+              @media (max-width:$width) {
+                font-size:16px;
+              }
             }
             dd{
               float:left;
               width:100%;
               font-size:14px;
               color:#ffff99;
+              @media (max-width:$width) {
+                font-size:12px;
+              }
               &.wx-code{
                 text-align:center;
                 margin:50px 0 20px;
+                @media (max-width:$width) {
+                  display:none;
+                }
               }
               &.rule-intro{
                 font-size:18px;
                 text-align:center;
+                @media (max-width:$width) {
+                  display:none;
+                }
               }
             }
           }

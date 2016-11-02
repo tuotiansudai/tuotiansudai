@@ -35,25 +35,25 @@
                         <i class="date-icon">
                             <span>${today}</span>
                         </i>
-                        <ul>
+                        <ul id="timeCount">
                             <li>
                                 <p><img src="${staticServer}/activity/images/double-eleven/first-time.png" ></p>
                                 <p class="tip-info">即将登场</p>
                                 <p class="time-text">
-                                    <span data-now="${now}" data-end="11:11:00">09 : 58 : 37</span>
+                                    <span data-date="${today}" data-end="11:11:00">00:00:00</span>
                                 </p>
                                 <p class="btn-item">
-                                    <span>马上投资</span>
+                                    <a href="/loan-list">马上投资</a>
                                 </p>
                             </li>
-                            <li class="end">
+                            <li>
                                 <p><img src="${staticServer}/activity/images/double-eleven/twice-time.png" ></p>
                                 <p class="tip-info">即将登场</p>
                                 <p class="time-text">
-                                    <span data-now="${now}" data-end="13:11:00">09 : 58 : 37</span>
+                                    <span data-date="${today}" data-end="13:11:00">00:00:00</span>
                                 </p>
                                 <p class="btn-item">
-                                    <span>马上投资</span>
+                                    <a href="/loan-list">马上投资</a>
                                 </p>
 
                             </li>
@@ -110,9 +110,6 @@
                         </h3>
                         <p class="font-14 text-c actor-phone">活动期间，新用户在平台完成注册、实名认证、绑卡、充值、投资均可获得一次100%中奖的抽奖机会；</p>
                         <ul class="loan-list-group">
-                            <!-- 如果进行到下一个任务，添加active class给li标签
-                                 如果已完成的任务，添加finish class给li标签
-                            -->
                             <li class=""<#if steps[0] == 1>active</#if><#if steps[0] == 2>finish</#if>">
                                 <span class="step step-one"></span>
                                 <#if steps[0] == 1>
