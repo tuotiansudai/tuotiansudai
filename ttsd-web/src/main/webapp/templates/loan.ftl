@@ -284,8 +284,9 @@
                                 </#if>
                             </@global.role>
                             
-                            <input type="hidden" value="false" id="isSkipAuth">
-                            
+                            <input type="hidden" value="${loan.investor.isSkipAuth}" id="isSkipAuth">
+                            <@global.role hasRole="'INVESTOR'">
+                            <#if !loan.investor.isSkipAuth>
                             <dd class="skip-group">
                                 <label>
                                     <i class="skip-icon active"></i>
@@ -295,7 +296,8 @@
                                     我已阅读并同意<a href="javascript:void(0)"><span id="serviceLayer">《安心签服务协议》</span>、<span id="privacyLayer">《隐私条款》</span>和<span id="numberLayer">《CFCA数字证书服务协议》</span></a>
                                 </div>
                             </dd>
-                            
+                            </#if>
+                            </@global.role>
                         </dl>
                     </form>
                 </#if>
