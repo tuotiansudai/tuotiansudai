@@ -7,7 +7,6 @@ import cfca.trustsign.common.vo.response.tx3.Tx3102ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -104,7 +103,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     }
 
     @Override
-    public BaseDto verifyCaptcha3102(String loginName, String captcha, boolean isSkipAuth) {
+    public BaseDto verifyCaptcha3102(String loginName, String captcha, boolean skipAuth) {
 
         try {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
@@ -124,7 +123,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
             if (isSuccess(tx3101ResVO)) {
                 accountModel.setProjectCode(projectCode);
-                accountModel.setIsSkipAuth(isSkipAuth);
+                accountModel.setSkipAuth(skipAuth);
                 accountMapper.update(accountModel);
                 return new BaseDto();
             } else {

@@ -17,7 +17,7 @@ public class InvestorDto implements Serializable {
 
     private String maxAvailableInvestAmount = "0";
 
-    private boolean isSkipAuth;
+    private boolean skipAuth;
 
     public InvestorDto(AccountModel accountModel, boolean remindNoPassword, long maxAvailableInvestAmount) {
         if (accountModel != null) {
@@ -26,7 +26,7 @@ public class InvestorDto implements Serializable {
             this.noPasswordInvest = accountModel.isNoPasswordInvest();
             this.remindNoPassword = remindNoPassword;
             this.maxAvailableInvestAmount = AmountConverter.convertCentToString(maxAvailableInvestAmount);
-            this.isSkipAuth = accountModel.isSkipAuth();
+            this.skipAuth = accountModel.isSkipAuth();
         }
     }
 
@@ -51,10 +51,10 @@ public class InvestorDto implements Serializable {
     }
 
     public boolean isSkipAuth() {
-        return isSkipAuth;
+        return skipAuth;
     }
 
-    public void setIsSkipAuth(boolean isSkipAuth) {
-        this.isSkipAuth = isSkipAuth;
+    public void setSkipAuth(boolean skipAuth) {
+        this.skipAuth = skipAuth;
     }
 }

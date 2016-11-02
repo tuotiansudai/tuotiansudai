@@ -37,7 +37,7 @@ public class AccountModel implements Serializable{
 
     private String anxinUserId;
 
-    private boolean isSkipAuth;
+    private boolean skipAuth;
 
     private String projectCode;
 
@@ -144,11 +144,11 @@ public class AccountModel implements Serializable{
     }
 
     public boolean isSkipAuth() {
-        return isSkipAuth;
+        return skipAuth;
     }
 
-    public void setIsSkipAuth(boolean isSkipAuth) {
-        this.isSkipAuth = isSkipAuth;
+    public void setSkipAuth(boolean skipAuth) {
+        this.skipAuth = skipAuth;
     }
 
     public String getProjectCode() {
