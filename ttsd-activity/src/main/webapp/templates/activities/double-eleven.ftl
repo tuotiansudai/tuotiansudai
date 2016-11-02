@@ -11,7 +11,7 @@
     <div class="content-group">
         <div class="wp clearfix">
             <div class="reg-tag-current" style="display: none">
-                <#include '../register.ftl' />
+                <#include '../module/register.ftl' />
             </div>
             <div class="model-group actor-info">
                 <div class="content-item after-line">
