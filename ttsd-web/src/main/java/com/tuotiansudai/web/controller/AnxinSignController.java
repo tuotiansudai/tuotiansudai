@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import cfca.sadk.algorithm.common.PKIException;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
 import com.tuotiansudai.service.AnxinSignService;
@@ -60,7 +61,7 @@ public class AnxinSignController {
 
     @ResponseBody
     @RequestMapping(value = "/verifyCaptcha", method = RequestMethod.POST)
-    public BaseDto verifyCaptcha(String captcha, boolean skipAuth, HttpServletRequest request) throws PKIException {
+    public BaseDto<BaseDataDto> verifyCaptcha(String captcha, boolean skipAuth, HttpServletRequest request) throws PKIException {
         String ip = RequestIPParser.parse(request);
         String loginName = LoginUserInfo.getLoginName();
         return anxinSignService.verifyCaptcha3102(loginName, captcha, skipAuth, ip);
