@@ -860,7 +860,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     $('.skip-group .skip-icon').on('click', function(event) {
         event.preventDefault();
 
-        $(this).hasClass('active')?$(this).removeClass('active') && $('#skipCheck').val('false') :$(this).addClass('active')&& $('#skipCheck').val('true') && $('#checkTip').hide();
+        $(this).hasClass('active')?$(this).removeClass('active') && $('#skipCheck').val('false') && $('#checkTip').show()&& $investSubmit.prop('disabled',true):$(this).addClass('active')&& $('#skipCheck').val('true') && $('#checkTip').hide() && $investSubmit.prop('disabled',false);
     });
 
     //skip tip click chechbox
