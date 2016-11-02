@@ -27,6 +27,8 @@ import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -83,6 +85,12 @@ public class LotteryDrawActivityService {
     @Autowired
     private RechargeMapper rechargeMapper;
 
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private BindBankCardService bindBankCardService;
+
 
     @Value("#{'${activity.point.draw.period}'.split('\\~')}")
     private List<String> pointTime = Lists.newArrayList();
@@ -105,7 +113,7 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(2);//您还未登陆，请登陆后再来抽奖吧！
         }
 
-        int drawTime = getDrawPrizeTime(mobile,activityCategory);
+        int drawTime = getDrawPrizeTime(mobile, activityCategory);
         if(drawTime <= 0){
             return new DrawLotteryResultDto(1);//您暂无抽奖机会，赢取机会后再来抽奖吧！
         }
@@ -334,5 +342,25 @@ public class LotteryDrawActivityService {
                 .put(ActivityCategory.POINT_DRAW_10000, pointTime)
                 .put(ActivityCategory.CARNIVAL_ACTIVITY, carnivalTime)
                 .build()).get(activityCategory);
+    }
+
+    public List<Integer> generateSteps(String loginName) {
+        List<Integer> steps = Lists.newArrayList(1, 0, 0, 0, 0);
+        if (Strings.isNullOrEmpty(loginName)) {
+            return steps;
+        }
+        steps.set(0, 2);
+        if (accountService.findByLoginName(loginName) == null) {
+            steps.set(1, 1);
+            return steps;
+        }
+        steps.set(1, 2);
+        steps.set(2, 1);
+        steps.set(3, 1);
+        steps.set(4, 1);
+        if (bindBankCardService.getPassedBankCard(loginName) != null) {
+            steps.set(2, 2);
+        }
+        return steps;
     }
 }
