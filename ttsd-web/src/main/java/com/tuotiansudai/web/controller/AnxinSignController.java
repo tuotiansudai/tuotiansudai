@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import cfca.sadk.algorithm.common.PKIException;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
@@ -35,21 +36,21 @@ public class AnxinSignController {
     }
 
     @RequestMapping(value = "/createAccount", method = RequestMethod.POST)
-    private BaseDto createAccount() throws PKIException {
+    private BaseDto<BaseDataDto> createAccount() throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
         return anxinSignService.createAccount3001(loginName);
     }
 
     @RequestMapping(value = "/sendCaptcha", method = RequestMethod.POST)
-    private BaseDto sendCaptcha(String captcha, boolean isSkipAuth) throws PKIException {
+    private BaseDto<BaseDataDto> sendCaptcha() throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
-        return anxinSignService.verifyCaptcha3102(loginName, captcha, isSkipAuth);
+        return anxinSignService.sendCaptcha3101(loginName);
     }
 
-    @RequestMapping(value = "/verifyCaptcha", method = RequestMethod.POST)
-    private BaseDto verifyCaptcha(String captcha) throws PKIException {
+    @RequestMapping(value = "/verifyCaptcha", method = RequestMethod.POST, params = {"captcha", "isSkipAuth"})
+    private BaseDto<BaseDataDto> verifyCaptcha(String captcha, boolean isSkipAuth) throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
-        return anxinSignService.verifyCaptcha3102(loginName, captcha, false);
+        return anxinSignService.verifyCaptcha3102(loginName, captcha, isSkipAuth);
     }
 
 

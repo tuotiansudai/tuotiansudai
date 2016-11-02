@@ -42,7 +42,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private static final int TEMP_PROJECT_CODE_EXPIRE_TIME = 1800; // 半小时
 
     @Override
-    public BaseDto<BaseDataDto> createAccount3001(String loginName) {
+    public BaseDto createAccount3001(String loginName) {
 
         try {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
@@ -54,26 +54,21 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             if (isSuccess(tx3001ResVO)) {
                 accountModel.setAnxinUserId(tx3001ResVO.getPerson().getUserId());
                 accountMapper.update(accountModel);
-
+                return new BaseDto();
             } else {
                 logger.error("create anxin sign account failed. " + retMessage);
-                BaseDto baseDto = new BaseDto<>(new BaseDataDto(false, retMessage));
-                baseDto.setSuccess(false);
-                return baseDto;
+                return failBaseDto();
             }
-            return new BaseDto<>(new BaseDataDto(true, retMessage));
 
         } catch (PKIException e) {
             logger.error("create anxin sign account failed. ", e);
-            BaseDto baseDto = new BaseDto<>(new BaseDataDto(false, "FAIL"));
-            baseDto.setSuccess(false);
-            return baseDto;
+            return failBaseDto();
         }
     }
 
 
     @Override
-    public BaseDto<BaseDataDto> sendCaptcha3101(String loginName) {
+    public BaseDto sendCaptcha3101(String loginName) {
 
         try {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
@@ -88,24 +83,20 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
             if (isSuccess(tx3101ResVO)) {
                 redisWrapperClient.setex(TEMP_PROJECT_CODE_KEY + loginName, TEMP_PROJECT_CODE_EXPIRE_TIME, projectCode);
-                return new BaseDto<>(new BaseDataDto(true, retMessage));
+                return new BaseDto();
             } else {
                 logger.error("send anxin captcha code failed. " + retMessage);
-                BaseDto baseDto = new BaseDto<>(new BaseDataDto(false, retMessage));
-                baseDto.setSuccess(false);
-                return baseDto;
+                return failBaseDto();
             }
 
         } catch (PKIException e) {
             logger.error("send anxin captcha code failed. ", e);
-            BaseDto baseDto = new BaseDto<>(new BaseDataDto(false, "FAIL"));
-            baseDto.setSuccess(false);
-            return baseDto;
+            return failBaseDto();
         }
     }
 
     @Override
-    public BaseDto<BaseDataDto> verifyCaptcha3102(String loginName, String captcha, boolean isSkipAuth) {
+    public BaseDto verifyCaptcha3102(String loginName, String captcha, boolean isSkipAuth) {
 
         try {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
@@ -116,9 +107,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
             if (StringUtils.isEmpty(projectCode)) {
                 logger.error("project code is expired. loginName:" + loginName + ", anxinUserId:" + anxinUserId);
-                BaseDto baseDto = new BaseDto<>(new BaseDataDto(false, "FAIL"));
-                baseDto.setSuccess(false);
-                return baseDto;
+                return failBaseDto();
             }
 
             Tx3102ResVO tx3101ResVO = anxinSignConnectService.verifyCaptcha3102(anxinUserId, projectCode, captcha);
@@ -129,21 +118,22 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 accountModel.setProjectCode(projectCode);
                 accountModel.setIsSkipAuth(isSkipAuth);
                 accountMapper.update(accountModel);
-
-                return new BaseDto<>(new BaseDataDto(true, retMessage));
+                return new BaseDto();
             } else {
                 logger.error("verify anxin captcha code failed. " + retMessage);
-                BaseDto baseDto = new BaseDto<>(new BaseDataDto(false, retMessage));
-                baseDto.setSuccess(false);
-                return baseDto;
+                return failBaseDto();
             }
 
         } catch (PKIException e) {
             logger.error("verify anxin captcha code failed. ", e);
-            BaseDto baseDto = new BaseDto<>(new BaseDataDto(false, "FAIL"));
-            baseDto.setSuccess(false);
-            return baseDto;
+            return failBaseDto();
         }
+    }
+
+    private BaseDto failBaseDto() {
+        BaseDto baseDto = new BaseDto<>();
+        baseDto.setSuccess(false);
+        return baseDto;
     }
 
     private boolean isSuccess(Tx3ResVO tx3ResVO) {
