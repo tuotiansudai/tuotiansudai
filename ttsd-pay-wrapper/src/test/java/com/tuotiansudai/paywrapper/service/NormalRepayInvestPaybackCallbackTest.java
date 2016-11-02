@@ -183,7 +183,6 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-
         NormalRepayNotifyRequestModel model = new NormalRepayNotifyRequestModel();
         model.setSign("sign");
         model.setSignType("RSA");
@@ -200,9 +199,6 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         normalRepayNotifyMapper.create(model);
 
         normalRepayService.asyncNormalRepayPaybackCallback();
-
-
-        //normalRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(investRepay2.getId()), "");
 
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());
 
@@ -257,7 +253,6 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 100, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-
         NormalRepayNotifyRequestModel model = new NormalRepayNotifyRequestModel();
         model.setSign("sign");
         model.setSignType("RSA");
@@ -274,11 +269,6 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         normalRepayNotifyMapper.create(model);
 
         normalRepayService.asyncNormalRepayPaybackCallback();
-
-
-
-
-        //normalRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(investRepay1.getId()), "");
 
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
 
@@ -350,9 +340,6 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         normalRepayNotifyMapper.create(model);
 
         normalRepayService.asyncNormalRepayPaybackCallback();
-
-
-        //normalRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(investRepay2.getId()), "");
 
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());

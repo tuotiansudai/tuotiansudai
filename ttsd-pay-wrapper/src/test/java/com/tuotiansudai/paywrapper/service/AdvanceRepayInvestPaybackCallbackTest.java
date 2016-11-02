@@ -7,6 +7,10 @@ import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.paywrapper.repository.mapper.AdvanceRepayNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.AdvanceRepayNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.NormalRepayNotifyRequestModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -18,6 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -62,6 +67,9 @@ public class AdvanceRepayInvestPaybackCallbackTest extends RepayBaseTest {
     @Autowired
     private AdvanceRepayService advanceRepayService;
 
+    @Autowired
+    private AdvanceRepayNotifyMapper advanceRepayNotifyMapper;
+
     @Test
     public void shouldCallbackFirstPeriodWhenLoanIsRepaying() throws Exception {
         UserModel loaner = this.getFakeUser("loaner");
@@ -99,7 +107,22 @@ public class AdvanceRepayInvestPaybackCallbackTest extends RepayBaseTest {
         InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 100, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(investRepay1.getId()), "");
+        AdvanceRepayNotifyRequestModel model = new AdvanceRepayNotifyRequestModel();
+        model.setSign("sign");
+        model.setSignType("RSA");
+        model.setMerId("mer_id");
+        model.setVersion("1.0");
+        model.setTradeNo("trade_no");
+        model.setOrderId(String.valueOf(investRepay1.getId()));
+        model.setStatus(NotifyProcessStatus.NOT_DONE.toString());
+        model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        model.setService("");
+        model.setRetCode("0000");
+        model.setRequestData(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        model.setRequestData("mer_date=20161101&mer_id=7099088&order_id="+investRepay2.getId()+"&ret_code=0000&sign_type=RSA&version=1.0&sign=JoP0KGZ1j6hXsovsqFMGfTNwqFXGQFbSMmGp+EfK4vzJtgwAjmESgusrND+KcWPZl+BI1aMiGX6Z6sySa31Xi9+OuTjRfMcWSSnAAcX1PBJdhhEci40XHUw8LRnN3WDwrswu4Zg71kaSrdNT/nGYBaszsvjjwWlhPxslz48cRvc=");
+        advanceRepayNotifyMapper.create(model);
+
+        advanceRepayService.asyncAdvanceRepayPaybackCallback();
 
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());
@@ -161,7 +184,22 @@ public class AdvanceRepayInvestPaybackCallbackTest extends RepayBaseTest {
 
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(investRepay2.getId()), "");
+        AdvanceRepayNotifyRequestModel model = new AdvanceRepayNotifyRequestModel();
+        model.setSign("sign");
+        model.setSignType("RSA");
+        model.setMerId("mer_id");
+        model.setVersion("1.0");
+        model.setTradeNo("trade_no");
+        model.setOrderId(String.valueOf(investRepay2.getId()));
+        model.setStatus(NotifyProcessStatus.NOT_DONE.toString());
+        model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        model.setService("");
+        model.setRetCode("0000");
+        model.setRequestData(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        model.setRequestData("mer_date=20161101&mer_id=7099088&order_id="+investRepay2.getId()+"&ret_code=0000&sign_type=RSA&version=1.0&sign=JoP0KGZ1j6hXsovsqFMGfTNwqFXGQFbSMmGp+EfK4vzJtgwAjmESgusrND+KcWPZl+BI1aMiGX6Z6sySa31Xi9+OuTjRfMcWSSnAAcX1PBJdhhEci40XHUw8LRnN3WDwrswu4Zg71kaSrdNT/nGYBaszsvjjwWlhPxslz48cRvc=");
+        advanceRepayNotifyMapper.create(model);
+
+        advanceRepayService.asyncAdvanceRepayPaybackCallback();
 
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());
