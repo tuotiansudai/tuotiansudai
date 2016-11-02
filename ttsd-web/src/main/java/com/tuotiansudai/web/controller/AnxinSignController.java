@@ -28,9 +28,9 @@ public class AnxinSignController {
         String loginName = LoginUserInfo.getLoginName();
         AccountModel accountModel = accountService.findByLoginName(loginName);
         if (accountModel != null && accountModel.getAnxinUserId() != null) {
-            return new ModelAndView("/anxin-sign-1", "account", accountModel);
+            return new ModelAndView("/myAccount/anxin-sign-list", "account", accountModel);
         } else {
-            return new ModelAndView("/anxin-sign-2", "account", accountModel);
+            return new ModelAndView("/myAccount/anxin-sign-init", "account", accountModel);
         }
     }
 

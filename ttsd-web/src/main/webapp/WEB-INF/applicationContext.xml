@@ -99,11 +99,13 @@
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage"
                   value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.membership.repository.model,com.tuotiansudai.message.repository.model"/>
+        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
     <bean id="pointSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="pointHikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.point.repository.model"/>
+        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->

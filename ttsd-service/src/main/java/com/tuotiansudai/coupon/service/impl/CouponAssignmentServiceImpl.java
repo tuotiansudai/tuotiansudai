@@ -187,7 +187,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
      */
     @Override
     public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
-        final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
+        final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName().toLowerCase();
 
         // 当前可领取的优惠券
         List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
