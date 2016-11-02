@@ -5,6 +5,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
+import com.mysql.jdbc.StringUtils;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
@@ -88,6 +89,11 @@ public class TransferServiceImpl implements TransferService {
     }
 
     private void checkTransferPurchase(InvestDto investDto) throws InvestException {
+        AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
+        if(StringUtils.isNullOrEmpty(accountModel.getProjectCode())){
+            throw new InvestException(InvestExceptionType.ANXIN_SIGN_IS_UNUSABLE);
+        }
+
         long loanId = Long.parseLong(investDto.getLoanId());
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferInvestId()));
         if (transferApplicationModel.getLoginName().equals(investDto.getLoginName())) {
@@ -99,7 +105,6 @@ public class TransferServiceImpl implements TransferService {
         }
         long investAmount = Long.parseLong(investDto.getAmount());
 
-        AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
         if (accountModel.getBalance() < investAmount) {
             throw new InvestException(InvestExceptionType.NOT_ENOUGH_BALANCE);
         }
