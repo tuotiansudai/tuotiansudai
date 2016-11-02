@@ -8,6 +8,7 @@ import com.tuotiansudai.cfca.connector.HttpConnector;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 import com.tuotiansudai.cfca.util.SecurityUtil;
+import org.joda.time.DateTime;
 
 public class Test3101 {
     public static void main(String[] args) throws PKIException {
@@ -16,10 +17,10 @@ public class Test3101 {
 
         Tx3101ReqVO tx3101ReqVO = new Tx3101ReqVO();
         HeadVO head = new HeadVO();
-        head.setTxTime("20160102235959");
+        head.setTxTime(DateTime.now().toString("yyyyMMddHHmmss"));
 
         ProxySignVO proxySignVO = new ProxySignVO();
-        proxySignVO.setUserId("AE5F7586B154481386E109BB2C4CDF55");
+        proxySignVO.setUserId("4027A45BC12E29E9E05311016B0AA19C");
         proxySignVO.setProjectCode("003");
 
         tx3101ReqVO.setHead(head);

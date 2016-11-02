@@ -73,6 +73,14 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         try {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
+            // 如果用户没有开通安心签账户，则先开通账户，再进行授权（发送验证码）
+            if (accountModel.getAnxinUserId() == null) {
+                BaseDto createAccountRet = this.createAccount3001(loginName);
+                if (!createAccountRet.isSuccess()) {
+                    return failBaseDto();
+                }
+            }
+
             String anxinUserId = accountModel.getAnxinUserId();
 
             String projectCode = UUIDGenerator.generate();

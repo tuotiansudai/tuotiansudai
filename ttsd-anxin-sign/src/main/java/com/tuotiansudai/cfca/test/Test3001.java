@@ -8,6 +8,7 @@ import com.tuotiansudai.cfca.connector.HttpConnector;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 import com.tuotiansudai.cfca.util.SecurityUtil;
+import org.joda.time.DateTime;
 
 public class Test3001 {
     public static void main(String[] args) throws PKIException {
@@ -16,14 +17,14 @@ public class Test3001 {
 
         Tx3001ReqVO tx3001ReqVO = new Tx3001ReqVO();
         HeadVO head = new HeadVO();
-        head.setTxTime("20161102155120");
+        head.setTxTime(DateTime.now().toString("yyyyMMddHHmmss"));
 
         PersonVO person = new PersonVO();
-        person.setPersonName("孙二");
+        person.setPersonName("周宝鑫");
         person.setIdentTypeCode("1");
         person.setIdentNo("222321199112050009");
-        person.setMobilePhone("13520001111");
-        person.setEmail("22803238111@cfca.com.cn");
+        person.setMobilePhone("18611445119");
+        person.setEmail("zhoubaoxin@tuotiansudai.com");
         person.setAddress("北京");
         person.setAuthenticationMode("公安部");
 
