@@ -43,7 +43,7 @@
                                 <p><img src="${staticServer}/activity/images/double-eleven/first-time.png" ></p>
                                 <p class="tip-info">即将登场</p>
                                 <p class="time-text">
-                                    <span data-date="${today}" data-now="${now}" data-end="11:11:00" data-activityEnd="">00:00:00</span>
+                                    <span data-date="${today}" data-now="${now}" data-end="11:11:00" data-activityEnd="${activityEnd}">00:00:00</span>
                                 </p>
                                 <p class="btn-item">
                                     <a href="/loan-list">马上投资</a>
@@ -53,7 +53,7 @@
                                 <p><img src="${staticServer}/activity/images/double-eleven/twice-time.png" ></p>
                                 <p class="tip-info">即将登场</p>
                                 <p class="time-text">
-                                    <span data-date="${today}" data-now="${now}" data-end="13:11:00" data-activityEnd="">00:00:00</span>
+                                    <span data-date="${today}" data-now="${now}" data-end="13:11:00" data-activityEnd="${activityEnd}">00:00:00</span>
                                 </p>
                                 <p class="btn-item">
                                     <a href="/loan-list">马上投资</a>
