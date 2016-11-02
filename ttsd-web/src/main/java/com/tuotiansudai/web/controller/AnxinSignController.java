@@ -47,10 +47,10 @@ public class AnxinSignController {
         return anxinSignService.sendCaptcha3101(loginName);
     }
 
-    @RequestMapping(value = "/verifyCaptcha", method = RequestMethod.POST, params = {"captcha", "isSkipAuth"})
-    private BaseDto<BaseDataDto> verifyCaptcha(String captcha, boolean isSkipAuth) throws PKIException {
+    @RequestMapping(value = "/verifyCaptcha", method = RequestMethod.POST, params = {"captcha", "skipAuth"})
+    private BaseDto<BaseDataDto> verifyCaptcha(String captcha, boolean skipAuth) throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
-        return anxinSignService.verifyCaptcha3102(loginName, captcha, isSkipAuth);
+        return anxinSignService.verifyCaptcha3102(loginName, captcha, skipAuth);
     }
 
 }
