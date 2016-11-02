@@ -69,9 +69,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.AutoJPushNoInvestAlert.name().equalsIgnoreCase(schedulerName)) {
             createAutoJPushNoInvestAlert();
         }
-        if (JobType.ImitateLottery.name().equals(schedulerName)) {
-            createImitateLotteryJob();
-        }
         if (JobType.ExperienceRepay.name().equals(schedulerName)) {
             createNewbieExperienceRepayJob();
         }
@@ -118,16 +115,6 @@ public class JobInitPlugin implements SchedulerPlugin {
                             .withMisfireHandlingInstructionIgnoreMisfires())
                     .withIdentity(jobGroup, jobName)
                     .submit();
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createImitateLotteryJob() {
-        try {
-            jobManager.newJob(JobType.ImitateLottery, ImitateLotteryJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0/5 * * * ?").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.ImitateLottery.name(), JobType.ImitateLottery.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
