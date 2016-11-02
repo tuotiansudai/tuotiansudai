@@ -167,7 +167,7 @@ public class ContractServiceTest {
     }
 
     public AccountModel getAccountModel(){
-        AccountModel accountModel = new AccountModel("testUserModel", "userName", "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel("testUserModel", "payUserId", "payAccountId", new Date());
         return accountModel;
     }
 

@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.model.AuditLogView;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
@@ -34,14 +35,14 @@ public class AuditLogServiceImpl implements AuditLogService {
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    private AccountService accountService;
+    private UserService userService;
 
     @Override
     @Transactional
     public void createUserActiveLog(String loginName, String operatorLoginName, UserStatus userStatus, String userIp) {
 
         String operation = userStatus == UserStatus.ACTIVE ? " 解禁" : " 禁止";
-        String description = operatorLoginName + operation + "了用户［" + accountService.getRealName(loginName) + "］。";
+        String description = operatorLoginName + operation + "了用户［" + userService.getRealName(loginName) + "］。";
 
         AuditLogModel log = new AuditLogModel();
         log.setId(idGenerator.generate());

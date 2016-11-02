@@ -29,14 +29,12 @@ public class EditUserDto implements Serializable {
 
     private String autoInvestStatus;
 
-    public EditUserDto(UserModel userModel, AccountModel accountModel, List<Role> roles, AutoInvestPlanModel autoInvestPlanModel) {
+    public EditUserDto(UserModel userModel, List<Role> roles, AutoInvestPlanModel autoInvestPlanModel) {
         this.loginName = userModel.getLoginName();
         this.email = userModel.getEmail();
         this.mobile = userModel.getMobile();
-        if (accountModel != null) {
-            this.identityNumber = accountModel.getIdentityNumber();
-            this.userName = accountModel.getUserName();
-        }
+        this.identityNumber = userModel.getIdentityNumber();
+        this.userName = userModel.getUserName();
         if (roles != null) {
             this.roles = roles;
         }

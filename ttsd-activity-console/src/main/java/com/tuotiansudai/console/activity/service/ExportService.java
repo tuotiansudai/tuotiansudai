@@ -136,10 +136,9 @@ public class ExportService {
         List<IPhone7InvestLotteryStatView> list = iPhone7InvestLotteryMapper.allStatInvest();
         return list.stream().map(r -> {
             UserModel userModel = userMapper.findByLoginName(r.getLoginName());
-            AccountModel accountModel = accountMapper.findByLoginName(r.getLoginName());
             return Arrays.asList(
                     userModel.getMobile(),
-                    accountModel.getUserName(),
+                    userModel.getUserName(),
                     new DecimalFormat("0.00").format(((double) r.getInvestAmountTotal()) / 100),
                     String.valueOf(r.getInvestCount()));
         }).collect(Collectors.toList());

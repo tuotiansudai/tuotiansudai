@@ -176,7 +176,7 @@ public class TransferServiceTest {
     }
 
     private void createAccount(String loginName) {
-        AccountModel accountModel = new AccountModel(loginName, "aaa", "372930198709118793", "2", "2", new Date());
+        AccountModel accountModel = new AccountModel(loginName, "2", "2", new Date());
         accountModel.setBalance(1000);
         accountMapper.create(accountModel);
     }
@@ -185,7 +185,6 @@ public class TransferServiceTest {
     public void setup() throws Exception {
         createUserByUserId("testuser");
         createAccount("testuser");
-
     }
 
     @Test

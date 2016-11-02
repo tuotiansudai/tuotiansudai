@@ -327,12 +327,12 @@ public class ProductServiceImpl implements ProductService {
         } else if (productShowItemDto.getGoodsType().equals(GoodsType.VIRTUAL)){
             UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
             return new ProductOrderModel(productShowItemDto.getId(), productShowItemDto.getPoints(), amount, productShowItemDto.getPoints() * amount,
-                    accountModel.getUserName(), userModel.getMobile(), "", false, null, accountModel.getLoginName());
+                    userModel.getUserName(), userModel.getMobile(), "", false, null, accountModel.getLoginName());
         } else {
             UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
             ProductModel productModel = productMapper.findById(productShowItemDto.getId());
             return new ProductOrderModel(productModel.getId(), productShowItemDto.getPoints(), amount, productShowItemDto.getPoints() * amount,
-                    accountModel.getUserName(), userModel.getMobile(), "", false, null, accountModel.getLoginName());
+                    userModel.getUserName(), userModel.getMobile(), "", false, null, accountModel.getLoginName());
         }
     }
 

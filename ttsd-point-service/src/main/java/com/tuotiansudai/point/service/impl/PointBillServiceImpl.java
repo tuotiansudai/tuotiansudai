@@ -14,6 +14,7 @@ import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,9 +140,10 @@ public class PointBillServiceImpl implements PointBillService {
 
         List<AccountItemDataDto> accountItemDataDtoList = Lists.newArrayList();
         for(AccountModel accountModel : accountModels) {
-            AccountItemDataDto accountItemDataDto = new AccountItemDataDto(accountModel);
+            UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
+            AccountItemDataDto accountItemDataDto = new AccountItemDataDto(userModel, accountModel);
             accountItemDataDto.setTotalPoint(pointBillMapper.findUserTotalPoint(accountModel.getLoginName()));
-            accountItemDataDto.setMobile(userMapper.findByLoginName(accountModel.getLoginName()).getMobile());
+            accountItemDataDto.setMobile(userModel.getMobile());
             accountItemDataDtoList.add(accountItemDataDto);
         }
         return accountItemDataDtoList;
