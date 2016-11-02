@@ -50,6 +50,7 @@
         <intercept-url pattern="/v2.0/get/loan" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/transfer-application" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/transfer-application-list" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/get/transfer-invest-repay" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/transferee" access="permitAll()"/>
         <intercept-url pattern="/callback/**" access="permitAll()"/>
         <intercept-url pattern="/ad/**" access="permitAll()"/>
@@ -60,6 +61,7 @@
         <intercept-url pattern="/share-callback" access="permitAll()"/>
         <intercept-url pattern="/v1.**/image-captcha" access="permitAll()"/>
         <intercept-url pattern="/v2.0/image-captcha" access="permitAll()"/>
+        <intercept-url pattern="/v2.0/get/pop-push" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
     </http>
 

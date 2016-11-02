@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -56,12 +57,12 @@ public class HomeLoanDto {
         this.productType = loan.getProductType();
         this.activityType = loan.getActivityType();
         this.baseRate = new BigDecimal(String.valueOf(loan.getBaseRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
-        if (activityRate > 0) {
+        if (loan.getActivityRate() > 0) {
             this.activityRate = new BigDecimal(String.valueOf(loan.getActivityRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
         }
         this.periods = loan.getPeriods();
         this.duration = loan.getDuration();
-        this.amount = new BigDecimal(loan.getLoanAmount()).toString();
+        this.amount = new DecimalFormat("#.00").format(loan.getLoanAmount());
         this.progress = new BigDecimal(investAmount).divide(new BigDecimal(loan.getLoanAmount()), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue();
         this.status = loan.getStatus().name();
         this.fundraisingStartTime = loan.getFundraisingStartTime();

@@ -1,5 +1,4 @@
-@import 'variables';
-@import "index_png";
+@import 'common/variables';
 @import 'module/register_png';
 
 $landingPhoneColorGray: #F2F2F2;
@@ -246,7 +245,7 @@ form label.error {
     height: 90px;
     text-align: center;
     margin: 0 auto;
-    background: url("/activity/images/icons/logo-index.png") left center no-repeat;
+    background: url("/activity/images/global/logo-index.png") left center no-repeat;
    a {
       display: inline-block;
       float: right;
