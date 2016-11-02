@@ -61,9 +61,7 @@
           cursor: pointer;
 
           & .badge {
-            background-image: url("/images/icons/spr.png");
-            background-position: -387px -172px;
-            background-repeat: no-repeat;
+            background: url("/images/global/icon-ok.png") left center no-repeat;
             width: 13px;
             height: 13px;
             position: absolute;
