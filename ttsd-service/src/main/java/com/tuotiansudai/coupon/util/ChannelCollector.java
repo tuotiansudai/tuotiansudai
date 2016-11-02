@@ -44,7 +44,7 @@ public class ChannelCollector implements UserCollector{
         return Iterators.any(userModels.iterator(), new Predicate<UserModel>() {
             @Override
             public boolean apply(UserModel input) {
-                return input.getLoginName().equals(loginName);
+                return input.getLoginName().equalsIgnoreCase(loginName);
             }
         });
     }
