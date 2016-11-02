@@ -24,6 +24,4 @@ public interface UserCouponService {
     long findSumBirthdayAndInterestByLoginName(String loginName);
 
     long findSumRedEnvelopeByLoginName(String loginName);
-
-    void assignUserCoupon(String loginName);
 }

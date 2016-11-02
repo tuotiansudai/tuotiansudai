@@ -19,9 +19,7 @@ public class SmsController {
     @RequestMapping(value = "/register-captcha", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> sendRegisterCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {
-        BaseDto<SmsDataDto> smsDateDto = smsService.sendRegisterCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
-        return smsDateDto;
-
+        return smsService.sendRegisterCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
     }
 
     @RequestMapping(value = "/no-password-invest-captcha", method = RequestMethod.POST)
@@ -94,5 +92,11 @@ public class SmsController {
     @ResponseBody
     public BaseDto<SmsDataDto> newUserReceiveMembership(@RequestBody SmsUserReceiveMembershipDto notifyDto) {
         return smsService.newUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
+    }
+
+    @RequestMapping(value = "/platform-balance-low-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> platformBalanceLowNotify(@RequestBody PlatformBalanceLowNotifyDto notifyDto) {
+        return smsService.platformBalanceLowNotify(notifyDto.getMobiles(), notifyDto.getWarningLine());
     }
 }

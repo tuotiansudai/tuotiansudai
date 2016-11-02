@@ -7,8 +7,8 @@
 	</div>
 	<div class="actor-content-group">
 		<div class="wp clearfix">
-            <div class="reg-tag-current" style="display: none;margin-top:10px;">
-				<#include '../register.ftl' />
+            <div class="reg-tag-current" style="display: none">
+				<#include '../module/register.ftl' />
             </div>
 			<div class="model-group text-c">
 				<i class="icon-laba"></i>

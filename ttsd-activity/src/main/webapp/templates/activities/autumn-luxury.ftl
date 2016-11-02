@@ -17,7 +17,7 @@
         <div class="left-bg"></div>
         <div class="right-bg"></div>
         <div class="reg-tag-current" style="display: none">
-            <#include '../register.ftl' />
+            <#include '../module/register.ftl' />
         </div>
         <div class="luxury-item clearfix">
             <div class="title-one">

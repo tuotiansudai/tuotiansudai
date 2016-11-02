@@ -15,6 +15,7 @@ import com.tuotiansudai.smswrapper.client.MdSmsClient;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.*;
 import com.tuotiansudai.smswrapper.service.SmsService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ import java.util.List;
 
 @Service
 public class SmsServiceImpl implements SmsService {
+
+    static Logger logger = Logger.getLogger(SmsServiceImpl.class);
 
     @Autowired
     private SmsClient smsClient;
@@ -43,11 +46,13 @@ public class SmsServiceImpl implements SmsService {
     @Value("${sms.sending.platform}")
     private String platform;
 
+    private final String SMS_PLATFORM = "zucp";
+
 
     @Override
     public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, String ip) {
         BaseDto<SmsDataDto> smsDateDto = smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
-        if(!smsDateDto.isSuccess() && platform.equals("zucp")){
+        if(!smsDateDto.getData().getStatus() && platform.equals(SMS_PLATFORM)){
             smsDateDto = this.sendRegisterCaptchaByMd(mobile, captcha,ip);
         }
         return smsDateDto;
@@ -107,7 +112,7 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     public BaseDto<SmsDataDto> experienceRepayNotify(List<String> mobiles, String repayAmount) {
-        return smsClient.sendSMS(ExperienceRepayNotifyMapper.class, mobiles, SmsTemplate.SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE, Lists.newArrayList(repayAmount), "");
+        return smsClient.sendSMS(ExperienceRepayNotifyMapper.class, mobiles, SmsTemplate.SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE, repayAmount, "");
     }
 
     @Override
@@ -127,11 +132,13 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     public BaseDto<SmsDataDto> couponNotifyByMd(SmsCouponNotifyDto notifyDto){
+        logger.info(MessageFormat.format("coupon notify send. couponId:{0}",notifyDto.getCouponType()));
         String couponName = (notifyDto.getCouponType() == CouponType.INTEREST_COUPON ? MessageFormat.format("+{0}%", notifyDto.getRate()) : MessageFormat.format("{0}元", notifyDto.getAmount()))
                 + notifyDto.getCouponType().getName();
 
         List<String> paramList = ImmutableList.<String>builder().add(couponName).add(notifyDto.getExpiredDate()).build();
-        if(platform.equals("zucp")){
+        if(platform.equals(SMS_PLATFORM)){
+            logger.info("coupon notify send by md platform");
             return mdSmsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE, paramList, "");
         }
 
@@ -139,7 +146,11 @@ public class SmsServiceImpl implements SmsService {
     }
 
     @Override
-    public BaseDto<SmsDataDto> sendRegisterCaptchaByMd(String mobile, String captcha, String ip){
+    public BaseDto<SmsDataDto> sendRegisterCaptchaByMd(String mobile, String captcha, String ip) {
         return mdSmsClient.sendSMS(RegisterCaptchaMapper.class, mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, captcha, ip);
+    }
+
+    public BaseDto<SmsDataDto> platformBalanceLowNotify(List<String> mobiles, String warningLine) {
+        return smsClient.sendSMS(PlatformBalanceLowNotifyMapper.class, mobiles, SmsTemplate.SMS_PLATFORM_BALANCE_LOW_NOTIFY_TEMPLATE, warningLine, "");
     }
 }

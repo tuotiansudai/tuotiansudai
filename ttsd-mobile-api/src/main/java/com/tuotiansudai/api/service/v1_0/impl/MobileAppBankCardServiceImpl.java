@@ -149,12 +149,6 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         if(loginUser == null){
             return new BaseResponseDto(ReturnMessage.USER_ID_NOT_EXIST.getCode(),ReturnMessage.USER_ID_NOT_EXIST.getMsg());
         }
-        BankCardModel bankCardModel = bankCardMapper.findByLoginNameAndIsFastPayOn(loginName);
-        if(bankCardModel != null){
-            return new BaseResponseDto(ReturnMessage.REPLACE_CARD_FAIL_HAS_OPEN_FAST_PAYMENT.getCode(),ReturnMessage.REPLACE_CARD_FAIL_HAS_OPEN_FAST_PAYMENT.getMsg());
-        }
-
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
         BankCardModel bankCardModelIsExist = bankCardMapper.findPassedBankCardByBankCode(newCardNo);
         if(bankCardModelIsExist != null){

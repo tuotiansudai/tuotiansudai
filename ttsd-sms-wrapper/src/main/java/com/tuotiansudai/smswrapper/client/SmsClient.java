@@ -6,6 +6,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.repository.mapper.BaseMapper;
@@ -19,11 +20,13 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +46,12 @@ public class SmsClient implements ApplicationContextAware {
 
     private static String SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE = "sms_ip_restricted:{0}";
 
+    private static String WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE = "wyy_sms_send_count_by_today:{0}";
+
+    private final static int sendSize = 10;
+
+    private final static int lifeSecond = 172800;
+
     @Value("${sms.netease.url}")
     private String url;
 
@@ -54,6 +63,9 @@ public class SmsClient implements ApplicationContextAware {
 
     @Value("${sms.interval.seconds}")
     private int second;
+
+    @Value("${common.environment}")
+    private String environment;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -81,10 +93,34 @@ public class SmsClient implements ApplicationContextAware {
         return sendSMS(baseMapperClass, mobileList, template, paramList, restrictedIP);
     }
 
+    public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, String param, String restrictedIP) {
+        List<String> paramList = Lists.newArrayList(param);
+        return sendSMS(baseMapperClass, mobileList, template, paramList, restrictedIP);
+    }
+
     public BaseDto<SmsDataDto> sendSMS(Class<? extends BaseMapper> baseMapperClass, List<String> mobileList, SmsTemplate template, List<String> paramList, String restrictedIP) {
         BaseDto<SmsDataDto> dto = new BaseDto<>();
         SmsDataDto data = new SmsDataDto();
         dto.setData(data);
+
+        if(Lists.<String>newArrayList(Environment.SMOKE.name(),Environment.STAGING.name(),Environment.DEV.name()).contains(environment)){
+            logger.info("[短信发送] 该环境不发送短信");
+            return dto;
+        }
+
+        if(Environment.QA.name().equals(environment)){
+            String redisKey = MessageFormat.format(this.WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE, "MD");
+            String hKey = DateTime.now().withTimeAtStartOfDay().toString("yyyyMMdd");
+            String redisValue = redisWrapperClient.hget(redisKey, hKey);
+
+            int smsSendSize = Strings.isNullOrEmpty(redisValue) ? 0 : Integer.parseInt(redisValue);
+            if(smsSendSize >= sendSize){
+                logger.error(MessageFormat.format("[短信发送] OA环境今日已经发送过10条短信 {0}",redisKey));
+                return dto;
+            }
+            smsSendSize++;
+            redisWrapperClient.hset(redisKey, hKey, String.valueOf(smsSendSize), lifeSecond);
+        }
 
         String redisKey = MessageFormat.format(SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE, restrictedIP);
 
@@ -124,9 +160,7 @@ public class SmsClient implements ApplicationContextAware {
 
             // 执行结果  {"code":200,"msg":"sendid","obj":1}
             String resultCode = getRetCode(EntityUtils.toString(response.getEntity(), "utf-8"));
-            if(resultCode.equals("200")){
-                dto.setSuccess(true);
-            }
+            dto.setSuccess(resultCode.equals(String.valueOf(HttpStatus.OK.value())));
 
             String content = template.generateContent(paramList);
 

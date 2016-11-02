@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.dto.SignInResult;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -43,14 +42,6 @@ public class CouponAspect {
     public void registerUserPointcut() {
     }
 
-    @Pointcut("execution(* *..SignInClient.login(..))")
-    public void loginSuccessPointcut() {
-    }
-
-    @Pointcut("execution(* *..SignInClient.refresh(..))")
-    public void refreshTokenPointcut() {
-    }
-
     @AfterReturning(value = "registerUserPointcut()", returning = "returnValue")
     public void afterReturningUserRegister(JoinPoint joinPoint, Object returnValue) {
         logger.info("after user register pointcut");
@@ -62,18 +53,6 @@ public class CouponAspect {
             }
         } catch (Exception e) {
             logger.error("after user register aspect fail ", e);
-        }
-    }
-
-    @AfterReturning(value = "loginSuccessPointcut() || refreshTokenPointcut()", returning = "signInResult")
-    public void afterReturningUserLogin(JoinPoint joinPoint, SignInResult signInResult) {
-        try {
-            if (signInResult != null && signInResult.isResult()) {
-                logger.info("assign coupon after user login");
-                couponAssignmentService.assignUserCoupon(signInResult.getUserInfo().getLoginName(), userGroups);
-            }
-        } catch (Exception e) {
-            logger.error("assign coupon after user login is failed ", e);
         }
     }
 }

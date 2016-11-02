@@ -11,6 +11,7 @@ import com.tuotiansudai.api.dto.v2_0.PromotionRequestDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppPromotionListsV2Service;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public class MobileAppPromotionListsV2ServiceImpl implements MobileAppPromotionL
 
     @Autowired
     private PromotionMapper promotionMapper;
+
+    @Value("${mobile.static.server}")
+    private String staticServer;
 
     @Override
     public BaseResponseDto<PromotionListResponseDataDto> generatePromotionList(PromotionRequestDto promotionRequestDto) {
@@ -39,7 +43,7 @@ public class MobileAppPromotionListsV2ServiceImpl implements MobileAppPromotionL
         if (CollectionUtils.isNotEmpty(promotionModels)) {
             for (PromotionModel promotionModel : promotionModels) {
                 PromotionRecordResponseDataDto dto = new PromotionRecordResponseDataDto();
-                dto.setImgUrl(promotionModel.getImageUrl());
+                dto.setImgUrl(staticServer + promotionModel.getImageUrl());
                 dto.setLinkUrl(promotionModel.getLinkUrl());
                 list.add(dto);
             }
