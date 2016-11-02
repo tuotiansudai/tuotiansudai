@@ -17,8 +17,7 @@ CREATE TABLE `ump_operations`.`coupon_repay_notify_request` (
   `response_data`  TEXT,
   `status`         VARCHAR(32)      NOT NULL     DEFAULT 'NOT_DONE',
   PRIMARY KEY (`id`),
-  KEY `idx_status` (`status`),
-  KEY `idx_order_id` (`order_id`)
+  KEY `INDEX__COUPON_REPAY_NOTIFY_REQUEST_ORDER_ID` (`order_id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001

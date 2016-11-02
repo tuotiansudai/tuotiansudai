@@ -132,7 +132,14 @@ public class CouponRepayServiceTest {
         when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
         doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
+
+
+
         couponRepayService.repay(idGenerator.generate(), false);
+
+
+
+
 
         ArgumentCaptor<UserCouponModel> userCouponModelArgumentCaptor = ArgumentCaptor.forClass(UserCouponModel.class);
         verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());

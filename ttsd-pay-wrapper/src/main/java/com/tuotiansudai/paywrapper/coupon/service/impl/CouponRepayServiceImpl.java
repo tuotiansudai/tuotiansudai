@@ -22,7 +22,7 @@ import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CouponRepayNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
-import com.tuotiansudai.paywrapper.repository.model.CouponRepayNotifyProcessStatus;
+import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.CouponRepayNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
@@ -38,7 +38,6 @@ import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -491,10 +490,9 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         for (CouponRepayNotifyRequestModel model : todoList) {
             if (updateCouponRepayNotifyRequestStatus(model)) {
                 try {
-                    ((CouponRepayService) AopContext.currentProxy()).processOneCallback(model);
+                    this.processOneCallback(model);
                 } catch (Exception e) {
                     fatalLog("coupon repay callback, processOneCallback error. couponRepayId:" + model.getOrderId(), e);
-                    e.printStackTrace();
                 }
             }
         }
@@ -510,7 +508,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     private boolean updateCouponRepayNotifyRequestStatus(CouponRepayNotifyRequestModel model) {
         try {
             redisWrapperClient.decr(CouponRepayNotifyCallbackJob.COUPON_REPAY_JOB_TRIGGER_KEY);
-            couponRepayNotifyRequestMapper.updateStatus(model.getId(), CouponRepayNotifyProcessStatus.DONE);
+            couponRepayNotifyRequestMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
         } catch (Exception e) {
             fatalLog("update_coupon_repay_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());
             return false;
@@ -588,7 +586,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     }
 
     private void sendSmsErrNotify(String errMsg) {
-        logger.info("sent conpon repay fatal sms message");
+        logger.info("sent coupon repay fatal sms message");
         SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("还款时优惠券发放业务错误。详细信息：{0}", errMsg));
         smsWrapperClient.sendFatalNotify(dto);
     }
