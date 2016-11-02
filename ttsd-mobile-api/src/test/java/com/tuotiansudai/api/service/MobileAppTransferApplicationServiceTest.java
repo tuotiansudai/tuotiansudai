@@ -108,9 +108,12 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         paginationRequestDto.setPageSize(10);
         paginationRequestDto.setIndex(1);
         List<TransferApplicationRecordDto> transferApplicationRecordDtos = Lists.newArrayList(transferApplicationRecordDto);
+        LoanModel loanModel = createLoanByUserId("test", transferApplicationRecordDto.getLoanId());
 
         when(transferApplicationMapper.findTransfereeApplicationPaginationByLoginName(anyString(), anyInt(), anyInt())).thenReturn(transferApplicationRecordDtos);
         when(transferApplicationMapper.findCountTransfereeApplicationPaginationByLoginName(anyString())).thenReturn(1);
+        when(loanMapper.findById(transferApplicationRecordDto.getLoanId())).thenReturn(loanModel);
+        when(investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getInvestId(), loanModel.getPeriods())).thenReturn(createInvestRepay("test", transferApplicationRecordDto.getInvestId(), 100, loanModel.getPeriods()));
 
         BaseResponseDto<TransferApplicationResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.generateTransfereeApplication(paginationRequestDto);
         assertEquals(TransferStatus.TRANSFERRING, baseResponseDto.getData().getTransferApplication().get(0).getTransferStatus());
@@ -121,7 +124,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         assertEquals("12.00", baseResponseDto.getData().getTransferApplication().get(0).getInvestAmount());
         assertEquals("2016-02-09 00:00:00", baseResponseDto.getData().getTransferApplication().get(0).getTransferTime());
         assertEquals("4", baseResponseDto.getData().getTransferApplication().get(0).getLeftPeriod());
-
+        assertEquals("90", baseResponseDto.getData().getTransferApplication().get(0).getLeftDays());
     }
 
     private TransferApplicationRecordDto createTransferApplicationRecordDto() {
@@ -383,6 +386,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         investRepayModel.setExpectedInterest(12);
         investRepayModel.setExpectedFee(5);
         investRepayModel.setPeriod(period);
+        investRepayModel.setRepayDate(DateTime.now().plusDays(90).toDate());
         return investRepayModel;
     }
     private UserModel createUserByUserId(String userId) {

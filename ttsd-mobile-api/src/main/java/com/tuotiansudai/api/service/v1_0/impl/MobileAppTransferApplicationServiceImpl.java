@@ -198,8 +198,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         if (CollectionUtils.isNotEmpty(transferApplicationRecordDtos)) {
             List<TransferApplicationRecordResponseDataDto> transferApplication = transferApplicationRecordDtos.stream().map(transferApplicationRecordDto -> {
                 TransferApplicationRecordResponseDataDto transferApplicationRecordResponseDataDto = new TransferApplicationRecordResponseDataDto(transferApplicationRecordDto);
-                InvestModel investModel = investMapper.findById(transferApplicationRecordDto.getInvestId());
-                LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+                LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
                 InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getInvestId(), loanModel.getPeriods());
                 long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), investRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                 transferApplicationRecordResponseDataDto.setLeftDays(String.valueOf(leftDays));
