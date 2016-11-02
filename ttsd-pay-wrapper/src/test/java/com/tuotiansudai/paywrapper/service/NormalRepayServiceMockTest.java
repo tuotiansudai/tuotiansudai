@@ -1,10 +1,10 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.job.AdvanceRepayCallbackJob;
+import com.tuotiansudai.job.NormalRepayCallbackJob;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.service.impl.AdvanceRepayServiceImpl;
+import com.tuotiansudai.paywrapper.service.impl.NormalRepayServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,10 +25,10 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
 @Transactional
-public class AdvanceRepayServiceMockTest {
+public class NormalRepayServiceMockTest {
 
     @InjectMocks
-    private AdvanceRepayServiceImpl advanceRepayService;
+    private NormalRepayServiceImpl normalRepayService;
 
     @Mock
     private PayAsyncClient payAsyncClient;
@@ -45,17 +45,17 @@ public class AdvanceRepayServiceMockTest {
     public void shouldIncrRedisTriggerWhenNormalRepayCallbackSuccess() throws Exception {
         when(payAsyncClient.parseCallbackRequest(any(Map.class), anyString(), any(Class.class), any(Class.class))).thenReturn(new BaseCallbackRequestModel());
 
-        advanceRepayService.investPaybackCallback(null, null);
+        normalRepayService.investPaybackCallback(null, null);
 
-        verify(redisWrapperClient, times(1)).incr(AdvanceRepayCallbackJob.ADVANCE_REPAY_JOB_TRIGGER_KEY);
+        verify(redisWrapperClient, times(1)).incr(NormalRepayCallbackJob.NORMAL_REPAY_JOB_TRIGGER_KEY);
     }
 
     @Test
     public void shouldNotIncrTriggerWhenNormalRepayCallbackFail() throws Exception {
         when(payAsyncClient.parseCallbackRequest(any(Map.class), anyString(), any(Class.class), any(Class.class))).thenReturn(null);
 
-        advanceRepayService.investPaybackCallback(null, null);
+        normalRepayService.investPaybackCallback(null, null);
 
-        verify(redisWrapperClient, times(0)).incr(AdvanceRepayCallbackJob.ADVANCE_REPAY_JOB_TRIGGER_KEY);
+        verify(redisWrapperClient, times(0)).incr(NormalRepayCallbackJob.NORMAL_REPAY_JOB_TRIGGER_KEY);
     }
 }
