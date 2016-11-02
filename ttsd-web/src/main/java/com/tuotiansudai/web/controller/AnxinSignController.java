@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -35,20 +36,23 @@ public class AnxinSignController {
         }
     }
 
+    @ResponseBody
     @RequestMapping(value = "/createAccount", method = RequestMethod.POST)
-    private BaseDto<BaseDataDto> createAccount() throws PKIException {
+    private BaseDto createAccount() throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
         return anxinSignService.createAccount3001(loginName);
     }
 
+    @ResponseBody
     @RequestMapping(value = "/sendCaptcha", method = RequestMethod.POST)
-    private BaseDto<BaseDataDto> sendCaptcha() throws PKIException {
+    private BaseDto sendCaptcha() throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
         return anxinSignService.sendCaptcha3101(loginName);
     }
 
+    @ResponseBody
     @RequestMapping(value = "/verifyCaptcha", method = RequestMethod.POST, params = {"captcha", "skipAuth"})
-    private BaseDto<BaseDataDto> verifyCaptcha(String captcha, boolean skipAuth) throws PKIException {
+    private BaseDto verifyCaptcha(String captcha, boolean skipAuth) throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
         return anxinSignService.verifyCaptcha3102(loginName, captcha, skipAuth);
     }
