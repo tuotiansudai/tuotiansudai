@@ -293,7 +293,7 @@
                                     <input type="hidden" id="skipCheck" value="true">
                                 </label>
                                 <div class="skip-text">
-                                    我已阅读并同意<a href="javascript:void(0)"><span id="serviceLayer">《安心签服务协议》</span>、<span id="privacyLayer">《隐私条款》</span>和<span id="numberLayer">《CFCA数字证书服务协议》</span></a>
+                                    我已阅读并同意<a href="javascript:void(0)"><span id="serviceLayer">《安心签服务协议》</span>、<span id="privacyLayer">《隐私条款》</span>和<span id="numberLayer">《CFCA数字证书服务协议》</span><span class="check-tip" id="checkTip">请勾选</span></a>
                                 </div>
                             </dd>
                             </#if>

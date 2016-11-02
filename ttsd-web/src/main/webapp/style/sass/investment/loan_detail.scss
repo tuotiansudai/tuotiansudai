@@ -719,6 +719,10 @@ $red: #eb4a3e;
                 color:#999999;
                 span{
                   cursor:pointer;
+                  &.check-tip{
+                    display:none;
+                    color:#ff2b00;
+                  }
                   &:hover{
                     text-decoration: underline;
                   }

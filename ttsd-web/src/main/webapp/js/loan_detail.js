@@ -375,7 +375,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                                 if($('#skipCheck').val()=='true'){
                                     getSkipPhoneTip();
                                 }else{
-                                    alert('未勾选');
+                                    $('#checkTip').show();
                                 }
                                 return false;
                             }
@@ -859,7 +859,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     //loan click checkbox
     $('.skip-group .skip-icon').on('click', function(event) {
         event.preventDefault();
-        $(this).hasClass('active')?$(this).removeClass('active') && $('#skipCheck').val('false'):$(this).addClass('active')&& $('#skipCheck').val('true');
+
+        $(this).hasClass('active')?$(this).removeClass('active') && $('#skipCheck').val('false') :$(this).addClass('active')&& $('#skipCheck').val('true') && $('#checkTip').hide();
     });
 
     //skip tip click chechbox
@@ -921,7 +922,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 dataType: 'json',
                 data: {
                     captcha: $('#skipPhoneCode').val(),
-                    isSkipAuth:$('#tipCheck').val()
+                    skipAuth:$('#tipCheck').val()
                 }
             })
             .done(function(data) {
