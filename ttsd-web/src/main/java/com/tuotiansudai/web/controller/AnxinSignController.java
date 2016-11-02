@@ -49,7 +49,7 @@ public class AnxinSignController {
     @RequestMapping(value = "/sendCaptcha", method = RequestMethod.POST)
     private BaseDto sendCaptcha(String captcha) throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
-        return anxinSignService.verifyCaptcha3102(loginName, captcha);
+        return anxinSignService.verifyCaptcha3102(loginName, captcha, false);
     }
 
 
