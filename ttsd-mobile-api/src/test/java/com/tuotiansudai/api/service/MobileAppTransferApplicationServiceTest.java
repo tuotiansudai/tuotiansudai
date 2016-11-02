@@ -97,6 +97,11 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         assertEquals("2016-02-09 00:00:00", baseResponseDto.getData().getTransferApplication().get(0).getTransferTime());
         assertEquals("4", baseResponseDto.getData().getTransferApplication().get(0).getLeftPeriod());
         assertEquals("400", baseResponseDto.getData().getTransferApplication().get(0).getLeftDays());
+
+        investRepayModel.setRepayDate(DateTime.now().plusDays(-90).toDate());
+        when(investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getInvestId(), loanModel.getPeriods())).thenReturn(investRepayModel);
+        baseResponseDto = mobileAppTransferApplicationService.generateTransferApplication(transferApplicationRequestDto);
+        assertEquals("0", baseResponseDto.getData().getTransferApplication().get(0).getLeftDays());
     }
     @Test
     public void shouldGenerateTransfereeApplicationIsSuccess() {
@@ -109,11 +114,12 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         paginationRequestDto.setIndex(1);
         List<TransferApplicationRecordDto> transferApplicationRecordDtos = Lists.newArrayList(transferApplicationRecordDto);
         LoanModel loanModel = createLoanByUserId("test", transferApplicationRecordDto.getLoanId());
+        InvestRepayModel investRepayModel = createInvestRepay("test", transferApplicationRecordDto.getInvestId(), 100, loanModel.getPeriods());
 
         when(transferApplicationMapper.findTransfereeApplicationPaginationByLoginName(anyString(), anyInt(), anyInt())).thenReturn(transferApplicationRecordDtos);
         when(transferApplicationMapper.findCountTransfereeApplicationPaginationByLoginName(anyString())).thenReturn(1);
         when(loanMapper.findById(transferApplicationRecordDto.getLoanId())).thenReturn(loanModel);
-        when(investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getInvestId(), loanModel.getPeriods())).thenReturn(createInvestRepay("test", transferApplicationRecordDto.getInvestId(), 100, loanModel.getPeriods()));
+        when(investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getInvestId(), loanModel.getPeriods())).thenReturn(investRepayModel);
 
         BaseResponseDto<TransferApplicationResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.generateTransfereeApplication(paginationRequestDto);
         assertEquals(TransferStatus.TRANSFERRING, baseResponseDto.getData().getTransferApplication().get(0).getTransferStatus());
@@ -125,6 +131,11 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         assertEquals("2016-02-09 00:00:00", baseResponseDto.getData().getTransferApplication().get(0).getTransferTime());
         assertEquals("4", baseResponseDto.getData().getTransferApplication().get(0).getLeftPeriod());
         assertEquals("90", baseResponseDto.getData().getTransferApplication().get(0).getLeftDays());
+
+        investRepayModel.setRepayDate(DateTime.now().plusDays(-90).toDate());
+        when(investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getInvestId(), loanModel.getPeriods())).thenReturn(investRepayModel);
+        baseResponseDto = mobileAppTransferApplicationService.generateTransfereeApplication(paginationRequestDto);
+        assertEquals("0", baseResponseDto.getData().getTransferApplication().get(0).getLeftDays());
     }
 
     private TransferApplicationRecordDto createTransferApplicationRecordDto() {

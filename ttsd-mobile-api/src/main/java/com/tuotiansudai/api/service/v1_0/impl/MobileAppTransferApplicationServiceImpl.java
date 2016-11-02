@@ -201,7 +201,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
                 LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
                 InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getInvestId(), loanModel.getPeriods());
                 long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), investRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                transferApplicationRecordResponseDataDto.setLeftDays(String.valueOf(leftDays));
+                transferApplicationRecordResponseDataDto.setLeftDays(String.valueOf(leftDays > 0 ? leftDays : 0));
                 return transferApplicationRecordResponseDataDto;
             }).collect(Collectors.toList());
             transferApplicationResponseDataDto.setTransferApplication(transferApplication);
@@ -270,12 +270,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         transferApplicationResponseDataDto.setTotalCount(transferService.findCountAllTransferApplicationPaginationList(transferStatusList, Double.parseDouble(rateLower), Double.parseDouble(rateUpper)));
 
         if (CollectionUtils.isNotEmpty(transferApplicationRecordDto.getRecords())) {
-            List<TransferApplicationRecordResponseDataDto> transferApplication = Lists.transform(transferApplicationRecordDto.getRecords(), new Function<TransferApplicationPaginationItemDataDto, TransferApplicationRecordResponseDataDto>() {
-                @Override
-                public TransferApplicationRecordResponseDataDto apply(TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto) {
-                    return new TransferApplicationRecordResponseDataDto(transferApplicationPaginationItemDataDto);
-                }
-            });
+            List<TransferApplicationRecordResponseDataDto> transferApplication = transferApplicationRecordDto.getRecords().stream().map(TransferApplicationRecordResponseDataDto::new).collect(Collectors.toList());
             transferApplicationResponseDataDto.setTransferApplication(transferApplication);
         }
 
