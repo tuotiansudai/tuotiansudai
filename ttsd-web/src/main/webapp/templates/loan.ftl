@@ -284,9 +284,9 @@
                                 </#if>
                             </@global.role>
                             
-                            <input type="hidden" value="${loan.investor.isSkipAuth}" id="isSkipAuth">
+                            <input type="hidden" value="${loan.investor.skipAuth?c}" id="isSkipAuth">
                             <@global.role hasRole="'INVESTOR'">
-                            <#if !loan.investor.isSkipAuth>
+                            <#if !loan.investor.skipAuth>
                             <dd class="skip-group">
                                 <label>
                                     <i class="skip-icon active"></i>
