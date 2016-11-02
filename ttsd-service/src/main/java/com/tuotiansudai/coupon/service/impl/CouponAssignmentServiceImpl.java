@@ -221,7 +221,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                     isChannelUser =  couponUserGroupModel.getUserGroupItems().contains(userModel.getChannel()) && (userModel.getRegisterTime().after(couponModel.getStartTime()) && userModel.getRegisterTime().before(couponModel.getEndTime()));
                 }
 
-                return couponModel.getUserGroup().equals(UserGroup.CHANNEL) ? isChannelUser : (isInUserGroup && isAssignableCoupon);
+                return couponModel.getUserGroup().equals(UserGroup.CHANNEL) ? (isChannelUser && isAssignableCoupon) : (isInUserGroup && isAssignableCoupon);
             }
 
             // 用户已经持有的该类型的优惠券的数量
