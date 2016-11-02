@@ -1,7 +1,5 @@
 package com.tuotiansudai.message.repository.model;
 
-import com.tuotiansudai.message.dto.MessageDto;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -11,10 +9,14 @@ public class MessageModel implements Serializable {
     private String title;
     private String appTitle;
     private String template;
+    private String templateTxt;
     private MessageType type;
     private MessageEventType eventType;
     private List<MessageUserGroup> userGroups;
     private List<MessageChannel> channels;
+    private ManualMessageType manualMessageType;
+    private String webUrl;
+    private AppUrl appUrl;
     private MessageStatus status;
     private long readCount;
     private String activatedBy;
@@ -40,16 +42,6 @@ public class MessageModel implements Serializable {
         this.createdTime = new Date();
         this.updatedBy = this.createdBy;
         this.updatedTime = this.createdTime;
-    }
-
-    public MessageModel(MessageDto messageDto) {
-        this.id = messageDto.getId();
-        this.title = messageDto.getTitle();
-        this.template = messageDto.getTemplate();
-        this.userGroups = messageDto.getUserGroups();
-        this.channels = messageDto.getChannels();
-        this.updatedBy = messageDto.getUpdatedBy();
-        this.createdBy = messageDto.getCreatedBy();
     }
 
     public long getId() {
@@ -84,6 +76,14 @@ public class MessageModel implements Serializable {
         this.template = template;
     }
 
+    public String getTemplateTxt() {
+        return templateTxt;
+    }
+
+    public void setTemplateTxt(String templateTxt) {
+        this.templateTxt = templateTxt;
+    }
+
     public MessageType getType() {
         return type;
     }
@@ -114,6 +114,30 @@ public class MessageModel implements Serializable {
 
     public void setChannels(List<MessageChannel> channels) {
         this.channels = channels;
+    }
+
+    public ManualMessageType getManualMessageType() {
+        return manualMessageType;
+    }
+
+    public void setManualMessageType(ManualMessageType manualMessageType) {
+        this.manualMessageType = manualMessageType;
+    }
+
+    public String getWebUrl() {
+        return webUrl;
+    }
+
+    public void setWebUrl(String webUrl) {
+        this.webUrl = webUrl;
+    }
+
+    public AppUrl getAppUrl() {
+        return appUrl;
+    }
+
+    public void setAppUrl(AppUrl appUrl) {
+        this.appUrl = appUrl;
     }
 
     public MessageStatus getStatus() {

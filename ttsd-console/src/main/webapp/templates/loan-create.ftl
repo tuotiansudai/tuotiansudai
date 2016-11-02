@@ -39,7 +39,8 @@
                     <div class="col-sm-3">
                         <select name="loanType" class="selectpicker b-width">
                             <#list loanTypes as loanType>
-                                <option value="${loanType.name()}" <#if loanType_index == 0 >selected="selected"</#if>>${loanType.getName()}</option>
+                                <option value="${loanType.name()}"
+                                        <#if loanType_index == 0 >selected="selected"</#if>>${loanType.getName()}</option>
                             </#list>
                         </select>
                     </div>
@@ -52,7 +53,8 @@
                         <select name="productType" class="selectpicker">
                             <option value="">请选择</option>
                             <#list productTypes as productType>
-                                <option value="${productType.name()}" <#if productType_index == 0 >selected="selected"</#if>>${productType.getDuration()}</option>
+                                <option value="${productType.name()}"
+                                        <#if productType_index == 0 >selected="selected"</#if>>${productType.getDuration()}</option>
                             </#list>
                         </select>
                     </div>
@@ -63,7 +65,8 @@
                     <label class="col-sm-2 control-label">预计出借金额（元）: </label>
 
                     <div class="col-sm-3">
-                        <input name="loanAmount" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
+                        <input name="loanAmount" type="text" class="form-control amount"
+                               datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
                                errormsg="预计出借金额需要正确填写">
                     </div>
                 </div>
@@ -72,7 +75,8 @@
                     <label class="col-sm-2 control-label">单笔最小投资金额（元）: </label>
 
                     <div class="col-sm-3">
-                        <input name="minInvestAmount" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
+                        <input name="minInvestAmount" type="text" class="form-control amount"
+                               datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
                                errormsg="单笔最小投资金额需要正确填写">
                     </div>
                 </div>
@@ -81,7 +85,8 @@
                     <label class="col-sm-2 control-label">投资递增金额（元）: </label>
 
                     <div class="col-sm-3">
-                        <input name="investIncreasingAmount" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
+                        <input name="investIncreasingAmount" type="text" class="form-control amount"
+                               datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
                                errormsg="投资递增金额需要正确填写">
                     </div>
                 </div>
@@ -90,7 +95,8 @@
                     <label class="col-sm-2 control-label">个人最大投资金额（元）: </label>
 
                     <div class="col-sm-3">
-                        <input name="maxInvestAmount" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
+                        <input name="maxInvestAmount" type="text" class="form-control amount"
+                               datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
                                errormsg="个人最大投资金额需要正确填写">
                     </div>
                 </div>
@@ -101,7 +107,8 @@
                     <div class="col-sm-2">
                         <select name="activityType" class="selectpicker">
                             <#list activityTypes as activityType>
-                                <option value="${activityType.name()}" <#if activityType_index == 0 >selected="selected"</#if>>${activityType.getActivityTypeName()}</option>
+                                <option value="${activityType.name()}"
+                                        <#if activityType_index == 0 >selected="selected"</#if>>${activityType.getActivityTypeName()}</option>
                             </#list>
                         </select>
                     </div>
@@ -127,7 +134,8 @@
                     <label class="col-sm-2 control-label">基本利率（%）: </label>
 
                     <div class="col-sm-3">
-                        <input name="baseRate" type="text" class="form-control rate" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/" errormsg="基本利率需要正确填写">
+                        <input name="baseRate" type="text" class="form-control rate"
+                               datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/" errormsg="基本利率需要正确填写">
                     </div>
                 </div>
 
@@ -135,7 +143,8 @@
                     <label class="col-sm-2 control-label">活动利率（%）: </label>
 
                     <div class="col-sm-3">
-                        <input name="activityRate" type="text" class="form-control rate" datatype="/^\d+(\.\d{1,2})?$/" value="0.0"
+                        <input name="activityRate" type="text" class="form-control rate" datatype="/^\d+(\.\d{1,2})?$/"
+                               value="0.0"
                                errormsg="活动利率需要正确填写">
                     </div>
                 </div>
@@ -188,7 +197,8 @@
                     <div class="col-sm-2 checkbox" id="extraSource">
                         <#list extraSources as source>
                             <label>
-                                <input name="extraSource" type="checkbox" value="${source.name()}">${source.name()}</input>
+                                <input name="extraSource" type="checkbox"
+                                       value="${source.name()}">${source.name()}</input>
                             </label>
                         </#list>
                     </div>
@@ -230,10 +240,40 @@
             <div class="upload-box"></div>
         </div>
 
+        <h3><span>消息中心信息</span></h3>
+        <hr class="top-line"/>
+        <div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">是否发送信息: </label>
+
+                <div class="col-sm-4 checkbox">
+                    <input type="checkbox" class="message-send" name="message-send">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">推送信息标题</label>
+
+                <div class="col-sm-3">
+                    <input name="message-title" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">推送信息内容</label>
+
+                <div class="col-sm-3">
+                    <input name="message-content" type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-sm-2 control-label">操作: </label>
             <div class="col-sm-4">
-                <button type="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/create">保存</button>
+                <button type="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/create">
+                    保存
+                </button>
             </div>
         </div>
     </form>

@@ -1,8 +1,7 @@
-package com.tuotiansudai.jpush.repository.model;
+package com.tuotiansudai.enums;
 
 public enum PushSource {
     ALL,
     IOS,
     ANDROID
-
 }

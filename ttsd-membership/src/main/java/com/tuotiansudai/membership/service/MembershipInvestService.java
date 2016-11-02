@@ -52,11 +52,15 @@ public class MembershipInvestService {
             int level = userMembershipEvaluator.evaluateUpgradeLevel(loginName).getLevel();
             MembershipModel newMembership = membershipMapper.findByExperience(accountModel.getMembershipPoint());
             if (newMembership.getLevel() > level) {
-                UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, newMembership.getId());
-                userMembershipMapper.create(userMembershipModel);
+                membershipUpgrade(loginName, newMembership.getId());
             }
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+    }
+
+    public void membershipUpgrade(String loginName, long membershipId) {
+        UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, membershipId);
+        userMembershipMapper.create(userMembershipModel);
     }
 }

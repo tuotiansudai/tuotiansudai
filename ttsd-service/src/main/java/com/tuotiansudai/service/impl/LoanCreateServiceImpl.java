@@ -4,11 +4,13 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.job.AutoInvestJob;
 import com.tuotiansudai.job.DeadlineFundraisingJob;
 import com.tuotiansudai.job.FundraisingStartJob;
 import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.message.service.MessageService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanCreateService;
@@ -83,6 +85,12 @@ public class LoanCreateServiceImpl implements LoanCreateService {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private MessageService messageService;
+
     @Override
     public LoanTitleModel createTitle(LoanTitleDto loanTitleDto) {
         LoanTitleModel loanTitleModel = new LoanTitleModel(idGenerator.generate(), LoanTitleType.NEW_TITLE_TYPE, loanTitleDto.getTitle());
@@ -137,6 +145,11 @@ public class LoanCreateServiceImpl implements LoanCreateService {
 
         if (loanCreateRequestDto.getLoanerEnterpriseDetails() != null) {
             pledgeEnterpriseMapper.create(new PledgeEnterpriseModel(loanId, loanCreateRequestDto.getPledgeEnterprise()));
+        }
+
+        if (null != loanCreateRequestDto.getMessageCreateDto()) {
+            long messageId = messageService.createAndEditManualMessage(loanCreateRequestDto.getMessageCreateDto(), 0);
+            redisWrapperClient.hset(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanId), String.valueOf(messageId));
         }
 
         return new BaseDto<>(new BaseDataDto(true));

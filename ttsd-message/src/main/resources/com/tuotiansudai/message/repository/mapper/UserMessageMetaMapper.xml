@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.message.repository.mapper.UserMessageMetaMapper">
 
-    <select id="findLoanNameById" parameterType="long" resultType="string">
-        select name from loan where id = ${id}
+    <select id="findLoanById" parameterType="long" resultType="hashmap">
+        select id, name, base_rate as baseRate, activity_rate as activityRate from loan where id = ${id}
     </select>
 
     <select id="findLoanByLoanRepayId" parameterType="long" resultType="hashmap">
@@ -41,29 +41,10 @@
         and datediff(user_coupon.end_time, now()) = 5
     </select>
 
-    <select id="findAssignUserCoupon" parameterType="long" resultType="hashmap">
-        select
-        user_coupon.login_name as login_name,
-        coupon.coupon_type  as type,
-        coupon.amount as amount,
-        coupon.rate as rate,
-        user_coupon.start_time as start_time,
-        user_coupon.end_time as end_time
-        from user_coupon
-        join coupon on user_coupon.coupon_id = coupon.id
-        where user_coupon.id = #{userCouponId}
-    </select>
-
-    <select id="findRechargeById" parameterType="long" resultType="hashmap">
-        select amount, login_name
-        from recharge
-        where id = #{id} and status = 'SUCCESS'
-    </select>
-
     <select id="findWithdrawById" parameterType="long" resultType="hashmap">
-        select amount, login_name
+        select amount, login_name, status
         from withdraw
-        where id = #{id} and status = 'SUCCESS'
+        where id = #{id}
     </select>
 
     <select id="findInvestById" parameterType="long" resultType="hashmap">
@@ -92,5 +73,27 @@
         and user_message.login_name = #{loginName}
         and message.event_type = 'MEMBERSHIP_EXPIRED'
         where user_message.created_time > user_membership.expired_time)
+    </select>
+
+    <select id="findLoanRepayById" resultType="hashmap">
+        select period from loan_repay where id = #{id}
+    </select>
+
+    <select id="findInvestsByLoanId" resultType="hashmap">
+        select id, login_name as loginName from invest where loan_id = #{loanId}
+    </select>
+
+    <select id="findInvestRepayByInvestIdAndPeriod" resultType="hashmap">
+        select repay_amount as amount from invest_repay where invest_id = #{investId} and period = #{period}
+    </select>
+
+    <select id="findBirthDayUsers" resultType="string">
+        select login_name
+        from account
+        where (if(length(identity_number) = 18, substring(identity_number,11,4), substring(identity_number,9,4))) = DATE_FORMAT(now(),'%m%d')
+    </select>
+
+    <select id="findMembershipById" resultType="hashmap">
+        select level from membership where id = #{id}
     </select>
 </mapper>

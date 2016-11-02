@@ -3,7 +3,7 @@ package com.tuotiansudai.message.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.message.dto.MessageDto;
+import com.tuotiansudai.message.dto.MessageCreateDto;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -11,7 +11,6 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -83,7 +82,7 @@ public class MessageServiceTest {
         return fakeUser;
     }
 
-    private MessageDto prepareData() {
+    private MessageCreateDto prepareData() {
         UserModel userModel = getFakeUser("testUser");
         UserModel testUserModel = getFakeUser("updateUser");
         userMapper.create(userModel);
@@ -94,100 +93,100 @@ public class MessageServiceTest {
                 Lists.newArrayList(MessageChannel.WEBSITE),
                 MessageStatus.TO_APPROVE, new Date(), userModel.getLoginName());
         messageMapper.create(messageModel);
-        return new MessageDto(messageModel);
+        return new MessageCreateDto(messageModel);
     }
 
     @Test
     public void testCreateAndEditManualMessage() throws Exception {
-        MessageDto originMessageDto = prepareData();
+        MessageCreateDto originMessageCreateDto = prepareData();
 
-        messageService.createAndEditManualMessage(originMessageDto, 0);
-        MessageDto messageDto = messageService.getMessageByMessageId(originMessageDto.getId());
-        assertEquals(originMessageDto.getId(), messageDto.getId());
-        assertEquals(originMessageDto.getTitle(), messageDto.getTitle());
-        assertEquals(originMessageDto.getTemplate(), messageDto.getTemplate());
-        assertEquals(originMessageDto.getType(), messageDto.getType());
-        assertEquals(originMessageDto.getUserGroups(), messageDto.getUserGroups());
-        assertEquals(originMessageDto.getChannels(), messageDto.getChannels());
-        assertEquals(originMessageDto.getStatus(), messageDto.getStatus());
-        assertEquals(originMessageDto.getReadCount(), messageDto.getReadCount());
-        assertEquals(originMessageDto.getActivatedBy(), messageDto.getActivatedBy());
-        assertEquals(originMessageDto.getActivatedTime(), messageDto.getActivatedTime());
-        assertEquals(originMessageDto.getUpdatedBy(), messageDto.getUpdatedBy());
-        assertEquals(originMessageDto.getCreatedBy(), messageDto.getCreatedBy());
+        messageService.createAndEditManualMessage(originMessageCreateDto, 0);
+        MessageCreateDto messageCreateDto = messageService.getMessageByMessageId(originMessageCreateDto.getId());
+        assertEquals(originMessageCreateDto.getId(), messageCreateDto.getId());
+        assertEquals(originMessageCreateDto.getTitle(), messageCreateDto.getTitle());
+        assertEquals(originMessageCreateDto.getTemplate(), messageCreateDto.getTemplate());
+        assertEquals(originMessageCreateDto.getType(), messageCreateDto.getType());
+        assertEquals(originMessageCreateDto.getUserGroups(), messageCreateDto.getUserGroups());
+        assertEquals(originMessageCreateDto.getChannels(), messageCreateDto.getChannels());
+        assertEquals(originMessageCreateDto.getStatus(), messageCreateDto.getStatus());
+        assertEquals(originMessageCreateDto.getReadCount(), messageCreateDto.getReadCount());
+        assertEquals(originMessageCreateDto.getActivatedBy(), messageCreateDto.getActivatedBy());
+        assertEquals(originMessageCreateDto.getActivatedTime(), messageCreateDto.getActivatedTime());
+        assertEquals(originMessageCreateDto.getUpdatedBy(), messageCreateDto.getUpdatedBy());
+        assertEquals(originMessageCreateDto.getCreatedBy(), messageCreateDto.getCreatedBy());
 
-        originMessageDto.setTitle("editTitle");
-        originMessageDto.setTemplate("editTitle");
-        originMessageDto.setChannels(Lists.newArrayList(MessageChannel.APP_MESSAGE));
-        originMessageDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
-        messageService.createAndEditManualMessage(originMessageDto, 0);
-        messageDto = messageService.getMessageByMessageId(originMessageDto.getId());
-        assertEquals(originMessageDto.getId(), messageDto.getId());
-        assertEquals(originMessageDto.getTitle(), messageDto.getTitle());
-        assertEquals(originMessageDto.getTemplate(), messageDto.getTemplate());
-        assertEquals(originMessageDto.getType(), messageDto.getType());
-        assertEquals(originMessageDto.getUserGroups(), messageDto.getUserGroups());
-        assertEquals(originMessageDto.getChannels(), messageDto.getChannels());
-        assertEquals(originMessageDto.getStatus(), messageDto.getStatus());
-        assertEquals(originMessageDto.getReadCount(), messageDto.getReadCount());
-        assertEquals(originMessageDto.getActivatedBy(), messageDto.getActivatedBy());
-        assertEquals(originMessageDto.getActivatedTime(), messageDto.getActivatedTime());
-        assertEquals(originMessageDto.getUpdatedBy(), messageDto.getUpdatedBy());
-        assertEquals(originMessageDto.getCreatedBy(), messageDto.getCreatedBy());
+        originMessageCreateDto.setTitle("editTitle");
+        originMessageCreateDto.setTemplate("editTitle");
+        originMessageCreateDto.setChannels(Lists.newArrayList(MessageChannel.APP_MESSAGE));
+        originMessageCreateDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
+        messageService.createAndEditManualMessage(originMessageCreateDto, 0);
+        messageCreateDto = messageService.getMessageByMessageId(originMessageCreateDto.getId());
+        assertEquals(originMessageCreateDto.getId(), messageCreateDto.getId());
+        assertEquals(originMessageCreateDto.getTitle(), messageCreateDto.getTitle());
+        assertEquals(originMessageCreateDto.getTemplate(), messageCreateDto.getTemplate());
+        assertEquals(originMessageCreateDto.getType(), messageCreateDto.getType());
+        assertEquals(originMessageCreateDto.getUserGroups(), messageCreateDto.getUserGroups());
+        assertEquals(originMessageCreateDto.getChannels(), messageCreateDto.getChannels());
+        assertEquals(originMessageCreateDto.getStatus(), messageCreateDto.getStatus());
+        assertEquals(originMessageCreateDto.getReadCount(), messageCreateDto.getReadCount());
+        assertEquals(originMessageCreateDto.getActivatedBy(), messageCreateDto.getActivatedBy());
+        assertEquals(originMessageCreateDto.getActivatedTime(), messageCreateDto.getActivatedTime());
+        assertEquals(originMessageCreateDto.getUpdatedBy(), messageCreateDto.getUpdatedBy());
+        assertEquals(originMessageCreateDto.getCreatedBy(), messageCreateDto.getCreatedBy());
     }
 
     @Test
     public void testMessageExisted() throws Exception {
-        MessageDto messageDto = prepareData();
+        MessageCreateDto messageCreateDto = prepareData();
 
-        assertTrue(messageService.isMessageExist(messageDto.getId()));
+        assertTrue(messageService.isMessageExist(messageCreateDto.getId()));
         assertFalse(messageService.isMessageExist(-1));
     }
 
     @Test
     public void testGetMessageByMessageId() throws Exception {
-        MessageDto originMessageDto = prepareData();
+        MessageCreateDto originMessageCreateDto = prepareData();
 
-        MessageDto messageDto = messageService.getMessageByMessageId(originMessageDto.getId());
+        MessageCreateDto messageCreateDto = messageService.getMessageByMessageId(originMessageCreateDto.getId());
 
-        assertEquals(originMessageDto.getId(), messageDto.getId());
-        assertEquals(originMessageDto.getTitle(), messageDto.getTitle());
-        assertEquals(originMessageDto.getTemplate(), messageDto.getTemplate());
-        assertEquals(originMessageDto.getType(), messageDto.getType());
-        assertEquals(originMessageDto.getUserGroups(), messageDto.getUserGroups());
-        assertEquals(originMessageDto.getChannels(), messageDto.getChannels());
-        assertEquals(originMessageDto.getStatus(), messageDto.getStatus());
-        assertEquals(originMessageDto.getReadCount(), messageDto.getReadCount());
-        assertEquals(originMessageDto.getActivatedBy(), messageDto.getActivatedBy());
-        assertEquals(originMessageDto.getActivatedTime(), messageDto.getActivatedTime());
-        assertEquals(originMessageDto.getUpdatedBy(), messageDto.getUpdatedBy());
-        assertEquals(originMessageDto.getCreatedBy(), messageDto.getCreatedBy());
+        assertEquals(originMessageCreateDto.getId(), messageCreateDto.getId());
+        assertEquals(originMessageCreateDto.getTitle(), messageCreateDto.getTitle());
+        assertEquals(originMessageCreateDto.getTemplate(), messageCreateDto.getTemplate());
+        assertEquals(originMessageCreateDto.getType(), messageCreateDto.getType());
+        assertEquals(originMessageCreateDto.getUserGroups(), messageCreateDto.getUserGroups());
+        assertEquals(originMessageCreateDto.getChannels(), messageCreateDto.getChannels());
+        assertEquals(originMessageCreateDto.getStatus(), messageCreateDto.getStatus());
+        assertEquals(originMessageCreateDto.getReadCount(), messageCreateDto.getReadCount());
+        assertEquals(originMessageCreateDto.getActivatedBy(), messageCreateDto.getActivatedBy());
+        assertEquals(originMessageCreateDto.getActivatedTime(), messageCreateDto.getActivatedTime());
+        assertEquals(originMessageCreateDto.getUpdatedBy(), messageCreateDto.getUpdatedBy());
+        assertEquals(originMessageCreateDto.getCreatedBy(), messageCreateDto.getCreatedBy());
     }
 
     public void testRejectManualMessage() throws Exception {
-        MessageDto originMessageDto = prepareData();
-        BaseDto<BaseDataDto> baseDto = messageService.rejectManualMessage(originMessageDto.getId(), "updateUser");
+        MessageCreateDto originMessageCreateDto = prepareData();
+        BaseDto<BaseDataDto> baseDto = messageService.rejectManualMessage(originMessageCreateDto.getId(), "updateUser");
         assertTrue(baseDto.getData().getStatus());
-        MessageDto messageDto = messageService.getMessageByMessageId(originMessageDto.getId());
-        assertEquals(MessageStatus.REJECTION, messageDto.getStatus());
-        assertEquals("updateUser", messageDto.getUpdatedBy());
-        baseDto = messageService.rejectManualMessage(originMessageDto.getId(), "");
+        MessageCreateDto messageCreateDto = messageService.getMessageByMessageId(originMessageCreateDto.getId());
+        assertEquals(MessageStatus.REJECTION, messageCreateDto.getStatus());
+        assertEquals("updateUser", messageCreateDto.getUpdatedBy());
+        baseDto = messageService.rejectManualMessage(originMessageCreateDto.getId(), "");
         assertFalse(baseDto.getData().getStatus());
     }
 
     public void testApproveManualMessage() throws Exception {
-        MessageDto originMessageDto = prepareData();
-        BaseDto<BaseDataDto> baseDto = messageService.approveManualMessage(originMessageDto.getId(), "updateUser");
+        MessageCreateDto originMessageCreateDto = prepareData();
+        BaseDto<BaseDataDto> baseDto = messageService.approveManualMessage(originMessageCreateDto.getId(), "updateUser");
         assertTrue(baseDto.getData().getStatus());
-        MessageDto messageDto = messageService.getMessageByMessageId(originMessageDto.getId());
-        assertEquals(MessageStatus.APPROVED, messageDto.getStatus());
-        assertEquals("updateUser", messageDto.getUpdatedBy());
-        baseDto = messageService.rejectManualMessage(originMessageDto.getId(), "");
+        MessageCreateDto messageCreateDto = messageService.getMessageByMessageId(originMessageCreateDto.getId());
+        assertEquals(MessageStatus.APPROVED, messageCreateDto.getStatus());
+        assertEquals("updateUser", messageCreateDto.getUpdatedBy());
+        baseDto = messageService.rejectManualMessage(originMessageCreateDto.getId(), "");
         assertFalse(baseDto.getData().getStatus());
     }
 
     public void testDeleteManualMessage() throws Exception {
-        MessageDto messageDto = prepareData();
+        MessageCreateDto messageDto = prepareData();
         messageService.deleteManualMessage(messageDto.getId(), "");
         assertTrue(null == messageService.getMessageByMessageId(messageDto.getId()));
     }

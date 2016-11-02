@@ -5,7 +5,10 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.message.dto.MessageDto;
+import com.tuotiansudai.jpush.dto.JPushAlertDto;
+import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
+import com.tuotiansudai.jpush.service.JPushAlertService;
+import com.tuotiansudai.message.dto.MessageCreateDto;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageStatus;
@@ -23,6 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageServiceImpl implements MessageService {
@@ -33,6 +37,9 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
+    @Autowired
+    private JPushAlertService jPushAlertService;
+
     public final static String redisMessageReceivers = "message:manual-message:receivers";
 
     private final static int EXPIRED_PERIOD = 30;
@@ -42,18 +49,53 @@ public class MessageServiceImpl implements MessageService {
         return messageMapper.findMessageCount(title, messageStatus, createdBy, messageType);
     }
 
-    @Override
-    public List<MessageModel> findMessageList(String title, MessageStatus messageStatus, String createdBy, MessageType messageType, int index, int pageSize) {
-        return messageMapper.findMessageList(title, messageStatus, createdBy, messageType, (index - 1) * pageSize, pageSize);
+    private MessageCreateDto messageModelToDto(MessageModel messageModel) {
+        MessageCreateDto messageCreateDto = new MessageCreateDto(messageModel);
+        Long jPushId = jPushAlertService.findJPushIdByMessageId(messageModel.getId());
+        if (null != jPushId) {
+            JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelById(jPushId);
+            messageCreateDto.setJpush(true);
+            messageCreateDto.setPushType(jPushAlertModel.getPushType());
+            messageCreateDto.setPushSource(jPushAlertModel.getPushSource());
+            messageCreateDto.setPushDistricts(jPushAlertModel.getPushDistricts());
+        } else {
+            messageCreateDto.setJpush(false);
+        }
+        return messageCreateDto;
     }
 
     @Override
-    public void createAndEditManualMessage(MessageDto messageDto, long importUsersId) {
-        long messageId = messageDto.getId();
+    public List<MessageCreateDto> findMessageList(String title, MessageStatus messageStatus, String createdBy, MessageType messageType, int index, int pageSize) {
+        List<MessageModel> messageModels = messageMapper.findMessageList(title, messageStatus, createdBy, messageType, (index - 1) * pageSize, pageSize);
+        return messageModels.stream().map(this::messageModelToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public long createAndEditManualMessage(MessageCreateDto messageCreateDto, long importUsersId) {
+        long messageId = messageCreateDto.getId();
         if (isMessageExist(messageId)) {
-            editManualMessage(messageDto, importUsersId);
+            editManualMessage(messageCreateDto, importUsersId);
         } else {
-            createManualMessage(messageDto, importUsersId);
+            MessageModel messageModel = createManualMessage(messageCreateDto, importUsersId);
+            messageId = messageModel.getId();
+        }
+        if (messageCreateDto.isJpush()) {
+            editManualJPush(messageCreateDto, messageId);
+        }
+        return messageId;
+    }
+
+    private void editManualJPush(MessageCreateDto messageCreateDto, long messageId) {
+        Long jPushId = jPushAlertService.findJPushIdByMessageId(messageId);
+        JPushAlertDto jPushAlertDto = messageCreateDto.getJPushAlertDto();
+        jPushAlertDto.setMessageId(messageId);
+        if (null != jPushId && !messageCreateDto.isJpush()) {
+            jPushAlertService.delete(messageCreateDto.getUpdatedBy(), jPushId);
+        } else {
+            if (messageCreateDto.isJpush()) {
+                jPushAlertDto.setId(String.valueOf(jPushId));
+            }
+            jPushAlertService.buildJPushAlert(messageCreateDto.getCreatedBy(), jPushAlertDto);
         }
     }
 
@@ -84,8 +126,8 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public MessageDto getMessageByMessageId(long messageId) {
-        return new MessageDto(messageMapper.findById(messageId));
+    public MessageCreateDto getMessageByMessageId(long messageId) {
+        return messageModelToDto(messageMapper.findById(messageId));
     }
 
     @Override
@@ -99,6 +141,11 @@ public class MessageServiceImpl implements MessageService {
             messageModel.setUpdatedTime(new Date());
             messageModel.setUpdatedBy(checkerName);
             messageMapper.update(messageModel);
+
+            Long jPushId = jPushAlertService.findJPushIdByMessageId(messageId);
+            if (null != jPushId) {
+                jPushAlertService.reject(checkerName, jPushId, null);
+            }
             return new BaseDto<>(new BaseDataDto(true, null));
         }
         return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE"));
@@ -117,6 +164,11 @@ public class MessageServiceImpl implements MessageService {
             messageModel.setUpdatedTime(new Date());
             messageModel.setUpdatedBy(checkerName);
             messageMapper.update(messageModel);
+
+            Long jPushId = jPushAlertService.findJPushIdByMessageId(messageId);
+            if (null != jPushId) {
+                jPushAlertService.manualJPushAlert(jPushId);
+            }
             return new BaseDto<>(new BaseDataDto(true, null));
         }
         return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE"));
@@ -129,6 +181,11 @@ public class MessageServiceImpl implements MessageService {
         }
         messageMapper.deleteById(messageId, updatedBy, new Date());
         redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(messageId));
+
+        Long jPushId = jPushAlertService.findJPushIdByMessageId(messageId);
+        if (null != jPushId) {
+            jPushAlertService.delete(updatedBy, jPushId);
+        }
         return new BaseDto<>(new BaseDataDto(true, null));
     }
 
@@ -138,8 +195,8 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @SuppressWarnings(value = "unchecked")
-    private void createManualMessage(MessageDto messageDto, long importUsersId) {
-        MessageModel messageModel = new MessageModel(messageDto);
+    private MessageModel createManualMessage(MessageCreateDto messageCreateDto, long importUsersId) {
+        MessageModel messageModel = messageCreateDto.getMessageModel();
 
         messageModel.setType(MessageType.MANUAL);
         messageModel.setStatus(MessageStatus.TO_APPROVE);
@@ -150,21 +207,23 @@ public class MessageServiceImpl implements MessageService {
 
         messageMapper.create(messageModel);
 
-        if (messageDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
+        if (messageCreateDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
             String messageId = String.valueOf(messageModel.getId());
             List<String> importUsers = (List<String>) redisWrapperClient.hgetSeri(redisMessageReceivers, String.valueOf(importUsersId));
             redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(importUsersId));
             redisWrapperClient.hsetSeri(redisMessageReceivers, messageId, importUsers);
         }
+
+        return messageModel;
     }
 
     @SuppressWarnings(value = "unchecked")
-    private void editManualMessage(MessageDto messageDto, long importUsersId) {
+    private void editManualMessage(MessageCreateDto messageCreateDto, long importUsersId) {
         List<String> importUsers = (List<String>) redisWrapperClient.hgetSeri(redisMessageReceivers, String.valueOf(importUsersId));
         redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(importUsersId));
 
-        MessageModel originMessageModel = messageMapper.findById(messageDto.getId());
-        MessageModel messageModel = new MessageModel(messageDto);
+        MessageModel originMessageModel = messageMapper.findById(messageCreateDto.getId());
+        MessageModel messageModel = messageCreateDto.getMessageModel();
 
         messageModel.setType(originMessageModel.getType());
         messageModel.setEventType(originMessageModel.getEventType());
@@ -179,8 +238,8 @@ public class MessageServiceImpl implements MessageService {
 
         messageMapper.update(messageModel);
 
-        if (messageDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
-            String messageId = String.valueOf(messageDto.getId());
+        if (messageCreateDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
+            String messageId = String.valueOf(messageCreateDto.getId());
             redisWrapperClient.hsetSeri(redisMessageReceivers, messageId, importUsers);
         }
     }

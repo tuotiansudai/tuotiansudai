@@ -17,6 +17,7 @@ public enum JumpTo {
     WITHDRAW_RECORDS("10","提现记录",Lists.newArrayList("jumpTo")),
     REFERRER_INVEST_LIST("11","推荐人投资列表",Lists.newArrayList("jumpTo")),
     INVEST_REPAY("12","回款计划",Lists.newArrayList("jumpTo","investId","loanId","isCompleted")),
+    MESSAGE_CENTER("13", "消息中心", Lists.newArrayList("jumpTo")),
     OTHER("0","其他",Lists.newArrayList("jumpToLink"));
 
     private String index;

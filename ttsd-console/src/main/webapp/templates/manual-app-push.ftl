@@ -50,8 +50,8 @@
                     <input type="radio"  class="push_object_choose" value="district" name="pushObjectChoose" placeholder=""  datatype="*" >地区
                 </#if>
             </div>
-
         </div>
+
         <div class="form-group">
             <label  class="col-sm-2 control-label"></label>
             <div class="col-sm-5 province <#if !(jPushAlert??)|| (jPushAlert??&&!(jPushAlert.pushDistricts?has_content))>app-push-link</#if>">

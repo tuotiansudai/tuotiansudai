@@ -5,19 +5,37 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.AnnounceDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.message.dto.MessageCreateDto;
+import com.tuotiansudai.message.repository.model.ManualMessageType;
+import com.tuotiansudai.message.repository.model.MessageChannel;
+import com.tuotiansudai.message.repository.model.MessageStatus;
+import com.tuotiansudai.message.repository.model.MessageUserGroup;
+import com.tuotiansudai.message.service.MessageService;
 import com.tuotiansudai.repository.mapper.AnnounceMapper;
 import com.tuotiansudai.repository.model.AnnounceModel;
 import com.tuotiansudai.service.AnnounceService;
+import com.tuotiansudai.util.DistrictUtil;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
+
+import static com.tuotiansudai.enums.PushType.IMPORTANT_EVENT;
+import static com.tuotiansudai.message.repository.model.AppUrl.NOTIFY;
+import static com.tuotiansudai.message.repository.model.MessageType.MANUAL;
 
 @Service
 public class AnnounceServiceImpl implements AnnounceService {
 
     @Autowired
     private AnnounceMapper announceMapper;
+
+    @Autowired
+    private MessageService messageService;
 
     @Override
     public int findAnnounceCount(Long id, String title) {
@@ -30,8 +48,38 @@ public class AnnounceServiceImpl implements AnnounceService {
     }
 
     @Override
-    public void create(AnnounceDto announceDto) {
+    public void create(AnnounceDto announceDto, String createdBy) {
         this.announceMapper.create(new AnnounceModel(announceDto));
+        sendMessageAndJPush(announceDto, createdBy);
+    }
+
+    private void sendMessageAndJPush(AnnounceDto announceDto, String createdBy) {
+        MessageCreateDto messageCreateDto = new MessageCreateDto();
+        messageCreateDto.setTitle(announceDto.getTitle());
+        messageCreateDto.setTemplate(announceDto.getContent());
+        messageCreateDto.setTemplateTxt(announceDto.getContentText());
+        messageCreateDto.setType(MANUAL);
+        messageCreateDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
+        messageCreateDto.setChannels(Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
+        messageCreateDto.setManualMessageType(ManualMessageType.NOTIFY);
+        messageCreateDto.setWebUrl(MessageFormat.format("/announce/{0}", announceDto.getId()));
+        messageCreateDto.setAppUrl(NOTIFY);
+        messageCreateDto.setJpush(true);
+        messageCreateDto.setPushType(IMPORTANT_EVENT);
+        messageCreateDto.setPushSource(PushSource.ALL);
+        messageCreateDto.setPushDistricts(DistrictUtil.getAllCodes());
+        messageCreateDto.setStatus(MessageStatus.APPROVED);
+        messageCreateDto.setReadCount(0);
+        messageCreateDto.setActivatedBy(createdBy);
+        messageCreateDto.setActivatedTime(new Date());
+        messageCreateDto.setExpiredTime(new DateTime().withDate(9999, 12, 31).toDate());
+        messageCreateDto.setUpdatedBy(createdBy);
+        messageCreateDto.setUpdatedTime(new Date());
+        messageCreateDto.setCreatedBy(createdBy);
+        messageCreateDto.setCreatedTime(new Date());
+
+        long messageId = messageService.createAndEditManualMessage(messageCreateDto, 0);
+        messageService.approveManualMessage(messageId, createdBy);
     }
 
     @Override

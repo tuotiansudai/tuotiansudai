@@ -107,13 +107,71 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
         $submitBtn.on('click', function (event) {
             event.preventDefault();
             var boolFlag = check();
-            var $self = $(this);
+            var channelArr = [], placeArr = [], userGroupArr = [];
+            userGroupArr.push($('#userGroup').find('input[type="checkbox"]:checked').val());
+
+            $('#messageChannel').find('.channel:checked').each(function (index, el) {
+                channelArr.push($(this).val());
+            });
+
+            if ($('#areaGroup').find('input[type="checkbox"]:checked').length > 0) {
+                $('#areaGroup').find('input[type="checkbox"]:checked').each(function (index, el) {
+                    placeArr.push($(this).val());
+                });
+            } else {
+                // $('#areaGroup').find('input[type="checkbox"]').each(function (index, el) {
+                //     placeArr.push($(this).val());
+                // });
+            }
+
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {
-                    $('.message-template').val(getContentTxt());
-                    $self.attr('disabled', 'disabled');
-                    $messageForm[0].submit();
+                    var dataDto = {
+                        "id": $('.message-id').val(),
+                        "title": $('.message-title').val(),
+                        "template": getContent(),
+                        "templateTxt": getContentTxt(),
+                        "userGroups": userGroupArr,
+                        "channels": channelArr,
+                        "manualMessageType": $('.manualMessageType').val(),
+                        "webUrl": $('.message-web-url').val(),
+                        "appUrl": $('.message-app-url').val(),
+                        "jpush": $('#extra').prop('checked') ? true : false,
+                        "pushType": $('.message-pushType').val(),
+                        "pushSource": $('.message-pushSource').val(),
+                        "pushDistricts": placeArr
+                    };
+                    var dataForm = JSON.stringify(dataDto);
+                    var importUsersId = $('.importUsersId').val();
+                    var url = "/message-manage/manual-message/create?importUsersId=" + importUsersId;
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: dataForm,
+                        contentType: 'application/json; charset=UTF-8'
+                    }).done(function (res) {
+                        alert("success");
+                    });
                 }
+            }
+        });
+
+        $('#extra').on('change', function (event) {
+            event.preventDefault();
+            if ($(this).prop('checked') == true) {
+                $('.check-item').show();
+            } else {
+                $('.check-item').hide();
+            }
+        });
+
+        $('.area-list .push_object_choose').on('change', function (event) {
+            event.preventDefault();
+            if ($(this).attr('value') == 'all') {
+                $('#areaGroup .app-push-link').hide();
+            } else if ($(this).attr('value') == 'district') {
+                $('#areaGroup .app-push-link').show();
             }
         });
     });
