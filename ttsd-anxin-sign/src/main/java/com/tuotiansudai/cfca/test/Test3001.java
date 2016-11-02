@@ -16,7 +16,7 @@ public class Test3001 {
 
         Tx3001ReqVO tx3001ReqVO = new Tx3001ReqVO();
         HeadVO head = new HeadVO();
-        head.setTxTime(String.valueOf(System.currentTimeMillis()));
+        head.setTxTime("20161102155120");
 
         PersonVO person = new PersonVO();
         person.setPersonName("孙二");

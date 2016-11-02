@@ -126,6 +126,10 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             String retMessage = tx3101ResVO.getHead().getRetMessage();
 
             if (isSuccess(tx3101ResVO)) {
+                accountModel.setProjectCode(projectCode);
+                accountModel.setIsSkipAuth(isSkipAuth);
+                accountMapper.update(accountModel);
+
                 return new BaseDto<>(new BaseDataDto(true, retMessage));
             } else {
                 logger.error("verify anxin captcha code failed. " + retMessage);
