@@ -16,7 +16,7 @@ import cfca.trustsign.common.vo.response.tx3.Tx3202ResVO;
 import com.tuotiansudai.cfca.connector.HttpConnector;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
-import com.tuotiansudai.cfca.service.anxinSignService;
+import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.util.SecurityUtil;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class anxinSignServiceImpl implements anxinSignService {
+public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
     @Override
     public Tx3001ResVO createAccount3001(AccountModel accountModel, UserModel userModel) throws PKIException {

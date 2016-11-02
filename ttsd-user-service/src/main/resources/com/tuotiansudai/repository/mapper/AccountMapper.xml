@@ -21,6 +21,9 @@
         <result column="auto_repay" property="autoRepay"/>
         <result column="no_password_invest" property="noPasswordInvest"/>
         <result column="membership_point" property="membershipPoint"/>
+        <result column="anxin_user_id" property="anxinUserId"/>
+        <result column="is_skip_auth" property="isSkipAuth"/>
+        <result column="project_code" property="projectCode"/>
     </resultMap>
 
     <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">
@@ -50,7 +53,10 @@
           auto_repay = #{autoRepay},
           no_password_invest = #{noPasswordInvest},
           point = #{point},
-          membership_point = #{membershipPoint}
+          membership_point = #{membershipPoint},
+          anxin_user_id = #{anxinUserId},
+          is_skip_auth = #{isSkipAuth},
+          project_code = #{projectCode}
         where login_name = #{loginName}
     </update>
 

@@ -14,9 +14,9 @@ import com.tuotiansudai.cfca.util.CommonUtil;
 
 public class HttpConnector {
 
-    public static String JKS_PATH = "./jks/anxinsign.jks";
-    public static String JKS_PWD = "Abcd1234";
-    public static String ALIAS = "041@z20100816001@devadmintest@00000002 (cfca test oca11)";
+    public static String JKS_PATH = "/Users/zhoubx/workspace/ttsd/ttsd-anxin-sign/jks/anxinsign.jks";
+    public static String JKS_PWD = "123abc";
+    public static String ALIAS = "anxinsign";
 
     //     public String url = "https://210.74.46.99:8447/FEP/";
     public String url = "https://210.74.42.33:9443/FEP/";

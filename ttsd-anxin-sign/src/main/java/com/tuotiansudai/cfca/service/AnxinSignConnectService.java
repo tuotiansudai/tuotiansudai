@@ -8,11 +8,12 @@ import cfca.trustsign.common.vo.response.tx3.Tx3102ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3202ResVO;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
-public interface anxinSignService {
+@Service
+public interface AnxinSignConnectService {
 
     Tx3001ResVO createAccount3001(AccountModel accountModel, UserModel userModel) throws PKIException;
 

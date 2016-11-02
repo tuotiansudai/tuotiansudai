@@ -35,6 +35,12 @@ public class AccountModel implements Serializable{
 
     private long membershipPoint;
 
+    private String anxinUserId;
+
+    private boolean isSkipAuth;
+
+    private String projectCode;
+
     public AccountModel() {
     }
 
@@ -127,5 +133,29 @@ public class AccountModel implements Serializable{
 
     public void setMembershipPoint(long membershipPoint) {
         this.membershipPoint = membershipPoint;
+    }
+
+    public String getAnxinUserId() {
+        return anxinUserId;
+    }
+
+    public void setAnxinUserId(String anxinUserId) {
+        this.anxinUserId = anxinUserId;
+    }
+
+    public boolean isSkipAuth() {
+        return isSkipAuth;
+    }
+
+    public void setIsSkipAuth(boolean isSkipAuth) {
+        this.isSkipAuth = isSkipAuth;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 }

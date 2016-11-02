@@ -17,13 +17,13 @@ public class Test3002 {
 
         Tx3002ReqVO tx3002ReqVO = new Tx3002ReqVO();
         HeadVO head = new HeadVO();
-        head.setTxTime("20160102235959");
+        head.setTxTime(String.valueOf(System.currentTimeMillis()));
 
         EnterpriseVO enterprise = new EnterpriseVO();
-        enterprise.setEnterpriseName("中国测试公司");
+        enterprise.setEnterpriseName("拓天速贷测试账号");
         enterprise.setIdentTypeCode("3");
         enterprise.setIdentNo("123123");
-        enterprise.setMobilePhone("13800138001");
+        enterprise.setMobilePhone("18611445119");
         enterprise.setLandlinePhone("11900139002");
         enterprise.setEmail("11900139002@cfca.com.cn");
         enterprise.setAuthenticationMode("公安部");
