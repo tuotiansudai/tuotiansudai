@@ -96,7 +96,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         assertEquals("12.00", baseResponseDto.getData().getTransferApplication().get(0).getInvestAmount());
         assertEquals("2016-02-09 00:00:00", baseResponseDto.getData().getTransferApplication().get(0).getTransferTime());
         assertEquals("4", baseResponseDto.getData().getTransferApplication().get(0).getLeftPeriod());
-
+        assertEquals("400", baseResponseDto.getData().getTransferApplication().get(0).getLeftDays());
     }
     @Test
     public void shouldGenerateTransfereeApplicationIsSuccess() {
@@ -271,7 +271,6 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         assertEquals(new DateTime().withTimeAtStartOfDay().toString("yyyy/MM/dd HH:mm:ss"),baseResponseDto.getData().getDeadLine());
         assertEquals("99.49",baseResponseDto.getData().getDiscountLower());
         assertEquals(AmountConverter.convertCentToString(investModel.getAmount()),baseResponseDto.getData().getDiscountUpper());
-
     }
 
     @Test
@@ -303,7 +302,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         assertEquals("1", baseResponseDto.getData().getTransferApplication().get(0).getActivityRate());
         assertEquals("12", baseResponseDto.getData().getTransferApplication().get(0).getBaseRate());
         assertEquals(TransferStatus.SUCCESS, baseResponseDto.getData().getTransferApplication().get(0).getTransferStatus());
-
+        assertEquals("400", baseResponseDto.getData().getTransferApplication().get(0).getLeftDays());
     }
 
     @Test
@@ -348,6 +347,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferApplicationPaginationItemDataDto.setBaseRate(12);
         transferApplicationPaginationItemDataDto.setActivityRate(1);
         transferApplicationPaginationItemDataDto.setTransferStatus(transferApplicationModel.getStatus().name());
+        transferApplicationPaginationItemDataDto.setLeftDays("400");
 
         return transferApplicationPaginationItemDataDto;
     }
