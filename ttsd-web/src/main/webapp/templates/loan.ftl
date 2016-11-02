@@ -283,6 +283,19 @@
                                     </dd>
                                 </#if>
                             </@global.role>
+                            
+                            <input type="hidden" value="false" id="isSkipAuth">
+                            
+                            <dd class="skip-group">
+                                <label>
+                                    <i class="skip-icon active"></i>
+                                    <input type="hidden" id="skipCheck" value="true">
+                                </label>
+                                <div class="skip-text">
+                                    我已阅读并同意<a href="javascript:void(0)"><span>《安心签服务协议》</span>、<span>《隐私条款》</span>和<span>《CFCA数字证书服务协议》</span></a>
+                                </div>
+                            </dd>
+                            
                         </dl>
                     </form>
                 </#if>
@@ -516,6 +529,38 @@
         <input type="hidden" name="noPasswordInvest" value="true"/>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
+    <div class="get-skipphone-tip" id="getSkipPhone">
+        <div class="tip-item">
+            <span>
+                <input type="text" class="skip-phone-code" id="skipPhoneCode" placeholder="请输入验证码">
+            </span>
+            <span>
+                <input type="button" class="get-skip-code" value="获取短信验证码" id="getSkipCode">
+                <i class="microphone">
+                    <img src="${staticServer}/images/icons/microphone.png">
+                </i>
+            </span>
+        </div>
+        <div class="tip-item">
+            <span class="skip-error" id="skipError"></span>
+            <a href="/" class="skip-intro" target="_blank">什么是安心签？</a>
+        </div>
+        <div class="tip-item">
+            <button class="get-skip-btn" id="getSkipBtn">立即授权</button>
+        </div>
+        <div class="tip-item">
+            <label>
+                <i class="skip-icon active"></i>
+                <input type="hidden" id="tipCheck" value="true">
+            </label>
+            <a class="skip-text">
+                我已阅读并同意<span>《安心签免短信授权服务协议》</span>
+            </a>
+        </div>
+    </div>
+    <div class="skip-success-tip" id="skipSuccess">
+        <span><i class="skip-icon"><img src="${staticServer}/images/icons/skip-success.png"></i>授权成功！</span>
+    </div>
     <#include "coupon-alert.ftl" />
 </div>
     <#include "red-envelope-float.ftl" />
