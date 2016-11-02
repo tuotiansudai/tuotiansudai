@@ -1,0 +1,71 @@
+.safety-signed-frame {
+  background: #fff;
+  padding: 10px 30px 30px 40px;
+  overflow: hidden;
+  color: #525252;
+
+  .sign-img {
+    height: 190px;
+    background: url("/images/myaccount/an-mark.png") center center no-repeat;
+  }
+  .safety-status-box {
+    color: #4c4c4c;
+    .status-text {
+      display: block;
+      i {
+        background: url("../../images/myaccount/an-ic-ok.png") center center no-repeat;
+        height:35px;
+        width:35px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 8px;
+      }
+    }
+    .to-open-check {
+      margin-top:30px;
+      display: block;
+    }
+    .btn-normal {
+      display: block;
+      margin: 10px auto;
+    }
+    .agreeOpen {
+      vertical-align: middle;
+      color: #999;
+      em {
+        color: #4d4d4d;
+      }
+    }
+
+  }
+.safety-advantage-box {
+  border-top:1px solid #e7eaee;
+  padding-top: 10px;
+  margin-top: 20px;
+  p {
+    color: #525252;
+  }
+
+  .advantage-list {
+    li {
+      display: inline-block;
+      width:33%;
+      padding-top: 70px;
+      text-align: center;
+      color: #ff7200;
+      font-size: 16px;
+      margin-bottom:20px;
+      &:nth-child(1) {
+        background: url("../../images/myaccount/an-ic-adv01.png") center top no-repeat;
+      }
+      &:nth-child(2) {
+        background: url("../../images/myaccount/an-ic-adv02.png") center top no-repeat;
+      }
+      &:nth-child(3) {
+        background: url("../../images/myaccount/an-ic-adv03.png") center top no-repeat;
+      }
+    }
+  }
+}
+
+}
