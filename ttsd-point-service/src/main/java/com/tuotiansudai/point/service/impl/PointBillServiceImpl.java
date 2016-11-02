@@ -1,6 +1,5 @@
 package com.tuotiansudai.point.service.impl;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -11,7 +10,10 @@ import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.UserModel;
@@ -26,6 +28,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PointBillServiceImpl implements PointBillService {
@@ -99,28 +102,25 @@ public class PointBillServiceImpl implements PointBillService {
 
         long count = pointBillMapper.findCountPointBillPagination(loginName, startTime, endTime, businessTypes);
         if (count > 0) {
-            int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
+            int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
             items = pointBillMapper.findPointBillPagination(loginName, (index - 1) * pageSize, pageSize, startTime, endTime, businessTypes);
         }
-        List<PointBillPaginationItemDataDto> records = Lists.transform(items, new Function<PointBillModel, PointBillPaginationItemDataDto>() {
-            @Override
-            public PointBillPaginationItemDataDto apply(PointBillModel view) {
-                return new PointBillPaginationItemDataDto(view);
-            }
-        });
+        List<PointBillPaginationItemDataDto> records = items.stream()
+                .map(PointBillPaginationItemDataDto::new)
+                .collect(Collectors.toList());
 
-        BasePaginationDataDto<PointBillPaginationItemDataDto> dto = new BasePaginationDataDto<PointBillPaginationItemDataDto>(index, pageSize, count, records);
+        BasePaginationDataDto<PointBillPaginationItemDataDto> dto = new BasePaginationDataDto<>(index, pageSize, count, records);
         dto.setStatus(true);
         return dto;
     }
 
     @Override
-    public List<PointBillPaginationItemDataDto> getPointBillByLoginName(String loginName, int index, int pageSize){
-        List<PointBillModel> pointBillModels =  pointBillMapper.findPointBillByLoginName(loginName, (index - 1) * pageSize, pageSize);
+    public List<PointBillPaginationItemDataDto> getPointBillByLoginName(String loginName, int index, int pageSize) {
+        List<PointBillModel> pointBillModels = pointBillMapper.findPointBillByLoginName(loginName, (index - 1) * pageSize, pageSize);
 
         List<PointBillPaginationItemDataDto> pointBillPaginationItemDataDtoList = new ArrayList<>();
-        for(PointBillModel pointBillModel : pointBillModels) {
+        for (PointBillModel pointBillModel : pointBillModels) {
             PointBillPaginationItemDataDto pointBillPaginationItemDataDto = new PointBillPaginationItemDataDto(pointBillModel);
             pointBillPaginationItemDataDtoList.add(pointBillPaginationItemDataDto);
         }
@@ -128,18 +128,18 @@ public class PointBillServiceImpl implements PointBillService {
     }
 
     @Override
-    public long getPointBillCountByLoginName(String loginName){
+    public long getPointBillCountByLoginName(String loginName) {
         return pointBillMapper.findCountPointBillByLoginName(loginName);
     }
 
     @Override
-    public List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, Integer currentPageNo, Integer pageSize){
-        List<AccountModel> accountModels =  accountMapper.findUsersAccountPoint(loginName, userName, mobile,
+    public List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, Integer currentPageNo, Integer pageSize) {
+        List<AccountModel> accountModels = accountMapper.findUsersAccountPoint(loginName, userName, mobile,
                 currentPageNo != null ? (currentPageNo - 1) * pageSize : null,
                 pageSize);
 
         List<AccountItemDataDto> accountItemDataDtoList = Lists.newArrayList();
-        for(AccountModel accountModel : accountModels) {
+        for (AccountModel accountModel : accountModels) {
             UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
             AccountItemDataDto accountItemDataDto = new AccountItemDataDto(userModel, accountModel);
             accountItemDataDto.setTotalPoint(pointBillMapper.findUserTotalPoint(accountModel.getLoginName()));
@@ -150,7 +150,7 @@ public class PointBillServiceImpl implements PointBillService {
     }
 
     @Override
-    public int findUsersAccountPointCount(String loginName, String userName, String mobile){
+    public int findUsersAccountPointCount(String loginName, String userName, String mobile) {
         return accountMapper.findUsersAccountPointCount(loginName, userName, mobile);
     }
 

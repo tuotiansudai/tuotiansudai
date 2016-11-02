@@ -11,7 +11,7 @@
 </div>
 <div class="integral-draw-frame" id="integralDrawPage">
     <div class="reg-tag-current" style="display: none">
-        <#include '../register.ftl' />
+        <#include '../module/register.ftl' />
     </div>
     <a href="javascript:void(0)" class="show-login no-login-text"></a>
     <div class="good-news-frame clearfix">
