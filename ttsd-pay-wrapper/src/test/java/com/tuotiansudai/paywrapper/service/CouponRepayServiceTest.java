@@ -135,9 +135,7 @@ public class CouponRepayServiceTest {
 
 
 
-        couponRepayService.repay(idGenerator.generate(), false);
-
-
+        //couponRepayService.repay(idGenerator.generate(), false);
 
 
 

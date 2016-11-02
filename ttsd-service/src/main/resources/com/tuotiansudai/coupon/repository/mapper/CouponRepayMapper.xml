@@ -35,7 +35,7 @@
             #{actualRepayDate}, #{isTransferred}, #{status}, now())
     </insert>
 
-    <select id="findById" resultMap="couponRepayResultMap" parameterType="java.lang.long">
+    <select id="findById" resultMap="couponRepayResultMap" parameterType="java.lang.Long">
         select * from coupon_repay where id = #{id}
     </select>
 
