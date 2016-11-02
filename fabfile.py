@@ -133,6 +133,7 @@ def deploy_worker():
         sudo('rm -rf ttsd-job-worker-all/')
         sudo('rm -rf ttsd-job-worker-invest/')
         sudo('rm -rf ttsd-job-worker-jpush/')
+        sudo('rm -rf ttsd-job-worker-repay/')
         sudo('unzip \*.zip')
         sudo('supervisorctl start all')
 
