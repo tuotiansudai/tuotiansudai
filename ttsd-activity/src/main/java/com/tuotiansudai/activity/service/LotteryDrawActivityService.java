@@ -97,7 +97,7 @@ public class LotteryDrawActivityService {
         List<String> activityTime = getActivityTime(activityCategory);
         Date activityStartTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date activityEndTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        if(!nowDate.before(activityStartTime) || !nowDate.after(activityEndTime)){
+        if(!nowDate.before(activityEndTime) || !nowDate.after(activityStartTime)){
             return new DrawLotteryResultDto(3);//不在活动时间范围内！
         }
 

@@ -1,6 +1,6 @@
 <div class="nine-lottery-group">
 	<div class="lottery-left-group">
-		<h3>我的抽奖机会：<span>1</span>次</h3>
+		<h3>我的抽奖机会：<span>${myCount}</span>次</h3>
 		<ul class="lottery-item" id="lottery">
 			<li class="lottery-unit lottery-unit-0">
 				<img src="${staticServer}/activity/images/model/double-eleven/gift-one.png">
@@ -58,37 +58,40 @@
 			
 		</div>
 	</div>
-	<div class="lottery-tip" id="lotteryTip">
+	<div class="lottery-tip" id="lotteryTip"></div>
 		<script type="text/html" id="lotteryTipTpl">
 		<i class="close-btn close-item"></i>
-		{{each list}}
 			<div class="text-list">
-			{{if $value.returnCode == 0}}
-				{{if $value.prizeType=='CONCRETE'}}
-					<p class="intro-text">抽中了{{$value.prizeValue}}</p>
+			{{if returnCode == 0}}
+				{{if prizeType=='CONCRETE'}}
+					<p class="intro-text">抽中了{{prizeValue}}</p>
 					<p class="info-text">拓天客服将会在7个工作日内联系您发放奖品！</p>
-				{{else if $value.prizeType=='VIRTUAL'}}
+				{{else if prizeType=='VIRTUAL'}}
 					<p class="title-text"><img src="${staticServer}/activity/images/model/double-eleven/title-bg.png" width="25%"></p>
-					<p class="intro-text">抽中了{{$value.prizeValue}}</p>
+					<p class="intro-text">抽中了{{prizeValue}}</p>
 					<p class="info-text">奖品已发放至“我的宝藏”当中。</p>
-					
-			{{else if $value.returnCode == 1}}
+				{{else}}
+                {{/if}}
+			{{else if returnCode == 1}}
 				<p class="no-time">您暂无抽奖机会啦～</p>
 				<p class="info-text">赢取机会后再来抽奖吧！</p>
+			{{else}}
 			{{/if}}
-			
+
 			</div>
 			<div class="btn-list">
-			{{if $value.returnCode == 0}}
-				{{if $value.prizeType=='CONCRETE'}}
+			{{if returnCode == 0}}
+				{{if prizeType=='CONCRETE'}}
 					<a href="javascript:void(0)" class="tip-btn close-item">继续抽奖</a>
-				{{else if $value.prizeType=='VIRTUAL'}}
+				{{else if prizeType=='VIRTUAL'}}
 					<a href="/my-treasure" class="tip-btn">去查看</a><a href="javascript:void(0)" class="tip-btn close-item">继续抽奖</a>
-			{{else if $value.returnCode == 1}}
+				{{else}}
+				{{/if}}
+			{{else if returnCode == 1}}
 				<a href="javascript:void(0)" class="tip-btn close-item">知道了</a>
+			{{else}}
 			{{/if}}
 			</div>
-		{{/each}}
 		</script>
-	</div>
+
 </div>

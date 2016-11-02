@@ -59,8 +59,7 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
             if (lottery.times < lottery.cycle) {
                 lottery.speed -= 10;
             } else if (lottery.times == lottery.cycle) {
-                var index = Math.random() * (lottery.count) | 0; //中奖物品通过一个随机数生成
-                lottery.prize = index;
+                lottery.prize = lottery.prize;
             } else {
                 if (lottery.times > lottery.cycle + 10 && ((lottery.prize == 0 && lottery.index == 7) || lottery.prize == lottery.index + 1)) {
                     lottery.speed += 110;
@@ -108,13 +107,17 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
                         return false;
                     } else {
                         $.ajax({
-                            url: '/activity/point-draw/draw',
+                            url: '/activity/point-draw/task-draw',
                             type: 'POST',
-                            dataType: 'json'
+                            dataType: 'json',
+                            data:{
+                                mobile:$('#MobileNumber').val(),
+                                activityCategory:'CARNIVAL_ACTIVITY'
+                            }
                         })
                         .done(function(data) {
                             if(data.returnCode == 1){
-                                $('#lotteryTip').html(tpl('lotteryTipTpl',{list:data}));
+                                $('#lotteryTip').html(tpl('lotteryTipTpl',data));
                                 layer.open({
                                   type: 1,
                                   title:false,
@@ -122,7 +125,7 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
                                   content: $('#lotteryTip')
                                 });
                             }else if(data.returnCode == 0){
-                                $('#lotteryTip').html(tpl('lotteryTipTpl',{list:data}));
+                                $('#lotteryTip').html(tpl('lotteryTipTpl',data));
                                 switch (data.prize) {
                                     case 'M1_PHONE':  //锤子M1手机
                                         lottery.prize=7;
@@ -169,8 +172,7 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
     $('h3 span', $lotteryList).on('click', function(event) {
         event.preventDefault();
         var $self = $(this),
-            index = $self.index(),
-            $listItem = $self.closest('.lottery-right-group').find('.record-group');
+            index = $self.index();
         $self.addClass('active').siblings().removeClass('active')
             .closest('.lottery-right-group').find('.record-group .record-item:eq(' + index + ')').addClass('active')
             .siblings().removeClass('active');
@@ -208,14 +210,14 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
     function getRecord(){
         $.ajax({
             url: '/activity/point-draw/all-list',
-            type: 'POST',
-            dataType: 'json'
+            type: 'GET',
+            dataType: 'json',
+            data:{
+                activityCategory:'CARNIVAL_ACTIVITY'
+            }
         })
         .done(function(data) {
-            var record={
-                list:data
-            };
-            $('#recordList').html(tpl('recordListTpl',record.list));
+            $('#recordList').html(tpl('recordListTpl',{list:data}));
         })
         .fail(function() {
             layer.msg('请求失败，请刷新页面重试');
@@ -223,14 +225,15 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
 
         $.ajax({
             url: '/activity/point-draw/user-list',
-            type: 'POST',
-            dataType: 'json'
+            type: 'GET',
+            dataType: 'json',
+            data:{
+                mobile:$('#MobileNumber').val(),
+                activityCategory:'CARNIVAL_ACTIVITY'
+            }
         })
         .done(function(data) {
-            var record={
-                list:data
-            };
-            $('#myRecord').html(tpl('myRecordTpl',record.list));
+            $('#myRecord').html(tpl('myRecordTpl',{list:data}));
         })
         .fail(function() {
             layer.msg('请求失败，请刷新页面重试');
