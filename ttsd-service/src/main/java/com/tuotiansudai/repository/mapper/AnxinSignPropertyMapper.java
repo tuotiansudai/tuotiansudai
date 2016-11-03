@@ -1,6 +1,5 @@
 package com.tuotiansudai.repository.mapper;
 
-
 import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -12,7 +11,7 @@ public interface AnxinSignPropertyMapper {
 
     void update(AnxinSignPropertyModel anxinSignPropertyModel);
 
-    AnxinSignPropertyModel findById(Long id);
+    AnxinSignPropertyModel findById(@Param(value = "id") Long id);
 
-    AnxinSignPropertyModel findById(@Param(value = "loginName") String loginName);
+    AnxinSignPropertyModel findByLoginName(@Param(value = "loginName") String loginName);
 }
