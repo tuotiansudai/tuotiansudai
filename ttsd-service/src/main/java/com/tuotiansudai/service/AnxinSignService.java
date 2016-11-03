@@ -11,6 +11,6 @@ public interface AnxinSignService {
 
     BaseDto<BaseDataDto> verifyCaptcha3102(String loginName, String captcha, boolean isSkipAuth);
 
-    BaseDto<BaseDataDto> createContracts(String loginName, long loanId, long investId);
+    BaseDto<BaseDataDto> createContracts(long loanId);
 
 }

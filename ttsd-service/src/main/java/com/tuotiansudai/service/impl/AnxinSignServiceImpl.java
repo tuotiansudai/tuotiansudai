@@ -56,9 +56,16 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Autowired
     private InvestRepayMapper investRepayMapper;
 
+    @Autowired
+    private InvestMapper investMapper;
+
     private static final String TEMP_PROJECT_CODE_KEY = "temp_project_code:";
 
     private static final int TEMP_PROJECT_CODE_EXPIRE_TIME = 1800; // 半小时
+
+    private static final String SIGN_LOCATION_AGENT_LOGIN_NAME = "agentLoginName";
+
+    private static final String SIGN_LOCATION_INVESTOR_LOGIN_NAME = "investorLoginName";
 
     @Override
     public BaseDto createAccount3001(String loginName) {
@@ -168,8 +175,11 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     }
 
     @Override
-    public BaseDto<BaseDataDto> createContracts(String loginName, long loanId, long investId){
+    public BaseDto createContracts(long loanId){
+        List<CreateContractVO> createContractVOs = Lists.newArrayList();
+        investMapper.findSuccessInvestsByLoanId(loanId).forEach(investModel -> createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(),loanId,investModel.getId())));
 
+        return new BaseDto();
     }
 
     private CreateContractVO collectInvestorContractModel(String investorLoginName, long loanId, long investId) {
@@ -199,15 +209,26 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             dataModel.put("pledge", "车辆");
         }
         createContractVO.setInvestmentInfo(dataModel);
+
+        SignInfoVO agentSignInfo = new SignInfoVO();
+        agentSignInfo.setUserId(agentAccount.getAnxinUserId());
+        agentSignInfo.setAuthorizationTime(new DateTime(agentAccount.getAuthorizationTime()).toString("yyyyMMddHHmmss"));
+        agentSignInfo.setLocation(Strings.isNullOrEmpty(agentModel.getCity()) ? "北京" : agentModel.getCity());
+        agentSignInfo.setSignLocation(SIGN_LOCATION_AGENT_LOGIN_NAME);
+        agentSignInfo.setProjectCode(String.valueOf(loanModel.getId()));
+        agentSignInfo.setIsProxySign(1);
+
+        SignInfoVO investorSignInfo = new SignInfoVO();
+        investorSignInfo.setUserId(investorAccount.getAnxinUserId());
+        investorSignInfo.setAuthorizationTime(new DateTime(investorAccount.getAuthorizationTime()).toString("yyyyMMddHHmmss"));
+        investorSignInfo.setLocation(Strings.isNullOrEmpty(investorModel.getCity()) ? "北京" : investorModel.getCity());
+        investorSignInfo.setSignLocation(SIGN_LOCATION_INVESTOR_LOGIN_NAME);
+        investorSignInfo.setProjectCode(String.valueOf(loanModel.getId()));
+        investorSignInfo.setIsProxySign(1);
+
+        createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
         createContractVO.setTemplateId("JK_108");
-        SignInfoVO signInfoVO = new SignInfoVO();
-        signInfoVO.setUserId(agentAccount.getAnxinUserId());
-        signInfoVO.setAuthorizationTime(new DateTime(investorAccount.getAuthorizationTime()).toString("yyyyMMddHHmmss"));
-        signInfoVO.setLocation(Strings.isNullOrEmpty(investorModel.getCity()) ? "北京" : investorModel.getCity());
-        signInfoVO.setSignLocation("Signature1");
-        signInfoVO.setProjectCode(String.valueOf(loanModel.getId()));
-        signInfoVO.setIsProxySign(1);
-        createContractVO.setSignInfos(new SignInfoVO[]{signInfoVO});
+        createContractVO.setIsSign(1);
         return createContractVO;
     }
 
