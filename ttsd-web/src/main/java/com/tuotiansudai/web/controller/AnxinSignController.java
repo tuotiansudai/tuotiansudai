@@ -49,9 +49,9 @@ public class AnxinSignController {
 
     @ResponseBody
     @RequestMapping(value = "/sendCaptcha", method = RequestMethod.POST)
-    private BaseDto sendCaptcha() throws PKIException {
+    private BaseDto sendCaptcha(boolean isVoice) throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
-        return anxinSignService.sendCaptcha3101(loginName);
+        return anxinSignService.sendCaptcha3101(loginName, isVoice);
     }
 
     @ResponseBody
@@ -62,8 +62,8 @@ public class AnxinSignController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/download-contract",method = RequestMethod.GET)
-    private void downloadContract(HttpServletRequest request,HttpServletResponse response){
+    @RequestMapping(value = "/download-contract", method = RequestMethod.GET)
+    private void downloadContract(HttpServletRequest request, HttpServletResponse response) {
         //在SSH框架中，可以通过HttpServletResponse response=ServletActionContext.getResponse();取出Respond对象
         //清空一下response对象，否则出现缓存什么的
         response.reset();
@@ -78,7 +78,7 @@ public class AnxinSignController {
             e.printStackTrace();
         }
         response.setCharacterEncoding("UTF-8");
-        response.addHeader("Content-Disposition","attachment;filename=" + filename);
+        response.addHeader("Content-Disposition", "attachment;filename=" + filename);
         /*
          * 这里是最关键的一步。
          * 直接把这个东西写到response输出流里面，给用户下载。

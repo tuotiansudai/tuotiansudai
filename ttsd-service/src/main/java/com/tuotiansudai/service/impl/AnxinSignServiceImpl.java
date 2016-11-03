@@ -67,7 +67,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
 
     @Override
-    public BaseDto sendCaptcha3101(String loginName) {
+    public BaseDto sendCaptcha3101(String loginName, boolean isVoice) {
 
         try {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
@@ -84,7 +84,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
             String projectCode = UUIDGenerator.generate();
 
-            Tx3101ResVO tx3101ResVO = anxinSignConnectService.sendCaptcha3101(anxinUserId, projectCode);
+            Tx3101ResVO tx3101ResVO = anxinSignConnectService.sendCaptcha3101(anxinUserId, projectCode, isVoice);
 
             String retMessage = tx3101ResVO.getHead().getRetMessage();
 

@@ -58,7 +58,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
 
     @Override
-    public Tx3101ResVO sendCaptcha3101(String userId, String projectCode) throws PKIException {
+    public Tx3101ResVO sendCaptcha3101(String userId, String projectCode, boolean isVoice) throws PKIException {
         HttpConnector httpConnector = new HttpConnector();
         httpConnector.init();
 
@@ -67,6 +67,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         ProxySignVO proxySignVO = new ProxySignVO();
         proxySignVO.setUserId(userId);
         proxySignVO.setProjectCode(projectCode);
+        proxySignVO.setIsSendVoice(isVoice ? 1 : 0);
 
         tx3101ReqVO.setHead(getHeadVO());
         tx3101ReqVO.setProxySign(proxySignVO);
