@@ -264,7 +264,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
     function skipSuccess() {
         layer.closeAll();
         $('#skipSuccess').show();
-        setInterval(function() {
+        setTimeout(function() {
             $('#skipSuccess').hide();
             submitData();
         }, 3000)

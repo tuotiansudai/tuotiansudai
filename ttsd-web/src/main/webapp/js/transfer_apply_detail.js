@@ -225,7 +225,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
     function skipSuccess(){
         layer.closeAll();
         $('#skipSuccess').show();
-        setInterval(function(){
+        setTimeout(function(){
             $('#skipSuccess').hide();
             applyTip();
         },3000)
