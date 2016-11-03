@@ -20,6 +20,7 @@ import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.util.SecurityUtil;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -141,7 +142,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
     private HeadVO getHeadVO() {
         HeadVO head = new HeadVO();
-        head.setTxTime(String.valueOf(System.currentTimeMillis()));
+        head.setTxTime(DateTime.now().toString("yyyyMMddHHmmss"));
         return head;
     }
 

@@ -22,7 +22,7 @@
         <result column="no_password_invest" property="noPasswordInvest"/>
         <result column="membership_point" property="membershipPoint"/>
         <result column="anxin_user_id" property="anxinUserId"/>
-        <result column="is_skip_auth" property="isSkipAuth"/>
+        <result column="skip_auth" property="skipAuth"/>
         <result column="project_code" property="projectCode"/>
     </resultMap>
 
@@ -55,7 +55,7 @@
           point = #{point},
           membership_point = #{membershipPoint},
           anxin_user_id = #{anxinUserId},
-          is_skip_auth = #{isSkipAuth},
+          skip_auth = #{skipAuth},
           project_code = #{projectCode}
         where login_name = #{loginName}
     </update>

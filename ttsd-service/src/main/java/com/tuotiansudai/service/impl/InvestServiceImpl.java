@@ -137,6 +137,11 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private void checkInvestAvailable(InvestDto investDto) throws InvestException {
+        AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
+        if(com.mysql.jdbc.StringUtils.isNullOrEmpty(accountModel.getProjectCode())){
+            throw new InvestException(InvestExceptionType.ANXIN_SIGN_IS_UNUSABLE);
+        }
+
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
 
@@ -152,7 +157,6 @@ public class InvestServiceImpl implements InvestService {
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
         long userInvestIncreasingAmount = loan.getInvestIncreasingAmount();
 
-        AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
         if (accountModel.getBalance() < investAmount) {
             throw new InvestException(InvestExceptionType.NOT_ENOUGH_BALANCE);
         }
