@@ -1,6 +1,7 @@
 package com.tuotiansudai.job;
 
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -22,10 +23,16 @@ public class NormalRepayCallbackJob implements Job {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("trigger NormalRepayCallbackJob job start... ");
-        payWrapperClient.normalRepayInvestPayback();
+        String trigger = redisWrapperClient.get(NORMAL_REPAY_JOB_TRIGGER_KEY);
+        if (trigger != null && Integer.valueOf(trigger) > 0) {
+            payWrapperClient.normalRepayInvestPayback();
+        }
         logger.info("trigger NormalRepayCallbackJob job end... ");
     }
 }

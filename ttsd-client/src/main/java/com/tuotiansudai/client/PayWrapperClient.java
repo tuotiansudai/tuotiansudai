@@ -33,9 +33,6 @@ public class PayWrapperClient extends BaseClient {
     @Value("${pay.application.context}")
     protected String applicationContext;
 
-    @Autowired
-    protected RedisWrapperClient redisWrapperClient;
-
     private final static String registerPath = "/register";
 
     private final static String systemRechargePath = "/system-recharge";
@@ -71,9 +68,6 @@ public class PayWrapperClient extends BaseClient {
     private final static String noPasswordInvestPath = "/no-password-invest";
 
     private final static String transferCashPath = "/transfer-cash";
-
-    private final static String NORMAL_REPAY_JOB_TRIGGER_KEY = "job:repay:normal_repay_callback_job_trigger";
-    private final static String ADVANCE_REPAY_JOB_TRIGGER_KEY = "job:repay:advance_repay_callback_job_trigger";
 
     public BaseDto<PayDataDto> transferCash(Object transferCashDto) {
         return syncExecute(transferCashDto, transferCashPath, "POST");
@@ -153,19 +147,11 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public BaseDto<PayDataDto> normalRepayInvestPayback() {
-        String trigger = redisWrapperClient.get(NORMAL_REPAY_JOB_TRIGGER_KEY);
-        if (trigger != null && Integer.valueOf(trigger) > 0) {
-            return syncExecute(null, "/job/async_normal_repay_notify", "POST");
-        }
-        return null;
+        return syncExecute(null, "/job/async_normal_repay_notify", "POST");
     }
 
     public BaseDto<PayDataDto> advanceRepayInvestPayback() {
-        String trigger = redisWrapperClient.get(ADVANCE_REPAY_JOB_TRIGGER_KEY);
-        if (trigger != null && Integer.valueOf(trigger) > 0) {
-            return syncExecute(null, "/job/async_advance_repay_notify", "POST");
-        }
-       return null;
+        return syncExecute(null, "/job/async_advance_repay_notify", "POST");
     }
 
     public BaseDto<PayDataDto> investTransferCallback() {
