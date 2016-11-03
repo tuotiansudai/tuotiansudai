@@ -13,14 +13,15 @@
         <result column="skip_auth" property="skipAuth"/>
         <result column="project_code" property="projectCode"/>
         <result column="ip" property="ip"/>
+        <result column="auth_time" property="authTime"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
     <insert id="create" parameterType="AnxinSignPropertyModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`anxin_sign_property`
-        (`login_name`,`anxin_user_id`,`skip_auth`,`project_code`,`ip`,`created_time`)
+        (`login_name`,`anxin_user_id`,`skip_auth`,`project_code`,`ip`,`auth_time`,`created_time`)
         VALUES
-        (#{loginName},#{anxinUserId},#{skipAuth},#{projectCode},#{ip},#{createdTime});
+        (#{loginName},#{anxinUserId},#{skipAuth},#{projectCode},#{ip},#{authTime},#{createdTime});
 
     </insert>
 
@@ -31,7 +32,7 @@
         `skip_auth` = #{skipAuth},
         `project_code` = #{projectCode},
         `ip` = #{ip},
-        `created_time` = #{createdTime}
+        `auth_time` = #{authTime}
         WHERE
         id = #{id}
     </update>

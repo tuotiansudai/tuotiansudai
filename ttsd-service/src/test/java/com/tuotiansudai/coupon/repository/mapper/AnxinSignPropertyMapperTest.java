@@ -3,58 +3,64 @@ package com.tuotiansudai.coupon.repository.mapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
 import com.tuotiansudai.repository.mapper.BaseMapperTest;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.UUIDGenerator;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class AnxinSignPropertyMapperTest extends BaseMapperTest {
 
     @Autowired
-    private CouponRepayMapper couponRepayMapper;
+    private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
     @Test
-    public void shouldCreateCouponRepay() throws Exception {
-        UserModel investor = this.createFakeUser("investor");
-        LoanModel fakeLoan = this.createFakeLoan("loaner", ProductType._30, 1, LoanStatus.REPAYING);
-        InvestModel fakeInvest = this.createFakeInvest(fakeLoan.getId(), 1, investor.getLoginName());
-        CouponModel fakeInterestCoupon = this.createFakeInterestCoupon(1);
-        UserCouponModel fakeUserCoupon = this.createFakeUserCoupon(investor.getLoginName(), fakeInterestCoupon.getId(), fakeLoan.getId(), fakeInvest.getId());
-        couponRepayMapper.create(new CouponRepayModel(investor.getLoginName(), fakeInterestCoupon.getId(), fakeUserCoupon.getId(), fakeInvest.getId(), 100, 10, 1, new DateTime().withDate(2016, 1, 1).toDate()));
+    public void shouldCreateUpdateFind() throws Exception {
+        AnxinSignPropertyModel model = new AnxinSignPropertyModel();
 
-        CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponIdAndPeriod(fakeUserCoupon.getId(), 1);
+        String loginName = "sidneygao";
 
-        assertNotNull(couponRepayModel);
+        model.setLoginName(loginName);
+        model.setProjectCode(UUIDGenerator.generate());
+        model.setIp("192.168.111.222");
+        model.setAnxinUserId("asdfghjklpoiuytrewwqzcxb89274940");
+        model.setAuthTime(new Date());
+        model.setCreatedTime(new Date());
+        model.setSkipAuth(true);
+        anxinSignPropertyMapper.create(model);
+
+        AnxinSignPropertyModel getModel = anxinSignPropertyMapper.findByLoginName(loginName);
+
+        assertNotNull(getModel);
+
+        getModel.setProjectCode("abcd");
+        getModel.setIp("123");
+        getModel.setAnxinUserId("uuuu");
+        Date authTime = new Date();
+        getModel.setAuthTime(authTime);
+        getModel.setSkipAuth(false);
+        anxinSignPropertyMapper.update(getModel);
+
+        AnxinSignPropertyModel getModel2 = anxinSignPropertyMapper.findByLoginName(loginName);
+
+        assert (getModel2.getProjectCode().equals("abcd"));
+        assert (getModel2.getIp().equals("123"));
+        assert (getModel2.getAnxinUserId().equals("uuuu"));
+        assert (getModel2.isSkipAuth() == false);
+        assert (getModel2.getAuthTime().getTime() / 1000 == authTime.getTime() / 1000);
+
+        AnxinSignPropertyModel getModel3 = anxinSignPropertyMapper.findById(getModel2.getId());
+
+        assertNotNull(getModel3);
     }
 
-    @Test
-    public void shouldUpdateCouponRepay() throws Exception {
-        UserModel investor = this.createFakeUser("investor");
-        LoanModel fakeLoan = this.createFakeLoan("loaner", ProductType._30, 1, LoanStatus.REPAYING);
-        InvestModel fakeInvest = this.createFakeInvest(fakeLoan.getId(), 1, investor.getLoginName());
-        CouponModel fakeInterestCoupon = this.createFakeInterestCoupon(1);
-        UserCouponModel fakeUserCoupon = this.createFakeUserCoupon(investor.getLoginName(), fakeInterestCoupon.getId(), fakeLoan.getId(), fakeInvest.getId());
-
-        CouponRepayModel couponRepayModel = new CouponRepayModel(investor.getLoginName(), fakeInterestCoupon.getId(), fakeUserCoupon.getId(), fakeInvest.getId(), 100, 10, 1, new DateTime().withDate(2016, 1, 1).toDate());
-        couponRepayMapper.create(couponRepayModel);
-        CouponRepayModel repayModel = couponRepayMapper.findByUserCouponIdAndPeriod(fakeUserCoupon.getId(), 1);
-        repayModel.setActualInterest(200);
-        repayModel.setActualFee(20);
-        repayModel.setActualRepayDate(new DateTime().withDate(2016, 12, 31).withTimeAtStartOfDay().toDate());
-        repayModel.setStatus(RepayStatus.COMPLETE);
-
-        couponRepayMapper.update(repayModel);
-
-        CouponRepayModel updatedCouponRepay = couponRepayMapper.findByUserCouponIdAndPeriod(fakeUserCoupon.getId(), 1);
-
-        assertThat(updatedCouponRepay.getActualInterest(), is(repayModel.getActualInterest()));
-        assertThat(updatedCouponRepay.getActualFee(), is(repayModel.getActualFee()));
-        assertThat(updatedCouponRepay.getStatus(), is(repayModel.getStatus()));
-        assertThat(updatedCouponRepay.getActualRepayDate(), is(repayModel.getActualRepayDate()));
-    }
 }
