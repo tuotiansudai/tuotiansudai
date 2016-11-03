@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envelope-float', 'jquery.ajax.extension'], function ($, layer) {
+require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envelope-float', 'jquery.ajax.extension','anxin_qian'], function ($, layer) {
     var $createForm = $('#createForm'),
         $agreement = $createForm.find('.agreement'),
         $isSkipAuth=$('#isSkipAuth');
@@ -185,8 +185,11 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
             clearInterval(Down);
             $('#getSkipCode').val('重新获取验证码').prop('disabled',false);
             $('#microPhone').css('visibility', 'visible');
+            num=60;
+        }else{
+            num--;
         }
-        num--;
+        
     }
     //submit data skip phone code
     $('#getSkipBtn').on('click',  function(event) {
@@ -232,45 +235,4 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
         event.preventDefault();
         $(this).val()!=''?$('#skipError').text('').hide():$('#skipError').text('验证码不能为空').show();;
     });
-
-    $('#serviceLayer').on('click', function(event) {
-        event.preventDefault();
-        layer.open({
-            type: 1,
-            title: '安心签服务协议',
-            area: ['950px', '600px'],
-            shadeClose: true,
-            move: false,
-            scrollbar: true,
-            skin:'register-skin',
-            content: $('#serviceBox')
-        });
-    });
-    $('#privacyLayer').on('click', function(event) {
-        event.preventDefault();
-        layer.open({
-            type: 1,
-            title: '隐私条款',
-            area: ['950px', '600px'],
-            shadeClose: true,
-            move: false,
-            scrollbar: true,
-            skin:'register-skin',
-            content: $('#privacyBox')
-        });
-    });
-    $('#numberLayer').on('click', function(event) {
-        event.preventDefault();
-        layer.open({
-            type: 1,
-            title: 'CFCA数字证书服务协议',
-            area: ['950px', '600px'],
-            shadeClose: true,
-            move: false,
-            scrollbar: true,
-            skin:'register-skin',
-            content: $('#numberBox')
-        });
-    });
-
 });
