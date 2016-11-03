@@ -17,7 +17,7 @@ public interface AnxinSignConnectService {
 
     Tx3001ResVO createAccount3001(AccountModel accountModel, UserModel userModel) throws PKIException;
 
-    Tx3101ResVO sendCaptcha3101(String userId, String projectCode) throws PKIException;
+    Tx3101ResVO sendCaptcha3101(String userId, String projectCode, boolean isVoice) throws PKIException;
 
     Tx3102ResVO verifyCaptcha3102(String userId, String projectCode, String checkCode) throws PKIException;
 
