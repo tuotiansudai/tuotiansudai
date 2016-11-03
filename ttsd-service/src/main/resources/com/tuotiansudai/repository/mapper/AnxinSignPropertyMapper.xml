@@ -37,11 +37,11 @@
         id = #{id}
     </update>
 
-    <select id="findById" resultMap="activityResultMap">
+    <select id="findById" resultMap="anxinSignProperModel">
         SELECT * FROM `aa`.`anxin_sign_property` WHERE id = #{id}
     </select>
 
-    <select id="findByLoginName" resultMap="activityResultMap" parameterType="map">
+    <select id="findByLoginName" resultMap="anxinSignProperModel" parameterType="map">
         SELECT * FROM `aa`.`anxin_sign_property` where login_name = #{loginName}
     </select>
 </mapper>
