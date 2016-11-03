@@ -134,6 +134,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
         $(this).hasClass('active')?$(this).removeClass('active') && $('#tipCheck').val('false'):$(this).addClass('active')&& $('#tipCheck').val('true');
     });
 
+
     //show phone code tip
     function getSkipPhoneTip(){
         layer.open({
