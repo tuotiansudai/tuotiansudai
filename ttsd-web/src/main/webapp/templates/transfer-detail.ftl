@@ -86,8 +86,9 @@
                     <input type="hidden" id="transferInvestId" name="transferInvestId" value="${transferApplication.id?string.computer}"/>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <p><button id="transferSubmit" class="btn-pay btn-normal" type="button">马上投资</button></p>
-                    <input type="hidden" value="false" id="isSkipAuth">
-                    
+                    <input type="hidden" value="${loan.investor.skipAuth?c}" id="isSkipAuth">
+                    <@global.role hasRole="'INVESTOR'">
+                    <#if !loan.investor.skipAuth>
                     <p class="skip-group">
                         <label>
                             <i class="skip-icon active"></i>
@@ -97,7 +98,8 @@
                             我已阅读并同意<a href="javascript:void(0)"><span id="serviceLayer">《安心签服务协议》</span>、<span id="privacyLayer">《隐私条款》</span>和<span id="numberLayer">《CFCA数字证书服务协议》</span><span class="check-tip" id="checkTip">请勾选</span></a>
                         </label>
                     </p>
-                    
+                    </#if>
+                    </@global.role>
                 </form>
             </#if>
         </div>
