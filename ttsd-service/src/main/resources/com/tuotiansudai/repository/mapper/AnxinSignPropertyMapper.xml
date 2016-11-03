@@ -6,7 +6,7 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
-    <resultMap id="anxinSignProperModel" type="AnxinSignPropertyModel">
+    <resultMap id="anxinSignProperModel" type="com.tuotiansudai.repository.model.AnxinSignPropertyModel">
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
         <result column="anxin_user_id" property="anxinUserId"/>
@@ -16,7 +16,7 @@
         <result column="created_time" property="createDTime"/>
     </resultMap>
 
-    <insert id="create" parameterType="anxinSignProperModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="AnxinSignPropertyModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`anxin_sign_property`
         (`login_name`,`anxin_user_id`,`skip_auth`,`project_code`,`ip`,`created_time`)
         VALUES
@@ -24,7 +24,7 @@
 
     </insert>
 
-    <update id="update" parameterType="anxinSignProperModel">
+    <update id="update" parameterType="AnxinSignPropertyModel">
         UPDATE `aa`.`anxin_sign_property`
         SET
         `login_name` = #{loginName},
