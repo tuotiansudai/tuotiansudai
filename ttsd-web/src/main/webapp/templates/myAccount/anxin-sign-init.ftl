@@ -10,9 +10,9 @@
         <span class="status-text">安心签电子签章服务</span>
         <button class="btn-normal" id="openSafetySigned">立即开启</button>
          <span class="init-checkbox-style on">
-             <input type="checkbox" id="agreeOpen" class="default-checkbox" checked>
+             <input type="checkbox" id="agreeOpen1" class="default-checkbox" checked>
          </span>
-             <label for="agreeOpen" class="agreeOpen"><em>我已阅读并同意</em>《安心签服务协议》、《隐私条款》和《CFCA数字证书服务协议》</label>
+             <label for="agreeOpen1" class="agreeOpen"><em>我已阅读并同意</em>《安心签服务协议》、《隐私条款》和《CFCA数字证书服务协议》</label>
 
     </div>
 
@@ -21,9 +21,9 @@
             <span class="to-open-check">开通免短信授权服务，投资快人一步！</span>
             <button class="btn-normal" id="openAuthorization">立即授权开通</button>
           <span class="init-checkbox-style on">
-              <input type="checkbox" id="agreeOpen" class="default-checkbox" checked>
+              <input type="checkbox" id="agreeOpen2" class="default-checkbox" checked>
             </span>
-            <label for="agreeOpen" class="agreeOpen"><em>我已阅读并同意</em>《安心签免短信授权服务协议》</label>
+            <label for="agreeOpen2" class="agreeOpen"><em>我已阅读并同意</em>《安心签免短信授权服务协议》</label>
 
 
       </div>

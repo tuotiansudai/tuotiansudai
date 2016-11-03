@@ -1,6 +1,6 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.anxin_sign}" pageJavascript="${js.anxin_sign}" activeNav="我的账户" activeLeftNav="安心签" title="安心签">
-<div class="safety-signed-frame">
+<div class="safety-signed-frame" id="safetySignedList">
     <h2 class="column-title"><em>安心签</em></h2>
     <div class="safety-signed-list">
         <ul class="info-list" >
@@ -31,6 +31,16 @@
             10、自动投标开启后，若有多个项目可投，将尽可能优先新手专享进行投资。<br/>
             11、自动投标开启后，如果不想自动投标，请手动关闭。
         </p>
+    </div>
+
+
+    <div class="open-safety-box">
+        <span>开通免短信授权服务，投资快人一步！</span>
+        <span class="init-checkbox-style on">
+             <input type="checkbox" id="readOk" class="default-checkbox" checked>
+         </span>
+        <label for="readOk" class="agreeOpen"><em>我已阅读并同意</em>《安心签免短信授权服务协议》</label>
+
     </div>
 
 </div>

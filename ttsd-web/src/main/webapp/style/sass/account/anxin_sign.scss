@@ -4,6 +4,13 @@
   padding: 10px 30px 30px 40px;
   overflow: hidden;
   color: #525252;
+  .agreeOpen {
+    vertical-align: middle;
+    color: #999;
+    em {
+      color: #4d4d4d;
+    }
+  }
 
   .sign-img {
     height: 190px;
@@ -30,13 +37,7 @@
       display: block;
       margin: 10px auto;
     }
-    .agreeOpen {
-      vertical-align: middle;
-      color: #999;
-      em {
-        color: #4d4d4d;
-      }
-    }
+
 
   }
   .safety-advantage-box {
@@ -83,15 +84,11 @@
     }
   }
 
-  .layer-msg-tip {
-    color: #fff;
-    font-size: 18px;
-    font-weight: bold;
-    i {
-      display: inline-block;
-      width:45px;
-      height:45px;
-      background: url('/images/myaccount/an-ic-ok.png') left center no-repeat;
+  .open-safety-box {
+    span {
+      display: block;
     }
   }
+
+
 }
