@@ -41,6 +41,8 @@ public class AccountModel implements Serializable{
 
     private String projectCode;
 
+    private Date authorizationTime;
+
     public AccountModel() {
     }
 
@@ -157,5 +159,13 @@ public class AccountModel implements Serializable{
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
+    }
+
+    public Date getAuthorizationTime() {
+        return authorizationTime;
+    }
+
+    public void setAuthorizationTime(Date authorizationTime) {
+        this.authorizationTime = authorizationTime;
     }
 }

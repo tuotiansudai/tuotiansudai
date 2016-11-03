@@ -24,6 +24,7 @@
         <result column="anxin_user_id" property="anxinUserId"/>
         <result column="skip_auth" property="skipAuth"/>
         <result column="project_code" property="projectCode"/>
+        <result column="authorization_time" property="authorizationTime"/>
     </resultMap>
 
     <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">

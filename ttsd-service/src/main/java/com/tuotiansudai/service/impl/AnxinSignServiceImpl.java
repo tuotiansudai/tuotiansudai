@@ -1,23 +1,34 @@
 package com.tuotiansudai.service.impl;
 
 import cfca.sadk.algorithm.common.PKIException;
+import cfca.trustsign.common.vo.cs.CreateContractVO;
+import cfca.trustsign.common.vo.cs.SignInfoVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3101ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3102ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AnxinSignService;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class AnxinSignServiceImpl implements AnxinSignService {
@@ -35,6 +46,15 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
+    private LoanerDetailsMapper loanerDetailsMapper;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
 
     private static final String TEMP_PROJECT_CODE_KEY = "temp_project_code:";
 
@@ -146,5 +166,50 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private boolean isSuccess(Tx3ResVO tx3ResVO) {
         return tx3ResVO.getHead().getRetCode().equals("60000000");
     }
+
+    @Override
+    public BaseDto<BaseDataDto> createContracts(String loginName, long loanId, long investId){
+
+    }
+
+    private CreateContractVO collectInvestorContractModel(String investorLoginName, long loanId, long investId) {
+        CreateContractVO createContractVO = new CreateContractVO();
+        Map<String, String> dataModel = new HashMap<>();
+        LoanModel loanModel = loanMapper.findById(loanId);
+        UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
+        AccountModel agentAccount = accountMapper.findByLoginName(loanModel.getAgentLoginName());
+        UserModel investorModel = userMapper.findByLoginName(investorLoginName);
+        AccountModel investorAccount = accountMapper.findByLoginName(investorLoginName);
+        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
+        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
+        dataModel.put("agentMobile", agentModel.getMobile());
+        dataModel.put("agentIdentityNumber", agentAccount.getIdentityNumber());
+        dataModel.put("investorMobile", investorModel.getMobile());
+        dataModel.put("investorIdentityNumber", investorAccount.getIdentityNumber());
+        dataModel.put("loanerUserName", loanerDetailsModel.getUserName());
+        dataModel.put("loanerIdentityNumber", loanerDetailsModel.getIdentityNumber());
+        dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+        dataModel.put("periods", String.valueOf(loanModel.getPeriods()));
+        dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate()));
+        dataModel.put("recheckTime", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
+        dataModel.put("endTime", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
+        if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
+            dataModel.put("pledge", "房屋");
+        } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
+            dataModel.put("pledge", "车辆");
+        }
+        createContractVO.setInvestmentInfo(dataModel);
+        createContractVO.setTemplateId("JK_108");
+        SignInfoVO signInfoVO = new SignInfoVO();
+        signInfoVO.setUserId(agentAccount.getAnxinUserId());
+        signInfoVO.setAuthorizationTime(new DateTime(investorAccount.getAuthorizationTime()).toString("yyyyMMddHHmmss"));
+        signInfoVO.setLocation(Strings.isNullOrEmpty(investorModel.getCity()) ? "北京" : investorModel.getCity());
+        signInfoVO.setSignLocation("Signature1");
+        signInfoVO.setProjectCode(String.valueOf(loanModel.getId()));
+        signInfoVO.setIsProxySign(1);
+        createContractVO.setSignInfos(new SignInfoVO[]{signInfoVO});
+        return createContractVO;
+    }
+
 
 }
