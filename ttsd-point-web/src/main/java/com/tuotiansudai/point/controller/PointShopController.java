@@ -87,9 +87,6 @@ public class PointShopController {
     @RequestMapping(value = "/{id}/{goodsType}/detail", method = RequestMethod.GET)
     public ModelAndView pointSystemDetail(@PathVariable long id,
                                           @PathVariable GoodsType goodsType) {
-
-        System.out.println("id = " + id );
-        System.out.println("GoodsType = " + goodsType );
         ModelAndView modelAndView = new ModelAndView("/point-detail");
         ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, goodsType);
         modelAndView.addObject("productShowItem", productShowItemDto);
