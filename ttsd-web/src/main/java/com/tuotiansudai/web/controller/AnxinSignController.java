@@ -3,9 +3,11 @@ package com.tuotiansudai.web.controller;
 import cfca.sadk.algorithm.common.PKIException;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.AnxinSignService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,20 +25,20 @@ import java.net.URLEncoder;
 public class AnxinSignController {
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
     private AnxinSignService anxinSignService;
-
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView anxinSignPage() {
+
         String loginName = LoginUserInfo.getLoginName();
-        AccountModel accountModel = accountService.findByLoginName(loginName);
-        if (accountModel != null && accountModel.getAnxinUserId() != null && accountModel.getProjectCode() != null) {
-            return new ModelAndView("/myAccount/anxin-sign-list", "account", accountModel);
+        AnxinSignPropertyModel anxinProp = anxinSignService.getAnxinSignProp(loginName);
+
+        if (anxinSignService.hasAuthedBefore(loginName)) {
+            // 如果以前授权过，则进入列表页
+            return new ModelAndView("/myAccount/anxin-sign-list", "anxinProp", anxinProp);
         } else {
-            return new ModelAndView("/myAccount/anxin-sign-init", "account", accountModel);
+            // 否则进入开通安心签账户的初始页面
+            return new ModelAndView("/myAccount/anxin-sign-init", "anxinProp", anxinProp);
         }
     }
 
@@ -56,9 +58,10 @@ public class AnxinSignController {
 
     @ResponseBody
     @RequestMapping(value = "/verifyCaptcha", method = RequestMethod.POST)
-    public BaseDto verifyCaptcha(String captcha, boolean skipAuth) throws PKIException {
+    public BaseDto verifyCaptcha(String captcha, boolean skipAuth, HttpServletRequest request) throws PKIException {
+        String ip = RequestIPParser.parse(request);
         String loginName = LoginUserInfo.getLoginName();
-        return anxinSignService.verifyCaptcha3102(loginName, captcha, skipAuth);
+        return anxinSignService.verifyCaptcha3102(loginName, captcha, skipAuth, ip);
     }
 
     @ResponseBody

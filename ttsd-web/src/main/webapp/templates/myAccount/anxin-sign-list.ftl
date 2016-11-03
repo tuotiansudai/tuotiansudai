@@ -3,7 +3,7 @@
 <div class="safety-signed-frame" id="safetySignedList">
     <h2 class="column-title"><em>安心签</em></h2>
     <div class="safety-signed-list">
-        <#--<input type="hidden" data-skipAuth="${account.isSkipAuth!}" class="bind-data">-->
+        <#--<input type="hidden" data-skipAuth="${anxinProp.isSkipAuth!}" class="bind-data">-->
         <ul class="info-list" >
             <li>
                 <span class="info-title"> CFCA安心签服务</span>

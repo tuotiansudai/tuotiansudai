@@ -12,11 +12,11 @@ public class AnxinSignPropertyModel implements Serializable {
 
     private String anxinUserId;
 
-    private boolean skipAuth;
+    private boolean skipAuth = false;
 
     private String projectCode;
 
-    private String ip;
+    private String authIp;
 
     private Date authTime;
 
@@ -62,12 +62,12 @@ public class AnxinSignPropertyModel implements Serializable {
         this.projectCode = projectCode;
     }
 
-    public String getIp() {
-        return ip;
+    public String getAuthIp() {
+        return authIp;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setAuthIp(String authIp) {
+        this.authIp = authIp;
     }
 
     public Date getAuthTime() {

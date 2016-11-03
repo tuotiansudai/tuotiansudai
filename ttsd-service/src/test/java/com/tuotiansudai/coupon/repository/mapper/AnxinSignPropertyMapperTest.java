@@ -31,7 +31,7 @@ public class AnxinSignPropertyMapperTest extends BaseMapperTest {
 
         model.setLoginName(loginName);
         model.setProjectCode(UUIDGenerator.generate());
-        model.setIp("192.168.111.222");
+        model.setAuthIp("192.168.111.222");
         model.setAnxinUserId("asdfghjklpoiuytrewwqzcxb89274940");
         model.setAuthTime(new Date());
         model.setCreatedTime(new Date());
@@ -43,7 +43,7 @@ public class AnxinSignPropertyMapperTest extends BaseMapperTest {
         assertNotNull(getModel);
 
         getModel.setProjectCode("abcd");
-        getModel.setIp("123");
+        getModel.setAuthIp("123");
         getModel.setAnxinUserId("uuuu");
         Date authTime = new Date();
         getModel.setAuthTime(authTime);
@@ -53,7 +53,7 @@ public class AnxinSignPropertyMapperTest extends BaseMapperTest {
         AnxinSignPropertyModel getModel2 = anxinSignPropertyMapper.findByLoginName(loginName);
 
         assert (getModel2.getProjectCode().equals("abcd"));
-        assert (getModel2.getIp().equals("123"));
+        assert (getModel2.getAuthIp().equals("123"));
         assert (getModel2.getAnxinUserId().equals("uuuu"));
         assert (getModel2.isSkipAuth() == false);
         assert (getModel2.getAuthTime().getTime() / 1000 == authTime.getTime() / 1000);
