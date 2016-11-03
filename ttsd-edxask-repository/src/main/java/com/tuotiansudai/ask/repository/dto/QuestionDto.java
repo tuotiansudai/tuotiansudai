@@ -1,9 +1,8 @@
-package com.tuotiansudai.ask.dto;
+package com.tuotiansudai.ask.repository.dto;
 
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
-import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -37,8 +36,8 @@ public class QuestionDto implements Serializable {
 
     public QuestionDto(QuestionModel questionModel, String mobile) {
         this.id = questionModel.getId();
-        this.question = SensitiveWordsFilter.filter(questionModel.getQuestion());
-        this.addition = SensitiveWordsFilter.filter(questionModel.getAddition());
+        this.question = questionModel.getQuestion();
+        this.addition = questionModel.getAddition();
         this.answers = questionModel.getAnswers();
         this.mobile = mobile;
         this.tags = questionModel.getTags();
