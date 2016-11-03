@@ -538,7 +538,7 @@
             </span>
             <span>
                 <input type="button" class="get-skip-code" value="获取短信验证码" id="getSkipCode">
-                <i class="microphone">
+                <i class="microphone" id="microPhone">
                     <img src="${staticServer}/images/icons/microphone.png">
                 </i>
             </span>

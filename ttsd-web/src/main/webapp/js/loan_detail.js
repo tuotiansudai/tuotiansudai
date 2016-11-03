@@ -884,30 +884,41 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     var num = 60,Down;
 
     //get phone code
-    $('#getSkipCode').on('click',  function(event) {
+    $('#getSkipCode').on('click', function(event) {
         event.preventDefault();
-       var $self=$(this);
+        getCode(false);
+    });
+    
+    //get phone code yuyin
+    $('#microPhone').on('click', function(event) {
+        event.preventDefault();
+        getCode(true);
+    });
+    function getCode(type){
         $.ajax({
             url: '/anxinSign/sendCaptcha',
             type: 'POST',
-            dataType: 'json'
+            dataType: 'json',
+            data:{
+                isVoice:type
+            }
         })
         .done(function(data) {
-             countDown();
+            countDown();
             Down = setInterval(countDown, 1000);
         })
         .fail(function() {
-            layer.msg('请求失败，请重试！');
+            layer.msg('请求失败，请重试或联系客服！');
         });
-        
-    });
-    
+    }
     //countdown skip
     function countDown() {
         $('#getSkipCode').val(num + 's').prop('disabled',true);
+        $('#microPhone').hide();
         if (num == 0) {
             clearInterval(Down);
             $('#getSkipCode').val('重新获取验证码').prop('disabled',false);
+            $('#microPhone').show();
         }
         num--;
     }
