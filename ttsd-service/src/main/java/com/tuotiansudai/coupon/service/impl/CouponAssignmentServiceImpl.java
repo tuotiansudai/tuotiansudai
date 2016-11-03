@@ -213,15 +213,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 // 该优惠券是否可以被发放给该用户
                 boolean isAssignableCoupon = this.isAssignableCoupon(couponModel);
 
-                //该优惠券如果指定发给渠道用户,那么只发放给优惠券在活动期限内 且 来源渠道的用户注册时间也在活动期限内
-                boolean isChannelUser = false;
-                if(couponModel.getUserGroup().equals(UserGroup.CHANNEL)){
-                    CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponModel.getId());
-                    UserModel userModel = userMapper.findByLoginName(loginName);
-                    isChannelUser =  couponUserGroupModel.getUserGroupItems().contains(userModel.getChannel()) && (userModel.getRegisterTime().after(couponModel.getStartTime()) && userModel.getRegisterTime().before(couponModel.getEndTime()));
-                }
-
-                return couponModel.getUserGroup().equals(UserGroup.CHANNEL) ? (isChannelUser && isAssignableCoupon) : (isInUserGroup && isAssignableCoupon);
+                return isInUserGroup && isAssignableCoupon;
             }
 
             // 用户已经持有的该类型的优惠券的数量
