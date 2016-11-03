@@ -92,6 +92,8 @@
     <![endif]-->
     <!-- -->
     <#include "../pageLayout/cnzz.ftl"/>
+    <!-- growing io -->
+    <#include "../pageLayout/growing-io.ftl"/>
 
 </head>
 <body>
