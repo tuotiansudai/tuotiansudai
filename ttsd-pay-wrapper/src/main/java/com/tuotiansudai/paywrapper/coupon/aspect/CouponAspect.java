@@ -8,8 +8,6 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.SendRedEnvelopeJob;
-import com.tuotiansudai.jpush.job.AutoJPushAlertLoanOutJob;
-import com.tuotiansudai.jpush.job.SendCouponIncomeJob;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -133,36 +131,6 @@ public class CouponAspect {
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send red envelope job for loan[" + loanId + "] fail", e);
-        }
-    }
-
-    private void createAutoJPushAlertLoanOutJob(long loanId) {
-        try {
-            Date triggerTime = new DateTime().plusMinutes(AutoJPushAlertLoanOutJob.JPUSH_ALERT_LOAN_OUT_DELAY_MINUTES)
-                    .toDate();
-            jobManager.newJob(JobType.AutoJPushAlertLoanOut, AutoJPushAlertLoanOutJob.class)
-                    .addJobData(AutoJPushAlertLoanOutJob.LOAN_ID_KEY, loanId)
-                    .withIdentity(JobType.AutoJPushAlertLoanOut.name(), "Loan-" + loanId)
-                    .replaceExistingJob(true)
-                    .runOnceAt(triggerTime)
-                    .replaceExistingJob(true)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.error("create send red AutoJPushAlertLoanOut job for loan[" + loanId + "] fail", e);
-        }
-    }
-
-    private void createSendCouponIncomeJob(long loanRepayId) {
-        try {
-            Date triggerTime = new DateTime().plusMinutes(SendCouponIncomeJob.SEND_COUPON_INCOME_DELAY_MINUTES)
-                    .toDate();
-            jobManager.newJob(JobType.SendCouponIncome, SendCouponIncomeJob.class)
-                    .addJobData(SendCouponIncomeJob.LOAN_REPAY_ID_KEY, loanRepayId)
-                    .withIdentity(JobType.SendCouponIncome.name(), "LoanRepayId-" + loanRepayId)
-                    .runOnceAt(triggerTime)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.error("create send coupon income job for loanRepayId[" + loanRepayId + "] fail", e);
         }
     }
 

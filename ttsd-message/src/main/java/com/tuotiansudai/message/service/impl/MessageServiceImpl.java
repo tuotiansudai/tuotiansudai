@@ -51,9 +51,8 @@ public class MessageServiceImpl implements MessageService {
 
     private MessageCreateDto messageModelToDto(MessageModel messageModel) {
         MessageCreateDto messageCreateDto = new MessageCreateDto(messageModel);
-        Long jPushId = jPushAlertService.findJPushIdByMessageId(messageModel.getId());
-        if (null != jPushId) {
-            JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelById(jPushId);
+        JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelByMessageId(messageModel.getId());
+        if (null != jPushAlertModel) {
             messageCreateDto.setJpush(true);
             messageCreateDto.setPushType(jPushAlertModel.getPushType());
             messageCreateDto.setPushSource(jPushAlertModel.getPushSource());
@@ -86,16 +85,19 @@ public class MessageServiceImpl implements MessageService {
     }
 
     private void editManualJPush(MessageCreateDto messageCreateDto, long messageId) {
-        Long jPushId = jPushAlertService.findJPushIdByMessageId(messageId);
+        JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelByMessageId(messageId);
         JPushAlertDto jPushAlertDto = messageCreateDto.getJPushAlertDto();
         jPushAlertDto.setMessageId(messageId);
-        if (null != jPushId && !messageCreateDto.isJpush()) {
-            jPushAlertService.delete(messageCreateDto.getUpdatedBy(), jPushId);
+        if (null != jPushAlertModel) {
+            if (messageCreateDto.isJpush()) {
+                jPushAlertService.buildJPushAlert(messageCreateDto.getCreatedBy(), jPushAlertDto);
+            } else {
+                jPushAlertService.delete(messageCreateDto.getUpdatedBy(), jPushAlertModel.getId());
+            }
         } else {
             if (messageCreateDto.isJpush()) {
-                jPushAlertDto.setId(String.valueOf(jPushId));
+                jPushAlertService.buildJPushAlert(messageCreateDto.getCreatedBy(), jPushAlertDto);
             }
-            jPushAlertService.buildJPushAlert(messageCreateDto.getCreatedBy(), jPushAlertDto);
         }
     }
 
@@ -142,9 +144,9 @@ public class MessageServiceImpl implements MessageService {
             messageModel.setUpdatedBy(checkerName);
             messageMapper.update(messageModel);
 
-            Long jPushId = jPushAlertService.findJPushIdByMessageId(messageId);
-            if (null != jPushId) {
-                jPushAlertService.reject(checkerName, jPushId, null);
+            JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelByMessageId(messageId);
+            if (null != jPushAlertModel) {
+                jPushAlertService.reject(checkerName, jPushAlertModel.getId(), null);
             }
             return new BaseDto<>(new BaseDataDto(true, null));
         }
@@ -165,9 +167,9 @@ public class MessageServiceImpl implements MessageService {
             messageModel.setUpdatedBy(checkerName);
             messageMapper.update(messageModel);
 
-            Long jPushId = jPushAlertService.findJPushIdByMessageId(messageId);
-            if (null != jPushId) {
-                jPushAlertService.manualJPushAlert(jPushId);
+            JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelByMessageId(messageId);
+            if (null != jPushAlertModel) {
+                jPushAlertService.manualJPushAlert(jPushAlertModel.getId());
             }
             return new BaseDto<>(new BaseDataDto(true, null));
         }
@@ -182,9 +184,9 @@ public class MessageServiceImpl implements MessageService {
         messageMapper.deleteById(messageId, updatedBy, new Date());
         redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(messageId));
 
-        Long jPushId = jPushAlertService.findJPushIdByMessageId(messageId);
-        if (null != jPushId) {
-            jPushAlertService.delete(updatedBy, jPushId);
+        JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelByMessageId(messageId);
+        if (null != jPushAlertModel) {
+            jPushAlertService.delete(updatedBy, jPushAlertModel.getId());
         }
         return new BaseDto<>(new BaseDataDto(true, null));
     }

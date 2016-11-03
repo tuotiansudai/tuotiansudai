@@ -56,15 +56,15 @@ public class MessageServiceTest {
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
         messageMapper.create(autoMessageModel);
 
-        List<MessageModel> manualMessageModelList = messageService.findMessageList("title", null, null, MessageType.MANUAL, 1, 10);
+        List<MessageCreateDto> manualMessageDtoList = messageService.findMessageList("title", null, null, MessageType.MANUAL, 1, 10);
 
-        List<MessageModel> autoMessageModelList = messageService.findMessageList("title", null, null, MessageType.EVENT, 1, 10);
+        List<MessageCreateDto> autoMessageDtoList = messageService.findMessageList("title", null, null, MessageType.EVENT, 1, 10);
 
         long manualCount = messageService.findMessageCount("title", null, null, MessageType.MANUAL);
         long autoCount = messageService.findMessageCount("title", null, null, MessageType.EVENT);
 
-        assertThat(1, is(manualMessageModelList.size()));
-        assertThat(1, is(autoMessageModelList.size()));
+        assertThat(1, is(manualMessageDtoList.size()));
+        assertThat(1, is(autoMessageDtoList.size()));
         assertThat(1L, is(manualCount));
         assertThat(1L, is(autoCount));
 

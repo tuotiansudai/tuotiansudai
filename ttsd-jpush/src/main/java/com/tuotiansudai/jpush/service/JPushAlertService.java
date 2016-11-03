@@ -47,5 +47,5 @@ public interface JPushAlertService {
 
     void storeJPushId(String loginName, String platform, String jPushId);
 
-    JPushAlertModel findJPushByMessageId(long messageId);
+    JPushAlertModel findJPushAlertModelByMessageId(long messageId);
 }

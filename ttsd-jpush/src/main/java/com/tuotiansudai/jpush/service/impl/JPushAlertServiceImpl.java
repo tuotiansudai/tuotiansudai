@@ -491,7 +491,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public JPushAlertModel findJPushByMessageId(long messageId) {
+    public JPushAlertModel findJPushAlertModelByMessageId(long messageId) {
         return jPushAlertMapper.findByMessageId(messageId);
     }
 }

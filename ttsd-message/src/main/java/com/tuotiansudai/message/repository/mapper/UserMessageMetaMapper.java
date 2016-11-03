@@ -36,4 +36,6 @@ public interface UserMessageMetaMapper {
     List<String> findBirthDayUsers();
 
     Map<String, Object> findMembershipById(@Param(value = "id") long id);
+
+    Map<String, Object> findTransferApplicationById(@Param(value = "id") long id);
 }

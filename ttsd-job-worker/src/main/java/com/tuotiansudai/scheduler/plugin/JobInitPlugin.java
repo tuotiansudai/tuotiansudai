@@ -2,9 +2,7 @@ package com.tuotiansudai.scheduler.plugin;
 
 import com.tuotiansudai.activity.job.CalculateTravelLuxuryPrizeJob;
 import com.tuotiansudai.job.*;
-import com.tuotiansudai.jpush.job.AutoJPushAlertBirthDayJob;
-import com.tuotiansudai.jpush.job.AutoJPushAlertBirthMonthJob;
-import com.tuotiansudai.jpush.job.AutoJPushNoInvestAlertJob;
+import com.tuotiansudai.message.job.BirthdayMessageSendJob;
 import com.tuotiansudai.point.job.ImitateLotteryJob;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
@@ -60,15 +58,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.BirthdayNotify.name().equalsIgnoreCase(schedulerName)) {
             createBirthdayNotifyJob();
         }
-        if (JobType.AutoJPushAlertBirthMonth.name().equalsIgnoreCase(schedulerName)) {
-            createAutoJPushAlertBirthMonth();
-        }
-        if (JobType.AutoJPushAlertBirthDay.name().equalsIgnoreCase(schedulerName)) {
-            createAutoJPushAlertBirthDay();
-        }
-        if (JobType.AutoJPushNoInvestAlert.name().equalsIgnoreCase(schedulerName)) {
-            createAutoJPushNoInvestAlert();
-        }
         if (JobType.ImitateLottery.name().equals(schedulerName)) {
             createImitateLotteryJob();
         }
@@ -81,7 +70,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.PlatformBalanceLowNotify.name().equals(schedulerName)) {
             platformBalanceLowNotifyJob();
         }
-
+        if (JobType.BirthdayMessage.name().equals(schedulerName)) {
+            birthdayMessageSendJob();
+        }
     }
 
     @Override
@@ -163,39 +154,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void createAutoJPushAlertBirthMonth() {
-        try {
-            jobManager.newJob(JobType.AutoJPushAlertBirthMonth, AutoJPushAlertBirthMonthJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 12 1 * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.AutoJPushAlertBirthMonth.name(), JobType.AutoJPushAlertBirthMonth.name()).submit();
-
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createAutoJPushAlertBirthDay() {
-        try {
-            jobManager.newJob(JobType.AutoJPushAlertBirthDay, AutoJPushAlertBirthDayJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 9 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.AutoJPushAlertBirthDay.name(), JobType.AutoJPushAlertBirthDay.name()).submit();
-
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createAutoJPushNoInvestAlert() {
-        try {
-            jobManager.newJob(JobType.AutoJPushNoInvestAlert, AutoJPushNoInvestAlertJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 30 9 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.AutoJPushNoInvestAlert.name(), JobType.AutoJPushNoInvestAlert.name()).submit();
-
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
     private void createLoanRepayNotifyJob() {
         try {
             jobManager.newJob(JobType.LoanRepayNotify, LoanRepayNotifyJob.class).replaceExistingJob(true)
@@ -246,4 +204,13 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
+    private void birthdayMessageSendJob() {
+        try {
+            jobManager.newJob(JobType.BirthdayMessage, BirthdayMessageSendJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 9 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
+                    .withIdentity(JobType.BirthdayMessage.name(), JobType.BirthdayMessage.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
 }

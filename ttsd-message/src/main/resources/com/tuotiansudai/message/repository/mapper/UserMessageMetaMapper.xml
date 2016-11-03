@@ -96,4 +96,8 @@
     <select id="findMembershipById" resultType="hashmap">
         select level from membership where id = #{id}
     </select>
+
+    <select id="findTransferApplicationById" resultType="hashmap">
+        select login_name from aa.transfer_application where id = #{id}
+    </select>
 </mapper>

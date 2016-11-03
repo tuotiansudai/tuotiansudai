@@ -65,7 +65,7 @@ public class UserMessageEventGenerator {
 
     private void sendJPushByUserMessageModel(UserMessageModel userMessageModel) {
         try {
-            Optional<JPushAlertModel> jPushAlertModelOptional = Optional.of(jPushAlertService.findJPushByMessageId(userMessageModel.getMessageId()));
+            Optional<JPushAlertModel> jPushAlertModelOptional = Optional.of(jPushAlertService.findJPushAlertModelByMessageId(userMessageModel.getMessageId()));
             if (jPushAlertModelOptional.isPresent()) {
                 JPushAlertModel jPushAlertModel = jPushAlertModelOptional.get();
                 jPushAlertModel.setContent(userMessageModel.getAppTitle());
@@ -119,7 +119,7 @@ public class UserMessageEventGenerator {
     }
 
     @Transactional
-    public void generateWithdrawSuccessEvent(long withdrawId) {
+    public void generateWithdrawSuccessOrApplicationSuccessEvent(long withdrawId) {
         Map<String, Object> withdraw = userMessageMetaMapper.findWithdrawById(withdrawId);
         if (withdraw == null) {
             return;
@@ -129,32 +129,31 @@ public class UserMessageEventGenerator {
 
         long amount = ((BigInteger) withdraw.get("amount")).longValue();
         String loginName = (String) withdraw.get("login_name");
-        String title = "";
-        String appTitle = "";
-        String content = "";
-        long messageId = 0L;
         if (withdrawStatus.equals(SUCCESS)) {
             MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.WITHDRAW_SUCCESS);
             //Title:您的{0}元提现已到账,请查收
             //AppTitle:您的{0}元提现已到账,请查收
             //Content:尊敬的用户，您提交的{0}元提现申请已成功通过审核，请及时查收款项，感谢您选择拓天速贷。
-            title = MessageFormat.format(messageModel.getTitle(), AmountConverter.convertCentToString(amount));
-            appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount));
-            content = MessageFormat.format(messageModel.getTemplate(), AmountConverter.convertCentToString(amount));
-            messageId = messageModel.getId();
+            String title = MessageFormat.format(messageModel.getTitle(), AmountConverter.convertCentToString(amount));
+            String appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount));
+            String content = MessageFormat.format(messageModel.getTemplate(), AmountConverter.convertCentToString(amount));
+            long messageId = messageModel.getId();
+            UserMessageModel userMessageModel = new UserMessageModel(messageId, loginName, title, appTitle, content);
+            userMessageMapper.create(userMessageModel);
+            sendJPushByUserMessageModel(userMessageModel);
         } else if (withdrawStatus.equals(APPLY_SUCCESS)) {
             MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.WITHDRAW_APPLICATION_SUCCESS);
             //Title:您的{0}元提现申请已提交成功
             //AppTitle:您的{0}元提现申请已提交成功
             //Content:尊敬的用户，您提交了{0}元提现申请，联动优势将会在1个工作日内进行审批，请耐心等待。
-            title = MessageFormat.format(messageModel.getTitle(), AmountConverter.convertCentToString(amount));
-            appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount));
-            content = MessageFormat.format(messageModel.getTemplate(), AmountConverter.convertCentToString(amount));
-            messageId = messageModel.getId();
+            String title = MessageFormat.format(messageModel.getTitle(), AmountConverter.convertCentToString(amount));
+            String appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount));
+            String content = MessageFormat.format(messageModel.getTemplate(), AmountConverter.convertCentToString(amount));
+            long messageId = messageModel.getId();
+            UserMessageModel userMessageModel = new UserMessageModel(messageId, loginName, title, appTitle, content);
+            userMessageMapper.create(userMessageModel);
+            sendJPushByUserMessageModel(userMessageModel);
         }
-        UserMessageModel userMessageModel = new UserMessageModel(messageId, loginName, title, appTitle, content);
-        userMessageMapper.create(userMessageModel);
-        sendJPushByUserMessageModel(userMessageModel);
     }
 
     @Transactional
@@ -190,6 +189,23 @@ public class UserMessageEventGenerator {
         String title = MessageFormat.format(messageModel.getTitle(), AmountConverter.convertCentToString(amount));
         String appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount));
         String content = MessageFormat.format(messageModel.getTemplate(), name);
+
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
+        userMessageMapper.create(userMessageModel);
+        sendJPushByUserMessageModel(userMessageModel);
+    }
+
+    public void generateTransferFailEvent(long transferApplicationId) {
+        Map<String, Object> transferApplication = userMessageMetaMapper.findTransferApplicationById(transferApplicationId);
+        String loginName = (String) transferApplication.get("login_name");
+        MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.TRANSFER_FAIL);
+        //Title:您提交的债权转让到期取消，请查看！
+        //AppTitle:您提交的债权转让到期取消，请查看！
+        //Content:尊敬的用户，我们遗憾地通知您，您发起的转让项目没有转让成功。如有疑问，请致电客服热线400-169-1188，感谢您选择拓天速贷。
+
+        String title = messageModel.getTitle();
+        String appTitle = messageModel.getAppTitle();
+        String content = messageModel.getTemplate();
 
         UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
         userMessageMapper.create(userMessageModel);
