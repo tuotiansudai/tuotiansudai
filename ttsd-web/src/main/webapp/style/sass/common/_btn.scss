@@ -238,5 +238,24 @@ label.checkbox {
   }
 }
 
+.init-checkbox-style {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  text-align: center;
+  background: url("../../images/global/btn-checkbox.png") no-repeat 0 0px;
+  &.on {
+    background: url("../../images/global/btn-checkbox.png") no-repeat 0 -27px;
+  }
+  .default-checkbox {
+    opacity: 0;
+    cursor: pointer;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+  }
+}
+
+
+
 
 
