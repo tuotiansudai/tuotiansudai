@@ -5,10 +5,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.PayFormDataDto;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -68,11 +69,6 @@ public class PayWrapperClient extends BaseClient {
     private final static String noPasswordInvestPath = "/no-password-invest";
 
     private final static String transferCashPath = "/transfer-cash";
-
-    private final static  String COUPON_REPAY_JOB_TRIGGER_KEY = "job:repay:coupon_repay_callback_job_trigger";
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     public BaseDto<PayDataDto> transferCash(Object transferCashDto) {
         return syncExecute(transferCashDto, transferCashPath, "POST");
@@ -152,11 +148,7 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public BaseDto<PayDataDto> couponRepayCallback() {
-        String trigger = redisWrapperClient.get(COUPON_REPAY_JOB_TRIGGER_KEY);
-        if (trigger != null && Integer.valueOf(trigger) > 0) {
-            return syncExecute(null, "/job/async_coupon_repay_notify", "POST");
-        }
-       return null;
+        return syncExecute(null, "/job/async_coupon_repay_notify", "POST");
     }
 
     public BaseDto<PayDataDto> investTransferCallback() {

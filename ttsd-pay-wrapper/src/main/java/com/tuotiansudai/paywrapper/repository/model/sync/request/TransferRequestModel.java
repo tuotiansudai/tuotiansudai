@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-public class TransferRequestModel extends BaseAsyncRequestModel {
+public class TransferRequestModel extends BaseSyncRequestModel {
 
     private String orderId;
 
@@ -29,12 +29,6 @@ public class TransferRequestModel extends BaseAsyncRequestModel {
     private String amount;
 
     public TransferRequestModel() {
-    }
-
-    public static TransferRequestModel newRequest(String orderId, String payUserId, String amount, String notifyUrl) {
-        TransferRequestModel model = TransferRequestModel.newRequest(orderId, payUserId, amount);
-        model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), notifyUrl);
-        return model;
     }
 
     public static TransferRequestModel newRequest(String orderId, String payUserId, String amount) {

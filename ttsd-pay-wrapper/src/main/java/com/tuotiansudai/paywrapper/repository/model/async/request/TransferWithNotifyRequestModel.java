@@ -30,30 +30,17 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
 
     }
 
-    public static TransferWithNotifyRequestModel createMembershipPurchaseRequestModel(String orderId, String payUserId, String amount, Source source) {
-        String retUrl = MessageFormat.format("{0}/callback/{1}", getCallbackMobileHost(), MobileFrontCallbackService.MEMBERSHIP_PURCHASE.getServiceName());
-        String notifyUrl = MessageFormat.format("{0}/{1}", getCallbackBackHost(), "membership-purchase-notify");
-        TransferWithNotifyRequestModel asynRequestModel = new TransferWithNotifyRequestModel(orderId, payUserId, amount, retUrl, notifyUrl);
-        if (Lists.newArrayList(Source.ANDROID, Source.IOS).contains(source)) {
-            asynRequestModel.setSourceV("HTML5");
-        }
-        return asynRequestModel;
+    public static TransferWithNotifyRequestModel newCouponRepayRequest(String orderId, String payUserId, String amount, String notifyUrl) {
+        return new TransferWithNotifyRequestModel(orderId, payUserId, amount,notifyUrl);
     }
 
-    public static TransferWithNotifyRequestModel createSystemRechargeRequestModel(String orderId, String payUserId, String amount) {
-        String retUrl = MessageFormat.format("{0}/finance-manage/system-bill", getCallbackConsoleHost());
-        String notifyUrl = MessageFormat.format("{0}/{1}", getCallbackBackHost(), "system_recharge_notify");
-        return new TransferWithNotifyRequestModel(orderId, payUserId, amount, retUrl, notifyUrl);
-    }
-
-    private TransferWithNotifyRequestModel(String orderId, String payUserId, String amount, String retUrl, String notifyUrl) {
+    private TransferWithNotifyRequestModel(String orderId, String payUserId, String amount, String notifyUrl) {
         this.service = "transfer_asyn";
         this.orderId = orderId;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.particUserId = payUserId;
         this.amount = amount;
-        this.retUrl = retUrl;
-        this.notifyUrl = notifyUrl;
+        this.notifyUrl = MessageFormat.format("{0}/{1}", getCallbackBackHost(), notifyUrl);
     }
 
     @Override
