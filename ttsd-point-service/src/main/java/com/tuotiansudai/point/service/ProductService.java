@@ -18,10 +18,6 @@ public interface ProductService {
 
     void createProduct(ProductDto productDto);
 
-    List<ProductModel> findProductsList(GoodsType goodsType, int index, int pageSize);
-
-    long findProductsCount(GoodsType goodsType);
-
     List<ProductModel> findAllProducts(GoodsType goodsType, int index, int pageSize);
 
     long findAllProductsCount(GoodsType goodsType);

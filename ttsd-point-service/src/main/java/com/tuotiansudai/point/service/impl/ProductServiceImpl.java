@@ -83,16 +83,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public long findProductsCount(GoodsType goodsType) {
-        return productMapper.findExchangeableProductsCount(goodsType);
-    }
-
-    @Override
-    public List<ProductModel> findProductsList(GoodsType goodsType, int index, int pageSize) {
-        return productMapper.findExchangeableProductsList(goodsType, (index - 1) * pageSize, pageSize);
-    }
-
-    @Override
     public long findAllProductsCount(GoodsType goodsType) {
         return productMapper.findAllProductsCount(goodsType);
     }
@@ -170,6 +160,7 @@ public class ProductServiceImpl implements ProductService {
         ProductModel productModel = productMapper.findById(goodsId);
         if (productModel == null) {
             logger.debug(MessageFormat.format(errorMessage, goodsId));
+            return new BaseDataDto(false, MessageFormat.format(errorMessage, goodsId));
         }
         productOrderMapper.batchConsignment(goodsId);
         return new BaseDataDto(true, null);
@@ -190,6 +181,10 @@ public class ProductServiceImpl implements ProductService {
         }
 
         ProductModel productModel = productDto.toProductModel();
+        ProductModel oldProductModel = productMapper.findById(productDto.getId());
+        productModel.setActive(oldProductModel.isActive());
+        productModel.setActiveBy(oldProductModel.getActiveBy());
+        productModel.setActiveTime(oldProductModel.getActiveTime());
         productModel.setUpdatedBy(productDto.getLoginName());
         productModel.setUpdatedTime(new Date());
         productMapper.update(productModel);
