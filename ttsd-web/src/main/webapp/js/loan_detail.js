@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'fancybox', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert', 'red-envelope-float', 'jquery.form', 'commonFun','logintip','assign_coupon'], function ($, pagination, Mustache, investListTemplate, layer, _) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'fancybox', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert', 'red-envelope-float', 'jquery.form', 'commonFun','logintip','assign_coupon','anxin_qian'], function ($, pagination, Mustache, investListTemplate, layer, _) {
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
         amountInputElement = $(".text-input-amount", $loanDetail),
@@ -919,8 +919,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             clearInterval(Down);
             $('#getSkipCode').val('重新获取验证码').prop('disabled',false);
             $('#microPhone').css('visibility', 'visible');
+            num=60;
+        }else{
+            num--;
         }
-        num--;
     }
     //submit data skip phone code
     $('#getSkipBtn').on('click',  function(event) {
@@ -962,49 +964,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         },3000)
     }
 
-    $('#skipPhoneCode').on('keyup', function(event) {
+    //skip tip click chechbox
+    $('.tip-item .skip-icon').on('click', function(event) {
         event.preventDefault();
-        $(this).val()!=''?$('#skipError').text('').hide():$('#skipError').text('验证码不能为空').show();;
+        $(this).hasClass('active') ? $(this).removeClass('active') && $('#tipCheck').val('false') : $(this).addClass('active') && $('#tipCheck').val('true');
     });
-
-    $('#serviceLayer').on('click', function(event) {
-        event.preventDefault();
-        layer.open({
-            type: 1,
-            title: '安心签服务协议',
-            area: ['950px', '600px'],
-            shadeClose: true,
-            move: false,
-            scrollbar: true,
-            skin:'register-skin',
-            content: $('#serviceBox')
-        });
-    });
-    $('#privacyLayer').on('click', function(event) {
-        event.preventDefault();
-        layer.open({
-            type: 1,
-            title: '隐私条款',
-            area: ['950px', '600px'],
-            shadeClose: true,
-            move: false,
-            scrollbar: true,
-            skin:'register-skin',
-            content: $('#privacyBox')
-        });
-    });
-    $('#numberLayer').on('click', function(event) {
-        event.preventDefault();
-        layer.open({
-            type: 1,
-            title: 'CFCA数字证书服务协议',
-            area: ['950px', '600px'],
-            shadeClose: true,
-            move: false,
-            scrollbar: true,
-            skin:'register-skin',
-            content: $('#numberBox')
-        });
-    });
-
 });

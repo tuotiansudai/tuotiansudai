@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-float', 'jquery.ajax.extension', 'logintip'], function($, pagination, layer) {
+require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-float', 'jquery.ajax.extension', 'logintip','anxin_qian'], function($, pagination, layer) {
     var $transferDetailCon = $('.transfer-detail-content'),
         $errorTip = $('.errorTip', $transferDetailCon),
         $questionList = $('.question-list', $transferDetailCon),
@@ -225,8 +225,10 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
             clearInterval(Down);
             $('#getSkipCode').val('重新获取验证码').prop('disabled', false);
             $('#microPhone').css('visibility', 'visible');
+            num=60;
+        }else{
+            num--;
         }
-        num--;
     }
     //submit data skip phone code
     $('#getSkipBtn').on('click', function(event) {
@@ -273,43 +275,4 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
         $(this).val() != '' ? $('#skipError').text('').hide() : $('#skipError').text('验证码不能为空').show();;
     });
 
-    $('#serviceLayer').on('click', function(event) {
-        event.preventDefault();
-        layer.open({
-            type: 1,
-            title: '安心签服务协议',
-            area: ['950px', '600px'],
-            shadeClose: true,
-            move: false,
-            scrollbar: true,
-            skin: 'register-skin',
-            content: $('#serviceBox')
-        });
-    });
-    $('#privacyLayer').on('click', function(event) {
-        event.preventDefault();
-        layer.open({
-            type: 1,
-            title: '隐私条款',
-            area: ['950px', '600px'],
-            shadeClose: true,
-            move: false,
-            scrollbar: true,
-            skin: 'register-skin',
-            content: $('#privacyBox')
-        });
-    });
-    $('#numberLayer').on('click', function(event) {
-        event.preventDefault();
-        layer.open({
-            type: 1,
-            title: 'CFCA数字证书服务协议',
-            area: ['950px', '600px'],
-            shadeClose: true,
-            move: false,
-            scrollbar: true,
-            skin: 'register-skin',
-            content: $('#numberBox')
-        });
-    });
 });
