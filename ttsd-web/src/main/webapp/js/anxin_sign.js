@@ -1,4 +1,39 @@
 require(['jquery', 'layerWrapper'], function ($, layer) {
+    function ajaxOuterFun(option,callback) {
+        var defaults={
+            type:'POST',
+            data:'',
+            url:''
+        };
+        var options=$.extend(defaults,option);
+        $.ajax({
+            type:options.type,
+            data:options.data,
+            dataType: 'json',
+            contentType: 'application/json; charset=UTF-8'
+        }).done(function(data) {
+            callback && callback(data);
+        }).fail(function() {
+            layer.msg('请求数据失败，请刷新页面重试！');
+        });
+    }
+
+    //模拟真实的checkbox
+    $.fn.initCheckbox=function() {
+        return $(this).each(function() {
+            $(this).bind('click',function() {
+                var $this=$(this);
+                var checked=$this.find('input:checkbox').prop('checked');
+                if(checked) {
+                    $this.addClass("on");
+                }
+                else {
+                    $this.removeClass("on");
+                }
+
+            })
+        });
+    };
 
     (function() {
         var $safetyFrame=$('#safetySignedFrame');
@@ -6,45 +41,37 @@ require(['jquery', 'layerWrapper'], function ($, layer) {
             $closed=$('.safety-status-box.closed',$getHidParam),
             $opened=$('.safety-status-box.opened',$getHidParam);
 
-
-        function ajaxOuterFun(option,callback) {
-            var defaults={
-                type:'GET',
-                data:''
-            };
-            this.options=$.extend(defaults,option);
-            $.ajax({
-                type:this.options.type,
-                data:this.options.data,
-                dataType: 'json',
-                contentType: 'application/json; charset=UTF-8'
-            }).done(function(data) {
-                callback && callback(data);
-            }).fail(function(response) {
-                layer.msg('请求数据失败，请刷新页面重试！');
-            });
-        }
-        // 开启爱心签服务
+        // 开启安心签服务
         $('#openSafetySigned').on('click',function() {
-            ajaxOuterFun({data:''},function(response) {
-                var data;
-                layer.msg('<span class="layer-msg-tip"><i></i>授权成功!</span>');
-                $closed.hide();
-                $opened.show();
+            ajaxOuterFun({
+                type:'POST',
+                url:' /anxinSign/createAccount'
+            },function(response) {
+
+                layer.msg('<span class="layer-msg-tip"><i></i>开启成功!</span>',{
+                    skin:'msg-tip-box',
+                    time: 1500,
+                    area:['290px','90px']
+                },function() {
+                    $closed.hide();
+                    $opened.show();
+                });
             });
         });
 
-        //模拟真实的checkbox
-        $('.init-checkbox-style').on('click', function () {
-            var $this = $(this),
-                checked=$this.find('input:checkbox').prop('checked');
-            $this.toggleClass("on");
-        });
+        $('.init-checkbox-style',$safetyFrame).initCheckbox();
 
         // 立即开通免短信授权服务
         $('#openAuthorization').on('click',function() {
 
         });
+
+    })();
+
+    //安心签列表
+    (function() {
+        var $safetyList=$('#safetySignedList');
+
 
     })();
 
