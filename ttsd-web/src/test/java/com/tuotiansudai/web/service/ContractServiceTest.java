@@ -132,6 +132,8 @@ public class ContractServiceTest {
         UserModel um = new UserModel();
         um.setId(idGenerator.generate());
         um.setLoginName("testUserModel");
+        um.setUserName("userName");
+        um.setIdentityNumber("identityNumber");
         um.setPassword("1234567");
         um.setMobile("1823123123");
         um.setRegisterTime(new Date());

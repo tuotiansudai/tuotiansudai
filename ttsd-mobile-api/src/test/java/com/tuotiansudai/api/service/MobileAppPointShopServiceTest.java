@@ -323,6 +323,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
         userModelTest.setMobile("13900000000");
+        userModelTest.setUserName("userName");
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
