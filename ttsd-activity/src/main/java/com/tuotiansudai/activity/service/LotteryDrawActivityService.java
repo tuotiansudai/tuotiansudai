@@ -262,49 +262,47 @@ public class LotteryDrawActivityService {
     }
 
     public int getDrawPrizeTime(String mobile,ActivityCategory activityCategory){
-        List<String> activityTime = getActivityTime(activityCategory);
-        Date startTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        Date endTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         int lotteryTime = 0;
         UserModel userModel = userMapper.findByMobile(mobile);
         if(userModel == null){
             return lotteryTime;
         }
-
-        if(userModel.getRegisterTime().before(startTime) && userModel.getRegisterTime().after(endTime)){
-            lotteryTime ++;
-        }
-
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        if(accountModel != null && accountModel.getRegisterTime().before(startTime) && accountModel.getRegisterTime().after(endTime)){
-            lotteryTime ++;
-        }
-
-        List<ReferrerRelationModel> referrerRelationModels = referrerRelationMapper.findByReferrerLoginNameAndLevel(userModel.getLoginName(), 1);
-        for(ReferrerRelationModel referrerRelationModel : referrerRelationModels){
-            UserModel referrerUserModel = userMapper.findByLoginName(referrerRelationModel.getLoginName());
-            if(referrerUserModel.getRegisterTime().before(startTime) && referrerUserModel.getRegisterTime().after(endTime)){
+        List<String> activityTime = getActivityTime(activityCategory);
+        Date startTime = DateTime.parse(activityTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        Date endTime = DateTime.parse(activityTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, userModel.getLoginName());
+        for(UserModel referrerUserModel : userModels){
+            if(referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)){
                 lotteryTime ++;
-                if(investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(), endTime, startTime) > 0){
+                if(investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(),startTime,endTime) > 0){
                     lotteryTime ++;
                 }
             }
         }
 
+        if(userModel.getRegisterTime().before(endTime) && userModel.getRegisterTime().after(startTime)){
+            lotteryTime ++;
+        }
+
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        if(accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)){
+            lotteryTime ++;
+        }
+
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
-        if(bankCardModel != null && bankCardModel.getCreatedTime().before(startTime) && bankCardModel.getCreatedTime().after(endTime)){
+        if(bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)){
             lotteryTime ++;
         }
 
-        if(rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, endTime, startTime) > 0){
+        if(rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime) > 0){
             lotteryTime ++;
         }
 
-        if(investMapper.countInvestorSuccessInvestByInvestTime(userModel.getLoginName(), endTime, startTime) > 0){
+        if(investMapper.countInvestorSuccessInvestByInvestTime(userModel.getLoginName(), startTime, endTime) > 0){
             lotteryTime ++;
         }
 
-        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.AUTUMN_PRIZE, null, null);
+        long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, activityCategory, null, null);
         if(lotteryTime > 0){
             lotteryTime -= userTime;
         }
