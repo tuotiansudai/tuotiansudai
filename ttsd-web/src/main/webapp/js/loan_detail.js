@@ -914,11 +914,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     //countdown skip
     function countDown() {
         $('#getSkipCode').val(num + 's').prop('disabled',true);
-        $('#microPhone').hide();
+        $('#microPhone').css('visibility', 'hidden');
         if (num == 0) {
             clearInterval(Down);
             $('#getSkipCode').val('重新获取验证码').prop('disabled',false);
-            $('#microPhone').show();
+            $('#microPhone').css('visibility', 'visible');
         }
         num--;
     }
