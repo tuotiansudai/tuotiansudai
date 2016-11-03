@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,24 +40,28 @@ public class AnxinSignController {
         }
     }
 
+    @ResponseBody
     @RequestMapping(value = "/createAccount", method = RequestMethod.POST)
     private BaseDto createAccount() throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
         return anxinSignService.createAccount3001(loginName);
     }
 
+    @ResponseBody
     @RequestMapping(value = "/sendCaptcha", method = RequestMethod.POST)
-    private BaseDto sendCaptcha(String captcha, boolean isSkipAuth) throws PKIException {
+    private BaseDto sendCaptcha() throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
-        return anxinSignService.verifyCaptcha3102(loginName, captcha, isSkipAuth);
+        return anxinSignService.sendCaptcha3101(loginName);
     }
 
+    @ResponseBody
     @RequestMapping(value = "/verifyCaptcha", method = RequestMethod.POST)
-    private BaseDto verifyCaptcha(String captcha) throws PKIException {
+    private BaseDto verifyCaptcha(String captcha, boolean skipAuth) throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
-        return anxinSignService.verifyCaptcha3102(loginName, captcha, false);
+        return anxinSignService.verifyCaptcha3102(loginName, captcha, skipAuth);
     }
 
+    @ResponseBody
     @RequestMapping(value = "/download-contract",method = RequestMethod.GET)
     private void downloadContract(HttpServletRequest request,HttpServletResponse response){
         //在SSH框架中，可以通过HttpServletResponse response=ServletActionContext.getResponse();取出Respond对象
