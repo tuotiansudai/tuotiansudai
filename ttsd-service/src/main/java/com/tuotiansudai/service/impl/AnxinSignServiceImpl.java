@@ -107,7 +107,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 }
             }
 
-            String anxinUserId = accountModel.getAnxinUserId();
+            String anxinUserId = accountMapper.findByLoginName(loginName).getAnxinUserId();
 
             String projectCode = UUIDGenerator.generate();
 

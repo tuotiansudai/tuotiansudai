@@ -46,12 +46,12 @@
 				</li>
 				<li class="info-list ">
 					<em class="agreement checked">
-					<input type="hidden" value="${loan.investor.skipAuth?c}" id="isSkipAuth">
+					<input type="hidden" value="${formData.anxinProp.skipAuth?c}" id="isSkipAuth">
 					<i class="fa fa-check-square" aria-hidden="true"></i>
 					<input type="hidden" id="skipCheck" value="true">
 					<span>我已阅读并同意<strong><a href="${staticServer}/pdf/transferAgreementSample.pdf" target="view">债权转让协议书（范本）</a>
 					<@global.role hasRole="'INVESTOR'">
-                    <#if !loan.investor.skipAuth>
+                    <#if formData.anxinProp.skipAuth != true>
 					、<a href="javascript:void(0)" id="serviceLayer">《安心签服务协议》</a>、<a href="javascript:void(0)" id="privacyLayer">《隐私条款》</a>和<a href="javascript:void(0)" id="numberLayer">《CFCA数字证书服务协议》</a>
 					</#if>
                     </@global.role>
