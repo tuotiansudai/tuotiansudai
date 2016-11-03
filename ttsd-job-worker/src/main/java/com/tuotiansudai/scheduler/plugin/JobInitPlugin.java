@@ -174,7 +174,6 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
-
     private void deleteImitateLotteryJob() {
         jobManager.deleteJob(JobType.ImitateLottery, JobType.ImitateLottery.name(), JobType.ImitateLottery.name());
     }
