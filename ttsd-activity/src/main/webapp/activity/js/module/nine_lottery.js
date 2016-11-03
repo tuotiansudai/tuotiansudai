@@ -1,4 +1,4 @@
-define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl) {
+define(['jquery', 'layerWrapper', 'template','jquery.ajax.extension', 'commonFun'], function($,layer,tpl) {
 
     var $lotteryList = $('#lotteryList'),
         scrollTimer,
@@ -47,14 +47,18 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
             lottery.prize = -1;
             lottery.times = 0;
             lottery.click = false;
-            layer.open({
-              type: 1,
-              title:false,
-              closeBtn: 0,
-              content: $('#lotteryTip')
-            });
+
             getRecord();
             $('.lottery-left-group').find('h3 span').text(function(index,num){return parseInt(num)>=1?parseInt(num)-1:0});
+            setTimeout(function(){
+                layer.open({
+                    type: 1,
+                    title:false,
+                    closeBtn: 0,
+                    content: $('#lotteryTip')
+                });
+            },1000);
+
         } else {
             if (lottery.times < lottery.cycle) {
                 lottery.speed -= 10;
@@ -102,6 +106,7 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
                         area: ['auto', 'auto'],
                         content: $('#loginTip')
                     });
+                    $('.image-captcha img').trigger('click');
                 }else{
                     if (lottery.click) {
                         return false;

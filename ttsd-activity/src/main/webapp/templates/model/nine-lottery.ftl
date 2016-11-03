@@ -46,7 +46,7 @@
 			{{/each}}
 			</script>
 			
-			<ul class="record-item" id="myRecord"></ul>
+			<ul class="record-item my-gift" id="myRecord"></ul>
 			<script type="text/html" id="myRecordTpl">
 			{{each list}}
 				<li>
@@ -64,6 +64,7 @@
 			<div class="text-list">
 			{{if returnCode == 0}}
 				{{if prizeType=='CONCRETE'}}
+                	<p class="title-text"><img src="${staticServer}/activity/images/model/double-eleven/title-bg.png" width="25%"></p>
 					<p class="intro-text">抽中了{{prizeValue}}</p>
 					<p class="info-text">拓天客服将会在7个工作日内联系您发放奖品！</p>
 				{{else if prizeType=='VIRTUAL'}}

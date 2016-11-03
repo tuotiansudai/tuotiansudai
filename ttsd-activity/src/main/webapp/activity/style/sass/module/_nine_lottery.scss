@@ -169,7 +169,8 @@ $width: 700px;
 				left: 0;
 				bottom: 0;
 				background: #ff1552;
-
+				border-bottom-left-radius: 20px;
+				border-bottom-right-radius: 20px;
 				@media (max-width:$width) {
 				}
 			}
@@ -179,11 +180,10 @@ $width: 700px;
 				box-sizing: border-box;
 				padding: 0 30px;
 				display: none;
-
 				@media (max-width:$width) {
 					padding: 0 15px;
 				}
-				&:nth-child(2) {
+				&.my-gift {
 					height: 345px;
 					overflow-y: scroll;
 				}
