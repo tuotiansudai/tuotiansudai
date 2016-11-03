@@ -178,7 +178,11 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     public BaseDto createContracts(long loanId){
         List<CreateContractVO> createContractVOs = Lists.newArrayList();
         investMapper.findSuccessInvestsByLoanId(loanId).forEach(investModel -> createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(),loanId,investModel.getId())));
-
+        try {
+            anxinSignConnectService.generateContractBatch3202("1",createContractVOs);
+        } catch (PKIException e) {
+            e.printStackTrace();
+        }
         return new BaseDto();
     }
 

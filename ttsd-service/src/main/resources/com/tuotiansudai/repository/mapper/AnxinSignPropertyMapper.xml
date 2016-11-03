@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="anxinSignProperModel" type="AnxinSignPropertyModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="anxin_user_id" property="anxinUserId"/>
+        <result column="skip_auth" property="skipAuth"/>
+        <result column="project_code" property="projectCode"/>
+        <result column="ip" property="ip"/>
+        <result column="created_time" property="createDTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="anxinSignProperModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `aa`.`anxin_sign_property`
+        (`login_name`,`anxin_user_id`,`skip_auth`,`project_code`,`ip`,`created_time`)
+        VALUES
+        (#{loginName},#{anxinUserId},#{skipAuth},#{projectCode},#{ip},#{createDTime});
+
+    </insert>
+
+    <update id="update" parameterType="anxinSignProperModel">
+        UPDATE `aa`.`anxin_sign_property`
+        SET
+        `login_name` = #{loginName},
+        `anxin_user_id` = #{anxinUserId},
+        `skip_auth` = #{skipAuth},
+        `project_code` = #{projectCode},
+        `ip` = #{ip},
+        `created_time` = #{createDTime}
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="findById" resultMap="activityResultMap">
+        SELECT * FROM `aa`.`anxin_sign_property` WHERE id = #{id}
+    </select>
+
+    <select id="findByLoginName" resultMap="activityResultMap" parameterType="map">
+        SELECT * FROM `aa`.`anxin_sign_property` where login_name = #{loginName}
+    </select>
+</mapper>

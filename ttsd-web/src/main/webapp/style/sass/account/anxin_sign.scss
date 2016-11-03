@@ -1,3 +1,4 @@
+@import 'account_common';
 .safety-signed-frame {
   background: #fff;
   padding: 10px 30px 30px 40px;
@@ -38,7 +39,7 @@
     }
 
   }
-.safety-advantage-box {
+  .safety-advantage-box {
   border-top:1px solid #e7eaee;
   padding-top: 10px;
   margin-top: 20px;
@@ -68,4 +69,29 @@
   }
 }
 
+  .safety-signed-list {
+    .info-list {
+      .info-title {
+        width:auto;
+      }
+    }
+    .operation-info {
+      border-top:1px solid #e7eaee;
+      color:#525252;
+      margin-top: 19px;
+      padding-top: 13px;
+    }
+  }
+
+  .layer-msg-tip {
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    i {
+      display: inline-block;
+      width:45px;
+      height:45px;
+      background: url('/images/myaccount/an-ic-ok.png') left center no-repeat;
+    }
+  }
 }
