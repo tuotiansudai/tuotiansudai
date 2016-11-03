@@ -964,7 +964,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     function skipSuccess(){
         layer.closeAll();
         $('#skipSuccess').show();
-        setInterval(function(){
+        setTimeout(function(){
             $('#skipSuccess').hide();
             noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
         },3000)
