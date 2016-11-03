@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import com.tuotiansudai.repository.model.Source;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     private List<EvidenceResponseDataDto> evidence;
 
-    private String extraSource;
+    private List<Source> extraSource;
     private String activityDesc;
 
     public String getLoanId() {
@@ -348,11 +349,11 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
         this.extraRates = extraRates;
     }
 
-    public String getExtraSource() {
+    public List<Source> getExtraSource() {
         return extraSource;
     }
 
-    public void setExtraSource(String extraSource) {
+    public void setExtraSource(List<Source> extraSource) {
         this.extraSource = extraSource;
     }
 

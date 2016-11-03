@@ -148,7 +148,7 @@ public class LoanServiceImpl implements LoanService {
                 loanListDto.setExtraLoanRateModels(fillExtraLoanRate(extraLoanRateModels));
             }
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
-            loanListDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : "");
+            loanListDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : null);
             loanListDtos.add(loanListDto);
         }
         return loanListDtos;
@@ -219,7 +219,7 @@ public class LoanServiceImpl implements LoanService {
                 }
                 loanItemDto.setDuration(loanModel.getDuration());
                 double rate = extraLoanRateMapper.findMaxRateByLoanId(loanModel.getId());
-                String extraSource = "";
+                List<Source> extraSource = Lists.newArrayList();
                 boolean activity = false;
                 String activityDesc = "";
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());

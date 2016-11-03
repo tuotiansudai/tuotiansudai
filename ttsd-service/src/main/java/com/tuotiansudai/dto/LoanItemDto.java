@@ -1,11 +1,9 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanType;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.*;
 
 import java.util.Date;
+import java.util.List;
 
 public class LoanItemDto {
 
@@ -43,7 +41,7 @@ public class LoanItemDto {
 
     private double extraRate;
 
-    private String extraSource;
+    private List<Source> extraSource;
 
     private String activityDesc;
 
@@ -185,14 +183,14 @@ public class LoanItemDto {
         this.extraRate = extraRate;
     }
 
-    public String getExtraSource() {
+
+    public List<Source> getExtraSource() {
         return extraSource;
     }
 
-    public void setExtraSource(String extraSource) {
+    public void setExtraSource(List<Source> extraSource) {
         this.extraSource = extraSource;
     }
-
 
     public String getActivityDesc() {
         return activityDesc;

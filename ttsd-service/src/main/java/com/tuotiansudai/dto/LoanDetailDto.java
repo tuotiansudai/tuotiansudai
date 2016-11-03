@@ -74,7 +74,7 @@ public class LoanDetailDto extends BaseDataDto {
 
     private String basicInfo;
 
-    private String extraSource;
+    private List<Source> extraSource;
 
     private boolean activity;
 
@@ -261,11 +261,11 @@ public class LoanDetailDto extends BaseDataDto {
         return declaration;
     }
 
-    public String getExtraSource() {
+    public List<Source> getExtraSource() {
         return extraSource;
     }
 
-    public void setExtraSource(String extraSource) {
+    public void setExtraSource(List<Source> extraSource) {
         this.extraSource = extraSource;
     }
 

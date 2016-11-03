@@ -2,6 +2,7 @@ package com.tuotiansudai.api.dto.v3_0;
 
 import com.tuotiansudai.api.dto.v2_0.ExtraRateListResponseDataDto;
 import com.tuotiansudai.repository.model.PledgeType;
+import com.tuotiansudai.repository.model.Source;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class LoanResponseDataDto {
     public String maxInvestMoneyCent;
     public String investedMoneyCent;
     public String loanMoneyCent;
-    private String extraSource;
+    private List<Source> extraSource;
     private List<ExtraRateListResponseDataDto> extraRates;
     private String activityDesc;
     private PledgeType pledgeType;
@@ -209,11 +210,11 @@ public class LoanResponseDataDto {
         this.loanMoneyCent = loanMoneyCent;
     }
 
-    public String getExtraSource() {
+    public List<Source> getExtraSource() {
         return extraSource;
     }
 
-    public void setExtraSource(String extraSource) {
+    public void setExtraSource(List<Source> extraSource) {
         this.extraSource = extraSource;
     }
 

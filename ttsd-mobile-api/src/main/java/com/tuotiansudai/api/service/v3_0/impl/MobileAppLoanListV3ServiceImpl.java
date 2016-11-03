@@ -199,7 +199,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
 
             if (ProductType.EXPERIENCE != loan.getProductType()) {
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
-                loanResponseDataDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : "");
+                loanResponseDataDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : null);
             }
 
             loanDtoList.add(loanResponseDataDto);
