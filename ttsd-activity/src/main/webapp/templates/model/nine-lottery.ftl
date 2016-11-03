@@ -77,6 +77,8 @@
 				<p class="no-time">您暂无抽奖机会啦～</p>
 				<p class="info-text">赢取机会后再来抽奖吧！</p>
 			{{else}}
+                <p class="no-time">不在活动期间！</p>
+                <p class="info-text">敬请期待~</p>
 			{{/if}}
 
 			</div>
@@ -91,6 +93,7 @@
 			{{else if returnCode == 1}}
 				<a href="javascript:void(0)" class="tip-btn close-item">知道了</a>
 			{{else}}
+                <a href="javascript:void(0)" class="tip-btn close-item">知道了</a>
 			{{/if}}
 			</div>
 		</script>
