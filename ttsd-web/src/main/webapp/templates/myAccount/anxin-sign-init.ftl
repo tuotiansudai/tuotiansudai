@@ -5,7 +5,8 @@
 
     <div class="sign-img"></div>
 
-<#--<input type="hidden" class="bind-data" data-sign="${account.anxinUserId}">-->
+    <input type="hidden" class="bind-data" data-sign="${account.anxinUserId}">
+
      <div class="safety-status-box closed tc">
         <span class="status-text">安心签电子签章服务</span>
         <button class="btn-normal" id="openSafetySigned">立即开启</button>
