@@ -18,6 +18,8 @@ public class AnxinSignPropertyModel implements Serializable {
 
     private String ip;
 
+    private Date authTime;
+
     private Date createdTime;
 
     public long getId() {
@@ -66,6 +68,14 @@ public class AnxinSignPropertyModel implements Serializable {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public Date getAuthTime() {
+        return authTime;
+    }
+
+    public void setAuthTime(Date authTime) {
+        this.authTime = authTime;
     }
 
     public Date getCreatedTime() {

@@ -71,6 +71,7 @@
         <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <!--menus-->
+
         <intercept-url pattern="/loan-list/**" access="permitAll()"/>
         <intercept-url pattern="/account/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/investor/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>

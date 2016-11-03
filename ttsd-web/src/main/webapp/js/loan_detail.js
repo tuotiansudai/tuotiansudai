@@ -904,8 +904,14 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
         })
         .done(function(data) {
-            countDown();
-            Down = setInterval(countDown, 1000);
+            if(data.success) {
+                countDown();
+                Down = setInterval(countDown, 1000);
+            }
+            else {
+                layer.msg('请求失败，请重试或联系客服！');
+            }
+
         })
         .fail(function() {
             layer.msg('请求失败，请重试或联系客服！');
@@ -913,7 +919,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     }
     //countdown skip
     function countDown() {
-        $('#getSkipCode').val(num + 's').prop('disabled',true);
+        $('#getSkipCode').val(num + '秒后可重新获取').prop('disabled',true);
         $('#microPhone').css('visibility', 'hidden');
         if (num == 0) {
             clearInterval(Down);

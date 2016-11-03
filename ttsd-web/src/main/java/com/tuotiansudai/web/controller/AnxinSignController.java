@@ -33,37 +33,37 @@ public class AnxinSignController {
     public ModelAndView anxinSignPage() {
         String loginName = LoginUserInfo.getLoginName();
         AccountModel accountModel = accountService.findByLoginName(loginName);
-        if (accountModel != null && accountModel.getAnxinUserId() != null) {
-            return new ModelAndView("/myAccount/anxin-sign-init", "account", accountModel);
-        } else {
+        if (accountModel != null && accountModel.getAnxinUserId() != null && accountModel.getProjectCode() != null) {
             return new ModelAndView("/myAccount/anxin-sign-list", "account", accountModel);
+        } else {
+            return new ModelAndView("/myAccount/anxin-sign-init", "account", accountModel);
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/createAccount", method = RequestMethod.POST)
-    private BaseDto createAccount() throws PKIException {
+    public BaseDto createAccount() throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
         return anxinSignService.createAccount3001(loginName);
     }
 
     @ResponseBody
     @RequestMapping(value = "/sendCaptcha", method = RequestMethod.POST)
-    private BaseDto sendCaptcha(boolean isVoice) throws PKIException {
+    public BaseDto sendCaptcha(boolean isVoice) throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
         return anxinSignService.sendCaptcha3101(loginName, isVoice);
     }
 
     @ResponseBody
     @RequestMapping(value = "/verifyCaptcha", method = RequestMethod.POST)
-    private BaseDto verifyCaptcha(String captcha, boolean skipAuth) throws PKIException {
+    public BaseDto verifyCaptcha(String captcha, boolean skipAuth) throws PKIException {
         String loginName = LoginUserInfo.getLoginName();
         return anxinSignService.verifyCaptcha3102(loginName, captcha, skipAuth);
     }
 
     @ResponseBody
     @RequestMapping(value = "/download-contract", method = RequestMethod.GET)
-    private void downloadContract(HttpServletRequest request, HttpServletResponse response) {
+    public void downloadContract(HttpServletRequest request, HttpServletResponse response) {
         //在SSH框架中，可以通过HttpServletResponse response=ServletActionContext.getResponse();取出Respond对象
         //清空一下response对象，否则出现缓存什么的
         response.reset();
