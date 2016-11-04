@@ -54,6 +54,7 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
         }
         // 开启安心签服务
         $('#openSafetySigned').on('click',function() {
+            var $this=$(this);
             ajaxOuterFun({
                 url:' /anxinSign/createAccount'
             },function(response) {
@@ -62,9 +63,16 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
                     time: 1500,
                     area:['290px','90px']
                 },function() {
+                    //done
                     $closed.hide();
                     $opened.show();
                 });
+            },function() {
+                //always
+                $this.prop('disabled',false);
+            },function() {
+                //fail
+                $this.prop('disabled',true);
             });
         });
 
@@ -154,6 +162,7 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
                 }
             },function(data) {
                if(data.success) {
+                   layer.closeAll();
                    layer.msg('<span class="layer-msg-tip"><i></i>授权成功!</span>',{
                        skin:'msg-tip-box',
                        time: 1500,
@@ -163,7 +172,7 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
                    });
                }
                else {
-                   $this.find('error').show();
+                   $this.find('.error').show();
                }
             })
         })
@@ -171,8 +180,7 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
         $('body').on('click','a',function(event) {
             var target=event.target,
                 $safetyAgreement=$('.safety-agreement-frame',$safetyFrame),
-                contentDom,
-                atitle;
+                contentDom;
             var showAgreement=function(title,content) {
                 event.preventDefault();
                 layer.open({
@@ -201,9 +209,6 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
                     showAgreement('安心签免短信授权服务协议',contentDom);
                     break;
             }
-
-
-            // alert('ppp');
 
         });
 

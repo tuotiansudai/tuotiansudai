@@ -243,9 +243,11 @@ label.checkbox {
   height: 24px;
   cursor: pointer;
   text-align: center;
-  background: url("../../images/global/btn-checkbox.png") no-repeat 0 0px;
+  background: url("../../images/global/btn-checkbox.png") no-repeat 0 4px;
+  vertical-align: middle;
+  display: inline-block;
   &.on {
-    background: url("../../images/global/btn-checkbox.png") no-repeat 0 -27px;
+    background: url("../../images/global/btn-checkbox.png") no-repeat 0 -23px;
   }
   .default-checkbox {
     opacity: 0;

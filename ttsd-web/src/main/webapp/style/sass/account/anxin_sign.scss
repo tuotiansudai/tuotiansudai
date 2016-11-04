@@ -10,6 +10,9 @@
   .agreeOpen {
     vertical-align: middle;
     color: #999;
+    a {
+      color: #999;
+    }
     em {
       color: #4d4d4d;
     }
@@ -90,7 +93,6 @@
 
   .open-safety-box {
     margin:25px;
-    height: 100%;
     span.info {
       display: block;
       color: #4c4c4c;
@@ -110,7 +112,6 @@
     }
     .tip-item {
       position: relative;
-      height: 100%;
       span {
         input {
           height: 30px;
@@ -147,7 +148,7 @@
       }
       .button-bar {
         position: absolute;
-        bottom: 56px;
+        top: 79px;
         left: 36px;
       }
     }
