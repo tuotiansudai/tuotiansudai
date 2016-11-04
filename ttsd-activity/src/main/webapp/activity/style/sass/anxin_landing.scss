@@ -63,7 +63,7 @@ a.anxin-button {
       background: #e6ecf4;
 
       p {
-        padding: 27px 20px 2px 20px;
+        padding: 20px 20px 2px 20px;
         text-align: left;
       }
       .organize {
@@ -186,6 +186,9 @@ a.anxin-button {
     .CFCA-box {
       width:100%;
       margin-top: 15px;
+      .anxin-button {
+        display: none;
+      }
       dd {
         height:auto;
         padding-bottom:15px;
