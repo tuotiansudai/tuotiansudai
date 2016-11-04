@@ -103,7 +103,18 @@ public class SignInClient {
                 .post(requestBody);
 
         try {
-            return objectMapper.readValue(this.execute(request), SignInResult.class);
+            SignInResult signInResult = objectMapper.readValue(this.execute(request), SignInResult.class);
+
+            HttpSession session = httpServletRequest.getSession(false);
+            logger.debug(MessageFormat.format("[Login] user({0}) original session id({1}) new session id({2})",
+                    signInResult.getUserInfo().getLoginName(),
+                    session != null ? session.getId() : null,
+                    signInResult.getToken()));
+            if (session != null) {
+                redisWrapperClient.setex(session.getId(), 30, signInResult.getToken());
+            }
+
+            return signInResult;
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] login no password failed (user={0} source={1})", username, source.name()));
         }
