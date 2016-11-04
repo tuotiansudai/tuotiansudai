@@ -1,7 +1,5 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.message.dto.MessageCreateDto;
-
 public class LoanCreateRequestDto {
 
     private LoanCreateBaseRequestDto loan;
@@ -18,7 +16,9 @@ public class LoanCreateRequestDto {
 
     private LoanCreatePledgeEnterpriseRequestDto pledgeEnterprise;
 
-    private MessageCreateDto messageCreateDto;
+    private String loanMessageTitle;
+
+    private String loanMessageContent;
 
     public LoanCreateBaseRequestDto getLoan() {
         return loan;
@@ -76,11 +76,19 @@ public class LoanCreateRequestDto {
         this.pledgeEnterprise = pledgeEnterprise;
     }
 
-    public MessageCreateDto getMessageCreateDto() {
-        return messageCreateDto;
+    public String getLoanMessageTitle() {
+        return loanMessageTitle;
     }
 
-    public void setMessageCreateDto(MessageCreateDto messageCreateDto) {
-        this.messageCreateDto = messageCreateDto;
+    public void setLoanMessageTitle(String loanMessageTitle) {
+        this.loanMessageTitle = loanMessageTitle;
+    }
+
+    public String getLoanMessageContent() {
+        return loanMessageContent;
+    }
+
+    public void setLoanMessageContent(String loanMessageContent) {
+        this.loanMessageContent = loanMessageContent;
     }
 }

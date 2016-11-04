@@ -1,9 +1,11 @@
 package com.tuotiansudai.message.dto;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
+import com.tuotiansudai.jpush.repository.model.JumpTo;
 import com.tuotiansudai.jpush.repository.model.PushUserType;
 import com.tuotiansudai.message.repository.model.*;
 import org.apache.commons.collections.CollectionUtils;
@@ -12,8 +14,6 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import static com.tuotiansudai.jpush.repository.model.JumpTo.MESSAGE_CENTER;
 
 public class MessageCreateDto implements Serializable {
     private long id;
@@ -95,7 +95,7 @@ public class MessageCreateDto implements Serializable {
         jpushAlertDto.setPushSource(this.pushSource);
         jpushAlertDto.setPushUserType(Lists.newArrayList(PushUserType.ALL));
         jpushAlertDto.setContent(this.templateTxt);
-        jpushAlertDto.setJumpTo(MESSAGE_CENTER);
+        jpushAlertDto.setJumpTo(JumpTo.MESSAGE_CENTER);
         jpushAlertDto.setJumpToLink(null);
         jpushAlertDto.setExpectPushTime(simpleDateFormat.format(new Date()));
         jpushAlertDto.setAutomatic(false);

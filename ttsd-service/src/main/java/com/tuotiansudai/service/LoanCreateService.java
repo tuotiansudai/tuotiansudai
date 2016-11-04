@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface LoanCreateService {
 
-    String LOAN_MESSAGE_REDIS_KEY = "web:loan:loanMessageMap";
-
     List<LoanTitleModel> findAllTitles();
 
     LoanTitleModel createTitle(LoanTitleDto loanTitleDto);

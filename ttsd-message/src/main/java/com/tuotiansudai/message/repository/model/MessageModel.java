@@ -1,5 +1,7 @@
 package com.tuotiansudai.message.repository.model;
 
+import com.tuotiansudai.enums.AppUrl;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;

@@ -6,6 +6,8 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.UserMessageDto;
 import com.tuotiansudai.api.dto.v1_0.UserMessagesRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
+import com.tuotiansudai.message.dto.MessageCreateDto;
+import com.tuotiansudai.message.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +17,9 @@ public class MobileAppMessageController extends MobileAppBaseController {
 
     @Autowired
     private MobileAppUserMessageService mobileAppUserMessageService;
+
+    @Autowired
+    private MessageService messageService;
 
     @RequestMapping(value = "/get/messages", method = RequestMethod.POST)
     public BaseResponseDto getMessages(@RequestBody UserMessagesRequestDto requestDto) {
@@ -31,6 +36,10 @@ public class MobileAppMessageController extends MobileAppBaseController {
         ModelAndView modelAndView = new ModelAndView("");
 
         UserMessageDto userMessageDto = mobileAppUserMessageService.getUserMessageModelByIdAndLoginName(userMessageId, getLoginName());
+        MessageCreateDto messageCreateDto = messageService.getMessageByMessageId(userMessageId);
+        if (null != messageCreateDto && null != messageCreateDto.getAppUrl()) {
+            modelAndView.addObject("appUrl", messageCreateDto.getAppUrl().getPath());
+        }
 
         modelAndView.addObject("dto", userMessageDto);
         return modelAndView;
