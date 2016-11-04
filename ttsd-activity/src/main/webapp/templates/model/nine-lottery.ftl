@@ -92,11 +92,7 @@
 				{{/if}}
 			{{else if returnCode == 1}}
 				<a href="javascript:void(0)" class="tip-btn close-item">知道了</a>
-<<<<<<< HEAD
 			{{else if returnCode == 3}}
-=======
-			{{else}}
->>>>>>> 336a6e78616c72a542f8f5ee3f04f98b5097e563
                 <a href="javascript:void(0)" class="tip-btn close-item">知道了</a>
 			{{/if}}
 			</div>

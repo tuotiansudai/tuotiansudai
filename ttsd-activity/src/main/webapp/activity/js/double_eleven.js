@@ -20,12 +20,13 @@ require(['jquery', 'underscore', 'layerWrapper', 'template', 'jquery.ajax.extens
                     activityEnd=_this.attr('data-activityEnd'),
                     dateText=_this.attr('data-date').replace('-','/'),
                     EndTime = new Date('2016/'+dateText+' '+endtimeText),
-                    NowTime = new Date(),
-                    t = EndTime.getTime() - NowTime.getTime(),
+                    NowTime = $('#nowTimeCount').val(),
+                    t = EndTime.getTime() - parseInt(NowTime),
                     h = Math.floor(t / 1000 / 60 / 60 % 24),
                     m = Math.floor(t / 1000 / 60 % 60),
                     s = Math.floor(t / 1000 % 60);
-                if(new Date('2016/'+dateText).getTime()>new Date(activityEnd).getTime()){
+
+                if(parseInt(NowTime)>new Date(activityEnd).getTime()){
                     clearInterval(timer);
                     $self.addClass('end').find('.time-text span').text('活动已过期');
                     $self.find('.btn-item a').attr('href','javascript:void(0)');
@@ -38,8 +39,12 @@ require(['jquery', 'underscore', 'layerWrapper', 'template', 'jquery.ajax.extens
                 }
             });
         }
+        $('#nowTimeCount').val(new Date($('#nowTimeCount').attr('data-time')).getTime());
         getRTime();
-        var timer=setInterval(getRTime, 1000);
+        var timer=setInterval(function(){
+            $('#nowTimeCount').val(function(index,num){return parseInt(num)+1000});
+            getRTime();
+        }, 1000);
 
     });
 });

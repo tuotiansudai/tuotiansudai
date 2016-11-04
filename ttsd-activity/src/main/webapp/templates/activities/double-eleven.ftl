@@ -38,6 +38,7 @@
                         <i class="date-icon">
                             <span>${today}</span>
                         </i>
+                        <input type="hidden" id="nowTimeCount" data-time="${now}">
                         <ul id="timeCount">
                             <li>
                                 <p><img src="${staticServer}/activity/images/double-eleven/first-time.png" ></p>

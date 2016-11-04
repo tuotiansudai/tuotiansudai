@@ -22,7 +22,7 @@ public class CarnivalActivityController {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/double-eleven", "responsive", true);
         modelAndView.addObject("myCount", lotteryDrawActivityService.getDrawPrizeTime(LoginUserInfo.getMobile(), ActivityCategory.CARNIVAL_ACTIVITY));
-        modelAndView.addObject("now", DateTime.now().toString("yyyy/MM/dd hh:mm:ss"));
+        modelAndView.addObject("now", DateTime.now().toString("yyyy/MM/dd HH:mm:ss"));
         modelAndView.addObject("today", DateTime.now().toString("MM-dd"));
         modelAndView.addObject("steps", lotteryDrawActivityService.generateSteps(loginName));
         modelAndView.addObject("activityEnd", lotteryDrawActivityService.getActivityEndTime(ActivityCategory.CARNIVAL_ACTIVITY));
