@@ -53,16 +53,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
                     submitData();
                     return;
                 } else {
-                    if($('#isAnxinUser').val() == 'true'){
-                        getSkipPhoneTip();
-                    }else{
-                        if ($('#skipCheck').val() == 'true') {
-                            getSkipPhoneTip();
-                        } else {
-                            $('#checkTip').show();
-                        }
-                    }
-
+                    getSkipPhoneTip();
                     return false;
                 }
             }

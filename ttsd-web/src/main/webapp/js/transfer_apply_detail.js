@@ -23,11 +23,10 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
                 applyTip();
                 return;
             }else{
-                if($('#skipCheck').val()=='true'){
+                if($('#isAnxinUser').val() == 'true'){
                     getSkipPhoneTip();
                 }else{
-                    $agreement.next('span.error').show();
-                    return;
+                    $('#skipCheck').val() == 'true'?getSkipPhoneTip():$agreement.next('span.error').show();;
                 }
                 return false;
             }
@@ -208,6 +207,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
             .done(function(data) {
                 $self.removeClass('active').val('立即授权').prop('disabled', false);
                 if(data.success){
+                    $('#isAnxinUser').val('true') && $('.skip-group').hide();
                     if(data.skipAuth=='true'){
                         $('#isSkipAuth').val('true');
                     }
