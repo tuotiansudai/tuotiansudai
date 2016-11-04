@@ -3,15 +3,14 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
         var defaults={
             type:'POST',
             url:'',
-            data:''
+            data:{}
         };
         var options=$.extend(defaults,option);
         $.ajax({
             type:options.type,
             data:options.data,
             url:options.url,
-            dataType: 'json',
-            contentType: 'application/json; charset=UTF-8'
+            dataType: 'json'
         }).done(function(data) {
             callback && callback(data);
         }).fail(function() {
@@ -69,16 +68,15 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
         $('.init-checkbox-style',$safetyFrame).initCheckbox(function(element) {
             var $parentBox=$(element).parents('.safety-status-box');
             //点击我已阅读并同意是否disable按钮
-            if($parentBox.hasClass('closed')) {
-                var isCheck=$(element).hasClass('on'),
-                    $openAuthorization=$('#openAuthorization');
+            var isCheck=$(element).hasClass('on'),
+                $btnNormal=$parentBox.find('button.btn-open');
+
                 if(isCheck) {
-                    $openAuthorization.prop('disabled',false);
+                    $btnNormal.prop('disabled',false);
                 }
                 else {
-                    $openAuthorization.prop('disabled',true);
+                    $btnNormal.prop('disabled',true);
                 }
-            }
 
         });
 
@@ -111,7 +109,10 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
         $('#getSkipPhone').on('click',function(event) {
             var getId=event.target.id,
                 isVoice; //是否语音获取
-            if(getId=='getSkipCode') {
+            if(!getId) {
+                return;
+            }
+            else if(getId=='getSkipCode') {
                 isVoice=true;
             }
             else if(getId=='microPhone') {
@@ -135,6 +136,7 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
         //验证验证码并开通短信服务
         $('#toOpenSMS').on('click',function() {
             var $this=$(this);
+
             ajaxOuterFun({
                 url:'anxinSign/verifyCaptcha',
                 data:{

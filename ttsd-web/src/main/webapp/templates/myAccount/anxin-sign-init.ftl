@@ -4,12 +4,12 @@
     <h2 class="column-title"><em>安心签</em></h2>
 
     <div class="sign-img"></div>
-
-    <input type="hidden" class="bind-data" data-sign="${anxinProp.anxinUserId!}">
+<#--${anxinProp.anxinUserId!}-->
+    <input type="hidden" class="bind-data" data-sign="true">
 
      <div class="safety-status-box closed tc">
         <span class="status-text">安心签电子签章服务</span>
-        <button class="btn-normal" id="openSafetySigned">立即开启</button>
+        <button class="btn-normal btn-open" id="openSafetySigned">立即开启</button>
          <span class="init-checkbox-style on">
              <input type="checkbox" id="agreeOpen1" class="default-checkbox" checked>
          </span>
@@ -20,7 +20,7 @@
       <div class="safety-status-box opened tc">
             <span class="status-text"><i></i>安心签电子签章服务已开启</span>
             <span class="to-open-check">开通免短信授权服务，投资快人一步！</span>
-            <button class="btn-normal" id="openAuthorization">立即授权开通</button>
+            <button class="btn-normal btn-open" id="openAuthorization">立即授权开通</button>
           <span class="init-checkbox-style on">
               <input type="checkbox" id="agreeOpen2" class="default-checkbox" checked>
             </span>
