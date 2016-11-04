@@ -18,4 +18,6 @@ public interface AnxinSignService {
 
     BaseDto<BaseDataDto> createContracts(long loanId);
 
+    BaseDto switchSkipAuth(String loginName, boolean open);
+
 }

@@ -54,7 +54,7 @@
 					<@global.role hasRole="'INVESTOR'">
 
                     <#if formData.anxinProp.skipAuth != true>
-					、<a href="javascript:void(0)" id="serviceLayer">《安心签服务协议》</a>、<a href="javascript:void(0)" id="privacyLayer">《隐私条款》</a>和<a href="javascript:void(0)" id="numberLayer">《CFCA数字证书服务协议》</a>
+					、<a href="javascript:void(0)" class="service-layer">《安心签服务协议》</a>、<a href="javascript:void(0)" class="privacy-layer">《隐私条款》</a>和<a href="javascript:void(0)" class="number-layer">《CFCA数字证书服务协议》</a>
 					</#if>
                     </@global.role>
 					</strong></span>
