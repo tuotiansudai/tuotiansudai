@@ -970,6 +970,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         $('#skipSuccess').show();
         setTimeout(function(){
             $('#skipSuccess').hide();
+            $('#skipPhoneCode').val('');
+            num=0;
             noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
         },3000)
     }
