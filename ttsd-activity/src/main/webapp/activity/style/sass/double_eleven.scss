@@ -525,6 +525,10 @@ $width:700px;
                       background:#b1a3a2;
                       span{
                         color:#fff;
+                        font-size:40px;
+                        @media (max-width:$width) {
+                          font-size:18px;
+                        }
                       }
                     }
                   }
@@ -537,6 +541,9 @@ $width:700px;
                     &.time-text{
                       span{
                         font-size:40px;
+                        @media (max-width:$width) {
+                          font-size:18px;
+                        }
                       }
                     }
                   }
