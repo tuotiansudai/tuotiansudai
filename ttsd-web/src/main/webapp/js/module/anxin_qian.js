@@ -1,7 +1,7 @@
 define(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function($, layer) {
 
 	(function() {
-
+        $safetyFrame=$('#safetySignedFrame');
 		//所有弹框协议
         $('body').on('click','a',function(event) {
             var target=event.target,
