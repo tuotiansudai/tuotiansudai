@@ -946,7 +946,14 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             })
             .done(function(data) {
                 $self.removeClass('active').val('立即授权').prop('disabled', false);
-                data.success?skipSuccess():$('#skipError').text('验证码不正确').show();
+                if(data.success){
+                    if(data.skipAuth=='true'){
+                        $('#isSkipAuth').val('true');
+                    }
+                    skipSuccess();
+                }else{
+                    $('#skipError').text('验证码不正确').show();
+                }
             })
             .fail(function() {
                 $self.removeClass('active').val('立即授权').prop('disabled', false);
