@@ -85,4 +85,8 @@ public class AnxinSignPropertyModel implements Serializable {
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
+
+    public boolean isAnxinUser() {
+        return this.anxinUserId != null && this.anxinUserId.length() > 0;
+    }
 }

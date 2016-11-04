@@ -31,7 +31,9 @@ public class AnxinSignController {
     public ModelAndView anxinSignPage() {
 
         String loginName = LoginUserInfo.getLoginName();
+
         AnxinSignPropertyModel anxinProp = anxinSignService.getAnxinSignProp(loginName);
+        anxinProp = anxinProp != null ? anxinProp : new AnxinSignPropertyModel();
 
         if (anxinSignService.hasAuthedBefore(loginName)) {
             // 如果以前授权过，则进入列表页
@@ -66,7 +68,7 @@ public class AnxinSignController {
 
     @ResponseBody
     @RequestMapping(value = "/switchSkipAuth", method = RequestMethod.POST)
-    public BaseDto switchSkipAuth(boolean open) throws PKIException {
+    public BaseDto switchSkipAuth(boolean open) {
         String loginName = LoginUserInfo.getLoginName();
         return anxinSignService.switchSkipAuth(loginName, open);
     }
