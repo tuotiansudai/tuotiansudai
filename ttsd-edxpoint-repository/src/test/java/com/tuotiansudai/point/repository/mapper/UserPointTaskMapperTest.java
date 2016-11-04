@@ -29,11 +29,13 @@ public class UserPointTaskMapperTest {
     public void shouldCreatePointBillModel() throws Exception {
         String fakeLoginName = "fakeUser";
 
-        List<PointTaskModel> pointTaskModels = pointTaskMapper.findPointTaskPagination(0, 10);
-        for (PointTaskModel pointTaskModel : pointTaskModels) {
-            userPointTaskMapper.create(new UserPointTaskModel(fakeLoginName, pointTaskModel.getId(), 1000, 1));
-        }
+        PointTaskModel pointTaskModel = pointTaskMapper.findById(1);
 
-        assertThat(userPointTaskMapper.findByLoginName(fakeLoginName).size(), is(pointTaskModels.size()));
+        userPointTaskMapper.create(new UserPointTaskModel(fakeLoginName, pointTaskModel.getId(), 1000, 1));
+
+
+        assertThat(userPointTaskMapper.findByLoginName(fakeLoginName).size(), is(1));
     }
+
+
 }
