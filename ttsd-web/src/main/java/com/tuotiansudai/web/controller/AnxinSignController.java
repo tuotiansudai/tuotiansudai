@@ -35,7 +35,7 @@ public class AnxinSignController {
         AnxinSignPropertyModel anxinProp = anxinSignService.getAnxinSignProp(loginName);
         anxinProp = anxinProp != null ? anxinProp : new AnxinSignPropertyModel();
 
-        if (anxinSignService.hasAuthedBefore(loginName)) {
+        if (anxinSignService.hasAuthed(loginName)) {
             // 如果以前授权过，则进入列表页
             return new ModelAndView("/myAccount/anxin-sign-list", "anxinProp", anxinProp);
         } else {

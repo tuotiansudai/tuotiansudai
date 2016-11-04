@@ -73,7 +73,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      * 以前是否授权过
      */
     @Override
-    public boolean hasAuthedBefore(String loginName) {
+    public boolean hasAuthed(String loginName) {
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
         return anxinProp != null && anxinProp.getAnxinUserId() != null && anxinProp.getProjectCode() != null;
     }
@@ -94,6 +94,11 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     public BaseDto createAccount3001(String loginName) {
 
         try {
+            if(hasAnxinAccount(loginName)) {
+                logger.error(loginName + " already have anxin-sign account. can't create anymore.");
+                return failBaseDto();
+            }
+
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
             UserModel userModel = userMapper.findByLoginName(loginName);
 
