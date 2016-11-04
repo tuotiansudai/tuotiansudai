@@ -230,9 +230,9 @@ public class LotteryDrawActivityService {
             case INTEREST_COUPON_2_POINT_DRAW :
                 return 314;
             case INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL:
-                return 313;
+                return 321;
             case RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL:
-                return 312;
+                return 320;
         }
         return 0l;
     }
