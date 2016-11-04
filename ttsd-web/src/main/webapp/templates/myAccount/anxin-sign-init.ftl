@@ -12,7 +12,12 @@
          <span class="init-checkbox-style on">
              <input type="checkbox" id="agreeOpen1" class="default-checkbox" checked>
          </span>
-             <label for="agreeOpen1" class="agreeOpen"><em>我已阅读并同意</em>《安心签平台服务协议》、《隐私条款》和《CFCA数字证书服务协议》</label>
+             <label for="agreeOpen1" class="agreeOpen"><em>我已阅读并同意</em>
+                 <a href="javascript:void(0);" class="link-agree-service" >《安心签平台服务协议》</a>、
+                 <a href="javascript:void(0);" class="link-agree-privacy" >《隐私条款》</a>
+                 和
+                 <a href="javascript:void(0);" class="link-agree-number" >《CFCA数字证书服务协议》</a>
+             </label>
 
     </div>
 
@@ -23,7 +28,7 @@
           <span class="init-checkbox-style on">
               <input type="checkbox" id="agreeOpen2" class="default-checkbox" checked>
             </span>
-            <label for="agreeOpen2" class="agreeOpen"><em>我已阅读并同意</em><a href="#" class="link-free-SMS">《安心签免短信授权服务协议》</a> </label>
+            <label for="agreeOpen2" class="agreeOpen"><em>我已阅读并同意</em><a href="#" class="link-agree-free-SMS">《安心签免短信授权服务协议》</a> </label>
       </div>
 
     <div class="safety-advantage-box">

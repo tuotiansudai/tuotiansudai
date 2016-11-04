@@ -1,5 +1,5 @@
 require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) {
-    function ajaxOuterFun(option,callback) {
+    function ajaxOuterFun(option,callback,alwaysFun,failFun) {
         var defaults={
             type:'POST',
             url:'',
@@ -15,6 +15,10 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
             callback && callback(data);
         }).fail(function() {
             layer.msg('请求数据失败，请刷新页面重试！');
+            failFun && failFun();
+
+        }).always(function() {
+            alwaysFun && alwaysFun();
         });
     }
 
@@ -113,15 +117,17 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
                 return;
             }
             else if(getId=='getSkipCode') {
-                isVoice=true;
+                isVoice=false;
             }
             else if(getId=='microPhone') {
-                isVoice=false;
+                isVoice=true;
             }
             if(getId=='getSkipCode' || getId=='microPhone') {
                 ajaxOuterFun({
                     url:'anxinSign/sendCaptcha',
-                    data:{"isVoice":isVoice}
+                    data:{
+                        isVoice:isVoice
+                    }
                 },function(data) {
                     if(data.success) {
                         countDown();
@@ -162,14 +168,43 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
             })
         })
     //所有弹框协议
-        $safetyFrame.on('click',function(event) {
-            var target=event.target;
-            switch(target) {
-                case 'free-SMS-box':
+        $('body').on('click','a',function(event) {
+            var target=event.target,
+                $safetyAgreement=$('.safety-agreement-frame',$safetyFrame),
+                contentDom,
+                atitle;
+            var showAgreement=function(title,content) {
+                event.preventDefault();
+                layer.open({
+                    type:1,
+                    title:title,
+                    area:['800px','520px'],
+                    shadeClose: false,
+                    content: content
+                });
+            }
+            switch(target.className) {
+                case 'link-agree-service':
+                    contentDom=$('.service-box',$safetyAgreement);
+                    showAgreement('安心平台签服务协议',contentDom);
                     break;
-                case 'service-box':
+                case 'link-agree-privacy':
+                    contentDom=$('.privacy-box',$safetyAgreement);
+                    showAgreement('隐私条款',contentDom);
+                    break;
+                case 'link-agree-number':
+                    contentDom=$('.number-box',$safetyAgreement);
+                    showAgreement('CFCA数字证书服务协议',contentDom);
+                    break;
+                case 'link-agree-free-SMS':
+                    contentDom=$('.free-SMS-box',$safetyAgreement);
+                    showAgreement('安心签免短信授权服务协议',contentDom);
                     break;
             }
+
+
+            // alert('ppp');
+
         });
 
     })();
