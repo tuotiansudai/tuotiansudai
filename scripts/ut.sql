@@ -1,3 +1,4 @@
+-- 测试环境的密码，需要在后面追加环境ip 如 tuotiansd153, sdactivity153 ...
 grant select,insert,update,delete,create,drop,alter,index on aa.* to tuotiansd@'%' identified by 'tuotiansd';
 grant select,insert,update,delete,create,drop,alter,index on job_worker.* to tuotiansd@'%' identified by 'tuotiansd';
 grant select,insert,update,delete,create,drop,alter,index on sms_operations.* to tuotiansd@'%' identified by 'tuotiansd';
