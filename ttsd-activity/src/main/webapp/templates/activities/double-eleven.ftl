@@ -2,6 +2,9 @@
 <@global.main pageCss="${css.double_eleven}" pageJavascript="${js.double_eleven}" activeNav="" activeLeftNav="" title="拓天双11活动_活动中心_拓天速贷" keywords="撩妹神器,撩妹礼包,投资活动,拓天速贷" description="拓天速贷双11活动,推出撩妹神器'息'结良缘限时专享标,收益增加1.1%,并送'撩妹礼包',你撩妹,我买单,单身狗抽奖还可获100%中奖机会.">
 <div class="double-eleven-container">
     <@global.isNotAnonymous>
+        <form id="logout-form" class="logout-form" action="/logout" method="post">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
         <input type="hidden" value="<@global.security.authentication property="principal.mobile" />" id="MobileNumber"/>
     </@global.isNotAnonymous>
     <div class="top-intro-img">
