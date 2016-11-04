@@ -161,6 +161,7 @@ define(['jquery', 'layerWrapper', 'template','jquery.ajax.extension', 'commonFun
                                 roll();
                                 lottery.click = true;
                             }else if(data.returnCode == 3){
+                                alert('我是alert！');
                                 $('#lotteryTip').html(tpl('lotteryTipTpl',data));
                                 layer.open({
                                     type: 1,
