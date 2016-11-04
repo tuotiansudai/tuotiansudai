@@ -15,6 +15,7 @@ web:
   ports:
     - "20002:8080"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-web/war:/usr/local/tomcat/webapps
     - /var/log/tuotian/web:/usr/local/tomcat/logs
     - /var/log/tuotian/web:/var/log/tomcat
