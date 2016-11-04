@@ -39,11 +39,11 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
     //安心初始
     (function() {
         var $safetyFrame=$('#safetySignedFrame');
-            getUserParam=$('input.bind-data',$safetyFrame).data('sign'),
+            isAnxinUser=$('input.bind-data',$safetyFrame).data('is-anxin-user'),
             $closed=$('.safety-status-box.closed',$safetyFrame),
             $opened=$('.safety-status-box.opened',$safetyFrame);
 
-        if(!getUserParam) {
+        if(!isAnxinUser) {
             $closed.show();
         }
         else {
