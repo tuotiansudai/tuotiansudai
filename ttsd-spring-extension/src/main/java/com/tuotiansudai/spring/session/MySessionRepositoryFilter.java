@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.tuotiansudai.client.RedisWrapperClient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -52,6 +53,8 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
 
     private MultiHttpSessionStrategy httpSessionStrategy = new CookieHttpSessionStrategy();
 
+    private RedisWrapperClient redisWrapperClient;
+
     /**
      * Creates a new instance.
      *
@@ -71,6 +74,10 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
         }
         this.httpSessionStrategy = new MultiHttpSessionStrategyAdapter(
                 httpSessionStrategy);
+    }
+
+    public void setRedisWrapperClient(RedisWrapperClient redisWrapperClient) {
+        this.redisWrapperClient = redisWrapperClient;
     }
 
     /**
@@ -230,6 +237,10 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
             HttpSessionWrapper original = getCurrentSession();
             setCurrentSession(null);
 
+            if (redisWrapperClient.get(originalSessionId) != null) {
+                SESSION_LOGGER.info(MessageFormat.format("[change session id] before change session, original sessionId = {0}, new sessionId = {1}", originalSessionId, redisWrapperClient.get(originalSessionId)));
+            }
+
             HttpSessionWrapper newSession = getSession();
             original.setSession(newSession.getSession());
 
@@ -240,7 +251,7 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
                 newSession.setAttribute(attrName, attrValue);
             }
 
-            SESSION_LOGGER.info(MessageFormat.format("[change session id] original sessionId = {0}, new sessionId = {1}", originalSessionId, newSession.getId()));
+            SESSION_LOGGER.info(MessageFormat.format("[change session id] after change session, original sessionId = {0}, new sessionId = {1}", originalSessionId, newSession.getId()));
 
             return newSession.getId();
         }
@@ -278,13 +289,28 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
 
         @Override
         public HttpSessionWrapper getSession(boolean create) {
-            Object signInNewSessionId = this.getRequest().getAttribute("newSessionId");
-            HttpSessionWrapper currentSession = getCurrentSession();
+            String requestedSessionId = getRequestedSessionId();
 
-            if (currentSession != null && signInNewSessionId == null) {
+            String signInNewSessionId = requestedSessionId != null ? redisWrapperClient.get(requestedSessionId) : null;
+
+            if (signInNewSessionId != null) {
+                if (getCurrentSession() != null) {
+                    SESSION_LOGGER.debug(MessageFormat.format("current session ({0}), sign in new session id ({1})", signInNewSessionId, getCurrentSession().getId()));
+                }
+                S session = MySessionRepositoryFilter.this.sessionRepository.createSession(signInNewSessionId);
+                redisWrapperClient.del(signInNewSessionId);
+                session.setLastAccessedTime(System.currentTimeMillis());
+                HttpSessionWrapper currentSession = new HttpSessionWrapper(session, getServletContext());
+                setCurrentSession(currentSession);
                 return currentSession;
             }
-            String requestedSessionId = getRequestedSessionId();
+
+            HttpSessionWrapper currentSession = getCurrentSession();
+
+            if (currentSession != null) {
+                return currentSession;
+            }
+
             if (requestedSessionId != null && getAttribute(INVALID_SESSION_ID_ATTR) == null) {
                 S session = getSession(requestedSessionId);
                 if (session != null) {
@@ -292,9 +318,9 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
                     currentSession = new HttpSessionWrapper(session, getServletContext());
                     currentSession.setNew(false);
                     setCurrentSession(currentSession);
+                    SESSION_LOGGER.debug(MessageFormat.format("current session is null, but requestedSessionId = {0}", requestedSessionId));
                     return currentSession;
-                }
-                else {
+                } else {
                     // This is an invalid session id. No need to ask again if
                     // request.getSession is invoked for the duration of this request
                     if (SESSION_LOGGER.isDebugEnabled()) {
@@ -308,18 +334,7 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
                 return null;
             }
 
-
-            String newSessionId = signInNewSessionId != null ? (String) signInNewSessionId : null;
-
-            S session;
-
-            if (newSessionId != null && !newSessionId.equalsIgnoreCase(requestedSessionId)) {
-                this.getRequest().removeAttribute("newSessionId");
-                session = MySessionRepositoryFilter.this.sessionRepository.createSession(newSessionId);
-            } else {
-                session = MySessionRepositoryFilter.this.sessionRepository.createSession();
-            }
-
+            S session = MySessionRepositoryFilter.this.sessionRepository.createSession();
             session.setLastAccessedTime(System.currentTimeMillis());
             currentSession = new HttpSessionWrapper(session, getServletContext());
             setCurrentSession(currentSession);
