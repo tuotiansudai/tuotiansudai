@@ -108,6 +108,9 @@
       }
       button {
         width:150px;
+        &.one {
+          width: 270px;
+        }
       }
     }
     .tip-item {

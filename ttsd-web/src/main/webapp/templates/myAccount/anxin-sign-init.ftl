@@ -52,7 +52,7 @@
                 <i class="microphone" id="microPhone"></i>
             </span>
             <div class="error" style="display: none">验证码不正确</div>
-            <div class="button-bar"><a href="javascript:void(0);" class="btn-normal one" id="toOpenSMS">立即开通</a></div>
+            <div class="button-bar"><button class="btn-normal one" id="toOpenSMS">立即开通</button></div>
         </div>
 
     </div>
