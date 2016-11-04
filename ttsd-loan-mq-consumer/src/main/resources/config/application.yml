@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    aa:
+      jdbcUrl: jdbc:mysql://192.168.33.10:3306/aa?useUnicode=true&characterEncoding=UTF-8
+      username: tuotiansd
+      password: tuotiansd
+      driver-class-name: com.mysql.jdbc.Driver
+      min-idle: 1
+      max-pool-size: 5

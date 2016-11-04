@@ -12,7 +12,8 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.mq.client.MQClient;
+import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.BindBankCardService;
@@ -25,11 +26,12 @@ import com.tuotiansudai.util.RandomStringGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -78,6 +80,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
+
+    @Autowired
+    private MQClient mqClient;
 
     public static String SHA = "SHA";
 
@@ -159,8 +164,8 @@ public class UserServiceImpl implements UserService {
         userModel.setLastModifiedTime(new Date());
 
 
-        if(this.userMapper.create(userModel) == 0 ) {
-            logger.debug(MessageFormat.format("[CREATE USER:login_name-{0},mobile-{1} has registered]",userModel.getLoginName(),userModel.getMobile()));
+        if (this.userMapper.create(userModel) == 0) {
+            logger.debug(MessageFormat.format("[CREATE USER:login_name-{0},mobile-{1} has registered]", userModel.getLoginName(), userModel.getMobile()));
             return false;
         }
 
@@ -178,6 +183,13 @@ public class UserServiceImpl implements UserService {
         MembershipModel membershipModel = membershipMapper.findByLevel(0);
         UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(userModel.getLoginName(), membershipModel.getId());
         userMembershipMapper.create(userMembershipModel);
+
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
+            @Override
+            public void afterCommit() {
+                mqClient.publishMessage(MessageTopic.UserRegistered, dto.getMobile());
+            }
+        });
 
         return true;
     }

@@ -1,0 +1,13 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    def springVersion = '4.3.1.RELEASE'
+    def slf4jVersion = '1.7.21'
+
+    compile "org.springframework:spring-context-support:$springVersion"
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    compile "com.aliyun.mns:aliyun-sdk-mns:1.1.7"
+}

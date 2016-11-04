@@ -26,4 +26,6 @@ include "ttsd-service",
         'ttsd-point-web'
 include 'ttsd-edxpoint-model'
 include 'ttsd-edxpoint-repository'
+include 'ttsd-mq-client'
+include 'ttsd-loan-mq-consumer'
 
