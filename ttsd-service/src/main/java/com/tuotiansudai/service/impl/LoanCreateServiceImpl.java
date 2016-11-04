@@ -3,6 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.job.AutoInvestJob;
@@ -11,6 +12,7 @@ import com.tuotiansudai.job.FundraisingStartJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.AnxinSignService;
 import com.tuotiansudai.service.LoanCreateService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
@@ -82,6 +84,9 @@ public class LoanCreateServiceImpl implements LoanCreateService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private AnxinSignService anxinSignService;
 
     @Override
     public LoanTitleModel createTitle(LoanTitleDto loanTitleDto) {
@@ -220,6 +225,10 @@ public class LoanCreateServiceImpl implements LoanCreateService {
     private BaseDto<BaseDataDto> checkCreateLoanData(LoanCreateRequestDto loanCreateRequestDto) {
         if (userRoleMapper.findByLoginNameAndRole(loanCreateRequestDto.getLoan().getAgent(), Role.LOANER) == null) {
             return new BaseDto<>(new BaseDataDto(false, "代理用户不存在"));
+        }
+
+        if (!anxinSignService.hasAuthed(loanCreateRequestDto.getLoan().getAgent())) {
+            return new BaseDto<>(new BaseDataDto(false, "代理/借款 用户未授权安心签"));
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount()) < AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMinInvestAmount())) {
