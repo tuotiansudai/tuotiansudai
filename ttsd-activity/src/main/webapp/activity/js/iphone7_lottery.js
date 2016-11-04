@@ -19,7 +19,7 @@ require(['jquery', 'layerWrapper', 'template', 'logintip','jquery.validate', 'jq
 
 		$.ajax({
 			url: '/activity/iphone7-lottery/getDate',
-			type: 'POST',
+			type: 'GET',
 			dataType: 'json'
 		})
 		.done(function(data) {
@@ -31,6 +31,7 @@ require(['jquery', 'layerWrapper', 'template', 'logintip','jquery.validate', 'jq
 		})
 		.fail(function() {
 			layer.msg('请求失败，请刷新页面重试！');
+			return false;
 		});
 
 
