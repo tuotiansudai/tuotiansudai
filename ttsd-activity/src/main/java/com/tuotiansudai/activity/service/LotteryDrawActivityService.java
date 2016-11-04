@@ -360,4 +360,9 @@ public class LotteryDrawActivityService {
         }
         return steps;
     }
+
+    public String getActivityEndTime(ActivityCategory activityCategory){
+        List<String> activityTime = getActivityTime(activityCategory);
+        return activityTime.get(1).replaceAll("-","/");
+    }
 }

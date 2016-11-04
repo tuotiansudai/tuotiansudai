@@ -115,6 +115,7 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
                             }
                         })
                         .done(function(data) {
+
                             if(data.returnCode == 1){
                                 $('#lotteryTip').html(tpl('lotteryTipTpl',data));
                                 layer.open({
@@ -154,6 +155,14 @@ define(['jquery', 'layerWrapper', 'template', 'commonFun'], function($,layer,tpl
                                 lottery.speed = 100;
                                 roll();
                                 lottery.click = true;
+                            }else if(data.returnCode == 3){
+                                $('#lotteryTip').html(tpl('lotteryTipTpl',data));
+                                layer.open({
+                                    type: 1,
+                                    title:false,
+                                    closeBtn: 0,
+                                    content: $('#lotteryTip')
+                                });
                             }
                         })
                         .fail(function() {
