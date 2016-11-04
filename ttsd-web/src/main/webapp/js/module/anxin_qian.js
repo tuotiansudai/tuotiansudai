@@ -2,7 +2,7 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function($, layer) {
 
 	(function() {
 
-		$('#serviceLayer').on('click', function(event) {
+		$('.service-layer').on('click', function(event) {
 			event.preventDefault();
 			layer.open({
 				type: 1,
@@ -15,7 +15,7 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function($, layer) {
 				content: $('#serviceBox')
 			});
 		});
-		$('#privacyLayer').on('click', function(event) {
+		$('.privacy-layer').on('click', function(event) {
 			event.preventDefault();
 			layer.open({
 				type: 1,
@@ -28,7 +28,7 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function($, layer) {
 				content: $('#privacyBox')
 			});
 		});
-		$('#numberLayer').on('click', function(event) {
+		$('.number-layer').on('click', function(event) {
 			event.preventDefault();
 			layer.open({
 				type: 1,
