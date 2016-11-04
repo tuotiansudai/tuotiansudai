@@ -98,41 +98,37 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public BaseDto sendCaptcha3101(String loginName, boolean isVoice) {
+        try {
+            AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
-        anxinSignService.createContracts(30055181812832l);
-        return null;
+            // 如果用户没有开通安心签账户，则先开通账户，再进行授权（发送验证码）
+            if (accountModel.getAnxinUserId() == null) {
+                BaseDto createAccountRet = this.createAccount3001(loginName);
+                if (!createAccountRet.isSuccess()) {
+                    return failBaseDto();
+                }
+            }
 
-//        try {
-//            AccountModel accountModel = accountMapper.findByLoginName(loginName);
-//
-//            // 如果用户没有开通安心签账户，则先开通账户，再进行授权（发送验证码）
-//            if (accountModel.getAnxinUserId() == null) {
-//                BaseDto createAccountRet = this.createAccount3001(loginName);
-//                if (!createAccountRet.isSuccess()) {
-//                    return failBaseDto();
-//                }
-//            }
-//
-//            String anxinUserId = accountModel.getAnxinUserId();
-//
-//            String projectCode = UUIDGenerator.generate();
-//
-//            Tx3101ResVO tx3101ResVO = anxinSignConnectService.sendCaptcha3101(anxinUserId, projectCode, isVoice);
-//
-//            String retMessage = tx3101ResVO.getHead().getRetMessage();
-//
-//            if (isSuccess(tx3101ResVO)) {
-//                redisWrapperClient.setex(TEMP_PROJECT_CODE_KEY + loginName, TEMP_PROJECT_CODE_EXPIRE_TIME, projectCode);
-//                return new BaseDto();
-//            } else {
-//                logger.error("send anxin captcha code failed. " + retMessage);
-//                return failBaseDto();
-//            }
-//
-//        } catch (PKIException e) {
-//            logger.error("send anxin captcha code failed. ", e);
-//            return failBaseDto();
-//        }
+            String anxinUserId = accountModel.getAnxinUserId();
+
+            String projectCode = UUIDGenerator.generate();
+
+            Tx3101ResVO tx3101ResVO = anxinSignConnectService.sendCaptcha3101(anxinUserId, projectCode, isVoice);
+
+            String retMessage = tx3101ResVO.getHead().getRetMessage();
+
+            if (isSuccess(tx3101ResVO)) {
+                redisWrapperClient.setex(TEMP_PROJECT_CODE_KEY + loginName, TEMP_PROJECT_CODE_EXPIRE_TIME, projectCode);
+                return new BaseDto();
+            } else {
+                logger.error("send anxin captcha code failed. " + retMessage);
+                return failBaseDto();
+            }
+
+        } catch (PKIException e) {
+            logger.error("send anxin captcha code failed. ", e);
+            return failBaseDto();
+        }
     }
 
     @Override
