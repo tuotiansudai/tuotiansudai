@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.squareup.okhttp.*;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.MessageFormat;
 
@@ -34,6 +36,9 @@ public class SignInClient {
 
     @Autowired
     private HttpServletRequest httpServletRequest;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     public SignInClient() {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -61,7 +66,18 @@ public class SignInClient {
 
         try {
             String response = this.execute(request);
-            return objectMapper.readValue(response, SignInResult.class);
+            SignInResult signInResult = objectMapper.readValue(response, SignInResult.class);
+
+            HttpSession session = httpServletRequest.getSession(false);
+            logger.debug(MessageFormat.format("[Login] user({0}) original session id({1}) new session id({2})",
+                    signInResult.getUserInfo().getLoginName(),
+                    session != null ? session.getId() : null,
+                    signInResult.getToken()));
+            if (session != null) {
+                redisWrapperClient.setex(session.getId(), 30, signInResult.getToken());
+            }
+
+            return signInResult;
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] login failed (user={0} token={1} source={2} deviceId={3})", username, token, source, deviceId), e);
         }
