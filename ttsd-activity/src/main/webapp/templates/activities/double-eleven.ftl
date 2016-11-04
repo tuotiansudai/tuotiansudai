@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.double_eleven}" pageJavascript="${js.double_eleven}" activeNav="" activeLeftNav="" title="拓天英豪榜_英豪榜活动_拓天速贷" keywords="拓天英豪榜,英豪榜活动,投资排行榜,拓天速贷" description="拓天速贷投资排行榜活动,狂欢大轰趴,连嗨三周半,打响排行保卫战,拓天英豪榜投资活动每日神秘大奖悬赏最具实力的投资人.">
+<@global.main pageCss="${css.double_eleven}" pageJavascript="${js.double_eleven}" activeNav="" activeLeftNav="" title="拓天双11活动_活动中心_拓天速贷" keywords="撩妹神器,撩妹礼包,投资活动,拓天速贷" description="拓天速贷双11活动,推出撩妹神器'息'结良缘限时专享标,收益增加1.1%,并送'撩妹礼包',你撩妹,我买单,单身狗抽奖还可获100%中奖机会.">
 <div class="double-eleven-container">
     <@global.isNotAnonymous>
         <input type="hidden" value="<@global.security.authentication property="principal.mobile" />" id="MobileNumber"/>
@@ -15,8 +15,8 @@
             </div>
             <div class="model-group actor-info">
                 <div class="content-item after-line">
-                    <p class="title-text">请问脱光一次值多少钱？别报警，拓天速贷此番祭出</p>
-                    <p>脱光神器：</p>
+                    <p class="title-text">双11清空女票的购物车要多少钱？别报警，拓天速贷此番祭出</p>
+                    <p>撩妹神器：</p>
                     <p><span><img src="${staticServer}/activity/images/double-eleven/info-text.png" width="100%"></span></p>
                     <p>女神喜欢的香槟玫瑰、法国大餐、星级酒店，统统满足她！所谓“但愿人长久，钱里共婵娟”。兄弟只能帮到这了，接下来你懂得哦！</p>
                 </div>
@@ -74,7 +74,7 @@
                                 <i class="right-line"></i>
                             </span>
                         </h3>
-                        <p>活动期间，投资90天、180天或360天标的，<span>单笔1111元</span>以上即送<span>“脱光礼包”</span>(每人限领1个)，</p>
+                        <p>活动期间，投资90天、180天或360天标的，<span>单笔1111元</span>以上即送<span>“撩妹礼包”</span>(每人限领1个)，</p>
                         <p>礼包于活动结束后三个工作日内发放，用户可在PC端“我的账户-我的宝藏”或App端“我的财富-我的宝藏”中查看。</p>
                         <div class="coupon-group">
                             <h3>
@@ -113,7 +113,7 @@
                         </h3>
                         <p class="font-14 text-c actor-phone">活动期间，新用户在平台完成注册、实名认证、绑卡、充值、投资均可获得一次100%中奖的抽奖机会；</p>
                         <ul class="loan-list-group">
-                        <li class=""<#if steps[0] == 1>active</#if><#if steps[0] == 2>finish</#if>">
+                        <li class="<#if steps[0] == 1>active</#if><#if steps[0] == 2>finish</#if>">
                             <span class="step step-one"></span>
                             <#if steps[0] == 1>
                                 <a href="/register/user" class="step-btn">去注册</a></#if>

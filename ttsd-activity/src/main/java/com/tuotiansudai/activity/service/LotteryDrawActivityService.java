@@ -124,7 +124,7 @@ public class LotteryDrawActivityService {
         userMapper.lockByLoginName(userModel.getLoginName());
 
         LotteryPrize lotteryPrize = lotteryDrawPrize(activityCategory);
-        if(lotteryPrize.getActivityCategory().equals(PrizeType.VIRTUAL)){
+        if(lotteryPrize.getPrizeType().equals(PrizeType.VIRTUAL)){
             couponAssignmentService.assignUserCoupon(mobile, getCouponId(lotteryPrize));
         }
 

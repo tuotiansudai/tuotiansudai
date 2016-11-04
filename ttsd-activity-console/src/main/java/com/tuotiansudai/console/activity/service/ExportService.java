@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.activity.service;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.dto.ActivityCategory;
 import com.tuotiansudai.activity.dto.LotteryPrize;
@@ -156,7 +157,7 @@ public class ExportService {
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, prizeType, startTime, endTime, null, null);
         List<List<String>> rows = Lists.newArrayList();
         userLotteryPrizeViews.forEach(userLotteryPrizeView -> rows.add(Lists.newArrayList(
-                userLotteryPrizeView.getUserName(),
+                Strings.isNullOrEmpty(userLotteryPrizeView.getUserName()) ? "" : userLotteryPrizeView.getUserName(),
                 userLotteryPrizeView.getMobile(),
                 userLotteryPrizeView.getLoginName(),
                 new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd"),
