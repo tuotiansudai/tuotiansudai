@@ -6,7 +6,7 @@ import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
 
 public interface AnxinSignService {
 
-    boolean hasAuthedBefore(String loginName);
+    boolean hasAuthed(String loginName);
 
     AnxinSignPropertyModel getAnxinSignProp(String loginName);
 

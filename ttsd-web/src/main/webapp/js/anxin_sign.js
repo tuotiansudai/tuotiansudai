@@ -1,5 +1,5 @@
-require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) {
-    function ajaxOuterFun(option,callback) {
+require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], function ($, layer) {
+    function ajaxOuterFun(option,callback,alwaysFun,failFun) {
         var defaults={
             type:'POST',
             url:'',

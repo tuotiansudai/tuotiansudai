@@ -23,11 +23,10 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
                 applyTip();
                 return;
             }else{
-                if($('#skipCheck').val()=='true'){
+                if($('#isAnxinUser').val() == 'true'){
                     getSkipPhoneTip();
                 }else{
-                    $agreement.next('span.error').show();
-                    return;
+                    $('#skipCheck').val() == 'true'?getSkipPhoneTip():$agreement.next('span.error').show();;
                 }
                 return false;
             }
@@ -207,7 +206,15 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
             })
             .done(function(data) {
                 $self.removeClass('active').val('立即授权').prop('disabled', false);
-                data.success?skipSuccess():$('#skipError').text('验证码不正确').show();
+                if(data.success){
+                    $('#isAnxinUser').val('true') && $('.skip-group').hide();
+                    if(data.skipAuth=='true'){
+                        $('#isSkipAuth').val('true');
+                    }
+                    skipSuccess();
+                }else{
+                    $('#skipError').text('验证码不正确').show();
+                }
             })
             .fail(function() {
                 $self.removeClass('active').val('立即授权').prop('disabled', false);
@@ -227,6 +234,8 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
         $('#skipSuccess').show();
         setTimeout(function(){
             $('#skipSuccess').hide();
+            $('#skipPhoneCode').val('');
+            num=0;
             applyTip();
         },3000)
     }

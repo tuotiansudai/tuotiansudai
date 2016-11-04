@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import cfca.sadk.algorithm.common.PKIException;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
 import com.tuotiansudai.service.AnxinSignService;
@@ -35,7 +36,7 @@ public class AnxinSignController {
         AnxinSignPropertyModel anxinProp = anxinSignService.getAnxinSignProp(loginName);
         anxinProp = anxinProp != null ? anxinProp : new AnxinSignPropertyModel();
 
-        if (anxinSignService.hasAuthedBefore(loginName)) {
+        if (anxinSignService.hasAuthed(loginName)) {
             // 如果以前授权过，则进入列表页
             return new ModelAndView("/myAccount/anxin-sign-list", "anxinProp", anxinProp);
         } else {
@@ -60,7 +61,7 @@ public class AnxinSignController {
 
     @ResponseBody
     @RequestMapping(value = "/verifyCaptcha", method = RequestMethod.POST)
-    public BaseDto verifyCaptcha(String captcha, boolean skipAuth, HttpServletRequest request) throws PKIException {
+    public BaseDto<BaseDataDto> verifyCaptcha(String captcha, boolean skipAuth, HttpServletRequest request) throws PKIException {
         String ip = RequestIPParser.parse(request);
         String loginName = LoginUserInfo.getLoginName();
         return anxinSignService.verifyCaptcha3102(loginName, captcha, skipAuth, ip);
