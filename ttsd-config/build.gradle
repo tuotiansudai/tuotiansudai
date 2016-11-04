@@ -100,7 +100,7 @@ flyway {
 
     url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/${defaultDatabase}?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
 
-    if (['aa', 'ump_operations', 'sms_operations', 'job_worker'].contains(defaultDatabase)) {
+    if (['aa', 'ump_operations', 'sms_operations', 'anxin_operations', 'job_worker'].contains(defaultDatabase)) {
         user = properties.getProperty("common.jdbc.username")
         password = properties.getProperty("common.jdbc.password")
     }
