@@ -5,7 +5,7 @@
 
     <div class="sign-img"></div>
 <#--${anxinProp.anxinUserId!}-->
-    <input type="hidden" class="bind-data" data-sign="true">
+    <input type="hidden" class="bind-data" data-sign="${anxinProp.anxinUserId!}">
 
      <div class="safety-status-box closed tc">
         <span class="status-text">安心签电子签章服务</span>
