@@ -372,11 +372,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                                 noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
                                 return;
                             }else{
-                                if($('#skipCheck').val()=='true'){
-                                    getSkipPhoneTip();
-                                }else{
-                                    $('#checkTip').show();
-                                }
+                                getSkipPhoneTip();
                                 return false;
                             }
                             
@@ -947,6 +943,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             .done(function(data) {
                 $self.removeClass('active').val('立即授权').prop('disabled', false);
                 if(data.success){
+                    $('#isAnxinUser').val('true') && $('.skip-group').hide();
                     if(data.skipAuth=='true'){
                         $('#isSkipAuth').val('true');
                     }
@@ -973,6 +970,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         $('#skipSuccess').show();
         setTimeout(function(){
             $('#skipSuccess').hide();
+            $('#skipPhoneCode').val('');
+            num=0;
             noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
         },3000)
     }

@@ -18,6 +18,7 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -184,7 +185,8 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
 
         InvestorDto investorDto = new InvestorDto(accountMapper.findByLoginName(loginName), this.isRemindNoPassword(loginName),
-                this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount), anxinProp != null && anxinProp.isSkipAuth());
+                this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount), anxinProp != null && anxinProp.isSkipAuth(),
+                StringUtils.isNotEmpty(anxinProp.getAnxinUserId()));
 
         LoanDetailDto loanDto = new LoanDetailDto(loanModel,
                 loanDetailsMapper.getByLoanId(loanModel.getId()),

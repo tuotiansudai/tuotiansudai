@@ -86,9 +86,10 @@
                     <input type="hidden" id="transferInvestId" name="transferInvestId" value="${transferApplication.id?string.computer}"/>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <p><button id="transferSubmit" class="btn-pay btn-normal" type="button">马上投资</button></p>
-                    <input type="hidden" value="${loan.investor.anxinUser?c}" id="isSkipAuth">
+                    <input type="hidden" value="${anxinProp.skipAuth?c}" id="isSkipAuth">
+                    <input type="hidden" value="${anxinProp.anxinUser?c}" id="isAnxinUser">
                     <@global.role hasRole="'INVESTOR'">
-                    <#if !loan.investor.anxinUser>
+                    <#if anxinProp.anxinUser != true>
                     <p class="skip-group">
                         <label>
                             <i class="skip-icon active"></i>
@@ -164,6 +165,7 @@
                     <table>
                         <thead>
                         <tr>
+
                             <th>受让人</th>
                             <th>转让价格(元)</th>
                             <th>交易方式</th>
