@@ -6,7 +6,6 @@ import com.tuotiansudai.api.dto.v1_0.EvidenceResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ExtraLoanRateDto;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.PledgeType;
-import com.tuotiansudai.repository.model.Source;
 
 import java.util.Date;
 import java.util.List;
@@ -101,7 +100,7 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
 
     private List<EvidenceResponseDataDto> evidence;
 
-    private List<Source> extraSource;
+    private String extraSource;
 
     private ActivityType activityType;
 
@@ -473,11 +472,11 @@ public class LoanDetailV2ResponseDataDto extends BaseResponseDataDto {
         this.activityType = activityType;
     }
 
-    public List<Source> getExtraSource() {
+    public String getExtraSource() {
         return extraSource;
     }
 
-    public void setExtraSource(List<Source> extraSource) {
+    public void setExtraSource(String extraSource) {
         this.extraSource = extraSource;
     }
 

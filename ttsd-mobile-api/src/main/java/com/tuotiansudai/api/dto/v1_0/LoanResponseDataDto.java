@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.repository.model.PledgeType;
-import com.tuotiansudai.repository.model.Source;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
