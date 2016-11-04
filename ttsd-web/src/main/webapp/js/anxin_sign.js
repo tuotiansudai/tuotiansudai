@@ -164,7 +164,7 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
     (function() {
         var $safetyList=$('#safetySignedList'),
             bindingSet=$('.binding-set',$safetyList),
-            isSkipAuth=$('.bind-data',$safetyList).data('skipAuth'); //是否开启免验
+            isSkipAuth=$('.bind-data',$safetyList).data('skip-auth'); //是否开启免验
         if(isSkipAuth) {
             $safetyList.find('.sms-open').show();
         }
@@ -211,19 +211,19 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
                 var domID=this.id;
                 if(domID=='safetyToOpen') {
                     //去开启
-                    isOpen=false;
+                    isOpen=true;
                     tipMsg='开启成功';
                 }
                 else if(domID=='safetyToClose') {
                     //去关闭
-                    isOpen=true;
+                    isOpen=false;
                     tipMsg='关闭成功';
                 }
 
                 ajaxOuterFun({
-                    url:' /anxinSign/switchSkipAuth',
+                    url:'/anxinSign/switchSkipAuth',
                     data:{
-                        open:isOpen
+                        "open":isOpen
                     }
                 },function(data) {
                     if(data.success) {

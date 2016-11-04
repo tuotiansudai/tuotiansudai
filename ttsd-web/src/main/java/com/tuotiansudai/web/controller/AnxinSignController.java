@@ -2,9 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import cfca.sadk.algorithm.common.PKIException;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.AnxinSignService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
@@ -17,7 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 @Controller
@@ -62,6 +62,13 @@ public class AnxinSignController {
         String ip = RequestIPParser.parse(request);
         String loginName = LoginUserInfo.getLoginName();
         return anxinSignService.verifyCaptcha3102(loginName, captcha, skipAuth, ip);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/switchSkipAuth", method = RequestMethod.POST)
+    public BaseDto switchSkipAuth(boolean open) throws PKIException {
+        String loginName = LoginUserInfo.getLoginName();
+        return anxinSignService.switchSkipAuth(loginName, open);
     }
 
     @ResponseBody

@@ -209,6 +209,24 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         }
     }
 
+    /**
+     * 打开/关闭 免验开关
+     */
+    @Override
+    public BaseDto switchSkipAuth(String loginName, boolean open) {
+        try {
+            logger.info(loginName + " is switching anxin-sign skip-auth " + (open ? "on." : "off."));
+            AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
+            anxinProp.setSkipAuth(open);
+            anxinSignPropertyMapper.update(anxinProp);
+        } catch (Exception e) {
+            logger.error("switch anxin-sign skip-auth " + (open ? "on " : "off ") + "failed.", e);
+            return failBaseDto();
+        }
+        return new BaseDto();
+    }
+
+
     private BaseDto failBaseDto() {
         BaseDto baseDto = new BaseDto<>();
         baseDto.setSuccess(false);
