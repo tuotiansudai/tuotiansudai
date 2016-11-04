@@ -116,7 +116,6 @@
             </ul>
             <@security.authorize access="hasAnyAuthority('DATA')">
                 <button class="btn btn-default pull-left export-activity-prize-prize" id="activityPrizeExport" type="button">导出Excel</button>
-                <a href="/activity-console/activity-manage/export-prize-record">请点击此处导出EXCEl</a>
             </@security.authorize>
         </nav>
     </div>
