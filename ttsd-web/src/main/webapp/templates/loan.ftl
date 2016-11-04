@@ -284,16 +284,16 @@
                                 </#if>
                             </@global.role>
                             
-                            <input type="hidden" value="${loan.investor.skipAuth?c}" id="isSkipAuth">
+                            <input type="hidden" value="${loan.investor.anxinUser?c}" id="isSkipAuth">
                             <@global.role hasRole="'INVESTOR'">
-                            <#if !loan.investor.skipAuth>
+                            <#if !loan.investor.anxinUser>
                             <dd class="skip-group">
                                 <label>
                                     <i class="skip-icon active"></i>
                                     <input type="hidden" id="skipCheck" value="true">
                                 </label>
                                 <div class="skip-text">
-                                    我已阅读并同意<a href="javascript:void(0)"><span class="service-layer">《安心签服务协议》</span>、<span class="privacy-layer">《隐私条款》</span>和<span class="number-layer">《CFCA数字证书服务协议》</span><span class="check-tip" id="checkTip">请勾选</span></a>
+                                    我已阅读并同意<a href="javascript:void(0)"><span class="service-layer">《安心签平台服务协议》</span>、<span class="privacy-layer">《隐私条款》</span>和<span class="number-layer">《CFCA数字证书服务协议》</span><span class="check-tip" id="checkTip">请勾选</span></a>
                                 </div>
                             </dd>
                             </#if>
@@ -532,6 +532,7 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
     <#include "component/anxin-qian.ftl" />
+    <#include "component/anxin-agreement.ftl" />
     <#include "component/coupon-alert.ftl" />
 </div>
     <#include "component/red-envelope-float.ftl" />

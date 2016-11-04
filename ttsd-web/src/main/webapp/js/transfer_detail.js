@@ -53,11 +53,16 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
                     submitData();
                     return;
                 } else {
-                    if ($('#skipCheck').val() == 'true') {
+                    if($('#isAnxinUser').val() == 'true'){
                         getSkipPhoneTip();
-                    } else {
-                        $('#checkTip').show();
+                    }else{
+                        if ($('#skipCheck').val() == 'true') {
+                            getSkipPhoneTip();
+                        } else {
+                            $('#checkTip').show();
+                        }
                     }
+
                     return false;
                 }
             }
@@ -246,7 +251,16 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
                 })
                 .done(function(data) {
                     $self.removeClass('active').val('立即授权').prop('disabled', false);
-                    data.success ? skipSuccess() : $('#skipError').text('验证码不正确').show();
+                    if(data.success){
+                        $('#isAnxinUser').val('true');
+                        if(data.skipAuth=='true'){
+                            $('#isSkipAuth').val('true');
+                        }
+                        $('.skip-group').hide();
+                        skipSuccess();
+                    }else{
+                        $('#skipError').text('验证码不正确').show();
+                    }
                 })
                 .fail(function() {
                     $self.removeClass('active').val('立即授权').prop('disabled', false);

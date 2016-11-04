@@ -86,7 +86,9 @@
                     <input type="hidden" id="transferInvestId" name="transferInvestId" value="${transferApplication.id?string.computer}"/>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <p><button id="transferSubmit" class="btn-pay btn-normal" type="button">马上投资</button></p>
-                    <input type="hidden" value="${anxinProp.anxinUser?c}" id="isSkipAuth">
+                    skipAuth:${anxinProp.skipAuth?c}
+                    <input type="hidden" value="${anxinProp.skipAuth?c}" id="isSkipAuth">
+                    <input type="hidden" value="${anxinProp.anxinUser?c}" id="isAnxinUser">
                     <@global.role hasRole="'INVESTOR'">
                     <#if anxinProp.anxinUser != true>
                     <p class="skip-group">
@@ -95,7 +97,7 @@
                             <input type="hidden" id="skipCheck" value="true">
                         </label>
                         <label class="skip-text">
-                            我已阅读并同意<a href="javascript:void(0)"><span class="service-layer">《安心签服务协议》</span>、<span class="privacy-layer">《隐私条款》</span>和<span class="number-layer">《CFCA数字证书服务协议》</span><span class="check-tip" id="checkTip">请勾选</span></a>
+                            我已阅读并同意<a href="javascript:void(0)"><span class="service-layer">《安心签平台服务协议》</span>、<span class="privacy-layer">《隐私条款》</span>和<span class="number-layer">《CFCA数字证书服务协议》</span><span class="check-tip" id="checkTip">请勾选</span></a>
                         </label>
                     </p>
                     </#if>
@@ -164,6 +166,7 @@
                     <table>
                         <thead>
                         <tr>
+
                             <th>受让人</th>
                             <th>转让价格(元)</th>
                             <th>交易方式</th>
@@ -198,6 +201,7 @@
 
     </div>
     <#include "component/anxin-qian.ftl" />
+    <#include "component/anxin-agreement.ftl" />
     <#include "component/coupon-alert.ftl" />
 </div>
     <#include "component/red-envelope-float.ftl" />
