@@ -118,19 +118,22 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
             else if(getId=='microPhone') {
                 isVoice=false;
             }
-            ajaxOuterFun({
-                url:'anxinSign/sendCaptcha',
-                data:{"isVoice":isVoice}
-            },function(data) {
-                if(data.success) {
-                    countDown();
-                    Down = setInterval(countDown, 1000);
-                }
-                else {
-                    layer.msg('请求失败，请重试或联系客服！');
-                }
+            if(getId=='getSkipCode' || getId=='microPhone') {
+                ajaxOuterFun({
+                    url:'anxinSign/sendCaptcha',
+                    data:{"isVoice":isVoice}
+                },function(data) {
+                    if(data.success) {
+                        countDown();
+                        Down = setInterval(countDown, 1000);
+                    }
+                    else {
+                        layer.msg('请求失败，请重试或联系客服！');
+                    }
 
-            })
+                })
+            }
+
         });
 
         //验证验证码并开通短信服务
