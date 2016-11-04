@@ -281,7 +281,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("agentIdentityNumber", agentAccount.getIdentityNumber());
         dataModel.put("investorMobile", investorModel.getMobile());
         dataModel.put("investorIdentityNumber", investorAccount.getIdentityNumber());
-        dataModel.put("loanerUserName", loanerDetailsModel.getUserName());
+//        dataModel.put("loanerUserName", loanerDetailsModel.getUserName());
         dataModel.put("loanerIdentityNumber", loanerDetailsModel.getIdentityNumber());
         dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
         dataModel.put("periods", String.valueOf(loanModel.getPeriods()));
@@ -289,29 +289,27 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("recheckTime", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
         dataModel.put("endTime", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
         dataModel.put("investId", String.valueOf(investorModel.getId()));
-        if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
-            dataModel.put("pledge", "房屋");
-        } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
-            dataModel.put("pledge", "车辆");
-        }
+//        if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
+//            dataModel.put("pledge", "房屋");
+//        } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
+//            dataModel.put("pledge", "车辆");
+//        }
         createContractVO.setInvestmentInfo(dataModel);
 
-        AnxinSignPropertyModel agentSignModel = anxinSignPropertyMapper.findByLoginName(agentModel.getLoginName());
         SignInfoVO agentSignInfo = new SignInfoVO();
-        agentSignInfo.setUserId("4C6E9CB56A6F7EE05311016B0A6939A19C");
-        agentSignInfo.setAuthorizationTime(new DateTime(agentSignModel.getAuthTime()).toString("yyyyMMddHHmmss"));
-        agentSignInfo.setLocation(agentSignModel.getAuthIp());
+        agentSignInfo.setUserId(agentAnxinProp.getAnxinUserId());
+        agentSignInfo.setAuthorizationTime(new DateTime(agentAnxinProp.getAuthTime()).toString("yyyyMMddHHmmss"));
+        agentSignInfo.setLocation(agentAnxinProp.getAuthIp());
         agentSignInfo.setSignLocation(SIGN_LOCATION_AGENT_LOGIN_NAME);
-        agentSignInfo.setProjectCode(String.valueOf(loanModel.getId()));
+        agentSignInfo.setProjectCode(agentAnxinProp.getProjectCode());
         agentSignInfo.setIsProxySign(1);
 
-        AnxinSignPropertyModel investorSignModel = anxinSignPropertyMapper.findByLoginName(investorModel.getLoginName());
         SignInfoVO investorSignInfo = new SignInfoVO();
-        investorSignInfo.setUserId("27A45BC4BC29E9E05311016B0AA19C6939");
-        investorSignInfo.setAuthorizationTime(new DateTime(investorSignModel.getAuthTime()).toString("yyyyMMddHHmmss"));
-        investorSignInfo.setLocation(Strings.isNullOrEmpty(investorModel.getCity()) ? "北京" : investorModel.getCity());
+        investorSignInfo.setUserId(investorAnxinProp.getAnxinUserId());
+        investorSignInfo.setAuthorizationTime(new DateTime(investorAnxinProp.getAuthTime()).toString("yyyyMMddHHmmss"));
+        investorSignInfo.setLocation(investorAnxinProp.getAuthIp());
         investorSignInfo.setSignLocation(SIGN_LOCATION_INVESTOR_LOGIN_NAME);
-        investorSignInfo.setProjectCode(String.valueOf(loanModel.getId()));
+        investorSignInfo.setProjectCode(investorAnxinProp.getProjectCode());
         investorSignInfo.setIsProxySign(1);
 
         createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});

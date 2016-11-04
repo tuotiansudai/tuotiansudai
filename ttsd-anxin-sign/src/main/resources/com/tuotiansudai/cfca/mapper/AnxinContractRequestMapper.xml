@@ -9,6 +9,7 @@
     <resultMap id="anxinContractRequestModel" type="AnxinContractRequestModel">
         <id column="id" property="id"/>
         <result column="loan_id" property="loanId"/>
+        <result column="invest_id" property="investId"/>
         <result column="agent_sign_id" property="agentSignId"/>
         <result column="investor_sign_id" property="investorSignId"/>
         <result column="tx_time" property="txTime"/>
@@ -32,10 +33,10 @@
 
     <insert id="create" parameterType="AnxinSignRequestModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `anxin_operations`.`anxin_contract_request`
-        (`loan_id`,`agent_sign_id`,`investor_sign_id`,`tx_time`,`batch_no`,`template_id`,`is_sign`,`agent_mobile`,`loaner_identity_number`,`recheck_time`,`total_rate`,
+        (`loan_id`,`invest_id`,`agent_sign_id`,`investor_sign_id`,`tx_time`,`batch_no`,`template_id`,`is_sign`,`agent_mobile`,`loaner_identity_number`,`recheck_time`,`total_rate`,
         `investor_mobile`,`agent_identity_number`,`periods`,`pledge`,`end_time`,`investor_identity_number`,`loaner_user_name`,`loan_amount`,`created_time`)
         VALUES
-        (#{loanId},#{agentSignId},#{investorSignId},#{txTime},#{batchNo},#{templateId},#{isSign},#{agentMobile},#{loanerIdentityNumber},#{recheckTime},#{totalRate},
+        (#{loanId},#{investId},#{agentSignId},#{investorSignId},#{txTime},#{batchNo},#{templateId},#{isSign},#{agentMobile},#{loanerIdentityNumber},#{recheckTime},#{totalRate},
         #{investorMobile},#{agentIdentityNumber},#{periods},#{pledge},#{endTime},#{investorIdentityNumber},#{loanerUserName},#{loanAmount},#{createdTime});
     </insert>
 
@@ -43,6 +44,7 @@
         UPDATE `anxin_operations`.`anxin_contract_request`
         SET
         `loan_id` = #{loanId},
+        `invest_id` = #{investId},
         `agent_sign_id` = #{agentSignId},
         `investor_sign_id` = #{investorSignId},
         `tx_time` = #{txTime},

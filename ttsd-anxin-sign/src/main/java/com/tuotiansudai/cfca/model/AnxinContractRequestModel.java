@@ -7,6 +7,7 @@ import java.util.Date;
 public class AnxinContractRequestModel implements Serializable{
     private long id;
     private long loanId;
+    private long investId;
     private long agentSignId;
     private long investorSignId;
     private String txTime;
@@ -30,8 +31,9 @@ public class AnxinContractRequestModel implements Serializable{
     public AnxinContractRequestModel() {
     }
 
-    public AnxinContractRequestModel(long loanId,long agentSignId, long investorSignId, String txTime, String batchNo, String templateId, String isSign, String agentMobile, String loanerIdentityNumber, String recheckTime, String totalRate, String investorMobile, String agentIdentityNumber, String periods, String pledge, String endTime, String investorIdentityNumber, String loanerUserName, String loanAmount, Date createdTime) {
+    public AnxinContractRequestModel(long loanId,long investId,long agentSignId, long investorSignId, String txTime, String batchNo, String templateId, String isSign, String agentMobile, String loanerIdentityNumber, String recheckTime, String totalRate, String investorMobile, String agentIdentityNumber, String periods, String pledge, String endTime, String investorIdentityNumber, String loanerUserName, String loanAmount, Date createdTime) {
         this.loanId = loanId;
+        this.investId = investId;
         this.agentSignId = agentSignId;
         this.investorSignId = investorSignId;
         this.txTime = txTime;
@@ -51,6 +53,14 @@ public class AnxinContractRequestModel implements Serializable{
         this.loanerUserName = loanerUserName;
         this.loanAmount = loanAmount;
         this.createdTime = createdTime;
+    }
+
+    public long getInvestId() {
+        return investId;
+    }
+
+    public void setInvestId(long investId) {
+        this.investId = investId;
     }
 
     public long getLoanId() {

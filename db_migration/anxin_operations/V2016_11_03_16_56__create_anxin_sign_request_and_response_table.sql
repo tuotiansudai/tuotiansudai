@@ -19,6 +19,7 @@ CREATE TABLE `anxin_operations`.`anxin_sign_request` (
 CREATE TABLE `anxin_operations`.`anxin_contract_request` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `loan_id` BIGINT UNSIGNED NOT NULL,
+  `invest_id` BIGINT UNSIGNED NOT NULL,
   `agent_sign_id` BIGINT UNSIGNED NOT NULL,
   `investor_sign_id` BIGINT UNSIGNED NOT NULL,
   `tx_time` VARCHAR(14) NULL,
@@ -50,16 +51,14 @@ CREATE TABLE `anxin_operations`.`anxin_contract_request` (
 
   CREATE TABLE `anxin_operations`.`anxin_contract_response` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `request_id` BIGINT UNSIGNED NOT NULL,
   `loan_id` BIGINT UNSIGNED NOT NULL,
   `batch_no` VARCHAR(32) NOT NULL,
-  `tx_time` VARCHAR(14) NOT NULL,
-  `locale` VARCHAR(15) NOT NULL,
+  `tx_time` VARCHAR(14) ,
+  `locale` VARCHAR(15) ,
   `ret_code` VARCHAR(100) NOT NULL,
   `ret_message` VARCHAR(200) ,
   `created_time` DATETIME NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT FK_CONTRACT_RESPONSE_REQUEST_ID_REF_CONTRACT_REQUEST_ID FOREIGN KEY (`request_id`) REFERENCES `anxin_operations`.`anxin_contract_request` (`id`)
+  PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001

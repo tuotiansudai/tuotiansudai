@@ -8,7 +8,6 @@ public class AnxinContractResponseModel implements Serializable {
 
     private long id;
     private long loanId;
-    private long requestId;
     private String batchNo;
     private String txTime;
     private String locale;
@@ -19,9 +18,15 @@ public class AnxinContractResponseModel implements Serializable {
     public AnxinContractResponseModel() {
     }
 
-    public AnxinContractResponseModel(long loanId,long requestId, String batchNo, String txTime, String locale, String retCode, String retMessage, Date createdTime) {
+    public AnxinContractResponseModel(long loanId, String batchNo,String retMessage, String retCode) {
         this.loanId = loanId;
-        this.requestId = requestId;
+        this.batchNo = batchNo;
+        this.retMessage = retMessage;
+        this.retCode = retCode;
+    }
+
+    public AnxinContractResponseModel(long loanId, String batchNo, String txTime, String locale, String retCode, String retMessage, Date createdTime) {
+        this.loanId = loanId;
         this.batchNo = batchNo;
         this.txTime = txTime;
         this.locale = locale;
@@ -44,14 +49,6 @@ public class AnxinContractResponseModel implements Serializable {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(long requestId) {
-        this.requestId = requestId;
     }
 
     public String getBatchNo() {

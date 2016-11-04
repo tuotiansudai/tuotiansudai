@@ -10,10 +10,13 @@ import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3101ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3102ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3202ResVO;
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.cfca.connector.HttpConnector;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 import com.tuotiansudai.cfca.mapper.AnxinContractRequestMapper;
+import com.tuotiansudai.cfca.mapper.AnxinContractResponseMapper;
 import com.tuotiansudai.cfca.mapper.AnxinSignRequestMapper;
 import com.tuotiansudai.cfca.model.AnxinContractRequestModel;
 import com.tuotiansudai.cfca.model.AnxinContractResponseModel;
@@ -37,6 +40,9 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
     @Autowired
     private AnxinContractRequestMapper anxinContractRequestMapper;
+
+    @Autowired
+    private AnxinContractResponseMapper anxinContractResponseMapper;
 
     @Override
     public Tx3001ResVO createAccount3001(AccountModel accountModel, UserModel userModel) throws PKIException {
@@ -126,7 +132,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     }
 
     @Override
-    public Tx3202ResVO generateContractBatch3202(long loanId,String batchNo, List<CreateContractVO> createContractList) throws PKIException {
+    public Tx3202ResVO generateContractBatch3202(long loanId, String batchNo, List<CreateContractVO> createContractList) throws PKIException {
         HttpConnector httpConnector = new HttpConnector();
         httpConnector.init();
 
@@ -136,7 +142,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         tx3202ReqVO.setBatchNo(batchNo);
         tx3202ReqVO.setCreateContracts(createContractList.toArray(new CreateContractVO[0]));
 
-        generateRequestRecord(loanId,tx3202ReqVO.getBatchNo(), tx3202ReqVO.getHead().getTxTime(), createContractList);
+        generateRequestRecord(loanId, tx3202ReqVO.getBatchNo(), tx3202ReqVO.getHead().getTxTime(), createContractList);
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
@@ -147,9 +153,28 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
         Tx3202ResVO tx3202ResVO = jsonObjectMapper.readValue(res, Tx3202ResVO.class);
+        AnxinContractResponseModel anxinContractResponseModel;
+        if (Strings.isNullOrEmpty(tx3202ResVO.getBatchNo())) {
+            Map<String, String> response = coverJson(res);
+            anxinContractResponseModel = new AnxinContractResponseModel(loanId, batchNo, response.get("errorCode"), response.get("errorMessage"));
+        } else {
+            anxinContractResponseModel = new AnxinContractResponseModel(loanId,
+                    tx3202ResVO.getBatchNo(), tx3202ResVO.getHead().getTxTime(), tx3202ResVO.getHead().getLocale(),
+                    tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage(), DateTime.now().toDate());
+        }
 
+        anxinContractResponseMapper.create(anxinContractResponseModel);
         System.out.println("res:" + res);
         return null;
+    }
+
+    private Map<String, String> coverJson(String response) {
+        Map<String, String> responseMap = Maps.newConcurrentMap();
+        String[] split = response.split(",");
+        for (String str : split) {
+            responseMap.put("str.split(\":\")[0]", str.split(":")[1]);
+        }
+        return responseMap;
     }
 
 
@@ -173,7 +198,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         return person;
     }
 
-    private void generateRequestRecord(long loanId,String batchNo,String txTime, List<CreateContractVO> createContractList){
+    private void generateRequestRecord(long loanId, String batchNo, String txTime, List<CreateContractVO> createContractList) {
         createContractList.forEach(createContractVO -> {
             if (createContractVO.getSignInfos() != null) {
                 long agentSignId = 0l;
@@ -185,13 +210,15 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                     anxinSignRequestMapper.create(anxinSignRequestModel);
                     if (signInfoVo.getSignLocation().equals("agentLoginName")) {
                         agentSignId = anxinSignRequestModel.getId();
+                        investorSignId = anxinSignRequestModel.getId();
                     } else {
+                        agentSignId = anxinSignRequestModel.getId();
                         investorSignId = anxinSignRequestModel.getId();
                     }
                 }
 
                 Map<String, String> investmentInfo = createContractVO.getInvestmentInfo();
-                anxinContractRequestMapper.create(new AnxinContractRequestModel(loanId,agentSignId, investorSignId, txTime, batchNo, createContractVO.getTemplateId(),
+                anxinContractRequestMapper.create(new AnxinContractRequestModel(loanId,Long.parseLong(investmentInfo.get("investId")), agentSignId, investorSignId, txTime, batchNo, createContractVO.getTemplateId(),
                         createContractVO.getIsSign() != null ? String.valueOf(createContractVO.getIsSign()) : "0", investmentInfo.get("agentMobile"),
                         investmentInfo.get("loanerIdentityNumber"), investmentInfo.get("recheckTime"), investmentInfo.get("totalRate"),
                         investmentInfo.get("investorMobile"), investmentInfo.get("agentIdentityNumber"), investmentInfo.get("periods"),
@@ -200,5 +227,4 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
             }
         });
     }
-
 }
