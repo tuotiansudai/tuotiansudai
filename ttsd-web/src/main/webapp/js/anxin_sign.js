@@ -152,11 +152,20 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
                    });
                }
                else {
-                   layer.msg('请求失败，请重试或联系客服！');
+                   $this.find('error').show();
                }
             })
         })
-
+    //所有弹框协议
+        $safetyFrame.on('click',function(event) {
+            var target=event.target;
+            switch(target) {
+                case 'free-SMS-box':
+                    break;
+                case 'service-box':
+                    break;
+            }
+        });
 
     })();
 

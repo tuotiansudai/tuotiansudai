@@ -5,7 +5,7 @@
 
     <div class="sign-img"></div>
 
-    <input type="hidden" class="bind-data" data-sign="${anxinProp.anxinUserId!}">
+    <#--<input type="hidden" class="bind-data" data-sign="${anxinProp.anxinUserId!}">-->
 
      <div class="safety-status-box closed tc">
         <span class="status-text">安心签电子签章服务</span>
@@ -13,7 +13,7 @@
          <span class="init-checkbox-style on">
              <input type="checkbox" id="agreeOpen1" class="default-checkbox" checked>
          </span>
-             <label for="agreeOpen1" class="agreeOpen"><em>我已阅读并同意</em>《安心签服务协议》、《隐私条款》和《CFCA数字证书服务协议》</label>
+             <label for="agreeOpen1" class="agreeOpen"><em>我已阅读并同意</em>《安心签平台服务协议》、《隐私条款》和《CFCA数字证书服务协议》</label>
 
     </div>
 
@@ -24,7 +24,7 @@
           <span class="init-checkbox-style on">
               <input type="checkbox" id="agreeOpen2" class="default-checkbox" checked>
             </span>
-            <label for="agreeOpen2" class="agreeOpen"><em>我已阅读并同意</em>《安心签免短信授权服务协议》</label>
+            <label for="agreeOpen2" class="agreeOpen"><em>我已阅读并同意</em><a href="#" class="link-free-SMS">《安心签免短信授权服务协议》</a> </label>
       </div>
 
     <div class="safety-advantage-box">
@@ -37,7 +37,7 @@
         <p>安心签电子签章具有保密性、不可篡改性、可校验性，用户可自己对签章真伪进行检验，不用担心交易对手身份作假，更为全面地为用户资金保驾护航。</p>
     </div>
 
-    <div class="open-safety-box clearfix" id="getSkipPhone">
+    <div class="open-safety-box clearfix" id="getSkipPhone" style="display: none">
         <div class="tip-item tc">
             <span>
                 <input type="text" class="skip-phone-code" id="skipPhoneCode" placeholder="请输入验证码">
@@ -47,10 +47,11 @@
                 <input type="button" class="get-skip-code" value="获取短信验证码" id="getSkipCode">
                 <i class="microphone" id="microPhone"></i>
             </span>
-            <div class="error">验证码不正确</div>
+            <div class="error" style="display: none">验证码不正确</div>
             <div class="button-bar"><a href="javascript:void(0);" class="btn-normal one" id="toOpenSMS">立即开通</a></div>
         </div>
 
     </div>
+    <#include "../component/anxin-agreement.ftl" />
  </div>
 </@global.main>
