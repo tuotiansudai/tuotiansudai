@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.cfca.mapper.AnxinContractRequestMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="anxinContractRequestModel" type="AnxinContractRequestModel">
+        <id column="id" property="id"/>
+        <result column="agent_sign_id" property="agentSignId"/>
+        <result column="investor_sign_id" property="investorSignId"/>
+        <result column="tx_time" property="txTime"/>
+        <result column="batch_no" property="batchNo"/>
+        <result column="template_id" property="templateId"/>
+        <result column="is_sign" property="isSign"/>
+        <result column="agent_mobile" property="agentMobile"/>
+        <result column="loaner_identity_number" property="loanerIdentityNumber"/>
+        <result column="recheck_time" property="recheckTime"/>
+        <result column="total_rate" property="totalRate"/>
+        <result column="investor_mobile" property="investorMobile"/>
+        <result column="agent_identity_number" property="agentIdentityNumber"/>
+        <result column="periods" property="periods"/>
+        <result column="pledge" property="pledge"/>
+        <result column="end_time" property="endTime"/>
+        <result column="investor_identity_number" property="investorIdentityNumber"/>
+        <result column="loaner_user_name" property="loanerUserName"/>
+        <result column="loan_amount" property="loanAmount"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="AnxinSignRequestModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `anxin_operations`.`anxin_contract_request`
+        (`agent_sign_id`,`investor_sign_id`,`tx_time`,`batch_no`,`template_id`,`is_sign`,`agent_mobile`,`loaner_identity_number`,`recheck_time`,`total_rate`,
+        `investor_mobile`,`agent_identity_number`,`periods`,`pledge`,`end_time`,`investor_identity_number`,`loaner_user_name`,`loan_amount`,`created_time`)
+        VALUES
+        (#{agentSignId},#{investorSignId},#{txTime},#{batchNo},#{templateId},#{isSign},#{agentMobile},#{loanerIdentityNumber},#{recheckTime},#{totalRate},
+        #{investorMobile},#{agentIdentityNumber},#{periods},#{pledge},#{endTime},#{investorIdentityNumber},#{loanerUserName},#{loanAmount},#{createdTime});
+    </insert>
+
+    <update id="update" parameterType="AnxinSignRequestModel">
+        UPDATE `anxin_operations`.`anxin_contract_request`
+        SET
+        `agent_sign_id` = #{agentSignId},
+        `investor_sign_id` = #{investorSignId},
+        `tx_time` = #{txTime},
+        `batch_no` = #{batchNo},
+        `template_id` = #{templateId},
+        `is_sign` = #{isSign},
+        `agent_mobile` = #{agentMobile},
+        `loaner_identity_number` = #{loanerIdentityNumber},
+        `recheck_time` = #{recheckTime},
+        `total_rate` = #{totalRate},
+        `investor_mobile` = #{investorMobile},
+        `agent_identity_number` = #{agentIdentityNumber},
+        `periods` = #{periods},
+        `pledge` = #{pledge},
+        `end_time` = #{endTime},
+        `investor_identity_number` = #{investorIdentityNumber},
+        `loaner_user_name` = #{loanerUserName},
+        `loan_amount` = #{loanAmount},
+        `created_time` = #{createdTime}
+        WHERE
+        id = #{id}
+    </update>
+
+</mapper>

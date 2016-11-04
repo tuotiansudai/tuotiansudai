@@ -14,7 +14,7 @@ import com.tuotiansudai.cfca.util.CommonUtil;
 
 public class HttpConnector {
 
-    public static String JKS_PATH = "/Users/zhoubx/workspace/ttsd/ttsd-anxin-sign/jks/anxinsign.jks";
+    public static String JKS_PATH = "/Users/baisong/Documents/workspace/tuotian/ttsd-anxin-sign/jks/anxinsign.jks";
     public static String JKS_PWD = "123abc";
     public static String ALIAS = "anxinsign";
 

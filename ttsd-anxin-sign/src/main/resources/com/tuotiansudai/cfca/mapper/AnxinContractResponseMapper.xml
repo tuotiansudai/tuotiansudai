@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.cfca.mapper.AnxinContractResponseMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+    <resultMap id="anxinContractRequestModel" type="AnxinContractResponseModel">
+        <id column="id" property="id"/>
+        <result column="request_id" property="requestId"/>
+        <result column="batch_no" property="batchNo"/>
+        <result column="tx_time" property="txTime"/>
+        <result column="locale" property="locale"/>
+        <result column="ret_code" property="retCode"/>
+        <result column="ret_message" property="retMessage"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="AnxinContractResponseModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `anxin_operations`.`anxin_contract_response`
+        (`request_id`,`batch_no`,`tx_time`,`locale`,`ret_code`,`ret_message`,`created_time`)
+        VALUES
+        (#{requestId},#{batchNo},#{txTime},#{locale},#{retCode},#{retMessage},#{createdTime});
+
+    </insert>
+
+    <update id="update" parameterType="AnxinContractResponseModel">
+        UPDATE `anxin_operations`.`anxin_contract_response`
+        SET
+        `request_id` = #{requestId},
+        `batch_no` = #{batchNo},
+        `tx_time` = #{txTime},
+        `locale` = #{locale},
+        `ret_code` = #{retCode},
+        `ret_message` = #{retMessage},
+        `created_time` = #{createdTime}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

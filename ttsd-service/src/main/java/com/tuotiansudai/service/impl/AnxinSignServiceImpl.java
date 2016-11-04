@@ -59,6 +59,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Autowired
     private InvestMapper investMapper;
 
+    @Autowired
+    private AnxinSignService anxinSignService;
+
     private static final String TEMP_PROJECT_CODE_KEY = "temp_project_code:";
 
     private static final int TEMP_PROJECT_CODE_EXPIRE_TIME = 1800; // 半小时
@@ -96,37 +99,40 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Override
     public BaseDto sendCaptcha3101(String loginName, boolean isVoice) {
 
-        try {
-            AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        anxinSignService.createContracts(30055181812832l);
+        return null;
 
-            // 如果用户没有开通安心签账户，则先开通账户，再进行授权（发送验证码）
-            if (accountModel.getAnxinUserId() == null) {
-                BaseDto createAccountRet = this.createAccount3001(loginName);
-                if (!createAccountRet.isSuccess()) {
-                    return failBaseDto();
-                }
-            }
-
-            String anxinUserId = accountModel.getAnxinUserId();
-
-            String projectCode = UUIDGenerator.generate();
-
-            Tx3101ResVO tx3101ResVO = anxinSignConnectService.sendCaptcha3101(anxinUserId, projectCode, isVoice);
-
-            String retMessage = tx3101ResVO.getHead().getRetMessage();
-
-            if (isSuccess(tx3101ResVO)) {
-                redisWrapperClient.setex(TEMP_PROJECT_CODE_KEY + loginName, TEMP_PROJECT_CODE_EXPIRE_TIME, projectCode);
-                return new BaseDto();
-            } else {
-                logger.error("send anxin captcha code failed. " + retMessage);
-                return failBaseDto();
-            }
-
-        } catch (PKIException e) {
-            logger.error("send anxin captcha code failed. ", e);
-            return failBaseDto();
-        }
+//        try {
+//            AccountModel accountModel = accountMapper.findByLoginName(loginName);
+//
+//            // 如果用户没有开通安心签账户，则先开通账户，再进行授权（发送验证码）
+//            if (accountModel.getAnxinUserId() == null) {
+//                BaseDto createAccountRet = this.createAccount3001(loginName);
+//                if (!createAccountRet.isSuccess()) {
+//                    return failBaseDto();
+//                }
+//            }
+//
+//            String anxinUserId = accountModel.getAnxinUserId();
+//
+//            String projectCode = UUIDGenerator.generate();
+//
+//            Tx3101ResVO tx3101ResVO = anxinSignConnectService.sendCaptcha3101(anxinUserId, projectCode, isVoice);
+//
+//            String retMessage = tx3101ResVO.getHead().getRetMessage();
+//
+//            if (isSuccess(tx3101ResVO)) {
+//                redisWrapperClient.setex(TEMP_PROJECT_CODE_KEY + loginName, TEMP_PROJECT_CODE_EXPIRE_TIME, projectCode);
+//                return new BaseDto();
+//            } else {
+//                logger.error("send anxin captcha code failed. " + retMessage);
+//                return failBaseDto();
+//            }
+//
+//        } catch (PKIException e) {
+//            logger.error("send anxin captcha code failed. ", e);
+//            return failBaseDto();
+//        }
     }
 
     @Override
@@ -175,11 +181,11 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     }
 
     @Override
-    public BaseDto createContracts(long loanId){
+    public BaseDto createContracts(long loanId) {
         List<CreateContractVO> createContractVOs = Lists.newArrayList();
-        investMapper.findSuccessInvestsByLoanId(loanId).forEach(investModel -> createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(),loanId,investModel.getId())));
+        investMapper.findSuccessInvestsByLoanId(loanId).forEach(investModel -> createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId())));
         try {
-            anxinSignConnectService.generateContractBatch3202("1",createContractVOs);
+            anxinSignConnectService.generateContractBatch3202(loanId,UUIDGenerator.generate(), createContractVOs);
         } catch (PKIException e) {
             e.printStackTrace();
         }
@@ -207,6 +213,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate()));
         dataModel.put("recheckTime", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
         dataModel.put("endTime", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
+        dataModel.put("investId", String.valueOf(investorModel.getId()));
         if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
             dataModel.put("pledge", "房屋");
         } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
@@ -215,7 +222,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         createContractVO.setInvestmentInfo(dataModel);
 
         SignInfoVO agentSignInfo = new SignInfoVO();
-        agentSignInfo.setUserId(agentAccount.getAnxinUserId());
+        agentSignInfo.setUserId("4027A45BC12E29E9E05311016B0AA19C");
         agentSignInfo.setAuthorizationTime(new DateTime(agentAccount.getAuthorizationTime()).toString("yyyyMMddHHmmss"));
         agentSignInfo.setLocation(Strings.isNullOrEmpty(agentModel.getCity()) ? "北京" : agentModel.getCity());
         agentSignInfo.setSignLocation(SIGN_LOCATION_AGENT_LOGIN_NAME);
@@ -223,7 +230,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         agentSignInfo.setIsProxySign(1);
 
         SignInfoVO investorSignInfo = new SignInfoVO();
-        investorSignInfo.setUserId(investorAccount.getAnxinUserId());
+        investorSignInfo.setUserId("404C6E9CB4BC6F7EE05311016B0A6939");
         investorSignInfo.setAuthorizationTime(new DateTime(investorAccount.getAuthorizationTime()).toString("yyyyMMddHHmmss"));
         investorSignInfo.setLocation(Strings.isNullOrEmpty(investorModel.getCity()) ? "北京" : investorModel.getCity());
         investorSignInfo.setSignLocation(SIGN_LOCATION_INVESTOR_LOGIN_NAME);
@@ -232,7 +239,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
         createContractVO.setTemplateId("JK_108");
-        createContractVO.setIsSign(1);
         return createContractVO;
     }
 
