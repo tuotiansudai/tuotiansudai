@@ -76,9 +76,9 @@
 			{{else if returnCode == 1}}
 				<p class="no-time">您暂无抽奖机会啦～</p>
 				<p class="info-text">赢取机会后再来抽奖吧！</p>
-			{{else}}
-                <p class="no-time">不在活动期间！</p>
-                <p class="info-text">敬请期待~</p>
+			{{else if returnCode == 3}}
+                <p class="no-time">活动已过期～</p>
+                <p class="info-text">更多活动即将登场！</p>
 			{{/if}}
 
 			</div>
@@ -92,7 +92,11 @@
 				{{/if}}
 			{{else if returnCode == 1}}
 				<a href="javascript:void(0)" class="tip-btn close-item">知道了</a>
+<<<<<<< HEAD
+			{{else if returnCode == 3}}
+=======
 			{{else}}
+>>>>>>> 336a6e78616c72a542f8f5ee3f04f98b5097e563
                 <a href="javascript:void(0)" class="tip-btn close-item">知道了</a>
 			{{/if}}
 			</div>

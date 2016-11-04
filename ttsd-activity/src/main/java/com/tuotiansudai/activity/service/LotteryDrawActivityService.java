@@ -230,9 +230,9 @@ public class LotteryDrawActivityService {
             case INTEREST_COUPON_2_POINT_DRAW :
                 return 314;
             case INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL:
-                return 310;
-            case RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL:
                 return 313;
+            case RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL:
+                return 312;
         }
         return 0l;
     }
@@ -359,5 +359,10 @@ public class LotteryDrawActivityService {
             steps.set(2, 2);
         }
         return steps;
+    }
+
+    public String getActivityEndTime(ActivityCategory activityCategory){
+        List<String> activityTime = getActivityTime(activityCategory);
+        return activityTime.get(1).replaceAll("-","/");
     }
 }

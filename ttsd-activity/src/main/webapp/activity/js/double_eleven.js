@@ -15,14 +15,17 @@ require(['jquery', 'underscore', 'layerWrapper', 'template', 'jquery.ajax.extens
                 var $self=$(this),
                     _this=$self.find('.time-text span'),
                     endtimeText=_this.attr('data-end'),
+                    nowtimeText=_this.attr('data-now'),
+                    activityEnd=_this.attr('data-activityEnd'),
                     dateText=_this.attr('data-date').replace('-','/'),
                     EndTime = new Date('2016/'+dateText+' '+endtimeText),
-                    NowTime = new Date(),
+                    NowTime = new Date(nowtimeText),
                     t = EndTime.getTime() - NowTime.getTime(),
                     h = Math.floor(t / 1000 / 60 / 60 % 24),
                     m = Math.floor(t / 1000 / 60 % 60),
                     s = Math.floor(t / 1000 % 60);
-                if(new Date('2016/'+dateText).getTime()>new Date('2016/11/13 00:00:00').getTime()){
+                console.log(t);
+                if(new Date('2016/'+dateText).getTime()>new Date(activityEnd).getTime()){
                     clearInterval(timer);
                     $self.addClass('end').find('.btn-time a').attr('href','javascript:void(0)');
                 }else{

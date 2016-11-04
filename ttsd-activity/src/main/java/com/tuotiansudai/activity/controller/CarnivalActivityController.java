@@ -25,6 +25,7 @@ public class CarnivalActivityController {
         modelAndView.addObject("now", DateTime.now().toString("yyyy/MM/dd hh:mm:ss"));
         modelAndView.addObject("today", DateTime.now().toString("MM-dd"));
         modelAndView.addObject("steps", lotteryDrawActivityService.generateSteps(loginName));
+        modelAndView.addObject("activityEnd", lotteryDrawActivityService.getActivityEndTime(ActivityCategory.CARNIVAL_ACTIVITY));
         return modelAndView;
     }
 }
