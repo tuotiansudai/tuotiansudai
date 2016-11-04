@@ -152,14 +152,26 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
         });
 
         //验证验证码并开通短信服务
+
         $('#toOpenSMS').on('click',function() {
-            var $this=$(this);
+            var $this=$(this),
+                $skipPhoneCode=$('#skipPhoneCode'),
+                phoneCode=$skipPhoneCode.val();
+            $skipPhoneCode.on('keyup',function() {
+                var $self=$(this);
+                $self.parents().find('.error').hide();
+            });
+            if(!phoneCode) {
+                $this.parents().find('.error').show().html('验证码不能为空');
+                return;
+            }
+
             $this.prop('disabled',true);
             ajaxOuterFun({
                 thisDom:$this,
                 url:'anxinSign/verifyCaptcha',
                 data:{
-                    captcha: $('#skipPhoneCode').val(),
+                    captcha: phoneCode,
                     skipAuth:true
                 }
             },function(data) {
@@ -174,7 +186,7 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
                    });
                }
                else {
-                   $this.parents().find('.error').show();
+                   $this.parents().find('.error').show().html('验证码错误');
                    $this.prop('disabled',false);
                }
             })
@@ -205,6 +217,10 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension'], function ($, layer) 
                     break;
                 case 'link-agree-number':
                     contentDom=$('.number-box',$safetyAgreement);
+                    showAgreement('CFCA数字证书服务协议',contentDom);
+                    break;
+                case 'link-agree-number-authorize':
+                    contentDom=$('.number-authorize-box',$safetyAgreement);
                     showAgreement('CFCA数字证书服务协议',contentDom);
                     break;
                 case 'link-agree-free-SMS':
