@@ -20,11 +20,11 @@ public class Test3001 {
         head.setTxTime(DateTime.now().toString("yyyyMMddHHmmss"));
 
         PersonVO person = new PersonVO();
-        person.setPersonName("周宝鑫");
+        person.setPersonName("周宝鑫3");
         person.setIdentTypeCode("1");
-        person.setIdentNo("222321199112050009");
-        person.setMobilePhone("18611445119");
-        person.setEmail("zhoubaoxin@tuotiansudai.com");
+        person.setIdentNo("222321199112050004");
+        person.setMobilePhone("18611445117");
+        person.setEmail("zhoubaoxin6@tuotiansudai.com");
         person.setAddress("北京");
         person.setAuthenticationMode("公安部");
 

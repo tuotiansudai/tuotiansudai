@@ -7,12 +7,20 @@ import java.util.Date;
 public class AnxinSignPropertyModel implements Serializable {
 
     private long id;
+
     private String loginName;
+
     private String anxinUserId;
-    private boolean skipAuth;
+
+    private boolean skipAuth = false;
+
     private String projectCode;
-    private String ip;
-    private Date createDTime;
+
+    private String authIp;
+
+    private Date authTime;
+
+    private Date createdTime;
 
     public long getId() {
         return id;
@@ -54,19 +62,31 @@ public class AnxinSignPropertyModel implements Serializable {
         this.projectCode = projectCode;
     }
 
-    public String getIp() {
-        return ip;
+    public String getAuthIp() {
+        return authIp;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setAuthIp(String authIp) {
+        this.authIp = authIp;
     }
 
-    public Date getCreateDTime() {
-        return createDTime;
+    public Date getAuthTime() {
+        return authTime;
     }
 
-    public void setCreateDTime(Date createDTime) {
-        this.createDTime = createDTime;
+    public void setAuthTime(Date authTime) {
+        this.authTime = authTime;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public boolean isAnxinUser() {
+        return this.anxinUserId != null && this.anxinUserId.length() > 0;
     }
 }

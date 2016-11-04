@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'fancybox', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert', 'red-envelope-float', 'jquery.form', 'commonFun','logintip','assign_coupon'], function ($, pagination, Mustache, investListTemplate, layer, _) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'fancybox', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert', 'red-envelope-float', 'jquery.form', 'commonFun','logintip','assign_coupon','anxin_qian'], function ($, pagination, Mustache, investListTemplate, layer, _) {
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
         amountInputElement = $(".text-input-amount", $loanDetail),
@@ -904,8 +904,14 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
         })
         .done(function(data) {
-            countDown();
-            Down = setInterval(countDown, 1000);
+            if(data.success) {
+                countDown();
+                Down = setInterval(countDown, 1000);
+            }
+            else {
+                layer.msg('请求失败，请重试或联系客服！');
+            }
+
         })
         .fail(function() {
             layer.msg('请求失败，请重试或联系客服！');
@@ -913,14 +919,16 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     }
     //countdown skip
     function countDown() {
-        $('#getSkipCode').val(num + 's').prop('disabled',true);
+        $('#getSkipCode').val(num + '秒后可重新获取').prop('disabled',true);
         $('#microPhone').css('visibility', 'hidden');
         if (num == 0) {
             clearInterval(Down);
             $('#getSkipCode').val('重新获取验证码').prop('disabled',false);
             $('#microPhone').css('visibility', 'visible');
+            num=60;
+        }else{
+            num--;
         }
-        num--;
     }
     //submit data skip phone code
     $('#getSkipBtn').on('click',  function(event) {
@@ -938,7 +946,14 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             })
             .done(function(data) {
                 $self.removeClass('active').val('立即授权').prop('disabled', false);
-                data.success?skipSuccess():$('#skipError').text('验证码不正确').show();
+                if(data.success){
+                    if(data.skipAuth=='true'){
+                        $('#isSkipAuth').val('true');
+                    }
+                    skipSuccess();
+                }else{
+                    $('#skipError').text('验证码不正确').show();
+                }
             })
             .fail(function() {
                 $self.removeClass('active').val('立即授权').prop('disabled', false);
@@ -956,55 +971,15 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     function skipSuccess(){
         layer.closeAll();
         $('#skipSuccess').show();
-        setInterval(function(){
+        setTimeout(function(){
             $('#skipSuccess').hide();
             noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
         },3000)
     }
 
-    $('#skipPhoneCode').on('keyup', function(event) {
+    //skip tip click chechbox
+    $('.tip-item .skip-icon').on('click', function(event) {
         event.preventDefault();
-        $(this).val()!=''?$('#skipError').text('').hide():$('#skipError').text('验证码不能为空').show();;
+        $(this).hasClass('active') ? $(this).removeClass('active') && $('#tipCheck').val('false') : $(this).addClass('active') && $('#tipCheck').val('true');
     });
-
-    $('#serviceLayer').on('click', function(event) {
-        event.preventDefault();
-        layer.open({
-            type: 1,
-            title: '安心签服务协议',
-            area: ['950px', '600px'],
-            shadeClose: true,
-            move: false,
-            scrollbar: true,
-            skin:'register-skin',
-            content: $('#serviceBox')
-        });
-    });
-    $('#privacyLayer').on('click', function(event) {
-        event.preventDefault();
-        layer.open({
-            type: 1,
-            title: '隐私条款',
-            area: ['950px', '600px'],
-            shadeClose: true,
-            move: false,
-            scrollbar: true,
-            skin:'register-skin',
-            content: $('#privacyBox')
-        });
-    });
-    $('#numberLayer').on('click', function(event) {
-        event.preventDefault();
-        layer.open({
-            type: 1,
-            title: 'CFCA数字证书服务协议',
-            area: ['950px', '600px'],
-            shadeClose: true,
-            move: false,
-            scrollbar: true,
-            skin:'register-skin',
-            content: $('#numberBox')
-        });
-    });
-
 });

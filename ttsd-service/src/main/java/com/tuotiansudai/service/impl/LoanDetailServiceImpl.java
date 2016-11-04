@@ -80,6 +80,9 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Autowired
+    private AnxinSignPropertyMapper anxinSignPropertyMapper;
+
+    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
@@ -178,8 +181,10 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             }
         }
 
+        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
 
-        InvestorDto investorDto = new InvestorDto(accountMapper.findByLoginName(loginName), this.isRemindNoPassword(loginName), this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount));
+        InvestorDto investorDto = new InvestorDto(accountMapper.findByLoginName(loginName), this.isRemindNoPassword(loginName),
+                this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount), anxinProp != null && anxinProp.isSkipAuth());
 
         LoanDetailDto loanDto = new LoanDetailDto(loanModel,
                 loanDetailsMapper.getByLoanId(loanModel.getId()),

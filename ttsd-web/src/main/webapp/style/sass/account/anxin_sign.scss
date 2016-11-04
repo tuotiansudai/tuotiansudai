@@ -4,9 +4,15 @@
   padding: 10px 30px 30px 40px;
   overflow: hidden;
   color: #525252;
+  .layui-layer-page .layui-layer-content {
+    overflow: auto!important;
+  }
   .agreeOpen {
     vertical-align: middle;
     color: #999;
+    a {
+      color: #999;
+    }
     em {
       color: #4d4d4d;
     }
@@ -18,6 +24,7 @@
   }
   .safety-status-box {
     color: #4c4c4c;
+    display: none;
     .status-text {
       display: block;
       i {
@@ -85,8 +92,68 @@
   }
 
   .open-safety-box {
-    span {
+    margin:25px;
+    span.info {
       display: block;
+      color: #4c4c4c;
+      padding-bottom: 5px;
+    }
+    .button-bar {
+      margin-top:10px;
+      a {
+        width:90px;
+        &.one {
+          width: 200px;
+        }
+      }
+      button {
+        width:150px;
+        &.one {
+          width: 270px;
+        }
+      }
+    }
+    .tip-item {
+      position: relative;
+      span {
+        input {
+          height: 30px;
+          border:1px solid #e6e6e6;
+          padding: 0px 6px;
+          cursor: pointer;
+          &.skip-phone-code {
+            width:170px;
+          }
+          &.get-skip-code {
+            width:107px;
+            color: #797979;
+            font-size:12px;
+            height: 32px;
+            padding:0;
+            text-align: center;
+            background: #fafafa;
+          }
+        }
+        .microphone {
+          display: inline-block;
+          width: 32px;
+          height: 30px;
+          border: 1px solid #e6e6e6;
+          background: url(../../images/icons/microphone.png) center center no-repeat;
+          vertical-align: middle;
+          margin-left: -5px;
+        }
+      }
+      .error {
+        text-align: left;
+        margin-left: 10px;
+        margin-top: 6px;
+      }
+      .button-bar {
+        position: absolute;
+        top: 79px;
+        left: 36px;
+      }
     }
   }
 

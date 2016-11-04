@@ -35,14 +35,6 @@ public class AccountModel implements Serializable{
 
     private long membershipPoint;
 
-    private String anxinUserId;
-
-    private boolean skipAuth;
-
-    private String projectCode;
-
-    private Date authorizationTime;
-
     public AccountModel() {
     }
 
@@ -135,37 +127,5 @@ public class AccountModel implements Serializable{
 
     public void setMembershipPoint(long membershipPoint) {
         this.membershipPoint = membershipPoint;
-    }
-
-    public String getAnxinUserId() {
-        return anxinUserId;
-    }
-
-    public void setAnxinUserId(String anxinUserId) {
-        this.anxinUserId = anxinUserId;
-    }
-
-    public boolean isSkipAuth() {
-        return skipAuth;
-    }
-
-    public void setSkipAuth(boolean skipAuth) {
-        this.skipAuth = skipAuth;
-    }
-
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-    public Date getAuthorizationTime() {
-        return authorizationTime;
-    }
-
-    public void setAuthorizationTime(Date authorizationTime) {
-        this.authorizationTime = authorizationTime;
     }
 }

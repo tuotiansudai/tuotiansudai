@@ -38,9 +38,6 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     @Autowired
     private AnxinContractRequestMapper anxinContractRequestMapper;
 
-    @Autowired
-    private AnxinContractResponseModel anxinContractResponseMapper;
-
     @Override
     public Tx3001ResVO createAccount3001(AccountModel accountModel, UserModel userModel) throws PKIException {
 
