@@ -39,7 +39,7 @@ public class LoanResponseDataDto {
     public String investedMoneyCent;
     public String loanMoneyCent;
     private List<ExtraLoanRateDto> extraRates;
-    private List<Source> extraSource;
+    private String extraSource;
     private String activityDesc;
     private PledgeType pledgeType;
 
@@ -290,11 +290,11 @@ public class LoanResponseDataDto {
         this.loanMoneyCent = loanMoneyCent;
     }
 
-    public List<Source> getExtraSource() {
+    public String getExtraSource() {
         return extraSource;
     }
 
-    public void setExtraSource(List<Source> extraSource) {
+    public void setExtraSource(String extraSource) {
         this.extraSource = extraSource;
     }
 

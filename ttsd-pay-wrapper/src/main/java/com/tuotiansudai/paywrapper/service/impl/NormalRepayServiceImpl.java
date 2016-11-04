@@ -406,85 +406,39 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         return false;
     }
 
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String investPaybackCallback(Map<String, String> paramsMap, String originalQueryString) throws Exception {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
-                paramsMap,
-                originalQueryString,
-                NormalRepayNotifyMapper.class,
-                NormalRepayNotifyRequestModel.class);
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, ProjectTransferNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
 
         if (callbackRequest == null) {
             logger.error(MessageFormat.format("[Normal Repay] invest payback callback parse is failed (queryString = {0})", originalQueryString));
             return null;
         }
 
-        redisWrapperClient.incr(NormalRepayCallbackJob.NORMAL_REPAY_JOB_TRIGGER_KEY);
-        return callbackRequest.getResponseData();
-    }
-
-    @Override
-    public BaseDto<PayDataDto> asyncNormalRepayPaybackCallback(){
-        List<NormalRepayNotifyRequestModel> todoList = repayNotifyMapper.getNormalTodoList(repayProcessListSize);
-        for (NormalRepayNotifyRequestModel model : todoList) {
-            if (updateNormalRepayNotifyRequestStatus(model)) {
-                try {
-                    ((NormalRepayService) AopContext.currentProxy()).processOneNormalRepayPaybackCallback(model);
-                } catch (Exception e) {
-                    fatalLog("normal repay callback, processOneNormalRepayPaybackCallback error. investId:" + model.getOrderId(), e);
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        BaseDto<PayDataDto> asyncNormalRepayNotifyDto = new BaseDto<>();
-        PayDataDto baseDataDto = new PayDataDto();
-        baseDataDto.setStatus(true);
-        asyncNormalRepayNotifyDto.setData(baseDataDto);
-
-        return asyncNormalRepayNotifyDto;
-    }
-
-    private boolean updateNormalRepayNotifyRequestStatus(NormalRepayNotifyRequestModel model) {
-        try {
-            redisWrapperClient.decr(NormalRepayCallbackJob.NORMAL_REPAY_JOB_TRIGGER_KEY);
-            repayNotifyMapper.updateStatus(model.getId(), RepayNotifyProcessStatus.DONE);
-        } catch (Exception e) {
-            fatalLog("update_normal_repay_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public void processOneNormalRepayPaybackCallback(NormalRepayNotifyRequestModel callbackRequestModel){
-        long investRepayId = Long.parseLong(callbackRequestModel.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
+        long investRepayId = Long.parseLong(callbackRequest.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
         InvestRepayModel currentInvestRepay = investRepayMapper.findById(investRepayId);
 
         LoanRepayModel currentLoanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(investMapper.findById(currentInvestRepay.getInvestId()).getLoanId(), currentInvestRepay.getPeriod());
         long loanRepayId = currentLoanRepayModel.getId();
 
-        if (!callbackRequestModel.isSuccess()) {
+        if (!callbackRequest.isSuccess()) {
             logger.error(MessageFormat.format("[Normal Repay {0}] invest payback({1}) callback is not success",
                     String.valueOf(loanRepayId), String.valueOf(investRepayId)));
+            return callbackRequest.getResponseData();
         }
 
         if (currentInvestRepay.getStatus() != RepayStatus.WAIT_PAY) {
             logger.error(MessageFormat.format("[Normal Repay {0}] invest payback({1}) status({2}) is not WAIT_PAY",
                     String.valueOf(loanRepayId), String.valueOf(investRepayId), currentInvestRepay.getStatus().name()));
+            return callbackRequest.getResponseData();
         }
 
-        try {
-            this.processInvestRepay(loanRepayId, currentInvestRepay);
-        } catch (AmountTransferException e) {
-            logger.error(MessageFormat.format("[Normal Repay {0}] processInvestRepay fail ({1}) status({2})",
-                    String.valueOf(loanRepayId), String.valueOf(investRepayId), currentInvestRepay.getStatus().name()));
-        }
-
+        this.processInvestRepay(loanRepayId, currentInvestRepay);
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
         redisWrapperClient.hset(redisKey, String.valueOf(investRepayId), SyncRequestStatus.SUCCESS.name());
+
+        return callbackRequest.getResponseData();
     }
 
     @Override

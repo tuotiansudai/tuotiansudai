@@ -1,6 +1,5 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
@@ -155,7 +154,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
             if(loanDetailsModel != null)
             {
-                loanResponseDataDto.setExtraSource(Source.WEB.name().equals(loanDetailsModel.getExtraSource())?loanDetailsModel.getExtraSource():null);
+                loanResponseDataDto.setExtraSource((loanDetailsModel.getExtraSource().size() ==1 && loanDetailsModel.getExtraSource().contains(Source.WEB.name())) ? Source.WEB.name() : null);
             }
 
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
@@ -170,12 +169,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     }
 
     private List<ExtraLoanRateDto> fillExtraRate(List<ExtraLoanRateModel> extraLoanRateModels) {
-        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
-            @Override
-            public ExtraLoanRateDto apply(ExtraLoanRateModel model) {
-                return new ExtraLoanRateDto(model);
-            }
-        });
+        return Lists.transform(extraLoanRateModels, model -> new ExtraLoanRateDto(model));
     }
 
 }

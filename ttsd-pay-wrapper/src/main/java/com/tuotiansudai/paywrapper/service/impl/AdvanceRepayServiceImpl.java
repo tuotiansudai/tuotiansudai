@@ -396,6 +396,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         this.processInvestRepay(loanRepayId, currentInvestRepay);
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
         redisWrapperClient.hset(redisKey, String.valueOf(investRepayId), SyncRequestStatus.SUCCESS.name());
+
         return callbackRequest.getResponseData();
     }
 
