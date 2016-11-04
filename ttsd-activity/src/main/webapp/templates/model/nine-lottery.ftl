@@ -87,7 +87,7 @@
 				{{if prizeType=='CONCRETE'}}
 					<a href="javascript:void(0)" class="tip-btn close-item">继续抽奖</a>
 				{{else if prizeType=='VIRTUAL'}}
-					<a href="/my-treasure" class="tip-btn">去查看</a><a href="javascript:void(0)" class="tip-btn close-item">继续抽奖</a>
+					<a href="/loan-list" class="tip-btn">去使用</a><a href="javascript:void(0)" class="tip-btn close-item">继续抽奖</a>
 				{{else}}
 				{{/if}}
 			{{else if returnCode == 1}}

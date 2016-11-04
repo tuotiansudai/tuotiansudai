@@ -29,7 +29,6 @@ require(['jquery', 'underscore', 'layerWrapper', 'template', 'jquery.ajax.extens
                 if(parseInt(NowTime)>new Date(activityEnd).getTime()){
                     clearInterval(timer);
                     $self.addClass('end').find('.time-text span').text('活动已过期');
-                    $self.find('.btn-item a').attr('href','javascript:void(0)');
                 }else{
                     if(t>0){
                         _this.text((h>=10?h:'0'+h) + ":" + (m>=10?m:'0'+m) + ":" + (s>=10?s:'0'+s));
