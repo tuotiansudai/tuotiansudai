@@ -234,6 +234,8 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
         $('#skipSuccess').show();
         setTimeout(function(){
             $('#skipSuccess').hide();
+            $('#skipPhoneCode').val('');
+            num=0;
             applyTip();
         },3000)
     }

@@ -158,4 +158,8 @@
 <div class="free-SMS-box pad-m" style="display: none">
     安心签免短信授权服务协议
 </div>
+    <#--《CFCA数字证书授权协议》-->
+    <div class="number-authorize-box">
+        CFCA数字证书授权协议
+    </div>
 </div>

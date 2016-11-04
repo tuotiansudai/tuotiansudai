@@ -271,6 +271,8 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
         $('#skipSuccess').show();
         setTimeout(function() {
             $('#skipSuccess').hide();
+            $('#skipPhoneCode').val('');
+            num=0;
             submitData();
         }, 3000)
     }

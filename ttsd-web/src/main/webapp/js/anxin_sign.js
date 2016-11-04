@@ -152,14 +152,26 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
         });
 
         //验证验证码并开通短信服务
+
         $('#toOpenSMS').on('click',function() {
-            var $this=$(this);
+            var $this=$(this),
+                $skipPhoneCode=$('#skipPhoneCode'),
+                phoneCode=$skipPhoneCode.val();
+            $skipPhoneCode.on('keyup',function() {
+                var $self=$(this);
+                $self.parents().find('.error').hide();
+            });
+            if(!phoneCode) {
+                $this.parents().find('.error').show().html('验证码不能为空');
+                return;
+            }
+
             $this.prop('disabled',true);
             ajaxOuterFun({
                 thisDom:$this,
                 url:'anxinSign/verifyCaptcha',
                 data:{
-                    captcha: $('#skipPhoneCode').val(),
+                    captcha: phoneCode,
                     skipAuth:true
                 }
             },function(data) {
@@ -174,11 +186,50 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
                    });
                }
                else {
-                   $this.parents().find('.error').show();
+                   $this.parents().find('.error').show().html('验证码错误');
                    $this.prop('disabled',false);
                }
             })
         })
+    //所有弹框协议
+        $('body').on('click','a',function(event) {
+            var target=event.target,
+                $safetyAgreement=$('.safety-agreement-frame',$safetyFrame),
+                contentDom;
+            var showAgreement=function(title,content) {
+                event.preventDefault();
+                layer.open({
+                    type:1,
+                    title:title,
+                    area:['800px','520px'],
+                    shadeClose: false,
+                    content: content
+                });
+            }
+            switch(target.className) {
+                case 'link-agree-service':
+                    contentDom=$('.service-box',$safetyAgreement);
+                    showAgreement('安心平台签服务协议',contentDom);
+                    break;
+                case 'link-agree-privacy':
+                    contentDom=$('.privacy-box',$safetyAgreement);
+                    showAgreement('隐私条款',contentDom);
+                    break;
+                case 'link-agree-number':
+                    contentDom=$('.number-box',$safetyAgreement);
+                    showAgreement('CFCA数字证书服务协议',contentDom);
+                    break;
+                case 'link-agree-number-authorize':
+                    contentDom=$('.number-authorize-box',$safetyAgreement);
+                    showAgreement('CFCA数字证书服务协议',contentDom);
+                    break;
+                case 'link-agree-free-SMS':
+                    contentDom=$('.free-SMS-box',$safetyAgreement);
+                    showAgreement('安心签免短信授权服务协议',contentDom);
+                    break;
+            }
+
+        });
 
     })();
 

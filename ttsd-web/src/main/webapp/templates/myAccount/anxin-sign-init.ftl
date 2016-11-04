@@ -14,9 +14,10 @@
          </span>
              <label for="agreeOpen1" class="agreeOpen"><em>我已阅读并同意</em>
                  <a href="javascript:void(0);" class="link-agree-service" >《安心签平台服务协议》</a>、
-                 <a href="javascript:void(0);" class="link-agree-privacy" >《隐私条款》</a>
-                 和
+                 <a href="javascript:void(0);" class="link-agree-privacy" >《隐私条款》</a>、
                  <a href="javascript:void(0);" class="link-agree-number" >《CFCA数字证书服务协议》</a>
+                 和
+                 <a href="javascript:void(0);" class="link-agree-number-authorize" >《CFCA数字证书授权协议》</a>
              </label>
 
     </div>
@@ -44,7 +45,7 @@
     <div class="open-safety-box clearfix" id="getSkipPhone" style="display: none">
         <div class="tip-item tc">
             <span>
-                <input type="text" class="skip-phone-code" id="skipPhoneCode" placeholder="请输入验证码">
+                <input type="text" maxlength="6" class="skip-phone-code" id="skipPhoneCode" placeholder="请输入验证码">
                 <input type="hidden" id="tipCheck" value="true">
             </span>
             <span>
