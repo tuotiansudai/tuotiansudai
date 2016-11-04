@@ -253,7 +253,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
                     $self.removeClass('active').val('立即授权').prop('disabled', false);
                     if(data.success){
                         $('#isAnxinUser').val('true');
-                        if(data.skipAuth=='true'){
+                        if(data.data.message=='skipAuth'){
                             $('#isSkipAuth').val('true');
                         }
                         $('.skip-group').hide();

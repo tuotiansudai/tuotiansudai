@@ -86,7 +86,6 @@
                     <input type="hidden" id="transferInvestId" name="transferInvestId" value="${transferApplication.id?string.computer}"/>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <p><button id="transferSubmit" class="btn-pay btn-normal" type="button">马上投资</button></p>
-                    skipAuth:${anxinProp.skipAuth?c}
                     <input type="hidden" value="${anxinProp.skipAuth?c}" id="isSkipAuth">
                     <input type="hidden" value="${anxinProp.anxinUser?c}" id="isAnxinUser">
                     <@global.role hasRole="'INVESTOR'">

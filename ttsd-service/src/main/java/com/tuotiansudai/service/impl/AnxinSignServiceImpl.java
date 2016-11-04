@@ -11,6 +11,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -171,7 +172,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      * @return
      */
     @Override
-    public BaseDto verifyCaptcha3102(String loginName, String captcha, boolean skipAuth, String ip) {
+    public BaseDto<BaseDataDto> verifyCaptcha3102(String loginName, String captcha, boolean skipAuth, String ip) {
 
         try {
             // 如果用户没有开通安心签账户，则返回失败
@@ -202,7 +203,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 anxinProp.setAuthTime(new Date());
                 anxinProp.setAuthIp(ip);
                 anxinSignPropertyMapper.update(anxinProp);
-                return new BaseDto();
+                BaseDto baseDto = new BaseDto();
+                baseDto.setData(new BaseDataDto(true, skipAuth ? "skipAuth" : ""));
+                return baseDto;
             } else {
                 logger.error("verify anxin captcha code failed. " + retMessage);
                 return failBaseDto();
