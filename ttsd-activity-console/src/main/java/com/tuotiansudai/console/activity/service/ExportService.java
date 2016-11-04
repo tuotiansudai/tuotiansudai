@@ -157,7 +157,7 @@ public class ExportService {
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, prizeType, startTime, endTime, null, null);
         List<List<String>> rows = Lists.newArrayList();
         userLotteryPrizeViews.forEach(userLotteryPrizeView -> rows.add(Lists.newArrayList(
-                Strings.isNullOrEmpty(userLotteryPrizeView.getUserName()) ? "" : userLotteryPrizeView.getUserName(),
+                Strings.isNullOrEmpty(userLotteryPrizeView.getUserName()) ? "未实名认证" : userLotteryPrizeView.getUserName(),
                 userLotteryPrizeView.getMobile(),
                 userLotteryPrizeView.getLoginName(),
                 new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd"),
