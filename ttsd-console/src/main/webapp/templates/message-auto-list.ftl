@@ -55,22 +55,22 @@
                     <#assign adminRole = true/>
                 </@security.authorize>
 
-                <#list messages as message>
+                <#list messageList as message>
                 <tr>
                     <td>
-                    ${message.id}
+                    ${message.id?c}
                     </td>
                     <td>
                         全部用户
                     </td>
                     <td>
-                    ${message.pushType.description!}
+                    ${(message.pushType.getDescription())!}
                     </td>
                     <td>
                     ${message.title!}
                     </td>
                     <td>
-                    ${message.templateTxt!}
+                    ${message.template!}
                     </td>
                     <td>
                         系统消息
@@ -80,7 +80,7 @@
                     </td>
                     <td>
                         PC:${message.webUrl!}
-                        APP:${message.appUrl.description!}
+                        APP:${(message.appUrl.getDescription())!}
                     </td>
                     <td>
                         是
@@ -110,6 +110,39 @@
             </tbody>
         </table>
     </div>
+
+    <!-- pagination  -->
+    <nav>
+        <div>
+            <span class="bordern">总共${messageCount}条,每页显示${pageSize}条</span>
+        </div>
+        <#if messageList?has_content>
+            <ul class="pagination">
+                <li>
+                    <#if hasPreviousPage>
+                    <a href="?index=${index-1}&pageSize=${pageSize}<#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if><#if title??>&title=${title!}</#if><#if createdBy??>&createdBy=${createdBy!}</#if>"
+                       aria-label="Previous">
+                    <#else>
+                    <a href="#" aria-label="Previous">
+                    </#if>
+                    <span aria-hidden="true">&laquo; Prev</span>
+                </a>
+                </li>
+                <li><a>${index}</a></li>
+                <li>
+                    <#if hasNextPage>
+                    <a href="?index=${index+1}&pageSize=${pageSize}<#if messageStatusInput??>&messageStatus=${messageStatusInput}</#if><#if title??>&title=${title!}</#if><#if createdBy??>&createdBy=${createdBy!}</#if>"
+                       aria-label="Next">
+                    <#else>
+                    <a href="#" aria-label="Next">
+                    </#if>
+                    <span aria-hidden="true">Next &raquo;</span>
+                </a>
+                </li>
+            </ul>
+        </#if>
+    </nav>
+    <!-- pagination -->
 </div>
 <!-- content area end -->
 </@global.main>

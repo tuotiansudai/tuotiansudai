@@ -1,25 +1,25 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
+import com.tuotiansudai.message.repository.model.ManualMessageType;
 import com.tuotiansudai.message.repository.model.MessageChannel;
+import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
 import com.tuotiansudai.spring.LoginUserInfo;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageService {
@@ -29,6 +29,9 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
     @Autowired
     private UserMessageMapper userMessageMapper;
+
+    @Autowired
+    private MessageMapper messageMapper;
 
     @Autowired
     private RedisWrapperClient redisClient;
@@ -59,15 +62,14 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     private UserMessageResponseDataDto fillMessageDataDto(String loginName, int index, int pageSize) {
         long totalCount = userMessageMapper.countMessagesByLoginName(loginName, MessageChannel.APP_MESSAGE);
         List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.APP_MESSAGE, (index - 1) * pageSize, pageSize);
-        List<UserMessageDto> userMessages = Lists.transform(userMessageModels, new Function<UserMessageModel, UserMessageDto>() {
-            @Override
-            public UserMessageDto apply(UserMessageModel model) {
-                UserMessageDto userMessageDto = new UserMessageDto(model);
-                userMessageDto.setTitle(model.getAppTitle());
-                userMessageDto.setContent(StringUtils.isEmpty(model.getContent()) ? model.getAppTitle() : model.getContent());
-                return userMessageDto;
-            }
-        });
+        List<UserMessageDto> userMessages = userMessageModels.stream().map(userMessageModel -> {
+            UserMessageDto userMessageDto = new UserMessageDto(userMessageModel);
+
+            MessageModel messageModel = messageMapper.findById(userMessageModel.getMessageId());
+            userMessageDto.setMessageType(messageModel.getManualMessageType().getDescription());
+
+            return userMessageDto;
+        }).collect(Collectors.toList());
 
         return new UserMessageResponseDataDto(index, pageSize, totalCount, userMessages);
     }
@@ -87,11 +89,21 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     }
 
     @Override
-    public BaseResponseDto updateReadMessage(String messageId) {
+    public BaseResponseDto updateReadMessage(String userMessageId) {
         BaseResponseDto baseDto = new BaseResponseDto();
         baseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        userMessageServices.readMessage(Long.parseLong(messageId));
+        userMessageServices.readMessage(Long.parseLong(userMessageId));
         return baseDto;
+    }
+
+    @Override
+    public UserMessageDto getUserMessageModelByIdAndLoginName(long userMessageId, String loginName) {
+        UserMessageModel userMessageModel = userMessageMapper.findById(userMessageId);
+        if (null == userMessageModel || !userMessageModel.getLoginName().equals(loginName)) {
+            return new UserMessageDto(0L, ManualMessageType.SYSTEM.name(), "消息不存在", "消息不存在", false, new Date());
+        }
+        userMessageServices.readMessage(userMessageId);
+        return new UserMessageDto(userMessageModel);
     }
 }

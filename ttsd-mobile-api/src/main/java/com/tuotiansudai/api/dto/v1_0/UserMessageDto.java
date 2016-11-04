@@ -10,6 +10,7 @@ import java.util.Date;
 
 public class UserMessageDto implements Serializable {
     private long userMessageId;
+    private String messageType;
     private String title;
     private String content;
     private boolean read;
@@ -24,12 +25,29 @@ public class UserMessageDto implements Serializable {
         this.createdTime = userMessageModel.getCreatedTime();
     }
 
+    public UserMessageDto(long userMessageId, String messageType, String title, String content, boolean read, Date createdTime) {
+        this.userMessageId = userMessageId;
+        this.messageType = messageType;
+        this.title = title;
+        this.content = content;
+        this.read = read;
+        this.createdTime = createdTime;
+    }
+
     public long getUserMessageId() {
         return userMessageId;
     }
 
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
+    }
+
+    public String getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
     }
 
     public String getTitle() {

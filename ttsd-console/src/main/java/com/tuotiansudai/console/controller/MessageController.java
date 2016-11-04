@@ -66,7 +66,7 @@ public class MessageController {
                                         @RequestParam(value = "title", required = false) String title,
                                         @RequestParam(value = "createdBy", required = false) String createdBy,
                                         @RequestParam(value = "messageStatus", required = false) MessageStatus messageStatus) {
-        ModelAndView modelAndView = new ModelAndView("/event-message-list");
+        ModelAndView modelAndView = new ModelAndView("/message-auto-list");
 
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
