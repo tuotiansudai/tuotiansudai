@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], function ($, layer) {
     function ajaxOuterFun(option,callback,alwaysFun,failFun) {
         var defaults={
@@ -15,13 +16,10 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
             callback && callback(data);
         }).fail(function() {
             layer.msg('请求数据失败，请刷新页面重试！');
-            failFun && failFun();
+            options.thisDom.prop('disabled',false);
 
-        }).always(function() {
-            alwaysFun && alwaysFun();
         });
     }
-
     //模拟真实的checkbox
     $.fn.initCheckbox=function(callback) {
         return $(this).each(function() {
@@ -55,7 +53,9 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
         // 开启安心签服务
         $('#openSafetySigned').on('click',function() {
             var $this=$(this);
+            $this.prop('disabled',true);
             ajaxOuterFun({
+                thisDom:$this,
                 url:' /anxinSign/createAccount'
             },function(response) {
                 layer.msg('<span class="layer-msg-tip"><i></i>开启成功!</span>',{
@@ -69,10 +69,10 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
                 });
             },function() {
                 //always
-                $this.prop('disabled',false);
+                $this.prop('disabled',true);
             },function() {
                 //fail
-                $this.prop('disabled',true);
+                $this.prop('disabled',false);
             });
         });
 
@@ -120,6 +120,7 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
         //获取验证码
         $('#getSkipPhone').on('click',function(event) {
             var getId=event.target.id,
+                $this=$(this),
                 isVoice; //是否语音获取
             if(!getId) {
                 return;
@@ -132,6 +133,7 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
             }
             if(getId=='getSkipCode' || getId=='microPhone') {
                 ajaxOuterFun({
+                    thisDom:$this,
                     url:'anxinSign/sendCaptcha',
                     data:{
                         isVoice:isVoice
@@ -153,8 +155,9 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
         //验证验证码并开通短信服务
         $('#toOpenSMS').on('click',function() {
             var $this=$(this);
-
+            $this.prop('disabled',true);
             ajaxOuterFun({
+                thisDom:$this,
                 url:'anxinSign/verifyCaptcha',
                 data:{
                     captcha: $('#skipPhoneCode').val(),
@@ -172,7 +175,8 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
                    });
                }
                else {
-                   $this.find('.error').show();
+                   $this.parents().find('.error').show();
+                   $this.prop('disabled',false);
                }
             })
         })
@@ -240,12 +244,14 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
                 }
 
                 ajaxOuterFun({
+                    thisDom:$this,
                     url:'/anxinSign/switchSkipAuth',
                     data:{
                         "open":isOpen
                     }
                 },function(data) {
                     if(data.success) {
+                        layer.closeAll();
                         layer.msg(tipMsg,function() {
                             location.reload();
                         });
