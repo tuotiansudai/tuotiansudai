@@ -289,12 +289,28 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
 
         @Override
         public HttpSessionWrapper getSession(boolean create) {
+            String requestedSessionId = getRequestedSessionId();
+
+            String signInNewSessionId = requestedSessionId != null ? redisWrapperClient.get(requestedSessionId) : null;
+
+            if (signInNewSessionId != null) {
+                if (getCurrentSession() != null) {
+                    SESSION_LOGGER.debug(MessageFormat.format("current session ({0}), sign in new session id ({1})", signInNewSessionId, getCurrentSession().getId()));
+                }
+                S session = MySessionRepositoryFilter.this.sessionRepository.createSession(signInNewSessionId);
+                redisWrapperClient.del(signInNewSessionId);
+                session.setLastAccessedTime(System.currentTimeMillis());
+                HttpSessionWrapper currentSession = new HttpSessionWrapper(session, getServletContext());
+                setCurrentSession(currentSession);
+                return currentSession;
+            }
+
             HttpSessionWrapper currentSession = getCurrentSession();
 
             if (currentSession != null) {
                 return currentSession;
             }
-            String requestedSessionId = getRequestedSessionId();
+
             if (requestedSessionId != null && getAttribute(INVALID_SESSION_ID_ATTR) == null) {
                 S session = getSession(requestedSessionId);
                 if (session != null) {
@@ -318,17 +334,7 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
                 return null;
             }
 
-            S session;
-
-            String signInNewSessionId = requestedSessionId != null ? redisWrapperClient.get(requestedSessionId) : null;
-
-            if (signInNewSessionId != null) {
-                session = MySessionRepositoryFilter.this.sessionRepository.createSession(signInNewSessionId);
-                redisWrapperClient.del(signInNewSessionId);
-            } else {
-                session = MySessionRepositoryFilter.this.sessionRepository.createSession();
-            }
-
+            S session = MySessionRepositoryFilter.this.sessionRepository.createSession();
             session.setLastAccessedTime(System.currentTimeMillis());
             currentSession = new HttpSessionWrapper(session, getServletContext());
             setCurrentSession(currentSession);
