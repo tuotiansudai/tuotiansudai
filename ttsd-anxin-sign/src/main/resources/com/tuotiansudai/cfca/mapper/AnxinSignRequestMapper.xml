@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.cfca.mapper.AnxinSignRequestMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="anxinSignRequestModel" type="AnxinSignRequestModel">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="authorization_time" property="authorizationTime"/>
+        <result column="location" property="location"/>
+        <result column="sign_location" property="signLocation"/>
+        <result column="project_code" property="projectCode"/>
+        <result column="is_proxy_sign" property="isProxySign"/>
+        <result column="is_copy" property="isCopy"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="AnxinSignRequestModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `anxin_operations`.`anxin_sign_request`
+        (`user_id`,`authorization_time`,`location`,`sign_location`,`project_code`,`is_proxy_sign`,`is_copy`,`created_time`)
+        VALUES
+        (#{userId},#{authorizationTime},#{location},#{signLocation},#{projectCode},#{isProxySign},#{isCopy},#{createdTime});
+    </insert>
+
+    <update id="update" parameterType="AnxinSignRequestModel">
+        UPDATE `anxin_operations`.`anxin_sign_request`
+        SET
+        `id` =,
+        `user_id` = ,#{userId}
+        `authorization_time` = #{authorizationTime},
+        `location` = #{location},
+        `sign_location` = #{signLocation},
+        `project_code` = #{projectCode},
+        `is_proxy_sign` = #{isProxySign},
+        `is_copy` = #{isCopy},
+        `created_time` = #{createdTime}
+        WHERE
+        id = #{id}
+    </update>
+
+</mapper>

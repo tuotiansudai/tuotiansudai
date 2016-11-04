@@ -21,6 +21,6 @@ public interface AnxinSignConnectService {
 
     Tx3102ResVO verifyCaptcha3102(String userId, String projectCode, String checkCode) throws PKIException;
 
-    Tx3202ResVO generateContractBatch3202(String batchNo, List<CreateContractVO> createContractlist) throws PKIException;
+    Tx3202ResVO generateContractBatch3202(long loanId,String batchNo, List<CreateContractVO> createContractlist) throws PKIException;
 
 }
