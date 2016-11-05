@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -39,12 +41,24 @@ class UserBillDiagnosis implements Diagnosis {
 
     @Override
     public List<DiagnosisResult> diagnosis(String[] args) {
-        List<String> specialsUsers = extraDiagnosisUsers(args);
+        List<String> specialsUsers;
+        if (args.length == 0) {
+            specialsUsers = findYesterdayActiveUsers();
+        } else {
+            specialsUsers = extraDiagnosisUsers(args);
+        }
         int userCount = specialsUsers.size();
         logger.info("diagnosis user bill for {} users", userCount);
         return IntStream.range(0, specialsUsers.size())
                 .mapToObj(i -> this.diagnosisUser(i, userCount, specialsUsers.get(i)))
                 .collect(Collectors.toList());
+    }
+
+    private List<String> findYesterdayActiveUsers() {
+        Date beginDate = Date.from(LocalDate.now().minusDays(1).atStartOfDay().toInstant(ZoneOffset.ofHours(8)));
+        Date endDate = Date.from(LocalDate.now().atStartOfDay().toInstant(ZoneOffset.ofHours(8)));
+        logger.info("search users {} - {}", beginDate, endDate);
+        return userBillExtMapper.findLoginNameByTime(beginDate, endDate);
     }
 
     private DiagnosisResult diagnosisUser(int idx, int userCount, String loginName) {

@@ -4,6 +4,7 @@ import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillModel;
 import org.apache.ibatis.annotations.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -27,4 +28,7 @@ public interface UserBillExtMapper {
 
     @Select("select distinct login_name from user_bill where order_id is not null")
     List<String> findAllLoginName();
+
+    @Select("select distinct login_name from user_bill where created_time >= #{beginDate} and created_time < #{endDate}")
+    List<String> findLoginNameByTime(@Param("beginDate") Date beginDate, @Param("endDate") Date endDate);
 }
