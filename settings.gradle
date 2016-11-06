@@ -5,7 +5,7 @@ include "ttsd-service",
         "ttsd-sms-wrapper",
         "ttsd-job-worker",
         "ttsd-mobile-api",
-        "ttsd-point",
+        "ttsd-point-service",
         "ttsd-jpush",
         'ttsd-membership',
         "ttsd-activity",
@@ -24,5 +24,7 @@ include "ttsd-service",
         'ttsd-activity-repository',
         'ttsd-util',
         'ttsd-point-web'
+include 'ttsd-edxpoint-model'
+include 'ttsd-edxpoint-repository'
 include 'ttsd-diagnosis'
 

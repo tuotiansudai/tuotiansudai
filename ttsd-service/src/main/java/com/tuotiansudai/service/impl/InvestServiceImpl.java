@@ -12,6 +12,7 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
@@ -32,6 +33,7 @@ import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.jsoup.helper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -88,9 +90,6 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
-
-    @Autowired
-    private UserMembershipMapper userMembershipMapper;
 
     @Autowired
     private MembershipMapper membershipMapper;
@@ -213,8 +212,19 @@ public class InvestServiceImpl implements InvestService {
         String loginName = investDto.getLoginName();
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
 
+        logger.debug(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon({3})",
+                investDto.getLoginName(),
+                String.valueOf(loanId),
+                investDto.getAmount(),
+                CollectionUtils.isNotEmpty(investDto.getUserCouponIds()) ? String.valueOf(investDto.getUserCouponIds().get(0)) : "empty"));
+
         UserCouponDto maxBenefitUserCoupon = userCouponService.getMaxBenefitUserCoupon(loginName, loanId, investAmount);
         if (maxBenefitUserCoupon != null && CollectionUtils.isEmpty(investDto.getUserCouponIds())) {
+            logger.error(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with no user coupon, but max benefit user coupon({3}) is existed",
+                    investDto.getLoginName(),
+                    String.valueOf(loanId),
+                    investDto.getAmount(),
+                    String.valueOf(maxBenefitUserCoupon.getId())));
             throw new InvestException(InvestExceptionType.NONE_COUPON_SELECTED);
         }
 
@@ -225,6 +235,13 @@ public class InvestServiceImpl implements InvestService {
                 UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 Date usedTime = userCouponModel.getUsedTime();
+                logger.debug(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon(id = {3} usedTime = {4} status = {5})",
+                        investDto.getLoginName(),
+                        String.valueOf(loanId),
+                        investDto.getAmount(),
+                        String.valueOf(userCouponId),
+                        usedTime,
+                        userCouponModel.getStatus()));
                 if ((usedTime != null && new DateTime(usedTime).plusSeconds(couponLockSeconds).isAfter(new DateTime()))
                         || !loginName.equalsIgnoreCase(userCouponModel.getLoginName())
                         || InvestStatus.SUCCESS == userCouponModel.getStatus()
@@ -499,15 +516,43 @@ public class InvestServiceImpl implements InvestService {
         return rate == 0 ? 0 : new BigDecimal(duration * amount).multiply(new BigDecimal(rate)).divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 
-    public long calculateMembershipPreference(String loginName, long loanId, long investAmount) {
+    public long calculateMembershipPreference(String loginName, long loanId, List<Long> couponIds, long investAmount, Source source) {
         long preference;
         UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
         MembershipModel membershipModel = membershipMapper.findById(userMembershipModel.getMembershipId());
+        double investFeeRate = membershipModel != null ? membershipModel.getFee() : this.defaultFee;
         LoanModel loanModel = loanMapper.findById(loanId);
+
+        List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
+        long extraLoanRateExpectedInterest = 0L;
+        if(CollectionUtils.isNotEmpty(extraLoanRateModels) && !StringUtils.isEmpty(loanDetailsModel) && loanDetailsModel.getExtraSource().contains(source.name())){
+            for (ExtraLoanRateModel extraLoanRateModel : extraLoanRateModels) {
+                if ((extraLoanRateModel.getMinInvestAmount() <= investAmount && investAmount < extraLoanRateModel.getMaxInvestAmount()) ||
+                        (extraLoanRateModel.getMaxInvestAmount() == 0 && extraLoanRateModel.getMinInvestAmount() <= investAmount)) {
+                    extraLoanRateExpectedInterest = InterestCalculator.calculateExtraLoanRateExpectedInterest(extraLoanRateModel.getRate(), investAmount, loanModel.getDuration(), investFeeRate);
+                }
+            }
+        }
+
+        long expectedInterest = 0;
+        //红包和投资体验券不计算在内
+        for (Long couponId : couponIds) {
+            CouponModel couponModel = couponMapper.findById(couponId);
+            if (loanModel == null || couponModel == null) {
+                continue;
+            }else {
+                expectedInterest = (couponModel.getCouponType() == CouponType.INTEREST_COUPON || couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) ? InterestCalculator.getCouponExpectedInterest(loanModel, couponModel, investAmount, loanModel.getDuration()) : 0;
+            }
+        }
         long interest = InterestCalculator.estimateExpectedInterest(loanModel, investAmount);
         long originFee = new BigDecimal(interest).multiply(new BigDecimal(defaultFee)).longValue();
-        long membershipFee = new BigDecimal(interest).multiply(new BigDecimal(membershipModel.getFee())).longValue();
-        preference = originFee - membershipFee;
+        long membershipFee = new BigDecimal(interest).multiply(new BigDecimal(defaultFee)).multiply(new BigDecimal(membershipModel.getFee() * 10)).longValue();
+        long originCouponFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
+        long membershipCouponFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(defaultFee)).multiply(new BigDecimal((membershipModel.getFee() * 10))).longValue();
+        long originExtraLoanRateExpectedInterest = new BigDecimal(extraLoanRateExpectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
+        long membershipExtraLoanRateExpectedInterest = new BigDecimal(extraLoanRateExpectedInterest).multiply(new BigDecimal(defaultFee)).multiply(new BigDecimal(membershipModel.getFee() * 10)).longValue();
+        preference = originFee - membershipFee + originCouponFee - membershipCouponFee + originExtraLoanRateExpectedInterest - membershipExtraLoanRateExpectedInterest ;
         return preference;
     }
 }

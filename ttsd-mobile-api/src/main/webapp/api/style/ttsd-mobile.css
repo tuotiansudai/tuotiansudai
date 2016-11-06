@@ -52,6 +52,12 @@ body {
     text-align: right;
     color: #2e3033;
 }
+.info-detail .col-info.text-card {
+    float: right;
+    width:100%;
+    text-align: center;
+    color: #2e3033;
+}
 .info-detail .title {
     display: block;
     text-align: left;

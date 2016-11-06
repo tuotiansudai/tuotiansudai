@@ -84,11 +84,11 @@ public class PointShopController {
         }
     }
 
-    @RequestMapping(value = "/{id}/{itemType}/detail", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/{goodsType:(?:COUPON|PHYSICAL|VIRTUAL)}/detail", method = RequestMethod.GET)
     public ModelAndView pointSystemDetail(@PathVariable long id,
-                                          @PathVariable ItemType itemType) {
+                                          @PathVariable GoodsType goodsType) {
         ModelAndView modelAndView = new ModelAndView("/point-detail");
-        ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, itemType);
+        ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, goodsType);
         modelAndView.addObject("productShowItem", productShowItemDto);
 
         modelAndView.addObject("responsive", true);
@@ -98,9 +98,9 @@ public class PointShopController {
     @RequestMapping(value = "/hasEnoughGoods", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> hasEnoughGoods(@RequestParam(value = "id", required = true) long id,
-                                               @RequestParam(value = "itemType", required = true) ItemType itemType,
+                                               @RequestParam(value = "goodsType", required = true) GoodsType goodsType,
                                                @RequestParam(value = "amount", required = true) int amount) {
-        ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, itemType);
+        ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, goodsType);
         if (productShowItemDto.getLeftCount() < amount) {
             return new BaseDto<>(new BaseDataDto(false, "所需商品数量不足"));
         } else {
@@ -108,11 +108,11 @@ public class PointShopController {
         }
     }
 
-    @RequestMapping(value = "/order/{id}/{itemType}/{number}", method = RequestMethod.GET)
-    public ModelAndView pointSystemOrder(@PathVariable long id, @PathVariable ItemType itemType, @PathVariable int number) {
+    @RequestMapping(value = "/order/{id}/{goodsType:(?:COUPON|PHYSICAL|VIRTUAL)}/{number}", method = RequestMethod.GET)
+    public ModelAndView pointSystemOrder(@PathVariable long id, @PathVariable GoodsType goodsType, @PathVariable int number) {
         ModelAndView modelAndView = new ModelAndView("/point-order");
 
-        ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, itemType);
+        ProductShowItemDto productShowItemDto = productService.findProductShowItemDto(id, goodsType);
         modelAndView.addObject("productShowItem", productShowItemDto);
         if (number <= productShowItemDto.getLeftCount()) {
             modelAndView.addObject("number", number);
@@ -120,7 +120,7 @@ public class PointShopController {
             modelAndView.addObject("number", productShowItemDto.getLeftCount());
         }
 
-        if (itemType.equals(ItemType.PHYSICAL)) {
+        if (goodsType.equals(GoodsType.PHYSICAL)) {
             String loginName = LoginUserInfo.getLoginName();
             List<UserAddressModel> userAddressModels = productService.getUserAddressesByLoginName(loginName);
             modelAndView.addObject("addresses", userAddressModels);
@@ -133,11 +133,11 @@ public class PointShopController {
     @RequestMapping(value = "/order", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> buyProduct(@RequestParam(value = "id", required = true) long id,
-                                           @RequestParam(value = "itemType", required = true) ItemType itemType,
+                                           @RequestParam(value = "goodsType", required = true) GoodsType goodsType,
                                            @RequestParam(value = "number", required = true) int number,
                                            @RequestParam(value = "userAddressId", required = false) Long addressId) {
         String loginName = LoginUserInfo.getLoginName();
-        return productService.buyProduct(loginName, id, itemType, number, addressId);
+        return productService.buyProduct(loginName, id, goodsType, number, addressId);
     }
 
     @RequestMapping(value = "/add-address", method = RequestMethod.POST)

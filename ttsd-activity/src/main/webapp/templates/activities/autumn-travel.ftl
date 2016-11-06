@@ -11,7 +11,7 @@
 </div>
 <div class="autumn-tour-frame" id="autumnTravelPage">
     <div class="reg-tag-current" style="display: none">
-        <#include '../register.ftl' />
+        <#include '../module/register.ftl' />
     </div>
 
     <div class="bg-box">

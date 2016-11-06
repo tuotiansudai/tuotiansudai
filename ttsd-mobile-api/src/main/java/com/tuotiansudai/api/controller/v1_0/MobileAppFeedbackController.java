@@ -42,7 +42,7 @@ public class MobileAppFeedbackController extends MobileAppBaseController {
             type = FeedbackType.valueOf(feedbackRequestDto.getType());
         }
 
-        feedbackService.create(getLoginName(), source, type, feedbackRequestDto.getContent());
+        feedbackService.create(getLoginName(), source, type, feedbackRequestDto.getContent(),feedbackRequestDto.getContact());
         return new BaseResponseDto(ReturnMessage.SUCCESS);
     }
 }

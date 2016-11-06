@@ -19,6 +19,8 @@ public class BannerModel implements Serializable {
 
     private String url;
 
+    private String appUrl;
+
     private String title;
 
     private String content;
@@ -199,6 +201,14 @@ public class BannerModel implements Serializable {
         this.sharedUrl = sharedUrl;
     }
 
+    public String getAppUrl() {
+        return appUrl;
+    }
+
+    public void setAppUrl(String appUrl) {
+        this.appUrl = appUrl;
+    }
+
     public BannerModel() {
 
     }
@@ -206,9 +216,10 @@ public class BannerModel implements Serializable {
     public BannerModel(BannerDto bannerDto) {
         this.id = bannerDto.getId();
         this.name = bannerDto.getName();
-        this.webImageUrl = bannerDto.getWebImageUrl();
-        this.appImageUrl = bannerDto.getAppImageUrl();
+        this.webImageUrl = bannerDto.getWebImageUrl().trim();
+        this.appImageUrl = bannerDto.getAppImageUrl().trim();
         this.url = bannerDto.getUrl();
+        this.appUrl = bannerDto.getAppUrl();
         this.title = bannerDto.getTitle();
         this.content = bannerDto.getContent();
         this.sharedUrl = bannerDto.getSharedUrl();

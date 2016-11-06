@@ -186,5 +186,5 @@
         <p><a href="javascript:void(0)" class="close-btn">确定</a></p>
     </div>
 </div>
-<#include "login-tip.ftl" />
+<#include "component/login-tip.ftl" />
 </@global.main>

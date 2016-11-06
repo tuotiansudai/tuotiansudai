@@ -8,7 +8,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">加息券名称:</label>
             <div class="col-sm-4">
-                <span class="form-control">加息体验券</span>
+                <span class="form-control">加息券</span>
                 <input class="couponType" name="couponType" value="INTEREST_COUPON" type="hidden">
             </div>
         </div>
@@ -61,7 +61,7 @@
             <div class="col-sm-2 invest-coupon">
 
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
-                    <#assign notUserGroups = ['EXCHANGER','WINNER','EXPERIENCE_INVEST_SUCCESS','EXPERIENCE_REPAY_SUCCESS'] />
+                    <#assign notUserGroups = ['EXCHANGER','WINNER','EXPERIENCE_INVEST_SUCCESS','EXPERIENCE_REPAY_SUCCESS','NOT_ACCOUNT_NOT_INVESTED_USER'] />
                     <#list userGroups as userGroup>
                         <#if !(notUserGroups?seq_contains(userGroup.name()))>
                             <option value="${userGroup.name()}">${userGroup.getDescription()}</option>
