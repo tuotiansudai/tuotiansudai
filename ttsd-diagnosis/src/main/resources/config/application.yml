@@ -5,10 +5,32 @@ spring:
       username: root
       password:
       driver-class-name: com.mysql.jdbc.Driver
+  mail:
+    host: smtp.qiye.163.com
+    prot: 994
+    username: no-repay@tuotiansudai.com
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            trust: smtp.qiye.163.com
 logging:
   level:
     com:
       tuotiansudai:
         diagnosis: debug
-
-
+diagnosis:
+  schedule:
+    hour: 2
+    minute: 18
+  report:
+    notify-mail-from: no-repay@tuotiansudai.com
+    notify-mail-address:
+      - lei@tuotiansudai.com
+      - gaoxiduan@tuotiansudai.com
+      - zhangzhigang@tuotiansudai.com
