@@ -174,7 +174,7 @@ public class SignInClient {
                 .url(MessageFormat.format("http://{0}:{1}/session/{2}?source={3}", signInHost, signInPort, token, source))
                 .get();
         try {
-            SignInResult signInResult = objectMapper.readValue(this.execute(request).body().toString(), SignInResult.class);
+            SignInResult signInResult = objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
             if (!signInResult.isResult()) {
                 logger.info(MessageFormat.format("[sign in client] session({0}) is invalid", token));
             }
