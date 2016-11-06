@@ -139,7 +139,7 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <property name="basePackage"
-                  value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.membership.repository.mapper,com.tuotiansudai.message.repository.mapper,com.tuotiansudai.cfca.mapper"/>
+                  value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.transfer.repository.mapper,com.tuotiansudai.membership.repository.mapper,com.tuotiansudai.message.repository.mapper"/>
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
