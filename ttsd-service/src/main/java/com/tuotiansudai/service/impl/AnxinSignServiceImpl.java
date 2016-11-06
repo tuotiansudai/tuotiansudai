@@ -59,9 +59,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private InvestMapper investMapper;
 
     @Autowired
-    private AnxinSignService anxinSignService;
-
-    @Autowired
     private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
     private static final String TEMP_PROJECT_CODE_KEY = "temp_project_code:";
