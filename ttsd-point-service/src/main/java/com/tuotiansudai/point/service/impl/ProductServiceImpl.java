@@ -9,9 +9,9 @@ import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.point.dto.ProductDto;
-import com.tuotiansudai.point.dto.ProductOrderDto;
-import com.tuotiansudai.point.dto.ProductShowItemDto;
+import com.tuotiansudai.point.repository.dto.ProductDto;
+import com.tuotiansudai.point.repository.dto.ProductOrderDto;
+import com.tuotiansudai.point.repository.dto.ProductShowItemDto;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
@@ -72,13 +72,7 @@ public class ProductServiceImpl implements ProductService {
             productDto.setName(convertProductDto.getName());
             productDto.setDescription(convertProductDto.getDescription());
         }
-
-        ProductModel productModel = productDto.toProductModel();
-        productModel.setActive(false);
-        productModel.setCreatedBy(productDto.getLoginName());
-        productModel.setCreatedTime(new Date());
-        productModel.setUpdatedBy(productDto.getLoginName());
-        productModel.setUpdatedTime(new Date());
+        ProductModel productModel = new ProductModel(productDto.getLoginName(), productDto.getType(), productDto.getCouponId(), productDto.getName(), productDto.getSeq(), productDto.getImageUrl(), productDto.getDescription(), productDto.getTotalCount(), productDto.getPoints(), productDto.getStartTime(), productDto.getEndTime());
         productMapper.create(productModel);
     }
 
@@ -179,12 +173,13 @@ public class ProductServiceImpl implements ProductService {
             productDto.setName(convertProductDto.getName());
             productDto.setDescription(convertProductDto.getDescription());
         }
-
-        ProductModel productModel = productDto.toProductModel();
-        ProductModel oldProductModel = productMapper.findById(productDto.getId());
-        productModel.setActive(oldProductModel.isActive());
-        productModel.setActiveBy(oldProductModel.getActiveBy());
-        productModel.setActiveTime(oldProductModel.getActiveTime());
+        ProductModel productModel = productMapper.findById(productDto.getId());
+        productModel.setSeq(productDto.getSeq());
+        productModel.setImageUrl(productDto.getImageUrl());
+        productModel.setStartTime(productDto.getStartTime());
+        productModel.setEndTime(productDto.getEndTime());
+        productModel.setPoints(productDto.getPoints());
+        productModel.setTotalCount(productDto.getTotalCount());
         productModel.setUpdatedBy(productDto.getLoginName());
         productModel.setUpdatedTime(new Date());
         productMapper.update(productModel);
@@ -454,7 +449,7 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductShowItemDto convertProductShowItemDto(ExchangeCouponView exchangeCouponView) {
 
-        ProductShowItemDto productShowItemDto = new ProductShowItemDto(exchangeCouponView, exchangeCouponView.getProductId());
+        ProductShowItemDto productShowItemDto = new ProductShowItemDto(exchangeCouponView.getCouponModel().getTotalCount(), exchangeCouponView.getCouponModel().getIssuedCount(), exchangeCouponView.getExchangePoint(), exchangeCouponView.getSeq(), exchangeCouponView.getImageUrl(), exchangeCouponView.getCouponModel().getCouponType(), exchangeCouponView.getCouponModel().getAmount(), exchangeCouponView.getCouponModel().getRate(), exchangeCouponView.getProductId());
         List<String> descriptions = getProductDescription(exchangeCouponView.getCouponModel().getInvestLowerLimit(), exchangeCouponView.getCouponModel().getProductTypes(), exchangeCouponView.getCouponModel().getDeadline());
         String descriptionString = "";
         for (String description : descriptions) {
