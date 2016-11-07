@@ -4,14 +4,15 @@ import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
-import cfca.trustsign.common.vo.response.tx3.Tx3101ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.sms.PlatformBalanceLowNotifyDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AnxinSignService;
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +64,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Autowired
     private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
     private static final String TEMP_PROJECT_CODE_KEY = "temp_project_code:";
 
     private static final int TEMP_PROJECT_CODE_EXPIRE_TIME = 1800; // 半小时
@@ -72,6 +77,12 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Value(value = "${anxin.contract.batch.num}")
     private int batchNum;
+
+    @Value(value = "${anxin.contract.template}")
+    private String template;
+
+    @Value("#{'${anxin.contract.notify.mobileList}'.split('\\|')}")
+    private List<String> mobileList;
 
 
     /**
@@ -206,7 +217,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 baseDto.setData(new BaseDataDto(true, skipAuth ? "skipAuth" : ""));
                 return baseDto;
             } else {
-                String retMessage =tx3101ResVO.getHead().getRetMessage();
+                String retMessage = tx3101ResVO.getHead().getRetMessage();
                 logger.error("verify anxin captcha code failed. " + retMessage);
                 return failBaseDto(retMessage);
             }
@@ -252,20 +263,33 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Override
     public BaseDto createContracts(long loanId) {
         List<CreateContractVO> createContractVOs = Lists.newArrayList();
-        investMapper.findSuccessInvestsByLoanId(loanId).forEach(investModel -> {
+        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
+        InvestModel investModel;
+        BaseDto baseDto = new BaseDto();
+        for (int i = 0; i < investModels.size(); i++) {
+            investModel = investModels.get(i);
             createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId()));
-            if (createContractVOs.size() == batchNum) {
+            if (createContractVOs.size() == batchNum || investModels.size() == i) {
                 String batchNo = UUIDGenerator.generate();
                 try {
+                    logger.debug(MessageFormat.format("[安心签] create contract begin , loanId:{0}, batchNo{1}", loanId, batchNo));
                     //创建合同
                     anxinSignConnectService.generateContractBatch3202(loanId, batchNo, createContractVOs);
+                    baseDto.setSuccess(true);
                 } catch (PKIException e) {
-                    e.printStackTrace();
+                    PlatformBalanceLowNotifyDto notifyDto = new PlatformBalanceLowNotifyDto();
+                    notifyDto.setMobiles(mobileList);
+                    notifyDto.setWarningLine(MessageFormat.format("安心签生成合同错误,loanId:{0}",loanId));
+                    smsWrapperClient.sendPlatformBalanceLowNotify(notifyDto);
+
+                    baseDto.setSuccess(false);
+                    logger.error(MessageFormat.format("[安心签] create contract error , loanId:{0}", loanId), e);
+
                 }
                 createContractVOs.clear();
             }
-        });
-        return new BaseDto();
+        }
+        return baseDto;
     }
 
     private CreateContractVO collectInvestorContractModel(String investorLoginName, long loanId, long investId) {
@@ -324,7 +348,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         investorSignInfo.setIsProxySign(1);
 
         createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
-        createContractVO.setTemplateId("7");
+        createContractVO.setTemplateId(template);
+        createContractVO.setIsSign(1);
         return createContractVO;
     }
 
@@ -343,8 +368,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public BaseDto updateContractResponse(long loanId) {
-        BaseDto baseDto = new BaseDto();
-        baseDto.setSuccess(true);
+        BaseDto baseDto = new BaseDto(true);
         try {
             //查询修改合同创建结果并更新invest
             List<ContractResponseView> contractResponseViews = anxinSignConnectService.updateContractResponse(loanId);
@@ -355,7 +379,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 }
             });
         } catch (PKIException e) {
-            e.printStackTrace();
+            baseDto.setSuccess(false);
+            logger.error(MessageFormat.format("[安心签] update contract response error , loanId:{0}", loanId), e);
         }
 
         return baseDto;

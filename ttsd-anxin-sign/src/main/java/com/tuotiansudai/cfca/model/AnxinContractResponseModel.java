@@ -27,14 +27,12 @@ public class AnxinContractResponseModel implements Serializable {
         this.retCode = retCode;
     }
 
-    public AnxinContractResponseModel(long loanId, String batchNo,String contractNo, String txTime, String locale, String retCode, String retMessage, Date createdTime) {
+    public AnxinContractResponseModel(long loanId, String batchNo,String contractNo, String txTime, String locale, Date createdTime) {
         this.loanId = loanId;
         this.batchNo = batchNo;
         this.contractNo = contractNo;
         this.txTime = txTime;
         this.locale = locale;
-        this.retCode = retCode;
-        this.retMessage = retMessage;
         this.createdTime = createdTime;
     }
 

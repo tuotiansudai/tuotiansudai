@@ -58,7 +58,7 @@ CREATE TABLE `anxin_operations`.`anxin_contract_request` (
   `contract_no` VARCHAR(32),
   `tx_time` VARCHAR(14) ,
   `locale` VARCHAR(15) ,
-  `ret_code` VARCHAR(100) NOT NULL,
+  `ret_code` VARCHAR(100),
   `ret_message` VARCHAR(200) ,
   `created_time` DATETIME NULL,
   `updated_time` DATETIME NULL,

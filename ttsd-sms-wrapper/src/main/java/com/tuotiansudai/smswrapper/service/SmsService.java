@@ -41,4 +41,6 @@ public interface SmsService {
     BaseDto<SmsDataDto> sendRegisterCaptchaByMd(String mobile, String captcha, String ip);
     
     BaseDto<SmsDataDto> platformBalanceLowNotify(List<String> mobiles, String warningValue);
+
+    BaseDto<SmsDataDto> generateContractNotify(List<String> mobiles, String warningValue);
 }

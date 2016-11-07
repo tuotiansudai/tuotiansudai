@@ -29,7 +29,9 @@ public enum SmsTemplate {
 
     SMS_IMPORT_RECEIVE_MEMBERSHIP(3031214, "尊敬的用户，拓天给您赠送了V%s会员，赶紧投资享受会员特权吧！"),
 
-    SMS_NEW_USER_RECEIVE_MEMBERSHIP(3031215, "尊敬的用户，欢迎您加入拓天，拓天给您赠送了V%s会员，赶紧投资享受会员特权吧！");
+    SMS_NEW_USER_RECEIVE_MEMBERSHIP(3031215, "尊敬的用户，欢迎您加入拓天，拓天给您赠送了V%s会员，赶紧投资享受会员特权吧！"),
+
+    SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE(3032242, "安心签合同生成失败,loanId: %s。");
 
     private long templateId;
 
