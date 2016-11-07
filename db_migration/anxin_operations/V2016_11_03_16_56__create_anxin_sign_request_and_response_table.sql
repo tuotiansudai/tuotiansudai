@@ -20,6 +20,7 @@ CREATE TABLE `anxin_operations`.`anxin_contract_request` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `loan_id` BIGINT UNSIGNED NOT NULL,
   `invest_id` BIGINT UNSIGNED NOT NULL,
+  `contract_no` VARCHAR(32),
   `agent_sign_id` BIGINT UNSIGNED NOT NULL,
   `investor_sign_id` BIGINT UNSIGNED NOT NULL,
   `tx_time` VARCHAR(14) NULL,
@@ -39,6 +40,7 @@ CREATE TABLE `anxin_operations`.`anxin_contract_request` (
   `loaner_user_name` VARCHAR(50) NULL,
   `loan_amount` VARCHAR(15) NULL,
   `created_time` DATETIME NULL,
+  `updated_time` DATETIME NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT FK_CONTRACT_REQUEST_AGEN_SIGN_ID_REF_SIGN_REQUEST_ID FOREIGN KEY (`agent_sign_id`) REFERENCES `anxin_operations`.`anxin_sign_request` (`id`),
   CONSTRAINT FK_CONTRACT_REQUEST_INVESTOR_SIGN_ID_REF_IGN_REQUEST_ID FOREIGN KEY (`investor_sign_id`) REFERENCES `anxin_operations`.`anxin_sign_request` (`id`)
@@ -53,11 +55,13 @@ CREATE TABLE `anxin_operations`.`anxin_contract_request` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `loan_id` BIGINT UNSIGNED NOT NULL,
   `batch_no` VARCHAR(32) NOT NULL,
+  `contract_no` VARCHAR(32),
   `tx_time` VARCHAR(14) ,
   `locale` VARCHAR(15) ,
   `ret_code` VARCHAR(100) NOT NULL,
   `ret_message` VARCHAR(200) ,
   `created_time` DATETIME NULL,
+  `updated_time` DATETIME NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB

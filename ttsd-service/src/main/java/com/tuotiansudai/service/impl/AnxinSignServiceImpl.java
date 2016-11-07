@@ -3,10 +3,7 @@ package com.tuotiansudai.service.impl;
 import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
-import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
-import cfca.trustsign.common.vo.response.tx3.Tx3101ResVO;
-import cfca.trustsign.common.vo.response.tx3.Tx3102ResVO;
-import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
+import cfca.trustsign.common.vo.response.tx3.*;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
@@ -258,7 +255,18 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         List<CreateContractVO> createContractVOs = Lists.newArrayList();
         investMapper.findSuccessInvestsByLoanId(loanId).forEach(investModel -> createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId())));
         try {
-            anxinSignConnectService.generateContractBatch3202(loanId,UUIDGenerator.generate(), createContractVOs);
+            String batchNo = UUIDGenerator.generate();
+            //创建合同
+            anxinSignConnectService.generateContractBatch3202(loanId,batchNo, createContractVOs);
+            //查询修改合同创建结果并更新invest
+            Tx3202ResVO tx3202ResVO = anxinSignConnectService.findContractResponseByBatchNo(batchNo);
+            if(tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null){
+                for(CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()){
+                    if(createContractVO.getCode().equals("60000000")){
+                        investMapper.updateContractNoById(Long.parseLong(createContractVO.getInvestmentInfo().get("investId")),createContractVO.getContractNo());
+                    }
+                }
+            }
         } catch (PKIException e) {
             e.printStackTrace();
         }

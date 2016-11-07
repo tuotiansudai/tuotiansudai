@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @Service
@@ -21,6 +22,10 @@ public interface AnxinSignConnectService {
 
     Tx3102ResVO verifyCaptcha3102(String userId, String projectCode, String checkCode) throws PKIException;
 
-    Tx3202ResVO generateContractBatch3202(long loanId,String batchNo, List<CreateContractVO> createContractlist) throws PKIException;
+    Tx3202ResVO generateContractBatch3202(long loanId,String batchNo, List<CreateContractVO> createContractList) throws PKIException;
+
+    Tx3202ResVO findContractResponseByBatchNo(String batchNo) throws PKIException;
+
+    byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException;
 
 }

@@ -2,10 +2,7 @@ package com.tuotiansudai.cfca.service.impl;
 
 import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.*;
-import cfca.trustsign.common.vo.request.tx3.Tx3001ReqVO;
-import cfca.trustsign.common.vo.request.tx3.Tx3101ReqVO;
-import cfca.trustsign.common.vo.request.tx3.Tx3102ReqVO;
-import cfca.trustsign.common.vo.request.tx3.Tx3202ReqVO;
+import cfca.trustsign.common.vo.request.tx3.*;
 import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3101ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3102ResVO;
@@ -29,6 +26,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 
@@ -153,19 +151,59 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
         Tx3202ResVO tx3202ResVO = jsonObjectMapper.readValue(res, Tx3202ResVO.class);
-        AnxinContractResponseModel anxinContractResponseModel;
         if (Strings.isNullOrEmpty(tx3202ResVO.getBatchNo())) {
             Map<String, String> response = coverJson(res);
-            anxinContractResponseModel = new AnxinContractResponseModel(loanId, batchNo, response.get("errorCode"), response.get("errorMessage"));
+            anxinContractResponseMapper.create(new AnxinContractResponseModel(loanId, batchNo, response.get("errorCode"), response.get("errorMessage")));
         } else {
-            anxinContractResponseModel = new AnxinContractResponseModel(loanId,
-                    tx3202ResVO.getBatchNo(), tx3202ResVO.getHead().getTxTime(), tx3202ResVO.getHead().getLocale(),
-                    tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage(), DateTime.now().toDate());
-        }
+            for(CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()){
+                long investId = Long.parseLong(createContractVO.getInvestmentInfo().get("investId"));
+                anxinContractRequestMapper.updateContractNoByInvestId(createContractVO.getContractNo(),investId);
 
-        anxinContractResponseMapper.create(anxinContractResponseModel);
+                anxinContractResponseMapper.create(new AnxinContractResponseModel(loanId,
+                        tx3202ResVO.getBatchNo(), createContractVO.getContractNo(), tx3202ResVO.getHead().getTxTime(), tx3202ResVO.getHead().getLocale(),
+                        tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage(), DateTime.now().toDate()));
+            }
+        }
         System.out.println("res:" + res);
         return null;
+    }
+
+    @Override
+    public Tx3202ResVO findContractResponseByBatchNo(String batchNo) throws PKIException {
+        HttpConnector httpConnector = new HttpConnector();
+        httpConnector.init();
+
+        Tx3211ReqVO tx3211ReqVO = new Tx3211ReqVO();
+
+        tx3211ReqVO.setHead(getHeadVO());
+        tx3211ReqVO.setBatchNo(batchNo);
+
+        JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
+        String req = jsonObjectMapper.writeValueAsString(tx3211ReqVO);
+        System.out.println("req:" + req);
+
+        String txCode = "3211";
+        String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
+        String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
+        Tx3202ResVO tx3202ResVO = jsonObjectMapper.readValue(res, Tx3202ResVO.class);
+
+        if(tx3202ResVO != null){
+            for(CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()){
+                anxinContractResponseMapper.updateRetByContractNo(createContractVO.getContractNo(),
+                        createContractVO.getCode(),
+                        createContractVO.getMessage(),
+                        DateTime.now().toDate());
+            }
+        }
+        return tx3202ResVO;
+    }
+
+    @Override
+    public byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException{
+        HttpConnector httpConnector = new HttpConnector();
+        httpConnector.init();
+
+        return httpConnector.getFile("platId/" + Request.PLAT_ID + "/contractNo/" + contractNo + "/downloading");
     }
 
     private Map<String, String> coverJson(String response) {
@@ -218,7 +256,8 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                 }
 
                 Map<String, String> investmentInfo = createContractVO.getInvestmentInfo();
-                anxinContractRequestMapper.create(new AnxinContractRequestModel(loanId,Long.parseLong(investmentInfo.get("investId")), agentSignId, investorSignId, txTime, batchNo, createContractVO.getTemplateId(),
+                anxinContractRequestMapper.create(new AnxinContractRequestModel(loanId,Long.parseLong(investmentInfo.get("investId")),
+                        agentSignId, investorSignId, txTime, batchNo, createContractVO.getTemplateId(),
                         createContractVO.getIsSign() != null ? String.valueOf(createContractVO.getIsSign()) : "0", investmentInfo.get("agentMobile"),
                         investmentInfo.get("loanerIdentityNumber"), investmentInfo.get("recheckTime"), investmentInfo.get("totalRate"),
                         investmentInfo.get("investorMobile"), investmentInfo.get("agentIdentityNumber"), investmentInfo.get("periods"),
