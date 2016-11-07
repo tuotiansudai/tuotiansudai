@@ -74,7 +74,7 @@ public class LoanDetailDto extends BaseDataDto {
 
     private String basicInfo;
 
-    private List<Source> extraSource;
+    private String extraSource;
 
     private boolean activity;
 
@@ -103,7 +103,7 @@ public class LoanDetailDto extends BaseDataDto {
         this.raisingPeriod = new Period(new DateTime(), new DateTime(loanModel.getFundraisingEndTime()), PeriodType.dayTime());
         this.investor = investorDto;
         this.declaration = loanDetails == null ? null : loanDetails.getDeclaration();
-        this.extraSource = loanDetails == null ? null :loanDetails.getExtraSource();
+        this.extraSource = loanDetails == null ? null :(loanDetails.getExtraSource().size() == 1 && loanDetails.getExtraSource().contains(Source.MOBILE)) ? Source.MOBILE.name() : null;
         this.activity = loanDetails == null ? false : loanDetails.isActivity();
         this.activityDesc = loanDetails == null ? "" : loanDetails.getActivityDesc();
         this.pledgeType = loanModel.getPledgeType();
@@ -261,11 +261,11 @@ public class LoanDetailDto extends BaseDataDto {
         return declaration;
     }
 
-    public List<Source> getExtraSource() {
+    public String getExtraSource() {
         return extraSource;
     }
 
-    public void setExtraSource(List<Source> extraSource) {
+    public void setExtraSource(String extraSource) {
         this.extraSource = extraSource;
     }
 

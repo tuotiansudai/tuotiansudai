@@ -230,7 +230,7 @@ public class LoanServiceImpl implements LoanService {
                 }
                 if (rate > 0) {
                     loanItemDto.setExtraRate(rate * 100);
-                    loanItemDto.setExtraSource(extraSource);
+                    loanItemDto.setExtraSource((extraSource.size() == 1 && extraSource.contains(Source.MOBILE)) ? Source.MOBILE.name() : "");
                 }
                 loanItemDto.setActivity(activity);
                 loanItemDto.setActivityDesc(activityDesc);

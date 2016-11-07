@@ -41,7 +41,7 @@ public class LoanItemDto {
 
     private double extraRate;
 
-    private List<Source> extraSource;
+    private String extraSource;
 
     private String activityDesc;
 
@@ -183,12 +183,11 @@ public class LoanItemDto {
         this.extraRate = extraRate;
     }
 
-
-    public List<Source> getExtraSource() {
+    public String getExtraSource() {
         return extraSource;
     }
 
-    public void setExtraSource(List<Source> extraSource) {
+    public void setExtraSource(String extraSource) {
         this.extraSource = extraSource;
     }
 
