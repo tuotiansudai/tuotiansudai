@@ -177,6 +177,15 @@ worker-jpush:
   command: bash -c "/opt/worker/ttsd-job-worker-jpush/bin/ttsd-job-worker"
   links:
     - "redis-server"
+worker-all:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-diagnosis/build/distributions:/opt/worker
+    - /var/log/tuotian/diagnosis:/var/log/ttsd-diagnosis
+  command: bash -c "/opt/worker/ttsd-diagnosis/bin/ttsd-diagnosis"
 static-server:
   image: "nginx"
   volumes:

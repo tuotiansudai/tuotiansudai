@@ -15,6 +15,7 @@ class Deployment(object):
         self.jcversion()
         self.compile()
         self.build_and_unzip_worker()
+        self.build_diagnosis()
         self.mk_static_package()
         self.init_docker()
 
@@ -35,6 +36,11 @@ class Deployment(object):
         sh('cd ./ttsd-job-worker && {0} -Pwork=invest distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker && {0} -Pwork=jpush distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker/build/distributions && unzip \*.zip')
+
+    def build_diagnosis(self):
+        print "Making diagnosis build..."
+        sh('cd ./ttsd-diagnosis && {0} distZip'.format(self._gradle))
+        sh('cd ./ttsd-diagnosis/build/distributions && unzip \*.zip')
 
     def mkwar(self):
         print "Making war..."

@@ -3,9 +3,11 @@ package com.tuotiansudai.diagnosis;
 import com.tuotiansudai.diagnosis.config.DiagnosisConfig;
 import com.tuotiansudai.diagnosis.support.Diagnosis;
 import com.tuotiansudai.diagnosis.support.DiagnosisResult;
+import com.tuotiansudai.dto.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -30,6 +32,9 @@ class DiagnosisApplication {
 
     @Autowired
     private DiagnosisConfig diagnosisConfig;
+
+    @Value("${common.environment}")
+    private Environment environment;
 
     @Autowired
     public DiagnosisApplication(List<Diagnosis> diagnoses) {
@@ -82,10 +87,12 @@ class DiagnosisApplication {
     private void mailReport(String description, List<List<DiagnosisResult>> totalResult) {
         String reportMessage = buildDiagnosisReport(description, totalResult);
         logger.info(reportMessage);
-        try {
-            sendReportMail(reportMessage);
-        } catch (Exception e) {
-            logger.error("send report mail fail", e);
+        if (Arrays.asList(Environment.PRODUCTION, Environment.QA).contains(environment)) {
+            try {
+                sendReportMail(reportMessage);
+            } catch (Exception e) {
+                logger.error("send report mail fail", e);
+            }
         }
     }
 
@@ -112,15 +119,19 @@ class DiagnosisApplication {
             reportLines.add("  Diagnosis complete.");
             reportLines.add("");
         });
-        return String.join("\r\n", reportLines);
+        return String.join("\n", reportLines);
     }
 
     private void sendReportMail(String reportMessage) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(diagnosisConfig.getReport().getNotifyMailFrom());
-        message.setTo(diagnosisConfig.getReport().getNotifyMailAddress());
+        if (Environment.isProduction(environment)) {
+            message.setTo(diagnosisConfig.getReport().getNotifyMailAddress());
+        } else {
+            message.setTo(diagnosisConfig.getReport().getNotifyMailAddressQA());
+        }
         message.setSubject("diagnosis report");
-        message.setText(reportMessage);
+        message.setText(reportMessage.replace("\n", "\r\n"));
         mailSender.send(message);
     }
 }

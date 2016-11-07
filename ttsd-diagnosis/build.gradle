@@ -32,3 +32,16 @@ dependencies {
     compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1"
     compile "mysql:mysql-connector-java:5.1.39"
 }
+
+processResources {
+    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
+    def outerConfigPath = '/workspace/new_version_config/ttsd-diagnosis'
+    if (project.hasProperty("diagnosisConfigPath") && new File(diagnosisConfigPath).isDirectory()) {
+        innerConfigPath = diagnosisConfigPath
+    } else if (new File(outerConfigPath).isDirectory()) {
+        innerConfigPath = outerConfigPath
+    }
+    from("${innerConfigPath}") {
+        into '/'
+    }
+}

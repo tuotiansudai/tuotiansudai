@@ -24,13 +24,13 @@ logging:
     com:
       tuotiansudai:
         diagnosis: debug
+  path: /var/log/ttsd-diagnosis
+
 diagnosis:
   schedule:
     hour: 2
     minute: 18
   report:
     notify-mail-from: no-repay@tuotiansudai.com
-    notify-mail-address:
-      - lei@tuotiansudai.com
-      - gaoxiduan@tuotiansudai.com
-      - zhangzhigang@tuotiansudai.com
+    notify-mail-address: dev@tuotiansudai.com
+    notify-mail-address-qa: dev@tuotiansudai.com
