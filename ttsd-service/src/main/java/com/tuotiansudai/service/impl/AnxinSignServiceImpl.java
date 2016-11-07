@@ -21,6 +21,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -54,9 +55,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Autowired
     private InvestMapper investMapper;
-
-    @Autowired
-    private AnxinSignService anxinSignService;
 
     @Autowired
     private AnxinSignPropertyMapper anxinSignPropertyMapper;
@@ -257,9 +255,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         try {
             String batchNo = UUIDGenerator.generate();
             //创建合同
-            anxinSignConnectService.generateContractBatch3202(loanId,batchNo, createContractVOs);
+            //anxinSignConnectService.generateContractBatch3202(loanId,batchNo, createContractVOs);
             //查询修改合同创建结果并更新invest
-            Tx3202ResVO tx3202ResVO = anxinSignConnectService.findContractResponseByBatchNo(batchNo);
+            Tx3202ResVO tx3202ResVO = anxinSignConnectService.findContractResponseByBatchNo("96262824fbc74884a18a5450e2d54781");
             if(tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null){
                 for(CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()){
                     if(createContractVO.getCode().equals("60000000")){
@@ -297,19 +295,19 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("agentIdentityNumber", agentAccount.getIdentityNumber());
         dataModel.put("investorMobile", investorModel.getMobile());
         dataModel.put("investorIdentityNumber", investorAccount.getIdentityNumber());
-//        dataModel.put("loanerUserName", loanerDetailsModel.getUserName());
+        dataModel.put("loanerUserName", loanerDetailsModel.getUserName());
         dataModel.put("loanerIdentityNumber", loanerDetailsModel.getIdentityNumber());
         dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
         dataModel.put("periods", String.valueOf(loanModel.getPeriods()));
         dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate()));
         dataModel.put("recheckTime", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
-        dataModel.put("endTime", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
-        dataModel.put("investId", String.valueOf(investorModel.getId()));
-//        if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
-//            dataModel.put("pledge", "房屋");
-//        } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
-//            dataModel.put("pledge", "车辆");
-//        }
+        dataModel.put("endTime", "2016-11-07");
+        dataModel.put("investId", String.valueOf(investId));
+        if(loanModel.getPledgeType().equals(PledgeType.HOUSE)){
+            dataModel.put("pledge", "房屋");
+        }else if(loanModel.getPledgeType().equals(PledgeType.VEHICLE)){
+            dataModel.put("pledge", "车辆");
+        }
         createContractVO.setInvestmentInfo(dataModel);
 
         SignInfoVO agentSignInfo = new SignInfoVO();
@@ -333,5 +331,17 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return createContractVO;
     }
 
+    @Override
+    public byte[] downContractByContractNo(String contractNo){
+        byte[] contract = null;
+        try {
+            contract = anxinSignConnectService.downLoanContractByBatchNo(contractNo);
+        } catch (PKIException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return contract;
+    }
 
 }

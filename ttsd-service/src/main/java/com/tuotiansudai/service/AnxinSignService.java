@@ -20,4 +20,6 @@ public interface AnxinSignService {
 
     BaseDto switchSkipAuth(String loginName, boolean open);
 
+    byte[] downContractByContractNo(String contractNo);
+
 }

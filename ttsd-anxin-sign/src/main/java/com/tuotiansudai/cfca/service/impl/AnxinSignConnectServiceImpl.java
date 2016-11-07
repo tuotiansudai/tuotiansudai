@@ -151,6 +151,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
         Tx3202ResVO tx3202ResVO = jsonObjectMapper.readValue(res, Tx3202ResVO.class);
+
         if (Strings.isNullOrEmpty(tx3202ResVO.getBatchNo())) {
             Map<String, String> response = coverJson(res);
             anxinContractResponseMapper.create(new AnxinContractResponseModel(loanId, batchNo, response.get("errorCode"), response.get("errorMessage")));
@@ -187,7 +188,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
         Tx3202ResVO tx3202ResVO = jsonObjectMapper.readValue(res, Tx3202ResVO.class);
 
-        if(tx3202ResVO != null){
+        if(tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null){
             for(CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()){
                 anxinContractResponseMapper.updateRetByContractNo(createContractVO.getContractNo(),
                         createContractVO.getCode(),
@@ -210,7 +211,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         Map<String, String> responseMap = Maps.newConcurrentMap();
         String[] split = response.split(",");
         for (String str : split) {
-            responseMap.put("str.split(\":\")[0]", str.split(":")[1]);
+            responseMap.put(str.split(":")[0].replaceAll("\\{", "").replaceAll("\\}", "").replaceAll("\"", ""), str.split(":")[1].replaceAll("\\{", "").replaceAll("\\}", "").replaceAll("\"",""));
         }
         return responseMap;
     }

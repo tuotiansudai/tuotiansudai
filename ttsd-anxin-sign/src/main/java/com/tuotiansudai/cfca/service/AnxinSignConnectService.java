@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-@Service
 public interface AnxinSignConnectService {
 
     Tx3001ResVO createAccount3001(AccountModel accountModel, UserModel userModel) throws PKIException;
