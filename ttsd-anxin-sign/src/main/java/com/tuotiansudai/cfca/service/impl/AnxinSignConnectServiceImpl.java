@@ -325,14 +325,12 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                     if(anxinSignRequestModel == null){
                         anxinSignRequestModel = new AnxinSignRequestModel(signInfoVo.getUserId(), signInfoVo.getAuthorizationTime(), signInfoVo.getLocation(),
                                 signInfoVo.getSignLocation(), signInfoVo.getProjectCode(), signInfoVo.getIsProxySign() != null ? String.valueOf(signInfoVo.getIsProxySign()) : "0",
-                                signInfoVo.getIsCopy() != null ? String.valueOf(signInfoVo.getIsCopy()) : "1", DateTime.now().toDate());
+                                signInfoVo.getIsCopy() != null ? String.valueOf(signInfoVo.getIsCopy()) : "0", DateTime.now().toDate());
                         anxinSignRequestMapper.create(anxinSignRequestModel);
                     }
                     if (signInfoVo.getSignLocation().equals("agentLoginName")) {
                         agentSignId = anxinSignRequestModel.getId();
-                        investorSignId = anxinSignRequestModel.getId();
                     } else {
-                        agentSignId = anxinSignRequestModel.getId();
                         investorSignId = anxinSignRequestModel.getId();
                     }
                 }

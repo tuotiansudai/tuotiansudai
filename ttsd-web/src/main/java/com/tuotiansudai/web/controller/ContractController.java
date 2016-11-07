@@ -38,7 +38,7 @@ public class ContractController {
         String loginName = LoginUserInfo.getLoginName();
         try {
             String pdfString = contractService.generateInvestorContract(loginName, loanId, investId);
-            if(StringUtils.isEmpty(pdfString)){
+            if (StringUtils.isEmpty(pdfString)) {
                 httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
                 return;
             }
@@ -50,10 +50,10 @@ public class ContractController {
     }
 
     @RequestMapping(value = "/transfer/transferApplicationId/{transferApplicationId}", method = RequestMethod.GET)
-    public void generateTransferContract(@PathVariable long transferApplicationId,HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
+    public void generateTransferContract(@PathVariable long transferApplicationId, HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
         try {
             String pdfString = contractService.generateTransferContract(transferApplicationId);
-            if(StringUtils.isEmpty(pdfString)){
+            if (StringUtils.isEmpty(pdfString)) {
                 httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
                 return;
             }
@@ -65,7 +65,7 @@ public class ContractController {
     }
 
     @RequestMapping(value = "/invest/contractNo/{contractNo}", method = RequestMethod.GET)
-    public void findContract(@PathVariable String contractNo,HttpServletRequest httpServletRequest, HttpServletResponse response){
+    public void findContract(@PathVariable String contractNo, HttpServletRequest httpServletRequest, HttpServletResponse response) {
         byte[] pdf = anxinSignService.downContractByContractNo("JK20161107000000449");
         try {
             response.setContentType("application/pdf");

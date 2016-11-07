@@ -343,7 +343,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         BaseDto baseDto = new BaseDto();
         baseDto.setSuccess(true);
         try {
-            //查询修改合同创建结果并更新invest
+            //查询合同创建结果并更新invest
             List<ContractResponseView> contractResponseViews = anxinSignConnectService.updateContractResponse(loanId);
 
             contractResponseViews.forEach(contractResponseView -> {

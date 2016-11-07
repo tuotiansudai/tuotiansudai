@@ -368,7 +368,7 @@ public class LoanServiceImpl implements LoanService {
         logger.debug("标的放款：生成合同，标的ID:" + loanId);
         anxinSignService.createContracts(loanId);
 
-        logger.debug("标的放款：创建修改合同创建状态job，标的ID:" + loanId);
+        logger.debug("标的放款：创建job —— 十分钟后，查询并更新合同状态。标的ID:" + loanId);
         updateContractResponseHandleJob(loanId);
 
         return true;
