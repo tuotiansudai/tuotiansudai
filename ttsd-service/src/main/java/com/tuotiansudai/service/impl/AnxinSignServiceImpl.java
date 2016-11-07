@@ -3,8 +3,10 @@ package com.tuotiansudai.service.impl;
 import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
-import cfca.trustsign.common.vo.response.tx3.*;
-import com.google.common.base.Strings;
+import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
+import cfca.trustsign.common.vo.response.tx3.Tx3101ResVO;
+import cfca.trustsign.common.vo.response.tx3.Tx3102ResVO;
+import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
@@ -98,9 +100,10 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     public BaseDto createAccount3001(String loginName) {
 
         try {
-            if(hasAnxinAccount(loginName)) {
+            if (hasAnxinAccount(loginName)) {
                 logger.error(loginName + " already have anxin-sign account. can't create anymore.");
-                return failBaseDto();
+                BaseDataDto dataDto = new BaseDataDto(false, "用户已有安心签账户，不能重复开户");
+                return new BaseDto<>(false, dataDto);
             }
 
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
@@ -180,7 +183,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             // 如果用户没有开通安心签账户，则返回失败
             if (!hasAnxinAccount(loginName)) {
                 logger.error("user has not create anxin account yet. loginName: " + loginName);
-                return failBaseDto();
+                BaseDataDto dataDto = new BaseDataDto(false, "用户还未开通安心签账户");
+                return new BaseDto<>(false, dataDto);
             }
 
             AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
@@ -191,7 +195,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
             if (StringUtils.isEmpty(projectCode)) {
                 logger.error("project code is expired. loginName:" + loginName + ", anxinUserId:" + anxinUserId);
-                return failBaseDto();
+                BaseDataDto dataDto = new BaseDataDto(false, "验证码不能为空");
+                return new BaseDto<>(false, dataDto);
             }
 
             Tx3102ResVO tx3101ResVO = anxinSignConnectService.verifyCaptcha3102(anxinUserId, projectCode, captcha);
@@ -256,14 +261,13 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Override
     public BaseDto createContracts(long loanId) {
         List<CreateContractVO> createContractVOs = Lists.newArrayList();
-
         investMapper.findSuccessInvestsByLoanId(loanId).forEach(investModel -> {
             createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId()));
-            if(createContractVOs.size() == batchNum){
+            if (createContractVOs.size() == batchNum) {
                 String batchNo = UUIDGenerator.generate();
                 try {
                     //创建合同
-                    anxinSignConnectService.generateContractBatch3202(loanId,batchNo, createContractVOs);
+                    anxinSignConnectService.generateContractBatch3202(loanId, batchNo, createContractVOs);
                 } catch (PKIException e) {
                     e.printStackTrace();
                 }
@@ -305,9 +309,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("recheckTime", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
         dataModel.put("endTime", "2016-11-07");
         dataModel.put("investId", String.valueOf(investId));
-        if(loanModel.getPledgeType().equals(PledgeType.HOUSE)){
+        if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
             dataModel.put("pledge", "房屋");
-        }else if(loanModel.getPledgeType().equals(PledgeType.VEHICLE)){
+        } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
             dataModel.put("pledge", "车辆");
         }
         createContractVO.setInvestmentInfo(dataModel);
@@ -334,7 +338,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     }
 
     @Override
-    public byte[] downContractByContractNo(String contractNo){
+    public byte[] downContractByContractNo(String contractNo) {
         byte[] contract = null;
         try {
             contract = anxinSignConnectService.downLoanContractByBatchNo(contractNo);
@@ -347,7 +351,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     }
 
     @Override
-    public BaseDto updateContractResponse(long loanId){
+    public BaseDto updateContractResponse(long loanId) {
         BaseDto baseDto = new BaseDto();
         baseDto.setSuccess(true);
         try {
@@ -355,7 +359,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             List<ContractResponseView> contractResponseViews = anxinSignConnectService.updateContractResponse(loanId);
 
             contractResponseViews.forEach(contractResponseView -> {
-                if(contractResponseView.getRetCode().equals("60000000")){
+                if (contractResponseView.getRetCode().equals("60000000")) {
                     investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
                 }
             });
