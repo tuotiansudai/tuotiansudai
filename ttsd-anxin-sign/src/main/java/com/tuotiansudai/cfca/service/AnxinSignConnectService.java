@@ -8,7 +8,6 @@ import cfca.trustsign.common.vo.response.tx3.Tx3102ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3202ResVO;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
-import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -26,5 +25,7 @@ public interface AnxinSignConnectService {
     Tx3202ResVO findContractResponseByBatchNo(String batchNo) throws PKIException;
 
     byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException;
+
+    List updateContractResponse(long loanId) throws PKIException;
 
 }

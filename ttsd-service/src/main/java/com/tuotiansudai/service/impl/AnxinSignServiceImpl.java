@@ -6,6 +6,7 @@ import cfca.trustsign.common.vo.cs.SignInfoVO;
 import cfca.trustsign.common.vo.response.tx3.*;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
@@ -19,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -66,6 +68,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private static final String SIGN_LOCATION_AGENT_LOGIN_NAME = "agentLoginName";
 
     private static final String SIGN_LOCATION_INVESTOR_LOGIN_NAME = "investorLoginName";
+
+    @Value(value = "${anxin.contract.batch.num}")
+    private int batchNum;
 
 
     /**
@@ -251,23 +256,20 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Override
     public BaseDto createContracts(long loanId) {
         List<CreateContractVO> createContractVOs = Lists.newArrayList();
-        investMapper.findSuccessInvestsByLoanId(loanId).forEach(investModel -> createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId())));
-        try {
-            String batchNo = UUIDGenerator.generate();
-            //创建合同
-            //anxinSignConnectService.generateContractBatch3202(loanId,batchNo, createContractVOs);
-            //查询修改合同创建结果并更新invest
-            Tx3202ResVO tx3202ResVO = anxinSignConnectService.findContractResponseByBatchNo("96262824fbc74884a18a5450e2d54781");
-            if(tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null){
-                for(CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()){
-                    if(createContractVO.getCode().equals("60000000")){
-                        investMapper.updateContractNoById(Long.parseLong(createContractVO.getInvestmentInfo().get("investId")),createContractVO.getContractNo());
-                    }
+
+        investMapper.findSuccessInvestsByLoanId(loanId).forEach(investModel -> {
+            createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId()));
+            if(createContractVOs.size() == batchNum){
+                String batchNo = UUIDGenerator.generate();
+                try {
+                    //创建合同
+                    anxinSignConnectService.generateContractBatch3202(loanId,batchNo, createContractVOs);
+                } catch (PKIException e) {
+                    e.printStackTrace();
                 }
+                createContractVOs.clear();
             }
-        } catch (PKIException e) {
-            e.printStackTrace();
-        }
+        });
         return new BaseDto();
     }
 
@@ -342,6 +344,26 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             e.printStackTrace();
         }
         return contract;
+    }
+
+    @Override
+    public BaseDto updateContractResponse(long loanId){
+        BaseDto baseDto = new BaseDto();
+        baseDto.setSuccess(true);
+        try {
+            //查询修改合同创建结果并更新invest
+            List<ContractResponseView> contractResponseViews = anxinSignConnectService.updateContractResponse(loanId);
+
+            contractResponseViews.forEach(contractResponseView -> {
+                if(contractResponseView.getRetCode().equals("60000000")){
+                    investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
+                }
+            });
+        } catch (PKIException e) {
+            e.printStackTrace();
+        }
+
+        return baseDto;
     }
 
 }

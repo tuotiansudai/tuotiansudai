@@ -79,4 +79,8 @@
         invest_id = #{investId}
     </update>
 
+
+    <select id="findBatchNoByLoanId" parameterType="long" resultType="String">
+        select distinct batch_no from `anxin_operations`.`anxin_contract_request` where loan_id = #{loanId}
+    </select>
 </mapper>

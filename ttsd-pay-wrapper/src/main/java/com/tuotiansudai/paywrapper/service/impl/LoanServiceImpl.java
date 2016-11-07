@@ -13,6 +13,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.job.AnxinContractHandleJob;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
@@ -367,6 +368,9 @@ public class LoanServiceImpl implements LoanService {
         logger.debug("标的放款：生成合同，标的ID:" + loanId);
         anxinSignService.createContracts(loanId);
 
+        logger.debug("标的放款：创建修改合同创建状态job，标的ID:" + loanId);
+        updateContractResponseHandleJob(loanId);
+
         return true;
     }
 
@@ -520,6 +524,21 @@ public class LoanServiceImpl implements LoanService {
         }
         String respData = callbackRequest.getResponseData();
         return respData;
+    }
+
+    private void updateContractResponseHandleJob(long loanId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(AnxinContractHandleJob.HANDLE_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.ContractResponse, AnxinContractHandleJob.class)
+                    .addJobData(AnxinContractHandleJob.LOAN_ID_KEY, loanId)
+                    .withIdentity(JobType.ContractResponse.name(), "Loan-" + loanId)
+                    .replaceExistingJob(true)
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create update contract response  handle job for loan[" + loanId + "] fail", e);
+        }
     }
 
 }

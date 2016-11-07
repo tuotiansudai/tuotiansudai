@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
@@ -64,10 +66,10 @@ public class ContractController {
 
     @RequestMapping(value = "/invest/contractNo/{contractNo}", method = RequestMethod.GET)
     public void findContract(@PathVariable String contractNo,HttpServletRequest httpServletRequest, HttpServletResponse response){
-        byte[] pdf = anxinSignService.downContractByContractNo("JK20161107000000051");
+        byte[] pdf = anxinSignService.downContractByContractNo("JK20161107000000449");
         try {
             response.setContentType("application/pdf");
-            OutputStream stream = response.getOutputStream();
+            ServletOutputStream stream = response.getOutputStream();
             stream.write(pdf);
             stream.flush();
             stream.close();
