@@ -49,7 +49,7 @@ public class PointManageController {
     private PointBillService pointBillService;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ModelAndView createProduct(ProductDto productDto) {
+    public ModelAndView createProduct(@Valid @ModelAttribute ProductDto productDto) {
         productDto.setLoginName(LoginUserInfo.getLoginName());
         try {
             productService.createProduct(productDto);
