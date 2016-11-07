@@ -188,7 +188,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         PersonVO person = new PersonVO();
         person.setPersonName(accountModel.getUserName());
-        person.setIdentTypeCode("1");
+        person.setIdentTypeCode("0");
         person.setIdentNo(accountModel.getIdentityNumber());
         person.setMobilePhone(userModel.getMobile());
         person.setEmail(userModel.getEmail());
