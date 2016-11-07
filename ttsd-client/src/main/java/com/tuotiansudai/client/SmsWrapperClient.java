@@ -35,7 +35,7 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String PLATFORM_BALANCE_LOW_NOTIFY = "/sms/platform-balance-low-notify";
 
-    private final static String GENERATE_CONTRACT_ERROR_NOTIFY = "generate-contract-error-notify";
+    private final static String GENERATE_CONTRACT_ERROR_NOTIFY = "/sms/generate-contract-error-notify";
 
     private final static String LOAN_OUT_INVESTOR_NOTIFY_URI = "/sms/loan-out-investor-notify";
 

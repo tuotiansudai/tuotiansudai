@@ -278,7 +278,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                     PlatformBalanceLowNotifyDto notifyDto = new PlatformBalanceLowNotifyDto();
                     notifyDto.setMobiles(mobileList);
                     notifyDto.setWarningLine(MessageFormat.format("安心签生成合同错误,loanId:{0}",loanId));
-                    smsWrapperClient.sendPlatformBalanceLowNotify(notifyDto);
+                    smsWrapperClient.sendGenerateContractErrorNotify(notifyDto);
 
                     baseDto.setSuccess(false);
                     logger.error(MessageFormat.format("[安心签] create contract error , loanId:{0}", loanId), e);
