@@ -23,7 +23,6 @@
         (`loan_id`,`batch_no`,`contract_no`,`tx_time`,`locale`,`ret_code`,`ret_message`,`created_time`)
         VALUES
         (#{loanId},#{batchNo},#{contractNo},#{txTime},#{locale},#{retCode},#{retMessage},#{createdTime});
-
     </insert>
 
     <update id="update" parameterType="AnxinContractResponseModel">
