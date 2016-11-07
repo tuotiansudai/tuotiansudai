@@ -7,7 +7,7 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -18,11 +18,22 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 public class MybatisAAConfig {
+    @Bean
+    public MybatisAAConnectionConfig mybatisAAConnectionConfig() {
+        return new MybatisAAConnectionConfig();
+    }
 
     @Bean(name = "hikariCPAAConfig")
-    @ConfigurationProperties(prefix = "spring.datasource.aa")
-    public HikariConfig hikariCPAAConfig() {
-        return new HikariConfig();
+    public HikariConfig hikariCPAAConfig(MybatisAAConnectionConfig connConfig) {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/aa?useUnicode=true&characterEncoding=UTF-8",
+                connConfig.getDbHost(), connConfig.getDbPort()));
+        config.setUsername(connConfig.getDbUser());
+        config.setPassword(connConfig.getDbPassword());
+        config.setDriverClassName("com.mysql.jdbc.Driver");
+        config.setMinimumIdle(1);
+        config.setMaximumPoolSize(5);
+        return config;
     }
 
     @Bean
@@ -54,4 +65,48 @@ public class MybatisAAConfig {
                 "com.tuotiansudai.membership.repository.model");
         return sessionFactory.getObject();
     }
+
+    public static class MybatisAAConnectionConfig {
+        @Value("${common.jdbc.host}")
+        private String dbHost;
+        @Value("${common.jdbc.port}")
+        private String dbPort;
+        @Value("${common.jdbc.username}")
+        private String dbUser;
+        @Value("${common.jdbc.password}")
+        private String dbPassword;
+
+        public String getDbHost() {
+            return dbHost;
+        }
+
+        public void setDbHost(String dbHost) {
+            this.dbHost = dbHost;
+        }
+
+        public String getDbPort() {
+            return dbPort;
+        }
+
+        public void setDbPort(String dbPort) {
+            this.dbPort = dbPort;
+        }
+
+        public String getDbUser() {
+            return dbUser;
+        }
+
+        public void setDbUser(String dbUser) {
+            this.dbUser = dbUser;
+        }
+
+        public String getDbPassword() {
+            return dbPassword;
+        }
+
+        public void setDbPassword(String dbPassword) {
+            this.dbPassword = dbPassword;
+        }
+    }
+
 }
