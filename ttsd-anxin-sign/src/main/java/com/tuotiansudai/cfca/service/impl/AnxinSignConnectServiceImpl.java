@@ -321,10 +321,13 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                 long agentSignId = 0l;
                 long investorSignId = 0l;
                 for (SignInfoVO signInfoVo : createContractVO.getSignInfos()) {
-                    AnxinSignRequestModel anxinSignRequestModel = new AnxinSignRequestModel(signInfoVo.getUserId(), signInfoVo.getAuthorizationTime(), signInfoVo.getLocation(),
-                            signInfoVo.getSignLocation(), signInfoVo.getProjectCode(), signInfoVo.getIsProxySign() != null ? String.valueOf(signInfoVo.getIsProxySign()) : "0",
-                            signInfoVo.getIsCopy() != null ? String.valueOf(signInfoVo.getIsCopy()) : "1", DateTime.now().toDate());
-                    anxinSignRequestMapper.create(anxinSignRequestModel);
+                    AnxinSignRequestModel anxinSignRequestModel = anxinSignRequestMapper.findByUserId(signInfoVo.getUserId());
+                    if(anxinSignRequestModel == null){
+                        anxinSignRequestModel = new AnxinSignRequestModel(signInfoVo.getUserId(), signInfoVo.getAuthorizationTime(), signInfoVo.getLocation(),
+                                signInfoVo.getSignLocation(), signInfoVo.getProjectCode(), signInfoVo.getIsProxySign() != null ? String.valueOf(signInfoVo.getIsProxySign()) : "0",
+                                signInfoVo.getIsCopy() != null ? String.valueOf(signInfoVo.getIsCopy()) : "1", DateTime.now().toDate());
+                        anxinSignRequestMapper.create(anxinSignRequestModel);
+                    }
                     if (signInfoVo.getSignLocation().equals("agentLoginName")) {
                         agentSignId = anxinSignRequestModel.getId();
                         investorSignId = anxinSignRequestModel.getId();
@@ -335,14 +338,15 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                 }
 
                 Map<String, String> investmentInfo = createContractVO.getInvestmentInfo();
-
-                anxinContractRequestMapper.create(new AnxinContractRequestModel(loanId,Long.parseLong(investmentInfo.get("investId")),
-                        agentSignId, investorSignId, txTime, batchNo, createContractVO.getTemplateId(),
-                        createContractVO.getIsSign() != null ? String.valueOf(createContractVO.getIsSign()) : "0", investmentInfo.get("agentMobile"),
-                        investmentInfo.get("loanerIdentityNumber"), investmentInfo.get("recheckTime"), investmentInfo.get("totalRate"),
-                        investmentInfo.get("investorMobile"), investmentInfo.get("agentIdentityNumber"), investmentInfo.get("periods"),
-                        investmentInfo.get("pledge"), investmentInfo.get("endTime"), investmentInfo.get("investorIdentityNumber"),
-                        investmentInfo.get("loanerUserName"), investmentInfo.get("loanAmount"), DateTime.now().toDate()));
+                if(anxinContractRequestMapper.findSuccessRequestByInvestId(Long.parseLong(investmentInfo.get("investId"))) == 0){
+                    anxinContractRequestMapper.create(new AnxinContractRequestModel(loanId,Long.parseLong(investmentInfo.get("investId")),
+                            agentSignId, investorSignId, txTime, batchNo, createContractVO.getTemplateId(),
+                            createContractVO.getIsSign() != null ? String.valueOf(createContractVO.getIsSign()) : "0", investmentInfo.get("agentMobile"),
+                            investmentInfo.get("loanerIdentityNumber"), investmentInfo.get("recheckTime"), investmentInfo.get("totalRate"),
+                            investmentInfo.get("investorMobile"), investmentInfo.get("agentIdentityNumber"), investmentInfo.get("periods"),
+                            investmentInfo.get("pledge"), investmentInfo.get("endTime"), investmentInfo.get("investorIdentityNumber"),
+                            investmentInfo.get("loanerUserName"), investmentInfo.get("loanAmount"), DateTime.now().toDate()));
+                }
             }
         });
     }

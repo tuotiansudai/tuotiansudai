@@ -41,4 +41,8 @@
         id = #{id}
     </update>
 
+    <select id="findByUserId" parameterType="string" resultMap="anxinSignRequestModel">
+        select * from `anxin_operations`.`anxin_sign_request` where user_id = #{userId}
+    </select>
+
 </mapper>

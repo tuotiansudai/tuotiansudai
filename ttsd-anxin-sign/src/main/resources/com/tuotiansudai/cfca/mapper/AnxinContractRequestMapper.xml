@@ -83,4 +83,15 @@
     <select id="findBatchNoByLoanId" parameterType="long" resultType="String">
         select distinct batch_no from `anxin_operations`.`anxin_contract_request` where loan_id = #{loanId}
     </select>
+
+    <select id="findBatchNoByLoanId" parameterType="long" resultType="String">
+        select distinct batch_no from `anxin_operations`.`anxin_contract_request` where loan_id = #{loanId}
+    </select>
+
+
+    <select id="findSuccessRequestByInvestId" parameterType="long" resultType="int">
+        select count(1) from `anxin_operations`.`anxin_contract_request` request join `anxin_operations`.`anxin_contract_response` response
+        on request.contract_no = response.contract_no where request.invest_id = #{investId} and ret_message = '60000000'
+    </select>
+
 </mapper>

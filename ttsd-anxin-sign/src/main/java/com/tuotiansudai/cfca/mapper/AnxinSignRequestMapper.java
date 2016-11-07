@@ -11,4 +11,6 @@ public interface AnxinSignRequestMapper {
 
     void update(AnxinSignRequestModel anxinSignRequestModel);
 
+    AnxinSignRequestModel findByUserId(String userId);
+
 }
