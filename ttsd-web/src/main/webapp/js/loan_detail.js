@@ -976,9 +976,4 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         },3000)
     }
 
-    //skip tip click chechbox
-    $('.tip-item .skip-icon').on('click', function(event) {
-        event.preventDefault();
-        $(this).hasClass('active') ? $(this).removeClass('active') && $('#tipCheck').val('false') : $(this).addClass('active') && $('#tipCheck').val('true');
-    });
 });
