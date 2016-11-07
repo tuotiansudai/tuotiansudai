@@ -5,6 +5,7 @@ import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
@@ -12,6 +13,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
 import com.tuotiansudai.dto.sms.PlatformBalanceLowNotifyDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -273,13 +275,11 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                     logger.debug(MessageFormat.format("[安心签] create contract begin , loanId:{0}, batchNo{1}", loanId, batchNo));
                     //创建合同
                     anxinSignConnectService.generateContractBatch3202(loanId, batchNo, createContractVOs);
+
                     baseDto.setSuccess(true);
                 } catch (PKIException e) {
-                    PlatformBalanceLowNotifyDto notifyDto = new PlatformBalanceLowNotifyDto();
-                    notifyDto.setMobiles(mobileList);
-                    notifyDto.setWarningLine(MessageFormat.format("安心签生成合同错误,loanId:{0}",loanId));
-                    smsWrapperClient.sendGenerateContractErrorNotify(notifyDto);
-
+                    smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList,ImmutableList.<String>builder().add(String.valueOf(loanId)).add(batchNo).build()));
+                    
                     baseDto.setSuccess(false);
                     logger.error(MessageFormat.format("[安心签] create contract error , loanId:{0}", loanId), e);
 

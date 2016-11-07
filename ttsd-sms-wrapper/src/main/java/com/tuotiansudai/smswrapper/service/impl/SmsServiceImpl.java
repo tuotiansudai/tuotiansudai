@@ -155,7 +155,7 @@ public class SmsServiceImpl implements SmsService {
     }
 
     @Override
-    public BaseDto<SmsDataDto> generateContractNotify(List<String> mobiles, String warningValue){
-        return smsClient.sendSMS(PlatformBalanceLowNotifyMapper.class, mobiles, SmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, warningValue, "");
+    public BaseDto<SmsDataDto> generateContractNotify(List<String> mobiles, List<String> paramList){
+        return smsClient.sendSMS(GenerateContractErrorNotifyMapper.class, mobiles, SmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, paramList, "");
     }
 }

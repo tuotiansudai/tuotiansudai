@@ -83,7 +83,7 @@ public class SmsWrapperClient extends BaseClient {
         return send(notify, PLATFORM_BALANCE_LOW_NOTIFY);
     }
 
-    public BaseDto<SmsDataDto> sendGenerateContractErrorNotify(PlatformBalanceLowNotifyDto notify) {
+    public BaseDto<SmsDataDto> sendGenerateContractErrorNotify(GenerateContractErrorNotifyDto notify) {
         return send(notify, GENERATE_CONTRACT_ERROR_NOTIFY);
     }
 

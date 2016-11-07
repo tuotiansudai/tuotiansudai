@@ -102,7 +102,7 @@ public class SmsController {
 
     @RequestMapping(value = "/generate-contract-error-notify", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<SmsDataDto> generateContractErrorNotify(@RequestBody PlatformBalanceLowNotifyDto notifyDto) {
+    public BaseDto<SmsDataDto> generateContractErrorNotify(@RequestBody GenerateContractErrorNotifyDto notifyDto) {
         return smsService.generateContractNotify(notifyDto.getMobiles(), notifyDto.getWarningLine());
     }
 }
