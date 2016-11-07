@@ -10,9 +10,9 @@ public interface AnxinSignService {
 
     AnxinSignPropertyModel getAnxinSignProp(String loginName);
 
-    BaseDto<BaseDataDto> createAccount3001(String loginName);
+    BaseDto createAccount3001(String loginName);
 
-    BaseDto<BaseDataDto> sendCaptcha3101(String loginName, boolean isVoice);
+    BaseDto sendCaptcha3101(String loginName, boolean isVoice);
 
     BaseDto<BaseDataDto> verifyCaptcha3102(String loginName, String captcha, boolean isSkipAuth, String ip);
 

@@ -5,7 +5,6 @@ import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3101ResVO;
-import cfca.trustsign.common.vo.response.tx3.Tx3102ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
@@ -96,14 +95,13 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         try {
             if (hasAnxinAccount(loginName)) {
                 logger.error(loginName + " already have anxin-sign account. can't create anymore.");
-                BaseDataDto dataDto = new BaseDataDto(false, "用户已有安心签账户，不能重复开户");
-                return new BaseDto<>(false, dataDto);
+                return failBaseDto("用户已有安心签账户，不能重复开户");
             }
 
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
             UserModel userModel = userMapper.findByLoginName(loginName);
 
-            Tx3001ResVO tx3001ResVO = anxinSignConnectService.createAccount3001(accountModel, userModel);
+            Tx3ResVO tx3001ResVO = anxinSignConnectService.createAccount3001(accountModel, userModel);
             String retMessage = tx3001ResVO.getHead().getRetMessage();
 
             if (isSuccess(tx3001ResVO)) {
@@ -112,19 +110,19 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 anxinProp.setLoginName(loginName);
                 Date now = new Date();
                 anxinProp.setCreatedTime(now);
-                anxinProp.setAnxinUserId(tx3001ResVO.getPerson().getUserId());
+                anxinProp.setAnxinUserId(((Tx3001ResVO) tx3001ResVO).getPerson().getUserId());
                 anxinSignPropertyMapper.create(anxinProp);
 
                 accountMapper.update(accountModel);
                 return new BaseDto();
             } else {
                 logger.error("create anxin sign account failed. " + retMessage);
-                return failBaseDto();
+                return new BaseDto(false);
             }
 
         } catch (PKIException e) {
             logger.error("create anxin sign account failed. ", e);
-            return failBaseDto();
+            return new BaseDto(false);
         }
     }
 
@@ -136,7 +134,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             if (!hasAnxinAccount(loginName)) {
                 BaseDto createAccountRet = this.createAccount3001(loginName);
                 if (!createAccountRet.isSuccess()) {
-                    return failBaseDto();
+                    return createAccountRet;
                 }
             }
 
@@ -144,21 +142,19 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
             String projectCode = UUIDGenerator.generate();
 
-            Tx3101ResVO tx3101ResVO = anxinSignConnectService.sendCaptcha3101(anxinUserId, projectCode, isVoice);
-
-            String retMessage = tx3101ResVO.getHead().getRetMessage();
+            Tx3ResVO tx3101ResVO = anxinSignConnectService.sendCaptcha3101(anxinUserId, projectCode, isVoice);
 
             if (isSuccess(tx3101ResVO)) {
                 redisWrapperClient.setex(TEMP_PROJECT_CODE_KEY + loginName, TEMP_PROJECT_CODE_EXPIRE_TIME, projectCode);
                 return new BaseDto();
             } else {
-                logger.error("send anxin captcha code failed. " + retMessage);
-                return failBaseDto();
+                logger.error("send anxin captcha code failed. " + tx3101ResVO.getHead().getRetMessage());
+                return new BaseDto(false);
             }
 
         } catch (PKIException e) {
             logger.error("send anxin captcha code failed. ", e);
-            return failBaseDto();
+            return new BaseDto(false);
         }
     }
 
@@ -177,8 +173,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             // 如果用户没有开通安心签账户，则返回失败
             if (!hasAnxinAccount(loginName)) {
                 logger.error("user has not create anxin account yet. loginName: " + loginName);
-                BaseDataDto dataDto = new BaseDataDto(false, "用户还未开通安心签账户");
-                return new BaseDto<>(false, dataDto);
+                return failBaseDto("用户还未开通安心签账户");
             }
 
             AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
@@ -189,13 +184,10 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
             if (StringUtils.isEmpty(projectCode)) {
                 logger.error("project code is expired. loginName:" + loginName + ", anxinUserId:" + anxinUserId);
-                BaseDataDto dataDto = new BaseDataDto(false, "验证码不能为空");
-                return new BaseDto<>(false, dataDto);
+                return failBaseDto("验证码已过期，请重新获取");
             }
 
-            Tx3102ResVO tx3101ResVO = anxinSignConnectService.verifyCaptcha3102(anxinUserId, projectCode, captcha);
-
-            String retMessage = tx3101ResVO.getHead().getRetMessage();
+            Tx3ResVO tx3101ResVO = anxinSignConnectService.verifyCaptcha3102(anxinUserId, projectCode, captcha);
 
             if (isSuccess(tx3101ResVO)) {
                 // 更新projectCode 和 skipAuth
@@ -208,13 +200,14 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 baseDto.setData(new BaseDataDto(true, skipAuth ? "skipAuth" : ""));
                 return baseDto;
             } else {
+                String retMessage =tx3101ResVO.getHead().getRetMessage();
                 logger.error("verify anxin captcha code failed. " + retMessage);
-                return failBaseDto();
+                return failBaseDto(retMessage);
             }
 
         } catch (PKIException e) {
             logger.error("verify anxin captcha code failed. ", e);
-            return failBaseDto();
+            return new BaseDto<>(false);
         }
     }
 
@@ -230,20 +223,18 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             anxinSignPropertyMapper.update(anxinProp);
         } catch (Exception e) {
             logger.error("switch anxin-sign skip-auth " + (open ? "on " : "off ") + "failed.", e);
-            return failBaseDto();
+            return new BaseDto(false);
         }
         return new BaseDto();
     }
 
-
-    private BaseDto failBaseDto() {
-        BaseDto baseDto = new BaseDto<>();
-        baseDto.setSuccess(false);
-        return baseDto;
+    private BaseDto<BaseDataDto> failBaseDto(String errorMessage) {
+        BaseDataDto dataDto = new BaseDataDto(false, errorMessage);
+        return new BaseDto<>(false, dataDto);
     }
 
     private boolean isSuccess(Tx3ResVO tx3ResVO) {
-        return tx3ResVO.getHead().getRetCode().equals("60000000");
+        return tx3ResVO != null && tx3ResVO.getHead() != null && "60000000".equals(tx3ResVO.getHead().getRetCode());
     }
 
     private boolean hasAnxinAccount(String loginName) {

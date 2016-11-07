@@ -32,7 +32,7 @@ public class MobileAppAnxinSignController {
         if(retDto.isSuccess()) {
             return new BaseResponseDto(ReturnMessage.SUCCESS);
         }
-        return new BaseResponseDto(ReturnMessage.FAIL);
+        return new BaseResponseDto(ReturnMessage.FAIL.getCode(), retDto.getData().getMessage());
     }
 
     @ResponseBody
@@ -50,7 +50,7 @@ public class MobileAppAnxinSignController {
         if(retDto.isSuccess()) {
             return new BaseResponseDto(ReturnMessage.SUCCESS);
         }
-        return new BaseResponseDto(ReturnMessage.FAIL);
+        return new BaseResponseDto(ReturnMessage.FAIL.getCode(), retDto.getData().getMessage());
     }
 
     @ResponseBody
@@ -65,7 +65,7 @@ public class MobileAppAnxinSignController {
         if(retDto.isSuccess()) {
             return new BaseResponseDto(ReturnMessage.SUCCESS);
         }
-        return new BaseResponseDto(ReturnMessage.FAIL);
+        return new BaseResponseDto(ReturnMessage.FAIL.getCode(), retDto.getData().getMessage());
     }
 
 
@@ -80,7 +80,7 @@ public class MobileAppAnxinSignController {
         if(retDto.isSuccess()) {
             return new BaseResponseDto(ReturnMessage.SUCCESS);
         }
-        return new BaseResponseDto(ReturnMessage.FAIL);
+        return new BaseResponseDto(ReturnMessage.FAIL.getCode(), retDto.getData().getMessage());
     }
 
 
