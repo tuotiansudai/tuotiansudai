@@ -84,7 +84,7 @@ public class MobileAppExchangeServiceImpl implements MobileAppExchangeService{
         Iterator<BaseCouponResponseDataDto> items = Iterators.transform(filter, new Function<UserCouponModel, BaseCouponResponseDataDto>() {
             @Override
             public BaseCouponResponseDataDto apply(UserCouponModel userCouponModel) {
-                return new BaseCouponResponseDataDto(couponModel, userCouponModel);
+                return new BaseCouponResponseDataDto(userCouponModel);
 
             }
         });
