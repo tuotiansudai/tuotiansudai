@@ -4,7 +4,6 @@ import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
-import cfca.trustsign.common.vo.response.tx3.Tx3101ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
@@ -133,6 +132,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     }
 
 
+    /**
+     * 发送验证码
+     */
     @Override
     public BaseDto sendCaptcha3101(String loginName, boolean isVoice) {
         try {
@@ -166,11 +168,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     /**
      * 确认验证码 （授权）
-     *
-     * @param loginName
-     * @param captcha
-     * @param skipAuth
-     * @return
      */
     @Override
     public BaseDto<BaseDataDto> verifyCaptcha3102(String loginName, String captcha, boolean skipAuth, String ip) {
