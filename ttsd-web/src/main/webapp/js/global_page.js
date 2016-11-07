@@ -77,9 +77,6 @@ globalFun.prototype={
         this.addEventHandler(this.$('#iphone-app-pop'),'mouseover',this.showAppCode.bind(this));
         this.addEventHandler(this.$('#iphone-app-pop'),'mouseleave',this.hideAppCode.bind(this));
 
-        //添加growing的js
-        this.growingStatistics();
-
     },
     showMainMenu:function(e) {
         e.preventDefault();
@@ -115,7 +112,7 @@ globalFun.prototype={
     closeDownLoadBox:function(e) {
         e.stopPropagation();
         e.preventDefault();
-        e.parentElement.style.display='none';
+        e.currentTarget.parentElement.style.display='none';
     },
     //去体验
     toExperience:function(e) {
@@ -176,20 +173,13 @@ globalFun.prototype={
        // var headEle=document.getElementsByTagName('head')[0];
        //  headEle.appendChild(oScript);
 
-    },
-    // 添加growing的js
-    growingStatistics:function() {
-        var _vdsGrowing = [],vdsUrl;
-            _vdsGrowing.push(['setAccountId', 'a1e41737f5d5de60']);
-            vdsUrl=document.location.protocol+'//dn-growing.qbox.me/vds.js';
-        this.createScript(vdsUrl);
     }
 }
 
 var globalFun=new globalFun();
 globalFun.init();
 
-//cnzz统计
+// ********* cnzz统计 BEGIN ***********
 function cnzzPushConstructor() {
     this.trackClick=function(category, action, label) {
         var test=window.testlaney;
@@ -197,6 +187,8 @@ function cnzzPushConstructor() {
     }
 }
 cnzzPush = new cnzzPushConstructor();
+// ********** cnzz统计 END **********
+
 
 
 
