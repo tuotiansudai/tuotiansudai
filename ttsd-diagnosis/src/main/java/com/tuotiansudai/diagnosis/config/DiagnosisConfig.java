@@ -50,7 +50,7 @@ public class DiagnosisConfig {
     public static class ReportConfig {
         private String notifyMailFrom;
         private String[] notifyMailAddress;
-        private String[] notifyMailAddressQA;
+        private String[] notifyMailAddressQa;
 
         public String getNotifyMailFrom() {
             return notifyMailFrom;
@@ -68,12 +68,12 @@ public class DiagnosisConfig {
             this.notifyMailAddress = notifyMailAddress;
         }
 
-        public String[] getNotifyMailAddressQA() {
-            return notifyMailAddressQA;
+        public String[] getNotifyMailAddressQa() {
+            return notifyMailAddressQa;
         }
 
-        public void setNotifyMailAddressQA(String[] notifyMailAddressQA) {
-            this.notifyMailAddressQA = notifyMailAddressQA;
+        public void setNotifyMailAddressQa(String[] notifyMailAddressQa) {
+            this.notifyMailAddressQa = notifyMailAddressQa;
         }
     }
 }

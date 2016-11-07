@@ -8,7 +8,7 @@ spring:
   mail:
     host: smtp.qiye.163.com
     prot: 994
-    username: no-repay@tuotiansudai.com
+    username: no-reply@tuotiansudai.com
     password:
     properties:
       mail:
@@ -31,6 +31,6 @@ diagnosis:
     hour: 2
     minute: 18
   report:
-    notify-mail-from: no-repay@tuotiansudai.com
+    notify-mail-from: no-reply@tuotiansudai.com
     notify-mail-address: dev@tuotiansudai.com
     notify-mail-address-qa: dev@tuotiansudai.com

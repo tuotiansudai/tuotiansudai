@@ -128,7 +128,7 @@ class DiagnosisApplication {
         if (Environment.isProduction(environment)) {
             message.setTo(diagnosisConfig.getReport().getNotifyMailAddress());
         } else {
-            message.setTo(diagnosisConfig.getReport().getNotifyMailAddressQA());
+            message.setTo(diagnosisConfig.getReport().getNotifyMailAddressQa());
         }
         message.setSubject("diagnosis report");
         message.setText(reportMessage.replace("\n", "\r\n"));
