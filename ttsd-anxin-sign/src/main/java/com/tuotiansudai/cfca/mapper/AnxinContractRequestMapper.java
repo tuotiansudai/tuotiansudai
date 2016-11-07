@@ -16,4 +16,6 @@ public interface AnxinContractRequestMapper {
                                     @Param(value = "investId") long investId);
 
     List<String> findBatchNoByLoanId(@Param(value = "loanId") long loanId);
+
+    int findSuccessRequestByInvestId(@Param(value = "investId") long investId);
 }

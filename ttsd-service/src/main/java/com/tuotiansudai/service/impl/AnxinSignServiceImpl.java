@@ -307,7 +307,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("periods", String.valueOf(loanModel.getPeriods()));
         dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate()));
         dataModel.put("recheckTime", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
-        dataModel.put("endTime", "2016-11-07");
+        dataModel.put("endTime", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
         dataModel.put("investId", String.valueOf(investId));
         if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
             dataModel.put("pledge", "房屋");
@@ -333,7 +333,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         investorSignInfo.setIsProxySign(1);
 
         createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
-        createContractVO.setTemplateId("JK_108");
+        createContractVO.setTemplateId("7");
         return createContractVO;
     }
 
