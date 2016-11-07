@@ -25,6 +25,7 @@ import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.util.SecurityUtil;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,8 @@ import java.util.Map;
 
 @Service
 public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
+
+    static Logger logger = Logger.getLogger(AnxinSignConnectService.class);
 
     @Autowired
     private AnxinSignRequestMapper anxinSignRequestMapper;
@@ -59,16 +62,14 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3001ReqVO);
-        System.out.println("req:" + req);
+        logger.debug("req:" + req);
 
         String txCode = "3001";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
         Tx3001ResVO tx3001ResVO = jsonObjectMapper.readValue(res, Tx3001ResVO.class);
-        System.out.println("res:" + res);
-        System.out.println("tx3001ResVO:" + tx3001ResVO);
-
+        logger.debug("res:" + res);
         return tx3001ResVO;
     }
 
@@ -90,7 +91,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3101ReqVO);
-        System.out.println("req:" + req);
+        logger.debug("req:" + req);
 
         String txCode = "3101";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
@@ -98,7 +99,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         Tx3101ResVO tx3101ResVO = jsonObjectMapper.readValue(res, Tx3101ResVO.class);
 
-        System.out.println("res:" + res);
+        logger.debug("res:" + res);
         return tx3101ResVO;
     }
 
@@ -119,7 +120,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3102ReqVO);
-        System.out.println("req:" + req);
+        logger.debug("req:" + req);
 
         String txCode = "3102";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
@@ -127,7 +128,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         Tx3102ResVO tx3102ResVO = jsonObjectMapper.readValue(res, Tx3102ResVO.class);
 
-        System.out.println("res:" + res);
+        logger.debug("res:" + res);
         return tx3102ResVO;
     }
 
@@ -146,7 +147,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
-        System.out.println("req:" + req);
+        logger.debug("req:" + req);
 
         String txCode = "3202";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
@@ -164,7 +165,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         }
 
         anxinContractResponseMapper.create(anxinContractResponseModel);
-        System.out.println("res:" + res);
+        logger.debug("res:" + res);
         return null;
     }
 

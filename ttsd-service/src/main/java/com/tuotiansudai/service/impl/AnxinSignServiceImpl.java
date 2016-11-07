@@ -94,9 +94,10 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     public BaseDto createAccount3001(String loginName) {
 
         try {
-            if(hasAnxinAccount(loginName)) {
+            if (hasAnxinAccount(loginName)) {
                 logger.error(loginName + " already have anxin-sign account. can't create anymore.");
-                return failBaseDto();
+                BaseDataDto dataDto = new BaseDataDto(false, "用户已有安心签账户，不能重复开户");
+                return new BaseDto<>(false, dataDto);
             }
 
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
@@ -176,7 +177,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             // 如果用户没有开通安心签账户，则返回失败
             if (!hasAnxinAccount(loginName)) {
                 logger.error("user has not create anxin account yet. loginName: " + loginName);
-                return failBaseDto();
+                BaseDataDto dataDto = new BaseDataDto(false, "用户还未开通安心签账户");
+                return new BaseDto<>(false, dataDto);
             }
 
             AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
@@ -187,7 +189,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
             if (StringUtils.isEmpty(projectCode)) {
                 logger.error("project code is expired. loginName:" + loginName + ", anxinUserId:" + anxinUserId);
-                return failBaseDto();
+                BaseDataDto dataDto = new BaseDataDto(false, "验证码不能为空");
+                return new BaseDto<>(false, dataDto);
             }
 
             Tx3102ResVO tx3101ResVO = anxinSignConnectService.verifyCaptcha3102(anxinUserId, projectCode, captcha);
@@ -254,7 +257,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         List<CreateContractVO> createContractVOs = Lists.newArrayList();
         investMapper.findSuccessInvestsByLoanId(loanId).forEach(investModel -> createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId())));
         try {
-            anxinSignConnectService.generateContractBatch3202(loanId,UUIDGenerator.generate(), createContractVOs);
+            anxinSignConnectService.generateContractBatch3202(loanId, UUIDGenerator.generate(), createContractVOs);
         } catch (PKIException e) {
             e.printStackTrace();
         }
