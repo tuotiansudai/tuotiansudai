@@ -72,7 +72,18 @@ public class ProductServiceImpl implements ProductService {
             productDto.setName(convertProductDto.getName());
             productDto.setDescription(convertProductDto.getDescription());
         }
-        ProductModel productModel = new ProductModel(productDto.getLoginName(), productDto.getType(), productDto.getCouponId(), productDto.getName(), productDto.getSeq(), productDto.getImageUrl(), productDto.getDescription(), productDto.getTotalCount(), productDto.getPoints(), productDto.getStartTime(), productDto.getEndTime());
+        ProductModel productModel = new ProductModel(
+                productDto.getLoginName(),
+                productDto.getType(),
+                productDto.getCouponId(),
+                productDto.getName(),
+                productDto.getSeq(),
+                productDto.getImageUrl(),
+                productDto.getDescription(),
+                productDto.getTotalCount(),
+                productDto.getPoints(),
+                productDto.getStartTime(),
+                productDto.getEndTime());
         productMapper.create(productModel);
     }
 
@@ -274,7 +285,12 @@ public class ProductServiceImpl implements ProductService {
                 if (null != productModelCoupon) {
                     CouponModel couponModel = couponService.findCouponById(productModelCoupon.getCouponId());
                     if (null != couponModel) {
-                        ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModelCoupon.getPoints(), productModelCoupon.getSeq(), productModelCoupon.getImageUrl(), id, couponModel);
+                        ExchangeCouponView exchangeCouponView = new ExchangeCouponView(
+                                productModelCoupon.getPoints(),
+                                productModelCoupon.getSeq(),
+                                productModelCoupon.getImageUrl(),
+                                id,
+                                couponModel);
                         productShowItemDto = convertProductShowItemDto(exchangeCouponView);
                     }
                 }
@@ -449,8 +465,19 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductShowItemDto convertProductShowItemDto(ExchangeCouponView exchangeCouponView) {
 
-        ProductShowItemDto productShowItemDto = new ProductShowItemDto(exchangeCouponView.getCouponModel().getTotalCount(), exchangeCouponView.getCouponModel().getIssuedCount(), exchangeCouponView.getExchangePoint(), exchangeCouponView.getSeq(), exchangeCouponView.getImageUrl(), exchangeCouponView.getCouponModel().getCouponType(), exchangeCouponView.getCouponModel().getAmount(), exchangeCouponView.getCouponModel().getRate(), exchangeCouponView.getProductId());
-        List<String> descriptions = getProductDescription(exchangeCouponView.getCouponModel().getInvestLowerLimit(), exchangeCouponView.getCouponModel().getProductTypes(), exchangeCouponView.getCouponModel().getDeadline());
+        ProductShowItemDto productShowItemDto = new ProductShowItemDto(
+                exchangeCouponView.getCouponModel().getTotalCount(),
+                exchangeCouponView.getCouponModel().getIssuedCount(),
+                exchangeCouponView.getExchangePoint(),
+                exchangeCouponView.getSeq(),
+                exchangeCouponView.getImageUrl(),
+                exchangeCouponView.getCouponModel().getCouponType(),
+                exchangeCouponView.getCouponModel().getAmount(),
+                exchangeCouponView.getCouponModel().getRate(),
+                exchangeCouponView.getProductId());
+        List<String> descriptions = getProductDescription(exchangeCouponView.getCouponModel().getInvestLowerLimit(),
+                exchangeCouponView.getCouponModel().getProductTypes(),
+                exchangeCouponView.getCouponModel().getDeadline());
         String descriptionString = "";
         for (String description : descriptions) {
             descriptionString += description + "\n";

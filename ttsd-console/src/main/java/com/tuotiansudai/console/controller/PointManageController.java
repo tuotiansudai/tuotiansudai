@@ -233,17 +233,31 @@ public class PointManageController {
             if (id != null) {
                 couponService.editCoupon(loginName, exchangeCouponDto);
                 ProductModel productModel = productService.findProductByCouponId(id);
-                ProductDto productDto = new ProductDto(productModel.getId(), GoodsType.COUPON, loginName, exchangeCouponDto.getId(),
-                        exchangeCouponDto.getCouponType().name(), exchangeCouponDto.getSeq(), exchangeCouponDto.getImageUrl(),
-                        exchangeCouponDto.getExchangePoint(), exchangeCouponDto.getTotalCount(),
-                        exchangeCouponDto.getStartTime(), exchangeCouponDto.getEndTime());
+                ProductDto productDto = new ProductDto
+                        (productModel.getId(),
+                        GoodsType.COUPON, loginName,
+                        exchangeCouponDto.getId(),
+                        exchangeCouponDto.getCouponType().name(),
+                        exchangeCouponDto.getSeq(),
+                        exchangeCouponDto.getImageUrl(),
+                        exchangeCouponDto.getExchangePoint(),
+                        exchangeCouponDto.getTotalCount(),
+                        exchangeCouponDto.getStartTime(),
+                        exchangeCouponDto.getEndTime());
                 productService.updateProduct(productDto);
             } else {
                 ExchangeCouponDto exchangeCouponDtoView  = couponService.createCoupon(loginName, exchangeCouponDto);
-                ProductDto productDto = new ProductDto(GoodsType.COUPON, exchangeCouponDtoView.getId(), exchangeCouponDtoView.getCouponType().name(),
-                        exchangeCouponDtoView.getSeq(), exchangeCouponDtoView.getImageUrl(),
-                        exchangeCouponDtoView.getExchangePoint(), exchangeCouponDtoView.getTotalCount(),
-                        exchangeCouponDtoView.getStartTime(), exchangeCouponDtoView.getEndTime(),loginName);
+                ProductDto productDto = new ProductDto(
+                        GoodsType.COUPON,
+                        exchangeCouponDtoView.getId(),
+                        exchangeCouponDtoView.getCouponType().name(),
+                        exchangeCouponDtoView.getSeq(),
+                        exchangeCouponDtoView.getImageUrl(),
+                        exchangeCouponDtoView.getExchangePoint(),
+                        exchangeCouponDtoView.getTotalCount(),
+                        exchangeCouponDtoView.getStartTime(),
+                        exchangeCouponDtoView.getEndTime(),
+                        loginName);
                 productService.createProduct(productDto);
             }
             modelAndView.setViewName("redirect:/point-manage/coupon-exchange-manage");
