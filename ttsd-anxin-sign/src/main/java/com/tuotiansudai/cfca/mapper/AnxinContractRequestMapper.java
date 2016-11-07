@@ -13,9 +13,9 @@ public interface AnxinContractRequestMapper {
     void create(AnxinContractRequestModel anxinContractRequestModel);
 
     void updateContractNoByInvestId(@Param(value = "contractNo") String contractNo,
-                                    @Param(value = "investId") long investId);
+                                    @Param(value = "investId") long investId,
+                                    @Param(value = "txTime") String txTime);
 
     List<String> findBatchNoByLoanId(@Param(value = "loanId") long loanId);
 
-    int findSuccessRequestByInvestId(@Param(value = "investId") long investId);
 }

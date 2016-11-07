@@ -17,9 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 @Controller
 @RequestMapping(path = "/contract")
@@ -66,13 +64,38 @@ public class ContractController {
 
     @RequestMapping(value = "/invest/contractNo/{contractNo}", method = RequestMethod.GET)
     public void findContract(@PathVariable String contractNo, HttpServletRequest httpServletRequest, HttpServletResponse response) {
-        byte[] pdf = anxinSignService.downContractByContractNo("JK20161107000000449");
+//        byte[] pdf = anxinSignService.downContractByContractNo("JK20161107000000449");
+//        try {
+//            response.setContentType("application/pdf");
+//            ServletOutputStream stream = response.getOutputStream();
+//            stream.write(pdf);
+//            stream.flush();
+//            stream.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        byte[] buffer = null;
         try {
+            File file = new File("/Users/baisong/Downloads/test.pdf");
+            FileInputStream fis = new FileInputStream(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
+            byte[] b = new byte[1000];
+            int n;
+            while ((n = fis.read(b)) != -1) {
+                bos.write(b, 0, n);
+            }
+            fis.close();
+            bos.close();
+            buffer = bos.toByteArray();
+
             response.setContentType("application/pdf");
             ServletOutputStream stream = response.getOutputStream();
-            stream.write(pdf);
+            stream.write(buffer);
             stream.flush();
             stream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

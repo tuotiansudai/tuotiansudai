@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -172,7 +173,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
-        logger.debug("req:" + req);
+        logger.debug(MessageFormat.format("[安心签] loanId:{0},batchNo:{1} created contract request date:{2}",loanId,batchNo,req));
 
         String txCode = "3202";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
@@ -184,16 +185,16 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
             Map<String, String> response = coverJson(res);
             anxinContractResponseMapper.create(new AnxinContractResponseModel(loanId, batchNo, response.get("errorCode"), response.get("errorMessage")));
         } else {
-            for(CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()){
+            for (CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()) {
                 long investId = Long.parseLong(createContractVO.getInvestmentInfo().get("investId"));
-                anxinContractRequestMapper.updateContractNoByInvestId(createContractVO.getContractNo(),investId);
+                anxinContractRequestMapper.updateContractNoByInvestId(createContractVO.getContractNo(), investId, tx3202ReqVO.getHead().getTxTime());
                 anxinContractResponseMapper.create(new AnxinContractResponseModel(loanId,
                         tx3202ResVO.getBatchNo(), createContractVO.getContractNo(), tx3202ResVO.getHead().getTxTime(), tx3202ResVO.getHead().getLocale(),
-                        "wait", "wait", DateTime.now().toDate()));
+                        DateTime.now().toDate()));
             }
         }
-        System.out.println("res:" + res);
-        return null;
+        logger.debug(MessageFormat.format("[安心签] loanId:{0},batchNo:{1} created contract response date:{2}",loanId,batchNo,res));
+        return tx3202ResVO;
     }
 
     @Override
@@ -208,7 +209,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3211ReqVO);
-        System.out.println("req:" + req);
+        logger.debug(MessageFormat.format("[安心签] find contract response , batchNo:{0}",batchNo));
 
         String txCode = "3211";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
@@ -217,16 +218,16 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     }
 
     @Override
-    public List updateContractResponse(long loanId){
+    public List updateContractResponse(long loanId) {
         List<String> batchNos = anxinContractRequestMapper.findBatchNoByLoanId(loanId);
         List<ContractResponseView> contractResponseViews = Lists.newArrayList();
-        if(CollectionUtils.isNotEmpty(batchNos)){
+        if (CollectionUtils.isNotEmpty(batchNos)) {
             batchNos.forEach(batchNo -> {
                 Tx3202ResVO tx3202ResVO = null;
                 try {
                     tx3202ResVO = findContractResponseByBatchNo(batchNo);
                 } catch (PKIException e) {
-                    e.printStackTrace();
+                    logger.error(MessageFormat.format("[安心签] find contract response error, loanId:{0} , batchNo:{1}",loanId,batchNo),e);
                 }
                 if (tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null) {
                     for (CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()) {
@@ -244,44 +245,10 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     }
 
     @Override
-    public byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException{
+    public byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException {
         HttpConnector httpConnector = new HttpConnector();
         httpConnector.init();
-
-        byte[] fileBtye = httpConnector.getFile("platId/" + Request.PLAT_ID + "/contractNo/" + contractNo + "/downloading");
-
-        BufferedOutputStream bos = null;
-        FileOutputStream fos = null;
-        File file = null;
-        String filePath = "./file";
-        try {
-            File dir = new File(filePath);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-            file = new File(filePath + File.separator + contractNo + ".pdf");
-            fos = new FileOutputStream(file);
-            bos = new BufferedOutputStream(fos);
-            bos.write(fileBtye);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (bos != null) {
-                try {
-                    bos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
+        logger.debug(MessageFormat.format("[安心签] down loan contract , contractNo:{0}", contractNo));
         return httpConnector.getFile("platId/" + Request.PLAT_ID + "/contractNo/" + contractNo + "/downloading");
     }
 
@@ -289,7 +256,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         Map<String, String> responseMap = Maps.newConcurrentMap();
         String[] split = response.split(",");
         for (String str : split) {
-            responseMap.put(str.split(":")[0].replaceAll("\\{", "").replaceAll("\\}", "").replaceAll("\"", ""), str.split(":")[1].replaceAll("\\{", "").replaceAll("\\}", "").replaceAll("\"",""));
+            responseMap.put(str.split(":")[0].replaceAll("\\{", "").replaceAll("\\}", "").replaceAll("\"", ""), str.split(":")[1].replaceAll("\\{", "").replaceAll("\\}", "").replaceAll("\"", ""));
         }
         return responseMap;
     }
@@ -321,13 +288,10 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                 long agentSignId = 0l;
                 long investorSignId = 0l;
                 for (SignInfoVO signInfoVo : createContractVO.getSignInfos()) {
-                    AnxinSignRequestModel anxinSignRequestModel = anxinSignRequestMapper.findByUserId(signInfoVo.getUserId());
-                    if(anxinSignRequestModel == null){
-                        anxinSignRequestModel = new AnxinSignRequestModel(signInfoVo.getUserId(), signInfoVo.getAuthorizationTime(), signInfoVo.getLocation(),
-                                signInfoVo.getSignLocation(), signInfoVo.getProjectCode(), signInfoVo.getIsProxySign() != null ? String.valueOf(signInfoVo.getIsProxySign()) : "0",
-                                signInfoVo.getIsCopy() != null ? String.valueOf(signInfoVo.getIsCopy()) : "0", DateTime.now().toDate());
-                        anxinSignRequestMapper.create(anxinSignRequestModel);
-                    }
+                    AnxinSignRequestModel anxinSignRequestModel = new AnxinSignRequestModel(signInfoVo.getUserId(), signInfoVo.getAuthorizationTime(), signInfoVo.getLocation(),
+                            signInfoVo.getSignLocation(), signInfoVo.getProjectCode(), signInfoVo.getIsProxySign() != null ? String.valueOf(signInfoVo.getIsProxySign()) : "0",
+                            signInfoVo.getIsCopy() != null ? String.valueOf(signInfoVo.getIsCopy()) : "1", DateTime.now().toDate());
+                    anxinSignRequestMapper.create(anxinSignRequestModel);
                     if (signInfoVo.getSignLocation().equals("agentLoginName")) {
                         agentSignId = anxinSignRequestModel.getId();
                     } else {
@@ -336,15 +300,13 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                 }
 
                 Map<String, String> investmentInfo = createContractVO.getInvestmentInfo();
-                if(anxinContractRequestMapper.findSuccessRequestByInvestId(Long.parseLong(investmentInfo.get("investId"))) == 0){
-                    anxinContractRequestMapper.create(new AnxinContractRequestModel(loanId,Long.parseLong(investmentInfo.get("investId")),
-                            agentSignId, investorSignId, txTime, batchNo, createContractVO.getTemplateId(),
-                            createContractVO.getIsSign() != null ? String.valueOf(createContractVO.getIsSign()) : "0", investmentInfo.get("agentMobile"),
-                            investmentInfo.get("loanerIdentityNumber"), investmentInfo.get("recheckTime"), investmentInfo.get("totalRate"),
-                            investmentInfo.get("investorMobile"), investmentInfo.get("agentIdentityNumber"), investmentInfo.get("periods"),
-                            investmentInfo.get("pledge"), investmentInfo.get("endTime"), investmentInfo.get("investorIdentityNumber"),
-                            investmentInfo.get("loanerUserName"), investmentInfo.get("loanAmount"), DateTime.now().toDate()));
-                }
+                anxinContractRequestMapper.create(new AnxinContractRequestModel(loanId, Long.parseLong(investmentInfo.get("investId")),
+                        agentSignId, investorSignId, txTime, batchNo, createContractVO.getTemplateId(),
+                        createContractVO.getIsSign() != null ? String.valueOf(createContractVO.getIsSign()) : "0", investmentInfo.get("agentMobile"),
+                        investmentInfo.get("loanerIdentityNumber"), investmentInfo.get("recheckTime"), investmentInfo.get("totalRate"),
+                        investmentInfo.get("investorMobile"), investmentInfo.get("agentIdentityNumber"), investmentInfo.get("periods"),
+                        investmentInfo.get("pledge"), investmentInfo.get("endTime"), investmentInfo.get("investorIdentityNumber"),
+                        investmentInfo.get("loanerUserName"), investmentInfo.get("loanAmount"), DateTime.now().toDate()));
             }
         });
     }
