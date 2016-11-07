@@ -144,6 +144,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     }
 
 
+    /**
+     * 发送验证码
+     */
     @Override
     public BaseDto sendCaptcha3101(String loginName, boolean isVoice) {
         try {
@@ -177,11 +180,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     /**
      * 确认验证码 （授权）
-     *
-     * @param loginName
-     * @param captcha
-     * @param skipAuth
-     * @return
      */
     @Override
     public BaseDto<BaseDataDto> verifyCaptcha3102(String loginName, String captcha, boolean skipAuth, String ip) {
@@ -370,7 +368,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     public BaseDto updateContractResponse(long loanId) {
         BaseDto baseDto = new BaseDto(true);
         try {
-            //查询修改合同创建结果并更新invest
+            //查询合同创建结果并更新invest
             List<ContractResponseView> contractResponseViews = anxinSignConnectService.updateContractResponse(loanId);
 
             contractResponseViews.forEach(contractResponseView -> {
