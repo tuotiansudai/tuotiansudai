@@ -8,6 +8,7 @@ public class AnxinContractRequestModel implements Serializable{
     private long id;
     private long loanId;
     private long investId;
+    private String contractNo;
     private long agentSignId;
     private long investorSignId;
     private String txTime;
@@ -53,6 +54,14 @@ public class AnxinContractRequestModel implements Serializable{
         this.loanerUserName = loanerUserName;
         this.loanAmount = loanAmount;
         this.createdTime = createdTime;
+    }
+
+    public String getContractNo() {
+        return contractNo;
+    }
+
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
     }
 
     public long getInvestId() {

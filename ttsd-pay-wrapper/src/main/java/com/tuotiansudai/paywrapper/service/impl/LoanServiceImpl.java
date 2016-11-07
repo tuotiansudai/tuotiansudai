@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -12,6 +13,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.job.AnxinContractHandleJob;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
@@ -40,10 +42,8 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AmountTransfer;
-import com.tuotiansudai.util.JobManager;
-import com.tuotiansudai.util.SendCloudMailUtil;
+import com.tuotiansudai.service.AnxinSignService;
+import com.tuotiansudai.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -107,6 +107,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private AnxinSignService anxinSignService;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
@@ -362,6 +365,12 @@ public class LoanServiceImpl implements LoanService {
             logger.error(MessageFormat.format("放款短信邮件通知失败 (loanId = {0})", String.valueOf(loanId)), e);
         }
 
+        logger.debug("标的放款：生成合同，标的ID:" + loanId);
+        anxinSignService.createContracts(loanId);
+
+        logger.debug("标的放款：创建修改合同创建状态job，标的ID:" + loanId);
+        updateContractResponseHandleJob(loanId);
+
         return true;
     }
 
@@ -515,6 +524,21 @@ public class LoanServiceImpl implements LoanService {
         }
         String respData = callbackRequest.getResponseData();
         return respData;
+    }
+
+    private void updateContractResponseHandleJob(long loanId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(AnxinContractHandleJob.HANDLE_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.ContractResponse, AnxinContractHandleJob.class)
+                    .addJobData(AnxinContractHandleJob.LOAN_ID_KEY, loanId)
+                    .withIdentity(JobType.ContractResponse.name(), "Loan-" + loanId)
+                    .replaceExistingJob(true)
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create update contract response  handle job for loan[" + loanId + "] fail", e);
+        }
     }
 
 }

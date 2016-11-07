@@ -336,4 +336,8 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanId), "/job/send-red-envelope-after-loan-out", "POST");
     }
 
+    public BaseDto<PayDataDto> anxinContractHandle(long loanId){
+        return syncExecute(String.valueOf(loanId), "/job/anxin-contract-notify", "POST");
+    }
+
 }

@@ -83,7 +83,7 @@ public class SecurityUtil {
             X509Cert signCert = CertUtil.getCertFromJKS(jksPath, jksPWD, alias);
 
             Signature signature = new Signature();
-            byte[] signatureByte = signature.p7SignMessageDetach(Mechanism.SHA1_RSA, sourceData.getBytes(), privateKey, signCert, session);
+            byte[] signatureByte = signature.p7SignMessageDetach(Mechanism.SHA1_RSA, sourceData.getBytes(SystemConst.DEFAULT_CHARSET), privateKey, signCert, session);
             return new String(signatureByte);
         } catch (Exception e) {
             throw new PKIException("P7 detach signature fail", e);

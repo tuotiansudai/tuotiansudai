@@ -7,6 +7,7 @@ import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3101ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
@@ -20,8 +21,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -66,6 +69,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private static final String SIGN_LOCATION_AGENT_LOGIN_NAME = "agentLoginName";
 
     private static final String SIGN_LOCATION_INVESTOR_LOGIN_NAME = "investorLoginName";
+
+    @Value(value = "${anxin.contract.batch.num}")
+    private int batchNum;
 
 
     /**
@@ -246,12 +252,19 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Override
     public BaseDto createContracts(long loanId) {
         List<CreateContractVO> createContractVOs = Lists.newArrayList();
-        investMapper.findSuccessInvestsByLoanId(loanId).forEach(investModel -> createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId())));
-        try {
-            anxinSignConnectService.generateContractBatch3202(loanId, UUIDGenerator.generate(), createContractVOs);
-        } catch (PKIException e) {
-            e.printStackTrace();
-        }
+        investMapper.findSuccessInvestsByLoanId(loanId).forEach(investModel -> {
+            createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId()));
+            if (createContractVOs.size() == batchNum) {
+                String batchNo = UUIDGenerator.generate();
+                try {
+                    //创建合同
+                    anxinSignConnectService.generateContractBatch3202(loanId, batchNo, createContractVOs);
+                } catch (PKIException e) {
+                    e.printStackTrace();
+                }
+                createContractVOs.clear();
+            }
+        });
         return new BaseDto();
     }
 
@@ -279,19 +292,19 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("agentIdentityNumber", agentAccount.getIdentityNumber());
         dataModel.put("investorMobile", investorModel.getMobile());
         dataModel.put("investorIdentityNumber", investorAccount.getIdentityNumber());
-//        dataModel.put("loanerUserName", loanerDetailsModel.getUserName());
+        dataModel.put("loanerUserName", loanerDetailsModel.getUserName());
         dataModel.put("loanerIdentityNumber", loanerDetailsModel.getIdentityNumber());
         dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
         dataModel.put("periods", String.valueOf(loanModel.getPeriods()));
         dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate()));
         dataModel.put("recheckTime", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
-        dataModel.put("endTime", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
-        dataModel.put("investId", String.valueOf(investorModel.getId()));
-//        if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
-//            dataModel.put("pledge", "房屋");
-//        } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
-//            dataModel.put("pledge", "车辆");
-//        }
+        dataModel.put("endTime", "2016-11-07");
+        dataModel.put("investId", String.valueOf(investId));
+        if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
+            dataModel.put("pledge", "房屋");
+        } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
+            dataModel.put("pledge", "车辆");
+        }
         createContractVO.setInvestmentInfo(dataModel);
 
         SignInfoVO agentSignInfo = new SignInfoVO();
@@ -315,5 +328,37 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return createContractVO;
     }
 
+    @Override
+    public byte[] downContractByContractNo(String contractNo) {
+        byte[] contract = null;
+        try {
+            contract = anxinSignConnectService.downLoanContractByBatchNo(contractNo);
+        } catch (PKIException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return contract;
+    }
+
+    @Override
+    public BaseDto updateContractResponse(long loanId) {
+        BaseDto baseDto = new BaseDto();
+        baseDto.setSuccess(true);
+        try {
+            //查询修改合同创建结果并更新invest
+            List<ContractResponseView> contractResponseViews = anxinSignConnectService.updateContractResponse(loanId);
+
+            contractResponseViews.forEach(contractResponseView -> {
+                if (contractResponseView.getRetCode().equals("60000000")) {
+                    investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
+                }
+            });
+        } catch (PKIException e) {
+            e.printStackTrace();
+        }
+
+        return baseDto;
+    }
 
 }

@@ -8,6 +8,7 @@ import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
 import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.paywrapper.service.NormalRepayService;
+import com.tuotiansudai.service.AnxinSignService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,9 @@ public class JobController {
 
     @Autowired
     private AdvanceRepayService advanceRepayService;
+
+    @Autowired
+    private AnxinSignService anxinSignService;
 
     @ResponseBody
     @RequestMapping(value = "/async_invest_notify", method = RequestMethod.POST)
@@ -96,5 +100,11 @@ public class JobController {
     @RequestMapping(value = "/send-red-envelope-after-loan-out", method = RequestMethod.POST)
     public void sendRedEnvelopeAfterLoanOut(@RequestBody long loanId) {
         couponLoanOutService.sendRedEnvelope(loanId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/anxin-contract-notify", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> contractNotify(@RequestBody long loanId) {
+        return anxinSignService.updateContractResponse(loanId);
     }
 }
