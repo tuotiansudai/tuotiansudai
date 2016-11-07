@@ -3,10 +3,8 @@ package com.tuotiansudai.cfca.service.impl;
 import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.*;
 import cfca.trustsign.common.vo.request.tx3.*;
-import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
-import cfca.trustsign.common.vo.response.tx3.Tx3101ResVO;
-import cfca.trustsign.common.vo.response.tx3.Tx3102ResVO;
-import cfca.trustsign.common.vo.response.tx3.Tx3202ResVO;
+import cfca.trustsign.common.vo.response.ErrorResVO;
+import cfca.trustsign.common.vo.response.tx3.*;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -49,7 +47,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     private AnxinContractResponseMapper anxinContractResponseMapper;
 
     @Override
-    public Tx3001ResVO createAccount3001(AccountModel accountModel, UserModel userModel) throws PKIException {
+    public Tx3ResVO createAccount3001(AccountModel accountModel, UserModel userModel) throws PKIException {
 
         HttpConnector httpConnector = new HttpConnector();
         httpConnector.init();
@@ -69,14 +67,15 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
-        Tx3001ResVO tx3001ResVO = jsonObjectMapper.readValue(res, Tx3001ResVO.class);
         logger.debug("res:" + res);
+
+        Tx3ResVO tx3001ResVO = readResponse(res, Tx3001ResVO.class);
         return tx3001ResVO;
     }
 
 
     @Override
-    public Tx3101ResVO sendCaptcha3101(String userId, String projectCode, boolean isVoice) throws PKIException {
+    public Tx3ResVO sendCaptcha3101(String userId, String projectCode, boolean isVoice) throws PKIException {
         HttpConnector httpConnector = new HttpConnector();
         httpConnector.init();
 
@@ -98,14 +97,14 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
-        Tx3101ResVO tx3101ResVO = jsonObjectMapper.readValue(res, Tx3101ResVO.class);
-
         logger.debug("res:" + res);
+        Tx3ResVO tx3101ResVO = readResponse(res, Tx3101ResVO.class);
+
         return tx3101ResVO;
     }
 
     @Override
-    public Tx3102ResVO verifyCaptcha3102(String userId, String projectCode, String checkCode) throws PKIException {
+    public Tx3ResVO verifyCaptcha3102(String userId, String projectCode, String checkCode) throws PKIException {
         HttpConnector httpConnector = new HttpConnector();
         httpConnector.init();
 
@@ -127,10 +126,35 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
-        Tx3102ResVO tx3102ResVO = jsonObjectMapper.readValue(res, Tx3102ResVO.class);
-
         logger.debug("res:" + res);
-        return tx3102ResVO;
+
+        Tx3ResVO tx3ResVO = readResponse(res, Tx3102ResVO.class);
+        return tx3ResVO;
+    }
+
+
+    private Tx3ResVO readResponse(String res, Class<? extends Tx3ResVO> cla) {
+        if (res.indexOf("\"60000000\"") > 0) {
+            // 成功：
+            JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
+            return jsonObjectMapper.readValue(res, cla);
+        } else {
+            // 失败：
+            JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
+            ErrorResVO errorResVO = jsonObjectMapper.readValue(res, ErrorResVO.class);
+
+            HeadVO headVO = new HeadVO();
+            headVO.setRetCode(errorResVO.getErrorCode());
+            headVO.setRetMessage(errorResVO.getErrorMessage());
+            try {
+                Tx3ResVO tx3ResVO = cla.newInstance();
+                tx3ResVO.setHead(headVO);
+                return tx3ResVO;
+            } catch (Exception e) {
+                logger.error("read response of " + cla.getName() + " fail.", e);
+            }
+            return null;
+        }
     }
 
     @Override
@@ -326,4 +350,5 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
             }
         });
     }
+
 }

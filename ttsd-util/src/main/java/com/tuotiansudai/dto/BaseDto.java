@@ -9,6 +9,10 @@ public class BaseDto<T extends BaseDataDto> {
     public BaseDto() {
     }
 
+    public BaseDto(boolean success) {
+        this.success = success;
+    }
+
     public BaseDto(T data) {
         this.data = data;
     }
