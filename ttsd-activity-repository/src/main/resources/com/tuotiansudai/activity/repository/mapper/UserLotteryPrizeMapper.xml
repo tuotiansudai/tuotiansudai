@@ -21,6 +21,7 @@
         <result column="user_name" property="userName"></result>
         <result column="prize" property="prize"></result>
         <result column="lottery_time" property="lotteryTime"></result>
+        <result column="login_name" property="loginName"></result>
     </resultMap>
 
     <insert id="create" parameterType="userLotteryPrizeModel" useGeneratedKeys="true" keyProperty="id">
@@ -43,7 +44,7 @@
     </update>
 
     <select id="findUserLotteryPrizeViews" parameterType="map" resultMap="userLotteryPrizeView">
-        select p.lottery_time,p.mobile,p.user_name,p.prize from `edxactivity`.`user_lottery_prize` p
+        select p.lottery_time,p.mobile,p.user_name,p.prize,p.login_name from `edxactivity`.`user_lottery_prize` p
         <where>
             <if test="mobile !=null and mobile !='' ">
                 and p.mobile like '${mobile}%'
@@ -62,7 +63,9 @@
             </if>
         </where>
         order by p.lottery_time DESC
-        limit #{index}, #{pageSize}
+        <if test="index != null and pageSize != null">
+            limit #{index}, #{pageSize}
+        </if>
     </select>
 
     <select id="findUserLotteryPrizeCountViews" parameterType="map" resultType="int">
