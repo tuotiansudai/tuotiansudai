@@ -23,6 +23,7 @@ import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import com.tuotiansudai.util.RandomStringGenerator;
+import com.tuotiansudai.util.TransactionUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -30,8 +31,6 @@ import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationAdapter;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -184,13 +183,7 @@ public class UserServiceImpl implements UserService {
         UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(userModel.getLoginName(), membershipModel.getId());
         userMembershipMapper.create(userMembershipModel);
 
-        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
-            @Override
-            public void afterCommit() {
-                mqClient.publishMessage(MessageTopic.UserRegistered, dto.getMobile());
-            }
-        });
-
+        TransactionUtil.runAfterCommit(() -> mqClient.publishMessage(MessageTopic.UserRegistered, dto.getMobile()));
         return true;
     }
 
