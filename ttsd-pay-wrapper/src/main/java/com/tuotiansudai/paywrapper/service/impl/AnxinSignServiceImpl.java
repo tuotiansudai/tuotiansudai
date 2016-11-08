@@ -60,8 +60,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Value(value = "${anxin.contract.batch.num}")
     private int batchNum;
 
-    @Value(value = "${anxin.contract.template}")
-    private String template;
+    @Value(value = "${anxin.loan.contract.template}")
+    private String templateId;
 
     @Value("#{'${anxin.contract.notify.mobileList}'.split('\\|')}")
     private List<String> mobileList;
@@ -156,7 +156,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         investorSignInfo.setIsProxySign(1);
 
         createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
-        createContractVO.setTemplateId(template);
+        createContractVO.setTemplateId(templateId);
         createContractVO.setIsSign(1);
         return createContractVO;
     }
