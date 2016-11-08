@@ -64,38 +64,13 @@ public class ContractController {
 
     @RequestMapping(value = "/invest/contractNo/{contractNo}", method = RequestMethod.GET)
     public void findContract(@PathVariable String contractNo, HttpServletRequest httpServletRequest, HttpServletResponse response) {
-//        byte[] pdf = anxinSignService.downContractByContractNo("JK20161107000000449");
-//        try {
-//            response.setContentType("application/pdf");
-//            ServletOutputStream stream = response.getOutputStream();
-//            stream.write(pdf);
-//            stream.flush();
-//            stream.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-        byte[] buffer = null;
+        byte[] pdf = anxinSignService.downContractByContractNo(contractNo);
         try {
-            File file = new File("/Users/baisong/Downloads/test.pdf");
-            FileInputStream fis = new FileInputStream(file);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
-            byte[] b = new byte[1000];
-            int n;
-            while ((n = fis.read(b)) != -1) {
-                bos.write(b, 0, n);
-            }
-            fis.close();
-            bos.close();
-            buffer = bos.toByteArray();
-
             response.setContentType("application/pdf");
             ServletOutputStream stream = response.getOutputStream();
-            stream.write(buffer);
+            stream.write(pdf);
             stream.flush();
             stream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

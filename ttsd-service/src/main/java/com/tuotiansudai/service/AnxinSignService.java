@@ -22,4 +22,6 @@ public interface AnxinSignService {
     byte[] downContractByContractNo(String contractNo);
 
 
+    BaseDto createTransferContracts(long transferApplicationId);
+
 }
