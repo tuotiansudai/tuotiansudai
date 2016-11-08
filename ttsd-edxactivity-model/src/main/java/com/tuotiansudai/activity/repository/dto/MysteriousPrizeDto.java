@@ -1,4 +1,4 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.activity.repository.dto;
 
 import java.io.Serializable;
 import java.util.Date;
