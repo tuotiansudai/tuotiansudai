@@ -7,13 +7,13 @@ public class AnxinSendCaptchaRequestModel implements Serializable {
 
     private long id;
 
-    private long txTime;
+    private String txTime;
 
-    private long userId;
+    private String userId;
 
     private String projectCode;
 
-    private long isSendVoice;
+    private String isSendVoice;
 
     private Date createdTime;
 
@@ -29,19 +29,19 @@ public class AnxinSendCaptchaRequestModel implements Serializable {
         this.id = id;
     }
 
-    public long getTxTime() {
+    public String getTxTime() {
         return txTime;
     }
 
-    public void setTxTime(long txTime) {
+    public void setTxTime(String txTime) {
         this.txTime = txTime;
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -53,11 +53,11 @@ public class AnxinSendCaptchaRequestModel implements Serializable {
         this.projectCode = projectCode;
     }
 
-    public long getIsSendVoice() {
+    public String getIsSendVoice() {
         return isSendVoice;
     }
 
-    public void setIsSendVoice(long isSendVoice) {
+    public void setIsSendVoice(String isSendVoice) {
         this.isSendVoice = isSendVoice;
     }
 

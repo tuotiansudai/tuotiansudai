@@ -7,17 +7,17 @@ public class AnxinSendCaptchaResponseModel implements Serializable {
 
     private long id;
 
-    private long txTime;
+    private String txTime;
 
     private String retCode;
 
     private String retMessage;
 
-    private long userId;
+    private String userId;
 
     private String projectCode;
 
-    private long isSendVoice;
+    private String isSendVoice;
 
     private Date createdTime;
 
@@ -33,11 +33,11 @@ public class AnxinSendCaptchaResponseModel implements Serializable {
         this.id = id;
     }
 
-    public long getTxTime() {
+    public String getTxTime() {
         return txTime;
     }
 
-    public void setTxTime(long txTime) {
+    public void setTxTime(String txTime) {
         this.txTime = txTime;
     }
 
@@ -57,11 +57,11 @@ public class AnxinSendCaptchaResponseModel implements Serializable {
         this.retMessage = retMessage;
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -73,11 +73,11 @@ public class AnxinSendCaptchaResponseModel implements Serializable {
         this.projectCode = projectCode;
     }
 
-    public long getIsSendVoice() {
+    public String getIsSendVoice() {
         return isSendVoice;
     }
 
-    public void setIsSendVoice(long isSendVoice) {
+    public void setIsSendVoice(String isSendVoice) {
         this.isSendVoice = isSendVoice;
     }
 
