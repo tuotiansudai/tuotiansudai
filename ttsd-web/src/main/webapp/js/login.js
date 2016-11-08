@@ -55,7 +55,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
         });
     };
         //input失去焦点时验证
-        loginFormElement.find('input:text,input:password').on('keyup',function() {
+        loginFormElement.find('input:text,input:password').on('blur',function() {
             var $this=$(this);
             errorElement.text('').css('visibility', 'hidden');
             $this.checkLogin();
@@ -87,7 +87,8 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
             return false;
         };
 
-        loginSubmitElement.click(function () {
+        loginSubmitElement.click(function (event) {
+            event.preventDefault();
             loginFormElement.find('input:text,input:password').checkLogin();
             if(formCheckValid) {
                 submitLoginForm();
