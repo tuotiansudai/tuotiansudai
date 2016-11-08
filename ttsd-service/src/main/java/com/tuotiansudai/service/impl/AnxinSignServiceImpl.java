@@ -288,7 +288,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         for (int i = 0; i < investModels.size(); i++) {
             investModel = investModels.get(i);
             createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId()));
-            if (createContractVOs.size() == batchNum || investModels.size() == i) {
+            if (createContractVOs.size() == batchNum || investModels.size() == (i + 1)) {
                 String batchNo = UUIDGenerator.generate();
                 try {
                     logger.debug(MessageFormat.format("[安心签] create contract begin , loanId:{0}, batchNo{1}", loanId, batchNo));
@@ -462,10 +462,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate() * 100));
         dataModel.put("recheckTime1", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
         dataModel.put("recheckTime2", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
-//        dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
-//        dataModel.put("endTime2", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
-        dataModel.put("endTime2", "2016-12-11");
-        dataModel.put("endTime2", "2016-12-11");
+        dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
+        dataModel.put("endTime2", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
         dataModel.put("orderId", String.valueOf(investId));
         if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
             dataModel.put("pledge", "房屋");
