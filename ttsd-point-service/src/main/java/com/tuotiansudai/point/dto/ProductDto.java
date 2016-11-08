@@ -25,11 +25,11 @@ public class ProductDto implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
-    public ProductDto(){
+    public ProductDto() {
 
     }
 
-    public ProductDto(ExchangeCouponDto exchangeCouponDto, String loginName){
+    public ProductDto(ExchangeCouponDto exchangeCouponDto, String loginName) {
         this.type = GoodsType.COUPON;
         this.loginName = loginName;
         this.couponId = exchangeCouponDto.getId();
@@ -42,7 +42,7 @@ public class ProductDto implements Serializable {
         this.endTime = exchangeCouponDto.getEndTime();
     }
 
-    public ProductDto(ExchangeCouponDto exchangeCouponDto, String loginName, ProductModel productModel){
+    public ProductDto(ExchangeCouponDto exchangeCouponDto, String loginName, ProductModel productModel) {
         this.id = productModel.getId();
         this.type = GoodsType.COUPON;
         this.loginName = loginName;
@@ -54,6 +54,22 @@ public class ProductDto implements Serializable {
         this.totalCount = exchangeCouponDto.getTotalCount();
         this.startTime = exchangeCouponDto.getStartTime();
         this.endTime = exchangeCouponDto.getEndTime();
+    }
+
+    public ProductModel toProductModel() {
+        ProductModel model = new ProductModel();
+        model.setId(this.id);
+        model.setType(this.type);
+        model.setCouponId(this.couponId);
+        model.setName(this.name);
+        model.setSeq(this.seq);
+        model.setImageUrl(this.imageUrl);
+        model.setDescription(this.description);
+        model.setTotalCount(this.totalCount);
+        model.setPoints(this.points);
+        model.setStartTime(this.startTime);
+        model.setEndTime(this.endTime);
+        return model;
     }
 
     public long getId() {

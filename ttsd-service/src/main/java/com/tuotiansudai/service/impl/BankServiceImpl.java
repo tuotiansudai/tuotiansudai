@@ -1,6 +1,5 @@
 package com.tuotiansudai.service.impl;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BankDto;
 import com.tuotiansudai.repository.mapper.BankMapper;
@@ -38,12 +37,15 @@ public class BankServiceImpl implements BankService {
     public List<BankDto> findBankList() {
         List<BankModel> bankModels = bankMapper.findBankList();
 
-        List<BankDto> records = Lists.transform(bankModels, new Function<BankModel, BankDto>() {
-            @Override
-            public BankDto apply(BankModel input) {
-                return new BankDto(input);
-            }
-        });
+        List<BankDto> records = Lists.transform(bankModels, input -> new BankDto(input));
+        return records;
+    }
+
+    @Override
+    public List<BankDto> findWebBankList() {
+        List<BankModel> bankModels = bankMapper.findWebBankList();
+
+        List<BankDto> records = Lists.transform(bankModels, input -> new BankDto(input));
         return records;
     }
 

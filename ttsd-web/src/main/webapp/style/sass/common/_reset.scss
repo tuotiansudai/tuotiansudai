@@ -27,7 +27,7 @@ body {
   font-family: $fontStack;
   font-size: nth($fontSize,2);
   line-height: nth($baseLineHeight,1);
-  background: nth($baseColor,5);
+  background: #f5f5f5;
   color:nth($CK2,7);
   overflow-x: hidden;
   overflow-y: auto;
@@ -67,12 +67,6 @@ a{
 }
 .tr {
   text-align: right;
-}
-.hide {
-  display: none;
-}
-.show {
-  display: block;
 }
 p {
   color: #4c4c4c;

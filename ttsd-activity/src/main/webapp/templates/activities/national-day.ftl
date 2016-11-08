@@ -15,7 +15,7 @@
 <div class="national-day-frame" id="nationalDayFrame">
     <div class="seizeSeat"></div>
     <div class="reg-tag-current" style="display: none">
-        <#include '../register.ftl' />
+        <#include '../module/register.ftl' />
     </div>
  <div class="section-outer">
         <div class="section-title">

@@ -1,7 +1,6 @@
 package com.tuotiansudai.coupon.util;
 
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
@@ -32,12 +31,7 @@ public class ChannelCollector implements UserCollector{
             return null;
         }
         List<UserModel> userModels = userMapper.findUsersByChannel(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("channels", couponUserGroupModel.getUserGroupItems()).build()));
-        return Lists.transform(userModels, new Function<UserModel, String>() {
-            @Override
-            public String apply(UserModel input) {
-                return input.getLoginName();
-            }
-        });
+        return Lists.transform(userModels, input -> input.getLoginName());
     }
 
     @Override

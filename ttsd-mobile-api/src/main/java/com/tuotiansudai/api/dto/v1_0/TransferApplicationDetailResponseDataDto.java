@@ -21,11 +21,12 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
     private String baseRate;
     private String activityRate;
     private int leftPeriod;
+    private String leftDays;
     private String deadline;
     private String expecedInterest;
     private String transferStatus;
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public String getTransferApplicationId() {
         return transferApplicationId;
@@ -153,6 +154,14 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
 
     public void setTransferStatus(String transferStatus) {
         this.transferStatus = transferStatus;
+    }
+
+    public String getLeftDays() {
+        return leftDays;
+    }
+
+    public void setLeftDays(String leftDays) {
+        this.leftDays = leftDays;
     }
 
     public TransferApplicationDetailResponseDataDto(TransferApplicationDetailDto transferApplicationDetailDto) {

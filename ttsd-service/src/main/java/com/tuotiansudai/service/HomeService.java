@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface HomeService {
 
-    List<HomeLoanDto> getLoans();
+    List<HomeLoanDto> getNormalLoans();
+
+    List<HomeLoanDto> getNewbieLoans();
 
     List<HomeLoanDto> getEnterpriseLoans();
 }
