@@ -1,10 +1,8 @@
 package com.tuotiansudai.repository.mapper;
 
-
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.service.AnxinSignService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +28,6 @@ public class AccountMapperTest {
 
     @Autowired
     private AccountMapper accountMapper;
-
-    @Autowired
-    private AnxinSignService anxinSignService;
 
     @Test
     public void shouldCreateAccount() throws Exception {
@@ -91,10 +86,5 @@ public class AccountMapperTest {
         model.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(model);
         return model;
-    }
-
-    @Test
-    public void shouleDanxinSignConnectService(){
-        anxinSignService.createContracts(30055181812832l);
     }
 }

@@ -1,6 +1,5 @@
 package com.tuotiansudai.web.controller;
 
-
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.service.CouponAlertService;
@@ -11,13 +10,9 @@ import com.tuotiansudai.dto.LoanDetailDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.service.AnxinSignService;
 import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -25,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Min;
-
 
 @Controller
 @RequestMapping(value = "/loan")
@@ -46,15 +40,8 @@ public class LoanDetailController {
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
-    @Autowired
-    private AnxinSignService anxinSignService;
-
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getLoanDetail(@PathVariable long loanId) {
-        anxinSignService.createContracts(30055181812832l);
-//        anxinSignService.updateContractResponse(30055181812832l);
-
-//        anxinSignService.downContractByContractNo("JK20161107000000015");
         LoanDetailDto loanDetail = loanDetailService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
         if (loanDetail == null) {
             return new ModelAndView("/error/404");
