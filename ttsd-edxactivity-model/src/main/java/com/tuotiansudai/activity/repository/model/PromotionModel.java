@@ -1,7 +1,7 @@
 package com.tuotiansudai.activity.repository.model;
 
-import com.tuotiansudai.activity.dto.PromotionDto;
-import com.tuotiansudai.activity.dto.PromotionStatus;
+import com.tuotiansudai.activity.repository.dto.PromotionDto;
+import com.tuotiansudai.activity.repository.dto.PromotionStatus;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.tuotiansudai.repository;
+package com.tuotiansudai.activity.repository.model;
 
 public enum TianDouPrize {
 

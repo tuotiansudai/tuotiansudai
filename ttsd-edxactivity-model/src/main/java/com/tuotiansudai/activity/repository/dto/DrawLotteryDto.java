@@ -1,7 +1,7 @@
-package com.tuotiansudai.dto.ranking;
+package com.tuotiansudai.activity.repository.dto;
 
+import com.tuotiansudai.activity.repository.model.TianDouPrize;
 import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.repository.TianDouPrize;
 
 public class DrawLotteryDto extends BaseDataDto {
 

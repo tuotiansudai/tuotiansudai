@@ -1,8 +1,7 @@
 package com.tuotiansudai.activity.repository.mapper;
 
-import com.tuotiansudai.activity.dto.PromotionStatus;
+import com.tuotiansudai.activity.repository.dto.PromotionStatus;
 import com.tuotiansudai.activity.repository.model.PromotionModel;
-import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

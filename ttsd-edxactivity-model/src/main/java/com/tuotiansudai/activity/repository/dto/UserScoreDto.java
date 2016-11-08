@@ -1,4 +1,4 @@
-package com.tuotiansudai.dto.ranking;
+package com.tuotiansudai.activity.repository.dto;
 
 public class UserScoreDto {
 

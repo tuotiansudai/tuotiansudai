@@ -1,9 +1,9 @@
 package com.tuotiansudai.activity.controller;
 
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.ranking.DrawLotteryDto;
-import com.tuotiansudai.dto.ranking.UserScoreDto;
-import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
+import com.tuotiansudai.activity.repository.dto.DrawLotteryDto;
+import com.tuotiansudai.activity.repository.dto.UserScoreDto;
+import com.tuotiansudai.activity.repository.dto.UserTianDouRecordDto;
 import com.tuotiansudai.point.dto.UserPointPrizeDto;
 import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.repository.mapper.AccountMapper;

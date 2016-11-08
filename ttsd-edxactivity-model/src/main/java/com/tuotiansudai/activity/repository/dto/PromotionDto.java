@@ -1,4 +1,4 @@
-package com.tuotiansudai.activity.dto;
+package com.tuotiansudai.activity.repository.dto;
 
 import com.tuotiansudai.activity.repository.model.PromotionModel;
 import org.springframework.format.annotation.DateTimeFormat;

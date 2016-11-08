@@ -1,6 +1,7 @@
-package com.tuotiansudai.dto.ranking;
+package com.tuotiansudai.activity.repository.dto;
 
-import com.tuotiansudai.repository.TianDouPrize;
+
+import com.tuotiansudai.activity.repository.model.TianDouPrize;
 
 public class UserTianDouRecordDto implements Comparable<UserTianDouRecordDto>{
 
