@@ -60,7 +60,7 @@ public class MessageController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/event-message-list", method = RequestMethod.GET)
+    @RequestMapping(value = "/auto-message-list", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView autoMessageList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
@@ -91,7 +91,7 @@ public class MessageController {
 
     @RequestMapping(value = "/manual-message", method = RequestMethod.GET)
     public ModelAndView createManualMessage() {
-        ModelAndView modelAndView = new ModelAndView("/manual-message");
+        ModelAndView modelAndView = new ModelAndView("/message-manual-edit");
         modelAndView.addObject("userGroups", Lists.newArrayList(MessageUserGroup.values()));
         List<MessageUserGroup> selectedUserGroups = Lists.newArrayList(MessageUserGroup.values());
         selectedUserGroups.remove(MessageUserGroup.IMPORT_USER);
@@ -110,7 +110,7 @@ public class MessageController {
     public ModelAndView createManualMessage(@PathVariable long messageId) {
         MessageCreateDto messageCreateDto = messageService.getMessageByMessageId(messageId);
 
-        ModelAndView modelAndView = new ModelAndView("/manual-message");
+        ModelAndView modelAndView = new ModelAndView("/message-manual-edit");
         modelAndView.addObject("dto", messageCreateDto);
         modelAndView.addObject("userGroups", Lists.newArrayList(MessageUserGroup.values()));
         modelAndView.addObject("selectedUserGroups", messageCreateDto.getUserGroups());
@@ -126,6 +126,7 @@ public class MessageController {
     }
 
     @RequestMapping(value = "/manual-message/create", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> createManualMessage(@RequestBody MessageCreateDto messageCreateDto, @RequestParam(value = "importUsersId") long importUsersId) {
         messageCreateDto.setUpdatedBy(LoginUserInfo.getLoginName());
         if (!messageService.isMessageExist(messageCreateDto.getId())) {
@@ -159,21 +160,21 @@ public class MessageController {
         return new BaseDto<>(new BaseDataDto(true, String.valueOf(newImportUsersId)));
     }
 
-    @RequestMapping(value = "/manual-message/{messageId}/approve", method = RequestMethod.POST)
+    @RequestMapping(value = "/approve/{messageId}", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> messageApprove(@PathVariable long messageId) {
-        return messageService.approveManualMessage(messageId, LoginUserInfo.getLoginName());
+    public BaseDto<BaseDataDto> manualMessageApprove(@PathVariable long messageId) {
+        return messageService.approveMessage(messageId, LoginUserInfo.getLoginName());
     }
 
-    @RequestMapping(value = "/manual-message/{messageId}/reject", method = RequestMethod.POST)
+    @RequestMapping(value = "/reject/{messageId}", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> messageReject(@PathVariable long messageId) {
-        return messageService.rejectManualMessage(messageId, LoginUserInfo.getLoginName());
+    public BaseDto<BaseDataDto> manualMessageReject(@PathVariable long messageId) {
+        return messageService.rejectMessage(messageId, LoginUserInfo.getLoginName());
     }
 
-    @RequestMapping(value = "/manual-message/{messageId}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/{messageId}", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> messageDelete(@PathVariable long messageId) {
-        return messageService.deleteManualMessage(messageId, LoginUserInfo.getLoginName());
+    public BaseDto<BaseDataDto> manualMessageDelete(@PathVariable long messageId) {
+        return messageService.deleteMessage(messageId, LoginUserInfo.getLoginName());
     }
 }

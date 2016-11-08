@@ -165,29 +165,29 @@ public class MessageServiceTest {
 
     public void testRejectManualMessage() throws Exception {
         MessageCreateDto originMessageCreateDto = prepareData();
-        BaseDto<BaseDataDto> baseDto = messageService.rejectManualMessage(originMessageCreateDto.getId(), "updateUser");
+        BaseDto<BaseDataDto> baseDto = messageService.rejectMessage(originMessageCreateDto.getId(), "updateUser");
         assertTrue(baseDto.getData().getStatus());
         MessageCreateDto messageCreateDto = messageService.getMessageByMessageId(originMessageCreateDto.getId());
         assertEquals(MessageStatus.REJECTION, messageCreateDto.getStatus());
         assertEquals("updateUser", messageCreateDto.getUpdatedBy());
-        baseDto = messageService.rejectManualMessage(originMessageCreateDto.getId(), "");
+        baseDto = messageService.rejectMessage(originMessageCreateDto.getId(), "");
         assertFalse(baseDto.getData().getStatus());
     }
 
     public void testApproveManualMessage() throws Exception {
         MessageCreateDto originMessageCreateDto = prepareData();
-        BaseDto<BaseDataDto> baseDto = messageService.approveManualMessage(originMessageCreateDto.getId(), "updateUser");
+        BaseDto<BaseDataDto> baseDto = messageService.approveMessage(originMessageCreateDto.getId(), "updateUser");
         assertTrue(baseDto.getData().getStatus());
         MessageCreateDto messageCreateDto = messageService.getMessageByMessageId(originMessageCreateDto.getId());
         assertEquals(MessageStatus.APPROVED, messageCreateDto.getStatus());
         assertEquals("updateUser", messageCreateDto.getUpdatedBy());
-        baseDto = messageService.rejectManualMessage(originMessageCreateDto.getId(), "");
+        baseDto = messageService.rejectMessage(originMessageCreateDto.getId(), "");
         assertFalse(baseDto.getData().getStatus());
     }
 
     public void testDeleteManualMessage() throws Exception {
         MessageCreateDto messageDto = prepareData();
-        messageService.deleteManualMessage(messageDto.getId(), "");
+        messageService.deleteMessage(messageDto.getId(), "");
         assertTrue(null == messageService.getMessageByMessageId(messageDto.getId()));
     }
 }

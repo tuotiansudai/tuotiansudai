@@ -31,7 +31,7 @@ public class MessageCreateAspect {
 
     private final static String LOAN_MESSAGE_REDIS_KEY = "web:loan:loanMessageMap";
 
-    public final static String LOAN_ID_KEY = "LOAN_ID";
+    private final static String LOAN_ID_KEY = "LOAN_ID";
 
     private static Logger logger = Logger.getLogger(MessageCreateAspect.class);
 
@@ -53,7 +53,7 @@ public class MessageCreateAspect {
     public void startRaisingLoanPointcut() {
     }
 
-    @Pointcut("execution(* *..AnnounceService.create(..))")
+    @Pointcut("execution(void com.tuotiansudai.service.AnnounceService.create(..))")
     public void createAnnouncePointcut() {
     }
 
@@ -65,7 +65,7 @@ public class MessageCreateAspect {
         try {
             String messageId = redisWrapperClient.hget(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanId));
             if (!Strings.isNullOrEmpty(messageId)) {
-                messageService.approveManualMessage(Long.valueOf(messageId), "sidneygao");
+                messageService.approveMessage(Long.valueOf(messageId), "sidneygao");
                 redisWrapperClient.hdel(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanId));
             }
             logger.info(MessageFormat.format("[Message Event Aspect] after start raising loan pointcut finished. loanId:{0}", loanId));
@@ -149,7 +149,7 @@ public class MessageCreateAspect {
             messageCreateDto.setCreatedTime(new Date());
 
             long messageId = messageService.createAndEditManualMessage(messageCreateDto, 0);
-            messageService.approveManualMessage(messageId, createdBy);
+            messageService.approveMessage(messageId, createdBy);
             logger.info(MessageFormat.format("[Message Event Aspect] after create announce pointcut finished. announceId:{0}", announceDto.getId()));
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Message Event Aspect] after create announce pointcut is fail. announceId:{0}", announceDto.getId()), e);

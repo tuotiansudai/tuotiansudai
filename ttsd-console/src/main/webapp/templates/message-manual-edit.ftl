@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="manual-message.js" headLab="app-push-manage" sideLab="createManualMessage" title="编辑手动信息">
+<@global.main pageCss="" pageJavascript="message-manual-edit.js" headLab="message-manage" sideLab="createManualMessage" title="创建手动站内信">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -114,7 +114,7 @@
                         <#list pushTypes as pushType>
                             <#if pushType.getType()=='MANUAL'>
                                 <option value="${pushType.name()}"
-                                        <#if jPushAlert?? && jPushAlert.pushType == pushType>selected</#if>>${pushType.getDescription()}</option>
+                                        <#if jPushAlert?? && jPushAlert.pushType == pushType || ((dto.pushType)?? && dto.pushType == pushType)>selected</#if>>${pushType.getDescription()}</option>
                             </#if>
                         </#list>
                     </select>
@@ -127,7 +127,7 @@
                     <select class="selectpicker message-pushSource" name="message-pushSource">
                         <#list pushSources as pushSource>
                             <option value="${pushSource.name()}"
-                                    <#if jPushAlert?? && jPushAlert.pushSource == pushSource>selected</#if>>${pushSource.name()}</option>
+                                    <#if jPushAlert?? && jPushAlert.pushSource == pushSource || ((dto.pushSource)?? && dto.pushSource == pushSource)>selected</#if>>${pushSource.name()}</option>
                         </#list>
                     </select>
                 </div>

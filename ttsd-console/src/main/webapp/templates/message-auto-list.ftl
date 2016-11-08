@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="message-auto-list.js" headLab="message-auto-list" sideLab="messageAutoManage" title="自动发送站内信管理">
+<@global.main pageCss="" pageJavascript="message-auto-list.js" headLab="message-manage" sideLab="autoMessageManage" title="自动发送站内信管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -50,11 +50,6 @@
             </tr>
             </thead>
             <tbody>
-                <#assign adminRole = false/>
-                <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                    <#assign adminRole = true/>
-                </@security.authorize>
-
                 <#list messageList as message>
                 <tr>
                     <td>
@@ -96,11 +91,19 @@
                         </#if>
                     </td>
                     <td>
-                        <#if message.status == 'TO_APPROVE'>
-                            启用
-                        <#elseif message.status == 'APPROVED'>
-                            暂停
-                        </#if>
+                        <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                            <#if message.status == 'TO_APPROVE'>
+                                <button class="btn btn-success btn-xs enabled-link"
+                                        data-link="/message-manage/approve/${message.id?c}">
+                                    启用
+                                </button>
+                            <#elseif message.status == 'APPROVED'>
+                                <button class="btn btn-danger btn-xs disabled-link"
+                                        data-link="/message-manage/reject/${message.id?c}">
+                                    暂停
+                                </button>
+                            </#if>
+                        </@security.authorize>
                     </td>
                     <td>
                     ${message.updatedBy}

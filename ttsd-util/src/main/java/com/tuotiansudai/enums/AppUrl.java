@@ -30,7 +30,6 @@ public enum AppUrl {
     LOGIN("登录", "app://tuotian/login"),
     INVEST_DETAILS_REPAY_DETAIL("投资详情(回款计划)", "app://tuotian/myinvest-repay-plan?investId={0}"),
 
-    ACTIVITY_CENTER("活动中心", "app://tuotian/activity-center"),
     MESSAGE_CENTER_LIST("消息中心列表页", "app://tuotian/message-list"),
     MESSAGE_CENTER_DETAIL("消息中心详情页", "app://tuotian/message-detail/{0}"),
     CONTACT_US("联系我们", "app://tuotian/contact-us"),

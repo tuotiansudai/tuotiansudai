@@ -90,6 +90,7 @@ public class MessageServiceImpl implements MessageService {
         jPushAlertDto.setMessageId(messageId);
         if (null != jPushAlertModel) {
             if (messageCreateDto.isJpush()) {
+                jPushAlertDto.setId(String.valueOf(jPushAlertModel.getId()));
                 jPushAlertService.buildJPushAlert(messageCreateDto.getCreatedBy(), jPushAlertDto);
             } else {
                 jPushAlertService.delete(messageCreateDto.getUpdatedBy(), jPushAlertModel.getId());
@@ -133,7 +134,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public BaseDto<BaseDataDto> rejectManualMessage(long messageId, String checkerName) {
+    public BaseDto<BaseDataDto> rejectMessage(long messageId, String checkerName) {
         if (!isMessageExist(messageId)) {
             return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
         }
@@ -149,17 +150,28 @@ public class MessageServiceImpl implements MessageService {
                 jPushAlertService.reject(checkerName, jPushAlertModel.getId(), null);
             }
             return new BaseDto<>(new BaseDataDto(true, null));
+        } else if (MessageType.EVENT == messageModel.getType()) {
+            messageModel.setStatus(MessageStatus.TO_APPROVE);
+            messageModel.setUpdatedTime(new Date());
+            messageModel.setUpdatedBy(checkerName);
+            messageMapper.update(messageModel);
+
+            JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelByMessageId(messageId);
+            if (null != jPushAlertModel) {
+                jPushAlertService.reject(checkerName, jPushAlertModel.getId(), "");
+            }
+            return new BaseDto<>(new BaseDataDto(true, null));
         }
-        return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE"));
+        return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE or EVENT message"));
     }
 
     @Override
-    public BaseDto<BaseDataDto> approveManualMessage(long messageId, String checkerName) {
+    public BaseDto<BaseDataDto> approveMessage(long messageId, String checkerName) {
         if (!isMessageExist(messageId)) {
             return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
         }
         MessageModel messageModel = messageMapper.findById(messageId);
-        if (MessageStatus.TO_APPROVE == messageModel.getStatus()) {
+        if (MessageStatus.TO_APPROVE == messageModel.getStatus() || MessageType.EVENT == messageModel.getType()) {
             messageModel.setActivatedBy(checkerName);
             messageModel.setActivatedTime(new Date());
             messageModel.setStatus(MessageStatus.APPROVED);
@@ -173,11 +185,11 @@ public class MessageServiceImpl implements MessageService {
             }
             return new BaseDto<>(new BaseDataDto(true, null));
         }
-        return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE"));
+        return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE or EVENT message"));
     }
 
     @Override
-    public BaseDto<BaseDataDto> deleteManualMessage(long messageId, String updatedBy) {
+    public BaseDto<BaseDataDto> deleteMessage(long messageId, String updatedBy) {
         if (!isMessageExist(messageId)) {
             return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
         }

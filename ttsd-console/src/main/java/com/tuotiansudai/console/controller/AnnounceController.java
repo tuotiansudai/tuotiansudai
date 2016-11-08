@@ -55,7 +55,7 @@ public class AnnounceController {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         baseDto.setData(dataDto);
-        this.announceService.create(announceDto, LoginUserInfo.getLoginName());
+        announceService.create(announceDto, LoginUserInfo.getLoginName());
         dataDto.setStatus(true);
         return baseDto;
     }

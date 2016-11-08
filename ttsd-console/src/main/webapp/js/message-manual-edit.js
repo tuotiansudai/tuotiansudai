@@ -151,12 +151,14 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                         data: dataForm,
                         contentType: 'application/json; charset=UTF-8'
                     }).done(function (res) {
-                        alert("success");
+                        if (res.status) {
+                            location.href = "/message-manage/manual-message-list";
+                        }
                     });
                 }
             }
         });
-
+        $('#extra').prop('checked') == true ? $('.check-item').show() : $('.check-item').hide();
         $('#extra').on('change', function (event) {
             event.preventDefault();
             if ($(this).prop('checked') == true) {

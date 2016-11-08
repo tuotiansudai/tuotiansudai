@@ -24,9 +24,9 @@ public interface MessageService {
 
     MessageCreateDto getMessageByMessageId(long messageId);
 
-    BaseDto<BaseDataDto> rejectManualMessage(long messageId, String checkerName);
+    BaseDto<BaseDataDto> rejectMessage(long messageId, String checkerName);
 
-    BaseDto<BaseDataDto> approveManualMessage(long messageId, String checkerName);
+    BaseDto<BaseDataDto> approveMessage(long messageId, String checkerName);
 
-    BaseDto<BaseDataDto> deleteManualMessage(long messageId, String updatedBy);
+    BaseDto<BaseDataDto> deleteMessage(long messageId, String updatedBy);
 }

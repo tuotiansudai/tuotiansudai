@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="message-manual-list.js" headLab="app-push-manage" sideLab="manualMessageManage" title="手动发送站内信管理">
+<@global.main pageCss="" pageJavascript="message-manual-list.js" headLab="message-manage" sideLab="manualMessageManage" title="手动发送站内信管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -144,7 +144,6 @@
                                 <a class="pass reject-btn" href="javascript:void(0)"
                                    data-messageId="${message.id?c}">驳回</a>|
                             </@security.authorize>
-                            <@security.authorize access="hasAuthority('ADMIN')">｜</@security.authorize>
                             <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
                                 <a href="/message-manage/manual-message/${message.id?c}/edit">编辑</a>｜
                                 <a class="pass delete-btn" href="javascript:void(0)"

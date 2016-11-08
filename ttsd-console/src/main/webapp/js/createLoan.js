@@ -18,6 +18,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
 
         var arrayParam = ['extraRateIds', 'extraSource'];
 
+
         var loanIdElement = $('input[name="id"]');
         var loanNameElement = $('select[name="name"]'); //标的名称Element
         var loanTypeElement = $('select[name="loanType"]'); //标的类型Element
@@ -347,7 +348,8 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
             var value = loanNameElement.val();
             var url = $currentFormSubmitBtn.data("url");
             var requestData = {};
-
+            var messageTitle = $('#messagsTitle').val(),
+                messageContent = $('#messageContent').val();
             if ("房产抵押借款" == value) {
                 requestData = generateRequestParams({
                     'loan': loanParam,
@@ -372,7 +374,8 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     'pledgeEnterprise': pledgeEnterpriseParam
                 });
             }
-
+            requestData.loanMessageTitle = messageTitle;
+            requestData.loanMessageContent = messageContent;
             $.ajax(
                 {
                     url: url,
@@ -494,4 +497,14 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
             requestData['loan']['loanTitles'] = uploadFile;
             return requestData
         }
+
+        $('#messageSend').on('change', function () {
+            if ($(this).prop('checked') == true) {
+                $('#messagsTitle').prop('disabled', false);
+                $('#messageContent').prop('disabled', false);
+            } else {
+                $('#messagsTitle').prop('disabled', true).val('');
+                $('#messageContent').prop('disabled', true).val('');
+            }
+        });
     });
