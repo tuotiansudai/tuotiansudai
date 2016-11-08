@@ -40,6 +40,9 @@ public class AdvanceRepayDiagnosis extends NormalRepayDiagnosis {
     protected long calcExpectInvestRepayAmount(InvestRepayModel investRepayModel) {
         // 提前还款实际交易金额 = 当期利息 + 投资本金
         InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
+        if (investModel == null) {
+            return -2;
+        }
         return investModel.getAmount() + investRepayModel.getActualInterest();
     }
 
@@ -47,6 +50,9 @@ public class AdvanceRepayDiagnosis extends NormalRepayDiagnosis {
     protected long calcExpectLoanRepayAmount(LoanRepayModel loanRepayModel) {
         // 提前还款实际交易金额 = 当期利息 + 本金
         LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
+        if (loanModel == null) {
+            return -1;
+        }
         return loanModel.getLoanAmount() + loanRepayModel.getActualInterest();
     }
 }

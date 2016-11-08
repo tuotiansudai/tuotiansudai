@@ -47,6 +47,9 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
         // 逾期还款实际交易金额 = 当期利息 + 罚息 + 投资本金
         // 其中 当期利息 = 上期利息 + 逾期天数产生的利息
         InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
+        if (investModel == null) {
+            return -2;
+        }
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId());
         long overdueDefaultInterest = investRepayModels.stream()
                 .map(InvestRepayModel::getDefaultInterest)
@@ -61,6 +64,9 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
         // 逾期还款实际交易金额 = 当期利息 + 罚息 + 投资本金
         // 其中 当期利息 = 上期利息 + 逾期天数产生的利息
         LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
+        if (loanModel == null) {
+            return -1;
+        }
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanRepayModel.getLoanId());
         long overdueDefaultInterest = loanRepayModels.stream()
                 .map(LoanRepayModel::getDefaultInterest)

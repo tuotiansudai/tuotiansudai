@@ -63,7 +63,9 @@ public class InvestTransferOutDiagnosis extends UserBillBusinessDiagnosis {
     private boolean checkTransferInOutExists(TransferApplicationModel transferApplicationModel) {
         InvestModel transferOutInvest = investMapper.findById(transferApplicationModel.getTransferInvestId());
         InvestModel transferInInvest = investMapper.findById(transferApplicationModel.getInvestId());
-        return transferOutInvest.getStatus() == InvestStatus.SUCCESS &&
+        return transferOutInvest != null &&
+                transferInInvest != null &&
+                transferOutInvest.getStatus() == InvestStatus.SUCCESS &&
                 transferInInvest.getStatus() == InvestStatus.SUCCESS &&
                 transferInInvest.getAmount() == transferOutInvest.getAmount();
     }

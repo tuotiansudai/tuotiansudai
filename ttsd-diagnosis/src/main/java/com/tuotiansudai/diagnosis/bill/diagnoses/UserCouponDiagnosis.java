@@ -57,6 +57,9 @@ public abstract class UserCouponDiagnosis extends UserBillBusinessDiagnosis {
 
     public CouponRepayModel findTracedObject(UserBillModel userBillModel) {
         UserCouponModel userCouponModel = userCouponMapper.findById(userBillModel.getOrderId());
+        if (userCouponModel == null) {
+            return null;
+        }
         String eventDateString = new SimpleDateFormat("yyyy-MM-dd").format(userBillModel.getCreatedTime());
         List<CouponRepayModel> couponRepayList = couponRepayMapper.findCouponRepayByInvestIdAndRepayDate(userBillModel.getLoginName(),
                 userCouponModel.getInvestId(), null, null, eventDateString);

@@ -67,7 +67,15 @@ class UserBillDiagnosis implements Diagnosis {
         DiagnosisContext diagnosisContext = new DiagnosisContext(loginName);
         userBillModelList.stream()
                 .filter(bill -> diagnosisMap.containsKey(bill.getBusinessType()) && bill.getOrderId() != null)
-                .forEach(bill -> diagnosisMap.get(bill.getBusinessType()).diagnosis(bill, diagnosisContext));
+                .forEach(bill -> {
+                    UserBillBusinessDiagnosis diagnosis = diagnosisMap.get(bill.getBusinessType());
+                    try {
+                        diagnosis.diagnosis(bill, diagnosisContext);
+                    } catch (Exception e) {
+                        diagnosisContext.addProblem("diagnosis failed: " + e.getMessage());
+                        logger.error("diagnosis failed", e);
+                    }
+                });
         return diagnosisContext.getResult();
     }
 
