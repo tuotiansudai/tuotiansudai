@@ -19,6 +19,7 @@ shouldRejectClick: function (lastTouchEventTimestamp, clickEventTimestamp) {
 
 import MediaList from 'components/licaiCircle/MediaList';
 import Article from 'components/licaiCircle/Article';
+import messageCenter from 'components/messageCenter/messageCenter';
 import taskCenter from 'components/taskCenter/taskCenter';
 
 class App extends React.Component {
@@ -28,6 +29,7 @@ class App extends React.Component {
         		<Route path="media-center" component={MediaList} />
         		<Route path="task-center" component={taskCenter} />
         		<Route path="media-center/article/:id" component={Article} />
+        		<Route path="message-center" component={messageCenter} />
         		<Redirect from="/" to="media-center" />
 	        </Router>
 		)
