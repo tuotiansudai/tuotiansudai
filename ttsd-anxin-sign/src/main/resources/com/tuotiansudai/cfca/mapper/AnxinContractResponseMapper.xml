@@ -7,7 +7,7 @@
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
     <resultMap id="anxinContractRequestModel" type="AnxinContractResponseModel">
         <id column="id" property="id"/>
-        <result column="business_id" property="loanId"/>
+        <result column="business_id" property="businessId"/>
         <result column="batch_no" property="batchNo"/>
         <result column="contract_no" property="contractNo"/>
         <result column="tx_time" property="txTime"/>
@@ -22,13 +22,13 @@
         INSERT INTO `anxin_operations`.`anxin_contract_response`
         (`business_id`,`batch_no`,`contract_no`,`tx_time`,`locale`,`ret_code`,`ret_message`,`created_time`)
         VALUES
-        (#{loanId},#{batchNo},#{contractNo},#{txTime},#{locale},#{retCode},#{retMessage},#{createdTime});
+        (#{businessId},#{batchNo},#{contractNo},#{txTime},#{locale},#{retCode},#{retMessage},#{createdTime});
     </insert>
 
     <update id="update" parameterType="AnxinContractResponseModel">
         UPDATE `anxin_operations`.`anxin_contract_response`
         SET
-        `business_id` = #{loanId},
+        `business_id` = #{businessId},
         `batch_no` = #{batchNo},
         `contract_no` = #{contractNo},
         `tx_time` = #{txTime},

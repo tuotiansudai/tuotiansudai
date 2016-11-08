@@ -103,4 +103,10 @@ public class JobController {
     public BaseDto<PayDataDto> contractNotify(@RequestBody long loanId) {
         return anxinSignService.updateContractResponse(loanId, AnxinContractType.LOAN_CONTRACT);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/anxin-transfer_contract-notify", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> transferContractNotify(@RequestBody long loanId) {
+        return anxinSignService.updateContractResponse(loanId, AnxinContractType.TRANSFER_CONTRACT);
+    }
 }

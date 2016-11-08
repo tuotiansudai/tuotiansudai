@@ -351,10 +351,10 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                 anxinContractRequestMapper.create(new AnxinContractRequestModel(businessId,anxinContractType.name(), Long.parseLong(investmentInfo.get("orderId")),
                         agentSignId, investorSignId, txTime, batchNo, createContractVO.getTemplateId(),
                         createContractVO.getIsSign() != null ? String.valueOf(createContractVO.getIsSign()) : "0", investmentInfo.get("agentMobile"),
-                        investmentInfo.get("loanerIdentityNumber"), investmentInfo.get("recheckTime"), investmentInfo.get("totalRate"),
-                        investmentInfo.get("investorMobile"), investmentInfo.get("agentIdentityNumber"), investmentInfo.get("periods"),
-                        investmentInfo.get("pledge"), investmentInfo.get("endTime"), investmentInfo.get("investorIdentityNumber"),
-                        investmentInfo.get("loanerUserName"), investmentInfo.get("loanAmount"), DateTime.now().toDate()));
+                        investmentInfo.get("loanerIdentityNumber"), investmentInfo.get("recheckTime1"), investmentInfo.get("totalRate"),
+                        investmentInfo.get("investorMobile"), investmentInfo.get("agentIdentityNumber"), investmentInfo.get("periods1"),
+                        investmentInfo.get("pledge"), investmentInfo.get("endTime1"), investmentInfo.get("investorIdentityNumber"),
+                        investmentInfo.get("loanerUserName"), investmentInfo.get("loanAmount1"), DateTime.now().toDate()));
             }
         });
     }

@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -38,7 +39,10 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.*;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.util.SendCloudMailUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -521,18 +525,20 @@ public class LoanServiceImpl implements LoanService {
         return respData;
     }
 
-    private void updateContractResponseHandleJob(long loanId) {
+    private void updateContractResponseHandleJob(long businessId) {
         try {
             Date triggerTime = new DateTime().plusMinutes(AnxinContractHandleJob.HANDLE_DELAY_MINUTES)
                     .toDate();
             jobManager.newJob(JobType.ContractResponse, AnxinContractHandleJob.class)
-                    .addJobData(AnxinContractHandleJob.LOAN_ID_KEY, loanId)
-                    .withIdentity(JobType.ContractResponse.name(), "Loan-" + loanId)
+                    .addJobData(AnxinContractHandleJob.BUSINESS_ID, businessId)
+                    .addJobData(AnxinContractHandleJob.ANXIN_CONTRACT_TYPE, AnxinContractType.TRANSFER_CONTRACT)
+                    .withIdentity(JobType.ContractResponse.name(), "Loan-" + businessId)
+                    .withIdentity(JobType.ContractResponse.name(), "Loan-" + businessId)
                     .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
-            logger.error("create update contract response  handle job for loan[" + loanId + "] fail", e);
+            logger.error("create update contract response  handle job for loan[" + businessId + "] fail", e);
         }
     }
 

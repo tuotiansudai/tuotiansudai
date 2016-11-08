@@ -174,7 +174,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             dataModel.put("identity", loanModel.getLoanerIdentityNumber());
             dataModel.put("amount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
             dataModel.put("totalRate", String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100));
-            dataModel.put("periods", String.valueOf(loanModel.getPeriods()));
+            dataModel.put("periods", String.valueOf(loanModel.getPeriods() * 30));
         }
 
         if (transferApplicationModel.getPeriod() != 1) {
