@@ -26,7 +26,7 @@ public class InvestModel implements Serializable {
     private long loanId;
 
 
-    private String contractId;
+    private String contractNo;
     /**
      * 投资金额
      */
@@ -228,11 +228,11 @@ public class InvestModel implements Serializable {
         this.investFeeRate = investFeeRate;
     }
 
-    public String getContractId() {
-        return contractId;
+    public String getContractNo() {
+        return contractNo;
     }
 
-    public void setContractId(String contractId) {
-        this.contractId = contractId;
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
     }
 }
