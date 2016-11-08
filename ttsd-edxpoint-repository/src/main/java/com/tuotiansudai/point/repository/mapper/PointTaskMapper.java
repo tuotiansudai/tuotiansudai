@@ -14,7 +14,4 @@ public interface PointTaskMapper {
 
     PointTaskModel findById(long id);
 
-    long findCountPointTaskPagination();
-
-    List<PointTaskModel> findPointTaskPagination(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 }

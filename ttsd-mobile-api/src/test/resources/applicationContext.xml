@@ -119,6 +119,10 @@
         <property name="dataSource" ref="activityHikariCPDataSource"/>
     </bean>
 
+    <bean id="pointTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="pointHikariCPDataSource"/>
+    </bean>
+
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage"
