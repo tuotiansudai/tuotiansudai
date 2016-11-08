@@ -302,10 +302,8 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         person.setIdentTypeCode("0");
         person.setIdentNo(accountModel.getIdentityNumber());
         person.setMobilePhone(userModel.getMobile());
-        person.setEmail(userModel.getEmail());
         person.setAddress(userModel.getCity());
         person.setAuthenticationMode("公安部");
-
         return person;
     }
 
