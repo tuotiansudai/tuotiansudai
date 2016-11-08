@@ -26,11 +26,15 @@
 </#macro>
 
 <#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="">
-    <#local menus=[
-    {"title":"首页", "url":"/","category":"16顶部导航"},
-    {"title":"我要投资", "url":"/loan-list","category":"17顶部导航"},
+    <#local mainMenus=[
+    {"title":"首页", "url":"/","category":"16顶部导航","navigation":"true"},
+    {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
+        {"title":"直投项目", "url":"/loan-list"},
+        {"title":"转让项目", "url":"/transfer-list"}
+    ]},
+
     {"title":"我要借款", "url":"/loan-application","category":"19顶部导航","navigation":"true"},
-    {"title":"我的账户", "url":"/account", "category":"18顶部导航","leftNavs":[
+    {"title":"我的账户", "url":"/account", "category":"18顶部导航","navigation":"true","leftNavs":[
         {"title":"账户总览", "url":"/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"我的投资", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
         {"title":"债权转让", "url":"/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
@@ -42,8 +46,8 @@
         {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
-    {"title":"问答", "url":"${askServer}","category":""},
-    {"title":"关于我们", "url":"/about/company","category":"20顶部导航", "leftNavs":[
+    {"title":"拓天问答", "url":"${askServer}","category":"","navigation":"true"},
+    {"title":"信息披露", "url":"/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
         {"title":"公司介绍", "url":"/about/company"},
         {"title":"团队介绍", "url":"/about/team"},
         {"title":"拓天公告", "url":"/about/notice"},
@@ -70,38 +74,34 @@
     </#if>
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
-
+    <#if !isAppSource>
+        <meta name = "format-detection" content = "telephone=no">
+    </#if>
     <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${css.global}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
     <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8" />
     </#if>
-    <script>
-        var _czc = _czc || [];
-        <#if isProduction>
-            _czc.push(["_trackEvent()", "1254796373"]);
-        <#else >
-            _czc.push(["_trackEvent()", "1257936541"]);
-        </#if>
-    </script>
 
+    <#include "../cnzz.ftl"/>
+    <!-- growing io -->
+    <#include "../growing-io.ftl"/>
 </head>
 <body>
 
 <#if !isAppSource>
-    <#include "../header.ftl"/>
-    <#include "../top-menus.ftl"/>
+    <#include "../pageLayout/header.ftl"/>
+    <#include "../pageLayout/top-menus.ftl"/>
 </#if>
-
 <div class="main-frame full-screen clearfix">
     <#if !isAppSource>
-        <#include "../left-menus.ftl"/>
+        <#include "../pageLayout/left-menus.ftl"/>
     </#if>
     <#nested>
 </div>
 
 <#if !isAppSource>
-    <#include "../footer.ftl" />
+    <#include "../pageLayout/footer.ftl" />
 </#if>
 
 <script type="text/javascript" charset="utf-8">
@@ -113,126 +113,8 @@
     };
     </@security.authorize>
 
-    adjustMobileHideHack();
-    function adjustMobileHideHack() {
-
-        //this function will be remove when all pages are responsive
-        var bodyDom=document.getElementsByTagName("body")[0],
-            userAgent = navigator.userAgent.toLowerCase(),
-            metaTags=document.getElementsByTagName('meta'),
-            metaLen=metaTags.length,isResponse=false,isPC=false,i=0;
-        isPC = !(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1);
-        for(;i<metaLen;i++) {
-            if(metaTags[i].getAttribute('name')=='viewport') {
-                isResponse=true;
-            }
-        }
-        bodyDom.className=(!isResponse&&!isPC)?'page-width':'';
-    }
-
-    window.$ = function(id) {
-        return document.getElementById(id);
-    };
-
-    function phoneLoadFun() {
-
-        window.$('closeDownloadBox').onclick=function(event) {
-            event.stopPropagation();
-            event.preventDefault();
-            this.parentElement.style.display='none';
-        };
-        window.$('btnExperience').onclick=function(event) {
-            event.stopPropagation();
-            event.preventDefault();
-            location.href = "/app/download";
-        };
-
-        window.$('showMainMenu').onclick=function(event) {
-            event.stopPropagation();
-            event.preventDefault();
-            this.nextElementSibling.style.display='block';
-
-        };
-
-    }
-    var imgDom=window.$('iphone-app-img'),
-        TopMainMenuList=window.$('TopMainMenuList');
-
-    if (window.$('iphone-app-pop')) {
-        window.$('iphone-app-pop').onclick=function(e) {
-            if(imgDom.style.display == "block") {
-                imgDom.style.display='none';
-            }
-            else {
-                imgDom.style.display='block';
-            }
-            if (event.stopPropagation) {
-                event.stopPropagation();
-            }
-            else if (window.event) {
-                window.event.cancelBubble = true;
-            }
-        };
-    }
-
-    document.getElementsByTagName("body")[0].onclick=function(e) {
-        var userAgent = navigator.userAgent.toLowerCase(),
-                event = e || window.event,
-                target = event.srcElement || event.target;
-        if(target.tagName=='LI' ) {
-            return;
-        }
-        imgDom.style.display='none';
-        if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
-
-            //判断是否为viewport
-            var metaTags=document.getElementsByTagName('meta'),
-                    metaLen=metaTags.length,i=0;
-            for(;i<metaLen;i++) {
-                if(metaTags[i].getAttribute('name')=='viewport') {
-                    TopMainMenuList.style.display='none';
-                }
-            }
-        }
-
-    };
-
-    phoneLoadFun();
-
-    document.getElementById('getMore').onclick=function(){
-        var obj = document. getElementById('getMore');  
-        toggleClass(obj,"active"); 
-    }
-
-    function hasClass(obj, cls) {  
-        return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));  
-    }  
-      
-    function addClass(obj, cls) {  
-        if (!this.hasClass(obj, cls)) obj.className += " " + cls;  
-    }  
-      
-    function removeClass(obj, cls) {  
-        if (hasClass(obj, cls)) {  
-            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');  
-            obj.className = obj.className.replace(reg, ' ');  
-        }  
-    }  
-      
-    function toggleClass(obj,cls){  
-        if(hasClass(obj,cls)){  
-            removeClass(obj, cls);
-            document. getElementById('linkList').style.height='30px';  
-        }else{  
-            addClass(obj, cls);
-            document. getElementById('linkList').style.height='auto';  
-        }  
-    } 
-
-
-
 </script>
-
+<script src="${staticServer}${jsPath}${js.global_page}" type="text/javascript"  charset="utf-8"></script>
 <script src="${staticServer}${jsPath}${js.config}" type="text/javascript" charset="utf-8"></script>
 
 <#if pageJavascript?? && pageJavascript?length gt 0>
@@ -240,11 +122,9 @@
         data-main="${staticServer}${jsPath}${pageJavascript}">
 
 </script>
-<script src="${staticServer}${jsPath}${js.cnzz_statistics}" type="text/javascript" charset="utf-8"></script>
-
 </#if>
 
-<#include "../statistic.ftl" />
+<#include "../pageLayout/statistic.ftl" />
 </body>
 </html>
 </#macro>

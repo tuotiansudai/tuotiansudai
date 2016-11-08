@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'fancybox', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert', 'red-envelope-float', 'jquery.form', 'commonFun','logintip'], function ($, pagination, Mustache, investListTemplate, layer, _) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'fancybox', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert', 'red-envelope-float', 'jquery.form', 'commonFun','logintip','assign_coupon'], function ($, pagination, Mustache, investListTemplate, layer, _) {
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
         amountInputElement = $(".text-input-amount", $loanDetail),
@@ -417,7 +417,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         layer.open({
             type: 1,
             closeBtn: 0,
-            skin: 'demo-class',
+            skin: 'layer-tip-loanDetail',
             shadeClose: false,
             title: '免密投资',
             btn: ['不开启', '开启'],
@@ -479,7 +479,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         layer.open({
             type: 1,
             closeBtn: 0,
-            skin: 'demo-class',
+            skin: 'layer-tip-loanDetail',
             title: '免密投资',
             shadeClose: false,
             btn: autoInvestOn ? ['继续投资', '开启免密投资'] : ['继续投资', '前往联动优势授权'],
@@ -534,7 +534,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         layer.closeAll();
         layer.open({
             type: 1,
-            skin: 'demo-class',
+            skin: 'layer-tip-loanDetail',
             shadeClose:false,
             title: '登录到联动优势支付平台开通免密投资',
             area: ['500px', '290px'],
@@ -581,7 +581,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             layer.open({
                 type: 1,
                 closeBtn: 0,
-                skin: 'demo-class',
+                skin: 'layer-tip-loanDetail',
                 title: '免密投资',
                 shadeClose:false,
                 btn:['取消', '确认'],
@@ -795,11 +795,30 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             layer.closeAll('tips');
             var value = _.compose(replace)($investInput.val()),
                 $expected=$accountInfo.find('.expected-interest-dd');
+
+            var queryParams = [];
+            $.each($('input[type="hidden"][name="userCouponIds"]'), function(index, item) {
+                queryParams.push({
+                    'name': 'couponIds',
+                    'value': $(item).data("coupon-id")
+                })
+            });
+
+            $ticketList.find('li').each(function(index, item) {
+                if ($(item).find('input[type="radio"]:checked').length > 0) {
+                    queryParams.push({
+                        'name': 'couponIds',
+                        'value': $(item).data("coupon-id")
+                    });
+                }
+            });
+            var couponIds = queryParams.length == 0 ? 0: queryParams[0].value;
+
             $.ajax({
                 url: '/get-membership-preference',
                 type: 'GET',
                 dataType: 'json',
-                data:{"loanId":loanId,"investAmount":value},
+                data:{"loanId":loanId,"investAmount":value,"couponIds":couponIds},
                 contentType: 'application/json; charset=UTF-8'
             })
                 .done(function(response) {

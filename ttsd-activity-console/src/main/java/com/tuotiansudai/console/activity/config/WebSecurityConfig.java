@@ -23,7 +23,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.headers().frameOptions().sameOrigin();
         http.formLogin().loginPage("/login");
-        http.authorizeRequests().antMatchers("/**").permitAll();
+        http.authorizeRequests().antMatchers("/activity-console/activity-manage/**").hasAnyAuthority("ADMIN", "CUSTOMER_SERVICE", "OPERATOR", "OPERATOR_ADMIN");
+        http.authorizeRequests().antMatchers("/**").hasAnyAuthority("ADMIN", "CUSTOMER_SERVICE", "OPERATOR", "OPERATOR_ADMIN");
         http.addFilterAt(myPreAuthenticatedProcessingFilter, AbstractPreAuthenticatedProcessingFilter.class);
         http.exceptionHandling().accessDeniedHandler(myAccessDeniedHandler());
     }

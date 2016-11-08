@@ -17,6 +17,7 @@ import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.BankModel;
 import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ import java.util.List;
 
 @Service
 public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
+
+    final static Logger logger = Logger.getLogger(MobileAppRechargeServiceImpl.class);
+
     @Autowired
     private PayWrapperClient payWrapperClient;
 
@@ -45,7 +49,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
 
     @Override
     public BaseResponseDto recharge(BankCardRequestDto bankCardRequestDto) {
-        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        BaseResponseDto<BankCardResponseDto> baseResponseDto = new BaseResponseDto<>();
         RechargeDto rechargeDto = bankCardRequestDto.convertToRechargeDto();
         rechargeDto.setChannel(mobileAppChannelService.obtainChannelBySource(bankCardRequestDto.getBaseParam()));
 
@@ -58,10 +62,16 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
         BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
         try {
             BaseDto<PayFormDataDto> formDto = payWrapperClient.recharge(rechargeDto);
+            if (!formDto.isSuccess()) {
+                logger.error("[MobileAppRechargeServiceImpl][recharge] pay wrapper may fail to connect.");
+
+                baseResponseDto.setCode(ReturnMessage.FAIL.getCode());
+                baseResponseDto.setMessage(ReturnMessage.FAIL.getMsg());
+                return baseResponseDto;
+            }
             if (formDto.getData().getStatus()) {
                 bankCardResponseDto.setUrl(formDto.getData().getUrl());
                 bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(formDto.getData().getFields()));
-
             }
         } catch (UnsupportedEncodingException e) {
             return new BaseResponseDto(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode(), ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
@@ -83,26 +93,21 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
         String bankCode = bankLimitRequestDto.getBankCode();
         BankLimitResponseDataDto bankLimitResponseDataDto = new BankLimitResponseDataDto();
         if (StringUtils.isEmpty(bankCode)) {
-            List<BankModel> bankModelList = bankMapper.findBankList();
-            List<BankLimitUnitDto> bankLimitUnitDtos = Lists.transform(bankModelList, new Function<BankModel, BankLimitUnitDto>() {
-                @Override
-                public BankLimitUnitDto apply(BankModel bankModel) {
-                    return new BankLimitUnitDto(AmountConverter.convertCentToString(bankModel.getSingleAmount()),
-                            AmountConverter.convertCentToString(bankModel.getSingleDayAmount()), bankModel.getBankCode(),
-                            bankModel.getName());
-                }
-            });
+            List<BankModel> bankModelList = bankMapper.findWebBankList();
+            List<BankLimitUnitDto> bankLimitUnitDtos = Lists.transform(bankModelList, bankModel -> new BankLimitUnitDto(AmountConverter.convertCentToString(bankModel.getSingleAmount()),
+                    AmountConverter.convertCentToString(bankModel.getSingleDayAmount()), bankModel.getBankCode(),
+                    bankModel.getName()));
 
             bankLimitResponseDataDto.setRechargeLeftAmount("");
             bankLimitResponseDataDto.setBankLimits(bankLimitUnitDtos);
         } else {
             BankModel bankModel = bankMapper.findByBankCode(bankCode);
             if (null == bankModel) {
-                return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+                return new BaseResponseDto<>(ReturnMessage.BIND_CARD_LIMIT_FAIL.getCode(), ReturnMessage.BIND_CARD_LIMIT_FAIL.getMsg());
             }
             long leftAmount = getLeftRechargeAmount(bankLimitRequestDto.getBaseParam().getPhoneNum(), bankModel);
             if (leftAmount < 0) {
-                return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+                return new BaseResponseDto<>(ReturnMessage.BIND_CARD_LIMIT_FAIL.getCode(), ReturnMessage.BIND_CARD_LIMIT_FAIL.getMsg());
             } else {
                 bankLimitResponseDataDto.setRechargeLeftAmount(AmountConverter.convertCentToString(leftAmount));
                 bankLimitResponseDataDto.setBankLimits(Lists.newArrayList(new BankLimitUnitDto(AmountConverter.convertCentToString(bankModel.getSingleAmount()),

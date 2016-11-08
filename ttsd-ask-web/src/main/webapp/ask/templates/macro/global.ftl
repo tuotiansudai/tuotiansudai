@@ -19,7 +19,54 @@
     </@security.authorize>
 </#macro>
 
-<#macro main pageCss pageJavascript staticServer="${staticServer}" title="拓天速贷" keywords="" description="">
+<#macro main pageCss pageJavascript="" activeNav="" staticServer="${staticServer}" title="拓天速贷" keywords="" activeLeftNav=""  description="">
+    <#local mainMenus=[
+    {"title":"首页", "url":"${webServer}","category":"16顶部导航","navigation":"true"},
+    {"title":"我要投资", "url":"${webServer}/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
+        {"title":"直投项目", "url":"${webServer}/loan-list"},
+        {"title":"转让项目", "url":"${webServer}/transfer-list"}
+    ]},
+    {"title":"我要借款", "url":"${webServer}/loan-application","category":"19顶部导航","navigation":"true"},
+
+    {"title":"我的账户", "url":"${webServer}/account", "category":"18顶部导航","navigation":"true","leftNavs":[
+        {"title":"账户总览", "url":"${webServer}/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"我的投资", "url":"${webServer}/investor/invest-list", "role":"'USER', 'INVESTOR'"},
+        {"title":"债权转让", "url":"${webServer}/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
+        {"title":"我的借款", "url":"${webServer}/loaner/loan-list", "role":"'LOANER'"},
+        {"title":"资金管理", "url":"${webServer}/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"我的财豆", "url":"${webServer}/point", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"个人资料", "url":"${webServer}/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"自动投标", "url":"${webServer}/auto-invest", "role":"'USER', 'INVESTOR'"},
+        {"title":"推荐管理", "url":"${webServer}/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"我的宝藏", "url":"${webServer}/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
+    ]},
+    {"title":"拓天问答", "url":"${askServer}","category":"","navigation":"true"},
+    {"title":"信息披露", "url":"${webServer}/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
+        {"title":"公司介绍", "url":"${webServer}/about/company"},
+        {"title":"团队介绍", "url":"${webServer}/about/team"},
+        {"title":"拓天公告", "url":"${webServer}/about/notice"},
+        {"title":"媒体报道", "url":"${webServer}/about/media"},
+        {"title":"推荐奖励", "url":"${webServer}/about/refer-reward"},
+        {"title":"服务费用", "url":"${webServer}/about/service-fee"},
+        {"title":"联系我们", "url":"${webServer}/about/contact"},
+        {"title":"运营数据", "url":"${webServer}/about/operational"}
+    ]},
+    {"title":"帮助中心", "url":"${webServer}/help/help-center","category":"21顶部导航", "navigation":"false","leftNavs":[
+        {"title":"注册认证", "url":"${webServer}/help/account"},
+        {"title":"账户管理", "url":"${webServer}/help/user"},
+        {"title":"资金相关", "url":"${webServer}/help/money"},
+        {"title":"产品类型", "url":"${webServer}/help/product"},
+        {"title":"其他问题", "url":"/${webServer}help/other"}
+    ]}
+    ]/>
+
+    <#local membershipMenus=[
+        {"title":"我的会员", "url":"/membership","category":""},
+        {"title":"成长体系", "url":"/membership/structure","category":""},
+        {"title":"会员特权", "url":"/membership/privilege","category":""},
+        {"title":"积分商城", "url":"/point-shop","category":""},
+        {"title":"积分任务", "url":"/point-shop/task","category":""}
+    ]/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,25 +83,16 @@
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8"/>
     </#if>
-    <script>
-        var _czc = _czc || [];
-        _czc.push(["_trackEvent()", "1257936541"]);
 
-        var _hmt = _hmt || [];
-        (function() {
-            var hm = document.createElement("script");
-            hm.src = "//hm.baidu.com/hm.js?d181b58b93d8babf116049c3dc826443";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-
-    </script>
+    <#include "../cnzz.ftl"/>
+    <!-- growing io -->
+    <#include "../growing-io.ftl"/>
 </head>
 <body>
-    <#include "../header.ftl"/>
+    <#include "../pageLayout/header.ftl"/>
 
 <#--top menus-->
-    <#include "../top-menu.ftl"/>
+    <#include "../pageLayout/top-menu.ftl"/>
 <#--top menus-->
 
 <#--ad image-->
@@ -99,58 +137,8 @@
     </div>
 </div>
 
-    <#include "../footer.ftl" />
+    <#include "../pageLayout/footer.ftl" />
 
-<script type="text/javascript">
-    window.$ = function(id) {
-        return document.getElementById(id);
-    };
-    var imgDom=window.$('iphone-app-img'),
-            TopMainMenuList=window.$('TopMainMenuList');
-    if (window.$('iphone-app-pop')) {
-        window.$('iphone-app-pop').onclick=function(event) {
-            if(imgDom.style.display == "block") {
-                imgDom.style.display='none';
-            }
-            else {
-                imgDom.style.display='block';
-            }
-            if (event.stopPropagation) {
-                event.stopPropagation();
-            }
-            else if (window.event) {
-                window.event.cancelBubble = true;
-            }
-        };
-    }
-
-
-    document.getElementById('showMainMenu').onclick=function(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        this.nextElementSibling.style.display='block';
-    }
-
-    document.getElementsByTagName("body")[0].onclick=function(e) {
-        var userAgent = navigator.userAgent.toLowerCase(),
-                event = e || window.event,
-                target = event.srcElement || event.target;
-
-        imgDom.style.display='none';
-        if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
-
-            //判断是否为viewport
-            var metaTags=document.getElementsByTagName('meta'),
-                    metaLen=metaTags.length,i=0;
-            for(;i<metaLen;i++) {
-                if(metaTags[i].getAttribute('name')=='viewport') {
-                    document.getElementById('TopMainMenuList').style.display='none';
-                }
-            }
-        }
-
-    };
-</script>
 <script src="${staticServer}${jsPath}${pageJavascript}" type="text/javascript"></script>
 
 </body>

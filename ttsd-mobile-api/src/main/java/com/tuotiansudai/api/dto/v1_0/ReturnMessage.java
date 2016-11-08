@@ -2,6 +2,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 public enum ReturnMessage {
     SUCCESS("0000",""),
+    FAIL("1234", "系统繁忙"),
     /******手机端注册返回码******/
     MOBILE_NUMBER_IS_NULL("0001", "手机号码为空"),
     MOBILE_NUMBER_IS_INVALID("0002","手机号码不合法"),
@@ -69,6 +70,7 @@ public enum ReturnMessage {
 
     /******绑卡失败******/
     BIND_CARD_FAIL("0026","绑卡失败"),
+    BIND_CARD_LIMIT_FAIL("0203","暂不支持该银行卡"),
     /******绑卡失败******/
 
     /******签约失败******/

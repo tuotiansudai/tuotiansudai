@@ -47,7 +47,7 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
             createCalculateDefaultInterest();
         }
-        if (JobType.CalculateTravelLuxuryPrize.name().equalsIgnoreCase(schedulerName)){
+        if (JobType.CalculateTravelLuxuryPrize.name().equalsIgnoreCase(schedulerName)) {
             //运营生成中奖纪录,暂时停掉该job
             //calculateTravelLuxuryPrize();
         }
@@ -77,6 +77,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
         if (JobType.CheckUserBalanceMonthly.name().equals(schedulerName)) {
             createCheckUserBalanceJob();
+        }
+        if (JobType.PlatformBalanceLowNotify.name().equals(schedulerName)) {
+            platformBalanceLowNotifyJob();
         }
 
     }
@@ -228,6 +231,16 @@ public class JobInitPlugin implements SchedulerPlugin {
             jobManager.newJob(JobType.CheckUserBalanceMonthly, CheckUserBalanceJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 30 1 ? * 7#1 *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.CheckUserBalanceMonthly.name(), JobType.CheckUserBalanceMonthly.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void platformBalanceLowNotifyJob() {
+        try {
+            jobManager.newJob(JobType.PlatformBalanceLowNotify, PlatformBalanceMonitorJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 9 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
+                    .withIdentity(JobType.PlatformBalanceLowNotify.name(), JobType.PlatformBalanceLowNotify.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
