@@ -6,7 +6,7 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
-    <resultMap id="anxinSignRequestModel" type="AnxinSignRequestModel">
+    <resultMap id="anxinSignRequest" type="com.tuotiansudai.cfca.model.AnxinSignRequestModel">
         <id column="id" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="authorization_time" property="authorizationTime"/>
@@ -16,16 +16,17 @@
         <result column="is_proxy_sign" property="isProxySign"/>
         <result column="is_copy" property="isCopy"/>
         <result column="created_time" property="createdTime"/>
+
     </resultMap>
 
-    <insert id="create" parameterType="AnxinSignRequestModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="com.tuotiansudai.cfca.model.AnxinSignRequestModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `anxin_operations`.`anxin_sign_request`
         (`user_id`,`authorization_time`,`location`,`sign_location`,`project_code`,`is_proxy_sign`,`is_copy`,`created_time`)
         VALUES
         (#{userId},#{authorizationTime},#{location},#{signLocation},#{projectCode},#{isProxySign},#{isCopy},#{createdTime});
     </insert>
 
-    <update id="update" parameterType="AnxinSignRequestModel">
+    <update id="update" parameterType="com.tuotiansudai.cfca.model.AnxinSignRequestModel">
         UPDATE `anxin_operations`.`anxin_sign_request`
         SET
         `id` =,
@@ -41,7 +42,7 @@
         id = #{id}
     </update>
 
-    <select id="findByUserId" parameterType="string" resultMap="anxinSignRequestModel">
+    <select id="findByUserId" parameterType="string" resultMap="anxinSignRequest">
         select * from `anxin_operations`.`anxin_sign_request` where user_id = #{userId}
     </select>
 
