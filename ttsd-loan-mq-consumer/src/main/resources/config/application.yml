@@ -1,0 +1,6 @@
+logging:
+  path: /var/log/loan-mq-consumer
+  level:
+    com:
+      tuotian:
+        mq: debug
