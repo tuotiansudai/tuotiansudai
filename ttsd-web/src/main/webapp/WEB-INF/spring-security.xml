@@ -81,6 +81,7 @@
         <intercept-url pattern="/point/sign-in" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
         <intercept-url pattern="/point/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/personal-info/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/anxinSign" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/auto-invest" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')" method="GET"/>
         <intercept-url pattern="/auto-invest/agreement" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')" method="GET"/>
         <intercept-url pattern="/auto-invest/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
