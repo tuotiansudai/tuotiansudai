@@ -22,7 +22,7 @@ CREATE TABLE `anxin_operations`.`anxin_create_account_response` (
   `tx_time` VARCHAR(14) NOT NULL,
   `ret_code` VARCHAR(20) NOT NULL,
   `ret_message` VARCHAR(100) NOT NULL,
-  `user_id` BIGINT UNSIGNED NOT NULL,
+  `user_id` VARCHAR(32) NOT NULL,
   `person_name` VARCHAR(150) NOT NULL,
   `ident_type_code` VARCHAR(1) NOT NULL,
   `ident_no` VARCHAR(80) NOT NULL,
