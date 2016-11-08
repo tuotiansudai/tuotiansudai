@@ -1,6 +1,12 @@
 package com.tuotiansudai.activity.dto;
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.model.LotteryPrizeView;
+
+import java.util.List;
+
 public enum LotteryPrize{
+    //旅游奢侈品活动
     TOURISM("华东旅游大奖",PrizeType.CONCRETE,ActivityCategory.AUTUMN_PRIZE,0),
     MANGO_CARD_100("100元芒果卡",PrizeType.CONCRETE,ActivityCategory.AUTUMN_PRIZE,0.5),
     LUXURY("奢侈品大奖",PrizeType.CONCRETE,ActivityCategory.AUTUMN_PRIZE,0),
@@ -10,6 +16,7 @@ public enum LotteryPrize{
     INTEREST_COUPON_5("0.5%加息券",PrizeType.VIRTUAL,ActivityCategory.AUTUMN_PRIZE,25),
     INTEREST_COUPON_2("0.2%加息券",PrizeType.VIRTUAL,ActivityCategory.AUTUMN_PRIZE,29.5),
 
+    //1000积分抽奖
     BICYCLE_XM("小米（MI）九号平衡车",PrizeType.CONCRETE,ActivityCategory.POINT_DRAW_1000,0),
     MASK("防雾霾骑行口罩",PrizeType.CONCRETE,ActivityCategory.POINT_DRAW_1000,3),
     LIPSTICK("屈臣氏润唇膏",PrizeType.CONCRETE,ActivityCategory.POINT_DRAW_1000,3),
@@ -19,6 +26,7 @@ public enum LotteryPrize{
     RED_ENVELOPE_10("10元投资红包",PrizeType.VIRTUAL,ActivityCategory.POINT_DRAW_1000,45),
     INTEREST_COUPON_2_POINT_DRAW("0.2%加息券",PrizeType.VIRTUAL,ActivityCategory.POINT_DRAW_1000,40),
 
+    //10000积分抽奖
     IPHONE7_128G("iPhone 7手机128G",PrizeType.CONCRETE,ActivityCategory.POINT_DRAW_10000,0),
     DELAYED_ACTION("通用自拍杆",PrizeType.CONCRETE,ActivityCategory.POINT_DRAW_10000,3),
     U_DISH("拓天速贷U盘",PrizeType.CONCRETE,ActivityCategory.POINT_DRAW_10000,3),
@@ -28,6 +36,7 @@ public enum LotteryPrize{
     RED_ENVELOPE_50_POINT_DRAW("50元投资红包",PrizeType.VIRTUAL,ActivityCategory.POINT_DRAW_10000,24),
     INTEREST_COUPON_5_POINT_DRAW("0.5%加息券",PrizeType.VIRTUAL,ActivityCategory.POINT_DRAW_10000,30),
 
+    //国庆活动
     MEMBERSHIP_V5("一个月V5会员体验",PrizeType.MEMBERSHIP,ActivityCategory.NATIONAL_PRIZE,25),
     RED_INVEST_15("15元投资红包",PrizeType.VIRTUAL,ActivityCategory.NATIONAL_PRIZE,30),
     RED_INVEST_50("50元投资红包",PrizeType.VIRTUAL,ActivityCategory.NATIONAL_PRIZE,30),
@@ -35,14 +44,24 @@ public enum LotteryPrize{
     IQIYI_MEMBERSHIP("一个月爱奇艺会员",PrizeType.CONCRETE,ActivityCategory.NATIONAL_PRIZE,4),
     CINEMA_TICKET("电影票一张",PrizeType.CONCRETE,ActivityCategory.NATIONAL_PRIZE,3),
     FLOWER_CUP("青花瓷杯子",PrizeType.CONCRETE,ActivityCategory.NATIONAL_PRIZE,3),
-    IPHONE_7("iphone7",PrizeType.CONCRETE,ActivityCategory.NATIONAL_PRIZE,0);
+    IPHONE_7("iphone7",PrizeType.CONCRETE,ActivityCategory.NATIONAL_PRIZE,0),
+
+    //双11狂欢
+    M1_PHONE("锤子M1手机(预定)",PrizeType.CONCRETE,ActivityCategory.CARNIVAL_ACTIVITY,0),
+    HUMIDIFIER("小熊加湿器",PrizeType.CONCRETE,ActivityCategory.CARNIVAL_ACTIVITY,1),
+    HAIR_DRIER("飞科电吹风机",PrizeType.CONCRETE,ActivityCategory.CARNIVAL_ACTIVITY,1),
+    IQIYI_MEMBERSHIP_REF_CARNIVAL("爱奇艺会员",PrizeType.CONCRETE,ActivityCategory.CARNIVAL_ACTIVITY,5),
+    TELEPHONE_FARE_10_REF_CARNIVAL("10元话费",PrizeType.CONCRETE,ActivityCategory.CARNIVAL_ACTIVITY,5),
+    BAMBOO_CHARCOAL_PACKAGE("卡通汽车竹炭包",PrizeType.CONCRETE,ActivityCategory.CARNIVAL_ACTIVITY,8),
+    INTEREST_COUPON_5_POINT_DRAW_REF_CARNIVAL("0.5加息券",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,41),
+    RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL("50元红包",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,39);
 
     String description;
     PrizeType prizeType;
     ActivityCategory activityCategory;
     double rate;
 
-    LotteryPrize(String description,PrizeType prizeType,ActivityCategory activityCategory,double rate){
+    LotteryPrize(String description, PrizeType prizeType, ActivityCategory activityCategory, double rate){
         this.description = description;
         this.activityCategory = activityCategory;
         this.prizeType = prizeType;
@@ -79,5 +98,16 @@ public enum LotteryPrize{
 
     public void setRate(double rate) {
         this.rate = rate;
+    }
+
+    public static List<LotteryPrizeView> getActivityPrize(ActivityCategory activityCategory){
+        List list = Lists.newArrayList();
+        LotteryPrize[] lotteryPrizes = LotteryPrize.values();
+        for(LotteryPrize lotteryPrize : lotteryPrizes) {
+            if (activityCategory.equals(lotteryPrize.getActivityCategory())) {
+                list.add(new LotteryPrizeView(lotteryPrize.name(), lotteryPrize.getDescription()));
+            }
+        }
+        return list;
     }
 }

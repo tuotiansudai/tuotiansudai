@@ -17,7 +17,7 @@ import java.util.Map.Entry;
 @Component
 public class HttpConnectorTest {
 
-    public static String JKS_PATH = "/Users/zhoubx/workspace/anxin_sign/anxinsign.jks";
+    public static String JKS_PATH = "/workspace/dev-config/anxinsign.jks";
     public static String JKS_PWD = "123abc";
     public static String ALIAS = "anxinsign";
     public String URL = "https://210.74.42.33:9443/FEP/";

@@ -35,8 +35,8 @@
                 <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/ump_operations?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
-                <property name="minimumIdle" value="${pay.ump_operations.minimumIdle}"/>
-                <property name="maximumPoolSize" value="${pay.ump_operations.maximumPoolSize}"/>
+                <property name="minimumIdle" value="${pay.pay.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${pay.pay.maximumPoolSize}"/>
                 <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
                 <property name="dataSourceProperties">
                     <props>
@@ -77,8 +77,8 @@
                 <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
-                <property name="minimumIdle" value="${pay.job_worker.minimumIdle}"/>
-                <property name="maximumPoolSize" value="${pay.job_worker.maximumPoolSize}"/>
+                <property name="minimumIdle" value="${pay.job.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${pay.job.maximumPoolSize}"/>
                 <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
                 <property name="dataSourceProperties">
                     <props>
@@ -92,37 +92,45 @@
     </bean>
 
     <bean id="pointHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxpoint?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="${point.jdbc.username}"/>
-        <property name="password" value="${point.jdbc.password}"/>
-        <property name="minimumIdle" value="${pay.point.minimumIdle}"/>
-        <property name="maximumPoolSize" value="${pay.point.maximumPoolSize}"/>
-        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
-        <property name="dataSourceProperties">
-            <props>
-                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
-                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
-                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
-            </props>
-        </property>
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxpoint?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${point.jdbc.username}"/>
+                <property name="password" value="${point.jdbc.password}"/>
+                <property name="minimumIdle" value="${pay.point.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${pay.point.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
     </bean>
 
     <bean id="activityHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${activity.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="${activity.jdbc.username}"/>
-        <property name="password" value="${activity.jdbc.password}"/>
-        <property name="minimumIdle" value="${pay.activity.minimumIdle}"/>
-        <property name="maximumPoolSize" value="${pay.activity.maximumPoolSize}"/>
-        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
-        <property name="dataSourceProperties">
-            <props>
-                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
-                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
-                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
-            </props>
-        </property>
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${activity.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${activity.jdbc.username}"/>
+                <property name="password" value="${activity.jdbc.password}"/>
+                <property name="minimumIdle" value="${pay.activity.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${pay.activity.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
     </bean>
 
     <bean id="anxinHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">

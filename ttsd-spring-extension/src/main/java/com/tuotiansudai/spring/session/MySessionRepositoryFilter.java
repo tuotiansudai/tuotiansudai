@@ -233,12 +233,22 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
                 attrs.put(attrName, value);
             }
 
+            String signInNewSessionId = originalSessionId != null ? redisWrapperClient.get(originalSessionId) : null;
+
             MySessionRepositoryFilter.this.sessionRepository.delete(originalSessionId);
             HttpSessionWrapper original = getCurrentSession();
             setCurrentSession(null);
 
+            if (signInNewSessionId != null) {
+                S newSession = MySessionRepositoryFilter.this.sessionRepository.createSession(signInNewSessionId);
+                redisWrapperClient.del(signInNewSessionId);
+                newSession.setLastAccessedTime(System.currentTimeMillis());
+                HttpSessionWrapper currentSession = new HttpSessionWrapper(newSession, getServletContext());
+                setCurrentSession(currentSession);
+            }
+
             if (redisWrapperClient.get(originalSessionId) != null) {
-                SESSION_LOGGER.info(MessageFormat.format("[change session id] before change session, original sessionId = {0}, new sessionId = {1}", originalSessionId, redisWrapperClient.get(originalSessionId)));
+                SESSION_LOGGER.info(MessageFormat.format("[change session id] before change session, original sessionId = {0}, new sessionId = {1}", originalSessionId, signInNewSessionId));
             }
 
             HttpSessionWrapper newSession = getSession();
@@ -290,21 +300,21 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
         @Override
         public HttpSessionWrapper getSession(boolean create) {
             HttpSessionWrapper currentSession = getCurrentSession();
-
             if (currentSession != null) {
                 return currentSession;
             }
             String requestedSessionId = getRequestedSessionId();
-            if (requestedSessionId != null && getAttribute(INVALID_SESSION_ID_ATTR) == null) {
+            if (requestedSessionId != null
+                    && getAttribute(INVALID_SESSION_ID_ATTR) == null) {
                 S session = getSession(requestedSessionId);
                 if (session != null) {
                     this.requestedSessionIdValid = true;
                     currentSession = new HttpSessionWrapper(session, getServletContext());
                     currentSession.setNew(false);
                     setCurrentSession(currentSession);
-                    SESSION_LOGGER.debug(MessageFormat.format("current session is null, but requestedSessionId = {0}", requestedSessionId));
                     return currentSession;
-                } else {
+                }
+                else {
                     // This is an invalid session id. No need to ask again if
                     // request.getSession is invoked for the duration of this request
                     if (SESSION_LOGGER.isDebugEnabled()) {
@@ -317,18 +327,14 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
             if (!create) {
                 return null;
             }
-
-            S session;
-
-            String signInNewSessionId = requestedSessionId != null ? redisWrapperClient.get(requestedSessionId) : null;
-
-            if (signInNewSessionId != null) {
-                session = MySessionRepositoryFilter.this.sessionRepository.createSession(signInNewSessionId);
-                redisWrapperClient.del(signInNewSessionId);
-            } else {
-                session = MySessionRepositoryFilter.this.sessionRepository.createSession();
+            if (SESSION_LOGGER.isDebugEnabled()) {
+                SESSION_LOGGER.debug(
+                        "A new session was created. To help you troubleshoot where the session was created we provided a StackTrace (this is not an error). You can prevent this from appearing by disabling DEBUG logging for "
+                                + SESSION_LOGGER_NAME,
+                        new RuntimeException(
+                                "For debugging purposes only (not an error)"));
             }
-
+            S session = MySessionRepositoryFilter.this.sessionRepository.createSession();
             session.setLastAccessedTime(System.currentTimeMillis());
             currentSession = new HttpSessionWrapper(session, getServletContext());
             setCurrentSession(currentSession);

@@ -34,6 +34,9 @@ function globalFun() {
     }
     //绑定监听事件
     this.addEventHandler=function(target,type,fn) {
+        if(!target){
+            return;
+        }
         if(target.addEventListener){
             target.addEventListener(type,fn);
         }else{
