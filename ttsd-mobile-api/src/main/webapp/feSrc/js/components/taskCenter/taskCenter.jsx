@@ -5,8 +5,6 @@ import ajax from 'utils/ajax';
 import IScroll from 'iscroll/build/iscroll-probe';
 import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
-import Immutable from 'seamless-immutable';
-import taskBanner from './task_banner1.png';
 import taskLineLeft from './task_line_left.png';
 import taskLineRight from './task_line_right.png';
 
@@ -34,7 +32,6 @@ class ButtonStatus extends React.Component {
         let description=this.props.description;
 
         if(!isComplete) {
-            // onClick={this.jumpToWhere.bind(this)}
             button=<a className={description? 'TaskItemBtn' : 'TaskItemBtn column-one'} url={url} onTouchTap={this.jumpToWhere.bind(this)} data-value={value} data-url={url} >去完成</a>;
         }
         else  {
@@ -71,12 +68,12 @@ class NewbieTaskGroup extends React.Component {
         });
             return (
             <div className="NewbieTaskGroup">
-            <div className="HeaderGroup">
+            <div className="HeaderGroup" >
                 <img src={taskLineLeft} />
                 <span className="HeaderTitle">新手任务</span>
                 <img src={taskLineRight}/>
             </div>
-            <div className="scroll-wrap clearfix" ref="scrollWrap">
+            <div className="scroll-wrap clearfix">
                 {rows}
                 </div>
             </div>
@@ -110,13 +107,13 @@ class AdvanceTaskGroup extends React.Component {
 
         return (
             <div className="AdvanceTaskGroup">
-            <div className="HeaderGroup">
+            <div className="HeaderGroup" ref="HeaderGroup">
                 <img src={taskLineLeft} />
                 <span className="HeaderTitle">进阶任务</span>
                 <img src={taskLineRight} />
             </div>
 
-            <div className="scroll-wrap clearfix" ref="scrollOngoing">
+            <div className="scroll-wrap clearfix" >
                {rows}
             </div>
             
@@ -142,8 +139,6 @@ class taskCenter extends React.Component {
             }
         };
 
-    listIndex = 1;
-
     destroyIscroll() {
         if (this.myScroll) {
             this.myScroll.destroy();
@@ -158,24 +153,38 @@ class taskCenter extends React.Component {
             done: callback
         });
     }
+    //当下滑固定菜单在顶部
+    fixTopMenu(scrollY) {
+        let conOffsetTop=this.refs.scrollWrap.offsetTop;
+        let tabHeaderDom=document.getElementById('tabHeaderDom');
+        let menuHeight=tabHeaderDom.clientHeight*0.5;
+
+        console.log(this.myScroll);
+        if(!scrollY && tabHeaderDom.getAttribute('style')){
+            this.myScroll.scrollTo(0, -conOffsetTop*0.9, 0);
+            tabHeaderDom.setAttribute('style','top:'+conOffsetTop*0.98+'px;width:100%;left:0;height:1rem; line-height:1rem');
+        }
+        else if(scrollY && scrollY>=conOffsetTop) {
+            let yTop=scrollY+20;
+            tabHeaderDom.setAttribute('style','top:'+yTop+'px;width:100%;left:0;height:1rem; line-height:1rem');
+        }
+        else if(scrollY && scrollY<conOffsetTop) {
+            tabHeaderDom.removeAttribute('style');
+        }
+
+    }
     tabHeaderClickHandler(event) {
         let value = event.target.dataset.value;
         let top=this.myScroll.y-10;
-        let imgHeight=document.getElementById('imageTopHead').scrollHeight*1.1;
-        let tabHeaderDom=document.getElementById('tabHeaderDom'),
-            headerTop=tabHeaderDom.style.top;
+
         if(/active/.test(event.target.className) ) {
             return;
         }
         this.setState({
           active: value,
           isShowLoading:true
-
         });
-
-        if(headerTop!='5.33rem' && headerTop!='') {
-            this.myScroll.scrollTo(0, -imgHeight, 80);
-        }
+        this.fixTopMenu();
 
         if(value=='ONGOING') {
             this.fetchData('/task-center/tasks',(response) => {
@@ -225,44 +234,47 @@ class taskCenter extends React.Component {
 
 	}
     componentDidUpdate() {
-
-        imagesLoaded(this.refs.mainConWrap).on('done', () => {
-            setTimeout(() => {
-            if (!this.myScroll) {
-                this.refs.mainConWrap.style.height=document.documentElement.clientHeight +'px';
-                // this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight) + 'px';
-                this.myScroll = new IScroll(this.refs.mainConWrap,{
-                    probeType: 3,
-                    mouseWheel: true,
-                    hScrollbar:false,
-                    vScrollbar:true,
-                    momentum:false,
-                    useTransition:false,
-                    bounce:false,
-                    useTransform:true
-
-                });
-                this.myScroll.on('scroll',function() {
-                     let imgHeight=document.getElementById('imageTopHead').scrollHeight;
+        //数据加载完成后
+        if(!this.state.isShowLoading) {
+            // debugger
+            console.log(this.myScroll);
+            imagesLoaded(this.refs.mainConWrap).on('done', () => {
+                setTimeout(() => {
                     let tabHeaderDom=document.getElementById('tabHeaderDom');
-                    let maxY=Math.abs(this.myScroll.scrollerHeight);
                     let menuHeight=tabHeaderDom.clientHeight*0.5;
-                    let curY=Math.abs(this.myScroll.y)+menuHeight;
+                    let conOffsetTop=this.refs.scrollWrap.offsetTop;
 
-                    if(curY>imgHeight) {
-                        tabHeaderDom.setAttribute('style','top:'+curY+'px;width:100%;left:0;height:1rem; line-height:1rem');
+                    if (!this.myScroll) {
+                        this.refs.mainConWrap.style.height=document.documentElement.clientHeight +'px';
+                        this.myScroll = new IScroll(this.refs.mainConWrap,{
+                            probeType: 3,
+                            mouseWheel: true,
+                            hScrollbar:false,
+                            vScrollbar:true,
+                            momentum:false,
+                            useTransition:false,
+                            bounce:false,
+                            useTransform:true
+
+                        });
+                        this.myScroll.on('scroll',function() {
+                            let curY=Math.abs(this.myScroll.y)+menuHeight;
+                            this.fixTopMenu(curY);
+                        }.bind(this));
+
                     }
                     else {
-                        tabHeaderDom.setAttribute('style','top:5.33rem;');
+                        this.myScroll.refresh();
+                        if(!this.myScroll.hasVerticalScroll) {
+                            //垂直方向没有滚动条
+                            tabHeaderDom.removeAttribute('style');
+                        }
                     }
-                }.bind(this));
+                },5);
+            });
 
-            }
-            else {
-                this.myScroll.refresh();
-            }
-          },5);
-        });
+        }
+
     }
 
 	componentWillUnmount() {
@@ -296,7 +308,6 @@ class taskCenter extends React.Component {
                 </div>
 			</div>	    
 		);
-
         if (this.state.isShowLoading) {
             loading = <div className="loading"><i className="fa fa-spinner fa-spin"></i></div>;
         }
