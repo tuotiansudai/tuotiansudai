@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.HelpCenterMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="helpCenterResultMap" type="HelpCenterModel">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="category" property="category"/>
+    </resultMap>
+
+    <insert id="create" parameterType="HelpCenterModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `aa`.`help_center` (title, content, category) VALUES (#{title}, #{content}, #{category})
+    </insert>
+
+    <select id="findAllHelpCenterByTitleAndCategory" resultMap="helpCenterResultMap" parameterType="map">
+        SELECT * FROM `aa`.`help_center`
+        <where>
+            <if test="category != null ">
+                AND status = 'HOT'
+            </if>
+            <if test="title != null">
+                AND title like CONCAT('%', #{title}, '%')
+            </if>
+        </where>
+        order by id
+    </select>
+</mapper>
