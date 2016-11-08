@@ -89,7 +89,9 @@ class DiagnosisApplication {
         logger.info(reportMessage);
         if (Arrays.asList(Environment.PRODUCTION, Environment.QA).contains(environment)) {
             try {
+                logger.info("sending report mail");
                 sendReportMail(reportMessage);
+                logger.info("send report mail done!");
             } catch (Exception e) {
                 logger.error("send report mail fail", e);
             }
