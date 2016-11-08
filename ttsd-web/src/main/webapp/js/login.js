@@ -96,9 +96,11 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
         });
 
         $(document).keypress(function (event) {
+
             var keycode = (event.keyCode ? event.keyCode : event.which)
             if (keycode === 13 && formCheckValid) {
                 loginSubmitElement.focus();
+                event.preventDefault();
                 submitLoginForm();
             }
             else {
