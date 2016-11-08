@@ -2,8 +2,6 @@ import React from 'react';
 import changeTitle from 'utils/changeTitle';
 import { main } from './messageCenter.scss';
 import IScroll from 'iscroll';
-import imagesLoaded from 'imagesloaded';
-import Praise from 'components/licaiCircle/Praise';
 import ajax from 'utils/ajax';
 
 class messageCenter extends React.Component {
