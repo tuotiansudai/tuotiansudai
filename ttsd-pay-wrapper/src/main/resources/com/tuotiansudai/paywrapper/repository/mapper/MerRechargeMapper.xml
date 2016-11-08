@@ -21,6 +21,7 @@
         <result property="amount" column="amount"/>
         <result property="accountType" column="account_type"/>
         <result property="gateId" column="gate_id"/>
+        <result property="comAmtType" column="com_amt_type"/>
         <result property="requestTime" column="request_time"/>
         <result property="requestUrl" column="request_url"/>
         <result property="requestData" column="request_data"/>
@@ -31,8 +32,8 @@
     </select>
 
     <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerRechargePersonRequestModel">
-        insert into mer_recharge_request (service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url, order_id, mer_date, pay_type, recharge_mer_id, amount, account_type, gate_id, request_time, request_url, request_data)
-        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl}, #{orderId}, #{merDate}, #{payType}, #{rechargeMerId}, #{amount}, #{accountType}, #{gateId}, #{requestTime}, #{requestUrl}, #{requestData})
+        insert into mer_recharge_request (service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url, order_id, mer_date, pay_type, recharge_mer_id, amount, account_type, gate_id, com_amt_type, request_time, request_url, request_data)
+        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl}, #{orderId}, #{merDate}, #{payType}, #{rechargeMerId}, #{amount}, #{accountType}, #{gateId}, #{comAmtType}, #{requestTime}, #{requestUrl}, #{requestData})
     </insert>
 
 </mapper>
