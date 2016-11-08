@@ -70,6 +70,8 @@ public class RequestResponseServiceImpl implements RequestResponseService {
             responseModel.setAddress(tx3001ResVO.getPerson().getAddress());
             responseModel.setAuthenticationMode(tx3001ResVO.getPerson().getAuthenticationMode());
             responseModel.setNotSendPwd(tx3001ResVO.getNotSendPwd() == null ? "0" : tx3001ResVO.getNotSendPwd().toString());
+            responseModel.setAnxinSignEmail(tx3001ResVO.getPerson().getAnXinSignEmail());
+            responseModel.setAnxinSignMobilePhone(tx3001ResVO.getPerson().getAnXinSignMobilePhone());
         }
         responseModel.setCreatedTime(new Date());
         anxinCreateAccountResponseMapper.create(responseModel);
