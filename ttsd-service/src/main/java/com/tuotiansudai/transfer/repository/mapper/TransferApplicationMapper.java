@@ -90,4 +90,7 @@ public interface TransferApplicationMapper {
                                                                          @Param(value = "year") String year,
                                                                          @Param(value = "month") String month,
                                                                          @Param(value = "day") String day);
+
+    void updateContractNoById(@Param(value = "transferId") Long transferId,
+                              @Param(value = "contractNo") String contractNo);
 }

@@ -7,6 +7,8 @@ import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.cfca.dto.AnxinContractType;
+import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -278,6 +280,36 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
 
     @Override
+    public BaseDto createContracts(long loanId) {
+        List<CreateContractVO> createContractVOs = Lists.newArrayList();
+        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
+        InvestModel investModel;
+        BaseDto baseDto = new BaseDto();
+        for (int i = 0; i < investModels.size(); i++) {
+            investModel = investModels.get(i);
+            createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId()));
+            if (createContractVOs.size() == batchNum || investModels.size() == i) {
+                String batchNo = UUIDGenerator.generate();
+                try {
+                    logger.debug(MessageFormat.format("[安心签] create contract begin , loanId:{0}, batchNo{1}", loanId, batchNo));
+                    //创建合同
+                    anxinSignConnectService.generateContractBatch3202(loanId, batchNo, AnxinContractType.LOAN_CONTRACT,createContractVOs);
+
+                    baseDto.setSuccess(true);
+                } catch (PKIException e) {
+                    smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, ImmutableList.<String>builder().add(String.valueOf(loanId)).add(batchNo).build()));
+
+                    baseDto.setSuccess(false);
+                    logger.error(MessageFormat.format("[安心签] create contract error , loanId:{0}", loanId), e);
+
+                }
+                createContractVOs.clear();
+            }
+        }
+        return baseDto;
+    }
+
+    @Override
     public BaseDto createTransferContracts(long transferApplicationId) {
         List<CreateContractVO> createContractVOs = Lists.newArrayList(collectTransferContractModel(transferApplicationId));
         BaseDto baseDto = new BaseDto();
@@ -285,7 +317,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         try {
             logger.debug(MessageFormat.format("[安心签] create transfer contract begin , loanId:{0}, batchNo{1}", transferApplicationId, batchNo));
             //创建合同
-            anxinSignConnectService.generateContractBatch3202(transferApplicationId, batchNo, createContractVOs);
+            anxinSignConnectService.generateContractBatch3202(transferApplicationId, batchNo,AnxinContractType.TRANSFER_CONTRACT, createContractVOs);
 
             baseDto.setSuccess(true);
         } catch (PKIException e) {
@@ -304,11 +336,11 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         Map<String, String> dataModel = new HashMap<>();
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
 
-        AccountModel transferreAccountModel = accountMapper.findByLoginName(transferApplicationModel.getLoginName());
+        AccountModel transfereeAccountModel = accountMapper.findByLoginName(transferApplicationModel.getLoginName());
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(transferApplicationModel.getLoginName());
-        if (transferreAccountModel != null) {
-            dataModel.put("transferMobile", userMapper.findByLoginName(transferreAccountModel.getLoginName()).getMobile());
-            dataModel.put("transferIdentity", transferreAccountModel.getIdentityNumber());
+        if (transfereeAccountModel != null) {
+            dataModel.put("transferMobile", userMapper.findByLoginName(transfereeAccountModel.getLoginName()).getMobile());
+            dataModel.put("transferIdentity", transfereeAccountModel.getIdentityNumber());
         }
 
         InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
@@ -345,6 +377,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("investAmount", AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
         dataModel.put("transferTime", simpleDateFormat.format(transferApplicationModel.getTransferTime()));
         dataModel.put("leftPeriod", String.valueOf(transferApplicationModel.getLeftPeriod()));
+        dataModel.put("orderId", String.valueOf(transferApplicationModel.getId()));
 
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         String msg1;
@@ -429,9 +462,11 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate() * 100));
         dataModel.put("recheckTime1", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
         dataModel.put("recheckTime2", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
-        dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
-        dataModel.put("endTime2", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
-        dataModel.put("investId", String.valueOf(investId));
+//        dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
+//        dataModel.put("endTime2", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
+        dataModel.put("endTime2", "2016-12-11");
+        dataModel.put("endTime2", "2016-12-11");
+        dataModel.put("orderId", String.valueOf(investId));
         if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
             dataModel.put("pledge", "房屋");
         } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
@@ -472,6 +507,30 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             e.printStackTrace();
         }
         return contract;
+    }
+
+    @Override
+    public BaseDto updateContractResponse(long businessId,AnxinContractType anxinContractType) {
+        BaseDto baseDto = new BaseDto(true);
+        try {
+            //查询合同创建结果并更新invest
+            List<ContractResponseView> contractResponseViews = anxinSignConnectService.updateContractResponse(businessId,anxinContractType);
+
+            contractResponseViews.forEach(contractResponseView -> {
+                if (contractResponseView.getRetCode().equals("60000000")) {
+                    if(anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)){
+                        investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
+                    }else{
+                        transferApplicationMapper.updateContractNoById(contractResponseView.getInvestId(),contractResponseView.getContractNo());
+                    }
+                }
+            });
+        } catch (PKIException e) {
+            baseDto.setSuccess(false);
+            logger.error(MessageFormat.format("[安心签] update contract response error , loanId:{0}", businessId), e);
+        }
+
+        return baseDto;
     }
 
 }

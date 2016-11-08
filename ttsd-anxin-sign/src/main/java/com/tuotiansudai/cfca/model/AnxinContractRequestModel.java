@@ -6,11 +6,12 @@ import java.util.Date;
 
 public class AnxinContractRequestModel implements Serializable{
     private long id;
-    private long loanId;
-    private long investId;
+    private long businessId;
+    private long orderId;
     private String contractNo;
     private long agentSignId;
     private long investorSignId;
+    private String contractType;
     private String txTime;
     private String batchNo;
     private String templateId;
@@ -32,9 +33,10 @@ public class AnxinContractRequestModel implements Serializable{
     public AnxinContractRequestModel() {
     }
 
-    public AnxinContractRequestModel(long loanId,long investId,long agentSignId, long investorSignId, String txTime, String batchNo, String templateId, String isSign, String agentMobile, String loanerIdentityNumber, String recheckTime, String totalRate, String investorMobile, String agentIdentityNumber, String periods, String pledge, String endTime, String investorIdentityNumber, String loanerUserName, String loanAmount, Date createdTime) {
-        this.loanId = loanId;
-        this.investId = investId;
+    public AnxinContractRequestModel(long businessId,String contractType,long investId,long agentSignId, long investorSignId, String txTime, String batchNo, String templateId, String isSign, String agentMobile, String loanerIdentityNumber, String recheckTime, String totalRate, String investorMobile, String agentIdentityNumber, String periods, String pledge, String endTime, String investorIdentityNumber, String loanerUserName, String loanAmount, Date createdTime) {
+        this.businessId = businessId;
+        this.contractType = contractType;
+        this.orderId = investId;
         this.agentSignId = agentSignId;
         this.investorSignId = investorSignId;
         this.txTime = txTime;
@@ -56,6 +58,14 @@ public class AnxinContractRequestModel implements Serializable{
         this.createdTime = createdTime;
     }
 
+    public String getContractType() {
+        return contractType;
+    }
+
+    public void setContractType(String contractType) {
+        this.contractType = contractType;
+    }
+
     public String getContractNo() {
         return contractNo;
     }
@@ -64,20 +74,20 @@ public class AnxinContractRequestModel implements Serializable{
         this.contractNo = contractNo;
     }
 
-    public long getInvestId() {
-        return investId;
+    public long getOrderId() {
+        return orderId;
     }
 
-    public void setInvestId(long investId) {
-        this.investId = investId;
+    public void setOrderId(long orderId) {
+        this.orderId = orderId;
     }
 
-    public long getLoanId() {
-        return loanId;
+    public long getBusinessId() {
+        return businessId;
     }
 
-    public void setLoanId(long loanId) {
-        this.loanId = loanId;
+    public void setBusinessId(long businessId) {
+        this.businessId = businessId;
     }
 
     public long getId() {

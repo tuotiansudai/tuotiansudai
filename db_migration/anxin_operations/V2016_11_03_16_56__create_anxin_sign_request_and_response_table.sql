@@ -18,9 +18,10 @@ CREATE TABLE `anxin_operations`.`anxin_sign_request` (
 
 CREATE TABLE `anxin_operations`.`anxin_contract_request` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `loan_id` BIGINT UNSIGNED NOT NULL,
-  `invest_id` BIGINT UNSIGNED NOT NULL,
+  `business_id` BIGINT UNSIGNED NOT NULL,
+  `order_id` BIGINT UNSIGNED NOT NULL,
   `contract_no` VARCHAR(32),
+  `contract_type` VARCHAR(32) NOT NULL,
   `agent_sign_id` BIGINT UNSIGNED NOT NULL,
   `investor_sign_id` BIGINT UNSIGNED NOT NULL,
   `tx_time` VARCHAR(14) NULL,
@@ -53,7 +54,7 @@ CREATE TABLE `anxin_operations`.`anxin_contract_request` (
 
   CREATE TABLE `anxin_operations`.`anxin_contract_response` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `loan_id` BIGINT UNSIGNED NOT NULL,
+  `business_id` BIGINT UNSIGNED NOT NULL,
   `batch_no` VARCHAR(32) NOT NULL,
   `contract_no` VARCHAR(32),
   `tx_time` VARCHAR(14) ,
