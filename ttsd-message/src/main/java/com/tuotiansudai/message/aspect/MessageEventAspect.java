@@ -193,7 +193,7 @@ public class MessageEventAspect {
         }
     }
 
-    @AfterReturning(value = "rewardReferrerSuccessPointcut()")
+    @AfterReturning("rewardReferrerSuccessPointcut()")
     public void afterReturningRewardReferrer(JoinPoint joinPoint) {
         Object loanModel = joinPoint.getArgs()[0];
         try {
@@ -221,8 +221,8 @@ public class MessageEventAspect {
     }
 
     @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "purchaseMembershipPointcut()", returning = "returnValue")
-    public void afterPurchaseMembership(JoinPoint joinPoint, boolean returnValue) {
+    @AfterReturning(value = "purchaseMembershipPointcut()")
+    public void afterPurchaseMembership(JoinPoint joinPoint) {
         Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
         String loginName = paramsMap.get("loginName");
         int duration = Integer.valueOf(paramsMap.get("duration"));
@@ -235,8 +235,8 @@ public class MessageEventAspect {
     }
 
     @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "membershipUpgradePointcut()", returning = "returnValue")
-    public void afterMembershipUpgrade(JoinPoint joinPoint, boolean returnValue) {
+    @AfterReturning(value = "membershipUpgradePointcut()")
+    public void afterMembershipUpgrade(JoinPoint joinPoint) {
         Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
         String loginName = paramsMap.get("loginName");
         long membershipId = Integer.valueOf(paramsMap.get("membershipId"));

@@ -58,8 +58,8 @@ public class MessageCreateAspect {
     }
 
     @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "startRaisingLoanPointcut()", returning = "returnValue")
-    public void afterStartRaisingLoan(JoinPoint joinPoint, boolean returnValue) {
+    @AfterReturning(value = "startRaisingLoanPointcut()")
+    public void afterStartRaisingLoan(JoinPoint joinPoint) {
         JobExecutionContext context = (JobExecutionContext) joinPoint.getArgs()[0];
         long loanId = Long.parseLong(String.valueOf(context.getJobDetail().getJobDataMap().get(LOAN_ID_KEY)));
         try {
@@ -75,8 +75,8 @@ public class MessageCreateAspect {
     }
 
     @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "createLoanPointcut() || updateLoanPointcut()", returning = "returnValue")
-    public void afterCreateOrUpdateLoan(JoinPoint joinPoint, boolean returnValue) {
+    @AfterReturning(value = "createLoanPointcut() || updateLoanPointcut()")
+    public void afterCreateOrUpdateLoan(JoinPoint joinPoint) {
         LoanCreateRequestDto loanCreateRequestDto = (LoanCreateRequestDto) joinPoint.getArgs()[0];
         if (null == loanCreateRequestDto || Strings.isNullOrEmpty(loanCreateRequestDto.getLoanMessageTitle().trim()) ||
                 Strings.isNullOrEmpty(loanCreateRequestDto.getLoanMessageContent().trim())) {
@@ -117,8 +117,8 @@ public class MessageCreateAspect {
     }
 
     @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "createAnnouncePointcut()", returning = "returnValue")
-    public void afterCreateAnnounce(JoinPoint joinPoint, boolean returnValue) {
+    @AfterReturning(value = "createAnnouncePointcut()")
+    public void afterCreateAnnounce(JoinPoint joinPoint) {
         AnnounceDto announceDto = (AnnounceDto) joinPoint.getArgs()[0];
         String createdBy = (String) joinPoint.getArgs()[1];
 
