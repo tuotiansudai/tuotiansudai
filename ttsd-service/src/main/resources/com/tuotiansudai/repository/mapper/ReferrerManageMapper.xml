@@ -104,9 +104,9 @@
             <if test="referrerRewardStatus != null and referrerRewardStatus.name() == 'SUCCESS' ">
                 AND a.`status` = 'SUCCESS'
             </if>
-            <!--<if test="referrerRewardStatus != null and referrerRewardStatus.name() != 'SUCCESS' ">-->
-                <!--AND a.`status` in ('FAILURE','NO_ACCOUNT')-->
-            <!--</if>-->
+            <if test="referrerRewardStatus != null and referrerRewardStatus.name() != 'SUCCESS' ">
+                AND a.`status` in ('FAILURE','NO_ACCOUNT')
+            </if>
         </where>
         ) irr
         JOIN
@@ -195,12 +195,12 @@
             <if test="role != null and role.name() != 'STAFF'">
                 AND a.`referrer_role` != 'STAFF'
             </if>
-            <!--<if test="referrerRewardStatus != null and referrerRewardStatus.name() == 'SUCCESS' ">-->
-                <!--AND a.`status` = 'SUCCESS'-->
-            <!--</if>-->
-            <!--<if test="referrerRewardStatus != null and referrerRewardStatus.name() != 'SUCCESS' ">-->
-                <!--AND a.`status` in ('FAILURE','NO_ACCOUNT')-->
-            <!--</if>-->
+            <if test="referrerRewardStatus != null and referrerRewardStatus.name() == 'SUCCESS' ">
+                AND a.`status` = 'SUCCESS'
+            </if>
+            <if test="referrerRewardStatus != null and referrerRewardStatus.name() != 'SUCCESS' ">
+                AND a.`status` in ('FAILURE','NO_ACCOUNT')
+            </if>
         </where>
         ) irr
         JOIN
