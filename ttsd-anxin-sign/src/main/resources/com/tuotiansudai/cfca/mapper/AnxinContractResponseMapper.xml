@@ -5,7 +5,7 @@
 <mapper namespace="com.tuotiansudai.cfca.mapper.AnxinContractResponseMapper">
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
-    <resultMap id="anxinContractRequestModel" type="AnxinContractResponseModel">
+    <resultMap id="anxinContractRequestModel" type="com.tuotiansudai.cfca.model.AnxinContractResponseModel">
         <id column="id" property="id"/>
         <result column="business_id" property="businessId"/>
         <result column="batch_no" property="batchNo"/>
@@ -18,14 +18,14 @@
         <result column="updated_time" property="updatedTime"/>
     </resultMap>
 
-    <insert id="create" parameterType="AnxinContractResponseModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="com.tuotiansudai.cfca.model.AnxinContractResponseModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `anxin_operations`.`anxin_contract_response`
         (`business_id`,`batch_no`,`contract_no`,`tx_time`,`locale`,`ret_code`,`ret_message`,`created_time`)
         VALUES
         (#{businessId},#{batchNo},#{contractNo},#{txTime},#{locale},#{retCode},#{retMessage},#{createdTime});
     </insert>
 
-    <update id="update" parameterType="AnxinContractResponseModel">
+    <update id="update" parameterType="com.tuotiansudai.cfca.model.AnxinContractResponseModel">
         UPDATE `anxin_operations`.`anxin_contract_response`
         SET
         `business_id` = #{businessId},
