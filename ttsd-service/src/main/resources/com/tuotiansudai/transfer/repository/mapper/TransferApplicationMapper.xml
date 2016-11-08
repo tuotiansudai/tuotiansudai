@@ -429,4 +429,10 @@
           loan_id = #{loanId} AND
           status = 'TRANSFERRING'
     </select>
+
+    <update id="updateContractNoById" parameterType="map" >
+        update `aa`.`transfer_application` set
+        contract_no = #{contractNo},
+        where id = #{transferId}
+    </update>
 </mapper>

@@ -7,7 +7,7 @@ import java.util.Date;
 public class AnxinContractResponseModel implements Serializable {
 
     private long id;
-    private long loanId;
+    private long businessId;
     private String batchNo;
     private String contractNo;
     private String txTime;
@@ -20,15 +20,15 @@ public class AnxinContractResponseModel implements Serializable {
     public AnxinContractResponseModel() {
     }
 
-    public AnxinContractResponseModel(long loanId, String batchNo, String retCode,String retMessage) {
-        this.loanId = loanId;
+    public AnxinContractResponseModel(long businessId, String batchNo, String retCode,String retMessage) {
+        this.businessId = businessId;
         this.batchNo = batchNo;
         this.retMessage = retMessage;
         this.retCode = retCode;
     }
 
-    public AnxinContractResponseModel(long loanId, String batchNo,String contractNo, String txTime, String locale, Date createdTime) {
-        this.loanId = loanId;
+    public AnxinContractResponseModel(long businessId, String batchNo,String contractNo, String txTime, String locale, Date createdTime) {
+        this.businessId = businessId;
         this.batchNo = batchNo;
         this.contractNo = contractNo;
         this.txTime = txTime;
@@ -52,12 +52,12 @@ public class AnxinContractResponseModel implements Serializable {
         this.contractNo = contractNo;
     }
 
-    public long getLoanId() {
-        return loanId;
+    public long getBusinessId() {
+        return businessId;
     }
 
-    public void setLoanId(long loanId) {
-        this.loanId = loanId;
+    public void setBusinessId(long businessId) {
+        this.businessId = businessId;
     }
 
     public long getId() {

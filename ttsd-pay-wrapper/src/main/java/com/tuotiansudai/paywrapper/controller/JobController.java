@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.controller;
 
+import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
@@ -105,6 +106,6 @@ public class JobController {
     @ResponseBody
     @RequestMapping(value = "/anxin-contract-notify", method = RequestMethod.POST)
     public BaseDto<PayDataDto> contractNotify(@RequestBody long loanId) {
-        return anxinSignService.updateContractResponse(loanId);
+        return anxinSignService.updateContractResponse(loanId, AnxinContractType.LOAN_CONTRACT);
     }
 }

@@ -46,8 +46,16 @@ public class LoanDetailController {
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
+    @Autowired
+    private AnxinSignService anxinSignService;
+
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getLoanDetail(@PathVariable long loanId) {
+        anxinSignService.createContracts(30055181812832l);
+//        anxinSignService.createTransferContracts(24l);
+//        anxinSignService.updateContractResponse(30055181812832l);
+
+//        anxinSignService.downContractByContractNo("JK20161107000000015");
         LoanDetailDto loanDetail = loanDetailService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
         if (loanDetail == null) {
             return new ModelAndView("/error/404");
