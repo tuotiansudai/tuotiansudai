@@ -8,7 +8,7 @@ import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
-import com.tuotiansudai.paywrapper.repository.model.InvestNotifyProcessStatus;
+import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
@@ -88,7 +88,7 @@ public class InvestServicePaybackExceptionTest {
         String orderId= "11111";
 
         InvestNotifyRequestModel model = new InvestNotifyRequestModel();
-        model.setStatus(InvestNotifyProcessStatus.NOT_DONE.toString());
+        model.setStatus(NotifyProcessStatus.NOT_DONE.toString());
         model.setId(requestModelId);
         model.setOrderId(orderId);
         model.setRetCode("0000");

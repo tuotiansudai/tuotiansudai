@@ -22,7 +22,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.InvestTransferNotifyRequest
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
-import com.tuotiansudai.paywrapper.repository.model.InvestNotifyProcessStatus;
+import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
@@ -454,7 +454,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     private boolean updateInvestTransferNotifyRequestStatus(InvestNotifyRequestModel model) {
         try {
             redisWrapperClient.decr(InvestTransferCallbackJob.INVEST_TRANSFER_JOB_TRIGGER_KEY);
-            investTransferNotifyRequestMapper.updateStatus(model.getId(), InvestNotifyProcessStatus.DONE);
+            investTransferNotifyRequestMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
             logger.info(MessageFormat.format("[Invest Transfer Callback {0}] decrease request count and update request status to DONE", model.getOrderId()));
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] update request status is failed", model.getOrderId()), e);

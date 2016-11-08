@@ -30,13 +30,6 @@ public class TransferRequestModel extends BaseAsyncRequestModel {
 
     public TransferRequestModel() {
     }
-
-    public static TransferRequestModel newRequest(String orderId, String payUserId, String amount, String notify_url) {
-        TransferRequestModel model = TransferRequestModel.newRequest(orderId, payUserId, amount);
-        model.notifyUrl =  MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), notify_url);
-        return model;
-    }
-
     public static TransferRequestModel newRequest(String orderId, String payUserId, String amount) {
         TransferRequestModel model = new TransferRequestModel();
         model.service = UmPayService.TRANSFER.getServiceName();

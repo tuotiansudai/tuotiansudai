@@ -1,10 +1,26 @@
 package com.tuotiansudai.paywrapper.extrarate.service.impl;
 
 
+import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.Environment;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.job.ExtraRateInvestCallbackJob;
+import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.extrarate.service.InvestRateService;
+import com.tuotiansudai.paywrapper.repository.mapper.ExtraRateNotifyRequestMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
+import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.ExtraRateNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferWithNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
@@ -12,12 +28,14 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ExtraRateServiceImpl implements ExtraRateService {
@@ -34,6 +52,9 @@ public class ExtraRateServiceImpl implements ExtraRateService {
     private PaySyncClient paySyncClient;
 
     @Autowired
+    private PayAsyncClient payAsyncClient;
+
+    @Autowired
     private AccountMapper accountMapper;
 
     @Autowired
@@ -43,7 +64,19 @@ public class ExtraRateServiceImpl implements ExtraRateService {
     private LoanMapper loanMapper;
 
     @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
     private InvestRateService investRateService;
+
+    @Autowired
+    private ExtraRateNotifyRequestMapper extraRateNotifyRequestMapper;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
+    @Value("${common.environment}")
+    private Environment environment;
 
     @Override
     public void transferPurchase(long investId) {
@@ -67,7 +100,12 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                 long actualInterest = investExtraRateModel.getExpectedInterest();
                 long actualFee = investExtraRateModel.getExpectedFee();
                 try {
+
+
                     this.sendExtraRateAmount(investExtraRateModel, actualInterest, actualFee);
+
+
+
                 } catch (Exception e) {
                     logger.error(MessageFormat.format("[Normal Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
                             String.valueOf(loanRepayId),
@@ -104,28 +142,84 @@ public class ExtraRateServiceImpl implements ExtraRateService {
             isSuccess = responseModel.isSuccess();
         }
         if (isSuccess || amount == 0) {
-            investRateService.updateExtraRateData(investExtraRateModel, actualInterest, actualFee);
+
         }*/
         if (amount > 0) {
             String orderId = investExtraRateModel.getInvestId() + "X" + System.currentTimeMillis();
+            try {
+                TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.newExtraRateRequest(
+                        orderId,
+                        accountModel.getPayUserId(),
+                        String.valueOf(amount),
+                        "extra_rate_notify");
 
-            TransferRequestModel requestModel = TransferRequestModel.newRequest(
-                    orderId,
-                    accountModel.getPayUserId(),
-                    String.valueOf(amount),
-                    "extra_rate_notify");
-
-            paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-
-
-
+                paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
+            } catch (PayException e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
         }
     }
 
 
+    @Override
+    public String extraRateInvestCallback(Map<String, String> paramsMap, String originalQueryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
+                paramsMap,
+                originalQueryString,
+                ExtraRateNotifyRequestMapper.class,
+                ExtraRateNotifyRequestModel.class);
+
+        if (callbackRequest == null) {
+            return null;
+        }
+        redisWrapperClient.incr(ExtraRateInvestCallbackJob.REPAY_EXTRA_RATE_JOB_TRIGGER_KEY);
+        return callbackRequest.getResponseData();
+    }
+
+    @Override
+    public BaseDto<PayDataDto> asyncExtraRateInvestCallback() {
+        List<ExtraRateNotifyRequestModel> todoList = extraRateNotifyRequestMapper.getTodoList(10);
+
+        for (ExtraRateNotifyRequestModel model : todoList) {
+            if (updateExtraRateNotifyRequestStatus(model)) {
+                try {
+                   this.processOneCallback(model);
+                } catch (Exception e) {
+                    fatalLog("invest callback, processOneCallback error. investId:" + model.getOrderId(), e);
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        BaseDto<PayDataDto> asyncExtraRateNotifyDto = new BaseDto<>();
+        PayDataDto baseDataDto = new PayDataDto();
+        baseDataDto.setStatus(true);
+        asyncExtraRateNotifyDto.setData(baseDataDto);
+
+        return asyncExtraRateNotifyDto;
+    }
+
+    private boolean updateExtraRateNotifyRequestStatus(ExtraRateNotifyRequestModel model) {
+        try {
+            redisWrapperClient.decr(ExtraRateInvestCallbackJob.REPAY_EXTRA_RATE_JOB_TRIGGER_KEY);
+            extraRateNotifyRequestMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
+        } catch (Exception e) {
+            fatalLog("update_repay_extra_rate_invest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), e);
+            return false;
+        }
+        return true;
+    }
 
 
+    @Override
+    public void processOneCallback(ExtraRateNotifyRequestModel callbackRequestModel) {
+        String orderIdStr = callbackRequestModel.getOrderId();
+        long orderId = Long.parseLong(orderIdStr);
+        InvestModel investModel = investMapper.findById(orderId);
+        AccountModel accountModel = accountMapper.findByLoginName(investModel.getLoginName());
 
+        //investRateService.updateExtraRateData(investExtraRateModel, actualInterest, actualFee);
+    }
 
     @Override
     public void advanceRepay(long loanRepayId) {
@@ -148,6 +242,18 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                 continue;
             }
         }
+    }
+
+
+    private void fatalLog(String errMsg, Throwable e) {
+        logger.fatal(errMsg, e);
+        sendSmsErrNotify(MessageFormat.format("{0},{1}", environment, errMsg));
+    }
+
+    private void sendSmsErrNotify(String errMsg) {
+        logger.info("sent invest fatal sms message");
+        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("投资业务错误。详细信息：{0}", errMsg));
+        smsWrapperClient.sendFatalNotify(dto);
     }
 
 }
