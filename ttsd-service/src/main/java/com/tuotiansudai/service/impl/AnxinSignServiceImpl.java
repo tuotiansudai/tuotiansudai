@@ -14,21 +14,26 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
-import com.tuotiansudai.dto.sms.PlatformBalanceLowNotifyDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AnxinSignService;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -69,23 +74,37 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
+    @Autowired
+    private TransferRuleMapper transferRuleMapper;
+
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
     private static final String TEMP_PROJECT_CODE_KEY = "temp_project_code:";
 
     private static final int TEMP_PROJECT_CODE_EXPIRE_TIME = 1800; // 半小时
 
-    private static final String SIGN_LOCATION_AGENT_LOGIN_NAME = "agentLoginName";
+    private static final String LOAN_CONTRACT_AGENT_SIGN = "agentUserName";
 
-    private static final String SIGN_LOCATION_INVESTOR_LOGIN_NAME = "investorLoginName";
+    private static final String LOAN_CONTRACT_INVESTOR_SIGN = "investorUserName";
+
+    private static final String TRANSFER_LOAN_CONTRACT_AGENT_SIGN = "transferUserName";
+
+    private static final String TRANSFER_LOAN_CONTRACT_INVESTOR_SIGN = "transfereeUserName";
 
     @Value(value = "${anxin.contract.batch.num}")
     private int batchNum;
 
-    @Value(value = "${anxin.contract.template}")
-    private String template;
+    @Value(value = "${anxin.loan.contract.template}")
+    private String loanTemplate;
+
+    @Value(value = "${anxin.transfer.contract.template}")
+    private String transferTemplate;
 
     @Value("#{'${anxin.contract.notify.mobileList}'.split('\\|')}")
     private List<String> mobileList;
-
 
     /**
      * 以前是否授权过
@@ -278,8 +297,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
                     baseDto.setSuccess(true);
                 } catch (PKIException e) {
-                    smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList,ImmutableList.<String>builder().add(String.valueOf(loanId)).add(batchNo).build()));
-                    
+                    smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, ImmutableList.<String>builder().add(String.valueOf(loanId)).add(batchNo).build()));
+
                     baseDto.setSuccess(false);
                     logger.error(MessageFormat.format("[安心签] create contract error , loanId:{0}", loanId), e);
 
@@ -288,6 +307,125 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             }
         }
         return baseDto;
+    }
+
+    @Override
+    public BaseDto createTransferContracts(long transferApplicationId) {
+        List<CreateContractVO> createContractVOs = Lists.newArrayList(collectTransferContractModel(transferApplicationId));
+        BaseDto baseDto = new BaseDto();
+        String batchNo = UUIDGenerator.generate();
+        try {
+            logger.debug(MessageFormat.format("[安心签] create transfer contract begin , loanId:{0}, batchNo{1}", transferApplicationId, batchNo));
+            //创建合同
+            anxinSignConnectService.generateContractBatch3202(transferApplicationId, batchNo, createContractVOs);
+
+            baseDto.setSuccess(true);
+        } catch (PKIException e) {
+            smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, ImmutableList.<String>builder().add(String.valueOf(transferApplicationId)).add(batchNo).build()));
+
+            baseDto.setSuccess(false);
+            logger.error(MessageFormat.format("[安心签] create transfer contract error , loanId:{0}", transferApplicationId), e);
+
+        }
+        createContractVOs.clear();
+        return baseDto;
+    }
+
+    private CreateContractVO collectTransferContractModel(long transferApplicationId) {
+        CreateContractVO createContractVO = new CreateContractVO();
+        Map<String, String> dataModel = new HashMap<>();
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
+
+        AccountModel transferrerAccountModel = accountMapper.findByLoginName(transferApplicationModel.getLoginName());
+        AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(transferApplicationModel.getLoginName());
+        if (transferrerAccountModel != null) {
+            dataModel.put("transferMobile", userMapper.findByLoginName(transferrerAccountModel.getLoginName()).getMobile());
+            dataModel.put("transferIdentity", transferrerAccountModel.getIdentityNumber());
+        }
+
+        InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
+        AccountModel investAccountModel = accountMapper.findByLoginName(investModel.getLoginName());
+        AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investModel.getLoginName());
+        if (investAccountModel != null) {
+            dataModel.put("transfereeMobile", userMapper.findByLoginName(investAccountModel.getLoginName()).getMobile());
+            dataModel.put("transfereeIdentity", investAccountModel.getIdentityNumber());
+        }
+
+        LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
+        if (null != loanModel) {
+            dataModel.put("userName", loanerDetailsMapper.getByLoanId(loanModel.getId()).getUserName());
+            dataModel.put("identity", loanModel.getLoanerIdentityNumber());
+            dataModel.put("amount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+            dataModel.put("totalRate", String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100));
+            dataModel.put("periods", String.valueOf(loanModel.getPeriods()));
+        }
+
+        if (transferApplicationModel.getPeriod() != 1) {
+            InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), transferApplicationModel.getPeriod() - 1);
+            dataModel.put("transferStartTime", simpleDateFormat.format(new LocalDate(investRepayModel.getRepayDate()).plusDays(1).toDate()));
+        } else {
+            if (loanModel.getType().equals(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY) || loanModel.getType().equals(LoanType.INVEST_INTEREST_MONTHLY_REPAY)) {
+                dataModel.put("transferStartTime", simpleDateFormat.format(investModel.getInvestTime()));
+            } else if (loanModel.getType().equals(LoanType.LOAN_INTEREST_MONTHLY_REPAY) || loanModel.getType().equals(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY)) {
+                dataModel.put("transferStartTime", simpleDateFormat.format(loanModel.getRecheckTime()));
+            }
+        }
+
+        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanModel.getPeriods());
+        dataModel.put("transferEndTime", simpleDateFormat.format(investRepayModel.getRepayDate()));
+
+        dataModel.put("investAmount", AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
+        dataModel.put("transferTime", simpleDateFormat.format(transferApplicationModel.getTransferTime()));
+        dataModel.put("leftPeriod", String.valueOf(transferApplicationModel.getLeftPeriod()));
+
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        String msg1;
+        String msg2;
+        String msg3;
+        if(transferRuleModel.getLevelOneFee() != 0){
+            msg1 = MessageFormat.format("甲方持有债权30天以内的，收取转让本金的{0}%作为服务费用。",transferRuleModel.getLevelOneFee());
+        }else {
+            msg1 = "甲方持有债权30天以内的，暂不收取转服务费用。";
+        }
+
+        if(transferRuleModel.getLevelTwoFee() != 0){
+            msg2 = MessageFormat.format("甲方持有债权30天以上，90天以内的，收取转让本金的{0}%作为服务费用。",transferRuleModel.getLevelOneFee());
+        }else {
+            msg2 = "甲方持有债权30天以上，90天以内的，暂不收取转服务费用。";
+        }
+
+        if(transferRuleModel.getLevelThreeFee() != 0){
+            msg3 = MessageFormat.format("甲方持有债权90天以上的，收取转让本金的{0}%作为服务费用。",transferRuleModel.getLevelOneFee());
+        }else {
+            msg3 = "甲方持有债权90天以上的，暂不收取转服务费用。";
+        }
+        dataModel.put("msg1", msg1);
+        dataModel.put("msg2", msg2);
+        dataModel.put("msg3", msg3);
+
+        createContractVO.setInvestmentInfo(dataModel);
+
+        SignInfoVO agentSignInfo = new SignInfoVO();
+        agentSignInfo.setUserId(agentAnxinProp.getAnxinUserId());
+        agentSignInfo.setAuthorizationTime(new DateTime(agentAnxinProp.getAuthTime()).toString("yyyyMMddHHmmss"));
+        agentSignInfo.setLocation(agentAnxinProp.getAuthIp());
+        agentSignInfo.setSignLocation(TRANSFER_LOAN_CONTRACT_AGENT_SIGN);
+        agentSignInfo.setProjectCode(agentAnxinProp.getProjectCode());
+        agentSignInfo.setIsProxySign(1);
+
+        SignInfoVO investorSignInfo = new SignInfoVO();
+        investorSignInfo.setUserId(investorAnxinProp.getAnxinUserId());
+        investorSignInfo.setAuthorizationTime(new DateTime(investorAnxinProp.getAuthTime()).toString("yyyyMMddHHmmss"));
+        investorSignInfo.setLocation(investorAnxinProp.getAuthIp());
+        investorSignInfo.setSignLocation(TRANSFER_LOAN_CONTRACT_INVESTOR_SIGN);
+        investorSignInfo.setProjectCode(investorAnxinProp.getProjectCode());
+        investorSignInfo.setIsProxySign(1);
+
+        createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
+        createContractVO.setTemplateId(transferTemplate);
+        createContractVO.setIsSign(1);
+
+        return createContractVO;
     }
 
     private CreateContractVO collectInvestorContractModel(String investorLoginName, long loanId, long investId) {
@@ -316,11 +454,15 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("investorIdentityNumber", investorAccount.getIdentityNumber());
         dataModel.put("loanerUserName", loanerDetailsModel.getUserName());
         dataModel.put("loanerIdentityNumber", loanerDetailsModel.getIdentityNumber());
-        dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-        dataModel.put("periods", String.valueOf(loanModel.getPeriods()));
-        dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate()));
-        dataModel.put("recheckTime", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
-        dataModel.put("endTime", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
+        dataModel.put("loanAmount1", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+        dataModel.put("loanAmount2", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+        dataModel.put("periods1", String.valueOf(loanModel.getPeriods() * 30));
+        dataModel.put("periods2", String.valueOf(loanModel.getPeriods() * 30));
+        dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate() * 100));
+        dataModel.put("recheckTime1", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
+        dataModel.put("recheckTime2", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
+        dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
+        dataModel.put("endTime2", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
         dataModel.put("investId", String.valueOf(investId));
         if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
             dataModel.put("pledge", "房屋");
@@ -333,7 +475,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         agentSignInfo.setUserId(agentAnxinProp.getAnxinUserId());
         agentSignInfo.setAuthorizationTime(new DateTime(agentAnxinProp.getAuthTime()).toString("yyyyMMddHHmmss"));
         agentSignInfo.setLocation(agentAnxinProp.getAuthIp());
-        agentSignInfo.setSignLocation(SIGN_LOCATION_AGENT_LOGIN_NAME);
+        agentSignInfo.setSignLocation(LOAN_CONTRACT_AGENT_SIGN);
         agentSignInfo.setProjectCode(agentAnxinProp.getProjectCode());
         agentSignInfo.setIsProxySign(1);
 
@@ -341,12 +483,12 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         investorSignInfo.setUserId(investorAnxinProp.getAnxinUserId());
         investorSignInfo.setAuthorizationTime(new DateTime(investorAnxinProp.getAuthTime()).toString("yyyyMMddHHmmss"));
         investorSignInfo.setLocation(investorAnxinProp.getAuthIp());
-        investorSignInfo.setSignLocation(SIGN_LOCATION_INVESTOR_LOGIN_NAME);
+        investorSignInfo.setSignLocation(LOAN_CONTRACT_INVESTOR_SIGN);
         investorSignInfo.setProjectCode(investorAnxinProp.getProjectCode());
         investorSignInfo.setIsProxySign(1);
 
         createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
-        createContractVO.setTemplateId(template);
+        createContractVO.setTemplateId(loanTemplate);
         createContractVO.setIsSign(1);
         return createContractVO;
     }

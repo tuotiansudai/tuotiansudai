@@ -92,9 +92,4 @@ public class AccountMapperTest {
         userMapper.create(model);
         return model;
     }
-
-    @Test
-    public void shouleDanxinSignConnectService(){
-        anxinSignService.createContracts(30055181812832l);
-    }
 }

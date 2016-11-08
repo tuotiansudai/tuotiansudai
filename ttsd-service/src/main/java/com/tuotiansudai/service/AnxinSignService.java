@@ -24,4 +24,6 @@ public interface AnxinSignService {
 
     BaseDto updateContractResponse(long loanId);
 
+    BaseDto createTransferContracts(long transferApplicationId);
+
 }
