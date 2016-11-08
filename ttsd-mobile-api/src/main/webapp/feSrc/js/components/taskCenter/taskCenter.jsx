@@ -157,9 +157,6 @@ class taskCenter extends React.Component {
     fixTopMenu(scrollY) {
         let conOffsetTop=this.refs.scrollWrap.offsetTop;
         let tabHeaderDom=document.getElementById('tabHeaderDom');
-        let menuHeight=tabHeaderDom.clientHeight*0.5;
-
-        console.log(this.myScroll);
         if(!scrollY && tabHeaderDom.getAttribute('style')){
             this.myScroll.scrollTo(0, -conOffsetTop*0.9, 0);
             tabHeaderDom.setAttribute('style','top:'+conOffsetTop*0.98+'px;width:100%;left:0;height:1rem; line-height:1rem');
@@ -236,8 +233,6 @@ class taskCenter extends React.Component {
     componentDidUpdate() {
         //数据加载完成后
         if(!this.state.isShowLoading) {
-            // debugger
-            console.log(this.myScroll);
             imagesLoaded(this.refs.mainConWrap).on('done', () => {
                 setTimeout(() => {
                     let tabHeaderDom=document.getElementById('tabHeaderDom');
