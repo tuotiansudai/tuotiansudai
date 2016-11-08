@@ -383,7 +383,6 @@ public class LoanCreateServiceImpl implements LoanCreateService {
         LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel != null && LoanStatus.PREHEAT == loanModel.getStatus()) {
             loanMapper.updateStatus(loanId, LoanStatus.RAISING);
-            this.createAutoInvestJob(loanId);
         }
     }
 
