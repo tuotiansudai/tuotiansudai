@@ -99,18 +99,17 @@
                         (图片大小为:1920px * 350px)
                     </div>
                 </#if>
-
-
             </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label">目标地址(移动端): </label>
-
+                <label class="col-sm-2 control-label">APP点击定位到: </label>
                 <div class="col-sm-4">
-                    <input type="text" name="appActivityUrl" class="form-control appActivityUrl"
-                           <#if dto??&&dto.status == 'TO_APPROVE'>readonly</#if>
-                           value="<#if dto??>${dto.appActivityUrl!}</#if>" placeholder="" datatype="*"
-                           errormsg="目标地址(移动端)不能为空">
+                    <select class="selectpicker appActivityUrl" name="appActivityUrl">
+                        <#list appUrls as appUrl>
+                            <option value="${appUrl.path}" <#if dto?? && appUrl.path == dto.appActivityUrl>selected</#if>>${appUrl.description}</option>
+                        </#list>
+                    </select>
+                    <div class="app-push-link other-to-link">定位地址:<input type="text" class="form-control other-link-text" name="otherToLink" placeholder=""  maxlength="100" datatype="*" errormsg="链接地址不能为空"></div>
                 </div>
                 <div class="col-sm-7">
                 </div>

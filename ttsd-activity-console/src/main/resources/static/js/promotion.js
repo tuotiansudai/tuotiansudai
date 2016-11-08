@@ -83,6 +83,23 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
         return defer.promise();
 
     };
+
+    $('select.linkUrl').change(function () {
+        var linkUrl = $(this).val();
+        if (linkUrl == '') {
+            $('.other-to-link').removeClass('app-push-link').val('');
+        } else {
+            $('.other-to-link').addClass('app-push-link').val('');
+        }
+
+    }).trigger('change');
+
+    $('.other-link-text').on('focusout',function(e){
+        e.preventDefault();
+        $('.linkUrl').find('option:contains("其他")').val($(this).val()).trigger('click');
+    });
+
+
     //表单校验初始化参数
     $promotionForm.Validform({
         btnSubmit: '.promotion-confirm',
@@ -110,7 +127,7 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
     $submitBtn.on('click', function(event) {
         event.preventDefault();
         var $self = $(this);
-        if (!IsURL($("input[name='linkUrl']").val())) {
+        if (!IsURL($("input[name='other-link-text']").val())) {
             showErrorMessage("链接网址格式不正确,请以http://或 https://开始");
             return false;
         }
@@ -120,7 +137,7 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
             return false;
         }
 
-        if ($("input[name='linkUrl']").val().length >= 100) {
+        if ($("input[name='other-link-text']").val().length >= 100) {
             showErrorMessage("链接最多100个中文字符!");
             return false;
         }

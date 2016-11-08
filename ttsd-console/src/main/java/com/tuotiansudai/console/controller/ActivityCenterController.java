@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.ActivityDto;
 import com.tuotiansudai.repository.model.ActivityStatus;
@@ -31,6 +32,7 @@ public class ActivityCenterController {
     public ModelAndView activityCenter() {
         ModelAndView modelAndView = new ModelAndView("/activity-center-edit");
         modelAndView.addObject("sources", Lists.newArrayList(Source.values()));
+        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()));
         return modelAndView;
     }
 
@@ -40,6 +42,7 @@ public class ActivityCenterController {
 
         ActivityDto activityDto = activityService.findActivityDtoById(activityId);
         modelAndView.addObject("sources", Lists.newArrayList(Source.values()));
+        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()));
         modelAndView.addObject("dto", activityDto);
         return modelAndView;
     }

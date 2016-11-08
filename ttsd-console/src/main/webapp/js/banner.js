@@ -1,11 +1,15 @@
-require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'jquery-ui', 'csrf'], function ($) {
+require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSelect', 'jquery-ui', 'csrf'], function ($) {
 
     $(function () {
 
         var $errorDom = $('.form-error'),
             $bannerForm = $('.banner-form'),
             $submitBtn = $('#btnSave'),
+            $selectDom = $('.selectpicker'), //select表单
             boolFlag = false;
+
+        //渲染select表单
+        $selectDom.selectpicker();
 
         function showErrorMessage(msg, obj) {
             currentErrorObj = obj;
@@ -38,6 +42,20 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'jquery-ui', 
             }
             return defer.promise();
         };
+
+        $('select.appUrl').change(function () {
+            var appUrl = $(this).val();
+            if (appUrl == '') {
+                $('.other-to-link').removeClass('app-push-link').val('');
+            } else {
+                $('.other-to-link').addClass('app-push-link').val('');
+            }
+        }).trigger('change');
+
+        $('.other-link-text').on('focusout',function(e){
+            e.preventDefault();
+            $('.appUrl').find('option:contains("其他")').val($(this).val()).trigger('click');
+        });
 
         $('.webImageUrl,.appImageUrl').on('change', function () {
             var $self = $(this),
@@ -158,7 +176,6 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'jquery-ui', 
                 showErrorMessage("序号必须为正整数");
                 return false;
             }
-
 
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {

@@ -1,10 +1,14 @@
-require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDatetimepicker', 'jquery-ui', 'csrf'], function ($) {
+require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDatetimepicker',  'bootstrapSelect', 'jquery-ui', 'csrf'], function ($) {
     $(function () {
         var $activityCenterForm = $('.activity-form'),
+            $selectDom = $('.selectpicker'), //select表单
             boolFlag = false, //校验布尔变量值
             $errorDom = $('.form-error'); //错误提示节点
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
         $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+
+        //渲染select表单
+        $selectDom.selectpicker();
 
         var _URL = window.URL || window.webkitURL;
 
@@ -78,6 +82,22 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
 
         };
 
+        $('select.appActivityUrl').change(function () {
+            var appActivityUrl = $(this).val();
+            if (appActivityUrl == '') {
+                $('.other-to-link').removeClass('app-push-link').val('');
+            } else {
+                $('.other-to-link').addClass('app-push-link').val('');
+            }
+
+        }).trigger('change');
+
+        $('.other-link-text').on('focusout',function(e){
+            e.preventDefault();
+            $('.appActivityUrl').find('option:contains("其他")').val($(this).val()).trigger('click');
+        });
+
+
         /**
          * @msg  {[string]} //文字信息
          * @obj  {[object]} //传入的dom节点
@@ -137,6 +157,12 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                         }
                 }
 
+                var appActivityUrl = $('.appActivityUrl').val();
+                var otherToLink = $('.other-link-text').val();
+                if (appActivityUrl == 'OTHER' && otherToLink == '') {
+                    showErrorMessage('链接地址不能为空', $('.other-link-text', $activityCenterForm));
+                    return false;
+                }
 
             },
             callback: function ($activityCenterForm) {
