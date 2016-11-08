@@ -1,4 +1,3 @@
-BEGIN;
   CREATE TABLE `activity` (
     `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
     `title` varchar(30) NOT NULL COMMENT '活动名称',
@@ -29,5 +28,3 @@ BEGIN;
     CONSTRAINT `FK_ACTIVITY_CREATED_BY_REF_USER_LOGIN_NAME` FOREIGN KEY (`created_by`) REFERENCES `user` (`login_name`),
     CONSTRAINT `FK_ACTIVITY_UPDATED_BY_REF_USER_LOGIN_NAME` FOREIGN KEY (`updated_by`) REFERENCES `user` (`login_name`)
   ) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COMMENT='活动中心活动';
-
-COMMIT;
