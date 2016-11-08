@@ -336,11 +336,11 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         Map<String, String> dataModel = new HashMap<>();
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
 
-        AccountModel transferrerAccountModel = accountMapper.findByLoginName(transferApplicationModel.getLoginName());
+        AccountModel transferreAccountModel = accountMapper.findByLoginName(transferApplicationModel.getLoginName());
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(transferApplicationModel.getLoginName());
-        if (transferrerAccountModel != null) {
-            dataModel.put("transferMobile", userMapper.findByLoginName(transferrerAccountModel.getLoginName()).getMobile());
-            dataModel.put("transferIdentity", transferrerAccountModel.getIdentityNumber());
+        if (transferreAccountModel != null) {
+            dataModel.put("transferMobile", userMapper.findByLoginName(transferreAccountModel.getLoginName()).getMobile());
+            dataModel.put("transferIdentity", transferreAccountModel.getIdentityNumber());
         }
 
         InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
