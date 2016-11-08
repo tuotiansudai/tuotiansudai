@@ -17,13 +17,13 @@ public interface AnxinSignService {
 
     BaseDto<BaseDataDto> verifyCaptcha3102(String loginName, String captcha, boolean isSkipAuth, String ip);
 
-    BaseDto<BaseDataDto> createContracts(long loanId);
-
     BaseDto switchSkipAuth(String loginName, boolean open);
 
     byte[] downContractByContractNo(String contractNo);
 
     BaseDto updateContractResponse(long loanId,AnxinContractType anxinContractType);
+
+    BaseDto createContracts(long loanId);
 
     BaseDto createTransferContracts(long transferApplicationId);
 

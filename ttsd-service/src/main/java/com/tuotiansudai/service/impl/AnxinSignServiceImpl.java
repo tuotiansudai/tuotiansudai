@@ -52,19 +52,18 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private UserMapper userMapper;
 
     @Autowired
-    private AnxinSignConnectService anxinSignConnectService;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
     @Autowired
     private LoanerDetailsMapper loanerDetailsMapper;
 
     @Autowired
-    private InvestRepayMapper investRepayMapper;
+    private AnxinSignConnectService anxinSignConnectService;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private InvestMapper investMapper;
@@ -384,21 +383,21 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         String msg1;
         String msg2;
         String msg3;
-        if(transferRuleModel.getLevelOneFee() != 0){
-            msg1 = MessageFormat.format("甲方持有债权30天以内的，收取转让本金的{0}%作为服务费用。",transferRuleModel.getLevelOneFee());
-        }else {
+        if (transferRuleModel.getLevelOneFee() != 0) {
+            msg1 = MessageFormat.format("甲方持有债权30天以内的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelOneFee());
+        } else {
             msg1 = "甲方持有债权30天以内的，暂不收取转服务费用。";
         }
 
-        if(transferRuleModel.getLevelTwoFee() != 0){
-            msg2 = MessageFormat.format("甲方持有债权30天以上，90天以内的，收取转让本金的{0}%作为服务费用。",transferRuleModel.getLevelOneFee());
-        }else {
+        if (transferRuleModel.getLevelTwoFee() != 0) {
+            msg2 = MessageFormat.format("甲方持有债权30天以上，90天以内的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelOneFee());
+        } else {
             msg2 = "甲方持有债权30天以上，90天以内的，暂不收取转服务费用。";
         }
 
-        if(transferRuleModel.getLevelThreeFee() != 0){
-            msg3 = MessageFormat.format("甲方持有债权90天以上的，收取转让本金的{0}%作为服务费用。",transferRuleModel.getLevelOneFee());
-        }else {
+        if (transferRuleModel.getLevelThreeFee() != 0) {
+            msg3 = MessageFormat.format("甲方持有债权90天以上的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelOneFee());
+        } else {
             msg3 = "甲方持有债权90天以上的，暂不收取转服务费用。";
         }
         dataModel.put("msg1", msg1);

@@ -64,6 +64,7 @@ pay-wrapper:
   ports:
     - "20004:8080"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - /workspace/ump_sign/:/workspace/ump_sign
     - ./ttsd-pay-wrapper/war:/usr/local/tomcat/webapps
     - /var/log/tuotian/pay-wrapper:/usr/local/tomcat/logs
@@ -92,6 +93,7 @@ mobile-api:
   ports:
     - "20006:8080"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-mobile-api/war:/usr/local/tomcat/webapps
     - /var/log/tuotian/mobile-api:/usr/local/tomcat/logs
     - /var/log/tuotian/mobile-api:/var/log/tomcat
