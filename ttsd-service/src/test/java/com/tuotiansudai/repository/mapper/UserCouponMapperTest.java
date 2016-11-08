@@ -66,6 +66,28 @@ public class UserCouponMapperTest {
         assertEquals(userCouponModel.getCouponId(), userCouponModelDb.getCouponId());
         assertEquals(userCouponModel.getLoginName(), userCouponModelDb.getLoginName());
 
+    }
+
+    @Test
+    public void shouldFindUserCouponAndCouponByLoginNameIsSuccess() {
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+
+        CouponModel couponModel = fakeCouponModel();
+        couponMapper.create(couponModel);
+
+        UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId());
+        userCouponMapper.create(userCouponModel);
+
+        List<UserCouponModel> userCouponModelList = userCouponMapper.findUserCouponAndCouponByLoginName("couponTest", null);
+
+        assertNotNull(userCouponModelList);
+        assertEquals(1, userCouponModelList.size());
+
+        UserCouponModel userCouponModelDb = userCouponModelList.get(0);
+        assertEquals(userCouponModel.getCouponId(), userCouponModelDb.getCouponId());
+        assertEquals(userCouponModel.getLoginName(), userCouponModelDb.getLoginName());
+
 
         assertEquals(userCouponModelList.get(0).getCoupon().getId(), couponModel.getId());
         assertEquals(userCouponModelList.get(0).getCoupon().getAmount(), couponModel.getAmount());
