@@ -16,7 +16,6 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
@@ -45,7 +44,11 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MobileAppTransferApplicationServiceImpl implements MobileAppTransferApplicationService {
@@ -80,10 +83,6 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     @Autowired
     UserMembershipMapper userMembershipMapper;
 
-    @Autowired
-    private UserMembershipService userMembershipService;
-
-
     @Override
     public BaseResponseDto generateTransferApplication(TransferApplicationRequestDto requestDto) {
         BaseResponseDto<TransferApplicationResponseDataDto> dto = new BaseResponseDto();
@@ -110,7 +109,12 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
             List<TransferApplicationRecordResponseDataDto> transferApplication = Lists.transform(transferApplicationRecordDtos, new Function<TransferApplicationRecordDto, TransferApplicationRecordResponseDataDto>() {
                 @Override
                 public TransferApplicationRecordResponseDataDto apply(TransferApplicationRecordDto transferApplicationRecordDto) {
-                    return new TransferApplicationRecordResponseDataDto(transferApplicationRecordDto);
+                    TransferApplicationRecordResponseDataDto transferApplicationRecordResponseDataDto = new TransferApplicationRecordResponseDataDto(transferApplicationRecordDto);
+                    LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
+                    InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
+                    long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), investRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                    transferApplicationRecordResponseDataDto.setLeftDays(String.valueOf(leftDays > 0 ? leftDays : 0));
+                    return transferApplicationRecordResponseDataDto;
                 }
             });
             transferApplicationResponseDataDto.setTransferApplication(transferApplication);
@@ -192,12 +196,14 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         transferApplicationResponseDataDto.setPageSize(pageSize);
         transferApplicationResponseDataDto.setTotalCount(transferApplicationMapper.findCountTransfereeApplicationPaginationByLoginName(loginName));
         if (CollectionUtils.isNotEmpty(transferApplicationRecordDtos)) {
-            List<TransferApplicationRecordResponseDataDto> transferApplication = Lists.transform(transferApplicationRecordDtos, new Function<TransferApplicationRecordDto, TransferApplicationRecordResponseDataDto>() {
-                @Override
-                public TransferApplicationRecordResponseDataDto apply(TransferApplicationRecordDto transferApplicationRecordDto) {
-                    return new TransferApplicationRecordResponseDataDto(transferApplicationRecordDto);
-                }
-            });
+            List<TransferApplicationRecordResponseDataDto> transferApplication = transferApplicationRecordDtos.stream().map(transferApplicationRecordDto -> {
+                TransferApplicationRecordResponseDataDto transferApplicationRecordResponseDataDto = new TransferApplicationRecordResponseDataDto(transferApplicationRecordDto);
+                LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
+                InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getInvestId(), loanModel.getPeriods());
+                long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), investRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                transferApplicationRecordResponseDataDto.setLeftDays(String.valueOf(leftDays > 0 ? leftDays : 0));
+                return transferApplicationRecordResponseDataDto;
+            }).collect(Collectors.toList());
             transferApplicationResponseDataDto.setTransferApplication(transferApplication);
 
         }
@@ -264,12 +270,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         transferApplicationResponseDataDto.setTotalCount(transferService.findCountAllTransferApplicationPaginationList(transferStatusList, Double.parseDouble(rateLower), Double.parseDouble(rateUpper)));
 
         if (CollectionUtils.isNotEmpty(transferApplicationRecordDto.getRecords())) {
-            List<TransferApplicationRecordResponseDataDto> transferApplication = Lists.transform(transferApplicationRecordDto.getRecords(), new Function<TransferApplicationPaginationItemDataDto, TransferApplicationRecordResponseDataDto>() {
-                @Override
-                public TransferApplicationRecordResponseDataDto apply(TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto) {
-                    return new TransferApplicationRecordResponseDataDto(transferApplicationPaginationItemDataDto);
-                }
-            });
+            List<TransferApplicationRecordResponseDataDto> transferApplication = transferApplicationRecordDto.getRecords().stream().map(TransferApplicationRecordResponseDataDto::new).collect(Collectors.toList());
             transferApplicationResponseDataDto.setTransferApplication(transferApplication);
         }
 
@@ -285,6 +286,11 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         String loginName = requestDto.getBaseParam().getUserId();
         TransferApplicationDetailDto transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(Long.parseLong(transferApplicationId), loginName, 3);
         TransferApplicationDetailResponseDataDto transferApplicationDetailResponseDataDto = new TransferApplicationDetailResponseDataDto(transferApplicationDetailDto);
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.valueOf(transferApplicationId));
+        LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
+        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationDetailDto.getTransferInvestId(), loanModel.getPeriods());
+        long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), investRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        transferApplicationDetailResponseDataDto.setLeftDays(String.valueOf(leftDays > 0 ? leftDays : 0));
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(transferApplicationDetailResponseDataDto);

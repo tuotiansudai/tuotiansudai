@@ -17,6 +17,16 @@ public class UserLotteryPrizeView implements Serializable {
 
     private String prizeValue;
 
+    private String loginName;
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+
     public String getMobile() {
         return mobile;
     }

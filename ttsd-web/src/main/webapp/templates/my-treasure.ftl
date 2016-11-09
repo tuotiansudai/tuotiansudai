@@ -308,6 +308,6 @@
             </div>
         </div>
     </div>
-    <#include "coupon-alert.ftl" />
+    <#include "component/coupon-alert.ftl" />
 </div>
 </@global.main>

@@ -30,12 +30,9 @@ public class ImportUserCollector implements UserCollector {
             return Lists.newArrayList();
         }
 
-        return Lists.transform(Lists.newArrayList(values.split(",")), new Function<String, String>() {
-            @Override
-            public String apply(String value) {
-                UserModel userModel = userMapper.findByLoginNameOrMobile(value);
-                return userModel.getLoginName();
-            }
+        return Lists.transform(Lists.newArrayList(values.split(",")), value -> {
+            UserModel userModel = userMapper.findByLoginNameOrMobile(value);
+            return userModel.getLoginName();
         });
     }
 
