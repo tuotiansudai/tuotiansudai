@@ -164,7 +164,6 @@
     <bean id="anxinSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="anxinHikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.cfca.model"/>
-        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
     <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
