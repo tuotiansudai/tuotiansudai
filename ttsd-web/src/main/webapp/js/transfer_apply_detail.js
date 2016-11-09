@@ -112,10 +112,12 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
             className = 'fa fa-check-square';
             $this.next('span.error').hide();
             $('#skipCheck').length>0?$('#skipCheck').val('true'):false;
+            $createForm.find('button[type="submit"]').prop('disabled', false);
         }
         else {
             className = 'fa fa-square-o';
             $('#skipCheck').length>0?$('#skipCheck').val('false'):false;
+            $createForm.find('button[type="submit"]').prop('disabled', true);
         }
         $this.find('i')[0].className = className;
     });
@@ -235,7 +237,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
             $('#skipSuccess').hide();
             $('#skipPhoneCode').val('');
             num=0;
-            applyTip();
+            sendData();
         },3000)
     }
 
