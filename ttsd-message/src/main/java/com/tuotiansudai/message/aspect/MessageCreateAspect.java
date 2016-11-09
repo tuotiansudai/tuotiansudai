@@ -70,8 +70,8 @@ public class MessageCreateAspect {
     @AfterReturning(value = "createLoanPointcut() || updateLoanPointcut()")
     public void afterCreateOrUpdateLoan(JoinPoint joinPoint) {
         LoanCreateRequestDto loanCreateRequestDto = (LoanCreateRequestDto) joinPoint.getArgs()[0];
-        if (null == loanCreateRequestDto || Strings.isNullOrEmpty(loanCreateRequestDto.getLoanMessageRequestDto().getLoanMessageTitle().trim()) ||
-                Strings.isNullOrEmpty(loanCreateRequestDto.getLoanMessageRequestDto().getLoanMessageContent().trim())) {
+        if (null == loanCreateRequestDto || Strings.isNullOrEmpty(loanCreateRequestDto.getLoanMessage().getLoanMessageTitle().trim()) ||
+                Strings.isNullOrEmpty(loanCreateRequestDto.getLoanMessage().getLoanMessageContent().trim())) {
             return;
         }
         try {

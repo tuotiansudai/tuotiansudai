@@ -77,9 +77,9 @@ public class MessageCompleteDto implements Serializable {
     public static MessageCompleteDto createFromLoanCreateRequestDto(LoanCreateRequestDto loanCreateRequestDto) {
         MessageCompleteDto messageCompleteDto = new MessageCompleteDto();
 
-        messageCompleteDto.setTitle(loanCreateRequestDto.getLoanMessageRequestDto().getLoanMessageTitle());
-        messageCompleteDto.setTemplate(loanCreateRequestDto.getLoanMessageRequestDto().getLoanMessageContent());
-        messageCompleteDto.setTemplateTxt(loanCreateRequestDto.getLoanMessageRequestDto().getLoanMessageContent());
+        messageCompleteDto.setTitle(loanCreateRequestDto.getLoanMessage().getLoanMessageTitle());
+        messageCompleteDto.setTemplate(loanCreateRequestDto.getLoanMessage().getLoanMessageContent());
+        messageCompleteDto.setTemplateTxt(loanCreateRequestDto.getLoanMessage().getLoanMessageContent());
         messageCompleteDto.setType(MessageType.MANUAL);
         messageCompleteDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
         messageCompleteDto.setChannels(Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
