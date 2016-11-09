@@ -177,7 +177,7 @@ worker-jpush:
   command: bash -c "/opt/worker/ttsd-job-worker-jpush/bin/ttsd-job-worker"
   links:
     - "redis-server"
-worker-jpush:
+loan-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
