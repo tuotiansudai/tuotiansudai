@@ -1,13 +1,15 @@
 package com.tuotiansudai.cfca.service.impl;
 
 import cfca.sadk.algorithm.common.PKIException;
-import cfca.trustsign.common.vo.cs.*;
+import cfca.trustsign.common.vo.cs.CreateContractVO;
+import cfca.trustsign.common.vo.cs.HeadVO;
+import cfca.trustsign.common.vo.cs.PersonVO;
+import cfca.trustsign.common.vo.cs.ProxySignVO;
 import cfca.trustsign.common.vo.request.tx3.*;
 import cfca.trustsign.common.vo.response.ErrorResVO;
 import cfca.trustsign.common.vo.response.tx3.*;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.cfca.connector.HttpConnector;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
@@ -15,10 +17,8 @@ import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.mapper.AnxinContractRequestMapper;
 import com.tuotiansudai.cfca.mapper.AnxinContractResponseMapper;
-import com.tuotiansudai.cfca.mapper.AnxinSignRequestMapper;
 import com.tuotiansudai.cfca.model.AnxinContractRequestModel;
 import com.tuotiansudai.cfca.model.AnxinContractResponseModel;
-import com.tuotiansudai.cfca.model.AnxinSignRequestModel;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.service.RequestResponseService;
 import com.tuotiansudai.cfca.util.SecurityUtil;
@@ -42,9 +42,6 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
     @Autowired
     private RequestResponseService requestResponseService;
-
-    @Autowired
-    private AnxinSignRequestMapper anxinSignRequestMapper;
 
     @Autowired
     private AnxinContractRequestMapper anxinContractRequestMapper;
