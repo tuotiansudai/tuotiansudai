@@ -20,6 +20,7 @@ import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.UUIDGenerator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -37,9 +38,6 @@ import java.util.Map;
 public class AnxinSignServiceImpl implements AnxinSignService {
 
     static Logger logger = Logger.getLogger(AnxinSignServiceImpl.class);
-
-    @Autowired
-    private AccountMapper accountMapper;
 
     @Autowired
     private UserMapper userMapper;
@@ -71,10 +69,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private TransferApplicationMapper transferApplicationMapper;
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-    private static final String TEMP_PROJECT_CODE_KEY = "temp_project_code:";
-
-    private static final int TEMP_PROJECT_CODE_EXPIRE_TIME = 1800; // 半小时
 
     private static final String LOAN_CONTRACT_AGENT_SIGN = "agentUserName";
 
@@ -156,7 +150,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         UserModel transfereeUserModel = userMapper.findByLoginName(transferApplicationModel.getLoginName());
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(transferApplicationModel.getLoginName());
         if (transfereeUserModel != null) {
-            dataModel.put("transferMobile", userMapper.findByLoginName(transfereeUserModel.getLoginName()).getMobile());
+            dataModel.put("transferUserName", transfereeUserModel.getUserName());
+            dataModel.put("transferMobile", transfereeUserModel.getMobile());
             dataModel.put("transferIdentity", transfereeUserModel.getIdentityNumber());
         }
 
@@ -164,8 +159,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         UserModel investAccountModel = userMapper.findByLoginName(investModel.getLoginName());
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investModel.getLoginName());
         if (investAccountModel != null) {
-            dataModel.put("transferreMobile", userMapper.findByLoginName(investAccountModel.getLoginName()).getMobile());
-            dataModel.put("transfeeerIdentity", investAccountModel.getIdentityNumber());
+            dataModel.put("transfereeUserName", investAccountModel.getUserName());
+            dataModel.put("transfereeMobile", userMapper.findByLoginName(investAccountModel.getLoginName()).getMobile());
+            dataModel.put("transfereeIdentity", investAccountModel.getIdentityNumber());
         }
 
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
@@ -264,6 +260,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
 
+        dataModel.put("agentUserName", agentModel.getUserName());
+        dataModel.put("investorUserName", investorModel.getUserName());
         dataModel.put("agentMobile", agentModel.getMobile());
         dataModel.put("agentIdentityNumber", agentModel.getIdentityNumber());
         dataModel.put("investorMobile", investorModel.getMobile());
@@ -277,10 +275,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate() * 100));
         dataModel.put("recheckTime1", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
         dataModel.put("recheckTime2", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
-//        dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
-//        dataModel.put("endTime2", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
-        dataModel.put("endTime2", "2016-12-11");
-        dataModel.put("endTime2", "2016-12-11");
+        dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
+        dataModel.put("endTime2", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
         dataModel.put("orderId", String.valueOf(investId));
         if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
             dataModel.put("pledge", "房屋");
@@ -317,6 +313,10 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         try {
             //查询合同创建结果并更新invest
             List<ContractResponseView> contractResponseViews = anxinSignConnectService.updateContractResponse(businessId,anxinContractType);
+
+            if(CollectionUtils.isEmpty(contractResponseViews)){
+                return new BaseDto(false);
+            }
 
             contractResponseViews.forEach(contractResponseView -> {
                 if (contractResponseView.getRetCode().equals("60000000")) {

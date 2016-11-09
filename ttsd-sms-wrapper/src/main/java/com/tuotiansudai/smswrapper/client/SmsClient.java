@@ -109,7 +109,7 @@ public class SmsClient implements ApplicationContextAware {
         }
 
         if(Environment.QA.name().equals(environment)){
-            String redisKey = MessageFormat.format(this.WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE, "MD");
+            String redisKey = MessageFormat.format(this.WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE, "SMS");
             String hKey = DateTime.now().withTimeAtStartOfDay().toString("yyyyMMdd");
             String redisValue = redisWrapperClient.hget(redisKey, hKey);
 
