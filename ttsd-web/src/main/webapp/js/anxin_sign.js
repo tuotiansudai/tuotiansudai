@@ -1,5 +1,5 @@
 require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], function ($, layer) {
-    function ajaxOuterFun(option,callback,alwaysFun,failFun) {
+    function ajaxOuterFun(option,callback) {
         var defaults={
             type:'POST',
             url:'',
@@ -302,9 +302,18 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
                 },function(data) {
                     if(data.success) {
                         layer.closeAll();
-                        layer.msg(tipMsg,function() {
-                            location.reload();
-                        });
+
+                        if(isOpen) {
+                            // 开启成功
+                            $safetyList.find('.sms-open').show();
+                            $safetyList.find('.sms-close').hide();
+                        }
+                        else{
+                            // 关闭成功
+                            $safetyList.find('.sms-open').hide();
+                            $safetyList.find('.sms-close').hide();
+                        }
+                        layer.msg(tipMsg);
                     }
                     else {
                         layer.msg('请求失败，请重试或联系客服！');
