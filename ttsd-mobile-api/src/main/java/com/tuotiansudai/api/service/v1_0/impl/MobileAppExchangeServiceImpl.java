@@ -69,7 +69,7 @@ public class MobileAppExchangeServiceImpl implements MobileAppExchangeService{
         String isUsed = "1";
         redisWrapperClient.hset(EXCHANGE_CODE_KEY + couponId, exchangeCode, isUsed);
 
-        List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponAndCouponByLoginName(loginName, null);
+        List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponWithCouponByLoginName(loginName, null);
         if(CollectionUtils.isEmpty(userCouponModels)){
             return new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(),ReturnMessage.SUCCESS.getMsg());
         }

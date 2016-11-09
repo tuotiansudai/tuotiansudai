@@ -11,7 +11,6 @@ import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.util.IdGenerator;
-import org.hamcrest.core.Is;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -79,7 +78,7 @@ public class UserCouponMapperTest {
         UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId());
         userCouponMapper.create(userCouponModel);
 
-        List<UserCouponModel> userCouponModelList = userCouponMapper.findUserCouponAndCouponByLoginName("couponTest", null);
+        List<UserCouponModel> userCouponModelList = userCouponMapper.findUserCouponWithCouponByLoginName("couponTest", null);
 
         assertNotNull(userCouponModelList);
         assertEquals(1, userCouponModelList.size());

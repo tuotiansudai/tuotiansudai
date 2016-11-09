@@ -6,7 +6,6 @@ import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppInvestCouponService;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
@@ -64,7 +63,7 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
             return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
 
-        List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponAndCouponByLoginName(dto.getBaseParam().getUserId(), null);
+        List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponWithCouponByLoginName(dto.getBaseParam().getUserId(), null);
 
         List<UserCouponModel> unavailableCouponList = filterUnavailableLoanProductType(userCouponModels, loanModel.getProductType());
 

@@ -106,7 +106,7 @@
         where uc.login_name = #{loginName}
     </select>
 
-    <select useCache="false" id="findUserCouponAndCouponByLoginName" resultMap="userCouponResultMap" parameterType="map">
+    <select useCache="false" id="findUserCouponWithCouponByLoginName" resultMap="userCouponResultMap" parameterType="map">
         select  uc.*,
         c.id as coupon_model_id,
         c.amount as amount,
