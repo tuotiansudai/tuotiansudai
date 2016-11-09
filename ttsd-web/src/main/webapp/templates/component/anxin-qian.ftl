@@ -1,7 +1,7 @@
 <div class="get-skipphone-tip" id="getSkipPhone">
         <div class="tip-item">
             <span>
-                <input type="text" class="skip-phone-code" id="skipPhoneCode" placeholder="请输入验证码">
+                <input type="text" class="skip-phone-code" id="skipPhoneCode" maxlength="6" placeholder="请输入验证码">
             </span>
             <span>
                 <input type="button" class="get-skip-code" value="获取短信验证码" id="getSkipCode">
