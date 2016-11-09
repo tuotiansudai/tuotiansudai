@@ -12,7 +12,7 @@
         </div>
         <div class="tip-item">
             <span class="skip-error" id="skipError"></span>
-            <a href="/" class="skip-intro" target="_blank">什么是安心签？</a>
+            <a href="/activity/landing-anxin" class="skip-intro" target="_blank">什么是安心签？</a>
         </div>
         <div class="tip-item">
             <button class="get-skip-btn" id="getSkipBtn">立即授权</button>

@@ -367,15 +367,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                         $('.image-captcha img').trigger('click');
                     } else {
                         if (isInvestor) {
-
-                            if($isSkipAuth.val()=='true'){
-                                noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
-                                return;
-                            }else{
-                                getSkipPhoneTip();
-                                return false;
-                            }
-                            
+                            noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
+                            return;
                         }
                         if (isAuthentication) {
                             location.href = '/register/account';
@@ -617,7 +610,15 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                             } else if (data.message == '新手标投资已超上限') {
                                 showLayer();
                             } else {
-                                showInputErrorTips(data.message);
+                                
+                                if($isSkipAuth.val()=='true'){
+                                    $investForm.submit();
+                                    return;
+                                }else{
+                                    showInputErrorTips(data.message);
+                                    getSkipPhoneTip();
+                                    return false;
+                                }
                             }
                         }
                     });
@@ -625,7 +626,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             });
             return;
         }
-
         $investForm.submit();
     }
 
@@ -915,7 +915,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     }
     //countdown skip
     function countDown() {
-        $('#getSkipCode').val(num + '秒后可重新获取').prop('disabled',true);
+        $('#getSkipCode').val(num + '秒后重新获取').prop('disabled',true);
         $('#microPhone').css('visibility', 'hidden');
         if (num == 0) {
             clearInterval(Down);
@@ -972,7 +972,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $('#skipSuccess').hide();
             $('#skipPhoneCode').val('');
             num=0;
-            noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
+            $('#investForm').submit();
         },3000)
     }
 

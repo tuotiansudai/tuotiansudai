@@ -49,13 +49,8 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
                 });
                 $('.image-captcha img').trigger('click');
             } else {
-                if ($isSkipAuth.val() == 'true') {
-                    submitData();
-                    return;
-                } else {
-                    getSkipPhoneTip();
-                    return false;
-                }
+                submitData();
+                return;
             }
         });
 
@@ -132,7 +127,14 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
                                     return false;
                                 }
                             }
-                            $transferForm.submit();
+                            if($isSkipAuth.val()=='true'){
+                                $transferForm.submit();
+                                return;
+                            }else{
+                                getSkipPhoneTip();
+                                return false;
+                            }
+                            
                         }
                     });
                 }
@@ -215,7 +217,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
     }
     //countdown skip
     function countDown() {
-        $('#getSkipCode').val(num + 's').prop('disabled', true);
+        $('#getSkipCode').val(num + '秒后重新获取').prop('disabled', true);
         $('#microPhone').css('visibility', 'hidden');
         if (num == 0) {
             clearInterval(Down);
@@ -273,7 +275,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
             $('#skipSuccess').hide();
             $('#skipPhoneCode').val('');
             num=0;
-            submitData();
+            $('#transferForm').submit();
         }, 3000)
     }
 
