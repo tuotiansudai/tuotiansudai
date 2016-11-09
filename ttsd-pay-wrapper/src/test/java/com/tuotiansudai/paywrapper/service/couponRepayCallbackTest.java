@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -8,27 +9,22 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.job.CouponRepayNotifyCallbackJob;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.impl.CouponRepayServiceImpl;
-import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.mapper.CouponRepayNotifyRequestMapper;
+import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.CouponRepayNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.InterestCalculator;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -38,15 +34,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.anyListOf;
+import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -94,6 +89,14 @@ public class couponRepayCallbackTest {
     @Mock
     private SystemBillService systemBillService;
 
+    @Mock
+    private CouponRepayNotifyRequestMapper couponRepayNotifyRequestMapper;
+
+    @Mock
+    private RedisWrapperClient redisWrapperClient;
+
+    @Mock
+    private UserBillMapper userBillMapper;
 
     @Before
     public void init() {
@@ -101,108 +104,50 @@ public class couponRepayCallbackTest {
     }
 
     @Test
-    public void shouldNormalRepayCouponRepayIsSuccess() throws PayException, AmountTransferException {
+    public void shouldOnlyOneRecords(){
+
         UserModel userModel = mockUser("testCouponRepay", "13900880000", "12311@abc");
         LoanRepayModel loanRepay = this.getFakeLoanRepayModel(idGenerator.generate(), idGenerator.generate(), 1, 0, 100000, new DateTime().withMillisOfSecond(0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
-        List<LoanRepayModel> loanRepayModels = Lists.newArrayList(loanRepay);
         LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
         CouponModel couponModel = mockCoupon(userModel.getLoginName(), 200000l);
         AccountModel accountModel = mockAccountModel(userModel.getLoginName());
         InvestModel investModel = mockInvest(idGenerator.generate(), userModel.getLoginName(), 50000l);
         UserCouponModel userCouponModel = mockUserCoupon(userModel.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
-        List<UserCouponModel> userCouponModels = Lists.newArrayList(userCouponModel);
         TransferResponseModel responseModel = new TransferResponseModel();
         responseModel.setRetCode("0000");
 
-        CouponRepayModel couponRepayModel = new CouponRepayModel();
-        couponRepayModel.setLoginName(userModel.getLoginName());
-        couponRepayModel.setCouponId(couponModel.getId());
-        couponRepayModel.setUserCouponId(userCouponModel.getId());
+        CouponRepayModel couponRepayModel = this.getFakeCouponRepayModel(userModel.getLoginName(), couponModel.getId(), userCouponModel.getId(), investModel.getId(), 45, 5);
 
+        CouponRepayNotifyRequestModel couponRepayNotifyRequestModel = this.mockCouponRepayNotifyRequestModel(couponRepayModel.getId(), NotifyProcessStatus.NOT_DONE);
+        List<CouponRepayNotifyRequestModel> couponRepayNotifyRequestModelList = Lists.newArrayList(couponRepayNotifyRequestModel);
+
+        when(couponRepayMapper.findById(anyLong())).thenReturn(couponRepayModel);
+        when(investMapper.findById(anyLong())).thenReturn(investModel);
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(loanRepayMapper.findById(anyLong())).thenReturn(loanRepay);
-        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(loanRepayMapper.findByLoanIdOrderByPeriodAsc(anyLong())).thenReturn(loanRepayModels);
-        when(userCouponMapper.findByLoanId(anyLong(), any(List.class))).thenReturn(userCouponModels);
-        when(transferApplicationMapper.findByTransferInvestId(anyLong(), any(List.class))).thenReturn(null);
+        when(loanRepayMapper.findByLoanIdAndPeriod(anyLong(),anyInt())).thenReturn(loanRepay);
+        when(userCouponMapper.findById(anyLong())).thenReturn(userCouponModel);
         when(couponMapper.findById(anyLong())).thenReturn(couponModel);
-        when(investMapper.findById(anyLong())).thenReturn(investModel);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
-        when(couponRepayMapper.findByUserCouponIdAndPeriod(anyLong(), anyLong())).thenReturn(couponRepayModel);
-        when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
         doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
-        couponRepayService.repay(idGenerator.generate(), false);
-        ArgumentCaptor<UserCouponModel> userCouponModelArgumentCaptor = ArgumentCaptor.forClass(UserCouponModel.class);
-        verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());
-        assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
-        assertEquals("45", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualInterest()));
+        when(couponRepayNotifyRequestMapper.getTodoList(anyInt())).thenReturn(couponRepayNotifyRequestModelList);
+        couponRepayService.asyncCouponRepayCallback();
+
+        verify(redisWrapperClient, times(1)).decr(CouponRepayNotifyCallbackJob.COUPON_REPAY_JOB_TRIGGER_KEY);
+        verify(couponRepayNotifyRequestMapper, times(1)).updateStatus(couponRepayNotifyRequestModel.getId(), NotifyProcessStatus.DONE);
+
     }
 
     @Test
-    public void shouldAdvanceRepayCouponRepayIsSuccess() throws PayException {
-        UserModel userModel = mockUser("testCouponRepay", "13900880000", "12311@abc");
-        LoanRepayModel currentLoanRepay = this.getFakeLoanRepayModel(idGenerator.generate(), idGenerator.generate(), 1, 0, 100000, new DateTime().minusDays(10).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.COMPLETE);
-        List<LoanRepayModel> loanRepayModels = Lists.newArrayList(currentLoanRepay);
-        LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
-        CouponModel couponModel = mockCoupon(userModel.getLoginName(), 200000l);
-        AccountModel accountModel = mockAccountModel(userModel.getLoginName());
-        InvestModel investModel = mockInvest(idGenerator.generate(), userModel.getLoginName(), 50000l);
-        UserCouponModel userCouponModel = mockUserCoupon(userModel.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
-        List<UserCouponModel> userCouponModels = Lists.newArrayList(userCouponModel);
-        TransferResponseModel responseModel = new TransferResponseModel();
-        responseModel.setRetCode("0000");
+    public void shouldNoAnyRecords(){
 
-        CouponRepayModel couponRepayModel = new CouponRepayModel();
-        couponRepayModel.setLoginName(userModel.getLoginName());
-        couponRepayModel.setCouponId(couponModel.getId());
-        couponRepayModel.setUserCouponId(userCouponModel.getId());
+        List<CouponRepayNotifyRequestModel> couponRepayNotifyRequestModelList = Lists.newArrayList();
 
-
-        when(loanRepayMapper.findById(anyLong())).thenReturn(currentLoanRepay);
-        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(loanRepayMapper.findByLoanIdOrderByPeriodAsc(anyLong())).thenReturn(loanRepayModels);
-        when(userCouponMapper.findByLoanId(anyLong(), any(List.class))).thenReturn(userCouponModels);
-        when(transferApplicationMapper.findByTransferInvestId(anyLong(), any(List.class))).thenReturn(null);
-        when(couponMapper.findById(anyLong())).thenReturn(couponModel);
-        when(investMapper.findById(anyLong())).thenReturn(investModel);
-        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
-        when(couponRepayMapper.findByUserCouponIdAndPeriod(anyLong(), anyLong())).thenReturn(couponRepayModel);
-        when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
-        doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
-        doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
-        couponRepayService.repay(idGenerator.generate(), true);
-
-        ArgumentCaptor<UserCouponModel> userCouponModelArgumentCaptor = ArgumentCaptor.forClass(UserCouponModel.class);
-        verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());
-        assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
-        assertEquals("45", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualInterest()));
+        when(couponRepayNotifyRequestMapper.getTodoList(anyInt())).thenReturn(couponRepayNotifyRequestModelList);
+        couponRepayService.asyncCouponRepayCallback();
+        verify(redisWrapperClient, times(0)).decr(CouponRepayNotifyCallbackJob.COUPON_REPAY_JOB_TRIGGER_KEY);
     }
-
-    @Test
-    public void shouldGenerateCouponPayment() {
-        UserModel testGenerateUser = mockUser("testGenerateUser", "18911239999", "18911239999@163.com");
-        LoanModel loanModel = fakeLoanModel(testGenerateUser.getLoginName());
-        CouponModel couponModel = mockCoupon(testGenerateUser.getLoginName(), 200000l);
-        InvestModel investModel = mockInvest(idGenerator.generate(), testGenerateUser.getLoginName(), 50000l);
-        UserCouponModel userCouponModel = mockUserCoupon(testGenerateUser.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
-
-        when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(Lists.newArrayList(investModel));
-        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(anyLong(), anyListOf(CouponType.class))).thenReturn(Lists.newArrayList(userCouponModel));
-        when(couponMapper.findById(anyLong())).thenReturn(couponModel);
-        couponRepayService.generateCouponRepay(loanModel.getId());
-
-        doNothing().when(couponRepayMapper).create(any(CouponRepayModel.class));
-        ArgumentCaptor<CouponRepayModel> argumentCaptor = ArgumentCaptor.forClass(CouponRepayModel.class);
-        verify(couponRepayMapper, times(3)).create(argumentCaptor.capture());
-        CouponRepayModel value = argumentCaptor.getValue();
-
-        DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
-        Date repayDate = lastRepayDate.plusDays(InterestCalculator.DAYS_OF_MONTH).toDate();
-        assertEquals("123", String.valueOf(value.getExpectedInterest()));
-        assertEquals("12", String.valueOf(value.getExpectedFee()));
-    }
-
 
     protected LoanRepayModel getFakeLoanRepayModel(long loanRepayId, long loanId, int period, long corpus, long expectedInterest, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
         LoanRepayModel fakeLoanRepay = new LoanRepayModel(loanRepayId, loanId, period, corpus, expectedInterest, expectedRepayDate, repayStatus);
@@ -289,5 +234,35 @@ public class couponRepayCallbackTest {
         return model;
     }
 
+    private CouponRepayNotifyRequestModel mockCouponRepayNotifyRequestModel(long orderId, NotifyProcessStatus notifyProcessStatus){
+        CouponRepayNotifyRequestModel couponRepayNotifyRequestModel = new CouponRepayNotifyRequestModel();
+        couponRepayNotifyRequestModel.setId(idGenerator.generate());
+        couponRepayNotifyRequestModel.setSign("sign");
+        couponRepayNotifyRequestModel.setSignType("RSA");
+        couponRepayNotifyRequestModel.setMerId("mer_id");
+        couponRepayNotifyRequestModel.setVersion("1.0");
+        couponRepayNotifyRequestModel.setTradeNo("trade_no");
+        couponRepayNotifyRequestModel.setOrderId(String.valueOf(orderId));
+        couponRepayNotifyRequestModel.setStatus(notifyProcessStatus.toString());
+        couponRepayNotifyRequestModel.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        couponRepayNotifyRequestModel.setService("");
+        couponRepayNotifyRequestModel.setRetCode("0000");
+        couponRepayNotifyRequestModel.setRequestData(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        couponRepayNotifyRequestModel.setRequestData("mer_date=20161101&mer_id=7099088&order_id="+orderId+"&ret_code=0000&sign_type=RSA&version=1.0&sign=JoP0KGZ1j6hXsovsqFMGfTNwqFXGQFbSMmGp+EfK4vzJtgwAjmESgusrND+KcWPZl+BI1aMiGX6Z6sySa31Xi9+OuTjRfMcWSSnAAcX1PBJdhhEci40XHUw8LRnN3WDwrswu4Zg71kaSrdNT/nGYBaszsvjjwWlhPxslz48cRvc=");
+        return couponRepayNotifyRequestModel;
+    }
+
+    private CouponRepayModel getFakeCouponRepayModel(String loginName, long couponId, long userCouponId, long investId, long actualInterest, long actualFee){
+        CouponRepayModel couponRepayModel = new CouponRepayModel();
+        couponRepayModel.setId(idGenerator.generate());
+        couponRepayModel.setLoginName(loginName);
+        couponRepayModel.setCouponId(couponId);
+        couponRepayModel.setUserCouponId(userCouponId);
+        couponRepayModel.setInvestId(investId);
+        couponRepayModel.setActualInterest(actualInterest);
+        couponRepayModel.setActualFee(actualFee);
+        return couponRepayModel;
+    }
 
 }
+

@@ -276,15 +276,12 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public String couponRepayCallback(Map<String, String> paramsMap, String originalQueryString){
-
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
                 originalQueryString,
                 CouponRepayNotifyRequestMapper.class,
                 CouponRepayNotifyRequestModel.class);
-
         if (callbackRequest == null) {
             return null;
         }
@@ -296,15 +293,13 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     public BaseDto<PayDataDto> asyncCouponRepayCallback() {
         List<CouponRepayNotifyRequestModel> todoList = couponRepayNotifyRequestMapper.getTodoList(couponRepayProcessListSize);
 
-        for (CouponRepayNotifyRequestModel model : todoList) {
-            if (updateCouponRepayNotifyRequestStatus(model)) {
-                try {
-                    this.processOneCallback(model);
-                } catch (Exception e) {
-                    fatalLog("coupon repay callback, processOneCallback error. couponRepayId:" + model.getOrderId(), e);
-                }
+        todoList.stream().filter(model -> updateCouponRepayNotifyRequestStatus(model)).forEach(model -> {
+            try {
+                this.processOneCallback(model);
+            } catch (Exception e) {
+                fatalLog("coupon repay callback, processOneCallback error. couponRepayId:" + model.getOrderId(), e);
             }
-        }
+        });
 
         BaseDto<PayDataDto> asyncCouponRepayNotifyDto = new BaseDto<>();
         PayDataDto baseDataDto = new PayDataDto();
@@ -369,6 +364,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             logger.error(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) update user bill is failed",
                     String.valueOf(currentLoanRepayModel.getId()),
                     String.valueOf(userCouponModel.getId())), e);
+            fatalLog("coupon repay processOneCallback error. currentLoanRepayModelId:" + currentLoanRepayModel.getId(), e);
         }
 
     }
