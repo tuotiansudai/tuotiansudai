@@ -289,6 +289,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         LoanModel loanModel = loanMapper.findById(loanId);
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
         if(Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())){
+            logger.error(MessageFormat.format("[安心签] create contract error,agentModel is not anxin sign , loanid:{0} , userId:{1}", loanId,loanModel.getAgentLoginName()));
             return new BaseDto(true);
         }
         for (int i = 0; i < investModels.size(); i++) {
@@ -321,6 +322,11 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public BaseDto createTransferContracts(long transferApplicationId) {
+        CreateContractVO createContractVO = collectTransferContractModel(transferApplicationId);
+        if(createContractVO == null){
+            logger.error(MessageFormat.format("[安心签] create transfer contract error,users is not anxin sign , transferApplicationId:{0}", transferApplicationId));
+            return new BaseDto(true);
+        }
         List<CreateContractVO> createContractVOs = Lists.newArrayList(collectTransferContractModel(transferApplicationId));
         BaseDto baseDto = new BaseDto();
         String batchNo = UUIDGenerator.generate();
@@ -359,6 +365,16 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         if (investAccountModel != null) {
             dataModel.put("transfereeMobile", userMapper.findByLoginName(investAccountModel.getLoginName()).getMobile());
             dataModel.put("transfereeIdentity", investAccountModel.getIdentityNumber());
+        }
+
+        if(Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())){
+            logger.error(MessageFormat.format("[安心签] create transfer contract error,agentAnxinProp is not anxin sign , transferApplicationId:{0} , userId:{1}", transferApplicationId,transferApplicationModel.getLoginName()));
+            return null;
+        }
+
+        if(Strings.isNullOrEmpty(investorAnxinProp.getProjectCode()) ){
+            logger.error(MessageFormat.format("[安心签] create transfer contract error,investorAnxinProp is not anxin sign , transferApplicationId:{0} , userId:{1}", transferApplicationId,investModel.getLoginName()));
+            return null;
         }
 
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
@@ -457,6 +473,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investorLoginName);
 
         if(Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())){
+            logger.error(MessageFormat.format("[安心签] create contract error,investorAnxinProp is not anxin sign , loanid:{0} , investId:{1} ,userId:{2}", loanId,investId,investorLoginName));
             return null;
         }
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
