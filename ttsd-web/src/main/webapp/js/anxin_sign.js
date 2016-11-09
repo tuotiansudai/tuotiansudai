@@ -105,7 +105,7 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
         //倒计时函数
         var num = 60,Down;
         function countDown() {
-            $('#getSkipCode').val(num + '秒后可重新获取').prop('disabled',true);
+            $('#getSkipCode').val(num + '秒后重新获取').prop('disabled',true);
             $('#microPhone').css('visibility', 'hidden');
             if (num == 0) {
                 clearInterval(Down);

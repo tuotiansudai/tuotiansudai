@@ -915,7 +915,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     }
     //countdown skip
     function countDown() {
-        $('#getSkipCode').val(num + '秒后可重新获取').prop('disabled',true);
+        $('#getSkipCode').val(num + '秒后重新获取').prop('disabled',true);
         $('#microPhone').css('visibility', 'hidden');
         if (num == 0) {
             clearInterval(Down);

@@ -217,7 +217,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
     }
     //countdown skip
     function countDown() {
-        $('#getSkipCode').val(num + 's').prop('disabled', true);
+        $('#getSkipCode').val(num + '秒后重新获取').prop('disabled', true);
         $('#microPhone').css('visibility', 'hidden');
         if (num == 0) {
             clearInterval(Down);
