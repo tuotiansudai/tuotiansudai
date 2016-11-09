@@ -8,7 +8,7 @@
         <div class="global-message-detail">
             <h1>${title}</h1>
 
-            <div class="meta">${createdTime}</div>
+            <div class="meta tc">${createdTime}</div>
             <div class="content">
             ${content}
             </div>

@@ -16,6 +16,7 @@ require(['jquery', 'mustache', 'text!/tpl/message-list.mustache', 'pagination', 
             };
             var html = Mustache.render(messageListTemplate, data);
             $('.list-container .global-message-list.active').html(html);
+
             $('.read-all-messages').click(function () {
                 $.ajax({
                     url: "/message/read-all",
