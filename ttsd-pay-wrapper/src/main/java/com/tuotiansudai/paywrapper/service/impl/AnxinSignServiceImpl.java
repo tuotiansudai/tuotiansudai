@@ -73,10 +73,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    private static final String TEMP_PROJECT_CODE_KEY = "temp_project_code:";
-
-    private static final int TEMP_PROJECT_CODE_EXPIRE_TIME = 1800; // 半小时
-
     private static final String LOAN_CONTRACT_AGENT_SIGN = "agentUserName";
 
     private static final String LOAN_CONTRACT_INVESTOR_SIGN = "investorUserName";
@@ -84,6 +80,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private static final String TRANSFER_LOAN_CONTRACT_AGENT_SIGN = "transferUserName";
 
     private static final String TRANSFER_LOAN_CONTRACT_INVESTOR_SIGN = "transfereeUserName";
+
+    private static final String GENERATE_CONTRACT_SUCCESS = "60000000";
 
     @Value(value = "${anxin.contract.batch.num}")
     private int batchNum;
@@ -324,7 +322,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             }
 
             contractResponseViews.forEach(contractResponseView -> {
-                if (contractResponseView.getRetCode().equals("60000000")) {
+                if (contractResponseView.getRetCode().equals(GENERATE_CONTRACT_SUCCESS)) {
                     if(anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)){
                         investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
                     }else{
