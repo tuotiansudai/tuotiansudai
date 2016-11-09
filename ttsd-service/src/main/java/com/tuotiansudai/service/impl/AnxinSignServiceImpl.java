@@ -5,6 +5,7 @@ import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
@@ -285,9 +286,18 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
         InvestModel investModel;
         BaseDto baseDto = new BaseDto();
+        LoanModel loanModel = loanMapper.findById(loanId);
+        AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
+        if(Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())){
+            return new BaseDto(true);
+        }
         for (int i = 0; i < investModels.size(); i++) {
             investModel = investModels.get(i);
-            createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId()));
+            CreateContractVO createContractVO = collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
+            if(createContractVO == null){
+                continue;
+            }
+            createContractVOs.add(createContractVO);
             if (createContractVOs.size() == batchNum || investModels.size() == (i + 1)) {
                 String batchNo = UUIDGenerator.generate();
                 try {
@@ -446,6 +456,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         AccountModel investorAccount = accountMapper.findByLoginName(investorLoginName);
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investorLoginName);
 
+        if(Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())){
+            return null;
+        }
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
 
