@@ -15,6 +15,18 @@
   table.table-striped {
     thead tr th {
       text-align: left;
+      font-size:16px;
+      padding: 8px 6px;
+      &:nth-child(1) {
+        width:20%;
+        padding-left:31px;
+      }
+      &:nth-child(2) {
+        width:70%;
+      }
+      &:nth-child(3) {
+        width:10%;
+      }
     }
     tbody tr {
       border-bottom: 1px dashed #f0f0f0;
