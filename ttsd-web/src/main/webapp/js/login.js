@@ -7,58 +7,57 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
             captchaElement = $('.captcha', loginFormElement),
             errorElement = $('.error', loginFormElement),
             imageCaptchaElement = $('.image-captcha img', loginFormElement),
-            formCheckValid=false; //检查form表单验证是否全部通过
+            formCheckValid=true; //检查form表单验证是否全部通过
 
-        // 刷新验证码
-        var refreshCaptcha = function () {
+    // 刷新验证码
+    function refreshCaptcha() {
             captchaElement.val('');
             imageCaptchaElement.attr('src', '/login/captcha?' + new Date().getTime().toString());
-        };
-
-        refreshCaptcha();
-
-        imageCaptchaElement.click(function () {
-            refreshCaptcha();
-        });
+        }
 
      //表单验证
-    $.fn.checkLogin=function() {
-        return $(this).each(function(key,option) {
+    function checkLogin(DomElement) {
+        DomElement.each(function(key,option) {
             var name=option.name,
                 value=$.trim(option.value),
                 errorMsg;
-            formCheckValid=true;
+                formCheckValid=true;
             switch(name) {
                 case 'username':
                     if(_.isEmpty(value)) {
                         errorMsg='用户名不能为空';
-                        errorElement.text(errorMsg).css('visibility', 'visible');
                         formCheckValid=false;
                     }
                     break;
                 case 'password':
                     if(_.isEmpty(value)) {
                         errorMsg='密码不能为空';
-                        errorElement.text(errorMsg).css('visibility', 'visible');
                         formCheckValid=false;
                     }
                     break;
                 case 'captcha':
                     if(_.isEmpty(value)) {
                         errorMsg='验证码不能为空';
-                        errorElement.text(errorMsg).css('visibility', 'visible');
                         formCheckValid=false;
                     }
                     break;
             }
-
+            if(!formCheckValid) {
+                errorElement.text(errorMsg).css('visibility', 'visible');
+            }
         });
     };
+
+        refreshCaptcha();
+        imageCaptchaElement.click(function () {
+            refreshCaptcha();
+        });
+
         //input失去焦点时验证
         loginFormElement.find('input:text,input:password').on('blur',function() {
             var $this=$(this);
             errorElement.text('').css('visibility', 'hidden');
-            $this.checkLogin();
+            checkLogin($this);
         });
 
         var submitLoginForm = function () {
@@ -73,14 +72,12 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
                         refreshCaptcha();
                         loginSubmitElement.removeClass('loading');
                         errorElement.text(data.message).css('visibility', 'visible');
-                        formCheckValid=false;
                     }
                 },
                 error: function () {
                     loginSubmitElement.removeClass('loading');
                     refreshCaptcha();
                     errorElement.text("用户或密码不正确").css('visibility', 'visible');
-                    formCheckValid=false;
                 }
             });
 
@@ -89,7 +86,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
 
         loginSubmitElement.click(function (event) {
             event.preventDefault();
-            loginFormElement.find('input:text,input:password').checkLogin();
+            checkLogin(loginFormElement.find('input:text,input:password'));
             if(formCheckValid) {
                 submitLoginForm();
             }
@@ -104,7 +101,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
                 submitLoginForm();
             }
             else {
-                loginFormElement.find('input:text,input:password').checkLogin();
+                checkLogin(loginFormElement.find('input:text,input:password'));
             }
         })
     })();
