@@ -20,6 +20,6 @@ public interface ExtraRateService {
 
     BaseDto<PayDataDto> asyncExtraRateInvestCallback();
 
-    void processOneCallback(ExtraRateNotifyRequestModel callbackRequestModel);
+    void processOneCallback(ExtraRateNotifyRequestModel callbackRequestModel) throws Exception;
 
 }

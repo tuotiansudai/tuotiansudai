@@ -14,14 +14,11 @@ import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.extrarate.service.InvestRateService;
 import com.tuotiansudai.paywrapper.repository.mapper.ExtraRateNotifyRequestMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ExtraRateNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferWithNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -78,6 +75,9 @@ public class ExtraRateServiceImpl implements ExtraRateService {
     @Value("${common.environment}")
     private Environment environment;
 
+    @Value(value = "${pay.extra.rate.invest.notify.process.batch.size}")
+    private int extraRateProcessListSize;
+
     @Override
     public void transferPurchase(long investId) {
         InvestModel investModel = investMapper.findById(investId);
@@ -100,12 +100,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                 long actualInterest = investExtraRateModel.getExpectedInterest();
                 long actualFee = investExtraRateModel.getExpectedFee();
                 try {
-
-
                     this.sendExtraRateAmount(investExtraRateModel, actualInterest, actualFee);
-
-
-
                 } catch (Exception e) {
                     logger.error(MessageFormat.format("[Normal Repay {0}] extra rate is failed, investId={0} loginName={1} amount={3}",
                             String.valueOf(loanRepayId),
@@ -129,21 +124,6 @@ public class ExtraRateServiceImpl implements ExtraRateService {
             return;
         }
         long amount = actualInterest - actualFee;
-        boolean isSuccess = false;
-        /*if (amount > 0) {
-            String orderId = investExtraRateModel.getInvestId() + "X" + System.currentTimeMillis();
-
-            TransferRequestModel requestModel = TransferRequestModel.newRequest(orderId, accountModel.getPayUserId(), String.valueOf(amount));
-
-
-            TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-
-
-            isSuccess = responseModel.isSuccess();
-        }
-        if (isSuccess || amount == 0) {
-
-        }*/
         if (amount > 0) {
             String orderId = investExtraRateModel.getInvestId() + "X" + System.currentTimeMillis();
             try {
@@ -155,11 +135,10 @@ public class ExtraRateServiceImpl implements ExtraRateService {
 
                 paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
             } catch (PayException e) {
-                logger.error(e.getLocalizedMessage(), e);
+                fatalLog("extra rate sync send fail. orderId:" +orderId, e);
             }
         }
     }
-
 
     @Override
     public String extraRateInvestCallback(Map<String, String> paramsMap, String originalQueryString) {
@@ -178,15 +157,14 @@ public class ExtraRateServiceImpl implements ExtraRateService {
 
     @Override
     public BaseDto<PayDataDto> asyncExtraRateInvestCallback() {
-        List<ExtraRateNotifyRequestModel> todoList = extraRateNotifyRequestMapper.getTodoList(10);
+        List<ExtraRateNotifyRequestModel> todoList = extraRateNotifyRequestMapper.getTodoList(extraRateProcessListSize);
 
         for (ExtraRateNotifyRequestModel model : todoList) {
             if (updateExtraRateNotifyRequestStatus(model)) {
                 try {
                    this.processOneCallback(model);
                 } catch (Exception e) {
-                    fatalLog("invest callback, processOneCallback error. investId:" + model.getOrderId(), e);
-                    e.printStackTrace();
+                    fatalLog("extra rate invest callback, processOneCallback error. orderId:" + model.getOrderId(), e);
                 }
             }
         }
@@ -210,15 +188,14 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         return true;
     }
 
-
     @Override
-    public void processOneCallback(ExtraRateNotifyRequestModel callbackRequestModel) {
-        String orderIdStr = callbackRequestModel.getOrderId();
+    public void processOneCallback(ExtraRateNotifyRequestModel callbackRequestModel) throws Exception  {
+        String orderIdStr = callbackRequestModel.getOrderId().split("X")[0];
         long orderId = Long.parseLong(orderIdStr);
-        InvestModel investModel = investMapper.findById(orderId);
-        AccountModel accountModel = accountMapper.findByLoginName(investModel.getLoginName());
-
-        //investRateService.updateExtraRateData(investExtraRateModel, actualInterest, actualFee);
+        InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(orderId);
+        long amount = investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+        if (callbackRequestModel.isSuccess() || amount == 0)
+            investRateService.updateExtraRateData(investExtraRateModel, investExtraRateModel.getExpectedInterest(), investExtraRateModel.getExpectedFee());
     }
 
     @Override
@@ -244,7 +221,6 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         }
     }
 
-
     private void fatalLog(String errMsg, Throwable e) {
         logger.fatal(errMsg, e);
         sendSmsErrNotify(MessageFormat.format("{0},{1}", environment, errMsg));
@@ -252,7 +228,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
 
     private void sendSmsErrNotify(String errMsg) {
         logger.info("sent invest fatal sms message");
-        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("投资业务错误。详细信息：{0}", errMsg));
+        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("阶梯加息还款业务错误。详细信息：{0}", errMsg));
         smsWrapperClient.sendFatalNotify(dto);
     }
 

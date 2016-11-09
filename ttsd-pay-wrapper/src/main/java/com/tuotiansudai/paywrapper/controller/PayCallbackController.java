@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.AgreementBusinessType;
+import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.repository.model.UmPayService;
 import com.tuotiansudai.paywrapper.service.*;
 import org.apache.log4j.Logger;
@@ -55,6 +56,9 @@ public class PayCallbackController {
 
     @Autowired
     private MembershipPurchasePayService membershipPurchasePayService;
+
+    @Autowired
+    private ExtraRateService extraRateService;
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
@@ -239,6 +243,13 @@ public class PayCallbackController {
     public ModelAndView membershipPurchaseNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = membershipPurchasePayService.purchaseCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/extra_rate_notify", method = RequestMethod.GET)
+    public ModelAndView extraRateInvestNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.extraRateService.extraRateInvestCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
