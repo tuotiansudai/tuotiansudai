@@ -60,7 +60,6 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
         //input失去焦点时验证
         loginFormElement.find('input:text,input:password').on('blur',function(event) {
             var $this=$(this);
-            target=event.target;
             errorElement.text('').css('visibility', 'hidden');
             checkLogin($this);
         });
@@ -91,7 +90,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
 
         loginSubmitElement.click(function (event) {
             event.preventDefault();
-            checkLogin(loginFormElement.find('input:text,input:password'));
+            formCheckValid=checkLogin(loginFormElement.find('input:text,input:password'));
             if(formCheckValid) {
                 submitLoginForm();
             }
@@ -99,8 +98,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
 
         $(document).keypress(function (event) {
 
-            var keycode = (event.keyCode ? event.keyCode : event.which),
-                target=event.target;
+            var keycode = (event.keyCode ? event.keyCode : event.which);
             if (keycode === 13 ) {
                 formCheckValid=checkLogin(loginFormElement.find('input:text,input:password'));
                 if(formCheckValid) {
