@@ -8,7 +8,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
 import com.tuotiansudai.jpush.service.JPushAlertService;
-import com.tuotiansudai.message.dto.MessageCreateDto;
+import com.tuotiansudai.message.dto.MessageCompleteDto;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageStatus;
@@ -49,55 +49,55 @@ public class MessageServiceImpl implements MessageService {
         return messageMapper.findMessageCount(title, messageStatus, createdBy, messageType);
     }
 
-    private MessageCreateDto messageModelToDto(MessageModel messageModel) {
-        MessageCreateDto messageCreateDto = new MessageCreateDto(messageModel);
+    private MessageCompleteDto messageModelToDto(MessageModel messageModel) {
+        MessageCompleteDto messageCompleteDto = new MessageCompleteDto(messageModel);
         JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelByMessageId(messageModel.getId());
         if (null != jPushAlertModel) {
-            messageCreateDto.setJpush(true);
-            messageCreateDto.setPushType(jPushAlertModel.getPushType());
-            messageCreateDto.setPushSource(jPushAlertModel.getPushSource());
-            messageCreateDto.setPushDistricts(jPushAlertModel.getPushDistricts());
+            messageCompleteDto.setJpush(true);
+            messageCompleteDto.setPushType(jPushAlertModel.getPushType());
+            messageCompleteDto.setPushSource(jPushAlertModel.getPushSource());
+            messageCompleteDto.setPushDistricts(jPushAlertModel.getPushDistricts());
         } else {
-            messageCreateDto.setJpush(false);
+            messageCompleteDto.setJpush(false);
         }
-        return messageCreateDto;
+        return messageCompleteDto;
     }
 
     @Override
-    public List<MessageCreateDto> findMessageList(String title, MessageStatus messageStatus, String createdBy, MessageType messageType, int index, int pageSize) {
+    public List<MessageCompleteDto> findMessageCompleteDtoList(String title, MessageStatus messageStatus, String createdBy, MessageType messageType, int index, int pageSize) {
         List<MessageModel> messageModels = messageMapper.findMessageList(title, messageStatus, createdBy, messageType, (index - 1) * pageSize, pageSize);
         return messageModels.stream().map(this::messageModelToDto).collect(Collectors.toList());
     }
 
     @Override
-    public long createAndEditManualMessage(MessageCreateDto messageCreateDto, long importUsersId) {
-        long messageId = messageCreateDto.getId();
+    public long createAndEditManualMessage(MessageCompleteDto messageCompleteDto, long importUsersId) {
+        long messageId = messageCompleteDto.getId();
         if (isMessageExist(messageId)) {
-            editManualMessage(messageCreateDto, importUsersId);
+            editManualMessage(messageCompleteDto, importUsersId);
         } else {
-            MessageModel messageModel = createManualMessage(messageCreateDto, importUsersId);
+            MessageModel messageModel = createManualMessage(messageCompleteDto, importUsersId);
             messageId = messageModel.getId();
         }
-        if (messageCreateDto.isJpush()) {
-            editManualJPush(messageCreateDto, messageId);
+        if (messageCompleteDto.isJpush()) {
+            editManualJPush(messageCompleteDto, messageId);
         }
         return messageId;
     }
 
-    private void editManualJPush(MessageCreateDto messageCreateDto, long messageId) {
+    private void editManualJPush(MessageCompleteDto messageCompleteDto, long messageId) {
         JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelByMessageId(messageId);
-        JPushAlertDto jPushAlertDto = messageCreateDto.getJPushAlertDto();
+        JPushAlertDto jPushAlertDto = messageCompleteDto.getJPushAlertDto();
         jPushAlertDto.setMessageId(messageId);
         if (null != jPushAlertModel) {
-            if (messageCreateDto.isJpush()) {
+            if (messageCompleteDto.isJpush()) {
                 jPushAlertDto.setId(String.valueOf(jPushAlertModel.getId()));
-                jPushAlertService.buildJPushAlert(messageCreateDto.getCreatedBy(), jPushAlertDto);
+                jPushAlertService.buildJPushAlert(messageCompleteDto.getCreatedBy(), jPushAlertDto);
             } else {
-                jPushAlertService.delete(messageCreateDto.getUpdatedBy(), jPushAlertModel.getId());
+                jPushAlertService.delete(messageCompleteDto.getUpdatedBy(), jPushAlertModel.getId());
             }
         } else {
-            if (messageCreateDto.isJpush()) {
-                jPushAlertService.buildJPushAlert(messageCreateDto.getCreatedBy(), jPushAlertDto);
+            if (messageCompleteDto.isJpush()) {
+                jPushAlertService.buildJPushAlert(messageCompleteDto.getCreatedBy(), jPushAlertDto);
             }
         }
     }
@@ -129,7 +129,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public MessageCreateDto getMessageByMessageId(long messageId) {
+    public MessageCompleteDto findMessageCompleteDtoByMessageId(long messageId) {
         return messageModelToDto(messageMapper.findById(messageId));
     }
 
@@ -209,8 +209,8 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @SuppressWarnings(value = "unchecked")
-    private MessageModel createManualMessage(MessageCreateDto messageCreateDto, long importUsersId) {
-        MessageModel messageModel = messageCreateDto.getMessageModel();
+    private MessageModel createManualMessage(MessageCompleteDto messageCompleteDto, long importUsersId) {
+        MessageModel messageModel = messageCompleteDto.getMessageModel();
 
         messageModel.setType(MessageType.MANUAL);
         messageModel.setStatus(MessageStatus.TO_APPROVE);
@@ -221,7 +221,7 @@ public class MessageServiceImpl implements MessageService {
 
         messageMapper.create(messageModel);
 
-        if (messageCreateDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
+        if (messageCompleteDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
             String messageId = String.valueOf(messageModel.getId());
             List<String> importUsers = (List<String>) redisWrapperClient.hgetSeri(redisMessageReceivers, String.valueOf(importUsersId));
             redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(importUsersId));
@@ -232,12 +232,12 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @SuppressWarnings(value = "unchecked")
-    private void editManualMessage(MessageCreateDto messageCreateDto, long importUsersId) {
+    private void editManualMessage(MessageCompleteDto messageCompleteDto, long importUsersId) {
         List<String> importUsers = (List<String>) redisWrapperClient.hgetSeri(redisMessageReceivers, String.valueOf(importUsersId));
         redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(importUsersId));
 
-        MessageModel originMessageModel = messageMapper.findById(messageCreateDto.getId());
-        MessageModel messageModel = messageCreateDto.getMessageModel();
+        MessageModel originMessageModel = messageMapper.findById(messageCompleteDto.getId());
+        MessageModel messageModel = messageCompleteDto.getMessageModel();
 
         messageModel.setType(originMessageModel.getType());
         messageModel.setEventType(originMessageModel.getEventType());
@@ -252,8 +252,8 @@ public class MessageServiceImpl implements MessageService {
 
         messageMapper.update(messageModel);
 
-        if (messageCreateDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
-            String messageId = String.valueOf(messageCreateDto.getId());
+        if (messageCompleteDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
+            String messageId = String.valueOf(messageCompleteDto.getId());
             redisWrapperClient.hsetSeri(redisMessageReceivers, messageId, importUsers);
         }
     }

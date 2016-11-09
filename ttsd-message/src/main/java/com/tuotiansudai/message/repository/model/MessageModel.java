@@ -16,7 +16,7 @@ public class MessageModel implements Serializable {
     private MessageEventType eventType;
     private List<MessageUserGroup> userGroups;
     private List<MessageChannel> channels;
-    private ManualMessageType manualMessageType;
+    private MessageCategory messageCategory;
     private String webUrl;
     private AppUrl appUrl;
     private MessageStatus status;
@@ -118,12 +118,12 @@ public class MessageModel implements Serializable {
         this.channels = channels;
     }
 
-    public ManualMessageType getManualMessageType() {
-        return manualMessageType;
+    public MessageCategory getMessageCategory() {
+        return messageCategory;
     }
 
-    public void setManualMessageType(ManualMessageType manualMessageType) {
-        this.manualMessageType = manualMessageType;
+    public void setMessageCategory(MessageCategory messageCategory) {
+        this.messageCategory = messageCategory;
     }
 
     public String getWebUrl() {

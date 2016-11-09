@@ -6,7 +6,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
-import com.tuotiansudai.message.dto.MessageCreateDto;
+import com.tuotiansudai.message.dto.MessageCompleteDto;
 import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.message.service.MessageService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -46,7 +46,7 @@ public class MessageController {
         modelAndView.addObject("createdBy", createdBy);
         modelAndView.addObject("messageStatusInput", messageStatus);
 
-        modelAndView.addObject("messageList", messageService.findMessageList(title, messageStatus, createdBy, MessageType.MANUAL, index, pageSize));
+        modelAndView.addObject("messageList", messageService.findMessageCompleteDtoList(title, messageStatus, createdBy, MessageType.MANUAL, index, pageSize));
 
         modelAndView.addObject("messageStatuses", Lists.newArrayList(MessageStatus.values()));
         long messageCount = messageService.findMessageCount(title, messageStatus, createdBy, MessageType.MANUAL);
@@ -75,7 +75,7 @@ public class MessageController {
         modelAndView.addObject("createdBy", createdBy);
         modelAndView.addObject("messageStatusInput", messageStatus);
 
-        modelAndView.addObject("messageList", messageService.findMessageList(title, messageStatus, createdBy, MessageType.EVENT, index, pageSize));
+        modelAndView.addObject("messageList", messageService.findMessageCompleteDtoList(title, messageStatus, createdBy, MessageType.EVENT, index, pageSize));
 
         modelAndView.addObject("messageStatuses", Lists.newArrayList(MessageStatus.values()));
         long messageCount = messageService.findMessageCount(title, messageStatus, createdBy, MessageType.EVENT);
@@ -98,7 +98,7 @@ public class MessageController {
         modelAndView.addObject("selectedUserGroups", selectedUserGroups);
         modelAndView.addObject("channelTypes", Lists.newArrayList(MessageChannel.values()));
         modelAndView.addObject("selectedChannelTypes", Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
-        modelAndView.addObject("manualMessageTypes", ManualMessageType.values());
+        modelAndView.addObject("manualMessageTypes", MessageCategory.values());
         modelAndView.addObject("appUrls", AppUrl.values());
         modelAndView.addObject("pushTypes", PushType.values());
         modelAndView.addObject("pushSources", PushSource.values());
@@ -108,15 +108,15 @@ public class MessageController {
 
     @RequestMapping(value = "/manual-message/{messageId}/edit", method = RequestMethod.GET)
     public ModelAndView createManualMessage(@PathVariable long messageId) {
-        MessageCreateDto messageCreateDto = messageService.getMessageByMessageId(messageId);
+        MessageCompleteDto messageCompleteDto = messageService.findMessageCompleteDtoByMessageId(messageId);
 
         ModelAndView modelAndView = new ModelAndView("/message-manual-edit");
-        modelAndView.addObject("dto", messageCreateDto);
+        modelAndView.addObject("dto", messageCompleteDto);
         modelAndView.addObject("userGroups", Lists.newArrayList(MessageUserGroup.values()));
-        modelAndView.addObject("selectedUserGroups", messageCreateDto.getUserGroups());
+        modelAndView.addObject("selectedUserGroups", messageCompleteDto.getUserGroups());
         modelAndView.addObject("channelTypes", Lists.newArrayList(MessageChannel.values()));
-        modelAndView.addObject("selectedChannelTypes", messageCreateDto.getChannels());
-        modelAndView.addObject("manualMessageTypes", ManualMessageType.values());
+        modelAndView.addObject("selectedChannelTypes", messageCompleteDto.getChannels());
+        modelAndView.addObject("manualMessageTypes", MessageCategory.values());
         modelAndView.addObject("appUrls", AppUrl.values());
         modelAndView.addObject("pushTypes", PushType.values());
         modelAndView.addObject("pushSources", PushSource.values());
@@ -127,12 +127,12 @@ public class MessageController {
 
     @RequestMapping(value = "/manual-message/create", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> createManualMessage(@RequestBody MessageCreateDto messageCreateDto, @RequestParam(value = "importUsersId") long importUsersId) {
-        messageCreateDto.setUpdatedBy(LoginUserInfo.getLoginName());
-        if (!messageService.isMessageExist(messageCreateDto.getId())) {
-            messageCreateDto.setCreatedBy(LoginUserInfo.getLoginName());
+    public BaseDto<BaseDataDto> createManualMessage(@RequestBody MessageCompleteDto messageCompleteDto, @RequestParam(value = "importUsersId") long importUsersId) {
+        messageCompleteDto.setUpdatedBy(LoginUserInfo.getLoginName());
+        if (!messageService.isMessageExist(messageCompleteDto.getId())) {
+            messageCompleteDto.setCreatedBy(LoginUserInfo.getLoginName());
         }
-        messageService.createAndEditManualMessage(messageCreateDto, importUsersId);
+        messageService.createAndEditManualMessage(messageCompleteDto, importUsersId);
         return new BaseDto<>(new BaseDataDto(true));
     }
 

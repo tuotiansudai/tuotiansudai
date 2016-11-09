@@ -16,9 +16,7 @@ public class LoanCreateRequestDto {
 
     private LoanCreatePledgeEnterpriseRequestDto pledgeEnterprise;
 
-    private String loanMessageTitle;
-
-    private String loanMessageContent;
+    private LoanMessageRequestDto loanMessageRequestDto;
 
     public LoanCreateBaseRequestDto getLoan() {
         return loan;
@@ -76,19 +74,11 @@ public class LoanCreateRequestDto {
         this.pledgeEnterprise = pledgeEnterprise;
     }
 
-    public String getLoanMessageTitle() {
-        return loanMessageTitle;
+    public LoanMessageRequestDto getLoanMessageRequestDto() {
+        return loanMessageRequestDto;
     }
 
-    public void setLoanMessageTitle(String loanMessageTitle) {
-        this.loanMessageTitle = loanMessageTitle;
-    }
-
-    public String getLoanMessageContent() {
-        return loanMessageContent;
-    }
-
-    public void setLoanMessageContent(String loanMessageContent) {
-        this.loanMessageContent = loanMessageContent;
+    public void setLoanMessageRequestDto(LoanMessageRequestDto loanMessageRequestDto) {
+        this.loanMessageRequestDto = loanMessageRequestDto;
     }
 }

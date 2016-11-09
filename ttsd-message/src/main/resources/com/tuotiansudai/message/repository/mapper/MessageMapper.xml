@@ -18,7 +18,7 @@
                 typeHandler="com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler"/>
         <result column="channels" property="channels"
                 typeHandler="com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler"/>
-        <result column="manual_message_type" property="manualMessageType"/>
+        <result column="message_category" property="messageCategory"/>
         <result column="web_url" property="webUrl"/>
         <result column="app_url" property="appUrl"/>
         <result column="status" property="status"/>
@@ -35,14 +35,14 @@
     <insert id="create" parameterType="MessageModel" useGeneratedKeys="true" keyProperty="id">
         insert into message (`title`, `app_title`, `template`, `template_txt`, `type`, `event_type`, `user_groups`,
         `channels`,
-        `manual_message_type`, `web_url`, `app_url`, `status`, `read_count`, `activated_by`, `activated_time`,
+        `message_category`, `web_url`, `app_url`, `status`, `read_count`, `activated_by`, `activated_time`,
         `expired_time`,
         `updated_by`, `updated_time`, `created_by`,
         `created_time`, `deleted`)
         value(#{title}, #{appTitle}, #{template}, #{templateTxt}, #{type}, #{eventType},
         #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler},
         #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler},
-        #{manualMessageType}, #{webUrl}, #{appUrl}, #{status}, #{readCount}, #{activatedBy}, #{activatedTime},
+        #{messageCategory}, #{webUrl}, #{appUrl}, #{status}, #{readCount}, #{activatedBy}, #{activatedTime},
         #{expiredTime},
         #{updatedBy}, #{updatedTime}, #{createdBy}, #{createdTime}, 0)
     </insert>
@@ -56,7 +56,7 @@
             `event_type` = #{eventType},
             `user_groups` = #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler},
             `channels` = #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler},
-        `manual_message_type` = #{manualMessageType},
+        `manual_message_type` = #{messageCategory},
         `web_url` = #{webUrl},
         `app_url` = #{appUrl},
             `status` = #{status},

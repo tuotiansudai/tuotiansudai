@@ -6,7 +6,7 @@ import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
-import com.tuotiansudai.message.repository.model.ManualMessageType;
+import com.tuotiansudai.message.repository.model.MessageCategory;
 import com.tuotiansudai.message.repository.model.MessageChannel;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
@@ -66,7 +66,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
             UserMessageDto userMessageDto = new UserMessageDto(userMessageModel);
 
             MessageModel messageModel = messageMapper.findById(userMessageModel.getMessageId());
-            userMessageDto.setMessageType(messageModel.getManualMessageType().getDescription());
+            userMessageDto.setMessageType(messageModel.getMessageCategory().getDescription());
 
             return userMessageDto;
         }).collect(Collectors.toList());
@@ -101,7 +101,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     public UserMessageDto getUserMessageModelByIdAndLoginName(long userMessageId, String loginName) {
         UserMessageModel userMessageModel = userMessageMapper.findById(userMessageId);
         if (null == userMessageModel || !userMessageModel.getLoginName().equals(loginName)) {
-            return new UserMessageDto(0L, ManualMessageType.SYSTEM.name(), "消息不存在", "消息不存在", false, new Date());
+            return new UserMessageDto(0L, MessageCategory.SYSTEM.name(), "消息不存在", "消息不存在", false, new Date());
         }
         userMessageServices.readMessage(userMessageId);
         return new UserMessageDto(userMessageModel);

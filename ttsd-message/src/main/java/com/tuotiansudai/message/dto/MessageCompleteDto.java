@@ -1,6 +1,8 @@
 package com.tuotiansudai.message.dto;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.AnnounceDto;
+import com.tuotiansudai.dto.LoanCreateRequestDto;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
@@ -8,14 +10,17 @@ import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.model.JumpTo;
 import com.tuotiansudai.jpush.repository.model.PushUserType;
 import com.tuotiansudai.message.repository.model.*;
+import com.tuotiansudai.util.DistrictUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class MessageCreateDto implements Serializable {
+public class MessageCompleteDto implements Serializable {
     private long id;
     private String title;
     private String template;
@@ -23,7 +28,7 @@ public class MessageCreateDto implements Serializable {
     private MessageType type;
     private List<MessageUserGroup> userGroups;
     private List<MessageChannel> channels;
-    private ManualMessageType manualMessageType;
+    private MessageCategory messageCategory;
     private String webUrl;
     private AppUrl appUrl;
     private boolean jpush;
@@ -40,10 +45,68 @@ public class MessageCreateDto implements Serializable {
     private String createdBy;
     private Date createdTime;
 
-    public MessageCreateDto() {
+    public static MessageCompleteDto createFromAnnounceDto(AnnounceDto announceDto, String createdBy) {
+        MessageCompleteDto messageCompleteDto = new MessageCompleteDto();
+
+        messageCompleteDto.setTitle(announceDto.getTitle());
+        messageCompleteDto.setTemplate(announceDto.getContent());
+        messageCompleteDto.setTemplateTxt(announceDto.getContentText());
+        messageCompleteDto.setType(MessageType.MANUAL);
+        messageCompleteDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
+        messageCompleteDto.setChannels(Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
+        messageCompleteDto.setMessageCategory(MessageCategory.NOTIFY);
+        messageCompleteDto.setWebUrl(MessageFormat.format("/announce/{0}", announceDto.getId()));
+        messageCompleteDto.setAppUrl(AppUrl.NOTIFY);
+        messageCompleteDto.setJpush(true);
+        messageCompleteDto.setPushType(PushType.IMPORTANT_EVENT);
+        messageCompleteDto.setPushSource(PushSource.ALL);
+        messageCompleteDto.setPushDistricts(DistrictUtil.getAllCodes());
+        messageCompleteDto.setStatus(MessageStatus.APPROVED);
+        messageCompleteDto.setReadCount(0);
+        messageCompleteDto.setActivatedBy(createdBy);
+        messageCompleteDto.setActivatedTime(new Date());
+        messageCompleteDto.setExpiredTime(new DateTime().withDate(9999, 12, 31).toDate());
+        messageCompleteDto.setUpdatedBy(createdBy);
+        messageCompleteDto.setUpdatedTime(new Date());
+        messageCompleteDto.setCreatedBy(createdBy);
+        messageCompleteDto.setCreatedTime(new Date());
+
+        return messageCompleteDto;
     }
 
-    public MessageCreateDto(MessageModel messageModel) {
+    public static MessageCompleteDto createFromLoanCreateRequestDto(LoanCreateRequestDto loanCreateRequestDto) {
+        MessageCompleteDto messageCompleteDto = new MessageCompleteDto();
+
+        messageCompleteDto.setTitle(loanCreateRequestDto.getLoanMessageRequestDto().getLoanMessageTitle());
+        messageCompleteDto.setTemplate(loanCreateRequestDto.getLoanMessageRequestDto().getLoanMessageContent());
+        messageCompleteDto.setTemplateTxt(loanCreateRequestDto.getLoanMessageRequestDto().getLoanMessageContent());
+        messageCompleteDto.setType(MessageType.MANUAL);
+        messageCompleteDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
+        messageCompleteDto.setChannels(Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
+        messageCompleteDto.setMessageCategory(MessageCategory.NOTIFY);
+        messageCompleteDto.setWebUrl(MessageFormat.format("/loan/{0}", loanCreateRequestDto.getLoan().getId()));
+        messageCompleteDto.setAppUrl(AppUrl.NOTIFY);
+        messageCompleteDto.setJpush(true);
+        messageCompleteDto.setPushType(PushType.IMPORTANT_EVENT);
+        messageCompleteDto.setPushSource(PushSource.ALL);
+        messageCompleteDto.setPushDistricts(DistrictUtil.getAllCodes());
+        messageCompleteDto.setStatus(MessageStatus.APPROVED);
+        messageCompleteDto.setReadCount(0);
+        messageCompleteDto.setActivatedBy(null);
+        messageCompleteDto.setActivatedTime(null);
+        messageCompleteDto.setExpiredTime(new DateTime().withDate(9999, 12, 31).toDate());
+        messageCompleteDto.setUpdatedBy(loanCreateRequestDto.getLoan().getCreatedBy());
+        messageCompleteDto.setUpdatedTime(new Date());
+        messageCompleteDto.setCreatedBy(loanCreateRequestDto.getLoan().getCreatedBy());
+        messageCompleteDto.setCreatedTime(new Date());
+
+        return messageCompleteDto;
+    }
+
+    public MessageCompleteDto() {
+    }
+
+    public MessageCompleteDto(MessageModel messageModel) {
         this.id = messageModel.getId();
         this.title = messageModel.getTitle();
         this.template = messageModel.getTemplate();
@@ -51,7 +114,7 @@ public class MessageCreateDto implements Serializable {
         this.type = messageModel.getType();
         this.userGroups = messageModel.getUserGroups();
         this.channels = messageModel.getChannels();
-        this.manualMessageType = messageModel.getManualMessageType();
+        this.messageCategory = messageModel.getMessageCategory();
         this.webUrl = messageModel.getWebUrl();
         this.appUrl = messageModel.getAppUrl();
         this.status = messageModel.getStatus();
@@ -75,7 +138,7 @@ public class MessageCreateDto implements Serializable {
         messageModel.setTemplateTxt(this.templateTxt);
         messageModel.setUserGroups(this.userGroups);
         messageModel.setChannels(this.channels);
-        messageModel.setManualMessageType(this.manualMessageType);
+        messageModel.setMessageCategory(this.messageCategory);
         messageModel.setWebUrl(this.webUrl);
         messageModel.setAppUrl(this.appUrl);
         messageModel.setUpdatedBy(this.updatedBy);
@@ -234,12 +297,12 @@ public class MessageCreateDto implements Serializable {
         this.createdTime = createdTime;
     }
 
-    public ManualMessageType getManualMessageType() {
-        return manualMessageType;
+    public MessageCategory getMessageCategory() {
+        return messageCategory;
     }
 
-    public void setManualMessageType(ManualMessageType manualMessageType) {
-        this.manualMessageType = manualMessageType;
+    public void setMessageCategory(MessageCategory messageCategory) {
+        this.messageCategory = messageCategory;
     }
 
     public String getWebUrl() {

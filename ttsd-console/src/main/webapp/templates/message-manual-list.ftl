@@ -110,7 +110,7 @@
                     ${message.template!}
                     </td>
                     <td>
-                    ${message.manualMessageType.getDescription()!}
+                    ${message.messageCategory.getDescription()!}
                     </td>
                     <td>
                         <#if message.channels?has_content>

@@ -67,10 +67,10 @@
         <div class="form-group">
             <label class="col-sm-1 control-label">消息类型</label>
             <div class="col-sm-4">
-                <select class="selectpicker manualMessageType" name="manualMessageType">
-                    <#list manualMessageTypes as manualMessageType>
-                        <option value="${manualMessageType.name()}"
-                                <#if (selectedManualMessageType?? && selectedManualMessageType == manualMessageType) || ((dto.manualMessageType)?? && dto.manualMessageType == manualMessageType)>selected</#if>>${manualMessageType.getDescription()}</option>
+                <select class="selectpicker messageCategory" name="messageCategory">
+                    <#list manualMessageTypes as messageCategory>
+                        <option value="${messageCategory.name()}"
+                                <#if (selectedManualMessageType?? && selectedManualMessageType == messageCategory) || ((dto.messageCategory)?? && dto.messageCategory == messageCategory)>selected</#if>>${messageCategory.getDescription()}</option>
                     </#list>
                 </select>
             </div>
