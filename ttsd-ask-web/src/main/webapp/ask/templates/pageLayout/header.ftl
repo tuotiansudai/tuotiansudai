@@ -18,7 +18,7 @@
                 <a href="${webServer}/activity-center">活动中心</a>
             </li>
             <li class="header-help-center">
-                <a href="/help/help-center">帮助中心</a>
+                <a href="${webServer}/help/help-center">帮助中心</a>
             </li>
         <@global.isNotAnonymous>
             <li><a class="personal-info-link" href="${webServer}/personal-info"><@global.security.authentication property="principal.mobile"/></a></li>
