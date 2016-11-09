@@ -33,7 +33,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
                     if(_.isEmpty(value)) {
                         errorMsg='密码不能为空';
                         formCheckValid=false;
-                    } else if(/^(?=.*[^\d])(.{6,20})$/.test(value)) {
+                    } else if(!/^(?=.*[^\d])(.{6,20})$/.test(value)) {
                         errorMsg='密码为6位至20位，不能全是数字';
                         formCheckValid=false;
                     }
@@ -49,6 +49,7 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
                 errorElement.text(errorMsg).css('visibility', 'visible');
             }
         });
+        return formCheckValid;
     };
 
         refreshCaptcha();
@@ -57,8 +58,9 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
         });
 
         //input失去焦点时验证
-        loginFormElement.find('input:text,input:password').on('blur',function() {
+        loginFormElement.find('input:text,input:password').on('blur',function(event) {
             var $this=$(this);
+            target=event.target;
             errorElement.text('').css('visibility', 'hidden');
             checkLogin($this);
         });
@@ -97,14 +99,15 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
 
         $(document).keypress(function (event) {
 
-            var keycode = (event.keyCode ? event.keyCode : event.which)
-            if (keycode === 13 && formCheckValid) {
-                loginSubmitElement.focus();
-                event.preventDefault();
-                submitLoginForm();
-            }
-            else {
-                checkLogin(loginFormElement.find('input:text,input:password'));
+            var keycode = (event.keyCode ? event.keyCode : event.which),
+                target=event.target;
+            if (keycode === 13 ) {
+                formCheckValid=checkLogin(loginFormElement.find('input:text,input:password'));
+                if(formCheckValid) {
+                    loginSubmitElement.focus();
+                    event.preventDefault();
+                    submitLoginForm();
+                }
             }
         })
     })();
