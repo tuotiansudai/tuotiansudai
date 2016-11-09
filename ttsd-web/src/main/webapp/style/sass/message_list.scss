@@ -65,13 +65,17 @@
     color: #808080;
   }
   .content {
+    margin-top: 5px;
+    padding: 20px 0;
+    color: #808080;
+    line-height: 1.5;
+    border-top:1px solid #e9ebef;
     p {
       color: #808080;
     }
-    margin-top: 20px;
-    padding: 20px;
-    color: #808080;
-    line-height: 1.5;
+    a.look-detail {
+      color: #ff6c00;
+    }
   }
   .go-back {
     margin-top: 15px;
