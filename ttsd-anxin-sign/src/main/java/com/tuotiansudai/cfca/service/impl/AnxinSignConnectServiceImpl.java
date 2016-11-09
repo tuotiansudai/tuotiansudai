@@ -50,14 +50,14 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     private AnxinContractResponseMapper anxinContractResponseMapper;
 
     @Override
-    public Tx3ResVO createAccount3001(AccountModel accountModel, UserModel userModel) throws PKIException {
+    public Tx3ResVO createAccount3001(UserModel userModel) throws PKIException {
 
         HttpConnector httpConnector = new HttpConnector();
         httpConnector.init();
 
         Tx3001ReqVO tx3001ReqVO = new Tx3001ReqVO();
 
-        PersonVO person = convertAccountToPersonVO(accountModel, userModel);
+        PersonVO person = convertAccountToPersonVO(userModel);
 
         tx3001ReqVO.setHead(getHeadVO());
         tx3001ReqVO.setPerson(person);
@@ -283,12 +283,12 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         return head;
     }
 
-    private PersonVO convertAccountToPersonVO(AccountModel accountModel, UserModel userModel) {
+    private PersonVO convertAccountToPersonVO(UserModel userModel) {
 
         PersonVO person = new PersonVO();
-        person.setPersonName(accountModel.getUserName());
+        person.setPersonName(userModel.getUserName());
         person.setIdentTypeCode("0");
-        person.setIdentNo(accountModel.getIdentityNumber());
+        person.setIdentNo(userModel.getIdentityNumber());
         person.setMobilePhone(userModel.getMobile());
         person.setAddress(userModel.getCity());
         person.setAuthenticationMode("公安部");

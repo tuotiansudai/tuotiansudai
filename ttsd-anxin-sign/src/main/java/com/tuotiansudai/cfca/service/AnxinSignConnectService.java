@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface AnxinSignConnectService {
 
-    Tx3ResVO createAccount3001(AccountModel accountModel, UserModel userModel) throws PKIException;
+    Tx3ResVO createAccount3001(UserModel userModel) throws PKIException;
 
     Tx3ResVO sendCaptcha3101(String userId, String projectCode, boolean isVoice) throws PKIException;
 
