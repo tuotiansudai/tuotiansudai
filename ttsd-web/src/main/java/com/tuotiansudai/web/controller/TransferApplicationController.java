@@ -1,16 +1,14 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
-import com.tuotiansudai.exception.InvestExceptionType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.TransferStatus;
-import com.tuotiansudai.service.AnxinSignService;
+import com.tuotiansudai.cfca.service.AnxinSignService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;

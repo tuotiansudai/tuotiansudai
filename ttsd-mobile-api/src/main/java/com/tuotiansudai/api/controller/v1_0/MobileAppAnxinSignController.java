@@ -3,7 +3,7 @@ package com.tuotiansudai.api.controller.v1_0;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.service.AnxinSignService;
+import com.tuotiansudai.cfca.service.AnxinSignService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

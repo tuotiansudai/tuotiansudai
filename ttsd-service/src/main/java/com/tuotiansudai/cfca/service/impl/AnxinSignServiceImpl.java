@@ -1,4 +1,4 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.cfca.service.impl;
 
 import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
@@ -13,7 +13,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.AnxinSignService;
+import com.tuotiansudai.cfca.service.AnxinSignService;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
