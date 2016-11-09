@@ -32,6 +32,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -205,5 +206,31 @@ public class QuestionService {
         BasePaginationDataDto<QuestionDto> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
         data.setStatus(true);
         return new BaseDto<BasePaginationDataDto>(data);
+    }
+
+    private BaseDto<BasePaginationDataDto> getQuestionsByKeywords(String keywords, String loginName, int index, int pageSize) {
+        long count = questionMapper.countQuestionsByKeywords(keywords);
+        List<QuestionModel> questionModels = questionMapper.findQuestionsByKeywords(keywords, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        List<QuestionDto> items = questionModels.stream().map(questionModel -> {
+            String mobile;
+            if (questionModel.getLoginName().equals(loginName)) {
+                if (Strings.isNullOrEmpty(questionModel.getMobile())) {
+                    mobile = questionModel.getFakeMobile();
+                } else {
+                    mobile = questionModel.getMobile();
+                }
+            } else {
+                if (Strings.isNullOrEmpty(questionModel.getMobile())) {
+                    mobile = questionModel.getFakeMobile();
+                } else {
+                    mobile = questionModel.getMobile();
+                }
+            }
+            return new QuestionDto(questionModel, mobile);
+        }).collect(Collectors.toList());
+
+        BasePaginationDataDto<QuestionDto> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
+        data.setStatus(true);
+        return new BaseDto<>(data);
     }
 }

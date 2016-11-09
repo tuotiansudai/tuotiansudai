@@ -57,4 +57,10 @@ public interface QuestionMapper {
     long countQuestionsForConsole(@Param(value = "question") String question,
                                   @Param(value = "mobile") String mobile,
                                   @Param(value = "status") QuestionStatus status);
+
+    List<QuestionModel> findQuestionsByKeywords(@Param(value = "keywords") String keywords,
+                                                @Param(value = "index") int index,
+                                                @Param(value = "pageSize") int pageSize);
+
+    long countQuestionsByKeywords(@Param(value = "keywords") String keywords);
 }
