@@ -2,7 +2,8 @@
 @import '../plugins/daterangepicker';
 @import "../module/coupon_alert";
 @import "top-sub-menu";
-
+@import "../module/login_tip";
+@import "../module/anxin_qian";
 ////隐藏顶部菜单
 //.swiper-container {
 //  display: none;
@@ -155,6 +156,45 @@
           width: 168px;
           margin: 10px 15px 0;
         }
+        &.skip-group{
+            display:inline-block;
+            text-align:left;
+            label{
+              float:left;
+              width:20px;
+              .skip-icon{
+                display:inline-block;
+                width:14px;
+                height:14px;
+                background:url('/images/icons/skip-checkbox.png') no-repeat center;;
+                background-position: 0px 0px;
+                cursor:pointer;
+                margin-top:5px;
+                &.active{
+                  background-position: -24px 0px;
+                }
+              }
+              &.skip-text{
+                float:left;
+                width:250px;
+                font-size:12px;
+                color:#4d4d4d;
+                a{
+                  color:#999999;
+                  span{
+                    cursor:pointer;
+                    &.check-tip{
+                      display:none;
+                      color:#ff2b00;
+                    }
+                    &:hover{
+                      text-decoration: underline;
+                    }
+                  }
+                }
+              }
+            }
+          }
       }
     }
   }

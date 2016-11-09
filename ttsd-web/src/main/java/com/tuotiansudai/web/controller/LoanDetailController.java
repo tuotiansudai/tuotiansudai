@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.controller;
 
-
 import com.google.common.collect.Lists;
+import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.UserCouponService;
@@ -11,6 +11,7 @@ import com.tuotiansudai.dto.LoanDetailDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.service.AnxinSignService;
 import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Min;
-
 
 @Controller
 @RequestMapping(value = "/loan")

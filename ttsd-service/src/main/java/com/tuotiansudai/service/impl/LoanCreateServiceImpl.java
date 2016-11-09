@@ -11,6 +11,7 @@ import com.tuotiansudai.job.FundraisingStartJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.AnxinSignService;
 import com.tuotiansudai.service.LoanCreateService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
@@ -82,6 +83,9 @@ public class LoanCreateServiceImpl implements LoanCreateService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private AnxinSignService anxinSignService;
 
     @Override
     public LoanTitleModel createTitle(LoanTitleDto loanTitleDto) {
@@ -220,6 +224,10 @@ public class LoanCreateServiceImpl implements LoanCreateService {
     private BaseDto<BaseDataDto> checkCreateLoanData(LoanCreateRequestDto loanCreateRequestDto) {
         if (userRoleMapper.findByLoginNameAndRole(loanCreateRequestDto.getLoan().getAgent(), Role.LOANER) == null) {
             return new BaseDto<>(new BaseDataDto(false, "代理用户不存在"));
+        }
+
+        if (!anxinSignService.getAnxinSignProp(loanCreateRequestDto.getLoan().getAgent()).isSkipAuth()) {
+            return new BaseDto<>(new BaseDataDto(false, "代理/借款 用户未开通安心签免短信验证"));
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount()) < AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMinInvestAmount())) {
@@ -375,7 +383,6 @@ public class LoanCreateServiceImpl implements LoanCreateService {
         LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel != null && LoanStatus.PREHEAT == loanModel.getStatus()) {
             loanMapper.updateStatus(loanId, LoanStatus.RAISING);
-            this.createAutoInvestJob(loanId);
         }
     }
 
