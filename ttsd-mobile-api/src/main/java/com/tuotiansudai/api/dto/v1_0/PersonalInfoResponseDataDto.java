@@ -18,6 +18,10 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private String districtCode;
     private boolean autoInvest;
     private String bankName;
+    private boolean anxinUser;
+    private boolean skipAuth;
+    private boolean hasAuthed;
+
 
     private boolean isNewbieEnable;
 
@@ -165,5 +169,29 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
 
     public void setIsNewbieEnable(boolean isNewbieEnable) {
         this.isNewbieEnable = isNewbieEnable;
+    }
+
+    public boolean isAnxinUser() {
+        return anxinUser;
+    }
+
+    public void setAnxinUser(boolean anxinUser) {
+        this.anxinUser = anxinUser;
+    }
+
+    public boolean isSkipAuth() {
+        return skipAuth;
+    }
+
+    public void setSkipAuth(boolean skipAuth) {
+        this.skipAuth = skipAuth;
+    }
+
+    public boolean isHasAuthed() {
+        return hasAuthed;
+    }
+
+    public void setHasAuthed(boolean hasAuthed) {
+        this.hasAuthed = hasAuthed;
     }
 }

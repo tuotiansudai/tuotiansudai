@@ -130,7 +130,7 @@ public class LotteryDrawActivityService {
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
         try{
-            userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
+            userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? userModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
         }catch (Exception e){
             logger.error(MessageFormat.format("draw is fail, mobile:{0},activity:{1}",mobile,activityCategory.getDescription()));
         }
@@ -178,7 +178,11 @@ public class LotteryDrawActivityService {
 
         try{
             pointBillService.createPointBill(userModel.getLoginName(), null, PointBusinessType.ACTIVITY, (-activityCategory.getConsumeCategory().getPoint()), MessageFormat.format("抽中{0}", lotteryPrize.getDescription()));
-            userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
+            userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(),
+                    !Strings.isNullOrEmpty(userModel.getUserName()) ? userModel.getLoginName() : "",
+                    lotteryPrize,
+                    DateTime.now().toDate(),
+                    activityCategory));
         }catch (Exception e){
             logger.error(MessageFormat.format("draw is fail, mobile:{0},activity:{1}",mobile,activityCategory.getDescription()));
         }

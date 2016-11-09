@@ -39,8 +39,6 @@ public class ContractServiceImpl implements ContractService {
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
-    private LoanRepayMapper loanRepayMapper;
-    @Autowired
     private UserMapper userMapper;
     @Autowired
     private LoanerDetailsMapper loanerDetailsMapper;
@@ -103,15 +101,14 @@ public class ContractServiceImpl implements ContractService {
         Map<String, Object> dataModel = new HashMap<>();
         LoanModel loanModel = loanMapper.findById(loanId);
         UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
-        AccountModel agentAccount = accountMapper.findByLoginName(loanModel.getAgentLoginName());
         UserModel investorModel = userMapper.findByLoginName(investorLoginName);
         AccountModel investorAccount = accountMapper.findByLoginName(investorLoginName);
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
         dataModel.put("agentMobile", agentModel.getMobile());
-        dataModel.put("agentIdentityNumber", agentAccount.getIdentityNumber());
+        dataModel.put("agentIdentityNumber", agentModel.getIdentityNumber());
         dataModel.put("investorMobile", investorModel.getMobile());
-        dataModel.put("investorIdentityNumber", investorAccount.getIdentityNumber());
+        dataModel.put("investorIdentityNumber", agentModel.getIdentityNumber());
         dataModel.put("loanerUserName", loanerDetailsModel.getUserName());
         dataModel.put("loanerIdentityNumber", loanerDetailsModel.getIdentityNumber());
         dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
@@ -164,29 +161,27 @@ public class ContractServiceImpl implements ContractService {
             return dataModel;
         }
 
-        AccountModel transferrerAccountModel = accountMapper.findByLoginName(transferApplicationModel.getLoginName());
-        if (transferrerAccountModel != null) {
-            dataModel.put("transferrerUserName", transferrerAccountModel.getUserName());
-            dataModel.put("transferrerMobile", userMapper.findByLoginName(transferrerAccountModel.getLoginName()).getMobile());
-            dataModel.put("transferrerIdentityNumber", transferrerAccountModel.getIdentityNumber());
+        LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
+        if (loanModel == null) {
+            return dataModel;
         }
+
+        UserModel transferrerUserModel = userMapper.findByLoginName(transferApplicationModel.getLoginName());
+        dataModel.put("transferrerUserName", transferrerUserModel.getUserName());
+        dataModel.put("transferrerMobile", transferrerUserModel.getMobile());
+        dataModel.put("transferrerIdentityNumber", transferrerUserModel.getIdentityNumber());
 
         InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
-        AccountModel investAccountModel = accountMapper.findByLoginName(investModel.getLoginName());
-        if (investAccountModel != null) {
-            dataModel.put("transfereeUserName", investAccountModel.getUserName());
-            dataModel.put("transfereeMobile", userMapper.findByLoginName(investAccountModel.getLoginName()).getMobile());
-            dataModel.put("transfereeIdentityNumber", investAccountModel.getIdentityNumber());
-        }
+        UserModel investUserModel = userMapper.findByLoginName(investModel.getLoginName());
+        dataModel.put("transfereeUserName", investUserModel.getUserName());
+        dataModel.put("transfereeMobile", investUserModel.getMobile());
+        dataModel.put("transfereeIdentityNumber", investUserModel.getIdentityNumber());
 
-        LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
-        if (null != loanModel) {
-            dataModel.put("loanerUserName", loanerDetailsMapper.getByLoanId(loanModel.getId()).getUserName());
-            dataModel.put("loanerIdentityNumber", loanModel.getLoanerIdentityNumber());
-            dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-            dataModel.put("totalRate", loanModel.getBaseRate() + loanModel.getActivityRate());
-            dataModel.put("periods", loanModel.getPeriods());
-        }
+        dataModel.put("loanerUserName", loanerDetailsMapper.getByLoanId(loanModel.getId()).getUserName());
+        dataModel.put("loanerIdentityNumber", loanModel.getLoanerIdentityNumber());
+        dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+        dataModel.put("totalRate", loanModel.getBaseRate() + loanModel.getActivityRate());
+        dataModel.put("periods", loanModel.getPeriods());
 
         if (transferApplicationModel.getPeriod() != 1) {
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), transferApplicationModel.getPeriod() - 1);

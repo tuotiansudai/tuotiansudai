@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
@@ -11,7 +12,9 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.job.AnxinContractHandleJob;
 import com.tuotiansudai.job.InvestTransferCallbackJob;
+import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -30,6 +33,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
+import com.tuotiansudai.paywrapper.service.AnxinSignService;
 import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -40,8 +44,11 @@ import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.quartz.SchedulerException;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -113,6 +120,12 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Autowired
     private CouponRepayMapper couponRepayMapper;
+
+    @Autowired
+    private AnxinSignService anxinSignService;
+
+    @Autowired
+    private JobManager jobManager;
 
     @Override
     public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
@@ -488,6 +501,12 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is over invest", String.valueOf(investId)));
                 this.overInvestPaybackProcess(investId);
+
+                logger.debug("债权转让：生成合同，标的ID:" + transferApplicationModel.getId());
+                anxinSignService.createTransferContracts(transferApplicationModel.getId());
+
+                logger.debug("债权转让：创建job —— 十分钟后，查询并更新合同状态。标的ID:" + transferApplicationModel.getId());
+                updateContractResponseHandleJob(transferApplicationModel.getId());
             } else {
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is success", String.valueOf(investId)));
                 ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
@@ -559,5 +578,21 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         investModel.setInvestFeeRate(membershipModel.getFee());
         investModel.setNoPasswordInvest(investDto.isNoPassword());
         return investModel;
+    }
+
+    private void updateContractResponseHandleJob(long businessId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(AnxinContractHandleJob.HANDLE_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.ContractResponse, AnxinContractHandleJob.class)
+                    .addJobData(AnxinContractHandleJob.BUSINESS_ID, businessId)
+                    .addJobData(AnxinContractHandleJob.ANXIN_CONTRACT_TYPE, AnxinContractType.LOAN_CONTRACT)
+                    .withIdentity(JobType.ContractResponse.name(), "Loan-" + businessId)
+                    .replaceExistingJob(true)
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create update trnasfer contract response  handle job for loan[" + businessId + "] fail", e);
+        }
     }
 }
