@@ -1,10 +1,13 @@
 spring:
   datasource:
     aaro:
-      url: jdbc:mysql://192.168.33.10:3306/aa?useUnicode=true&characterEncoding=UTF-8
+      jdbc-url: jdbc:mysql://192.168.33.10:3306/aa?useUnicode=true&characterEncoding=UTF-8
       username: root
       password:
       driver-class-name: com.mysql.jdbc.Driver
+      minimum-idle: 0
+      maximum-pool-size: 1
+      read-only: true
   mail:
     host: smtp.qiye.163.com
     prot: 994
@@ -34,3 +37,4 @@ diagnosis:
     notify-mail-from: no-reply@tuotiansudai.com
     notify-mail-address: dev@tuotiansudai.com
     notify-mail-address-qa: dev@tuotiansudai.com
+
