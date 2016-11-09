@@ -175,17 +175,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         jPushAlertMapper.update(jPushAlertModel);
     }
 
-    public void autoJPushAlertSend(JPushAlertModel jPushAlertModel) {
-        if (null != jPushAlertModel) {
-            Map extras = chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel));
-            mobileAppJPushClient.sendPushAlertByAll(String.valueOf(jPushAlertModel.getId()), jPushAlertModel.getContent(), extras, jPushAlertModel.getPushSource());
-            jPushAlertModel.setStatus(PushStatus.SEND_SUCCESS);
-            jPushAlertMapper.update(jPushAlertModel);
-        } else {
-            logger.debug("Auto JPush is disabled.");
-        }
-    }
-
     @Override
     public void manualJPushAlert(long id) {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
@@ -490,8 +479,5 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         logger.debug(MessageFormat.format("jpushId:{0} end", value));
     }
 
-    @Override
-    public JPushAlertModel findJPushAlertModelByMessageId(long messageId) {
-        return jPushAlertMapper.findByMessageId(messageId);
-    }
+
 }

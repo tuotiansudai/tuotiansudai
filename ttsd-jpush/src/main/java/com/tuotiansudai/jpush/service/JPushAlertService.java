@@ -35,8 +35,6 @@ public interface JPushAlertService {
 
     void changeJPushAlertContent(long id, String content, String loginName);
 
-    void autoJPushAlertSend(JPushAlertModel jPushAlertModel);
-
     void manualJPushAlert(long id);
 
     BaseDto<BaseDataDto> pass(String loginName, long id, String ip);
@@ -46,6 +44,4 @@ public interface JPushAlertService {
     void delete(String loginName, long id);
 
     void storeJPushId(String loginName, String platform, String jPushId);
-
-    JPushAlertModel findJPushAlertModelByMessageId(long messageId);
 }

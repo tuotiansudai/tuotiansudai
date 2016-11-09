@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
+import com.tuotiansudai.jpush.service.JPushAlertNewService;
 import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.message.dto.MessageCompleteDto;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
@@ -38,6 +39,9 @@ public class MessageServiceImpl implements MessageService {
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
+    private JPushAlertNewService jPushAlertNewService;
+
+    @Autowired
     private JPushAlertService jPushAlertService;
 
     public final static String redisMessageReceivers = "message:manual-message:receivers";
@@ -51,7 +55,7 @@ public class MessageServiceImpl implements MessageService {
 
     private MessageCompleteDto messageModelToDto(MessageModel messageModel) {
         MessageCompleteDto messageCompleteDto = new MessageCompleteDto(messageModel);
-        JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelByMessageId(messageModel.getId());
+        JPushAlertModel jPushAlertModel = jPushAlertNewService.findJPushAlertModelByMessageId(messageModel.getId());
         if (null != jPushAlertModel) {
             messageCompleteDto.setJpush(true);
             messageCompleteDto.setPushType(jPushAlertModel.getPushType());
@@ -85,7 +89,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     private void editManualJPush(MessageCompleteDto messageCompleteDto, long messageId) {
-        JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelByMessageId(messageId);
+        JPushAlertModel jPushAlertModel = jPushAlertNewService.findJPushAlertModelByMessageId(messageId);
         JPushAlertDto jPushAlertDto = messageCompleteDto.getJPushAlertDto();
         jPushAlertDto.setMessageId(messageId);
         if (null != jPushAlertModel) {
@@ -145,7 +149,7 @@ public class MessageServiceImpl implements MessageService {
             messageModel.setUpdatedBy(checkerName);
             messageMapper.update(messageModel);
 
-            JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelByMessageId(messageId);
+            JPushAlertModel jPushAlertModel = jPushAlertNewService.findJPushAlertModelByMessageId(messageId);
             if (null != jPushAlertModel) {
                 jPushAlertService.reject(checkerName, jPushAlertModel.getId(), null);
             }
@@ -156,7 +160,7 @@ public class MessageServiceImpl implements MessageService {
             messageModel.setUpdatedBy(checkerName);
             messageMapper.update(messageModel);
 
-            JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelByMessageId(messageId);
+            JPushAlertModel jPushAlertModel = jPushAlertNewService.findJPushAlertModelByMessageId(messageId);
             if (null != jPushAlertModel) {
                 jPushAlertService.reject(checkerName, jPushAlertModel.getId(), "");
             }
@@ -179,7 +183,7 @@ public class MessageServiceImpl implements MessageService {
             messageModel.setUpdatedBy(checkerName);
             messageMapper.update(messageModel);
 
-            JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelByMessageId(messageId);
+            JPushAlertModel jPushAlertModel = jPushAlertNewService.findJPushAlertModelByMessageId(messageId);
             if (null != jPushAlertModel) {
                 jPushAlertService.manualJPushAlert(jPushAlertModel.getId());
             }
@@ -196,7 +200,7 @@ public class MessageServiceImpl implements MessageService {
         messageMapper.deleteById(messageId, updatedBy, new Date());
         redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(messageId));
 
-        JPushAlertModel jPushAlertModel = jPushAlertService.findJPushAlertModelByMessageId(messageId);
+        JPushAlertModel jPushAlertModel = jPushAlertNewService.findJPushAlertModelByMessageId(messageId);
         if (null != jPushAlertModel) {
             jPushAlertService.delete(updatedBy, jPushAlertModel.getId());
         }

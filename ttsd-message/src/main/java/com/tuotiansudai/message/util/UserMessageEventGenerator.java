@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
-import com.tuotiansudai.jpush.service.JPushAlertService;
+import com.tuotiansudai.jpush.service.JPushAlertNewService;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMetaMapper;
@@ -61,15 +61,15 @@ public class UserMessageEventGenerator {
     private LoginLogMapper loginLogMapper;
 
     @Autowired
-    private JPushAlertService jPushAlertService;
+    private JPushAlertNewService jPushAlertNewService;
 
     private void sendJPushByUserMessageModel(UserMessageModel userMessageModel) {
         try {
-            Optional<JPushAlertModel> jPushAlertModelOptional = Optional.of(jPushAlertService.findJPushAlertModelByMessageId(userMessageModel.getMessageId()));
+            Optional<JPushAlertModel> jPushAlertModelOptional = Optional.of(jPushAlertNewService.findJPushAlertModelByMessageId(userMessageModel.getMessageId()));
             if (jPushAlertModelOptional.isPresent()) {
                 JPushAlertModel jPushAlertModel = jPushAlertModelOptional.get();
                 jPushAlertModel.setContent(userMessageModel.getAppTitle());
-                jPushAlertService.autoJPushAlertSend(jPushAlertModel);
+                jPushAlertNewService.autoJPushAlertSend(jPushAlertModel);
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format("jPush send fail! userMessageId:{0} content:{1}", userMessageModel.getId(), userMessageModel.getContent()));
