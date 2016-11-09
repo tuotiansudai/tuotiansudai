@@ -363,8 +363,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         AccountModel investAccountModel = accountMapper.findByLoginName(investModel.getLoginName());
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investModel.getLoginName());
         if (investAccountModel != null) {
-            dataModel.put("transfereeMobile", userMapper.findByLoginName(investAccountModel.getLoginName()).getMobile());
-            dataModel.put("transfereeIdentity", investAccountModel.getIdentityNumber());
+            dataModel.put("transferreMobile", userMapper.findByLoginName(investAccountModel.getLoginName()).getMobile());
+            dataModel.put("transferreIdentity", investAccountModel.getIdentityNumber());
         }
 
         if(Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())){
