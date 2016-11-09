@@ -33,6 +33,9 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
                     if(_.isEmpty(value)) {
                         errorMsg='密码不能为空';
                         formCheckValid=false;
+                    } else if(/^(?=.*[^\d])(.{6,20})$/.test(value)) {
+                        errorMsg='密码为6位至20位，不能全是数字';
+                        formCheckValid=false;
                     }
                     break;
                 case 'captcha':
