@@ -435,7 +435,7 @@
 
     <update id="updateContractNoById" parameterType="map" >
         update `aa`.`transfer_application` set
-        contract_no = #{contractNo},
+        contract_no = #{contractNo}
         where id = #{transferId}
     </update>
 </mapper>

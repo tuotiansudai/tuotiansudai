@@ -919,7 +919,7 @@
 
     <update id="updateContractNoById" parameterType="map" >
         update invest set
-        contract_no = #{contractNo},
+        contract_no = #{contractNo}
         where id = #{investId}
     </update>
 

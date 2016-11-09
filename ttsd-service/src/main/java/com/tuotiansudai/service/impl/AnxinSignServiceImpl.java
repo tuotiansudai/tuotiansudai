@@ -5,6 +5,7 @@ import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
@@ -285,10 +286,20 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
         InvestModel investModel;
         BaseDto baseDto = new BaseDto();
+        LoanModel loanModel = loanMapper.findById(loanId);
+        AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
+        if(Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())){
+            logger.error(MessageFormat.format("[安心签] create contract error,agentModel is not anxin sign , loanid:{0} , userId:{1}", loanId,loanModel.getAgentLoginName()));
+            return new BaseDto(true);
+        }
         for (int i = 0; i < investModels.size(); i++) {
             investModel = investModels.get(i);
-            createContractVOs.add(collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId()));
-            if (createContractVOs.size() == batchNum || investModels.size() == i) {
+            CreateContractVO createContractVO = collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
+            if(createContractVO == null){
+                continue;
+            }
+            createContractVOs.add(createContractVO);
+            if (createContractVOs.size() == batchNum || investModels.size() == (i + 1)) {
                 String batchNo = UUIDGenerator.generate();
                 try {
                     logger.debug(MessageFormat.format("[安心签] create contract begin , loanId:{0}, batchNo{1}", loanId, batchNo));
@@ -311,6 +322,11 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public BaseDto createTransferContracts(long transferApplicationId) {
+        CreateContractVO createContractVO = collectTransferContractModel(transferApplicationId);
+        if(createContractVO == null){
+            logger.error(MessageFormat.format("[安心签] create transfer contract error,users is not anxin sign , transferApplicationId:{0}", transferApplicationId));
+            return new BaseDto(true);
+        }
         List<CreateContractVO> createContractVOs = Lists.newArrayList(collectTransferContractModel(transferApplicationId));
         BaseDto baseDto = new BaseDto();
         String batchNo = UUIDGenerator.generate();
@@ -347,8 +363,18 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         AccountModel investAccountModel = accountMapper.findByLoginName(investModel.getLoginName());
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investModel.getLoginName());
         if (investAccountModel != null) {
-            dataModel.put("transfereeMobile", userMapper.findByLoginName(investAccountModel.getLoginName()).getMobile());
-            dataModel.put("transfereeIdentity", investAccountModel.getIdentityNumber());
+            dataModel.put("transferreMobile", userMapper.findByLoginName(investAccountModel.getLoginName()).getMobile());
+            dataModel.put("transferreIdentity", investAccountModel.getIdentityNumber());
+        }
+
+        if(Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())){
+            logger.error(MessageFormat.format("[安心签] create transfer contract error,agentAnxinProp is not anxin sign , transferApplicationId:{0} , userId:{1}", transferApplicationId,transferApplicationModel.getLoginName()));
+            return null;
+        }
+
+        if(Strings.isNullOrEmpty(investorAnxinProp.getProjectCode()) ){
+            logger.error(MessageFormat.format("[安心签] create transfer contract error,investorAnxinProp is not anxin sign , transferApplicationId:{0} , userId:{1}", transferApplicationId,investModel.getLoginName()));
+            return null;
         }
 
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
@@ -446,6 +472,10 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         AccountModel investorAccount = accountMapper.findByLoginName(investorLoginName);
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investorLoginName);
 
+        if(Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())){
+            logger.error(MessageFormat.format("[安心签] create contract error,investorAnxinProp is not anxin sign , loanid:{0} , investId:{1} ,userId:{2}", loanId,investId,investorLoginName));
+            return null;
+        }
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
 
@@ -462,10 +492,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate() * 100));
         dataModel.put("recheckTime1", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
         dataModel.put("recheckTime2", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
-//        dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
-//        dataModel.put("endTime2", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
-        dataModel.put("endTime2", "2016-12-11");
-        dataModel.put("endTime2", "2016-12-11");
+        dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
+        dataModel.put("endTime2", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
         dataModel.put("orderId", String.valueOf(investId));
         if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
             dataModel.put("pledge", "房屋");

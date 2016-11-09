@@ -1,13 +1,15 @@
 package com.tuotiansudai.cfca.service.impl;
 
 import cfca.sadk.algorithm.common.PKIException;
-import cfca.trustsign.common.vo.cs.*;
+import cfca.trustsign.common.vo.cs.CreateContractVO;
+import cfca.trustsign.common.vo.cs.HeadVO;
+import cfca.trustsign.common.vo.cs.PersonVO;
+import cfca.trustsign.common.vo.cs.ProxySignVO;
 import cfca.trustsign.common.vo.request.tx3.*;
 import cfca.trustsign.common.vo.response.ErrorResVO;
 import cfca.trustsign.common.vo.response.tx3.*;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.cfca.connector.HttpConnector;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
@@ -15,10 +17,8 @@ import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.mapper.AnxinContractRequestMapper;
 import com.tuotiansudai.cfca.mapper.AnxinContractResponseMapper;
-import com.tuotiansudai.cfca.mapper.AnxinSignRequestMapper;
 import com.tuotiansudai.cfca.model.AnxinContractRequestModel;
 import com.tuotiansudai.cfca.model.AnxinContractResponseModel;
-import com.tuotiansudai.cfca.model.AnxinSignRequestModel;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.service.RequestResponseService;
 import com.tuotiansudai.cfca.util.SecurityUtil;
@@ -42,9 +42,6 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
     @Autowired
     private RequestResponseService requestResponseService;
-
-    @Autowired
-    private AnxinSignRequestMapper anxinSignRequestMapper;
 
     @Autowired
     private AnxinContractRequestMapper anxinContractRequestMapper;
@@ -201,6 +198,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
         logger.debug(MessageFormat.format("[安心签] loanId:{0},batchNo:{1} created contract request date:{2}", businessId, batchNo, req));
 
+
         String txCode = "3202";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
@@ -208,8 +206,8 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         Tx3202ResVO tx3202ResVO = jsonObjectMapper.readValue(res, Tx3202ResVO.class);
 
         if (Strings.isNullOrEmpty(tx3202ResVO.getBatchNo())) {
-            Map<String, String> response = coverJson(res);
-            anxinContractResponseMapper.create(new AnxinContractResponseModel(businessId, batchNo, response.get("errorCode"), response.get("errorMessage")));
+            ErrorResVO errorResVO = jsonObjectMapper.readValue(res, ErrorResVO.class);
+            anxinContractResponseMapper.create(new AnxinContractResponseModel(businessId, batchNo, errorResVO.getErrorCode(), errorResVO.getErrorMessage()));
         } else {
             for (CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()) {
                 anxinContractRequestMapper.updateContractNoByInvestId(createContractVO.getContractNo(),
@@ -279,16 +277,6 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         return httpConnector.getFile("platId/" + Request.PLAT_ID + "/contractNo/" + contractNo + "/downloading");
     }
 
-    private Map<String, String> coverJson(String response) {
-        Map<String, String> responseMap = Maps.newConcurrentMap();
-        String[] split = response.split(",");
-        for (String str : split) {
-            responseMap.put(str.split(":")[0].replaceAll("\\{", "").replaceAll("\\}", "").replaceAll("\"", ""), str.split(":")[1].replaceAll("\\{", "").replaceAll("\\}", "").replaceAll("\"", ""));
-        }
-        return responseMap;
-    }
-
-
     private HeadVO getHeadVO() {
         HeadVO head = new HeadVO();
         head.setTxTime(DateTime.now().toString("yyyyMMddHHmmss"));
@@ -308,31 +296,21 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     }
 
     private void generateRequestRecord(long businessId, String batchNo, String txTime, AnxinContractType anxinContractType, List<CreateContractVO> createContractList) {
+        JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
+        Tx3202ReqVO tx3202ReqVO = new Tx3202ReqVO();
+
+        tx3202ReqVO.setHead(getHeadVO());
+        tx3202ReqVO.setBatchNo(batchNo);
         createContractList.forEach(createContractVO -> {
             if (createContractVO.getSignInfos() != null) {
-                long agentSignId = 0l;
-                long investorSignId = 0l;
-                for (SignInfoVO signInfoVo : createContractVO.getSignInfos()) {
-                    AnxinSignRequestModel anxinSignRequestModel = new AnxinSignRequestModel(signInfoVo.getUserId(), signInfoVo.getAuthorizationTime(), signInfoVo.getLocation(),
-                            signInfoVo.getSignLocation(), signInfoVo.getProjectCode(), signInfoVo.getIsProxySign() != null ? String.valueOf(signInfoVo.getIsProxySign()) : "0",
-                            signInfoVo.getIsCopy() != null ? String.valueOf(signInfoVo.getIsCopy()) : "1", DateTime.now().toDate());
-                    anxinSignRequestMapper.create(anxinSignRequestModel);
-                    if (signInfoVo.getSignLocation().equals("agentUserName") && anxinContractType.equals(AnxinContractType.LOAN_CONTRACT) ||
-                            signInfoVo.getSignLocation().equals("transferUserName") && anxinContractType.equals(AnxinContractType.TRANSFER_CONTRACT)) {
-                        agentSignId = anxinSignRequestModel.getId();
-                    } else {
-                        investorSignId = anxinSignRequestModel.getId();
-                    }
-                }
+                tx3202ReqVO.setCreateContracts(new CreateContractVO[]{createContractVO});
+                String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
 
                 Map<String, String> investmentInfo = createContractVO.getInvestmentInfo();
-                anxinContractRequestMapper.create(new AnxinContractRequestModel(businessId, anxinContractType.name(), Long.parseLong(investmentInfo.get("orderId")),
-                        agentSignId, investorSignId, txTime, batchNo, createContractVO.getTemplateId(),
-                        createContractVO.getIsSign() != null ? String.valueOf(createContractVO.getIsSign()) : "0", investmentInfo.get("agentMobile"),
-                        investmentInfo.get("loanerIdentityNumber"), investmentInfo.get("recheckTime1"), investmentInfo.get("totalRate"),
-                        investmentInfo.get("investorMobile"), investmentInfo.get("agentIdentityNumber"), investmentInfo.get("periods1"),
-                        investmentInfo.get("pledge"), investmentInfo.get("endTime1"), investmentInfo.get("investorIdentityNumber"),
-                        investmentInfo.get("loanerUserName"), investmentInfo.get("loanAmount1"), DateTime.now().toDate()));
+                anxinContractRequestMapper.create(new AnxinContractRequestModel(businessId, Long.parseLong(investmentInfo.get("orderId")),createContractVO.getContractNo(),
+                        anxinContractType.name(), txTime, batchNo, createContractVO.getTemplateId(),
+                        createContractVO.getIsSign() != null ? String.valueOf(createContractVO.getIsSign()) : "0", jsonObjectMapper.writeValueAsString(tx3202ReqVO),
+                        DateTime.now().toDate()));
             }
         });
     }
