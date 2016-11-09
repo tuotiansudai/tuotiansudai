@@ -150,7 +150,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         UserModel transfereeUserModel = userMapper.findByLoginName(transferApplicationModel.getLoginName());
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(transferApplicationModel.getLoginName());
         if (transfereeUserModel != null) {
-            dataModel.put("transferUserName", transfereeUserModel.getUserName());
             dataModel.put("transferMobile", transfereeUserModel.getMobile());
             dataModel.put("transferIdentity", transfereeUserModel.getIdentityNumber());
         }
@@ -159,7 +158,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         UserModel investAccountModel = userMapper.findByLoginName(investModel.getLoginName());
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investModel.getLoginName());
         if (investAccountModel != null) {
-            dataModel.put("transfereeUserName", investAccountModel.getUserName());
             dataModel.put("transfereeMobile", userMapper.findByLoginName(investAccountModel.getLoginName()).getMobile());
             dataModel.put("transfereeIdentity", investAccountModel.getIdentityNumber());
         }
@@ -260,8 +258,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
 
-        dataModel.put("agentUserName", agentModel.getUserName());
-        dataModel.put("investorUserName", investorModel.getUserName());
         dataModel.put("agentMobile", agentModel.getMobile());
         dataModel.put("agentIdentityNumber", agentModel.getIdentityNumber());
         dataModel.put("investorMobile", investorModel.getMobile());

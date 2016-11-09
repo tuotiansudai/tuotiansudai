@@ -243,7 +243,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     }
 
     @Override
-    public List updateContractResponse(long loanId, AnxinContractType anxinContractType) {
+    public List<ContractResponseView> updateContractResponse(long loanId, AnxinContractType anxinContractType) {
         List<String> batchNos = anxinContractRequestMapper.findBatchNoByBusinessId(loanId);
         List<ContractResponseView> contractResponseViews = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(batchNos)) {
