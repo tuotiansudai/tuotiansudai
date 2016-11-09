@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -12,6 +13,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.job.AnxinContractHandleJob;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
@@ -31,10 +33,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncRespon
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.LoanService;
-import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
-import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
-import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
+import com.tuotiansudai.paywrapper.service.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -107,6 +106,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private AnxinSignService anxinSignService;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
@@ -362,6 +364,12 @@ public class LoanServiceImpl implements LoanService {
             logger.error(MessageFormat.format("放款短信邮件通知失败 (loanId = {0})", String.valueOf(loanId)), e);
         }
 
+        logger.debug("标的放款：生成合同，标的ID:" + loanId);
+        anxinSignService.createContracts(loanId);
+
+        logger.debug("标的放款：创建job —— 十分钟后，查询并更新合同状态。标的ID:" + loanId);
+        updateContractResponseHandleJob(loanId);
+
         return true;
     }
 
@@ -515,6 +523,23 @@ public class LoanServiceImpl implements LoanService {
         }
         String respData = callbackRequest.getResponseData();
         return respData;
+    }
+
+    private void updateContractResponseHandleJob(long businessId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(AnxinContractHandleJob.HANDLE_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.ContractResponse, AnxinContractHandleJob.class)
+                    .addJobData(AnxinContractHandleJob.BUSINESS_ID, businessId)
+                    .addJobData(AnxinContractHandleJob.ANXIN_CONTRACT_TYPE, AnxinContractType.TRANSFER_CONTRACT)
+                    .withIdentity(JobType.ContractResponse.name(), "Loan-" + businessId)
+                    .withIdentity(JobType.ContractResponse.name(), "Loan-" + businessId)
+                    .replaceExistingJob(true)
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create update contract response  handle job for loan[" + businessId + "] fail", e);
+        }
     }
 
 }

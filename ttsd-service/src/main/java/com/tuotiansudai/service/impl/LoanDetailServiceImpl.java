@@ -183,10 +183,11 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         }
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
+        boolean anxinSkipAuth = anxinProp != null && anxinProp.isSkipAuth();
+        boolean isAnxinUser = anxinProp != null && StringUtils.isNotEmpty(anxinProp.getAnxinUserId());
 
         InvestorDto investorDto = new InvestorDto(accountMapper.findByLoginName(loginName), this.isRemindNoPassword(loginName),
-                this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount), anxinProp != null && anxinProp.isSkipAuth(),
-                StringUtils.isNotEmpty(anxinProp.getAnxinUserId()));
+                this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount), anxinSkipAuth, isAnxinUser);
 
         LoanDetailDto loanDto = new LoanDetailDto(loanModel,
                 loanDetailsMapper.getByLoanId(loanModel.getId()),

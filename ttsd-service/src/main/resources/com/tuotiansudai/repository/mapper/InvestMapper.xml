@@ -11,6 +11,7 @@
         <result column="transfer_invest_id" property="transferInvestId"/>
         <result column="login_name" property="loginName"/>
         <result column="loan_id" property="loanId"/>
+        <result column="contract_no" property="contractNo"/>
         <result column="amount" property="amount"/>
         <result column="status" property="status"/>
         <result column="transfer_status" property="transferStatus"/>
@@ -915,5 +916,11 @@
         from invest
         where status = 'SUCCESS' and login_name = #{loginName} and created_time BETWEEN #{startTime} and #{endTime}
     </select>
+
+    <update id="updateContractNoById" parameterType="map" >
+        update invest set
+        contract_no = #{contractNo}
+        where id = #{investId}
+    </update>
 
 </mapper>

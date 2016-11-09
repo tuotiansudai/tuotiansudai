@@ -284,8 +284,8 @@
                                 </#if>
                             </@global.role>
                             
-                            <input type="hidden" value="${loan.investor.anxinUser?c}" id="isSkipAuth">
-                            <input type="hidden" value="${anxinProp.anxinUser?c}" id="isAnxinUser">
+                            <input type="hidden" value="${loan.investor.skipAuth?c}" id="isSkipAuth">
+                            <input type="hidden" value="${loan.investor.anxinUser?c}" id="isAnxinUser">
                             <@global.role hasRole="'INVESTOR'">
                             <#if !loan.investor.anxinUser>
                             <dd class="skip-group">
@@ -294,7 +294,7 @@
                                     <input type="hidden" id="skipCheck" value="true">
                                 </label>
                                 <div class="skip-text">
-                                    我已阅读并同意<a href="javascript:void(0)"><span class="service-layer">《安心签平台服务协议》</span>、<span class="privacy-layer">《隐私条款》</span>和<span class="number-layer">《CFCA数字证书服务协议》</span><span class="check-tip" id="checkTip">请勾选</span></a>
+                                    我已阅读并同意<a href="javascript:void(0)"><span class="anxin_layer link-agree-service">《安心签平台服务协议》</span>、<span class="anxin_layer link-agree-privacy">《隐私条款》</span>和<span class="anxin_layer link-agree-number">《CFCA数字证书服务协议》</span><span class="check-tip" id="checkTip">请勾选</span></a>
                                 </div>
                             </dd>
                             </#if>

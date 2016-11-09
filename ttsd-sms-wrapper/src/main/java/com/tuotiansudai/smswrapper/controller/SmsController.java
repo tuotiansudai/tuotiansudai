@@ -99,4 +99,10 @@ public class SmsController {
     public BaseDto<SmsDataDto> platformBalanceLowNotify(@RequestBody PlatformBalanceLowNotifyDto notifyDto) {
         return smsService.platformBalanceLowNotify(notifyDto.getMobiles(), notifyDto.getWarningLine());
     }
+
+    @RequestMapping(value = "/generate-contract-error-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> generateContractErrorNotify(@RequestBody GenerateContractErrorNotifyDto notifyDto) {
+        return smsService.generateContractNotify(notifyDto.getMobiles(), notifyDto.getWarningLine());
+    }
 }

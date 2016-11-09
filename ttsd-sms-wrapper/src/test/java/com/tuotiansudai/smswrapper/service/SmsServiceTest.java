@@ -2,6 +2,7 @@ package com.tuotiansudai.smswrapper.service;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.BaseDto;
@@ -89,6 +90,19 @@ public class SmsServiceTest {
         String captcha = "9999";
 
         BaseDto<SmsDataDto> baseDto = this.smsService.sendNoPasswordInvestCaptcha(mobile, captcha, null);
+        assertTrue(baseDto.isSuccess());
+    }
+
+    @Test
+    @Transactional
+    public void shouldSendGenerateContractEoor() throws Exception {
+        MockResponse mockResponse = new MockResponse();
+        mockResponse.setBody(SUCCESS_RESPONSE_BODY);
+        server.enqueue(mockResponse);
+        URL url = server.getUrl("/webservice.asmx/mdSmsSend_u");
+        this.smsClient.setUrl(url.toString());
+
+        BaseDto<SmsDataDto> baseDto = this.smsService.generateContractNotify(Lists.newArrayList(), Lists.newArrayList());
         assertTrue(baseDto.isSuccess());
     }
 }

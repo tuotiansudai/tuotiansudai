@@ -20,6 +20,7 @@ dependencies {
     compile project(':ttsd-dependency'),
             project(':ttsd-util'),
             project(':ttsd-config'),
+            project(':ttsd-client'),
             project(':ttsd-user-service')
 
 }

@@ -3,7 +3,6 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.job.AutoInvestJob;
@@ -384,7 +383,6 @@ public class LoanCreateServiceImpl implements LoanCreateService {
         LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel != null && LoanStatus.PREHEAT == loanModel.getStatus()) {
             loanMapper.updateStatus(loanId, LoanStatus.RAISING);
-            this.createAutoInvestJob(loanId);
         }
     }
 

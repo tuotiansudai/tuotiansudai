@@ -11,16 +11,40 @@ import com.tuotiansudai.cfca.constant.MIMEType;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.constant.SystemConst;
 import com.tuotiansudai.cfca.util.CommonUtil;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HttpConnector {
 
-    public static String JKS_PATH = "/Users/zhoubx/workspace/ttsd/ttsd-anxin-sign/jks/anxinsign.jks";
-    public static String JKS_PWD = "123abc";
-    public static String ALIAS = "anxinsign";
+    public static String JKS_PATH;
 
-    //     public String url = "https://210.74.46.99:8447/FEP/";
-    public String url = "https://210.74.42.33:9443/FEP/";
-    //    public String url = "https://localhost:8443/FEP/";
+    public static String JKS_PWD;
+
+    public static String ALIAS;
+
+    public static String URL;
+
+    @Value("${anxin.jks.path}")
+    public void setJksPath(String jksPath) {
+        JKS_PATH = jksPath;
+    }
+
+    @Value("${anxin.jks.pwd}")
+    public void setJksPwd(String jksPwd) {
+        JKS_PWD = jksPwd;
+    }
+
+    @Value("${anxin.alias}")
+    public void setAlias(String alias) {
+        ALIAS = alias;
+    }
+
+    @Value("${anxin.url}")
+    public void setUrl(String url) {
+        URL = url;
+    }
+
     public int connectTimeout = 3000;
     public int readTimeout = 10000;
     public String channel = "Test";
@@ -46,8 +70,8 @@ public class HttpConnector {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (!url.endsWith("/")) {
-            url += "/";
+        if (!URL.endsWith("/")) {
+            URL += "/";
         }
     }
 
@@ -66,7 +90,7 @@ public class HttpConnector {
     public byte[] getFile(String uri) {
         HttpURLConnection connection = null;
         try {
-            connection = httpClient.connect(url + uri, "GET");
+            connection = httpClient.connect(URL + uri, "GET");
             int responseCode = httpClient.send(connection, null);
             System.out.println("responseCode:" + responseCode);
             if (responseCode != 200) {
@@ -107,8 +131,8 @@ public class HttpConnector {
     private String deal(String uri, String method, String request) {
         HttpURLConnection connection = null;
         try {
-            connection = httpClient.connect(url + uri, method);
-            System.out.println(url + uri);
+            connection = httpClient.connect(URL + uri, method);
+            System.out.println(URL + uri);
             System.out.println(method);
             System.out.println(request);
             int responseCode = httpClient.send(connection, request == null ? null : CommonUtil.getBytes(request));
@@ -125,8 +149,8 @@ public class HttpConnector {
     private String deal(String uri, String method, String request, File file, String signature) {
         HttpURLConnection connection = null;
         try {
-            connection = httpClient.connect(url + uri, method);
-            System.out.println(url + uri);
+            connection = httpClient.connect(URL + uri, method);
+            System.out.println(URL + uri);
             System.out.println(method);
             System.out.println(request);
             int responseCode = httpClient.send(connection, request == null ? null : CommonUtil.getBytes(request), file, signature);
