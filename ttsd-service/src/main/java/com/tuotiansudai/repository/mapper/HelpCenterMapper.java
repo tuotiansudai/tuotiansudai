@@ -10,6 +10,9 @@ import java.util.List;
 @Repository
 public interface HelpCenterMapper {
 
-    List<HelpCenterModel> findAllHelpCenterByTitleAndCategory(@Param(value = "title") String title,
-                                            @Param(value = "category") HelpCategory category);
+    List<HelpCenterModel> findAllHelpCenterByTitleOrCategoryOrHot(@Param(value = "title") String title,
+                                                                  @Param(value = "category") HelpCategory category,
+                                                                  @Param(value = "hot") boolean hot);
+
+    List<HelpCenterModel> findAllHelpCenterCategory();
 }

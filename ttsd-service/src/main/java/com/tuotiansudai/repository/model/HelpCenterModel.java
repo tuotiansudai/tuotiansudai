@@ -10,6 +10,7 @@ public class HelpCenterModel implements Serializable{
     private String title;
     private String content;
     private HelpCategory category;
+    private boolean hot;
 
     public long getId() {
         return id;
@@ -41,5 +42,13 @@ public class HelpCenterModel implements Serializable{
 
     public void setCategory(HelpCategory category) {
         this.category = category;
+    }
+
+    public boolean isHot() {
+        return hot;
+    }
+
+    public void setHot(boolean hot) {
+        this.hot = hot;
     }
 }

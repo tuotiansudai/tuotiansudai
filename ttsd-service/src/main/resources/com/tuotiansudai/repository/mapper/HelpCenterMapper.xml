@@ -11,22 +11,26 @@
         <result column="title" property="title"/>
         <result column="content" property="content"/>
         <result column="category" property="category"/>
+        <result column="hot" property="hot"/>
     </resultMap>
 
-    <insert id="create" parameterType="HelpCenterModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `aa`.`help_center` (title, content, category) VALUES (#{title}, #{content}, #{category})
-    </insert>
-
-    <select id="findAllHelpCenterByTitleAndCategory" resultMap="helpCenterResultMap" parameterType="map">
+    <select id="findAllHelpCenterByTitleOrCategoryOrHot" resultMap="helpCenterResultMap" parameterType="map">
         SELECT * FROM `aa`.`help_center`
         <where>
             <if test="category != null ">
-                AND status = 'HOT'
+                AND category = #{category}
             </if>
-            <if test="title != null">
+            <if test="hot != null ">
+                AND hot is true
+            </if>
+            <if test="title != null ">
                 AND title like CONCAT('%', #{title}, '%')
             </if>
         </where>
         order by id
+    </select>
+
+    <select id="findAllHelpCenterCategory" resultMap="helpCenterResultMap">
+        SELECT distinct(category) FROM `aa`.`help_center`
     </select>
 </mapper>
