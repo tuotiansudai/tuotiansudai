@@ -85,7 +85,7 @@ public class LoanCreateServiceImpl implements LoanCreateService {
     private PayWrapperClient payWrapperClient;
 
     @Autowired
-    private AnxinSignService anxinSignService;
+    private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
     @Override
     public LoanTitleModel createTitle(LoanTitleDto loanTitleDto) {
@@ -226,7 +226,7 @@ public class LoanCreateServiceImpl implements LoanCreateService {
             return new BaseDto<>(new BaseDataDto(false, "代理用户不存在"));
         }
 
-        if (!anxinSignService.getAnxinSignProp(loanCreateRequestDto.getLoan().getAgent()).isSkipAuth()) {
+        if (!anxinSignPropertyMapper.findByLoginName(loanCreateRequestDto.getLoan().getAgent()).isSkipAuth()) {
             return new BaseDto<>(new BaseDataDto(false, "代理/借款 用户未开通安心签免短信验证"));
         }
 
