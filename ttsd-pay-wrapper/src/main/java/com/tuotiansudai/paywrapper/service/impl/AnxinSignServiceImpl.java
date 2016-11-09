@@ -20,6 +20,7 @@ import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.UUIDGenerator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -72,10 +73,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    private static final String TEMP_PROJECT_CODE_KEY = "temp_project_code:";
-
-    private static final int TEMP_PROJECT_CODE_EXPIRE_TIME = 1800; // 半小时
-
     private static final String LOAN_CONTRACT_AGENT_SIGN = "agentUserName";
 
     private static final String LOAN_CONTRACT_INVESTOR_SIGN = "investorUserName";
@@ -83,6 +80,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private static final String TRANSFER_LOAN_CONTRACT_AGENT_SIGN = "transferUserName";
 
     private static final String TRANSFER_LOAN_CONTRACT_INVESTOR_SIGN = "transfereeUserName";
+
+    private static final String GENERATE_CONTRACT_SUCCESS = "60000000";
 
     @Value(value = "${anxin.contract.batch.num}")
     private int batchNum;
@@ -164,8 +163,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         AccountModel investAccountModel = accountMapper.findByLoginName(investModel.getLoginName());
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investModel.getLoginName());
         if (investAccountModel != null) {
-            dataModel.put("transferreMobile", userMapper.findByLoginName(investAccountModel.getLoginName()).getMobile());
-            dataModel.put("transfeeerIdentity", investAccountModel.getIdentityNumber());
+            dataModel.put("transfereeMobile", userMapper.findByLoginName(investAccountModel.getLoginName()).getMobile());
+            dataModel.put("transfereeIdentity", investAccountModel.getIdentityNumber());
         }
 
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
@@ -279,10 +278,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate() * 100));
         dataModel.put("recheckTime1", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
         dataModel.put("recheckTime2", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
-//        dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
-//        dataModel.put("endTime2", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
-        dataModel.put("endTime2", "2016-12-11");
-        dataModel.put("endTime2", "2016-12-11");
+        dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
+        dataModel.put("endTime2", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
         dataModel.put("orderId", String.valueOf(investId));
         if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
             dataModel.put("pledge", "房屋");
@@ -320,8 +317,12 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             //查询合同创建结果并更新invest
             List<ContractResponseView> contractResponseViews = anxinSignConnectService.updateContractResponse(businessId,anxinContractType);
 
+            if(CollectionUtils.isEmpty(contractResponseViews)){
+                return new BaseDto(false);
+            }
+
             contractResponseViews.forEach(contractResponseView -> {
-                if (contractResponseView.getRetCode().equals("60000000")) {
+                if (contractResponseView.getRetCode().equals(GENERATE_CONTRACT_SUCCESS)) {
                     if(anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)){
                         investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
                     }else{

@@ -533,7 +533,6 @@ public class LoanServiceImpl implements LoanService {
                     .addJobData(AnxinContractHandleJob.BUSINESS_ID, businessId)
                     .addJobData(AnxinContractHandleJob.ANXIN_CONTRACT_TYPE, AnxinContractType.TRANSFER_CONTRACT)
                     .withIdentity(JobType.ContractResponse.name(), "Loan-" + businessId)
-                    .withIdentity(JobType.ContractResponse.name(), "Loan-" + businessId)
                     .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .submit();

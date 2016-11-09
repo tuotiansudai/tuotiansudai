@@ -4,14 +4,18 @@ import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.Date;
 
 @Component
 public class AnxinContractHandleJob implements Job {
@@ -25,6 +29,9 @@ public class AnxinContractHandleJob implements Job {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private JobManager jobManager;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -47,8 +54,24 @@ public class AnxinContractHandleJob implements Job {
             return;
         }
 
-        if (!dto.getData().getStatus()) {
-            throw new JobExecutionException();
+        if (!dto.isSuccess()) {
+            updateContractResponseHandleJob(businessId,anxinContractType);
+        }
+    }
+
+    private void updateContractResponseHandleJob(long businessId,AnxinContractType anxinContractType) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(AnxinContractHandleJob.HANDLE_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.ContractResponse, AnxinContractHandleJob.class)
+                    .addJobData(AnxinContractHandleJob.BUSINESS_ID, businessId)
+                    .addJobData(AnxinContractHandleJob.ANXIN_CONTRACT_TYPE, anxinContractType)
+                    .withIdentity(JobType.ContractResponse.name(), "Loan-" + businessId)
+                    .replaceExistingJob(true)
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create update contract response  handle job for loan[" + businessId + "] fail", e);
         }
     }
 }

@@ -226,7 +226,7 @@ public class LoanCreateServiceImpl implements LoanCreateService {
             return new BaseDto<>(new BaseDataDto(false, "代理用户不存在"));
         }
 
-        if (anxinSignService.getAnxinSignProp(loanCreateRequestDto.getLoan().getAgent()).isSkipAuth()) {
+        if (!anxinSignService.getAnxinSignProp(loanCreateRequestDto.getLoan().getAgent()).isSkipAuth()) {
             return new BaseDto<>(new BaseDataDto(false, "代理/借款 用户未开通安心签免短信验证"));
         }
 
