@@ -18,18 +18,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
             $('#tipText').addClass('active');
         },
         submitHandler: function (form) {
-            
-            if($isSkipAuth.val()=='true'){
-                applyTip();
-                return;
-            }else{
-                if($('#isAnxinUser').val() == 'true'){
-                    getSkipPhoneTip();
-                }else{
-                    $('#skipCheck').val() == 'true'?getSkipPhoneTip():$agreement.next('span.error').show();;
-                }
-                return false;
-            }
+            applyTip();
         }
     });
 
@@ -48,8 +37,18 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
                         type: 'GET'
                     }).done(function (data) {
                         if (true == data.data.status) {
-                            sendData();
-                            layer.closeAll();
+                            if($isSkipAuth.val()=='true'){
+                                sendData();
+                                layer.closeAll();
+                            }else{
+                                if($('#isAnxinUser').val() == 'true'){
+                                    getSkipPhoneTip();
+                                }else{
+                                    $('#skipCheck').val() == 'true'?getSkipPhoneTip():$agreement.next('span.error').show();;
+                                }
+                                return false;
+                            }
+                            
                         } else {
                             layer.msg(data.message);
                         }

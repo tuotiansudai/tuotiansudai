@@ -14,6 +14,8 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function($, layer) {
                     title:title,
                     area:['800px','520px'],
                     shadeClose: false,
+                    scrollbar: true,
+                    skin:'register-skin',
                     content: content
                 });
             }
