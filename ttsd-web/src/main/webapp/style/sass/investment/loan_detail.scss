@@ -566,6 +566,9 @@ $red: #eb4a3e;
             label{
               float:left;
               width:20px;
+              @media (max-width:700px) {
+                height:70px;
+              }
               .skip-icon{
                 display:inline-block;
                 width:14px;
@@ -584,6 +587,10 @@ $red: #eb4a3e;
               width:314px;
               font-size:12px;
               color:#4d4d4d;
+              @media (max-width:700px) {
+                width:auto;
+                float:none;
+              }
               a{
                 color:#999999;
                 span{

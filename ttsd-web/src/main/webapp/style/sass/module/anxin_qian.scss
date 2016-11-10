@@ -126,6 +126,9 @@
     background:rgba(0,0,0,.5);
     text-align:center;
     border-radius:10px;
+    @media (max-width:700px) {
+      width:140px;
+    }
     .skip-icon{
       margin-right:10px;
     }

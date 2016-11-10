@@ -23,7 +23,7 @@
                 <input type="hidden" id="tipCheck" value="true">
             </label>
             <a class="skip-text">
-                我已阅读并同意<span class="anxin_layer link-agree-free-SMS">《安心签免短信授权服务协议》</span>
+                我已阅读并同意<span class="anxin_layer link-agree-free-SMS">《短信免责申明》</span>
             </a>
         </div>
 </div>

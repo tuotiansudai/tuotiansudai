@@ -871,7 +871,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             title: '安心签代签署授权',
             btn: 0,
             type: 1,
-            area: ['400px', 'auto'],
+            area: $(window).width()>700?['400px', 'auto']:['320px','auto'],
             content: $('#getSkipPhone')
         });
     }

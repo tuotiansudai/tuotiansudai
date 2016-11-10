@@ -69,7 +69,7 @@
                 <dd>答：安心签电子签章的签章流程设计完全符合传统签章的使用习惯，被签文件的打印件与传统签署文件完全一致。同时由于签章与数字证书的绑定，签章过程既保留了传统签章的签章要素，又完全符合数字签名流程。所以被签文件的打印件完全适用于我国传统签章的相关法律法规，同时被签文件的电子文档也适用于我国电子签名法。</dd>
                 <dt class="hack">问题3：投资者如何验证电子印章真伪？</dt>
                 <dd class="hack">想要验证拓天速贷投资合同上拓天速贷电子印章的真伪，其实就是检验电子印章所包含的证书是否有效。从技术上讲，证书包含三部分内容：该用户的信息，公钥，还有CFCA对该证书里信息的确认签名。就像要打开一把用数字加密的锁，所需的钥匙就是CFCA给出的公钥--根证书。在拓天速贷进行投资后，会自动生成电子合同（PDF格式），点击电子签章查看证书信息(推荐使用Adobe Reader阅读器，<a href="http://sw.bos.baidu.com/sw-search-sp/software/58b4bbd8e88d9/AdobeReader_2015.007.20033.exe" target="_blank">点击下载</a> ）
-                    您还可以通过登录CFCA旗下电子合同平台—安心签官网<br/>（<a href="https://www.anxinsign.com" target="_blank"> https://www.anxinsign.com</a>）验证电子印章的真伪</dd>
+                    <br/>您还可以通过登录CFCA旗下电子合同平台—安心签官网（<a href="https://www.anxinsign.com" target="_blank"> https://www.anxinsign.com</a>）验证电子印章的真伪</dd>
             </dl>
        </div>
       </div>

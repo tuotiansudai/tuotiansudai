@@ -44,7 +44,7 @@
         <span class="init-checkbox-style on">
              <input type="checkbox" id="readOk" class="default-checkbox" checked>
          </span>
-        <label for="readOk" class="agreeOpen"><em>我已阅读并同意</em>《安心签免短信授权服务协议》</label>
+        <label for="readOk" class="agreeOpen"><em>我已阅读并同意</em>《短信免责申明》</label>
 
         <div class="button-bar">
             <button class="btn-normal ok fl" type="button">确认</button>
