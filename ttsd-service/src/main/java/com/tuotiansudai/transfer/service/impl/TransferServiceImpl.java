@@ -248,7 +248,7 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setBaseRate(loanModel.getBaseRate() * 100);
         transferApplicationDetailDto.setLeftPeriod(transferApplicationModel.getLeftPeriod());
         transferApplicationDetailDto.setDueDate(investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), loanModel.getPeriods()).getRepayDate());
-        transferApplicationDetailDto.setNextRefundDate(DateTime.now().toDate());
+        transferApplicationDetailDto.setNextRefundDate(investRepayModel.getRepayDate());
         transferApplicationDetailDto.setLoanType(loanModel.getType().getRepayType());
         transferApplicationDetailDto.setDeadLine(transferApplicationModel.getDeadline());
         String beforeDeadLine;
