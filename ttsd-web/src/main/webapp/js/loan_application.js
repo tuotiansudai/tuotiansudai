@@ -22,7 +22,7 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', '
 						layer.open({
 							type: 1,
 							btn: 0,
-							area: ['400px', 'auto'],
+							area: ['auto', 'auto'],
 							title: '温馨提示',
 							content: $('#isUser')
 						});
@@ -108,7 +108,7 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', '
 							layer.open({
 								type: 1,
 								btn: 0,
-								area: ['400px', 'auto'],
+								area: ['auto', 'auto'],
 								title: '温馨提示',
 								content: $('#successTip'),
 								cancel: function (index) {
@@ -152,7 +152,7 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', '
 			layer.open({
 				type: 1,
 				btn: 0,
-				area: ['500px', '510px'],
+				area: ['auto', 'auto'],
 				title: [title, 'padding:0;text-align:center'],
 				content: $('#homeTip'),
 				cancel: function () {
