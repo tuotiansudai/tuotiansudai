@@ -37,7 +37,7 @@ public class AnxinQueryContractJob implements Job {
 
     public final static String ANXIN_CONTRACT_TYPE = "LOAN_ID";
 
-    public final static int HANDLE_DELAY_MINUTES = 10;
+    public final static int HANDLE_DELAY_MINUTES = 3;
 
     public static int tryTimes = 0;
 
