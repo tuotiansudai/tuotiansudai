@@ -18,7 +18,6 @@ import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ExtraRateNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.TransferWithNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
@@ -194,9 +193,9 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         String orderIdStr = callbackRequestModel.getOrderId().split("X")[0];
         long orderId = Long.parseLong(orderIdStr);
         InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(orderId);
-        long amount = investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+        long amount = investExtraRateModel.getActualInterest() - investExtraRateModel.getActualFee();
         if (callbackRequestModel.isSuccess() || amount == 0)
-            investRateService.updateExtraRateData(investExtraRateModel, investExtraRateModel.getExpectedInterest(), investExtraRateModel.getExpectedFee());
+            investRateService.updateExtraRateData(investExtraRateModel, investExtraRateModel.getActualInterest(), investExtraRateModel.getActualFee());
     }
 
     @Override

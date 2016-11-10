@@ -102,7 +102,6 @@ public class JobController {
         couponLoanOutService.sendRedEnvelope(loanId);
     }
 
-
     @ResponseBody
     @RequestMapping(value = "/async_extra_rate_invest_notify", method = RequestMethod.POST)
     public BaseDto<PayDataDto> asyncExtraRateInvestNotify() {
