@@ -135,6 +135,10 @@ define([], function () {
         },
         //自动播放
         autoplay: function() {
+
+            if(this.play) {
+                clearInterval(this.play);
+            }
             this.play = setInterval(function() {
                 this.prev = this.index;
                 this.index++;
@@ -173,13 +177,9 @@ define([], function () {
         },
 
         bindTouchEvn:function() {
-            globalFun.addEventHandler(this.boxul[0],'touchstart',this.touchstart.bind(this),false);
-            globalFun.addEventHandler(this.boxul[0],'touchmove',this.touchmove.bind(this),false);
-            globalFun.addEventHandler(this.boxul[0],'touchend',this.touchend.bind(this),false);
-
-            // this.boxul[0].addEventListener('touchstart', this.touchstart.bind(this), false);
-            // this.boxul[0].addEventListener('touchmove', this.touchmove.bind(this), false);
-            // this.boxul[0].addEventListener('touchend', this.touchend.bind(this), false);
+            this.boxul[0].addEventListener('touchstart', this.touchstart.bind(this), false);
+            this.boxul[0].addEventListener('touchmove', this.touchmove.bind(this), false);
+            this.boxul[0].addEventListener('touchend', this.touchend.bind(this), false);
         },
         touchstart: function(e) {
             if (this.ready_moved) {
