@@ -237,38 +237,34 @@ class taskCenter extends React.Component {
         //数据加载完成后
         if(!this.state.isShowLoading) {
             imagesLoaded(this.refs.mainConWrap).on('done', () => {
-                setTimeout(() => {
-                    let tabHeaderDom=document.getElementById('tabHeaderDom');
-                    let menuHeight=tabHeaderDom.clientHeight*0.5;
-                    let conOffsetTop=this.refs.scrollWrap.offsetTop;
+                let tabHeaderDom=document.getElementById('tabHeaderDom');
+                let menuHeight=tabHeaderDom.clientHeight*0.5;
+                if (!this.myScroll) {
+                    this.refs.mainConWrap.style.height=document.documentElement.clientHeight +'px';
+                    this.myScroll = new IScroll(this.refs.mainConWrap,{
+                        probeType: 3,
+                        mouseWheel: true,
+                        hScrollbar:false,
+                        vScrollbar:true,
+                        momentum:false,
+                        useTransition:false,
+                        bounce:false,
+                        useTransform:true
 
-                    if (!this.myScroll) {
-                        this.refs.mainConWrap.style.height=document.documentElement.clientHeight +'px';
-                        this.myScroll = new IScroll(this.refs.mainConWrap,{
-                            probeType: 3,
-                            mouseWheel: true,
-                            hScrollbar:false,
-                            vScrollbar:true,
-                            momentum:false,
-                            useTransition:false,
-                            bounce:false,
-                            useTransform:true
+                    });
+                    this.myScroll.on('scroll',function() {
+                        let curY=Math.abs(this.myScroll.y)+menuHeight;
+                        this.fixTopMenu(curY);
+                    }.bind(this));
 
-                        });
-                        this.myScroll.on('scroll',function() {
-                            let curY=Math.abs(this.myScroll.y)+menuHeight;
-                            this.fixTopMenu(curY);
-                        }.bind(this));
-
+                }
+                else {
+                    this.myScroll.refresh();
+                    if(!this.myScroll.hasVerticalScroll) {
+                        //垂直方向没有滚动条
+                        tabHeaderDom.removeAttribute('style');
                     }
-                    else {
-                        this.myScroll.refresh();
-                        if(!this.myScroll.hasVerticalScroll) {
-                            //垂直方向没有滚动条
-                            tabHeaderDom.removeAttribute('style');
-                        }
-                    }
-                },5);
+                }
             });
 
         }
