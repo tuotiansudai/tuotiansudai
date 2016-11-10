@@ -88,6 +88,7 @@ mobile-api:
   environment:
     - "TZ=Asia/Shanghai"
     - "JAVA_OPTS=-Xmx1024m"
+    - "spring.profiles.active=QA"
   ports:
     - "20006:8080"
   volumes:
