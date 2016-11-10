@@ -116,6 +116,7 @@ public class LoanListController {
             }
         }
         String batchNos = redisWrapperClient.hget("",String.valueOf(businessId));
-        return anxinSignService.queryContract(businessId, Lists.newArrayList(batchNos.split(",")),anxinContractType);
+        anxinSignService.queryContract(businessId, Lists.newArrayList(batchNos.split(",")),anxinContractType);
+        return new BaseDto<>(true);
     }
 }
