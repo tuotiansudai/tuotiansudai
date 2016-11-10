@@ -256,14 +256,13 @@
         user.city as city,
         user.register_time as register_time,
         user.status as status,
-        account.user_name as user_name,
-        account.identity_number as identity_number,
+        user.user_name as user_name,
+        user.identity_number as identity_number,
         (select mobile from user referrer where referrer.login_name = user.referrer) AS referrer_mobile
         FROM user
-        LEFT JOIN account ON user.login_name = account.login_name
         <where>
             <if test="identityNumber != null and identityNumber != '' ">
-                AND account.`identity_number` = #{identityNumber}
+                AND user.`identity_number` = #{identityNumber}
             </if>
             <if test="loginName != null and loginName != '' ">
                 AND user.`login_name` = #{loginName}
@@ -288,7 +287,7 @@
         IF(exists (select 1 from user_role where user_role.login_name = user.login_name and user_role.role = 'STAFF'), TRUE, FALSE) as is_staff,
         user.register_time as register_time,
         user.status as status,
-        account.user_name as user_name,
+        user.user_name as user_name,
         account.balance as balance,
         (select max(`user_bill`.`created_time`) from `user_bill` where `user_bill`.`login_name` = `user`.`login_name`) as last_bill_time
         FROM `user`
