@@ -1,5 +1,9 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.cfca.dto.AnxinContractType;
+import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanListDto;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.LoanService;
@@ -24,6 +28,9 @@ public class LoanListController {
 
     @Autowired
     private LoanService loanService;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
     public ModelAndView ConsoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
@@ -56,5 +63,38 @@ public class LoanListController {
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
         return modelAndView;
+    }
+
+
+    @RequestMapping(value = "/contract", method = RequestMethod.GET)
+    public ModelAndView contract(){
+        ModelAndView modelAndView = new ModelAndView("/contract-list");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/generate-contract", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> generateContract(@RequestParam(value = "loanId", required = false) Long loanId,
+                                 @RequestParam(value = "anxinContractType", required = false) AnxinContractType anxinContractType){
+
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto = new BaseDataDto();
+        baseDto.setData(baseDataDto);
+        baseDataDto.setMessage("");
+        baseDataDto.setStatus(true);
+        baseDto.setSuccess(true);
+        return baseDto;
+    }
+
+    @RequestMapping(value = "/query-contract", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> queryContract(@RequestParam(value = "loanId", required = false) Long loanId,
+                              @RequestParam(value = "anxinContractType", required = false) AnxinContractType anxinContractType){
+
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto = new BaseDataDto();
+        baseDto.setData(baseDataDto);
+        baseDataDto.setMessage("");
+        baseDataDto.setStatus(true);
+        baseDto.setSuccess(true);
+        return baseDto;
     }
 }
