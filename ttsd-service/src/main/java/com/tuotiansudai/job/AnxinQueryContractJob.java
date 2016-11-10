@@ -37,9 +37,9 @@ public class AnxinQueryContractJob implements Job {
 
     public final static String ANXIN_CONTRACT_TYPE = "LOAN_ID";
 
-    public final static int HANDLE_DELAY_MINUTES = 10;
+    public final static int HANDLE_DELAY_MINUTES = 3;
 
-    public static int tryTimes = 0;
+    public final static String ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY = "anxinContractQueryTryTimes:";
 
     @Autowired
     private AnxinSignService anxinSignService;
@@ -62,6 +62,7 @@ public class AnxinQueryContractJob implements Job {
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
 
+    private final static int SEVEN_DAYS = 60 * 60 * 24 * 7; // 7天
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -75,8 +76,13 @@ public class AnxinQueryContractJob implements Job {
 
             AnxinContractType anxinContractType = (AnxinContractType) context.getJobDetail().getJobDataMap().get(ANXIN_CONTRACT_TYPE);
 
-            if (++tryTimes > 3) {
-                // 尝试超过3次（第4次了），发短信报警，不再尝试了
+
+            if (redisWrapperClient.incrEx(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId, SEVEN_DAYS) > 3) {
+
+                // 尝试超过3次（第4次了），清空计数器，不再尝试了
+                redisWrapperClient.del(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId);
+
+                // 发短信报警
                 smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));
 
                 if (anxinContractType == AnxinContractType.LOAN_CONTRACT) {
@@ -93,7 +99,7 @@ public class AnxinQueryContractJob implements Job {
 
             if (waitingBatchNo != null && waitingBatchNo.size() > 0) {
                 logger.error(MessageFormat.format("some batch is still in waiting. businessId:{0}, anxin ContractType:{1}, batchNo list(in waiting):{2}",
-                        businessId, anxinContractType.name(), String.join(",", waitingBatchNo)));
+                        String.valueOf(businessId), anxinContractType.name(), String.join(",", waitingBatchNo)));
                 this.createAnxinQueryContractJob(waitingBatchNo, businessId, anxinContractType);
             } else {
                 // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功

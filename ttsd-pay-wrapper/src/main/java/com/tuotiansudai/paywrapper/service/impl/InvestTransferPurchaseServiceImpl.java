@@ -488,13 +488,12 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is over invest", String.valueOf(investId)));
                 this.overInvestPaybackProcess(investId);
-
-                logger.debug("债权转让：生成合同，标的ID:" + transferApplicationModel.getId());
-                anxinSignService.createTransferContracts(transferApplicationModel.getId());
-
             } else {
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is success", String.valueOf(investId)));
                 ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
+
+                logger.debug("债权转让：生成合同，标的ID:" + transferApplicationModel.getId());
+                anxinSignService.createTransferContracts(transferApplicationModel.getId());
             }
         } else {
             // 失败的话：更新 invest 状态为投资失败
@@ -533,7 +532,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             }
         } catch (Exception e) {
             // 所有其他异常，包括数据库链接，网络异常，记录日志，发短信通知管理员，抛出异常，事务回滚。
-            logger.error(e.getLocalizedMessage() ,e);
+            logger.error(e.getLocalizedMessage(), e);
         }
 
         // 联动优势返回返款失败，但是标记此条请求已经处理完成，记录日志，在异步notify中进行投资成功处理
