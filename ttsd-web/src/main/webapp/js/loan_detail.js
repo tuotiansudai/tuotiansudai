@@ -615,7 +615,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                                     $investForm.submit();
                                     return;
                                 }else{
-                                    showInputErrorTips(data.message);
                                     getSkipPhoneTip();
                                     return false;
                                 }
