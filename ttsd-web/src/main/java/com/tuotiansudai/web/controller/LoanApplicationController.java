@@ -40,10 +40,7 @@ public class LoanApplicationController {
         if (!StringUtils.isEmpty(mobile)) {
             modelAndView.addObject("mobile", mobile);
             UserModel userModel = userService.findByMobile(mobile);
-            AccountModel accountModel = accountService.findByLoginName(userModel.getLoginName());
-            if (null != accountModel) {
-                modelAndView.addObject("userName", accountModel.getUserName());
-            }
+            modelAndView.addObject("userName", userModel.getUserName());
         }
 
         modelAndView.addObject("regions", LoanApplicationRegion.values());

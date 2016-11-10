@@ -43,7 +43,7 @@ public class LoanApplicationService {
         LoanApplicationModel loanApplicationModel = new LoanApplicationModel(loanApplicationDto);
         UserModel userModel = userMapper.findByLoginName(loanApplicationDto.getLoginName());
         loanApplicationModel.setMobile(userModel.getMobile());
-        loanApplicationModel.setUserName(accountModel.getUserName());
+        loanApplicationModel.setUserName(userModel.getUserName());
         loanApplicationMapper.create(loanApplicationModel);
         return new BaseDto<>(new BaseDataDto(true));
     }

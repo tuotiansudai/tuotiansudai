@@ -47,7 +47,7 @@ public class MobileAppAgreementServiceTest extends ServiceTestBase{
         dataDto.setStatus(true);
         formDto.setData(dataDto);
 
-        AccountModel accountModel = new AccountModel("testuser", "testuser", "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel("testuser", "payUserId", "payAccountId", new Date());
 
         when(payWrapperClient.agreement(any(AgreementDto.class))).thenReturn(formDto);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);

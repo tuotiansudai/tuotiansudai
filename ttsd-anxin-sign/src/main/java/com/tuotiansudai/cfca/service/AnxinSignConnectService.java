@@ -4,6 +4,7 @@ import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.response.tx3.*;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
+import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 public interface AnxinSignConnectService {
 
-    Tx3ResVO createAccount3001(AccountModel accountModel, UserModel userModel) throws PKIException;
+    Tx3ResVO createAccount3001(UserModel userModel) throws PKIException;
 
     Tx3ResVO sendCaptcha3101(String userId, String projectCode, boolean isVoice) throws PKIException;
 
@@ -24,6 +25,6 @@ public interface AnxinSignConnectService {
 
     byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException;
 
-    List updateContractResponse(long loanId,AnxinContractType anxinContractType) throws PKIException;
+    List<ContractResponseView> updateContractResponse(long loanId, AnxinContractType anxinContractType) throws PKIException;
 
 }

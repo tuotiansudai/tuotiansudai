@@ -311,7 +311,7 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
                         else{
                             // 关闭成功
                             $safetyList.find('.sms-open').hide();
-                            $safetyList.find('.sms-close').hide();
+                            $safetyList.find('.sms-close').show();
                         }
                         layer.msg(tipMsg);
                     }

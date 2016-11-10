@@ -11,10 +11,6 @@ public class AccountModel implements Serializable{
 
     private String loginName;
 
-    private String userName;
-
-    private String identityNumber;
-
     private String payUserId;
 
     private String payAccountId;
@@ -38,10 +34,8 @@ public class AccountModel implements Serializable{
     public AccountModel() {
     }
 
-    public AccountModel(String loginName, String userName, String identityNumber, String payUserId, String payAccountId, Date registerTime) {
+    public AccountModel(String loginName, String payUserId, String payAccountId, Date registerTime) {
         this.loginName = loginName;
-        this.userName = userName;
-        this.identityNumber = identityNumber;
         this.payUserId = payUserId;
         this.payAccountId = payAccountId;
         this.registerTime = registerTime;
@@ -53,14 +47,6 @@ public class AccountModel implements Serializable{
 
     public String getLoginName() {
         return loginName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getIdentityNumber() {
-        return identityNumber;
     }
 
     public String getPayUserId() {

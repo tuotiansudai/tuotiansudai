@@ -6,6 +6,7 @@ import com.tuotiansudai.coupon.dto.CouponAlertDto;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -54,7 +55,7 @@ public class ActivitiesController {
 
     @RequestMapping(value = "/isLogin", method = RequestMethod.GET)
     public ModelAndView isLogin() {
-        if(!StringUtils.isEmpty(LoginUserInfo.getLoginName())) {
+        if (!StringUtils.isEmpty(LoginUserInfo.getLoginName())) {
             return null;
         } else {
             return new ModelAndView("/csrf");
@@ -64,6 +65,7 @@ public class ActivitiesController {
     @ResponseBody
     @RequestMapping(value = "/get-realRealName", method = RequestMethod.GET)
     public String markRemind(@RequestParam(value = "mobile") String mobile) {
-        return accountService.getRealNameByMobile(mobile);
+        UserModel userModel = userService.findByMobile(mobile);
+        return userModel != null ? userModel.getLoginName() : mobile;
     }
 }

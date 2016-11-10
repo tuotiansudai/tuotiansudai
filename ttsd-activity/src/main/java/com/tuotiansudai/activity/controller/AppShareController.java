@@ -27,22 +27,16 @@ public class AppShareController {
 
     @Autowired
     private UserMapper userMapper;
+
     @Autowired
     private AccountMapper accountMapper;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private PrepareUserMapper prepareUserMapper;
 
-
-    private String getReferrerInfo(UserModel referrer) {
-        AccountModel referrerAccount = accountMapper.findByLoginName(referrer.getLoginName());
-        if (null != referrerAccount && !StringUtils.isEmpty(referrerAccount.getUserName())) {
-            return  StringUtils.leftPad(StringUtils.right(referrerAccount.getUserName(),1),referrerAccount.getUserName().length(),"*") ;
-        } else {
-            return referrer.getMobile().substring(0, 3) + "****" + referrer.getMobile().substring(7);
-        }
-    }
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getAppSharePage(@RequestParam(value = "referrerMobile") String referrerMobile, HttpServletRequest httpServletRequest) {
@@ -111,5 +105,13 @@ public class AppShareController {
         }
 
         return "/activities/share-app-android";
+    }
+
+    private String getReferrerInfo(UserModel referrer) {
+        if (!StringUtils.isEmpty(referrer.getUserName())) {
+            return  StringUtils.leftPad(StringUtils.right(referrer.getUserName(),1),referrer.getUserName().length(),"*") ;
+        } else {
+            return referrer.getMobile().substring(0, 3) + "****" + referrer.getMobile().substring(7);
+        }
     }
 }
