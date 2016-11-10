@@ -13,8 +13,9 @@ sourceSets {
 }
 
 dependencies {
-    compile project(":ttsd-user-service"),
-            project(':ttsd-util')
+    compile project(':ttsd-util')
+
+    providedCompile "org.springframework:spring-context:4.3.1.RELEASE"
 
 }
 

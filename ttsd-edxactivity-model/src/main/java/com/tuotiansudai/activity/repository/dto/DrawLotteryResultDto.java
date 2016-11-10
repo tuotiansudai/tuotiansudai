@@ -5,14 +5,14 @@ import com.tuotiansudai.dto.BaseDataDto;
 
 public class DrawLotteryResultDto extends BaseDataDto {
 
-    public DrawLotteryResultDto(int returnCode,String prize,String prizeType,String prizeValue){
+    public DrawLotteryResultDto(int returnCode, String prize, String prizeType, String prizeValue) {
         this.returnCode = returnCode;
         this.prize = prize;
         this.prizeType = prizeType;
         this.prizeValue = prizeValue;
     }
 
-    public DrawLotteryResultDto(int returnCode,String prize,String prizeType,String prizeValue,String myPoint){
+    public DrawLotteryResultDto(int returnCode, String prize, String prizeType, String prizeValue, String myPoint) {
         this.returnCode = returnCode;
         this.prize = prize;
         this.prizeType = prizeType;
@@ -20,7 +20,7 @@ public class DrawLotteryResultDto extends BaseDataDto {
         this.myPoint = myPoint;
     }
 
-    public DrawLotteryResultDto(int returnCode){
+    public DrawLotteryResultDto(int returnCode) {
         this.returnCode = returnCode;
     }
 
@@ -72,5 +72,9 @@ public class DrawLotteryResultDto extends BaseDataDto {
 
     public void setMyPoint(String myPoint) {
         this.myPoint = myPoint;
+    }
+
+    public boolean isDrawLotterySuccess() {
+        return 0 == this.returnCode;
     }
 }

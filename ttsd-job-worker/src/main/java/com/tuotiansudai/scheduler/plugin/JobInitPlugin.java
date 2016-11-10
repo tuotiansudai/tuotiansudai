@@ -1,6 +1,5 @@
 package com.tuotiansudai.scheduler.plugin;
 
-import com.tuotiansudai.activity.job.CalculateTravelLuxuryPrizeJob;
 import com.tuotiansudai.job.*;
 import com.tuotiansudai.jpush.job.AutoJPushAlertBirthDayJob;
 import com.tuotiansudai.jpush.job.AutoJPushAlertBirthMonthJob;
@@ -46,10 +45,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
         if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
             createCalculateDefaultInterest();
-        }
-        if (JobType.CalculateTravelLuxuryPrize.name().equalsIgnoreCase(schedulerName)) {
-            //运营生成中奖纪录,暂时停掉该job
-            //calculateTravelLuxuryPrize();
         }
         if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
             createRefreshAreaByMobile();
@@ -138,16 +133,6 @@ public class JobInitPlugin implements SchedulerPlugin {
             jobManager.newJob(JobType.CalculateDefaultInterest, CalculateDefaultInterestJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name()).submit();
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void calculateTravelLuxuryPrize() {
-        try {
-            jobManager.newJob(JobType.CalculateTravelLuxuryPrize, CalculateTravelLuxuryPrizeJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 5 0 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.CalculateTravelLuxuryPrize.name(), JobType.CalculateTravelLuxuryPrize.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }

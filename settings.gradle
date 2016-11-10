@@ -5,10 +5,8 @@ include "ttsd-service",
         "ttsd-sms-wrapper",
         "ttsd-job-worker",
         "ttsd-mobile-api",
-        "ttsd-point-service",
         "ttsd-jpush",
         'ttsd-membership',
-        "ttsd-activity",
         "ttsd-message",
         'ttsd-user-service',
         'ttsd-web-common-config',
@@ -21,10 +19,8 @@ include "ttsd-service",
         'ttsd-dependency',
         'ttsd-spring-extension',
         'ttsd-activity-console',
-        'ttsd-activity-repository',
-        'ttsd-util',
-        'ttsd-point-web'
-include 'ttsd-edxactivity-model'
-include 'ttsd-edxpoint-model'
-include 'ttsd-edxpoint-repository'
+        'ttsd-util'
+
+include 'ttsd-edxactivity-model', 'ttsd-edxactivity-repository', 'ttsd-activity-service', 'ttsd-activity-web'
+include 'ttsd-edxpoint-model', 'ttsd-edxpoint-repository', "ttsd-point-service", 'ttsd-point-web'
 

@@ -1,0 +1,18 @@
+apply plugin: 'war'
+apply from: 'db_migration.gradle'
+
+dependencies {
+    compile project(':ttsd-web-common-config'),
+            project(':ttsd-point-service'),
+            project(':ttsd-activity-service'),
+            fileTree(dir: 'libs', include: '**/*.jar'),
+            'org.apache.poi:poi:3.13'
+
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0',
+            'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
+}
+
+war {
+    archiveName "ROOT.war"
+    destinationDir = file("war")
+}
