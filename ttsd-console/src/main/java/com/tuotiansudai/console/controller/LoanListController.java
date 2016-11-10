@@ -1,12 +1,18 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanListDto;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +37,16 @@ public class LoanListController {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private AnxinSignService anxinSignService;
+
+    @Autowired
+    private InvestService investService;
+
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
 
     @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
     public ModelAndView ConsoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
@@ -73,28 +89,33 @@ public class LoanListController {
     }
 
     @RequestMapping(value = "/generate-contract", method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> generateContract(@RequestParam(value = "loanId", required = false) Long loanId,
+    public BaseDto<BaseDataDto> generateContract(@RequestParam(value = "businessId", required = false) Long businessId,
                                  @RequestParam(value = "anxinContractType", required = false) AnxinContractType anxinContractType){
 
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto baseDataDto = new BaseDataDto();
-        baseDto.setData(baseDataDto);
-        baseDataDto.setMessage("");
-        baseDataDto.setStatus(true);
-        baseDto.setSuccess(true);
-        return baseDto;
+        if(anxinContractType.equals(AnxinContractType.LOAN_CONTRACT) && CollectionUtils.isNotEmpty(investService.findSuccessInvestsAndContractNoIsNullByLoanId(businessId))){
+            return anxinSignService.createLoanContracts(businessId);
+        }else{
+            TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
+            if(transferApplicationModel != null && transferApplicationModel.getContractNo() == 0l){
+                return anxinSignService.createTransferContracts(businessId);
+            }
+        }
+        return new BaseDto(false);
     }
 
     @RequestMapping(value = "/query-contract", method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> queryContract(@RequestParam(value = "loanId", required = false) Long loanId,
+    public BaseDto<BaseDataDto> queryContract(@RequestParam(value = "businessId", required = false) Long businessId,
                               @RequestParam(value = "anxinContractType", required = false) AnxinContractType anxinContractType){
 
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto baseDataDto = new BaseDataDto();
-        baseDto.setData(baseDataDto);
-        baseDataDto.setMessage("");
-        baseDataDto.setStatus(true);
-        baseDto.setSuccess(true);
-        return baseDto;
+        if(anxinContractType.equals(AnxinContractType.LOAN_CONTRACT) && CollectionUtils.isEmpty(investService.findSuccessInvestsAndContractNoIsNullByLoanId(businessId))){
+            return new BaseDto<>(false);
+        }else{
+            TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
+            if(transferApplicationModel != null && transferApplicationModel.getContractNo() != 0l){
+                return new BaseDto<>(false);
+            }
+        }
+        String batchNos = redisWrapperClient.hget("",String.valueOf(businessId));
+        return anxinSignService.queryContract(businessId, Lists.newArrayList(batchNos.split(",")),anxinContractType);
     }
 }

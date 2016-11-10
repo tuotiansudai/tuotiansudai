@@ -919,4 +919,11 @@
         where id = #{investId}
     </update>
 
+    <select id="findSuccessInvestsAndContractNoIsNullByLoanId" parameterType="long" resultMap="investResultMap">
+        select
+        <include refid="columns"></include>
+        from invest
+        where loan_id = #{loanId} and status = 'SUCCESS' and contract_no is null
+    </select>
+
 </mapper>

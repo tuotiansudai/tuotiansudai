@@ -562,4 +562,10 @@ public class InvestServiceImpl implements InvestService {
         preference = originFee - membershipFee + originCouponFee - membershipCouponFee + originExtraLoanRateExpectedInterest - membershipExtraLoanRateExpectedInterest;
         return preference;
     }
+
+    @Autowired
+    public List<InvestModel> findSuccessInvestsAndContractNoIsNullByLoanId(long loanId){
+        return investMapper.findSuccessInvestsAndContractNoIsNullByLoanId(loanId);
+    }
+
 }
