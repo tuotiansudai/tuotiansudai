@@ -437,9 +437,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         if (null != loanModel) {
             dataModel.put("userName", loanerDetailsModel.getUserName());
             dataModel.put("identity", loanerDetailsModel.getIdentityNumber());
-            dataModel.put("amount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-            dataModel.put("totalRate", String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100));
-            dataModel.put("periods", String.valueOf(loanModel.getPeriods() * 30));
+            dataModel.put("amount", AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
+            dataModel.put("totalRate", String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
+            dataModel.put("periods", String.valueOf(loanModel.getPeriods() * 30) + "天");
         }
 
         if (transferApplicationModel.getPeriod() != 1) {
@@ -456,7 +456,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanModel.getPeriods());
         dataModel.put("transferEndTime", simpleDateFormat.format(investRepayModel.getRepayDate()));
 
-        dataModel.put("investAmount", AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
+        dataModel.put("investAmount", AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) + "元");
         dataModel.put("transferTime", simpleDateFormat.format(transferApplicationModel.getTransferTime()));
         dataModel.put("leftPeriod", String.valueOf(transferApplicationModel.getLeftPeriod()));
         dataModel.put("orderId", String.valueOf(transferApplicationModel.getId()));
@@ -542,9 +542,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("loanerIdentityNumber", loanerDetailsModel.getIdentityNumber());
         dataModel.put("loanAmount1", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
         dataModel.put("loanAmount2", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-        dataModel.put("periods1", String.valueOf(loanModel.getPeriods() * 30));
-        dataModel.put("periods2", String.valueOf(loanModel.getPeriods() * 30));
-        dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate() * 100));
+        dataModel.put("periods1", String.valueOf(loanModel.getPeriods() * 30)+"天");
+        dataModel.put("periods2", String.valueOf(loanModel.getPeriods()) + "期");
+        dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate() * 100)+"%");
         dataModel.put("recheckTime1", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
         dataModel.put("recheckTime2", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
         dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
