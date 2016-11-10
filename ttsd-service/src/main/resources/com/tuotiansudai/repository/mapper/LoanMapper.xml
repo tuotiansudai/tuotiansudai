@@ -348,7 +348,7 @@
             <if test="productType != null">
                 product_type = #{productType},
             </if>
-            <if test="activityRate !=null">
+            <if test="activityRate !=null and activityRate != ''">
                 activity_rate = #{activityRate},
             </if>
             <if test="baseRate != null and baseRate != ''">
