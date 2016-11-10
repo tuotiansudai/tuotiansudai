@@ -1,7 +1,6 @@
 package com.tuotiansudai.cfca.mapper;
 
 
-import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.cfca.model.AnxinQueryContractRequestModel;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -23,7 +22,6 @@ public class AnxinQueryContractRequestMapperTest {
     public void shouldCreateIsOk(){
         AnxinQueryContractRequestModel anxinQueryContractRequestModel = new AnxinQueryContractRequestModel();
         anxinQueryContractRequestModel.setBatchNo("t");
-        anxinQueryContractRequestModel.setContractType(AnxinContractType.LOAN_CONTRACT);
         anxinQueryContractRequestModel.setCreatedTime(DateTime.now().toDate());
         anxinQueryContractRequestModel.setJsonDate("123");
         anxinQueryContractRequestModel.setTxTime("123");

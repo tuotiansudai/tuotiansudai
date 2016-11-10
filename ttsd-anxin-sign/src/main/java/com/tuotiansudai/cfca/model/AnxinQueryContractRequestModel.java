@@ -8,7 +8,6 @@ public class AnxinQueryContractRequestModel {
 
     private long id;
     private String batchNo;
-    private AnxinContractType contractType;
     private String txTime;
     private String jsonDate;
     private Date createdTime;
@@ -16,9 +15,8 @@ public class AnxinQueryContractRequestModel {
     public AnxinQueryContractRequestModel() {
     }
 
-    public AnxinQueryContractRequestModel(String batchNo, AnxinContractType contractType, String txTime, String jsonDate, Date createdTime) {
+    public AnxinQueryContractRequestModel(String batchNo, String txTime, String jsonDate, Date createdTime) {
         this.batchNo = batchNo;
-        this.contractType = contractType;
         this.txTime = txTime;
         this.jsonDate = jsonDate;
         this.createdTime = createdTime;
@@ -38,14 +36,6 @@ public class AnxinQueryContractRequestModel {
 
     public void setBatchNo(String batchNo) {
         this.batchNo = batchNo;
-    }
-
-    public AnxinContractType getContractType() {
-        return contractType;
-    }
-
-    public void setContractType(AnxinContractType contractType) {
-        this.contractType = contractType;
     }
 
     public String getTxTime() {

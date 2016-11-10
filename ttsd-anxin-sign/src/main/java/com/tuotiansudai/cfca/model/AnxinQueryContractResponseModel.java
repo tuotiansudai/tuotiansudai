@@ -8,12 +8,9 @@ import java.util.Date;
 public class AnxinQueryContractResponseModel {
 
     private long id;
-    private long requestId;
     private String batchNo;
     private String contractNo;
-    private AnxinContractType contractType;
     private String txTime;
-    private String isSign;
     private String retCode;
     private String retMessage;
     private String jsonData;
@@ -22,13 +19,10 @@ public class AnxinQueryContractResponseModel {
     public AnxinQueryContractResponseModel() {
     }
 
-    public AnxinQueryContractResponseModel(long requestId, String batchNo, String contractNo, AnxinContractType contractType, String txTime, String isSign, String retCode, String retMessage, String jsonDate, Date createdTime) {
-        this.requestId = requestId;
+    public AnxinQueryContractResponseModel(String batchNo, String contractNo, String txTime, String retCode, String retMessage, String jsonDate, Date createdTime) {
         this.batchNo = batchNo;
         this.contractNo = contractNo;
-        this.contractType = contractType;
         this.txTime = txTime;
-        this.isSign = isSign;
         this.retCode = retCode;
         this.retMessage = retMessage;
         this.jsonData = jsonDate;
@@ -42,14 +36,6 @@ public class AnxinQueryContractResponseModel {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(long requestId) {
-        this.requestId = requestId;
     }
 
     public String getBatchNo() {
@@ -68,28 +54,12 @@ public class AnxinQueryContractResponseModel {
         this.contractNo = contractNo;
     }
 
-    public AnxinContractType getContractType() {
-        return contractType;
-    }
-
-    public void setContractType(AnxinContractType contractType) {
-        this.contractType = contractType;
-    }
-
     public String getTxTime() {
         return txTime;
     }
 
     public void setTxTime(String txTime) {
         this.txTime = txTime;
-    }
-
-    public String getIsSign() {
-        return isSign;
-    }
-
-    public void setIsSign(String isSign) {
-        this.isSign = isSign;
     }
 
     public String getRetCode() {

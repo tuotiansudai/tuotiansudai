@@ -17,8 +17,12 @@ import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.mapper.AnxinContractRequestMapper;
 import com.tuotiansudai.cfca.mapper.AnxinContractResponseMapper;
+import com.tuotiansudai.cfca.mapper.AnxinQueryContractRequestMapper;
+import com.tuotiansudai.cfca.mapper.AnxinQueryContractResponseMapper;
 import com.tuotiansudai.cfca.model.AnxinContractRequestModel;
 import com.tuotiansudai.cfca.model.AnxinContractResponseModel;
+import com.tuotiansudai.cfca.model.AnxinQueryContractRequestModel;
+import com.tuotiansudai.cfca.model.AnxinQueryContractResponseModel;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.service.RequestResponseService;
 import com.tuotiansudai.cfca.util.SecurityUtil;
@@ -49,6 +53,12 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
     @Autowired
     private AnxinContractResponseMapper anxinContractResponseMapper;
+
+    @Autowired
+    private AnxinQueryContractRequestMapper anxinQueryContractRequestMapper;
+
+    @Autowired
+    private AnxinQueryContractResponseMapper anxinQueryContractResponseMapper;
 
     @Override
     public Tx3ResVO createAccount3001(UserModel userModel) throws PKIException {
@@ -215,10 +225,9 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                         Long.parseLong(createContractVO.getInvestmentInfo().get("orderId")),
                         tx3202ReqVO.getHead().getTxTime());
 
-
-//                anxinContractResponseMapper.create(new AnxinContractResponseModel(businessId,
-//                        tx3202ResVO.getBatchNo(), createContractVO.getContractNo(), tx3202ResVO.getHead().getTxTime(), tx3202ResVO.getHead().getLocale(),
-//                        DateTime.now().toDate()));
+                anxinContractResponseMapper.create(new AnxinContractResponseModel(businessId,
+                        tx3202ResVO.getBatchNo(), createContractVO.getContractNo(), tx3202ResVO.getHead().getTxTime(), tx3202ResVO.getHead().getLocale(),
+                        DateTime.now().toDate(),createContractVO.getInvestmentInfo().get("code"),createContractVO.getInvestmentInfo().get("message")));
             }
         }
         logger.debug(MessageFormat.format("[安心签] loanId:{0},batchNo:{1} created contract response date:{2}", businessId, batchNo, res));
@@ -239,6 +248,8 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         String req = jsonObjectMapper.writeValueAsString(tx3211ReqVO);
         logger.debug(MessageFormat.format("[安心签] find contract response , batchNo:{0}", batchNo));
 
+        anxinQueryContractRequestMapper.create(new AnxinQueryContractRequestModel(batchNo, tx3211ReqVO.getHead().getTxTime(), req, DateTime.now().toDate()));
+
         String txCode = "3211";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
@@ -246,6 +257,14 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         logger.debug("[安心签] Query contract response:" + res);
 
         Tx3202ResVO tx3202ResVO = (Tx3202ResVO) readResponse(res, Tx3202ResVO.class);
+
+        if(tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null){
+            for(CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()){
+                anxinQueryContractResponseMapper.create(new AnxinQueryContractResponseModel(batchNo,createContractVO.getContractNo(),tx3202ResVO.getHead().getTxTime(),createContractVO.getCode(),createContractVO.getMessage(),res,DateTime.now().toDate()));
+            }
+        }else{
+            anxinQueryContractResponseMapper.create(new AnxinQueryContractResponseModel(batchNo,"","",tx3202ResVO.getHead().getRetCode(),tx3202ResVO.getHead().getRetMessage(),res,DateTime.now().toDate()));
+        }
         return tx3202ResVO;
     }
 
