@@ -10,6 +10,9 @@ import com.tuotiansudai.paywrapper.service.impl.AnxinSignServiceImpl;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -31,6 +34,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -64,6 +69,9 @@ public class AnxinSignServiceTest {
 
     @Mock
     private TransferApplicationMapper transferApplicationMapper;
+
+    @Mock
+    private TransferRuleMapper transferRuleMapper;
 
     @Before
     public void init() {
@@ -131,7 +139,42 @@ public class AnxinSignServiceTest {
 
     @Test
     public void shouldGenerateTransferContractIsOk(){
-        when(transferApplicationMapper.findById(anyLong())).thenReturn()
+        UserModel agent = getFakeUserModel("agentTransferLoginName");
+        UserModel investor = getFakeUserModel("investorLoginName");
+        TransferApplicationModel transferApplicationModel = getTransferApplication(agent.getLoginName());
+        AnxinSignPropertyModel agentAnxin = getAnxinSignPropertyModel(agent.getLoginName());
+        LoanModel loanModel = getFakeLoan(agent.getLoginName(), agent.getLoginName());
+        InvestModel investModel = getFakeInvestModel(loanModel.getId(), investor.getLoginName());
+        InvestRepayModel investRepayModel = getInvestRepayModel();
+
+        when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel);
+        when(userMapper.findByLoginName(anyString())).thenReturn(agent);
+        when(anxinSignPropertyMapper.findByLoginName(anyString())).thenReturn(agentAnxin);
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(investMapper.findById(anyLong())).thenReturn(investModel);
+        when(loanerDetailsMapper.getByLoanId(anyLong())).thenReturn(getLoanerDetailsModel());
+        when(investRepayMapper.findByInvestIdAndPeriod(anyLong(), anyInt())).thenReturn(investRepayModel);
+//        when(transferRuleMapper.find()).thenReturn();
+
+    }
+
+    private TransferRuleModel getTransferRuleModel(){
+        TransferRuleModel transferRuleModel = new TransferRuleModel();
+//        transferRuleModel.setLevelThreeFee();
+        return transferRuleModel;
+    }
+
+    private TransferApplicationModel getTransferApplication(String loginName){
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setLoginName(loginName);
+        transferApplicationModel.setName("name");
+        transferApplicationModel.setTransferAmount(1000l);
+        transferApplicationModel.setInvestAmount(1200l);
+        transferApplicationModel.setTransferTime(new DateTime("2016-01-02").toDate());
+        transferApplicationModel.setStatus(TransferStatus.TRANSFERRING);
+        transferApplicationModel.setDeadline(new Date());
+        transferApplicationModel.setApplicationTime(new Date());
+        return transferApplicationModel;
     }
 
 
