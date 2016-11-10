@@ -78,6 +78,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final String TRANSFER_LOAN_CONTRACT_INVESTOR_SIGN = "transfereeUserName";
 
+    private static final String GENERATE_CONTRACT_SUCCESS = "60000000";
+
     @Value(value = "${anxin.contract.batch.num}")
     private int batchNum;
 
@@ -315,7 +317,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             }
 
             contractResponseViews.forEach(contractResponseView -> {
-                if (contractResponseView.getRetCode().equals("60000000")) {
+                if (contractResponseView.getRetCode().equals(GENERATE_CONTRACT_SUCCESS)) {
                     if(anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)){
                         investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
                     }else{
