@@ -227,7 +227,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
                 anxinContractResponseMapper.create(new AnxinContractResponseModel(businessId,
                         tx3202ResVO.getBatchNo(), createContractVO.getContractNo(), tx3202ResVO.getHead().getTxTime(), tx3202ResVO.getHead().getLocale(),
-                        DateTime.now().toDate(),createContractVO.getInvestmentInfo().get("code"),createContractVO.getInvestmentInfo().get("message")));
+                        DateTime.now().toDate(),createContractVO.getCode(),createContractVO.getMessage()));
             }
         }
         logger.debug(MessageFormat.format("[安心签] loanId:{0},batchNo:{1} created contract response date:{2}", businessId, batchNo, res));
