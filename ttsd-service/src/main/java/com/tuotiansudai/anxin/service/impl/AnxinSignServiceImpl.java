@@ -31,9 +31,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     static Logger logger = Logger.getLogger(AnxinSignServiceImpl.class);
 
     @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
     private UserMapper userMapper;
 
     @Autowired
@@ -234,10 +231,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         byte[] contract = null;
         try {
             contract = anxinSignConnectService.downLoanContractByBatchNo(contractNo);
-        } catch (PKIException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (PKIException | FileNotFoundException e) {
+            logger.error(e.getLocalizedMessage(), e);
         }
         return contract;
     }
