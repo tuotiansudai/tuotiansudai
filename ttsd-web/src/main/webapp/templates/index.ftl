@@ -4,51 +4,16 @@
 <div class="home-page-container" id="homePageContainer">
     <div class="banner-box">
         <div id="bannerBox" class="banner-box-inner">
-
             <ul class="banner-img-list">
-                <li style="opacity: 1;">
-                    <a href="https://tuotiansudai.com/activity/single-carnival" onclick="cnzzPush.trackClick('首页','Banner模块','双十一 你撩妹我买单')" target="_blank">
-                        <img src="https://static.tuotiansudai.com//upload/20161107/57521478482858422.jpg" data-app-img="https://static.tuotiansudai.com//upload/20161107/40731478482862091.jpg" alt="双十一活动">
-                    </a>
-                </li>
-                <li style="opacity: 0;">
-                    <a href="https://tuotiansudai.com/activity/invest-achievement" onclick="cnzzPush.trackClick('首页','Banner模块','称号活动')" target="_blank">
-                        <img src="https://static.tuotiansudai.com//upload/20160708/42441467975156254.png" data-app-img="https://static.tuotiansudai.com//upload/20160708/52421467975158264.png" alt="拓天速贷">
-                    </a>
-                </li>
-                <li style="opacity: 0;">
-                    <a href="https://tuotiansudai.com/activity/landing-page" onclick="cnzzPush.trackClick('首页','Banner模块','新手活动')" target="_blank">
-                        <img src="https://static.tuotiansudai.com//upload/20160708/98591467975197628.png" data-app-img="https://static.tuotiansudai.com//upload/20160708/82341467975201217.png" alt="拓天速贷">
-                    </a>
-                </li>
-                <li style="opacity: 0;">
-                    <a href="https://tuotiansudai.com/activity/birth-month" onclick="cnzzPush.trackClick('首页','Banner模块','生日月')" target="_blank">
-                        <img src="https://static.tuotiansudai.com//upload/20160708/96541467975330119.jpg" data-app-img="https://static.tuotiansudai.com//upload/20160708/47691467975332089.jpg" alt="拓天速贷">
-                    </a>
-                </li>
-                <li style="opacity: 0;">
-                    <a href="https://tuotiansudai.com/activity/share-reward" onclick="cnzzPush.trackClick('首页','Banner模块','推荐奖励')" target="_blank">
-                        <img src="https://static.tuotiansudai.com//upload/20161014/84441476444119664.jpg" data-app-img="https://static.tuotiansudai.com//upload/20161014/21781476444124470.jpg" alt="拓天速贷">
-                    </a>
-                </li>
-                <li style="opacity: 0;">
-                    <a href="https://tuotiansudai.com/activity/app-download" onclick="cnzzPush.trackClick('首页','Banner模块','APP下载')" target="_blank">
-                        <img src="https://static.tuotiansudai.com//upload/20160708/13051467975553704.png" data-app-img="https://static.tuotiansudai.com//upload/20160708/75551467975555774.png" alt="拓天速贷">
-                    </a>
-                </li>
+                <#list bannerList as banner>
+                    <li>
+                        <a href="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"
+                           <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
+                            <img src="${staticServer}/${banner.webImageUrl}" data-app-img="${staticServer}/${banner.appImageUrl}" alt="${banner.title}">
+                        </a>
+                    </li>
+                </#list>
             </ul>
-
-            <#--<ul class="banner-img-list">-->
-
-                <#--<#list bannerList as banner>-->
-                    <#--<li>-->
-                        <#--<a href="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"-->
-                           <#--<#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>-->
-                            <#--<img src="${staticServer}/${banner.webImageUrl}" data-app-img="${staticServer}/${banner.appImageUrl}" alt="${banner.title}">-->
-                        <#--</a>-->
-                    <#--</li>-->
-                <#--</#list>-->
-            <#--</ul>-->
         </div>
         <div class="page-width">
             <@global.isAnonymous>
