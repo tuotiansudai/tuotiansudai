@@ -1,6 +1,5 @@
 package com.tuotiansudai.job;
 
-import com.oracle.tools.packager.Log;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import org.apache.log4j.Logger;
