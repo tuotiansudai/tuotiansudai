@@ -27,5 +27,5 @@ public interface AnxinSignService {
 
     BaseDto createTransferContracts(long transferApplicationId);
 
-    BaseDto queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType);
+    List<String> queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType);
 }
