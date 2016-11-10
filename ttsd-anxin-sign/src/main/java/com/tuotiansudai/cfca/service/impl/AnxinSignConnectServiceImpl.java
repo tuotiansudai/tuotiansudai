@@ -285,12 +285,10 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                 }
                 if (tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null) {
                     for (CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()) {
-                        // TODO: insert response record
                         contractResponseViews.add(new ContractResponseView(Long.parseLong(createContractVO.getInvestmentInfo().get("orderId")),
                                 createContractVO.getContractNo(), createContractVO.getCode()));
                     }
                 } else {
-                    // TODO: insert response record
                     // 60030407 = 该批次还没有执行完毕，请稍后再试
                     if (tx3202ResVO != null && "60030407".equals(tx3202ResVO.getHead().getRetCode())) {
                         waitingBatchNoList.add(batchNo);
