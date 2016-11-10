@@ -1,8 +1,11 @@
 package com.tuotiansudai.anxin.service;
 
+import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
+
+import java.util.List;
 
 public interface AnxinSignService {
 
@@ -19,4 +22,10 @@ public interface AnxinSignService {
     BaseDto switchSkipAuth(String loginName, boolean open);
 
     byte[] downContractByContractNo(String contractNo);
+
+    BaseDto createLoanContracts(long loanId);
+
+    BaseDto createTransferContracts(long transferApplicationId);
+
+    BaseDto queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType);
 }

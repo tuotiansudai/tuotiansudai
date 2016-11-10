@@ -42,5 +42,5 @@ public interface SmsService {
     
     BaseDto<SmsDataDto> platformBalanceLowNotify(List<String> mobiles, String warningValue);
 
-    BaseDto<SmsDataDto> generateContractNotify(List<String> mobiles, List<String> warningValue);
+    BaseDto<SmsDataDto> generateContractNotify(List<String> mobiles, long businessId);
 }
