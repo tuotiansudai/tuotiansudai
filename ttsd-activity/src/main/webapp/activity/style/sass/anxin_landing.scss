@@ -149,6 +149,10 @@ a.anxin-button {
       dd {
         font-size: 14px;
         margin-bottom:20px;
+        a {
+          text-decoration: underline;
+          color: #0e4393;
+        }
       }
     }
   }
@@ -229,6 +233,13 @@ a.anxin-button {
           &:nth-child(3) {
             background-size: 40%;
           }
+        }
+      }
+    }
+    .for-qa-answer {
+      dl {
+        .hack {
+          display: none;
         }
       }
     }
