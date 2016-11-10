@@ -1,4 +1,4 @@
-require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment'], function ($) {
+require(['jquery', 'csrf', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment'], function ($) {
     $(function () {
 
         $('.selectpicker').selectpicker({
@@ -7,17 +7,20 @@ require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstr
         });
 
         $('#create').click(function(event) {
-            if(!confirm("确定要创建合同吗？")) {
+            if(!confirm("确定要执行创建合同吗？")) {
                 return false;
             }
             $.ajax({
                 url: '/project-manage/generate-contract',
                 type: 'POST',
-                dataType: 'json'
+                dataType: 'json',
+                data:$('#contractForm').serialize()
             })
             .done(function(res) {
                 if (res.success) {
-                    alert("数据库缓存已经清除。");
+                    alert("成功创建合同!");
+                }else{
+                    alert(res.data.message);
                 }
                 console.log("success");
             })
@@ -30,17 +33,18 @@ require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstr
         });
 
         $('#find').click(function(event) {
-            if(!confirm("确定要创建合同吗？")) {
+            if(!confirm("确定要执行查询合同吗？")) {
                 return false;
             }
             $.ajax({
-                url: '/project-manage/generate-contract',
+                url: '/project-manage/query-contract',
                 type: 'POST',
-                dataType: 'json'
+                dataType: 'json',
+                data:$('#contractForm').serialize()
             })
                 .done(function(res) {
                     if (res.success) {
-                        alert("数据库缓存已经清除。");
+                        alert("查询合同成功!");
                     }
                     console.log("success");
                 })

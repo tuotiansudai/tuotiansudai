@@ -364,7 +364,7 @@ public class LoanServiceImpl implements LoanService {
         }
 
         logger.debug("标的放款：生成合同，标的ID:" + loanId);
-        anxinSignService.createContracts(loanId);
+        anxinSignService.createLoanContracts(loanId);
 
         return true;
     }

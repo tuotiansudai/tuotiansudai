@@ -1,14 +1,13 @@
-<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="contract-list.js" headLab="project-manage" sideLab="contract" title="CFCA创建合同">
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form action="" class="form-inline query-build">
+    <form action="" class="form-inline query-build" id="contractForm">
         <div class="row">
             <div class="form-group">
                 <label for="control-label">标的ID:</label>
-                <input type="text" name="loanId" class="form-control jq-id">
+                <input type="text" name="businessId" class="form-control jq-id">
             </div>
 
             <div class="form-group">

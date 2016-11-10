@@ -1,7 +1,9 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
+import com.tuotiansudai.anxin.service.impl.AnxinSignServiceImpl;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -47,7 +50,6 @@ public class LoanListController {
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
 
-
     @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
     public ModelAndView ConsoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
                                         @RequestParam(value = "loanId", required = false) Long loanId,
@@ -55,7 +57,7 @@ public class LoanListController {
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                         @RequestParam(value = "loanName", required = false) String loanName,
-                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize){
+                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         int loanListCount = loanService.findLoanListCount(status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
@@ -83,40 +85,106 @@ public class LoanListController {
 
 
     @RequestMapping(value = "/contract", method = RequestMethod.GET)
-    public ModelAndView contract(){
+    public ModelAndView contract() {
         ModelAndView modelAndView = new ModelAndView("/contract-list");
         return modelAndView;
     }
 
+    @ResponseBody
     @RequestMapping(value = "/generate-contract", method = RequestMethod.POST)
     public BaseDto<BaseDataDto> generateContract(@RequestParam(value = "businessId", required = false) Long businessId,
-                                 @RequestParam(value = "anxinContractType", required = false) AnxinContractType anxinContractType){
+                                                 @RequestParam(value = "anxinContractType", required = false) AnxinContractType anxinContractType) {
 
-        if(anxinContractType.equals(AnxinContractType.LOAN_CONTRACT) && CollectionUtils.isNotEmpty(investService.findSuccessInvestsAndContractNoIsNullByLoanId(businessId))){
-            return anxinSignService.createLoanContracts(businessId);
-        }else{
-            TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
-            if(transferApplicationModel != null && transferApplicationModel.getContractNo() == 0l){
-                return anxinSignService.createTransferContracts(businessId);
-            }
+        BaseDto baseDto = new BaseDto();
+        baseDto.setSuccess(false);
+        BaseDataDto baseDataDto = new BaseDataDto();
+        baseDto.setData(baseDataDto);
+
+        if(businessId == null){
+            baseDataDto.setMessage("请填写标的ID!");
+            return baseDto;
         }
-        return new BaseDto(false);
+
+        if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
+
+            if (loanService.findLoanById(businessId) == null) {
+                baseDataDto.setMessage("该标的不存在!");
+                return baseDto;
+            }
+
+            if (redisWrapperClient.exists(AnxinSignServiceImpl.LOAN_CONTRACT_IN_CREATING_KEY + businessId)) {
+                baseDataDto.setMessage("该标的合同正在生成中,请稍后再试!");
+                return baseDto;
+            }
+
+            if (CollectionUtils.isEmpty(investService.findContractFailInvest(businessId))) {
+                baseDataDto.setMessage("该标的无可生成的合同!");
+                return baseDto;
+            }
+
+            return anxinSignService.createLoanContracts(businessId);
+        } else {
+
+            TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
+            if (transferApplicationModel == null) {
+                baseDataDto.setMessage("该债权转让不存在!");
+                return baseDto;
+            }
+
+            if (redisWrapperClient.exists(AnxinSignServiceImpl.TRANSFER_CONTRACT_IN_CREATING_KEY + businessId)) {
+                baseDataDto.setMessage("该债权转让合同正在生成中,请稍后再试!");
+                return baseDto;
+            }
+
+            if (!Strings.isNullOrEmpty(transferApplicationModel.getContractNo())) {
+                baseDataDto.setMessage("该债权转让无可生成的合同!");
+                return baseDto;
+            }
+
+            return anxinSignService.createTransferContracts(businessId);
+        }
     }
 
+    @ResponseBody
     @RequestMapping(value = "/query-contract", method = RequestMethod.POST)
     public BaseDto<BaseDataDto> queryContract(@RequestParam(value = "businessId", required = false) Long businessId,
-                              @RequestParam(value = "anxinContractType", required = false) AnxinContractType anxinContractType){
+                                              @RequestParam(value = "anxinContractType", required = false) AnxinContractType anxinContractType) {
 
-        if(anxinContractType.equals(AnxinContractType.LOAN_CONTRACT) && CollectionUtils.isEmpty(investService.findSuccessInvestsAndContractNoIsNullByLoanId(businessId))){
-            return new BaseDto<>(false);
-        }else{
-            TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
-            if(transferApplicationModel != null && transferApplicationModel.getContractNo() != 0l){
-                return new BaseDto<>(false);
+        BaseDto baseDto = new BaseDto();
+        baseDto.setSuccess(false);
+        BaseDataDto baseDataDto = new BaseDataDto();
+        baseDto.setData(baseDataDto);
+        String batchStr;
+
+        if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
+
+            if (loanService.findLoanById(businessId) == null) {
+                baseDataDto.setMessage("该标的不存在!");
+                return baseDto;
             }
+
+            if (CollectionUtils.isEmpty(investService.findContractFailInvest(businessId))) {
+                baseDataDto.setMessage("该标的合同已经全部生成!");
+                return baseDto;
+            }
+
+            batchStr = redisWrapperClient.get(AnxinSignServiceImpl.LOAN_BATCH_NO_LIST_KEY + businessId);
+        } else {
+            TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
+            if (transferApplicationModel == null) {
+                baseDataDto.setMessage("该债权转让不存在!");
+                return baseDto;
+            }
+
+            if (!Strings.isNullOrEmpty(transferApplicationModel.getContractNo())) {
+                baseDataDto.setMessage("该债权转让合同已经全部生成!");
+                return baseDto;
+            }
+
+            batchStr = redisWrapperClient.get(AnxinSignServiceImpl.TRANSFER_BATCH_NO_LIST_KEY + businessId);
         }
-        String batchNos = redisWrapperClient.hget("",String.valueOf(businessId));
-        anxinSignService.queryContract(businessId, Lists.newArrayList(batchNos.split(",")),anxinContractType);
+
+        anxinSignService.queryContract(businessId, Lists.newArrayList(batchStr.split(",")), anxinContractType);
         return new BaseDto<>(true);
     }
 }

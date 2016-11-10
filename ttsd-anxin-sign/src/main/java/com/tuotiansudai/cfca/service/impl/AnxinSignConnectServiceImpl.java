@@ -215,9 +215,10 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                         Long.parseLong(createContractVO.getInvestmentInfo().get("orderId")),
                         tx3202ReqVO.getHead().getTxTime());
 
-                anxinContractResponseMapper.create(new AnxinContractResponseModel(businessId,
-                        tx3202ResVO.getBatchNo(), createContractVO.getContractNo(), tx3202ResVO.getHead().getTxTime(), tx3202ResVO.getHead().getLocale(),
-                        DateTime.now().toDate()));
+
+//                anxinContractResponseMapper.create(new AnxinContractResponseModel(businessId,
+//                        tx3202ResVO.getBatchNo(), createContractVO.getContractNo(), tx3202ResVO.getHead().getTxTime(), tx3202ResVO.getHead().getLocale(),
+//                        DateTime.now().toDate()));
             }
         }
         logger.debug(MessageFormat.format("[安心签] loanId:{0},batchNo:{1} created contract response date:{2}", businessId, batchNo, res));
@@ -256,11 +257,12 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         List<ContractResponseView> contractResponseViews = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(batchNoList)) {
             for (String batchNo : batchNoList) {
-                Tx3202ResVO tx3202ResVO = null;
+                Tx3202ResVO tx3202ResVO;
                 try {
                     tx3202ResVO = queryContractByBatchNo(batchNo);
                 } catch (PKIException e) {
                     logger.error(MessageFormat.format("[安心签] Query contract response error, loan/transfer Id:{0}, batchNo:{1}", businessId, batchNo), e);
+                    continue;
                 }
                 if (tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null) {
                     for (CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()) {

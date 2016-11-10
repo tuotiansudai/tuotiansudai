@@ -262,6 +262,6 @@ public interface InvestMapper {
                               @Param(value = "contractNo") String contractNo);
 
 
-    List<InvestModel> findSuccessInvestsAndContractNoIsNullByLoanId(@Param(value = "loanId") long loanId);
+    List<InvestModel> findContractFailInvest(@Param(value = "loanId") long loanId);
 
 }

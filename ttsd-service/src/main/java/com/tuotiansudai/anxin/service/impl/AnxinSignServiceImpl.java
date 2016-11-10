@@ -372,6 +372,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public BaseDto createTransferContracts(long transferApplicationId) {
+        redisWrapperClient.setex(TRANSFER_CONTRACT_IN_CREATING_KEY + transferApplicationId, SEVEN_DAYS, "1");
+
         CreateContractVO createContractVO = collectTransferContractModel(transferApplicationId);
         if (createContractVO == null) {
             logger.error(MessageFormat.format("[安心签] create transfer contract error,users is not anxin sign , transferApplicationId:{0}", transferApplicationId));
@@ -385,7 +387,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             //创建合同
             Tx3202ResVO tx3202ResVO = anxinSignConnectService.generateContractBatch3202(transferApplicationId, batchNo, AnxinContractType.TRANSFER_CONTRACT, createContractVOs);
 
-            baseDto.setSuccess(tx3202ResVO == null ? false : true);
+            baseDto.setSuccess(isSuccess(tx3202ResVO));
         } catch (PKIException e) {
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
 
@@ -398,6 +400,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         logger.debug("创建job，十分钟后，查询并更新合同状态。债权ID:" + transferApplicationId);
         updateContractResponseHandleJob(Arrays.asList(batchNo), transferApplicationId, AnxinContractType.TRANSFER_CONTRACT);
 
+        redisWrapperClient.setex(TRANSFER_BATCH_NO_LIST_KEY + transferApplicationId, SEVEN_DAYS, batchNo);
         return baseDto;
     }
 

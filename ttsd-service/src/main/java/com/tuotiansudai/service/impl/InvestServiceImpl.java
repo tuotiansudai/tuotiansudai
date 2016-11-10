@@ -563,9 +563,9 @@ public class InvestServiceImpl implements InvestService {
         return preference;
     }
 
-    @Autowired
-    public List<InvestModel> findSuccessInvestsAndContractNoIsNullByLoanId(long loanId){
-        return investMapper.findSuccessInvestsAndContractNoIsNullByLoanId(loanId);
+    @Override
+    public List<InvestModel> findContractFailInvest(long loanId){
+        return investMapper.findContractFailInvest(loanId);
     }
 
 }

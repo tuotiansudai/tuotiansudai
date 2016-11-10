@@ -20,21 +20,24 @@ public class AnxinContractResponseModel implements Serializable {
     public AnxinContractResponseModel() {
     }
 
-    public AnxinContractResponseModel(long businessId, String batchNo, String retCode,String retMessage) {
+    public AnxinContractResponseModel(long businessId, String batchNo, String retCode, String retMessage) {
         this.businessId = businessId;
         this.batchNo = batchNo;
         this.retMessage = retMessage;
         this.retCode = retCode;
     }
 
-    public AnxinContractResponseModel(long businessId, String batchNo,String contractNo, String txTime, String locale, Date createdTime) {
+    public AnxinContractResponseModel(long businessId, String batchNo, String contractNo, String txTime, String locale, Date createdTime, String retCode, String retMessage) {
         this.businessId = businessId;
         this.batchNo = batchNo;
         this.contractNo = contractNo;
         this.txTime = txTime;
         this.locale = locale;
         this.createdTime = createdTime;
+        this.retCode = retCode;
+        this.retMessage = retMessage;
     }
+
 
     public Date getUpdatedTime() {
         return updatedTime;

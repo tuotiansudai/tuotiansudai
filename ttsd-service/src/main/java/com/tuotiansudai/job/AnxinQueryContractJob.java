@@ -98,7 +98,7 @@ public class AnxinQueryContractJob implements Job {
             } else {
                 // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
                 if (anxinContractType == AnxinContractType.LOAN_CONTRACT) {
-                    List<InvestModel> contractFailList = investService.findSuccessInvestsAndContractNoIsNullByLoanId(businessId);
+                    List<InvestModel> contractFailList = investService.findContractFailInvest(businessId);
                     if (CollectionUtils.isNotEmpty(contractFailList)) {
                         // 有失败的，发短信
                         smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));
