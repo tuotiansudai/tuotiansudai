@@ -9,6 +9,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.paywrapper.service.impl.AnxinSignServiceImpl;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -60,6 +61,9 @@ public class AnxinSignServiceTest {
 
     @Mock
     private AnxinSignConnectService anxinSignConnectService;
+
+    @Mock
+    private TransferApplicationMapper transferApplicationMapper;
 
     @Before
     public void init() {
@@ -123,6 +127,11 @@ public class AnxinSignServiceTest {
 
         BaseDto baseDto = anxinSignService.createContracts(loanModel.getId());
         assertTrue(!baseDto.isSuccess());
+    }
+
+    @Test
+    public void shouldGenerateTransferContractIsOk(){
+        when(transferApplicationMapper.findById(anyLong())).thenReturn()
     }
 
 
