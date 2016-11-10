@@ -19,12 +19,12 @@ public interface AnxinSignConnectService {
 
     Tx3ResVO verifyCaptcha3102(String userId, String projectCode, String checkCode) throws PKIException;
 
-    Tx3202ResVO generateContractBatch3202(long loanId,String batchNo,AnxinContractType anxinContractType, List<CreateContractVO> createContractList) throws PKIException;
+    Tx3202ResVO generateContractBatch3202(long loanId, String batchNo, AnxinContractType anxinContractType, List<CreateContractVO> createContractList) throws PKIException;
 
     Tx3202ResVO queryContractByBatchNo(String batchNo) throws PKIException;
 
     byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException;
 
-    List<ContractResponseView> queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) throws PKIException;
+    List[] queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType);
 
 }

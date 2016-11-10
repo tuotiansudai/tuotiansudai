@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -247,7 +249,8 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     }
 
     @Override
-    public List<ContractResponseView> queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {
+    public List[] queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {
+        List<String> waitingBatchNoList = new ArrayList<>();
         List<ContractResponseView> contractResponseViews = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(batchNoList)) {
             for (String batchNo : batchNoList) {
@@ -255,10 +258,11 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                 try {
                     tx3202ResVO = queryContractByBatchNo(batchNo);
                 } catch (PKIException e) {
-                    logger.error(MessageFormat.format("[安心签] Query contract response error, loan/transfer Id:{0} , batchNo:{1}", businessId, batchNo), e);
+                    logger.error(MessageFormat.format("[安心签] Query contract response error, loan/transfer Id:{0}, batchNo:{1}", businessId, batchNo), e);
                 }
                 if (tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null) {
                     for (CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()) {
+                        // TODO: remove this, don't need to update contractResponse table anymore
                         anxinContractResponseMapper.updateRetByContractNo(createContractVO.getContractNo(),
                                 createContractVO.getCode(),
                                 createContractVO.getMessage(),
@@ -267,12 +271,16 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                                 createContractVO.getContractNo(), createContractVO.getCode()));
                     }
                 } else {
+                    // 60030407
+                    if (tx3202ResVO != null && "60030407".equals(tx3202ResVO.getHead().getRetCode())) {
+                        waitingBatchNoList.add(batchNo);
+                    }
                     logger.error(MessageFormat.format("[安心签] Query contract response error. businessId:{0}, batchNo:{1}, errorCode:{2}, errorMessage:{3}",
                             businessId, batchNo, tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage()));
                 }
             }
         }
-        return contractResponseViews;
+        return new List[]{waitingBatchNoList, contractResponseViews};
     }
 
     @Override

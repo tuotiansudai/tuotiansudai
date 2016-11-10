@@ -561,39 +561,27 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     }
 
     @Override
-    public BaseDto queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {
-        BaseDto baseDto = new BaseDto(true);
-        try {
-            //查询合同创建结果并更新invest
-            List<ContractResponseView> contractResponseViews = anxinSignConnectService.queryContract(businessId, batchNoList, anxinContractType);
+    public List<String> queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {
 
-            boolean haveFailedContract = false;
+        //查询合同创建结果，以及处理中的batchNo
+        List[] lists = anxinSignConnectService.queryContract(businessId, batchNoList, anxinContractType);
 
-            for (ContractResponseView contractResponseView : contractResponseViews) {
-                if (contractResponseView.getRetCode().equals(GENERATE_CONTRACT_SUCCESS)) {
-                    if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
-                        investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
-                    } else {
-                        transferApplicationMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
-                    }
-                } else {
-                    haveFailedContract = true;
-                }
+        // 处理中的batchNo
+        List<String> waitingBatchNoList = lists[0];
+
+        // 处理结果
+        List<ContractResponseView> contractResponseViews = lists[1];
+
+        // 把合同号更新到 invest 或 transferApplication 表
+        contractResponseViews.stream().filter(contractResponseView -> contractResponseView.getRetCode().equals(GENERATE_CONTRACT_SUCCESS)).forEach(contractResponseView -> {
+            if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
+                investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
+            } else {
+                transferApplicationMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
             }
+        });
 
-            // 如果有失败的合同，则发送报警短信
-            if (haveFailedContract) {
-                smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));
-            }
-
-            return new BaseDto(!haveFailedContract);
-
-        } catch (PKIException e) {
-            baseDto.setSuccess(false);
-            logger.error(MessageFormat.format("[安心签] update contract response error , loanId:{0}", businessId), e);
-        }
-
-        return baseDto;
+        return waitingBatchNoList;
     }
 
 }
