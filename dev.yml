@@ -150,6 +150,7 @@ worker-all:
     - "TZ=Asia/Shanghai"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-job-worker/build/distributions:/opt/worker
     - /var/log/tuotian/worker-all:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-job-worker-all/bin/ttsd-job-worker"
