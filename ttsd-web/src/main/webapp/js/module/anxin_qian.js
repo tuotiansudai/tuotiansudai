@@ -12,7 +12,7 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function($, layer) {
                 layer.open({
                     type:1,
                     title:title,
-                    area:['800px','520px'],
+                    area:$(window).width()>700?['800px','520px']:['320px','100%'],
                     shadeClose: false,
                     scrollbar: true,
                     skin:'register-skin',
