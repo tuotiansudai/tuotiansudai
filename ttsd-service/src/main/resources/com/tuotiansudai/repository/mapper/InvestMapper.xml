@@ -251,13 +251,13 @@
         invest.login_name AS investor_login_name,
         (SELECT province FROM user WHERE login_name = invest.login_name) AS province,
         (SELECT city FROM user WHERE login_name = invest.login_name) AS city,
-        (SELECT identity_number FROM account WHERE login_name = invest.login_name) AS identity_number,
-        (SELECT user_name FROM account WHERE login_name = invest.login_name) AS investor_username,
+        (SELECT identity_number FROM user WHERE user.login_name = invest.login_name) AS identity_number,
+        (SELECT user_name FROM user WHERE user.login_name = invest.login_name) AS investor_username,
         (SELECT mobile FROM user WHERE login_name = invest.login_name) AS investor_mobile,
         (SELECT GROUP_CONCAT(role ORDER BY role SEPARATOR ', ') FROM user_role WHERE login_name = invest.login_name) AS
         investor_roles,
         (SELECT referrer FROM user WHERE login_name = invest.login_name) AS referrer_login_name,
-        (SELECT user_name FROM account WHERE login_name = (SELECT referrer FROM user WHERE login_name =
+        (SELECT user_name FROM user WHERE user.login_name = (SELECT referrer FROM user WHERE login_name =
         invest.login_name)) AS referrer_username,
         (SELECT mobile FROM user WHERE login_name = (SELECT referrer FROM user WHERE login_name = invest.login_name)) AS
         referrer_mobile,
@@ -624,12 +624,10 @@
         SELECT
             invest.login_name,
             SUM(invest.amount) sumAmount,
-            account.user_name,
+            user.user_name,
             user.mobile
         FROM
             invest
-        INNER JOIN
-            account ON invest.login_name = account.login_name
         INNER JOIN
             user ON invest.login_name = user.login_name
         WHERE
@@ -646,7 +644,7 @@
                   ta.login_name = invest.login_name
                 AND ta.application_time between #{activityBeginTime} and #{tradingTime}
             )
-        GROUP BY login_name , account.user_name , user.mobile
+        GROUP BY login_name , user.user_name , user.mobile
         ORDER BY sumAmount DESC , MAX(invest.trading_time)
     </select>
 
@@ -654,7 +652,7 @@
         SELECT
           rr.`referrer_login_name` AS login_name,
           SUM(t.`amount`) AS sumAmount,
-          a.`user_name`,
+          u.`user_name`,
           u.`mobile`
         FROM
           referrer_relation rr
@@ -664,13 +662,11 @@
             AND DATE_FORMAT(t.`trading_time`, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime}, '%Y-%m-%d')
             AND t.`trading_time` BETWEEN #{activityBeginTime}
             AND #{activityEndTime}
-          JOIN account a
-            ON rr.`referrer_login_name` = a.`login_name`
           JOIN user u
             ON rr.`referrer_login_name` = u.`login_name`
         WHERE rr.`level` = 1
         GROUP BY rr.`referrer_login_name`,
-          a.`user_name`,
+          u.`user_name`,
           u.`mobile`
         ORDER BY SUM(t.`amount`) DESC,
           MAX(t.`trading_time`)

@@ -342,7 +342,7 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
     }
 
     private AccountModel createAccountByUserId(String userId) {
-        AccountModel accountModel = new AccountModel(userId, userId, "120101198810012010", "", "", new Date());
+        AccountModel accountModel = new AccountModel(userId, "", "", new Date());
         accountModel.setBalance(10000);
         accountModel.setFreeze(10000);
         accountMapper.create(accountModel);

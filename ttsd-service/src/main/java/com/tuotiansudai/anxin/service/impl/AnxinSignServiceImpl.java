@@ -91,22 +91,18 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 return failBaseDto("用户已有安心签账户，不能重复开户");
             }
 
-            AccountModel accountModel = accountMapper.findByLoginName(loginName);
             UserModel userModel = userMapper.findByLoginName(loginName);
 
-            Tx3ResVO tx3001ResVO = anxinSignConnectService.createAccount3001(accountModel, userModel);
+            Tx3ResVO tx3001ResVO = anxinSignConnectService.createAccount3001(userModel);
             String retMessage = tx3001ResVO.getHead().getRetMessage();
 
             if (isSuccess(tx3001ResVO)) {
-
                 AnxinSignPropertyModel anxinProp = new AnxinSignPropertyModel();
                 anxinProp.setLoginName(loginName);
                 Date now = new Date();
                 anxinProp.setCreatedTime(now);
                 anxinProp.setAnxinUserId(((Tx3001ResVO) tx3001ResVO).getPerson().getUserId());
                 anxinSignPropertyMapper.create(anxinProp);
-
-                accountMapper.update(accountModel);
                 return new BaseDto();
             } else {
                 logger.error("create anxin sign account failed. " + retMessage);

@@ -69,7 +69,7 @@ public class MobileAppExchangeServiceImpl implements MobileAppExchangeService{
         String isUsed = "1";
         redisWrapperClient.hset(EXCHANGE_CODE_KEY + couponId, exchangeCode, isUsed);
 
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
+        List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponWithCouponByLoginName(loginName, null);
         if(CollectionUtils.isEmpty(userCouponModels)){
             return new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(),ReturnMessage.SUCCESS.getMsg());
         }
@@ -84,7 +84,7 @@ public class MobileAppExchangeServiceImpl implements MobileAppExchangeService{
         Iterator<BaseCouponResponseDataDto> items = Iterators.transform(filter, new Function<UserCouponModel, BaseCouponResponseDataDto>() {
             @Override
             public BaseCouponResponseDataDto apply(UserCouponModel userCouponModel) {
-                return new BaseCouponResponseDataDto(couponModel, userCouponModel);
+                return new BaseCouponResponseDataDto(userCouponModel);
 
             }
         });
