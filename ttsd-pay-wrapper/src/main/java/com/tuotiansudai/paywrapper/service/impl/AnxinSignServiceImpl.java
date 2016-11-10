@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
+import cfca.trustsign.common.vo.response.tx3.Tx3202ResVO;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -101,9 +102,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         BaseDto baseDto = new BaseDto();
         LoanModel loanModel = loanMapper.findById(loanId);
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
-        if(Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())){
+        if(agentAnxinProp == null || Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())){
             logger.error(MessageFormat.format("[安心签] create contract error,agentModel is not anxin sign , loanid:{0} , userId:{1}", loanId,loanModel.getAgentLoginName()));
-            return new BaseDto(true);
+            return new BaseDto(false);
         }
         for (int i = 0; i < investModels.size(); i++) {
             investModel = investModels.get(i);
@@ -117,9 +118,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 try {
                     logger.debug(MessageFormat.format("[安心签] create contract begin , loanId:{0}, batchNo{1}", loanId, batchNo));
                     //创建合同
-                    anxinSignConnectService.generateContractBatch3202(loanId, batchNo, AnxinContractType.LOAN_CONTRACT,createContractVOs);
+                    Tx3202ResVO tx3202ResVO = anxinSignConnectService.generateContractBatch3202(loanId, batchNo, AnxinContractType.LOAN_CONTRACT,createContractVOs);
 
-                    baseDto.setSuccess(true);
+                    baseDto.setSuccess(tx3202ResVO == null ? false : true);
                 } catch (PKIException e) {
                     smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, ImmutableList.<String>builder().add(String.valueOf(loanId)).add(batchNo).build()));
 
@@ -138,7 +139,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         CreateContractVO createContractVO = collectTransferContractModel(transferApplicationId);
         if(createContractVO == null){
             logger.error(MessageFormat.format("[安心签] create transfer contract error,users is not anxin sign , transferApplicationId:{0}", transferApplicationId));
-            return new BaseDto(true);
+            return new BaseDto(false);
         }
         List<CreateContractVO> createContractVOs = Lists.newArrayList(collectTransferContractModel(transferApplicationId));
         BaseDto baseDto = new BaseDto();
@@ -146,9 +147,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         try {
             logger.debug(MessageFormat.format("[安心签] create transfer contract begin , loanId:{0}, batchNo{1}", transferApplicationId, batchNo));
             //创建合同
-            anxinSignConnectService.generateContractBatch3202(transferApplicationId, batchNo,AnxinContractType.TRANSFER_CONTRACT, createContractVOs);
+            Tx3202ResVO tx3202ResVO =  anxinSignConnectService.generateContractBatch3202(transferApplicationId, batchNo,AnxinContractType.TRANSFER_CONTRACT, createContractVOs);
 
-            baseDto.setSuccess(true);
+            baseDto.setSuccess(tx3202ResVO == null ? false : true);
         } catch (PKIException e) {
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, ImmutableList.<String>builder().add(String.valueOf(transferApplicationId)).add(batchNo).build()));
 
