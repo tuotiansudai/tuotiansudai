@@ -1,12 +1,12 @@
 package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.AutumnPrizeService;
 import com.tuotiansudai.activity.service.LotteryActivityService;
+import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
@@ -43,6 +43,9 @@ public class AutumnPrizeController {
     @Autowired
     private LotteryActivityService lotteryActivityService;
 
+    @Autowired
+    private LotteryDrawActivityService lotteryDrawActivityService;
+
     @RequestMapping(path = "/travel", method = RequestMethod.GET)
     public ModelAndView travelPrize() {
         String loginName = LoginUserInfo.getLoginName();
@@ -53,29 +56,9 @@ public class AutumnPrizeController {
         modelAndView.addObject("userTravelPrize", autumnPrizeService.getTravelAwardItems(loginName));
         modelAndView.addObject("myTravelPrize", autumnPrizeService.getMyTravelAwardItems(LoginUserInfo.getMobile()));
         modelAndView.addObject("drawTime", lotteryActivityService.getDrawPrizeTime(LoginUserInfo.getMobile()));
-        modelAndView.addObject("steps", generateSteps(loginName));
-        modelAndView.addObject("activityType","travel");
+        modelAndView.addObject("steps", lotteryDrawActivityService.generateSteps(loginName));
+        modelAndView.addObject("activityType", "travel");
         return modelAndView;
-    }
-
-    private List<Integer> generateSteps(String loginName) {
-        List<Integer> steps = Lists.newArrayList(1, 0, 0, 0, 0);
-        if (Strings.isNullOrEmpty(loginName)) {
-            return steps;
-        }
-        steps.set(0, 2);
-        if (accountService.findByLoginName(loginName) == null) {
-            steps.set(1, 1);
-            return steps;
-        }
-        steps.set(1, 2);
-        steps.set(2, 1);
-        steps.set(3, 1);
-        steps.set(4, 1);
-        if (bindBankCardService.getPassedBankCard(loginName) != null) {
-            steps.set(2, 2);
-        }
-        return steps;
     }
 
     @RequestMapping(path = "/luxury", method = RequestMethod.GET)
@@ -87,7 +70,7 @@ public class AutumnPrizeController {
         modelAndView.addObject("luxuryPrize", autumnPrizeService.getLuxuryPrizeItems());
         modelAndView.addObject("userLuxuryPrize", autumnPrizeService.getLuxuryAwardItems(loginName));
         modelAndView.addObject("myLuxuryPrize", autumnPrizeService.getMyLuxuryAwardItems(LoginUserInfo.getMobile()));
-        modelAndView.addObject("steps", generateSteps(loginName));
+        modelAndView.addObject("steps", lotteryDrawActivityService.generateSteps(loginName));
         modelAndView.addObject("drawTime", lotteryActivityService.getDrawPrizeTime(LoginUserInfo.getMobile()));
         modelAndView.addObject("activityType","luxury");
         return modelAndView;

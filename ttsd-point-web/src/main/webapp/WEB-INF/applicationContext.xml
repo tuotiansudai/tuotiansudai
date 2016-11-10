@@ -54,8 +54,8 @@
                 <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
-                <property name="minimumIdle" value="${web.job_worker.minimumIdle}"/>
-                <property name="maximumPoolSize" value="${web.job_worker.maximumPoolSize}"/>
+                <property name="minimumIdle" value="${point.job.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${point.job.maximumPoolSize}"/>
                 <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
                 <property name="dataSourceProperties">
                     <props>
@@ -69,20 +69,24 @@
     </bean>
 
     <bean id="pointHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxpoint?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="${point.jdbc.username}"/>
-        <property name="password" value="${point.jdbc.password}"/>
-        <property name="minimumIdle" value="${point.aa.minimumIdle}"/>
-        <property name="maximumPoolSize" value="${point.aa.maximumPoolSize}"/>
-        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
-        <property name="dataSourceProperties">
-            <props>
-                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
-                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
-                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
-            </props>
-        </property>
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxpoint?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${point.jdbc.username}"/>
+                <property name="password" value="${point.jdbc.password}"/>
+                <property name="minimumIdle" value="${point.point.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${point.point.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
     </bean>
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->
