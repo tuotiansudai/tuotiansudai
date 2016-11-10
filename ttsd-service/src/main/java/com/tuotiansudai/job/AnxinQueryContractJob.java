@@ -1,10 +1,18 @@
 package com.tuotiansudai.job;
 
 import com.tuotiansudai.anxin.service.AnxinSignService;
+import com.tuotiansudai.anxin.service.impl.AnxinSignServiceImpl;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.JobManager;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.Job;
@@ -37,6 +45,9 @@ public class AnxinQueryContractJob implements Job {
     private AnxinSignService anxinSignService;
 
     @Autowired
+    private InvestService investService;
+
+    @Autowired
     private JobManager jobManager;
 
     @Autowired
@@ -44,6 +55,12 @@ public class AnxinQueryContractJob implements Job {
 
     @Value("#{'${anxin.contract.notify.mobileList}'.split('\\|')}")
     private List<String> mobileList;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
 
 
     @Override
@@ -61,6 +78,14 @@ public class AnxinQueryContractJob implements Job {
             if (++tryTimes > 3) {
                 // 尝试超过3次（第4次了），发短信报警，不再尝试了
                 smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));
+
+                if (anxinContractType == AnxinContractType.LOAN_CONTRACT) {
+                    // 清redis中的inCreating标记
+                    redisWrapperClient.del(AnxinSignServiceImpl.LOAN_CONTRACT_IN_CREATING_KEY + businessId);
+                } else if (anxinContractType == AnxinContractType.TRANSFER_CONTRACT) {
+                    // 清redis中的inCreating标记
+                    redisWrapperClient.del(AnxinSignServiceImpl.TRANSFER_CONTRACT_IN_CREATING_KEY + businessId);
+                }
             }
 
             List<String> waitingBatchNo = anxinSignService.queryContract(businessId, batchNoList, anxinContractType);
@@ -72,14 +97,30 @@ public class AnxinQueryContractJob implements Job {
                 this.createAnxinQueryContractJob(waitingBatchNo, businessId, anxinContractType);
             } else {
                 // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
-
+                if (anxinContractType == AnxinContractType.LOAN_CONTRACT) {
+                    List<InvestModel> contractFailList = investService.findSuccessInvestsAndContractNoIsNullByLoanId(businessId);
+                    if (CollectionUtils.isNotEmpty(contractFailList)) {
+                        // 有失败的，发短信
+                        smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));
+                    }
+                    // 清redis中的inCreating标记
+                    redisWrapperClient.del(AnxinSignServiceImpl.LOAN_CONTRACT_IN_CREATING_KEY + businessId);
+                } else if (anxinContractType == AnxinContractType.TRANSFER_CONTRACT) {
+                    TransferApplicationModel applicationModel = transferApplicationMapper.findById(businessId);
+                    if (applicationModel != null && StringUtils.isEmpty(applicationModel.getContractNo())) {
+                        // 失败了，发短信
+                        smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));
+                    }
+                    // 清redis中的inCreating标记
+                    redisWrapperClient.del(AnxinSignServiceImpl.TRANSFER_CONTRACT_IN_CREATING_KEY + businessId);
+                }
             }
-
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
             return;
         }
     }
+
 
     private void createAnxinQueryContractJob(List<String> batchNoList, long businessId, AnxinContractType contractType) {
         try {

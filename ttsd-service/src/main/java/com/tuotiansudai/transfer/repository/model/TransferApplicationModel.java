@@ -19,7 +19,7 @@ public class TransferApplicationModel implements Serializable {
 
     private Long investId;
 
-    private long contractNo;
+    private String contractNo;
 
     private int period;
 
@@ -191,11 +191,11 @@ public class TransferApplicationModel implements Serializable {
         this.source = source;
     }
 
-    public long getContractNo() {
+    public String getContractNo() {
         return contractNo;
     }
 
-    public void setContractNo(long contractNo) {
+    public void setContractNo(String contractNo) {
         this.contractNo = contractNo;
     }
 }
