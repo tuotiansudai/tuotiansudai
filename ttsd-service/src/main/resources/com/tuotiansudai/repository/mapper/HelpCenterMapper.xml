@@ -17,20 +17,20 @@
     <select id="findAllHelpCenterByTitleOrCategoryOrHot" resultMap="helpCenterResultMap" parameterType="map">
         SELECT * FROM `aa`.`help_center`
         <where>
-            <if test="category != null ">
+            <if test="category != null and category !='' ">
                 AND category = #{category}
             </if>
-            <if test="hot != null ">
+            <if test="hot == 'true'  ">
                 AND hot is true
             </if>
-            <if test="title != null ">
-                AND title like CONCAT('%', #{title}, '%')
+            <if test="keywords != null and keywords != '' ">
+                AND title like CONCAT('%', #{keywords}, '%')
             </if>
         </where>
         order by id
     </select>
 
-    <select id="findAllHelpCenterCategory" resultMap="helpCenterResultMap">
+    <select id="findAllHelpCenterCategory" resultType="java.lang.String">
         SELECT distinct(category) FROM `aa`.`help_center`
     </select>
 </mapper>

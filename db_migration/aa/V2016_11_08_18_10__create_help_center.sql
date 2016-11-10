@@ -3,9 +3,9 @@ CREATE TABLE `help_center` (
   `title`        VARCHAR(200) NOT NULL,
   `content`      TEXT         NOT NULL,
   `category`     VARCHAR(50)  NOT NULL,
-  `hot`          BOOLEAN DEFAULT FALSE
+  `hot`          BOOLEAN DEFAULT FALSE,
   PRIMARY KEY (`id`),
-  CONSTRAINT `INDEX_HELP_CENTER_TITLE` (`title`)
+  INDEX INDEX_HELP_CENTER_TITLE (`title`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001
