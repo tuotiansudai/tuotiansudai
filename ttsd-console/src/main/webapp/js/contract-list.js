@@ -45,6 +45,8 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 
                 .done(function(res) {
                     if (res.success) {
                         alert("查询合同成功!");
+                    }else{
+                        alert(res.data.message);
                     }
                     console.log("success");
                 })
