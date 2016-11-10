@@ -5,9 +5,9 @@ import com.google.common.base.Strings;
 import com.squareup.okhttp.*;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.UUID;
 
 public abstract class BaseClient {
@@ -60,6 +60,8 @@ public abstract class BaseClient {
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+
+        logger.debug(MessageFormat.format("[BaseClient][execute] execute fail! url:{0}, method:{1}, requestBody.content:{2}, requestId:{3}, userId:{4}", url, method, requestJson, requestId, userId));
 
         return null;
     }
