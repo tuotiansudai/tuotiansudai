@@ -12,7 +12,7 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function($, layer) {
                 layer.open({
                     type:1,
                     title:title,
-                    area:['800px','520px'],
+                    area:$(window).width()>700?['800px','520px']:['320px','100%'],
                     shadeClose: false,
                     scrollbar: true,
                     skin:'register-skin',
@@ -30,7 +30,7 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function($, layer) {
                 showAgreement('CFCA数字证书服务协议',contentDom);
             }else if($(this).hasClass('link-agree-free-SMS')){
                 contentDom=$('.free-SMS-box',$safetyAgreement);
-                showAgreement('安心签免短信授权服务协议',contentDom);
+                showAgreement('短信免责申明',contentDom);
             }else if($(this).hasClass('link-agree-number-authorize')){
                 contentDom=$('.number-authorize-box',$safetyAgreement);
                 showAgreement('CFCA数字证书授权协议',contentDom);

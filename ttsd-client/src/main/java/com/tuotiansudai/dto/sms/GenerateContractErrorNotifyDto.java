@@ -11,14 +11,14 @@ public class GenerateContractErrorNotifyDto implements Serializable {
     private List<String> mobiles;
 
     @NotEmpty
-    private List<String> warningLine;
+    private long businessId;
 
     public GenerateContractErrorNotifyDto() {
     }
 
-    public GenerateContractErrorNotifyDto(List<String> mobiles, List<String> warningLine) {
+    public GenerateContractErrorNotifyDto(List<String> mobiles, long businessId) {
         this.mobiles = mobiles;
-        this.warningLine = warningLine;
+        this.businessId = businessId;
     }
 
     public List<String> getMobiles() {
@@ -29,11 +29,12 @@ public class GenerateContractErrorNotifyDto implements Serializable {
         this.mobiles = mobiles;
     }
 
-    public List<String> getWarningLine() {
-        return warningLine;
+    public long getBusinessId() {
+        return businessId;
     }
 
-    public void setWarningLine(List<String> warningLine) {
-        this.warningLine = warningLine;
+    public void setBusinessId(long businessId) {
+        this.businessId = businessId;
     }
+
 }

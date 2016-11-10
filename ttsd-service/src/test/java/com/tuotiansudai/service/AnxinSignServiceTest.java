@@ -1,19 +1,18 @@
-package com.tuotiansudai.paywrapper.service;
+package com.tuotiansudai.service;
 
 import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.response.tx3.Tx3202ResVO;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.anxin.service.impl.AnxinSignServiceImpl;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.paywrapper.service.impl.AnxinSignServiceImpl;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
-import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,21 +20,15 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -94,7 +87,7 @@ public class AnxinSignServiceTest {
         when(loanerDetailsMapper.getByLoanId(anyLong())).thenReturn(getLoanerDetailsModel());
         when(anxinSignConnectService.generateContractBatch3202(anyLong(), anyString(), any(AnxinContractType.class), anyList())).thenReturn(new Tx3202ResVO());
 
-        BaseDto baseDto = anxinSignService.createContracts(loanModel.getId());
+        BaseDto baseDto = anxinSignService.createLoanContracts(loanModel.getId());
         assertTrue(baseDto.isSuccess());
     }
 
@@ -113,7 +106,7 @@ public class AnxinSignServiceTest {
         when(loanerDetailsMapper.getByLoanId(anyLong())).thenReturn(getLoanerDetailsModel());
         when(anxinSignConnectService.generateContractBatch3202(anyLong(), anyString(), any(AnxinContractType.class), anyList())).thenReturn(new Tx3202ResVO());
 
-        BaseDto baseDto = anxinSignService.createContracts(loanModel.getId());
+        BaseDto baseDto = anxinSignService.createLoanContracts(loanModel.getId());
         assertTrue(!baseDto.isSuccess());
     }
 
@@ -133,7 +126,7 @@ public class AnxinSignServiceTest {
         when(loanerDetailsMapper.getByLoanId(anyLong())).thenReturn(getLoanerDetailsModel());
         when(anxinSignConnectService.generateContractBatch3202(anyLong(), anyString(), any(AnxinContractType.class), anyList())).thenReturn(null);
 
-        BaseDto baseDto = anxinSignService.createContracts(loanModel.getId());
+        BaseDto baseDto = anxinSignService.createLoanContracts(loanModel.getId());
         assertTrue(!baseDto.isSuccess());
     }
 

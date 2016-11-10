@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -12,10 +13,9 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.job.AnxinContractHandleJob;
+import com.tuotiansudai.job.AnxinQueryContractJob;
 import com.tuotiansudai.job.InvestTransferCallbackJob;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -33,7 +33,6 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.AnxinSignService;
 import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -99,9 +98,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Autowired
     private SystemBillService systemBillService;
-
-    @Autowired
-    private UserMembershipMapper userMembershipMapper;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -505,8 +501,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 logger.debug("债权转让：生成合同，标的ID:" + transferApplicationModel.getId());
                 anxinSignService.createTransferContracts(transferApplicationModel.getId());
 
-                logger.debug("债权转让：创建job —— 十分钟后，查询并更新合同状态。标的ID:" + transferApplicationModel.getId());
-                updateContractResponseHandleJob(transferApplicationModel.getId());
             } else {
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is success", String.valueOf(investId)));
                 ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
@@ -580,19 +574,4 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         return investModel;
     }
 
-    private void updateContractResponseHandleJob(long businessId) {
-        try {
-            Date triggerTime = new DateTime().plusMinutes(AnxinContractHandleJob.HANDLE_DELAY_MINUTES)
-                    .toDate();
-            jobManager.newJob(JobType.ContractResponse, AnxinContractHandleJob.class)
-                    .addJobData(AnxinContractHandleJob.BUSINESS_ID, businessId)
-                    .addJobData(AnxinContractHandleJob.ANXIN_CONTRACT_TYPE, AnxinContractType.TRANSFER_CONTRACT)
-                    .withIdentity(JobType.ContractResponse.name(), "Loan-" + businessId)
-                    .replaceExistingJob(true)
-                    .runOnceAt(triggerTime)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.error("create update trnasfer contract response  handle job for loan[" + businessId + "] fail", e);
-        }
-    }
 }

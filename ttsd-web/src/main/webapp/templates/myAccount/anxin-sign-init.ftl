@@ -29,7 +29,7 @@
           <span class="init-checkbox-style on">
               <input type="checkbox" id="agreeOpen2" class="default-checkbox" checked>
             </span>
-            <label for="agreeOpen2" class="agreeOpen"><em>我已阅读并同意</em><a href="#" class="anxin_layer link-agree-free-SMS">《安心签免短信授权服务协议》</a> </label>
+            <label for="agreeOpen2" class="agreeOpen"><em>我已阅读并同意</em><a href="#" class="anxin_layer link-agree-free-SMS">《短信免责申明》</a> </label>
       </div>
 
     <div class="safety-advantage-box">
