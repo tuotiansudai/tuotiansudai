@@ -6,7 +6,7 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
-    <resultMap id="activityResultMap" type="ActivityModel">
+    <resultMap id="activityResultMap" type="com.tuotiansudai.activity.repository.model.ActivityModel">
         <id column="id" property="id"/>
         <result column="title" property="title"/>
         <result column="web_activity_url" property="webActivityUrl"/>
