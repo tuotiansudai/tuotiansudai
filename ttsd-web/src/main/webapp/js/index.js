@@ -34,8 +34,8 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
         (function() {
             var $preheat=$('.preheat',$homePageContainer);
             function countDownLoan(domElement) {
-                var $this=$(domElement);
-                return $this.each(function() {
+                return $(domElement).each(function() {
+                    var $this=$(this);
                     var countdown=$this.data('time');
                     if(countdown > 0) {
                        var timer= setInterval(function () {
