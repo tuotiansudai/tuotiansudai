@@ -13,9 +13,20 @@ import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
+import com.tuotiansudai.paywrapper.repository.mapper.ExtraRateNotifyRequestMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ExtraRateNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferWithNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -41,6 +52,9 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -86,6 +100,9 @@ public class ExtraRateServiceTest{
     @Autowired
     protected PaySyncClient paySyncClient;
 
+    @Autowired
+    private ExtraRateNotifyRequestMapper extraRateNotifyRequestMapper;
+
     private MockWebServer mockServer;
 
     private MockWebServer mockUmPayService() throws IOException {
@@ -121,7 +138,7 @@ public class ExtraRateServiceTest{
     }
 
     @Test
-    public void shouldNormalRepayOk() {
+    public void shouldNormalRepayOk() throws PayException{
         DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
         LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
         long loanRepay1ExpectedInterest = 1000;
@@ -133,26 +150,27 @@ public class ExtraRateServiceTest{
         UserModel userModel = this.createFakeUser("investor", 1000000, 0);
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName());
-
-
-        ExtraRateNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModell(loanRepay2.getId());
+        ExtraRateNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
+        extraRateNotifyRequestMapper.create(extraRateNotifyRequestModel);
 
         extraRateService.normalRepay(loanRepay2.getId());
 
-        /*InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
+        extraRateService.asyncExtraRateInvestCallback();
+
+        InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
 
         long actualInterest = investExtraRateModel.getExpectedInterest();
-        assertThat(investExtraRateModel.getActualInterest(), is(actualInterest));
+        assertThat(investExtraRateModel.getExpectedInterest(), is(actualInterest));
 
         long actualFee = investExtraRateModel.getExpectedFee();
-        assertThat(investExtraRateModel.getActualFee(), is(actualFee));
+        assertThat(investExtraRateModel.getExpectedFee(), is(actualFee));
         assertThat(investExtraRateModel.getRepayAmount(), is(actualInterest - actualFee));
 
         List<UserBillModel> userBills = userBillMapper.findByLoginName(investModel.getLoginName());
 
         assertThat(userBills.get(0).getAmount(), is(actualInterest - actualFee));
         assertThat(userBills.get(0).getBusinessType(), is(UserBillBusinessType.EXTRA_RATE));
-        assertThat(userBills.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));*/
+        assertThat(userBills.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
     }
 
     @Test
@@ -225,7 +243,12 @@ public class ExtraRateServiceTest{
         InvestModel investModel = this.createFakeInvest(fakeLoan.getId(), null, 1000000, userModel.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
         this.createFakeInvestExtraRate(fakeLoan.getId(), investModel.getId(), investModel.getAmount(), investModel.getLoginName());
 
+        ExtraRateNotifyRequestModel extraRateNotifyRequestModel = this.getFakeExtraRateNotifyRequestModel(investModel.getId());
+        extraRateNotifyRequestMapper.create(extraRateNotifyRequestModel);
+
         extraRateService.advanceRepay(loanRepay2.getId());
+
+        extraRateService.asyncExtraRateInvestCallback();
 
         InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
 
@@ -364,7 +387,7 @@ public class ExtraRateServiceTest{
     }
 
 
-    private ExtraRateNotifyRequestModel getFakeExtraRateNotifyRequestModell(Long orderId){
+    private ExtraRateNotifyRequestModel getFakeExtraRateNotifyRequestModel(Long orderId){
         ExtraRateNotifyRequestModel model = new ExtraRateNotifyRequestModel();
         model.setSign("sign");
         model.setSignType("RSA");

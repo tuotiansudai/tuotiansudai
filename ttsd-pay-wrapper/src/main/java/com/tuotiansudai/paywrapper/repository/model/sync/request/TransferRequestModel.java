@@ -30,6 +30,13 @@ public class TransferRequestModel extends BaseAsyncRequestModel {
 
     public TransferRequestModel() {
     }
+
+    public static TransferRequestModel newExtraRateRequest(String orderId, String payUserId, String amount, String notifyUrl){
+        TransferRequestModel model = newRequest(orderId, payUserId, amount);
+        model.notifyUrl = notifyUrl;
+        return model;
+    }
+
     public static TransferRequestModel newRequest(String orderId, String payUserId, String amount) {
         TransferRequestModel model = new TransferRequestModel();
         model.service = UmPayService.TRANSFER.getServiceName();

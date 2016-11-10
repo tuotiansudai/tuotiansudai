@@ -1,9 +1,5 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
-import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.util.MobileFrontCallbackService;
-
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

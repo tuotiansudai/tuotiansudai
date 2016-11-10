@@ -19,6 +19,7 @@ import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ExtraRateNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferWithNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -125,10 +126,11 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         }
         long amount = actualInterest - actualFee;
         if (amount > 0) {
+            investRateService.updateExtraRateData(investExtraRateModel, actualInterest, actualFee);
             String orderId = investExtraRateModel.getInvestId() + "X" + System.currentTimeMillis();
             try {
-                TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.newExtraRateRequest(
-                        orderId,
+                TransferRequestModel requestModel = TransferRequestModel.newExtraRateRequest(
+                        String.valueOf(orderId),
                         accountModel.getPayUserId(),
                         String.valueOf(amount),
                         "extra_rate_notify");
@@ -158,7 +160,6 @@ public class ExtraRateServiceImpl implements ExtraRateService {
     @Override
     public BaseDto<PayDataDto> asyncExtraRateInvestCallback() {
         List<ExtraRateNotifyRequestModel> todoList = extraRateNotifyRequestMapper.getTodoList(extraRateProcessListSize);
-
         for (ExtraRateNotifyRequestModel model : todoList) {
             if (updateExtraRateNotifyRequestStatus(model)) {
                 try {
@@ -208,6 +209,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
             InvestModel investModel = investMapper.findById(investExtraRateModel.getInvestId());
             long actualInterest = InterestCalculator.calculateExtraLoanRateInterest(loanModel, investExtraRateModel.getExtraRate(), investModel, new Date());
             long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(investModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+
             try {
                 this.sendExtraRateAmount(investExtraRateModel, actualInterest, actualFee);
             } catch (Exception e) {
