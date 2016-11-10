@@ -99,6 +99,17 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final int TEMP_PROJECT_CODE_EXPIRE_TIME = 1800; // 半小时
 
+    private static final int SEVEN_DAYS = 60 * 60 * 24 * 7; // 7天
+
+    public static final String LOAN_CONTRACT_IN_CREATING_KEY = "loanContractInCreating:";
+
+    public static final String LOAN_BATCH_NO_LIST_KEY = "loanBathNoList:";
+
+    public static final String TRANSFER_CONTRACT_IN_CREATING_KEY = "transferContractInCreating:";
+
+    public static final String TRANSFER_BATCH_NO_LIST_KEY = "transferBathNoList:";
+
+
     @Value(value = "${anxin.contract.batch.num}")
     private int batchNum;
 
@@ -293,6 +304,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public BaseDto createLoanContracts(long loanId) {
+
+        redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, SEVEN_DAYS, "1");
+
         List<CreateContractVO> createContractVOs = Lists.newArrayList();
         List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
         InvestModel investModel;
@@ -331,9 +345,11 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 }
                 createContractVOs.clear();
             }
-            logger.debug("创建job，十分钟后，查询并更新合同状态。标的ID:" + loanId);
-            updateContractResponseHandleJob(batchNoList, loanId, AnxinContractType.LOAN_CONTRACT);
         }
+        logger.debug("创建job，十分钟后，查询并更新合同状态。标的ID:" + loanId);
+        updateContractResponseHandleJob(batchNoList, loanId, AnxinContractType.LOAN_CONTRACT);
+
+        redisWrapperClient.setex(LOAN_BATCH_NO_LIST_KEY + loanId, SEVEN_DAYS, String.join(",", batchNoList));
         return baseDto;
     }
 
@@ -566,7 +582,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         //查询合同创建结果，以及处理中的batchNo
         List[] lists = anxinSignConnectService.queryContract(businessId, batchNoList, anxinContractType);
 
-        // 处理中的batchNo
+        // 合同还没有生成完毕的batchNo
         List<String> waitingBatchNoList = lists[0];
 
         // 处理结果

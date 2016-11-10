@@ -250,7 +250,9 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
     @Override
     public List[] queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {
+        // 合同还没有生成完毕的batchNo
         List<String> waitingBatchNoList = new ArrayList<>();
+
         List<ContractResponseView> contractResponseViews = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(batchNoList)) {
             for (String batchNo : batchNoList) {
@@ -262,16 +264,13 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                 }
                 if (tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null) {
                     for (CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()) {
-                        // TODO: remove this, don't need to update contractResponse table anymore
-                        anxinContractResponseMapper.updateRetByContractNo(createContractVO.getContractNo(),
-                                createContractVO.getCode(),
-                                createContractVO.getMessage(),
-                                DateTime.now().toDate());
+                        // TODO: insert response record
                         contractResponseViews.add(new ContractResponseView(Long.parseLong(createContractVO.getInvestmentInfo().get("orderId")),
                                 createContractVO.getContractNo(), createContractVO.getCode()));
                     }
                 } else {
-                    // 60030407
+                    // TODO: insert response record
+                    // 60030407 = 该批次还没有执行完毕，请稍后再试
                     if (tx3202ResVO != null && "60030407".equals(tx3202ResVO.getHead().getRetCode())) {
                         waitingBatchNoList.add(batchNo);
                     }
