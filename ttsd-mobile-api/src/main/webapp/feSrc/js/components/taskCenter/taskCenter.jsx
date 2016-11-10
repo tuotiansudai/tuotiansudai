@@ -7,6 +7,7 @@ import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
 import taskLineLeft from './task_line_left.png';
 import taskLineRight from './task_line_right.png';
+import task_banner from './task_banner1.png';
 
 const pageSize = 10;
 const MenuData = {
@@ -132,7 +133,6 @@ class taskCenter extends React.Component {
         state = {
             active: MenuData.tabHeader[0].value,
             isShowLoading: true,
-
             listData: {
                 newbieTasks: [],
                 advancedTasks: []
@@ -155,15 +155,20 @@ class taskCenter extends React.Component {
     }
     //当下滑固定菜单在顶部
     fixTopMenu(scrollY) {
-        let conOffsetTop=this.refs.scrollWrap.offsetTop;
+        let conOffsetTop=this.refs.imageTopHead.offsetHeight;
         let tabHeaderDom=document.getElementById('tabHeaderDom');
+        let OngoingBoxTop=document.getElementById('OngoingBox').offsetTop;
         if(!scrollY && tabHeaderDom.getAttribute('style')){
-            this.myScroll.scrollTo(0, -conOffsetTop*0.9, 0);
-            tabHeaderDom.setAttribute('style','top:'+conOffsetTop*0.98+'px;width:100%;left:0;height:1rem; line-height:1rem');
+
+            let menuScrollTop=OngoingBoxTop-tabHeaderDom.offsetHeight * 0.27;
+            let conScrollTop= OngoingBoxTop - tabHeaderDom.offsetHeight ;
+
+            this.myScroll.scrollTo(0, -conScrollTop, 0);
+            tabHeaderDom.setAttribute('style','position:absolute;top:'+menuScrollTop+'px;width:100%;left:0;height:1rem; line-height:1rem');
         }
         else if(scrollY && scrollY>=conOffsetTop) {
-            let yTop=scrollY+20;
-            tabHeaderDom.setAttribute('style','top:'+yTop+'px;width:100%;left:0;height:1rem; line-height:1rem');
+            let yTop=scrollY+tabHeaderDom.offsetHeight*0.35;
+            tabHeaderDom.setAttribute('style','position:absolute;top:'+yTop+'px;width:100%;left:0;height:1rem; line-height:1rem');
         }
         else if(scrollY && scrollY<conOffsetTop) {
             tabHeaderDom.removeAttribute('style');
@@ -172,8 +177,6 @@ class taskCenter extends React.Component {
     }
     tabHeaderClickHandler(event) {
         let value = event.target.dataset.value;
-        let top=this.myScroll.y-10;
-
         if(/active/.test(event.target.className) ) {
             return;
         }
@@ -281,15 +284,16 @@ class taskCenter extends React.Component {
 			<div className={main} >
                 <div className="bodyCon" ref='mainConWrap'>
                 <div className="clearfix">
-                <div className="imageTopHead" id="imageTopHead" ref="imageTopHead"></div>
-			    <div className={classNames({'MenuBox':true})} style={{top:this.state.menuTop}}  ref="tabHeader" id="tabHeaderDom">
-			        <ul >
-                        {MenuData.tabHeader.map((value, index) => {
-                            return <li className={classNames({ 'MenuBoxItemNormal': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
-                        })}
-			        </ul>
-			    </div>
-		
+                <div className="imageTopHead" id="imageTopHead" ref="imageTopHead">
+                    <img src={task_banner} />
+                </div>
+                    <div className={classNames({'MenuBox':true})}   ref="tabHeader" id="tabHeaderDom">
+                        <ul >
+                            {MenuData.tabHeader.map((value, index) => {
+                                return <li className={classNames({ 'MenuBoxItemNormal': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
+                            })}
+                        </ul>
+                    </div>
     			<div className="ContentBox" ref="scrollWrap">
     			     <div id="OngoingBox" className="OngoingBox clearfix" >
                 {loading}
