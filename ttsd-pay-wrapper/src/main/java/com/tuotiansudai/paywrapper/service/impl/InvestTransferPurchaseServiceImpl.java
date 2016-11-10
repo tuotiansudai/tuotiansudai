@@ -586,7 +586,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                     .toDate();
             jobManager.newJob(JobType.ContractResponse, AnxinContractHandleJob.class)
                     .addJobData(AnxinContractHandleJob.BUSINESS_ID, businessId)
-                    .addJobData(AnxinContractHandleJob.ANXIN_CONTRACT_TYPE, AnxinContractType.LOAN_CONTRACT)
+                    .addJobData(AnxinContractHandleJob.ANXIN_CONTRACT_TYPE, AnxinContractType.TRANSFER_CONTRACT)
                     .withIdentity(JobType.ContractResponse.name(), "Loan-" + businessId)
                     .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
