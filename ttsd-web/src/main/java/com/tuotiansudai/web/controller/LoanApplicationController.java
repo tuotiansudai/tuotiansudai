@@ -10,6 +10,7 @@ import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.LoanApplicationService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -23,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/loan-application")
 public class LoanApplicationController {
 
+    static Logger logger = Logger.getLogger(LoanApplicationController.class);
+
     @Autowired
     LoanApplicationService loanApplicationService;
 
@@ -34,7 +37,7 @@ public class LoanApplicationController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView("loan-application","responsive", true);
 
         String mobile = LoginUserInfo.getMobile();
         if (!StringUtils.isEmpty(mobile)) {
@@ -55,7 +58,10 @@ public class LoanApplicationController {
     @ResponseBody
     public BaseDto<BaseDataDto> create(@RequestBody LoanApplicationDto loanApplicationDto) {
         String loginName = LoginUserInfo.getLoginName();
-        loanApplicationDto.setLoginName(loginName);
+        if (StringUtils.isEmpty(loginName)) {
+            logger.debug("loginName is Empty!");
+        }
+        loanApplicationDto.setLoginName(null == loginName ? "" : loginName);
         return loanApplicationService.create(loanApplicationDto);
     }
 }

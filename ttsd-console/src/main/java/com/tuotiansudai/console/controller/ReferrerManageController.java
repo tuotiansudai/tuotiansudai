@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.repository.model.ReferrerManageView;
+import com.tuotiansudai.repository.model.ReferrerRewardStatus;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ReferrerManageService;
@@ -33,13 +34,14 @@ public class ReferrerManageController {
                                        @RequestParam(value = "rewardEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date rewardEndTime,
                                        @RequestParam(value = "role", required = false) Role role,
                                        @RequestParam(value = "source", required = false) Source source,
+                                       @RequestParam(value = "referrerRewardStatus", required = false) ReferrerRewardStatus referrerRewardStatus,
                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         DateTime investDateTime = new DateTime(investEndTime);
         DateTime rewardDateTime = new DateTime(rewardEndTime);
         ModelAndView modelAndView = new ModelAndView("/referrer-manage");
-        List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerMobile, investMobile, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source, index, pageSize);
-        int referrerManageCount = referrerManageService.findReferrerManageCount(referrerMobile, investMobile, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source);
+        List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerMobile, investMobile, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source,referrerRewardStatus, index, pageSize);
+        int referrerManageCount = referrerManageService.findReferrerManageCount(referrerMobile, investMobile, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source,referrerRewardStatus);
         long investAmountSum = referrerManageService.findReferrerManageInvestAmountSum(referrerMobile, investMobile, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source);
         long rewardAmountSum = referrerManageService.findReferrerManageRewardAmountSum(referrerMobile, investMobile, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source);
         modelAndView.addObject("referrerMobile", referrerMobile);
@@ -62,6 +64,9 @@ public class ReferrerManageController {
         modelAndView.addObject("hasNextPage", hasNextPage);
         Source[] sources = Source.values();
         modelAndView.addObject("sources", sources);
+        modelAndView.addObject("referrerRewardStatuses", ReferrerRewardStatus.values());
+        modelAndView.addObject("referrerRewardStatus",referrerRewardStatus);
+
         modelAndView.addObject("investAmountSum", investAmountSum);
         modelAndView.addObject("rewardAmountSum", rewardAmountSum);
         return modelAndView;

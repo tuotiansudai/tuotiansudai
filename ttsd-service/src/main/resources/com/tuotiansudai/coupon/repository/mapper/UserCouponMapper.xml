@@ -24,6 +24,29 @@
         <result column="status" property="status"/>
         <result column="exchange_code" property="exchangeCode"/>
         <result column="achievement_loan_id" property="achievementLoanId"/>
+        <association property="coupon" javaType="CouponModel">
+            <id column="coupon_model_id" property="id"/>
+            <result column="amount" property="amount"/>
+            <result column="rate" property="rate"/>
+            <result column="birthday_benefit" property="birthdayBenefit"/>
+            <result column="multiple" property="multiple"/>
+            <result column="coupon_start_time" property="startTime"/>
+            <result column="coupon_end_time" property="endTime"/>
+            <result column="used_count" property="usedCount"/>
+            <result column="total_count" property="totalCount"/>
+            <result column="active" property="active"/>
+            <result column="shared" property="shared"/>
+            <result column="issued_count" property="issuedCount"/>
+            <result column="invest_lower_limit" property="investLowerLimit"/>
+            <result column="coupon_type" property="couponType"/>
+            <result column="product_types" property="productTypes" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
+            <result column="deleted" property="deleted"/>
+            <result column="user_group" property="userGroup"/>
+            <result column="sms_alert" property="smsAlert"/>
+            <result column="deadline" property="deadline"/>
+            <result column="coupon_source" property="couponSource"/>
+            <result column="comment" property="comment"/>
+        </association>
     </resultMap>
 
     <resultMap id="useRecordMap" type="UserCouponView">
@@ -76,6 +99,39 @@
         select uc.* from user_coupon uc
         <if test="couponTypes != null and couponTypes.size != 0">
             JOIN coupon c on uc.coupon_id = c.id and c.coupon_type in
+            <foreach collection="couponTypes" item="couponType" open="(" separator="," close=")">
+                #{couponType}
+            </foreach>
+        </if>
+        where uc.login_name = #{loginName}
+    </select>
+
+    <select useCache="false" id="findUserCouponWithCouponByLoginName" resultMap="userCouponResultMap" parameterType="map">
+        select  uc.*,
+        c.id as coupon_model_id,
+        c.amount as amount,
+        c.rate as rate,
+        c.birthday_benefit as birthday_benefit,
+        c.multiple as multiple,
+        c.start_time as coupon_start_time,
+        c.end_time as coupon_end_time,
+        c.used_count as used_count,
+        c.total_count as total_count,
+        c.active as active,
+        c.shared as shared,
+        c.issued_count as issued_count,
+        c.invest_lower_limit as invest_lower_limit,
+        c.coupon_type as coupon_type,
+        c.product_types as product_types,
+        c.deleted as deleted,
+        c.user_group as user_group,
+        c.sms_alert as sms_alert,
+        c.deadline as deadline,
+        c.coupon_source as coupon_source,
+        c.comment as comment
+        from user_coupon uc JOIN coupon c on uc.coupon_id = c.id
+        <if test="couponTypes != null and couponTypes.size != 0">
+            and c.coupon_type in
             <foreach collection="couponTypes" item="couponType" open="(" separator="," close=")">
                 #{couponType}
             </foreach>
