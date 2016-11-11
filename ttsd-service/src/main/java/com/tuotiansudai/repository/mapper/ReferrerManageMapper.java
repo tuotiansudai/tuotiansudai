@@ -1,9 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.ReferrerManageView;
-import com.tuotiansudai.repository.model.ReferrerRelationView;
-import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +13,8 @@ public interface ReferrerManageMapper {
     int findReferrerManageCount(@Param("referrerMobile") String referrerMobile, @Param("investMobile") String investMobile,
                                 @Param("investStartTime") Date investStartTime, @Param("investEndTime") Date investEndTime,
                                 @Param("level") Integer level, @Param("rewardStartTime") Date rewardStartTime,
-                                @Param("rewardEndTime") Date rewardEndTime, @Param("role") Role role, @Param("source") Source source);
+                                @Param("rewardEndTime") Date rewardEndTime, @Param("role") Role role, @Param("source") Source source,
+                                @Param("referrerRewardStatus") ReferrerRewardStatus referrerRewardStatus);
 
     long findReferrerManageInvestAmountSum(@Param("referrerMobile") String referrerMobile, @Param("investMobile") String investMobile,
                                 @Param("investStartTime") Date investStartTime, @Param("investEndTime") Date investEndTime,
@@ -32,6 +30,7 @@ public interface ReferrerManageMapper {
                                                 @Param("investStartTime") Date investStartTime, @Param("investEndTime") Date investEndTime,
                                                 @Param("level") Integer level, @Param("rewardStartTime") Date rewardStartTime,
                                                 @Param("rewardEndTime") Date rewardEndTime, @Param("role") Role role, @Param("source") Source source,
+                                                @Param("referrerRewardStatus") ReferrerRewardStatus referrerRewardStatus,
                                                 @Param("startLimit") int startLimit, @Param("endLimit") int endLimit);
 
     List<ReferrerRelationView> findReferRelationList(@Param("referrerLoginName") String referrerLoginName,
