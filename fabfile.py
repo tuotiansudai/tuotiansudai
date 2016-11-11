@@ -36,6 +36,7 @@ def migrate():
 
 def mk_war():
     local('/usr/local/bin/paver jcversion')
+    local('/opt/gradle/latest/bin/gradle initMQ -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('/opt/gradle/latest/bin/gradle ttsd-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('/opt/gradle/latest/bin/gradle ttsd-activity:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('/opt/gradle/latest/bin/gradle ttsd-pay-wrapper:war -PconfigPath=/workspace/v2config/default/ttsd-config/ -PpayConfigPath=/workspace/v2config/default/ttsd-pay-wrapper/')
