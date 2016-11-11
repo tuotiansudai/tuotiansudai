@@ -225,7 +225,7 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
                     break;
                 case 'link-agree-free-SMS':
                     contentDom=$('.free-SMS-box',$safetyAgreement);
-                    showAgreement('安心签免短信授权服务协议',contentDom);
+                    showAgreement('短信免责申明',contentDom);
                     break;
             }
 

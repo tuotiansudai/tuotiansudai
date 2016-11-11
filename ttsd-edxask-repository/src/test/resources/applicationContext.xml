@@ -33,8 +33,8 @@
                 <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${ask.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${ask.jdbc.username}"/>
                 <property name="password" value="${ask.jdbc.password}"/>
-                <property name="minimumIdle" value="${ask.minimumIdle}"/>
-                <property name="maximumPoolSize" value="${ask.maximumPoolSize}"/>
+                <property name="minimumIdle" value="${ask.ask.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${ask.ask.maximumPoolSize}"/>
                 <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
                 <property name="dataSourceProperties">
                     <props>

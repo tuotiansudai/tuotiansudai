@@ -11,6 +11,8 @@ grant select,insert,update,delete,create,drop,alter,index on edxpoint.* to sdpoi
 
 grant select,insert,update,delete,create,drop,alter,index on edxask.* to sdask@'%' identified by 'sdask';
 
+grant select,insert,update,delete,create,drop,alter,index on anxin_operations.* to sdanxin@'%' identified by 'sdanxin';
+
 update mysql.user set password=password('root') where user='root';
 
 flush privileges;
