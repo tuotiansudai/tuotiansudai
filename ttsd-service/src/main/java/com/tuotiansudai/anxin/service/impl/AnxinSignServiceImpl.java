@@ -308,7 +308,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, SEVEN_DAYS, "1");
 
         List<CreateContractVO> createContractVOs = Lists.newArrayList();
-        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
+        List<InvestModel> investModels = investMapper.findContractFailInvest(loanId);
         InvestModel investModel;
         BaseDto baseDto = new BaseDto();
         LoanModel loanModel = loanMapper.findById(loanId);

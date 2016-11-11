@@ -23,7 +23,6 @@ public class AnxinQueryContractRequestMapperTest {
         AnxinQueryContractRequestModel anxinQueryContractRequestModel = new AnxinQueryContractRequestModel();
         anxinQueryContractRequestModel.setBatchNo("t");
         anxinQueryContractRequestModel.setCreatedTime(DateTime.now().toDate());
-        anxinQueryContractRequestModel.setJsonDate("123");
         anxinQueryContractRequestModel.setTxTime("123");
         anxinQueryContractRequestMapper.create(anxinQueryContractRequestModel);
     }

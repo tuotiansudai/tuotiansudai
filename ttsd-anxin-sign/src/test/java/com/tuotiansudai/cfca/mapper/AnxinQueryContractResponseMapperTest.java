@@ -22,7 +22,6 @@ public class AnxinQueryContractResponseMapperTest {
     public void shouldCreateIsOk() {
         AnxinQueryContractResponseModel anxinQueryContractResponseModel = new AnxinQueryContractResponseModel();
         anxinQueryContractResponseModel.setTxTime("1");
-        anxinQueryContractResponseModel.setJsonData("1");
         anxinQueryContractResponseModel.setCreatedTime(DateTime.now().toDate());
         anxinQueryContractResponseModel.setBatchNo("1");
         anxinQueryContractResponseModel.setRetCode("1");
