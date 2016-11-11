@@ -26,6 +26,7 @@ public class MQTools {
         properties.load(new FileInputStream(configFile));
 
         String endPoint = properties.getProperty("aliyun.mns.endpoint");
+        System.out.printf(endPoint);
         String accessKeyId = properties.getProperty("aliyun.mns.accessKeyId");
         String accessKeySecret = properties.getProperty("aliyun.mns.accessKeySecret");
 
@@ -46,6 +47,7 @@ public class MQTools {
             });
             mnsClient.close();
         } catch (Exception e) {
+            System.out.println(e.toString());
             e.printStackTrace();
         } finally {
             mnsClient.close();
@@ -57,6 +59,7 @@ public class MQTools {
             CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
             return account.getMNSClient();
         } catch (Exception e) {
+            System.out.println(e.toString());
             e.printStackTrace();
         }
         return null;
@@ -129,6 +132,7 @@ public class MQTools {
     }
 
     private static SubscriptionMeta generateSubscriptionMeta(MessageTopic topic, String endpoint) {
+        System.out.printf(endpoint);
         SubscriptionMeta subscriptionMeta = new SubscriptionMeta();
         subscriptionMeta.setNotifyStrategy(SubscriptionMeta.NotifyStrategy.EXPONENTIAL_DECAY_RETRY);
         subscriptionMeta.setNotifyContentFormat(SubscriptionMeta.NotifyContentFormat.JSON);
