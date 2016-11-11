@@ -14,6 +14,7 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.ReferrerRelationService;
 import com.tuotiansudai.service.RegisterUserService;
+import com.tuotiansudai.util.TransactionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Autowired
     private ReferrerRelationService referrerRelationService;
 
+    @Autowired
+    private MQClient mqClient;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean register(UserModel userModel) throws ReferrerRelationException {
@@ -51,6 +55,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(userModel.getLoginName(), membershipModel.getId());
         userMembershipMapper.create(userMembershipModel);
 
+        TransactionUtil.runAfterCommit(() -> mqClient.publishMessage(MessageTopic.UserRegistered, dto.getMobile()));
         return true;
     }
 }
