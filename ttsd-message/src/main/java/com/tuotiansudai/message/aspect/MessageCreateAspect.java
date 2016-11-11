@@ -11,7 +11,6 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.quartz.JobExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +21,6 @@ import java.text.MessageFormat;
 public class MessageCreateAspect {
 
     private final static String LOAN_MESSAGE_REDIS_KEY = "web:loan:loanMessageMap";
-
-    private final static String LOAN_ID_KEY = "LOAN_ID";
 
     private static Logger logger = Logger.getLogger(MessageCreateAspect.class);
 
@@ -41,7 +38,7 @@ public class MessageCreateAspect {
     public void updateLoanPointcut() {
     }
 
-    @Pointcut("execution(* *..FundraisingStartJob.execute(..))")
+    @Pointcut("execution(* *..LoanCreateService.startRaising(..))")
     public void startRaisingLoanPointcut() {
     }
 
@@ -52,8 +49,7 @@ public class MessageCreateAspect {
     @SuppressWarnings(value = "unchecked")
     @AfterReturning(value = "startRaisingLoanPointcut()")
     public void afterStartRaisingLoan(JoinPoint joinPoint) {
-        JobExecutionContext context = (JobExecutionContext) joinPoint.getArgs()[0];
-        long loanId = Long.parseLong(String.valueOf(context.getJobDetail().getJobDataMap().get(LOAN_ID_KEY)));
+        long loanId = (long) joinPoint.getArgs()[0];
         try {
             String messageId = redisWrapperClient.hget(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanId));
             if (!Strings.isNullOrEmpty(messageId)) {
