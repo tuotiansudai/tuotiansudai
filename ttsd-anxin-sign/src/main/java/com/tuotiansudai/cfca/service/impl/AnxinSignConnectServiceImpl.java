@@ -283,7 +283,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                 try {
                     tx3202ResVO = queryContractByBatchNo(batchNo);
                 } catch (PKIException e) {
-                    logger.error(MessageFormat.format("[安心签] Query contract response error, loan/transfer Id:{0}, batchNo:{1}", businessId, batchNo), e);
+                    logger.error(MessageFormat.format("[安心签] Query contract response error, loan/transfer Id:{0}, batchNo:{1}", businessId + "", batchNo), e);
                     continue;
                 }
                 if (tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null) {
@@ -297,7 +297,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                         waitingBatchNoList.add(batchNo);
                     }
                     logger.error(MessageFormat.format("[安心签] Query contract response error. businessId:{0}, batchNo:{1}, errorCode:{2}, errorMessage:{3}",
-                            businessId, batchNo, tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage()));
+                            businessId + "", batchNo, tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage()));
                 }
             }
         }
