@@ -137,7 +137,7 @@ task flywayAA(type: FlywayMigrateTask) {
     extension.locations = ["filesystem:db_migration/aa"]
     extension.schemas = ["aa"]
 
-    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/aa?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.url = "jdbc:mysql://${defaultHost}:${defaultPort}/aa?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("common.jdbc.username")
     extension.password = properties.getProperty("common.jdbc.password")
 }
@@ -158,7 +158,7 @@ task flywayUMP(type: FlywayMigrateTask) {
     extension.locations = ["filesystem:db_migration/ump_operations"]
     extension.schemas = ["ump_operations"]
 
-    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/ump_operations?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.url = "jdbc:mysql://${defaultHost}:${defaultPort}/ump_operations?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("common.jdbc.username")
     extension.password = properties.getProperty("common.jdbc.password")
 }
@@ -179,7 +179,7 @@ task flywayAnxin(type: FlywayMigrateTask) {
     extension.locations = ["filesystem:db_migration/anxin_operations"]
     extension.schemas = ["anxin_operations"]
 
-    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/anxin_operations?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.url = "jdbc:mysql://${defaultHost}:${defaultPort}/anxin_operations?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("anxin.jdbc.username")
     extension.password = properties.getProperty("anxin.jdbc.password")
 }
@@ -200,7 +200,7 @@ task flywaySms(type: FlywayMigrateTask) {
     extension.locations = ["filesystem:db_migration/sms_operations"]
     extension.schemas = ["sms_operations"]
 
-    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/sms_operations?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.url = "jdbc:mysql://${defaultHost}:${defaultPort}/sms_operations?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("common.jdbc.username")
     extension.password = properties.getProperty("common.jdbc.password")
 }
@@ -221,7 +221,7 @@ task flywayWorker(type: FlywayMigrateTask) {
     extension.locations = ["filesystem:db_migration/job_worker"]
     extension.schemas = ["job_worker"]
 
-    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/job_worker?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.url = "jdbc:mysql://${defaultHost}:${defaultPort}/job_worker?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("common.jdbc.username")
     extension.password = properties.getProperty("common.jdbc.password")
 }
@@ -242,7 +242,7 @@ task flywayAsk(type: FlywayMigrateTask) {
     extension.locations = ["filesystem:db_migration/edxask"]
     extension.schemas = ["edxask"]
 
-    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxask?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.url = "jdbc:mysql://${defaultHost}:${defaultPort}/edxask?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("ask.jdbc.username")
     extension.password = properties.getProperty("ask.jdbc.password")
 }
@@ -263,7 +263,7 @@ task flywayActivity(type: FlywayMigrateTask) {
     extension.locations = ["filesystem:db_migration/edxactivity"]
     extension.schemas = ["edxactivity"]
 
-    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxactivity?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.url = "jdbc:mysql://${defaultHost}:${defaultPort}/edxactivity?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("activity.jdbc.username")
     extension.password = properties.getProperty("activity.jdbc.password")
 }
@@ -284,7 +284,7 @@ task flywayPoint(type: FlywayMigrateTask) {
     extension.locations = ["filesystem:db_migration/edxpoint"]
     extension.schemas = ["edxpoint"]
 
-    extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/edxpoint?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    extension.url = "jdbc:mysql://${defaultHost}:${defaultPort}/edxpoint?useUnicode=true&characterEncoding=UTF-8"
     extension.user = properties.getProperty("point.jdbc.username")
     extension.password = properties.getProperty("point.jdbc.password")
 }
