@@ -56,11 +56,8 @@ public class MQTools {
     }
 
     private static MNSClient getMnsClient(String endPoint, String accessKeyId, String accessKeySecret) {
-        System.out.println(endPoint);
         try {
-            System.out.println("59");
             CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
-            System.out.println("61");
             return account.getMNSClient();
         } catch (Exception e) {
             System.out.println(e.toString());
