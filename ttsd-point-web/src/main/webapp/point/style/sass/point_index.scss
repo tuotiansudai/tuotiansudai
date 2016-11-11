@@ -150,7 +150,7 @@
       width:100%;
       height:350px;
       position: relative;
-      background:url("/point/images/point-material.jpg") no-repeat center;
+      background:url("/point/images/point-material_20161107.jpg") no-repeat center;
       .store-login{
         width:300px;
         height:320px;
@@ -318,6 +318,7 @@
           border:1px solid #bcbcbc;
           box-sizing:border-box;
           padding:15px 69px;
+          cursor:pointer;
           &:hover{
             border:1px solid #0087e6;
             box-shadow:0px 0px 5px #0087e6;

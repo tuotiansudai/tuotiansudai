@@ -58,7 +58,7 @@
                 </#list>
             </li>
             <li>
-                <span>年化收益: </span>
+                <span>预期年化收益: </span>
                 <#assign rateUrl = "/loan-list?{rateType}&status=${status!}&productType=${productType!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}">
                 <#assign rateMap = {"":"全部","rateStart=0.1&rateEnd=0.12":"10-12%","rateStart=0.12&rateEnd=0.14":"12-14%","rateStart=0.14&rateEnd=0":"14%以上"}>
                 <#assign rateKeys = rateMap?keys>
