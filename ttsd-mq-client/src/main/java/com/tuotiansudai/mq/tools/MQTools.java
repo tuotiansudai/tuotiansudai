@@ -148,7 +148,7 @@ public class MQTools {
         subscriptionMeta.setNotifyStrategy(SubscriptionMeta.NotifyStrategy.EXPONENTIAL_DECAY_RETRY);
         subscriptionMeta.setNotifyContentFormat(SubscriptionMeta.NotifyContentFormat.JSON);
         subscriptionMeta.setTopicName(topic.getTopicName());
-        subscriptionMeta.setEndpoint(endpoint);
+        subscriptionMeta.setEndpoint(endpoint.replace("cn-hzjbp-a","cn-hangzhou"));
         return subscriptionMeta;
     }
 }
