@@ -387,7 +387,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public String investPaybackCallback(Map<String, String> paramsMap, String originalQueryString) throws Exception {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
