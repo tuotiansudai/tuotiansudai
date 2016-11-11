@@ -37,6 +37,8 @@ public class UserCouponModel implements Serializable{
 
     private InvestStatus status;
 
+    private CouponModel coupon;
+
     //TODO: Remove
     private String loanName;
 
@@ -208,5 +210,13 @@ public class UserCouponModel implements Serializable{
 
     public void setAchievementLoanId(long achievementLoanId) {
         this.achievementLoanId = achievementLoanId;
+    }
+
+    public CouponModel getCoupon() {
+        return coupon;
+    }
+
+    public void setCoupon(CouponModel coupon) {
+        this.coupon = coupon;
     }
 }

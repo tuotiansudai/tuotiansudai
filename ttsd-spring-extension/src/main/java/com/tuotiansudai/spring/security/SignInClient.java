@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.squareup.okhttp.*;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.MessageFormat;
 
@@ -34,6 +36,9 @@ public class SignInClient {
 
     @Autowired
     private HttpServletRequest httpServletRequest;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     public SignInClient() {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -60,9 +65,25 @@ public class SignInClient {
                 .post(formEncodingBuilder.build());
 
         try {
-            String response = this.execute(request);
-            return objectMapper.readValue(response, SignInResult.class);
-        } catch (IOException e) {
+            Response response = this.execute(request);
+
+            SignInResult signInResult = objectMapper.readValue(response.body().string(), SignInResult.class);
+
+            if(signInResult !=null && !signInResult.isResult() ){
+                return signInResult;
+            }
+
+            HttpSession session = httpServletRequest.getSession(false);
+            logger.debug(MessageFormat.format("[Login] user({0}) original session id({1}) new session id({2})",
+                    signInResult.getUserInfo().getLoginName(),
+                    session != null ? session.getId() : null,
+                    signInResult.getToken()));
+            if (session != null) {
+                redisWrapperClient.setex(session.getId(), 30, signInResult.getToken());
+            }
+
+            return signInResult;
+        } catch (Exception e) {
             logger.error(MessageFormat.format("[sign in client] login failed (user={0} token={1} source={2} deviceId={3})", username, token, source, deviceId), e);
         }
 
@@ -87,7 +108,18 @@ public class SignInClient {
                 .post(requestBody);
 
         try {
-            return objectMapper.readValue(this.execute(request), SignInResult.class);
+            SignInResult signInResult = objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
+
+            HttpSession session = httpServletRequest.getSession(false);
+            logger.debug(MessageFormat.format("[Login] user({0}) original session id({1}) new session id({2})",
+                    signInResult.getUserInfo().getLoginName(),
+                    session != null ? session.getId() : null,
+                    signInResult.getToken()));
+            if (session != null) {
+                redisWrapperClient.setex(session.getId(), 30, signInResult.getToken());
+            }
+
+            return signInResult;
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] login no password failed (user={0} source={1})", username, source.name()));
         }
@@ -105,7 +137,7 @@ public class SignInClient {
                 .post(RequestBody.create(null, new byte[0]));
 
         try {
-            return objectMapper.readValue(this.execute(request), SignInResult.class);
+            return objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] logout (token={0})", token));
         }
@@ -126,7 +158,7 @@ public class SignInClient {
                 .url(MessageFormat.format("http://{0}:{1}/refresh/{2}", signInHost, signInPort, token))
                 .post(requestBody);
         try {
-            return objectMapper.readValue(this.execute(request), SignInResult.class);
+            return objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] refresh failed (token={0} source={1})", token, source.name()));
         }
@@ -144,7 +176,7 @@ public class SignInClient {
                 .url(MessageFormat.format("http://{0}:{1}/session/{2}?source={3}", signInHost, signInPort, token, source))
                 .get();
         try {
-            SignInResult signInResult = objectMapper.readValue(this.execute(request), SignInResult.class);
+            SignInResult signInResult = objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
             if (!signInResult.isResult()) {
                 logger.info(MessageFormat.format("[sign in client] session({0}) is invalid", token));
             }
@@ -173,7 +205,7 @@ public class SignInClient {
         }
     }
 
-    private String execute(Request.Builder requestBuilder) throws IOException {
+    private Response execute(Request.Builder requestBuilder) throws IOException {
         int times = 0;
         String header = httpServletRequest.getHeader("X-Forwarded-For");
         if (!Strings.isNullOrEmpty(header)) {
@@ -183,7 +215,7 @@ public class SignInClient {
         do {
             Response response = okHttpClient.newCall(request).execute();
             if (response.code() < 500) {
-                return response.body().string();
+                return response;
             }
 
             logger.error(MessageFormat.format("[sign in client] 500 error (url={0})", request.httpUrl().url()));

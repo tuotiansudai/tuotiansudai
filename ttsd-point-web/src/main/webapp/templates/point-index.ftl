@@ -145,43 +145,37 @@
             <ul class="material-list">
                 <#list virtualProducts as virtualProduct>
                     <#if virtualProduct_index < 2>
-                        <li class="big-gift">
-                            <a href="/point-shop/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/detail">
-                                <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
+                        <li class="big-gift" data-href="/point-shop/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/detail">
+                            <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
 
-                                <p><img src="${staticServer}${virtualProduct.imageUrl}" width="160" height="100"></p>
-                                <p class="convert-btn">
-                                    <span class="name-text">${virtualProduct.name!"0"}</span>
-                                    <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
-                                    <#if virtualProduct?? && virtualProduct.leftCount ==0 >
-                                        <span class="fl get-btn">已售罄</span>
-                                    <#else>
-                                        <a class="fl"
-                                           href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span
-                                                class="fl get-btn">立即兑换</span></a>
-                                    </#if>
-
-                                </p>
-                            </a>
+                            <p><img src="${staticServer}${virtualProduct.imageUrl}" width="160" height="100"></p>
+                            <p class="convert-btn">
+                                <span class="name-text">${virtualProduct.name!"0"}</span>
+                                <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
+                                <#if virtualProduct?? && virtualProduct.leftCount ==0 >
+                                    <span class="fl get-btn">已售罄</span>
+                                <#else>
+                                    <a class="fl"
+                                       href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span class="fl get-btn">立即兑换</span></a>
+                                </#if>
+                            </p>
                         </li>
                     <#else>
-                        <li>
-                            <a href="/point-shop/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/detail">
-                                <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
+                        <li data-href="/point-shop/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/detail">
+                            <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
 
-                                <p><img src="${staticServer}${virtualProduct.imageUrl}" width="160" height="100"></p>
-                                <p class="convert-btn">
-                                    <span class="name-text">${virtualProduct.name}</span>
-                                    <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
-                                    <#if virtualProduct?? && virtualProduct.leftCount ==0 >
-                                        <span class="fl get-btn">已售罄</span>
-                                    <#else>
-                                        <a class="fl"
-                                           href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span
-                                                class="fl get-btn">立即兑换</span></a>
-                                    </#if>
-                                </p>
-                            </a>
+                            <p><img src="${staticServer}${virtualProduct.imageUrl}" width="160" height="100"></p>
+                            <p class="convert-btn">
+                                <span class="name-text">${virtualProduct.name}</span>
+                                <span class="price-text">尊享价：<i>${virtualProduct.points?string('0')}</i>积分</span>
+                                <#if virtualProduct?? && virtualProduct.leftCount ==0 >
+                                    <span class="fl get-btn">已售罄</span>
+                                <#else>
+                                    <a class="fl"
+                                       href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span
+                                            class="fl get-btn">立即兑换</span></a>
+                                </#if>
+                            </p>
                         </li>
                     </#if>
                 </#list>
@@ -204,46 +198,42 @@
             <ul class="material-list">
                 <#list physicalProducts as physicalProduct>
                     <#if physicalProduct_index < 2>
-                        <li class="big-gift">
-                            <a href="/point-shop/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/detail">
-                                <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
+                        <li class="big-gift" data-href="/point-shop/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/detail">
+                            <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
 
-                                <p class="mater-img picture-item">
-                                    <img src="${staticServer}${physicalProduct.imageUrl}" width="160" height="100"/>
-                                </p>
+                            <p class="mater-img picture-item">
+                                <img src="${staticServer}${physicalProduct.imageUrl}" width="160" height="100"/>
+                            </p>
 
-                                <p class="convert-btn">
-                                    <span class="name-text">${physicalProduct.name}</span>
-                                    <span class="price-text">尊享价：<i>${physicalProduct.points?string('0')}</i>积分</span>
-                                    <#if physicalProduct?? && physicalProduct.leftCount ==0 >
-                                        <span class="fl get-btn">已售罄</span>
-                                    <#else>
-                                        <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/1"><span
-                                                class="get-btn">立即兑换</span></a>
-                                    </#if>
-                                </p>
-                            </a>
+                            <p class="convert-btn">
+                                <span class="name-text">${physicalProduct.name}</span>
+                                <span class="price-text">尊享价：<i>${physicalProduct.points?string('0')}</i>积分</span>
+                                <#if physicalProduct?? && physicalProduct.leftCount ==0 >
+                                    <span class="fl get-btn">已售罄</span>
+                                <#else>
+                                    <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/1"><span
+                                            class="get-btn">立即兑换</span></a>
+                                </#if>
+                            </p>
                         </li>
                     <#else>
-                        <li>
-                            <a href="/point-shop/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/detail">
-                                <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
+                        <li data-href="/point-shop/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/detail">
+                            <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
 
-                                <p class="mater-img picture-item">
-                                    <img src="${staticServer}${physicalProduct.imageUrl}" width="160" height="100"/>
-                                </p>
+                            <p class="mater-img picture-item">
+                                <img src="${staticServer}${physicalProduct.imageUrl}" width="160" height="100"/>
+                            </p>
 
-                                <p class="convert-btn">
-                                    <span class="name-text">${physicalProduct.name}</span>
-                                    <span class="price-text">尊享价：<i>${physicalProduct.points?string('0')}</i>积分</span>
-                                    <#if physicalProduct?? && physicalProduct.leftCount ==0 >
-                                        <span class="fl get-btn">已售罄</span>
-                                    <#else>
-                                        <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/1"><span
-                                                class="get-btn">立即兑换</span></a>
-                                    </#if>
-                                </p>
-                            </a>
+                            <p class="convert-btn">
+                                <span class="name-text">${physicalProduct.name}</span>
+                                <span class="price-text">尊享价：<i>${physicalProduct.points?string('0')}</i>积分</span>
+                                <#if physicalProduct?? && physicalProduct.leftCount ==0 >
+                                    <span class="fl get-btn">已售罄</span>
+                                <#else>
+                                    <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/1"><span
+                                            class="get-btn">立即兑换</span></a>
+                                </#if>
+                            </p>
                         </li>
                     </#if>
                 </#list>
