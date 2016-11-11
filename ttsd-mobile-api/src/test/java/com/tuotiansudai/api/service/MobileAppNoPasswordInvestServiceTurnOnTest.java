@@ -1,8 +1,8 @@
 package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
-import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.NoPasswordInvestTurnOnRequestDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppNoPasswordInvestTurnOnServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -33,11 +33,11 @@ public class MobileAppNoPasswordInvestServiceTurnOnTest extends ServiceTestBase{
         AccountModel accountModel = new AccountModel("loginName", "userName", "identityNumber", "payUserId", "payAccountId", new Date());
         accountModel.setNoPasswordInvest(true);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
-        BaseParamDto baseParamDto = new BaseParamDto();
+        NoPasswordInvestTurnOnRequestDto noPasswordInvestTurnOnRequestDto = new NoPasswordInvestTurnOnRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("loginName");
-        baseParamDto.setBaseParam(baseParam);
-        BaseResponseDto baseResponseDto = mobileAppNoPasswordInvestTurnOnService.noPasswordInvestTurnOn(baseParamDto, "127.0.0.1");
+        noPasswordInvestTurnOnRequestDto.setBaseParam(baseParam);
+        BaseResponseDto baseResponseDto = mobileAppNoPasswordInvestTurnOnService.noPasswordInvestTurnOn(noPasswordInvestTurnOnRequestDto, "127.0.0.1");
 
         assertEquals("0000",baseResponseDto.getCode());
         assertEquals("",baseResponseDto.getMessage());
