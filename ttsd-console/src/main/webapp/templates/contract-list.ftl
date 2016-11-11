@@ -22,7 +22,7 @@
             </div>
 
             <div class="form-group">
-                <button class="btn btn-default" type="button" id="find">查询并更新合同</button>
+                <button class="btn btn-default" type="button" id="find">查询合同结果并更新合同编号</button>
             </div>
         </div>
     </form>

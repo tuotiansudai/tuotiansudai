@@ -28,6 +28,7 @@ import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JobManager;
 import com.tuotiansudai.util.UUIDGenerator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -304,7 +305,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public BaseDto createLoanContracts(long loanId) {
-
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, SEVEN_DAYS, "1");
 
         List<CreateContractVO> createContractVOs = Lists.newArrayList();
@@ -320,6 +320,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         List<String> batchNoList = new ArrayList<>();
 
+        boolean processResult = true;
         for (int i = 0; i < investModels.size(); i++) {
             investModel = investModels.get(i);
             CreateContractVO createContractVO = collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
@@ -334,22 +335,32 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                     //创建合同
                     Tx3202ResVO tx3202ResVO = anxinSignConnectService.generateContractBatch3202(loanId, batchNo, AnxinContractType.LOAN_CONTRACT, createContractVOs);
 
-                    baseDto.setSuccess(tx3202ResVO == null ? false : true);
+                    if(!isSuccess(tx3202ResVO)){
+                        processResult = false;
+                    }
                     batchNoList.add(batchNo);
                 } catch (PKIException e) {
                     smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
 
                     baseDto.setSuccess(false);
                     logger.error(MessageFormat.format("[安心签] create contract error , loanId:{0}", loanId), e);
-
                 }
                 createContractVOs.clear();
             }
         }
-        logger.debug("创建job，十分钟后，查询并更新合同状态。标的ID:" + loanId);
-        updateContractResponseHandleJob(batchNoList, loanId, AnxinContractType.LOAN_CONTRACT);
+
+        if(!processResult){
+            logger.error("[安心签]: some contract create error , ready send sms . loanId" + loanId);
+            smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
+        }
+
+        if (CollectionUtils.isNotEmpty((batchNoList))){
+            logger.debug("[安心签]:创建job，十分钟后，查询并更新合同状态。标的ID:" + loanId);
+            updateContractResponseHandleJob(batchNoList, loanId, AnxinContractType.LOAN_CONTRACT);
+        }
 
         redisWrapperClient.setex(LOAN_BATCH_NO_LIST_KEY + loanId, SEVEN_DAYS, String.join(",", batchNoList));
+        baseDto.setSuccess(true);
         return baseDto;
     }
 
@@ -383,7 +394,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         BaseDto baseDto = new BaseDto();
         String batchNo = UUIDGenerator.generate();
         try {
-            logger.debug(MessageFormat.format("[安心签] create transfer contract begin , loanId:{0}, batchNo{1}", transferApplicationId, batchNo));
+            logger.debug(MessageFormat.format("[安心签] create transfer contract begin , transferId:{0}, batchNo{1}", transferApplicationId, batchNo));
             //创建合同
             Tx3202ResVO tx3202ResVO = anxinSignConnectService.generateContractBatch3202(transferApplicationId, batchNo, AnxinContractType.TRANSFER_CONTRACT, createContractVOs);
 
@@ -392,13 +403,17 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
 
             baseDto.setSuccess(false);
-            logger.error(MessageFormat.format("[安心签] create transfer contract error , loanId:{0}", transferApplicationId), e);
-
+            logger.error(MessageFormat.format("[安心签] create transfer contract error , transferId:{0}", transferApplicationId), e);
         }
         createContractVOs.clear();
 
-        logger.debug("创建job，十分钟后，查询并更新合同状态。债权ID:" + transferApplicationId);
-        updateContractResponseHandleJob(Arrays.asList(batchNo), transferApplicationId, AnxinContractType.TRANSFER_CONTRACT);
+        if(baseDto.isSuccess()){
+            logger.debug("[安心签]:创建job，十分钟后，查询并更新合同状态。债权ID:" + transferApplicationId);
+            updateContractResponseHandleJob(Arrays.asList(batchNo), transferApplicationId, AnxinContractType.TRANSFER_CONTRACT);
+        }else{
+            logger.error("[安心签]: create transfer contract error , ready send sms . transferId" + transferApplicationId);
+            smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
+        }
 
         redisWrapperClient.setex(TRANSFER_BATCH_NO_LIST_KEY + transferApplicationId, SEVEN_DAYS, batchNo);
         return baseDto;

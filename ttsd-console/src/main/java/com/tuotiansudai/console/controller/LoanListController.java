@@ -184,6 +184,11 @@ public class LoanListController {
             batchStr = redisWrapperClient.get(AnxinSignServiceImpl.TRANSFER_BATCH_NO_LIST_KEY + businessId);
         }
 
+        if(Strings.isNullOrEmpty(batchStr)){
+            baseDataDto.setMessage("该标的已经超过7天,不可以重新查询合同结果并更新合同编号!");
+            return baseDto;
+        }
+
         anxinSignService.queryContract(businessId, Lists.newArrayList(batchStr.split(",")), anxinContractType);
         return new BaseDto<>(true);
     }
