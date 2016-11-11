@@ -89,7 +89,9 @@ public class MQTools {
         TopicMeta topicMeta = new TopicMeta();
         topicMeta.setTopicName(messageTopic.getTopicName());
         QueueMeta queueMetaTemplate = new QueueMeta();
+        System.out.println("92");
         mnsClient.createPullTopic(topicMeta, new Vector<>(subscriptQueueNameList), true, queueMetaTemplate);
+        System.out.println("93");
     }
 
     private static void initSubscriptQueue(MNSClient mnsClient, MessageTopic messageTopic) {
