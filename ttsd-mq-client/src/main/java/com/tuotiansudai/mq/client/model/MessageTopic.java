@@ -8,4 +8,8 @@ public enum MessageTopic {
     MessageTopic(String topicName) {
         this.topicName = topicName;
     }
+
+    public String getTopicName() {
+        return topicName;
+    }
 }
