@@ -3,7 +3,7 @@
 
 <div class="tour-slide"></div>
 <div class="page-width">
-    <div class="main-content">
+    <div class="main-content-heavily">
         <div class="con-inner">
             <div class="title-column">
                 <img src="${staticServer}/activity/images/heavily-courtship/title01.jpg" alt="获奖条件">
@@ -11,10 +11,20 @@
 
             <div class="category-info-frame">
                 <div class="category-box">
-                    <i class="line-top"></i>
-                    <i class="line-bottom"></i>
-                    <i class="line-left"></i>
-                    <i class="line-right"></i>
+                    <i class="column-title-co">有魄力</i>
+                    <i class="line-align left"></i>
+                    <i class="line-align right"></i>
+                    <i class="line-vertical top"></i>
+                    <i class="line-vertical bottom"></i>
+                    <em class="icon-reward"></em>
+                    <div class="info-word">
+                        每个债权放出后
+                        <b>第一个</b>
+                        投资的用户
+                    </div>
+                    <div class="info-img">
+                        <img src="${staticServer}/activity/images/heavily-courtship/sg-01.jpg" alt="每个债权放出后第一个投资的用户">
+                    </div>
                 </div>
             </div>
         </div>

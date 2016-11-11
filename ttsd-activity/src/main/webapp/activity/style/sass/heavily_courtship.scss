@@ -1,6 +1,6 @@
 @charset "utf-8";
 body {
-  background: #eec859 url("/activity/images/autumn-tour/bg-yun.png") center 775px no-repeat;
+  background: #eec859 center 775px no-repeat;
   overflow-x: hidden;
 }
 .main-frame {
@@ -11,21 +11,101 @@ body {
   height: 860px;
   background: url("/activity/images/heavily-courtship/banner-top.jpg") center top no-repeat;
 }
-.main-content {
+.main-content-heavily {
   margin: 0 26px 0 24px;
   background: #fff;
   .con-inner {
     padding:25px;
   }
   //line
-  .line-top {
-
+  .line-vertical {
+    display: inline-block;
+    height:13px;
+    width:100%;
+    background: url("../../images/heavily-courtship/base-line-top-bottom.png") left top repeat-x;
+  }
+  .line-align {
+    display: inline-block;
+    height:100%;
+    width:13px;
+    background: url("../../images/heavily-courtship/base-line-left-right.png") left top repeat-y;
+  }
+  .column-title-co {
+    height:60px;
+    width:100%;
+    z-index: 10;
+    background: url("/activity/images/heavily-courtship/bg-title.png") left top no-repeat;
+  }
+  .icon-reward {
+    width:75px;
+    height:68px;
+    background: url("../../images/heavily-courtship/base-ic-reward.png") left top no-repeat;
+  }
+  .info-img {
+    position: absolute;
+    right: 25px;
+    top: 18px;
+    width:212px;
+    height:154px;
+    display: inline-block;
+    text-align: right;
+  }
+  .info-word {
+    position: absolute;
+    top: 57px;
+    font-size: 16px;
+    color: #646464;
+    left: 20px;
+    b {
+      display: block;
+      color: #da493f;
+      font-size: 26px;
+    }
   }
   .category-info-frame {
     .category-box {
-      width:430px;
+      width:436px;
       height:215px;
+      margin-top: 50px;
       position: relative;
+      i {
+        &.column-title-co {
+          position: absolute;
+          top: -27px;
+          left: -19px;
+          padding-left: 40px;
+          padding-top: 5px;
+          font-size: 26px;
+          color: #652680;
+          z-index: 10;
+        }
+        &.left {
+          position: absolute;
+          left:0;
+          top:0;
+        }
+        &.right {
+          position: absolute;
+          right:0;
+          top:0;
+        }
+        &.top {
+          position: absolute;
+          left:0;
+          top:0;
+        }
+        &.bottom {
+          position: absolute;
+          left:0;
+          bottom:0;
+        }
+      }
+      .icon-reward {
+        position: absolute;
+        top:32%;
+        left:30%;
+      }
+
     }
   }
 
