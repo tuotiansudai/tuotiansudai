@@ -36,8 +36,8 @@
                     </em></dd>
                 </dl>
                 <dl>
-                    <dt>剩余期数</dt>
-                    <dd><em>${transferApplication.leftPeriod!}</em></dd>
+                    <dt>剩余天数</dt>
+                    <dd><em>${transferApplication.leftDays!}</em></dd>
                 </dl>
             </div>
             <div class="info-detail">
