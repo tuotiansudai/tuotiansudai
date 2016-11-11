@@ -1,6 +1,5 @@
 package com.tuotiansudai.cfca.mapper;
 
-
 import com.tuotiansudai.cfca.model.AnxinQueryContractResponseModel;
 import org.apache.ibatis.annotations.Insert;
 import org.springframework.stereotype.Repository;
@@ -8,8 +7,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AnxinQueryContractResponseMapper {
 
-    @Insert("INSERT INTO anxin_query_contract_response(batch_no,contract_no,tx_time,ret_code,ret_message,json_data,created_time)" +
-            "VALUES(#{batchNo},#{contractNo},#{txTime},#{retCode},#{retMessage},#{jsonData},#{createdTime})")
+    @Insert("INSERT INTO anxin_query_contract_response(abusiness_id,batch_no,tx_time,ret_code,ret_message,template_id,is_sign,contract_no,file_id,code,message,sign_infos,investment_info,created_time)" +
+            "VALUES(#{businessId},#{batchNo},#{txTime},#{retCode},#{retMessage},#{templateId},#{isSign},#{contractNo},#{fileId},#{code},#{message},#{signInfos},#{investmentInfo},#{createdTime})")
     void create(AnxinQueryContractResponseModel anxinQueryContractResponseModel);
 
 }

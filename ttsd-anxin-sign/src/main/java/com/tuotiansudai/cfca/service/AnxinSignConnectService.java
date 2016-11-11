@@ -21,7 +21,7 @@ public interface AnxinSignConnectService {
 
     Tx3202ResVO generateContractBatch3202(long loanId, String batchNo, AnxinContractType anxinContractType, List<CreateContractVO> createContractList) throws PKIException;
 
-    Tx3202ResVO queryContractByBatchNo(String batchNo) throws PKIException;
+    Tx3202ResVO queryContractByBatchNo(long businessId, String batchNo) throws PKIException;
 
     byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException;
 

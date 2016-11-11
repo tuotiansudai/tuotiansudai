@@ -147,7 +147,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3102ReqVO);
-        logger.debug("req:" + req);
+        logger.debug(MessageFormat.format("[安心签] verifyCaptcha. userId:{0}, projectCode:{1}, checkCode:{2}, request date:{3}", userId, projectCode, checkCode, req));
 
         String txCode = "3102";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
@@ -157,7 +157,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
-        logger.debug("res:" + res);
+        logger.debug(MessageFormat.format("[安心签] verifyCaptcha. userId:{0}, projectCode:{1}, checkCode:{2}, response date:{3}", userId, projectCode, checkCode, res));
 
         Tx3ResVO tx3102ResVO = readResponse(res, Tx3102ResVO.class);
 
@@ -207,8 +207,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
-        logger.debug(MessageFormat.format("[安心签] loanId:{0},batchNo:{1} created contract request date:{2}", businessId, batchNo, req));
-
+        logger.debug(MessageFormat.format("[安心签] loanId:{0}, batchNo:{1} created contract request date:{2}", businessId, batchNo, req));
 
         String txCode = "3202";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
@@ -235,7 +234,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     }
 
     @Override
-    public Tx3202ResVO queryContractByBatchNo(String batchNo) throws PKIException {
+    public Tx3202ResVO queryContractByBatchNo(long businessId, String batchNo) throws PKIException {
         HttpConnector httpConnector = new HttpConnector();
         httpConnector.init();
 
@@ -248,7 +247,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         String req = jsonObjectMapper.writeValueAsString(tx3211ReqVO);
         logger.debug(MessageFormat.format("[安心签] find contract response , batchNo:{0}", batchNo));
 
-        anxinQueryContractRequestMapper.create(new AnxinQueryContractRequestModel(batchNo, tx3211ReqVO.getHead().getTxTime(), req, DateTime.now().toDate()));
+        anxinQueryContractRequestMapper.create(new AnxinQueryContractRequestModel(businessId, batchNo, tx3211ReqVO.getHead().getTxTime(), DateTime.now().toDate()));
 
         String txCode = "3211";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
@@ -260,13 +259,12 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         if (tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null) {
             for (CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()) {
-                anxinQueryContractResponseMapper.create(new AnxinQueryContractResponseModel(batchNo, createContractVO.getContractNo(),
-                        tx3202ResVO.getHead().getTxTime(), createContractVO.getCode(), createContractVO.getMessage(),
-                        jsonObjectMapper.writeValueAsString(createContractVO), DateTime.now().toDate()));
+                anxinQueryContractResponseMapper.create(new AnxinQueryContractResponseModel(
+                        businessId, batchNo, tx3202ResVO.getHead().getTxTime(), tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage(), createContractVO));
             }
         } else {
-            anxinQueryContractResponseMapper.create(new AnxinQueryContractResponseModel(batchNo, "", "",
-                    tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage(), res, DateTime.now().toDate()));
+            anxinQueryContractResponseMapper.create(new AnxinQueryContractResponseModel(
+                    businessId, batchNo, tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage()));
         }
         return tx3202ResVO;
     }
@@ -281,7 +279,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
             for (String batchNo : batchNoList) {
                 Tx3202ResVO tx3202ResVO;
                 try {
-                    tx3202ResVO = queryContractByBatchNo(batchNo);
+                    tx3202ResVO = queryContractByBatchNo(businessId, batchNo);
                 } catch (PKIException e) {
                     logger.error(MessageFormat.format("[安心签] Query contract response error, loan/transfer Id:{0}, batchNo:{1}", businessId + "", batchNo), e);
                     continue;

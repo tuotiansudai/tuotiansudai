@@ -1,24 +1,22 @@
 package com.tuotiansudai.cfca.model;
 
-import com.tuotiansudai.cfca.dto.AnxinContractType;
-
 import java.util.Date;
 
 public class AnxinQueryContractRequestModel {
 
     private long id;
+    long businessId;
     private String batchNo;
     private String txTime;
-    private String jsonDate;
     private Date createdTime;
 
     public AnxinQueryContractRequestModel() {
     }
 
-    public AnxinQueryContractRequestModel(String batchNo, String txTime, String jsonDate, Date createdTime) {
+    public AnxinQueryContractRequestModel(long businessId, String batchNo, String txTime, Date createdTime) {
+        this.businessId = businessId;
         this.batchNo = batchNo;
         this.txTime = txTime;
-        this.jsonDate = jsonDate;
         this.createdTime = createdTime;
     }
 
@@ -28,6 +26,14 @@ public class AnxinQueryContractRequestModel {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(long businessId) {
+        this.businessId = businessId;
     }
 
     public String getBatchNo() {
@@ -44,14 +50,6 @@ public class AnxinQueryContractRequestModel {
 
     public void setTxTime(String txTime) {
         this.txTime = txTime;
-    }
-
-    public String getJsonDate() {
-        return jsonDate;
-    }
-
-    public void setJsonDate(String jsonDate) {
-        this.jsonDate = jsonDate;
     }
 
     public Date getCreatedTime() {

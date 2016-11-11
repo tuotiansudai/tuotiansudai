@@ -15,6 +15,7 @@ class Deployment(object):
         self.jcversion()
         self.compile()
         self.build_and_unzip_worker()
+        self.build_mq_consumer()
         self.mk_static_package()
         self.init_docker()
 
@@ -25,7 +26,7 @@ class Deployment(object):
 
     def compile(self):
         print "Compiling..."
-        sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint war'.format(
+        sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint initMQ war'.format(
             self._gradle))
         sh('cp /workspace/new_version_config/signin_service/settings_local.py ./signin_service/')
 
@@ -35,6 +36,11 @@ class Deployment(object):
         sh('cd ./ttsd-job-worker && {0} -Pwork=invest distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker && {0} -Pwork=jpush distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker/build/distributions && unzip \*.zip')
+
+    def build_mq_consumer(self):
+        print "Making MQ consumer build..."
+        sh('cd ./ttsd-loan-mq-consumer && {0} distZip'.format(self._gradle))
+        sh('cd ./ttsd-loan-mq-consumer/build/distributions && unzip \*.zip')
 
     def mkwar(self):
         print "Making war..."
