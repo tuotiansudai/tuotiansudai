@@ -5,10 +5,9 @@ import ajax from 'utils/ajax';
 import IScroll from 'iscroll/build/iscroll-probe';
 import imagesLoaded from 'imagesloaded';
 import classNames from 'classnames';
-import Immutable from 'seamless-immutable';
-import taskBanner from './task_banner1.png';
 import taskLineLeft from './task_line_left.png';
 import taskLineRight from './task_line_right.png';
+import task_banner from './task_banner1.png';
 
 const pageSize = 10;
 const MenuData = {
@@ -34,7 +33,6 @@ class ButtonStatus extends React.Component {
         let description=this.props.description;
 
         if(!isComplete) {
-            // onClick={this.jumpToWhere.bind(this)}
             button=<a className={description? 'TaskItemBtn' : 'TaskItemBtn column-one'} url={url} onTouchTap={this.jumpToWhere.bind(this)} data-value={value} data-url={url} >去完成</a>;
         }
         else  {
@@ -71,12 +69,12 @@ class NewbieTaskGroup extends React.Component {
         });
             return (
             <div className="NewbieTaskGroup">
-            <div className="HeaderGroup">
+            <div className="HeaderGroup" >
                 <img src={taskLineLeft} />
                 <span className="HeaderTitle">新手任务</span>
                 <img src={taskLineRight}/>
             </div>
-            <div className="scroll-wrap clearfix" ref="scrollWrap">
+            <div className="scroll-wrap clearfix">
                 {rows}
                 </div>
             </div>
@@ -110,13 +108,13 @@ class AdvanceTaskGroup extends React.Component {
 
         return (
             <div className="AdvanceTaskGroup">
-            <div className="HeaderGroup">
+            <div className="HeaderGroup" ref="HeaderGroup">
                 <img src={taskLineLeft} />
                 <span className="HeaderTitle">进阶任务</span>
                 <img src={taskLineRight} />
             </div>
 
-            <div className="scroll-wrap clearfix" ref="scrollOngoing">
+            <div className="scroll-wrap clearfix" >
                {rows}
             </div>
             
@@ -135,14 +133,11 @@ class taskCenter extends React.Component {
         state = {
             active: MenuData.tabHeader[0].value,
             isShowLoading: true,
-
             listData: {
                 newbieTasks: [],
                 advancedTasks: []
             }
         };
-
-    listIndex = 1;
 
     destroyIscroll() {
         if (this.myScroll) {
@@ -158,19 +153,39 @@ class taskCenter extends React.Component {
             done: callback
         });
     }
+    //当下滑固定菜单在顶部
+    fixTopMenu(scrollY) {
+        let conOffsetTop=this.refs.imageTopHead.offsetHeight;
+        let tabHeaderDom=document.getElementById('tabHeaderDom');
+        let OngoingBoxTop=document.getElementById('OngoingBox').offsetTop;
+        if(!scrollY && tabHeaderDom.getAttribute('style')){
+
+            let menuScrollTop=OngoingBoxTop-tabHeaderDom.offsetHeight * 0.27;
+            let conScrollTop= OngoingBoxTop - tabHeaderDom.offsetHeight ;
+
+            this.myScroll.scrollTo(0, -conScrollTop, 0);
+            tabHeaderDom.setAttribute('style','position:absolute;top:'+menuScrollTop+'px;width:100%;left:0;height:1rem; line-height:1rem');
+        }
+        else if(scrollY && scrollY>=conOffsetTop) {
+            let yTop=scrollY+tabHeaderDom.offsetHeight*0.35;
+            tabHeaderDom.setAttribute('style','position:absolute;top:'+yTop+'px;width:100%;left:0;height:1rem; line-height:1rem');
+        }
+        else if(scrollY && scrollY<conOffsetTop) {
+            tabHeaderDom.removeAttribute('style');
+        }
+
+    }
     tabHeaderClickHandler(event) {
         let value = event.target.dataset.value;
-       let top=this.myScroll.y-10;
-       let imgHeight=document.getElementById('imageTopHead').scrollHeight*1.1;
         if(/active/.test(event.target.className) ) {
             return;
         }
         this.setState({
           active: value,
           isShowLoading:true
-
         });
-        this.myScroll.scrollTo(0, -imgHeight, 1000);
+        this.fixTopMenu();
+
         if(value=='ONGOING') {
             this.fetchData('/task-center/tasks',(response) => {
 
@@ -219,46 +234,41 @@ class taskCenter extends React.Component {
 
 	}
     componentDidUpdate() {
+        //数据加载完成后
+        if(!this.state.isShowLoading) {
+            imagesLoaded(this.refs.mainConWrap).on('done', () => {
+                let tabHeaderDom=document.getElementById('tabHeaderDom');
+                let menuHeight=tabHeaderDom.clientHeight*0.5;
+                if (!this.myScroll) {
+                    this.refs.mainConWrap.style.height=document.documentElement.clientHeight +'px';
+                    this.myScroll = new IScroll(this.refs.mainConWrap,{
+                        probeType: 3,
+                        mouseWheel: true,
+                        hScrollbar:false,
+                        vScrollbar:true,
+                        momentum:false,
+                        useTransition:false,
+                        bounce:false,
+                        useTransform:true
 
-        imagesLoaded(this.refs.mainConWrap).on('always', () => {
-            setTimeout(() => {
-            if (!this.myScroll) {
-                this.refs.mainConWrap.style.height=document.documentElement.clientHeight +'px';
-                // this.refs.scrollWrap.style.height = (document.documentElement.clientHeight - this.refs.tabHeader.offsetHeight) + 'px';
-                this.myScroll = new IScroll(this.refs.mainConWrap,{
-                    probeType: 3,
-                    mouseWheel: true,
-                    hScrollbar:false,
-                    vScrollbar:true,
-                    momentum:false,
-                    useTransition:false,
-                    bounce:false,
-                    useTransform:true
+                    });
+                    this.myScroll.on('scroll',function() {
+                        let curY=Math.abs(this.myScroll.y)+menuHeight;
+                        this.fixTopMenu(curY);
+                    }.bind(this));
 
-                });
-                this.myScroll.on('scroll',function() {
-                     let imgHeight=document.getElementById('imageTopHead').scrollHeight;
-                    let tabHeaderDom=document.getElementById('tabHeaderDom');
-                    let maxY=Math.abs(this.myScroll.scrollerHeight);
-                    let menuHeight=tabHeaderDom.clientHeight*0.5;
-                    let curY=Math.abs(this.myScroll.y)+menuHeight;
-
-                    if(curY>imgHeight) {
-                        tabHeaderDom.setAttribute('style','top:'+curY+'px;width:100%;left:0;height:1rem; line-height:1rem');
+                }
+                else {
+                    this.myScroll.refresh();
+                    if(!this.myScroll.hasVerticalScroll) {
+                        //垂直方向没有滚动条
+                        tabHeaderDom.removeAttribute('style');
                     }
-                    else {
-                        tabHeaderDom.setAttribute('style','top:5.33rem;');
-                    }
-                }.bind(this));
+                }
+            });
 
-            }
-            else {
-                this.myScroll.refresh();
-            }
-          },100);
+        }
 
-
-        });
     }
 
 	componentWillUnmount() {
@@ -270,15 +280,16 @@ class taskCenter extends React.Component {
 			<div className={main} >
                 <div className="bodyCon" ref='mainConWrap'>
                 <div className="clearfix">
-                <div className="imageTopHead" id="imageTopHead" ref="imageTopHead"></div>
-			    <div className={classNames({'MenuBox':true})} style={{top:this.state.menuTop}}  ref="tabHeader" id="tabHeaderDom">
-			        <ul >
-                        {MenuData.tabHeader.map((value, index) => {
-                            return <li className={classNames({ 'MenuBoxItemNormal': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
-                        })}
-			        </ul>
-			    </div>
-		
+                <div className="imageTopHead" id="imageTopHead" ref="imageTopHead">
+                    <img src={task_banner} />
+                </div>
+                    <div className={classNames({'MenuBox':true})}   ref="tabHeader" id="tabHeaderDom">
+                        <ul >
+                            {MenuData.tabHeader.map((value, index) => {
+                                return <li className={classNames({ 'MenuBoxItemNormal': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
+                            })}
+                        </ul>
+                    </div>
     			<div className="ContentBox" ref="scrollWrap">
     			     <div id="OngoingBox" className="OngoingBox clearfix" >
                 {loading}
@@ -292,7 +303,6 @@ class taskCenter extends React.Component {
                 </div>
 			</div>	    
 		);
-
         if (this.state.isShowLoading) {
             loading = <div className="loading"><i className="fa fa-spinner fa-spin"></i></div>;
         }
