@@ -39,7 +39,7 @@ public class ContractController {
                 httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
                 return;
             }
-            response.setContentType("application/pdf;charset=UTF-8");
+            response.setContentType("application/octet-stream;charset=UTF-8");
             contractService.generateContractPdf(pdfString, response.getOutputStream());
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -54,7 +54,7 @@ public class ContractController {
                 httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
                 return;
             }
-            response.setContentType("application/pdf;charset=UTF-8");
+            response.setContentType("application/octet-stream;charset=UTF-8");
             contractService.generateContractPdf(pdfString, response.getOutputStream());
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
