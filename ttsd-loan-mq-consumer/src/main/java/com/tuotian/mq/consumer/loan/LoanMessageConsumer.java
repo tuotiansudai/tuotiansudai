@@ -23,7 +23,7 @@ public class LoanMessageConsumer implements MessageConsumer {
 
     @Override
     public MessageTopicQueue queue() {
-        return MessageTopicQueue.UserRegistered_CouponGiving;
+        return MessageTopicQueue.UserRegistered_CouponAssigning;
     }
 
     @Transactional
