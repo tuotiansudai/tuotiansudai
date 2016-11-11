@@ -102,6 +102,9 @@ public class AnxinQueryContractJob implements Job {
                         String.valueOf(businessId), anxinContractType.name(), String.join(",", waitingBatchNo)));
                 this.createAnxinQueryContractJob(waitingBatchNo, businessId, anxinContractType);
             } else {
+                // 查询结束，清空计数器
+                redisWrapperClient.del(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId);
+
                 // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
                 if (anxinContractType == AnxinContractType.LOAN_CONTRACT) {
                     List<InvestModel> contractFailList = investService.findContractFailInvest(businessId);

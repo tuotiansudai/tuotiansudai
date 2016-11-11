@@ -527,7 +527,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investorLoginName);
 
         if (investorAnxinProp == null || Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())) {
-            logger.error(MessageFormat.format("[安心签] create contract error,investorAnxinProp is not anxin sign , loanid:{0} , investId:{1} ,userId:{2}", loanId, investId, investorLoginName));
+            logger.error(MessageFormat.format("[安心签] create contract error, investor has not signed anxin yet. loanid:{0}, investId:{1}, userId:{2}", loanId, investId, investorLoginName));
             return null;
         }
 

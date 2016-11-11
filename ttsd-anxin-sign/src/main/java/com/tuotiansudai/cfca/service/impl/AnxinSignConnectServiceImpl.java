@@ -227,7 +227,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
                 anxinContractResponseMapper.create(new AnxinContractResponseModel(businessId,
                         tx3202ResVO.getBatchNo(), createContractVO.getContractNo(), tx3202ResVO.getHead().getTxTime(), tx3202ResVO.getHead().getLocale(),
-                        DateTime.now().toDate(),tx3202ResVO.getHead().getRetCode(),tx3202ResVO.getHead().getRetMessage()));
+                        DateTime.now().toDate(), tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage()));
             }
         }
         logger.debug(MessageFormat.format("[安心签] loanId:{0},batchNo:{1} created contract response date:{2}", businessId, batchNo, res));
@@ -258,12 +258,15 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         Tx3202ResVO tx3202ResVO = (Tx3202ResVO) readResponse(res, Tx3202ResVO.class);
 
-        if(tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null){
-            for(CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()){
-                anxinQueryContractResponseMapper.create(new AnxinQueryContractResponseModel(batchNo,createContractVO.getContractNo(),tx3202ResVO.getHead().getTxTime(),createContractVO.getCode(),createContractVO.getMessage(),res,DateTime.now().toDate()));
+        if (tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null) {
+            for (CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()) {
+                anxinQueryContractResponseMapper.create(new AnxinQueryContractResponseModel(batchNo, createContractVO.getContractNo(),
+                        tx3202ResVO.getHead().getTxTime(), createContractVO.getCode(), createContractVO.getMessage(),
+                        jsonObjectMapper.writeValueAsString(createContractVO), DateTime.now().toDate()));
             }
-        }else{
-            anxinQueryContractResponseMapper.create(new AnxinQueryContractResponseModel(batchNo,"","",tx3202ResVO.getHead().getRetCode(),tx3202ResVO.getHead().getRetMessage(),res,DateTime.now().toDate()));
+        } else {
+            anxinQueryContractResponseMapper.create(new AnxinQueryContractResponseModel(batchNo, "", "",
+                    tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage(), res, DateTime.now().toDate()));
         }
         return tx3202ResVO;
     }
