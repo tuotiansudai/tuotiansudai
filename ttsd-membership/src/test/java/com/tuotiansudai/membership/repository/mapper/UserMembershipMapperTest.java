@@ -9,8 +9,6 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -26,9 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -246,7 +242,7 @@ public class UserMembershipMapperTest {
     }
 
     @Test
-    public void shouldFindLoginNameMembershipByLevelIsOk(){
+    public void shouldFindLoginNameMembershipByLevelIsOk() {
         List<String> level0 = userMembershipMapper.findLoginNameMembershipByLevel(1);
         List<String> level1 = userMembershipMapper.findLoginNameMembershipByLevel(2);
         List<String> level3 = userMembershipMapper.findLoginNameMembershipByLevel(3);
@@ -269,6 +265,36 @@ public class UserMembershipMapperTest {
         loginNames = userMembershipMapper.findLoginNameMembershipByLevel(3);
         assertTrue(level3.size() == loginNames.size());
         loginNames = userMembershipMapper.findLoginNameMembershipByLevel(5);
-        assertTrue(loginNames.size()>level4.size());
+        assertTrue(loginNames.size() > level4.size());
+    }
+
+    @Test
+    public void testUpdate() {
+        prepareUserMembershipData();
+
+        UserMembershipModel originChangeUserMembershipModel = userMembershipMapper.findByLoginName("testUser1").get(0);
+        UserMembershipModel originOtherUserMembershipModel = userMembershipMapper.findByLoginName("testUser2").get(0);
+
+        originChangeUserMembershipModel.setLoginName("testUser3");
+        originChangeUserMembershipModel.setMembershipId(3);
+        originChangeUserMembershipModel.setExpiredTime(DateTime.parse("1999-06-30T01:20").toDate());
+        originChangeUserMembershipModel.setCreatedTime(DateTime.parse("1989-06-30T01:20").toDate());
+        originChangeUserMembershipModel.setType(UserMembershipType.GIVEN);
+
+        userMembershipMapper.update(originChangeUserMembershipModel);
+
+        UserMembershipModel updateChangeUserMembershipModel = userMembershipMapper.findByLoginNameByType("testUser3", UserMembershipType.GIVEN);
+        assertEquals(originChangeUserMembershipModel.getLoginName(), updateChangeUserMembershipModel.getLoginName());
+        assertEquals(originChangeUserMembershipModel.getMembershipId(), updateChangeUserMembershipModel.getMembershipId());
+        assertEquals(originChangeUserMembershipModel.getExpiredTime(), updateChangeUserMembershipModel.getExpiredTime());
+        assertEquals(originChangeUserMembershipModel.getCreatedTime(), updateChangeUserMembershipModel.getCreatedTime());
+        assertEquals(originChangeUserMembershipModel.getType(), updateChangeUserMembershipModel.getType());
+
+        UserMembershipModel updateOtherUserMembershipModel = userMembershipMapper.findByLoginName("testUser2").get(0);
+        assertEquals(originOtherUserMembershipModel.getLoginName(), updateOtherUserMembershipModel.getLoginName());
+        assertEquals(originOtherUserMembershipModel.getMembershipId(), updateOtherUserMembershipModel.getMembershipId());
+        assertEquals(originOtherUserMembershipModel.getExpiredTime(), updateOtherUserMembershipModel.getExpiredTime());
+        assertEquals(originOtherUserMembershipModel.getCreatedTime(), updateOtherUserMembershipModel.getCreatedTime());
+        assertEquals(originOtherUserMembershipModel.getType(), updateOtherUserMembershipModel.getType());
     }
 }
