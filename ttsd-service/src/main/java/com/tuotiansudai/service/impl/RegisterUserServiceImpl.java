@@ -7,6 +7,8 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.mq.client.MQClient;
+import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.Role;
