@@ -16,17 +16,8 @@ import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.repository.mapper.ExtraRateNotifyRequestMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ExtraRateNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.TransferWithNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -52,9 +43,6 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -385,7 +373,6 @@ public class ExtraRateServiceTest{
         loanMapper.create(fakeLoanModel);
         return fakeLoanModel;
     }
-
 
     private ExtraRateNotifyRequestModel getFakeExtraRateNotifyRequestModel(Long orderId){
         ExtraRateNotifyRequestModel model = new ExtraRateNotifyRequestModel();
