@@ -66,17 +66,19 @@ public class MobileAppExchangeServiceTest extends ServiceTestBase{
         baseParam.setUserId("test");
         exchangeRequestDto.setBaseParam(baseParam);
         exchangeRequestDto.setExchangeCode("127389719");
-        UserCouponModel userCouponModel = new UserCouponModel();
-        userCouponModel.setId(123456789);
-        userCouponModel.setStartTime(new DateTime("2016-01-01").toDate());
-        userCouponModel.setEndTime(new DateTime("2016-04-05").toDate());
-        userCouponModel.setExchangeCode(exchangeRequestDto.getExchangeCode());
 
         CouponModel couponModel = new CouponModel();
         couponModel.setCouponType(CouponType.INTEREST_COUPON);
         couponModel.setRate(5);
         couponModel.setInvestLowerLimit(100);
         couponModel.setProductTypes(Lists.newArrayList(ProductType._30));
+
+        UserCouponModel userCouponModel = new UserCouponModel();
+        userCouponModel.setId(123456789);
+        userCouponModel.setStartTime(new DateTime("2016-01-01").toDate());
+        userCouponModel.setEndTime(new DateTime("2016-04-05").toDate());
+        userCouponModel.setExchangeCode(exchangeRequestDto.getExchangeCode());
+        userCouponModel.setCoupon(couponModel);
 
         when(exchangeCodeService.getValueBase31(anyString())).thenReturn(123L);
         when(exchangeCodeService.checkExchangeCodeCorrect(anyString(), anyLong(), any(CouponModel.class))).thenReturn(true);
@@ -87,7 +89,7 @@ public class MobileAppExchangeServiceTest extends ServiceTestBase{
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
 
         when(couponMapper.findById(anyLong())).thenReturn(couponModel);
-        when(userCouponMapper.findByLoginName(anyString(),any(List.class))).thenReturn(Lists.newArrayList(userCouponModel));
+        when(userCouponMapper.findUserCouponWithCouponByLoginName(anyString(),any(List.class))).thenReturn(Lists.newArrayList(userCouponModel));
 
         BaseResponseDto<UserCouponListResponseDataDto> baseResponseDto = mobileAppAgreementService.exchange(exchangeRequestDto);
 
