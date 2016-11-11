@@ -177,6 +177,20 @@ worker-jpush:
   command: bash -c "/opt/worker/ttsd-job-worker-jpush/bin/ttsd-job-worker"
   links:
     - "redis-server"
+loan-mq-consumer:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-loan-mq-consumer/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-loan-mq-consumer:/var/log/loan-mq-consumer
+  command: bash -c "/opt/worker/ttsd-loan-mq-consumer/bin/ttsd-loan-mq-consumer"
+  links:
+    - "pay-wrapper"
+    - "sms-wrapper"
+    - "redis-server"
+
 diagnosis:
   image: "anapsix/alpine-java:8_jdk"
   environment:
@@ -186,6 +200,11 @@ diagnosis:
     - ./ttsd-diagnosis/build/distributions:/opt/worker
     - /var/log/tuotian/diagnosis:/var/log/ttsd-diagnosis
   command: bash -c "/opt/worker/ttsd-diagnosis/bin/ttsd-diagnosis"
+  links:
+    - "pay-wrapper"
+    - "sms-wrapper"
+    - "redis-server"
+
 static-server:
   image: "nginx"
   volumes:

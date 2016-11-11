@@ -1,0 +1,6 @@
+logging:
+  path: /var/log/job-worker
+  level:
+    com:
+      tuotian:
+        mq: debug
