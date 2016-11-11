@@ -180,8 +180,8 @@ task flywayAnxin(type: FlywayMigrateTask) {
     extension.schemas = ["anxin_operations"]
 
     extension.url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/anxin_operations?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
-    extension.user = properties.getProperty("common.jdbc.username")
-    extension.password = properties.getProperty("common.jdbc.password")
+    extension.user = properties.getProperty("anxin.jdbc.username")
+    extension.password = properties.getProperty("anxin.jdbc.password")
 }
 
 task flywaySms(type: FlywayMigrateTask) {
