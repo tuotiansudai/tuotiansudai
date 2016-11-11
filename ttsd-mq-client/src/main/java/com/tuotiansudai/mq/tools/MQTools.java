@@ -26,7 +26,6 @@ public class MQTools {
         properties.load(new FileInputStream(configFile));
 
         String endPoint = properties.getProperty("aliyun.mns.endpoint");
-        System.out.printf(endPoint);
         String accessKeyId = properties.getProperty("aliyun.mns.accessKeyId");
         String accessKeySecret = properties.getProperty("aliyun.mns.accessKeySecret");
 
@@ -55,8 +54,11 @@ public class MQTools {
     }
 
     private static MNSClient getMnsClient(String endPoint, String accessKeyId, String accessKeySecret) {
+        System.out.println(endPoint);
         try {
+            System.out.println("59");
             CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
+            System.out.println("61");
             return account.getMNSClient();
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -80,6 +82,7 @@ public class MQTools {
     }
 
     private static void createPullTopic(MNSClient mnsClient, MessageTopic messageTopic) {
+        System.out.println("85");
         List<String> subscriptQueueNameList = Stream.of(MessageTopicQueue.values())
                 .filter(q -> q.getTopic().equals(messageTopic))
                 .map(MessageTopicQueue::getQueueName).collect(Collectors.toList());
@@ -90,6 +93,7 @@ public class MQTools {
     }
 
     private static void initSubscriptQueue(MNSClient mnsClient, MessageTopic messageTopic) {
+        System.out.println("96:" + messageTopic.getTopicName());
         CloudTopic topic = mnsClient.getTopicRef(messageTopic.getTopicName());
         // need subscription
         List<String> subscriptQueueNameList = Stream.of(MessageTopicQueue.values())
@@ -99,12 +103,14 @@ public class MQTools {
         List<String> subscriptEndpointList = subscriptQueueNameList.stream()
                 .map(topic::generateQueueEndpoint)
                 .collect(Collectors.toList());
+        System.out.println("106:" + messageTopic.getTopicName());
         // already subscription
         List<SubscriptionMeta> existingSubscriptions = listExistingSubscriptions(topic);
         // remove invalid subscription
         existingSubscriptions.stream()
                 .filter(subscription -> !subscriptEndpointList.contains(subscription.getEndpoint()))
                 .forEach(subscription -> topic.unsubscribe(subscription.getSubscriptionName()));
+        System.out.println("113:" + messageTopic.getTopicName());
         // subscript new queue
         Set<String> existingEndpoints = existingSubscriptions.stream().map(SubscriptionMeta::getEndpoint).collect(Collectors.toSet());
         subscriptQueueNameList.stream()
@@ -114,6 +120,7 @@ public class MQTools {
     }
 
     private static List<SubscriptionMeta> listExistingSubscriptions(CloudTopic topic) {
+        System.out.println(123);
         PagingListResult<SubscriptionMeta> subscriptionMetaPagingListResult = topic.listSubscriptions("", "", 1000);
         if (subscriptionMetaPagingListResult != null) {
             List<SubscriptionMeta> existingSubscriptions = subscriptionMetaPagingListResult.getResult();
@@ -125,6 +132,7 @@ public class MQTools {
     }
 
     private static String createQueue(MNSClient mnsClient, String queueName) {
+        System.out.println(135);
         QueueMeta queueMeta = new QueueMeta();
         queueMeta.setQueueName(queueName);
         mnsClient.createQueue(queueMeta);
@@ -132,6 +140,7 @@ public class MQTools {
     }
 
     private static SubscriptionMeta generateSubscriptionMeta(MessageTopic topic, String endpoint) {
+        System.out.println(142);
         System.out.printf(endpoint);
         SubscriptionMeta subscriptionMeta = new SubscriptionMeta();
         subscriptionMeta.setNotifyStrategy(SubscriptionMeta.NotifyStrategy.EXPONENTIAL_DECAY_RETRY);
