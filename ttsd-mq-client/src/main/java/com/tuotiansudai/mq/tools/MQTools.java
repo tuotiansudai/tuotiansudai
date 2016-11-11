@@ -3,6 +3,7 @@ package com.tuotiansudai.mq.tools;
 import com.aliyun.mns.client.CloudAccount;
 import com.aliyun.mns.client.CloudTopic;
 import com.aliyun.mns.client.MNSClient;
+import com.aliyun.mns.model.PagingListResult;
 import com.aliyun.mns.model.QueueMeta;
 import com.aliyun.mns.model.SubscriptionMeta;
 import com.aliyun.mns.model.TopicMeta;
@@ -11,10 +12,7 @@ import com.tuotiansudai.mq.client.model.MessageTopicQueue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,10 +32,7 @@ public class MQTools {
 
         CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
         MNSClient mnsClient = account.getMNSClient();
-        List<String> existingTopicNameList = mnsClient.listTopic("", "", 1000)
-                .getResult().stream()
-                .map(TopicMeta::getTopicName)
-                .collect(Collectors.toList());
+        List<String> existingTopicNameList = getExistingTopNameList(mnsClient);
         Stream.of(MessageTopic.values()).forEach(messageTopic -> {
             if (existingTopicNameList.contains(messageTopic.getTopicName())) {
                 initSubscriptQueue(mnsClient, messageTopic);
@@ -46,6 +41,20 @@ public class MQTools {
             }
         });
         mnsClient.close();
+    }
+
+    private static List<String> getExistingTopNameList(MNSClient mnsClient) {
+        List<String> existingTopicNameList = new ArrayList<>();
+        PagingListResult<TopicMeta> topicMetaPagingListResult = mnsClient.listTopic("", "", 1000);
+        if (topicMetaPagingListResult != null) {
+            List<TopicMeta> result = topicMetaPagingListResult.getResult();
+            if (result != null) {
+                existingTopicNameList = result.stream()
+                        .map(TopicMeta::getTopicName)
+                        .collect(Collectors.toList());
+            }
+        }
+        return existingTopicNameList;
     }
 
     private static void createPullTopic(MNSClient mnsClient, MessageTopic messageTopic) {
@@ -70,12 +79,17 @@ public class MQTools {
                 .collect(Collectors.toList());
         // already subscription
         List<SubscriptionMeta> existingSubscriptions = topic.listSubscriptions("", "", 1000).getResult();
-        // remove invalid subscription
-        existingSubscriptions.stream()
-                .filter(subscription -> !subscriptEndpointList.contains(subscription.getEndpoint()))
-                .forEach(subscription -> topic.unsubscribe(subscription.getSubscriptionName()));
-        // subscript new queue
-        Set<String> existingEndpoints = existingSubscriptions.stream().map(SubscriptionMeta::getEndpoint).collect(Collectors.toSet());
+        Set<String> existingEndpoints;
+        if (existingSubscriptions != null) {
+            // remove invalid subscription
+            existingSubscriptions.stream()
+                    .filter(subscription -> !subscriptEndpointList.contains(subscription.getEndpoint()))
+                    .forEach(subscription -> topic.unsubscribe(subscription.getSubscriptionName()));
+            // subscript new queue
+            existingEndpoints = existingSubscriptions.stream().map(SubscriptionMeta::getEndpoint).collect(Collectors.toSet());
+        } else {
+            existingEndpoints = new HashSet<>();
+        }
         subscriptQueueNameList.stream()
                 .filter(queueName -> !existingEndpoints.contains(topic.generateQueueEndpoint(queueName)))
                 .map(queueName -> createQueue(mnsClient, queueName))
