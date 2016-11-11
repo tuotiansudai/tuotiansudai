@@ -546,7 +546,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
         });
     }
-    //submit  form
+    //投资表单请求以及校验
     function investSubmit(){
         
         if ($investForm.attr('action') === '/invest') {
@@ -579,7 +579,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
         }
         amountInputElement.val(amountInputElement.autoNumeric("get"));
-        if (noPasswordInvest) {
+        if (noPasswordInvest) {//判断是否开启免密投资
             layer.open({
                 type: 1,
                 closeBtn: 0,
@@ -595,7 +595,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 },
                 btn2:function(){
                     cnzzPush.trackClick("68标的详情页","马上投资确认框","确认");
-                    if($isSkipAuth.val()=='true'){
+                    if($isSkipAuth.val()=='true'){//判断是否开启安心签免验
                         sendSubmitRequest();
                     }else{
                         getSkipPhoneTip();
@@ -605,10 +605,16 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             });
             return;
         }
-        $investForm.submit();
+        //正常投资
+        if($isSkipAuth.val()=='true'){//判断是否开启安心签免验
+            $investForm.submit();
+        }else{
+            getSkipPhoneTip();
+            return false;
+        }
     }
 
-
+    //发送投资提交请求
     function sendSubmitRequest(){
         $investForm.ajaxSubmit({
             dataType: 'json',
@@ -854,20 +860,20 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
     })();
 
-    //loan click checkbox
+    //勾选马上投资下方 协议复选框
     $('.skip-group .skip-icon').on('click', function(event) {
         event.preventDefault();
 
         $(this).hasClass('active')?$(this).removeClass('active') && $('#skipCheck').val('false') && $('#checkTip').show()&& $investSubmit.prop('disabled',true):$(this).addClass('active')&& $('#skipCheck').val('true') && $('#checkTip').hide() && $investSubmit.prop('disabled',false);
     });
 
-    //skip tip click chechbox
+    //勾选 安心签弹框中的复选框
     $('.tip-item .skip-icon').on('click', function(event) {
         event.preventDefault();
         $(this).hasClass('active')?$(this).removeClass('active') && $('#tipCheck').val('false'):$(this).addClass('active')&& $('#tipCheck').val('true');
     });
 
-    //show phone code tip
+    //弹出安心签弹框
     function getSkipPhoneTip(){
         layer.open({
             shadeClose: false,
@@ -881,17 +887,18 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
     var num = 60,Down;
 
-    //get phone code
+    //获取短信验证码
     $('#getSkipCode').on('click', function(event) {
         event.preventDefault();
         getCode(false);
     });
     
-    //get phone code yuyin
+    //获取语音验证码
     $('#microPhone').on('click', function(event) {
         event.preventDefault();
         getCode(true);
     });
+    //安心签弹框中获取短信验证码请求
     function getCode(type){
         $.ajax({
             url: '/anxinSign/sendCaptcha',
@@ -915,7 +922,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             layer.msg('请求失败，请重试或联系客服！');
         });
     }
-    //countdown skip
+    //安心签弹框中获取短信验证码倒计时效果
     function countDown() {
         $('#getSkipCode').val(num + '秒后重新获取').prop('disabled',true);
         $('#microPhone').css('visibility', 'hidden');
@@ -928,7 +935,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             num--;
         }
     }
-    //submit data skip phone code
+    //安心签授权弹框表单提交
     $('#getSkipBtn').on('click',  function(event) {
         event.preventDefault();
         var $self=$(this);
@@ -966,7 +973,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         }
     });
 
-    //skip success
+    //安心签授权成功弹框
     function skipSuccess(){
         layer.closeAll();
         $('#skipSuccess').show();
@@ -974,8 +981,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $('#skipSuccess').hide();
             $('#skipPhoneCode').val('');
             num=0;
-            
-            sendSubmitRequest();
+            noPasswordInvest?sendSubmitRequest():$investForm.submit();
 
         },3000)
     }
