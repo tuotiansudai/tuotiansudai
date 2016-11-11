@@ -127,7 +127,7 @@
             resultMap="transferApplicationRecordDtoMap">
         select
         ta.id,ta.name,ta.transfer_amount,ta.invest_id,ta.invest_amount,ta.transfer_time,ta.status,ta.deadline,ta.left_period,l.base_rate,l.activity_rate,
-        ta.transfer_invest_id
+        ta.transfer_invest_id, ta.loan_id
         from transfer_application ta JOIN invest i on ta.invest_id = i.id JOIN loan l on l.id = ta.loan_id
         <where>
             <if test="loginName != null">

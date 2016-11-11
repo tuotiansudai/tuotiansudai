@@ -16,12 +16,8 @@
         <#assign description="拓天速贷为您提供准确及时的P2P投资项目,投资用户通过拓天速贷平台进行准确投标的方式进行投资,让您获得较高的收益.">
 </#switch>
 
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="" title="${title!}" keywords="${keywords!}" description="${description!}">
+<@global.main pageCss="${css.project_loan_list}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="直投项目" title="${title!}" keywords="${keywords!}" description="${description!}">
 <div class="loan-list-content">
-    <ul class="project-type">
-        <li class="active"><a href="/loan-list">直投项目</a></li>
-        <li><a href="/transfer-list">转让项目</a></li>
-    </ul>
     <div class="bRadiusBox bg-w">
         <ul class="wrapper-list">
             <li>
@@ -62,7 +58,7 @@
                 </#list>
             </li>
             <li>
-                <span>年化收益: </span>
+                <span>预期年化收益: </span>
                 <#assign rateUrl = "/loan-list?{rateType}&status=${status!}&productType=${productType!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}">
                 <#assign rateMap = {"":"全部","rateStart=0.1&rateEnd=0.12":"10-12%","rateStart=0.12&rateEnd=0.14":"12-14%","rateStart=0.14&rateEnd=0":"14%以上"}>
                 <#assign rateKeys = rateMap?keys>
@@ -210,7 +206,7 @@
                   data-url="/loan-list?status=${status!}&name=${name!}&productType=${productType!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}&index=${index + 1}">下一页</span>
         </div>
     </div>
-    <#include "coupon-alert.ftl" />
+    <#include "component/coupon-alert.ftl" />
 </div>
-    <#include "red-envelope-float.ftl" />
+    <#include "component/red-envelope-float.ftl" />
 </@global.main>

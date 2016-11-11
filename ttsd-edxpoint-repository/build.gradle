@@ -1,0 +1,20 @@
+apply plugin: 'java'
+
+version = '1.0'
+
+dependencies {
+    def springVersion = '4.3.1.RELEASE'
+    def mybatisVersion = '3.4.0'
+    def mybatisSpringVersion = '1.3.0'
+
+    compile project(':ttsd-edxpoint-model')
+    compile project(':ttsd-config')
+    compile project(':ttsd-client')
+    compile "org.springframework:spring-context-support:$springVersion"
+    compile "org.springframework:spring-jdbc:$springVersion"
+    compile 'org.springframework:spring-aspects:4.2.0.RELEASE'
+    compile "org.mybatis:mybatis:$mybatisVersion"
+    compile "org.mybatis:mybatis-spring:$mybatisSpringVersion"
+    compile 'com.zaxxer:HikariCP:2.4.7'
+}
+

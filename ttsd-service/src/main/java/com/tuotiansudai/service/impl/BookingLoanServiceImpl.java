@@ -35,6 +35,7 @@ public class BookingLoanServiceImpl implements BookingLoanService {
     public void create(String loginName, ProductType productType, String bookingAmount) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         BookingLoanModel bookingLoanModel = new BookingLoanModel(
+                loginName,
                 userModel != null ? userModel.getMobile() : null,
                 Source.WEB,
                 DateTime.now().toDate(),

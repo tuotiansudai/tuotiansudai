@@ -92,9 +92,6 @@ public class InvestServiceImpl implements InvestService {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private UserMembershipMapper userMembershipMapper;
-
-    @Autowired
     private MembershipMapper membershipMapper;
 
     @Autowired
@@ -120,9 +117,6 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private UserBirthdayUtil userBirthdayUtil;
-
-    @Autowired
-    private CouponService couponService;
 
     @Override
     @Transactional
@@ -218,8 +212,19 @@ public class InvestServiceImpl implements InvestService {
         String loginName = investDto.getLoginName();
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
 
+        logger.debug(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon({3})",
+                investDto.getLoginName(),
+                String.valueOf(loanId),
+                investDto.getAmount(),
+                CollectionUtils.isNotEmpty(investDto.getUserCouponIds()) ? String.valueOf(investDto.getUserCouponIds().get(0)) : "empty"));
+
         UserCouponDto maxBenefitUserCoupon = userCouponService.getMaxBenefitUserCoupon(loginName, loanId, investAmount);
         if (maxBenefitUserCoupon != null && CollectionUtils.isEmpty(investDto.getUserCouponIds())) {
+            logger.error(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with no user coupon, but max benefit user coupon({3}) is existed",
+                    investDto.getLoginName(),
+                    String.valueOf(loanId),
+                    investDto.getAmount(),
+                    String.valueOf(maxBenefitUserCoupon.getId())));
             throw new InvestException(InvestExceptionType.NONE_COUPON_SELECTED);
         }
 
@@ -230,6 +235,13 @@ public class InvestServiceImpl implements InvestService {
                 UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 Date usedTime = userCouponModel.getUsedTime();
+                logger.debug(MessageFormat.format("user({0}) invest (loan = {1} amount = {2}) with user coupon(id = {3} usedTime = {4} status = {5})",
+                        investDto.getLoginName(),
+                        String.valueOf(loanId),
+                        investDto.getAmount(),
+                        String.valueOf(userCouponId),
+                        usedTime,
+                        userCouponModel.getStatus()));
                 if ((usedTime != null && new DateTime(usedTime).plusSeconds(couponLockSeconds).isAfter(new DateTime()))
                         || !loginName.equalsIgnoreCase(userCouponModel.getLoginName())
                         || InvestStatus.SUCCESS == userCouponModel.getStatus()

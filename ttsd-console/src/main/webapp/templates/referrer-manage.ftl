@@ -77,6 +77,17 @@
                     </#list>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="control-label">奖励状态</label>
+                <select class="selectpicker referrerRewardStatus" data-style="btn-default">
+                    <option value="">全部</option>
+                    <#list referrerRewardStatuses as referrerRewardStatusItem>
+                        <#if referrerRewardStatusItem != 'NO_ACCOUNT'>
+                            <option value="${referrerRewardStatusItem.name()}" <#if (referrerRewardStatus?has_content && referrerRewardStatus == referrerRewardStatusItem.name()) >selected</#if>>${referrerRewardStatusItem.name()}</option>
+                        </#if>
+                    </#list>
+                </select>
+            </div>
             <button class="btn btn-primary search" type="button">查询</button>
             <button class="btn btn-default" type="reset">重置</button>
         </div>
@@ -138,7 +149,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage>
-                    <a href="/user-manage/referrer?referrerMobile=${referrerMobile!}&investMobile=${investMobile!}&investStartTime=${(investStartTime?string('yyyy-MM-dd'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd'))!}&level=${(level?string('0'))!}&rewardStartTime=${(rewardStartTime?string('yyyy-MM-dd'))!}&rewardEndTime=${(rewardEndTime?string('yyyy-MM-dd'))!}&role=${role!}&source=${source!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/user-manage/referrer?referrerMobile=${referrerMobile!}&investMobile=${investMobile!}&investStartTime=${(investStartTime?string('yyyy-MM-dd'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd'))!}&level=${(level?string('0'))!}&rewardStartTime=${(rewardStartTime?string('yyyy-MM-dd'))!}&rewardEndTime=${(rewardEndTime?string('yyyy-MM-dd'))!}&role=${role!}&source=${source!}&referrerRewardStatus=${referrerRewardStatus!}&index=${index-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -148,7 +159,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage>
-                    <a href="/user-manage/referrer?referrerMobile=${referrerMobile!}&investMobile=${investMobile!}&investStartTime=${(investStartTime?string('yyyy-MM-dd'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd'))!}&level=${(level?string('0'))!}&rewardStartTime=${(rewardStartTime?string('yyyy-MM-dd'))!}&rewardEndTime=${(rewardEndTime?string('yyyy-MM-dd'))!}&role=${role!}&source=${source!}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/user-manage/referrer?referrerMobile=${referrerMobile!}&investMobile=${investMobile!}&investStartTime=${(investStartTime?string('yyyy-MM-dd'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd'))!}&level=${(level?string('0'))!}&rewardStartTime=${(rewardStartTime?string('yyyy-MM-dd'))!}&rewardEndTime=${(rewardEndTime?string('yyyy-MM-dd'))!}&role=${role!}&source=${source!}&referrerRewardStatus=${referrerRewardStatus!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

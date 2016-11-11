@@ -40,7 +40,8 @@ var require = {
         'logintip': staticServer+'/activity/js/dest/login_tip.min',
         'drawCircle': staticServer+'/activity/js/dest/gift_circle_draw.min',
         'endTime': staticServer+'/activity/js/dest/actor_time.min',
-        'register_common': staticServer+'/activity/js/dest/register_common.min'
+        'register_common': staticServer+'/activity/js/dest/register_common.min',
+        'nine_lottery': staticServer+'/activity/js/dest/nine_lottery.min'
     },
     'waitSeconds':0,
     'shim': {

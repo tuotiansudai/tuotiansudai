@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,7 +69,6 @@ public class SmsControllerTest {
 
         server.enqueue(mockResponse);
         URL url = server.getUrl("/");
-
         this.smsClient.setUrl(url.toString());
 
         String fakeIp = String.valueOf(new Date().getTime());
@@ -83,8 +83,7 @@ public class SmsControllerTest {
                 .contentType(MediaType.parseMediaType("application/json; charset=UTF-8")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json; charset=UTF-8"))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.status").value(true));
+                .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
@@ -114,8 +113,7 @@ public class SmsControllerTest {
                 .contentType(MediaType.parseMediaType("application/json; charset=UTF-8")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json; charset=UTF-8"))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.status").value(true));
+                .andExpect(jsonPath("$.success").value(true));
     }
 
 }
