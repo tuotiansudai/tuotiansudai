@@ -3,7 +3,6 @@ grant select,insert,update,delete,create,drop,alter,index on aa.* to tuotiansd@'
 grant select,insert,update,delete,create,drop,alter,index on job_worker.* to tuotiansd@'%' identified by 'tuotiansd';
 grant select,insert,update,delete,create,drop,alter,index on sms_operations.* to tuotiansd@'%' identified by 'tuotiansd';
 grant select,insert,update,delete,create,drop,alter,index on ump_operations.* to tuotiansd@'%' identified by 'tuotiansd';
-grant select,insert,update,delete,create,drop,alter,index on anxin_operations.* to tuotiansd@'%' identified by 'tuotiansd';
 
 grant select,insert,update,delete,create,drop,alter,index on edxactivity.* to sdactivity@'%' identified by 'sdactivity';
 

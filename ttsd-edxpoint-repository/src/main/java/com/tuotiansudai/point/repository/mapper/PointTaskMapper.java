@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface PointTaskMapper {
 
+    int create(PointTaskModel pointTaskModel);
+
     PointTaskModel findByName(PointTask pointTask);
 
     PointTaskModel findById(long id);
