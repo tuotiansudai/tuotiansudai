@@ -16,6 +16,7 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
     private long loanId;
     private String transferrerMobile;
     private String leftPeriod;
+    private String leftDays;
     private String transfereeMobile;
     private String transferFee;
     private Date deadLine;
@@ -182,5 +183,13 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public String getLeftDays() {
+        return leftDays;
+    }
+
+    public void setLeftDays(String leftDays) {
+        this.leftDays = leftDays;
     }
 }

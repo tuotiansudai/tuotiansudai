@@ -1,14 +1,12 @@
 package com.tuotiansudai.ask.service;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.ask.dto.AnswerDto;
-import com.tuotiansudai.ask.dto.AnswerRequestDto;
-import com.tuotiansudai.ask.dto.AnswerResultDataDto;
-import com.tuotiansudai.ask.dto.QuestionDto;
+import com.tuotiansudai.ask.repository.dto.AnswerDto;
+import com.tuotiansudai.ask.repository.dto.AnswerRequestDto;
+import com.tuotiansudai.ask.repository.dto.AnswerResultDataDto;
+import com.tuotiansudai.ask.repository.dto.QuestionDto;
 import com.tuotiansudai.ask.repository.mapper.AnswerMapper;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.AnswerModel;
@@ -216,30 +214,22 @@ public class AnswerService {
 
         List<AnswerModel> answerModels = answerMapper.findByLoginName(loginName, null, null);
 
-        return Iterators.tryFind(answerModels.iterator(), new Predicate<AnswerModel>() {
-            @Override
-            public boolean apply(AnswerModel input) {
-                return input.isBestAnswer() && input.getAdoptedTime().after(lastAlertTime);
-            }
-        }).isPresent();
+        return Iterators.tryFind(answerModels.iterator(), input -> input.isBestAnswer() && input.getAdoptedTime().after(lastAlertTime)).isPresent();
     }
 
     private BaseDto<BasePaginationDataDto> generatePaginationData(final String loginName, int index, int pageSize, long count, List<AnswerModel> answers, final boolean isEncodeMobile) {
-        List<AnswerDto> items = Lists.transform(answers, new Function<AnswerModel, AnswerDto>() {
-            @Override
-            public AnswerDto apply(AnswerModel input) {
-                QuestionModel questionModel = questionMapper.findById(input.getQuestionId());
-                QuestionDto questionDto = new QuestionDto(questionModel,
-                        isEncodeMobile && !questionModel.getLoginName().equalsIgnoreCase(loginName) ? (MobileEncoder.encode(Strings.isNullOrEmpty(questionModel.getFakeMobile()) ? questionModel.getMobile() : questionModel.getFakeMobile())) : questionModel.getMobile());
-                return new AnswerDto(input,
-                        isEncodeMobile ? MobileEncoder.encode(Strings.isNullOrEmpty(input.getFakeMobile()) ? input.getMobile() : input.getFakeMobile()) : input.getMobile(),
-                        input.getFavoredBy() != null && input.getFavoredBy().contains(loginName),
-                        questionDto);
-            }
+        List<AnswerDto> items = Lists.transform(answers, input -> {
+            QuestionModel questionModel = questionMapper.findById(input.getQuestionId());
+            QuestionDto questionDto = new QuestionDto(questionModel,
+                    isEncodeMobile && !questionModel.getLoginName().equalsIgnoreCase(loginName) ? (MobileEncoder.encode(Strings.isNullOrEmpty(questionModel.getFakeMobile()) ? questionModel.getMobile() : questionModel.getFakeMobile())) : questionModel.getMobile());
+            return new AnswerDto(input,
+                    isEncodeMobile ? MobileEncoder.encode(Strings.isNullOrEmpty(input.getFakeMobile()) ? input.getMobile() : input.getFakeMobile()) : input.getMobile(),
+                    input.getFavoredBy() != null && input.getFavoredBy().contains(loginName),
+                    questionDto);
         });
 
         BasePaginationDataDto<AnswerDto> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
         data.setStatus(true);
-        return new BaseDto<BasePaginationDataDto>(data);
+        return new BaseDto<>(data);
     }
 }

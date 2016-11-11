@@ -363,6 +363,17 @@ def remove_point_logs():
     remove_nginx_logs()
 
 
+@roles('console')
+@parallel
+def remove_console_logs():
+    iso_date = get_7days_before()
+    with cd('/var/log/tuotian/console'):
+        run('rm -f *{0}.log'.format(iso_date))
+        run('rm -f *{0}.txt'.format(iso_date))
+
+    remove_nginx_logs()
+
+
 def remove_old_logs():
     """
     Remove logs which was generated 30 days ago
@@ -375,6 +386,7 @@ def remove_old_logs():
     execute(remove_static_logs)
     execute(remove_sign_in_logs)
     execute(remove_point_logs)
+    execute(remove_console_logs)
 
 
 def restart_logstash_process():
