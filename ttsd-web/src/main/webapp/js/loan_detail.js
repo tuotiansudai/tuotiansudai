@@ -606,7 +606,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                             $investSubmit.removeClass("loading");
                             var data = response.data;
                             if (data.status) {
-                                location.href = "/invest-success";
+                                if($isSkipAuth.val()=='true'){
+                                    location.href = "/invest-success";
+                                    return;
+                                }else{
+                                    getSkipPhoneTip();
+                                    return false;
+                                }
                             } else if (data.message == '新手标投资已超上限') {
                                 showLayer();
                             } else {
