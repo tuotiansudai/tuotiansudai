@@ -1,5 +1,5 @@
 logging:
-  path: /var/log/loan-mq-consumer
+  path: /var/log/job-worker
   level:
     com:
       tuotian:
