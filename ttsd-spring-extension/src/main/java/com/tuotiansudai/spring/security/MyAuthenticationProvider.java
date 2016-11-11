@@ -3,6 +3,7 @@ package com.tuotiansudai.spring.security;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.MyUser;
@@ -18,6 +19,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.text.MessageFormat;
 import java.util.List;
 
 @Component
@@ -33,6 +36,9 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private SignInClient signInClient;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -63,8 +69,6 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
                 authentication.getCredentials(),
                 grantedAuthorities);
         result.setDetails(authentication.getDetails());
-        httpServletRequest.setAttribute("newSessionId", signInResult.getToken());
-
         return result;
     }
 

@@ -71,7 +71,9 @@ require(['jquery', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepicker', 'j
             var rewardEndTime = $('.rewardEndTime').val();
             var role = $('.role').val();
             var source = $('.source').val();
-            window.location.href = '/user-manage/referrer?referrerMobile=' + referrerMobile + '&investMobile=' + investMobile + '&investStartTime=' + investStartTime + '&investEndTime=' + investEndTime + '&level=' + level + '&rewardStartTime=' + rewardStartTime + '&rewardEndTime=' + rewardEndTime + '&role=' + role + '&source=' + source + '&index=1&pageSize=10';
+            var referrerRewardStatus = $('.referrerRewardStatus').val();
+            window.location.href = '/user-manage/referrer?referrerMobile=' + referrerMobile + '&investMobile=' + investMobile + '&investStartTime=' + investStartTime + '&investEndTime=' + investEndTime + '&level=' + level + '&rewardStartTime=' + rewardStartTime + '&rewardEndTime=' + rewardEndTime
+                                        + '&role=' + role + '&source=' + source + '&referrerRewardStatus=' + referrerRewardStatus + '&index=1&pageSize=10';
         });
 
         $('.down-load').on('click', function () {
@@ -84,7 +86,9 @@ require(['jquery', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepicker', 'j
             var rewardEndTime = $('.rewardEndTime').val();
             var role = $('.role').val();
             var source = $('.source').val();
-            window.location.href = '/export/referrer?referrerMobile=' + referrerMobile + '&investMobile=' + investMobile + '&investStartTime=' + investStartTime + '&investEndTime=' + investEndTime + '&level=' + level + '&rewardStartTime=' + rewardStartTime + '&rewardEndTime=' + rewardEndTime + '&role=' + role + '&source=' + source;
+            var referrerRewardStatus = $('.referrerRewardStatus').val();
+            window.location.href = '/export/referrer?referrerMobile=' + referrerMobile + '&investMobile=' + investMobile + '&investStartTime=' + investStartTime + '&investEndTime=' + investEndTime + '&level=' + level + '&rewardStartTime=' + rewardStartTime + '&rewardEndTime=' + rewardEndTime
+                                        + '&role=' + role + '&source=' + source + '&referrerRewardStatus=' + referrerRewardStatus;
         });
     });
 })
