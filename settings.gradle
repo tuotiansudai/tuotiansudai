@@ -5,16 +5,12 @@ include "ttsd-service",
         "ttsd-sms-wrapper",
         "ttsd-job-worker",
         "ttsd-mobile-api",
-        "ttsd-point-service",
         "ttsd-jpush",
         'ttsd-membership',
         "ttsd-activity",
         "ttsd-message",
         'ttsd-user-service',
         'ttsd-web-common-config',
-        'ttsd-ask-web',
-        'ttsd-ask-service',
-        'ttsd-edxask-model',
         'ttsd-user-service',
         'ttsd-config',
         'ttsd-client',
@@ -22,9 +18,9 @@ include "ttsd-service",
         'ttsd-spring-extension',
         'ttsd-activity-console',
         'ttsd-activity-repository',
-        'ttsd-util',
         'ttsd-anxin-sign',
-        'ttsd-point-web'
-include 'ttsd-edxpoint-model'
-include 'ttsd-edxpoint-repository'
+        'ttsd-util'
+
+include 'ttsd-edxpoint-model', 'ttsd-edxpoint-repository', "ttsd-point-service", 'ttsd-point-web'
+include 'ttsd-edxask-model', 'ttsd-edxask-repository', 'ttsd-ask-service', 'ttsd-ask-web'
 

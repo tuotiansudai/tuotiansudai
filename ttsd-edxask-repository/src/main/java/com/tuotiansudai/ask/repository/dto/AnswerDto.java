@@ -1,9 +1,7 @@
-package com.tuotiansudai.ask.dto;
+package com.tuotiansudai.ask.repository.dto;
 
-import com.google.common.base.Strings;
 import com.tuotiansudai.ask.repository.model.AnswerModel;
 import com.tuotiansudai.ask.repository.model.AnswerStatus;
-import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 
 import java.util.Date;
 
@@ -39,7 +37,7 @@ public class AnswerDto {
         this.question = questionDto;
         this.id = answerModel.getId();
         this.mobile = mobile;
-        this.answer = SensitiveWordsFilter.filter(answerModel.getAnswer());
+        this.answer = answerModel.getAnswer();
         this.bestAnswer = answerModel.isBestAnswer();
         this.favorite = answerModel.getFavoredBy() != null ? answerModel.getFavoredBy().size() : 0;
         this.favored = isFavored;

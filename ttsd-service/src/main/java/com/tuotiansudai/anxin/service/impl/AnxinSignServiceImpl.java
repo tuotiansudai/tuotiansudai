@@ -527,12 +527,13 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investorLoginName);
 
         if (investorAnxinProp == null || Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())) {
-            logger.error(MessageFormat.format("[安心签] create contract error,investorAnxinProp is not anxin sign , loanid:{0} , investId:{1} ,userId:{2}", loanId, investId, investorLoginName));
+            logger.error(MessageFormat.format("[安心签] create contract error, investor has not signed anxin yet. loanid:{0}, investId:{1}, userId:{2}", loanId, investId, investorLoginName));
             return null;
         }
 
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
+        InvestModel investModel = investMapper.findById(investId);
 
         dataModel.put("agentMobile", agentModel.getMobile());
         dataModel.put("agentIdentityNumber", agentModel.getIdentityNumber());
@@ -541,10 +542,10 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("loanerUserName", loanerDetailsModel.getUserName());
         dataModel.put("loanerIdentityNumber", loanerDetailsModel.getIdentityNumber());
         dataModel.put("loanAmount1", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-        dataModel.put("loanAmount2", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+        dataModel.put("loanAmount2", AmountConverter.convertCentToString(investModel.getAmount()));
         dataModel.put("periods1", String.valueOf(loanModel.getPeriods() * 30)+"天");
         dataModel.put("periods2", String.valueOf(loanModel.getPeriods()) + "期");
-        dataModel.put("totalRate", String.valueOf(loanModel.getBaseRate() * 100)+"%");
+        dataModel.put("totalRate", String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100)+"%");
         dataModel.put("recheckTime1", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
         dataModel.put("recheckTime2", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
         dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
