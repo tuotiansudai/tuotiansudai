@@ -184,7 +184,7 @@ loan-mq-consumer:
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-loan-mq-consumer/build/distributions:/opt/worker
-    - /var/log/tuotian/ttsd-loan-mq-consumer:/var/log/loan-mq-consumer
+    - /var/log/tuotian/ttsd-loan-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-loan-mq-consumer/bin/ttsd-loan-mq-consumer"
   links:
     - "pay-wrapper"
