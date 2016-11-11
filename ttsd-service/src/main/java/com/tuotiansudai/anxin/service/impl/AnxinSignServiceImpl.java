@@ -28,6 +28,7 @@ import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JobManager;
 import com.tuotiansudai.util.UUIDGenerator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -337,29 +338,29 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                     if(!isSuccess(tx3202ResVO)){
                         processResult = false;
                     }
-
                     batchNoList.add(batchNo);
                 } catch (PKIException e) {
                     smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
 
                     baseDto.setSuccess(false);
                     logger.error(MessageFormat.format("[安心签] create contract error , loanId:{0}", loanId), e);
-
                 }
                 createContractVOs.clear();
             }
         }
 
-        if(processResult){
-            logger.debug("[安心签]:创建job，十分钟后，查询并更新合同状态。标的ID:" + loanId);
-            updateContractResponseHandleJob(batchNoList, loanId, AnxinContractType.LOAN_CONTRACT);
-        }else{
-            logger.error("[安心签]: create contract error , ready send sms . loanId" + loanId);
+        if(!processResult){
+            logger.error("[安心签]: some contract create error , ready send sms . loanId" + loanId);
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
         }
 
+        if (CollectionUtils.isNotEmpty((batchNoList))){
+            logger.debug("[安心签]:创建job，十分钟后，查询并更新合同状态。标的ID:" + loanId);
+            updateContractResponseHandleJob(batchNoList, loanId, AnxinContractType.LOAN_CONTRACT);
+        }
+
         redisWrapperClient.setex(LOAN_BATCH_NO_LIST_KEY + loanId, SEVEN_DAYS, String.join(",", batchNoList));
-        baseDto.setSuccess(processResult);
+        baseDto.setSuccess(true);
         return baseDto;
     }
 
