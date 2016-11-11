@@ -97,22 +97,28 @@ public class MQTools {
                 .map(topic::generateQueueEndpoint)
                 .collect(Collectors.toList());
         // already subscription
-        List<SubscriptionMeta> existingSubscriptions = topic.listSubscriptions("", "", 1000).getResult();
-        Set<String> existingEndpoints;
-        if (existingSubscriptions != null) {
-            // remove invalid subscription
-            existingSubscriptions.stream()
-                    .filter(subscription -> !subscriptEndpointList.contains(subscription.getEndpoint()))
-                    .forEach(subscription -> topic.unsubscribe(subscription.getSubscriptionName()));
-            // subscript new queue
-            existingEndpoints = existingSubscriptions.stream().map(SubscriptionMeta::getEndpoint).collect(Collectors.toSet());
-        } else {
-            existingEndpoints = new HashSet<>();
-        }
+        List<SubscriptionMeta> existingSubscriptions = listExistingSubscriptions(topic);
+        // remove invalid subscription
+        existingSubscriptions.stream()
+                .filter(subscription -> !subscriptEndpointList.contains(subscription.getEndpoint()))
+                .forEach(subscription -> topic.unsubscribe(subscription.getSubscriptionName()));
+        // subscript new queue
+        Set<String> existingEndpoints = existingSubscriptions.stream().map(SubscriptionMeta::getEndpoint).collect(Collectors.toSet());
         subscriptQueueNameList.stream()
                 .filter(queueName -> !existingEndpoints.contains(topic.generateQueueEndpoint(queueName)))
                 .map(queueName -> createQueue(mnsClient, queueName))
                 .forEach(queueName -> topic.subscribe(generateSubscriptionMeta(messageTopic, topic.generateQueueEndpoint(queueName))));
+    }
+
+    private static List<SubscriptionMeta> listExistingSubscriptions(CloudTopic topic) {
+        PagingListResult<SubscriptionMeta> subscriptionMetaPagingListResult = topic.listSubscriptions("", "", 1000);
+        if (subscriptionMetaPagingListResult != null) {
+            List<SubscriptionMeta> existingSubscriptions = subscriptionMetaPagingListResult.getResult();
+            if (existingSubscriptions != null) {
+                return existingSubscriptions;
+            }
+        }
+        return new ArrayList<>();
     }
 
     private static String createQueue(MNSClient mnsClient, String queueName) {
