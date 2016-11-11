@@ -12,7 +12,10 @@ import com.tuotiansudai.mq.client.model.MessageTopicQueue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,11 +41,10 @@ public class MQTools {
         try {
             List<String> existingTopicNameList = getExistingTopNameList(mnsClient);
             Stream.of(MessageTopic.values()).forEach(messageTopic -> {
-                if (existingTopicNameList.contains(messageTopic.getTopicName())) {
-                    initSubscriptQueue(mnsClient, messageTopic);
-                } else {
-                    createPullTopic(mnsClient, messageTopic);
+                if (!existingTopicNameList.contains(messageTopic.getTopicName())) {
+                    createTopic(mnsClient, messageTopic);
                 }
+                initSubscriptQueue(mnsClient, messageTopic);
             });
             mnsClient.close();
         } catch (Exception e) {
@@ -81,48 +83,41 @@ public class MQTools {
         return existingTopicNameList;
     }
 
-    private static void createPullTopic(MNSClient mnsClient, MessageTopic messageTopic) {
-        System.out.println("85");
-        List<String> subscriptQueueNameList = Stream.of(MessageTopicQueue.values())
-                .filter(q -> q.getTopic().equals(messageTopic))
-                .map(MessageTopicQueue::getQueueName).collect(Collectors.toList());
+    private static void createTopic(MNSClient mnsClient, MessageTopic messageTopic) {
         TopicMeta topicMeta = new TopicMeta();
         topicMeta.setTopicName(messageTopic.getTopicName());
-        QueueMeta queueMetaTemplate = new QueueMeta();
-        System.out.println("92");
-        mnsClient.createPullTopic(topicMeta, new Vector<>(subscriptQueueNameList), true, queueMetaTemplate);
-        System.out.println("93");
+        topicMeta.setLoggingEnabled(true);
+        mnsClient.createTopic(topicMeta);
     }
 
     private static void initSubscriptQueue(MNSClient mnsClient, MessageTopic messageTopic) {
-        System.out.println("96:" + messageTopic.getTopicName());
         CloudTopic topic = mnsClient.getTopicRef(messageTopic.getTopicName());
-        // need subscription
+        // queue which need subscription
         List<String> subscriptQueueNameList = Stream.of(MessageTopicQueue.values())
                 .filter(q -> q.getTopic().equals(messageTopic))
                 .map(MessageTopicQueue::getQueueName)
                 .collect(Collectors.toList());
         List<String> subscriptEndpointList = subscriptQueueNameList.stream()
-                .map(topic::generateQueueEndpoint)
+                .map(queueName -> generateQueueEndpoint(topic, queueName))
                 .collect(Collectors.toList());
-        System.out.println("106:" + messageTopic.getTopicName());
-        // already subscription
+
+        // queue which already subscription
         List<SubscriptionMeta> existingSubscriptions = listExistingSubscriptions(topic);
+        Set<String> existingEndpoints = existingSubscriptions.stream().map(SubscriptionMeta::getEndpoint).collect(Collectors.toSet());
+
         // remove invalid subscription
         existingSubscriptions.stream()
                 .filter(subscription -> !subscriptEndpointList.contains(subscription.getEndpoint()))
                 .forEach(subscription -> topic.unsubscribe(subscription.getSubscriptionName()));
-        System.out.println("113:" + messageTopic.getTopicName());
+
         // subscript new queue
-        Set<String> existingEndpoints = existingSubscriptions.stream().map(SubscriptionMeta::getEndpoint).collect(Collectors.toSet());
         subscriptQueueNameList.stream()
-                .filter(queueName -> !existingEndpoints.contains(topic.generateQueueEndpoint(queueName)))
+                .filter(queueName -> !existingEndpoints.contains(generateQueueEndpoint(topic, queueName)))
                 .map(queueName -> createQueue(mnsClient, queueName))
-                .forEach(queueName -> topic.subscribe(generateSubscriptionMeta(messageTopic, topic.generateQueueEndpoint(queueName))));
+                .forEach(queueName -> topic.subscribe(generateSubscriptionMeta(messageTopic, queueName, generateQueueEndpoint(topic, queueName))));
     }
 
     private static List<SubscriptionMeta> listExistingSubscriptions(CloudTopic topic) {
-        System.out.println(123);
         PagingListResult<SubscriptionMeta> subscriptionMetaPagingListResult = topic.listSubscriptions("", "", 1000);
         if (subscriptionMetaPagingListResult != null) {
             List<SubscriptionMeta> existingSubscriptions = subscriptionMetaPagingListResult.getResult();
@@ -134,21 +129,24 @@ public class MQTools {
     }
 
     private static String createQueue(MNSClient mnsClient, String queueName) {
-        System.out.println(135);
         QueueMeta queueMeta = new QueueMeta();
         queueMeta.setQueueName(queueName);
+        queueMeta.setLoggingEnabled(true);
         mnsClient.createQueue(queueMeta);
         return queueName;
     }
 
-    private static SubscriptionMeta generateSubscriptionMeta(MessageTopic topic, String endpoint) {
-        System.out.println(142);
-        System.out.printf(endpoint);
+    private static SubscriptionMeta generateSubscriptionMeta(MessageTopic topic, String subscriptionName, String endpoint) {
         SubscriptionMeta subscriptionMeta = new SubscriptionMeta();
+        subscriptionMeta.setSubscriptionName(subscriptionName);
         subscriptionMeta.setNotifyStrategy(SubscriptionMeta.NotifyStrategy.EXPONENTIAL_DECAY_RETRY);
         subscriptionMeta.setNotifyContentFormat(SubscriptionMeta.NotifyContentFormat.JSON);
         subscriptionMeta.setTopicName(topic.getTopicName());
-        subscriptionMeta.setEndpoint(endpoint.replace("cn-hzjbp-a","cn-hangzhou"));
+        subscriptionMeta.setEndpoint(endpoint);
         return subscriptionMeta;
+    }
+
+    private static String generateQueueEndpoint(CloudTopic topic, String queueName) {
+        return topic.generateQueueEndpoint(queueName).replace("cn-hzjbp-a", "cn-hangzhou");
     }
 }
