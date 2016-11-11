@@ -1,4 +1,4 @@
-package com.tuotiansudai.ask.dto;
+package com.tuotiansudai.ask.repository.dto;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
