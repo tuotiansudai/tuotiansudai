@@ -4,6 +4,7 @@ apply from: 'db_migration.gradle'
 dependencies {
     compile project(':ttsd-web-common-config'),
             project(':ttsd-point-service'),
+            project(':ttsd-user-service'),
             project(':ttsd-activity-service'),
             fileTree(dir: 'libs', include: '**/*.jar'),
             'org.apache.poi:poi:3.13'
