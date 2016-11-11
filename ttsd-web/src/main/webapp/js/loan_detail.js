@@ -20,7 +20,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         noPasswordInvest = amountInputElement.data('no-password-invest'),
         autoInvestOn = amountInputElement.data('auto-invest-on'),
         $minInvestAmount = $('.text-input-amount').data('min-invest-amount'),
-        $isSkipAuth=$('#isSkipAuth');
+        $isSkipAuth=$('#isSkipAuth'),
+        $investForm = $('#investForm');
 
     var viewport = commonFun.browserRedirect();
 
@@ -547,7 +548,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     }
     //submit  form
     function investSubmit(){
-        var $investForm = $('#investForm');
+        
         if ($investForm.attr('action') === '/invest') {
             if (!isInvestor) {
                 location.href = '/login?redirect=' + encodeURIComponent(location.href);
@@ -594,50 +595,36 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 },
                 btn2:function(){
                     cnzzPush.trackClick("68标的详情页","马上投资确认框","确认");
-                    $investForm.ajaxSubmit({
-                        dataType: 'json',
-                        url: '/no-password-invest',
-                        beforeSubmit: function () {
-                            console.log("invest start");
-                            $investSubmit.addClass("loading");
-                        },
-                        success: function (response) {
-                            layer.closeAll();
-                            $investSubmit.removeClass("loading");
-                            var data = response.data;
-                            if (data.status) {
-                                if($isSkipAuth.val()=='true'){
+                    if($isSkipAuth.val()=='true'){
+                        $investForm.ajaxSubmit({
+                            dataType: 'json',
+                            url: '/no-password-invest',
+                            beforeSubmit: function () {
+                                console.log("invest start");
+                                $investSubmit.addClass("loading");
+                            },
+                            success: function (response) {
+                                layer.closeAll();
+                                $investSubmit.removeClass("loading");
+                                var data = response.data;
+                                if (data.status) {
                                     location.href = "/invest-success";
-                                    return;
-                                }else{
-                                    getSkipPhoneTip();
-                                    return false;
-                                }
-                            } else if (data.message == '新手标投资已超上限') {
-                                showLayer();
-                            } else {
-                                
-                                if($isSkipAuth.val()=='true'){
-                                    $investForm.submit();
-                                    return;
-                                }else{
-                                    getSkipPhoneTip();
-                                    return false;
+                                } else if (data.message == '新手标投资已超上限') {
+                                    showLayer();
+                                } else {
+                                    showInputErrorTips(data.message);
                                 }
                             }
-                        }
-                    });
+                        });
+                    }else{
+                        getSkipPhoneTip();
+                        return false;
+                    }
                 }
             });
             return;
         }
-        if($isSkipAuth.val()=='true'){
-            $investForm.submit();
-            return;
-        }else{
-            getSkipPhoneTip();
-            return false;
-        }
+        $investForm.submit();
     }
 
     // 投资加息
@@ -983,7 +970,28 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $('#skipSuccess').hide();
             $('#skipPhoneCode').val('');
             num=0;
-            $('#investForm').submit();
+            
+            $investForm.ajaxSubmit({
+                dataType: 'json',
+                url: '/no-password-invest',
+                beforeSubmit: function () {
+                    console.log("invest start");
+                    $investSubmit.addClass("loading");
+                },
+                success: function (response) {
+                    layer.closeAll();
+                    $investSubmit.removeClass("loading");
+                    var data = response.data;
+                    if (data.status) {
+                        location.href = "/invest-success";
+                    } else if (data.message == '新手标投资已超上限') {
+                        showLayer();
+                    } else {
+                        showInputErrorTips(data.message);
+                    }
+                }
+            });
+
         },3000)
     }
 
