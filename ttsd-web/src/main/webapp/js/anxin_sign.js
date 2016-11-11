@@ -40,7 +40,7 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
     //所有弹框协议
     $('body').on('click','a',function(event) {
         var target=event.target,
-            $safetyAgreement=$('.safety-agreement-frame',$safetyFrame),
+            $safetyAgreement=$('.safety-agreement-frame'),
             contentDom;
         var showAgreement=function(title,content) {
             event.preventDefault();

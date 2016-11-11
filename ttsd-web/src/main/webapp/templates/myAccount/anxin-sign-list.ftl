@@ -57,6 +57,6 @@
             <a href="javascript:void(0);" class="btn fr ok">确认</a>
         </div>
     </div>
-
+    <#include "../component/anxin-agreement.ftl" />
 </div>
 </@global.main>
