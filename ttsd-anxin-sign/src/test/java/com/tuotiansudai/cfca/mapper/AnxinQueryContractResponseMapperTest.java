@@ -27,6 +27,7 @@ public class AnxinQueryContractResponseMapperTest {
         anxinQueryContractResponseModel.setRetCode("1");
         anxinQueryContractResponseModel.setRetMessage("1");
         anxinQueryContractResponseModel.setContractNo("1");
+        anxinQueryContractResponseModel.setBusinessId(1l);
         anxinQueryContractResponseMapper.create(anxinQueryContractResponseModel);
     }
 }

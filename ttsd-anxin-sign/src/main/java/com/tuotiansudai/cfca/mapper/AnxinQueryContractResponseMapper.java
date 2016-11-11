@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AnxinQueryContractResponseMapper {
 
-    @Insert("INSERT INTO anxin_query_contract_response(abusiness_id,batch_no,tx_time,ret_code,ret_message,template_id,is_sign,contract_no,file_id,code,message,sign_infos,investment_info,created_time)" +
+    @Insert("INSERT INTO anxin_query_contract_response(business_id,batch_no,tx_time,ret_code,ret_message,template_id,is_sign,contract_no,file_id,code,message,sign_infos,investment_info,created_time)" +
             "VALUES(#{businessId},#{batchNo},#{txTime},#{retCode},#{retMessage},#{templateId},#{isSign},#{contractNo},#{fileId},#{code},#{message},#{signInfos},#{investmentInfo},#{createdTime})")
     void create(AnxinQueryContractResponseModel anxinQueryContractResponseModel);
 
