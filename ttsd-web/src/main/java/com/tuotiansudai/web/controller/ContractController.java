@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 @Controller
 @RequestMapping(path = "/contract")
@@ -64,12 +65,15 @@ public class ContractController {
     public void findContract(@PathVariable String contractNo, HttpServletRequest httpServletRequest, HttpServletResponse response) {
         byte[] pdf = anxinSignService.downContractByContractNo(contractNo);
         try {
-            response.setContentType("application/pdf");
-            ServletOutputStream stream = response.getOutputStream();
-            stream.write(pdf);
-            stream.flush();
-            stream.close();
-        } catch (IOException e) {
+            response.reset();
+            response.addHeader("Content-Disposition", String.format("attachment;filename=%s", contractNo));
+            response.addHeader("Content-Length", "" + pdf.length);
+            OutputStream ous = new BufferedOutputStream(response.getOutputStream());
+            response.setContentType("application/octet-stream");
+            ous.write(pdf);
+            ous.flush();
+            ous.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
