@@ -28,19 +28,38 @@ public class MQTools {
         String endPoint = properties.getProperty("aliyun.mns.endpoint");
         String accessKeyId = properties.getProperty("aliyun.mns.accessKeyId");
         String accessKeySecret = properties.getProperty("aliyun.mns.accessKeySecret");
-        System.out.println(endPoint);
 
-        CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
-        MNSClient mnsClient = account.getMNSClient();
-        List<String> existingTopicNameList = getExistingTopNameList(mnsClient);
-        Stream.of(MessageTopic.values()).forEach(messageTopic -> {
-            if (existingTopicNameList.contains(messageTopic.getTopicName())) {
-                initSubscriptQueue(mnsClient, messageTopic);
-            } else {
-                createPullTopic(mnsClient, messageTopic);
-            }
-        });
-        mnsClient.close();
+        MNSClient mnsClient = getMnsClient(endPoint, accessKeyId, accessKeySecret);
+
+        if (mnsClient == null) {
+            return;
+        }
+
+        try {
+            List<String> existingTopicNameList = getExistingTopNameList(mnsClient);
+            Stream.of(MessageTopic.values()).forEach(messageTopic -> {
+                if (existingTopicNameList.contains(messageTopic.getTopicName())) {
+                    initSubscriptQueue(mnsClient, messageTopic);
+                } else {
+                    createPullTopic(mnsClient, messageTopic);
+                }
+            });
+            mnsClient.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            mnsClient.close();
+        }
+    }
+
+    private static MNSClient getMnsClient(String endPoint, String accessKeyId, String accessKeySecret) {
+        try {
+            CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
+            return account.getMNSClient();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static List<String> getExistingTopNameList(MNSClient mnsClient) {
