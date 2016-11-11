@@ -33,8 +33,8 @@
                 <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxactivity?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${activity.jdbc.username}"/>
                 <property name="password" value="${activity.jdbc.password}"/>
-                <property name="minimumIdle" value="${activity.minimumIdle}"/>
-                <property name="maximumPoolSize" value="${activity.maximumPoolSize}"/>
+                <property name="minimumIdle" value="${activity.activity.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${activity.activity.maximumPoolSize}"/>
                 <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
                 <property name="dataSourceProperties">
                     <props>

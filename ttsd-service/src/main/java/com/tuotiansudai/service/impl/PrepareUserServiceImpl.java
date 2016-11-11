@@ -56,7 +56,9 @@ public class PrepareUserServiceImpl implements PrepareUserService {
         }
 
         try {
+            UserModel userModel = userService.findByMobile(requestDto.getReferrerMobile());
             PrepareUserModel prepareUserModel = new PrepareUserModel();
+            prepareUserModel.setReferrerLoginName(userModel != null ? userModel.getLoginName():null);
             prepareUserModel.setReferrerMobile(requestDto.getReferrerMobile());
             prepareUserModel.setMobile(requestDto.getMobile());
             prepareUserModel.setCreatedTime(new Date());

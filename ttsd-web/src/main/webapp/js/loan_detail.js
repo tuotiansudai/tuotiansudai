@@ -625,7 +625,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             });
             return;
         }
-        $investForm.submit();
+        if($isSkipAuth.val()=='true'){
+            $investForm.submit();
+            return;
+        }else{
+            getSkipPhoneTip();
+            return false;
+        }
     }
 
     // 投资加息
