@@ -5,6 +5,8 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.mq.client.MQClient;
+import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
@@ -62,6 +64,9 @@ public class MockUserServiceTest {
 
     @Mock
     private PrepareUserMapper prepareUserMapper;
+
+    @Mock
+    private MQClient mqClient;
 
 
     @Before
@@ -151,6 +156,7 @@ public class MockUserServiceTest {
         when(myShaPasswordEncoder.encodePassword(anyString(), anyString())).thenReturn("salt");
         when(prepareUserMapper.findByMobile(anyString())).thenReturn(null);
         doNothing().when(referrerRelationService).generateRelation(null, loginName);
+        doNothing().when(mqClient).publishMessage(any(MessageTopic.class), anyString());
         MembershipModel membershipModel = new MembershipModel();
         membershipModel.setId(1);
         membershipModel.setLevel(0);

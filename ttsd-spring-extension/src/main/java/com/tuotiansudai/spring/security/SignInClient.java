@@ -66,10 +66,12 @@ public class SignInClient {
 
         try {
             Response response = this.execute(request);
-            if (response.code() != 200) {
-                return null;
-            }
+
             SignInResult signInResult = objectMapper.readValue(response.body().string(), SignInResult.class);
+
+            if(signInResult !=null && !signInResult.isResult() ){
+                return signInResult;
+            }
 
             HttpSession session = httpServletRequest.getSession(false);
             logger.debug(MessageFormat.format("[Login] user({0}) original session id({1}) new session id({2})",
@@ -81,7 +83,7 @@ public class SignInClient {
             }
 
             return signInResult;
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error(MessageFormat.format("[sign in client] login failed (user={0} token={1} source={2} deviceId={3})", username, token, source, deviceId), e);
         }
 
