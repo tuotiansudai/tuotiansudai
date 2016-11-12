@@ -1,4 +1,4 @@
-package com.tuotian.mq.consumer.loan;
+package com.tuotiansudai.mq.consumer.loan;
 
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
