@@ -5,9 +5,11 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppBookingLoanService;
 import com.tuotiansudai.repository.mapper.BookingLoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.BookingLoanModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanServ
 
     @Autowired
     private BookingLoanMapper bookingLoanMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public BaseResponseDto<BookingLoanResponseListsDto> getBookingLoan() {
@@ -39,7 +44,11 @@ public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanServ
 
     @Override
     public BaseResponseDto bookingLoan(BookingLoanRequestDto bookingLoanRequestDto) {
-        BookingLoanModel bookingLoanModel = new BookingLoanModel(bookingLoanRequestDto.getBaseParam().getPhoneNum(),
+        UserModel userModel = userMapper.findByMobile(bookingLoanRequestDto.getBaseParam().getPhoneNum());
+
+        BookingLoanModel bookingLoanModel = new BookingLoanModel(
+                userModel!=null?userModel.getLoginName():null,
+                bookingLoanRequestDto.getBaseParam().getPhoneNum(),
                 Source.valueOf(bookingLoanRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)),
                 DateTime.now().toDate(),
                 bookingLoanRequestDto.getProductType(),
