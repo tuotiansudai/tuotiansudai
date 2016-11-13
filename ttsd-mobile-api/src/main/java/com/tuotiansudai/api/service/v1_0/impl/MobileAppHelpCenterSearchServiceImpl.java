@@ -1,6 +1,5 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppHelpCenterSearchService;
@@ -21,20 +20,10 @@ public class MobileAppHelpCenterSearchServiceImpl implements MobileAppHelpCenter
     @Override
     public BaseResponseDto<HelpCenterSearchListResponseDataDto> getHelpCenterSearchResult(HelpCenterSearchRequestDto requestDto) {
 
-
-
-
         List<HelpCenterModel>  helpCenterModels =  helpCenterMapper.findAllHelpCenterByTitleOrCategoryOrHot(requestDto.getKeywords(), requestDto.getCategory() != null ? requestDto.getCategory().toUpperCase() : null, requestDto.getHot());
-
         List<HelpCenterSearchResponseDataDto> helpCenterSearchResponseDataDtoList = Lists.newArrayList();
-
         if(CollectionUtils.isNotEmpty(helpCenterModels)){
-            helpCenterSearchResponseDataDtoList = Lists.transform(helpCenterModels, new Function<HelpCenterModel, HelpCenterSearchResponseDataDto>() {
-                @Override
-                public HelpCenterSearchResponseDataDto apply(HelpCenterModel helpCenterModel) {
-                    return new HelpCenterSearchResponseDataDto(helpCenterModel);
-                }
-            });
+            helpCenterSearchResponseDataDtoList = Lists.transform(helpCenterModels, helpCenterModel -> new HelpCenterSearchResponseDataDto(helpCenterModel));
         }
 
         HelpCenterSearchListResponseDataDto dataDto = new HelpCenterSearchListResponseDataDto();

@@ -14,6 +14,12 @@
         <result column="hot" property="hot"/>
     </resultMap>
 
+
+    <insert id="create" parameterType="HelpCenterModel"  useGeneratedKeys="true" keyProperty="id">
+        insert into `aa`.`help_center` (id, title, content, category, hot)
+        value(#{id}, #{title}, #{content}, #{category}, #{hot})
+    </insert>
+
     <select id="findAllHelpCenterByTitleOrCategoryOrHot" resultMap="helpCenterResultMap" parameterType="map">
         SELECT * FROM `aa`.`help_center`
         <where>

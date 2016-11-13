@@ -12,6 +12,16 @@ public class HelpCenterModel implements Serializable{
     private HelpCategory category;
     private boolean hot;
 
+    public HelpCenterModel(){}
+
+    public HelpCenterModel(long id, String title, String content, HelpCategory category, boolean hot) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.category = category;
+        this.hot = hot;
+    }
+
     public long getId() {
         return id;
     }
