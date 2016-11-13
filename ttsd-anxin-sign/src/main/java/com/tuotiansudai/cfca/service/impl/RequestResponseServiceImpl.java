@@ -34,16 +34,16 @@ public class RequestResponseServiceImpl implements RequestResponseService {
     AnxinVerifyCaptchaResponseMapper anxinVerifyCaptchaResponseMapper;
 
     @Autowired
-    AnxinCreateContractRequestMapper anxinCreateContractRequestMapper;
+    AnxinCreateContractBatchRequestMapper anxinCreateContractBatchRequestMapper;
 
     @Autowired
-    AnxinCreateContractResponseMapper anxinCreateContractResponseMapper;
+    AnxinCreateContractBatchResponseMapper anxinCreateContractBatchResponseMapper;
 
     @Autowired
-    AnxinQueryContractRequestMapper anxinQueryContractRequestMapper;
+    AnxinQueryContractBatchRequestMapper anxinQueryContractBatchRequestMapper;
 
     @Autowired
-    AnxinQueryContractResponseMapper anxinQueryContractResponseMapper;
+    AnxinQueryContractBatchResponseMapper anxinQueryContractBatchResponseMapper;
 
     @Override
     public void insertCreateAccountRequest(Tx3001ReqVO tx3001ReqVO) {
@@ -154,8 +154,8 @@ public class RequestResponseServiceImpl implements RequestResponseService {
     public void insertBatchGenerateContractRequest(long businessId, Tx3202ReqVO tx3202ReqVO) {
         for (CreateContractVO contractVO : tx3202ReqVO.getCreateContracts()) {
             if (contractVO.getSignInfos() != null) {
-                AnxinCreateContractRequestModel requestModel = new AnxinCreateContractRequestModel(businessId, tx3202ReqVO, contractVO);
-                anxinCreateContractRequestMapper.create(requestModel);
+                AnxinCreateContractBatchRequestModel requestModel = new AnxinCreateContractBatchRequestModel(businessId, tx3202ReqVO, contractVO);
+                anxinCreateContractBatchRequestMapper.create(requestModel);
             }
         }
     }
@@ -165,12 +165,12 @@ public class RequestResponseServiceImpl implements RequestResponseService {
     public void insertBatchGenerateContractResponse(long businessId, String batchNo, Tx3202ResVO tx3202ResVO) {
 
         if (!tx3202ResVO.getHead().getRetCode().equals(AnxinRetCode.SUCCESS)) {
-            AnxinCreateContractResponseModel responseModel = new AnxinCreateContractResponseModel(businessId, batchNo, tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage());
-            anxinCreateContractResponseMapper.create(responseModel);
+            AnxinCreateContractBatchResponseModel responseModel = new AnxinCreateContractBatchResponseModel(businessId, batchNo, tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage());
+            anxinCreateContractBatchResponseMapper.create(responseModel);
         } else {
             for (CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()) {
-                AnxinCreateContractResponseModel responseModel = new AnxinCreateContractResponseModel(businessId, tx3202ResVO, createContractVO);
-                anxinCreateContractResponseMapper.create(responseModel);
+                AnxinCreateContractBatchResponseModel responseModel = new AnxinCreateContractBatchResponseModel(businessId, tx3202ResVO, createContractVO);
+                anxinCreateContractBatchResponseMapper.create(responseModel);
             }
         }
     }
@@ -178,12 +178,12 @@ public class RequestResponseServiceImpl implements RequestResponseService {
 
     @Override
     public void insertBatchQueryContractRequest(long businessId, Tx3211ReqVO tx3211ReqVO) {
-        AnxinQueryContractRequestModel requestModel = new AnxinQueryContractRequestModel();
+        AnxinQueryContractBatchRequestModel requestModel = new AnxinQueryContractBatchRequestModel();
         requestModel.setBusinessId(businessId);
         requestModel.setBatchNo(tx3211ReqVO.getBatchNo());
         requestModel.setTxTime(tx3211ReqVO.getHead().getTxTime());
         requestModel.setCreatedTime(new Date());
-        anxinQueryContractRequestMapper.create(requestModel);
+        anxinQueryContractBatchRequestMapper.create(requestModel);
     }
 
     @Override
@@ -192,17 +192,17 @@ public class RequestResponseServiceImpl implements RequestResponseService {
         if (tx3211ResVO != null && tx3211ResVO.getCreateContracts() != null) {
             // 请求成功返回
             for (CreateContractVO createContractVO : tx3211ResVO.getCreateContracts()) {
-                AnxinQueryContractResponseModel responseModel = new AnxinQueryContractResponseModel(businessId, tx3211ResVO, createContractVO);
-                anxinQueryContractResponseMapper.create(responseModel);
+                AnxinQueryContractBatchResponseModel responseModel = new AnxinQueryContractBatchResponseModel(businessId, tx3211ResVO, createContractVO);
+                anxinQueryContractBatchResponseMapper.create(responseModel);
             }
         } else {
             // 请求返回失败
-            AnxinQueryContractResponseModel responseModel = new AnxinQueryContractResponseModel();
+            AnxinQueryContractBatchResponseModel responseModel = new AnxinQueryContractBatchResponseModel();
             responseModel.setBusinessId(businessId);
             responseModel.setBatchNo(batchNo);
             responseModel.setRetCode(tx3211ResVO.getHead().getRetCode());
             responseModel.setRetMessage(tx3211ResVO.getHead().getRetMessage());
-            anxinQueryContractResponseMapper.create(responseModel);
+            anxinQueryContractBatchResponseMapper.create(responseModel);
         }
     }
 

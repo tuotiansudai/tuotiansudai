@@ -1,4 +1,4 @@
-CREATE TABLE `anxin_operations`.`anxin_create_account_request` (
+CREATE TABLE `anxin_operations`.`create_account_request` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `tx_time` VARCHAR(14) NOT NULL,
   `person_name` VARCHAR(150) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE `anxin_operations`.`anxin_create_account_request` (
   DEFAULT CHARSET = utf8;
 
 
-CREATE TABLE `anxin_operations`.`anxin_create_account_response` (
+CREATE TABLE `anxin_operations`.`create_account_response` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `tx_time` VARCHAR(14),
   `ret_code` VARCHAR(20) NOT NULL,

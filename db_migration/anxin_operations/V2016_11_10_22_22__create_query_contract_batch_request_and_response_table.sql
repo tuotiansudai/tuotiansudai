@@ -1,4 +1,4 @@
-CREATE TABLE `anxin_operations`.`anxin_query_contract_request` (
+CREATE TABLE `anxin_operations`.`query_contract_batch_request` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `business_id` VARCHAR(32) NOT NULL,
   `batch_no` VARCHAR(32) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE `anxin_operations`.`anxin_query_contract_request` (
   DEFAULT CHARSET = utf8;
 
 
-CREATE TABLE `anxin_operations`.`anxin_query_contract_response` (
+CREATE TABLE `anxin_operations`.`query_contract_batch_response` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `business_id` VARCHAR(32) NOT NULL,
   `batch_no` VARCHAR(32) NOT NULL,

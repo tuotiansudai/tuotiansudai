@@ -6,7 +6,7 @@ import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 
 import java.util.Date;
 
-public class AnxinQueryContractResponseModel {
+public class AnxinQueryContractBatchResponseModel {
 
     /**
      * common properties:
@@ -32,10 +32,10 @@ public class AnxinQueryContractResponseModel {
     private String investmentInfo;
 
 
-    public AnxinQueryContractResponseModel() {
+    public AnxinQueryContractBatchResponseModel() {
     }
 
-    public AnxinQueryContractResponseModel(long businessId, Tx3211ResVO tx3211ResVO, CreateContractVO createContractVO) {
+    public AnxinQueryContractBatchResponseModel(long businessId, Tx3211ResVO tx3211ResVO, CreateContractVO createContractVO) {
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         this.businessId = businessId;
         this.batchNo = tx3211ResVO.getBatchNo();

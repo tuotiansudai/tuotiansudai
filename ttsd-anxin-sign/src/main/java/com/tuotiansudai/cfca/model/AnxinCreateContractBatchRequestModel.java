@@ -9,7 +9,7 @@ import com.tuotiansudai.cfca.dto.AnxinContractType;
 import java.io.Serializable;
 import java.util.Date;
 
-public class AnxinCreateContractRequestModel implements Serializable{
+public class AnxinCreateContractBatchRequestModel implements Serializable{
     private long id;
     private long businessId;
     private String batchNo;
@@ -21,10 +21,10 @@ public class AnxinCreateContractRequestModel implements Serializable{
     private String investmentInfo;
     private Date createdTime;
 
-    public AnxinCreateContractRequestModel() {
+    public AnxinCreateContractBatchRequestModel() {
     }
 
-    public AnxinCreateContractRequestModel(long businessId, Tx3202ReqVO tx3202ReqVO, CreateContractVO createContractVO) {
+    public AnxinCreateContractBatchRequestModel(long businessId, Tx3202ReqVO tx3202ReqVO, CreateContractVO createContractVO) {
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         this.businessId = businessId;
         this.orderId = Long.parseLong(createContractVO.getInvestmentInfo().get("orderId"));

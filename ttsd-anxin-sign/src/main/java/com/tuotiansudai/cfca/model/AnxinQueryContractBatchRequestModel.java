@@ -2,7 +2,7 @@ package com.tuotiansudai.cfca.model;
 
 import java.util.Date;
 
-public class AnxinQueryContractRequestModel {
+public class AnxinQueryContractBatchRequestModel {
 
     private long id;
     private long businessId;
@@ -10,10 +10,10 @@ public class AnxinQueryContractRequestModel {
     private String txTime;
     private Date createdTime;
 
-    public AnxinQueryContractRequestModel() {
+    public AnxinQueryContractBatchRequestModel() {
     }
 
-    public AnxinQueryContractRequestModel(long businessId, String batchNo, String txTime, Date createdTime) {
+    public AnxinQueryContractBatchRequestModel(long businessId, String batchNo, String txTime, Date createdTime) {
         this.businessId = businessId;
         this.batchNo = batchNo;
         this.txTime = txTime;

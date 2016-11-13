@@ -6,7 +6,7 @@ import cfca.trustsign.common.vo.response.tx3.Tx3202ResVO;
 import java.io.Serializable;
 import java.util.Date;
 
-public class AnxinCreateContractResponseModel implements Serializable {
+public class AnxinCreateContractBatchResponseModel implements Serializable {
 
     private long id;
     private long businessId;
@@ -22,17 +22,17 @@ public class AnxinCreateContractResponseModel implements Serializable {
     private String investmentInfo;
     private Date createdTime;
 
-    public AnxinCreateContractResponseModel() {
+    public AnxinCreateContractBatchResponseModel() {
     }
 
-    public AnxinCreateContractResponseModel(long businessId, String batchNo, String retCode, String retMessage) {
+    public AnxinCreateContractBatchResponseModel(long businessId, String batchNo, String retCode, String retMessage) {
         this.businessId = businessId;
         this.batchNo = batchNo;
         this.retMessage = retMessage;
         this.retCode = retCode;
     }
 
-    public AnxinCreateContractResponseModel(long businessId, Tx3202ResVO tx3202ResVO, CreateContractVO contractVO) {
+    public AnxinCreateContractBatchResponseModel(long businessId, Tx3202ResVO tx3202ResVO, CreateContractVO contractVO) {
         this.businessId = businessId;
         this.orderId = contractVO.getInvestmentInfo().get("orderId");
         this.batchNo = tx3202ResVO.getBatchNo();
