@@ -1,5 +1,6 @@
 package com.tuotiansudai.cfca.mapper;
 
+import com.tuotiansudai.cfca.constant.AnxinRetCode;
 import com.tuotiansudai.cfca.model.AnxinCreateAccountResponseModel;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class AnxinCreateAccountResponseMapperTest {
     @Test
     public void shouldCreate() {
         AnxinCreateAccountResponseModel model = new AnxinCreateAccountResponseModel();
-        model.setRetCode("60000000");
+        model.setRetCode(AnxinRetCode.SUCCESS);
         model.setRetMessage("OK");
         model.setUserId("12345678901234567890123456789012");
         model.setTxTime(DateTime.now().toString("yyyyMMddHHmmss"));

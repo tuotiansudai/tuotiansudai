@@ -185,7 +185,7 @@ public class LoanListController {
         }
 
         if(Strings.isNullOrEmpty(batchStr)){
-            baseDataDto.setMessage("该标的已经超过7天,不可以重新查询合同结果并更新合同编号!");
+            baseDataDto.setMessage("该标的已经超过7天，无法再次［查询合同结果并更新合同编号］");
             return baseDto;
         }
 

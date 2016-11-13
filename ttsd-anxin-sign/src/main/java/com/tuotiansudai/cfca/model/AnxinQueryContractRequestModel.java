@@ -5,7 +5,7 @@ import java.util.Date;
 public class AnxinQueryContractRequestModel {
 
     private long id;
-    long businessId;
+    private long businessId;
     private String batchNo;
     private String txTime;
     private Date createdTime;

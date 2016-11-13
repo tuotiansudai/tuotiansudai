@@ -1,19 +1,27 @@
 package com.tuotiansudai.cfca.model;
 
 import cfca.trustsign.common.vo.cs.CreateContractVO;
+import cfca.trustsign.common.vo.response.tx3.Tx3211ResVO;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 
 import java.util.Date;
 
 public class AnxinQueryContractResponseModel {
 
+    /**
+     * common properties:
+     */
     private long id;
     private long businessId;
     private String batchNo;
     private String txTime;
     private String retCode;
     private String retMessage;
+    private Date createdTime;
 
+    /**
+     * contract properties:
+     */
     private String templateId;
     private int isSign;
     private String contractNo;
@@ -23,25 +31,17 @@ public class AnxinQueryContractResponseModel {
     private String signInfos;
     private String investmentInfo;
 
-    private Date createdTime;
 
-    public AnxinQueryContractResponseModel(){}
-
-    public AnxinQueryContractResponseModel(long businessId, String batchNo, String retCode, String retMessage) {
-        this.businessId = businessId;
-        this.batchNo = batchNo;
-        this.retCode = retCode;
-        this.retMessage = retMessage;
-        this.createdTime = new Date();
+    public AnxinQueryContractResponseModel() {
     }
 
-    public AnxinQueryContractResponseModel(long businessId, String batchNo, String txTime, String retCode, String retMessage, CreateContractVO createContractVO) {
+    public AnxinQueryContractResponseModel(long businessId, Tx3211ResVO tx3211ResVO, CreateContractVO createContractVO) {
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         this.businessId = businessId;
-        this.batchNo = batchNo;
-        this.txTime = txTime;
-        this.retCode = retCode;
-        this.retMessage = retMessage;
+        this.batchNo = tx3211ResVO.getBatchNo();
+        this.txTime = tx3211ResVO.getHead().getTxTime();
+        this.retCode = tx3211ResVO.getHead().getRetCode();
+        this.retMessage = tx3211ResVO.getHead().getRetMessage();
         if (createContractVO != null) {
             this.templateId = createContractVO.getTemplateId();
             this.isSign = createContractVO.getIsSign();

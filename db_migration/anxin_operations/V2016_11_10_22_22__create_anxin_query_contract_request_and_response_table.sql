@@ -1,9 +1,9 @@
 CREATE TABLE `anxin_operations`.`anxin_query_contract_request` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `business_id` VARCHAR(32) NULL,
-  `batch_no` VARCHAR(32) NULL,
-  `tx_time` VARCHAR(14) NULL,
-  `created_time` DATETIME NULL,
+  `business_id` VARCHAR(32) NOT NULL,
+  `batch_no` VARCHAR(32) NOT NULL,
+  `tx_time` VARCHAR(14) NOT NULL,
+  `created_time` DATETIME NOT NULL,
   PRIMARY KEY (`id`)
   )
   ENGINE = InnoDB

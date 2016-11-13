@@ -1,64 +1,65 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.cfca.mapper.AnxinContractRequestMapper">
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--<!DOCTYPE mapper-->
+        <!--PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+        <!--"http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<!--<mapper namespace="com.tuotiansudai.cfca.mapper.AnxinCreateContractRequestMapper">-->
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+    <!--<cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>-->
 
-    <resultMap id="anxinContractRequestModel" type="com.tuotiansudai.cfca.model.AnxinContractRequestModel">
-        <id column="id" property="id"/>
-        <result column="business_id" property="businessId"/>
-        <result column="contract_no" property="contractNo"/>
-        <result column="contract_type" property="contractType"/>
-        <result column="tx_time" property="txTime"/>
-        <result column="batch_no" property="batchNo"/>
-        <result column="template_id" property="templateId"/>
-        <result column="is_sign" property="isSign"/>
-        <result column="json_data" property="jsonData"/>
-        <result column="updated_time" property="updatedTime"/>
-        <result column="created_time" property="createdTime"/>
-    </resultMap>
+    <!--<resultMap id="anxinCreateContractRequestModel" type="com.tuotiansudai.cfca.model.AnxinCreateContractRequestModeltModel">-->
+        <!--<id column="id" property="id"/>-->
+        <!--<result column="business_id" property="businessId"/>-->
+        <!--<result column="order_id" property="orderId"/>-->
+        <!--<result column="batch_no" property="batchNo"/>-->
+        <!--<result column="contract_no" property="contractNo"/>-->
+        <!--<result column="tx_time" property="txTime"/>-->
+        <!--<result column="template_id" property="templateId"/>-->
+        <!--<result column="is_sign" property="isSign"/>-->
+        <!--<result column="sign_infos" property="signInfos"/>-->
+        <!--<result column="investment_info" property="investmentInfo"/>-->
+        <!--<result column="updated_time" property="updatedTime"/>-->
+        <!--<result column="created_time" property="createdTime"/>-->
+    <!--</resultMap>-->
 
-    <insert id="create" parameterType="com.tuotiansudai.cfca.model.AnxinContractRequestModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `anxin_operations`.`anxin_contract_request`
-        (`business_id`,`order_id`,`contract_no`,`contract_type`,`tx_time`,`batch_no`,`template_id`,`is_sign`,
-        `json_data`,`updated_time`,`created_time`)
-        VALUES
-        (#{businessId},#{orderId},#{contractNo},#{contractType},#{txTime},#{batchNo},#{templateId},#{isSign},
-        #{jsonData},#{updatedTime},#{createdTime});
-    </insert>
+    <!--<insert id="create" parameterType="com.tuotiansudai.cfca.model.AnxinCreateContractRequestModeltModel" useGeneratedKeys="true" keyProperty="id">-->
+        <!--INSERT INTO `anxin_operations`.`anxin_contract_request`-->
+        <!--(`business_id`,`order_id`,`contract_no`,`contract_type`,`tx_time`,`batch_no`,`template_id`,`is_sign`,-->
+        <!--`json_data`,`updated_time`,`created_time`)-->
+        <!--VALUES-->
+        <!--(#{businessId},#{orderId},#{contractNo},#{contractType},#{txTime},#{batchNo},#{templateId},#{isSign},-->
+        <!--#{jsonData},#{updatedTime},#{createdTime});-->
+    <!--</insert>-->
 
-    <update id="update" parameterType="com.tuotiansudai.cfca.model.AnxinContractRequestModel">
-        UPDATE `anxin_operations`.`anxin_contract_request`
-        SET
-        `business_id` = #{businessId},
-        `order_id` = #{orderId},
-        `contract_no` = #{contractNo},
-        `contract_type` = #{contractType},
-        `tx_time` = #{txTime},
-        `batch_no` = #{batchNo},
-        `template_id` = #{templateId},
-        `is_sign` = #{isSign},
-        `json_data` = #{jsonData},
-        `created_time` = #{createdTime}
-        WHERE
-        id = #{id}
-    </update>
+    <!--<update id="update" parameterType="com.tuotiansudai.cfca.model.AnxinCreateContractRequestModeltModel">-->
+        <!--UPDATE `anxin_operations`.`anxin_contract_request`-->
+        <!--SET-->
+        <!--`business_id` = #{businessId},-->
+        <!--`order_id` = #{orderId},-->
+        <!--`contract_no` = #{contractNo},-->
+        <!--`contract_type` = #{contractType},-->
+        <!--`tx_time` = #{txTime},-->
+        <!--`batch_no` = #{batchNo},-->
+        <!--`template_id` = #{templateId},-->
+        <!--`is_sign` = #{isSign},-->
+        <!--`json_data` = #{jsonData},-->
+        <!--`created_time` = #{createdTime}-->
+        <!--WHERE-->
+        <!--id = #{id}-->
+    <!--</update>-->
 
-    <update id="updateContractNoByInvestId" parameterType="map">
-        UPDATE `anxin_operations`.`anxin_contract_request`
-        SET
-        `contract_no` = #{contractNo},
-        `updated_time` = now()
-        WHERE
-        order_id = #{orderId}
-        and tx_time = #{txTime}
-    </update>
+    <!--<update id="updateContractNoByInvestId" parameterType="map">-->
+        <!--UPDATE `anxin_operations`.`anxin_contract_request`-->
+        <!--SET-->
+        <!--`contract_no` = #{contractNo},-->
+        <!--`updated_time` = now()-->
+        <!--WHERE-->
+        <!--order_id = #{orderId}-->
+        <!--and tx_time = #{txTime}-->
+    <!--</update>-->
 
 
-    <select id="findBatchNoByBusinessId" parameterType="long" resultType="String">
-        select distinct batch_no from `anxin_operations`.`anxin_contract_request` where business_id = #{businessId}
-    </select>
+    <!--<select id="findBatchNoByBusinessId" parameterType="long" resultType="String">-->
+        <!--select distinct batch_no from `anxin_operations`.`anxin_contract_request` where business_id = #{businessId}-->
+    <!--</select>-->
 
-</mapper>
+<!--</mapper>-->

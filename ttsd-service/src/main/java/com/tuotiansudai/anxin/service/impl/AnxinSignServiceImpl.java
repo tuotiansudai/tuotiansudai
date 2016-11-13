@@ -9,6 +9,7 @@ import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
+import com.tuotiansudai.cfca.constant.AnxinRetCode;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
@@ -94,13 +95,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final String TRANSFER_LOAN_CONTRACT_INVESTOR_SIGN = "transfereeUserName";
 
-    private static final String GENERATE_CONTRACT_SUCCESS = "60000000";
-
     private static final String TEMP_PROJECT_CODE_KEY = "temp_project_code:";
-
-    private static final int TEMP_PROJECT_CODE_EXPIRE_TIME = 1800; // 半小时
-
-    private static final int SEVEN_DAYS = 60 * 60 * 24 * 7; // 7天
 
     public static final String LOAN_CONTRACT_IN_CREATING_KEY = "loanContractInCreating:";
 
@@ -109,6 +104,12 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     public static final String TRANSFER_CONTRACT_IN_CREATING_KEY = "transferContractInCreating:";
 
     public static final String TRANSFER_BATCH_NO_LIST_KEY = "transferBathNoList:";
+
+    private static final int TEMP_PROJECT_CODE_EXPIRE_TIME = 60 * 30; // 验证码30分钟过期
+
+    private static final int BATCH_NO_LIFT_TIME = 60 * 60 * 24 * 7; // bath_NO 在redis里保存7天
+
+    private static final int CREATE_CONTRACT_MAX_IN_DOING_TIME = 60 * 60; // 创建合同的时间在1个小时内应该可以完成，如果job出现问题，没能删除InCreating key, 1个小时后，可以再次手动创建合同
 
 
     @Value(value = "${anxin.contract.batch.num}")
@@ -283,7 +284,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     }
 
     private boolean isSuccess(Tx3ResVO tx3ResVO) {
-        return tx3ResVO != null && tx3ResVO.getHead() != null && "60000000".equals(tx3ResVO.getHead().getRetCode());
+        return tx3ResVO != null && tx3ResVO.getHead() != null && AnxinRetCode.SUCCESS.equals(tx3ResVO.getHead().getRetCode());
     }
 
     private boolean hasAnxinAccount(String loginName) {
@@ -305,7 +306,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public BaseDto createLoanContracts(long loanId) {
-        redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, SEVEN_DAYS, "1");
+        redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
 
         List<CreateContractVO> createContractVOs = Lists.newArrayList();
         List<InvestModel> investModels = investMapper.findContractFailInvest(loanId);
@@ -333,9 +334,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 try {
                     logger.debug(MessageFormat.format("[安心签] create contract begin , loanId:{0}, batchNo{1}", loanId, batchNo));
                     //创建合同
-                    Tx3202ResVO tx3202ResVO = anxinSignConnectService.generateContractBatch3202(loanId, batchNo, AnxinContractType.LOAN_CONTRACT, createContractVOs);
+                    Tx3202ResVO tx3202ResVO = anxinSignConnectService.createContractBatch3202(loanId, batchNo, AnxinContractType.LOAN_CONTRACT, createContractVOs);
 
-                    if(!isSuccess(tx3202ResVO)){
+                    if (!isSuccess(tx3202ResVO)) {
                         processResult = false;
                     }
                     batchNoList.add(batchNo);
@@ -349,17 +350,17 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             }
         }
 
-        if(!processResult){
+        if (!processResult) {
             logger.error("[安心签]: some contract create error , ready send sms . loanId" + loanId);
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
         }
 
-        if (CollectionUtils.isNotEmpty((batchNoList))){
+        if (CollectionUtils.isNotEmpty((batchNoList))) {
             logger.debug("[安心签]:创建job，十分钟后，查询并更新合同状态。标的ID:" + loanId);
             updateContractResponseHandleJob(batchNoList, loanId, AnxinContractType.LOAN_CONTRACT);
         }
 
-        redisWrapperClient.setex(LOAN_BATCH_NO_LIST_KEY + loanId, SEVEN_DAYS, String.join(",", batchNoList));
+        redisWrapperClient.setex(LOAN_BATCH_NO_LIST_KEY + loanId, BATCH_NO_LIFT_TIME, String.join(",", batchNoList));
         baseDto.setSuccess(true);
         return baseDto;
     }
@@ -383,7 +384,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public BaseDto createTransferContracts(long transferApplicationId) {
-        redisWrapperClient.setex(TRANSFER_CONTRACT_IN_CREATING_KEY + transferApplicationId, SEVEN_DAYS, "1");
+        redisWrapperClient.setex(TRANSFER_CONTRACT_IN_CREATING_KEY + transferApplicationId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
 
         CreateContractVO createContractVO = collectTransferContractModel(transferApplicationId);
         if (createContractVO == null) {
@@ -396,7 +397,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         try {
             logger.debug(MessageFormat.format("[安心签] create transfer contract begin , transferId:{0}, batchNo{1}", transferApplicationId, batchNo));
             //创建合同
-            Tx3202ResVO tx3202ResVO = anxinSignConnectService.generateContractBatch3202(transferApplicationId, batchNo, AnxinContractType.TRANSFER_CONTRACT, createContractVOs);
+            Tx3202ResVO tx3202ResVO = anxinSignConnectService.createContractBatch3202(transferApplicationId, batchNo, AnxinContractType.TRANSFER_CONTRACT, createContractVOs);
 
             baseDto.setSuccess(isSuccess(tx3202ResVO));
         } catch (PKIException e) {
@@ -407,15 +408,15 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         }
         createContractVOs.clear();
 
-        if(baseDto.isSuccess()){
+        if (baseDto.isSuccess()) {
             logger.debug("[安心签]:创建job，十分钟后，查询并更新合同状态。债权ID:" + transferApplicationId);
             updateContractResponseHandleJob(Arrays.asList(batchNo), transferApplicationId, AnxinContractType.TRANSFER_CONTRACT);
-        }else{
+        } else {
             logger.error("[安心签]: create transfer contract error , ready send sms . transferId" + transferApplicationId);
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
         }
 
-        redisWrapperClient.setex(TRANSFER_BATCH_NO_LIST_KEY + transferApplicationId, SEVEN_DAYS, batchNo);
+        redisWrapperClient.setex(TRANSFER_BATCH_NO_LIST_KEY + transferApplicationId, BATCH_NO_LIFT_TIME, batchNo);
         return baseDto;
     }
 
@@ -558,9 +559,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("loanerIdentityNumber", loanerDetailsModel.getIdentityNumber());
         dataModel.put("loanAmount1", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
         dataModel.put("loanAmount2", AmountConverter.convertCentToString(investModel.getAmount()));
-        dataModel.put("periods1", String.valueOf(loanModel.getPeriods() * 30)+"天");
+        dataModel.put("periods1", String.valueOf(loanModel.getPeriods() * 30) + "天");
         dataModel.put("periods2", String.valueOf(loanModel.getPeriods()) + "期");
-        dataModel.put("totalRate", String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100)+"%");
+        dataModel.put("totalRate", String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
         dataModel.put("recheckTime1", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
         dataModel.put("recheckTime2", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
         dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
@@ -608,7 +609,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         List<ContractResponseView> contractResponseViews = lists[1];
 
         // 把合同号更新到 invest 或 transferApplication 表
-        contractResponseViews.stream().filter(contractResponseView -> contractResponseView.getRetCode().equals(GENERATE_CONTRACT_SUCCESS)).forEach(contractResponseView -> {
+        contractResponseViews.stream().filter(contractResponseView -> contractResponseView.getRetCode().equals(AnxinRetCode.SUCCESS)).forEach(contractResponseView -> {
             if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
                 investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
             } else {

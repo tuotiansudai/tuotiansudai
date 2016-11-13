@@ -8,21 +8,12 @@ import cfca.trustsign.common.vo.cs.ProxySignVO;
 import cfca.trustsign.common.vo.request.tx3.*;
 import cfca.trustsign.common.vo.response.ErrorResVO;
 import cfca.trustsign.common.vo.response.tx3.*;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.connector.HttpConnector;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
-import com.tuotiansudai.cfca.mapper.AnxinContractRequestMapper;
-import com.tuotiansudai.cfca.mapper.AnxinContractResponseMapper;
-import com.tuotiansudai.cfca.mapper.AnxinQueryContractRequestMapper;
-import com.tuotiansudai.cfca.mapper.AnxinQueryContractResponseMapper;
-import com.tuotiansudai.cfca.model.AnxinContractRequestModel;
-import com.tuotiansudai.cfca.model.AnxinContractResponseModel;
-import com.tuotiansudai.cfca.model.AnxinQueryContractRequestModel;
-import com.tuotiansudai.cfca.model.AnxinQueryContractResponseModel;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.service.RequestResponseService;
 import com.tuotiansudai.cfca.util.SecurityUtil;
@@ -36,9 +27,7 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
@@ -47,18 +36,6 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
     @Autowired
     private RequestResponseService requestResponseService;
-
-    @Autowired
-    private AnxinContractRequestMapper anxinContractRequestMapper;
-
-    @Autowired
-    private AnxinContractResponseMapper anxinContractResponseMapper;
-
-    @Autowired
-    private AnxinQueryContractRequestMapper anxinQueryContractRequestMapper;
-
-    @Autowired
-    private AnxinQueryContractResponseMapper anxinQueryContractResponseMapper;
 
     @Override
     public Tx3ResVO createAccount3001(UserModel userModel) throws PKIException {
@@ -167,9 +144,107 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         return tx3102ResVO;
     }
 
+    @Override
+    public Tx3202ResVO createContractBatch3202(long businessId, String batchNo, AnxinContractType contractType, List<CreateContractVO> createContractList) throws PKIException {
+        HttpConnector httpConnector = new HttpConnector();
+        httpConnector.init();
+
+        Tx3202ReqVO tx3202ReqVO = new Tx3202ReqVO();
+
+        tx3202ReqVO.setHead(getHeadVO());
+        tx3202ReqVO.setBatchNo(batchNo);
+        tx3202ReqVO.setCreateContracts(createContractList.toArray(new CreateContractVO[0]));
+
+        requestResponseService.insertBatchGenerateContractRequest(businessId, tx3202ReqVO);
+
+        JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
+        String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
+        logger.debug(MessageFormat.format("[安心签] loanId:{0}, batchNo:{1} created contract request date:{2}", businessId, batchNo, req));
+
+        String txCode = "3202";
+        String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
+        String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
+
+        Tx3202ResVO tx3202ResVO = (Tx3202ResVO) readResponse(res, Tx3202ResVO.class);
+
+        requestResponseService.insertBatchGenerateContractResponse(businessId, batchNo, tx3202ResVO);
+
+        logger.debug(MessageFormat.format("[安心签] loanId:{0},batchNo:{1} created contract response date:{2}", businessId, batchNo, res));
+        return tx3202ResVO;
+    }
+
+    @Override
+    public Tx3211ResVO queryContractBatch3211(long businessId, String batchNo) throws PKIException {
+        HttpConnector httpConnector = new HttpConnector();
+        httpConnector.init();
+
+        Tx3211ReqVO tx3211ReqVO = new Tx3211ReqVO();
+
+        tx3211ReqVO.setHead(getHeadVO());
+        tx3211ReqVO.setBatchNo(batchNo);
+
+        JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
+        String req = jsonObjectMapper.writeValueAsString(tx3211ReqVO);
+        logger.debug(MessageFormat.format("[安心签] find contract response , batchNo:{0}", batchNo));
+
+        requestResponseService.insertBatchQueryContractRequest(businessId, tx3211ReqVO);
+
+        String txCode = "3211";
+        String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
+        String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
+
+        logger.debug("[安心签] Query contract response:" + res);
+
+        Tx3211ResVO tx3211ResVO = (Tx3211ResVO) readResponse(res, Tx3211ResVO.class);
+
+        requestResponseService.insertBatchQueryContractResponse(businessId, batchNo, tx3211ResVO);
+
+        return tx3211ResVO;
+    }
+
+    @Override
+    public List[] queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {
+        // 合同还没有生成完毕的batchNo
+        List<String> waitingBatchNoList = new ArrayList<>();
+
+        List<ContractResponseView> contractResponseViews = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(batchNoList)) {
+            for (String batchNo : batchNoList) {
+                Tx3211ResVO tx3211ResVO;
+                try {
+                    tx3211ResVO = queryContractBatch3211(businessId, batchNo);
+                } catch (PKIException e) {
+                    logger.error(MessageFormat.format("[安心签] Query contract response error, loan/transfer Id:{0}, batchNo:{1}", businessId + "", batchNo), e);
+                    continue;
+                }
+                if (tx3211ResVO != null && tx3211ResVO.getCreateContracts() != null) {
+                    for (CreateContractVO createContractVO : tx3211ResVO.getCreateContracts()) {
+                        contractResponseViews.add(new ContractResponseView(Long.parseLong(createContractVO.getInvestmentInfo().get("orderId")),
+                                createContractVO.getContractNo(), createContractVO.getCode()));
+                    }
+                } else {
+                    // 60030407 = 该批次还没有执行完毕，请稍后再试
+                    if (tx3211ResVO != null && "60030407".equals(tx3211ResVO.getHead().getRetCode())) {
+                        waitingBatchNoList.add(batchNo);
+                    }
+                    logger.error(MessageFormat.format("[安心签] Query contract response error. businessId:{0}, batchNo:{1}, errorCode:{2}, errorMessage:{3}",
+                            businessId + "", batchNo, tx3211ResVO.getHead().getRetCode(), tx3211ResVO.getHead().getRetMessage()));
+                }
+            }
+        }
+        return new List[]{waitingBatchNoList, contractResponseViews};
+    }
+
+    @Override
+    public byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException {
+        HttpConnector httpConnector = new HttpConnector();
+        httpConnector.init();
+        logger.debug(MessageFormat.format("[安心签] down loan contract , contractNo:{0}", contractNo));
+        return httpConnector.getFile("platId/" + Request.PLAT_ID + "/contractNo/" + contractNo + "/downloading");
+    }
 
     private Tx3ResVO readResponse(String res, Class<? extends Tx3ResVO> cla) {
-        if (res.indexOf("\"60000000\"") > 0) {
+        if (res.indexOf("\"AnxinRetCode.SUCCESS\"") > 0) {
             // 成功：
             JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
             return jsonObjectMapper.readValue(res, cla);
@@ -192,124 +267,6 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         }
     }
 
-    @Override
-    public Tx3202ResVO generateContractBatch3202(long businessId, String batchNo, AnxinContractType anxinContractType, List<CreateContractVO> createContractList) throws PKIException {
-        HttpConnector httpConnector = new HttpConnector();
-        httpConnector.init();
-
-        Tx3202ReqVO tx3202ReqVO = new Tx3202ReqVO();
-
-        tx3202ReqVO.setHead(getHeadVO());
-        tx3202ReqVO.setBatchNo(batchNo);
-        tx3202ReqVO.setCreateContracts(createContractList.toArray(new CreateContractVO[0]));
-
-        generateRequestRecord(businessId, tx3202ReqVO.getBatchNo(), tx3202ReqVO.getHead().getTxTime(), anxinContractType, createContractList);
-
-        JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
-        String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
-        logger.debug(MessageFormat.format("[安心签] loanId:{0}, batchNo:{1} created contract request date:{2}", businessId, batchNo, req));
-
-        String txCode = "3202";
-        String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
-        String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
-
-        Tx3202ResVO tx3202ResVO = jsonObjectMapper.readValue(res, Tx3202ResVO.class);
-
-        if (Strings.isNullOrEmpty(tx3202ResVO.getBatchNo())) {
-            ErrorResVO errorResVO = jsonObjectMapper.readValue(res, ErrorResVO.class);
-            anxinContractResponseMapper.create(new AnxinContractResponseModel(businessId, batchNo, errorResVO.getErrorCode(), errorResVO.getErrorMessage()));
-        } else {
-            for (CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()) {
-                anxinContractRequestMapper.updateContractNoByInvestId(createContractVO.getContractNo(),
-                        Long.parseLong(createContractVO.getInvestmentInfo().get("orderId")),
-                        tx3202ReqVO.getHead().getTxTime());
-
-                anxinContractResponseMapper.create(new AnxinContractResponseModel(businessId,
-                        tx3202ResVO.getBatchNo(), createContractVO.getContractNo(), tx3202ResVO.getHead().getTxTime(), tx3202ResVO.getHead().getLocale(),
-                        DateTime.now().toDate(), tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage()));
-            }
-        }
-        logger.debug(MessageFormat.format("[安心签] loanId:{0},batchNo:{1} created contract response date:{2}", businessId, batchNo, res));
-        return tx3202ResVO;
-    }
-
-    @Override
-    public Tx3202ResVO queryContractByBatchNo(long businessId, String batchNo) throws PKIException {
-        HttpConnector httpConnector = new HttpConnector();
-        httpConnector.init();
-
-        Tx3211ReqVO tx3211ReqVO = new Tx3211ReqVO();
-
-        tx3211ReqVO.setHead(getHeadVO());
-        tx3211ReqVO.setBatchNo(batchNo);
-
-        JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
-        String req = jsonObjectMapper.writeValueAsString(tx3211ReqVO);
-        logger.debug(MessageFormat.format("[安心签] find contract response , batchNo:{0}", batchNo));
-
-        anxinQueryContractRequestMapper.create(new AnxinQueryContractRequestModel(businessId, batchNo, tx3211ReqVO.getHead().getTxTime(), DateTime.now().toDate()));
-
-        String txCode = "3211";
-        String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
-        String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
-
-        logger.debug("[安心签] Query contract response:" + res);
-
-        Tx3202ResVO tx3202ResVO = (Tx3202ResVO) readResponse(res, Tx3202ResVO.class);
-
-        if (tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null) {
-            for (CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()) {
-                anxinQueryContractResponseMapper.create(new AnxinQueryContractResponseModel(
-                        businessId, batchNo, tx3202ResVO.getHead().getTxTime(), tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage(), createContractVO));
-            }
-        } else {
-            anxinQueryContractResponseMapper.create(new AnxinQueryContractResponseModel(
-                    businessId, batchNo, tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage()));
-        }
-        return tx3202ResVO;
-    }
-
-    @Override
-    public List[] queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {
-        // 合同还没有生成完毕的batchNo
-        List<String> waitingBatchNoList = new ArrayList<>();
-
-        List<ContractResponseView> contractResponseViews = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(batchNoList)) {
-            for (String batchNo : batchNoList) {
-                Tx3202ResVO tx3202ResVO;
-                try {
-                    tx3202ResVO = queryContractByBatchNo(businessId, batchNo);
-                } catch (PKIException e) {
-                    logger.error(MessageFormat.format("[安心签] Query contract response error, loan/transfer Id:{0}, batchNo:{1}", businessId + "", batchNo), e);
-                    continue;
-                }
-                if (tx3202ResVO != null && tx3202ResVO.getCreateContracts() != null) {
-                    for (CreateContractVO createContractVO : tx3202ResVO.getCreateContracts()) {
-                        contractResponseViews.add(new ContractResponseView(Long.parseLong(createContractVO.getInvestmentInfo().get("orderId")),
-                                createContractVO.getContractNo(), createContractVO.getCode()));
-                    }
-                } else {
-                    // 60030407 = 该批次还没有执行完毕，请稍后再试
-                    if (tx3202ResVO != null && "60030407".equals(tx3202ResVO.getHead().getRetCode())) {
-                        waitingBatchNoList.add(batchNo);
-                    }
-                    logger.error(MessageFormat.format("[安心签] Query contract response error. businessId:{0}, batchNo:{1}, errorCode:{2}, errorMessage:{3}",
-                            businessId + "", batchNo, tx3202ResVO.getHead().getRetCode(), tx3202ResVO.getHead().getRetMessage()));
-                }
-            }
-        }
-        return new List[]{waitingBatchNoList, contractResponseViews};
-    }
-
-    @Override
-    public byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException {
-        HttpConnector httpConnector = new HttpConnector();
-        httpConnector.init();
-        logger.debug(MessageFormat.format("[安心签] down loan contract , contractNo:{0}", contractNo));
-        return httpConnector.getFile("platId/" + Request.PLAT_ID + "/contractNo/" + contractNo + "/downloading");
-    }
-
     private HeadVO getHeadVO() {
         HeadVO head = new HeadVO();
         head.setTxTime(DateTime.now().toString("yyyyMMddHHmmss"));
@@ -326,26 +283,6 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         person.setAddress(userModel.getCity());
         person.setAuthenticationMode("公安部");
         return person;
-    }
-
-    private void generateRequestRecord(long businessId, String batchNo, String txTime, AnxinContractType anxinContractType, List<CreateContractVO> createContractList) {
-        JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
-        Tx3202ReqVO tx3202ReqVO = new Tx3202ReqVO();
-
-        tx3202ReqVO.setHead(getHeadVO());
-        tx3202ReqVO.setBatchNo(batchNo);
-        createContractList.forEach(createContractVO -> {
-            if (createContractVO.getSignInfos() != null) {
-                tx3202ReqVO.setCreateContracts(new CreateContractVO[]{createContractVO});
-                String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
-
-                Map<String, String> investmentInfo = createContractVO.getInvestmentInfo();
-                anxinContractRequestMapper.create(new AnxinContractRequestModel(businessId, Long.parseLong(investmentInfo.get("orderId")), createContractVO.getContractNo(),
-                        anxinContractType.name(), txTime, batchNo, createContractVO.getTemplateId(),
-                        createContractVO.getIsSign() != null ? String.valueOf(createContractVO.getIsSign()) : "0", jsonObjectMapper.writeValueAsString(tx3202ReqVO),
-                        DateTime.now().toDate()));
-            }
-        });
     }
 
 }
