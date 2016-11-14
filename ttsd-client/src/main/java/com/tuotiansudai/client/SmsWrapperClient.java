@@ -35,6 +35,8 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String PLATFORM_BALANCE_LOW_NOTIFY = "/sms/platform-balance-low-notify";
 
+    private final static String GENERATE_CONTRACT_ERROR_NOTIFY = "/sms/generate-contract-error-notify";
+
     private final static String LOAN_OUT_INVESTOR_NOTIFY_URI = "/sms/loan-out-investor-notify";
 
     private final static String PASSWORD_CHANGED_NOTIFY_URI = "/sms/mobile/{mobile}/password-changed-notify";
@@ -79,6 +81,10 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendPlatformBalanceLowNotify(PlatformBalanceLowNotifyDto notify) {
         return send(notify, PLATFORM_BALANCE_LOW_NOTIFY);
+    }
+
+    public BaseDto<SmsDataDto> sendGenerateContractErrorNotify(GenerateContractErrorNotifyDto notify) {
+        return send(notify, GENERATE_CONTRACT_ERROR_NOTIFY);
     }
 
     public BaseDto<SmsDataDto> sendLoanRepayNotify(RepayNotifyDto dto) {

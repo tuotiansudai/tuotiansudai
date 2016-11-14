@@ -94,7 +94,7 @@ public class MobileAppAutoInvestPlanServiceTest extends ServiceTestBase {
 
         AutoInvestPlanModel autoInvestPlanModel = fakeUserAutoInvestPlan(userModel.getLoginName(), 769);
 
-        AccountModel accountModel = new AccountModel(userModel.getLoginName(), "userName", "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel(userModel.getLoginName(), "payUserId", "payAccountId", new Date());
         accountModel.setAutoInvest(true);
         accountMapper.create(accountModel);
         accountMapper.update(accountModel);

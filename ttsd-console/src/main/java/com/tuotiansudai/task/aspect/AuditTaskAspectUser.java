@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -34,10 +35,10 @@ import java.util.List;
 public class AuditTaskAspectUser {
 
     @Autowired
-    RedisWrapperClient redisWrapperClient;
+    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    AccountService accountService;
+    private UserService userService;
 
     @Autowired
     private UserMapper userMapper;
@@ -81,13 +82,13 @@ public class AuditTaskAspectUser {
 
             String receiverLoginName = task.getSender();
             notify.setReceiver(receiverLoginName);
-            String senderRealName = accountService.getRealName(operatorLoginName);
+            String senderRealName = userService.getRealName(operatorLoginName);
 
-            String editUserRealName = accountService.getRealName(editUserDto.getLoginName());
+            String editUserRealName = userService.getRealName(editUserDto.getLoginName());
             notify.setDescription(senderRealName + " 通过了您修改用户［" + editUserRealName + "］的申请。");
             redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
 
-            String receiverRealName = accountService.getRealName(receiverLoginName);
+            String receiverRealName = userService.getRealName(receiverLoginName);
             String description = senderRealName + " 通过了 " + receiverRealName + " 修改用户［" + editUserRealName + "］的申请。";
             description += task.getDescription().split("的信息。")[1];
             auditLogService.createAuditLog(operatorLoginName, receiverLoginName, OperationType.USER, task.getObjId(), description, ip);
@@ -106,7 +107,7 @@ public class AuditTaskAspectUser {
             task.setOperateURL("/user-manage/user/" + editUserDto.getLoginName());
             task.setSender(operatorLoginName);
 
-            String senderRealName = accountService.getRealName(operatorLoginName);
+            String senderRealName = userService.getRealName(operatorLoginName);
 
             UserModel beforeUpdateUserModel = userMapper.findByLoginName(editUserDto.getLoginName());
             List<UserRoleModel> beforeUpdateUserRoleModels = userRoleMapper.findByLoginName(editUserDto.getLoginName());
