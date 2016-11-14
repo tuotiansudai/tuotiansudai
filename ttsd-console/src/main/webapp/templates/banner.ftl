@@ -80,7 +80,6 @@
                         <option value="${url.path}" <#if banner?? && url.path == banner.appUrl>selected</#if>>${url.description}</option>
                     </#list>
                 </select>
-                <div class="app-push-link other-to-link">定位地址:<input type="text" class="form-control other-link-text" name="otherToLink" <#if banner??>value="${banner.appUrl}"</#if> placeholder=""  maxlength="100" datatype="*" errormsg="链接地址不能为空"></div>
             </div>
         </div>
 

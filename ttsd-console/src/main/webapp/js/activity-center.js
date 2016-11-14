@@ -82,20 +82,20 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
 
         };
 
-        $('select.appActivityUrl').change(function () {
-            var appActivityUrl = $(this).val();
-            if (appActivityUrl == '') {
-                $('.other-to-link').removeClass('app-push-link').val('');
-            } else {
-                $('.other-to-link').addClass('app-push-link').val('');
-            }
-
-        }).trigger('change');
-
-        $('.other-link-text').on('focusout',function(e){
-            e.preventDefault();
-            $('.appActivityUrl').find('option:contains("其他")').val($(this).val()).trigger('click');
-        });
+        //$('select.appActivityUrl').change(function () {
+        //    var appActivityUrl = $(this).val();
+        //    if (appActivityUrl == '') {
+        //        $('.other-to-link').removeClass('app-push-link').val('');
+        //    } else {
+        //        $('.other-to-link').addClass('app-push-link').val('');
+        //    }
+        //
+        //}).trigger('change');
+        //
+        //$('.other-link-text').on('focusout',function(e){
+        //    e.preventDefault();
+        //    $('.appActivityUrl').find('option:contains("其他")').val($(this).val()).trigger('click');
+        //});
 
 
         /**
@@ -155,13 +155,6 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                             showErrorMessage('活动止期不能为空', $('.expiredTime', $activityCenterForm));
                             return false;
                         }
-                }
-
-                var appActivityUrl = $('.appActivityUrl').val();
-                var otherToLink = $('.other-link-text').val();
-                if (appActivityUrl == 'OTHER' && otherToLink == '') {
-                    showErrorMessage('链接地址不能为空', $('.other-link-text', $activityCenterForm));
-                    return false;
                 }
 
             },
