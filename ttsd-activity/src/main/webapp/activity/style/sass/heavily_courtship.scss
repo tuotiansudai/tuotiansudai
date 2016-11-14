@@ -1,6 +1,6 @@
 @charset "utf-8";
 body {
-  background: #eec859 center 775px no-repeat;
+  background: #eec859 url("/activity/images/heavily-courtship/bg-decorate.jpg") center 1080px no-repeat;
   overflow-x: hidden;
 }
 .main-frame {
@@ -11,11 +11,52 @@ body {
   height: 860px;
   background: url("/activity/images/heavily-courtship/banner-top.jpg") center top no-repeat;
 }
+.envelop-word {
+  display: none;
+}
 .main-content-heavily {
-  margin: 0 26px 0 24px;
+  margin: 0 26px 30px 24px;
   background: #fff;
   .con-inner {
     padding:25px;
+  }
+  .prompt-box {
+    background: #fcf7d5;
+    color: #652680;
+    font-size: 14px;
+    padding:30px;
+    position: relative;
+    height: 730px;
+    .app {
+      display: none;
+    }
+    .web {
+      display: block;
+    }
+
+    b {
+      font-size:18px;
+      display: block;
+    }
+    .bg-envelop {
+      display: block;
+      height:500px;
+      background: url("/activity/images/heavily-courtship/bg-envelop.jpg") left bottom no-repeat;
+      left: -25px;
+      position: absolute;
+      width: 110%;
+    }
+  }
+  .to-invest-button {
+    margin:30px auto;
+    a {
+      display: inline-block;
+      width:306px;
+      height: 70px;
+      background: url("/activity/images/heavily-courtship/btn-loan.jpg") left top no-repeat;
+
+
+    }
   }
   //line
   .line-vertical {
@@ -30,7 +71,14 @@ body {
     width:13px;
     background: url("../../images/heavily-courtship/base-line-left-right.png") left top repeat-y;
   }
+  .line-vertical-center {
+    display: inline-block;
+    height:13px;
+    width:100%;
+    background: url("../../images/heavily-courtship/base-line-center.png") center top no-repeat;
+  }
   .column-title-co {
+    text-align: left;
     height:60px;
     width:100%;
     z-index: 10;
@@ -114,29 +162,90 @@ body {
     height:96px;
     background: url("/activity/images/heavily-courtship/base-bg-squ.jpg") left top no-repeat;
     position: relative;
+    display: inline-block;
+    margin: 16px;
     em {
       position: absolute;
       font-size: 24px;
       color: #652680;
-      &:nth-child(1) {
-        left:10px;
-        top:10px;
+      &.one {
+        top: 10px;
+        left:0;
+        width: 58%;
+        text-align: center;
       }
-      &:nth-child(2) {
-        right:10px;
-        top:10px;
+      &.two {
+        top: 10px;
+        right: 0;
+        width: 61%;
+        text-align: center;
       }
-      &:nth-child(3) {
-        left:10px;
-        bottom:10px;
+      &.three {
+        bottom: 6px;
+        left:0;
+        width: 58%;
+        text-align: center;
       }
-      &:nth-child(4) {
-        right:10px;
-        bottom:10px;
+      &.four {
+        bottom:6px;
+        right: 0;
+        width: 61%;
+        text-align: center;
       }
     }
   }
   .mind-category {
+    width:50%;
+    height: 176px;
+    float: left;
+    text-align: center;
+    &.last {
+      width:100%;
+      height:auto;
+      position: relative;
+      margin-top:20px;
+      text-align: left;
+      .top {
+        top:-26px;
+        position:absolute;
+      }
+      .bottom {
+        top: 197px;
+        position:absolute;
+      }
+      .middle {
+        left: 49%;
+        top: -26px;
+        position: absolute;
+        background-repeat: no-repeat;
+      }
+    }
+    .example {
+      .round-cake {
+        float: left;
+        margin-left:0;
+      }
+      p {
+        padding-right:30px;
+        padding-top: 29px;
+      }
+    }
+    .subject {
+      position: relative;
+      float: left;
+      width:50%;
+      &.last-subject {
+        float: none;
+        margin: 80px auto 30px auto;
+      }
+      .icon-reward {
+        top: 13%!important;
+      }
+      .bg-info-img {
+        top:-25px;
+      }
+
+    }
     dt {
       width:95px;
       height:38px;
@@ -166,10 +275,264 @@ body {
           padding-top: 40px;
           padding-left: 20px;
         }
+      }
+      &.ultimate-prize {
+        text-align: center;
+        p {
+          color: #652680;
+          font-size: 18px;
+          font-weight: bold;
+        }
+        em {
+          display: inline-block;
+          background: #652680;
+          color: #fff;
+          font-size:22px;
+          font-weight: bold;
+          padding: 5px 30px;
+        }
+        img {
+          display: block;
+          margin: 20px auto 35px auto;
+          width:50%;
+        }
+      }
+    }
 
-
+    .PS-list {
+      margin-top:30px;
+      dt {
+        width:74px;
+        height: 51px;
+        background: #fbe94d;
+        color: #652680;
+        font-weight: bold;
+        font-size: 40px;
+        padding:0;
+        float: left;
+        line-height: 51px;
+        text-align: center;
+        letter-spacing: -1px;
+        margin-right:15px;
+      }
+      p {
+        color: #652680;
+        font-size: 20px;
+        display: inline-block;
+        width: 57%;
+        margin-right: 25px;
+      }
+      p.app {
+        display: none;
+      }
+      .wechat {
+        border:9px solid #fee900;
       }
     }
   }
 
+}
+
+@media screen and (max-width: 700px) {
+  .tour-slide {
+    height: 265px;
+    background: url("/activity/images/heavily-courtship/app-banner.jpg") center top no-repeat;
+    background-size: 100%;
+  }
+  .title-column {
+    img { width:70%;}
+  }
+
+  .envelop-word {
+    display: block;
+    width:100%;
+    margin-top: -15px;
+  }
+  .main-content-heavily {
+    margin: 0 15px 20px 15px;
+    .to-invest-button a{
+      transform: scale(0.8);
+    }
+    .info-img {
+      img {
+        width: 67%;
+        margin-top: 30px;
+      }
+    }
+    .info-word {
+      font-size: 14px;
+      b {
+        font-size: 20px;
+      }
+    }
+    .example-out {
+      display: none;
+    }
+    .icon-reward {
+      transform: scale(0.8);
+    }
+    .bg-info-img  {
+      transform: scale(0.7);
+      right: -10px;
+    }
+    .round-cake {
+      transform: scale(0.75);
+      margin: 5px 0;
+    }
+    .con-inner {
+      padding:15px;
+    }
+    .prompt-box {
+      height:420px;
+      padding:10px;
+      font-size:12px;
+      b {
+        font-size:12px;
+      }
+      .web {
+        display: none;
+      }
+      .app {
+        display: block;
+      }
+      .bg-envelop {
+        height: 215px;
+        left: -15px;
+        position: absolute;
+        width: 108%;
+        background-size: 100%;
+        bottom: 0;
+      }
+    }
+    .category-info-frame {
+      .category-box {
+        width:100%;
+        &.hack {
+          p {
+            text-align: left;
+          }
+        }
+        &.ultimate-prize {
+          p {
+            text-align: left;
+            font-size: 12px;
+            padding-right: 30px;
+          }
+          em {
+            font-size:15px;
+            font-weight: normal;
+          }
+        }
+      }
+      .PS-list {
+        margin-top: 10px;
+        margin-left: -16px;
+        p {
+          display: none;
+        }
+        p.app {
+          display: inline-block;
+          font-size:12px;
+          width:60%;
+          margin-right:0;
+        }
+        dt {
+          transform: scale(0.7);
+          margin-right: 0;
+        }
+        dd {
+          width:calc( 100% - 74px);
+          padding-top: 13px;
+          float: right;
+
+          img {
+            width:100%;
+            &.wechat {
+              width: 30%;
+              float: right;
+              border: 3px solid #fee900;
+            }
+          }
+        }
+      }
+    }
+    .mind-category {
+      width:100%;
+      float: none;
+      dt {
+        font-size: 16px;
+        width: 74px;
+        height: 35px;
+        line-height: 35px;
+      }
+      .subject {
+        width:100%;
+        float: none;
+        margin-bottom: 20px;
+        margin-left:0px;
+        .icon-reward {
+          left: 27%!important;
+        }
+        &.last-subject {
+          margin:auto;
+          margin-left:10px;
+        }
+      }
+      &.last {
+        margin-top: -10px;
+        padding-bottom: 40px;
+        .top,.bottom,.middle {
+          display: none;
+        }
+      }
+    }
+  }
+
+}
+
+@media screen and (max-width: 400px) {
+  .main-content-heavily .category-info-frame .category-box.ultimate-prize em {
+    font-size: 12px;
+  }
+  .main-content-heavily .round-cake {
+    margin: -6px;
+  }
+  .main-content-heavily .bg-info-img {
+    transform: scale(-0.6);
+    right: -23px;
+  }
+  .main-content-heavily .mind-category .subject {
+    margin-bottom: 20px;
+  }
+  .main-content-heavily .to-invest-button {
+    margin: 10px auto;
+  }
+  .main-content-heavily .category-info-frame .category-box {
+    margin-top:30px;
+  }
+}
+@media screen and (max-width: 350px) {
+  .tour-slide {
+    height:215px;
+  }
+  .main-content-heavily .round-cake {
+    margin: -11px;
+  }
+  .main-content-heavily .mind-category {
+    height:130px;
+  }
+  .main-content-heavily .bg-info-img {
+    transform: scale(-0.45);
+    right: -37px;
+    top: -36px!important;
+  }
+  .main-content-heavily .mind-category .subject {
+    margin-bottom: 20px;
+  }
+  .main-content-heavily .to-invest-button {
+    margin: 10px auto;
+  }
+  .main-content-heavily .category-info-frame .category-box {
+    margin-top:30px;
+  }
 }
