@@ -8,12 +8,13 @@
         <result column="referrer_mobile" property="referrerMobile"/>
         <result column="mobile" property="mobile"/>
         <result column="channel" property="channel"/>
+        <result column="referrer_login_name" property="referrerLoginName"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
     <insert id="create" parameterType="PrepareUserModel" useGeneratedKeys="true" keyProperty="id">
-        insert into prepare_user(referrer_mobile,mobile,channel,created_time)
-        values (#{referrerMobile},#{mobile},#{channel},#{createdTime})
+        insert into prepare_user(referrer_mobile,referrer_login_name,mobile,channel,created_time)
+        values (#{referrerMobile},#{referrerLoginName},#{mobile},#{channel},#{createdTime})
     </insert>
 
     <select id="findPrepares" parameterType="map" resultMap="prepareResultMap">

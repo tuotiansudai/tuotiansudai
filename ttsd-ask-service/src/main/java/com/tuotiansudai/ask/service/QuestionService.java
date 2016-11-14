@@ -1,13 +1,11 @@
 package com.tuotiansudai.ask.service;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.ask.dto.QuestionDto;
-import com.tuotiansudai.ask.dto.QuestionRequestDto;
-import com.tuotiansudai.ask.dto.QuestionResultDataDto;
+import com.tuotiansudai.ask.repository.dto.QuestionDto;
+import com.tuotiansudai.ask.repository.dto.QuestionRequestDto;
+import com.tuotiansudai.ask.repository.dto.QuestionResultDataDto;
 import com.tuotiansudai.ask.repository.mapper.AnswerMapper;
 import com.tuotiansudai.ask.repository.mapper.QuestionMapper;
 import com.tuotiansudai.ask.repository.model.AnswerModel;
@@ -64,15 +62,7 @@ public class QuestionService {
             return dataDto;
         }
         dataDto.setCaptchaValid(true);
-
-        if (SensitiveWordsFilter.match(questionRequestDto.getQuestion())) {
-            return dataDto;
-        }
         dataDto.setQuestionSensitiveValid(true);
-
-        if (SensitiveWordsFilter.match(questionRequestDto.getAddition())) {
-            return dataDto;
-        }
         dataDto.setAdditionSensitiveValid(true);
 
         UserModel userModel = userMapper.findByLoginName(loginName);
@@ -179,12 +169,7 @@ public class QuestionService {
         List<QuestionModel> questions = questionMapper.findByLoginName(loginName, null, null);
         for (QuestionModel question : questions) {
             List<AnswerModel> answerModels = answerMapper.findByQuestionId(loginName, question.getId());
-            if (Iterators.tryFind(answerModels.iterator(), new Predicate<AnswerModel>() {
-                @Override
-                public boolean apply(AnswerModel input) {
-                    return input.getCreatedTime().after(lastAlertTime);
-                }
-            }).isPresent()) {
+            if (Iterators.tryFind(answerModels.iterator(), input -> input.getCreatedTime().after(lastAlertTime)).isPresent()) {
                 return true;
             }
         }
@@ -193,17 +178,12 @@ public class QuestionService {
     }
 
     private BaseDto<BasePaginationDataDto> generatePaginationData(final String loginName, int index, int pageSize, long count, List<QuestionModel> questionModels, final boolean isEncodeMobile) {
-        List<QuestionDto> items = Lists.transform(questionModels, new Function<QuestionModel, QuestionDto>() {
-            @Override
-            public QuestionDto apply(QuestionModel input) {
-                return new QuestionDto(input,
-                        isEncodeMobile && !input.getLoginName().equalsIgnoreCase(loginName) ?
-                                (MobileEncoder.encode(Strings.isNullOrEmpty(input.getFakeMobile()) ? input.getMobile() : input.getFakeMobile())) : input.getMobile());
-            }
-        });
+        List<QuestionDto> items = Lists.transform(questionModels, input -> new QuestionDto(input,
+                isEncodeMobile && !input.getLoginName().equalsIgnoreCase(loginName) ?
+                        (MobileEncoder.encode(Strings.isNullOrEmpty(input.getFakeMobile()) ? input.getMobile() : input.getFakeMobile())) : input.getMobile()));
 
         BasePaginationDataDto<QuestionDto> data = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
         data.setStatus(true);
-        return new BaseDto<BasePaginationDataDto>(data);
+        return new BaseDto<>(data);
     }
 }
