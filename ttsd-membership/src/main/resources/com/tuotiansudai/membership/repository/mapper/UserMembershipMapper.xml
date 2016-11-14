@@ -57,7 +57,7 @@
         SELECT
         user_membership.id,
         user_membership.login_name,
-        account.user_name,
+        user.user_name,
         user.mobile,
         account.membership_point,
         membership.level,
@@ -106,7 +106,7 @@
         SELECT
         user_membership.id,
         user_membership.login_name,
-        account.user_name,
+        user.user_name,
         user.mobile,
         account.membership_point,
         membership.level,

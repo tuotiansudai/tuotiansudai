@@ -4,12 +4,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
-import com.tuotiansudai.paywrapper.service.AdvanceRepayService;
-import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
-import com.tuotiansudai.paywrapper.service.LoanService;
-import com.tuotiansudai.paywrapper.service.NormalRepayService;
-import org.apache.log4j.Logger;
+import com.tuotiansudai.paywrapper.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/job")
 public class JobController {
-
-    private static Logger logger = Logger.getLogger(JobController.class);
 
     @Autowired
     private LoanService loanService;
@@ -108,4 +101,3 @@ public class JobController {
         couponLoanOutService.sendRedEnvelope(loanId);
     }
 }
-
