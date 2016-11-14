@@ -10,11 +10,10 @@ import java.util.List;
 @Repository
 public interface PointTaskMapper {
 
+    int create(PointTaskModel pointTaskModel);
+
     PointTaskModel findByName(PointTask pointTask);
 
     PointTaskModel findById(long id);
 
-    long findCountPointTaskPagination();
-
-    List<PointTaskModel> findPointTaskPagination(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 }

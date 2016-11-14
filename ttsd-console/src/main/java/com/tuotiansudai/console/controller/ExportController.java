@@ -376,14 +376,16 @@ public class ExportController {
                                @RequestParam(value = "rewardEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date
                                        rewardEndTime,
                                @RequestParam(value = "role", required = false) Role role,
-                               @RequestParam(value = "source", required = false) Source source, HttpServletResponse response) throws
+                               @RequestParam(value = "source", required = false) Source source,
+                               @RequestParam(value = "referrerRewardStatus", required = false) ReferrerRewardStatus referrerRewardStatus,
+                               HttpServletResponse response) throws
             IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleReferrerManageCsvHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         DateTime investDateTime = new DateTime(investEndTime);
         DateTime rewardDateTime = new DateTime(rewardEndTime);
-        List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerMobile, investMobile, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : null, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : null, role, source, index, pageSize);
+        List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerMobile, investMobile, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : null, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : null, role, source,referrerRewardStatus, index, pageSize);
         List<List<String>> referrerManageData = exportService.buildReferrer(referrerManageViews);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleReferrerManageCsvHeader, referrerManageData, response.getOutputStream());
     }

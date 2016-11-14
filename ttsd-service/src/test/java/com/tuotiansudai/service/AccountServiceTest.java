@@ -186,7 +186,7 @@ public class AccountServiceTest {
     }
 
     public AccountModel createAccountModel(String loginName, long balance) {
-        AccountModel accountModel = new AccountModel(loginName, "userName", "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountModel.setBalance(balance);
         accountModel.setFreeze(1000L);
         accountModel.setPoint(10000L);

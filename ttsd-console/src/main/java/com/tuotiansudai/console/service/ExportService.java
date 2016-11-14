@@ -55,6 +55,4 @@ public interface ExportService {
     List<List<String>> buildInvestAchievement(List<LoanAchievementView> records);
 
     List<List<String>> buildReferrer(List<ReferrerManageView> records);
-
-    List<AccountItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize);
 }
