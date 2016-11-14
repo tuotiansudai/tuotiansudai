@@ -184,7 +184,7 @@ worker-repay:
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
     - ./ttsd-job-worker/build/distributions:/opt/worker
-    - /var/log/tuotian/worker-repay:/var/log/job-worker
+    - /var/log/tuotian/worker-repay:/var/log/job-worker-repay
   command: bash -c "/opt/worker/ttsd-job-worker-repay/bin/ttsd-job-worker"
   links:
     - "pay-wrapper"

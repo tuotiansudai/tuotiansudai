@@ -410,7 +410,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             if (updateAdvanceRepayNotifyRequestStatus(model)) {
                 try {
                    if(!this.processOneInvestPaybackCallback(model)){
-                       fatalLog("advance repay callback, processOneInvestPaybackCallback fail. investRepayId:" + model.getOrderId());
+                       fatalLog("advance repay callback, processOneInvestPaybackCallback fail. investRepayId:" + model.getOrderId(), null);
                    }
                 } catch (Exception e) {
                     fatalLog("advance repay callback, processOneInvestPaybackCallback error. investRepayId:" + model.getOrderId(), e);
@@ -431,7 +431,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             redisWrapperClient.decr(AdvanceRepayCallbackJob.ADVANCE_REPAY_JOB_TRIGGER_KEY);
             advanceRepayNotifyMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
         } catch (Exception e) {
-            fatalLog("update_advance_repay_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());
+            fatalLog("update_advance_repay_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), null);
             return false;
         }
         return true;
@@ -465,7 +465,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         redisWrapperClient.hset(redisKey, String.valueOf(investRepayId), SyncRequestStatus.SUCCESS.name());
         return true;
     }
-
 
 
     @Override
@@ -590,10 +589,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         return isSuccess;
     }
 
-    private void fatalLog(String errMsg) {
-        this.fatalLog(errMsg, null);
-    }
-
     private void fatalLog(String errMsg, Throwable e) {
         logger.fatal(errMsg, e);
         sendSmsErrNotify(MessageFormat.format("{0},{1}", environment, errMsg));
@@ -604,7 +599,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("提前还款业务错误。详细信息：{0}", errMsg));
         smsWrapperClient.sendFatalNotify(dto);
     }
-
 
 }
 

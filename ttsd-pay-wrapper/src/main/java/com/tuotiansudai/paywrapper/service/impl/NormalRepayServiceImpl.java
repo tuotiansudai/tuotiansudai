@@ -450,7 +450,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             if (updateNormalRepayNotifyRequestStatus(model)) {
                 try {
                     if(!this.processOneNormalRepayPaybackCallback(model)){
-                        fatalLog("normal repay callback, processOneNormalRepayPaybackCallback fail. investRepayId:" + model.getOrderId());
+                        fatalLog("normal repay callback, processOneNormalRepayPaybackCallback fail. investRepayId:" + model.getOrderId(), null);
                     }
                 } catch (Exception e) {
                     fatalLog("normal repay callback, processOneNormalRepayPaybackCallback error. investRepayId:" + model.getOrderId(), e);
@@ -677,10 +677,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         }
 
         return isSuccess;
-    }
-
-    private void fatalLog(String errMsg) {
-        fatalLog(errMsg);
     }
 
     private void fatalLog(String errMsg, Throwable e) {
