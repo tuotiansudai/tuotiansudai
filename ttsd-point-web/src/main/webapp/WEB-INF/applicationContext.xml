@@ -123,6 +123,8 @@
         <property name="basePackage" value="com.tuotiansudai.point.repository.mapper"/>
     </bean>
 
+
+
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">

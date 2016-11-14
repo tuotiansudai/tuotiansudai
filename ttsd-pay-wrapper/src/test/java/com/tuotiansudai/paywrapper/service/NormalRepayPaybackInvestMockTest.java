@@ -107,9 +107,9 @@ public class NormalRepayPaybackInvestMockTest {
         invest2InvestRepay1.setRepayAmount(invest2InvestRepay1.getActualInterest() - invest2InvestRepay1.getActualFee());
         when(investRepayMapper.findByInvestIdAndPeriod(invest2.getId(), loanRepay1.getPeriod())).thenReturn(invest2InvestRepay1);
 
-        AccountModel investor1Account = new AccountModel(investor1LoginName, "userName", "id", investor1LoginName, investor1LoginName, new Date());
+        AccountModel investor1Account = new AccountModel(investor1LoginName, investor1LoginName, investor1LoginName, new Date());
         when(accountMapper.findByLoginName(invest1.getLoginName())).thenReturn(investor1Account);
-        AccountModel investor2Account = new AccountModel(investor2LoginName, "userName", "id", investor2LoginName, investor2LoginName, new Date());
+        AccountModel investor2Account = new AccountModel(investor2LoginName, investor2LoginName, investor2LoginName, new Date());
         when(accountMapper.findByLoginName(invest2.getLoginName())).thenReturn(investor2Account);
 
         ProjectTransferResponseModel responseModel = new ProjectTransferResponseModel();
@@ -194,9 +194,9 @@ public class NormalRepayPaybackInvestMockTest {
         invest2InvestRepay2.setRepayAmount(invest2InvestRepay2.getCorpus() + invest2InvestRepay2.getActualInterest() - invest2InvestRepay2.getActualFee());
         when(investRepayMapper.findByInvestIdAndPeriod(invest2.getId(), loanRepay2.getPeriod())).thenReturn(invest2InvestRepay2);
 
-        AccountModel investor1Account = new AccountModel(investor1LoginName, "userName", "id", investor1LoginName, investor1LoginName, new Date());
+        AccountModel investor1Account = new AccountModel(investor1LoginName, investor1LoginName, investor1LoginName, new Date());
         when(accountMapper.findByLoginName(invest1.getLoginName())).thenReturn(investor1Account);
-        AccountModel investor2Account = new AccountModel(investor2LoginName, "userName", "id", investor2LoginName, investor2LoginName, new Date());
+        AccountModel investor2Account = new AccountModel(investor2LoginName, investor2LoginName, investor2LoginName, new Date());
         when(accountMapper.findByLoginName(invest2.getLoginName())).thenReturn(investor2Account);
 
         ProjectTransferResponseModel responseModel = new ProjectTransferResponseModel();
@@ -271,7 +271,7 @@ public class NormalRepayPaybackInvestMockTest {
         invest1InvestRepay1.setRepayAmount(invest1InvestRepay1.getActualInterest() - invest1InvestRepay1.getActualFee());
         when(investRepayMapper.findByInvestIdAndPeriod(invest1.getId(), loanRepay1.getPeriod())).thenReturn(invest1InvestRepay1);
 
-        AccountModel investor1Account = new AccountModel(investor1LoginName, "userName", "id", investor1LoginName, investor1LoginName, new Date());
+        AccountModel investor1Account = new AccountModel(investor1LoginName, investor1LoginName, investor1LoginName, new Date());
         when(accountMapper.findByLoginName(invest1.getLoginName())).thenReturn(investor1Account);
 
         ProjectTransferResponseModel responseModel = new ProjectTransferResponseModel();

@@ -131,8 +131,8 @@ public class RankingActivityServiceImpl implements RankingActivityService {
 
         UserModel userModel = userMapper.findByLoginName(loginName);
         AccountModel accountModel = accountService.findByLoginName(loginName);
-        String userName = accountModel == null ? "" : accountModel.getUserName();
-        String identityNumber = accountModel == null ? "" : accountModel.getIdentityNumber();
+        String userName = accountModel == null ? "" : userModel.getUserName();
+        String identityNumber = accountModel == null ? "" : userModel.getIdentityNumber();
 
         String dateTime = DateFormatUtils.format(new Date(), "yyyy-MM-dd_HH:mm:ss");
         String winnerPrize = prize + "+" + dateTime;

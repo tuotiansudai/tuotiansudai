@@ -18,6 +18,7 @@ include "ttsd-service",
         'ttsd-spring-extension',
         'ttsd-activity-console',
         'ttsd-activity-repository',
+        'ttsd-anxin-sign',
         'ttsd-util'
 
 include 'ttsd-edxpoint-model', 'ttsd-edxpoint-repository', "ttsd-point-service", 'ttsd-point-web'

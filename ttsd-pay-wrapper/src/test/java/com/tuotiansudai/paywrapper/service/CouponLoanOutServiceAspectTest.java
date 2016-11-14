@@ -198,7 +198,7 @@ public class CouponLoanOutServiceAspectTest {
     }
 
     private void mockAccount(String loginName, long initAmount) throws AmountTransferException {
-        AccountModel am = new AccountModel(loginName, loginName, loginName, loginName, loginName, new Date());
+        AccountModel am = new AccountModel(loginName, loginName, loginName, new Date());
         accountMapper.create(am);
         amountTransfer.transferInBalance(loginName, idGenerator.generate(), initAmount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
     }

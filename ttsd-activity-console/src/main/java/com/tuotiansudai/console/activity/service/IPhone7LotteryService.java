@@ -69,8 +69,7 @@ public class IPhone7LotteryService {
         }
         List<IPhone7InvestLotteryStatDto> dtoList = records.stream().map(r -> {
             UserModel userModel = userMapper.findByLoginName(r.getLoginName());
-            AccountModel accountModel = accountMapper.findByLoginName(r.getLoginName());
-            return new IPhone7InvestLotteryStatDto(r, userModel.getMobile(), accountModel.getUserName());
+            return new IPhone7InvestLotteryStatDto(r, userModel.getMobile(), userModel.getUserName());
         }).collect(Collectors.toList());
 
         BasePaginationDataDto<IPhone7InvestLotteryStatDto> paginationDataDto = new BasePaginationDataDto<>(
@@ -110,14 +109,13 @@ public class IPhone7LotteryService {
         List<IPhone7InvestLotteryWinnerView> winnerViews = mapper.listWinner();
         return winnerViews.stream().map(w -> {
             UserModel userModel = userMapper.findByLoginName(w.getLoginName());
-            AccountModel accountModel = accountMapper.findByLoginName(w.getLoginName());
-            return new IPhone7InvestLotteryWinnerDto(w, userModel.getMobile(), accountModel.getUserName());
+            return new IPhone7InvestLotteryWinnerDto(w, userModel.getMobile(), userModel.getUserName());
         }).collect(Collectors.toList());
     }
 
     private void logOperation(IPhone7LotteryConfigModel configModel, boolean passed, String loginName, String ip) {
-        String auditor = accountMapper.findByLoginName(loginName).getUserName();
-        String operator = accountMapper.findByLoginName(configModel.getCreatedBy()).getUserName();
+        String auditor = userMapper.findByLoginName(loginName).getUserName();
+        String operator = userMapper.findByLoginName(configModel.getCreatedBy()).getUserName();
         String operation = passed ? "通过" : "驳回";
         String activityName = "老板出差，运营汪闭眼送iphone7";
         String description = MessageFormat.format("{0}{1}了{2}在“{3}”活动中修改的中奖配置({4}万：{5}, 手机号:{6})",

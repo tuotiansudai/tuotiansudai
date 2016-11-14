@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
@@ -28,7 +29,7 @@ public class AuditTaskAspectPush {
     RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    AccountService accountService;
+    UserService userService;
 
     static Logger logger = Logger.getLogger(AuditTaskAspectPush.class);
 
@@ -54,7 +55,7 @@ public class AuditTaskAspectPush {
                 task.setCreatedTime(new Date());
 
                 String senderLoginName = creator;
-                String senderRealName = accountService.getRealName(senderLoginName);
+                String senderRealName = userService.getRealName(senderLoginName);
 
                 task.setSender(senderLoginName);
                 task.setOperateURL("/app-push-manage/manual-app-push-list");
@@ -83,7 +84,7 @@ public class AuditTaskAspectPush {
 
                     OperationTask notify = getOperationTask(operator, taskId, task);
 
-                    String senderRealName = accountService.getRealName(operator);
+                    String senderRealName = userService.getRealName(operator);
 
                     notify.setDescription(senderRealName + " 审核通过了您创建的APP推送［" + task.getObjName() + "］。");
 
@@ -111,7 +112,7 @@ public class AuditTaskAspectPush {
 
                 OperationTask notify = getOperationTask(operator, taskId, task);
 
-                String senderRealName = accountService.getRealName(operator);
+                String senderRealName = userService.getRealName(operator);
 
                 notify.setDescription(senderRealName + " 驳回了您创建的APP推送［" + task.getObjName() + "］。");
 

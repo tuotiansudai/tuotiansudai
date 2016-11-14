@@ -51,8 +51,8 @@ public class PersonalInfoController {
         mv.addObject("autoInvest", accountModel != null && accountModel.isAutoInvest());
 
         if (accountModel != null) {
-            mv.addObject("userName", accountModel.getUserName());
-            mv.addObject("identityNumber", accountModel.getIdentityNumber());
+            mv.addObject("userName", userModel.getUserName());
+            mv.addObject("identityNumber", userModel.getIdentityNumber());
             BankCardModel bankCard = bindBankCardService.getPassedBankCard(userModel.getLoginName());
             if (bankCard != null) {
                 mv.addObject("bankCard", bankCard.getCardNumber());

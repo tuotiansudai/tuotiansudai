@@ -210,7 +210,7 @@ public class InvestTransferControllerTest {
         fakeUserModel.setStatus(UserStatus.ACTIVE);
         fakeUserModel.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(fakeUserModel);
-        AccountModel accountModel = new AccountModel(loginName, loginName, "id", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountModel.setBalance(balance);
         accountModel.setFreeze(freeze);
         accountMapper.create(accountModel);
