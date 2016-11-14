@@ -15,6 +15,7 @@ web:
   ports:
     - "20002:8080"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-web/war:/usr/local/tomcat/webapps
     - /var/log/tuotian/web:/usr/local/tomcat/logs
     - /var/log/tuotian/web:/var/log/tomcat
@@ -32,6 +33,7 @@ console:
   ports:
     - "20003:8080"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-console/war:/usr/local/tomcat/webapps
     - /var/log/tuotian/console:/usr/local/tomcat/logs
     - /var/log/tuotian/console:/var/log/tomcat
@@ -63,6 +65,7 @@ pay-wrapper:
   ports:
     - "20004:8080"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - /workspace/ump_sign/:/workspace/ump_sign
     - ./ttsd-pay-wrapper/war:/usr/local/tomcat/webapps
     - /var/log/tuotian/pay-wrapper:/usr/local/tomcat/logs
@@ -91,6 +94,7 @@ mobile-api:
   ports:
     - "20006:8080"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-mobile-api/war:/usr/local/tomcat/webapps
     - /var/log/tuotian/mobile-api:/usr/local/tomcat/logs
     - /var/log/tuotian/mobile-api:/var/log/tomcat
@@ -146,6 +150,7 @@ worker-all:
     - "TZ=Asia/Shanghai"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-job-worker/build/distributions:/opt/worker
     - /var/log/tuotian/worker-all:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-job-worker-all/bin/ttsd-job-worker"
@@ -176,6 +181,19 @@ worker-jpush:
     - /var/log/tuotian/worker-jpush:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-job-worker-jpush/bin/ttsd-job-worker"
   links:
+    - "redis-server"
+loan-mq-consumer:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-loan-mq-consumer/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-loan-mq-consumer:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-loan-mq-consumer/bin/ttsd-loan-mq-consumer"
+  links:
+    - "pay-wrapper"
+    - "sms-wrapper"
     - "redis-server"
 static-server:
   image: "nginx"

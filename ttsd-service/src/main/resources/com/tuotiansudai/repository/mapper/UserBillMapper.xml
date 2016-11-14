@@ -88,7 +88,7 @@
 
     <select id="findUserFunds" parameterType="map" resultMap="userBillResultView">
         select ub.*,
-        a.user_name,
+        u.user_name,
         u.mobile,
         IFNULL((select 1 from user_role ur where ur.login_name = ub.login_name and ur.role = 'STAFF'),0) as is_staff
         from user_bill ub
@@ -96,7 +96,6 @@
         <if test="mobile != null and mobile != ''">
             and u.mobile = #{mobile}
         </if>
-        LEFT JOIN account a on ub.login_name = a.login_name
         <where>
             <if test="userBillBusinessType != null">
                 and ub.business_type = #{userBillBusinessType}
