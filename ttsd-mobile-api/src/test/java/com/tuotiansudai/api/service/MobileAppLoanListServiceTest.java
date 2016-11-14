@@ -62,8 +62,9 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         CouponModel couponModel = fakeCouponModel(userModel.getLoginName());
         couponMapper.create(couponModel);
 
-        UserCouponModel userCouponModel = getUserCouponModel(couponModel.getId(),loanModel.getId(),investModel.getId(),userModel.getLoginName(),null);
+        UserCouponModel userCouponModel = getUserCouponModel(couponModel.getId(),loanModel.getId(),investModel.getId(),userModel.getLoginName(),InvestStatus.FAIL);
         userCouponMapper.create(userCouponModel);
+        userCouponMapper.update(userCouponModel);
 
         BaseResponseDto<LoanListResponseDataDto> loanList = mobileAppLoanListService.generateLoanList(getLoanListRequest(userModel.getLoginName()));
         List<LoanResponseDataDto> list = loanList.getData().getLoanList();
@@ -111,6 +112,9 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
 
         InvestModel investModel = getFakeInvestModel(loanModel1.getId(), userModel.getLoginName());
         investMapper.create(investModel);
+
+        CouponModel couponModel = fakeCouponModel(userModel.getLoginName());
+        couponMapper.create(couponModel);
 
         BaseResponseDto<LoanListResponseDataDto> loanList = mobileAppLoanListService.generateLoanList(getLoanListRequest(userModel.getLoginName()));
         List<LoanResponseDataDto> list = loanList.getData().getLoanList();
