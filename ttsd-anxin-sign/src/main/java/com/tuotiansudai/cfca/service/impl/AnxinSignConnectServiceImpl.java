@@ -10,6 +10,7 @@ import cfca.trustsign.common.vo.response.ErrorResVO;
 import cfca.trustsign.common.vo.response.tx3.*;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.connector.HttpConnector;
+import com.tuotiansudai.cfca.constant.AnxinRetCode;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
@@ -244,7 +245,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     }
 
     private Tx3ResVO readResponse(String res, Class<? extends Tx3ResVO> cla) {
-        if (res.indexOf("\"AnxinRetCode.SUCCESS\"") > 0) {
+        if (res.indexOf("\"" + AnxinRetCode.SUCCESS + "\"") > 0) {
             // 成功：
             JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
             return jsonObjectMapper.readValue(res, cla);
