@@ -37,7 +37,7 @@ public class AnxinQueryContractJob implements Job {
 
     public final static String ANXIN_CONTRACT_TYPE = "LOAN_ID";
 
-    public final static int HANDLE_DELAY_MINUTES = 10;
+    public final static int HANDLE_DELAY_MINUTES = 3;
 
     public final static String ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY = "anxinContractQueryTryTimes:";
 
@@ -68,18 +68,18 @@ public class AnxinQueryContractJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
         try {
-            logger.info("trigger anxin contract handle job, prepare do job");
-
             long businessId = (long) context.getJobDetail().getJobDataMap().get(BUSINESS_ID);
+
+            logger.info("trigger anxin contract handle job, prepare do job. Counter:" + redisWrapperClient.get(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId));
 
             List<String> batchNoList = (List<String>) context.getJobDetail().getJobDataMap().get(BATCH_NO_LIST);
 
             AnxinContractType anxinContractType = (AnxinContractType) context.getJobDetail().getJobDataMap().get(ANXIN_CONTRACT_TYPE);
 
 
-            if (redisWrapperClient.incrEx(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId, SEVEN_DAYS) > 3) {
+            if (redisWrapperClient.incrEx(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId, SEVEN_DAYS) > 5) {
 
-                // 尝试超过3次（第4次了），清空计数器，不再尝试了
+                // 尝试超过5次（第6次了），清空计数器，不再尝试了
                 redisWrapperClient.del(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId);
 
                 // 发短信报警

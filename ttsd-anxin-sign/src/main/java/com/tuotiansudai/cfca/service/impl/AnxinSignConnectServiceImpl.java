@@ -218,14 +218,14 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                     logger.error(MessageFormat.format("[安心签] Query contract response error, loan/transfer Id:{0}, batchNo:{1}", businessId + "", batchNo), e);
                     continue;
                 }
-                if (tx3211ResVO != null && tx3211ResVO.getCreateContracts() != null) {
+                if (isSuccess(tx3211ResVO)) {
                     for (CreateContractVO createContractVO : tx3211ResVO.getCreateContracts()) {
                         contractResponseViews.add(new ContractResponseView(Long.parseLong(createContractVO.getInvestmentInfo().get("orderId")),
                                 createContractVO.getContractNo(), createContractVO.getCode()));
                     }
                 } else {
                     // 60030407 = 该批次还没有执行完毕，请稍后再试
-                    if (tx3211ResVO != null && "60030407".equals(tx3211ResVO.getHead().getRetCode())) {
+                    if (tx3211ResVO != null && AnxinRetCode.CONTRACT_IN_CREATING.equals(tx3211ResVO.getHead().getRetCode())) {
                         waitingBatchNoList.add(batchNo);
                     }
                     logger.error(MessageFormat.format("[安心签] Query contract response error. businessId:{0}, batchNo:{1}, errorCode:{2}, errorMessage:{3}",
@@ -284,6 +284,10 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         person.setAddress(userModel.getCity());
         person.setAuthenticationMode("公安部");
         return person;
+    }
+
+    private boolean isSuccess(Tx3ResVO tx3ResVO) {
+        return tx3ResVO != null && tx3ResVO.getHead() != null && AnxinRetCode.SUCCESS.equals(tx3ResVO.getHead().getRetCode());
     }
 
 }
