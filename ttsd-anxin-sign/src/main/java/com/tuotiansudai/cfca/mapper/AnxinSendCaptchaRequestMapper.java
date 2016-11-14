@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AnxinSendCaptchaRequestMapper {
 
-    @Insert("insert into anxin_send_captcha_request (tx_time, user_id, project_code, is_send_voice, created_time) " +
+    @Insert("insert into send_captcha_request (tx_time, user_id, project_code, is_send_voice, created_time) " +
             "values (#{txTime},#{userId},#{projectCode},#{isSendVoice},#{createdTime})")
     void create(AnxinSendCaptchaRequestModel anxinSendCaptchaRequestModel);
 }
