@@ -92,7 +92,7 @@
         )
         value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source},
         #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, now(), #{investTime}, #{tradingTime},
-        #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler}, #{investFeeRate})
+        #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler}, #{investFeeRate}, #{contractNo})
     </insert>
 
     <update id="update" parameterType="InvestModel">
