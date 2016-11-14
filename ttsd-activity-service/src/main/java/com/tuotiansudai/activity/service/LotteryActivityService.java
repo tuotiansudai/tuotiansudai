@@ -9,6 +9,7 @@ import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.MobileEncryptor;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -48,9 +49,6 @@ public class LotteryActivityService {
 
     @Autowired
     private RechargeMapper rechargeMapper;
-
-    @Autowired
-    private RandomUtils randomUtils;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -189,7 +187,7 @@ public class LotteryActivityService {
 
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, lotteryPrizes, ActivityCategory.AUTUMN_PRIZE);
         for(UserLotteryPrizeView view : userLotteryPrizeViews){
-            view.setMobile(randomUtils.encryptWebMiddleMobile(view.getMobile()));
+            view.setMobile(MobileEncryptor.encryptWebMiddleMobile(view.getMobile()));
         }
         return userLotteryPrizeViews;
     }

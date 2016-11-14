@@ -19,6 +19,8 @@ dependencies {
             project(':ttsd-client'),
             project(':ttsd-edxactivity-model')
 
+    testCompile project(':ttsd-user-service')
+
 }
 
 processResources.outputs.upToDateWhen { false }

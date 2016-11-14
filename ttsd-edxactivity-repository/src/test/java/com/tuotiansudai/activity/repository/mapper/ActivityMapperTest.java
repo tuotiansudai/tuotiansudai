@@ -1,9 +1,12 @@
-package com.tuotiansudai.repository.mapper;
+package com.tuotiansudai.activity.repository.mapper;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.model.ActivityModel;
 import com.tuotiansudai.activity.repository.model.ActivityStatus;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;

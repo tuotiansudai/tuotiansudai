@@ -1,4 +1,4 @@
-package com.tuotiansudai.repository.mapper;
+package com.tuotiansudai.activity.repository.mapper;
 
 import com.tuotiansudai.activity.repository.model.ActivityModel;
 import com.tuotiansudai.activity.repository.model.ActivityStatus;

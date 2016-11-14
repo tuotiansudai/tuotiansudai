@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.repository.mapper.ActivityMapper">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.ActivityMapper">
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
@@ -32,7 +32,7 @@
     </resultMap>
 
     <insert id="create" parameterType="ActivityModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `aa`.`activity`
+        INSERT INTO `edxactivity`.`activity`
         (title, web_activity_url, app_activity_url, description, web_picture_url, app_picture_url, activated_time,
         expired_time, source, status, created_by, created_time, updated_by, updated_time, activated_by,share_title,
         share_content,share_url,seq,long_term)
@@ -43,7 +43,7 @@
     </insert>
 
     <update id="update" parameterType="ActivityModel">
-        UPDATE `aa`.`activity`
+        UPDATE `edxactivity`.`activity`
         SET
         title = #{title},
         web_activity_url = #{webActivityUrl},
@@ -70,11 +70,11 @@
     </update>
 
     <select id="findById" resultMap="activityResultMap">
-        SELECT * FROM `aa`.`activity` WHERE id = #{id}
+        SELECT * FROM `edxactivity`.`activity` WHERE id = #{id}
     </select>
 
     <select id="findAllActivities" resultMap="activityResultMap" parameterType="map">
-        SELECT * FROM `aa`.`activity`
+        SELECT * FROM `edxactivity`.`activity`
         <where>
             <if test="startTime != null">
                 AND activated_time &gt;= #{startTime}
@@ -99,7 +99,7 @@
     </select>
 
     <select id="findActiveActivities" resultMap="activityResultMap">
-        SELECT * FROM `aa`.`activity`
+        SELECT * FROM `edxactivity`.`activity`
         WHERE
         status = 'APPROVED'
         <if test="source != null">
@@ -110,7 +110,7 @@
     </select>
 
     <select id="findActivity" resultMap="activityResultMap" parameterType="map">
-        SELECT * FROM `aa`.`activity`
+        SELECT * FROM `edxactivity`.`activity`
         <where>
             <if test="beginExpiredTime != null">
                 AND expired_time &gt;= #{beginExpiredTime}
@@ -133,7 +133,7 @@
     </select>
 
     <select id="countActivity" resultType="java.lang.Integer">
-        SELECT count(1) FROM `aa`.`activity`
+        SELECT count(1) FROM `edxactivity`.`activity`
         <where>
             <if test="beginExpiredTime != null">
                 AND expired_time &gt;= #{beginExpiredTime}

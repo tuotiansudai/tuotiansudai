@@ -35,12 +35,6 @@ public class AutumnPrizeController {
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private BindBankCardService bindBankCardService;
-
-    @Autowired
     private LotteryActivityService lotteryActivityService;
 
     @Autowired

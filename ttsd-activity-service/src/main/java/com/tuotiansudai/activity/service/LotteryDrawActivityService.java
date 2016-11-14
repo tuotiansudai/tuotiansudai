@@ -21,9 +21,8 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
-import com.tuotiansudai.util.RandomUtils;
+import com.tuotiansudai.util.MobileEncryptor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -61,9 +60,6 @@ public class LotteryDrawActivityService {
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
     @Autowired
-    private RandomUtils randomUtils;
-
-    @Autowired
     private BankCardMapper bankCardMapper;
 
     @Autowired
@@ -71,9 +67,6 @@ public class LotteryDrawActivityService {
 
     @Autowired
     private RechargeMapper rechargeMapper;
-
-    @Autowired
-    private AccountService accountService;
 
     @Autowired
     private BindBankCardService bindBankCardService;
@@ -182,7 +175,7 @@ public class LotteryDrawActivityService {
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile, ActivityCategory activityCategory) {
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, null, activityCategory);
         for (UserLotteryPrizeView view : userLotteryPrizeViews) {
-            view.setMobile(randomUtils.encryptWebMiddleMobile(view.getMobile()));
+            view.setMobile(MobileEncryptor.encryptWebMiddleMobile(view.getMobile()));
             view.setPrizeValue(view.getPrize().getDescription());
         }
         return userLotteryPrizeViews;
@@ -336,7 +329,7 @@ public class LotteryDrawActivityService {
             return steps;
         }
         steps.set(0, 2);
-        if (accountService.findByLoginName(loginName) == null) {
+        if (accountMapper.findByLoginName(loginName) == null) {
             steps.set(1, 1);
             return steps;
         }

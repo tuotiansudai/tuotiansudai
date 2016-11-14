@@ -1,8 +1,8 @@
 package com.tuotiansudai.activity.controller;
 
 import com.tuotiansudai.activity.repository.dto.ActivityDto;
+import com.tuotiansudai.activity.service.ActivityService;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.ActivityService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,7 @@ import java.util.List;
 public class ActivityCenterController {
 
     @Autowired
-    ActivityService activityService;
+    private ActivityService activityService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getAllOperatingActivities() {

@@ -1,6 +1,5 @@
 package com.tuotiansudai.activity.service;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
@@ -11,10 +10,11 @@ import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.RandomUtils;
+import com.tuotiansudai.util.MobileEncryptor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -34,13 +34,13 @@ public class HeroRankingService {
     static Logger logger = Logger.getLogger(HeroRankingService.class);
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private InvestMapper investMapper;
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
-
-    @Autowired
-    private RandomUtils randomUtils;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -117,12 +117,13 @@ public class HeroRankingService {
             List<HeroRankingView> heroRankingViewList = investMapper.findHeroRankingByReferrer(tradingTime, heroRankingActivityPeriod.get(0), heroRankingActivityPeriod.get(1), (index - 1) * pageSize, pageSize);
             baseListDataDto.setStatus(true);
             if (CollectionUtils.isNotEmpty(heroRankingViewList)) {
-                baseListDataDto.setRecords(Lists.transform(heroRankingViewList, new Function<HeroRankingView, HeroRankingView>() {
-                    @Override
-                    public HeroRankingView apply(HeroRankingView input) {
-                        input.setLoginName(randomUtils.encryptMobile(loginName, input.getLoginName()));
+                baseListDataDto.setRecords(Lists.transform(heroRankingViewList, input -> {
+                    if (input.getLoginName().equalsIgnoreCase(loginName)) {
+                        input.setLoginName("您的位置");
                         return input;
                     }
+                    input.setLoginName(MobileEncryptor.encryptAppMiddleMobile(userMapper.findByLoginName(loginName).getMobile()));
+                    return input;
                 }));
             }
         }

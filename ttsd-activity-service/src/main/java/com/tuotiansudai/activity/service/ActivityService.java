@@ -1,14 +1,13 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.activity.service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.ActivityDto;
+import com.tuotiansudai.activity.repository.mapper.ActivityMapper;
 import com.tuotiansudai.activity.repository.model.ActivityModel;
 import com.tuotiansudai.activity.repository.model.ActivityStatus;
-import com.tuotiansudai.repository.mapper.ActivityMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.ActivityService;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,9 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class ActivityServiceImpl implements ActivityService {
+public class ActivityService {
 
-    static Logger logger = Logger.getLogger(ActivityServiceImpl.class);
+    static Logger logger = Logger.getLogger(ActivityService.class);
 
     @Autowired
     ActivityMapper activityMapper;
@@ -28,7 +27,6 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     InvestMapper investMapper;
 
-    @Override
     public List<ActivityDto> getAllActiveActivities(String loginName, Source source) {
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
@@ -41,7 +39,6 @@ public class ActivityServiceImpl implements ActivityService {
         });
     }
 
-    @Override
     public boolean saveOrUpdate(ActivityDto activityDto, ActivityStatus activityStatus, String loginName, String ip) {
         ActivityModel activityModelExist = activityMapper.findById(activityDto.getActivityId());
 
@@ -105,7 +102,6 @@ public class ActivityServiceImpl implements ActivityService {
         return false;
     }
 
-    @Override
     public ActivityDto findActivityDtoById(long activityId) {
         ActivityModel activityModel = activityMapper.findById(activityId);
 
@@ -113,7 +109,6 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
 
-    @Override
     public List<ActivityDto> findAllActivities(Date startTime, Date endTime, ActivityStatus activityStatus, Source source) {
         if (endTime != null) {
             endTime = new DateTime(endTime).plusDays(1).minusSeconds(1).toDate();

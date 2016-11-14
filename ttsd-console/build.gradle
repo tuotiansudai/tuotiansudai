@@ -7,7 +7,7 @@ dependencies {
             project(':ttsd-message'),
             project(':ttsd-jpush'),
             project(':ttsd-ask-service'),
-            project(':ttsd-edxactivity-model'),
+            project(':ttsd-activity-service'),
             fileTree(dir: 'libs', include: '**/*.jar'),
             'org.apache.poi:poi:3.13'
 

@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.MobileEncryptor;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
@@ -28,9 +29,6 @@ public class MidAutumnActivityService {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private RandomUtils randomUtils;
 
     @Autowired
     private InvestMapper investMapper;
@@ -77,7 +75,7 @@ public class MidAutumnActivityService {
         Iterator<String> family = Iterators.transform(myFamily.iterator(), new Function<String, String>() {
             @Override
             public String apply(String input) {
-                return randomUtils.encryptWebMiddleMobile(userMapper.findByLoginName(input).getMobile());
+                return MobileEncryptor.encryptWebMiddleMobile(userMapper.findByLoginName(input).getMobile());
             }
         });
 

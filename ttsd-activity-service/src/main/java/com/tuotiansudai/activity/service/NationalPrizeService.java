@@ -14,6 +14,7 @@ import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.MobileEncryptor;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -51,9 +52,6 @@ public class NationalPrizeService {
 
     @Autowired
     private RechargeMapper rechargeMapper;
-
-    @Autowired
-    private RandomUtils randomUtils;
 
     @Autowired
     private MembershipMapper membershipMapper;
@@ -202,7 +200,7 @@ public class NationalPrizeService {
     public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile){
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, null, ActivityCategory.NATIONAL_PRIZE);
         for(UserLotteryPrizeView view : userLotteryPrizeViews){
-            view.setMobile(randomUtils.encryptWebMiddleMobile(view.getMobile()));
+            view.setMobile(MobileEncryptor.encryptWebMiddleMobile(view.getMobile()));
         }
         return userLotteryPrizeViews;
     }

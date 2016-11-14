@@ -10,6 +10,7 @@ import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.MobileEncryptor;
 import com.tuotiansudai.util.RandomUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,6 @@ public class Iphone7LotteryService {
     @Autowired
     private IPhone7InvestLotteryMapper iPhone7InvestLotteryMapper;
 
-    @Autowired
-    private RandomUtils randomUtils;
-
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.iphone7.startTime}\")}")
     private Date activityIphone7StartTime;
 
@@ -43,7 +41,7 @@ public class Iphone7LotteryService {
 
     public List<IPhone7LotteryDto> iphone7InvestLotteryWinnerViewList(){
         List<IPhone7LotteryConfigModel> iPhone7LotteryConfigModels = iPhone7LotteryConfigMapper.effectiveList();
-        return iPhone7LotteryConfigModels.stream().map(iPhone7LotteryConfigModel -> new IPhone7LotteryDto(iPhone7LotteryConfigModel, randomUtils.encryptWebMiddleMobile(iPhone7LotteryConfigModel.getMobile()))).collect(Collectors.toList());
+        return iPhone7LotteryConfigModels.stream().map(iPhone7LotteryConfigModel -> new IPhone7LotteryDto(iPhone7LotteryConfigModel, MobileEncryptor.encryptWebMiddleMobile(iPhone7LotteryConfigModel.getMobile()))).collect(Collectors.toList());
     }
 
     public String nextLotteryInvestAmount(){
