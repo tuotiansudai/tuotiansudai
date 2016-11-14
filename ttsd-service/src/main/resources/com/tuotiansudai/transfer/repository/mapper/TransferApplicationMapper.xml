@@ -365,7 +365,7 @@
         <result column="contract_no" property="contractNo"/>
     </resultMap>
 
-    <select id="findTransferInvestList" parameterType="map" resultMap="transferInvestDetailMap">
+    <select id="findTransferInvestList" parameterType="map" resultMap="transferInvestDetailMap" useCache="false">
         select
         ta.id as id,
         ta.name as loan_name,

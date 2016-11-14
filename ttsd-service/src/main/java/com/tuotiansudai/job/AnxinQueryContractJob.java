@@ -70,7 +70,8 @@ public class AnxinQueryContractJob implements Job {
         try {
             long businessId = (long) context.getJobDetail().getJobDataMap().get(BUSINESS_ID);
 
-            logger.info("trigger anxin contract handle job, prepare do job. Counter:" + redisWrapperClient.get(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId));
+            logger.info(MessageFormat.format("trigger anxin contract handle job, prepare do job. businessId:{0}, Counter:{1}",
+                    String.valueOf(businessId), redisWrapperClient.get(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId)));
 
             List<String> batchNoList = (List<String>) context.getJobDetail().getJobDataMap().get(BATCH_NO_LIST);
 
@@ -120,7 +121,7 @@ public class AnxinQueryContractJob implements Job {
                 } else if (anxinContractType == AnxinContractType.TRANSFER_CONTRACT) {
                     TransferApplicationModel applicationModel = transferApplicationMapper.findById(businessId);
                     InvestModel investModel = investService.findById(applicationModel.getInvestId());
-                    if (applicationModel != null && investModel != null && StringUtils.isEmpty(investModel.getContractNo())) {
+                    if (investModel != null && StringUtils.isEmpty(investModel.getContractNo())) {
                         logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}", String.valueOf(businessId)));
                         // 失败了，发短信
                         smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));
