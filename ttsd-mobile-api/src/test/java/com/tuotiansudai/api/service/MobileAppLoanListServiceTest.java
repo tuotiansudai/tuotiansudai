@@ -1,23 +1,27 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.v1_0.BaseParam;
-import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
-import com.tuotiansudai.api.dto.v1_0.LoanListRequestDto;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanListServiceImpl;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.IdGenerator;
+import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
-public class MobileAppLoanListServiceTest extends ServiceTestBase{
+import static org.junit.Assert.assertTrue;
+
+public class MobileAppLoanListServiceTest extends ServiceTestBase {
 
     @Autowired
     private MobileAppLoanListServiceImpl mobileAppLoanListService;
@@ -26,20 +30,12 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
     @Autowired
     private InvestMapper investMapper;
     @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
-    @Autowired
     private IdGenerator idGenerator;
-    @Autowired
-    private CouponService couponService;
-    @Autowired
-    private ExtraLoanRateMapper extraLoanRateMapper;
-    @Autowired
-    private LoanDetailsMapper loanDetailsMapper;
     @Autowired
     private UserMapper userMapper;
 
     @Test
-    public void shouldGenerateLoanListIsOk(){
+    public void shouldGenerateLoanListIsOk() {
         ReflectionTestUtils.setField(mobileAppLoanListService, "defaultFee", 0.1);
         UserModel userModel = getUserModelTest();
         userMapper.create(userModel);
@@ -49,25 +45,65 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         loanMapper.create(loanModel);
         loanMapper.create(loanModel1);
 
-        InvestModel investModel = getFakeInvestModel(loanModel.getId(),userModel.getLoginName());
-        InvestModel investModel1 = getFakeInvestModel(loanModel1.getId(),userModel.getLoginName());
+        InvestModel investModel = getFakeInvestModel(loanModel.getId(), userModel.getLoginName());
+        InvestModel investModel1 = getFakeInvestModel(loanModel1.getId(), userModel.getLoginName());
         investMapper.create(investModel);
         investMapper.create(investModel1);
 
-        mobileAppLoanListService.generateLoanList(getLoanListRequest(userModel.getLoginName()));
+        BaseResponseDto<LoanListResponseDataDto> loanList = mobileAppLoanListService.generateLoanList(getLoanListRequest(userModel.getLoginName()));
+        List<LoanResponseDataDto> list = loanList.getData().getLoanList();
+        assertTrue(CollectionUtils.isNotEmpty(list));
+        assertTrue(list.get(0).getProductNewType() != ProductType.EXPERIENCE.name());
     }
 
-    private LoanListRequestDto getLoanListRequest(String loginName){
+    @Test
+    public void shouldInvestorNormalGenerateLoanListIsOk() {
+        ReflectionTestUtils.setField(mobileAppLoanListService, "defaultFee", 0.1);
+        UserModel userModel = getUserModelTest();
+        userMapper.create(userModel);
+
+        LoanModel loanModel = getFakeLoanModel(userModel.getLoginName(), ProductType._30);
+        LoanModel loanModel1 = getFakeLoanModel(userModel.getLoginName(), ProductType.EXPERIENCE);
+        loanMapper.create(loanModel);
+        loanMapper.create(loanModel1);
+
+        BaseResponseDto<LoanListResponseDataDto> loanList = mobileAppLoanListService.generateLoanList(getLoanListRequest(userModel.getLoginName()));
+        List<LoanResponseDataDto> list = loanList.getData().getLoanList();
+        assertTrue(CollectionUtils.isNotEmpty(list));
+        assertTrue(list.get(0).getProductNewType() == ProductType.EXPERIENCE.name());
+    }
+
+    @Test
+    public void shouldInvestExperienceLoanNormalGenerateLoanListIsOk() {
+        ReflectionTestUtils.setField(mobileAppLoanListService, "defaultFee", 0.1);
+        UserModel userModel = getUserModelTest();
+        userMapper.create(userModel);
+
+        LoanModel loanModel = getFakeLoanModel(userModel.getLoginName(), ProductType._30);
+        LoanModel loanModel1 = getFakeLoanModel(userModel.getLoginName(), ProductType.EXPERIENCE);
+        loanMapper.create(loanModel);
+        loanMapper.create(loanModel1);
+
+        InvestModel investModel1 = getFakeInvestModel(loanModel1.getId(), userModel.getLoginName());
+        investMapper.create(investModel1);
+
+        BaseResponseDto<LoanListResponseDataDto> loanList = mobileAppLoanListService.generateLoanList(getLoanListRequest(userModel.getLoginName()));
+        List<LoanResponseDataDto> list = loanList.getData().getLoanList();
+        assertTrue(CollectionUtils.isNotEmpty(list));
+        assertTrue(list.get(0).getProductNewType() != ProductType.EXPERIENCE.name());
+    }
+
+    private LoanListRequestDto getLoanListRequest(String loginName) {
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
-        loanListRequestDto.setIndex(0);
+        loanListRequestDto.setIndex(1);
         loanListRequestDto.setPageSize(100);
         loanListRequestDto.setBaseParam(baseParam);
         return loanListRequestDto;
     }
 
-    private InvestModel getFakeInvestModel(long loanId,String loginName) {
+    private InvestModel getFakeInvestModel(long loanId, String loginName) {
         InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
@@ -85,7 +121,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         return userModelTest;
     }
 
-    private LoanModel getFakeLoanModel(String fakeUserName,ProductType productType){
+    private LoanModel getFakeLoanModel(String fakeUserName, ProductType productType) {
         LoanModel loanModel = new LoanModel();
         loanModel.setAgentLoginName(fakeUserName);
         loanModel.setBaseRate(0.16);
