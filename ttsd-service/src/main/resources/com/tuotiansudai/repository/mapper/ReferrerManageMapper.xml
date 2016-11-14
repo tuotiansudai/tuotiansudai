@@ -80,7 +80,7 @@
         FROM
         (invest_referrer_reward a
         LEFT JOIN
-        account b
+        user b
         ON a.`referrer_login_name` = b.`login_name`)
         LEFT JOIN
         user referrer_u
@@ -116,7 +116,7 @@
         invest_u.`mobile` AS invest_mobile
         FROM
         (invest m
-        LEFT JOIN account n
+        LEFT JOIN user n
         ON m.`login_name` = n.`login_name`)
         LEFT JOIN
         user invest_u
@@ -174,7 +174,7 @@
         FROM
         (invest_referrer_reward a
         LEFT JOIN
-        account b
+        user b
         ON a.`referrer_login_name` = b.`login_name`)
         LEFT JOIN
         user referrer_u
@@ -210,7 +210,7 @@
         invest_u.`mobile` AS invest_mobile
         FROM
         (invest m
-        LEFT JOIN account n
+        LEFT JOIN user n
         ON m.`login_name` = n.`login_name`)
         LEFT JOIN
         user invest_u
@@ -275,7 +275,7 @@
         FROM
         (invest_referrer_reward a
         LEFT JOIN
-        account b
+        user b
         ON a.`referrer_login_name` = b.`login_name`)
         LEFT JOIN
         user referrer_u
@@ -305,7 +305,7 @@
         invest_u.`mobile` AS invest_mobile
         FROM
         (invest m
-        LEFT JOIN account n
+        LEFT JOIN user n
         ON m.`login_name` = n.`login_name`)
         LEFT JOIN
         user invest_u
@@ -370,7 +370,7 @@
         FROM
         (invest_referrer_reward a
         LEFT JOIN
-        account b
+        user b
         ON a.`referrer_login_name` = b.`login_name`)
         LEFT JOIN
         user referrer_u
@@ -400,7 +400,7 @@
         invest_u.`mobile` AS invest_mobile
         FROM
         (invest m
-        LEFT JOIN account n
+        LEFT JOIN user n
         ON m.`login_name` = n.`login_name`)
         LEFT JOIN
         user invest_u

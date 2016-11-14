@@ -1,16 +1,13 @@
 package com.tuotiansudai.smswrapper.service;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.SmsClient;
-import com.tuotiansudai.smswrapper.repository.mapper.TurnOffNoPasswordInvestCaptchaMapper;
 import com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper;
-import com.tuotiansudai.smswrapper.repository.model.SmsModel;
+import com.tuotiansudai.smswrapper.repository.mapper.TurnOffNoPasswordInvestCaptchaMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,12 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,13 +35,7 @@ public class SmsServiceTest {
     @Autowired
     private SmsClient smsClient;
 
-    @Autowired
-    private RegisterCaptchaMapper registerCaptchaMapper;
-
     private String SUCCESS_RESPONSE_BODY = "{\"code\":200,\"msg\":\"sendid\",\"obj\":1}";
-
-    @Autowired
-    private TurnOffNoPasswordInvestCaptchaMapper noPasswordInvestMapper;
 
     @Before
     public void setUp() throws Exception {
@@ -89,6 +75,19 @@ public class SmsServiceTest {
         String captcha = "9999";
 
         BaseDto<SmsDataDto> baseDto = this.smsService.sendNoPasswordInvestCaptcha(mobile, captcha, null);
+        assertTrue(baseDto.isSuccess());
+    }
+
+    @Test
+    @Transactional
+    public void shouldSendGenerateContractEoor() throws Exception {
+        MockResponse mockResponse = new MockResponse();
+        mockResponse.setBody(SUCCESS_RESPONSE_BODY);
+        server.enqueue(mockResponse);
+        URL url = server.getUrl("/webservice.asmx/mdSmsSend_u");
+        this.smsClient.setUrl(url.toString());
+
+        BaseDto<SmsDataDto> baseDto = this.smsService.generateContractNotify(Lists.newArrayList(), 1111L);
         assertTrue(baseDto.isSuccess());
     }
 }

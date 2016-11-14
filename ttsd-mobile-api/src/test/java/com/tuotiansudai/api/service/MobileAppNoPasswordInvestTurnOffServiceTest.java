@@ -42,7 +42,7 @@ public class MobileAppNoPasswordInvestTurnOffServiceTest extends ServiceTestBase
 
     @Test
     public void shouldNoPasswordInvestTurnOffIsOk(){
-        AccountModel accountModel = new AccountModel("loginName", "userName", "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         UserModel userModel = new UserModel();
         userModel.setMobile("13688888888");
         BaseResponseDto baseResponseDto = new BaseResponseDto();
