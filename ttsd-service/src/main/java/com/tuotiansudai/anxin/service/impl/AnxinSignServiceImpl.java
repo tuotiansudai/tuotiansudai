@@ -315,7 +315,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         LoanModel loanModel = loanMapper.findById(loanId);
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
         if (agentAnxinProp == null || Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())) {
-            logger.error(MessageFormat.format("[安心签] create contract error, agentModel is not anxin sign , loanid:{0} , userId:{1}", loanId, loanModel.getAgentLoginName()));
+            logger.error(MessageFormat.format("[安心签] create contract error, agent has not signed, loanid:{0}, userId:{1}", loanId, loanModel.getAgentLoginName()));
             return new BaseDto(false);
         }
 
@@ -332,7 +332,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             if (createContractVOs.size() == batchNum || investModels.size() == (i + 1)) {
                 String batchNo = UUIDGenerator.generate();
                 try {
-                    logger.debug(MessageFormat.format("[安心签] create contract begin , loanId:{0}, batchNo{1}", loanId, batchNo));
+                    logger.debug(MessageFormat.format("[安心签] create contract begin, loanId:{0}, batchNo:{1}", loanId, batchNo));
                     //创建合同
                     Tx3202ResVO tx3202ResVO = anxinSignConnectService.createContractBatch3202(loanId, batchNo, AnxinContractType.LOAN_CONTRACT, createContractVOs);
 
@@ -344,14 +344,14 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                     smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
 
                     baseDto.setSuccess(false);
-                    logger.error(MessageFormat.format("[安心签] create contract error , loanId:{0}", loanId), e);
+                    logger.error(MessageFormat.format("[安心签] create contract error, loanId:{0}", loanId), e);
                 }
                 createContractVOs.clear();
             }
         }
 
         if (!processResult) {
-            logger.error("[安心签]: some contract create error , ready send sms . loanId" + loanId);
+            logger.error("[安心签]: some contract create error, ready send sms. loanId:" + loanId);
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
         }
 
@@ -388,14 +388,13 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         CreateContractVO createContractVO = collectTransferContractModel(transferApplicationId);
         if (createContractVO == null) {
-            logger.error(MessageFormat.format("[安心签] create transfer contract error,users is not anxin sign , transferApplicationId:{0}", transferApplicationId));
             return new BaseDto(false);
         }
         List<CreateContractVO> createContractVOs = Lists.newArrayList(createContractVO);
         BaseDto baseDto = new BaseDto();
         String batchNo = UUIDGenerator.generate();
         try {
-            logger.debug(MessageFormat.format("[安心签] create transfer contract begin , transferId:{0}, batchNo{1}", transferApplicationId, batchNo));
+            logger.debug(MessageFormat.format("[安心签] create transfer contract begin, transferId:{0}, batchNo:{1}", transferApplicationId, batchNo));
             //创建合同
             Tx3202ResVO tx3202ResVO = anxinSignConnectService.createContractBatch3202(transferApplicationId, batchNo, AnxinContractType.TRANSFER_CONTRACT, createContractVOs);
 
@@ -404,7 +403,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
 
             baseDto.setSuccess(false);
-            logger.error(MessageFormat.format("[安心签] create transfer contract error , transferId:{0}", transferApplicationId), e);
+            logger.error(MessageFormat.format("[安心签] create transfer contract error, transferId:{0}", transferApplicationId), e);
         }
         createContractVOs.clear();
 
@@ -412,7 +411,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             logger.debug("[安心签]:创建job，十分钟后，查询并更新合同状态。债权ID:" + transferApplicationId);
             updateContractResponseHandleJob(Arrays.asList(batchNo), transferApplicationId, AnxinContractType.TRANSFER_CONTRACT);
         } else {
-            logger.error("[安心签]: create transfer contract error , ready send sms . transferId" + transferApplicationId);
+            logger.error("[安心签]: create transfer contract error, ready send sms. transferId:" + transferApplicationId);
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
         }
 
@@ -428,7 +427,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         UserModel transfereeUserModel = userMapper.findByLoginName(transferApplicationModel.getLoginName());
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(transferApplicationModel.getLoginName());
         if (agentAnxinProp == null || Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())) {
-            logger.error(MessageFormat.format("[安心签] create transfer contract error,agentAnxinProp is not anxin sign , transferApplicationId:{0} , userId:{1}", transferApplicationId, transferApplicationModel.getLoginName()));
+            logger.error(MessageFormat.format("[安心签] create transfer contract error, agent has not signed, transferApplicationId:{0}, userId:{1}", transferApplicationId, transferApplicationModel.getLoginName()));
             return null;
         }
         if (transfereeUserModel != null) {
@@ -440,7 +439,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         UserModel investAccountModel = userMapper.findByLoginName(investModel.getLoginName());
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investModel.getLoginName());
         if (investorAnxinProp == null || Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())) {
-            logger.error(MessageFormat.format("[安心签] create transfer contract error,investorAnxinProp is not anxin sign , transferApplicationId:{0} , userId:{1}", transferApplicationId, investModel.getLoginName()));
+            logger.error(MessageFormat.format("[安心签] create transfer contract error, investor has not signed, transferApplicationId:{0}, userId:{1}", transferApplicationId, investModel.getLoginName()));
             return null;
         }
         if (investAccountModel != null) {
@@ -543,7 +542,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investorLoginName);
 
         if (investorAnxinProp == null || Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())) {
-            logger.error(MessageFormat.format("[安心签] create contract error, investor has not signed anxin yet. loanid:{0}, investId:{1}, userId:{2}", loanId, investId, investorLoginName));
+            logger.error(MessageFormat.format("[安心签] create contract error, investor has not signed. loanid:{0}, investId:{1}, userId:{2}", loanId, investId, investorLoginName));
             return null;
         }
 
