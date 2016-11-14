@@ -243,7 +243,7 @@ public class ExtraRateServiceIdempotentTest {
     }
 
     private AccountModel getFakeAccount(String loginName, long balance, long freeze) {
-        AccountModel accountModel = new AccountModel(loginName, loginName, "id", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountModel.setBalance(balance);
         accountModel.setFreeze(freeze);
         return accountModel;
