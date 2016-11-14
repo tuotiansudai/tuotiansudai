@@ -25,7 +25,7 @@
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.cache,com.tuotiansudai.spring,com.tuotiansudai.console.util,
           com.tuotiansudai.util,com.tuotiansudai.coupon,com.tuotiansudai.jpush,com.tuotiansudai.console.bi,com.tuotiansudai.point,com.tuotiansudai.task.aspect,com.tuotiansudai.transfer,com.tuotiansudai.aspect,com.tuotiansudai.membership,com.tuotiansudai.message,
-          com.tuotiansudai.ask.service,com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.mq"/>
+          com.tuotiansudai.ask.service,com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.mq,com.tuotiansudai.activity.service"/>
 
     <aop:aspectj-autoproxy expose-proxy="true"/>
 
@@ -114,6 +114,27 @@
         </constructor-arg>
     </bean>
 
+    <bean id="activityHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${activity.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${activity.jdbc.username}"/>
+                <property name="password" value="${activity.jdbc.password}"/>
+                <property name="minimumIdle" value="${console.activity.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${console.activity.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
+
     <bean id="anxinHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
@@ -148,6 +169,10 @@
         <property name="dataSource" ref="pointHikariCPDataSource"/>
     </bean>
 
+    <bean id="activityTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="activityHikariCPDataSource"/>
+    </bean>
+
     <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
         <property name="dataSource" ref="jobHikariCPDataSource"/>
     </bean>
@@ -156,7 +181,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.jpush.repository.model,com.tuotiansudai.console.bi.repository.model,
-                                                    com.tuotiansudai.transfer.repository.model,com.tuotiansudai.membership.repository.model,com.tuotiansudai.message.repository.model,com.tuotiansudai.activity.repository.model"/>
+                                                    com.tuotiansudai.transfer.repository.model,com.tuotiansudai.membership.repository.model,com.tuotiansudai.message.repository.model"/>
         <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
@@ -169,6 +194,12 @@
     <bean id="pointSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="pointHikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.point.repository.model"/>
+        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
+    </bean>
+
+    <bean id="activitySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="activityHikariCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.activity.repository.model"/>
         <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
@@ -193,6 +224,11 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="pointSqlSessionFactory"/>
         <property name="basePackage" value="com.tuotiansudai.point.repository.mapper"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="activitySqlSessionFactory"/>
+        <property name="basePackage" value="com.tuotiansudai.activity.repository.mapper"/>
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
