@@ -6,6 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -49,6 +50,9 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
@@ -62,9 +66,10 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         }
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
         ProductType noContainProductType = null;
-        if (investMapper.findCountSuccessByLoginNameAndProductTypes(loanListRequestDto.getBaseParam().getUserId(), null) > 0) {
+        if(CollectionUtils.isEmpty(userCouponMapper.findUsedExperienceByLoginName(loanListRequestDto.getBaseParam().getUserId()))){
             noContainProductType = ProductType.EXPERIENCE;
         }
+
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), noContainProductType, loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index);
 
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();

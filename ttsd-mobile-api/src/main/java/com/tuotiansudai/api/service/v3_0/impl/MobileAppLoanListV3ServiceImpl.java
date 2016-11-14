@@ -8,6 +8,7 @@ import com.tuotiansudai.api.dto.v3_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v3_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
 import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
@@ -17,6 +18,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExperienceLoanDetailService;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,17 +54,18 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
     @Autowired
     private ExperienceLoanDetailService experienceLoanDetailService;
 
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
     @Override
     public BaseResponseDto generateIndexLoan(String loginName) {
         List<ProductType> noContainExperienceLoans = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
-        List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType.EXPERIENCE, ProductType._30, ProductType._90, ProductType._180, ProductType._360);
 
         LoanModel loanModel = null;
-        if (StringUtils.isEmpty(loginName) ||
-                investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, allProductTypesCondition) == 0) {
+        if (StringUtils.isEmpty(loginName) || CollectionUtils.isNotEmpty(userCouponMapper.findUsedExperienceByLoginName(loginName))) {
             //没登录 or 没投资过任何标
             List<LoanModel> loanModels = loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(Lists.newArrayList(ProductType.EXPERIENCE)), ActivityType.NEWBIE);
             if (loanModels.size() <= 0) {
