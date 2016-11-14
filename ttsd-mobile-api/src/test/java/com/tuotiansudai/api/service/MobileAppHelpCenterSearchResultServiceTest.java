@@ -37,13 +37,13 @@ public class MobileAppHelpCenterSearchResultServiceTest extends ServiceTestBase 
         List<HelpCenterModel> helpCenterModels = new ArrayList<>();
         HelpCenterModel helpCenterModel1 = createHelpCenterModel("testQuestion1", "testAnster1", HelpCategory.ACCOUNT_BANK_CARD, false);
         helpCenterModels.add(helpCenterModel1);
-        HelpCenterModel helpCenterModel2 = createHelpCenterModel("testQuestion1", "testAnster1", HelpCategory.COUPON_REFERRER, true);
+        HelpCenterModel helpCenterModel2 = createHelpCenterModel("testQuestion2", "testAnster1", HelpCategory.COUPON_REFERRER, true);
         helpCenterModels.add(helpCenterModel2);
-        HelpCenterModel helpCenterModel3 = createHelpCenterModel("testQuestion1", "testAnster1", HelpCategory.KNOW_TTSD, true);
+        HelpCenterModel helpCenterModel3 = createHelpCenterModel("testQuestion3", "testAnster2", HelpCategory.KNOW_TTSD, true);
         helpCenterModels.add(helpCenterModel3);
-        HelpCenterModel helpCenterModel4 = createHelpCenterModel("testQuestion1", "testAnster1", HelpCategory.POINT_MEMBERSHIP, false);
+        HelpCenterModel helpCenterModel4 = createHelpCenterModel("testQuestion4", "testAnster3", HelpCategory.POINT_MEMBERSHIP, false);
         helpCenterModels.add(helpCenterModel4);
-        HelpCenterModel helpCenterModel5 = createHelpCenterModel("testQuestion1", "testAnster1", HelpCategory.RECHARGE_WITHDRAW, false);
+        HelpCenterModel helpCenterModel5 = createHelpCenterModel("testQuestion5", "testAnster4", HelpCategory.RECHARGE_WITHDRAW, false);
         helpCenterModels.add(helpCenterModel5);
         return helpCenterModels;
     }
@@ -54,7 +54,7 @@ public class MobileAppHelpCenterSearchResultServiceTest extends ServiceTestBase 
 
         HelpCenterSearchRequestDto requestDto = new HelpCenterSearchRequestDto();
         requestDto.setHot("true");
-        requestDto.setKeywords("test");
+        requestDto.setKeywords("Question");
         requestDto.setCategory("");
 
         BaseResponseDto<HelpCenterSearchListResponseDataDto> baseResponseDto = mobileAppHelpCenterSearchService.getHelpCenterSearchResult(requestDto);
@@ -66,7 +66,7 @@ public class MobileAppHelpCenterSearchResultServiceTest extends ServiceTestBase 
         prepareData();
         HelpCenterSearchRequestDto requestDto = new HelpCenterSearchRequestDto();
         requestDto.setHot("false");
-        requestDto.setKeywords("test");
+        requestDto.setKeywords("Question");
         requestDto.setCategory("know_ttsd");
 
         BaseResponseDto<HelpCenterSearchListResponseDataDto> baseResponseDto = mobileAppHelpCenterSearchService.getHelpCenterSearchResult(requestDto);
@@ -78,7 +78,7 @@ public class MobileAppHelpCenterSearchResultServiceTest extends ServiceTestBase 
         prepareData();
         HelpCenterSearchRequestDto requestDto = new HelpCenterSearchRequestDto();
         requestDto.setHot("false");
-        requestDto.setKeywords("test");
+        requestDto.setKeywords("Question");
         requestDto.setCategory("");
 
         BaseResponseDto<HelpCenterSearchListResponseDataDto> baseResponseDto = mobileAppHelpCenterSearchService.getHelpCenterSearchResult(requestDto);
