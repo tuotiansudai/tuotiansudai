@@ -474,7 +474,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("investAmount", AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) + "元");
         dataModel.put("transferTime", simpleDateFormat.format(transferApplicationModel.getTransferTime()));
         dataModel.put("leftPeriod", String.valueOf(transferApplicationModel.getLeftPeriod()));
-        dataModel.put("orderId", String.valueOf(transferApplicationModel.getId()));
+        dataModel.put("orderId", String.valueOf(transferApplicationModel.getInvestId()));
 
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         String msg1;
@@ -609,11 +609,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         // 把合同号更新到 invest 或 transferApplication 表
         contractResponseViews.stream().filter(contractResponseView -> contractResponseView.getRetCode().equals(AnxinRetCode.SUCCESS)).forEach(contractResponseView -> {
-            if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
-                investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
-            } else {
-                transferApplicationMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
-            }
+            investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
         });
 
         return waitingBatchNoList;

@@ -119,7 +119,8 @@ public class AnxinQueryContractJob implements Job {
                     redisWrapperClient.del(AnxinSignServiceImpl.LOAN_CONTRACT_IN_CREATING_KEY + businessId);
                 } else if (anxinContractType == AnxinContractType.TRANSFER_CONTRACT) {
                     TransferApplicationModel applicationModel = transferApplicationMapper.findById(businessId);
-                    if (applicationModel != null && StringUtils.isEmpty(applicationModel.getContractNo())) {
+                    InvestModel investModel = investService.findById(applicationModel.getInvestId());
+                    if (applicationModel != null && investModel != null && StringUtils.isEmpty(investModel.getContractNo())) {
                         logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}", String.valueOf(businessId)));
                         // 失败了，发短信
                         smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));
