@@ -65,7 +65,7 @@ public class RankingActivityServiceTest {
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(userModelTest);
 
-        AccountModel accountModel = new AccountModel(userId, "张三", "1" + RandomStringUtils.randomNumeric(10), "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel(userId, "payUserId", "payAccountId", new Date());
         accountMapper.create(accountModel);
     }
 

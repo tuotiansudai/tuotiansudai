@@ -24,6 +24,9 @@ public class InvestModel implements Serializable {
      * 标的ID
      */
     private long loanId;
+
+
+    private String contractNo;
     /**
      * 投资金额
      */
@@ -223,5 +226,13 @@ public class InvestModel implements Serializable {
 
     public void setInvestFeeRate(double investFeeRate) {
         this.investFeeRate = investFeeRate;
+    }
+
+    public String getContractNo() {
+        return contractNo;
+    }
+
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
     }
 }

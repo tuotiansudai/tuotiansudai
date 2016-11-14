@@ -15,7 +15,7 @@
             </div>
             <div class="model-group actor-info">
                 <div class="content-item after-line">
-                    <p class="title-text">双11清空女票的购物车要多少钱？别报警，拓天速贷此番祭出</p>
+                    <p class="title-text">清空女票的购物车要多少钱？别报警，拓天速贷此番祭出</p>
                     <p>撩妹神器：</p>
                     <p><span><img src="${staticServer}/activity/images/double-eleven/info-text.png" width="100%"></span></p>
                     <p>女神喜欢的香槟玫瑰、法国大餐、星级酒店，统统满足她！所谓“但愿人长久，钱里共婵娟”。兄弟只能帮到这了，接下来你懂得哦！</p>
