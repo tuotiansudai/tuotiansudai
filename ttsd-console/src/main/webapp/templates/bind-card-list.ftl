@@ -10,7 +10,6 @@
                 <input type="text" class="form-control jq-loginName" name="loginName" value="${loginName!}">
             </div>
             <button class="btn btn-primary search" type="submit">查询</button>
-            <a class="btn btn-default pull-right btn-add-agent-rate" href="/user-manage/agent/create">添加代理人层级/收益比例</a>
         </div>
     </form>
 
@@ -18,9 +17,14 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th>代理人</th>
-                <th>代理层级</th>
-                <th>收益比例(%)</th>
+                <th>编号</th>
+                <th>申请人姓名</th>
+                <th>申请人手机号</th>
+                <th>原银行卡（银行卡号）</th>
+                <th>申请银行卡（银行卡号）</th>
+                <th>申请时间</th>
+                <th>状态</th>
+                <th>备注</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -28,11 +32,14 @@
                 <#list agentLevelRateList as agent>
                 <tr>
                     <td>${agent.loginName!}</td>
-                    <td>${agent.level!}</td>
-                    <td>${(agent.rate * 100)?string('0.00')!}</td>
-                    <td><a href="/user-manage/agent/${(agent.id?string('0'))!}" class="btn btn-link"> 编辑</a>
-                        | <a href="/user-manage/agent/delete/${(agent.id?string('0'))!}" class="btn btn-link jq-delete"
-                             data-id="${(agent.id?string('0'))!}">删除</a></td>
+                    <td>${agent.loginName!}</td>
+                    <td>${agent.loginName!}</td>
+                    <td>${agent.loginName!}</td>
+                    <td>${agent.loginName!}</td>
+                    <td>${agent.loginName!}</td>
+                    <td>${agent.loginName!}</td>
+                    <td>${agent.loginName!}</td>
+                    <td></td>
                 </tr>
                 </#list>
             </tbody>

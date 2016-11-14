@@ -1,17 +1,15 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.dto.AgentDto;
-import com.tuotiansudai.exception.CreateAgentException;
 import com.tuotiansudai.repository.mapper.AgentLevelRateMapper;
 import com.tuotiansudai.repository.model.AgentLevelRateModel;
 import com.tuotiansudai.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -43,50 +41,5 @@ public class BindCardManagerController {
 
         return modelAndView;
     }
-
-    @RequestMapping(value = "/agent/create", method = RequestMethod.GET)
-    public ModelAndView addAgentLevelRate() {
-        return new ModelAndView("/agent-edit");
-    }
-
-    @RequestMapping(value = "/agent/create", method = RequestMethod.POST)
-    @ResponseBody
-    public ModelAndView create(@Valid @ModelAttribute AgentDto agentDto,RedirectAttributes redirectAttributes){
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            agentService.create(agentDto);
-            modelAndView.setViewName("redirect:/user-manage/agents");
-            return modelAndView;
-        } catch (CreateAgentException e) {
-            modelAndView.setViewName("redirect:/user-manage/agent/create");
-            redirectAttributes.addFlashAttribute("agent", agentDto);
-            redirectAttributes.addFlashAttribute("errorMessage",e.getMessage());
-            return modelAndView;
-        }
-    }
-
-
-    @RequestMapping(value = "/agent/{id}", method = RequestMethod.GET)
-    public ModelAndView editAgent(@PathVariable long id) {
-        AgentLevelRateModel agentLevelRateModel = agentLevelRateMapper.findAgentLevelRateById(id);
-        ModelAndView mv = new ModelAndView("/agent-edit");
-        mv.addObject("agent",agentLevelRateModel);
-        mv.addObject("edit",true);
-        return mv;
-    }
-    @RequestMapping(value = "/agent/delete/{id}", method = RequestMethod.GET)
-    public String deleteAgent(@PathVariable long id) {
-        agentLevelRateMapper.delete(id);
-        return "redirect:/user-manage/agents";
-    }
-
-    @RequestMapping(value = "/agent/edit", method = RequestMethod.POST)
-    public String editAgent(@Valid @ModelAttribute AgentDto agentDto) {
-        agentService.update(agentDto);
-        return "redirect:/user-manage/agents";
-    }
-
-
-
 
 }
