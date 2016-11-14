@@ -108,3 +108,4 @@ public class JobController {
         couponLoanOutService.sendRedEnvelope(loanId);
     }
 }
+
