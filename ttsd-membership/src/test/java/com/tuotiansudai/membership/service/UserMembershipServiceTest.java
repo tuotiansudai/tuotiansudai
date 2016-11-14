@@ -189,15 +189,15 @@ public class UserMembershipServiceTest {
     }
 
     private List<UserMembershipItemDto> prepareUserMembershipData() {
-        UserModel userModel1 = createFakeUser("testUser1", "18612340001", DateTime.parse("2010-06-30T12:30").withTimeAtStartOfDay().toDate());
+        UserModel userModel1 = createFakeUser("userMembershipTestUser1", "18612340001", DateTime.parse("2010-06-30T12:30").withTimeAtStartOfDay().toDate());
         AccountModel accountModel1 = createFakeAccount(userModel1, 1);
         UserMembershipModel userMembershipModel1 = createUserMembershipModel("testUser1", UserMembershipType.UPGRADE, 0);
 
-        UserModel userModel2 = createFakeUser("testUser2", "18612340002", DateTime.parse("2010-07-30T12:30").withTimeAtStartOfDay().toDate());
+        UserModel userModel2 = createFakeUser("userMembershipTestUser2", "18612340002", DateTime.parse("2010-07-30T12:30").withTimeAtStartOfDay().toDate());
         AccountModel accountModel2 = createFakeAccount(userModel2, 2);
         UserMembershipModel userMembershipModel2 = createUserMembershipModel("testUser2", UserMembershipType.GIVEN, 5);
 
-        UserModel userModel3 = createFakeUser("testUser3", "18612340003", DateTime.parse("2010-08-30T12:30").withTimeAtStartOfDay().toDate());
+        UserModel userModel3 = createFakeUser("userMembershipTestUser3", "18612340003", DateTime.parse("2010-08-30T12:30").withTimeAtStartOfDay().toDate());
         AccountModel accountModel3 = createFakeAccount(userModel3, 3);
         UserMembershipModel userMembershipModel3 = createUserMembershipModel("testUser3", UserMembershipType.UPGRADE, 0);
 
