@@ -263,6 +263,17 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
+    public Long incrEx(final String key, int seconds) {
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                long val = jedis.incr(key);
+                jedis.expire(key, seconds);
+                return val;
+            }
+        });
+    }
+
     public Long incr(final String key, final long increasement) {
         return execute(new JedisAction<Long>() {
             @Override

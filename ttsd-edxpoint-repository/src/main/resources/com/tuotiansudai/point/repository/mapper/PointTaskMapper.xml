@@ -16,13 +16,10 @@
         <result property="createdTime" column="created_time"/>
     </resultMap>
 
-    <select id="findPointTaskPagination" resultMap="pointTaskResultMap" parameterType="map">
-        select * from point_task where active = TRUE order by created_time desc limit #{index}, #{pageSize}
-    </select>
-
-    <select id="findCountPointTaskPagination" resultType="long">
-        select count(*) from point_task where active = TRUE
-    </select>
+    <insert id="create" parameterType="PointTaskModel" useGeneratedKeys="true" keyProperty="id">
+        insert into point_task (`name`, `point`, `active`, `multiple`, `max_level`, `created_time`)
+        value (#{name}, #{point},  #{active},  #{multiple},  #{maxLevel},  #{createdTime})
+    </insert>
 
     <select id="findById" resultMap="pointTaskResultMap">
         select * from point_task where id = #{id}

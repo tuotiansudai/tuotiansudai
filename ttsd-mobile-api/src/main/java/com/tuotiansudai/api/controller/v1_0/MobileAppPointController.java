@@ -41,9 +41,4 @@ public class MobileAppPointController extends MobileAppBaseController {
         return mobileAppPointService.queryPoint(baseParamDto);
     }
 
-    @RequestMapping(value = "/get/point-task", method = RequestMethod.POST)
-    public BaseResponseDto getPointTask(@RequestBody PointTaskRequestDto pointTaskRequestDto) {
-        pointTaskRequestDto.getBaseParam().setUserId(getLoginName());
-        return mobileAppPointService.queryPointTaskList(pointTaskRequestDto);
-    }
 }

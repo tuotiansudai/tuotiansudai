@@ -120,9 +120,11 @@ public class UserMembershipMapperTest {
         return userModel;
     }
 
-    private AccountModel createFakeAccount(UserModel userModel, String userName, long membershipPoint) {
-        AccountModel accountModel = new AccountModel(userModel.getLoginName(), userName, RandomStringUtils.randomNumeric(18),
-                RandomStringUtils.randomNumeric(32), RandomStringUtils.randomNumeric(14), userModel.getRegisterTime());
+    private AccountModel createFakeAccount(UserModel userModel, long membershipPoint) {
+        AccountModel accountModel = new AccountModel(userModel.getLoginName(),
+                RandomStringUtils.randomNumeric(32),
+                RandomStringUtils.randomNumeric(14),
+                userModel.getRegisterTime());
         accountModel.setMembershipPoint(membershipPoint);
         accountMapper.create(accountModel);
         return accountModel;
@@ -143,7 +145,7 @@ public class UserMembershipMapperTest {
         UserMembershipItemView userMembershipItemView = new UserMembershipItemView();
         userMembershipItemView.setLoginName(userModel.getLoginName());
         userMembershipItemView.setMobile(userModel.getMobile());
-        userMembershipItemView.setRealName(accountModel.getUserName());
+        userMembershipItemView.setRealName(userModel.getUserName());
         userMembershipItemView.setRegisterTime(userModel.getRegisterTime());
         userMembershipItemView.setUserMembershipType(userMembershipModel.getType());
         userMembershipItemView.setMembershipLevel(membershipMapper.findById(userMembershipModel.getMembershipId()).getLevel());
@@ -153,15 +155,15 @@ public class UserMembershipMapperTest {
 
     private List<UserMembershipItemView> prepareUserMembershipData() {
         UserModel userModel1 = createFakeUser("testUser1", "18612340001", DateTime.parse("2000-06-30T12:30").toDate());
-        AccountModel accountModel1 = createFakeAccount(userModel1, "userName1", 1);
+        AccountModel accountModel1 = createFakeAccount(userModel1, 1);
         UserMembershipModel userMembershipModel1 = createUserMembershipModel("testUser1", UserMembershipType.UPGRADE, 0);
 
         UserModel userModel2 = createFakeUser("testUser2", "18612340002", DateTime.parse("2000-07-30T12:30").toDate());
-        AccountModel accountModel2 = createFakeAccount(userModel2, "userName2", 2);
+        AccountModel accountModel2 = createFakeAccount(userModel2, 2);
         UserMembershipModel userMembershipModel2 = createUserMembershipModel("testUser2", UserMembershipType.GIVEN, 5);
 
         UserModel userModel3 = createFakeUser("testUser3", "18612340003", DateTime.parse("2000-08-30T12:30").toDate());
-        AccountModel accountModel3 = createFakeAccount(userModel3, "userName3", 3);
+        AccountModel accountModel3 = createFakeAccount(userModel3, 3);
         UserMembershipModel userMembershipModel3 = createUserMembershipModel("testUser3", UserMembershipType.UPGRADE, 0);
 
         List<UserMembershipItemView> userMembershipItemViews = new ArrayList<>();

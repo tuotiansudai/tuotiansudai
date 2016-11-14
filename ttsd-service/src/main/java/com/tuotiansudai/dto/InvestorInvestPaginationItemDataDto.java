@@ -40,7 +40,11 @@ public class InvestorInvestPaginationItemDataDto {
 
     private Double extraRate;
 
-    public InvestorInvestPaginationItemDataDto(LoanModel loanModel, InvestModel investModel, InvestRepayModel investRepayModel, List<UserCouponDto> userCouponDtoList, boolean investRepayExist, InvestExtraRateModel investExtraRateModel) {
+    private String contractNo;
+
+    private ContractStatus contractStatus;
+
+    public InvestorInvestPaginationItemDataDto(LoanModel loanModel, InvestModel investModel, InvestRepayModel investRepayModel, List<UserCouponDto> userCouponDtoList, boolean investRepayExist, InvestExtraRateModel investExtraRateModel, ContractStatus contractStatus) {
         this.investId = investModel.getId();
         this.loanId = investModel.getLoanId();
         this.loanName = loanModel.getName();
@@ -62,6 +66,16 @@ public class InvestorInvestPaginationItemDataDto {
         this.investRepayExist = investRepayExist;
         this.productType = loanModel.getProductType();
         this.extraRate = investExtraRateModel != null ? investExtraRateModel.getExtraRate() : null;
+        this.contractNo = investModel.getContractNo();
+        this.contractStatus = contractStatus;
+    }
+
+    public ContractStatus getContractStatus() {
+        return contractStatus;
+    }
+
+    public void setContractStatus(ContractStatus contractStatus) {
+        this.contractStatus = contractStatus;
     }
 
     public long getInvestId() {
@@ -123,5 +137,13 @@ public class InvestorInvestPaginationItemDataDto {
 
     public void setExtraRate(Double extraRate) {
         this.extraRate = extraRate;
+    }
+
+    public String getContractNo() {
+        return contractNo;
+    }
+
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
     }
 }

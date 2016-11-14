@@ -25,10 +25,13 @@ public class MobileAppSendSmsV2ServiceTest extends ServiceTestBase {
 
     @InjectMocks
     private MobileAppSendSmsV2ServiceImpl mobileAppSendSmsV2Service;
+
     @Mock
     private CaptchaHelper captchaHelper;
+
     @Mock
     private UserService userService;
+
     @Mock
     private SmsCaptchaService smsCaptchaService;
 
@@ -55,7 +58,7 @@ public class MobileAppSendSmsV2ServiceTest extends ServiceTestBase {
         sendSmsCompositeRequestDto.setBaseParam(baseParam);
         mockMethod();
         BaseResponseDto baseResponseDto = mobileAppSendSmsV2Service.sendSms(sendSmsCompositeRequestDto,"192.168.1.1");
-        assertEquals(baseResponseDto.getCode(), ReturnMessage.NEED_IMAGE_CAPTCHA.getCode());
+        assertEquals(baseResponseDto.getCode(), ReturnMessage.IMAGE_CAPTCHA_IS_WRONG.getCode());
     }
 
     private void mockMethod(){

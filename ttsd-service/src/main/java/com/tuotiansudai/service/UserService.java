@@ -3,12 +3,8 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.repository.model.UserView;
 
-import java.util.Date;
 import java.util.List;
 
 public interface UserService {
@@ -18,6 +14,10 @@ public interface UserService {
     boolean emailIsExist(String email);
 
     boolean mobileIsExist(String mobile);
+
+    boolean isIdentityNumberExist(String identityNumber);
+
+    String getRealName(String loginNameOrMobile);
 
     boolean registerUser(RegisterUserDto dto) throws ReferrerRelationException;
 
@@ -54,4 +54,6 @@ public interface UserService {
     boolean mobileIsRegister(String mobile);
 
     UserModel findByMobile(String mobile);
+
+    UserModel findByLoginName(String loginName);
 }
