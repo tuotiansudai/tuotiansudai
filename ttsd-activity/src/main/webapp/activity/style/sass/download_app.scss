@@ -89,8 +89,61 @@
     }
   }
   .download-seven{
+    background:#869cb3;
+    height:360px;
+    box-sizing:border-box;
     @media (max-width:700px) {
       display:none;
+    }
+    .content-item{
+      width:750px;
+      height:100%;
+      margin:0 auto;
+      position: relative;
+      p{
+        display:inline-block;
+        width:100%;
+        font-size:26px;
+        color:#3e3f50;
+        margin-bottom:0;
+        &.wx-text{
+          margin-top:120px;
+        }
+        &.des-text{
+          font-size:22px;
+          color:#fff;
+        }
+      }
+      .ios-download{
+        width:160px;
+        height:60px;
+        position: absolute;
+        top:50%;
+        margin-top:10px;
+        right:220px;
+        background:url('/activity/images/download/apple-download.png') no-repeat center;
+        background-size:100%;
+      }
+      .android-download{
+        width:160px;
+        height:60px;
+        position: absolute;
+        top:50%;
+        margin-top:-60px;
+        right:220px;
+        background:url('/activity/images/download/android-download.png') no-repeat center;
+        background-size:100%;
+      }
+      .wx-footer{
+        width:200px;
+        height:200px;
+        position: absolute;
+        top:50%;
+        right:0;
+        margin-top:-100px;
+        background:url('/activity/images/download/wx-footer.png') no-repeat center;
+        background-size:100%;
+      }
     }
   }
 }

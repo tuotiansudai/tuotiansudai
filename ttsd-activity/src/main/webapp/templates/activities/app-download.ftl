@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.download_app}" pageJavascript="${js.download_app}" activeNav="" activeLeftNav="" title="拓天速贷手机客户端_理财客户端_拓天速贷" keywords="拓天速贷,APP理财,移动客户端,网络理财,P2P理财,拓天速贷APP" description="拓天速贷手机客户端为理财,投资,贷款等投融资用户提供安全、专业、便捷的互联网金融理财服务。">
+<@global.main pageCss="${css.download_app}" pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷手机客户端_理财客户端_拓天速贷" keywords="拓天速贷,APP理财,移动客户端,网络理财,P2P理财,拓天速贷APP" description="拓天速贷手机客户端为理财,投资,贷款等投融资用户提供安全、专业、便捷的互联网金融理财服务。">
 
 <div class="download-container">
     <div class="download-one">
@@ -7,7 +7,7 @@
         <img src="${staticServer}/activity/images/download/phone-one.png" class="mobile-img" width="100%">
         <div class="wp">
             <a href="https://itunes.apple.com/cn/app/ta-tian-su-dai/id1039233966?mt=8" class="ios-btn" target="_blank"></a>
-            <a href="/app/tuotiansudai.apk" class="android-btn"></a>
+            <a href="/app/tuotiansudai.apk" class="android-btn" target="_blank"></a>
             <a href="javascript:void(0)" class="wx-code"></a>
         </div>
     </div>
@@ -32,8 +32,12 @@
         <img src="${staticServer}/activity/images/download/phone-six.png" class="mobile-img" width="100%">
     </div>
      <div class="download-seven">
-        <div class="wp">
-            的所发生的
+        <div class="content-item">
+            <p class="wx-text">扫描二维码，下载APP</p>
+            <p class="des-text">投资快人一步</p>
+            <a href="https://itunes.apple.com/cn/app/ta-tian-su-dai/id1039233966?mt=8" class="ios-download" target="_blank"></a>
+            <a href="/app/tuotiansudai.apk" class="android-download" target="_blank"></a>
+            <a href="javascript:void(0)" class="wx-footer"></a>
         </div>
     </div>
 </div>
