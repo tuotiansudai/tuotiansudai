@@ -170,7 +170,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
 
     public UserModel getUserModelTest() {
         UserModel userModelTest = new UserModel();
-        userModelTest.setLoginName("testCoupon");
+        userModelTest.setLoginName("testLoanList");
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
         userModelTest.setMobile("13900000000");
