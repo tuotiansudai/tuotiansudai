@@ -172,8 +172,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
                     TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.newCouponRepayRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(couponRepayModel.getId()), String.valueOf(new Date().getTime())),
                             accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
-                            String.valueOf(transferAmount),
-                            "coupon_repay_notify");
+                            String.valueOf(transferAmount));
 
                     paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
 
@@ -325,46 +324,36 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     public void processOneCallback(CouponRepayNotifyRequestModel callbackRequestModel) {
 
         long couponRepayId = Long.parseLong(callbackRequestModel.getOrderId().split("X")[0]);
-
         CouponRepayModel couponRepayModel = couponRepayMapper.findById(couponRepayId);
-
-        InvestModel investModel = investMapper.findById(couponRepayModel.getInvestId());
-
-        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-
-        LoanRepayModel currentLoanRepayModel = this.loanRepayMapper.findByLoanIdAndPeriod(loanModel.getId(), couponRepayModel.getPeriod());
-
-        UserCouponModel userCouponModel = userCouponMapper.findById(couponRepayModel.getUserCouponId());
-
-        CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+        CouponModel couponModel = couponMapper.findById(couponRepayModel.getCouponId());
 
         try {
-            amountTransfer.transferInBalance(userCouponModel.getLoginName(),
-                    userCouponModel.getId(),
+            amountTransfer.transferInBalance(couponRepayModel.getLoginName(),
+                    couponRepayModel.getUserCouponId(),
                     couponRepayModel.getActualInterest(),
                     couponModel.getCouponType().getUserBillBusinessType(), null, null);
 
-            amountTransfer.transferOutBalance(userCouponModel.getLoginName(),
-                    userCouponModel.getId(),
+            amountTransfer.transferOutBalance(couponRepayModel.getLoginName(),
+                    couponRepayModel.getUserCouponId(),
                     couponRepayModel.getActualFee(),
                     UserBillBusinessType.INVEST_FEE, null, null);
 
             String detail = MessageFormat.format(SystemBillDetailTemplate.COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
                     couponModel.getCouponType().getName(),
-                    String.valueOf(userCouponModel.getId()),
-                    String.valueOf(currentLoanRepayModel.getId()),
+                    String.valueOf(couponRepayModel.getUserCouponId()),
+                    String.valueOf(couponRepayModel.getId()),
                     String.valueOf(couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()));
 
-            systemBillService.transferOut(userCouponModel.getId(), (couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()), SystemBillBusinessType.COUPON, detail);
+            systemBillService.transferOut(couponRepayModel.getUserCouponId(), (couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()), SystemBillBusinessType.COUPON, detail);
 
             logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) update user bill and system bill is success",
-                    String.valueOf(currentLoanRepayModel.getId()),
-                    String.valueOf(userCouponModel.getId())));
+                    String.valueOf(couponRepayModel.getId()),
+                    String.valueOf(couponRepayModel.getUserCouponId())));
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) update user bill is failed",
-                    String.valueOf(currentLoanRepayModel.getId()),
-                    String.valueOf(userCouponModel.getId())), e);
-            fatalLog("coupon repay processOneCallback error. currentLoanRepayModelId:" + currentLoanRepayModel.getId(), e);
+                    String.valueOf(couponRepayModel.getId()),
+                    String.valueOf(couponRepayModel.getUserCouponId())), e);
+            fatalLog("coupon repay processOneCallback error. currentLoanRepayModelId:" + couponRepayModel.getId(), e);
         }
 
     }

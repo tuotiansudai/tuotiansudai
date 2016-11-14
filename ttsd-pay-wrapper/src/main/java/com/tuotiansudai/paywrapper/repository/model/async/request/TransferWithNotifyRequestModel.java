@@ -30,8 +30,11 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
 
     }
 
-    public static TransferWithNotifyRequestModel newCouponRepayRequest(String orderId, String payUserId, String amount, String notifyUrl) {
-        return new TransferWithNotifyRequestModel(orderId, payUserId, amount,notifyUrl);
+    public static TransferWithNotifyRequestModel newCouponRepayRequest(String orderId, String payUserId, String amount) {
+        return new TransferWithNotifyRequestModel(orderId,
+                payUserId,
+                amount,
+                "coupon_repay_notify");
     }
 
     private TransferWithNotifyRequestModel(String orderId, String payUserId, String amount, String notifyUrl) {
