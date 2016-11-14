@@ -12,6 +12,7 @@
         <result column="loan_id" property="loanId"/>
         <result column="transfer_invest_id" property="transferInvestId"/>
         <result column="invest_id" property="investId"/>
+        <result column="contract_no" property="contractNo"/>
         <result column="period" property="period"/>
         <result column="login_name" property="loginName"/>
         <result column="invest_amount" property="investAmount"/>
@@ -362,6 +363,7 @@
         <result column="transferrer_loginName" property="transferrerLoginName"></result>
         <result column="transferee_loginName" property="transfereeLoginName"></result>
         <result column="loan_id" property="loanId"></result>
+        <result column="contract_no" property="contractNo"/>
     </resultMap>
 
     <select id="findTransferInvestList" parameterType="map" resultMap="transferInvestDetailMap">
@@ -371,6 +373,7 @@
         ta.transfer_amount,
         ta.invest_amount,
         ta.transfer_time,
+        ta.contract_no,
         (select min(ir.repay_date) from invest_repay ir where ir.invest_id = i.id and ir.status in ('REPAYING',
         'OVERDUE')) as next_repay_date,
         (select ir.expected_interest + ir.corpus - ir.expected_fee
@@ -429,4 +432,10 @@
           loan_id = #{loanId} AND
           status = 'TRANSFERRING'
     </select>
+
+    <update id="updateContractNoById" parameterType="map" >
+        update `aa`.`transfer_application` set
+        contract_no = #{contractNo}
+        where id = #{transferId}
+    </update>
 </mapper>

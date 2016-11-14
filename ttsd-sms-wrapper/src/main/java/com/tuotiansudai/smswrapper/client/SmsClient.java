@@ -48,7 +48,7 @@ public class SmsClient implements ApplicationContextAware {
 
     private static String WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE = "wyy_sms_send_count_by_today:{0}";
 
-    private final static int sendSize = 10;
+    private final static int sendSize = 100;
 
     private final static int lifeSecond = 172800;
 
@@ -109,7 +109,7 @@ public class SmsClient implements ApplicationContextAware {
         }
 
         if(Environment.QA.name().equals(environment)){
-            String redisKey = MessageFormat.format(this.WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE, "MD");
+            String redisKey = MessageFormat.format(this.WYY_SMS_SEND_COUNT_BY_TODAY_TEMPLATE, "SMS");
             String hKey = DateTime.now().withTimeAtStartOfDay().toString("yyyyMMdd");
             String redisValue = redisWrapperClient.hget(redisKey, hKey);
 
