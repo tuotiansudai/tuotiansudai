@@ -42,7 +42,7 @@ public class SystemRechargeServiceTest {
         UserModel userModel = getFakeUserModel();
         userMapper.create(userModel);
 
-        AccountModel accountModel = new AccountModel("loginName","loginName","111111111111111123","payUserId","payAccountId",new Date());
+        AccountModel accountModel = new AccountModel("loginName","payUserId","payAccountId",new Date());
         accountModel.setBalance(1000l);
         accountMapper.create(accountModel);
 

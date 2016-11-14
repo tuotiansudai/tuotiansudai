@@ -33,9 +33,9 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
         //开标倒计时
         (function() {
             var $preheat=$('.preheat',$homePageContainer);
-            $.fn.countDown=function() {
-                var $this=$(this);
-                return $this.each(function() {
+            function countDownLoan(domElement) {
+                return $(domElement).each(function() {
+                    var $this=$(this);
                     var countdown=$this.data('time');
                     if(countdown > 0) {
                        var timer= setInterval(function () {
@@ -43,6 +43,13 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
                                 $secondShow=$this.find('.second_show'),
                                 minute=Math.floor(countdown/60),
                                 second=countdown%60;
+                           if(countdown==0) {
+                               //结束倒计时
+                               clearInterval(timer);
+                               $this.parents('a').removeClass('preheat-btn').text('立即购买');
+                               $this.remove();
+
+                           }
                             minute=(minute <= 9)?('0' + minute):minute;
                             second=(second <= 9)?('0' + second):second;
                             $minuteShow.text(minute);
@@ -50,13 +57,10 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
                             countdown--;
                         },1000);
                     }
-                    else {
-                        clearInterval(timer);
-                    }
 
                 });
             };
-            $preheat.countDown();
+            countDownLoan($preheat);
 
         })();
 
@@ -85,11 +89,9 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
                 event.preventDefault();
                 $.ajax({
                     url: '/isLogin',
-                    type: 'GET',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=UTF-8'
+                    type: 'GET'
                 })
-                    .fail(function (response) {
+                    .success(function (response) {
                             if ("" == response.responseText) {
                                 $bookInvestForm.find('.init-radio-style').removeClass('on');
                                 $bookInvestForm.find('input[name="bookingAmount"]').val('');
@@ -158,11 +160,9 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
                     var data = $(form).serialize();
                     $.ajax({
                         url: '/isLogin',
-                        type: 'GET',
-                        dataType: 'json',
-                        contentType: 'application/json; charset=UTF-8'
+                        type: 'GET'
                     })
-                        .fail(function (response) {
+                        .success(function (response) {
                                 if ("" == response.responseText) {
                                     $.ajax({
                                         url: '/booking-loan/invest?' + data,

@@ -130,15 +130,4 @@ public class PointTaskAspect {
         logger.info("after returning turn on no password invest, point task aspect completed");
     }
 
-    @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "execution(* *..InvestService.turnOnAutoInvest(..))")
-    public void afterReturningTurnOnAutoInvestCallback(JoinPoint joinPoint) {
-        logger.info("after returning turn on auto invest, point task aspect starting...");
-
-        String loginName = (String) joinPoint.getArgs()[0];
-
-        pointTaskService.completeAdvancedTask(PointTask.FIRST_TURN_ON_AUTO_INVEST, loginName);
-
-        logger.info("after returning turn on auto invest, point task aspect completed");
-    }
 }

@@ -1,6 +1,6 @@
 @import '../common/variables';
 @import "../module/coupon_alert";
-
+@import "../module/anxin_qian";
 .layui-layer-btn {
   text-align: center !important;
   .layui-layer-btn0 {
@@ -66,7 +66,17 @@
       font-size:12px;
       color:#000;
       .agreement {
-        margin-left: 130px;
+        span{
+          strong{
+            color:#999;
+            a{
+              color:#999;
+              &:hover{
+                text-decoration: underline;
+              }
+            }
+          }
+        }
       }
       .agree-tip {
         display: inline-block;

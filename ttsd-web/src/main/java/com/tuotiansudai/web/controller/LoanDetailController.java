@@ -1,6 +1,5 @@
 package com.tuotiansudai.web.controller;
 
-
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.service.CouponAlertService;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Min;
-
 
 @Controller
 @RequestMapping(value = "/loan")

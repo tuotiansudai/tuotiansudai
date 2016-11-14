@@ -6,13 +6,13 @@ import com.google.common.collect.Lists;
 import java.util.List;
 
 public enum ActivityCategory {
-    AUTUMN_PRIZE("旅游奢侈品活动",ConsumeCategory.TASK_COUNT),
-    NATIONAL_PRIZE("国庆活动",ConsumeCategory.TASK_COUNT),
-    POINT_DRAW_1000("1000积分抽奖",ConsumeCategory.ACCOUNT_POINT_BY_1000),
-    POINT_DRAW_10000("10000积分抽奖",ConsumeCategory.ACCOUNT_POINT_BY_10000),
-    CARNIVAL_ACTIVITY("双11狂欢",ConsumeCategory.TASK_COUNT);
+    AUTUMN_PRIZE("旅游奢侈品活动", ConsumeCategory.TASK_COUNT),
+    NATIONAL_PRIZE("国庆活动", ConsumeCategory.TASK_COUNT),
+    POINT_DRAW_1000("1000积分抽奖", ConsumeCategory.ACCOUNT_POINT_BY_1000),
+    POINT_DRAW_10000("10000积分抽奖", ConsumeCategory.ACCOUNT_POINT_BY_10000),
+    CARNIVAL_ACTIVITY("双11狂欢", ConsumeCategory.TASK_COUNT);
 
-    ActivityCategory(String description,ConsumeCategory consumeCategory) {
+    ActivityCategory(String description, ConsumeCategory consumeCategory) {
         this.description = description;
         this.consumeCategory = consumeCategory;
     }
@@ -37,10 +37,10 @@ public enum ActivityCategory {
         this.consumeCategory = consumeCategory;
     }
 
-    public static List<ActivityCategory> getTaskActivityCategory(){
+    public static List<ActivityCategory> getTaskActivityCategory() {
         List<ActivityCategory> activityList = Lists.newArrayList();
         Lists.newArrayList(ActivityCategory.values()).forEach(activityCategory -> {
-            if(activityCategory.getConsumeCategory() != null && activityCategory.getConsumeCategory().equals(ConsumeCategory.TASK_COUNT)){
+            if (activityCategory.getConsumeCategory() != null && activityCategory.getConsumeCategory().equals(ConsumeCategory.TASK_COUNT)) {
                 activityList.add(activityCategory);
             }
         });
