@@ -119,7 +119,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
 
     private UserCouponModel getUserCouponModel(long couponId,long loanId,long investId,String loginName, InvestStatus investStatus){
         UserCouponModel userCouponModel = new UserCouponModel();
-        userCouponModel.setId(1);
+        userCouponModel.setId(idGenerator.generate());
         userCouponModel.setCouponId(couponId);
         userCouponModel.setLoanId(loanId);
         userCouponModel.setInvestId(investId);
