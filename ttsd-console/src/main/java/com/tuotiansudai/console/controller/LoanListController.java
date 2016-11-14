@@ -92,8 +92,8 @@ public class LoanListController {
 
     @ResponseBody
     @RequestMapping(value = "/generate-contract", method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> generateContract(@RequestParam(value = "businessId", required = false) Long businessId,
-                                                 @RequestParam(value = "anxinContractType", required = false) AnxinContractType anxinContractType) {
+    public BaseDto<BaseDataDto> generateContract(@RequestParam(value = "businessId", required = true) Long businessId,
+                                                 @RequestParam(value = "anxinContractType", required = true) AnxinContractType anxinContractType) {
 
         BaseDto baseDto = new BaseDto();
         baseDto.setSuccess(false);
@@ -147,14 +147,19 @@ public class LoanListController {
 
     @ResponseBody
     @RequestMapping(value = "/query-contract", method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> queryContract(@RequestParam(value = "businessId", required = false) Long businessId,
-                                              @RequestParam(value = "anxinContractType", required = false) AnxinContractType anxinContractType) {
+    public BaseDto<BaseDataDto> queryContract(@RequestParam(value = "businessId", required = true) Long businessId,
+                                              @RequestParam(value = "anxinContractType", required = true) AnxinContractType anxinContractType) {
 
         BaseDto baseDto = new BaseDto();
         baseDto.setSuccess(false);
         BaseDataDto baseDataDto = new BaseDataDto();
         baseDto.setData(baseDataDto);
         String batchStr;
+
+        if(businessId == null){
+            baseDataDto.setMessage("请填写标的ID!");
+            return baseDto;
+        }
 
         if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
 

@@ -22,8 +22,6 @@ public class AnxinCreateContractBatchResponseModel implements Serializable {
     private String investmentInfo;
     private Date createdTime;
 
-    public AnxinCreateContractBatchResponseModel() {
-    }
 
     public AnxinCreateContractBatchResponseModel(long businessId, String batchNo, String retCode, String retMessage) {
         this.businessId = businessId;
