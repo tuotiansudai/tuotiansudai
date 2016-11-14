@@ -10,10 +10,7 @@ import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.DistrictUtil;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.util.BankCardUtil;
@@ -40,7 +37,8 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
     private InvestMapper investMapper;
 
     @Autowired
-    private LoanMapper loanMapper;
+    private AnxinSignPropertyMapper anxinSignPropertyMapper;
+
     @Autowired
     private UserCouponMapper userCouponMapper;
 
@@ -57,7 +55,8 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
         } else {
             BankCardModel bankCard = bankCardMapper.findPassedBankCardByLoginName(loginName);
             AccountModel account = accountService.findByLoginName(loginName);
-            PersonalInfoResponseDataDto personalInfoDataDto = generatePersonalInfoData(userModel, bankCard, account);
+            AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
+            PersonalInfoResponseDataDto personalInfoDataDto = generatePersonalInfoData(userModel, bankCard, account, anxinProp);
 
             dto.setData(personalInfoDataDto);
             dto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -66,20 +65,20 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
         return dto;
     }
 
-    private PersonalInfoResponseDataDto generatePersonalInfoData(UserModel user, BankCardModel bankCard, AccountModel account) {
+    private PersonalInfoResponseDataDto generatePersonalInfoData(UserModel user, BankCardModel bankCard, AccountModel account, AnxinSignPropertyModel anxinProp) {
         PersonalInfoResponseDataDto personalInfoDataDto = new PersonalInfoResponseDataDto();
         personalInfoDataDto.setUserId(user.getLoginName());
         personalInfoDataDto.setUserName(user.getMobile());
         personalInfoDataDto.setPhoneNum(user.getMobile());
         personalInfoDataDto.setPhoto(user.getAvatar());
         personalInfoDataDto.setEmail(user.getEmail());
-        if(StringUtils.isNotEmpty(user.getProvince())){
+        if (StringUtils.isNotEmpty(user.getProvince())) {
             personalInfoDataDto.setDistrictCode(DistrictUtil.convertNameToCode(user.getProvince()));
         }
         if (account != null) {
             personalInfoDataDto.setCertificationFlag(true);
-            personalInfoDataDto.setRealName(account.getUserName());
-            personalInfoDataDto.setIdCard(account.getIdentityNumber());
+            personalInfoDataDto.setRealName(user.getUserName());
+            personalInfoDataDto.setIdCard(user.getIdentityNumber());
             personalInfoDataDto.setAutoInvest(account.isAutoInvest());
         } else {
             personalInfoDataDto.setCertificationFlag(false);
@@ -102,15 +101,26 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             personalInfoDataDto.setFastPaymentEnable(false);
             personalInfoDataDto.setBankName("");
         }
+
+        if (anxinProp != null) {
+            personalInfoDataDto.setAnxinUser(StringUtils.isNotEmpty(anxinProp.getAnxinUserId()));
+            personalInfoDataDto.setSkipAuth(anxinProp.isSkipAuth());
+            personalInfoDataDto.setHasAuthed(StringUtils.isNotEmpty(anxinProp.getProjectCode()));
+        } else {
+            personalInfoDataDto.setAnxinUser(false);
+            personalInfoDataDto.setSkipAuth(false);
+            personalInfoDataDto.setHasAuthed(false);
+        }
+
         List<UserCouponModel> userCouponModels = userCouponMapper.findUsedExperienceByLoginName(user.getLoginName());
-        if(CollectionUtils.isNotEmpty(userCouponModels)){
+        if (CollectionUtils.isNotEmpty(userCouponModels)) {
             personalInfoDataDto.setIsExperienceEnable(true);
-        }else{
+        } else {
             personalInfoDataDto.setIsExperienceEnable(false);
         }
-        if(investMapper.sumSuccessInvestCountByLoginName(user.getLoginName()) > 0){
+        if (investMapper.sumSuccessInvestCountByLoginName(user.getLoginName()) > 0) {
             personalInfoDataDto.setIsNewbieEnable(false);
-        }else{
+        } else {
             personalInfoDataDto.setIsNewbieEnable(true);
         }
 

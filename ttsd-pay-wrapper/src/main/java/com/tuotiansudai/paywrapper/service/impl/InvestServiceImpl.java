@@ -514,8 +514,9 @@ public class InvestServiceImpl implements InvestService {
 
     private void calculateActivityAutumnInvest(InvestModel investModel) {
         try {
-            String mobile = userMapper.findByLoginName(investModel.getLoginName()).getMobile();
-            String userName = accountMapper.findByLoginName(investModel.getLoginName()).getUserName();
+            UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
+            String mobile = userModel.getMobile();
+            String userName = userModel.getUserName();
             if (investModel.getCreatedTime().before(this.activityAutumnStartTime) || investModel.getCreatedTime().after(this.activityAutumnEndTime)) {
                 return;
             }

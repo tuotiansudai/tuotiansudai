@@ -30,7 +30,7 @@ public class MobileAppNoPasswordInvestServiceTurnOnTest extends ServiceTestBase{
 
     @Test
     public void shouldNoPasswordInvestTurnOnIsOk(){
-        AccountModel accountModel = new AccountModel("loginName", "userName", "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         accountModel.setNoPasswordInvest(true);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         BaseParamDto baseParamDto = new BaseParamDto();

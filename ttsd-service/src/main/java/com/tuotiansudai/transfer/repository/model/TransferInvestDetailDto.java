@@ -33,6 +33,14 @@ public class TransferInvestDetailDto implements Serializable {
 
     private long loanId;
 
+    private String contractNo;
+
+    private String contractNotExist;
+
+    private String contractAlreadyCreated;
+
+    private String contractCreating;
+
     public Integer getId() {
         return id;
     }
@@ -139,5 +147,37 @@ public class TransferInvestDetailDto implements Serializable {
     public String getNextRepayAmountStr() {
 
         return  AmountConverter.convertCentToString(nextRepayAmount);
+    }
+
+    public String getContractNo() {
+        return contractNo;
+    }
+
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
+    }
+
+    public String getContractNotExist() {
+        return contractNotExist;
+    }
+
+    public void setContractNotExist(String contractNotExist) {
+        this.contractNotExist = contractNotExist;
+    }
+
+    public String getContractAlreadyCreated() {
+        return contractAlreadyCreated;
+    }
+
+    public void setContractAlreadyCreated(String contractAlreadyCreated) {
+        this.contractAlreadyCreated = contractAlreadyCreated;
+    }
+
+    public String getContractCreating() {
+        return contractCreating;
+    }
+
+    public void setContractCreating(String contractCreating) {
+        this.contractCreating = contractCreating;
     }
 }

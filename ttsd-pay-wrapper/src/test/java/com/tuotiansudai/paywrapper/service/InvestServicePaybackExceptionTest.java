@@ -119,7 +119,7 @@ public class InvestServicePaybackExceptionTest {
         loanModel.setLoanAmount(1000L);
         when(this.loanMapper.findById(loanId)).thenReturn(loanModel);
 
-        AccountModel accountModel = new AccountModel(loginName, "zhoubx", "", "mockPayUserId", "", new Date());
+        AccountModel accountModel = new AccountModel(loginName, "mockPayUserId", "", new Date());
         when(this.accountMapper.findByLoginName(loginName)).thenReturn(accountModel);
 
         when(this.paySyncClient.send(Matchers.<Class<? extends ProjectTransferMapper>>any(), any(ProjectTransferRequestModel.class), Matchers.<Class<ProjectTransferResponseModel>>any())).thenThrow(PayException.class);

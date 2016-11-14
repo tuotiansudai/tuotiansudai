@@ -33,8 +33,7 @@ public class LoanApplicationService {
     UserMapper userMapper;
 
     public BaseDto<BaseDataDto> create(LoanApplicationDto loanApplicationDto) {
-        AccountModel accountModel = accountMapper.findByLoginName(loanApplicationDto.getLoginName());
-        if (null == accountModel) {
+        if (null == accountMapper.findByLoginName(loanApplicationDto.getLoginName())) {
             return new BaseDto<>(new BaseDataDto(false, "账户没有实名认证"));
         }
         if (loanApplicationDto.getAmount() <= 0) {
@@ -46,7 +45,7 @@ public class LoanApplicationService {
         LoanApplicationModel loanApplicationModel = new LoanApplicationModel(loanApplicationDto);
         UserModel userModel = userMapper.findByLoginName(loanApplicationDto.getLoginName());
         loanApplicationModel.setMobile(userModel.getMobile());
-        loanApplicationModel.setUserName(accountModel.getUserName());
+        loanApplicationModel.setUserName(userModel.getUserName());
         try {
             loanApplicationMapper.create(loanApplicationModel);
         } catch (Exception e) {

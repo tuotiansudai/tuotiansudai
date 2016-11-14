@@ -59,7 +59,7 @@ public class RepayBaseTest {
     }
 
     protected AccountModel getFakeAccount(UserModel userModel) {
-        AccountModel fakeAccount = new AccountModel(userModel.getLoginName(), userModel.getLoginName(), "ID", "payUserId", "payAccountId", new Date());
+        AccountModel fakeAccount = new AccountModel(userModel.getLoginName(), "payUserId", "payAccountId", new Date());
         fakeAccount.setBalance(1000000);
         fakeAccount.setMembershipPoint(50001);
         return fakeAccount;
