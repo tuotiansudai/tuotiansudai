@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 public class MobileAppLoanListServiceTest extends ServiceTestBase {
@@ -94,7 +95,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         BaseResponseDto<LoanListResponseDataDto> loanList = mobileAppLoanListService.generateLoanList(getLoanListRequest(userModel.getLoginName()));
         List<LoanResponseDataDto> list = loanList.getData().getLoanList();
         assertTrue(CollectionUtils.isNotEmpty(list));
-        assertTrue(list.get(0).getProductNewType() != ProductType.EXPERIENCE.name());
+        assertNotEquals(list.get(0).getProductNewType(),ProductType.EXPERIENCE.name());
     }
 
     @Test
@@ -114,7 +115,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         BaseResponseDto<LoanListResponseDataDto> loanList = mobileAppLoanListService.generateLoanList(getLoanListRequest(userModel.getLoginName()));
         List<LoanResponseDataDto> list = loanList.getData().getLoanList();
         assertTrue(CollectionUtils.isNotEmpty(list));
-        assertTrue(list.get(0).getProductNewType() != ProductType.EXPERIENCE.name());
+        assertNotEquals(list.get(0).getProductNewType(),ProductType.EXPERIENCE.name());
     }
 
     private UserCouponModel getUserCouponModel(long couponId,long loanId,long investId,String loginName, InvestStatus investStatus){
