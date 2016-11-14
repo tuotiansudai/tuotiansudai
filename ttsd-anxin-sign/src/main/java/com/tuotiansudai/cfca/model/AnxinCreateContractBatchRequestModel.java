@@ -21,8 +21,6 @@ public class AnxinCreateContractBatchRequestModel implements Serializable{
     private String investmentInfo;
     private Date createdTime;
 
-    public AnxinCreateContractBatchRequestModel() {
-    }
 
     public AnxinCreateContractBatchRequestModel(long businessId, Tx3202ReqVO tx3202ReqVO, CreateContractVO createContractVO) {
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
