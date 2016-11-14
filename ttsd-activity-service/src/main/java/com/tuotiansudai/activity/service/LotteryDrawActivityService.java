@@ -120,10 +120,10 @@ public class LotteryDrawActivityService {
         }
 
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        try {
-            userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("draw is fail, mobile:{0},activity:{1}", mobile, activityCategory.getDescription()));
+        try{
+            userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? userModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
+        }catch (Exception e){
+            logger.error(MessageFormat.format("draw is fail, mobile:{0},activity:{1}",mobile,activityCategory.getDescription()));
         }
 
         return new DrawLotteryResultDto(0, lotteryPrize.name(), lotteryPrize.getPrizeType().name(), lotteryPrize.getDescription());
@@ -131,7 +131,6 @@ public class LotteryDrawActivityService {
 
     @Transactional
     public synchronized DrawLotteryResultDto drawPrizeByPoint(String mobile, ActivityCategory activityCategory) {
-
         UserModel userModel = userMapper.findByMobile(mobile);
         if (userModel == null) {
             return new DrawLotteryResultDto(2);//"该用户不存在！"
@@ -168,7 +167,7 @@ public class LotteryDrawActivityService {
         }
 
         try {
-            userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel.getUserName(), lotteryPrize, DateTime.now().toDate(), activityCategory));
+            userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), userModel.getUserName(), lotteryPrize, DateTime.now().toDate(), activityCategory));
         } catch (Exception e) {
             logger.error(MessageFormat.format("draw is fail, mobile:{0},activity:{1}", mobile, activityCategory.getDescription()));
         }

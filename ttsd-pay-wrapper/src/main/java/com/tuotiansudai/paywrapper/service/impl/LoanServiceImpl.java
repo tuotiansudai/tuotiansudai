@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -31,10 +32,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncRespon
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.LoanService;
-import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
-import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
-import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
+import com.tuotiansudai.paywrapper.service.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -107,6 +105,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private AnxinSignService anxinSignService;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
@@ -361,6 +362,9 @@ public class LoanServiceImpl implements LoanService {
         } catch (Exception e) {
             logger.error(MessageFormat.format("放款短信邮件通知失败 (loanId = {0})", String.valueOf(loanId)), e);
         }
+
+        logger.debug("标的放款：生成合同，标的ID:" + loanId);
+        anxinSignService.createLoanContracts(loanId);
 
         return true;
     }

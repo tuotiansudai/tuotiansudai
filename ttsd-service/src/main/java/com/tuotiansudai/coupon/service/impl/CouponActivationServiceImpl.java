@@ -16,6 +16,7 @@ import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AuditLogUtil;
@@ -120,10 +121,10 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
 
-        AccountModel auditor = accountMapper.findByLoginName(loginName);
+        UserModel auditor = userMapper.findByLoginName(loginName);
         String auditorRealName = auditor == null ? loginName : auditor.getUserName();
 
-        AccountModel operator = accountMapper.findByLoginName(couponModel.getCreatedBy());
+        UserModel operator = userMapper.findByLoginName(couponModel.getCreatedBy());
         String operatorRealName = operator == null ? couponModel.getCreatedBy() : operator.getUserName();
 
         String description = MessageFormat.format("{0} 撤销了 {1} 创建的 {2}", auditorRealName, operatorRealName, couponModel.getCouponType().getName());
@@ -153,10 +154,10 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
 
-        AccountModel auditor = accountMapper.findByLoginName(loginName);
+        UserModel auditor = userMapper.findByLoginName(loginName);
         String auditorRealName = auditor == null ? loginName : auditor.getUserName();
 
-        AccountModel operator = accountMapper.findByLoginName(couponModel.getCreatedBy());
+        UserModel operator = userMapper.findByLoginName(couponModel.getCreatedBy());
         String operatorRealName = operator == null ? couponModel.getCreatedBy() : operator.getUserName();
 
         if (couponModel.getUserGroup() == UserGroup.EXCHANGER_CODE) {

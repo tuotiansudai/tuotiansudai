@@ -14,7 +14,7 @@ public enum ActivityCategory {
     NEW_HERO_RANKING("英豪榜",ConsumeCategory.ACCOUNT_POINT_BY_NO_POINT),
     CARNIVAL_ACTIVITY("双11狂欢",ConsumeCategory.TASK_COUNT);
 
-    ActivityCategory(String description,ConsumeCategory consumeCategory) {
+    ActivityCategory(String description, ConsumeCategory consumeCategory) {
         this.description = description;
         this.consumeCategory = consumeCategory;
     }
@@ -39,10 +39,10 @@ public enum ActivityCategory {
         this.consumeCategory = consumeCategory;
     }
 
-    public static List<ActivityCategory> getTaskActivityCategory(){
+    public static List<ActivityCategory> getTaskActivityCategory() {
         List<ActivityCategory> activityList = Lists.newArrayList();
         Lists.newArrayList(ActivityCategory.values()).forEach(activityCategory -> {
-            if(activityCategory.getConsumeCategory() != null && activityCategory.getConsumeCategory().equals(ConsumeCategory.TASK_COUNT)){
+            if (activityCategory.getConsumeCategory() != null && activityCategory.getConsumeCategory().equals(ConsumeCategory.TASK_COUNT)) {
                 activityList.add(activityCategory);
             }
         });

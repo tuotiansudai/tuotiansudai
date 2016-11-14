@@ -256,7 +256,7 @@ public class PointTaskServiceTest {
         fakeUser.setStatus(UserStatus.ACTIVE);
         fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(fakeUser);
-        AccountModel accountModel = new AccountModel(fakeUser.getLoginName(), fakeUser.getLoginName(), "120101198810012010", "", "", new Date());
+        AccountModel accountModel = new AccountModel(fakeUser.getLoginName(), "", "", new Date());
         accountMapper.create(accountModel);
         return fakeUser;
     }

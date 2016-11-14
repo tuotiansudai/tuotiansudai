@@ -33,6 +33,8 @@ public class TransferInvestDetailDto implements Serializable {
 
     private long loanId;
 
+    private String contractNo;
+
     public Integer getId() {
         return id;
     }
@@ -139,5 +141,13 @@ public class TransferInvestDetailDto implements Serializable {
     public String getNextRepayAmountStr() {
 
         return  AmountConverter.convertCentToString(nextRepayAmount);
+    }
+
+    public String getContractNo() {
+        return contractNo;
+    }
+
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
     }
 }
