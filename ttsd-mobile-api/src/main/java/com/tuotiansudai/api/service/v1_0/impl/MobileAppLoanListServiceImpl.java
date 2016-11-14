@@ -62,14 +62,14 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         }
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
         ProductType noContainProductType = null;
-        if(investMapper.findCountSuccessByLoginNameAndProductTypes(loanListRequestDto.getBaseParam().getUserId(),Lists.newArrayList(ProductType.EXPERIENCE)) > 0){
+        if (investMapper.findCountSuccessByLoginNameAndProductTypes(loanListRequestDto.getBaseParam().getUserId(), null) > 0) {
             noContainProductType = ProductType.EXPERIENCE;
         }
-        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()),noContainProductType, loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index);
+        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), noContainProductType, loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index);
 
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
-            loanDtoList = convertLoanDto(loanModels,loanListRequestDto.getBaseParam().getUserId());
+            loanDtoList = convertLoanDto(loanModels, loanListRequestDto.getBaseParam().getUserId());
         }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -89,7 +89,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         return dto;
     }
 
-    private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList,String loginName) {
+    private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList, String loginName) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         for (LoanModel loan : loanList) {
@@ -123,7 +123,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             }
             loanResponseDataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loan.getFundraisingStartTime()));
             long investedAmount;
-            if(loan.getProductType() == ProductType.EXPERIENCE){
+            if (loan.getProductType() == ProductType.EXPERIENCE) {
                 Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
                 Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
                 List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loan.getId(), beginTime, endTime);
@@ -153,14 +153,13 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             }
 
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
-            if(loanDetailsModel != null)
-            {
-                loanResponseDataDto.setExtraSource("WEB".equals(loanDetailsModel.getExtraSource())?loanDetailsModel.getExtraSource():"");
+            if (loanDetailsModel != null) {
+                loanResponseDataDto.setExtraSource("WEB".equals(loanDetailsModel.getExtraSource()) ? loanDetailsModel.getExtraSource() : "");
             }
 
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
-            if(ProductType.EXPERIENCE == loan.getProductType()){
+            if (ProductType.EXPERIENCE == loan.getProductType()) {
                 investFeeRate = this.defaultFee;
             }
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
