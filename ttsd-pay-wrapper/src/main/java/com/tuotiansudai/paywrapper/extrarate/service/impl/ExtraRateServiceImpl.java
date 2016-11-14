@@ -18,6 +18,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ExtraRateNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.TransferWithNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.repository.mapper.*;
@@ -125,14 +126,15 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         }
         long amount = actualInterest - actualFee;
         if (amount > 0) {
+
             investRateService.updateExtraRateData(investExtraRateModel, actualInterest, actualFee);
+
             String orderId = investExtraRateModel.getInvestId() + "X" + System.currentTimeMillis();
             try {
-                TransferRequestModel requestModel = TransferRequestModel.newExtraRateRequest(
+                TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.newExtraRateRequest(
                         String.valueOf(orderId),
                         accountModel.getPayUserId(),
-                        String.valueOf(amount),
-                        "extra_rate_notify");
+                        String.valueOf(amount));
 
                 paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
             } catch (PayException e) {
