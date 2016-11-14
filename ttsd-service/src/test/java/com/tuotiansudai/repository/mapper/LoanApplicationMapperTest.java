@@ -45,8 +45,7 @@ public class LoanApplicationMapperTest {
     }
 
     private AccountModel createAccountModel(UserModel userModel) {
-        AccountModel accountModel = new AccountModel(userModel.getLoginName(), "userName", String.valueOf(random.nextLong()).substring(0, 10),
-                String.valueOf(random.nextLong()).substring(0, 10), String.valueOf(random.nextLong()).substring(0, 10), new Date());
+        AccountModel accountModel = new AccountModel(userModel.getLoginName(), String.valueOf(random.nextLong()).substring(0, 10), String.valueOf(random.nextLong()).substring(0, 10), new Date());
         accountMapper.create(accountModel);
         return accountModel;
     }

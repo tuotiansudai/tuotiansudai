@@ -80,7 +80,7 @@
         FROM
         (invest_referrer_reward a
         LEFT JOIN
-        account b
+        user b
         ON a.`referrer_login_name` = b.`login_name`)
         LEFT JOIN
         user referrer_u
@@ -101,6 +101,12 @@
             <if test="role != null and role.name() != 'STAFF'">
                 AND a.`referrer_role` != 'STAFF'
             </if>
+            <if test="referrerRewardStatus != null and referrerRewardStatus.name() == 'SUCCESS' ">
+                AND a.`status` = 'SUCCESS'
+            </if>
+            <if test="referrerRewardStatus != null and referrerRewardStatus.name() != 'SUCCESS' ">
+                AND a.`status` in ('FAILURE','NO_ACCOUNT')
+            </if>
         </where>
         ) irr
         JOIN
@@ -110,7 +116,7 @@
         invest_u.`mobile` AS invest_mobile
         FROM
         (invest m
-        LEFT JOIN account n
+        LEFT JOIN user n
         ON m.`login_name` = n.`login_name`)
         LEFT JOIN
         user invest_u
@@ -168,7 +174,7 @@
         FROM
         (invest_referrer_reward a
         LEFT JOIN
-        account b
+        user b
         ON a.`referrer_login_name` = b.`login_name`)
         LEFT JOIN
         user referrer_u
@@ -189,6 +195,12 @@
             <if test="role != null and role.name() != 'STAFF'">
                 AND a.`referrer_role` != 'STAFF'
             </if>
+            <if test="referrerRewardStatus != null and referrerRewardStatus.name() == 'SUCCESS' ">
+                AND a.`status` = 'SUCCESS'
+            </if>
+            <if test="referrerRewardStatus != null and referrerRewardStatus.name() != 'SUCCESS' ">
+                AND a.`status` in ('FAILURE','NO_ACCOUNT')
+            </if>
         </where>
         ) irr
         JOIN
@@ -198,7 +210,7 @@
         invest_u.`mobile` AS invest_mobile
         FROM
         (invest m
-        LEFT JOIN account n
+        LEFT JOIN user n
         ON m.`login_name` = n.`login_name`)
         LEFT JOIN
         user invest_u
@@ -263,7 +275,7 @@
         FROM
         (invest_referrer_reward a
         LEFT JOIN
-        account b
+        user b
         ON a.`referrer_login_name` = b.`login_name`)
         LEFT JOIN
         user referrer_u
@@ -293,7 +305,7 @@
         invest_u.`mobile` AS invest_mobile
         FROM
         (invest m
-        LEFT JOIN account n
+        LEFT JOIN user n
         ON m.`login_name` = n.`login_name`)
         LEFT JOIN
         user invest_u
@@ -358,7 +370,7 @@
         FROM
         (invest_referrer_reward a
         LEFT JOIN
-        account b
+        user b
         ON a.`referrer_login_name` = b.`login_name`)
         LEFT JOIN
         user referrer_u
@@ -388,7 +400,7 @@
         invest_u.`mobile` AS invest_mobile
         FROM
         (invest m
-        LEFT JOIN account n
+        LEFT JOIN user n
         ON m.`login_name` = n.`login_name`)
         LEFT JOIN
         user invest_u

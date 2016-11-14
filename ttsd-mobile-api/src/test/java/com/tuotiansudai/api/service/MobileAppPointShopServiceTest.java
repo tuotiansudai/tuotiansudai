@@ -36,7 +36,6 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 public class MobileAppPointShopServiceTest extends ServiceTestBase {
 
     @Autowired
@@ -130,7 +129,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
     public void shouldFindPointHomeIsOk() {
         String loginName = "findPointHomeUser";
         UserModel userModel = getUserModelTest(loginName);
-        AccountModel accountModel = new AccountModel(loginName, loginName, "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountModel.setPoint(1000l);
         accountMapper.create(accountModel);
         BaseParamDto baseParamDto = new BaseParamDto();
@@ -213,7 +212,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
-        AccountModel accountModel = new AccountModel(loginName, loginName, "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountModel.setPoint(10l);
         accountMapper.create(accountModel);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
@@ -234,7 +233,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
-        AccountModel accountModel = new AccountModel(loginName, loginName, "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountModel.setPoint(100000l);
         accountMapper.create(accountModel);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
@@ -255,7 +254,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
-        AccountModel accountModel = new AccountModel(loginName, loginName, "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountModel.setPoint(1000l);
         accountMapper.create(accountModel);
         UserAddressModel userAddressModel = new UserAddressModel(loginName, loginName, userModel.getMobile(), "", loginName);
@@ -323,6 +322,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
         userModelTest.setMobile("13900000000");
+        userModelTest.setUserName("userName");
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));

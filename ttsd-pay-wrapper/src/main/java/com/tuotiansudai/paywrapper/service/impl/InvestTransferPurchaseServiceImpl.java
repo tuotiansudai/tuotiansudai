@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
@@ -12,7 +13,6 @@ import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.InvestTransferCallbackJob;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -94,9 +94,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     private SystemBillService systemBillService;
 
     @Autowired
-    private UserMembershipMapper userMembershipMapper;
-
-    @Autowired
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
@@ -113,6 +110,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Autowired
     private CouponRepayMapper couponRepayMapper;
+
+    @Autowired
+    private AnxinSignService anxinSignService;
 
     @Override
     public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
@@ -491,6 +491,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             } else {
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is success", String.valueOf(investId)));
                 ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
+
+                logger.debug("债权转让：生成合同，标的ID:" + transferApplicationModel.getId());
+                anxinSignService.createTransferContracts(transferApplicationModel.getId());
             }
         } else {
             // 失败的话：更新 invest 状态为投资失败
@@ -529,7 +532,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             }
         } catch (Exception e) {
             // 所有其他异常，包括数据库链接，网络异常，记录日志，发短信通知管理员，抛出异常，事务回滚。
-            logger.error(e.getLocalizedMessage() ,e);
+            logger.error(e.getLocalizedMessage(), e);
         }
 
         // 联动优势返回返款失败，但是标记此条请求已经处理完成，记录日志，在异步notify中进行投资成功处理
@@ -560,4 +563,5 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         investModel.setNoPasswordInvest(investDto.isNoPassword());
         return investModel;
     }
+
 }

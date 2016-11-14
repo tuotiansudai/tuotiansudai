@@ -47,7 +47,7 @@ public class MdSmsClient implements ApplicationContextAware {
 
     private static String MD_SMS_SEND_COUNT_BY_TODAY_TEMPLATE = "md_sms_send_count_by_today:{0}";
 
-    private final static int sendSize = 10;
+    private final static int sendSize = 100;
 
     private final static int lifeSecond = 172800;
 

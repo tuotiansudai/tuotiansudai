@@ -33,7 +33,7 @@ public class AccountMapperTest {
     public void shouldCreateAccount() throws Exception {
         UserModel fakeUser = createFakeUser();
 
-        AccountModel model = new AccountModel(fakeUser.getLoginName(), "userName", "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel model = new AccountModel(fakeUser.getLoginName(), "payUserId", "payAccountId", new Date());
 
         accountMapper.create(model);
 
@@ -46,7 +46,7 @@ public class AccountMapperTest {
     public void shouldUpdateAccount() throws Exception {
         UserModel fakeUser = createFakeUser();
 
-        AccountModel model = new AccountModel(fakeUser.getLoginName(), "userName", "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel model = new AccountModel(fakeUser.getLoginName(), "payUserId", "payAccountId", new Date());
 
         accountMapper.create(model);
 
@@ -66,13 +66,7 @@ public class AccountMapperTest {
     public void shouldFindByIdentityNumber() throws Exception {
         UserModel fakeUser = createFakeUser();
 
-        AccountModel model = new AccountModel(fakeUser.getLoginName(), "userName", "identityNumber", "payUserId", "payAccountId", new Date());
-
-        accountMapper.create(model);
-
-        List<AccountModel> accountModels = accountMapper.findByIdentityNumber(model.getIdentityNumber());
-
-        assertNotNull(accountModels);
+        assertNotNull(userMapper.findByIdentityNumber(fakeUser.getIdentityNumber()));
     }
 
     private UserModel createFakeUser() {
@@ -81,6 +75,8 @@ public class AccountMapperTest {
         model.setPassword("password");
         model.setEmail("loginName@abc.com");
         model.setMobile("13900000000");
+        model.setUserName("userName");
+        model.setIdentityNumber("identityNumber");
         model.setRegisterTime(new Date());
         model.setStatus(UserStatus.ACTIVE);
         model.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
