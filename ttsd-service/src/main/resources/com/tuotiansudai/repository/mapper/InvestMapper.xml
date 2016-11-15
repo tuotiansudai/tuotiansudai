@@ -918,6 +918,11 @@
         where id = #{investId}
     </update>
 
+    <update id="updateAllContractNoByLoanId" parameterType="map" >
+        update invest set contract_no = #{contractNo}
+        where loan_id = #{loanId} and status = 'SUCCESS'
+    </update>
+
     <select id="findContractFailInvest" parameterType="long" resultMap="investResultMap">
         select
         <include refid="columns"></include>

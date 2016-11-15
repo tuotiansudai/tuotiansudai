@@ -492,8 +492,11 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is success", String.valueOf(investId)));
                 ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
 
-                logger.debug("债权转让：生成合同，标的ID:" + transferApplicationModel.getId());
+                logger.debug("债权转让：生成合同，转让ID:" + transferApplicationModel.getId());
                 anxinSignService.createTransferContracts(transferApplicationModel.getId());
+
+                logger.debug("债权转让：更新合同编号，投资ID:" + transferApplicationModel.getInvestId());
+                anxinSignService.updateTransferInvestContractNo(transferApplicationModel.getInvestId());
             }
         } else {
             // 失败的话：更新 invest 状态为投资失败
