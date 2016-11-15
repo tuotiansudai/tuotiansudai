@@ -20,7 +20,7 @@ public class DiagnosisContext {
 
     public void addTracedObject(long userBillId, String tracedObjectId) {
         if (tracedObject.containsKey(tracedObjectId)) {
-            throw new DuplicateObjectException("traced object [{0}] for UserBill[{1}] has been already traced by UserBill[{2}]",
+            throw new DuplicateObjectException("traced object [{0}] of UserBill[{1}] has been already traced by UserBill[{2}]",
                     tracedObjectId, userBillId, tracedObject.get(tracedObjectId));
         }
         tracedObject.put(tracedObjectId, userBillId);

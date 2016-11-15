@@ -18,7 +18,7 @@ public class SingleObjectDiagnosis<T> {
         this.userBillModel = userBillModel;
         passed = (t != null);
         if (!passed) {
-            problem = String.format("could not traced object for UserBill #%d (%s)", userBillModel.getId(), userBillModel.getBusinessType());
+            problem = String.format("could not trace UserBill #%d (%s)", userBillModel.getId(), userBillModel.getBusinessType());
             tracedObjectId = null;
         } else {
             tracedObjectId = getObjectId.apply(t);
