@@ -41,6 +41,7 @@
                     </div>
                     <div class="bg-info-img">
                         <img src="${staticServer}/activity/images/heavily-courtship/chan-01.png" alt="获奖条件">
+                        <em>小熊（Bear）加湿器</em>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -87,7 +88,7 @@
                                 <em class="three">4</em>
                                 <em class="four">?</em>
                             </span>
-                            <p>
+                            <p class="tl">
                                 本题答案为7，某个90天以上债权放出后，汪女士为第7个投资该债权的人，则汪女士就可以拿走该题对应的奖励。
                             </p>
                         </dd>
@@ -108,6 +109,7 @@
                             <em class="icon-reward"></em>
                             <div class="bg-info-img">
                                 <img src="${staticServer}/activity/images/heavily-courtship/sp-02.jpg" alt="灰姑凉暖贴">
+                                <em>爱心暖宝宝贴</em>
                             </div>
 
                         </dd>
@@ -121,6 +123,7 @@
                             <em class="icon-reward"></em>
                             <div class="bg-info-img">
                                 <img src="${staticServer}/activity/images/heavily-courtship/base-mask.jpg" alt="口罩">
+                                <em>3M 口罩一包（3只）</em>
                             </div>
                         </dd>
                         <div class="clearfix"></div>
@@ -134,6 +137,7 @@
                             <em class="icon-reward"></em>
                             <div class="bg-info-img">
                                 <img src="${staticServer}/activity/images/heavily-courtship/sp-card.jpg" alt="京东卡">
+                                <em>100元京东卡</em>
                             </div>
                         </dd>
 

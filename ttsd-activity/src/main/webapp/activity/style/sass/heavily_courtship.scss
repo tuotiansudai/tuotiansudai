@@ -111,6 +111,15 @@ body {
       top:0;
       bottom:0;
     }
+    em {
+      position: absolute;
+      bottom: -22px;
+      width: 100%;
+      display: block;
+      left: 0;
+      text-align: center;
+      color: #652680;
+    }
 
   }
   .info-word {
@@ -349,27 +358,36 @@ body {
     margin-top: -15px;
   }
   .main-content-heavily {
-    margin: 0 15px 20px 15px;
+    margin: 0 10px 20px 10px;
+    i.column-title-co {
+      transform: scale(0.8);
+      left: -50px;
+    }
     .to-invest-button a{
       transform: scale(0.8);
     }
+    .bg-info-img {
+      top:0;
+    }
     .info-img {
+      top:0;
       img {
         width: 67%;
         margin-top: 30px;
       }
     }
     .info-word {
-      font-size: 14px;
+      font-size: 12px;
+      top:45px;
       b {
-        font-size: 20px;
+        font-size: 18px;
       }
     }
     .example-out {
       display: none;
     }
     .icon-reward {
-      transform: scale(0.8);
+      transform: scale(0.6);
     }
     .bg-info-img  {
       transform: scale(0.7);
@@ -380,7 +398,7 @@ body {
       margin: 5px 0;
     }
     .con-inner {
-      padding:15px;
+      padding:5px;
     }
     .prompt-box {
       height:420px;
@@ -407,6 +425,7 @@ body {
     .category-info-frame {
       .category-box {
         width:100%;
+        height:183px;
         &.hack {
           p {
             text-align: left;
@@ -479,7 +498,7 @@ body {
         }
       }
       &.last {
-        margin-top: -10px;
+        margin-top: -35px;
         padding-bottom: 40px;
         .top,.bottom,.middle {
           display: none;
@@ -498,7 +517,7 @@ body {
     margin: -6px;
   }
   .main-content-heavily .bg-info-img {
-    transform: scale(-0.6);
+    transform: scale(0.6);
     right: -23px;
   }
   .main-content-heavily .mind-category .subject {
@@ -515,6 +534,9 @@ body {
   .tour-slide {
     height:215px;
   }
+  .main-content-heavily .mind-category.last {
+    margin-top: -17px;
+  }
   .main-content-heavily .round-cake {
     margin: -11px;
   }
@@ -522,9 +544,8 @@ body {
     height:130px;
   }
   .main-content-heavily .bg-info-img {
-    transform: scale(-0.45);
+    transform: scale(0.55);
     right: -37px;
-    top: -36px!important;
   }
   .main-content-heavily .mind-category .subject {
     margin-bottom: 20px;
