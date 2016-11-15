@@ -25,6 +25,7 @@
                     </div>
                     <div class="info-img">
                         <img src="${staticServer}/activity/images/heavily-courtship/sg-01.jpg" alt="每个债权放出后第一个投资的用户">
+                        <em>浪漫QQ表情抱枕</em>
                     </div>
                 </div>
                 <div class="category-box fr">

@@ -94,9 +94,18 @@ body {
     right: 17px;
     top: 18px;
     width:212px;
-    height:154px;
+    height:160px;
     display: inline-block;
     text-align: right;
+    em {
+      position: absolute;
+      bottom: -22px;
+      width: 100%;
+      display: block;
+      left: 0;
+      text-align: center;
+      color: #652680;
+    }
   }
   .bg-info-img {
     background: url("/activity/images/heavily-courtship/bg-sp.jpg") left top no-repeat;
@@ -111,16 +120,6 @@ body {
       top:0;
       bottom:0;
     }
-    em {
-      position: absolute;
-      bottom: -22px;
-      width: 100%;
-      display: block;
-      left: 0;
-      text-align: center;
-      color: #652680;
-    }
-
   }
   .info-word {
     position: absolute;
@@ -370,13 +369,7 @@ body {
     .bg-info-img {
       top:0;
     }
-    .info-img {
-      top:0;
-      img {
-        width: 67%;
-        margin-top: 30px;
-      }
-    }
+
     .info-word {
       font-size: 12px;
       top:45px;
@@ -393,6 +386,11 @@ body {
     .bg-info-img  {
       transform: scale(0.7);
       right: -10px;
+    }
+    .info-img {
+      transform: scale(0.7);
+      top:0;
+      right:-10px;
     }
     .round-cake {
       transform: scale(0.75);
@@ -427,6 +425,7 @@ body {
       .category-box {
         width:100%;
         height:183px;
+        margin-top:30px;
         &.hack {
           p {
             text-align: left;
@@ -519,9 +518,11 @@ body {
   .main-content-heavily .round-cake {
     margin: -6px;
   }
-  .main-content-heavily .bg-info-img {
-    transform: scale(0.6);
-    right: -23px;
+  .main-content-heavily {
+    .bg-info-img,.info-img {
+      transform: scale(0.6);
+      right: -23px;
+    }
   }
   .main-content-heavily .mind-category .subject {
     margin-bottom: 20px;
@@ -540,18 +541,17 @@ body {
   .main-content-heavily .mind-category.last {
     margin-top: -17px;
   }
-  .main-content-heavily .info-img img {
-    width: 56%;
-  }
   .main-content-heavily .round-cake {
     margin: -11px;
   }
   .main-content-heavily .mind-category {
     height:130px;
   }
-  .main-content-heavily .bg-info-img {
-    transform: scale(0.55);
-    right: -37px;
+  .main-content-heavily {
+    .bg-info-img,.info-img {
+      transform: scale(0.55);
+      right: -37px;
+    }
   }
   .main-content-heavily .mind-category .subject {
     margin-bottom: 20px;
