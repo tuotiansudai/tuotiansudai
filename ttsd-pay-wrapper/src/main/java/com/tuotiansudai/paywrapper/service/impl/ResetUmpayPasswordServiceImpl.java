@@ -11,7 +11,9 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.MerSendSmsPwdRe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerSendSmsPwdResponseModel;
 import com.tuotiansudai.paywrapper.service.ResetUmpayPasswordService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class ResetUmpayPasswordServiceImpl implements ResetUmpayPasswordService 
     private AccountMapper accountMapper;
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private IdGenerator idGenerator;
 
     @Autowired
@@ -33,9 +38,12 @@ public class ResetUmpayPasswordServiceImpl implements ResetUmpayPasswordService 
 
     @Override
     public BaseDto<PayDataDto> resetUmpayPassword(ResetUmpayPasswordDto resetUmpayPasswordDto) {
+        UserModel userModel = userMapper.findByLoginName(resetUmpayPasswordDto.getLoginName());
         AccountModel accountModel = accountMapper.findByLoginName(resetUmpayPasswordDto.getLoginName());
         String orderId = String.valueOf(idGenerator.generate());
-        MerSendSmsPwdRequestModel merSendSmsPwdRequestModel = new MerSendSmsPwdRequestModel(accountModel.getPayUserId(), accountModel.getIdentityNumber(), orderId);
+        MerSendSmsPwdRequestModel merSendSmsPwdRequestModel = new MerSendSmsPwdRequestModel(accountModel.getPayUserId(),
+                userModel.getIdentityNumber(),
+                orderId);
 
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();

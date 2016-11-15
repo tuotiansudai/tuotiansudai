@@ -45,6 +45,7 @@ public class LoanApplicationServiceTest {
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginName);
         userModel.setMobile(String.valueOf(random.nextLong()).substring(0, 10));
+        userModel.setUserName("userName");
         userModel.setPassword("password");
         userModel.setSalt("salt");
         userModel.setRegisterTime(new Date());
@@ -54,8 +55,7 @@ public class LoanApplicationServiceTest {
     }
 
     private AccountModel createAccountModel(UserModel userModel) {
-        AccountModel accountModel = new AccountModel(userModel.getLoginName(), "userName", String.valueOf(random.nextLong()).substring(0, 10),
-                String.valueOf(random.nextLong()).substring(0, 10), String.valueOf(random.nextLong()).substring(0, 10), new Date());
+        AccountModel accountModel = new AccountModel(userModel.getLoginName(), String.valueOf(random.nextLong()).substring(0, 10), String.valueOf(random.nextLong()).substring(0, 10), new Date());
         accountMapper.create(accountModel);
         return accountModel;
     }

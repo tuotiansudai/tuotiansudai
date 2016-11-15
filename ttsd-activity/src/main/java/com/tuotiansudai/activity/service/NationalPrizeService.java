@@ -161,8 +161,12 @@ public class NationalPrizeService {
             createUserMembershipModel(userModel.getLoginName(), MembershipLevel.V5.getLevel());
         }
 
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? accountModel.getUserName() : "", nationalPrize, DateTime.now().toDate(), ActivityCategory.NATIONAL_PRIZE));
+        userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile,
+                userModel.getLoginName(),
+                Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getUserName(),
+                nationalPrize,
+                DateTime.now().toDate(),
+                ActivityCategory.NATIONAL_PRIZE));
         return new DrawLotteryResultDto(0,nationalPrize.name(),prizeType.name(),nationalPrize.getDescription());
     }
 

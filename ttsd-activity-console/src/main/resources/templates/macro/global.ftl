@@ -31,7 +31,8 @@
                     {"name":"COMPLETE","text":"完成还款的借款","link":"/project-manage/loan-list?status=COMPLETE","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"CANCEL","text":"已经流标的借款","link":"/project-manage/loan-list?status=CANCEL","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"OVERDUE","text":"逾期的借款","link":"/project-manage/loan-list?status=OVERDUE","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"repaymentInfoList","text":"项目还款明细表","link":"/project-manage/loan-repay","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"repaymentInfoList","text":"项目还款明细表","link":"/project-manage/loan-repay","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"contract","text":"CFCA创建合同","link":"/project-manage/contract","role":"'ADMIN'"}
                 ]
             },
             {

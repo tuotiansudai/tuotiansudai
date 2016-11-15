@@ -27,8 +27,16 @@
                 {{/nextRepayDate}}
             </td>
             <td>
-            <a class="show-invest-repay" data-url="/investor/invest/{{investId}}/repay-data">回款详情</a> |
-            <a class="red" href="/contract/transfer/transferApplicationId/{{id}}" target="_blank">合同</a>
+            <a class="show-invest-repay" data-url="/investor/invest/{{investId}}/repay-data">回款详情 |</a>
+                {{#contractAlreadyCreated}}
+                    <a class="red" href="/contract/invest/contractNo/{{contractNo}}" target="_blank">合同</a>
+                {{/contractAlreadyCreated}}
+                {{#contractNotExist}}
+                    <a class="red" href="/contract/transfer/transferApplicationId/{{id}}" target="_blank">合同</a>
+                {{/contractNotExist}}
+                {{#contractCreating}}
+                    <a class="red">合同生成中</a>
+                {{/contractCreating}}
             </td>
         </tr>
         {{/records}}

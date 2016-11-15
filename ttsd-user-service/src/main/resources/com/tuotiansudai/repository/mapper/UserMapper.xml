@@ -12,6 +12,8 @@
         <result column="password" property="password"/>
         <result column="email" property="email"/>
         <result column="mobile" property="mobile"/>
+        <result column="user_name" property="userName"/>
+        <result column="identity_number" property="identityNumber"/>
         <result column="register_time" property="registerTime"/>
         <result column="last_login_time" property="lastLoginTime"/>
         <result column="last_modified_time" property="lastModifiedTime"/>
@@ -46,13 +48,15 @@
     </resultMap>
 
     <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
-        insert ignore into user (login_name, password, mobile, email, register_time, last_modified_time, referrer, status, salt, channel, source, sign_in_count)
-        value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source}, #{signInCount})
+        insert ignore into user (login_name, password, mobile, user_name, identity_number, email, register_time, last_modified_time, referrer, status, salt, channel, source, sign_in_count)
+        value(#{loginName}, #{password}, #{mobile}, #{userName}, #{identityNumber}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source}, #{signInCount})
     </insert>
 
     <update id="updateUser" parameterType="com.tuotiansudai.repository.model.UserModel">
         update user set email = #{email},
         mobile = #{mobile},
+        user_name = #{userName},
+        identity_number = #{identityNumber},
         password = #{password},
         last_modified_time = #{lastModifiedTime},
         last_modified_user = #{lastModifiedUser},
@@ -213,6 +217,22 @@
             and referrer = #{referrer}
         </if>
         order by register_time
+    </select>
+
+    <select id="findByIdentityNumber" parameterType="string" resultMap="userResultMap">
+        select * from user where identity_number = #{identityNumber}
+    </select>
+
+    <select id="findBirthDayUsers" resultType="string">
+        select login_name
+        from user
+        where (if(length(identity_number) = 18, substring(identity_number,11,4), substring(identity_number,9,4))) = DATE_FORMAT(now(),'%m%d')
+    </select>
+
+    <select id="findBirthMonthUsers" resultType="string">
+        select login_name
+        from account
+        where (if(length(identity_number) = 18, substring(identity_number,11,2), substring(identity_number,9,2))) = DATE_FORMAT(now(),'%m')
     </select>
 
 </mapper>

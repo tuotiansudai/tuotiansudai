@@ -11,6 +11,7 @@
         <result column="transfer_invest_id" property="transferInvestId"/>
         <result column="login_name" property="loginName"/>
         <result column="loan_id" property="loanId"/>
+        <result column="contract_no" property="contractNo"/>
         <result column="amount" property="amount"/>
         <result column="status" property="status"/>
         <result column="transfer_status" property="transferStatus"/>
@@ -82,7 +83,7 @@
     </resultMap>
 
     <sql id="columns">
-        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements, invest_fee_rate
+        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements, invest_fee_rate, contract_no
     </sql>
 
     <insert id="create" parameterType="InvestModel">
@@ -91,7 +92,7 @@
         )
         value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source},
         #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, now(), #{investTime}, #{tradingTime},
-        #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler}, #{investFeeRate})
+        #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler}, #{investFeeRate}, #{contractNo})
     </insert>
 
     <update id="update" parameterType="InvestModel">
@@ -250,13 +251,13 @@
         invest.login_name AS investor_login_name,
         (SELECT province FROM user WHERE login_name = invest.login_name) AS province,
         (SELECT city FROM user WHERE login_name = invest.login_name) AS city,
-        (SELECT identity_number FROM account WHERE login_name = invest.login_name) AS identity_number,
-        (SELECT user_name FROM account WHERE login_name = invest.login_name) AS investor_username,
+        (SELECT identity_number FROM user WHERE user.login_name = invest.login_name) AS identity_number,
+        (SELECT user_name FROM user WHERE user.login_name = invest.login_name) AS investor_username,
         (SELECT mobile FROM user WHERE login_name = invest.login_name) AS investor_mobile,
         (SELECT GROUP_CONCAT(role ORDER BY role SEPARATOR ', ') FROM user_role WHERE login_name = invest.login_name) AS
         investor_roles,
         (SELECT referrer FROM user WHERE login_name = invest.login_name) AS referrer_login_name,
-        (SELECT user_name FROM account WHERE login_name = (SELECT referrer FROM user WHERE login_name =
+        (SELECT user_name FROM user WHERE user.login_name = (SELECT referrer FROM user WHERE login_name =
         invest.login_name)) AS referrer_username,
         (SELECT mobile FROM user WHERE login_name = (SELECT referrer FROM user WHERE login_name = invest.login_name)) AS
         referrer_mobile,
@@ -623,12 +624,10 @@
         SELECT
             invest.login_name,
             SUM(invest.amount) sumAmount,
-            account.user_name,
+            user.user_name,
             user.mobile
         FROM
             invest
-        INNER JOIN
-            account ON invest.login_name = account.login_name
         INNER JOIN
             user ON invest.login_name = user.login_name
         WHERE
@@ -645,7 +644,7 @@
                   ta.login_name = invest.login_name
                 AND ta.application_time between #{activityBeginTime} and #{tradingTime}
             )
-        GROUP BY login_name , account.user_name , user.mobile
+        GROUP BY login_name , user.user_name , user.mobile
         ORDER BY sumAmount DESC , MAX(invest.trading_time)
     </select>
 
@@ -653,7 +652,7 @@
         SELECT
           rr.`referrer_login_name` AS login_name,
           SUM(t.`amount`) AS sumAmount,
-          a.`user_name`,
+          u.`user_name`,
           u.`mobile`
         FROM
           referrer_relation rr
@@ -663,13 +662,11 @@
             AND DATE_FORMAT(t.`trading_time`, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime}, '%Y-%m-%d')
             AND t.`trading_time` BETWEEN #{activityBeginTime}
             AND #{activityEndTime}
-          JOIN account a
-            ON rr.`referrer_login_name` = a.`login_name`
           JOIN user u
             ON rr.`referrer_login_name` = u.`login_name`
         WHERE rr.`level` = 1
         GROUP BY rr.`referrer_login_name`,
-          a.`user_name`,
+          u.`user_name`,
           u.`mobile`
         ORDER BY SUM(t.`amount`) DESC,
           MAX(t.`trading_time`)
@@ -914,6 +911,18 @@
         select *
         from invest
         where status = 'SUCCESS' and login_name = #{loginName} and created_time BETWEEN #{startTime} and #{endTime}
+    </select>
+
+    <update id="updateContractNoById" parameterType="map" >
+        update invest set contract_no = #{contractNo}
+        where id = #{investId}
+    </update>
+
+    <select id="findContractFailInvest" parameterType="long" resultMap="investResultMap">
+        select
+        <include refid="columns"></include>
+        from invest
+        where loan_id = #{loanId} and status = 'SUCCESS' and (contract_no is null or contract_no = '')
     </select>
 
 </mapper>

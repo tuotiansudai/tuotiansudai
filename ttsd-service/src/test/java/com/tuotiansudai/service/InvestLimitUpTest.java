@@ -4,10 +4,7 @@ import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -46,6 +43,9 @@ public class InvestLimitUpTest {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
     private LoanModel createLoanByUserId(String userId, long loanId) {
         LoanDto loanDto = new LoanDto();
@@ -109,7 +109,7 @@ public class InvestLimitUpTest {
     }
 
     private AccountModel createAccountByUserId(String userId) {
-        AccountModel accountModel = new AccountModel(userId, userId, "120101198810012010", "", "", new Date());
+        AccountModel accountModel = new AccountModel(userId, "", "", new Date());
         accountModel.setBalance(10000);
         accountModel.setFreeze(10000);
         accountMapper.create(accountModel);
@@ -119,10 +119,22 @@ public class InvestLimitUpTest {
         return accountModel;
     }
 
+    private AnxinSignPropertyModel createAnxinPropertyByLoginName(String loginName) {
+        AnxinSignPropertyModel anxinProp = new AnxinSignPropertyModel();
+        anxinProp.setLoginName(loginName);
+        anxinProp.setSkipAuth(true);
+        anxinProp.setAnxinUserId("aaaa");
+        anxinProp.setCreatedTime(new Date());
+        anxinProp.setProjectCode("aaaa");
+        anxinSignPropertyMapper.create(anxinProp);
+        return anxinProp;
+    }
+
     @Test
     public void shouldInvestNewbieFailed() {
         UserModel userModelInvest = createUserByUserId("testUserInvest");
         UserModel userModelLoaner = createUserByUserId("testUserLoaner");
+        this.createAnxinPropertyByLoginName("testUserInvest");
         createAccountByUserId(userModelInvest.getLoginName());
         long loanId = idGenerator.generate();
         LoanModel loanModel = createLoanByUserId(userModelLoaner.getLoginName(), loanId);
@@ -145,6 +157,7 @@ public class InvestLimitUpTest {
         UserModel userModelInvest = createUserByUserId("testUserInvest");
         UserModel userModelLoaner = createUserByUserId("testUserLoaner");
         createAccountByUserId(userModelInvest.getLoginName());
+        this.createAnxinPropertyByLoginName("testUserInvest");
         long loanId = idGenerator.generate();
         LoanModel loanModel = createLoanByUserId(userModelLoaner.getLoginName(), loanId);
         InvestModel investModel = createInvest(userModelInvest.getLoginName(), loanId);
