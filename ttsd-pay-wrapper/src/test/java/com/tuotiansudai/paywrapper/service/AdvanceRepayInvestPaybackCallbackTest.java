@@ -7,6 +7,7 @@ import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.paywrapper.repository.mapper.AdvanceRepayNotifyMapper;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
@@ -62,6 +63,9 @@ public class AdvanceRepayInvestPaybackCallbackTest extends RepayBaseTest {
     @Autowired
     private AdvanceRepayService advanceRepayService;
 
+    @Autowired
+    private AdvanceRepayNotifyMapper advanceRepayNotifyMapper;
+
     @Test
     public void shouldCallbackFirstPeriodWhenLoanIsRepaying() throws Exception {
         UserModel loaner = this.getFakeUser("loaner");
@@ -99,7 +103,9 @@ public class AdvanceRepayInvestPaybackCallbackTest extends RepayBaseTest {
         InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 100, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(investRepay1.getId()), "");
+        advanceRepayNotifyMapper.create(this.getFakeAdvanceRepayNotifyRequestModel(investRepay1.getId()));
+
+        advanceRepayService.asyncAdvanceRepayPaybackCallback();
 
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());
@@ -161,7 +167,9 @@ public class AdvanceRepayInvestPaybackCallbackTest extends RepayBaseTest {
 
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(investRepay2.getId()), "");
+        advanceRepayNotifyMapper.create(this.getFakeAdvanceRepayNotifyRequestModel(investRepay2.getId()));
+
+        advanceRepayService.asyncAdvanceRepayPaybackCallback();
 
         InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepay1.getId());
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());

@@ -8,6 +8,7 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.*;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -143,6 +144,14 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayDataDto> investCallback() {
         return syncExecute(null, "/job/async_invest_notify", "POST");
+    }
+
+    public BaseDto<PayDataDto> normalRepayInvestPayback() {
+        return syncExecute(null, "/job/async_normal_repay_notify", "POST");
+    }
+
+    public BaseDto<PayDataDto> advanceRepayInvestPayback() {
+        return syncExecute(null, "/job/async_advance_repay_notify", "POST");
     }
 
     public BaseDto<PayDataDto> investTransferCallback() {
