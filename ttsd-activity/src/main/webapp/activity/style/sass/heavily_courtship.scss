@@ -154,6 +154,7 @@ body {
       position: absolute;
       right:0;
       top:0;
+      background-position: right top;
     }
     &.top {
       position: absolute;
@@ -360,8 +361,8 @@ body {
   .main-content-heavily {
     margin: 0 10px 20px 10px;
     i.column-title-co {
-      transform: scale(0.8);
-      left: -50px;
+      transform: scale(0.7);
+      left: -70px;
     }
     .to-invest-button a{
       transform: scale(0.8);
@@ -387,7 +388,7 @@ body {
       display: none;
     }
     .icon-reward {
-      transform: scale(0.6);
+      transform: scale(0.7);
     }
     .bg-info-img  {
       transform: scale(0.7);
@@ -429,6 +430,8 @@ body {
         &.hack {
           p {
             text-align: left;
+            padding-right:15px;
+            padding-left:15px;
           }
         }
         &.ultimate-prize {
@@ -494,7 +497,7 @@ body {
         }
         &.last-subject {
           margin:auto;
-          margin-left:10px;
+          margin-left:8px;
         }
       }
       &.last {
@@ -537,6 +540,9 @@ body {
   .main-content-heavily .mind-category.last {
     margin-top: -17px;
   }
+  .main-content-heavily .info-img img {
+    width: 56%;
+  }
   .main-content-heavily .round-cake {
     margin: -11px;
   }
@@ -549,6 +555,7 @@ body {
   }
   .main-content-heavily .mind-category .subject {
     margin-bottom: 20px;
+    margin-left:7px;
   }
   .main-content-heavily .to-invest-button {
     margin: 10px auto;
@@ -556,4 +563,5 @@ body {
   .main-content-heavily .category-info-frame .category-box {
     margin-top:30px;
   }
+
 }
