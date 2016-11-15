@@ -495,8 +495,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 logger.debug("债权转让：生成合同，转让ID:" + transferApplicationModel.getId());
                 anxinSignService.createTransferContracts(transferApplicationModel.getId());
 
-                logger.debug("债权转让：更新合同编号，投资ID:" + transferApplicationModel.getInvestId());
-                anxinSignService.updateTransferInvestContractNo(transferApplicationModel.getInvestId());
+                logger.debug("债权转让：更新合同编号，投资ID:" + investId);
+                anxinSignService.updateTransferInvestContractNo(investId);
             }
         } else {
             // 失败的话：更新 invest 状态为投资失败

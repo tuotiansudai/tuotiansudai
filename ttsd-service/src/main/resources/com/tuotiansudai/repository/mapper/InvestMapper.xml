@@ -927,7 +927,7 @@
         select
         <include refid="columns"></include>
         from invest
-        where loan_id = #{loanId} and status = 'SUCCESS' and (contract_no is null or contract_no = '')
+        where loan_id = #{loanId} and transfer_invest_id is null and status = 'SUCCESS' and (contract_no is null or contract_no = '')
     </select>
 
 </mapper>
