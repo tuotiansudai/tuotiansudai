@@ -109,7 +109,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final int BATCH_NO_LIFT_TIME = 60 * 60 * 24 * 7; // bath_NO 在redis里保存7天
 
-    private static final int CREATE_CONTRACT_MAX_IN_DOING_TIME = 60 * 60; // 创建合同的时间在1个小时内应该可以完成，如果job出现问题，没能删除InCreating key, 1个小时后，可以再次手动创建合同
+    private static final int CREATE_CONTRACT_MAX_IN_DOING_TIME = 60 * 30; // 创建合同的时间在半个小时内应该可以完成，如果job出现问题，没能删除InCreating key, 半个小时后，可以再次手动创建合同
 
 
     @Value(value = "${anxin.contract.batch.num}")
@@ -474,7 +474,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("investAmount", AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) + "元");
         dataModel.put("transferTime", simpleDateFormat.format(transferApplicationModel.getTransferTime()));
         dataModel.put("leftPeriod", String.valueOf(transferApplicationModel.getLeftPeriod()));
-        dataModel.put("orderId", String.valueOf(transferApplicationModel.getId()));
+        dataModel.put("orderId", String.valueOf(transferApplicationModel.getInvestId()));
 
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         String msg1;
@@ -609,11 +609,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         // 把合同号更新到 invest 或 transferApplication 表
         contractResponseViews.stream().filter(contractResponseView -> contractResponseView.getRetCode().equals(AnxinRetCode.SUCCESS)).forEach(contractResponseView -> {
-            if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
-                investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
-            } else {
-                transferApplicationMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
-            }
+            investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
         });
 
         return waitingBatchNoList;
