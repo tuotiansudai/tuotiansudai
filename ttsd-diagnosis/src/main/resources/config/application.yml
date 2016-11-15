@@ -22,12 +22,6 @@ spring:
             required: true
           ssl:
             trust: smtp.qiye.163.com
-logging:
-  level:
-    com:
-      tuotiansudai:
-        diagnosis: debug
-  path: /var/log/ttsd-diagnosis
 
 diagnosis:
   schedule:

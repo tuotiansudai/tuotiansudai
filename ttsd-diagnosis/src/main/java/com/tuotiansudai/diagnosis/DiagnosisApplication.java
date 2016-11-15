@@ -132,7 +132,7 @@ class DiagnosisApplication {
         } else {
             message.setTo(diagnosisConfig.getReport().getNotifyMailAddressQa());
         }
-        message.setSubject("diagnosis report");
+        message.setSubject(String.format("diagnosis report [%s]", environment));
         message.setText(reportMessage.replace("\n", "\r\n"));
         mailSender.send(message);
     }
