@@ -141,6 +141,7 @@ def deploy_worker():
         sudo('rm -rf ttsd-job-worker-invest/')
         sudo('rm -rf ttsd-job-worker-jpush/')
         sudo('rm -rf ttsd-loan-mq-consumer/')
+        sudo('rm -rf ttsd-diagnosis/')
         sudo('unzip \*.zip')
         sudo('supervisorctl reload')
         sudo('supervisorctl start all')
