@@ -14,4 +14,6 @@ public interface BandCardManagerService {
     void updateRemark(long bankCardId,String remark);
 
     String findRemarkByBankCardId(long bankCardId);
+
+    void stopBankCard(long bankCardId);
 }

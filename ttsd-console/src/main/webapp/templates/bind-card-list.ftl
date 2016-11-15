@@ -17,7 +17,6 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th>编号</th>
                 <th>申请人姓名</th>
                 <th>申请人手机号</th>
                 <th>原银行卡（银行卡号）</th>
@@ -31,7 +30,6 @@
             <tbody>
                 <#list replaceBankCardDtoList as replace>
                 <tr>
-                    <td>${replace.id!}</td>
                     <td>${replace.userName!}</td>
                     <td>${replace.mobile!}</td>
                     <td>${replace.oldCard!}</td>
@@ -48,10 +46,24 @@
                             失败
                         </#if>
                     </td>
-                    <td>${replace.loginName!}</td>
+                    <td style="text-align:left;" width="160">
+                        <#if replace.remark??>
+                            <span class="tooltip-list"
+                                <#if replace.remark?length gt 20 && replace.remark?contains('|')>
+                                  data-original-title="${replace.remark?replace('|','—————————————————')!}">${(replace.remark?replace('|',''))?substring(0,20)!}...
+                                <#elseif replace.remark?length gt 20 && !replace.remark?contains('|')>
+                                    data-original-title="${replace.remark!}">${replace.remark?substring(0,20)!}...
+                                <#elseif replace.remark?length lt 20 && replace.remark?contains('|')>
+                                    data-original-title="${replace.remark?replace('|','—————————————————')!}">${(replace.remark?replace('|',' '))!}
+                                <#else>
+                                    data-original-title="${replace.remark!}">${replace.remark!}
+                                </#if>
+                            </span>
+                        </#if>
+                    </td>
                     <td>
                         <a href="/user-manage/agent/${(agent.id?string('0'))!}" class="btn btn-link">终止订单</a> |
-                        <a class="feedback-remark btn btn-link"  data-feedback-id="${replace.id?c}" class="btn btn-link">添加备注</a>
+                        <a class="replace-remark btn btn-link" data-replace-id="${replace.id?c}" class="btn btn-link">添加备注</a>
                     </td>
                 </tr>
                 </#list>
@@ -69,7 +81,7 @@
                     <h4 class="modal-title" id="myModalLabel">添加备注</h4>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="feedbackId" id="feedbackId" />
+                    <input type="hidden" name="replaceId" id="replaceId"/>
                     备注信息：<br/>
                     <textarea class="form-control" name="remark" id="remark" rows="3"></textarea>
                 </div>

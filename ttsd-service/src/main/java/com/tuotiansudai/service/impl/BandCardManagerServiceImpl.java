@@ -31,6 +31,8 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
 
     private static String BANK_CARD_REMARK_TEMPLATE = "bank_card_remark_id:{0}";
 
+    private static String BANK_CARD_AUDIT_STATUS_TEMPLATE = "bank_card_status_id:{0}";
+
     private static int REMARK_LIFE_TIME = 60 * 60 * 24 * 30 * 6;
 
     @Override
@@ -48,7 +50,7 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
             UserModel userModelByLoginName = userMapper.findByLoginName(input.getLoginName());
             BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(input.getLoginName());
             return new ReplaceBankCardDto(input.getId(), input.getLoginName(), userModelByLoginName.getUserName(), userModelByLoginName.getMobile(), bankCardModel != null ? bankCardModel.getBankCode() : "",
-                    bankCardModel != null ? bankCardModel.getCardNumber() : "", input.getBankCode(), input.getCardNumber(), input.getCreatedTime(), input.getStatus(), redisWrapperClient.get(MessageFormat.format(this.BANK_CARD_REMARK_TEMPLATE, input.getId())));
+                    bankCardModel != null ? bankCardModel.getCardNumber() : "", input.getBankCode(), input.getCardNumber(), input.getCreatedTime(), input.getStatus(), redisWrapperClient.get(MessageFormat.format(this.BANK_CARD_REMARK_TEMPLATE, String.valueOf(input.getId()))));
         });
 
         return Lists.newArrayList(replaceBankCardDtoIterator);
@@ -56,12 +58,12 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
 
     @Override
     public void updateRemark(long bankCardId,String remark) {
-        String key = MessageFormat.format(this.BANK_CARD_REMARK_TEMPLATE, bankCardId);
-        if (redisWrapperClient.exists(key)) {
+        String key = MessageFormat.format(this.BANK_CARD_REMARK_TEMPLATE, String.valueOf(bankCardId));
+        if (!redisWrapperClient.exists(key)) {
             redisWrapperClient.setex(key, REMARK_LIFE_TIME, remark);
         }else{
             String value = redisWrapperClient.get(key);
-            redisWrapperClient.setex(key, REMARK_LIFE_TIME, value + ";" + remark);
+            redisWrapperClient.setex(key, REMARK_LIFE_TIME, value + "|" + remark);
         }
     }
 
@@ -70,5 +72,10 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
         String key = MessageFormat.format(this.BANK_CARD_REMARK_TEMPLATE, bankCardId);
 
         return redisWrapperClient.get(key);
+    }
+
+    @Override
+    public void stopBankCard(long bankCardId){
+        
     }
 }
