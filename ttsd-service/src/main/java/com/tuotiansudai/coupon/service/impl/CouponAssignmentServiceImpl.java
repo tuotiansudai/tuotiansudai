@@ -131,7 +131,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), exchangeCode);
 
-        if (StringUtils.isNotEmpty(exchangeCode) || userCouponModel == null) {
+        if (userCouponModel == null) {
             return false;
         }
 
