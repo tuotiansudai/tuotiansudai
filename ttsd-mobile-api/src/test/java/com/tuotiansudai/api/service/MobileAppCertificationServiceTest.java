@@ -10,7 +10,9 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import org.junit.Test;
@@ -23,10 +25,16 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class MobileAppCertificationServiceTest extends ServiceTestBase{
+
     @InjectMocks
     private MobileAppCertificationServiceImpl mobileAppCertificationService;
+
     @Mock
     private UserService userService;
+
+    @Mock
+    private UserMapper userMapper;
+
     @Mock
     private AccountMapper accountMapper;
 
@@ -68,8 +76,9 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
         payDataDto.setStatus(false);
 
         when(accountMapper.findByLoginName(anyString())).thenReturn(null);
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
         when(userService.registerAccount(any(RegisterAccountDto.class))).thenReturn(baseDto);
-        when(accountService.isIdentityNumberExist(anyString())).thenReturn(false);
+        when(userService.isIdentityNumberExist(anyString())).thenReturn(false);
         BaseResponseDto<CertificationResponseDataDto> baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
         assertEquals("0001",baseResponseDto.getCode());
 

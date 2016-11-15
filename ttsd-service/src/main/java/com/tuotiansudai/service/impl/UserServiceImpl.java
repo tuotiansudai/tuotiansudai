@@ -1,6 +1,5 @@
 package com.tuotiansudai.service.impl;
 
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
@@ -8,22 +7,12 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
-import com.tuotiansudai.mq.client.MQClient;
-import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.BindBankCardService;
-import com.tuotiansudai.service.ReferrerRelationService;
-import com.tuotiansudai.service.SmsCaptchaService;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import com.tuotiansudai.util.RandomStringGenerator;
-import com.tuotiansudai.util.TransactionUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -69,19 +58,13 @@ public class UserServiceImpl implements UserService {
     private BindBankCardService bindBankCardService;
 
     @Autowired
-    private MembershipMapper membershipMapper;
-
-    @Autowired
-    private UserMembershipMapper userMembershipMapper;
-
-    @Autowired
     private PrepareUserMapper prepareUserMapper;
 
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Autowired
-    private MQClient mqClient;
+    private RegisterUserService registerUserService;
 
     public static String SHA = "SHA";
 
@@ -114,82 +97,81 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean registerUser(RegisterUserDto dto) throws ReferrerRelationException {
-        boolean loginNameIsExist = false;
-        String loginName;
-        if (StringUtils.isNotEmpty(dto.getLoginName())) {
-            loginName = dto.getLoginName();
-            loginNameIsExist = this.loginNameIsExist(loginName);
-        } else {
-            int count = 0;
-            loginName = RandomStringGenerator.generate(LOGIN_NAME_LENGTH);
-            while (loginNameIsExist(loginName)) {
-                loginName = RandomStringGenerator.generate(LOGIN_NAME_LENGTH);
-                ++count;
-                if (count > 20) {
-                    logger.debug(MessageFormat.format("[UserServiceImpl][registerUser] generate loginName failed! mobile:{0}", dto.getMobile()));
+    public boolean isIdentityNumberExist(String identityNumber) {
+        return userMapper.findByIdentityNumber(identityNumber) != null;
+    }
+
+    @Override
+    public String getRealName(String loginNameOrMobile) {
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
+        return userModel == null ? loginNameOrMobile : userModel.getUserName();
+    }
+
+    @Override
+    public boolean registerUser(RegisterUserDto dto) {
+        if (this.mobileIsExist(dto.getMobile())) {
+            logger.error(MessageFormat.format("[Register User {0}] mobile is existed", dto.getMobile()));
+            return false;
+        }
+
+        if (!this.smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA)) {
+            logger.error(MessageFormat.format("[Register User {0}] captcha({1}) is not match", dto.getMobile(), dto.getCaptcha()));
+            return false;
+        }
+
+        PrepareUserModel prepareUserModel = prepareUserMapper.findByMobile(dto.getMobile());
+        String referrer = prepareUserModel != null ? prepareUserModel.getReferrerMobile() : dto.getReferrer();
+        UserModel referrerUserModel = userMapper.findByLoginNameOrMobile(referrer);
+        if (!Strings.isNullOrEmpty(referrer) && referrerUserModel == null) {
+            logger.error(MessageFormat.format("[Register User {0}] referrer({1}) is not existed", dto.getMobile(), referrer));
+            return false;
+        }
+
+
+        String loginName = dto.getLoginName();
+        boolean autoGenerateLoginName = Strings.isNullOrEmpty(loginName);
+
+        if (!autoGenerateLoginName && this.loginNameIsExist(loginName)) {
+            logger.error(MessageFormat.format("[Register User {0}] login name ({1}) is existed", dto.getMobile(), loginName));
+            return false;
+        }
+
+        if (autoGenerateLoginName) {
+            int tryTimes = 0;
+            do {
+                tryTimes += 1;
+                if (tryTimes > 20) {
+                    logger.debug(MessageFormat.format("[Register User {0}] auto generate login name reach max times", dto.getMobile()));
                     return false;
                 }
-            }
+                loginName = RandomStringGenerator.generate(LOGIN_NAME_LENGTH);
+            } while (this.loginNameIsExist(loginName));
             dto.setLoginName(loginName);
         }
-        boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
-        PrepareUserModel prepareUserModel = prepareUserMapper.findByMobile(dto.getMobile());
-        if (prepareUserModel != null) {
-            dto.setReferrer(prepareUserModel.getReferrerMobile());
-        }
-        boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameOrMobileIsExist(dto.getReferrer());
-        boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
 
-        if (loginNameIsExist || mobileIsExist || referrerIsNotExist || verifyCaptchaFailed) {
-            return false;
-        }
 
-        UserModel userModel = new UserModel();
-        userModel.setLoginName(loginName);
-        userModel.setMobile(dto.getMobile());
-        userModel.setSource(dto.getSource());
-        if (!Strings.isNullOrEmpty(dto.getReferrer())) {
-            userModel.setReferrer(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName());
-        }
-        if (!Strings.isNullOrEmpty(dto.getChannel())) {
+        try {
+            UserModel userModel = new UserModel();
+            userModel.setLoginName(loginName);
+            userModel.setMobile(dto.getMobile());
+            userModel.setSource(dto.getSource());
+            userModel.setReferrer(referrerUserModel != null ? referrerUserModel.getLoginName() : null);
             userModel.setChannel(dto.getChannel());
-        }
-        String salt = myShaPasswordEncoder.generateSalt();
-        String encodePassword = myShaPasswordEncoder.encodePassword(dto.getPassword(), salt);
-        userModel.setSalt(salt);
-        userModel.setPassword(encodePassword);
-        userModel.setLastModifiedTime(new Date());
+            String salt = myShaPasswordEncoder.generateSalt();
+            userModel.setSalt(salt);
+            userModel.setPassword(myShaPasswordEncoder.encodePassword(dto.getPassword(), salt));
+            userModel.setLastModifiedTime(new Date());
+            return registerUserService.register(userModel);
+        } catch (ReferrerRelationException e) {
+            logger.error(MessageFormat.format("[Register User {0}] create new user is failed", dto.getMobile()));
 
-
-        if (this.userMapper.create(userModel) == 0) {
-            logger.debug(MessageFormat.format("[CREATE USER:login_name-{0},mobile-{1} has registered]", userModel.getLoginName(), userModel.getMobile()));
-            return false;
         }
 
-        UserRoleModel userRoleModel = new UserRoleModel();
-        userRoleModel.setLoginName(userModel.getLoginName().toLowerCase());
-        userRoleModel.setRole(Role.USER);
-        List<UserRoleModel> userRoleModels = Lists.newArrayList();
-        userRoleModels.add(userRoleModel);
-        this.userRoleMapper.create(userRoleModels);
-
-        if (!Strings.isNullOrEmpty(dto.getReferrer())) {
-            this.referrerRelationService.generateRelation(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName(), userModel.getLoginName());
-        }
-
-        MembershipModel membershipModel = membershipMapper.findByLevel(0);
-        UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(userModel.getLoginName(), membershipModel.getId());
-        userMembershipMapper.create(userMembershipModel);
-
-        TransactionUtil.runAfterCommit(() -> mqClient.publishMessage(MessageTopic.UserRegistered, dto.getMobile()));
-        return true;
+        return false;
     }
 
     @Override
     public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
-        dto.setMobile(userMapper.findByLoginName(dto.getLoginName()).getMobile());
         return payWrapperClient.register(dto);
     }
 
@@ -226,12 +208,7 @@ public class UserServiceImpl implements UserService {
         // update role
         userRoleMapper.deleteByLoginName(loginName);
         if (CollectionUtils.isNotEmpty(editUserDto.getRoles())) {
-            List<UserRoleModel> afterUpdateUserRoleModels = Lists.transform(editUserDto.getRoles(), new Function<Role, UserRoleModel>() {
-                @Override
-                public UserRoleModel apply(Role role) {
-                    return new UserRoleModel(loginName, role);
-                }
-            });
+            List<UserRoleModel> afterUpdateUserRoleModels = Lists.transform(editUserDto.getRoles(), role -> new UserRoleModel(loginName, role));
             userRoleMapper.create(afterUpdateUserRoleModels);
         }
 
@@ -246,12 +223,11 @@ public class UserServiceImpl implements UserService {
         userModel.setLastModifiedUser(operatorLoginName);
         userMapper.updateUser(userModel);
 
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (!mobile.equals(beforeUpdateUserMobile) && accountModel != null) {
+        if (!mobile.equals(beforeUpdateUserMobile) && accountMapper.findByLoginName(loginName) != null) {
             RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
                     mobile,
-                    accountModel.getUserName(),
-                    accountModel.getIdentityNumber());
+                    userModel.getUserName(),
+                    userModel.getIdentityNumber());
             BaseDto<PayDataDto> baseDto = payWrapperClient.register(registerAccountDto);
             if (!baseDto.getData().getStatus()) {
                 throw new EditUserException(baseDto.getData().getMessage());
@@ -291,11 +267,9 @@ public class UserServiceImpl implements UserService {
         for (UserRoleModel userRoleModel : userRoleModels) {
             roles.add(userRoleModel.getRole());
         }
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-
         AutoInvestPlanModel autoInvestPlanModel = autoInvestPlanMapper.findByLoginName(loginName);
 
-        EditUserDto editUserDto = new EditUserDto(userModel, accountModel, roles, autoInvestPlanModel);
+        EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel);
 
         BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
         if (bankCard != null) {
@@ -365,9 +339,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserModel findByLoginName(String loginName) {
+        return userMapper.findByLoginName(loginName);
+    }
+
+    @Override
     public boolean resetUmpayPassword(String loginName, String identityNumber) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (accountModel == null || !accountModel.getIdentityNumber().equals(identityNumber)) {
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        if (userModel == null || !userModel.getIdentityNumber().equals(identityNumber)) {
             return false;
         }
         ResetUmpayPasswordDto resetUmpayPasswordDto = new ResetUmpayPasswordDto(loginName, identityNumber);

@@ -66,7 +66,7 @@ public class MobileAppBookingLoanServiceTest extends ServiceTestBase {
     }
 
     public AccountModel getAccountModel(String loginName) {
-        AccountModel model = new AccountModel(loginName, "哈哈", "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel model = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountMapper.create(model);
         return model;
     }
