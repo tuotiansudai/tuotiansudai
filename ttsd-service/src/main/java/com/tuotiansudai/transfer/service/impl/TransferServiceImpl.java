@@ -94,11 +94,11 @@ public class TransferServiceImpl implements TransferService {
     private void checkTransferPurchase(InvestDto investDto) throws InvestException {
         AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
 
-        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(accountModel.getLoginName());
-
-        if (anxinProp == null || StringUtils.isEmpty(anxinProp.getProjectCode())) {
-            throw new InvestException(InvestExceptionType.ANXIN_SIGN_IS_UNUSABLE);
-        }
+//        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(accountModel.getLoginName());
+//
+//        if (anxinProp == null || StringUtils.isEmpty(anxinProp.getProjectCode())) {
+//            throw new InvestException(InvestExceptionType.ANXIN_SIGN_IS_UNUSABLE);
+//        }
 
         long loanId = Long.parseLong(investDto.getLoanId());
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferInvestId()));
