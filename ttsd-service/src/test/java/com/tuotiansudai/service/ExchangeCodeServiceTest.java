@@ -150,6 +150,7 @@ public class ExchangeCodeServiceTest {
         exchangeCouponDto.setStartTime(dateTime.toDate());
         exchangeCouponDto.setEndTime(dateTime.toDate());
         exchangeCouponDto.setActive(true);
+        exchangeCouponDto.setMultiple(true);
         exchangeCouponDto.setUserGroup(UserGroup.EXCHANGER_CODE);
         couponService.createCoupon("couponTest", exchangeCouponDto);
         long couponId = exchangeCouponDto.getId();
