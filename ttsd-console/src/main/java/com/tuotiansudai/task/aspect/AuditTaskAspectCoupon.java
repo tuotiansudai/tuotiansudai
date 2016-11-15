@@ -5,7 +5,7 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
@@ -27,7 +27,7 @@ public class AuditTaskAspectCoupon {
     RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    AccountService accountService;
+    UserService userService;
 
     static Logger logger = Logger.getLogger(AuditTaskAspectCoupon.class);
 
@@ -72,7 +72,7 @@ public class AuditTaskAspectCoupon {
             task.setCreatedTime(new Date());
 
             String senderLoginName = creator;
-            String senderRealName = accountService.getRealName(senderLoginName);
+            String senderRealName = userService.getRealName(senderLoginName);
 
             task.setSender(senderLoginName);
 
@@ -125,7 +125,7 @@ public class AuditTaskAspectCoupon {
                 notify.setCreatedTime(new Date());
                 notify.setObjId(task.getObjId());
 
-                String senderRealName = accountService.getRealName(senderLoginName);
+                String senderRealName = userService.getRealName(senderLoginName);
                 notify.setDescription(senderRealName + " 激活了您创建的 " + task.getObjName() + "。");
 
                 redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);

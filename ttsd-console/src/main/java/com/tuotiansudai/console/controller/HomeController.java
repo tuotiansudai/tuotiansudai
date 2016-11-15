@@ -4,6 +4,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.service.ConsoleHomeService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AccountService;
@@ -42,7 +43,7 @@ public class HomeController {
     UserRoleService userRoleService;
 
     @Autowired
-    AccountService accountService;
+    UserService userService;
 
     @Autowired
     private AuditLogService auditLogService;
@@ -134,7 +135,7 @@ public class HomeController {
 
             notify.setObjId(task.getObjId());
 
-            String senderRealName = accountService.getRealName(senderLoginName);
+            String senderRealName = userService.getRealName(senderLoginName);
 
             notify.setDescription(senderRealName + " 拒绝了您 " + operationType.getDescription() + "［" + task.getObjName() + "］的申请。");
 
@@ -142,7 +143,7 @@ public class HomeController {
             redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), notifyId, notify);
 
             String operator = task.getSender();
-            String operatorRealName = accountService.getRealName(operator);
+            String operatorRealName = userService.getRealName(operator);
             String description = senderRealName + " 拒绝了 " + operatorRealName + " " + operationType.getDescription() + "［" + task.getObjName() + "］的申请。";
             auditLogService.createAuditLog(senderLoginName, operator, operationType, task.getObjId(), description, ip);
 

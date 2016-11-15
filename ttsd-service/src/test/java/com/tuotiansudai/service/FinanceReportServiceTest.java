@@ -57,6 +57,7 @@ public class FinanceReportServiceTest {
         userModel.setPassword("123abc");
         userModel.setEmail("12345@abc.com");
         userModel.setMobile("1" + RandomStringUtils.randomNumeric(10));
+        userModel.setUserName("userName");
         userModel.setRegisterTime(new Date());
         userModel.setStatus(UserStatus.ACTIVE);
         userModel.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -65,8 +66,8 @@ public class FinanceReportServiceTest {
         return userModel;
     }
 
-    private AccountModel createAccountModel(UserModel userModel, String userName) {
-        AccountModel accountModel = new AccountModel(userModel.getLoginName(), userName, String.valueOf(RandomStringUtils.randomNumeric(18)), String.valueOf(RandomStringUtils.randomNumeric(32)),
+    private AccountModel createAccountModel(UserModel userModel) {
+        AccountModel accountModel = new AccountModel(userModel.getLoginName(), String.valueOf(RandomStringUtils.randomNumeric(32)),
                 String.valueOf(RandomStringUtils.randomNumeric(14)), new Date());
         accountMapper.create(accountModel);
         return accountModel;
@@ -78,7 +79,7 @@ public class FinanceReportServiceTest {
         loanModel.setName(loanName);
         loanModel.setType(type);
         loanModel.setAgentLoginName(agent.getLoginName());
-        loanModel.setLoanerUserName(loaner.getUserName());
+        loanModel.setLoanerUserName(agent.getUserName());
         loanModel.setBaseRate(12.5);
         loanModel.setActivityRate(3.2);
         loanModel.setDuration(90);
@@ -129,7 +130,7 @@ public class FinanceReportServiceTest {
         return investReferrerRewardModel;
     }
 
-    private FinanceReportItemView combineFinanceReportModel(LoanModel loanModel, InvestModel investModel, AccountModel investAccount, InvestRepayModel investRepayModel) {
+    private FinanceReportItemView combineFinanceReportModel(LoanModel loanModel, InvestModel investModel, UserModel userModel, InvestRepayModel investRepayModel) {
         FinanceReportItemView financeReportItemView = new FinanceReportItemView();
         financeReportItemView.setLoanId(loanModel.getId());
         financeReportItemView.setLoanName(loanModel.getName());
@@ -144,7 +145,7 @@ public class FinanceReportServiceTest {
         financeReportItemView.setRecheckTime(loanModel.getRecheckTime());
         financeReportItemView.setInvestTime(investModel.getInvestTime());
         financeReportItemView.setInvestLoginName(investModel.getLoginName());
-        financeReportItemView.setInvestRealName(investAccount.getUserName());
+        financeReportItemView.setInvestRealName(userModel.getUserName());
         financeReportItemView.setReferrer("referrer");
         financeReportItemView.setInvestAmount(investModel.getAmount());
         financeReportItemView.setRepayTime(investRepayModel.getRepayDate());
@@ -158,19 +159,19 @@ public class FinanceReportServiceTest {
 
     private List<FinanceReportItemView> prepareData() {
         UserModel referrerUserModel = createUserModel("referrer", null);
-        AccountModel referrerAccountModel = createAccountModel(referrerUserModel, "推荐员");
+        AccountModel referrerAccountModel = createAccountModel(referrerUserModel);
 
         UserModel loanerUserModel = createUserModel("loaner", null);
-        AccountModel loanerAccountModel = createAccountModel(loanerUserModel, "借款人");
+        AccountModel loanerAccountModel = createAccountModel(loanerUserModel);
 
         UserModel agentUserModel = createUserModel("agent", null);
-        AccountModel agentAccountModel = createAccountModel(agentUserModel, "代理人");
+        AccountModel agentAccountModel = createAccountModel(agentUserModel);
 
         UserModel investorWithReferrerUserModel = createUserModel("investorWithReferrer", "referrer");
-        AccountModel investorWithReferrerAccountModel = createAccountModel(investorWithReferrerUserModel, "有推荐投资人");
+        AccountModel investorWithReferrerAccountModel = createAccountModel(investorWithReferrerUserModel);
 
         UserModel investorWithoutReferrerUserModel = createUserModel("investorWithoutReferrer", null);
-        AccountModel investorWithoutReferrerAccountModel = createAccountModel(investorWithoutReferrerUserModel, "无推荐投资人");
+        AccountModel investorWithoutReferrerAccountModel = createAccountModel(investorWithoutReferrerUserModel);
 
         List<FinanceReportItemView> financeReportItemViews = new ArrayList<>();
 
@@ -178,27 +179,27 @@ public class FinanceReportServiceTest {
         InvestModel investModel = createInvestModel(1, loanModel.getId(), investorWithReferrerAccountModel, DateTime.parse("2016-10-12T01:20").toDate());
         InvestRepayModel investRepayModel = createInvestRepayModel(investModel.getId(), 1, RepayStatus.COMPLETE);
         InvestReferrerRewardModel investReferrerRewardModel = createInvestReferrerRewardModel(1, "referrer", Role.STAFF);
-        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerUserModel, investRepayModel));
         investRepayModel = createInvestRepayModel(investModel.getId(), 2, RepayStatus.COMPLETE);
-        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerUserModel, investRepayModel));
         investRepayModel = createInvestRepayModel(investModel.getId(), 3, RepayStatus.COMPLETE);
-        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerUserModel, investRepayModel));
         investModel = createInvestModel(2, loanModel.getId(), investorWithoutReferrerAccountModel, DateTime.parse("2016-11-12T01:20").toDate());
         investRepayModel = createInvestRepayModel(investModel.getId(), 1, RepayStatus.COMPLETE);
-        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithoutReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerUserModel, investRepayModel));
 
         loanModel = createLoanModel(2, "车辆", agentUserModel, loanerAccountModel, LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, LoanStatus.COMPLETE);
         investModel = createInvestModel(3, loanModel.getId(), investorWithReferrerAccountModel, DateTime.parse("2016-10-12T01:20").toDate());
         investReferrerRewardModel = createInvestReferrerRewardModel(3, "referrer", Role.USER);
         investRepayModel = createInvestRepayModel(investModel.getId(), 1, RepayStatus.COMPLETE);
-        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerUserModel, investRepayModel));
         investRepayModel = createInvestRepayModel(investModel.getId(), 2, RepayStatus.COMPLETE);
-        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerUserModel, investRepayModel));
         investRepayModel = createInvestRepayModel(investModel.getId(), 3, RepayStatus.REPAYING);
-        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerUserModel, investRepayModel));
         investModel = createInvestModel(4, loanModel.getId(), investorWithoutReferrerAccountModel, DateTime.parse("2016-11-12T01:20").toDate());
         investRepayModel = createInvestRepayModel(investModel.getId(), 1, RepayStatus.COMPLETE);
-        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithoutReferrerAccountModel, investRepayModel));
+        financeReportItemViews.add(combineFinanceReportModel(loanModel, investModel, investorWithReferrerUserModel, investRepayModel));
 
         return financeReportItemViews;
     }
