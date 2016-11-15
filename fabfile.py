@@ -132,13 +132,12 @@ def deploy_pay():
 def deploy_worker():
     put(local_path='./ttsd-job-worker/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-loan-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
     sudo('supervisorctl stop all')
     with cd('/workspace'):
-        sudo('rm -rf ttsd-job-worker-all/')
-        sudo('rm -rf ttsd-job-worker-invest/')
-        sudo('rm -rf ttsd-job-worker-jpush/')
-        sudo('rm -rf ttsd-loan-mq-consumer/')
+        sudo('rm -rf ttsd-*/')
         sudo('unzip \*.zip')
+        sudo('supervisorctl reload')
         sudo('supervisorctl start all')
 
 
