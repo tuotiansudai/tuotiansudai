@@ -11,6 +11,7 @@ public class ReplaceBankCardDto {
 
     private long id;
     private String loginName;
+    private String userName;
     private String mobile;
     private String oldCard;
     private String applyCard;
@@ -21,15 +22,24 @@ public class ReplaceBankCardDto {
     public ReplaceBankCardDto() {
     }
 
-    public ReplaceBankCardDto(long id, String loginName, String mobile,String oldCode, String oldNum, String applyCode, String applyNum, Date applyDate, BankCardStatus status, String remark) {
+    public ReplaceBankCardDto(long id, String loginName, String userName, String mobile,String oldCode, String oldNum, String applyCode, String applyNum, Date applyDate, BankCardStatus status, String remark) {
         this.id = id;
         this.loginName = loginName;
+        this.userName = userName;
         this.mobile = mobile;
         this.oldCard = Strings.isNullOrEmpty(oldCode) ? "" : BankCardUtil.getBankName(oldCode) + String.format("(尾号%s)",oldNum.length() == 19 ? oldNum.substring(oldNum.length() - 4,oldNum.length())  : "");
         this.applyCard = Strings.isNullOrEmpty(applyCode) ? "" : BankCardUtil.getBankName(applyCode) + String.format("(尾号%s)",applyNum.length() == 19 ? applyNum.substring(applyNum.length() - 4,applyNum.length())  : "");
         this.applyDate = applyDate;
         this.status = status;
         this.remark = remark;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public long getId() {

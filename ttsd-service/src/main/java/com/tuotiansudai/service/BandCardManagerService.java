@@ -7,7 +7,11 @@ import java.util.List;
 
 public interface BandCardManagerService {
 
-    int queryCountReplaceBankCardRecord(String loginName);
+    int queryCountReplaceBankCardRecord(String mobile);
 
-    List<ReplaceBankCardDto> queryReplaceBankCardRecord(String loginName, int index, int pageSize);
+    List<ReplaceBankCardDto> queryReplaceBankCardRecord(String mobile, int index, int pageSize);
+
+    void updateRemark(long bankCardId,String remark);
+
+    String findRemarkByBankCardId(long bankCardId);
 }
