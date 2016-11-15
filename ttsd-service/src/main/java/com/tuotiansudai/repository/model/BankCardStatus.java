@@ -10,7 +10,9 @@ public enum BankCardStatus {
 
     FAILED("失败"),
 
-    APPLY("申请");
+    APPLY("申请"),
+
+    STOP("终止");
 
     private final String status;
 

@@ -1,9 +1,9 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="agent.js" headLab="user-manage" sideLab="bindCard" title="换卡管理">
+<@global.main pageCss="" pageJavascript="bank-card.js" headLab="user-manage" sideLab="bindCard" title="换卡管理">
 <!-- content area begin -->
 
 <div class="col-md-10">
-    <form action="/user-manage/agents" class="form-inline query-build">
+    <form action="/user-manage/bind-card" class="form-inline query-build">
         <div class="row">
             <div class="form-group">
                 <label for="control-label">用户名</label>
@@ -29,17 +29,30 @@
             </tr>
             </thead>
             <tbody>
-                <#list agentLevelRateList as agent>
+                <#list replaceBankCardDtoList as replace>
                 <tr>
-                    <td>${agent.loginName!}</td>
-                    <td>${agent.loginName!}</td>
-                    <td>${agent.loginName!}</td>
-                    <td>${agent.loginName!}</td>
-                    <td>${agent.loginName!}</td>
-                    <td>${agent.loginName!}</td>
-                    <td>${agent.loginName!}</td>
-                    <td>${agent.loginName!}</td>
-                    <td></td>
+                    <td>${replace.id!}</td>
+                    <td>${replace.loginName!}</td>
+                    <td>${replace.mobile!}</td>
+                    <td>${replace.oldCard!}</td>
+                    <td>${replace.applyCard!}</td>
+                    <td>${replace.loginName!}</td>
+                    <td>
+                        <#if replace.status == 'PASSED'>
+                            换卡成功
+                        <#elseif replace.status == 'UNCHECKED' || replace.status == 'APPLY'>
+                            处理中
+                        <#elseif replace.status == 'STOP'>
+                            订单终止
+                        <#else>
+                            失败
+                        </#if>
+                    </td>
+                    <td>${replace.loginName!}</td>
+                    <td>
+                        <a href="/user-manage/agent/${(agent.id?string('0'))!}" class="btn btn-link">终止订单</a> |
+                        <a href="/user-manage/agent/${(agent.id?string('0'))!}" class="btn btn-link">添加备注</a>
+                    </td>
                 </tr>
                 </#list>
             </tbody>

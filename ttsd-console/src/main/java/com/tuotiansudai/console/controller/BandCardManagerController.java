@@ -1,8 +1,7 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.repository.mapper.AgentLevelRateMapper;
-import com.tuotiansudai.repository.model.AgentLevelRateModel;
-import com.tuotiansudai.service.AgentService;
+import com.tuotiansudai.dto.ReplaceBankCardDto;
+import com.tuotiansudai.service.BandCardManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,22 +13,21 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/user-manage")
-public class BindCardManagerController {
+public class BandCardManagerController {
     @Autowired
-    private AgentService agentService;
-
-    @Autowired
-    private AgentLevelRateMapper agentLevelRateMapper;
+    private BandCardManagerService bandCardManagerService;
 
     @RequestMapping(value = "/bind-card",method = RequestMethod.GET)
     public ModelAndView agentManage(@RequestParam(value = "loginName",required = false) String loginName,
                                     @RequestParam(value = "index",defaultValue = "1",required = false) int index,
                                     @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/bind-card-list");
-        int count = agentService.findAgentLevelRateCount(loginName);
-        List<AgentLevelRateModel> agentLevelRateList = agentService.findAgentLevelRate(loginName,(index-1) * pageSize,pageSize);
+
+        int count = bandCardManagerService.queryCountReplaceBankCardRecord(loginName);
+        List<ReplaceBankCardDto> replaceBankCardDtoList = bandCardManagerService.queryReplaceBankCardRecord(loginName, (index - 1) * pageSize, pageSize);
         modelAndView.addObject("count",count);
-        modelAndView.addObject("agentLevelRateList",agentLevelRateList);
+        modelAndView.addObject("replaceBankCardDtoList",replaceBankCardDtoList);
+
         modelAndView.addObject("index",index);
         modelAndView.addObject("pageSize",pageSize);
         modelAndView.addObject("loginName",loginName);
@@ -38,7 +36,6 @@ public class BindCardManagerController {
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage",hasPreviousPage);
         modelAndView.addObject("hasNextPage",hasNextPage);
-
         return modelAndView;
     }
 
