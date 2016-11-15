@@ -258,4 +258,10 @@ public interface InvestMapper {
                                                 @Param(value = "startTime") Date startTime,
                                                 @Param(value = "endTime") Date endTime);
 
+    void updateContractNoById(@Param(value = "investId") Long investId,
+                              @Param(value = "contractNo") String contractNo);
+
+
+    List<InvestModel> findContractFailInvest(@Param(value = "loanId") long loanId);
+
 }

@@ -89,11 +89,9 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
                 event.preventDefault();
                 $.ajax({
                     url: '/isLogin',
-                    type: 'GET',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=UTF-8'
+                    type: 'GET'
                 })
-                    .fail(function (response) {
+                    .success(function (response) {
                             if ("" == response.responseText) {
                                 $bookInvestForm.find('.init-radio-style').removeClass('on');
                                 $bookInvestForm.find('input[name="bookingAmount"]').val('');
@@ -162,11 +160,9 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
                     var data = $(form).serialize();
                     $.ajax({
                         url: '/isLogin',
-                        type: 'GET',
-                        dataType: 'json',
-                        contentType: 'application/json; charset=UTF-8'
+                        type: 'GET'
                     })
-                        .fail(function (response) {
+                        .success(function (response) {
                                 if ("" == response.responseText) {
                                     $.ajax({
                                         url: '/booking-loan/invest?' + data,

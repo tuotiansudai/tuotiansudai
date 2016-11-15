@@ -42,14 +42,13 @@
     </select>
 
     <select id="findRechargePagination" parameterType="map" resultMap="rechargeResultView">
-        select r.*, a.user_name, u.mobile,
+        select r.*, u.user_name, u.mobile,
         IFNULL((select 1 from user_role ur where ur.login_name = r.login_name and ur.role='STAFF'),0) as is_staff
         from recharge r
         JOIN `user` u on r.login_name = u.login_name
         <if test="mobile !=null and mobile != '' ">
             and u.mobile = #{mobile}
         </if>
-        JOIN account a on r.login_name = a.login_name
         <where>
             <if test="rechargeId !=null and rechargeId !='' ">
                 r.id = #{rechargeId}

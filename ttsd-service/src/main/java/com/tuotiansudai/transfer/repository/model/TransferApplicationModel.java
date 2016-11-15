@@ -188,4 +188,5 @@ public class TransferApplicationModel implements Serializable {
     public void setSource(Source source) {
         this.source = source;
     }
+
 }

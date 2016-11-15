@@ -19,6 +19,7 @@ dependencies {
             project(":ttsd-user-service"),
             project(":ttsd-membership"),
             project(":ttsd-util"),
+            project(":ttsd-anxin-sign"),
             project(":ttsd-mq-client"),
             fileTree(dir: 'libs', include: '**/*.jar')
 
