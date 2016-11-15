@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
+import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,9 @@ public class JobController {
 
     @Autowired
     private AdvanceRepayService advanceRepayService;
+
+    @Autowired
+    private ExtraRateService extraRateService;
 
     @ResponseBody
     @RequestMapping(value = "/async_invest_notify", method = RequestMethod.POST)
@@ -91,4 +95,9 @@ public class JobController {
         couponLoanOutService.sendRedEnvelope(loanId);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/async_extra_rate_invest_notify", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> asyncExtraRateInvestNotify() {
+        return this.extraRateService.asyncExtraRateInvestCallback();
+    }
 }
