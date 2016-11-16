@@ -364,8 +364,18 @@ public class LoanServiceImpl implements LoanService {
         }
 
         logger.debug("标的放款：生成合同，标的ID:" + loanId);
-        anxinSignService.createLoanContracts(loanId);
+        try {
+            anxinSignService.createLoanContracts(loanId);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("放款生成合同失败 (loanId = {0})", String.valueOf(loanId)), e);
+        }
 
+        logger.debug("标的放款：更新合同编号，标的ID:" + loanId);
+        try {
+            anxinSignService.updateLoanInvestContractNo(loanId);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("放款更新合同编号失败 (loanId = {0})", String.valueOf(loanId)), e);
+        }
         return true;
     }
 
