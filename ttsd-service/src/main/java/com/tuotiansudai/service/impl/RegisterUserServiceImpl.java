@@ -57,7 +57,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(userModel.getLoginName(), membershipModel.getId());
         userMembershipMapper.create(userMembershipModel);
 
-        TransactionUtil.runAfterCommit(() -> mqClient.publishMessage(MessageTopic.UserRegistered, userModel.getMobile()));
+        TransactionUtil.runAfterCommit(() -> mqClient.publishMessage(MessageTopic.UserRegistered, userModel.getLoginName()));
         return true;
     }
 }
