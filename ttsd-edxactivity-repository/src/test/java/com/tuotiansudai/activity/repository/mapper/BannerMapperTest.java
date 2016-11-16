@@ -1,7 +1,7 @@
-package com.tuotiansudai.repository.mapper;
+package com.tuotiansudai.activity.repository.mapper;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.BannerModel;
+import com.tuotiansudai.activity.repository.model.BannerModel;
 import com.tuotiansudai.repository.model.Source;
 import org.junit.Test;
 import org.junit.runner.RunWith;

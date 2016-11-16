@@ -1,13 +1,14 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.activity.repository.model;
 
 
+import com.tuotiansudai.activity.repository.dto.BannerDto;
 import com.tuotiansudai.repository.model.Source;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class BannerDto extends BaseDataDto implements Serializable {
+public class BannerModel implements Serializable {
 
     private long id;
 
@@ -35,13 +36,19 @@ public class BannerDto extends BaseDataDto implements Serializable {
 
     private boolean active;
 
+    private String createdBy;
+
+    private Date createdTime = new Date();
+
     private String activatedBy;
 
     private Date activatedTime;
 
+    private String deactivatedBy;
+
     private Date deactivatedTime;
 
-    private boolean deleted;
+    private boolean deleted = false;
 
     public long getId() {
         return id;
@@ -107,20 +114,28 @@ public class BannerDto extends BaseDataDto implements Serializable {
         this.order = order;
     }
 
-    public boolean isAuthenticated() {
-        return authenticated;
-    }
-
-    public void setAuthenticated(boolean authenticated) {
-        this.authenticated = authenticated;
-    }
-
     public boolean isActive() {
         return active;
     }
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
     public String getActivatedBy() {
@@ -139,12 +154,28 @@ public class BannerDto extends BaseDataDto implements Serializable {
         this.activatedTime = activatedTime;
     }
 
+    public String getDeactivatedBy() {
+        return deactivatedBy;
+    }
+
+    public void setDeactivatedBy(String deactivatedBy) {
+        this.deactivatedBy = deactivatedBy;
+    }
+
     public Date getDeactivatedTime() {
         return deactivatedTime;
     }
 
     public void setDeactivatedTime(Date deactivatedTime) {
         this.deactivatedTime = deactivatedTime;
+    }
+
+    public boolean isAuthenticated() {
+        return authenticated;
+    }
+
+    public void setAuthenticated(boolean authenticated) {
+        this.authenticated = authenticated;
     }
 
     public boolean isDeleted() {
@@ -178,4 +209,24 @@ public class BannerDto extends BaseDataDto implements Serializable {
     public void setAppUrl(String appUrl) {
         this.appUrl = appUrl;
     }
+
+    public BannerModel() {
+
+    }
+
+    public BannerModel(BannerDto bannerDto) {
+        this.id = bannerDto.getId();
+        this.name = bannerDto.getName();
+        this.webImageUrl = bannerDto.getWebImageUrl().trim();
+        this.appImageUrl = bannerDto.getAppImageUrl().trim();
+        this.url = bannerDto.getUrl();
+        this.appUrl = bannerDto.getAppUrl();
+        this.title = bannerDto.getTitle();
+        this.content = bannerDto.getContent();
+        this.sharedUrl = bannerDto.getSharedUrl();
+        this.source = bannerDto.getSource();
+        this.authenticated = bannerDto.isAuthenticated();
+        this.order = bannerDto.getOrder();
+    }
+
 }

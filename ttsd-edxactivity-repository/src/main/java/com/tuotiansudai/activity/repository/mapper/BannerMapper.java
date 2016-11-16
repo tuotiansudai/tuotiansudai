@@ -1,6 +1,6 @@
-package com.tuotiansudai.repository.mapper;
+package com.tuotiansudai.activity.repository.mapper;
 
-import com.tuotiansudai.repository.model.BannerModel;
+import com.tuotiansudai.activity.repository.model.BannerModel;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

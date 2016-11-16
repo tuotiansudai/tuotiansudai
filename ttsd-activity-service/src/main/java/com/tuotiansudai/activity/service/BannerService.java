@@ -1,10 +1,9 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.activity.service;
 
 
-import com.tuotiansudai.dto.BannerDto;
-import com.tuotiansudai.repository.mapper.BannerMapper;
-import com.tuotiansudai.repository.model.BannerModel;
-import com.tuotiansudai.service.BannerService;
+import com.tuotiansudai.activity.repository.dto.BannerDto;
+import com.tuotiansudai.activity.repository.mapper.BannerMapper;
+import com.tuotiansudai.activity.repository.model.BannerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +11,11 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class BannerServiceImpl implements BannerService {
+public class BannerService {
 
     @Autowired
     private BannerMapper bannerMapper;
 
-    @Override
     public void create(BannerDto bannerDto, String loginName, String ip) {
         BannerModel bannerModel = new BannerModel(bannerDto);
         bannerModel.setActive(true);
@@ -30,17 +28,14 @@ public class BannerServiceImpl implements BannerService {
         bannerMapper.create(bannerModel);
     }
 
-    @Override
     public List<BannerModel> findAllBannerList() {
         return bannerMapper.findAllBannerList();
     }
 
-    @Override
     public boolean updateBanner(BannerModel bannerModel, String loginName, String ip) {
         return bannerMapper.updateBanner(bannerModel);
     }
 
-    @Override
     public BannerModel findById(long id) {
         return bannerMapper.findById(id);
     }

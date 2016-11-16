@@ -35,10 +35,7 @@ CREATE TABLE `activity` (
   `share_url`        VARCHAR(100)        NOT NULL,
   `seq`              BIGINT(20)          NOT NULL,
   `long_term`        TINYINT(1)          NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_ACTIVITY_ACTIVATED_BY_REF_USER_LOGIN_NAME` (`activated_by`),
-  KEY `FK_ACTIVITY_CREATED_BY_REF_USER_LOGIN_NAME` (`created_by`),
-  KEY `FK_ACTIVITY_UPDATED_BY_REF_USER_LOGIN_NAME` (`updated_by`)
+  PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
