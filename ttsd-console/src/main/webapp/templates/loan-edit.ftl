@@ -293,7 +293,8 @@
                 <label class="col-sm-1 control-label">是否发送信息: </label>
 
                 <div class="col-sm-4 checkbox">
-                    <input type="checkbox" class="message-send" name="message-send" id="messageSend">
+                    <input type="checkbox" class="message-send" name="message-send" id="messageSend"
+                           <#if !loan.loanMessage??>checked</#if>>
                 </div>
             </div>
 
@@ -301,7 +302,9 @@
                 <label class="col-sm-2 control-label">推送信息标题</label>
 
                 <div class="col-sm-3">
-                    <input name="message-title" type="text" class="form-control" id="messagsTitle" disabled>
+                    <input name="message-title" type="text" class="form-control"
+                           id="messagsTitle" <#if loan.loanMessage??> value="${loan.loanMessage.loanMessageTitle!}"
+                           <#else>disabled</#if>>
                 </div>
             </div>
 
@@ -309,7 +312,9 @@
                 <label class="col-sm-2 control-label">推送信息内容</label>
 
                 <div class="col-sm-3">
-                    <input name="message-content" type="text" class="form-control" id="messageContent" disabled>
+                    <input name="message-content" type="text" class="form-control"
+                           id="messageContent" <#if loan.loanMessage??> value="${loan.loanMessage.loanMessageContent!}"
+                           <#else>disabled</#if>>
                 </div>
             </div>
         </div>
