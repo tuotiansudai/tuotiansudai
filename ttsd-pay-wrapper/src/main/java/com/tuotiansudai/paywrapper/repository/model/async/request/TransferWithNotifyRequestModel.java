@@ -1,9 +1,5 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
-import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.util.MobileFrontCallbackService;
-
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,14 +7,9 @@ import java.util.Map;
 
 public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
 
-
     private String orderId;
 
-    private String merAccountId;
-
     private String particUserId;
-
-    private String particAccountId;
 
     private String particAccType = "01";
 
@@ -35,6 +26,10 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
                 payUserId,
                 amount,
                 "coupon_repay_notify");
+    }
+
+    public static TransferWithNotifyRequestModel newExtraRateRequest(String orderId, String payUserId, String amount){
+        return new TransferWithNotifyRequestModel(orderId, payUserId, amount, "extra_rate_notify");
     }
 
     private TransferWithNotifyRequestModel(String orderId, String payUserId, String amount, String notifyUrl) {
