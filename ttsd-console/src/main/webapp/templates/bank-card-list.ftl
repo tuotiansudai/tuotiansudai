@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="bank-card.js" headLab="user-manage" sideLab="bindCard" title="换卡管理">
 <!-- content area begin -->
@@ -41,7 +42,7 @@
                         <#elseif replace.status == 'UNCHECKED' || replace.status == 'APPLY'>
                             处理中
                         <#elseif replace.status == 'STOP'>
-                            订单终止
+                            终止订单
                         <#else>
                             失败
                         </#if>
@@ -62,8 +63,13 @@
                         </#if>
                     </td>
                     <td>
-                        <a href="/user-manage/agent/${(agent.id?string('0'))!}" class="btn btn-link">终止订单</a> |
-                        <a class="replace-remark btn btn-link" data-replace-id="${replace.id?c}" class="btn btn-link">添加备注</a>
+                        <@security.authorize access="hasAnyAuthority('CUSTOMER_SERVICE')">
+                            <a class="stop-bank-card btn btn-link" data-replace-id="${replace.id?c}" data-replace-name="${replace.loginName!}" data-replace-status="${replace.status!}" >终止订单</a>
+                        </@security.authorize>
+                        <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">
+                            <a class="audit-bank-card btn btn-link" data-replace-id="${replace.id?c}" data-replace-name="${replace.loginName!}" data-replace-status="${replace.status!}">审核</a>
+                        </@security.authorize>
+                        <a class="replace-remark btn btn-link" data-replace-id="${replace.id?c}" > | 添加备注</a>
                     </td>
                 </tr>
                 </#list>

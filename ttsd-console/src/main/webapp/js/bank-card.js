@@ -18,9 +18,69 @@ require(['jquery', 'jquery-ui', 'layer', 'layer-extend', 'layerWrapper', 'bootst
             $('#replaceId').val(feedbackId);
             $('#update').modal('show');
         });
+
+
+        $('.stop-bank-card').on('click', function (e) {
+            e.preventDefault();
+            var $self = $(this),
+                feedbackId = $self.attr('data-replace-id'),
+                loginName = $self.attr('data-replace-name'),
+                replaceStatus = $self.attr('data-replace-status');
+
+            if(replaceStatus == "PASSED" || replaceStatus == "STOP" || replaceStatus == "FAILED" || replaceStatus == "REMOVED"){
+                alert("该状态不可以终止订单!");
+                return;
+            }
+            $.ajax({
+                type: "GET",
+                url: "/user-manage/audit-bank-card",
+                data: {
+                    bankCardId : feedbackId,
+                    loginName : loginName
+                },
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function (data) {
+                alert(data.data.message);
+                location.href = "/user-manage/bind-card";
+            }).fail(function () {
+                alert("终止订单失败");
+            });
+        });
+
+
+        $('.audit-bank-card').on('click', function (e) {
+            e.preventDefault();
+            var $self = $(this),
+                feedbackId = $self.attr('data-replace-id'),
+                loginName = $self.attr('data-replace-name'),
+                replaceStatus = $self.attr('data-replace-status');
+
+            if(replaceStatus == "PASSED" || replaceStatus == "STOP" || replaceStatus == "FAILED" || replaceStatus == "REMOVED"){
+                alert("该状态不可以终止订单!");
+                return;
+            }
+
+            $.ajax({
+                type: "GET",
+                url: "/user-manage/audit-bank-card",
+                data: {
+                    bankCardId : feedbackId,
+                    loginName : loginName
+                },
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function (data) {
+                alert(data.data.message);
+                location.href = "/user-manage/bind-card";
+            }).fail(function () {
+                alert("审核失败");
+            });
+
+        });
+
     });
 })
-
 
 //提交备注
 function update() {

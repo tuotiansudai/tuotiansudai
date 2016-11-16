@@ -8,6 +8,7 @@ import com.tuotiansudai.dto.ReplaceBankCardDto;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.BankCardStatus;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.BandCardManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,18 +32,16 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
 
     private static String BANK_CARD_REMARK_TEMPLATE = "bank_card_remark_id:{0}";
 
-    private static String BANK_CARD_AUDIT_STATUS_TEMPLATE = "bank_card_status_id:{0}";
-
     private static int REMARK_LIFE_TIME = 60 * 60 * 24 * 30 * 6;
 
     @Override
-    public int queryCountReplaceBankCardRecord(String mobile) {
+    public int queryCountReplaceBankCardRecord(String loginName, String mobile) {
         UserModel userModel = userMapper.findByMobile(mobile);
         return bankCardMapper.findCountReplaceBankCardByLoginName(userModel == null ? null : userModel.getLoginName());
     }
 
     @Override
-    public List<ReplaceBankCardDto> queryReplaceBankCardRecord(String mobile, int index, int pageSize) {
+    public List<ReplaceBankCardDto> queryReplaceBankCardRecord(String loginName, String mobile, int index, int pageSize) {
         UserModel userModel = userMapper.findByMobile(mobile);
         List<BankCardModel> replaceBankCards = bankCardMapper.findReplaceBankCardByLoginName(userModel == null ? null : userModel.getLoginName(), index, pageSize);
 
@@ -57,25 +56,23 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
     }
 
     @Override
-    public void updateRemark(long bankCardId,String remark) {
+    public void updateRemark(long bankCardId, String remark) {
         String key = MessageFormat.format(this.BANK_CARD_REMARK_TEMPLATE, String.valueOf(bankCardId));
         if (!redisWrapperClient.exists(key)) {
             redisWrapperClient.setex(key, REMARK_LIFE_TIME, remark);
-        }else{
+        } else {
             String value = redisWrapperClient.get(key);
             redisWrapperClient.setex(key, REMARK_LIFE_TIME, value + "|" + remark);
         }
     }
 
-    @Override
-    public String findRemarkByBankCardId(long bankCardId) {
-        String key = MessageFormat.format(this.BANK_CARD_REMARK_TEMPLATE, bankCardId);
-
-        return redisWrapperClient.get(key);
-    }
 
     @Override
-    public void stopBankCard(long bankCardId){
-        
+    public String updateBankCard(String loginName, long bankCardId, String ip) {
+        BankCardModel bankCardModel = bankCardMapper.findById(bankCardId);
+        bankCardModel.setStatus(BankCardStatus.STOP);
+        bankCardMapper.update(bankCardModel);
+        return "审核成功!";
     }
+
 }

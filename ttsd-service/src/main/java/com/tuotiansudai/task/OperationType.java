@@ -16,7 +16,9 @@ public enum OperationType implements Serializable{
 
     BANNER("banner", "banner操作"),
 
-    PUSH("App推送", "新建App推送");
+    PUSH("App推送", "新建App推送"),
+
+    BAND_CARD("绑卡管理", "终止换卡申请");
 
     private String targetType;
 

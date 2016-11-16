@@ -60,12 +60,13 @@
     </select>
 
     <select id="findReplaceBankCardByLoginName" parameterType="map" resultMap="BankCardResultMap">
-        select * from (select * from bank_card order by created_time desc) t
+        select * from (
+          select * from bank_card
         <where>
             <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
-        </where>
+        </where> order by created_time desc) t
         group by login_name having count(1) > 1 limit #{index},#{pageSize}
     </select>
 
