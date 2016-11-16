@@ -10,7 +10,7 @@
 
             <div class="meta tr">${createdTime}</div>
             <div class="content">
-            ${content} <a href=${webUrl}class="look-detail">【查看详情】</a>
+            ${content} <a href=${webUrl} class="look-detail">【查看详情】</a>
             </div>
             <div class="go-back">
                 <a href="#">返回列表</a>
