@@ -1,5 +1,6 @@
 /* create question */
 var _ = require('underscore');
+var $ = require('jquery');
 var comm = require("./commonFun");
 var $createQuestion=$('#createQuestion');
 var $questionDetailTag=$('#questionDetailTag');
