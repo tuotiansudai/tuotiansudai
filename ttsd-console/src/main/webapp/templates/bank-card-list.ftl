@@ -30,7 +30,7 @@
             </thead>
             <tbody>
                 <#list replaceBankCardDtoList as replace>
-                <tr>
+                <tr class="<#if replace.activeStatus!='verify'>bg-danger</#if>">
                     <td>${replace.userName!}</td>
                     <td>${replace.mobile!}</td>
                     <td>${replace.oldCard!}</td>
@@ -64,12 +64,16 @@
                     </td>
                     <td>
                         <@security.authorize access="hasAnyAuthority('CUSTOMER_SERVICE')">
-                            <a class="stop-bank-card btn btn-link" data-replace-id="${replace.id?c}" data-replace-name="${replace.loginName!}" data-replace-status="${replace.status!}" >终止订单</a>
+                            <#if replace.activeStatus == "verify">
+                                <a class="stop-bank-card btn btn-link" data-active-status="${replace.activeStatus!}" data-replace-id="${replace.id?c}" data-replace-name="${replace.loginName!}" data-replace-status="${replace.status!}" >终止订单 | </a>
+                            </#if>
                         </@security.authorize>
                         <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">
-                            <a class="audit-bank-card btn btn-link" data-replace-id="${replace.id?c}" data-replace-name="${replace.loginName!}" data-replace-status="${replace.status!}">审核</a>
+                            <#if replace.activeStatus != "verify">
+                                <a class="audit-bank-card btn btn-link" data-replace-id="${replace.id?c}" data-replace-name="${replace.loginName!}" data-replace-status="${replace.status!}">审核 | </a>
+                            </#if>
                         </@security.authorize>
-                        <a class="replace-remark btn btn-link" data-replace-id="${replace.id?c}" > | 添加备注</a>
+                        <a class="replace-remark btn btn-link" data-replace-id="${replace.id?c}" >添加备注</a>
                     </td>
                 </tr>
                 </#list>

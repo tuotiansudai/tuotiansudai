@@ -58,7 +58,7 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
             BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(input.getLoginName());
             return new ReplaceBankCardDto(input.getId(), input.getLoginName(), userModelByLoginName.getUserName(), userModelByLoginName.getMobile(), bankCardModel != null ? bankCardModel.getBankCode() : "",
                     bankCardModel != null ? bankCardModel.getCardNumber() : "", input.getBankCode(), input.getCardNumber(), input.getCreatedTime(), input.getStatus(),
-                    redisWrapperClient.get(MessageFormat.format(this.BANK_CARD_REMARK_TEMPLATE, String.valueOf(input.getId()))),activeId.indexOf(String.valueOf(input.getId())) != -1 ? "verify" : "inVerify");
+                    redisWrapperClient.get(MessageFormat.format(this.BANK_CARD_REMARK_TEMPLATE, String.valueOf(input.getId()))),activeId.indexOf(String.valueOf(input.getId())) != -1 ? "inVerify" : "verify");
         });
 
         return Lists.newArrayList(replaceBankCardDtoIterator);

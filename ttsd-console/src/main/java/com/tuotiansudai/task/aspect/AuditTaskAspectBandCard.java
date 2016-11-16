@@ -108,12 +108,12 @@ public class AuditTaskAspectBandCard {
             redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId, task);
 
             if (!redisWrapperClient.exists(BAND_CARD_ACTIVE_STATUS_TEMPLATE)) {
-                redisWrapperClient.setex(BAND_CARD_ACTIVE_STATUS_TEMPLATE, leftLife, String.valueOf(bankCardId));
+                redisWrapperClient.setex(BAND_CARD_ACTIVE_STATUS_TEMPLATE, leftLife, ";" + String.valueOf(bankCardId));
             } else {
                 String value = redisWrapperClient.get(BAND_CARD_ACTIVE_STATUS_TEMPLATE);
                 redisWrapperClient.setex(BAND_CARD_ACTIVE_STATUS_TEMPLATE, leftLife, value + ";" + String.valueOf(bankCardId));
             }
-            return "申请成功!";
+            return "申请成功,请等待运营管理员审核!";
         }
     }
 }
