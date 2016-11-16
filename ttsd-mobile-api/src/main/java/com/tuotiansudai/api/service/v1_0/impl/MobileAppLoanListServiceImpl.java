@@ -67,7 +67,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
         ProductType noContainProductType = null;
         List<UserCouponModel> userCouponModels = userCouponMapper.findUsedExperienceByLoginName(loanListRequestDto.getBaseParam().getUserId());
-        if(CollectionUtils.isEmpty(userCouponModels) || userCouponModels.get(0).getEndTime().after(DateTime.now().toDate())){
+        if(CollectionUtils.isEmpty(userCouponModels) || userCouponModels.get(0).getEndTime().before(DateTime.now().toDate())){
             noContainProductType = ProductType.EXPERIENCE;
         }
 
