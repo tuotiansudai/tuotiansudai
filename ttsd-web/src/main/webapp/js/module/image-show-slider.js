@@ -76,10 +76,12 @@ define([], function () {
         },
         //封装程序入口
         action: function() {
+            var redirect=globalFun.browserRedirect();
             this.autoplay();
             this.mouseoverout();
-            this.bindTouchEvn();
-
+            if(redirect=='mobile') {
+                this.bindTouchEvn();
+            }
         },
         //在样式表中设置好 .fadeIn 的透明度为0
         fadeIn: function(e) {

@@ -15,6 +15,7 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
                 });
             }
             if(imgCount>0) {
+                $imgScroll.find('li').eq(0).css({"z-index":2});
                 var runimg=new imageShowSlide.runImg('bannerBox','30',imgCount);
                 runimg.info();
             }
