@@ -67,7 +67,7 @@ public class MembershipInvestService {
         curUserMembershipModel.setExpiredTime(new Date());
         userMembershipMapper.update(curUserMembershipModel);
 
-        UserMembershipModel newUserMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, newMembership.getId());
+        UserMembershipModel newUserMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, membershipId);
         userMembershipMapper.create(newUserMembershipModel);
     }
 }

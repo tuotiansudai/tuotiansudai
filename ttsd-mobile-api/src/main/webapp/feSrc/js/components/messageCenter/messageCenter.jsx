@@ -2,6 +2,7 @@ import React from "react";
 import changeTitle from "utils/changeTitle";
 import {main} from "./messageCenter.scss";
 import IScroll from "iscroll";
+import imagesLoaded from "imagesloaded";
 import ajax from "utils/ajax";
 import {hashHistory} from "react-router";
 
@@ -10,10 +11,10 @@ class messageCenter extends React.Component {
         "code": "",
         "message": "",
         "data": {
-            "userMessageId": "",//消息ID
-            "title": "",//消息标题
-            "content": "",//消息内容
-            "createdTime": "",//创建时间
+            "userMessageId": "", //消息ID
+            "title": "", //消息标题
+            "content": "", //文章内容
+            "createTime": "", //创建时间
             "appUrl": ""//app跳转路径
         }
     };
@@ -64,7 +65,7 @@ class messageCenter extends React.Component {
                     <section className="content" dangerouslySetInnerHTML={{__html: this.state.data.content}}>
                     </section>
                     <section className="info clearfix">
-                        <a onTouchTap={this.goTo.bind(this)} data-href={this.state.data.appUrl}>去看看</a>
+                        <a onTouchTap={this.goTo.bind(this)} href={this.state.data.appUrl}>去看看</a>
                     </section>
                 </article>
             </div>

@@ -5,7 +5,7 @@ SET `message`.`message_category` = 'SYSTEM'
 WHERE `message`.type = 'EVENT';
 
 UPDATE `aa`.`message`
-SET `message`.`delete` = '1'
+SET `message`.`deleted` = '1'
 WHERE `message`.type = 'EVENT';
 
 INSERT INTO `aa`.`message` (`title`, `app_title`, `template`, `template_txt`, `type`, `event_type`, `user_groups`, `channels`, `web_url`, `app_url`, `status`, `read_count`, `activated_by`, `activated_time`, `expired_time`, `created_by`, `created_time`, `updated_by`, `updated_time`, `deleted`)

@@ -64,7 +64,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
         List<UserMessageDto> userMessages = userMessageModels.stream().map(userMessageModel -> {
             UserMessageDto userMessageDto = new UserMessageDto(userMessageModel);
 
-            MessageModel messageModel = messageMapper.findById(userMessageModel.getMessageId());
+            MessageModel messageModel = messageMapper.findByIdBesidesDeleted(userMessageModel.getMessageId());
             userMessageDto.setMessageType(messageModel.getMessageCategory().getDescription());
 
             return userMessageDto;
