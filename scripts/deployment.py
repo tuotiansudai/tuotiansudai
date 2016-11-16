@@ -16,6 +16,7 @@ class Deployment(object):
         self.compile()
         self.build_and_unzip_worker()
         self.build_mq_consumer()
+        self.build_diagnosis()
         self.mk_static_package()
         self.init_docker()
 
@@ -41,6 +42,11 @@ class Deployment(object):
         print "Making MQ consumer build..."
         sh('cd ./ttsd-loan-mq-consumer && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-loan-mq-consumer/build/distributions && unzip \*.zip')
+
+    def build_diagnosis(self):
+        print "Making diagnosis build..."
+        sh('cd ./ttsd-diagnosis && {0} distZip'.format(self._gradle))
+        sh('cd ./ttsd-diagnosis/build/distributions && unzip \*.zip')
 
     def mkwar(self):
         print "Making war..."

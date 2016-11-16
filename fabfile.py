@@ -53,6 +53,7 @@ def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=invest distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=jpush distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-loan-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/ -PdiagnosisConfigPath=/workspace/v2config/default/ttsd-diagnosis/')
 
 
 def mk_static_zip():
@@ -132,13 +133,17 @@ def deploy_pay():
 def deploy_worker():
     put(local_path='./ttsd-job-worker/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-loan-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./ttsd-diagnosis/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
     sudo('supervisorctl stop all')
     with cd('/workspace'):
         sudo('rm -rf ttsd-job-worker-all/')
         sudo('rm -rf ttsd-job-worker-invest/')
         sudo('rm -rf ttsd-job-worker-jpush/')
         sudo('rm -rf ttsd-loan-mq-consumer/')
+        sudo('rm -rf ttsd-diagnosis/')
         sudo('unzip \*.zip')
+        sudo('supervisorctl reload')
         sudo('supervisorctl start all')
 
 
