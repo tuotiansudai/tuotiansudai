@@ -31,4 +31,21 @@ diagnosis:
     notify-mail-from: no-reply@tuotiansudai.com
     notify-mail-address: dev@tuotiansudai.com
     notify-mail-address-qa: dev@tuotiansudai.com
+  known-bad-bills:
+    - 477563
+    - 477564
+    - 477565
+    - 477566
+    - 477567
+    - 477568
+    - 477569
+    - 477570
+    - 477571
+    - 477572
+    - 477573
+    - 477574
+    - 477575
+    - 477576
+    - 477577
+
 
