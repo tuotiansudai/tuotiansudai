@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,22 +68,8 @@ public class SignInClient {
         try {
             Response response = this.execute(request);
 
-            SignInResult signInResult = objectMapper.readValue(response.body().string(), SignInResult.class);
+            return objectMapper.readValue(response.body().string(), SignInResult.class);
 
-            if(signInResult !=null && !signInResult.isResult() ){
-                return signInResult;
-            }
-
-            HttpSession session = httpServletRequest.getSession(false);
-            logger.debug(MessageFormat.format("[Login] user({0}) original session id({1}) new session id({2})",
-                    signInResult.getUserInfo().getLoginName(),
-                    session != null ? session.getId() : null,
-                    signInResult.getToken()));
-            if (session != null) {
-                redisWrapperClient.setex(session.getId(), 30, signInResult.getToken());
-            }
-
-            return signInResult;
         } catch (Exception e) {
             logger.error(MessageFormat.format("[sign in client] login failed (user={0} token={1} source={2} deviceId={3})", username, token, source, deviceId), e);
         }
@@ -206,22 +193,25 @@ public class SignInClient {
     }
 
     private Response execute(Request.Builder requestBuilder) throws IOException {
-        int times = 0;
-        String header = httpServletRequest.getHeader("X-Forwarded-For");
-        if (!Strings.isNullOrEmpty(header)) {
-            requestBuilder.addHeader("X-Forwarded-For", header);
+        int tryTimes = 0;
+
+        String xForwardedForHeader = httpServletRequest.getHeader("X-Forwarded-For");
+        if (!Strings.isNullOrEmpty(xForwardedForHeader)) {
+            requestBuilder.addHeader("X-Forwarded-For", xForwardedForHeader);
         }
-        Request request = requestBuilder.build();
+
         do {
+            Request request = requestBuilder.build();
             Response response = okHttpClient.newCall(request).execute();
-            if (response.code() < 500) {
+            if (!HttpStatus.valueOf(response.code()).is5xxServerError()) {
                 return response;
             }
 
-            logger.error(MessageFormat.format("[sign in client] 500 error (url={0})", request.httpUrl().url()));
+            logger.error(MessageFormat.format("[sign in client] sign in server response is 5xx error (url={0}), try times is {1}",
+                    request.httpUrl().url(), String.valueOf(tryTimes)));
 
-        } while (++times < RETRY_MAX_TIMES);
+        } while (++tryTimes < RETRY_MAX_TIMES);
 
-        throw new IOException(MessageFormat.format("[sign in client] sign in server error (url={0})", request.httpUrl().url()));
+        throw new IOException();
     }
 }
