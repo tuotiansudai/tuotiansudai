@@ -7,7 +7,7 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
     registerAccountForm.validate({
         focusCleanup: true,
         focusInvalid: false,
-        onfocusout: function (element) {
+        onkeyup: function (element) {
             this.element(element);
             if($('input.valid',registerAccountForm).length==2) {
                 $btnSubmit.prop('disabled',false);
