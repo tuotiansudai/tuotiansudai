@@ -112,7 +112,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         LoanerDetailsModel loanerDetailsModel = new LoanerDetailsModel();
         loanerDetailsModel.setUserName("UserName");
         when(loanerDetailsMapper.getByLoanId(anyLong())).thenReturn(loanerDetailsModel);
-        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "declaration", "", false, "");
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "declaration", null, false, "");
         when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(loanDetailsModel);
 
         PledgeHouseModel pledgeHouseModel = new PledgeHouseModel();

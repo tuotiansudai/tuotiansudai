@@ -1,12 +1,12 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -66,7 +66,8 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         }
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
         ProductType noContainProductType = null;
-        if(CollectionUtils.isEmpty(userCouponMapper.findUsedExperienceByLoginName(loanListRequestDto.getBaseParam().getUserId()))){
+        List<UserCouponModel> userCouponModels = userCouponMapper.findUsedExperienceByLoginName(loanListRequestDto.getBaseParam().getUserId());
+        if(CollectionUtils.isEmpty(userCouponModels) && userCouponModels.get(0).getEndTime().after(DateTime.now().toDate())){
             noContainProductType = ProductType.EXPERIENCE;
         }
 
@@ -158,8 +159,9 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             }
 
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
-            if (loanDetailsModel != null) {
-                loanResponseDataDto.setExtraSource("WEB".equals(loanDetailsModel.getExtraSource()) ? loanDetailsModel.getExtraSource() : "");
+            if(loanDetailsModel != null)
+            {
+                loanResponseDataDto.setExtraSource(loanDetailsModel.getExtraSource() != null ? (loanDetailsModel.getExtraSource().size() ==1 && loanDetailsModel.getExtraSource().contains(Source.WEB)) ? Source.WEB.name() : null : null);
             }
 
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
@@ -174,12 +176,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     }
 
     private List<ExtraLoanRateDto> fillExtraRate(List<ExtraLoanRateModel> extraLoanRateModels) {
-        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
-            @Override
-            public ExtraLoanRateDto apply(ExtraLoanRateModel model) {
-                return new ExtraLoanRateDto(model);
-            }
-        });
+        return Lists.transform(extraLoanRateModels, model -> new ExtraLoanRateDto(model));
     }
 
 }

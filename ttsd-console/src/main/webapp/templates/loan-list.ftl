@@ -98,7 +98,10 @@
                                     </#list>
                                 </tbody>
                             </table>
-                            <span class="ladderInvest" style="display: block;">${loanListDto.extraSource!}</span>
+                            <span class="ladderInvest" style="display: block;">
+                                <#list loanListDto.extraSource as extraSource>
+                                    ${extraSource.name()}<#sep>, </#sep>
+                                </#list></span>
                         <#else>
                             -
                         </#if>
