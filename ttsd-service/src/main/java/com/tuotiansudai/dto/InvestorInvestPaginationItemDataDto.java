@@ -42,9 +42,7 @@ public class InvestorInvestPaginationItemDataDto {
 
     private String contractNo;
 
-    private ContractStatus contractStatus;
-
-    public InvestorInvestPaginationItemDataDto(LoanModel loanModel, InvestModel investModel, InvestRepayModel investRepayModel, List<UserCouponDto> userCouponDtoList, boolean investRepayExist, InvestExtraRateModel investExtraRateModel, ContractStatus contractStatus) {
+    public InvestorInvestPaginationItemDataDto(LoanModel loanModel, InvestModel investModel, InvestRepayModel investRepayModel, List<UserCouponDto> userCouponDtoList, boolean investRepayExist, InvestExtraRateModel investExtraRateModel) {
         this.investId = investModel.getId();
         this.loanId = investModel.getLoanId();
         this.loanName = loanModel.getName();
@@ -67,15 +65,6 @@ public class InvestorInvestPaginationItemDataDto {
         this.productType = loanModel.getProductType();
         this.extraRate = investExtraRateModel != null ? investExtraRateModel.getExtraRate() : null;
         this.contractNo = investModel.getContractNo();
-        this.contractStatus = contractStatus;
-    }
-
-    public ContractStatus getContractStatus() {
-        return contractStatus;
-    }
-
-    public void setContractStatus(ContractStatus contractStatus) {
-        this.contractStatus = contractStatus;
     }
 
     public long getInvestId() {

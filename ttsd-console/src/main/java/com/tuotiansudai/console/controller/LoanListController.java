@@ -9,6 +9,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanListDto;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
@@ -136,7 +137,9 @@ public class LoanListController {
                 return baseDto;
             }
 
-            if (!Strings.isNullOrEmpty(transferApplicationModel.getContractNo())) {
+            InvestModel investModel = investService.findById(transferApplicationModel.getInvestId());
+
+            if(investModel == null || !Strings.isNullOrEmpty(investModel.getContractNo())){
                 baseDataDto.setMessage("该债权转让无可生成的合同!");
                 return baseDto;
             }
@@ -181,7 +184,9 @@ public class LoanListController {
                 return baseDto;
             }
 
-            if (!Strings.isNullOrEmpty(transferApplicationModel.getContractNo())) {
+            InvestModel investModel = investService.findById(transferApplicationModel.getInvestId());
+
+            if (investModel == null || !Strings.isNullOrEmpty(investModel.getContractNo())) {
                 baseDataDto.setMessage("该债权转让合同已经全部生成!");
                 return baseDto;
             }
