@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    aaro:
+      jdbc-url: jdbc:mysql://192.168.33.10:3306/aa?useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password:
+      driver-class-name: com.mysql.jdbc.Driver
+      minimum-idle: 0
+      maximum-pool-size: 1
+      read-only: true
+  mail:
+    host: smtp.qiye.163.com
+    prot: 994
+    username: no-reply@tuotiansudai.com
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            trust: smtp.qiye.163.com
+
+diagnosis:
+  schedule:
+    hour: 2
+    minute: 18
+  report:
+    notify-mail-from: no-reply@tuotiansudai.com
+    notify-mail-address: dev@tuotiansudai.com
+    notify-mail-address-qa: dev@tuotiansudai.com
+  known-bad-bills:
+    - 100000
+
+

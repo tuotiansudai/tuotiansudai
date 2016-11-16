@@ -54,10 +54,12 @@
                 <li>可校验性</li>
             </ul>
             <p>安心签是由中国金融认证中心（CFCA）全资子公司安心签平台为拓天速贷投资用户提供的一种电子缔约文件在线签署、存储和管理服务的平台功能。具有保密性、不可篡改性、可校验性。所形成的数据电文或电子缔约文件符合中国法律规定，与纸质文件具有同样的法律效力。</p>
-            <a href="/anxinSign" class="anxin-button">开通安心签</a>
+            <#if !isAppSource>
+                <a href="/anxinSign" class="anxin-button">开通安心签</a>
+            </#if>
         </div>
 
-        </div>
+    </div>
 
     <div class="column-box-box clearfix">
         <div class="page-width for-qa-answer">

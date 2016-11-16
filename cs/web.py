@@ -49,7 +49,7 @@ class BaseHandler(RequestHandler):
 class UsersHandler(BaseHandler):
     SQL = '''
     SELECT u.`login_name`,
-           a.`user_name`,
+           u.`user_name`,
            u.`mobile`,
            u.`register_time`,
            u.`last_modified_time`,
@@ -58,7 +58,7 @@ class UsersHandler(BaseHandler):
            u.`channel`,
            u.`province`,
            u.`city`,
-           a.`identity_number`,
+           u.`identity_number`,
            IFNULL((SELECT 1 FROM `user_role` ur WHERE ur.`login_name` = u.`login_name` AND ur.`role` = 'STAFF'), 0) AS is_self_staff,
            u.`referrer` ,
            IFNULL((SELECT 1 FROM `user_role` ur WHERE ur.`login_name`  = u.`referrer`  AND ur.`role` = 'STAFF'), 0) AS is_referrer_staff
@@ -250,7 +250,7 @@ class InvestRepaysHandler(BaseHandler):
 class UserHandler(BaseHandler):
     SQL_USER = '''
     SELECT u.`login_name`,
-           a.`user_name`,
+           u.`user_name`,
            u.`mobile`,
            u.`register_time`,
            u.`last_modified_time`,
@@ -259,7 +259,7 @@ class UserHandler(BaseHandler):
            u.`channel`,
            u.`province`,
            u.`city`,
-           a.`identity_number`,
+           u.`identity_number`,
            a.`balance`,
            IFNULL((SELECT 1 FROM `user_role` ur WHERE ur.`login_name` = u.`login_name` AND ur.`role` = 'STAFF'), 0) AS is_self_staff,
            u.`referrer` ,
@@ -304,7 +304,7 @@ class UserHandler(BaseHandler):
 class BalancesHandler(BaseHandler):
     SQL = '''
     SELECT a.`login_name`,
-           a.`user_name`,
+           u.`user_name`,
            u.`mobile`,
            a.`balance`
       FROM `account` a
