@@ -739,11 +739,11 @@
     <select id="queryInvestViscosityDetail" parameterType="map" resultMap="investViscosityDetailView">
         select
             temp.login_name,
-            a.user_name,
+            u.user_name,
             u.mobile,
             IFNULL((select 1 from user_role ur where ur.login_name = temp.login_name and ur.role='STAFF'),0) as is_staff,
             u.referrer,
-            ra.user_name as referrer_user_name,
+            (select referrer.user_name from user referrer where referrer.login_name = u.referrer) as referrer_user_name,
             IFNULL((select 1 from user_role ur where ur.login_name = u.referrer and ur.role='STAFF'),0) as is_referrer_staff,
             temp.total_amount,
             temp.last_invest_time,
@@ -768,8 +768,6 @@
             group by i.login_name
         ) temp
         LEFT JOIN `user` u on temp.login_name = u.login_name
-        LEFT JOIN `account` a on temp.login_name = a.login_name
-        LEFT JOIN account ra on u.referrer = ra.login_name
         WHERE
         <if test="loanCount == 5">
             <![CDATA[ temp.loan_count >= #{loanCount} ]]>

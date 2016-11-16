@@ -12,8 +12,10 @@ import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.Date;
 
 @Service
 public class MembershipInvestService {
@@ -35,6 +37,7 @@ public class MembershipInvestService {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    @Transactional
     public void afterInvestSuccess(String loginName, long investAmount, long investId) {
         try {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
@@ -60,7 +63,11 @@ public class MembershipInvestService {
     }
 
     public void membershipUpgrade(String loginName, long membershipId) {
-        UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, membershipId);
-        userMembershipMapper.create(userMembershipModel);
+        UserMembershipModel curUserMembershipModel = userMembershipMapper.findCurrentMaxByLoginName(loginName);
+        curUserMembershipModel.setExpiredTime(new Date());
+        userMembershipMapper.update(curUserMembershipModel);
+
+        UserMembershipModel newUserMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, newMembership.getId());
+        userMembershipMapper.create(newUserMembershipModel);
     }
 }

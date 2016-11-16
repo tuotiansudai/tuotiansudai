@@ -83,6 +83,9 @@ public class LoanCreateServiceImpl implements LoanCreateService {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
+    @Autowired
+    private AnxinSignPropertyMapper anxinSignPropertyMapper;
+
     @Override
     public LoanTitleModel createTitle(LoanTitleDto loanTitleDto) {
         LoanTitleModel loanTitleModel = new LoanTitleModel(idGenerator.generate(), LoanTitleType.NEW_TITLE_TYPE, loanTitleDto.getTitle());
@@ -223,6 +226,11 @@ public class LoanCreateServiceImpl implements LoanCreateService {
     private BaseDto<BaseDataDto> checkCreateLoanData(LoanCreateRequestDto loanCreateRequestDto) {
         if (userRoleMapper.findByLoginNameAndRole(loanCreateRequestDto.getLoan().getAgent(), Role.LOANER) == null) {
             return new BaseDto<>(new BaseDataDto(false, "代理用户不存在"));
+        }
+
+        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loanCreateRequestDto.getLoan().getAgent());
+        if (anxinProp == null || !anxinProp.isSkipAuth()) {
+            return new BaseDto<>(new BaseDataDto(false, "代理/借款 用户未开通安心签免短信验证"));
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount()) < AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMinInvestAmount())) {
@@ -378,7 +386,6 @@ public class LoanCreateServiceImpl implements LoanCreateService {
         LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel != null && LoanStatus.PREHEAT == loanModel.getStatus()) {
             loanMapper.updateStatus(loanId, LoanStatus.RAISING);
-            this.createAutoInvestJob(loanId);
         }
     }
 

@@ -45,6 +45,7 @@ public enum JobType {
     ExperienceRepay("新手体验标还款"),
     CalculateTravelLuxuryPrize("生成旅游奢侈品奖品"),
     PlatformBalanceLowNotify("平台账户余额不足提醒"),
+    ContractResponse("更新合同状态"),
     BirthdayMessage("生日消息发送");
 
     private final String description;

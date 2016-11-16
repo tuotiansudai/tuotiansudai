@@ -105,7 +105,7 @@ public class LoanServiceTest {
 
 
     protected AccountModel getFakeAccount() {
-        return new AccountModel("loginName", "username", "identityNumber", "payUserId", "payAccountId", new Date());
+        return new AccountModel("loginName", "payUserId", "payAccountId", new Date());
     }
 
     private LoanModel fakeLoanModel() {

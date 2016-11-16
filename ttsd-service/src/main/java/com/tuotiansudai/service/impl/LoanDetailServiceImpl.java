@@ -18,6 +18,7 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,9 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
+
+    @Autowired
+    private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -178,8 +182,12 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             }
         }
 
+        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
+        boolean anxinSkipAuth = anxinProp != null && anxinProp.isSkipAuth();
+        boolean isAnxinUser = anxinProp != null && StringUtils.isNotEmpty(anxinProp.getAnxinUserId());
 
-        InvestorDto investorDto = new InvestorDto(accountMapper.findByLoginName(loginName), this.isRemindNoPassword(loginName), this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount));
+        InvestorDto investorDto = new InvestorDto(accountMapper.findByLoginName(loginName), this.isRemindNoPassword(loginName),
+                this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount), anxinSkipAuth, isAnxinUser);
 
         LoanDetailDto loanDto = new LoanDetailDto(loanModel,
                 loanDetailsMapper.getByLoanId(loanModel.getId()),
