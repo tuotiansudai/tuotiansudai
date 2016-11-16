@@ -35,7 +35,7 @@ public class MobileAppSendSmsV2ServiceImpl implements MobileAppSendSmsV2Service 
     public BaseResponseDto sendSms(SendSmsCompositeRequestDto sendSmsCompositeRequestDto, String remoteIp) {
         if (!sendSmsCompositeRequestDto.getType().equals(CaptchaType.TURN_OFF_NO_PASSWORD_INVEST)
                 && !captchaHelper.captchaVerify(sendSmsCompositeRequestDto.getImageCaptcha(), sendSmsCompositeRequestDto.getBaseParam().getDeviceId(), remoteIp)) {
-            return new BaseResponseDto(ReturnMessage.NEED_IMAGE_CAPTCHA.getCode(), ReturnMessage.IMAGE_CAPTCHA_IS_WRONG.getMsg());
+            return new BaseResponseDto(ReturnMessage.IMAGE_CAPTCHA_IS_WRONG.getCode(), ReturnMessage.IMAGE_CAPTCHA_IS_WRONG.getMsg());
         }
 
         ReturnMessage returnMessage = checkSendSms(sendSmsCompositeRequestDto);

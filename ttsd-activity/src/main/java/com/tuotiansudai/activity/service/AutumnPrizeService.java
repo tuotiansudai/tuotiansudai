@@ -17,6 +17,7 @@ import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.MobileEncoder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
@@ -52,15 +53,13 @@ public class AutumnPrizeService {
     private String activityAutumnLuxuryInvestKey;
 
     @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
     private UserMapper userMapper;
 
     public long getTodayInvestAmount(String loginName, String type) {
-        String mobile = userMapper.findByLoginName(loginName) != null?userMapper.findByLoginName(loginName).getMobile():"";
-        String userName = accountMapper.findByLoginName(loginName) !=null?accountMapper.findByLoginName(loginName).getUserName():"";
-        String secondKey = MessageFormat.format("{0}:{1}:{2}:{3}", loginName,mobile,userName, new DateTime().toString("yyyy-MM-dd"));
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        String mobile = userModel != null ? userModel.getMobile() : "";
+        String userName = userModel != null ? userModel.getUserName() : "";
+        String secondKey = MessageFormat.format("{0}:{1}:{2}:{3}", loginName, mobile, userName, new DateTime().toString("yyyy-MM-dd"));
         String invests = null;
         if ("travel".equalsIgnoreCase(type)) {
             invests = redisWrapperClient.hget(this.activityAutumnTravelInvestKey, secondKey);
@@ -74,7 +73,7 @@ public class AutumnPrizeService {
             return amount;
         }
         List<String> investDetail = Lists.newArrayList(invests.split("\\|"));
-        if(CollectionUtils.isNotEmpty(investDetail) && investDetail.size() >= 1){
+        if (CollectionUtils.isNotEmpty(investDetail) && investDetail.size() >= 1) {
             return Long.parseLong(investDetail.get(0));
         }
         return amount;
