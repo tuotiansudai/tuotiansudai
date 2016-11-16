@@ -356,5 +356,4 @@ public class ExtraRateServiceTest {
         loanMapper.create(fakeLoanModel);
         return fakeLoanModel;
     }
-
 }

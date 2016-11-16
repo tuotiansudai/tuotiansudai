@@ -24,6 +24,8 @@ public enum JobType {
     LoanOut("放款后续处理"),
     AutoInvest("自动投资"),
     InvestCallBack("投资回调处理"),
+    NormalRepayCallBack("正常还款回调处理"),
+    AdvanceRepayCallBack("提前还款回调处理"),
     InvestTransferCallBack("债权转让投资回调处理"),
     LoanStatusToRecheck("标的状态从筹款变为等待复核"),
     CalculateDefaultInterest("计算逾期罚息"),
