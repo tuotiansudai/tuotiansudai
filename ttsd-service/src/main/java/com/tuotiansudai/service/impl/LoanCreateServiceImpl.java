@@ -176,14 +176,7 @@ public class LoanCreateServiceImpl implements LoanCreateService {
             this.updateExtraRate(loanId, loanCreateRequestDto.getLoanDetails().getExtraRateRuleIds());
         } else {
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
-            if (!Strings.isNullOrEmpty(loanDetailsModel.getExtraSource())) {
-                loanCreateRequestDto.getLoanDetails().setExtraSource(Lists.transform(Lists.newArrayList(loanDetailsModel.getExtraSource().split(",")), new Function<String, Source>() {
-                    @Override
-                    public Source apply(String input) {
-                        return Source.valueOf(input);
-                    }
-                }));
-            }
+            loanCreateRequestDto.getLoanDetails().setExtraSource(loanDetailsModel.getExtraSource());
         }
 
         loanDetailsMapper.deleteByLoanId(loanId);

@@ -44,10 +44,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
             createCalculateDefaultInterest();
         }
-        if (JobType.CalculateTravelLuxuryPrize.name().equalsIgnoreCase(schedulerName)) {
-            //运营生成中奖纪录,暂时停掉该job
-            //calculateTravelLuxuryPrize();
-        }
         if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
             createRefreshAreaByMobile();
         }
@@ -75,12 +71,10 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.PlatformBalanceLowNotify.name().equals(schedulerName)) {
             platformBalanceLowNotifyJob();
         }
-        if (JobType.ImitateLottery.name().equals(schedulerName)) {
-            deleteImitateLotteryJob();
-        }
         if (JobType.BirthdayMessage.name().equals(schedulerName)) {
             birthdayMessageSendJob();
         }
+
     }
 
     @Override
@@ -132,16 +126,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void calculateTravelLuxuryPrize() {
-        try {
-            jobManager.newJob(JobType.CalculateTravelLuxuryPrize, CalculateTravelLuxuryPrizeJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 5 0 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.CalculateTravelLuxuryPrize.name(), JobType.CalculateTravelLuxuryPrize.name()).submit();
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
     private void createRefreshAreaByMobile() {
         try {
             jobManager.newJob(JobType.AutoReFreshAreaByMobile, AutoReFreshAreaByMobileJob.class).replaceExistingJob(true)
@@ -158,10 +142,6 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     private void deleteAutoJPushAlertBirthDay() {
         jobManager.deleteJob(JobType.AutoJPushAlertBirthDay, JobType.AutoJPushAlertBirthDay.name(), JobType.AutoJPushAlertBirthDay.name());
-    }
-
-    private void deleteImitateLotteryJob() {
-        jobManager.deleteJob(JobType.ImitateLottery, JobType.ImitateLottery.name(), JobType.ImitateLottery.name());
     }
 
     private void deleteAutoJPushNoInvestAlert() {
