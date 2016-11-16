@@ -18,20 +18,30 @@ public class ReplaceBankCardDto {
     private Date applyDate;
     private BankCardStatus status;
     private String remark;
+    private String activeStatus;
 
     public ReplaceBankCardDto() {
     }
 
-    public ReplaceBankCardDto(long id, String loginName, String userName, String mobile,String oldCode, String oldNum, String applyCode, String applyNum, Date applyDate, BankCardStatus status, String remark) {
+    public ReplaceBankCardDto(long id, String loginName, String userName, String mobile, String oldCode, String oldNum, String applyCode, String applyNum, Date applyDate, BankCardStatus status, String remark, String activeStatus) {
         this.id = id;
         this.loginName = loginName;
         this.userName = userName;
         this.mobile = mobile;
-        this.oldCard = Strings.isNullOrEmpty(oldCode) ? "" : BankCardUtil.getBankName(oldCode) + String.format("(尾号%s)",oldNum.length() == 19 ? oldNum.substring(oldNum.length() - 4,oldNum.length())  : "");
-        this.applyCard = Strings.isNullOrEmpty(applyCode) ? "" : BankCardUtil.getBankName(applyCode) + String.format("(尾号%s)",applyNum.length() == 19 ? applyNum.substring(applyNum.length() - 4,applyNum.length())  : "");
+        this.oldCard = Strings.isNullOrEmpty(oldCode) ? "" : BankCardUtil.getBankName(oldCode) + String.format("(尾号%s)", oldNum.length() == 19 ? oldNum.substring(oldNum.length() - 4, oldNum.length()) : "");
+        this.applyCard = Strings.isNullOrEmpty(applyCode) ? "" : BankCardUtil.getBankName(applyCode) + String.format("(尾号%s)", applyNum.length() == 19 ? applyNum.substring(applyNum.length() - 4, applyNum.length()) : "");
         this.applyDate = applyDate;
         this.status = status;
         this.remark = remark;
+        this.activeStatus = activeStatus;
+    }
+
+    public String getActiveStatus() {
+        return activeStatus;
+    }
+
+    public void setActiveStatus(String activeStatus) {
+        this.activeStatus = activeStatus;
     }
 
     public String getUserName() {

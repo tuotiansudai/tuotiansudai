@@ -4,19 +4,24 @@ package com.tuotiansudai.service.impl;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.dto.ReplaceBankCardDto;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.BankCardStatus;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.BandCardManagerService;
+import com.tuotiansudai.task.OperationTask;
+import com.tuotiansudai.task.TaskConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BandCardManagerServiceImpl implements BandCardManagerService {
@@ -32,6 +37,8 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
 
     private static String BANK_CARD_REMARK_TEMPLATE = "bank_card_remark_id:{0}";
 
+    public final String BAND_CARD_ACTIVE_STATUS_TEMPLATE = "bank_card_active_status";
+
     private static int REMARK_LIFE_TIME = 60 * 60 * 24 * 30 * 6;
 
     @Override
@@ -44,12 +51,14 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
     public List<ReplaceBankCardDto> queryReplaceBankCardRecord(String loginName, String mobile, int index, int pageSize) {
         UserModel userModel = userMapper.findByMobile(mobile);
         List<BankCardModel> replaceBankCards = bankCardMapper.findReplaceBankCardByLoginName(userModel == null ? null : userModel.getLoginName(), index, pageSize);
+        String activeId = redisWrapperClient.get(BAND_CARD_ACTIVE_STATUS_TEMPLATE);
 
         Iterator<ReplaceBankCardDto> replaceBankCardDtoIterator = Iterators.transform(replaceBankCards.iterator(), input -> {
             UserModel userModelByLoginName = userMapper.findByLoginName(input.getLoginName());
             BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(input.getLoginName());
             return new ReplaceBankCardDto(input.getId(), input.getLoginName(), userModelByLoginName.getUserName(), userModelByLoginName.getMobile(), bankCardModel != null ? bankCardModel.getBankCode() : "",
-                    bankCardModel != null ? bankCardModel.getCardNumber() : "", input.getBankCode(), input.getCardNumber(), input.getCreatedTime(), input.getStatus(), redisWrapperClient.get(MessageFormat.format(this.BANK_CARD_REMARK_TEMPLATE, String.valueOf(input.getId()))));
+                    bankCardModel != null ? bankCardModel.getCardNumber() : "", input.getBankCode(), input.getCardNumber(), input.getCreatedTime(), input.getStatus(),
+                    redisWrapperClient.get(MessageFormat.format(this.BANK_CARD_REMARK_TEMPLATE, String.valueOf(input.getId()))),activeId.indexOf(String.valueOf(bankCardModel.getId())) != -1 ? "active" : "inActive");
         });
 
         return Lists.newArrayList(replaceBankCardDtoIterator);
