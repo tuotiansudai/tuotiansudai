@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
@@ -67,7 +68,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
         ProductType noContainProductType = null;
         List<UserCouponModel> userCouponModels = userCouponMapper.findUsedExperienceByLoginName(loanListRequestDto.getBaseParam().getUserId());
-        if(CollectionUtils.isEmpty(userCouponModels) || userCouponModels.get(0).getEndTime().before(DateTime.now().toDate())){
+        if((!Strings.isNullOrEmpty(loanListRequestDto.getBaseParam().getUserId()) && CollectionUtils.isEmpty(userCouponModels)) || (CollectionUtils.isNotEmpty(userCouponModels) && userCouponModels.get(0).getEndTime().before(DateTime.now().toDate()))){
             noContainProductType = ProductType.EXPERIENCE;
         }
 
