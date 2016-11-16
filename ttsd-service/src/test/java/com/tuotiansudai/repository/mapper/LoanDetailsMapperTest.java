@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,7 +70,7 @@ public class LoanDetailsMapperTest {
     @Test
     public void testCreateAndGetLoanDetailsByLoanId() throws Exception {
         prepareData();
-        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(9999L, "testDescription", "", false, "");
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(9999L, "testDescription", null, false, "");
 
         loanDetailsMapper.create(loanDetailsModel);
         LoanDetailsModel findLoanDetailsModel = loanDetailsMapper.getByLoanId(loanDetailsModel.getLoanId());

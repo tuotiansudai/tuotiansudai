@@ -2,6 +2,7 @@ package com.tuotiansudai.cfca.model;
 
 import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.response.tx3.Tx3202ResVO;
+import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -31,6 +32,7 @@ public class AnxinCreateContractBatchResponseModel implements Serializable {
     }
 
     public AnxinCreateContractBatchResponseModel(long businessId, Tx3202ResVO tx3202ResVO, CreateContractVO contractVO) {
+        JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         this.businessId = businessId;
         this.orderId = contractVO.getInvestmentInfo().get("orderId");
         this.batchNo = tx3202ResVO.getBatchNo();
@@ -38,6 +40,10 @@ public class AnxinCreateContractBatchResponseModel implements Serializable {
         this.contractNo = contractVO.getContractNo();
         this.retCode = tx3202ResVO.getHead().getRetCode();
         this.retMessage = tx3202ResVO.getHead().getRetMessage();
+        this.templateId = contractVO.getTemplateId();
+        this.isSign = contractVO.getIsSign();
+        this.signInfos = jsonObjectMapper.writeValueAsString(contractVO.getSignInfos());
+        this.investmentInfo = jsonObjectMapper.writeValueAsString(contractVO.getInvestmentInfo());
         this.createdTime = new Date();
     }
 
