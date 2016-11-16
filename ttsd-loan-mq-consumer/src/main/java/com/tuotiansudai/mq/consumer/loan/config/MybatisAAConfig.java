@@ -1,4 +1,4 @@
-package com.tuotian.mq.consumer.loan.config;
+package com.tuotiansudai.mq.consumer.loan.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

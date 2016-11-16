@@ -37,7 +37,7 @@ public class LoanListDto {
 
     List<ExtraLoanRateItemDto> extraLoanRateModels;
 
-    private String extraSource;
+    private List<Source> extraSource;
 
     public long getId() {
         return id;
@@ -154,11 +154,11 @@ public class LoanListDto {
         this.extraLoanRateModels = extraLoanRateModels;
     }
 
-    public String getExtraSource() {
+    public List<Source> getExtraSource() {
         return extraSource;
     }
 
-    public void setExtraSource(String extraSource) {
+    public void setExtraSource(List<Source> extraSource) {
         this.extraSource = extraSource;
     }
 }
