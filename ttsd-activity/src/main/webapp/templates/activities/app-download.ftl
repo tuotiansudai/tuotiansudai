@@ -3,33 +3,104 @@
 
 <div class="download-container">
     <div class="download-one">
-        <img src="${staticServer}/activity/images/download/download-one.png" class="pc-img" width="100%">
-        <img src="${staticServer}/activity/images/download/phone-one.png" class="mobile-img" width="100%">
-        <div class="wp">
-            <a href="https://itunes.apple.com/cn/app/ta-tian-su-dai/id1039233966?mt=8" class="ios-btn" target="_blank"></a>
-            <a href="/app/tuotiansudai.apk" class="android-btn" target="_blank"></a>
-            <a href="javascript:void(0)" class="wx-code"></a>
+        <div class="wp step-one">
+            <div class="content-item">
+                <p><img src="${staticServer}/activity/images/download/one-text.png"></p>
+                <p>
+                    <a href="https://itunes.apple.com/cn/app/ta-tian-su-dai/id1039233966?mt=8" class="ios-btn" target="_blank"></a>
+                    <a href="/app/tuotiansudai.apk" class="android-btn" target="_blank"></a>
+                    <a href="javascript:void(0)" class="wx-code"></a>
+                </p>
+            </div>
         </div>
     </div>
     <div class="download-two">
-        <img src="${staticServer}/activity/images/download/download-two.png"  class="pc-img" width="100%">
-        <img src="${staticServer}/activity/images/download/phone-two.png" class="mobile-img" width="100%">
+        <div class="wp step-two">
+            <p class="title-icon">
+                <img src="${staticServer}/activity/images/download/two-icon.png">
+            </p>
+            <div class="content-item">
+                <p class="title-text">债权上线·早知道</p>
+                <p>最新热门标的实时提醒</p>
+                <p>信息快人一步，收益抢先到手</p>
+                <p>
+                    <i class="time-icon"><img src="${staticServer}/activity/images/download/time-icon.png"></i>
+                </p>
+                <p>
+                    <span>开团提醒</span>
+                </p>
+            </div>
+        </div>
     </div>
     <div class="download-three">
-        <img src="${staticServer}/activity/images/download/download-three.png"  class="pc-img" width="100%">
-        <img src="${staticServer}/activity/images/download/phone-three.png" class="mobile-img" width="100%">
+        <div class="wp step-three">
+            <p class="title-icon">
+                <img src="${staticServer}/activity/images/download/down-icon.png">
+            </p>
+            <div class="content-item">
+                <p class="title-text">资金流转·不站岗</p>
+                <p>精心打磨回款日历</p>
+                <p>每一笔投资尽在掌握，收益数据更直观</p>
+                <p>
+                    <i class="time-icon"><img src="${staticServer}/activity/images/download/cal-icon.png"></i>
+                </p>
+                <p>
+                    <span>回款日历</span>
+                </p>
+            </div>
+        </div>
     </div>
     <div class="download-four">
-        <img src="${staticServer}/activity/images/download/download-four.png"  class="pc-img" width="100%">
-        <img src="${staticServer}/activity/images/download/phone-four.png" class="mobile-img" width="100%">
+       <div class="wp step-four">
+            <div class="content-item">
+                <p class="title-text">随时随地·掌上投</p>
+                <p>碎片时间做投资</p>
+                <p>随时随地能玩赚，闲钱不停滞</p>
+                <p>
+                    <i class="time-icon"><img src="${staticServer}/activity/images/download/userful-icon.png"></i>
+                </p>
+                <p>
+                    <span>便捷投资</span>
+                </p>
+            </div>
+        </div>
     </div>
     <div class="download-five">
-        <img src="${staticServer}/activity/images/download/download-five.png"  class="pc-img" width="100%">
-        <img src="${staticServer}/activity/images/download/phone-five.png" class="mobile-img" width="100%">
+       <div class="wp step-five">
+            <div class="content-item">
+                <p class="title-text">多重保障·更安全</p>
+                <p>数据采用256位加密技术</p>
+                <p>多重密码保护，快捷支付也安全</p>
+                <p>
+                    <i class="time-icon"><img src="${staticServer}/activity/images/download/safe-icon.png"></i>
+                    <i class="data-icon"><img src="${staticServer}/activity/images/download/data-icon.png"></i>
+                </p>
+                <p>
+                    <span>账户安全</span>
+                    <span>数据与信息账户</span>
+                </p>
+            </div>
+        </div>
     </div>
     <div class="download-six">
-        <img src="${staticServer}/activity/images/download/download-six.png"  class="pc-img" width="100%">
-        <img src="${staticServer}/activity/images/download/phone-six.png" class="mobile-img" width="100%">
+        <div class="wp step-six">
+            <p class="title-icon">
+                <img src="${staticServer}/activity/images/download/down-img.png">
+            </p>
+            <div class="content-item">
+                <p class="title-text">一键签到·攒积分</p>
+                <p>不再错过每次签到</p>
+                <p>每日积分翻倍涨，海量商品随心兑</p>
+                <p>
+                    <i class="time-icon"><img src="${staticServer}/activity/images/download/store-icon.png"></i>
+                    <i class="time-icon"><img src="${staticServer}/activity/images/download/click-icon.png"></i>
+                </p>
+                <p>
+                    <span>积分商城</span>
+                    <span>一键签到</span>
+                </p>
+            </div>
+        </div>
     </div>
      <div class="download-seven">
         <div class="content-item">

@@ -4,88 +4,228 @@
 }
 
 .download-container{
+  float:left;
+  width:100%;
   .wp{
-    width:1000px;
+    width:1200px;
+    padding:0 100px;
     margin:0 auto;
-    position: relative;
+    box-sizing:border-box;
     &:after{
       content:'';
       display:block;
       clear:both;
     }
-    .ios-btn{
-      width:80px;
-      height:25px;
-      position: absolute;
-      bottom:60px;
-      left:180px;
-      background:url('/activity/images/download/iphone-btn.png') no-repeat center;
-      background-size:100%;
-      @media (max-width:374px){
-        width:50px;
-        height:20px;
-        left:10px;
-        bottom:40px;
-      }
-      @media (min-width:375px) and (max-width:700px) {
-        width:60px;
-        height:20px;
-        left:10px;
-        bottom:40px;
-      }
-    }
-    .android-btn{
-      width:80px;
-      height:25px;
-      position: absolute;
-      bottom:60px;
-      left:280px;
-      background:url('/activity/images/download/android-btn.png') no-repeat center;
-      background-size:100%;
-      @media (max-width:374px){
-        width:50px;
-        height:20px;
-        left:65px;
-        bottom:40px;
-      }
-      @media (min-width:375px) and (max-width:700px) {
-        width:60px;
-        height:20px;
-        left:75px;
-        bottom:40px;
-      }
-    }
-    .wx-code{
-      width:100px;
-      height:100px;
-      position: absolute;
-      bottom:15px;
-      left:375px;
-      background:url('/activity/images/download/wx-code.png') no-repeat center;
-      background-size:100%;
-      @media (max-width:374px){
-        width:50px;
-        height:50px;
-        left:120px;
-        bottom:25px;
-      }
-      @media (min-width:375px) and (max-width:700px) {
-        width:50px;
-        height:50px;
-        left:140px;
-        bottom:25px;
+  }
+  .download-one{
+    background:#ee7b2f;
+    .step-one{
+      background: url(/activity/images/download/step-one.png) no-repeat;
+      background-position: 720px 40px;
+      .content-item{
+        float:left;
+        margin-left:70px;
+        p{
+          margin-top:60px;
+        }
+        .ios-btn{
+          display:inline-block;
+          width:120px;
+          height:36px;
+          background:url('/activity/images/download/iphone-btn.png') no-repeat center;
+          background-size:100%;
+          position: relative;
+          bottom: 30px;
+        }
+        .android-btn{
+          display:inline-block;
+          width:120px;
+          height:36px;
+          background:url('/activity/images/download/android-btn.png') no-repeat center;
+          background-size:100%;
+          position: relative;
+          bottom: 30px;
+          margin: 0 15px;
+        }
+        .wx-code{
+          display:inline-block;
+          width:110px;
+          height:110px;
+          background:url('/activity/images/download/wx-code.png') no-repeat center;
+          background-size:100%;
+        }
       }
     }
   }
-  .pc-img{
-    @media (max-width:700px) {
-      display:none;
+  .download-two{
+    background:#fcfcfc;
+    .step-two{
+      background:url('/activity/images/download/step-two-bg.png') no-repeat;
+      background-position:0 160px;
+      .title-icon{
+        text-align:center;
+      }
+      .content-item{
+        float:right;
+        margin:30px 0 40px;
+        p{
+          font-size:20px;
+          color:#b2b2b2;
+          margin-bottom:0;
+          &.title-text{
+            color:#3e3f50;
+            font-size:40px;
+            margin-bottom:60px;
+          }
+          .time-icon{
+            display:inline-block;
+            width:80px;
+            height:60px;
+            text-align:center;
+            margin-top:50px;
+          }
+        }
+      }
     }
   }
-  .mobile-img{
-    display:none;
-    @media (max-width:700px) {
-      display:block;
+  .download-three{
+    background:#fbf3e9;
+    .step-three{
+      background:url('/activity/images/download/date-icon.png') no-repeat;
+      background-position: 150px 245px;
+      .title-icon{
+        text-align:center;
+        img{
+          margin-top: -2px;
+        }
+      }
+      .content-item{
+        float:left;
+        margin:100px 0 70px;
+        p{
+          font-size:20px;
+          color:#ee7c2f;
+          margin-bottom:0;
+          &.title-text{
+            color:#3e3f50;
+            font-size:40px;
+            margin-bottom:60px;
+          }
+          .time-icon{
+            display:inline-block;
+            width:80px;
+            height:60px;
+            text-align:center;
+            margin-top:50px;
+          }
+        }
+      }
+    }
+  }
+  .download-four{
+    background:url('/activity/images/download/step-four-bg.jpg') no-repeat;
+    background-position: -200px 0;
+    .step-four{
+      .title-icon{
+        text-align:center;
+      }
+      .content-item{
+        float:right;
+        width:400px;
+        height:415px;
+        background:rgba(29, 61, 108, .5);
+        margin:0 0 80px;
+        padding: 0 40px;
+        box-sizing: border-box;
+        p{
+          font-size:20px;
+          color:#fff;
+          margin-bottom:0;
+          &.title-text{
+            font-size:40px;
+            margin:40px 0 60px;
+          }
+          .time-icon{
+            display:inline-block;
+            width:80px;
+            height:60px;
+            text-align:center;
+            margin-top:50px;
+          }
+        }
+      }
+    }
+  }
+  .download-five{
+    background:#fbf3e9;
+    .step-five{
+      background:url('/activity/images/download/five-bg.png') no-repeat;
+      background-position:690px 40px;
+      .title-icon{
+        text-align:center;
+      }
+      .content-item{
+        float:left;
+        margin:60px 0;
+        p{
+          font-size:20px;
+          color:#ee7c2f;
+          margin-bottom:0;
+          &.title-text{
+            color:#3e3f50;
+            font-size:40px;
+            margin-bottom:60px;
+          }
+          .time-icon{
+            display:inline-block;
+            width:80px;
+            height:60px;
+            text-align:center;
+            margin-top:50px;
+          }
+          .data-icon{
+            display:inline-block;
+            width:140px;
+            height:60px;
+            text-align:center;
+            margin-top:50px;
+          }
+        }
+      }
+    }
+  }
+  .download-six{
+    background:#fcfcfc;
+    .step-six{
+      background:url('/activity/images/download/six-bg.png') no-repeat;
+      background-position:90px 100px;
+      .title-icon{
+        text-align:center;
+        img{
+          margin-top: -2px;
+        }
+      }
+      .content-item{
+        float:right;
+        margin:30px 0 40px;
+        p{
+          font-size:20px;
+          color:#b2b2b2;
+          margin-bottom:0;
+          &.title-text{
+            color:#3e3f50;
+            font-size:40px;
+            margin-bottom:60px;
+          }
+          .time-icon{
+            display:inline-block;
+            width:80px;
+            height:60px;
+            text-align:center;
+            margin-top:50px;
+          }
+        }
+      }
     }
   }
   .download-seven{
@@ -141,7 +281,7 @@
         top:50%;
         right:0;
         margin-top:-100px;
-        background:url('/activity/images/download/wx-footer.png') no-repeat center;
+        background:url('/activity/images/download/wx-code.png') no-repeat center;
         background-size:100%;
       }
     }
