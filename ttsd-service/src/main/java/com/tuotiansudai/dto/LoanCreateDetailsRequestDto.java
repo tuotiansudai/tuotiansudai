@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.model.LoanDetailsModel;
 import com.tuotiansudai.repository.model.Source;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.util.Collections;
 import java.util.List;
 
 public class LoanCreateDetailsRequestDto {
@@ -29,14 +30,7 @@ public class LoanCreateDetailsRequestDto {
         this.declaration = loanDetailsModel.getDeclaration();
         this.activity = loanDetailsModel.isActivity();
         this.activityDesc = loanDetailsModel.getActivityDesc();
-        if (!Strings.isNullOrEmpty(loanDetailsModel.getExtraSource())) {
-            this.extraSource = Lists.transform(Lists.newArrayList(loanDetailsModel.getExtraSource().split(",")), new Function<String, Source>() {
-                @Override
-                public Source apply(String input) {
-                    return Source.valueOf(input);
-                }
-            });
-        }
+        this.extraSource = loanDetailsModel.getExtraSource();
     }
 
     public String getDeclaration() {
