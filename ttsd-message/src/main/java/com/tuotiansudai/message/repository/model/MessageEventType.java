@@ -1,6 +1,11 @@
 package com.tuotiansudai.message.repository.model;
 
 public enum MessageEventType {
+    //old type
+    RECHARGE_SUCCESS("充值成功"),
+    ASSIGN_COUPON_SUCCESS("获得优惠券"),
+
+    //new type
     REGISTER_USER_SUCCESS("注册成功"),
     REGISTER_ACCOUNT_SUCCESS("实名认证成功"),
     WITHDRAW_APPLICATION_SUCCESS("提现申请成功"),

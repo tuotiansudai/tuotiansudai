@@ -71,10 +71,22 @@ public class MessageCreateAspect {
             return;
         }
         try {
-            MessageCompleteDto messageCompleteDto = MessageCompleteDto.createFromLoanCreateRequestDto(loanCreateRequestDto);
-
-            long messageId = messageService.createAndEditManualMessage(messageCompleteDto, 0);
-            redisWrapperClient.hset(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanCreateRequestDto.getLoan().getId()), String.valueOf(messageId));
+            if (redisWrapperClient.hexists(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanCreateRequestDto.getLoan().getId()))) {
+                if (null == loanCreateRequestDto.getLoanMessage()) {
+                    redisWrapperClient.hdel(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanCreateRequestDto.getLoan().getId()));
+                } else {
+                    long messageId = Long.valueOf(redisWrapperClient.hget(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanCreateRequestDto.getLoan().getId())));
+                    MessageCompleteDto messageCompleteDto = MessageCompleteDto.createFromLoanCreateRequestDto(loanCreateRequestDto);
+                    messageCompleteDto.setId(messageId);
+                    messageService.createAndEditManualMessage(messageCompleteDto, 0L);
+                }
+            } else {
+                if (null != loanCreateRequestDto.getLoanMessage()) {
+                    MessageCompleteDto messageCompleteDto = MessageCompleteDto.createFromLoanCreateRequestDto(loanCreateRequestDto);
+                    long messageId = messageService.createAndEditManualMessage(messageCompleteDto, 0L);
+                    redisWrapperClient.hset(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanCreateRequestDto.getLoan().getId()), String.valueOf(messageId));
+                }
+            }
             logger.info(MessageFormat.format("[Message Event Aspect] after create/update loan pointcut finished. loanId:{0}", loanCreateRequestDto.getLoan().getId()));
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Message Event Aspect] after create/update loan pointcut is fail. loanId:{0}", loanCreateRequestDto.getLoan().getId()), e);

@@ -60,7 +60,6 @@ public class MessageServiceImpl implements MessageService {
             messageCompleteDto.setJpush(true);
             messageCompleteDto.setPushType(jPushAlertModel.getPushType());
             messageCompleteDto.setPushSource(jPushAlertModel.getPushSource());
-            messageCompleteDto.setPushDistricts(jPushAlertModel.getPushDistricts());
         } else {
             messageCompleteDto.setJpush(false);
         }

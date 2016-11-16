@@ -4,7 +4,6 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
         var $selectDom = $('.selectpicker'); //select表单
         var $submitBtn = $('.message-save'); //提交按钮
         var $importBtn = $('.file-btn'); //导入用户按钮
-        var $messageForm = $('.message-form');
         var $userGroups = $('.userGroups');
         var $importGroups = $('.importGroups');
         var $allGroups = $('.allGroups');
@@ -107,22 +106,12 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
         $submitBtn.on('click', function (event) {
             event.preventDefault();
             var boolFlag = check();
-            var channelArr = [], placeArr = [], userGroupArr = [];
+            var channelArr = [], userGroupArr = [];
             userGroupArr.push($('#userGroup').find('input[type="checkbox"]:checked').val());
 
             $('#messageChannel').find('.channel:checked').each(function (index, el) {
                 channelArr.push($(this).val());
             });
-
-            if ($('#areaGroup').find('input[type="checkbox"]:checked').length > 0) {
-                $('#areaGroup').find('input[type="checkbox"]:checked').each(function (index, el) {
-                    placeArr.push($(this).val());
-                });
-            } else {
-                // $('#areaGroup').find('input[type="checkbox"]').each(function (index, el) {
-                //     placeArr.push($(this).val());
-                // });
-            }
 
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {
@@ -133,13 +122,12 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                         "templateTxt": getContentTxt(),
                         "userGroups": userGroupArr,
                         "channels": channelArr,
-                        "manualMessageType": $('.manualMessageType').val(),
+                        "messageCategory": $('.messageCategory').val(),
                         "webUrl": $('.message-web-url').val(),
                         "appUrl": $('.message-app-url').val(),
                         "jpush": $('#extra').prop('checked') ? true : false,
                         "pushType": $('.message-pushType').val(),
-                        "pushSource": $('.message-pushSource').val(),
-                        "pushDistricts": placeArr
+                        "pushSource": $('.message-pushSource').val()
                     };
                     var dataForm = JSON.stringify(dataDto);
                     var importUsersId = $('.importUsersId').val();
@@ -151,7 +139,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                         data: dataForm,
                         contentType: 'application/json; charset=UTF-8'
                     }).done(function (res) {
-                        if (res.status) {
+                        if (res.data.status) {
                             location.href = "/message-manage/manual-message-list";
                         }
                     });
@@ -165,15 +153,6 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                 $('.check-item').show();
             } else {
                 $('.check-item').hide();
-            }
-        });
-
-        $('.area-list .push_object_choose').on('change', function (event) {
-            event.preventDefault();
-            if ($(this).attr('value') == 'all') {
-                $('#areaGroup .app-push-link').hide();
-            } else if ($(this).attr('value') == 'district') {
-                $('#areaGroup .app-push-link').show();
             }
         });
     });

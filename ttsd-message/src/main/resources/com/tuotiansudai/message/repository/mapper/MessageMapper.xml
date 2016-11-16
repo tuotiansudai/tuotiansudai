@@ -56,7 +56,7 @@
             `event_type` = #{eventType},
             `user_groups` = #{userGroups, typeHandler=com.tuotiansudai.message.util.mybatis.MessageUserGroupListTypeHandler},
             `channels` = #{channels, typeHandler=com.tuotiansudai.message.util.mybatis.MessageChannelListTypeHandler},
-        `manual_message_type` = #{messageCategory},
+        `message_category` = #{messageCategory},
         `web_url` = #{webUrl},
         `app_url` = #{appUrl},
             `status` = #{status},
@@ -73,6 +73,10 @@
 
     <select id="findById" parameterType="long" resultMap="messageResultMap">
         select * from message where id = #{id} and deleted = 0;
+    </select>
+
+    <select id="findByIdBesidesDeleted" parameterType="long" resultMap="messageResultMap">
+        select * from message where id =#{id}
     </select>
 
     <select id="findActiveByEventType" parameterType="map" resultMap="messageResultMap">

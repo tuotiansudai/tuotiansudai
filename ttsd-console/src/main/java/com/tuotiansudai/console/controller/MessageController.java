@@ -10,7 +10,6 @@ import com.tuotiansudai.message.dto.MessageCompleteDto;
 import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.message.service.MessageService;
 import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.util.DistrictUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -90,7 +89,7 @@ public class MessageController {
     }
 
     @RequestMapping(value = "/manual-message", method = RequestMethod.GET)
-    public ModelAndView createManualMessage() {
+    public ModelAndView manualMessageCreate() {
         ModelAndView modelAndView = new ModelAndView("/message-manual-edit");
         modelAndView.addObject("userGroups", Lists.newArrayList(MessageUserGroup.values()));
         List<MessageUserGroup> selectedUserGroups = Lists.newArrayList(MessageUserGroup.values());
@@ -102,7 +101,6 @@ public class MessageController {
         modelAndView.addObject("appUrls", AppUrl.values());
         modelAndView.addObject("pushTypes", PushType.values());
         modelAndView.addObject("pushSources", PushSource.values());
-        modelAndView.addObject("provinces", DistrictUtil.getProvinces());
         return modelAndView;
     }
 
@@ -120,7 +118,6 @@ public class MessageController {
         modelAndView.addObject("appUrls", AppUrl.values());
         modelAndView.addObject("pushTypes", PushType.values());
         modelAndView.addObject("pushSources", PushSource.values());
-        modelAndView.addObject("provinces", DistrictUtil.getProvinces());
 
         return modelAndView;
     }

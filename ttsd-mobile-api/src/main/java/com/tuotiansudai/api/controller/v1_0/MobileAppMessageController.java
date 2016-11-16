@@ -1,25 +1,16 @@
 package com.tuotiansudai.api.controller.v1_0;
 
 
-import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.UserMessageDto;
-import com.tuotiansudai.api.dto.v1_0.UserMessagesRequestDto;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
-import com.tuotiansudai.message.dto.MessageCompleteDto;
-import com.tuotiansudai.message.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 public class MobileAppMessageController extends MobileAppBaseController {
 
     @Autowired
     private MobileAppUserMessageService mobileAppUserMessageService;
-
-    @Autowired
-    private MessageService messageService;
 
     @RequestMapping(value = "/get/messages", method = RequestMethod.POST)
     public BaseResponseDto getMessages(@RequestBody UserMessagesRequestDto requestDto) {
@@ -32,16 +23,13 @@ public class MobileAppMessageController extends MobileAppBaseController {
     }
 
     @RequestMapping(value = "/get/userMessage/{userMessageId}", method = RequestMethod.GET)
-    public ModelAndView getUserMessage(@PathVariable long userMessageId) {
-        ModelAndView modelAndView = new ModelAndView("");
+    @ResponseBody
+    public BaseResponseDto<UserMessageViewDto> getUserMessage(@PathVariable long userMessageId) {
+        UserMessageViewDto userMessageViewDto = mobileAppUserMessageService.getUserMessageModelByIdAndLoginName(userMessageId, getLoginName());
+        BaseResponseDto<UserMessageViewDto> baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
 
-        UserMessageDto userMessageDto = mobileAppUserMessageService.getUserMessageModelByIdAndLoginName(userMessageId, getLoginName());
-        MessageCompleteDto messageCompleteDto = messageService.findMessageCompleteDtoByMessageId(userMessageId);
-        if (null != messageCompleteDto && null != messageCompleteDto.getAppUrl()) {
-            modelAndView.addObject("appUrl", messageCompleteDto.getAppUrl().getPath());
-        }
+        baseResponseDto.setData(userMessageViewDto);
 
-        modelAndView.addObject("dto", userMessageDto);
-        return modelAndView;
+        return baseResponseDto;
     }
 }

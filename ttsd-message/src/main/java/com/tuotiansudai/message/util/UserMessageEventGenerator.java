@@ -129,31 +129,31 @@ public class UserMessageEventGenerator {
 
         long amount = ((BigInteger) withdraw.get("amount")).longValue();
         String loginName = (String) withdraw.get("login_name");
+        MessageModel messageModel = null;
         if (withdrawStatus.equals(SUCCESS)) {
-            MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.WITHDRAW_SUCCESS);
+            messageModel = messageMapper.findActiveByEventType(MessageEventType.WITHDRAW_SUCCESS);
             //Title:您的{0}元提现已到账,请查收
             //AppTitle:您的{0}元提现已到账,请查收
             //Content:尊敬的用户，您提交的{0}元提现申请已成功通过审核，请及时查收款项，感谢您选择拓天速贷。
-            String title = MessageFormat.format(messageModel.getTitle(), AmountConverter.convertCentToString(amount));
-            String appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount));
-            String content = MessageFormat.format(messageModel.getTemplate(), AmountConverter.convertCentToString(amount));
-            long messageId = messageModel.getId();
-            UserMessageModel userMessageModel = new UserMessageModel(messageId, loginName, title, appTitle, content);
-            userMessageMapper.create(userMessageModel);
-            sendJPushByUserMessageModel(userMessageModel);
+
         } else if (withdrawStatus.equals(APPLY_SUCCESS)) {
-            MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.WITHDRAW_APPLICATION_SUCCESS);
+            messageModel = messageMapper.findActiveByEventType(MessageEventType.WITHDRAW_APPLICATION_SUCCESS);
             //Title:您的{0}元提现申请已提交成功
             //AppTitle:您的{0}元提现申请已提交成功
             //Content:尊敬的用户，您提交了{0}元提现申请，联动优势将会在1个工作日内进行审批，请耐心等待。
-            String title = MessageFormat.format(messageModel.getTitle(), AmountConverter.convertCentToString(amount));
-            String appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount));
-            String content = MessageFormat.format(messageModel.getTemplate(), AmountConverter.convertCentToString(amount));
-            long messageId = messageModel.getId();
-            UserMessageModel userMessageModel = new UserMessageModel(messageId, loginName, title, appTitle, content);
-            userMessageMapper.create(userMessageModel);
-            sendJPushByUserMessageModel(userMessageModel);
         }
+
+        if (null == messageModel) {
+            return;
+        }
+
+        String title = MessageFormat.format(messageModel.getTitle(), AmountConverter.convertCentToString(amount));
+        String appTitle = MessageFormat.format(messageModel.getAppTitle(), AmountConverter.convertCentToString(amount));
+        String content = MessageFormat.format(messageModel.getTemplate(), AmountConverter.convertCentToString(amount));
+        long messageId = messageModel.getId();
+        UserMessageModel userMessageModel = new UserMessageModel(messageId, loginName, title, appTitle, content);
+        userMessageMapper.create(userMessageModel);
+        sendJPushByUserMessageModel(userMessageModel);
     }
 
     @Transactional

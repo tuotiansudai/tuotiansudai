@@ -25,15 +25,6 @@ public class UserMessageDto implements Serializable {
         this.createdTime = userMessageModel.getCreatedTime();
     }
 
-    public UserMessageDto(long userMessageId, String messageType, String title, String content, boolean read, Date createdTime) {
-        this.userMessageId = userMessageId;
-        this.messageType = messageType;
-        this.title = title;
-        this.content = content;
-        this.read = read;
-        this.createdTime = createdTime;
-    }
-
     public long getUserMessageId() {
         return userMessageId;
     }

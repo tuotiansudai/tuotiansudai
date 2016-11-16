@@ -10,8 +10,6 @@ import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.model.JumpTo;
 import com.tuotiansudai.jpush.repository.model.PushUserType;
 import com.tuotiansudai.message.repository.model.*;
-import com.tuotiansudai.util.DistrictUtil;
-import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -34,7 +32,6 @@ public class MessageCompleteDto implements Serializable {
     private boolean jpush;
     private PushType pushType;
     private PushSource pushSource;
-    private List<String> pushDistricts;
     private MessageStatus status;
     private long readCount;
     private String activatedBy;
@@ -60,7 +57,6 @@ public class MessageCompleteDto implements Serializable {
         messageCompleteDto.setJpush(true);
         messageCompleteDto.setPushType(PushType.IMPORTANT_EVENT);
         messageCompleteDto.setPushSource(PushSource.ALL);
-        messageCompleteDto.setPushDistricts(DistrictUtil.getAllCodes());
         messageCompleteDto.setStatus(MessageStatus.APPROVED);
         messageCompleteDto.setReadCount(0);
         messageCompleteDto.setActivatedBy(createdBy);
@@ -89,7 +85,6 @@ public class MessageCompleteDto implements Serializable {
         messageCompleteDto.setJpush(true);
         messageCompleteDto.setPushType(PushType.IMPORTANT_EVENT);
         messageCompleteDto.setPushSource(PushSource.ALL);
-        messageCompleteDto.setPushDistricts(DistrictUtil.getAllCodes());
         messageCompleteDto.setStatus(MessageStatus.APPROVED);
         messageCompleteDto.setReadCount(0);
         messageCompleteDto.setActivatedBy(null);
@@ -154,7 +149,7 @@ public class MessageCompleteDto implements Serializable {
         jpushAlertDto.setId(null);
         jpushAlertDto.setName(this.title);
         jpushAlertDto.setPushType(this.pushType);
-        jpushAlertDto.setPushDistricts(CollectionUtils.isEmpty(this.pushDistricts) ? null : this.pushDistricts);
+        jpushAlertDto.setPushDistricts(null);
         jpushAlertDto.setPushSource(this.pushSource);
         jpushAlertDto.setPushUserType(Lists.newArrayList(PushUserType.ALL));
         jpushAlertDto.setContent(this.templateTxt);
@@ -343,13 +338,5 @@ public class MessageCompleteDto implements Serializable {
 
     public void setPushSource(PushSource pushSource) {
         this.pushSource = pushSource;
-    }
-
-    public List<String> getPushDistricts() {
-        return pushDistricts;
-    }
-
-    public void setPushDistricts(List<String> pushDistricts) {
-        this.pushDistricts = pushDistricts;
     }
 }

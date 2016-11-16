@@ -11,5 +11,5 @@ public interface MobileAppUserMessageService {
 
     BaseResponseDto updateReadMessage(String messageId);
 
-    UserMessageDto getUserMessageModelByIdAndLoginName(long userMessageId, String loginName);
+    UserMessageViewDto getUserMessageModelByIdAndLoginName(long userMessageId, String loginName);
 }

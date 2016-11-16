@@ -6,7 +6,7 @@ require(['jquery', 'csrf', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepic
         $('.approve-btn').on('click', function () {
             if (confirm("确认审核？")) {
                 var messageId = $(this).attr('data-messageId');
-                var url = "/message-manage/manual-message/" + messageId + "/approve";
+                var url = "/message-manage/approve/" + messageId;
                 $.ajax({
                     url: url,
                     type: 'POST',
@@ -23,7 +23,7 @@ require(['jquery', 'csrf', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepic
         $('.reject-btn').on('click', function () {
             if (confirm("确认驳回？")) {
                 var messageId = $(this).attr('data-messageId');
-                var url = "/message-manage/manual-message/" + messageId + "/reject";
+                var url = "/message-manage/reject/" + messageId;
                 $.ajax({
                     url: url,
                     type: 'POST',
@@ -40,7 +40,7 @@ require(['jquery', 'csrf', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepic
         $('.delete-btn').on('click', function () {
             if (confirm("确认删除？")) {
                 var messageId = $(this).attr('data-messageId');
-                var url = "/message-manage/manual-message/" + messageId + "/delete";
+                var url = "/message-manage/delete/" + messageId;
                 $.ajax({
                     url: url,
                     type: 'POST',
