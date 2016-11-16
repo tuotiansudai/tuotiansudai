@@ -139,11 +139,11 @@ public class InvestServiceImpl implements InvestService {
     private void checkInvestAvailable(InvestDto investDto) throws InvestException {
         AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
 
-        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(accountModel.getLoginName());
-
-        if (anxinProp == null || StringUtils.isEmpty(anxinProp.getProjectCode())) {
-            throw new InvestException(InvestExceptionType.ANXIN_SIGN_IS_UNUSABLE);
-        }
+//        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(accountModel.getLoginName());
+//
+//        if (anxinProp == null || StringUtils.isEmpty(anxinProp.getProjectCode())) {
+//            throw new InvestException(InvestExceptionType.ANXIN_SIGN_IS_UNUSABLE);
+//        }
 
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
@@ -297,7 +297,7 @@ public class InvestServiceImpl implements InvestService {
 
         long extraRateInterest = 0;
         long extraRateFee = 0;
-        if (loanDetailsModel != null && !Strings.isNullOrEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB.name())) {
+        if (loanDetailsModel != null && !CollectionUtils.isEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB)) {
             extraRateInterest = getExtraRate(loanId, amount, loanModel.getDuration());
             extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }

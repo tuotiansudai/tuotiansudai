@@ -39,7 +39,7 @@ public class AppShareController {
 
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView getAppSharePage(@RequestParam(value = "referrerMobile") String referrerMobile, HttpServletRequest httpServletRequest) {
+    public ModelAndView getAppSharePage(@RequestParam(value = "referrerMobile",required = false) String referrerMobile, HttpServletRequest httpServletRequest) {
         UserModel referrer = userMapper.findByMobile(referrerMobile);
         if (null == referrer) {
             ModelAndView modelAndView = new ModelAndView("/error/error-info-page");

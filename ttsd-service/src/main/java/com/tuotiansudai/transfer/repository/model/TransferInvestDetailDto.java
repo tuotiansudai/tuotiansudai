@@ -35,6 +35,12 @@ public class TransferInvestDetailDto implements Serializable {
 
     private String contractNo;
 
+    private String contractOld;
+
+    private String contractOK;
+
+    private String contractCreating;
+
     public Integer getId() {
         return id;
     }
@@ -149,5 +155,29 @@ public class TransferInvestDetailDto implements Serializable {
 
     public void setContractNo(String contractNo) {
         this.contractNo = contractNo;
+    }
+
+    public String getContractOld() {
+        return contractOld;
+    }
+
+    public void setContractOld(String contractOld) {
+        this.contractOld = contractOld;
+    }
+
+    public String getContractOK() {
+        return contractOK;
+    }
+
+    public void setContractOK(String contractOK) {
+        this.contractOK = contractOK;
+    }
+
+    public String getContractCreating() {
+        return contractCreating;
+    }
+
+    public void setContractCreating(String contractCreating) {
+        this.contractCreating = contractCreating;
     }
 }

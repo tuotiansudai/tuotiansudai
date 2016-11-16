@@ -10,6 +10,7 @@ import cfca.trustsign.common.vo.response.ErrorResVO;
 import cfca.trustsign.common.vo.response.tx3.*;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.cfca.connector.HttpConnector;
+import com.tuotiansudai.cfca.constant.AnxinRetCode;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
@@ -52,7 +53,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3001ReqVO);
-        logger.debug("req:" + req);
+        logger.info("req:" + req);
 
         String txCode = "3001";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
@@ -62,7 +63,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
-        logger.debug("res:" + res);
+        logger.info("res:" + res);
 
         Tx3ResVO tx3001ResVO = readResponse(res, Tx3001ResVO.class);
 
@@ -89,7 +90,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3101ReqVO);
-        logger.debug("req:" + req);
+        logger.info("req:" + req);
 
         String txCode = "3101";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
@@ -99,7 +100,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
-        logger.debug("res:" + res);
+        logger.info("res:" + res);
         Tx3ResVO tx3101ResVO = readResponse(res, Tx3101ResVO.class);
 
         // 记录响应日志
@@ -124,7 +125,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3102ReqVO);
-        logger.debug(MessageFormat.format("[安心签] verifyCaptcha. userId:{0}, projectCode:{1}, checkCode:{2}, request date:{3}", userId, projectCode, checkCode, req));
+        logger.info(MessageFormat.format("[安心签] verifyCaptcha. userId:{0}, projectCode:{1}, checkCode:{2}, request date:{3}", userId, projectCode, checkCode, req));
 
         String txCode = "3102";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
@@ -134,7 +135,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
-        logger.debug(MessageFormat.format("[安心签] verifyCaptcha. userId:{0}, projectCode:{1}, checkCode:{2}, response date:{3}", userId, projectCode, checkCode, res));
+        logger.info(MessageFormat.format("[安心签] verifyCaptcha. userId:{0}, projectCode:{1}, checkCode:{2}, response date:{3}", userId, projectCode, checkCode, res));
 
         Tx3ResVO tx3102ResVO = readResponse(res, Tx3102ResVO.class);
 
@@ -159,7 +160,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
-        logger.debug(MessageFormat.format("[安心签] loanId:{0}, batchNo:{1} created contract request date:{2}", businessId, batchNo, req));
+        logger.info(MessageFormat.format("[安心签] loanId:{0}, batchNo:{1} created contract request date:{2}", businessId, batchNo, req));
 
         String txCode = "3202";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
@@ -169,7 +170,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         requestResponseService.insertBatchGenerateContractResponse(businessId, batchNo, tx3202ResVO);
 
-        logger.debug(MessageFormat.format("[安心签] loanId:{0},batchNo:{1} created contract response date:{2}", businessId, batchNo, res));
+        logger.info(MessageFormat.format("[安心签] loanId:{0},batchNo:{1} created contract response date:{2}", businessId, batchNo, res));
         return tx3202ResVO;
     }
 
@@ -185,7 +186,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3211ReqVO);
-        logger.debug(MessageFormat.format("[安心签] find contract response , batchNo:{0}", batchNo));
+        logger.info(MessageFormat.format("[安心签] find contract response , batchNo:{0}", batchNo));
 
         requestResponseService.insertBatchQueryContractRequest(businessId, tx3211ReqVO);
 
@@ -193,7 +194,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
-        logger.debug("[安心签] Query contract response:" + res);
+        logger.info("[安心签] Query contract response:" + res);
 
         Tx3211ResVO tx3211ResVO = (Tx3211ResVO) readResponse(res, Tx3211ResVO.class);
 
@@ -217,14 +218,14 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                     logger.error(MessageFormat.format("[安心签] Query contract response error, loan/transfer Id:{0}, batchNo:{1}", businessId + "", batchNo), e);
                     continue;
                 }
-                if (tx3211ResVO != null && tx3211ResVO.getCreateContracts() != null) {
+                if (isSuccess(tx3211ResVO)) {
                     for (CreateContractVO createContractVO : tx3211ResVO.getCreateContracts()) {
                         contractResponseViews.add(new ContractResponseView(Long.parseLong(createContractVO.getInvestmentInfo().get("orderId")),
                                 createContractVO.getContractNo(), createContractVO.getCode()));
                     }
                 } else {
                     // 60030407 = 该批次还没有执行完毕，请稍后再试
-                    if (tx3211ResVO != null && "60030407".equals(tx3211ResVO.getHead().getRetCode())) {
+                    if (tx3211ResVO != null && AnxinRetCode.CONTRACT_IN_CREATING.equals(tx3211ResVO.getHead().getRetCode())) {
                         waitingBatchNoList.add(batchNo);
                     }
                     logger.error(MessageFormat.format("[安心签] Query contract response error. businessId:{0}, batchNo:{1}, errorCode:{2}, errorMessage:{3}",
@@ -239,12 +240,12 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     public byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException {
         HttpConnector httpConnector = new HttpConnector();
         httpConnector.init();
-        logger.debug(MessageFormat.format("[安心签] down loan contract , contractNo:{0}", contractNo));
+        logger.info(MessageFormat.format("[安心签] down loan contract , contractNo:{0}", contractNo));
         return httpConnector.getFile("platId/" + Request.PLAT_ID + "/contractNo/" + contractNo + "/downloading");
     }
 
     private Tx3ResVO readResponse(String res, Class<? extends Tx3ResVO> cla) {
-        if (res.indexOf("\"AnxinRetCode.SUCCESS\"") > 0) {
+        if (res.indexOf("\"" + AnxinRetCode.SUCCESS + "\"") > 0) {
             // 成功：
             JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
             return jsonObjectMapper.readValue(res, cla);
@@ -283,6 +284,10 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         person.setAddress(userModel.getCity());
         person.setAuthenticationMode("公安部");
         return person;
+    }
+
+    private boolean isSuccess(Tx3ResVO tx3ResVO) {
+        return tx3ResVO != null && tx3ResVO.getHead() != null && AnxinRetCode.SUCCESS.equals(tx3ResVO.getHead().getRetCode());
     }
 
 }

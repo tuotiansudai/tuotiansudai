@@ -17,6 +17,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.ContractNoStatus;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
 import com.tuotiansudai.job.AnxinQueryContractJob;
 import com.tuotiansudai.job.JobType;
@@ -109,7 +110,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final int BATCH_NO_LIFT_TIME = 60 * 60 * 24 * 7; // bath_NO 在redis里保存7天
 
-    private static final int CREATE_CONTRACT_MAX_IN_DOING_TIME = 60 * 60; // 创建合同的时间在1个小时内应该可以完成，如果job出现问题，没能删除InCreating key, 1个小时后，可以再次手动创建合同
+    private static final int CREATE_CONTRACT_MAX_IN_DOING_TIME = 60 * 30; // 创建合同的时间在半个小时内应该可以完成，如果job出现问题，没能删除InCreating key, 半个小时后，可以再次手动创建合同
 
 
     @Value(value = "${anxin.contract.batch.num}")
@@ -308,61 +309,71 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     public BaseDto createLoanContracts(long loanId) {
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
 
-        List<CreateContractVO> createContractVOs = Lists.newArrayList();
-        List<InvestModel> investModels = investMapper.findContractFailInvest(loanId);
-        InvestModel investModel;
-        BaseDto baseDto = new BaseDto();
         LoanModel loanModel = loanMapper.findById(loanId);
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
         if (agentAnxinProp == null || Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())) {
-            logger.error(MessageFormat.format("[安心签] create contract error, agentModel is not anxin sign , loanid:{0} , userId:{1}", loanId, loanModel.getAgentLoginName()));
+            logger.error(MessageFormat.format("[安心签] create contract error, agent has not signed, loanid:{0}, userId:{1}",
+                    String.valueOf(loanId), loanModel.getAgentLoginName()));
             return new BaseDto(false);
         }
 
         List<String> batchNoList = new ArrayList<>();
-
         boolean processResult = true;
+
+        List<InvestModel> investModels = investMapper.findContractFailInvest(loanId);
+        List<CreateContractVO> createContractVOs = new ArrayList<>();
+
         for (int i = 0; i < investModels.size(); i++) {
-            investModel = investModels.get(i);
-            CreateContractVO createContractVO = collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
+            InvestModel investModel = investModels.get(i);
+            CreateContractVO createContractVO = collectInvestorContractModel(loanId, investModel);
             if (createContractVO == null) {
                 continue;
             }
             createContractVOs.add(createContractVO);
-            if (createContractVOs.size() == batchNum || investModels.size() == (i + 1)) {
-                String batchNo = UUIDGenerator.generate();
-                try {
-                    logger.debug(MessageFormat.format("[安心签] create contract begin , loanId:{0}, batchNo{1}", loanId, batchNo));
-                    //创建合同
-                    Tx3202ResVO tx3202ResVO = anxinSignConnectService.createContractBatch3202(loanId, batchNo, AnxinContractType.LOAN_CONTRACT, createContractVOs);
-
-                    if (!isSuccess(tx3202ResVO)) {
-                        processResult = false;
-                    }
-                    batchNoList.add(batchNo);
-                } catch (PKIException e) {
-                    smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
-
-                    baseDto.setSuccess(false);
-                    logger.error(MessageFormat.format("[安心签] create contract error , loanId:{0}", loanId), e);
+            if (createContractVOs.size() == batchNum) {
+                if (!createContractBatch(loanId, createContractVOs, batchNoList)) {
+                    processResult = false;
                 }
                 createContractVOs.clear();
             }
         }
+        // 循环结束，如果列表里还有未处理的，则给它们创建合同
+        if (!createContractVOs.isEmpty()) {
+            if (!createContractBatch(loanId, createContractVOs, batchNoList)) {
+                processResult = false;
+            }
+        }
 
         if (!processResult) {
-            logger.error("[安心签]: some contract create error , ready send sms . loanId" + loanId);
+            logger.error("[安心签]: create contract error. loanId:" + String.valueOf(loanId));
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
         }
 
         if (CollectionUtils.isNotEmpty((batchNoList))) {
-            logger.debug("[安心签]:创建job，十分钟后，查询并更新合同状态。标的ID:" + loanId);
+            logger.debug("[安心签]: 创建job，十分钟后，查询并更新合同状态。loanId:" + String.valueOf(loanId));
             updateContractResponseHandleJob(batchNoList, loanId, AnxinContractType.LOAN_CONTRACT);
         }
 
         redisWrapperClient.setex(LOAN_BATCH_NO_LIST_KEY + loanId, BATCH_NO_LIFT_TIME, String.join(",", batchNoList));
-        baseDto.setSuccess(true);
-        return baseDto;
+        return new BaseDto(true);
+    }
+
+    private Boolean createContractBatch(long loanId, List<CreateContractVO> createContractVOs, List<String> batchNoList) {
+        String batchNo = UUIDGenerator.generate();
+        try {
+            logger.debug(MessageFormat.format("[安心签] create contract begin, loanId:{0}, batchNo:{1}", String.valueOf(loanId), batchNo));
+            //创建合同
+            Tx3202ResVO tx3202ResVO = anxinSignConnectService.createContractBatch3202(loanId, batchNo, AnxinContractType.LOAN_CONTRACT, createContractVOs);
+
+            if (!isSuccess(tx3202ResVO)) {
+                return false;
+            }
+            batchNoList.add(batchNo);
+        } catch (PKIException e) {
+            logger.error(MessageFormat.format("[安心签] create contract error, loanId:{0}, batchNo:{1}", String.valueOf(loanId), batchNo), e);
+            return false;
+        }
+        return true;
     }
 
     private void updateContractResponseHandleJob(List<String> batchNoList, long businessId, AnxinContractType contractType) {
@@ -388,14 +399,13 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         CreateContractVO createContractVO = collectTransferContractModel(transferApplicationId);
         if (createContractVO == null) {
-            logger.error(MessageFormat.format("[安心签] create transfer contract error,users is not anxin sign , transferApplicationId:{0}", transferApplicationId));
             return new BaseDto(false);
         }
         List<CreateContractVO> createContractVOs = Lists.newArrayList(createContractVO);
         BaseDto baseDto = new BaseDto();
         String batchNo = UUIDGenerator.generate();
         try {
-            logger.debug(MessageFormat.format("[安心签] create transfer contract begin , transferId:{0}, batchNo{1}", transferApplicationId, batchNo));
+            logger.debug(MessageFormat.format("[安心签] create transfer contract begin, transferId:{0}, batchNo:{1}", transferApplicationId, batchNo));
             //创建合同
             Tx3202ResVO tx3202ResVO = anxinSignConnectService.createContractBatch3202(transferApplicationId, batchNo, AnxinContractType.TRANSFER_CONTRACT, createContractVOs);
 
@@ -404,7 +414,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
 
             baseDto.setSuccess(false);
-            logger.error(MessageFormat.format("[安心签] create transfer contract error , transferId:{0}", transferApplicationId), e);
+            logger.error(MessageFormat.format("[安心签] create transfer contract error, transferId:{0}", transferApplicationId), e);
         }
         createContractVOs.clear();
 
@@ -412,7 +422,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             logger.debug("[安心签]:创建job，十分钟后，查询并更新合同状态。债权ID:" + transferApplicationId);
             updateContractResponseHandleJob(Arrays.asList(batchNo), transferApplicationId, AnxinContractType.TRANSFER_CONTRACT);
         } else {
-            logger.error("[安心签]: create transfer contract error , ready send sms . transferId" + transferApplicationId);
+            logger.error("[安心签]: create transfer contract error, ready send sms. transferId:" + transferApplicationId);
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
         }
 
@@ -428,7 +438,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         UserModel transfereeUserModel = userMapper.findByLoginName(transferApplicationModel.getLoginName());
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(transferApplicationModel.getLoginName());
         if (agentAnxinProp == null || Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())) {
-            logger.error(MessageFormat.format("[安心签] create transfer contract error,agentAnxinProp is not anxin sign , transferApplicationId:{0} , userId:{1}", transferApplicationId, transferApplicationModel.getLoginName()));
+            logger.error(MessageFormat.format("[安心签] create transfer contract error, agent has not signed, transferApplicationId:{0}, userId:{1}", transferApplicationId, transferApplicationModel.getLoginName()));
             return null;
         }
         if (transfereeUserModel != null) {
@@ -440,7 +450,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         UserModel investAccountModel = userMapper.findByLoginName(investModel.getLoginName());
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investModel.getLoginName());
         if (investorAnxinProp == null || Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())) {
-            logger.error(MessageFormat.format("[安心签] create transfer contract error,investorAnxinProp is not anxin sign , transferApplicationId:{0} , userId:{1}", transferApplicationId, investModel.getLoginName()));
+            logger.error(MessageFormat.format("[安心签] create transfer contract error, investor has not signed, transferApplicationId:{0}, userId:{1}", transferApplicationId, investModel.getLoginName()));
             return null;
         }
         if (investAccountModel != null) {
@@ -475,7 +485,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("investAmount", AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) + "元");
         dataModel.put("transferTime", simpleDateFormat.format(transferApplicationModel.getTransferTime()));
         dataModel.put("leftPeriod", String.valueOf(transferApplicationModel.getLeftPeriod()));
-        dataModel.put("orderId", String.valueOf(transferApplicationModel.getId()));
+        dataModel.put("orderId", String.valueOf(transferApplicationModel.getInvestId()));
 
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         String msg1;
@@ -527,7 +537,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return createContractVO;
     }
 
-    private CreateContractVO collectInvestorContractModel(String investorLoginName, long loanId, long investId) {
+    private CreateContractVO collectInvestorContractModel(long loanId, InvestModel investModel) {
         CreateContractVO createContractVO = new CreateContractVO();
         Map<String, String> dataModel = new HashMap<>();
 
@@ -539,17 +549,19 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
 
         // 投资人
-        UserModel investorModel = userMapper.findByLoginName(investorLoginName);
-        AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investorLoginName);
+        long investId = investModel.getId();
+        String investLoginName = investModel.getLoginName();
+        UserModel investorModel = userMapper.findByLoginName(investLoginName);
+        AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
 
         if (investorAnxinProp == null || Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())) {
-            logger.error(MessageFormat.format("[安心签] create contract error, investor has not signed anxin yet. loanid:{0}, investId:{1}, userId:{2}", loanId, investId, investorLoginName));
+            logger.error(MessageFormat.format("[安心签] create contract error, investor has not signed. loanid:{0}, investId:{1}, userId:{2}",
+                    String.valueOf(loanId), String.valueOf(investId), investLoginName));
             return null;
         }
 
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
-        InvestModel investModel = investMapper.findById(investId);
 
         dataModel.put("agentMobile", agentModel.getMobile());
         dataModel.put("agentIdentityNumber", agentModel.getIdentityNumber());
@@ -610,14 +622,74 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         // 把合同号更新到 invest 或 transferApplication 表
         contractResponseViews.stream().filter(contractResponseView -> contractResponseView.getRetCode().equals(AnxinRetCode.SUCCESS)).forEach(contractResponseView -> {
-            if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
-                investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
-            } else {
-                transferApplicationMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
-            }
+            investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
         });
 
         return waitingBatchNoList;
     }
 
+    /**
+     * 将合同编号更新为OLD或WAITING
+     *
+     * @param loanId
+     * @return
+     */
+    @Override
+    public BaseDto updateLoanInvestContractNo(long loanId) {
+
+        LoanModel loanModel = loanMapper.findById(loanId);
+        String agentLoginName = loanModel.getAgentLoginName();
+        AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(agentLoginName);
+
+        if (agentAnxinProp == null || StringUtils.isEmpty(agentAnxinProp.getProjectCode())) {
+            // update all invest contractNo to "OLD"
+            investMapper.updateAllContractNoByLoanId(loanId, ContractNoStatus.OLD.name());
+            return new BaseDto();
+        }
+
+        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
+        for (InvestModel investModel : successInvestList) {
+            String investLoginName = investModel.getLoginName();
+            AnxinSignPropertyModel investAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
+
+            if (investAnxinProp == null || StringUtils.isEmpty(investAnxinProp.getProjectCode())) {
+                // update contractNo to "OLD"
+                investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.OLD.name());
+            } else {
+                // update contractNo to "WAITING"
+                investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.WAITING.name());
+            }
+        }
+
+        return new BaseDto();
+    }
+
+    /**
+     * 将债权转让投资的合同编号更新为OLD或WAITING
+     *
+     * @param investId
+     * @return
+     */
+    @Override
+    public BaseDto updateTransferInvestContractNo(long investId) {
+
+        InvestModel investModel = investMapper.findById(investId);
+        String investLoginName = investModel.getLoginName();
+        AnxinSignPropertyModel investAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
+
+        InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
+        String tranferLoginName = transferInvestModel.getLoginName();
+        AnxinSignPropertyModel tranferAnxinProp = anxinSignPropertyMapper.findByLoginName(tranferLoginName);
+
+        if (investAnxinProp == null || StringUtils.isEmpty(investAnxinProp.getProjectCode())
+                || tranferAnxinProp == null || StringUtils.isEmpty(tranferAnxinProp.getProjectCode())) {
+            // update contractNo to "OLD"
+            investMapper.updateContractNoById(investId, ContractNoStatus.OLD.name());
+        } else {
+            // update contractNo to "WAITING"
+            investMapper.updateContractNoById(investId, ContractNoStatus.WAITING.name());
+        }
+
+        return new BaseDto();
+    }
 }

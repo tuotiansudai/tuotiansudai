@@ -202,6 +202,7 @@ public class RequestResponseServiceImpl implements RequestResponseService {
             responseModel.setBatchNo(batchNo);
             responseModel.setRetCode(tx3211ResVO.getHead().getRetCode());
             responseModel.setRetMessage(tx3211ResVO.getHead().getRetMessage());
+            responseModel.setCreatedTime(new Date());
             anxinQueryContractBatchResponseMapper.create(responseModel);
         }
     }

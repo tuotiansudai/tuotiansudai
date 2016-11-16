@@ -68,18 +68,19 @@ public class AnxinQueryContractJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
         try {
-            logger.info("trigger anxin contract handle job, prepare do job");
-
             long businessId = (long) context.getJobDetail().getJobDataMap().get(BUSINESS_ID);
+
+            logger.info(MessageFormat.format("trigger anxin contract handle job, prepare do job. businessId:{0}, Counter:{1}",
+                    String.valueOf(businessId), redisWrapperClient.get(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId)));
 
             List<String> batchNoList = (List<String>) context.getJobDetail().getJobDataMap().get(BATCH_NO_LIST);
 
             AnxinContractType anxinContractType = (AnxinContractType) context.getJobDetail().getJobDataMap().get(ANXIN_CONTRACT_TYPE);
 
 
-            if (redisWrapperClient.incrEx(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId, SEVEN_DAYS) > 3) {
+            if (redisWrapperClient.incrEx(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId, SEVEN_DAYS) > 5) {
 
-                // 尝试超过3次（第4次了），清空计数器，不再尝试了
+                // 尝试超过5次（第6次了），清空计数器，不再尝试了
                 redisWrapperClient.del(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId);
 
                 // 发短信报警
@@ -98,14 +99,14 @@ public class AnxinQueryContractJob implements Job {
             logger.info(MessageFormat.format("trigger anxin contract handle job, loanId:{0}, anxin contract type:{1}", String.valueOf(businessId), anxinContractType.name()));
 
             if (waitingBatchNo != null && waitingBatchNo.size() > 0) {
-                logger.error(MessageFormat.format("some batch is still in waiting. businessId:{0}, anxin ContractType:{1}, batchNo list(in waiting):{2}",
+                logger.info(MessageFormat.format("some batch is still in waiting. businessId:{0}, anxin ContractType:{1}, batchNo list(in waiting):{2}",
                         String.valueOf(businessId), anxinContractType.name(), String.join(",", waitingBatchNo)));
                 this.createAnxinQueryContractJob(waitingBatchNo, businessId, anxinContractType);
             } else {
                 // 查询结束，清空计数器
                 redisWrapperClient.del(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId);
 
-                logger.debug(MessageFormat.format("execute query contract over. businessId:{0}", String.valueOf(businessId)));
+                logger.info(MessageFormat.format("execute query contract over. businessId:{0}", String.valueOf(businessId)));
 
                 // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
                 if (anxinContractType == AnxinContractType.LOAN_CONTRACT) {
@@ -119,7 +120,8 @@ public class AnxinQueryContractJob implements Job {
                     redisWrapperClient.del(AnxinSignServiceImpl.LOAN_CONTRACT_IN_CREATING_KEY + businessId);
                 } else if (anxinContractType == AnxinContractType.TRANSFER_CONTRACT) {
                     TransferApplicationModel applicationModel = transferApplicationMapper.findById(businessId);
-                    if (applicationModel != null && StringUtils.isEmpty(applicationModel.getContractNo())) {
+                    InvestModel investModel = investService.findById(applicationModel.getInvestId());
+                    if (investModel != null && StringUtils.isEmpty(investModel.getContractNo())) {
                         logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}", String.valueOf(businessId)));
                         // 失败了，发短信
                         smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));

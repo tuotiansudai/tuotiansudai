@@ -9,6 +9,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanListDto;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
@@ -92,8 +93,8 @@ public class LoanListController {
 
     @ResponseBody
     @RequestMapping(value = "/generate-contract", method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> generateContract(@RequestParam(value = "businessId", required = false) Long businessId,
-                                                 @RequestParam(value = "anxinContractType", required = false) AnxinContractType anxinContractType) {
+    public BaseDto<BaseDataDto> generateContract(@RequestParam(value = "businessId", required = true) Long businessId,
+                                                 @RequestParam(value = "anxinContractType", required = true) AnxinContractType anxinContractType) {
 
         BaseDto baseDto = new BaseDto();
         baseDto.setSuccess(false);
@@ -136,7 +137,9 @@ public class LoanListController {
                 return baseDto;
             }
 
-            if (!Strings.isNullOrEmpty(transferApplicationModel.getContractNo())) {
+            InvestModel investModel = investService.findById(transferApplicationModel.getInvestId());
+
+            if(investModel == null || !Strings.isNullOrEmpty(investModel.getContractNo())){
                 baseDataDto.setMessage("该债权转让无可生成的合同!");
                 return baseDto;
             }
@@ -147,14 +150,19 @@ public class LoanListController {
 
     @ResponseBody
     @RequestMapping(value = "/query-contract", method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> queryContract(@RequestParam(value = "businessId", required = false) Long businessId,
-                                              @RequestParam(value = "anxinContractType", required = false) AnxinContractType anxinContractType) {
+    public BaseDto<BaseDataDto> queryContract(@RequestParam(value = "businessId", required = true) Long businessId,
+                                              @RequestParam(value = "anxinContractType", required = true) AnxinContractType anxinContractType) {
 
         BaseDto baseDto = new BaseDto();
         baseDto.setSuccess(false);
         BaseDataDto baseDataDto = new BaseDataDto();
         baseDto.setData(baseDataDto);
         String batchStr;
+
+        if(businessId == null){
+            baseDataDto.setMessage("请填写标的ID!");
+            return baseDto;
+        }
 
         if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
 
@@ -176,7 +184,9 @@ public class LoanListController {
                 return baseDto;
             }
 
-            if (!Strings.isNullOrEmpty(transferApplicationModel.getContractNo())) {
+            InvestModel investModel = investService.findById(transferApplicationModel.getInvestId());
+
+            if (investModel == null || !Strings.isNullOrEmpty(investModel.getContractNo())) {
                 baseDataDto.setMessage("该债权转让合同已经全部生成!");
                 return baseDto;
             }

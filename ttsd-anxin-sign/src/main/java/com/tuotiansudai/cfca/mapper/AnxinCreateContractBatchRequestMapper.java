@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AnxinCreateContractBatchRequestMapper {
 
-    @Insert("INSERT INTO create_contract_batch_request (business_id,order_id,batch_no,contract_no,tx_time,template_id,is_sign,sign_infos,investment_info,updated_time,created_time) " +
-            "VALUES (#{businessId},#{orderId},#{batchNo},#{contractNo},#{txTime},#{templateId},#{isSign},#{signInfos},#{investmentInfo},#{updatedTime},#{createdTime})")
+    @Insert("INSERT INTO create_contract_batch_request (business_id,order_id,batch_no,tx_time,template_id,is_sign,sign_infos,investment_info,created_time) " +
+            "VALUES (#{businessId},#{orderId},#{batchNo},#{txTime},#{templateId},#{isSign},#{signInfos},#{investmentInfo},#{createdTime})")
     void create(AnxinCreateContractBatchRequestModel anxinCreateContractBatchRequestModel);
 
 }

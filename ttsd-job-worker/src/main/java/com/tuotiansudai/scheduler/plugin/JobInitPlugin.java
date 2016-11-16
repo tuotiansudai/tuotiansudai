@@ -73,9 +73,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.PlatformBalanceLowNotify.name().equals(schedulerName)) {
             platformBalanceLowNotifyJob();
         }
-        if (JobType.ImitateLottery.name().equals(schedulerName)) {
-            deleteImitateLotteryJob();
-        }
 
     }
 
@@ -158,9 +155,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
-    }
-    private void deleteImitateLotteryJob() {
-        jobManager.deleteJob(JobType.ImitateLottery, JobType.ImitateLottery.name(), JobType.ImitateLottery.name());
     }
 
     private void createAutoJPushNoInvestAlert() {

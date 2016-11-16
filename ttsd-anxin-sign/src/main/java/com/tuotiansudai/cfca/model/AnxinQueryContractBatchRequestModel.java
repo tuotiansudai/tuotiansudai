@@ -13,13 +13,6 @@ public class AnxinQueryContractBatchRequestModel {
     public AnxinQueryContractBatchRequestModel() {
     }
 
-    public AnxinQueryContractBatchRequestModel(long businessId, String batchNo, String txTime, Date createdTime) {
-        this.businessId = businessId;
-        this.batchNo = batchNo;
-        this.txTime = txTime;
-        this.createdTime = createdTime;
-    }
-
     public long getId() {
         return id;
     }
