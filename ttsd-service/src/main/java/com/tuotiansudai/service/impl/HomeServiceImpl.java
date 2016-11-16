@@ -78,7 +78,7 @@ public class HomeServiceImpl implements HomeService {
 
                 List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loan.getId());
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
-                String extraSource = "";
+                List<Source> extraSource = Lists.newArrayList();
                 boolean activity = false;
                 String activityDesc = "";
                 if (loanDetailsModel != null) {
@@ -102,7 +102,7 @@ public class HomeServiceImpl implements HomeService {
 
                 List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
-                String extraSource = "";
+                List<Source> extraSource = Lists.newArrayList();
                 boolean activity = false;
                 String activityDesc = "";
                 if (loanDetailsModel != null) {
