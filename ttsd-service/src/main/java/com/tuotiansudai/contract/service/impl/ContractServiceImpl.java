@@ -162,7 +162,7 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("loanerUserName", loanerDetailsMapper.getByLoanId(loanModel.getId()).getUserName());
         dataModel.put("loanerIdentityNumber", loanModel.getLoanerIdentityNumber());
         dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
-        dataModel.put("totalRate", String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate() * 100)) + "%");
+        dataModel.put("totalRate", String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
         dataModel.put("periods", String.valueOf(loanModel.getPeriods() * 30) + "天");
 
         if (transferApplicationModel.getPeriod() != 1) {
