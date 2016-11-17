@@ -1,0 +1,1 @@
+UPDATE invest SET contract_no = 'OLD' WHERE invest_time < '2016-11-15 12:17:00' and contract_no is null;
