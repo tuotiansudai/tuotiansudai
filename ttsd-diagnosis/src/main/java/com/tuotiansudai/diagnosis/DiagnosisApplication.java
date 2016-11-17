@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,8 +25,12 @@ import java.util.stream.IntStream;
 class DiagnosisApplication {
 
     private static Logger logger = LoggerFactory.getLogger(DiagnosisApplication.class);
+    private static final String LAST_DIAGNOSIS_TIME_KEY = "diagnosis:last:execution:day";
 
     private final List<Diagnosis> diagnoses;
+
+    @Autowired
+    private Jedis jedis;
 
     @Autowired
     private JavaMailSender mailSender;
@@ -66,9 +71,7 @@ class DiagnosisApplication {
     }
 
     private void scheduleDiagnosis() {
-        LocalDateTime fireTime = LocalDate.now().atStartOfDay()
-                .withHour(diagnosisConfig.getSchedule().getHour())
-                .withMinute(diagnosisConfig.getSchedule().getMinute());
+        LocalDateTime fireTime = getNextFireTime();
         logger.info("diagnosis scheduled at {}", fireTime);
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -76,8 +79,29 @@ class DiagnosisApplication {
                 String description = "diagnosis bills at " + LocalDate.now().minusDays(1).toString();
                 logger.info(description);
                 runOnce(new String[]{}, r -> mailReport(description, r));
+                logExecutionTime();
             }
         }, Date.from(fireTime.toInstant(ZoneOffset.ofHours(8))), 1000 * 60 * 60 * 24);
+    }
+
+    private LocalDateTime getNextFireTime() {
+        LocalDateTime fireTime = LocalDate.now().atStartOfDay()
+                .withHour(diagnosisConfig.getSchedule().getHour())
+                .withMinute(diagnosisConfig.getSchedule().getMinute());
+
+        String lastExecuteDay = jedis.get(LAST_DIAGNOSIS_TIME_KEY);
+        if (lastExecuteDay != null) {
+            int lastExecuteDayValue = Integer.parseInt(lastExecuteDay);
+            if (fireTime.getDayOfMonth() == lastExecuteDayValue) {
+                return fireTime.plusDays(1);
+            }
+        }
+
+        return fireTime;
+    }
+
+    private void logExecutionTime() {
+        jedis.set(LAST_DIAGNOSIS_TIME_KEY, String.valueOf(LocalDateTime.now().getDayOfMonth()));
     }
 
     private void printReport(String description, List<List<DiagnosisResult>> totalResult) {
