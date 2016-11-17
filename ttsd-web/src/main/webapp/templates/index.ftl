@@ -19,10 +19,10 @@
             <@global.isAnonymous>
                 <div class="register-ad-box fr tc">
                     <p class="num-text clearfix">
-                        <span class="percent">46</span>
-                        <span class="num-unit">倍</span>
+                        <span class="num-unit">可达</span>
+                        <span class="percent">13%</span>
                     </p>
-                    <b class="h-title">活期存款收益</b>
+                    <b class="h-title">预期年化收益率</b>
 
                     <p class="welcome-text"></p>
                     <a class="btn-normal" href="/register/user" onclick="cnzzPush.trackClick('21首页','Banner模块','免费注册')">免费注册 </a>
@@ -68,7 +68,7 @@
                 <dd class="guide">
                     <a href="/about/guide" onclick="cnzzPush.trackClick('28首页','安全保障模块','1')" target="_blank">
                         <b class="clearfix">稳健收益 较低门槛</b>
-                        <span>最高46倍活期存款收益，<br>最低投资门槛50元</span>
+                        <span>预期年化收益可达13%，<br>投资门槛50元起投</span>
                     </a>
                 </dd>
                 <dd class="risk">
@@ -79,8 +79,8 @@
                 </dd>
                 <dd class="assurance">
                     <a href="/about/assurance" onclick="cnzzPush.trackClick('30首页','安全保障模块','3')" target="_blank">
-                        <b class="clearfix">实力雄厚 安全保障</b>
-                        <span>上市企业投资，<br>资金数据均安全</span>
+                        <b class="clearfix">四大保障 投资无忧</b>
+                        <span>12道保障措施并举，<br>资金、个人信息均安全</span>
                     </a>
                 </dd>
             </dl>
