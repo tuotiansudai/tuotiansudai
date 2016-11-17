@@ -44,6 +44,19 @@
         </foreach>
     </insert>
 
+    <update id="update" parameterType="UserMembershipModel">
+        UPDATE `aa`.`user_membership`
+        SET
+        login_name = #{loginName},
+        membership_id = #{membershipId},
+        expired_time = #{expiredTime},
+        created_time = #{createdTime},
+        type = #{type},
+        membership_give_id = #{membershipGiveId}
+        WHERE
+        id = #{id}
+    </update>
+
     <select id="findById" resultMap="UserMembershipResultMap" parameterType="long">
         select * from user_membership where id = #{id}
     </select>

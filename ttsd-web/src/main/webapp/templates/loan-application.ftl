@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.loan_application}" pageJavascript="${js.loan_application}" activeNav="我要借款" activeLeftNav="" title="拓天速贷公司介绍_拓天理念_拓天资质_拓天速贷" keywords="拓天速贷,拓天速贷公司,拓天资质,拓天价值" description="拓天速贷以透明、公平、高效为原则,为有贷款需求的小微企业及有投资需求的个人提供规范、安全、专业的互联网金融信息服务.">
+<@global.main pageCss="${css.loan_application}" pageJavascript="${js.loan_application}" activeNav="我要借款" activeLeftNav="" title="我要借款_抵押借款_拓天速贷" keywords="抵押房产借款,抵押车辆借款,拓天借款,拓天速贷" description="拓天速贷为借款用户提供抵押房产借款和抵押车辆借款服务,拓天借款额度高,门槛低,速度快,利息低,24H放款,借款轻松还.">
 <div class="want-loan-group">
     <div class="loan-top-group">
         <img src="${staticServer}/images/wantloan/top-images.png"  width="100%" class="top-images">

@@ -35,9 +35,9 @@ public class TransferInvestDetailDto implements Serializable {
 
     private String contractNo;
 
-    private String contractNotExist;
+    private String contractOld;
 
-    private String contractAlreadyCreated;
+    private String contractOK;
 
     private String contractCreating;
 
@@ -157,20 +157,20 @@ public class TransferInvestDetailDto implements Serializable {
         this.contractNo = contractNo;
     }
 
-    public String getContractNotExist() {
-        return contractNotExist;
+    public String getContractOld() {
+        return contractOld;
     }
 
-    public void setContractNotExist(String contractNotExist) {
-        this.contractNotExist = contractNotExist;
+    public void setContractOld(String contractOld) {
+        this.contractOld = contractOld;
     }
 
-    public String getContractAlreadyCreated() {
-        return contractAlreadyCreated;
+    public String getContractOK() {
+        return contractOK;
     }
 
-    public void setContractAlreadyCreated(String contractAlreadyCreated) {
-        this.contractAlreadyCreated = contractAlreadyCreated;
+    public void setContractOK(String contractOK) {
+        this.contractOK = contractOK;
     }
 
     public String getContractCreating() {

@@ -11,6 +11,8 @@ dependencies {
             project(':ttsd-activity-repository'),
             'commons-httpclient:commons-httpclient:3.1',
             fileTree(dir: 'libs', include: '**/*.jar')
+    compile 'io.springfox:springfox-swagger2:2.5.0'
+    compile 'io.springfox:springfox-swagger-ui:2.5.0'
 
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0',
             'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'

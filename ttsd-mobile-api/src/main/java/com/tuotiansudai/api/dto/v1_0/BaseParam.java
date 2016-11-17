@@ -1,16 +1,28 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class BaseParam {
     private String userId;
+    @ApiModelProperty(value = "手机号码", example = "13800138000")
     private String phoneNum;
+    @ApiModelProperty(value = "身份认证票据", example = "66666666-6666-6666-6666-666666666666")
     private String token;
+    @ApiModelProperty(value = "客户端类型", example = "Android")
     private String platform;
+    @ApiModelProperty(value = "APP版本", example = "3.0")
     private String appVersion;
+    @ApiModelProperty(value = "操作系统版本", example = "7.0")
     private String osVersion;
+    @ApiModelProperty(value = "客户端设备ID", example = "FFFFFFF-FFFFFFFFFF-FFFFFFFFFFFFF")
     private String deviceId;
+    @ApiModelProperty(value = "客户端设备型号", example = "XiaoMi")
     private String deviceModel;
+    @ApiModelProperty(value = "客户端屏幕宽度", example = "768")
     private String screenW;
+    @ApiModelProperty(value = "客户端屏幕高度", example = "1024")
     private String screenH;
+    @ApiModelProperty(value = "渠道", example = "")
     private String channel;
 
     public String getUserId() {
