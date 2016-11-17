@@ -21,6 +21,7 @@ import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -162,7 +163,9 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("loanerUserName", loanerDetailsMapper.getByLoanId(loanModel.getId()).getUserName());
         dataModel.put("loanerIdentityNumber", loanModel.getLoanerIdentityNumber());
         dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
-        dataModel.put("totalRate", String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
+
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+        dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
         dataModel.put("periods", String.valueOf(loanModel.getPeriods() * 30) + "天");
 
         if (transferApplicationModel.getPeriod() != 1) {
@@ -230,7 +233,8 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("investAmount", AmountConverter.convertCentToString(investModel.getAmount()));
         dataModel.put("agentPeriods", String.valueOf(loanModel.getPeriods() * 30) + "天");
         dataModel.put("leftPeriods", String.valueOf(loanModel.getPeriods()) + "期");
-        dataModel.put("totalRate", String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+        dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
         dataModel.put("recheckTime", simpleDateFormat.format(loanModel.getRecheckTime()));
         dataModel.put("endTime", simpleDateFormat.format(investRepayModel.getRepayDate()));
         if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
