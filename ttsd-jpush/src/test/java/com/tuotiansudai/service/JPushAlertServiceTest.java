@@ -277,7 +277,7 @@ public class JPushAlertServiceTest {
         investModel.setLoginName(loginName);
         investModels.add(investModel);
 
-        AccountModel accountModel = new AccountModel(loginName, "test", "32424234", "test", "1233", new Date());
+        AccountModel accountModel = new AccountModel(loginName, "test", "1233", new Date());
         accountModel.setBalance(10);
 
         LoanModel loanModel = new LoanModel();

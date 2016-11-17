@@ -2,19 +2,14 @@ package com.tuotiansudai.transfer.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.TransferApplicationAutoCancelJob;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.dto.TransferApplicationFormDto;
@@ -108,6 +103,9 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         return dto;
     }
 
+    @Autowired
+    private AnxinSignPropertyMapper anxinSignPropertyMapper;
+
     @Override
     public TransferApplicationFormDto getApplicationForm(long investId) {
         InvestModel investModel = investMapper.findById(investId);
@@ -120,7 +118,9 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         long transferAmountLower = new BigDecimal(1 - transferRuleModel.getDiscount()).multiply(new BigDecimal(investModel.getAmount())).setScale(0, BigDecimal.ROUND_UP).longValue();
         int holdDays = TransferRuleUtil.getInvestHoldDays(loanModel.getType(), loanModel.getRecheckTime(), investModel.getCreatedTime());
 
-        return new TransferApplicationFormDto(investId, investModel.getAmount(), transferAmountLower, transferFeeRate, transferFee, expiredDate, holdDays);
+        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(investModel.getLoginName());
+
+        return new TransferApplicationFormDto(investId, investModel.getAmount(), transferAmountLower, transferFeeRate, transferFee, expiredDate, holdDays, anxinProp);
     }
 
     @Override
@@ -361,6 +361,17 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             index = index > totalPages ? totalPages : index;
             items = transferApplicationMapper.findTransferInvestList(investorLoginName, (index - 1) * pageSize, pageSize, startTime, endTime, loanStatus);
         }
+
+        items.forEach(transferInvestDetailDto -> {
+            if (ContractNoStatus.OLD.name().equals(transferInvestDetailDto.getContractNo())) {
+                transferInvestDetailDto.setContractOld("1");
+            } else if (ContractNoStatus.WAITING.name().equals(transferInvestDetailDto.getContractNo())) {
+                transferInvestDetailDto.setContractCreating("1");
+            } else {
+                transferInvestDetailDto.setContractOK("1");
+            }
+        });
+
         BasePaginationDataDto dto = new BasePaginationDataDto(index, pageSize, count, items);
         dto.setStatus(true);
         return dto;

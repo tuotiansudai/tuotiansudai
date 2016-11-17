@@ -135,6 +135,10 @@ define([], function () {
         },
         //自动播放
         autoplay: function() {
+
+            if(this.play) {
+                clearInterval(this.play);
+            }
             this.play = setInterval(function() {
                 this.prev = this.index;
                 this.index++;
@@ -142,7 +146,7 @@ define([], function () {
                     this.index = 0
                 };
                 this.imgshow();
-            }.bind(this), 8000) //循环播放图片
+            }.bind(this), 5000) //循环播放图片
         },
         //处理鼠标事件
         mouseoverout: function() {

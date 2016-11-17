@@ -70,16 +70,17 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
                             .longValue();
                     investExtraRateModel.setExpectedFee(expectedFee);
 
-                    String investSource;
+                    Source investSource;
                     if ("IOS".equals(investModel.getSource().name()) || "ANDROID".equals(investModel.getSource().name()) || "MOBILE".equals(investModel.getSource().name())) {
-                        investSource = "MOBILE";
+                        investSource = Source.MOBILE;
                     } else if ("WEB".equals(investModel.getSource().name())) {
-                        investSource = "WEB";
+                        investSource =  Source.WEB;
                     } else {
-                        investSource = "AUTO";
+                        investSource = Source.AUTO;
                     }
 
-                    if (!StringUtils.isNullOrEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(investSource))
+                    System.out.println("source = "+loanDetailsModel.getExtraSource().contains(investSource));
+                    if (!CollectionUtils.isEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(investSource))
                     {
                         investExtraRateMapper.create(investExtraRateModel);
                     }

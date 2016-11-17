@@ -129,7 +129,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
     public void shouldFindPointHomeIsOk() {
         String loginName = "findPointHomeUser";
         UserModel userModel = getUserModelTest(loginName);
-        AccountModel accountModel = new AccountModel(loginName, loginName, "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountModel.setPoint(1000l);
         accountMapper.create(accountModel);
         BaseParamDto baseParamDto = new BaseParamDto();
@@ -212,7 +212,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
-        AccountModel accountModel = new AccountModel(loginName, loginName, "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountModel.setPoint(10l);
         accountMapper.create(accountModel);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
@@ -233,7 +233,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
-        AccountModel accountModel = new AccountModel(loginName, loginName, "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountModel.setPoint(100000l);
         accountMapper.create(accountModel);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
@@ -254,7 +254,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
-        AccountModel accountModel = new AccountModel(loginName, loginName, "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         accountModel.setPoint(1000l);
         accountMapper.create(accountModel);
         UserAddressModel userAddressModel = new UserAddressModel(loginName, loginName, userModel.getMobile(), "", loginName);
@@ -290,7 +290,8 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
     }
 
     private ProductModel getProductModel(String loginName, GoodsType goodsType, long totalCount, long couponId) {
-        ProductModel productModel = new ProductModel(goodsType, "50元充值卡", 1, "upload/images/11.png", "50yuan", totalCount, 0, 200, new Date(), new DateTime().plusDays(7).toDate(), false, loginName, new Date());
+        ProductModel productModel = new ProductModel("test", goodsType, 0, "50元充值卡", 1, "upload/images/11.png", "50yuan", totalCount, 200, new Date(), new DateTime().plusDays(7).toDate());
+
         productModel.setCouponId(couponId);
         productModel.setActive(true);
         productMapper.create(productModel);
@@ -322,6 +323,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
         userModelTest.setMobile("13900000000");
+        userModelTest.setUserName("userName");
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
