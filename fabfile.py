@@ -59,7 +59,7 @@ def mk_worker_zip():
 def mk_static_zip():
     local('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/ robots.txt')
     local('cd ./ttsd-mobile-api/src/main/webapp && zip -r static_api.zip api/')
-    local('cd ./ttsd-activity/src/main/webapp && zip -r static_activity.zip activity/')
+    local('cd ./ttsd-activity-web/src/main/webapp && zip -r static_activity.zip activity/')
     local('cd ./ttsd-point-web/src/main/webapp && zip -r static_point.zip point/')
     local('cd ./ttsd-ask-web/src/main/webapp && zip -r static_ask.zip ask/')
 
@@ -87,7 +87,7 @@ def compile():
 def deploy_static():
     upload_project(local_dir='./ttsd-web/src/main/webapp/static.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_api.zip', remote_dir='/workspace')
-    upload_project(local_dir='./ttsd-activity/src/main/webapp/static_activity.zip', remote_dir='/workspace')
+    upload_project(local_dir='./ttsd-activity-web/src/main/webapp/static_activity.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-point-web/src/main/webapp/static_point.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-ask-web/src/main/webapp/static_ask.zip', remote_dir='/workspace')
     with cd('/workspace'):
@@ -172,7 +172,7 @@ def deploy_web():
 def deploy_activity():
     sudo('service tomcat stop')
     sudo('rm -rf /opt/tomcat/webapps/ROOT')
-    upload_project(local_dir='./ttsd-activity/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
+    upload_project(local_dir='./ttsd-activity-web/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
     sudo('service nginx restart')
 
