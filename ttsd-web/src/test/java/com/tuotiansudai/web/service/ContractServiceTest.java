@@ -221,8 +221,8 @@ public class ContractServiceTest {
         lm.setInvestIncreasingAmount(1);
         lm.setActivityType(ActivityType.NORMAL);
         lm.setProductType(ProductType._180);
-        lm.setBaseRate(0.12);
-        lm.setActivityRate(0);
+        lm.setBaseRate(0.11);
+        lm.setActivityRate(0.011);
         lm.setContractId(789098123);
         lm.setFundraisingStartTime(new Date());
         lm.setFundraisingEndTime(new Date());
