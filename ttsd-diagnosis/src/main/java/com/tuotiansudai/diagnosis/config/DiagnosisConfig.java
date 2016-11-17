@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class DiagnosisConfig {
     private ScheduleConfig schedule;
     private ReportConfig report;
+    private long[] knownBadBills;
 
     public ScheduleConfig getSchedule() {
         return schedule;
@@ -25,6 +26,13 @@ public class DiagnosisConfig {
         this.report = report;
     }
 
+    public long[] getKnownBadBills() {
+        return knownBadBills;
+    }
+
+    public void setKnownBadBills(long[] knownBadBills) {
+        this.knownBadBills = knownBadBills;
+    }
 
     public static class ScheduleConfig {
         private int hour;

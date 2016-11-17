@@ -2,14 +2,14 @@ package com.tuotiansudai.console.activity.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.dto.ActivityCategory;
-import com.tuotiansudai.activity.dto.LotteryPrize;
+import com.tuotiansudai.activity.service.AutumnService;
 import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryStatView;
+import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
-import com.tuotiansudai.activity.service.AutumnService;
-import com.tuotiansudai.console.activity.dto.AutumnExportDto;
+import com.tuotiansudai.activity.repository.dto.AutumnExportDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;

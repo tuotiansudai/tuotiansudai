@@ -2,8 +2,8 @@ package com.tuotiansudai.console.activity.controller;
 
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.dto.ActivityCategory;
-import com.tuotiansudai.activity.dto.LotteryPrize;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
+import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.LotteryPrizeView;
 import com.tuotiansudai.console.activity.service.UserLotteryService;
 import com.tuotiansudai.util.PaginationUtil;

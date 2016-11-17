@@ -2,20 +2,19 @@ package com.tuotiansudai.console.activity.service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.dto.LuxuryPrizeDto;
-import com.tuotiansudai.activity.dto.UserPrizePaginationItemDto;
-import com.tuotiansudai.activity.repository.mapper.LuxuryPrizeMapper;
-import com.tuotiansudai.activity.repository.mapper.UserLuxuryPrizeMapper;
+import com.tuotiansudai.activity.repository.dto.LuxuryPrizeDto;
+import com.tuotiansudai.activity.repository.dto.UserPrizePaginationItemDto;
 import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLuxuryPrizeModel;
-import com.tuotiansudai.console.activity.dto.LuxuryPrizeRequestDto;
+import com.tuotiansudai.activity.repository.mapper.LuxuryPrizeMapper;
+import com.tuotiansudai.activity.repository.mapper.UserLuxuryPrizeMapper;
+import com.tuotiansudai.activity.repository.dto.LuxuryPrizeRequestDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Date;

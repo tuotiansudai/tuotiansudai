@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.activity.service;
 
-import com.tuotiansudai.activity.dto.PromotionDto;
-import com.tuotiansudai.activity.dto.PromotionStatus;
+import com.tuotiansudai.activity.repository.dto.PromotionDto;
+import com.tuotiansudai.activity.repository.dto.PromotionStatus;
 import com.tuotiansudai.activity.repository.mapper.PromotionMapper;
 import com.tuotiansudai.activity.repository.model.PromotionModel;
 import org.springframework.beans.factory.annotation.Autowired;

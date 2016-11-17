@@ -1,6 +1,6 @@
 package com.tuotiansudai.console.activity.controller;
 
-import com.tuotiansudai.console.activity.dto.TravelPrizeRequestDto;
+import com.tuotiansudai.activity.repository.dto.TravelPrizeRequestDto;
 import com.tuotiansudai.console.activity.service.TravelPrizeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;

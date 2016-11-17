@@ -1,10 +1,10 @@
 package com.tuotiansudai.console.activity.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.dto.MysteriousPrizeDto;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.MysteriousPrizeDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.ActivityCategory;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
