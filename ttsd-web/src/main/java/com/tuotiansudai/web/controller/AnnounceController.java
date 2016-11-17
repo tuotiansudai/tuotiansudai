@@ -22,8 +22,8 @@ public class AnnounceController {
 
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public BaseDto<BasePaginationDataDto> getAnnounceList(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                                          @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+    public BaseDto<BasePaginationDataDto> getAnnounceList(@RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         return announceService.getAnnouncementList(index, pageSize);
     }
 
