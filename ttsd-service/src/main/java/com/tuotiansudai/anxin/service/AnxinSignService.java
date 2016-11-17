@@ -34,8 +34,4 @@ public interface AnxinSignService {
 
     BaseDto updateTransferInvestContractNo(long transferInvestId);
 
-    Map<String, String> collectTransferContractModel(long transferApplicationId);
-
-    Map<String, String> collectInvestorContractModel(String investorLoginName, long loanId, long investId);
-
 }

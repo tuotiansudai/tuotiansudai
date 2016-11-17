@@ -2,7 +2,7 @@ package com.tuotiansudai.service.impl;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
-import com.tuotiansudai.anxin.service.AnxinSignService;
+import com.tuotiansudai.anxin.service.GenerateContractService;
 import com.tuotiansudai.service.ContractService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -21,7 +21,7 @@ public class ContractServiceImpl implements ContractService {
     static Logger logger = Logger.getLogger(ContractServiceImpl.class);
 
     @Autowired
-    private AnxinSignService anxinSignService;
+    private GenerateContractService generateContractService;
 
     /**
      * 后缀为FTL
@@ -67,7 +67,7 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public String generateInvestorContract(String loginName, long loanId, long investId) {
-        Map<String, String> dataModel = anxinSignService.collectInvestorContractModel(loginName, loanId, investId);
+        Map<String, String> dataModel = generateContractService.collectInvestorContractModel(loginName, loanId, investId);
         if (dataModel.isEmpty()) {
             return "";
         }
@@ -96,7 +96,7 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public String generateTransferContract(long transferApplicationId) {
 
-        Map<String, String> dataModel = anxinSignService.collectTransferContractModel(transferApplicationId);
+        Map<String, String> dataModel = generateContractService.collectTransferContractModel(transferApplicationId);
         if (dataModel.isEmpty()) {
             return "";
         }

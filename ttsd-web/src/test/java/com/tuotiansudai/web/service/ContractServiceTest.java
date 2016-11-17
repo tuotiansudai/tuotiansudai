@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.anxin.service.AnxinSignService;
+import com.tuotiansudai.anxin.service.GenerateContractService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ContractService;
@@ -14,7 +14,6 @@ import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -56,7 +55,7 @@ public class ContractServiceTest {
     @Autowired
     private InvestRepayMapper investRepayMapper;
     @Autowired
-    private AnxinSignService anxinSignService;
+    private GenerateContractService generateContractService;
 
     @Before
     public void init() {
@@ -123,7 +122,7 @@ public class ContractServiceTest {
                 DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
 
-        Map<String, String> transferMap = anxinSignService.collectTransferContractModel(transferApplicationModel.getId());
+        Map<String, String> transferMap = generateContractService.collectTransferContractModel(transferApplicationModel.getId());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         assertNotNull(transferMap);
@@ -136,12 +135,12 @@ public class ContractServiceTest {
         assertEquals(transferMap.get("loanerUserName"), loanerDetailsModel.getUserName());
         assertEquals(transferMap.get("loanerIdentityNumber"), loanerDetailsModel.getIdentityNumber());
         assertEquals(transferMap.get("loanAmount"), AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
-        assertEquals(transferMap.get("totalRate"), String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate() * 100)) + "%" );
-        assertEquals(transferMap.get("periods"), String.valueOf(loanModel.getPeriods()  * 30) + "天" );
+        assertEquals(transferMap.get("totalRate"), String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate() * 100)) + "%");
+        assertEquals(transferMap.get("periods"), String.valueOf(loanModel.getPeriods() * 30) + "天");
         assertEquals(transferMap.get("transferStartTime"), simpleDateFormat.format(new LocalDate(startInvestRepayModel.getRepayDate()).plusDays(1).toDate()));
         assertEquals(transferMap.get("transferEndTime"), simpleDateFormat.format(endInvestRepayModel.getRepayDate()));
-        assertEquals(transferMap.get("investAmount"), AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) + "元" );
-        assertEquals(transferMap.get("transferTime"), simpleDateFormat.format(transferApplicationModel.getTransferTime()) );
+        assertEquals(transferMap.get("investAmount"), AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) + "元");
+        assertEquals(transferMap.get("transferTime"), simpleDateFormat.format(transferApplicationModel.getTransferTime()));
         assertEquals(transferMap.get("leftPeriod"), String.valueOf(transferApplicationModel.getLeftPeriod()));
         assertEquals(transferMap.get("msg1"), "甲方持有债权30天以内的，收取转让本金的0.01%作为服务费用。");
         assertEquals(transferMap.get("msg2"), "甲方持有债权30天以上，90天以内的，收取转让本金的0.01%作为服务费用。");
@@ -181,7 +180,7 @@ public class ContractServiceTest {
                 DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
 
-        Map<String, String> transferMap = anxinSignService.collectTransferContractModel(transferApplicationModel.getId());
+        Map<String, String> transferMap = generateContractService.collectTransferContractModel(transferApplicationModel.getId());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         assertNotNull(transferMap);
@@ -194,12 +193,12 @@ public class ContractServiceTest {
         assertEquals(transferMap.get("loanerUserName"), loanerDetailsModel.getUserName());
         assertEquals(transferMap.get("loanerIdentityNumber"), loanerDetailsModel.getIdentityNumber());
         assertEquals(transferMap.get("loanAmount"), AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
-        assertEquals(transferMap.get("totalRate"), String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate() * 100)) + "%" );
-        assertEquals(transferMap.get("periods"), String.valueOf(loanModel.getPeriods()  * 30) + "天" );
+        assertEquals(transferMap.get("totalRate"), String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate() * 100)) + "%");
+        assertEquals(transferMap.get("periods"), String.valueOf(loanModel.getPeriods() * 30) + "天");
         assertEquals(transferMap.get("transferStartTime"), simpleDateFormat.format(investModel.getInvestTime()));
         assertEquals(transferMap.get("transferEndTime"), simpleDateFormat.format(endInvestRepayModel.getRepayDate()));
-        assertEquals(transferMap.get("investAmount"), AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) + "元" );
-        assertEquals(transferMap.get("transferTime"), simpleDateFormat.format(transferApplicationModel.getTransferTime()) );
+        assertEquals(transferMap.get("investAmount"), AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) + "元");
+        assertEquals(transferMap.get("transferTime"), simpleDateFormat.format(transferApplicationModel.getTransferTime()));
         assertEquals(transferMap.get("leftPeriod"), String.valueOf(transferApplicationModel.getLeftPeriod()));
         assertEquals(transferMap.get("msg1"), "甲方持有债权30天以内的，收取转让本金的0.01%作为服务费用。");
         assertEquals(transferMap.get("msg2"), "甲方持有债权30天以上，90天以内的，收取转让本金的0.01%作为服务费用。");
@@ -253,7 +252,7 @@ public class ContractServiceTest {
         return investModel;
     }
 
-    private UserModel getUserModel(String loginName,String mobile) throws ParseException {
+    private UserModel getUserModel(String loginName, String mobile) throws ParseException {
         UserModel um = new UserModel();
         um.setId(idGenerator.generate());
         um.setLoginName(loginName);
