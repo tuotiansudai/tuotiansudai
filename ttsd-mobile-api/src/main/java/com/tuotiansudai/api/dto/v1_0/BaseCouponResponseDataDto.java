@@ -50,7 +50,8 @@ public class BaseCouponResponseDataDto {
     public BaseCouponResponseDataDto() {
     }
 
-    public BaseCouponResponseDataDto(CouponModel couponModel, UserCouponModel userCouponModel) {
+    public BaseCouponResponseDataDto(UserCouponModel userCouponModel) {
+        CouponModel couponModel = userCouponModel.getCoupon();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         this.userCouponId = String.valueOf(userCouponModel.getId());
         this.type = couponModel.getCouponType();

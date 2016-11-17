@@ -17,6 +17,8 @@ public interface UserMembershipMapper {
 
     void createBatch(List<UserMembershipModel> userMembershipModels);
 
+    void update(UserMembershipModel userMembershipModel);
+
     UserMembershipModel findById(long id);
 
     List<UserMembershipModel> findByLoginName(String loginName);
@@ -62,4 +64,6 @@ public interface UserMembershipMapper {
                                               @Param(value = "type") UserMembershipType type);
 
     long findCountMembershipByLevel(@Param(value = "level") long level);
+
+    List<String> findLoginNameMembershipByLevel(@Param(value = "level") long level);
 }

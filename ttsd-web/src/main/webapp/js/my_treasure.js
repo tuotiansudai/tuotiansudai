@@ -1,4 +1,4 @@
-require(['jquery', 'coupon-alert', 'jquery.ajax.extension'], function($) {
+require(['jquery', 'coupon-alert', 'jquery.ajax.extension','assign_coupon'], function($) {
 	$(function() {
 		var $body = $('body'),
 			$ruleList = $('#ruleList'),

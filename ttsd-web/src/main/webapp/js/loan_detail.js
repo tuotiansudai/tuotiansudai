@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'fancybox', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert', 'red-envelope-float', 'jquery.form', 'commonFun','logintip'], function ($, pagination, Mustache, investListTemplate, layer, _) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'fancybox', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert', 'red-envelope-float', 'jquery.form', 'commonFun','logintip','assign_coupon','anxin_qian'], function ($, pagination, Mustache, investListTemplate, layer, _) {
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
         amountInputElement = $(".text-input-amount", $loanDetail),
@@ -19,7 +19,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         noPasswordRemind = amountInputElement.data('no-password-remind'),
         noPasswordInvest = amountInputElement.data('no-password-invest'),
         autoInvestOn = amountInputElement.data('auto-invest-on'),
-        $minInvestAmount = $('.text-input-amount').data('min-invest-amount');
+        $minInvestAmount = $('.text-input-amount').data('min-invest-amount'),
+        $isSkipAuth=$('#isSkipAuth'),
+        $investForm = $('#investForm');
 
     var viewport = commonFun.browserRedirect();
 
@@ -417,7 +419,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         layer.open({
             type: 1,
             closeBtn: 0,
-            skin: 'demo-class',
+            skin: 'layer-tip-loanDetail',
             shadeClose: false,
             title: '免密投资',
             btn: ['不开启', '开启'],
@@ -479,7 +481,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         layer.open({
             type: 1,
             closeBtn: 0,
-            skin: 'demo-class',
+            skin: 'layer-tip-loanDetail',
             title: '免密投资',
             shadeClose: false,
             btn: autoInvestOn ? ['继续投资', '开启免密投资'] : ['继续投资', '前往联动优势授权'],
@@ -534,7 +536,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         layer.closeAll();
         layer.open({
             type: 1,
-            skin: 'demo-class',
+            skin: 'layer-tip-loanDetail',
             shadeClose:false,
             title: '登录到联动优势支付平台开通免密投资',
             area: ['500px', '290px'],
@@ -544,9 +546,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
         });
     }
-    //submit  form
+    //投资表单请求以及校验
     function investSubmit(){
-        var $investForm = $('#investForm');
+        
         if ($investForm.attr('action') === '/invest') {
             if (!isInvestor) {
                 location.href = '/login?redirect=' + encodeURIComponent(location.href);
@@ -577,11 +579,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
         }
         amountInputElement.val(amountInputElement.autoNumeric("get"));
-        if (noPasswordInvest) {
+        if (noPasswordInvest) {//判断是否开启免密投资
             layer.open({
                 type: 1,
                 closeBtn: 0,
-                skin: 'demo-class',
+                skin: 'layer-tip-loanDetail',
                 title: '免密投资',
                 shadeClose:false,
                 btn:['取消', '确认'],
@@ -593,34 +595,48 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 },
                 btn2:function(){
                     cnzzPush.trackClick("68标的详情页","马上投资确认框","确认");
-                    $investForm.ajaxSubmit({
-                        dataType: 'json',
-                        url: '/no-password-invest',
-                        beforeSubmit: function () {
-                            console.log("invest start");
-                            $investSubmit.addClass("loading");
-                        },
-                        success: function (response) {
-                            layer.closeAll();
-                            $investSubmit.removeClass("loading");
-                            var data = response.data;
-                            if (data.status) {
-                                location.href = "/invest-success";
-                            } else if (data.message == '新手标投资已超上限') {
-                                showLayer();
-                            } else {
-                                showInputErrorTips(data.message);
-                            }
-                        }
-                    });
+                    if($isSkipAuth.val()=='true'){//判断是否开启安心签免验
+                        sendSubmitRequest();
+                    }else{
+                        getSkipPhoneTip();
+                        return false;
+                    }
                 }
             });
             return;
         }
-
-        $investForm.submit();
+        //正常投资
+        if($isSkipAuth.val()=='true'){//判断是否开启安心签免验
+            $investForm.submit();
+        }else{
+            getSkipPhoneTip();
+            return false;
+        }
     }
 
+    //发送投资提交请求
+    function sendSubmitRequest(){
+        $investForm.ajaxSubmit({
+            dataType: 'json',
+            url: '/no-password-invest',
+            beforeSubmit: function () {
+                console.log("invest start");
+                $investSubmit.addClass("loading");
+            },
+            success: function (response) {
+                layer.closeAll();
+                $investSubmit.removeClass("loading");
+                var data = response.data;
+                if (data.status) {
+                    location.href = "/invest-success";
+                } else if (data.message == '新手标投资已超上限') {
+                    showLayer();
+                } else {
+                    showInputErrorTips(data.message);
+                }
+            }
+        });
+    }
     // 投资加息
     (function () {
         var $extraRate = $('#extra-rate');
@@ -843,5 +859,131 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
 
     })();
+
+    //勾选马上投资下方 协议复选框
+    $('.skip-group .skip-icon').on('click', function(event) {
+        event.preventDefault();
+
+        $(this).hasClass('active')?$(this).removeClass('active') && $('#skipCheck').val('false') && $('#checkTip').show()&& $investSubmit.prop('disabled',true):$(this).addClass('active')&& $('#skipCheck').val('true') && $('#checkTip').hide() && $investSubmit.prop('disabled',false);
+    });
+
+    //勾选 安心签弹框中的复选框
+    $('.tip-item .skip-icon').on('click', function(event) {
+        event.preventDefault();
+        $(this).hasClass('active')?$(this).removeClass('active') && $('#tipCheck').val('false'):$(this).addClass('active')&& $('#tipCheck').val('true');
+    });
+
+    //弹出安心签弹框
+    function getSkipPhoneTip(){
+        layer.open({
+            shadeClose: false,
+            title: '安心签代签署授权',
+            btn: 0,
+            type: 1,
+            area: $(window).width()>700?['400px', 'auto']:['320px','auto'],
+            content: $('#getSkipPhone')
+        });
+    }
+
+    var num = 60,Down;
+
+    //获取短信验证码
+    $('#getSkipCode').on('click', function(event) {
+        event.preventDefault();
+        getCode(false);
+    });
+    
+    //获取语音验证码
+    $('#microPhone').on('click', function(event) {
+        event.preventDefault();
+        getCode(true);
+    });
+    //安心签弹框中获取短信验证码请求
+    function getCode(type){
+        $.ajax({
+            url: '/anxinSign/sendCaptcha',
+            type: 'POST',
+            dataType: 'json',
+            data:{
+                isVoice:type
+            }
+        })
+        .done(function(data) {
+            if(data.success) {
+                countDown();
+                Down = setInterval(countDown, 1000);
+            }
+            else {
+                layer.msg('请求失败，请重试或联系客服！');
+            }
+
+        })
+        .fail(function() {
+            layer.msg('请求失败，请重试或联系客服！');
+        });
+    }
+    //安心签弹框中获取短信验证码倒计时效果
+    function countDown() {
+        $('#getSkipCode').val(num + '秒后重新获取').prop('disabled',true);
+        $('#microPhone').css('visibility', 'hidden');
+        if (num == 0) {
+            clearInterval(Down);
+            $('#getSkipCode').val('重新获取验证码').prop('disabled',false);
+            $('#microPhone').css('visibility', 'visible');
+            num=60;
+        }else{
+            num--;
+        }
+    }
+    //安心签授权弹框表单提交
+    $('#getSkipBtn').on('click',  function(event) {
+        event.preventDefault();
+        var $self=$(this);
+        if($('#skipPhoneCode').val()!=''){
+            $.ajax({
+                url: '/anxinSign/verifyCaptcha',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    captcha: $('#skipPhoneCode').val(),
+                    skipAuth:$('#tipCheck').val()
+                }
+            })
+            .done(function(data) {
+                $self.removeClass('active').val('立即授权').prop('disabled', false);
+                if(data.success){
+                    $('#isAnxinUser').val('true') && $('.skip-group').hide();
+                    if(data.skipAuth=='true'){
+                        $('#isSkipAuth').val('true');
+                    }
+                    skipSuccess();
+                }else{
+                    $('#skipError').text('验证码不正确').show();
+                }
+            })
+            .fail(function() {
+                $self.removeClass('active').val('立即授权').prop('disabled', false);
+                layer.msg('请求失败，请重试！');
+            })
+            .always(function() {
+                $self.addClass('active').val('授权中...').prop('disabled', true);
+            });
+        }else{
+            $('#skipError').text('验证码不能为空').show();
+        }
+    });
+
+    //安心签授权成功弹框
+    function skipSuccess(){
+        layer.closeAll();
+        $('#skipSuccess').show();
+        setTimeout(function(){
+            $('#skipSuccess').hide();
+            $('#skipPhoneCode').val('');
+            num=0;
+            noPasswordInvest?sendSubmitRequest():$investForm.submit();
+
+        },3000)
+    }
 
 });

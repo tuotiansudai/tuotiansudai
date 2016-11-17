@@ -1,20 +1,25 @@
 package com.tuotiansudai.activity.dto;
 
 
-public enum ActivityCategory {
-    AUTUMN_PRIZE("旅游奢侈品活动",1),
-    NATIONAL_PRIZE("国庆活动",1),
-    POINT_DRAW_1000("1000积分抽奖",1000),
-    POINT_DRAW_10000("10000积分抽奖",10000);
+import com.google.common.collect.Lists;
 
-    ActivityCategory(String description,int point) {
+import java.util.List;
+
+public enum ActivityCategory {
+    AUTUMN_PRIZE("旅游奢侈品活动", ConsumeCategory.TASK_COUNT),
+    NATIONAL_PRIZE("国庆活动", ConsumeCategory.TASK_COUNT),
+    POINT_DRAW_1000("1000积分抽奖", ConsumeCategory.ACCOUNT_POINT_BY_1000),
+    POINT_DRAW_10000("10000积分抽奖", ConsumeCategory.ACCOUNT_POINT_BY_10000),
+    CARNIVAL_ACTIVITY("双11狂欢", ConsumeCategory.TASK_COUNT);
+
+    ActivityCategory(String description, ConsumeCategory consumeCategory) {
         this.description = description;
-        this.point = point;
+        this.consumeCategory = consumeCategory;
     }
 
     String description;
 
-    int point;
+    ConsumeCategory consumeCategory;
 
     public String getDescription() {
         return description;
@@ -24,11 +29,21 @@ public enum ActivityCategory {
         this.description = description;
     }
 
-    public int getPoint() {
-        return point;
+    public ConsumeCategory getConsumeCategory() {
+        return consumeCategory;
     }
 
-    public void setPoint(int point) {
-        this.point = point;
+    public void setConsumeCategory(ConsumeCategory consumeCategory) {
+        this.consumeCategory = consumeCategory;
+    }
+
+    public static List<ActivityCategory> getTaskActivityCategory() {
+        List<ActivityCategory> activityList = Lists.newArrayList();
+        Lists.newArrayList(ActivityCategory.values()).forEach(activityCategory -> {
+            if (activityCategory.getConsumeCategory() != null && activityCategory.getConsumeCategory().equals(ConsumeCategory.TASK_COUNT)) {
+                activityList.add(activityCategory);
+            }
+        });
+        return activityList;
     }
 }

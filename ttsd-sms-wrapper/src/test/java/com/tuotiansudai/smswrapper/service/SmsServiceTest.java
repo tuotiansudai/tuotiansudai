@@ -1,14 +1,13 @@
 package com.tuotiansudai.smswrapper.service;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.tuotiansudai.smswrapper.SmsTemplate;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.smswrapper.client.SmsClient;
-import com.tuotiansudai.smswrapper.repository.mapper.TurnOffNoPasswordInvestCaptchaMapper;
 import com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper;
-import com.tuotiansudai.smswrapper.repository.model.SmsModel;
+import com.tuotiansudai.smswrapper.repository.mapper.TurnOffNoPasswordInvestCaptchaMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,12 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -40,13 +35,7 @@ public class SmsServiceTest {
     @Autowired
     private SmsClient smsClient;
 
-    @Autowired
-    private RegisterCaptchaMapper registerCaptchaMapper;
-
     private String SUCCESS_RESPONSE_BODY = "{\"code\":200,\"msg\":\"sendid\",\"obj\":1}";
-
-    @Autowired
-    private TurnOffNoPasswordInvestCaptchaMapper noPasswordInvestMapper;
 
     @Before
     public void setUp() throws Exception {
@@ -70,20 +59,8 @@ public class SmsServiceTest {
         String mobile = String.valueOf(new BigDecimal(Math.random() * 9 + 1).multiply(new BigDecimal(10000000000L)).longValue());
         String captcha = "9999";
 
-        this.smsService.sendRegisterCaptcha(mobile, captcha, null);
-
-        List<SmsModel> records = this.registerCaptchaMapper.findByMobile(mobile);
-
-        assert records.size() == 1;
-
-        SmsModel record = records.get(0);
-
-        assertThat(record.getMobile(), is(mobile));
-
-        List<String> paramList = ImmutableList.<String>builder().add(captcha).build();
-        String content = SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE.generateContent(paramList);
-        assertThat(record.getContent(), is(content));
-        assertThat(record.getResultCode(), is("200"));
+        BaseDto<SmsDataDto> baseDto = this.smsService.sendRegisterCaptcha(mobile, captcha, null);
+        assertTrue(baseDto.isSuccess());
     }
 
     @Test
@@ -97,19 +74,20 @@ public class SmsServiceTest {
         String mobile = String.valueOf(new BigDecimal(Math.random() * 9 + 1).multiply(new BigDecimal(10000000000L)).longValue());
         String captcha = "9999";
 
-        this.smsService.sendNoPasswordInvestCaptcha(mobile, captcha, null);
+        BaseDto<SmsDataDto> baseDto = this.smsService.sendNoPasswordInvestCaptcha(mobile, captcha, null);
+        assertTrue(baseDto.isSuccess());
+    }
 
-        List<SmsModel> records = this.noPasswordInvestMapper.findByMobile(mobile);
+    @Test
+    @Transactional
+    public void shouldSendGenerateContractEoor() throws Exception {
+        MockResponse mockResponse = new MockResponse();
+        mockResponse.setBody(SUCCESS_RESPONSE_BODY);
+        server.enqueue(mockResponse);
+        URL url = server.getUrl("/webservice.asmx/mdSmsSend_u");
+        this.smsClient.setUrl(url.toString());
 
-        assert records.size() == 1;
-
-        SmsModel record = records.get(0);
-
-        assertThat(record.getMobile(), is(mobile));
-
-        List<String> paramList = ImmutableList.<String>builder().add(captcha).build();
-        String content = SmsTemplate.SMS_NO_PASSWORD_INVEST_CAPTCHA_TEMPLATE.generateContent(paramList);
-        assertThat(record.getContent(), is(content));
-        assertThat(record.getResultCode(), is("200"));
+        BaseDto<SmsDataDto> baseDto = this.smsService.generateContractNotify(Lists.newArrayList(), 1111L);
+        assertTrue(baseDto.isSuccess());
     }
 }

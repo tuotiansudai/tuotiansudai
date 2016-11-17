@@ -56,7 +56,9 @@ public class PrepareUserServiceImpl implements PrepareUserService {
         }
 
         try {
+            UserModel userModel = userService.findByMobile(requestDto.getReferrerMobile());
             PrepareUserModel prepareUserModel = new PrepareUserModel();
+            prepareUserModel.setReferrerLoginName(userModel != null ? userModel.getLoginName():null);
             prepareUserModel.setReferrerMobile(requestDto.getReferrerMobile());
             prepareUserModel.setMobile(requestDto.getMobile());
             prepareUserModel.setCreatedTime(new Date());
@@ -81,14 +83,10 @@ public class PrepareUserServiceImpl implements PrepareUserService {
     }
 
     private List<PrepareUserDto> fillPrepareUser(List<PrepareUserModel> prepareUserModels) {
-        return Lists.transform(prepareUserModels, new Function<PrepareUserModel, PrepareUserDto>() {
-            @Override
-            public PrepareUserDto apply(PrepareUserModel prepareUserModel) {
-                UserModel referrerUserModel = userMapper.findByMobile(prepareUserModel.getReferrerMobile());
-                AccountModel referrerAccountModel = accountMapper.findByLoginName(referrerUserModel.getLoginName());
-                UserModel useUserModel = userMapper.findByMobile(prepareUserModel.getMobile());
-                return new PrepareUserDto(prepareUserModel, referrerAccountModel, useUserModel);
-            }
+        return Lists.transform(prepareUserModels, prepareUserModel -> {
+            UserModel referrerUserModel = userMapper.findByMobile(prepareUserModel.getReferrerMobile());
+            UserModel useUserModel = userMapper.findByMobile(prepareUserModel.getMobile());
+            return new PrepareUserDto(prepareUserModel, referrerUserModel, useUserModel);
         });
     }
 

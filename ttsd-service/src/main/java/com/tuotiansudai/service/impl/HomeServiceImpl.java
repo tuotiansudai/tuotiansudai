@@ -10,13 +10,18 @@ import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.HomeService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HomeServiceImpl implements HomeService {
+
+    static Logger logger = Logger.getLogger(HomeServiceImpl.class);
 
     @Autowired
     private LoanMapper loanMapper;
@@ -36,11 +41,20 @@ public class HomeServiceImpl implements HomeService {
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
-    @Override
-    public List<HomeLoanDto> getLoans() {
+    public List<HomeLoanDto> getNormalLoans() {
+        return getLoans().stream().filter(loan -> !loan.getProductType().equals(ProductType._30) && !loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
+    }
+
+    public List<HomeLoanDto> getNewbieLoans() {
+        return getLoans().stream().filter(loan -> loan.getProductType().equals(ProductType._30) || loan.getActivityType().equals(ActivityType.NEWBIE)).collect(Collectors.toList());
+    }
+
+    private List<HomeLoanDto> getLoans() {
         final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
 
         List<LoanModel> loanModels = loanMapper.findHomeLoan();
+
+        loanModels.forEach(loanModel -> logger.debug(MessageFormat.format("[home loan] loanId:{0}", loanModel.getId())));
 
         return Lists.transform(loanModels, new Function<LoanModel, HomeLoanDto>() {
             @Override
@@ -64,7 +78,7 @@ public class HomeServiceImpl implements HomeService {
 
                 List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loan.getId());
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
-                String extraSource = "";
+                List<Source> extraSource = Lists.newArrayList();
                 boolean activity = false;
                 String activityDesc = "";
                 if (loanDetailsModel != null) {
@@ -88,7 +102,7 @@ public class HomeServiceImpl implements HomeService {
 
                 List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
-                String extraSource = "";
+                List<Source> extraSource = Lists.newArrayList();
                 boolean activity = false;
                 String activityDesc = "";
                 if (loanDetailsModel != null) {
