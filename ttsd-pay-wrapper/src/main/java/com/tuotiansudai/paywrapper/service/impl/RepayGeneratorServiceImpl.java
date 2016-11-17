@@ -87,6 +87,7 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
             long expectedLoanInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvestModels, lastRepayDate, currentRepayDate);
             LoanRepayModel loanRepayModel = new LoanRepayModel(idGenerator.generate(), loanModel.getId(), period, currentPeriodCorpus, expectedLoanInterest, currentRepayDate.toDate(), RepayStatus.REPAYING);
             loanRepayModel.setCorpus(currentPeriodCorpus);
+
             if(loanRepayMapper.findByLoanIdAndPeriod(loanId, period) == null){
                 loanRepayModels.add(loanRepayModel);
             }else{
@@ -96,11 +97,14 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
             logger.debug(MessageFormat.format("[Generate_Repay:] loanId:{0} loanRepay generate {1} period end", String.valueOf(loanId),index + 1));
         }
         logger.debug(MessageFormat.format("[Generate_Repay:] loanId:{0} loanRepayModels size:{1} investRepayModels size:{2} begin",
-                String.valueOf(loanId),loanRepayModels == null?0:loanRepayModels.size(),investRepayModels == null?0:investRepayModels.size()));
+                String.valueOf(loanId), loanRepayModels == null ? 0 : loanRepayModels.size(), investRepayModels == null ? 0 : investRepayModels.size()));
 
-
-        loanRepayMapper.create(loanRepayModels);
-        investRepayMapper.create(investRepayModels);
+        if(CollectionUtils.isNotEmpty(loanRepayModels)){
+            loanRepayMapper.create(loanRepayModels);
+        }
+        if(CollectionUtils.isNotEmpty(investRepayModels)){
+            investRepayMapper.create(investRepayModels);
+        }
 
         logger.debug(MessageFormat.format("[Generate_Repay:] loanId:{0} loanRepayModels size:{1} investRepayModels size:{2} end",
                 String.valueOf(loanId),loanRepayModels == null?0:loanRepayModels.size(),investRepayModels == null?0:investRepayModels.size()));
