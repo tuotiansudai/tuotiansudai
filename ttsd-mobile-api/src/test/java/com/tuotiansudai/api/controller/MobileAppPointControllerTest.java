@@ -30,9 +30,4 @@ public class MobileAppPointControllerTest extends ControllerTestBase {
         when(mobileAppPointService.queryPointBillList(any(PointBillRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/get/point-bill", new PointBillRequestDto());
     }
-    @Test
-    public void shouldQueryPointTaskIsOk() throws Exception{
-        when(mobileAppPointService.queryPointTaskList(any(PointTaskRequestDto.class))).thenReturn(successResponseDto);
-        doRequestWithServiceMockedTest("/get/point-task", new PointTaskRequestDto());
-    }
 }

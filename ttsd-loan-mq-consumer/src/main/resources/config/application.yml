@@ -1,8 +1,0 @@
-logging:
-  file: /var/log/job-worker/loan-mq-consumer.log
-  level:
-    com:
-      tuotian:
-        mq: debug
-
-

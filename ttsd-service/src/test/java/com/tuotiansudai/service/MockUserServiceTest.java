@@ -5,8 +5,6 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
-import com.tuotiansudai.mq.client.MQClient;
-import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
@@ -66,7 +64,7 @@ public class MockUserServiceTest {
     private PrepareUserMapper prepareUserMapper;
 
     @Mock
-    private MQClient mqClient;
+    private RegisterUserService registerUserService;
 
 
     @Before
@@ -155,25 +153,17 @@ public class MockUserServiceTest {
         when(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.REGISTER_CAPTCHA)).thenReturn(true);
         when(myShaPasswordEncoder.encodePassword(anyString(), anyString())).thenReturn("salt");
         when(prepareUserMapper.findByMobile(anyString())).thenReturn(null);
-        doNothing().when(referrerRelationService).generateRelation(null, loginName);
-        doNothing().when(mqClient).publishMessage(any(MessageTopic.class), anyString());
+        when(registerUserService.register(any(UserModel.class))).thenReturn(true);
         MembershipModel membershipModel = new MembershipModel();
         membershipModel.setId(1);
         membershipModel.setLevel(0);
-        when(membershipMapper.findByLevel(0)).thenReturn(membershipModel);
 
         boolean success = userService.registerUser(registerUserDto);
 
         assertTrue(success);
-        ArgumentCaptor<ArrayList<UserRoleModel>> userRoleModelArgumentCaptor = ArgumentCaptor.forClass((Class<ArrayList<UserRoleModel>>) new ArrayList<UserRoleModel>().getClass());
+        ArgumentCaptor<UserModel> userModelArgumentCaptor = ArgumentCaptor.forClass(UserModel.class);
 
-        verify(userRoleMapper, times(1)).create(userRoleModelArgumentCaptor.capture());
-        assertThat(userRoleModelArgumentCaptor.getValue().get(0).getRole(), is(Role.USER));
+        verify(registerUserService, times(1)).register(userModelArgumentCaptor.capture());
 
-        ArgumentCaptor<UserMembershipModel> userMembershipModelArgumentCaptor = ArgumentCaptor.forClass(UserMembershipModel.class);
-        verify(userMembershipMapper, times(1)).create(userMembershipModelArgumentCaptor.capture());
-        UserMembershipModel newUserMembership = userMembershipModelArgumentCaptor.getValue();
-        assertThat(newUserMembership.getLoginName(), is(registerUserDto.getLoginName()));
-        assertThat(newUserMembership.getMembershipId(), is(membershipModel.getId()));
     }
 }

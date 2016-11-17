@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserView;
 import org.apache.ibatis.annotations.Param;
@@ -53,4 +54,10 @@ public interface UserMapper {
     List<UserModel> findUsersByRegisterTimeOrReferrer(@Param(value = "startTime") Date startTime,
                                                       @Param(value = "endTime") Date endTime,
                                                       @Param(value = "referrer") String referrer);
+
+    UserModel findByIdentityNumber(String identityNumber);
+
+    List<String> findBirthMonthUsers();
+
+    List<String> findBirthDayUsers();
 }

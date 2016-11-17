@@ -9,8 +9,6 @@
     <resultMap id="accountResultMap" type="AccountModel">
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
-        <result column="user_name" property="userName"/>
-        <result column="identity_number" property="identityNumber"/>
         <result column="pay_user_id" property="payUserId"/>
         <result column="pay_account_id" property="payAccountId"/>
         <result column="balance" property="balance"/>
@@ -24,10 +22,8 @@
     </resultMap>
 
     <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">
-        insert into account (login_name, user_name, identity_number, pay_user_id, pay_account_id, balance, freeze,
-        point, register_time, membership_point)
-        value(#{loginName}, #{userName}, #{identityNumber}, #{payUserId}, #{payAccountId}, #{balance}, #{freeze},
-        #{point}, #{registerTime}, #{membershipPoint})
+        insert into account (login_name, pay_user_id, pay_account_id, balance, freeze, point, register_time, membership_point)
+        value(#{loginName}, #{payUserId}, #{payAccountId}, #{balance}, #{freeze}, #{point}, #{registerTime}, #{membershipPoint})
     </insert>
 
     <select id="findByLoginName" parameterType="string" resultMap="accountResultMap">
@@ -54,25 +50,8 @@
         where login_name = #{loginName}
     </update>
 
-    <select id="findByIdentityNumber" parameterType="string" resultMap="accountResultMap">
-        select * from account where identity_number = #{identityNumber}
-    </select>
-
     <select id="findLoginNames" resultType="string">
         select login_name from account
-    </select>
-
-    <select id="findBirthDayUsers" resultType="string">
-        select login_name
-        from account
-        where (if(length(identity_number) = 18, substring(identity_number,11,4), substring(identity_number,9,4))) = DATE_FORMAT(now(),'%m%d')
-    </select>
-
-    
-    <select id="findBirthMonthUsers" resultType="string">
-        select login_name 
-        from account 
-        where (if(length(identity_number) = 18, substring(identity_number,11,2), substring(identity_number,9,2))) = DATE_FORMAT(now(),'%m')
     </select>
 
     <select id="findUsersAccountPoint" parameterType="map" resultMap="accountResultMap">
@@ -83,7 +62,7 @@
                 AND account.login_name = #{loginName}
             </if>
             <if test="userName != null and userName != '' ">
-                AND account.user_name = #{userName}
+                AND EXISTS (select 1 from user where user.login_name = account.login_name and user.user_name = #{userName})
             </if>
             <if test="mobile != null and mobile != '' ">
                 AND EXISTS (select 1 from user where user.login_name = account.login_name and user.mobile = #{mobile})
@@ -103,7 +82,7 @@
                 AND account.login_name = #{loginName}
             </if>
             <if test="userName != null and userName != '' ">
-                AND account.user_name = #{userName}
+                AND EXISTS (select 1 from user where user.login_name = account.login_name and user.user_name = #{userName})
             </if>
             <if test="mobile != null and mobile != '' ">
                 AND EXISTS (select 1 from user where user.login_name = account.login_name and user.mobile = #{mobile})
