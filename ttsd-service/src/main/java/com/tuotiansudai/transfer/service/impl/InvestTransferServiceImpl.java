@@ -2,7 +2,6 @@ package com.tuotiansudai.transfer.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -364,17 +363,13 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             items = transferApplicationMapper.findTransferInvestList(investorLoginName, (index - 1) * pageSize, pageSize, startTime, endTime, loanStatus);
         }
 
-        AnxinSignPropertyModel anxinSignPropertyModel = anxinSignPropertyMapper.findByLoginName(investorLoginName);
-
         items.forEach(transferInvestDetailDto -> {
-            if (anxinSignPropertyModel != null && anxinSignPropertyModel.getAuthTime() != null && (anxinSignPropertyModel.getAuthTime().compareTo(transferInvestDetailDto.getTransferTime()) == 0 || anxinSignPropertyModel.getAuthTime().compareTo(transferInvestDetailDto.getTransferTime()) == -1)){
-                if (Strings.isNullOrEmpty(transferInvestDetailDto.getContractNo())){
-                    transferInvestDetailDto.setContractCreating(ContractStatus.CONTRACT_CREATING.name());
-                } else{
-                    transferInvestDetailDto.setContractAlreadyCreated(ContractStatus.CONTRACT_ALREADY_CREATED.name());
-                }
-            }else{
-                transferInvestDetailDto.setContractNotExist(ContractStatus.CONTRACT_NOT_EXIST.name());
+            if (ContractNoStatus.OLD.name().equals(transferInvestDetailDto.getContractNo())) {
+                transferInvestDetailDto.setContractOld("1");
+            } else if (ContractNoStatus.WAITING.name().equals(transferInvestDetailDto.getContractNo())) {
+                transferInvestDetailDto.setContractCreating("1");
+            } else {
+                transferInvestDetailDto.setContractOK("1");
             }
         });
 

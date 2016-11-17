@@ -1,7 +1,6 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -173,14 +172,7 @@ public class LoanCreateServiceImpl implements LoanCreateService {
             this.updateExtraRate(loanId, loanCreateRequestDto.getLoanDetails().getExtraRateRuleIds());
         } else {
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
-            if (!Strings.isNullOrEmpty(loanDetailsModel.getExtraSource())) {
-                loanCreateRequestDto.getLoanDetails().setExtraSource(Lists.transform(Lists.newArrayList(loanDetailsModel.getExtraSource().split(",")), new Function<String, Source>() {
-                    @Override
-                    public Source apply(String input) {
-                        return Source.valueOf(input);
-                    }
-                }));
-            }
+            loanCreateRequestDto.getLoanDetails().setExtraSource(loanDetailsModel.getExtraSource());
         }
 
         loanDetailsMapper.deleteByLoanId(loanId);

@@ -14,9 +14,6 @@ import java.util.List;
 public class AllUserCollector implements UserCollector {
 
     @Autowired
-    private UserBirthdayUtil userBirthdayUtil;
-
-    @Autowired
     private CouponMapper couponMapper;
 
     @Autowired
@@ -30,6 +27,6 @@ public class AllUserCollector implements UserCollector {
     @Override
     public boolean contains(long couponId, String loginName) {
         CouponModel couponModel = couponMapper.findById(couponId);
-        return couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON || userBirthdayUtil.isBirthMonth(loginName);
+        return couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON || UserBirthdayUtil.isBirthMonth(userMapper.findByLoginName(loginName).getIdentityNumber());
     }
 }

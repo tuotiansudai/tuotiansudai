@@ -39,7 +39,7 @@ def mk_war():
     local('/usr/local/bin/paver jcversion')
     local('/opt/gradle/latest/bin/gradle initMQ -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('/opt/gradle/latest/bin/gradle ttsd-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('/opt/gradle/latest/bin/gradle ttsd-activity:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('/opt/gradle/latest/bin/gradle ttsd-activity-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('/opt/gradle/latest/bin/gradle ttsd-pay-wrapper:war -PconfigPath=/workspace/v2config/default/ttsd-config/ -PpayConfigPath=/workspace/v2config/default/ttsd-pay-wrapper/')
     local('/opt/gradle/latest/bin/gradle ttsd-console:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('/opt/gradle/latest/bin/gradle ttsd-activity-console:war -PconfigPath=/workspace/v2config/default/ttsd-config/ -PactivityConsoleConfigPath=/workspace/v2config/default/ttsd-activity-console/')
@@ -53,12 +53,13 @@ def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=invest distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=jpush distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-loan-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/ -PdiagnosisConfigPath=/workspace/v2config/default/ttsd-diagnosis/')
 
 
 def mk_static_zip():
     local('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/ robots.txt')
     local('cd ./ttsd-mobile-api/src/main/webapp && zip -r static_api.zip api/')
-    local('cd ./ttsd-activity/src/main/webapp && zip -r static_activity.zip activity/')
+    local('cd ./ttsd-activity-web/src/main/webapp && zip -r static_activity.zip activity/')
     local('cd ./ttsd-point-web/src/main/webapp && zip -r static_point.zip point/')
     local('cd ./ttsd-ask-web/src/main/webapp && zip -r static_ask.zip ask/')
 
@@ -86,7 +87,7 @@ def compile():
 def deploy_static():
     upload_project(local_dir='./ttsd-web/src/main/webapp/static.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-mobile-api/src/main/webapp/static_api.zip', remote_dir='/workspace')
-    upload_project(local_dir='./ttsd-activity/src/main/webapp/static_activity.zip', remote_dir='/workspace')
+    upload_project(local_dir='./ttsd-activity-web/src/main/webapp/static_activity.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-point-web/src/main/webapp/static_point.zip', remote_dir='/workspace')
     upload_project(local_dir='./ttsd-ask-web/src/main/webapp/static_ask.zip', remote_dir='/workspace')
     with cd('/workspace'):
@@ -132,13 +133,17 @@ def deploy_pay():
 def deploy_worker():
     put(local_path='./ttsd-job-worker/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-loan-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./ttsd-diagnosis/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
     sudo('supervisorctl stop all')
     with cd('/workspace'):
         sudo('rm -rf ttsd-job-worker-all/')
         sudo('rm -rf ttsd-job-worker-invest/')
         sudo('rm -rf ttsd-job-worker-jpush/')
         sudo('rm -rf ttsd-loan-mq-consumer/')
+        sudo('rm -rf ttsd-diagnosis/')
         sudo('unzip \*.zip')
+        sudo('supervisorctl reload')
         sudo('supervisorctl start all')
 
 
@@ -167,7 +172,7 @@ def deploy_web():
 def deploy_activity():
     sudo('service tomcat stop')
     sudo('rm -rf /opt/tomcat/webapps/ROOT')
-    upload_project(local_dir='./ttsd-activity/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
+    upload_project(local_dir='./ttsd-activity-web/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
     sudo('service nginx restart')
 

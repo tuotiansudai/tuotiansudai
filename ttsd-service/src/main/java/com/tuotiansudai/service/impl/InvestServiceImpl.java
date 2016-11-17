@@ -112,12 +112,6 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private UserCouponService userCouponService;
 
-    @Autowired
-    private UserBirthdayUtil userBirthdayUtil;
-
-    @Autowired
-    private AnxinSignPropertyMapper anxinSignPropertyMapper;
-
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
@@ -139,11 +133,11 @@ public class InvestServiceImpl implements InvestService {
     private void checkInvestAvailable(InvestDto investDto) throws InvestException {
         AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
 
-        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(accountModel.getLoginName());
-
-        if (anxinProp == null || StringUtils.isEmpty(anxinProp.getProjectCode())) {
-            throw new InvestException(InvestExceptionType.ANXIN_SIGN_IS_UNUSABLE);
-        }
+//        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(accountModel.getLoginName());
+//
+//        if (anxinProp == null || StringUtils.isEmpty(anxinProp.getProjectCode())) {
+//            throw new InvestException(InvestExceptionType.ANXIN_SIGN_IS_UNUSABLE);
+//        }
 
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
@@ -252,7 +246,7 @@ public class InvestServiceImpl implements InvestService {
                 if ((usedTime != null && new DateTime(usedTime).plusSeconds(couponLockSeconds).isAfter(new DateTime()))
                         || !loginName.equalsIgnoreCase(userCouponModel.getLoginName())
                         || InvestStatus.SUCCESS == userCouponModel.getStatus()
-                        || (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !userBirthdayUtil.isBirthMonth(loginName))
+                        || (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && UserBirthdayUtil.isBirthMonth(userMapper.findByLoginName(loginName).getIdentityNumber()))
                         || userCouponModel.getEndTime().before(new Date())
                         || !couponModel.getProductTypes().contains(loanModel.getProductType())
                         || (couponModel.getInvestLowerLimit() > 0 && investAmount < couponModel.getInvestLowerLimit())) {
@@ -297,7 +291,7 @@ public class InvestServiceImpl implements InvestService {
 
         long extraRateInterest = 0;
         long extraRateFee = 0;
-        if (loanDetailsModel != null && !Strings.isNullOrEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB.name())) {
+        if (loanDetailsModel != null && !CollectionUtils.isEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB)) {
             extraRateInterest = getExtraRate(loanId, amount, loanModel.getDuration());
             extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }
@@ -351,20 +345,9 @@ public class InvestServiceImpl implements InvestService {
 
             InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
 
-            AnxinSignPropertyModel anxinSignPropertyModel = anxinSignPropertyMapper.findByLoginName(loginName);
-
-            ContractStatus contractStatus = ContractStatus.CONTRACT_NOT_EXIST;
-            if (anxinSignPropertyModel != null && anxinSignPropertyModel.getAuthTime() != null && (anxinSignPropertyModel.getAuthTime().compareTo(investModel.getInvestTime()) == 0 || anxinSignPropertyModel.getAuthTime().compareTo(investModel.getInvestTime()) == -1)){
-                if (Strings.isNullOrEmpty(investModel.getContractNo())){
-                    contractStatus = ContractStatus.CONTRACT_CREATING;
-                } else{
-                    contractStatus = ContractStatus.CONTRACT_ALREADY_CREATED;
-                }
-            }
-
             items.add(new InvestorInvestPaginationItemDataDto(loanModel, investModel,
                     nextInvestRepayOptional.isPresent() ? nextInvestRepayOptional.get() : null,
-                    userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels), investExtraRateModel,contractStatus));
+                    userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels), investExtraRateModel));
         }
 
         BasePaginationDataDto<InvestorInvestPaginationItemDataDto> dto = new BasePaginationDataDto<>(index, pageSize, count, items);
