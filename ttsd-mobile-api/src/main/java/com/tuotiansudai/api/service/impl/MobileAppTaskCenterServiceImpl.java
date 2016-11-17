@@ -4,11 +4,10 @@ package com.tuotiansudai.api.service.impl;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.tuotiansudai.api.dto.TaskCenterResponseDataDto;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppTaskCenterService;
-import com.tuotiansudai.point.dto.PointTaskDto;
+import com.tuotiansudai.point.repository.dto.PointTaskDto;
 import com.tuotiansudai.point.service.PointTaskService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +32,7 @@ public class MobileAppTaskCenterServiceImpl implements MobileAppTaskCenterServic
 
         List<PointTaskDto> newbiePointTasks = pointTaskService.getNewbiePointTasks(loginName);
 
-        if (Iterators.any(newbiePointTasks.iterator(), new Predicate<PointTaskDto>() {
-            @Override
-            public boolean apply(PointTaskDto dto) {
-                return !dto.isCompleted();
-            }
-        })) {
+        if (Iterators.any(newbiePointTasks.iterator(), dto -> !dto.isCompleted())) {
             data.setNewbieTasks(newbiePointTasks);
         }
 

@@ -1,6 +1,6 @@
-package com.tuotiansudai.point.dto;
+package com.tuotiansudai.point.repository.dto;
 
-import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
+import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.util.AmountConverter;
@@ -36,30 +36,27 @@ public class ProductShowItemDto {
         this.updatedTime = productModel.getUpdatedTime();
     }
 
-    public ProductShowItemDto(ExchangeCouponView exchangeCouponView, long productId) {
+    public ProductShowItemDto(long totalCount, long usedCount, long points, Integer seq, String imageUrl, CouponType couponType, long amount , double rate, long productId){
         this.id = productId;
-        this.seq = exchangeCouponView.getSeq();
-        this.imageUrl = exchangeCouponView.getImageUrl();
-        switch (exchangeCouponView.getCouponModel().getCouponType()) {
+        this.seq = seq;
+        this.imageUrl = imageUrl;
+        this.goodsType = GoodsType.COUPON;
+        this.leftCount = totalCount - usedCount;
+        this.points = points;
+        switch (couponType) {
             case RED_ENVELOPE:
-                this.goodsType = GoodsType.COUPON;
-                this.name = AmountConverter.convertCentToString(exchangeCouponView.getCouponModel().getAmount()) + "元现金红包";
-                this.pictureDescription = String.valueOf(exchangeCouponView.getCouponModel().getAmount());
+                this.name = String.format(" %s 元现金红包", AmountConverter.convertCentToString(amount));
+                this.pictureDescription = String.valueOf(amount);
                 break;
             case INVEST_COUPON:
-                this.goodsType = GoodsType.COUPON;
-                this.name = AmountConverter.convertCentToString(exchangeCouponView.getCouponModel().getAmount()) + "元投资体验券";
-                this.pictureDescription = String.valueOf(exchangeCouponView.getCouponModel().getAmount());
+                this.name = String.format( "%s 元投资体验券", AmountConverter.convertCentToString(amount));
+                this.pictureDescription = String.valueOf(amount);
                 break;
             case INTEREST_COUPON:
-                this.goodsType = GoodsType.COUPON;
-                this.name = exchangeCouponView.getCouponModel().getRate() * 100 + "%加息券";
-                this.pictureDescription = String.valueOf(exchangeCouponView.getCouponModel().getRate() * 100);
+                this.name = String.format("%s %s加息券", rate * 100, "");
+                this.pictureDescription = String.valueOf(rate * 100);
                 break;
         }
-        this.leftCount = exchangeCouponView.getCouponModel().getTotalCount() - exchangeCouponView.getCouponModel().getIssuedCount();
-        this.points = exchangeCouponView.getExchangePoint();
-        this.updatedTime = exchangeCouponView.getCouponModel().getUpdatedTime();
     }
 
     public long getId() {

@@ -9,7 +9,7 @@
                 投资更便利</a>
             <div id="iphone-app-img" class="img-app-pc-top hide"></div>
         </div>
-        <i class="fa fa-navicon show-main-menu fr" id="showMainMenu">=</i>
+        <i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>
     </div>
 
 <#if activeNav??>
@@ -53,7 +53,7 @@
 
             </#if>
         </#list>
-        <li class="top-membership"><a href="/membership">会员中心</a> </li>
+        <li class="top-membership"><a href="${webServer}/membership">会员中心</a> </li>
         <li class="top-activity">
             <a href="${webServer}/activity/activity-center">活动中心</a>
         </li>

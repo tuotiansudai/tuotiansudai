@@ -746,4 +746,11 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             }
         }
     }
+
+    @Override
+    public void delStoreJPushId(String loginName){
+        redisWrapperClient.hdel(JPUSH_ID_KEY, loginName);
+    }
+
+
 }
