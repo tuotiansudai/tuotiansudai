@@ -64,7 +64,7 @@
                     </td>
                     <td>
                         <@security.authorize access="hasAnyAuthority('CUSTOMER_SERVICE')">
-                            <#if replace.activeStatus == "noRecheck">
+                            <#if replace.activeStatus == "noRecheck" && replace.status == "APPLY" >
                                 <a class="stop-bank-card btn btn-link" data-active-status="${replace.activeStatus!}" data-replace-id="${replace.id?c}" data-replace-name="${replace.loginName!}" data-replace-status="${replace.status!}" >终止订单 | </a>
                             </#if>
                         </@security.authorize>
