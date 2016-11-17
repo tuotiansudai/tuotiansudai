@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -45,8 +46,8 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
     @Transactional(rollbackFor = Exception.class)
     public void generateRepay(long loanId) throws PayException {
         logger.debug(MessageFormat.format("[Generate_Repay:] loanId:{0}",String.valueOf(loanId)));
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoanId(loanId);
+        List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
+        List<InvestRepayModel> investRepayModels = Lists.newArrayList();
 
         LoanModel loanModel = loanMapper.findById(loanId);
         List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanId);
