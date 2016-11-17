@@ -59,6 +59,9 @@ public class UserLotteryService{
     @Value("#{'${activity.carnival.period}'.split('\\~')}")
     private List<String> carnivalTime = Lists.newArrayList();
 
+    @Value("#{'${activity.christmas.period}'.split('\\~')}")
+    private List<String> christmasTime = Lists.newArrayList();
+
     public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile,final ActivityCategory prizeType,Integer index,Integer pageSize) {
         List<UserModel> userModels = userMapper.findUserModelByMobile(mobile,index, pageSize);
 
@@ -105,9 +108,15 @@ public class UserLotteryService{
             case CARNIVAL_ACTIVITY:
                 startTime = DateTime.parse(carnivalTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
                 endTime = DateTime.parse(carnivalTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+                break;
+            case CHRISTMAS_ACTIVITY:
+                startTime = DateTime.parse(christmasTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+                endTime = DateTime.parse(christmasTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+                break;
         }
 
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime,endTime, userModel.getLoginName());
+
         for(UserModel referrerUserModel : userModels){
             if(referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)){
                 lotteryTime ++;
@@ -125,6 +134,7 @@ public class UserLotteryService{
         if(accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)){
             lotteryTime ++;
         }
+        
 
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
         if(bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)){
