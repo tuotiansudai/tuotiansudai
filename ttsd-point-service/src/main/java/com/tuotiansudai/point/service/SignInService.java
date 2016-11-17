@@ -1,7 +1,7 @@
 package com.tuotiansudai.point.service;
 
 
-import com.tuotiansudai.point.dto.SignInPointDto;
+import com.tuotiansudai.point.repository.dto.SignInPointDto;
 
 public interface SignInService {
 

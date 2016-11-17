@@ -29,8 +29,7 @@
             base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.spring,
             com.tuotiansudai.util,com.tuotiansudai.api,com.tuotiansudai.coupon,com.tuotiansudai.aspect,com.tuotiansudai.point,
             com.tuotiansudai.transfer,com.tuotiansudai.api.util,com.tuotiansudai.jpush,com.tuotiansudai.membership,
-            com.tuotiansudai.message,com.tuotiansudai.cache,com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.mq,
-            com.tuotiansudai.contract.service"/>
+            com.tuotiansudai.message,com.tuotiansudai.cache,com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.mq,com.tuotiansudai.activity.service,com.tuotiansudai.contract.service"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>
@@ -157,7 +156,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage"
-                  value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.jpush.repository.model,com.tuotiansudai.membership.repository.model,com.tuotiansudai.message.repository.model"/>
+                  value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.jpush.repository.model,com.tuotiansudai.membership.repository.model,com.tuotiansudai.message.repository.model,com.tuotiansudai.activity.repository.model"/>
         <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
