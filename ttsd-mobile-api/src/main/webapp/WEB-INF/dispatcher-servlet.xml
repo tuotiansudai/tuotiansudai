@@ -71,4 +71,6 @@
         <property name="requestContextAttribute" value="requestContext"/>
         <property name="exposeSessionAttributes" value="true"/>
     </bean>
+
+    <import resource="swagger-configuration.xml"/>
 </beans>
