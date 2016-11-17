@@ -2,57 +2,34 @@ package com.tuotiansudai.service.impl;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.contract.service.GenerateContractService;
 import com.tuotiansudai.service.ContractService;
-import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
-import com.tuotiansudai.util.AmountConverter;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
 import org.apache.log4j.Logger;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class ContractServiceImpl implements ContractService {
     static Logger logger = Logger.getLogger(ContractServiceImpl.class);
+
+    @Autowired
+    private GenerateContractService generateContractService;
+
     /**
      * 后缀为FTL
      */
     private static final String FTL = ".ftl";
-    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-    @Autowired
-    private LoanMapper loanMapper;
-    @Autowired
-    private AccountMapper accountMapper;
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private LoanerDetailsMapper loanerDetailsMapper;
-    @Autowired
-    private InvestMapper investMapper;
-    @Autowired
-    private TransferApplicationMapper transferApplicationMapper;
-    @Autowired
-    private InvestRepayMapper investRepayMapper;
-    @Autowired
-    private TransferRuleMapper transferRuleMapper;
 
     @Override
-    public String getContract(String templateName, Map<String, Object> dataModel) {
+    public String getContract(String templateName, Map<String, String> dataModel) {
         Writer out = null;
         StringReader reader = null;
         try {
@@ -90,38 +67,11 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public String generateInvestorContract(String loginName, long loanId, long investId) {
-        Map<String, Object> dataModel = collectInvestorContractModel(loginName, loanId, investId);
+        Map<String, String> dataModel = generateContractService.collectInvestorContractModel(loginName, loanId, investId);
         if (dataModel.isEmpty()) {
             return "";
         }
         return getContract("contract", dataModel).replace("&nbsp;", "&#160;");
-    }
-
-    private Map<String, Object> collectInvestorContractModel(String investorLoginName, long loanId, long investId) {
-        Map<String, Object> dataModel = new HashMap<>();
-        LoanModel loanModel = loanMapper.findById(loanId);
-        UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
-        UserModel investorModel = userMapper.findByLoginName(investorLoginName);
-        AccountModel investorAccount = accountMapper.findByLoginName(investorLoginName);
-        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
-        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
-        dataModel.put("agentMobile", agentModel.getMobile());
-        dataModel.put("agentIdentityNumber", agentModel.getIdentityNumber());
-        dataModel.put("investorMobile", investorModel.getMobile());
-        dataModel.put("investorIdentityNumber", agentModel.getIdentityNumber());
-        dataModel.put("loanerUserName", loanerDetailsModel.getUserName());
-        dataModel.put("loanerIdentityNumber", loanerDetailsModel.getIdentityNumber());
-        dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-        dataModel.put("periods", loanModel.getPeriods());
-        dataModel.put("totalRate", loanModel.getBaseRate());
-        dataModel.put("recheckTime", simpleDateFormat.format(loanModel.getRecheckTime()));
-        dataModel.put("endTime", simpleDateFormat.format(investRepayModel.getRepayDate()));
-        if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
-            dataModel.put("pledge", "房屋");
-        } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
-            dataModel.put("pledge", "车辆");
-        }
-        return dataModel;
     }
 
     @Override
@@ -146,66 +96,11 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public String generateTransferContract(long transferApplicationId) {
 
-        Map<String, Object> dataModel = this.collectTransferContractModel(transferApplicationId);
+        Map<String, String> dataModel = generateContractService.collectTransferContractModel(transferApplicationId);
         if (dataModel.isEmpty()) {
             return "";
         }
         return getContract("transferContract", dataModel).replace("&nbsp;", "&#160;");
     }
 
-    private Map<String, Object> collectTransferContractModel(long transferApplicationId) {
-        Map<String, Object> dataModel = new HashMap<>();
-
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
-        if (null == transferApplicationModel) {
-            return dataModel;
-        }
-
-        LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
-        if (loanModel == null) {
-            return dataModel;
-        }
-
-        UserModel transferrerUserModel = userMapper.findByLoginName(transferApplicationModel.getLoginName());
-        dataModel.put("transferrerUserName", transferrerUserModel.getUserName());
-        dataModel.put("transferrerMobile", transferrerUserModel.getMobile());
-        dataModel.put("transferrerIdentityNumber", transferrerUserModel.getIdentityNumber());
-
-        InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
-        UserModel investUserModel = userMapper.findByLoginName(investModel.getLoginName());
-        dataModel.put("transfereeUserName", investUserModel.getUserName());
-        dataModel.put("transfereeMobile", investUserModel.getMobile());
-        dataModel.put("transfereeIdentityNumber", investUserModel.getIdentityNumber());
-
-        dataModel.put("loanerUserName", loanerDetailsMapper.getByLoanId(loanModel.getId()).getUserName());
-        dataModel.put("loanerIdentityNumber", loanModel.getLoanerIdentityNumber());
-        dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-        dataModel.put("totalRate", loanModel.getBaseRate() + loanModel.getActivityRate());
-        dataModel.put("periods", loanModel.getPeriods());
-
-        if (transferApplicationModel.getPeriod() != 1) {
-            InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), transferApplicationModel.getPeriod() - 1);
-            dataModel.put("transferStartTime", simpleDateFormat.format(new LocalDate(investRepayModel.getRepayDate()).plusDays(1).toDate()));
-        } else {
-            if (loanModel.getType().equals(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY) || loanModel.getType().equals(LoanType.INVEST_INTEREST_MONTHLY_REPAY)) {
-                dataModel.put("transferStartTime", simpleDateFormat.format(investModel.getInvestTime()));
-            } else if (loanModel.getType().equals(LoanType.LOAN_INTEREST_MONTHLY_REPAY) || loanModel.getType().equals(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY)) {
-                dataModel.put("transferStartTime", simpleDateFormat.format(loanModel.getRecheckTime()));
-            }
-        }
-
-        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanModel.getPeriods());
-        dataModel.put("transferEndTime", simpleDateFormat.format(investRepayModel.getRepayDate()));
-
-        dataModel.put("investAmount", AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
-        dataModel.put("transferTime", simpleDateFormat.format(transferApplicationModel.getTransferTime()));
-        dataModel.put("leftPeriod", transferApplicationModel.getLeftPeriod());
-
-        TransferRuleModel transferRuleModel = transferRuleMapper.find();
-        dataModel.put("fee30", transferRuleModel.getLevelOneFee());
-        dataModel.put("fee30_90", transferRuleModel.getLevelTwoFee());
-        dataModel.put("fee90", transferRuleModel.getLevelThreeFee());
-
-        return dataModel;
-    }
 }

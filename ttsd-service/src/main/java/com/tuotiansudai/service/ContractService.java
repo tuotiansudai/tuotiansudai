@@ -4,7 +4,7 @@ import java.io.OutputStream;
 import java.util.Map;
 
 public interface ContractService {
-    String getContract(String code, Map<String, Object> dataModel);
+    String getContract(String code, Map<String, String> dataModel);
 
     String generateInvestorContract(String loginName, long loanId, long investId);
 
