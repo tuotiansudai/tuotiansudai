@@ -3,6 +3,7 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.ReplaceBankCardDto;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
@@ -35,6 +36,10 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
 
     public final String BAND_CARD_ACTIVE_STATUS_TEMPLATE = "bank_card_active_status";
 
+    private final String BAND_CARD_IN_VERIFY = "inRecheck";
+
+    private final String BAND_CARD_ON_VERIFY = "noRecheck";
+
     private static int REMARK_LIFE_TIME = 60 * 60 * 24 * 30 * 6;
 
     @Override
@@ -47,7 +52,7 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
     public List<ReplaceBankCardDto> queryReplaceBankCard(String loginName, String mobile, int index, int pageSize) {
         UserModel userModel = userMapper.findByMobile(mobile);
         List<BankCardModel> replaceBankCards = bankCardMapper.findReplaceBankCardByLoginName(userModel == null ? null : userModel.getLoginName(), index, pageSize);
-        Map<String, String> bandCardIdMap = redisWrapperClient.hgetAll(BAND_CARD_ACTIVE_STATUS_TEMPLATE);
+        Map<String, String> bandCardIdMap = redisWrapperClient.exists(BAND_CARD_ACTIVE_STATUS_TEMPLATE) ? redisWrapperClient.hgetAll(BAND_CARD_ACTIVE_STATUS_TEMPLATE) : Maps.newConcurrentMap();
 
         Iterator<ReplaceBankCardDto> replaceBankCardDtoIterator = Iterators.transform(replaceBankCards.iterator(), input -> {
             UserModel userModelByLoginName = userMapper.findByLoginName(input.getLoginName());
@@ -55,7 +60,7 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
             return new ReplaceBankCardDto(input.getId(), input.getLoginName(), userModelByLoginName.getUserName(), userModelByLoginName.getMobile(), bankCardModel != null ? bankCardModel.getBankCode() : "",
                     bankCardModel != null ? bankCardModel.getCardNumber() : "", input.getBankCode(), input.getCardNumber(), input.getCreatedTime(), input.getStatus(),
                     redisWrapperClient.get(MessageFormat.format(this.BANK_CARD_REMARK_TEMPLATE, String.valueOf(input.getId()))),
-                    bandCardIdMap.get(input.getId()) != null ? "inVerify" : "verify");
+                    bandCardIdMap.get(String.valueOf(input.getId())) != null ? BAND_CARD_IN_VERIFY : BAND_CARD_ON_VERIFY);
         });
 
         return Lists.newArrayList(replaceBankCardDtoIterator);

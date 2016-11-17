@@ -25,18 +25,24 @@ require(['jquery', 'jquery-ui', 'layer', 'layer-extend', 'layerWrapper', 'bootst
             var $self = $(this),
                 feedbackId = $self.attr('data-replace-id'),
                 loginName = $self.attr('data-replace-name'),
-                replaceStatus = $self.attr('data-replace-status');
+                replaceStatus = $self.attr('data-replace-status'),
+                activeStatus = $self.attr('data-active-status');
 
-            if(replaceStatus == "PASSED" || replaceStatus == "STOP" || replaceStatus == "FAILED" || replaceStatus == "REMOVED"){
+            if (replaceStatus == "PASSED" || replaceStatus == "REJECT" || replaceStatus == "FAILED" || replaceStatus == "REMOVED") {
                 alert("该状态不可以终止订单!");
+                return;
+            }
+
+            if (activeStatus == "inRecheck") {
+                alert("正在审核中!");
                 return;
             }
             $.ajax({
                 type: "GET",
                 url: "/user-manage/audit-bank-card",
                 data: {
-                    bankCardId : feedbackId,
-                    loginName : loginName
+                    bankCardId: feedbackId,
+                    loginName: loginName
                 },
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8'
@@ -54,10 +60,16 @@ require(['jquery', 'jquery-ui', 'layer', 'layer-extend', 'layerWrapper', 'bootst
             var $self = $(this),
                 feedbackId = $self.attr('data-replace-id'),
                 loginName = $self.attr('data-replace-name'),
-                replaceStatus = $self.attr('data-replace-status');
+                replaceStatus = $self.attr('data-replace-status'),
+                activeStatus = $self.attr('data-active-status');
 
-            if(replaceStatus == "PASSED" || replaceStatus == "STOP" || replaceStatus == "FAILED" || replaceStatus == "REMOVED"){
+            if (replaceStatus == "PASSED" || replaceStatus == "STOP" || replaceStatus == "FAILED" || replaceStatus == "REMOVED") {
                 alert("该状态不可以终止订单!");
+                return;
+            }
+
+            if (activeStatus == "noRecheck") {
+                alert("正在审核中!");
                 return;
             }
 
@@ -65,8 +77,8 @@ require(['jquery', 'jquery-ui', 'layer', 'layer-extend', 'layerWrapper', 'bootst
                 type: "GET",
                 url: "/user-manage/audit-bank-card",
                 data: {
-                    bankCardId : feedbackId,
-                    loginName : loginName
+                    bankCardId: feedbackId,
+                    loginName: loginName
                 },
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8'

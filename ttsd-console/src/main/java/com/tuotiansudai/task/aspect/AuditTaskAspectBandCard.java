@@ -1,9 +1,12 @@
 package com.tuotiansudai.task.aspect;
 
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.EditUserDto;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Aspect
@@ -36,6 +40,9 @@ public class AuditTaskAspectBandCard {
     @Autowired
     private AuditLogService auditLogService;
 
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
     public final String BAND_CARD_ACTIVE_STATUS_TEMPLATE = "bank_card_active_status";
 
     static Logger logger = Logger.getLogger(AuditTaskAspectBandCard.class);
@@ -49,7 +56,10 @@ public class AuditTaskAspectBandCard {
         String taskId = OperationType.BAND_CARD + "-" + operatorLoginName;
         String loginName = LoginUserInfo.getLoginName();
 
-        if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+        List<UserRoleModel> userRoleModelList = userRoleMapper.findByLoginName(loginName);
+        boolean isAdmin = Iterators.any(userRoleModelList.iterator(), input -> Role.OPERATOR_ADMIN.equals(input.getRole()) || Role.ADMIN.equals(input.getRole()));
+
+        if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId) && isAdmin) {
             logger.debug(MessageFormat.format("check bank card task aspect. user:{0}, bankCard:{1}",loginName, bankCardId));
             OperationTask<EditUserDto> task = (OperationTask<EditUserDto>) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
@@ -72,13 +82,11 @@ public class AuditTaskAspectBandCard {
             String receiverRealName = userService.getRealName(receiverLoginName);
             String description = senderRealName + " 通过了 " + receiverRealName + " 修改用户［" + editUserRealName + "］的申请。";
             auditLogService.createAuditLog(loginName, receiverLoginName, OperationType.BAND_CARD, task.getObjId(), description, ip);
-
-            Map<String, String> bankCardIdMap = redisWrapperClient.hgetAll(BAND_CARD_ACTIVE_STATUS_TEMPLATE);
-            bankCardIdMap.remove(bankCardId);
+            redisWrapperClient.hdel(BAND_CARD_ACTIVE_STATUS_TEMPLATE, String.valueOf(bankCardId));
 
             return proceedingJoinPoint.proceed();
         } else {
-            logger.debug(MessageFormat.format("apply bank card task aspect. user:{0}, bankCard:{1}",loginName, bankCardId));
+            logger.debug(MessageFormat.format("apply bank card task aspect. user:{0}, bankCard:{1}", loginName, bankCardId));
             OperationTask<EditUserDto> task = new OperationTask<>();
             task.setTaskType(TaskType.TASK);
             task.setOperationType(OperationType.USER);
@@ -91,13 +99,14 @@ public class AuditTaskAspectBandCard {
             task.setOperateURL("/user-manage/bind-card");
             task.setSender(StringUtils.isEmpty(loginName) ? operatorLoginName : loginName);
             task.setObjId(String.valueOf(bankCardId));
+            task.setOperationType(OperationType.BAND_CARD);
 
             String senderRealName = userService.getRealName(StringUtils.isEmpty(loginName) ? operatorLoginName : loginName);
             task.setDescription(senderRealName + " 申请终止用户［" + editUserRealName + "］换卡操作。");
             redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId, task);
 
             Map<String, String> bandCardApplyMap = Maps.newConcurrentMap();
-            bandCardApplyMap.put(String.valueOf(bankCardId), "REJECT");
+            bandCardApplyMap.put(String.valueOf(bankCardId), "inRecheck");
             redisWrapperClient.hmset(BAND_CARD_ACTIVE_STATUS_TEMPLATE, bandCardApplyMap);
 
             return "申请成功,请等待运营管理员审核!";

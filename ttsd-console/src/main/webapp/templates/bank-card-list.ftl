@@ -30,7 +30,7 @@
             </thead>
             <tbody>
                 <#list replaceBankCardDtoList as replace>
-                <tr class="<#if replace.activeStatus!='verify'>bg-danger</#if>">
+                <tr class="<#if replace.activeStatus == 'inRecheck'>bg-danger</#if>">
                     <td>${replace.userName!}</td>
                     <td>${replace.mobile!}</td>
                     <td>${replace.oldCard!}</td>
@@ -41,7 +41,7 @@
                             换卡成功
                         <#elseif replace.status == 'UNCHECKED' || replace.status == 'APPLY'>
                             处理中
-                        <#elseif replace.status == 'STOP'>
+                        <#elseif replace.status == 'REJECT'>
                             终止订单
                         <#else>
                             失败
@@ -64,13 +64,13 @@
                     </td>
                     <td>
                         <@security.authorize access="hasAnyAuthority('CUSTOMER_SERVICE')">
-                            <#if replace.activeStatus == "verify">
+                            <#if replace.activeStatus == "noRecheck">
                                 <a class="stop-bank-card btn btn-link" data-active-status="${replace.activeStatus!}" data-replace-id="${replace.id?c}" data-replace-name="${replace.loginName!}" data-replace-status="${replace.status!}" >终止订单 | </a>
                             </#if>
                         </@security.authorize>
-                        <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">
-                            <#if replace.activeStatus != "verify">
-                                <a class="audit-bank-card btn btn-link" data-replace-id="${replace.id?c}" data-replace-name="${replace.loginName!}" data-replace-status="${replace.status!}">审核 | </a>
+                        <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                            <#if replace.activeStatus == "inRecheck">
+                                <a class="audit-bank-card btn btn-link" data-active-status="${replace.activeStatus!}" data-replace-id="${replace.id?c}" data-replace-name="${replace.loginName!}" data-replace-status="${replace.status!}">审核 | </a>
                             </#if>
                         </@security.authorize>
                         <a class="replace-remark btn btn-link" data-replace-id="${replace.id?c}" >添加备注</a>

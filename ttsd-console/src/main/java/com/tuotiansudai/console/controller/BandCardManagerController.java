@@ -20,7 +20,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/user-manage")
-public class BankCardManagerController {
+public class BandCardManagerController {
     @Autowired
     private BandCardManagerService bandCardManagerService;
     @RequestMapping(value = "/bind-card", method = RequestMethod.GET)
