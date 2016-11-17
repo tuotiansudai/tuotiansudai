@@ -121,10 +121,14 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/account/{loginName}/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/account/{loginName}/search/{loanerType}", method = RequestMethod.GET)
     @ResponseBody
-    public List<String> findLoginNames(@PathVariable String loginName) {
-        return userServiceConsole.findAllLoanerLikeLoginName(loginName);
+    public List<String> findLoanerLoginNames(@PathVariable String loginName, @PathVariable String loanerType) {
+        if ("ENTERPRISE_DIRECT".equals(loanerType)) {
+            return userServiceConsole.findAllLoanerLikeLoginName(loginName);
+        } else {
+            return userServiceConsole.findAllEnterpriseLoanerLikeLoginName(loginName);
+        }
     }
 
     @RequestMapping(value = "/account/{loginName}/query", method = RequestMethod.GET)
@@ -261,15 +265,15 @@ public class UserController {
     @ResponseBody
     public long queryUserMembershipByLevelCount(@RequestParam(value = "userGroup") UserGroup userGroup) {
         long level = MEMBERSHIP_V0;
-        if(userGroup.equals(UserGroup.MEMBERSHIP_V1)){
+        if (userGroup.equals(UserGroup.MEMBERSHIP_V1)) {
             level = MEMBERSHIP_V1;
-        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V2)){
+        } else if (userGroup.equals(UserGroup.MEMBERSHIP_V2)) {
             level = MEMBERSHIP_V2;
-        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V3)){
+        } else if (userGroup.equals(UserGroup.MEMBERSHIP_V3)) {
             level = MEMBERSHIP_V3;
-        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V4)){
+        } else if (userGroup.equals(UserGroup.MEMBERSHIP_V4)) {
             level = MEMBERSHIP_V4;
-        }else if (userGroup.equals(UserGroup.MEMBERSHIP_V5)){
+        } else if (userGroup.equals(UserGroup.MEMBERSHIP_V5)) {
             level = MEMBERSHIP_V5;
         }
         return userMembershipService.findCountMembershipByLevel(level);

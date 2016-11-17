@@ -36,5 +36,7 @@ public interface UserServiceConsole {
 
     List<String> findAllLoanerLikeLoginName(String loginName);
 
+    List<String> findAllEnterpriseLoanerLikeLoginName(String loginName);
+
     List<String> findAccountLikeLoginName(String loginName);
 }

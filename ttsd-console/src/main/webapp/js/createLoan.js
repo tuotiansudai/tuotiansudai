@@ -232,9 +232,11 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
         });
 
         var loanAgentElement = $('input[name="agent"]');
+        var pledgeType = $('input[name="name"]').val;
+        var loanerType = pledgeType == "税易经营性借款-直贷" ? "ENTERPRISE_DIRECT" : "AGENT"
         loanAgentElement.autocomplete({
             source: function (query, process) {
-                $.get('/user-manage/account/' + query.term + '/search', function (respData) {
+                $.get('/user-manage/account/' + query.term + '/search/' + loanerType, function (respData) {
                     return process(respData);
                 });
             }
