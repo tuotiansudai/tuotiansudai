@@ -14,6 +14,12 @@ public class AccountItemDataDto implements Serializable {
     private long point;
     private long totalPoint;
 
+    public AccountItemDataDto(UserModel userModel, AccountModel accountModel) {
+        this.loginName = accountModel.getLoginName();
+        this.userName = userModel.getUserName();
+        this.point = accountModel.getPoint();
+    }
+
     public String getLoginName() {
         return loginName;
     }
@@ -52,12 +58,6 @@ public class AccountItemDataDto implements Serializable {
 
     public void setTotalPoint(long totalPoint) {
         this.totalPoint = totalPoint;
-    }
-
-    public AccountItemDataDto(AccountModel accountModel) {
-        this.loginName = accountModel.getLoginName();
-        this.userName = accountModel.getUserName();
-        this.point = accountModel.getPoint();
     }
 }
 

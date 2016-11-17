@@ -137,6 +137,25 @@ globalFun.prototype={
         ulHeight=this.hasClass(objBtn,"active")?'auto':'30px';
         ulLIst.style.height=ulHeight;
     },
+    decorateRadioCheck:function($input,$radioLabel) {
+        var numRadio=$input.length;
+        if(numRadio) {
+            $input.each(function(key,option) {
+                var $this=$(this);
+                if($this.is(':checked')) {
+                    $this.next('label').addClass('checked');
+                }
+                $this.next('label').click(function() {
+                    var $thisLab=$(this);
+                    if(!/checked/.test(this.className)) {
+                        $radioLabel.removeClass('checked');
+                        $thisLab.addClass('checked');
+                    }
+                });
+            });
+
+        }
+    },
     // 动态插入script标签
     createScript:function(url, callback){
         var oScript = document.createElement('script');

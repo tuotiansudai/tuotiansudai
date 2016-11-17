@@ -23,8 +23,31 @@
     <aop:aspectj-autoproxy expose-proxy="true" />
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.spring,com.tuotiansudai.util,com.tuotiansudai.cache,com.tuotiansudai.coupon,com.tuotiansudai.aspect,com.tuotiansudai.point,
-                                            com.tuotiansudai.transfer,com.tuotiansudai.membership,com.tuotiansudai.message"/>
+    <context:component-scan base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,
+    com.tuotiansudai.spring,com.tuotiansudai.util,com.tuotiansudai.cache,com.tuotiansudai.coupon,com.tuotiansudai.aspect,
+    com.tuotiansudai.point,com.tuotiansudai.transfer,com.tuotiansudai.membership,com.tuotiansudai.message,
+    com.tuotiansudai.anxin.service,com.tuotiansudai.cfca,com.tuotiansudai.mq"/>
+
+    <bean id="anxinHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${anxin.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${anxin.jdbc.username}"/>
+                <property name="password" value="${anxin.jdbc.password}"/>
+                <property name="minimumIdle" value="${anxin.anxin.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${anxin.anxin.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>
@@ -54,8 +77,8 @@
                 <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
-                <property name="minimumIdle" value="${web.job_worker.minimumIdle}"/>
-                <property name="maximumPoolSize" value="${web.job_worker.maximumPoolSize}"/>
+                <property name="minimumIdle" value="${web.job.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${web.job.maximumPoolSize}"/>
                 <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
                 <property name="dataSourceProperties">
                     <props>
@@ -69,20 +92,24 @@
     </bean>
 
     <bean id="pointHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxpoint?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="${point.jdbc.username}"/>
-        <property name="password" value="${point.jdbc.password}"/>
-        <property name="minimumIdle" value="${point.aa.minimumIdle}"/>
-        <property name="maximumPoolSize" value="${point.aa.maximumPoolSize}"/>
-        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
-        <property name="dataSourceProperties">
-            <props>
-                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
-                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
-                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
-            </props>
-        </property>
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxpoint?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${point.jdbc.username}"/>
+                <property name="password" value="${point.jdbc.password}"/>
+                <property name="minimumIdle" value="${web.point.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${web.point.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
     </bean>
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->
@@ -108,6 +135,12 @@
         <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
+    <bean id="anxinSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="anxinHikariCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.cfca.model"/>
+        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
+    </bean>
+
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
@@ -118,6 +151,11 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="pointSqlSessionFactory"/>
         <property name="basePackage" value="com.tuotiansudai.point.repository.mapper"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="anxinSessionFactory"/>
+        <property name="basePackage" value="com.tuotiansudai.cfca.mapper"/>
     </bean>
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />

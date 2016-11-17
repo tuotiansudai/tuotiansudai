@@ -19,13 +19,7 @@ public interface AccountMapper {
 
     void update(AccountModel model);
 
-    List<AccountModel> findByIdentityNumber(String identityNumber);
-
     List<String> findLoginNames();
-
-    List<String> findBirthMonthUsers();
-
-    List<String> findBirthDayUsers();
 
     List<AccountModel> findUsersAccountPoint(@Param(value = "loginName") String loginName,
                                              @Param(value = "userName") String userName,
