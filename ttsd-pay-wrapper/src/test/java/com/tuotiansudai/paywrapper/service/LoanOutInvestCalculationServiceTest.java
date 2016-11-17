@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service;
 
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -189,7 +190,7 @@ public class LoanOutInvestCalculationServiceTest {
         loanDetailsModel.setId(id);
         loanDetailsModel.setLoanId(loanModel.getId());
         loanDetailsModel.setDeclaration("材料声明");
-        loanDetailsModel.setExtraSource("WEB,MOBILE");
+        loanDetailsModel.setExtraSource(Lists.newArrayList(Source.WEB,Source.MOBILE));
        return loanDetailsModel;
     }
 }

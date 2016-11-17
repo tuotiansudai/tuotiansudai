@@ -17,6 +17,8 @@ public enum SmsTemplate {
 
     SMS_FATAL_NOTIFY_TEMPLATE(8455, "%s 警报：%s"),
 
+    SMS_PLATFORM_BALANCE_LOW_NOTIFY_TEMPLATE(3032242, "系统账户余额不足 %s 元，请立刻充值！"),
+
     SMS_COUPON_NOTIFY_TEMPLATE(6487, "尊敬的拓天速贷客户，恭喜您获得%s，有效期%s，请及时投资体验。"),
 
     SMS_BIRTHDAY_NOTIFY_TEMPLATE(6482, "亲爱的天宝生日快乐！生日月投资收益翻倍，最高26%，不要错过哟！"),
@@ -27,7 +29,9 @@ public enum SmsTemplate {
 
     SMS_IMPORT_RECEIVE_MEMBERSHIP(3031214, "尊敬的用户，拓天给您赠送了V%s会员，赶紧投资享受会员特权吧！"),
 
-    SMS_NEW_USER_RECEIVE_MEMBERSHIP(3031215, "尊敬的用户，欢迎您加入拓天，拓天给您赠送了V%s会员，赶紧投资享受会员特权吧！");
+    SMS_NEW_USER_RECEIVE_MEMBERSHIP(3031215, "尊敬的用户，欢迎您加入拓天，拓天给您赠送了V%s会员，赶紧投资享受会员特权吧！"),
+
+    SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE(3034360, "安心签合同生成失败，标的/债权 id : %s");
 
     private long templateId;
 

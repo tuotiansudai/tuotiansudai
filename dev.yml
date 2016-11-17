@@ -2,11 +2,12 @@ sign-in:
   image: "leoshi/ttsd-signin-flask"
   volumes:
     - ./signin_service:/app
-    - /var/log/signin:/var/log/signin
+    - /var/log/tuotian/signin:/var/log/signin
   ports:
     - "20001:80"
   links:
     - "redis-server"
+
 web:
   image: "andreptb/tomcat:8-jdk8"
   environment:
@@ -15,6 +16,7 @@ web:
   ports:
     - "20002:8080"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-web/war:/usr/local/tomcat/webapps
     - /var/log/tuotian/web:/usr/local/tomcat/logs
     - /var/log/tuotian/web:/var/log/tomcat
@@ -24,6 +26,7 @@ web:
     - "redis-server"
     - "static-server"
     - "sign-in"
+
 console:
   image: "andreptb/tomcat:8-jdk8"
   environment:
@@ -32,6 +35,7 @@ console:
   ports:
     - "20003:8080"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-console/war:/usr/local/tomcat/webapps
     - /var/log/tuotian/console:/usr/local/tomcat/logs
     - /var/log/tuotian/console:/var/log/tomcat
@@ -41,6 +45,7 @@ console:
     - "redis-server"
     - "static-server"
     - "sign-in"
+
 activity-console:
   image: "andreptb/tomcat:8-jdk8"
   environment:
@@ -55,6 +60,7 @@ activity-console:
   links:
     - "redis-server"
     - "sign-in"
+
 pay-wrapper:
   image: "andreptb/tomcat:8-jdk8"
   environment:
@@ -63,6 +69,7 @@ pay-wrapper:
   ports:
     - "20004:8080"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - /workspace/ump_sign/:/workspace/ump_sign
     - ./ttsd-pay-wrapper/war:/usr/local/tomcat/webapps
     - /var/log/tuotian/pay-wrapper:/usr/local/tomcat/logs
@@ -70,6 +77,7 @@ pay-wrapper:
   links:
     - "sms-wrapper"
     - "redis-server"
+
 sms-wrapper:
   image: "andreptb/tomcat:8-jdk8"
   environment:
@@ -83,14 +91,17 @@ sms-wrapper:
     - /var/log/tuotian/sms-wrapper:/var/log/tomcat
   links:
     - "redis-server"
+
 mobile-api:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
     - "JAVA_OPTS=-Xmx1024m"
+    - "spring.profiles.active=QA"
   ports:
     - "20006:8080"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-mobile-api/war:/usr/local/tomcat/webapps
     - /var/log/tuotian/mobile-api:/usr/local/tomcat/logs
     - /var/log/tuotian/mobile-api:/var/log/tomcat
@@ -99,6 +110,7 @@ mobile-api:
     - "sms-wrapper"
     - "redis-server"
     - "sign-in"
+
 activity:
   image: "andreptb/tomcat:8-jdk8"
   environment:
@@ -114,6 +126,7 @@ activity:
     - "redis-server"
     - "static-server"
     - "sign-in"
+
 point:
   image: "andreptb/tomcat:8-jdk8"
   environment:
@@ -129,6 +142,7 @@ point:
     - "redis-server"
     - "static-server"
     - "sign-in"
+
 redis-server:
   image: "grokzen/redis-cluster"
   ports:
@@ -140,12 +154,14 @@ redis-server:
     - "20015:7005"
     - "20016:7006"
     - "20017:7007"
+
 worker-all:
   image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-job-worker/build/distributions:/opt/worker
     - /var/log/tuotian/worker-all:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-job-worker-all/bin/ttsd-job-worker"
@@ -153,6 +169,7 @@ worker-all:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
+
 worker-invest:
   image: "anapsix/alpine-java:8_jdk"
   environment:
@@ -166,6 +183,7 @@ worker-invest:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
+
 worker-jpush:
   image: "anapsix/alpine-java:8_jdk"
   environment:
@@ -177,6 +195,31 @@ worker-jpush:
   command: bash -c "/opt/worker/ttsd-job-worker-jpush/bin/ttsd-job-worker"
   links:
     - "redis-server"
+
+loan-mq-consumer:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-loan-mq-consumer/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-loan-mq-consumer:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-loan-mq-consumer/bin/ttsd-loan-mq-consumer"
+  links:
+    - "pay-wrapper"
+    - "sms-wrapper"
+    - "redis-server"
+
+diagnosis:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-diagnosis/build/distributions:/opt/worker
+    - /var/log/tuotian/diagnosis:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-diagnosis/bin/ttsd-diagnosis"
+
 static-server:
   image: "nginx"
   volumes:
@@ -184,6 +227,7 @@ static-server:
     - ./scripts/docker/ttsd-test-nginx.conf:/etc/nginx/conf.d/default.conf
   ports:
     - "20020:80"
+
 nginx-server_web:
   image: "nginx"
   volumes:
@@ -195,6 +239,7 @@ nginx-server_web:
     - "web"
     - "ask"
     - "point"
+
 nginx-server_console:
   image: "nginx"
   volumes:
@@ -204,6 +249,7 @@ nginx-server_console:
   links:
     - "console"
     - "activity-console"
+
 ask:
   image: "andreptb/tomcat:8-jdk8"
   environment:

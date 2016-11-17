@@ -181,8 +181,8 @@
             <div class="invite-box-friend anonymous">
                 <dl>
                     <dt>向好友发送您的邀请链接：</dt>
-                    <dd><input type="text" class="input-invite" disabled value="https://tuotiansudai.com/activity/landing-page?referrer=">
-                        <a class="btn-copy-link show-login" href="javascript:void(0);">复制链接</a>
+                    <dd><input type="text" class="input-invite" disabled value="您需要登录才可以邀请好友">
+                        <a class="btn-copy-link show-login" href="javascript:void(0);">去登陆</a>
                     </dd>
                 </dl>
             </div>
@@ -195,8 +195,8 @@
                 <div class="invite-box-friend no-identification">
                     <dl>
                         <dt>向好友发送您的邀请链接：</dt>
-                        <dd><input type="text" class="input-invite"  disabled value="https://tuotiansudai.com/activity/landing-page?referrer=<@global.security.authentication property='principal.mobile' />">
-                            <a class="btn-copy-link to-identification" href="javascript:void(0);" >复制链接</a>
+                        <dd><input type="text" class="input-invite"  disabled value="您的好友还不知道您是谁，先来实名认证吧">
+                            <a class="btn-copy-link to-identification" href="javascript:void(0);" >实名认证</a>
                         </dd>
                     </dl>
                 </div>

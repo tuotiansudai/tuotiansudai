@@ -1,4 +1,4 @@
-define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'jquery.form'], function($, layer) {
+define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'jquery.form'], function ($, layer) {
 
     var $loginFormElement = $('.form-login'),
         $loginSubmitElement = $('.login-submit'),
@@ -6,25 +6,23 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
         $errorElement = $('i.error'),
         $imageCaptchaElement = $('.image-captcha img');
 
-    var refreshCaptcha = function() {
+    var refreshCaptcha = function () {
         $captchaElement.val('');
         $imageCaptchaElement.attr('src', '/login/captcha?' + new Date().getTime().toString());
     };
 
-    $imageCaptchaElement.click(function() {
+    $imageCaptchaElement.click(function () {
         refreshCaptcha();
     });
 
-    var submitLoginForm = function() {
+    var submitLoginForm = function () {
         $loginFormElement.ajaxSubmit({
-            beforeSubmit: function(arr, $form, options) {
+            beforeSubmit: function (arr, $form, options) {
                 $loginSubmitElement.addClass('loading');
             },
-            success: function(data) {
+            success: function (data) {
                 if (data.status) {
-                    if($('.show-login').length>0){
-                        window.location.reload();
-                    }
+                    window.location.reload();
 
                 } else {
                     refreshCaptcha();
@@ -32,7 +30,7 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
                     layer.msg(data.message);
                 }
             },
-            error: function() {
+            error: function () {
                 $loginSubmitElement.removeClass('loading');
                 refreshCaptcha();
                 layer.msg('用户或密码不正确');
@@ -67,47 +65,46 @@ define(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'jquery.validate', 'j
                 minlength: '验证码不正确'
             }
         },
-        errorPlacement: function(error, element) {  
-            error.appendTo(element.parent());  
+        errorPlacement: function (error, element) {
+            error.appendTo(element.parent());
         },
-        submitHandler: function(form) {
+        submitHandler: function (form) {
             submitLoginForm();
         }
     });
 
-    $('body').on('click', '.close-btn', function(event) {
+    $('body').on('click', '.close-btn', function (event) {
         event.preventDefault();
         layer.closeAll();
     })
-    .on('click', '.show-login', function(event) {
-        event.preventDefault();
-        refreshCaptcha();
-        $.ajax({
-            url: '/activity/isLogin',
-            //data:data,
-            type: 'GET',
-            dataType: 'json',
-            contentType: 'application/json; charset=UTF-8'
-        })
-            .fail(function (response) {
-                if (response.responseText != "") {
-                    $("meta[name='_csrf']").remove();
-                    $('head').append($(response.responseText));
-                    var token = $("meta[name='_csrf']").attr("content");
-                    var header = $("meta[name='_csrf_header']").attr("content");
-                    $(document).ajaxSend(function (e, xhr, options) {
-                        xhr.setRequestHeader(header, token);
-                    });
-                    layer.open({
-                        type: 1,
-                        title: false,
-                        closeBtn: 0,
-                        area: ['auto', 'auto'],
-                        content: $('#loginTip')
-                    });
-                }
+        .on('click', '.show-login', function (event) {
+            event.preventDefault();
+            refreshCaptcha();
+            $.ajax({
+                url: '/activity/isLogin',
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            })
+                .fail(function (response) {
+                        if (response.responseText != "") {
+                            $("meta[name='_csrf']").remove();
+                            $('head').append($(response.responseText));
+                            var token = $("meta[name='_csrf']").attr("content");
+                            var header = $("meta[name='_csrf_header']").attr("content");
+                            $(document).ajaxSend(function (e, xhr, options) {
+                                xhr.setRequestHeader(header, token);
+                            });
+                            layer.open({
+                                type: 1,
+                                title: false,
+                                closeBtn: 0,
+                                area: ['auto', 'auto'],
+                                content: $('#loginTip')
+                            });
+                        }
 
-            }
-        );
-    });
+                    }
+                );
+        });
 });

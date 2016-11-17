@@ -12,5 +12,4 @@ public interface MobileAppPointService {
 
     BaseResponseDto queryPoint(BaseParamDto baseParamDto);
 
-    BaseResponseDto<PointTaskListResponseDataDto> queryPointTaskList(PointTaskRequestDto pointTaskRequestDto);
 }

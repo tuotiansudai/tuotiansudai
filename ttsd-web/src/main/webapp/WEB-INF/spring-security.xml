@@ -39,6 +39,9 @@
 
     <http auto-config="true" use-expressions="true" create-session="always" access-decision-manager-ref="affirmativeBased" authentication-manager-ref="authenticationManager"
           entry-point-ref="myLoginUrlAuthenticationEntryPoint">
+        <headers>
+            <frame-options policy="ALLOW-FROM" strategy="whitelist" value="https://www.growingio.com"/>
+        </headers>
         <access-denied-handler ref="myAccessDeniedHandler"/>
         <form-login login-page="/login"
                     authentication-details-source-ref="myWebAuthenticationDetailsSource"
@@ -68,6 +71,7 @@
         <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <!--menus-->
+
         <intercept-url pattern="/loan-list/**" access="permitAll()"/>
         <intercept-url pattern="/account/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/investor/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>
@@ -77,6 +81,7 @@
         <intercept-url pattern="/point/sign-in" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
         <intercept-url pattern="/point/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/personal-info/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/anxinSign" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/auto-invest" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')" method="GET"/>
         <intercept-url pattern="/auto-invest/agreement" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')" method="GET"/>
         <intercept-url pattern="/auto-invest/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
@@ -107,8 +112,7 @@
         <intercept-url pattern="/activity/point-lottery" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <intercept-url pattern="/loan-application/create" access="not isAnonymous()" method="POST"/>
-
-
+        <intercept-url pattern="/assign-coupon" access="not isAnonymous()"/>
         <intercept-url pattern="/**" access="permitAll()"/>
 
         <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>

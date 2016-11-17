@@ -247,7 +247,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     public void autoJPushAlertBirthMonth() {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.BIRTHDAY_ALERT_MONTH);
         if (jPushAlertModel != null) {
-            List<String> loginNames = accountMapper.findBirthMonthUsers();
+            List<String> loginNames = userMapper.findBirthMonthUsers();
             if (CollectionUtils.isEmpty(loginNames)) {
                 logger.debug("accountMapper.findBirthOfAccountInMonth() without data");
                 return;
@@ -262,7 +262,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     public void autoJPushAlertBirthDay() {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.BIRTHDAY_ALERT_DAY);
         if (jPushAlertModel != null) {
-            List<String> loginNames = accountMapper.findBirthDayUsers();
+            List<String> loginNames = userMapper.findBirthDayUsers();
             if (CollectionUtils.isEmpty(loginNames)) {
                 logger.debug("accountMapper.findBirthOfAccountInDay() without data");
                 return;
@@ -674,11 +674,11 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             baseDataDto.setStatus(true);
             baseDto.setSuccess(true);
 
-            AccountModel auditor = accountMapper.findByLoginName(loginName);
-            String auditorRealName = auditor == null ? loginName : auditor.getUserName();
+            UserModel auditor = userMapper.findByLoginName(loginName);
+            String auditorRealName = auditor == null || Strings.isNullOrEmpty(auditor.getUserName()) ? loginName : auditor.getUserName();
 
-            AccountModel operator = accountMapper.findByLoginName(jPushModel.getCreatedBy());
-            String operatorRealName = operator == null ? jPushModel.getCreatedBy() : operator.getUserName();
+            UserModel operator = userMapper.findByLoginName(jPushModel.getCreatedBy());
+            String operatorRealName = operator == null || Strings.isNullOrEmpty(operator.getUserName()) ? jPushModel.getCreatedBy() : operator.getUserName();
 
             String description = auditorRealName + " 审核通过了 " + operatorRealName + " 创建的APP推送［" + jPushModel.getName() + "］。";
             auditLogUtil.createAuditLog(loginName, jPushModel.getCreatedBy(), OperationType.PUSH, String.valueOf(id), description, ip);
@@ -700,11 +700,11 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         jPushModel.setAuditor(loginName);
         jPushAlertMapper.update(jPushModel);
 
-        AccountModel auditor = accountMapper.findByLoginName(loginName);
-        String auditorRealName = auditor == null ? loginName : auditor.getUserName();
+        UserModel auditor = userMapper.findByLoginName(loginName);
+        String auditorRealName = auditor == null || Strings.isNullOrEmpty(auditor.getUserName()) ? loginName : auditor.getUserName();
 
-        AccountModel operator = accountMapper.findByLoginName(jPushModel.getCreatedBy());
-        String operatorRealName = operator == null ? jPushModel.getCreatedBy() : operator.getUserName();
+        UserModel operator = userMapper.findByLoginName(jPushModel.getCreatedBy());
+        String operatorRealName = operator == null || Strings.isNullOrEmpty(operator.getUserName()) ? jPushModel.getCreatedBy() : operator.getUserName();
 
         String description = auditorRealName + " 驳回了 " + operatorRealName + " 创建的APP推送［" + jPushModel.getName() + "］。";
         auditLogUtil.createAuditLog(loginName, jPushModel.getCreatedBy(), OperationType.PUSH, String.valueOf(id), description, ip);

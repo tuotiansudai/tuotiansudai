@@ -33,9 +33,11 @@ def migrate():
     local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxask ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxactivity ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxpoint ttsd-config:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=anxin_operations ttsd-config:flywayMigrate')
 
 def mk_war():
     local('/usr/local/bin/paver jcversion')
+    local('/opt/gradle/latest/bin/gradle initMQ -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('/opt/gradle/latest/bin/gradle ttsd-web:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('/opt/gradle/latest/bin/gradle ttsd-activity:war -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('/opt/gradle/latest/bin/gradle ttsd-pay-wrapper:war -PconfigPath=/workspace/v2config/default/ttsd-config/ -PpayConfigPath=/workspace/v2config/default/ttsd-pay-wrapper/')
@@ -50,6 +52,8 @@ def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=invest distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=jpush distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('cd ./ttsd-loan-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/ -PdiagnosisConfigPath=/workspace/v2config/default/ttsd-diagnosis/')
 
 
 def mk_static_zip():
@@ -128,12 +132,18 @@ def deploy_pay():
 @roles('worker')
 def deploy_worker():
     put(local_path='./ttsd-job-worker/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./ttsd-loan-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./ttsd-diagnosis/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
     sudo('supervisorctl stop all')
     with cd('/workspace'):
         sudo('rm -rf ttsd-job-worker-all/')
         sudo('rm -rf ttsd-job-worker-invest/')
         sudo('rm -rf ttsd-job-worker-jpush/')
+        sudo('rm -rf ttsd-loan-mq-consumer/')
+        sudo('rm -rf ttsd-diagnosis/')
         sudo('unzip \*.zip')
+        sudo('supervisorctl reload')
         sudo('supervisorctl start all')
 
 
@@ -363,6 +373,17 @@ def remove_point_logs():
     remove_nginx_logs()
 
 
+@roles('console')
+@parallel
+def remove_console_logs():
+    iso_date = get_7days_before()
+    with cd('/var/log/tuotian/console'):
+        run('rm -f *{0}.log'.format(iso_date))
+        run('rm -f *{0}.txt'.format(iso_date))
+
+    remove_nginx_logs()
+
+
 def remove_old_logs():
     """
     Remove logs which was generated 30 days ago
@@ -375,6 +396,7 @@ def remove_old_logs():
     execute(remove_static_logs)
     execute(remove_sign_in_logs)
     execute(remove_point_logs)
+    execute(remove_console_logs)
 
 
 def restart_logstash_process():

@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float','count_down'], function ($,layer) {
+require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float','count_down','assign_coupon'], function ($,layer) {
     var $loan = $('.loan-list-box').find('li');
     //var preheat = $('.preheat');
 

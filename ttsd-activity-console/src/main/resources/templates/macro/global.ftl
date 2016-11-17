@@ -31,7 +31,8 @@
                     {"name":"COMPLETE","text":"完成还款的借款","link":"/project-manage/loan-list?status=COMPLETE","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"CANCEL","text":"已经流标的借款","link":"/project-manage/loan-list?status=CANCEL","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"OVERDUE","text":"逾期的借款","link":"/project-manage/loan-list?status=OVERDUE","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"repaymentInfoList","text":"项目还款明细表","link":"/project-manage/loan-repay","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"repaymentInfoList","text":"项目还款明细表","link":"/project-manage/loan-repay","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"contract","text":"CFCA创建合同","link":"/project-manage/contract","role":"'ADMIN'"}
                 ]
             },
             {
@@ -114,8 +115,10 @@
                     {"name":"activityCenter","text":"活动中心","link":"/activity-manage/activity-center-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"travelLuxuryActivity","text":"旅游+奢侈品活动管理","link":"/activity-console/activity-manage/travel/user-travel-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"lottery","text":"抽奖数据统计","link":"/activity-console/activity-manage/user-time-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"autumn","text":"中秋活动导出","link":"/activity-console/activity-manage/autumn-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
-]
+                    {"name":"autumn","text":"中秋活动导出","link":"/activity-console/activity-manage/autumn-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"promotion","text":"APP弹窗推送管理","link":"/activity-console/activity-manage/promotion/promotion-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"iphone7Lottery","text":"iphone7活动","link":"/activity-console/activity-manage/iphone7-lottery","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                ]
             },
             {
                 "name":"membership-manage",

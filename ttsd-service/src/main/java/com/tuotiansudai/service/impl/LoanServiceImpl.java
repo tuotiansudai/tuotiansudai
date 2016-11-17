@@ -2,34 +2,22 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.job.AutoInvestJob;
-import com.tuotiansudai.job.DeadlineFundraisingJob;
-import com.tuotiansudai.job.FundraisingStartJob;
-import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
@@ -160,7 +148,7 @@ public class LoanServiceImpl implements LoanService {
                 loanListDto.setExtraLoanRateModels(fillExtraLoanRate(extraLoanRateModels));
             }
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
-            loanListDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : "");
+            loanListDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : null);
             loanListDtos.add(loanListDto);
         }
         return loanListDtos;
@@ -231,7 +219,7 @@ public class LoanServiceImpl implements LoanService {
                 }
                 loanItemDto.setDuration(loanModel.getDuration());
                 double rate = extraLoanRateMapper.findMaxRateByLoanId(loanModel.getId());
-                String extraSource = "";
+                List<Source> extraSource = Lists.newArrayList();
                 boolean activity = false;
                 String activityDesc = "";
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
@@ -242,7 +230,7 @@ public class LoanServiceImpl implements LoanService {
                 }
                 if (rate > 0) {
                     loanItemDto.setExtraRate(rate * 100);
-                    loanItemDto.setExtraSource(extraSource);
+                    loanItemDto.setExtraSource((extraSource.size() == 1 && extraSource.contains(Source.MOBILE)) ? Source.MOBILE.name() : "");
                 }
                 loanItemDto.setActivity(activity);
                 loanItemDto.setActivityDesc(activityDesc);

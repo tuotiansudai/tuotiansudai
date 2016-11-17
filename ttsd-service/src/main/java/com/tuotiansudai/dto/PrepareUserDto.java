@@ -1,7 +1,6 @@
 package com.tuotiansudai.dto;
 
 
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.PrepareUserModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
@@ -18,13 +17,13 @@ public class PrepareUserDto {
     private Date useTime;
     private String referrerMobile;
 
-    public PrepareUserDto(PrepareUserModel prepareUserModel, AccountModel referrerAccountModel, UserModel useUserModel) {
+    public PrepareUserDto(PrepareUserModel prepareUserModel, UserModel referrerUserModel, UserModel userModel) {
         this.id = prepareUserModel.getId();
         this.mobile = prepareUserModel.getMobile();
-        this.referrerName = referrerAccountModel != null ? referrerAccountModel.getUserName() : null;
+        this.referrerName = referrerUserModel != null ? referrerUserModel.getUserName() : null;
         this.channel = prepareUserModel.getChannel();
-        this.register = useUserModel != null;
-        this.registerTime = register ? useUserModel.getRegisterTime() : null;
+        this.register = userModel != null;
+        this.registerTime = register ? userModel.getRegisterTime() : null;
         this.useTime = prepareUserModel.getCreatedTime();
         this.referrerMobile = prepareUserModel.getReferrerMobile();
     }

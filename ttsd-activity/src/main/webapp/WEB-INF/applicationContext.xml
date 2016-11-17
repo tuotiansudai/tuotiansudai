@@ -24,74 +24,90 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.util,com.tuotiansudai.cache,com.tuotiansudai.coupon,com.tuotiansudai.aspect,com.tuotiansudai.point,
-                                          com.tuotiansudai.transfer,com.tuotiansudai.membership,com.tuotiansudai.spring,com.tuotiansudai.activity.service"/>
+                                          com.tuotiansudai.transfer,com.tuotiansudai.membership,com.tuotiansudai.spring,com.tuotiansudai.activity.service,com.tuotiansudai.mq"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="${common.jdbc.username}"/>
-        <property name="password" value="${common.jdbc.password}"/>
-        <property name="minimumIdle" value="${web.aa.minimumIdle}"/>
-        <property name="maximumPoolSize" value="${web.aa.maximumPoolSize}"/>
-        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
-        <property name="dataSourceProperties">
-            <props>
-                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
-                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
-                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
-            </props>
-        </property>
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${common.jdbc.username}"/>
+                <property name="password" value="${common.jdbc.password}"/>
+                <property name="minimumIdle" value="${activity.aa.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${activity.aa.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
     </bean>
 
     <bean id="jobHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="${common.jdbc.username}"/>
-        <property name="password" value="${common.jdbc.password}"/>
-        <property name="minimumIdle" value="${web.job_worker.minimumIdle}"/>
-        <property name="maximumPoolSize" value="${web.job_worker.maximumPoolSize}"/>
-        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
-        <property name="dataSourceProperties">
-            <props>
-                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
-                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
-                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
-            </props>
-        </property>
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${common.jdbc.username}"/>
+                <property name="password" value="${common.jdbc.password}"/>
+                <property name="minimumIdle" value="${activity.job.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${activity.job.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
     </bean>
 
     <bean id="activityHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${activity.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="${activity.jdbc.username}"/>
-        <property name="password" value="${activity.jdbc.password}"/>
-        <property name="minimumIdle" value="${activity.minimumIdle}"/>
-        <property name="maximumPoolSize" value="${activity.maximumPoolSize}"/>
-        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
-        <property name="dataSourceProperties">
-            <props>
-                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
-                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
-                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
-            </props>
-        </property>
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${activity.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${activity.jdbc.username}"/>
+                <property name="password" value="${activity.jdbc.password}"/>
+                <property name="minimumIdle" value="${activity.activity.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${activity.activity.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
     </bean>
 
     <bean id="pointHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxpoint?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="${point.jdbc.username}"/>
-        <property name="password" value="${point.jdbc.password}"/>
-        <property name="minimumIdle" value="${activity.point.minimumIdle}"/>
-        <property name="maximumPoolSize" value="${activity.point.maximumPoolSize}"/>
-        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
-        <property name="dataSourceProperties">
-            <props>
-                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
-                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
-                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
-            </props>
-        </property>
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxpoint?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${point.jdbc.username}"/>
+                <property name="password" value="${point.jdbc.password}"/>
+                <property name="minimumIdle" value="${activity.point.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${activity.point.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
     </bean>
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->
@@ -110,16 +126,19 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.transfer.repository.model,com.tuotiansudai.membership.repository.model,com.tuotiansudai.activity.repository.autumn.model"/>
+        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
     <bean id="activitySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="activityHikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.activity.repository.model"/>
+        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
     <bean id="pointSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="pointHikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.point.repository.model"/>
+        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->

@@ -7,10 +7,8 @@ import com.tuotiansudai.dto.RechargeDto;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.BankModel;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.BankService;
-import com.tuotiansudai.service.BindBankCardService;
-import com.tuotiansudai.service.RechargeService;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.BankCardUtil;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -29,6 +27,9 @@ public class RechargeController {
 
     @Autowired
     private RechargeService rechargeService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private AccountService accountService;
@@ -51,12 +52,12 @@ public class RechargeController {
         modelAndView.addObject("banks", BankCardUtil.getRechargeBanks());
         modelAndView.addObject("isBindCard", isBindCard);
         modelAndView.addObject("isFastPayOn", isFastPayOn);
-        modelAndView.addObject("bankList", bankService.findBankList());
+        modelAndView.addObject("bankList", bankService.findWebBankList());
 
-        AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
-        if (accountModel != null && isBindCard) {
-            modelAndView.addObject("userName", accountModel.getUserName());
-            modelAndView.addObject("identityNumber", accountModel.getIdentityNumber());
+        UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
+        if (accountService.findByLoginName(LoginUserInfo.getLoginName()) != null && isBindCard) {
+            modelAndView.addObject("userName", userModel.getUserName());
+            modelAndView.addObject("identityNumber", userModel.getIdentityNumber());
             modelAndView.addObject("bankCode", bankCard.getBankCode());
             modelAndView.addObject("bank", BankCardUtil.getBankName(bankCard.getBankCode()));
             modelAndView.addObject("bankCard", bankCard.getCardNumber());

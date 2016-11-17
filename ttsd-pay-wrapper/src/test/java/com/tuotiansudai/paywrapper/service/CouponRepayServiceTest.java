@@ -291,7 +291,7 @@ public class CouponRepayServiceTest {
     }
 
     private AccountModel mockAccountModel(String loginName) {
-        AccountModel model = new AccountModel(loginName, "userName", "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel model = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         return model;
     }
 

@@ -214,7 +214,7 @@ public class InvestServiceTest {
         LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
         loanDetailsModel.setId(idGenerator.generate());
         loanDetailsModel.setDeclaration("声明材料");
-        loanDetailsModel.setExtraSource("WEB");
+        loanDetailsModel.setExtraSource(Lists.newArrayList(Source.WEB));
         loanDetailsModel.setLoanId(loanId);
         return loanDetailsModel;
     }

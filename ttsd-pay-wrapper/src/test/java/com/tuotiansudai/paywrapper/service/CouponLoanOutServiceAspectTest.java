@@ -94,10 +94,9 @@ public class CouponLoanOutServiceAspectTest {
                 "  </body>\n" +
                 "</html>");
         mockResponse.setResponseCode(200);
-        mockWebServer.enqueue(mockResponse);
-        mockWebServer.enqueue(mockResponse);
-        mockWebServer.enqueue(mockResponse);
-        mockWebServer.enqueue(mockResponse);
+
+        for(int i=0;i<8;i++)
+            mockWebServer.enqueue(mockResponse);
 
         return mockWebServer;
     }
@@ -123,6 +122,9 @@ public class CouponLoanOutServiceAspectTest {
         long mockCouponId = mockCoupon(couponCreater, mockCouponAmount);
         mockUserCouponAndInvest(mockInvestUserNames, mockCouponId, mockLoanId, investAmount);
 
+        couponLoanOutService.sendRedEnvelope(mockLoanId);
+
+        // 测试幂等性，多次调用，结果一致
         couponLoanOutService.sendRedEnvelope(mockLoanId);
 
         AccountModel am1 = accountMapper.findByLoginName(mockInvestUserNames[0]);
@@ -196,7 +198,7 @@ public class CouponLoanOutServiceAspectTest {
     }
 
     private void mockAccount(String loginName, long initAmount) throws AmountTransferException {
-        AccountModel am = new AccountModel(loginName, loginName, loginName, loginName, loginName, new Date());
+        AccountModel am = new AccountModel(loginName, loginName, loginName, new Date());
         accountMapper.create(am);
         amountTransfer.transferInBalance(loginName, idGenerator.generate(), initAmount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
     }

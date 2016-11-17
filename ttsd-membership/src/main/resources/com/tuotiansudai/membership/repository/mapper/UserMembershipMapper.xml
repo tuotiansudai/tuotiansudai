@@ -44,6 +44,19 @@
         </foreach>
     </insert>
 
+    <update id="update" parameterType="UserMembershipModel">
+        UPDATE `aa`.`user_membership`
+        SET
+        login_name = #{loginName},
+        membership_id = #{membershipId},
+        expired_time = #{expiredTime},
+        created_time = #{createdTime},
+        type = #{type},
+        membership_give_id = #{membershipGiveId}
+        WHERE
+        id = #{id}
+    </update>
+
     <select id="findById" resultMap="UserMembershipResultMap" parameterType="long">
         select * from user_membership where id = #{id}
     </select>
@@ -57,7 +70,7 @@
         SELECT
         user_membership.id,
         user_membership.login_name,
-        account.user_name,
+        user.user_name,
         user.mobile,
         account.membership_point,
         membership.level,
@@ -106,7 +119,7 @@
         SELECT
         user_membership.id,
         user_membership.login_name,
-        account.user_name,
+        user.user_name,
         user.mobile,
         account.membership_point,
         membership.level,
@@ -228,19 +241,44 @@
 
     <select id="findCountMembershipByLevel" resultType="java.lang.Long">
         SELECT
-        COUNT(1)
+            count(1)
         FROM
-        (SELECT
-        MAX(m.level) AS level, login_name
+            `user_membership` t1
+                JOIN
+            `membership` ON t1.`membership_id` = `membership`.id
+        WHERE
+            `expired_time` >= NOW() AND level = #{level}
+                AND level > (SELECT
+                    IFNULL(MAX(level), - 1)
+                FROM
+                    `user_membership`
+                        JOIN
+                    `membership` ON `membership_id` = `membership`.id
+                WHERE
+                    `user_membership`.`login_name` = t1.`login_name`
+                        AND `expired_time` > NOW()
+                        AND t1.`id` != `user_membership`.id)
+    </select>
+
+    <select id="findLoginNameMembershipByLevel" resultType="java.lang.String">
+        SELECT
+            `login_name`
         FROM
-        user_membership u
-        JOIN membership m ON u.membership_id = m.id
+            `user_membership` t1
+                JOIN
+            `membership` ON t1.`membership_id` = `membership`.id
         WHERE
-        expired_time > NOW()
-        GROUP BY login_name
-        ORDER BY level) membership
-        WHERE
-        level = #{level}
+            `expired_time` >= NOW() AND level = #{level}
+                AND level > (SELECT
+                    IFNULL(MAX(level), - 1)
+                FROM
+                    `user_membership`
+                        JOIN
+                    `membership` ON `membership_id` = `membership`.id
+                WHERE
+                    `user_membership`.`login_name` = t1.`login_name`
+                        AND `expired_time` > NOW()
+                        AND t1.`id` != `user_membership`.id)
     </select>
 
 </mapper>
