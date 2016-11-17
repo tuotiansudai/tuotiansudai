@@ -9,6 +9,7 @@ public enum Role {
     OPERATOR_ADMIN("运营管理员"),
     CUSTOMER_SERVICE("客服"),
     AGENT("代理商"),
+    ENTERPRISE_LOANER("企业借款人"),
     ADMIN("管理员"),
     EDITOR("编辑"),
     DATA("数据专员"),

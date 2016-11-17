@@ -8,16 +8,18 @@ public class MerBindProjectRequestModel extends BaseSyncRequestModel {
     private String projectName;
     private String projectAmount;
     private String loanUserId;
+    private String loanAccType;
     private String ctrlOverInvest; // 0: 不允许超投 1: 允许超投
 
 
-    public MerBindProjectRequestModel(String loanUserId, String loanAmount, String projectId, String projectName) {
+    public MerBindProjectRequestModel(String loanUserId, String loanAmount, String projectId, String projectName, String loanAccType) {
         super();
         this.service = "mer_bind_project";
         this.projectId = projectId;
         this.projectName = projectName;
         this.projectAmount = loanAmount;
         this.loanUserId = loanUserId;
+        this.loanAccType = loanAccType;
         this.ctrlOverInvest = "0";
     }
 
@@ -28,6 +30,7 @@ public class MerBindProjectRequestModel extends BaseSyncRequestModel {
         payRequestData.put("project_name", this.projectName);
         payRequestData.put("project_amount", this.projectAmount);
         payRequestData.put("loan_user_id", this.loanUserId);
+        payRequestData.put("loan_acc_type", this.loanAccType);
         payRequestData.put("ctrl_over_invest", this.ctrlOverInvest);
         return payRequestData;
     }
@@ -70,5 +73,13 @@ public class MerBindProjectRequestModel extends BaseSyncRequestModel {
 
     public void setCtrlOverInvest(String ctrlOverInvest) {
         this.ctrlOverInvest = ctrlOverInvest;
+    }
+
+    public String getLoanAccType() {
+        return loanAccType;
+    }
+
+    public void setLoanAccType(String loanAccType) {
+        this.loanAccType = loanAccType;
     }
 }

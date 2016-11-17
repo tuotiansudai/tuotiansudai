@@ -33,8 +33,8 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
-    public static ProjectTransferRequestModel newInvestRequest(String projectId, String orderId, String userId, String amount,Source source) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL,source);
+    public static ProjectTransferRequestModel newInvestRequest(String projectId, String orderId, String userId, String amount, Source source) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, source);
         if (source != null && source.equals(Source.WEB)) {
             model.retUrl = MessageFormat.format("{0}/invest-success", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
         }
@@ -77,8 +77,8 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
-    public static ProjectTransferRequestModel newLoanOutRequest(String projectId, String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
+    public static ProjectTransferRequestModel newLoanOutRequest(String projectId, String orderId, String userId, String amount, UmPayParticAccType payParticAccType) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, payParticAccType);
         model.retUrl = "/";
         model.notifyUrl = "/";
         model.servType = UmPayServType.TRANSFER_OUT_LOAN_OUT.getCode();
@@ -87,8 +87,8 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
-    public static ProjectTransferRequestModel newRepayRequest(String projectId, String orderId, String userId, String amount, boolean isAdvanceRepay) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
+    public static ProjectTransferRequestModel newRepayRequest(String projectId, String orderId, String userId, String amount, boolean isAdvanceRepay, UmPayParticAccType accType) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, accType);
         model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
         model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"),
                 isAdvanceRepay ? "advance_repay_notify" : "normal_repay_notify");

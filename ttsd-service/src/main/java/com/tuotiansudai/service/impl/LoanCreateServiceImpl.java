@@ -256,7 +256,8 @@ public class LoanCreateServiceImpl implements LoanCreateService {
             }
         }
 
-        if (PledgeType.ENTERPRISE == loanCreateRequestDto.getLoan().getPledgeType()) {
+        if (PledgeType.ENTERPRISE_AGENT == loanCreateRequestDto.getLoan().getPledgeType()
+                || PledgeType.ENTERPRISE_DIRECT == loanCreateRequestDto.getLoan().getPledgeType()) {
             if (loanCreateRequestDto.getLoanerEnterpriseDetails() == null) {
                 return new BaseDto<>(new BaseDataDto(false, "企业借款人信息不完整"));
             }
@@ -292,7 +293,7 @@ public class LoanCreateServiceImpl implements LoanCreateService {
             }
         }
 
-        if (PledgeType.ENTERPRISE == loanModel.getPledgeType()) {
+        if (PledgeType.ENTERPRISE_AGENT == loanModel.getPledgeType() || PledgeType.ENTERPRISE_DIRECT == loanModel.getPledgeType()) {
             loanCreateRequestDto.setLoanerEnterpriseDetails(new LoanCreateLoanerEnterpriseDetailsDto(loanerEnterpriseDetailsMapper.getByLoanId(loanId)));
             loanCreateRequestDto.setPledgeEnterprise(new LoanCreatePledgeEnterpriseRequestDto(pledgeEnterpriseMapper.getByLoanId(loanId)));
         }

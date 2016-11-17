@@ -118,6 +118,11 @@ public class UserServiceConsoleImpl implements UserServiceConsole {
     }
 
     @Override
+    public List<String> findAllEnterpriseLoanerLikeLoginName(String loginName){
+        return userMapperConsole.findAllEnterpriseLoanerLikeLoginName(loginName);
+    }
+
+    @Override
     public List<String> findAccountLikeLoginName(String loginName) {
         return userMapperConsole.findAccountLikeLoginName(loginName);
     }

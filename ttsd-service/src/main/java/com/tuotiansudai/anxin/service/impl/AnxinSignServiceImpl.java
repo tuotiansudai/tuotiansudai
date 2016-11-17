@@ -170,12 +170,12 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 return new BaseDto();
             } else {
                 logger.error("create anxin sign account failed. " + retMessage);
-                return new BaseDto(false);
+                return failBaseDto(retMessage);
             }
 
         } catch (PKIException e) {
             logger.error("create anxin sign account failed. ", e);
-            return new BaseDto(false);
+            return failBaseDto("创建安心签账户失败");
         }
     }
 

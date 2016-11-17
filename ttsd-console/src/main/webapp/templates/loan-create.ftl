@@ -18,13 +18,14 @@
                         <select name="name" class="selectpicker">
                             <option value="房产抵押借款" selected="selected">房产抵押借款</option>
                             <option value="车辆抵押借款">车辆抵押借款</option>
-                            <option value="税易经营性借款">税易经营性借款</option>
+                            <option value="税易经营性借款-代理">税易经营性借款-代理</option>
+                            <option value="税易经营性借款-直贷">税易经营性借款-直贷</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">代理用户: </label>
+                    <label id="agent" class="col-sm-2 control-label">代理用户: </label>
 
                     <div class="col-sm-2">
                         <input name="agent" type="text" class="form-control ui-autocomplete-input" datatype="*"

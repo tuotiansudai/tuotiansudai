@@ -189,7 +189,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
                     }
             }
         }
-        if(loanModel.getPledgeType() == PledgeType.ENTERPRISE){
+        if(loanModel.getPledgeType() == PledgeType.ENTERPRISE_AGENT || loanModel.getPledgeType() == PledgeType.ENTERPRISE_DIRECT){
             LoanerEnterpriseDetailsModel loanerEnterpriseDetailsModel = loanerEnterpriseDetailsMapper.getByLoanId(loanModel.getId());
             if(loanerEnterpriseDetailsModel != null){
                 EnterpriseDto enterpriseDto = new EnterpriseDto(loanerEnterpriseDetailsModel);

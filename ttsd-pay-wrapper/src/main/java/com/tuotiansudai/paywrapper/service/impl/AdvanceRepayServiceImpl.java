@@ -18,6 +18,7 @@ import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.model.UmPayParticAccType;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
@@ -146,12 +147,15 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         logger.info(MessageFormat.format("[Advance Repay {0}] generate repay form data is {1} + {2}",
                 String.valueOf(enabledLoanRepay.getId()), String.valueOf(corpus), String.valueOf(actualInterest)));
 
+        PledgeType pledgeType = loanModel.getPledgeType();
+
         try {
             ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newRepayRequest(String.valueOf(loanId),
                     MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(enabledLoanRepay.getId()), String.valueOf(currentRepayDate.getMillis())),
                     accountMapper.findByLoginName(loanModel.getAgentLoginName()).getPayUserId(),
                     String.valueOf(repayAmount),
-                    true);
+                    true,
+                    pledgeType == PledgeType.ENTERPRISE_DIRECT ? UmPayParticAccType.MERCHANT : UmPayParticAccType.INDIVIDUAL);
             baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
         } catch (PayException e) {
             logger.error(MessageFormat.format("[Advance Repay {0}] generate loan repay form data is failed", String.valueOf(enabledLoanRepay.getId())), e);

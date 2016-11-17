@@ -31,7 +31,8 @@
                         <select name="name" class="selectpicker" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
                             <option value="房产抵押借款" <#if loan.loan.name == "房产抵押借款">selected</#if>>房产抵押借款</option>
                             <option value="车辆抵押借款" <#if loan.loan.name == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
-                            <option value="税易经营性借款" <#if loan.loan.name == "税易经营性借款">selected</#if>>税易经营性借款</option>
+                            <option value="税易经营性借款-代理" <#if loan.loan.name == "税易经营性借款-代理">selected</#if>>税易经营性借款-代理</option>
+                            <option value="税易经营性借款-直贷" <#if loan.loan.name == "税易经营性借款-直贷">selected</#if>>税易经营性借款-直贷</option>
                         </select>
                     </div>
                 </div>
@@ -241,7 +242,7 @@
                 <#include 'loan-edit-loaner-details.ftl'>
             </#if>
 
-            <#if 'ENTERPRISE' == loan.loan.pledgeType>
+            <#if 'ENTERPRISE_AGENT' == loan.loan.pledgeType || 'ENTERPRISE_DIRECT' == loan.loan.pledgeType>
                 <#include 'loan-edit-loaner-enterprise-details.ftl'>
             </#if>
         </section>
@@ -255,7 +256,7 @@
                 <#include 'loan-edit-pledge-vehicle.ftl'>
             </#if>
 
-            <#if 'ENTERPRISE' == loan.loan.pledgeType>
+            <#if 'ENTERPRISE_AGENT' == loan.loan.pledgeType || 'ENTERPRISE_DIRECT' == loan.loan.pledgeType>
                 <#include 'loan-edit-pledge-enterprise.ftl'>
             </#if>
         </section>
