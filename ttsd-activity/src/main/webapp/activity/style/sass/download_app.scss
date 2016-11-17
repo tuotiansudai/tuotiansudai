@@ -11,6 +11,10 @@
     padding:0 100px;
     margin:0 auto;
     box-sizing:border-box;
+    @media (max-width:700px) {
+      width:100%;
+      padding:0 10px;
+    }
     &:after{
       content:'';
       display:block;
@@ -22,11 +26,28 @@
     .step-one{
       background: url(/activity/images/download/step-one.png) no-repeat;
       background-position: 720px 40px;
+      @media (max-width:320px) {
+        background-size:50%;
+        background-position:180px 55px;
+      }
+      @media (min-width:375px) and (max-width:700px) {
+        background-size:50%;
+        background-position:200px 55px;
+      }
       .content-item{
         float:left;
         margin-left:70px;
+        @media (max-width:700px) {
+          margin-left:0;
+        }
         p{
           margin-top:60px;
+          @media (max-width:700px) {
+            margin-top:30px;
+            .step-one-img{
+              width:50%;
+            }
+          }
         }
         .ios-btn{
           display:inline-block;
@@ -36,6 +57,12 @@
           background-size:100%;
           position: relative;
           bottom: 30px;
+          @media (max-width:700px) {
+            width:50px;
+            height:20px;
+            bottom:15px;
+            margin: 0;
+          }
         }
         .android-btn{
           display:inline-block;
@@ -46,6 +73,12 @@
           position: relative;
           bottom: 30px;
           margin: 0 15px;
+          @media (max-width:700px) {
+            width:50px;
+            height:20px;
+            bottom:15px;
+            margin: 0;
+          }
         }
         .wx-code{
           display:inline-block;
@@ -53,6 +86,10 @@
           height:110px;
           background:url('/activity/images/download/wx-code.png') no-repeat center;
           background-size:100%;
+          @media (max-width:700px) {
+            width:55px;
+            height:55px;
+          }
         }
       }
     }
@@ -62,20 +99,39 @@
     .step-two{
       background:url('/activity/images/download/step-two-bg.png') no-repeat;
       background-position:0 160px;
+      @media (max-width:700px) {
+        background-size: 55%;
+        background-position: -35px 85px;
+      }
       .title-icon{
         text-align:center;
+        @media (max-width:700px) {
+          .step-two-img{
+            width:100%;
+          }
+        }
       }
       .content-item{
         float:right;
         margin:30px 0 40px;
+        @media (max-width:700px) {
+          margin:15px 0 20px;
+        }
         p{
           font-size:20px;
           color:#b2b2b2;
           margin-bottom:0;
+          @media (max-width:700px) {
+            font-size:12px;
+          }
           &.title-text{
             color:#3e3f50;
             font-size:40px;
             margin-bottom:60px;
+            @media (max-width:700px) {
+              font-size:16px;
+              margin-bottom:0;
+            }
           }
           .time-icon{
             display:inline-block;
@@ -83,6 +139,14 @@
             height:60px;
             text-align:center;
             margin-top:50px;
+            @media (max-width:700px) {
+              width:30px;
+              height:30px;
+              margin-top:10px;
+              img{
+                width:100%;
+              }
+            }
           }
         }
       }
@@ -93,23 +157,41 @@
     .step-three{
       background:url('/activity/images/download/date-icon.png') no-repeat;
       background-position: 150px 245px;
+      @media (max-width:700px) {
+        background-position: 60px 140px;
+        background-size: 80%;
+      }
       .title-icon{
         text-align:center;
         img{
           margin-top: -2px;
+          @media (max-width:700px) {
+            width:10%;
+            margin-top:-14px;
+          }
         }
       }
       .content-item{
         float:left;
         margin:100px 0 70px;
+        @media (max-width:700px) {
+          margin:5px 0 35px;
+        }
         p{
           font-size:20px;
           color:#ee7c2f;
           margin-bottom:0;
+          @media (max-width:700px) {
+            font-size:12px;
+          }
           &.title-text{
             color:#3e3f50;
             font-size:40px;
             margin-bottom:60px;
+            @media (max-width:700px) {
+              font-size:16px;
+              margin-bottom:0;
+            }
           }
           .time-icon{
             display:inline-block;
@@ -117,6 +199,14 @@
             height:60px;
             text-align:center;
             margin-top:50px;
+            @media (max-width:700px) {
+              width:30px;
+              height:30px;
+              margin-top:25px;
+              img{
+                width:100%;
+              }
+            }
           }
         }
       }
@@ -125,10 +215,12 @@
   .download-four{
     background:url('/activity/images/download/step-four-bg.jpg') no-repeat;
     background-position: -200px 0;
+    @media (max-width:700px) {
+      background:url('/activity/images/download/four-phone-bg.jpg') no-repeat;
+      background-position: 0 0;
+      background-size: 100%;
+    }
     .step-four{
-      .title-icon{
-        text-align:center;
-      }
       .content-item{
         float:right;
         width:400px;
@@ -137,13 +229,26 @@
         margin:0 0 80px;
         padding: 0 40px;
         box-sizing: border-box;
+        @media (max-width:700px) {
+          width: 200px;
+          height: 180px;
+          padding: 0 20px;
+          margin: 0 0 30px;
+        }
         p{
           font-size:20px;
           color:#fff;
           margin-bottom:0;
+          @media (max-width:700px) {
+            font-size:12px;
+          }
           &.title-text{
             font-size:40px;
             margin:40px 0 60px;
+            @media (max-width:700px) {
+              font-size:16px;
+              margin:10px 0 20px;
+            }
           }
           .time-icon{
             display:inline-block;
@@ -151,6 +256,14 @@
             height:60px;
             text-align:center;
             margin-top:50px;
+            @media (max-width:700px) {
+              width:30px;
+              height:30px;
+              margin-top:10px;
+              img{
+                width:100%;
+              }
+            }
           }
         }
       }
@@ -161,20 +274,35 @@
     .step-five{
       background:url('/activity/images/download/five-bg.png') no-repeat;
       background-position:690px 40px;
-      .title-icon{
-        text-align:center;
+      @media (max-width:700px) {
+        background-size: 40%;
+        background-position: 180px 60px;
+      }
+      @media (min-width:375px) and (max-width:700px) {
+        background-size: 40%;
+        background-position: 200px 60px;
       }
       .content-item{
         float:left;
         margin:60px 0;
+        @media (max-width:700px) {
+          margin:30px 0;
+        }
         p{
           font-size:20px;
           color:#ee7c2f;
           margin-bottom:0;
+          @media (max-width:700px) {
+            font-size:12px;
+          }
           &.title-text{
             color:#3e3f50;
             font-size:40px;
             margin-bottom:60px;
+            @media (max-width:700px) {
+              font-size:16px;
+              margin-bottom:10px;
+            }
           }
           .time-icon{
             display:inline-block;
@@ -182,6 +310,14 @@
             height:60px;
             text-align:center;
             margin-top:50px;
+            @media (max-width:700px) {
+              width:30px;
+              height:30px;
+              margin: 10px 10px 0;
+              img{
+                width:100%;
+              }
+            }
           }
           .data-icon{
             display:inline-block;
@@ -189,6 +325,14 @@
             height:60px;
             text-align:center;
             margin-top:50px;
+            @media (max-width:700px) {
+              width:60px;
+              height:35px;
+              margin: 10px 10px 0;
+              img{
+                width:50%;
+              }
+            }
           }
         }
       }
@@ -199,23 +343,45 @@
     .step-six{
       background:url('/activity/images/download/six-bg.png') no-repeat;
       background-position:90px 100px;
+      @media (max-width:320px) {
+        background-size: 35%;
+        background-position: 5px 75px;
+      }
+      @media (min-width:375px) and (max-width:700px) {
+        background-size: 35%;
+        background-position: 25px 55px;
+      }
       .title-icon{
         text-align:center;
         img{
           margin-top: -2px;
+          @media (max-width:700px) {
+            width:10%;
+            margin-top:-14px;
+          }
         }
       }
       .content-item{
         float:right;
         margin:30px 0 40px;
+        @media (max-width:700px) {
+          margin:15px 0 20px;
+        }
         p{
           font-size:20px;
           color:#b2b2b2;
           margin-bottom:0;
+          @media (max-width:700px) {
+            font-size:12px;
+          }
           &.title-text{
             color:#3e3f50;
             font-size:40px;
             margin-bottom:60px;
+            @media (max-width:700px) {
+              font-size:16px;
+              margin-bottom:10px;
+            }
           }
           .time-icon{
             display:inline-block;
@@ -223,6 +389,14 @@
             height:60px;
             text-align:center;
             margin-top:50px;
+            @media (max-width:700px) {
+              width:30px;
+              height:30px;
+              margin: 10px 10px 0;
+              img{
+                width:100%;
+              }
+            }
           }
         }
       }
