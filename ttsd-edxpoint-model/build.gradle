@@ -12,4 +12,9 @@ sourceSets {
     test.runtimeClasspath += configurations.providedCompile
 }
 
+dependencies {
+    compile project(':ttsd-util'),
+            "org.springframework:spring-context-support:4.3.1.RELEASE"
+}
+
 processResources.outputs.upToDateWhen { false }

@@ -17,6 +17,8 @@ public interface QuestionMapper {
 
     QuestionModel findById(@Param(value = "id") long id);
 
+    QuestionModel lockById(@Param(value = "id") long id);
+
     List<QuestionModel> findByLoginName(@Param(value = "loginName") String loginName,
                                         @Param(value = "index") Integer index,
                                         @Param(value = "pageSize") Integer pageSize);

@@ -1,7 +1,7 @@
 package com.tuotiansudai.point.service;
 
 
-import com.tuotiansudai.point.dto.UserPointPrizeDto;
+import com.tuotiansudai.point.repository.dto.UserPointPrizeDto;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.tuotiansudai.point.dto;
+package com.tuotiansudai.point.repository.dto;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.point.repository.model.PointBillModel;

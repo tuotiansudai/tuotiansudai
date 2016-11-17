@@ -4,9 +4,9 @@ package com.tuotiansudai.point.service;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.point.dto.ProductDto;
-import com.tuotiansudai.point.dto.ProductOrderDto;
-import com.tuotiansudai.point.dto.ProductShowItemDto;
+import com.tuotiansudai.point.repository.dto.ProductDto;
+import com.tuotiansudai.point.repository.dto.ProductOrderDto;
+import com.tuotiansudai.point.repository.dto.ProductShowItemDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.repository.model.UserAddressModel;
@@ -17,10 +17,6 @@ import java.util.List;
 public interface ProductService {
 
     void createProduct(ProductDto productDto);
-
-    List<ProductModel> findProductsList(GoodsType goodsType, int index, int pageSize);
-
-    long findProductsCount(GoodsType goodsType);
 
     List<ProductModel> findAllProducts(GoodsType goodsType, int index, int pageSize);
 

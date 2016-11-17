@@ -1,4 +1,4 @@
-package com.tuotiansudai.point.dto;
+package com.tuotiansudai.point.repository.dto;
 
 public enum SignInPoint {
     FIRST_SIGN_IN(1, 2),
