@@ -1,14 +1,18 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.BankModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BankService;
 import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.BankCardUtil;
 import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -37,14 +41,15 @@ public class BindBankCardController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView bindBankCard() {
         ModelAndView view = new ModelAndView("/bind-card");
 
-        AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
-        if (accountModel != null) {
-            view.addObject("userName", accountModel.getUserName());
-        }
+        UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
+        view.addObject("userName", userModel.getUserName());
         view.addObject("banks", BankCardUtil.getWithdrawBanks());
         view.addObject("bankList", bankService.findWebBankList());
 
@@ -65,7 +70,7 @@ public class BindBankCardController {
     @RequestMapping(value = "/replace", method = RequestMethod.GET)
     public ModelAndView replaceBankCard() {
         ModelAndView view = new ModelAndView("/replace-card");
-        view.addObject("userName", accountService.findByLoginName(LoginUserInfo.getLoginName()).getUserName());
+        view.addObject("userName", userService.findByMobile(LoginUserInfo.getMobile()).getUserName());
 
         BankCardModel bankCardModel = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
         if (bankCardModel != null && bankCardModel.isFastPayOn()) {
@@ -110,17 +115,17 @@ public class BindBankCardController {
     public String getLimitTips(String bankCode) {
         DecimalFormat myformat = new DecimalFormat();
         myformat.applyPattern("##,###");
-        if(bankCode == null){
+        if (bankCode == null) {
             BankCardModel bankCardModel = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
-            if(bankCardModel != null && bankCardModel.isFastPayOn()){
+            if (bankCardModel != null && bankCardModel.isFastPayOn()) {
                 bankCode = bankCardModel.getBankCode();
             }
         }
         BankModel bankModel = bankService.findByBankCode(bankCode);
-        if(bankModel == null){
+        if (bankModel == null) {
             return "";
         }
-        return bankModel.getName() + "快捷支付限额:" + "单笔" + myformat.format(bankModel.getSingleAmount()/100) + "元/单日"+ myformat.format(bankModel.getSingleDayAmount()/100) + "元";
+        return bankModel.getName() + "快捷支付限额:" + "单笔" + myformat.format(bankModel.getSingleAmount() / 100) + "元/单日" + myformat.format(bankModel.getSingleDayAmount() / 100) + "元";
     }
 
 }

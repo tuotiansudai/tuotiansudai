@@ -16,6 +16,7 @@ import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AuditLogUtil;
@@ -29,6 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -82,6 +85,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Resource(name = "experienceRepaySuccessCollector")
     private UserCollector experienceRepaySuccessCollector;
 
+    @Resource(name = "membershipUserCollector")
+    private UserCollector membershipUserCollector;
+
     @Autowired
     private UserMapper userMapper;
 
@@ -115,10 +121,10 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
 
-        AccountModel auditor = accountMapper.findByLoginName(loginName);
+        UserModel auditor = userMapper.findByLoginName(loginName);
         String auditorRealName = auditor == null ? loginName : auditor.getUserName();
 
-        AccountModel operator = accountMapper.findByLoginName(couponModel.getCreatedBy());
+        UserModel operator = userMapper.findByLoginName(couponModel.getCreatedBy());
         String operatorRealName = operator == null ? couponModel.getCreatedBy() : operator.getUserName();
 
         String description = MessageFormat.format("{0} 撤销了 {1} 创建的 {2}", auditorRealName, operatorRealName, couponModel.getCouponType().getName());
@@ -148,10 +154,10 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
 
-        AccountModel auditor = accountMapper.findByLoginName(loginName);
+        UserModel auditor = userMapper.findByLoginName(loginName);
         String auditorRealName = auditor == null ? loginName : auditor.getUserName();
 
-        AccountModel operator = accountMapper.findByLoginName(couponModel.getCreatedBy());
+        UserModel operator = userMapper.findByLoginName(couponModel.getCreatedBy());
         String operatorRealName = operator == null ? couponModel.getCreatedBy() : operator.getUserName();
 
         if (couponModel.getUserGroup() == UserGroup.EXCHANGER_CODE) {
@@ -175,7 +181,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
         notifyDto.setRate(new BigDecimal(couponModel.getRate() * 100).setScale(0, BigDecimal.ROUND_UP).toString());
         notifyDto.setCouponType(couponModel.getCouponType());
-        notifyDto.setExpiredDate(new DateTime(couponModel.getEndTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
+        notifyDto.setExpiredDate(DateTime.now().plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
 
         for (String loginName : loginNames) {
             String mobile = userMapper.findByLoginName(loginName).getMobile();
@@ -205,6 +211,12 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                 .put(UserGroup.EXCHANGER_CODE, this.exchangeCodeCollector)
                 .put(UserGroup.EXPERIENCE_INVEST_SUCCESS, this.experienceInvestSuccessCollector)
                 .put(UserGroup.EXPERIENCE_REPAY_SUCCESS, this.experienceRepaySuccessCollector)
+                .put(UserGroup.MEMBERSHIP_V0, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V1, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V2, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V3, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V4, this.membershipUserCollector)
+                .put(UserGroup.MEMBERSHIP_V5, this.membershipUserCollector)
                 .build()).get(userGroup);
     }
 

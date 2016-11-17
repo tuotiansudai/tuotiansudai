@@ -3,11 +3,10 @@ package com.tuotiansudai.task.aspect;
 
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.ActivityDto;
-import com.tuotiansudai.repository.mapper.ActivityMapper;
 import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
@@ -30,10 +29,7 @@ public class AuditTaskAspectActivity {
     private AuditLogService auditLogService;
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private ActivityMapper activityMapper;
+    private UserService userService;
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
@@ -49,12 +45,12 @@ public class AuditTaskAspectActivity {
             String loginName = (String) joinPoint.getArgs()[2];
             String ip = (String) joinPoint.getArgs()[3];
 
-            String realName = accountService.getRealName(loginName);
+            String realName = userService.getRealName(loginName);
 
             String description;
 
             String operator = loginName;
-            String operatorRealName = accountService.getRealName(operator);
+            String operatorRealName = userService.getRealName(operator);
             String taskId = OperationType.ACTIVITY.toString() + "-" + activityDto.getActivityId();
             switch (activityStatus) {
                 case TO_APPROVE:
@@ -69,7 +65,7 @@ public class AuditTaskAspectActivity {
                         task.setCreatedTime(new Date());
 
                         String senderLoginName = operator;
-                        String senderRealName = accountService.getRealName(senderLoginName);
+                        String senderRealName = userService.getRealName(senderLoginName);
 
                         task.setSender(senderLoginName);
                         task.setOperateURL("/activity-manage/activity-center/" + activityDto.getActivityId());

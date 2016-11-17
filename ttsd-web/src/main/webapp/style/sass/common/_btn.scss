@@ -29,10 +29,10 @@
   cursor: pointer;
   @include user-select(none);
   @include touch-action(manipulation);
-  border: 1px solid nth($CK2,3);
   border-radius: 0px;
-  background: #999 none;
-  color: #fff;
+  background: #e6e6e6 none;
+  color: #4c4c4c;
+  border: 0;
   &:focus,
   &:active:focus,
   &.active:focus,
@@ -43,10 +43,8 @@
     //outline: 5px auto -webkit-focus-ring-color;
     //outline-offset: -2px;
   }
-  &:hover,
-  &:focus,
-  &.focus {
-    color: #fff;
+  &:hover{
+    color: #4c4c4c;
     text-decoration: none;
   }
   &:active,
@@ -77,6 +75,7 @@
   color: #fff;
   &:hover {
     background: rgba(255,117,42,0.8);
+    color: #fff;
   }
   &:disabled, &:disabled:hover {
     background: #ccc !important;
@@ -98,6 +97,7 @@
   color: #fff;
   &:hover {
     background: rgba(244,105,22,0.8);
+    color: #fff;
   }
   &:disabled, &:disabled:hover {
     background: #ccc;
@@ -202,9 +202,9 @@ label.radio {
   margin: 5px;
   padding-left: 20px;
   line-height: 17px;
-  background: url("/images/icons/spr.png") no-repeat 0 -209px;
+  background: url("../../images/global/btn-radio.png") no-repeat 0 0px;
   &.checked {
-    background: url("/images/icons/spr.png") no-repeat 0 -233px;
+    background: url("../../images/global/btn-radio.png") no-repeat 0 -24px;
   }
 }
 
@@ -214,9 +214,9 @@ label.checkbox {
   margin: 5px 0;
   padding-left: 20px;
   line-height: 17px;
-  background: url("/images/icons/spr.png") no-repeat 0 -258px;
+  background: url("../../images/global/btn-checkbox.png") no-repeat 0 0px;
   &.checked {
-    background: url("/images/icons/spr.png") no-repeat 0 -284px;
+    background: url("../../images/global/btn-checkbox.png") no-repeat 0 -26px;
   }
 }
 
@@ -226,9 +226,9 @@ label.checkbox {
   padding-top: 3px;
   cursor: pointer;
   text-align: center;
-  background: url("/images/icons/spr.png") no-repeat 0 -209px;
+  background: url("../../images/global/btn-radio.png") no-repeat 0 0px;
   &.on {
-    background-position: 0 -233px;
+    background: url("../../images/global/btn-radio.png") no-repeat 0 -24px;
   }
   .radio-class {
     opacity: 0;
@@ -237,6 +237,27 @@ label.checkbox {
     filter: alpha(opacity=0);
   }
 }
+
+.init-checkbox-style {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  text-align: center;
+  background: url("../../images/global/btn-checkbox.png") no-repeat 0 4px;
+  vertical-align: middle;
+  display: inline-block;
+  &.on {
+    background: url("../../images/global/btn-checkbox.png") no-repeat 0 -23px;
+  }
+  .default-checkbox {
+    opacity: 0;
+    cursor: pointer;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+  }
+}
+
+
 
 
 

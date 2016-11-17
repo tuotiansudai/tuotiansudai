@@ -102,8 +102,11 @@
                     {{if $value.investRepayExist}}
                         <a class="show-invest-repay" data-url="/investor/invest/{{$value.investId}}/repay-data">回款详情</a>
                         {{if $value.productType!='EXPERIENCE'}}
-                        <a class="red" href="/contract/investor/loanId/{{$value.loanId}}/investId/{{$value.investId}}"
-                           target="_blank"> | 合同</a>
+                            {{if $value.contractNo == 'OLD'}}
+                                <a class="red" href="/contract/investor/loanId/{{$value.loanId}}/investId/{{$value.investId}}" target="_blank"> | 合同</a>
+                            {{else if $value.contractNo != 'WAITING'}}
+                                <a class="red" href="/contract/invest/contractNo/{{$value.contractNo}}"  target="_blank"> | 合同</a>
+                            {{/if}}
                         {{/if}}
                     {{else}}
                     --

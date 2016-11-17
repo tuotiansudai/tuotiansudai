@@ -84,7 +84,7 @@
 
     <select id="findWithdrawPagination" parameterType="map" resultMap="withdrawResultView">
         select <include refid="columns"></include>,
-        a.user_name,
+        u.user_name,
         u.mobile,
         IFNULL((select 1 from user_role ur where ur.login_name = withdraw.login_name and ur.role = 'STAFF'),0) as is_staff
         from withdraw
@@ -93,7 +93,6 @@
         <if test="mobile != null and mobile != ''">
             and u.mobile = #{mobile}
         </if>
-        LEFT JOIN account a on withdraw.login_name = a.login_name
         <where>
             <if test="withdrawId != null and withdrawId != ''">
                 and withdraw.id = #{withdrawId}

@@ -58,6 +58,8 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     private String leftPeriod;
 
+    private String leftDays;
+
     public UserInvestRecordResponseDataDto() {
     }
 
@@ -187,5 +189,13 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     public void setLeftPeriod(String leftPeriod) {
         this.leftPeriod = leftPeriod;
+    }
+
+    public String getLeftDays() {
+        return leftDays;
+    }
+
+    public void setLeftDays(String leftDays) {
+        this.leftDays = leftDays;
     }
 }

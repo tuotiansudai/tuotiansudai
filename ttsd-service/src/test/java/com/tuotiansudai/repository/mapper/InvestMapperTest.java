@@ -528,11 +528,11 @@ public class InvestMapperTest {
         UserModel investor1 = createUserByUserId("investor1");
         UserModel investor2 = createUserByUserId("investor2");
         UserModel investor3 = createUserByUserId("investor3");
-        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "userName1", "identityNumber1", "payUserId1", "payAccountId1", new Date());
+        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", new Date());
         accountMapper.create(accountModel1);
-        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "userName2", "identityNumber2", "payUserId2", "payAccountId2", new Date());
+        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", new Date());
         accountMapper.create(accountModel2);
-        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "userName3", "identityNumber3", "payUserId3", "payAccountId3", new Date());
+        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", new Date());
         accountMapper.create(accountModel3);
 
 
@@ -553,17 +553,17 @@ public class InvestMapperTest {
         assertEquals(3, heroRankingViews.size());
         assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
         assertEquals(investModel3.getAmount(), heroRankingViews.get(0).getSumAmount());
-        assertEquals(accountModel3.getUserName(), heroRankingViews.get(0).getUserName());
+        assertEquals(investor3.getUserName(), heroRankingViews.get(0).getUserName());
         assertEquals(investor3.getMobile(), heroRankingViews.get(0).getMobile());
 
         assertEquals(investModel1.getLoginName(), heroRankingViews.get(1).getLoginName());
         assertEquals(investModel1.getAmount(), heroRankingViews.get(1).getSumAmount());
-        assertEquals(accountModel1.getUserName(), heroRankingViews.get(1).getUserName());
+        assertEquals(investor1.getUserName(), heroRankingViews.get(1).getUserName());
         assertEquals(investor1.getMobile(), heroRankingViews.get(1).getMobile());
 
         assertEquals(investModel2.getLoginName(), heroRankingViews.get(2).getLoginName());
         assertEquals(investModel2.getAmount(), heroRankingViews.get(2).getSumAmount());
-        assertEquals(accountModel2.getUserName(), heroRankingViews.get(2).getUserName());
+        assertEquals(investor2.getUserName(), heroRankingViews.get(2).getUserName());
         assertEquals(investor2.getMobile(), heroRankingViews.get(2).getMobile());
 
     }
@@ -573,11 +573,11 @@ public class InvestMapperTest {
         UserModel investor1 = createUserByUserId("investor1");
         UserModel investor2 = createUserByUserId("investor2");
         UserModel investor3 = createUserByUserId("investor3");
-        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "userName1", "identityNumber1", "payUserId1", "payAccountId1", new Date());
+        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", new Date());
         accountMapper.create(accountModel1);
-        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "userName2", "identityNumber2", "payUserId2", "payAccountId2", new Date());
+        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", new Date());
         accountMapper.create(accountModel2);
-        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "userName3", "identityNumber3", "payUserId3", "payAccountId3", new Date());
+        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", new Date());
         accountMapper.create(accountModel3);
 
 
@@ -601,17 +601,17 @@ public class InvestMapperTest {
         assertEquals(3,heroRankingViews.size());
         assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
         assertEquals(investModel3.getAmount(), heroRankingViews.get(0).getSumAmount());
-        assertEquals(accountModel3.getUserName(), heroRankingViews.get(0).getUserName());
+        assertEquals(investor3.getUserName(), heroRankingViews.get(0).getUserName());
         assertEquals(investor3.getMobile(),heroRankingViews.get(0).getMobile());
 
         assertEquals(investModel1.getLoginName(),heroRankingViews.get(1).getLoginName());
         assertEquals(investModel1.getAmount(),heroRankingViews.get(1).getSumAmount());
-        assertEquals(accountModel1.getUserName(),heroRankingViews.get(1).getUserName());
+        assertEquals(investor1.getUserName(),heroRankingViews.get(1).getUserName());
         assertEquals(investor1.getMobile(),heroRankingViews.get(1).getMobile());
 
         assertEquals(investModel2.getLoginName(),heroRankingViews.get(2).getLoginName());
         assertEquals(investModel2.getAmount(),heroRankingViews.get(2).getSumAmount());
-        assertEquals(accountModel2.getUserName(),heroRankingViews.get(2).getUserName());
+        assertEquals(investor2.getUserName(),heroRankingViews.get(2).getUserName());
         assertEquals(investor2.getMobile(),heroRankingViews.get(2).getMobile());
 
     }
@@ -621,11 +621,11 @@ public class InvestMapperTest {
         UserModel investor1 = createUserByUserId("investor1");
         UserModel investor2 = createUserByUserId("investor2");
         UserModel investor3 = createUserByUserId("investor3");
-        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "userName1", "identityNumber1", "payUserId1", "payAccountId1", new Date());
+        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", new Date());
         accountMapper.create(accountModel1);
-        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "userName2", "identityNumber2", "payUserId2", "payAccountId2", new Date());
+        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", new Date());
         accountMapper.create(accountModel2);
-        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "userName3", "identityNumber3", "payUserId3", "payAccountId3", new Date());
+        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", new Date());
         accountMapper.create(accountModel3);
 
 
@@ -650,12 +650,12 @@ public class InvestMapperTest {
 
         assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
         assertEquals(investModel3.getAmount(), heroRankingViews.get(0).getSumAmount());
-        assertEquals(accountModel3.getUserName(), heroRankingViews.get(0).getUserName());
+        assertEquals(investor3.getUserName(), heroRankingViews.get(0).getUserName());
         assertEquals(investor3.getMobile(),heroRankingViews.get(0).getMobile());
 
         assertEquals(investModel1.getLoginName(),heroRankingViews.get(1).getLoginName());
         assertEquals(investModel1.getAmount(),heroRankingViews.get(1).getSumAmount());
-        assertEquals(accountModel1.getUserName(),heroRankingViews.get(1).getUserName());
+        assertEquals(investor1.getUserName(),heroRankingViews.get(1).getUserName());
         assertEquals(investor1.getMobile(),heroRankingViews.get(1).getMobile());
 
     }
@@ -665,11 +665,11 @@ public class InvestMapperTest {
         UserModel investor1 = createUserByUserId("investor1");
         UserModel investor2 = createUserByUserId("investor2");
         UserModel investor3 = createUserByUserId("investor3");
-        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "userName1", "identityNumber1", "payUserId1", "payAccountId1", new Date());
+        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", new Date());
         accountMapper.create(accountModel1);
-        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "userName2", "identityNumber2", "payUserId2", "payAccountId2", new Date());
+        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", new Date());
         accountMapper.create(accountModel2);
-        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "userName3", "identityNumber3", "payUserId3", "payAccountId3", new Date());
+        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", new Date());
         accountMapper.create(accountModel3);
 
 
@@ -707,12 +707,12 @@ public class InvestMapperTest {
 
         assertEquals(investModel3.getLoginName(), heroRankingViews.get(0).getLoginName());
         assertEquals(investModel3.getAmount(), heroRankingViews.get(0).getSumAmount());
-        assertEquals(accountModel3.getUserName(), heroRankingViews.get(0).getUserName());
+        assertEquals(investor3.getUserName(), heroRankingViews.get(0).getUserName());
         assertEquals(investor3.getMobile(),heroRankingViews.get(0).getMobile());
 
         assertEquals(investModel1.getLoginName(),heroRankingViews.get(1).getLoginName());
         assertEquals(investModel1.getAmount(),heroRankingViews.get(1).getSumAmount());
-        assertEquals(accountModel1.getUserName(),heroRankingViews.get(1).getUserName());
+        assertEquals(investor1.getUserName(),heroRankingViews.get(1).getUserName());
         assertEquals(investor1.getMobile(),heroRankingViews.get(1).getMobile());
 
     }

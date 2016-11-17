@@ -29,16 +29,17 @@
             <li><span class="title">投资金额</span><em class="col-info">${investAmount}元</em></li>
             <li><span class="title">所投项目</span><em class="col-info">${investName}</em></li>
             <li><span class="title">项目编号</span><em class="col-info">${loanId}</em></li>
-        <#else>
+        <#elseif service == 'ptp_mer_replace_card'>
+            <li><em class="col-info text-card">${replaceCardContent!}</em></li>
         </#if>
         </ul>
 
     </div>
-    <a href="${href}" class="btn-disabled" id="Btn">3s</a>
+    <a href="javascript:void(0)" class="btn-disabled" data-href="${href}" id="Btn">3s</a>
+
 
     <script>
-        var num = 3,
-                href=document.getElementById('Btn').getAttribute('href');
+        var num = 3, href=document.getElementById('Btn').getAttribute('data-href');
         function countTime(){
             if(num == 0){
                 document.getElementById('Btn').innerHTML ='确定';

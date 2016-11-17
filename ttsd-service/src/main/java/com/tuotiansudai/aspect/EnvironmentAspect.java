@@ -17,6 +17,9 @@ public class EnvironmentAspect {
     @Value("${common.environment}")
     private Environment environment;
 
+    @Value("${common.fake.image.captcha}")
+    private String fakeImageCaptcha;
+
     @Value("${common.fake.captcha}")
     private String fakeCaptcha;
 
@@ -27,7 +30,20 @@ public class EnvironmentAspect {
             return true;
         }
 
-        if(Environment.PRODUCTION != environment && proceedingJoinPoint.getArgs()[0].equals(fakeCaptcha)){
+        if(Environment.PRODUCTION != environment && proceedingJoinPoint.getArgs()[0].equals(fakeImageCaptcha)){
+            return true;
+        }
+
+        return proceedingJoinPoint.proceed();
+    }
+
+    @Around(value = "execution(* *..SmsCaptchaService.verifyMobileCaptcha(..))")
+    public Object aroundVerifyMobileCaptcha(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        if (Environment.SMOKE == environment) {
+            return true;
+        }
+
+        if(Environment.PRODUCTION != environment && proceedingJoinPoint.getArgs()[1].equals(fakeCaptcha)){
             return true;
         }
 

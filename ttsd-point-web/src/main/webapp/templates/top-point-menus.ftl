@@ -1,4 +1,4 @@
-<div class="nav-container">
+<div class="nav-container-point">
     <div class="nav">
         <a href="${webServer}${applicationContext}/" class="logo"></a>
         <i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>

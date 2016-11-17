@@ -1,0 +1,15 @@
+apply plugin: 'java'
+
+version = '1.0'
+
+configurations {
+    providedCompile
+}
+
+sourceSets {
+    main.compileClasspath += configurations.providedCompile
+    test.compileClasspath += configurations.providedCompile
+    test.runtimeClasspath += configurations.providedCompile
+}
+
+processResources.outputs.upToDateWhen { false }

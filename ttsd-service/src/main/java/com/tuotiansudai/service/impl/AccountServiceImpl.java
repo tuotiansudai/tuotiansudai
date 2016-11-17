@@ -10,8 +10,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class AccountServiceImpl implements AccountService {
 
@@ -39,31 +37,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean isIdentityNumberExist(String identityNumber) {
-        List<AccountModel> accountModels = accountMapper.findByIdentityNumber(identityNumber);
-        return CollectionUtils.isNotEmpty(accountModels);
-    }
-
-    @Override
-    public String getRealName(String loginName) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        return accountModel == null ? loginName : accountModel.getUserName();
-    }
-
-    @Override
     public long getUserPointByLoginName(String loginName) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         return null == accountModel ? 0 : accountModel.getPoint();
-    }
-
-    @Override
-    public String getRealNameByMobile(String mobile){
-        UserModel userModel = userMapper.findByMobile(mobile);
-        if(userModel == null){
-            return mobile;
-        }
-
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        return accountModel == null ? userModel.getLoginName() : accountModel.getUserName();
     }
 }

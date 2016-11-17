@@ -9,14 +9,16 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.transfer.repository.model.*;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
+import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
+import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationItemDataDto;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
@@ -25,9 +27,13 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -66,23 +72,34 @@ public class TransferServiceImpl implements TransferService {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    @Autowired
+    private AnxinSignPropertyMapper anxinSignPropertyMapper;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
     @Override
-    public BaseDto<PayFormDataDto> transferPurchase(InvestDto investDto) throws InvestException{
+    public BaseDto<PayFormDataDto> transferPurchase(InvestDto investDto) throws InvestException {
         this.checkTransferPurchase(investDto);
         return payWrapperClient.purchase(investDto);
     }
 
     @Override
-    public BaseDto<PayDataDto> noPasswordTransferPurchase(InvestDto investDto) throws InvestException{
+    public BaseDto<PayDataDto> noPasswordTransferPurchase(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(true);
         this.checkTransferPurchase(investDto);
         return payWrapperClient.noPasswordPurchase(investDto);
     }
 
     private void checkTransferPurchase(InvestDto investDto) throws InvestException {
+        AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
+
+//        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(accountModel.getLoginName());
+//
+//        if (anxinProp == null || StringUtils.isEmpty(anxinProp.getProjectCode())) {
+//            throw new InvestException(InvestExceptionType.ANXIN_SIGN_IS_UNUSABLE);
+//        }
+
         long loanId = Long.parseLong(investDto.getLoanId());
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferInvestId()));
         if (transferApplicationModel.getLoginName().equals(investDto.getLoginName())) {
@@ -94,7 +111,6 @@ public class TransferServiceImpl implements TransferService {
         }
         long investAmount = Long.parseLong(investDto.getAmount());
 
-        AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
         if (accountModel.getBalance() < investAmount) {
             throw new InvestException(InvestExceptionType.NOT_ENOUGH_BALANCE);
         }
@@ -119,6 +135,10 @@ public class TransferServiceImpl implements TransferService {
             @Override
             public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto transferApplicationRecordDto) {
                 TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(transferApplicationRecordDto);
+                LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
+                InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
+                long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), investRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                transferApplicationPaginationItemDataDto.setLeftDays(String.valueOf(leftDays > 0 ? leftDays : 0));
                 return transferApplicationPaginationItemDataDto;
             }
         });
@@ -151,34 +171,34 @@ public class TransferServiceImpl implements TransferService {
         List<InvestRepayModel> investRepayModels = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId()) : investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
         if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS && transferApplicationModel.getInvestId() != null) {
             InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
-            transferApplicationRecodesDto.setTransferApplicationReceiver(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(),Source.WEB));
+            transferApplicationRecodesDto.setTransferApplicationReceiver(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(), Source.WEB));
             transferApplicationRecodesDto.setReceiveAmount(AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()));
             transferApplicationRecodesDto.setSource(investModel.getSource());
             transferApplicationRecodesDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels)));
             transferApplicationRecodesDto.setInvestAmount(AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
             transferApplicationRecodesDto.setTransferTime(transferApplicationModel.getTransferTime());
             transferApplicationRecodesDto.setStatus(true);
-        }
-        else{
+        } else {
             transferApplicationRecodesDto.setStatus(false);
         }
         return transferApplicationRecodesDto;
     }
+
     @Override
-    public List<TransferApplicationModel> getTransferApplicaationByTransferInvestId(long transferApplicationId){
+    public List<TransferApplicationModel> getTransferApplicaationByTransferInvestId(long transferApplicationId) {
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
-        return  transferApplicationMapper.findByTransferInvestId(transferApplicationModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING));
+        return transferApplicationMapper.findByTransferInvestId(transferApplicationModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING));
     }
 
     @Override
     public BasePaginationDataDto<TransferableInvestPaginationItemDataDto> generateTransferableInvest(String loginName, Integer index, Integer pageSize) {
         long count = investMapper.findWebCountTransferableApplicationPaginationByLoginName(loginName);
         List<TransferableInvestView> items = Lists.newArrayList();
-        items = investMapper.findWebTransferableApplicationPaginationByLoginName(loginName, (index-1) * pageSize, pageSize);
-        if(count > 0){
-            int totalPages = (int) ((count % pageSize > 0 || count == 0)? count / pageSize + 1 : count / pageSize);
+        items = investMapper.findWebTransferableApplicationPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
+        if (count > 0) {
+            int totalPages = (int) ((count % pageSize > 0 || count == 0) ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
-            items = investMapper.findWebTransferableApplicationPaginationByLoginName(loginName, (index-1) * pageSize, pageSize);
+            items = investMapper.findWebTransferableApplicationPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
 
         }
         List<TransferableInvestPaginationItemDataDto> records = Lists.transform(items, new Function<TransferableInvestView, TransferableInvestPaginationItemDataDto>() {
@@ -199,10 +219,10 @@ public class TransferServiceImpl implements TransferService {
             @Override
             public boolean apply(TransferableInvestPaginationItemDataDto input) {
                 TransferRuleModel transferRuleModel = transferRuleMapper.find();
-                return transferRuleModel.isMultipleTransferEnabled() || (!transferRuleModel.isMultipleTransferEnabled() && transferApplicationMapper.findByInvestId(input.getInvestId()) == null) ;
+                return transferRuleModel.isMultipleTransferEnabled() || (!transferRuleModel.isMultipleTransferEnabled() && transferApplicationMapper.findByInvestId(input.getInvestId()) == null);
             }
         });
-        BasePaginationDataDto<TransferableInvestPaginationItemDataDto> baseDto = new BasePaginationDataDto(index,pageSize,count,Lists.newArrayList(filter));
+        BasePaginationDataDto<TransferableInvestPaginationItemDataDto> baseDto = new BasePaginationDataDto(index, pageSize, count, Lists.newArrayList(filter));
         baseDto.setStatus(true);
 
         return baseDto;
@@ -214,7 +234,7 @@ public class TransferServiceImpl implements TransferService {
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
-        InvestRepayModel investRepayModel = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getInvestId(), transferApplicationModel.getPeriod()):investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), transferApplicationModel.getPeriod());
+        InvestRepayModel investRepayModel = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getInvestId(), transferApplicationModel.getPeriod()) : investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), transferApplicationModel.getPeriod());
         transferApplicationDetailDto.setId(transferApplicationModel.getId());
         transferApplicationDetailDto.setTransferInvestId(transferApplicationModel.getTransferInvestId());
         transferApplicationDetailDto.setName(transferApplicationModel.getName());
@@ -239,8 +259,8 @@ public class TransferServiceImpl implements TransferService {
         } else {
             if (now.before(transferApplicationModel.getDeadline())) {
                 long seconds = (transferApplicationModel.getDeadline().getTime() - now.getTime()) / 1000;
-                int days = (int)(seconds / (60 * 60 * 24));
-                int hours = (int)((seconds % (60 * 60 * 24)) / (60 * 60));
+                int days = (int) (seconds / (60 * 60 * 24));
+                int hours = (int) ((seconds % (60 * 60 * 24)) / (60 * 60));
                 int minutes = (int) ((seconds % (60 * 60)) / 60);
                 beforeDeadLine = MessageFormat.format("{0}天{1}小时{2}分", days, hours, minutes);
             } else {
@@ -250,7 +270,7 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setBeforeDeadLine(beforeDeadLine);
         transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());
         transferApplicationDetailDto.setTransferrer(randomUtils.encryptMobile(loginName, transferApplicationModel.getLoginName(), transferApplicationModel.getTransferInvestId(), Source.WEB));
-        long investId = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ?transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId();
+        long investId = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId();
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
@@ -258,21 +278,20 @@ public class TransferServiceImpl implements TransferService {
             transferApplicationDetailDto.setLoginName(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(), Source.MOBILE));
             transferApplicationDetailDto.setBalance(accountModel != null ? AmountConverter.convertCentToString(accountModel.getBalance()) : "0.00");
             transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
-        }
-        else if(transferApplicationModel.getStatus() == TransferStatus.SUCCESS){
+        } else if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
             InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
-            transferApplicationDetailDto.setLoginName(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(),Source.MOBILE));
+            transferApplicationDetailDto.setLoginName(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId(), Source.MOBILE));
             transferApplicationDetailDto.setInvestId(transferApplicationModel.getInvestId());
             transferApplicationDetailDto.setTransferTime(transferApplicationModel.getTransferTime());
         }
 
         long nextExpectedFee = new BigDecimal(investRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investFeeRate)).longValue();
         long nextExpectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - nextExpectedFee;
-        if(transferApplicationModel.getPeriod() == loanModel.getPeriods()){
-            nextExpectedInterest += investRepayMapper.findByInvestIdAndPeriod(investId,transferApplicationModel.getPeriod()).getCorpus();
+        if (transferApplicationModel.getPeriod() == loanModel.getPeriods()) {
+            nextExpectedInterest += investRepayMapper.findByInvestIdAndPeriod(investId, transferApplicationModel.getPeriod()).getCorpus();
         }
         transferApplicationDetailDto.setNextExpecedInterest(AmountConverter.convertCentToString(nextExpectedInterest));
-        transferApplicationDetailDto.setActivityRate(loanModel.getActivityRate()  * 100);
+        transferApplicationDetailDto.setActivityRate(loanModel.getActivityRate() * 100);
         return transferApplicationDetailDto;
     }
 }

@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
+<@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
 <div class="loan-detail-content" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" >
     <div class="borderBox clearfix no-border">
@@ -283,6 +283,22 @@
                                     </dd>
                                 </#if>
                             </@global.role>
+                            
+                            <input type="hidden" value="${loan.investor.skipAuth?c}" id="isSkipAuth">
+                            <input type="hidden" value="${loan.investor.anxinUser?c}" id="isAnxinUser">
+                            <@global.role hasRole="'INVESTOR'">
+                            <#if !loan.investor.anxinUser>
+                            <dd class="skip-group">
+                                <label>
+                                    <i class="skip-icon active"></i>
+                                    <input type="hidden" id="skipCheck" value="true">
+                                </label>
+                                <div class="skip-text">
+                                    我已阅读并同意<a href="javascript:void(0)"><span class="anxin_layer link-agree-service">《安心签平台服务协议》</span>、<span class="anxin_layer link-agree-privacy">《隐私条款》</span>、<span class="anxin_layer link-agree-number">《CFCA数字证书服务协议》</span>和<span class="anxin_layer link-agree-number-authorize">《CFCA数字证书授权协议》</span><span class="check-tip" id="checkTip">请勾选</span></a>
+                                </div>
+                            </dd>
+                            </#if>
+                            </@global.role>
                         </dl>
                     </form>
                 </#if>
@@ -463,7 +479,7 @@
                                     <div class="item">
                                         <h4 class="first"><span><a href="/activity/invest-achievement" target="_blank">拓荒先锋 >></a></span></h4>
                                         <#if (loan.achievement.firstInvestAchievementMobile)??>
-                                            <p>恭喜${loan.achievement.firstInvestAchievementMobile} ${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 拔得头筹 奖励0.2％加息券＋50元红包</p>
+                                            <p>恭喜${loan.achievement.firstInvestAchievementMobile} <#if (loan.achievement.firstInvestAchievementDate)??>${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")}</#if> 拔得头筹 奖励0.2％加息券＋50元红包</p>
                                         <#else>
                                             <p>虚位以待</p>
                                         </#if>
@@ -488,7 +504,7 @@
                                     <div class="item">
                                         <h4 class="hammer"><span><a href="/activity/invest-achievement" target="_blank">一锤定音 >></a></span></h4>
                                         <#if (loan.achievement.lastInvestAchievementMobile)??>
-                                            <p>恭喜${loan.achievement.lastInvestAchievementMobile} ${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 终结此标 奖励0.2％加息券＋50元红包</p>
+                                            <p>恭喜${loan.achievement.lastInvestAchievementMobile} <#if (loan.achievement.lastInvestAchievementDate)??>${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")}</#if> 终结此标 奖励0.2％加息券＋50元红包</p>
                                         <#else>
                                             <p>目前项目剩余${(loan.amountNeedRaised / 100)?string("0.00")}元快来一锤定音吧</p>
                                         </#if>
@@ -516,8 +532,10 @@
         <input type="hidden" name="noPasswordInvest" value="true"/>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
-    <#include "coupon-alert.ftl" />
+    <#include "component/anxin-qian.ftl" />
+    <#include "component/anxin-agreement.ftl" />
+    <#include "component/coupon-alert.ftl" />
 </div>
-    <#include "red-envelope-float.ftl" />
-    <#include "login-tip.ftl" />
+    <#include "component/red-envelope-float.ftl" />
+    <#include "component/login-tip.ftl" />
 </@global.main>

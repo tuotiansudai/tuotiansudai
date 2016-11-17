@@ -55,7 +55,7 @@ public class SmsController {
     @RequestMapping(value = "/coupon-notify", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> couponNotify(@Valid @RequestBody SmsCouponNotifyDto notifyDto) {
-        return smsService.couponNotify(notifyDto);
+        return smsService.couponNotifyByMd(notifyDto);
     }
 
     @RequestMapping(value = "/birthday-notify", method = RequestMethod.POST)
@@ -98,5 +98,11 @@ public class SmsController {
     @ResponseBody
     public BaseDto<SmsDataDto> platformBalanceLowNotify(@RequestBody PlatformBalanceLowNotifyDto notifyDto) {
         return smsService.platformBalanceLowNotify(notifyDto.getMobiles(), notifyDto.getWarningLine());
+    }
+
+    @RequestMapping(value = "/generate-contract-error-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> generateContractErrorNotify(@RequestBody GenerateContractErrorNotifyDto notifyDto) {
+        return smsService.generateContractNotify(notifyDto.getMobiles(), notifyDto.getBusinessId());
     }
 }
