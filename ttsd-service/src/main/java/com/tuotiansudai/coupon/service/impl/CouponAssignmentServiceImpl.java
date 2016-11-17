@@ -19,6 +19,7 @@ import com.tuotiansudai.mq.client.MQClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.util.TransactionUtil;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -255,13 +256,15 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
             }
         }));
 
-        for (CouponModel couponModel : couponModels) {
-            String queueMessage = MessageQueue.CouponAssigning.getMessageFormat()
-                    .replace("{loginName}", loginName)
-                    .replace("{couponId}", String.valueOf(couponModel.getId()));
-            mqClient.sendMessage(MessageQueue.CouponAssigning, queueMessage);
+        TransactionUtil.runAfterCommit(() -> {
+            for (CouponModel couponModel : couponModels) {
+                String queueMessage = MessageQueue.CouponAssigning.getMessageFormat()
+                        .replace("{loginName}", loginName)
+                        .replace("{couponId}", String.valueOf(couponModel.getId()));
+                mqClient.sendMessage(MessageQueue.CouponAssigning, queueMessage);
 //            ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
-        }
+            }
+        });
     }
 
     @Transactional
