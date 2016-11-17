@@ -32,7 +32,7 @@
 
             <div class="col-sm-4 ">
                 <input type="text" name="imageUrl" class="form-control form-imageUrl" readonly placeholder=""
-                       value="<#if exchangeCouponDto??>${staticServer}${exchangeCouponDto.imageUrl!}</#if>" datatype="*"
+                       value="<#if exchangeCouponDto??>${exchangeCouponDto.imageUrl!}</#if>" datatype="*"
                        errormsg="请上传商品图片">
 
                 <div class="imageUrlImage" style="margin-top: 10px">
