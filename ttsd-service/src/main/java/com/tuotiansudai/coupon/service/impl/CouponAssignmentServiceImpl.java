@@ -54,9 +54,6 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     private ExchangeCodeService exchangeCodeService;
 
     @Autowired
-    private UserBirthdayUtil userBirthdayUtil;
-
-    @Autowired
     private MQClient mqClient;
 
     @Resource(name = "allUserCollector")
