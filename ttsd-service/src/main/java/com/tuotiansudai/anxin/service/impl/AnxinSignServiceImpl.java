@@ -9,7 +9,7 @@ import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
-import com.tuotiansudai.contract.service.GenerateContractService;
+import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.cfca.constant.AnxinRetCode;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
@@ -80,7 +80,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private TransferApplicationMapper transferApplicationMapper;
 
     @Autowired
-    private GenerateContractService generateContractService;
+    private ContractService contractService;
 
     private static final String LOAN_CONTRACT_AGENT_SIGN = "agentUserName";
 
@@ -443,7 +443,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return null;
         }
 
-        Map<String, String> transferMap = generateContractService.collectTransferContractModel(transferApplicationId);
+        Map<String, String> transferMap = contractService.collectTransferContractModel(transferApplicationId);
         dataModel.put("transferMobile", transferMap.get("transferMobile"));
         dataModel.put("transferIdentity", transferMap.get("transferIdentityNumber"));
         dataModel.put("transfereeMobile", transferMap.get("transfereeMobile"));
@@ -509,7 +509,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return null;
         }
 
-        Map<String, String> investMap = generateContractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
+        Map<String, String> investMap = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
         dataModel.put("agentMobile", investMap.get("agentMobile"));
         dataModel.put("agentIdentityNumber", investMap.get("agentIdentityNumber"));
         dataModel.put("investorMobile", investMap.get("investorMobile"));

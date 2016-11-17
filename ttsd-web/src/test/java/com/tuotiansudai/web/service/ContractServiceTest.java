@@ -1,10 +1,9 @@
 package com.tuotiansudai.web.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.contract.service.GenerateContractService;
+import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
@@ -54,8 +53,6 @@ public class ContractServiceTest {
     private ContractService contractService;
     @Autowired
     private InvestRepayMapper investRepayMapper;
-    @Autowired
-    private GenerateContractService generateContractService;
 
     @Before
     public void init() {
@@ -122,7 +119,7 @@ public class ContractServiceTest {
                 DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
 
-        Map<String, String> transferMap = generateContractService.collectTransferContractModel(transferApplicationModel.getId());
+        Map<String, String> transferMap = contractService.collectTransferContractModel(transferApplicationModel.getId());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         assertNotNull(transferMap);
@@ -180,7 +177,7 @@ public class ContractServiceTest {
                 DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
 
-        Map<String, String> transferMap = generateContractService.collectTransferContractModel(transferApplicationModel.getId());
+        Map<String, String> transferMap = contractService.collectTransferContractModel(transferApplicationModel.getId());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         assertNotNull(transferMap);

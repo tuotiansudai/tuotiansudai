@@ -1,7 +1,8 @@
 package com.tuotiansudai.contract.service.impl;
 
-
-import com.tuotiansudai.contract.service.GenerateContractService;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.pdf.BaseFont;
+import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
@@ -9,17 +10,25 @@ import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.Version;
+import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.xhtmlrenderer.pdf.ITextFontResolver;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import java.io.*;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class GenerateContractServiceImpl implements GenerateContractService {
+public class ContractServiceImpl implements ContractService {
+    static Logger logger = Logger.getLogger(ContractServiceImpl.class);
 
     @Autowired
     private LoanMapper loanMapper;
@@ -43,6 +52,86 @@ public class GenerateContractServiceImpl implements GenerateContractService {
     private TransferRuleMapper transferRuleMapper;
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    /**
+     * 后缀为FTL
+     */
+    private static final String FTL = ".ftl";
+
+    @Override
+    public String getContract(String templateName, Map<String, String> dataModel) {
+        Writer out = null;
+        StringReader reader = null;
+        try {
+            out = new StringWriter();
+            Configuration cfg = new Configuration(new Version(2, 3, 23));
+            cfg.setDefaultEncoding("UTF-8");
+            cfg.setClassForTemplateLoading(ContractServiceImpl.class, "/");
+            Template template = cfg.getTemplate(templateName + FTL);
+            template.process(dataModel, out);
+            reader = new StringReader(out.toString());
+            out.flush();
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    logger.error(e.getLocalizedMessage(), e);
+                }
+            }
+        }
+        BufferedReader br = new BufferedReader(reader);
+        StringBuilder content = new StringBuilder();
+        String str = null;
+        try {
+            while ((str = br.readLine()) != null) {
+                content.append(str);
+            }
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return content.toString();
+    }
+
+    @Override
+    public String generateInvestorContract(String loginName, long loanId, long investId) {
+        Map<String, String> dataModel = collectInvestorContractModel(loginName, loanId, investId);
+        if (dataModel.isEmpty()) {
+            return "";
+        }
+        return getContract("contract", dataModel).replace("&nbsp;", "&#160;");
+    }
+
+    @Override
+    public void generateContractPdf(String pdfString, OutputStream outputStream) {
+
+        ITextRenderer renderer = new ITextRenderer();
+        ITextFontResolver fontResolver = renderer.getFontResolver();
+
+        try {
+            fontResolver.addFont(ContractServiceImpl.class.getClassLoader().getResource("SIMSUN.TTC").toString(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            renderer.setDocumentFromString(pdfString);
+            //renderer.setDocument(xhtmlContent,"");
+            renderer.layout();
+            renderer.createPDF(outputStream, true);
+        } catch (DocumentException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+    }
+
+    @Override
+    public String generateTransferContract(long transferApplicationId) {
+
+        Map<String, String> dataModel = collectTransferContractModel(transferApplicationId);
+        if (dataModel.isEmpty()) {
+            return "";
+        }
+        return getContract("transferContract", dataModel).replace("&nbsp;", "&#160;");
+    }
 
 
     @Override
@@ -151,4 +240,5 @@ public class GenerateContractServiceImpl implements GenerateContractService {
         }
         return dataModel;
     }
+
 }
