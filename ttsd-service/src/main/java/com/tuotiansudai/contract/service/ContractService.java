@@ -1,4 +1,4 @@
-package com.tuotiansudai.service;
+package com.tuotiansudai.contract.service;
 
 import java.io.OutputStream;
 import java.util.Map;
@@ -11,4 +11,8 @@ public interface ContractService {
     void generateContractPdf(String pdfString, OutputStream outputStream);
 
     String generateTransferContract(long transferApplicationId);
+
+    Map<String, String> collectTransferContractModel(long transferApplicationId);
+
+    Map<String, String> collectInvestorContractModel(String investorLoginName, long loanId, long investId);
 }
