@@ -11,8 +11,4 @@ public interface ContractService {
     void generateContractPdf(String pdfString, OutputStream outputStream);
 
     String generateTransferContract(long transferApplicationId);
-
-    Map<String, String> collectTransferContractModel(long transferApplicationId);
-
-    Map<String, String> collectInvestorContractModel(String investorLoginName, long loanId, long investId);
 }

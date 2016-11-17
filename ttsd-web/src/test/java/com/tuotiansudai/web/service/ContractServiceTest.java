@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ContractService;
@@ -54,6 +55,8 @@ public class ContractServiceTest {
     private ContractService contractService;
     @Autowired
     private InvestRepayMapper investRepayMapper;
+    @Autowired
+    private AnxinSignService anxinSignService;
 
     @Before
     public void init() {
@@ -120,7 +123,7 @@ public class ContractServiceTest {
                 DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
 
-        Map<String, String> transferMap = contractService.collectTransferContractModel(transferApplicationModel.getId());
+        Map<String, String> transferMap = anxinSignService.collectTransferContractModel(transferApplicationModel.getId());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         assertNotNull(transferMap);
@@ -178,7 +181,7 @@ public class ContractServiceTest {
                 DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
 
-        Map<String, String> transferMap = contractService.collectTransferContractModel(transferApplicationModel.getId());
+        Map<String, String> transferMap = anxinSignService.collectTransferContractModel(transferApplicationModel.getId());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         assertNotNull(transferMap);

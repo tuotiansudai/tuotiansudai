@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AnxinSignService {
 
@@ -32,5 +33,9 @@ public interface AnxinSignService {
     BaseDto updateLoanInvestContractNo(long loanId);
 
     BaseDto updateTransferInvestContractNo(long transferInvestId);
+
+    Map<String, String> collectTransferContractModel(long transferApplicationId);
+
+    Map<String, String> collectInvestorContractModel(String investorLoginName, long loanId, long investId);
 
 }
