@@ -132,7 +132,7 @@ public class ContractServiceTest {
         assertEquals(transferMap.get("loanerUserName"), loanerDetailsModel.getUserName());
         assertEquals(transferMap.get("loanerIdentityNumber"), loanerDetailsModel.getIdentityNumber());
         assertEquals(transferMap.get("loanAmount"), AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
-        assertEquals(transferMap.get("totalRate"), String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate() * 100)) + "%");
+        assertEquals(transferMap.get("totalRate"), String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
         assertEquals(transferMap.get("periods"), String.valueOf(loanModel.getPeriods() * 30) + "天");
         assertEquals(transferMap.get("transferStartTime"), simpleDateFormat.format(new LocalDate(startInvestRepayModel.getRepayDate()).plusDays(1).toDate()));
         assertEquals(transferMap.get("transferEndTime"), simpleDateFormat.format(endInvestRepayModel.getRepayDate()));
@@ -190,7 +190,7 @@ public class ContractServiceTest {
         assertEquals(transferMap.get("loanerUserName"), loanerDetailsModel.getUserName());
         assertEquals(transferMap.get("loanerIdentityNumber"), loanerDetailsModel.getIdentityNumber());
         assertEquals(transferMap.get("loanAmount"), AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
-        assertEquals(transferMap.get("totalRate"), String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate() * 100)) + "%");
+        assertEquals(transferMap.get("totalRate"), String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
         assertEquals(transferMap.get("periods"), String.valueOf(loanModel.getPeriods() * 30) + "天");
         assertEquals(transferMap.get("transferStartTime"), simpleDateFormat.format(investModel.getInvestTime()));
         assertEquals(transferMap.get("transferEndTime"), simpleDateFormat.format(endInvestRepayModel.getRepayDate()));
