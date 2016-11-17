@@ -31,7 +31,7 @@ public class MobileAppNoPasswordInvestServiceTest extends ServiceTestBase{
 
     @Test
     public void shouldGetNoPasswordInvestDataIsSuccess(){
-        AccountModel accountModel = new AccountModel("loginName", "userName", "identityNumber", "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         accountModel.setNoPasswordInvest(true);
         accountModel.setAutoInvest(true);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);

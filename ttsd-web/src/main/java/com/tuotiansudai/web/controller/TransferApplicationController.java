@@ -1,10 +1,12 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.service.LoanService;
@@ -40,6 +42,9 @@ public class TransferApplicationController {
     @Autowired
     private LoanService loanService;
 
+    @Autowired
+    private AnxinSignService anxinSignService;
+
     @RequestMapping(value = "/{transferApplicationId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getTransferApplicationDetail(@PathVariable long transferApplicationId) {
@@ -55,9 +60,13 @@ public class TransferApplicationController {
         loanDto.setType(loanModel.getType());
         loanDto.setPeriods(loanModel.getPeriods());
 
+        String loginName = LoginUserInfo.getLoginName();
+        AnxinSignPropertyModel anxinProp = anxinSignService.getAnxinSignProp(loginName);
+
         ModelAndView modelAndView = new ModelAndView("/transfer-detail");
         modelAndView.addObject("transferApplication", dto);
         modelAndView.addObject("loanDto", loanDto);
+        modelAndView.addObject("anxinProp", anxinProp != null ? anxinProp : new AnxinSignPropertyModel());
         modelAndView.addObject("transferApplicationReceiver", transferService.getTransferee(transferApplicationId, LoginUserInfo.getLoginName()));
         return modelAndView;
     }

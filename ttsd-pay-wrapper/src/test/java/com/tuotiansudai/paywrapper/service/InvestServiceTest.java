@@ -79,7 +79,7 @@ public class InvestServiceTest {
     private String appRetUrl;
 
     private AccountModel createAccountByUserId(String userId) {
-        AccountModel accountModel = new AccountModel(userId, userId, "120101198810012010", "", "", new Date());
+        AccountModel accountModel = new AccountModel(userId, "", "", new Date());
         accountModel.setAutoInvest(true);
         accountModel.setBalance(600000);
         accountModel.setFreeze(10000);
@@ -349,7 +349,7 @@ public class InvestServiceTest {
 
         this.createUserByUserId("testInvest");
 
-        AccountModel accountModel = new AccountModel("testInvest", "testInvest", "120101198810012010", "", "", new Date());
+        AccountModel accountModel = new AccountModel("testInvest", "", "", new Date());
         accountModel.setAutoInvest(true);
         accountModel.setBalance(10000);
         accountModel.setFreeze(0);
@@ -407,7 +407,7 @@ public class InvestServiceTest {
 
         this.createUserByUserId("testInvest");
 
-        AccountModel accountModel = new AccountModel("testInvest", "testInvest", "120101198810012010", "", "", new Date());
+        AccountModel accountModel = new AccountModel("testInvest", "", "", new Date());
         accountModel.setAutoInvest(true);
         accountModel.setBalance(10000);
         accountModel.setFreeze(0);
@@ -462,7 +462,7 @@ public class InvestServiceTest {
 
         this.createUserByUserId("testInvest");
 
-        AccountModel accountModel = new AccountModel("testInvest", "testInvest", "120101198810012010", "", "", new Date());
+        AccountModel accountModel = new AccountModel("testInvest", "", "", new Date());
         accountModel.setAutoInvest(true);
         accountModel.setBalance(10000);
         accountModel.setFreeze(0);

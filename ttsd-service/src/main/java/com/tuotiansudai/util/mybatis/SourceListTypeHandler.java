@@ -46,7 +46,7 @@ public class SourceListTypeHandler extends BaseTypeHandler<List<Source>> {
     }
 
     private List<Source> convertToSource(String s) {
-        if (s == null) {
+        if (s == null || s.equals("")) {
             return null;
         }
         List<Source> sources = Lists.newArrayList();

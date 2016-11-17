@@ -1,5 +1,6 @@
-<@global.isAnonymous>
 <div class="login-tip" id="loginTip">
+    <meta name="_csrf" content="${(_csrf.token)!}"/>
+    <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
     <i class="close-btn"></i>
     <div class="login-box">
         <h3>欢迎登录拓天速贷</h3>
@@ -39,4 +40,3 @@
         <p>下载拓天速贷APP 投资快人一步</p>
     </div>
 </div>
-</@global.isAnonymous>

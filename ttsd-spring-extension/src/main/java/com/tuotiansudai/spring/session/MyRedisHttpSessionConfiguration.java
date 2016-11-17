@@ -1,5 +1,6 @@
 package com.tuotiansudai.spring.session;
 
+import com.tuotiansudai.client.RedisWrapperClient;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,6 +52,9 @@ public class MyRedisHttpSessionConfiguration implements ImportAware {
 
     private RedisFlushMode redisFlushMode = RedisFlushMode.ON_SAVE;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
     @Bean
     public SessionEventHttpSessionListenerAdapter sessionEventHttpSessionListenerAdapter() {
         return new SessionEventHttpSessionListenerAdapter(this.httpSessionListeners);
@@ -62,7 +66,7 @@ public class MyRedisHttpSessionConfiguration implements ImportAware {
         sessionRepositoryFilter.setServletContext(this.servletContext);
         defaultHttpSessionStrategy.setCookieSerializer(new MyDefaultCookieSerializer());
         sessionRepositoryFilter.setHttpSessionStrategy(this.defaultHttpSessionStrategy);
-
+        sessionRepositoryFilter.setRedisWrapperClient(redisWrapperClient);
         return sessionRepositoryFilter;
     }
 

@@ -15,8 +15,10 @@ public class BookingLoanModel implements Serializable {
     private boolean status;
     private Date createTime;
     private Date updateTime;
+    private String loginName;
 
-    public BookingLoanModel(String mobile, Source source, Date bookingTime, ProductType productType, long amount, Date noticeTime, boolean status, Date createTime) {
+    public BookingLoanModel(String loginName,String mobile, Source source, Date bookingTime, ProductType productType, long amount, Date noticeTime, boolean status, Date createTime) {
+        this.loginName = loginName;
         this.mobile = mobile;
         this.source = source;
         this.bookingTime = bookingTime;
@@ -108,5 +110,13 @@ public class BookingLoanModel implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 }

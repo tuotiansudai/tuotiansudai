@@ -1,17 +1,18 @@
 package com.tuotiansudai.task.aspect;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanCreateRequestDto;
-import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
@@ -34,7 +35,7 @@ public class AuditTaskAspectLoan {
     RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    AccountService accountService;
+    private UserService userService;
 
     @Autowired
     LoanService loanService;
@@ -65,8 +66,8 @@ public class AuditTaskAspectLoan {
                 task.setCreatedTime(new Date());
 
                 String senderLoginName = loanModel.getCreatedLoginName();
-                AccountModel sender = accountService.findByLoginName(senderLoginName);
-                String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
+                UserModel sender = userService.findByLoginName(senderLoginName);
+                String senderRealName = sender != null && !Strings.isNullOrEmpty(sender.getUserName()) ? sender.getUserName() : senderLoginName;
 
                 task.setSender(senderLoginName);
                 task.setOperateURL("/project-manage/loan/" + loanModel.getId());
@@ -108,7 +109,7 @@ public class AuditTaskAspectLoan {
                     notify.setCreatedTime(new Date());
                     notify.setObjId(task.getObjId());
 
-                    String senderRealName = accountService.getRealName(senderLoginName);
+                    String senderRealName = userService.getRealName(senderLoginName);
 
                     notify.setDescription(senderRealName + " 通过了您 " + OperationType.PROJECT.getDescription() + "［" + task.getObjName() + "］的申请。");
 
