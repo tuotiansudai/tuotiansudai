@@ -51,7 +51,7 @@ body {
     text-align: left;
     color: #f9de56;
     font-size: 18px;
-    padding: 50px;
+    padding: 50px 50px 0 50px;
   }
 }
 
@@ -70,8 +70,10 @@ body {
       width: 95%;
     }
     .product-list {
-      height:300px;
+      height:345px;
+      position: relative;
       i {
+        position: absolute;
         display: inline-block;
         width:70px;
         height:100%;
@@ -79,33 +81,52 @@ body {
         background-size: 90%;
       }
       .arrow-left {
-        float: left;
+        left:0;
+        display: none;
+
       }
       .arrow-right {
-        float: right;
+        right:0;
         background: url("/activity/images/birthday-month/icon-arrow-right.jpg") center center no-repeat;
         background-size: 90%;
       }
       .product-box {
         width:calc( 100% - 140px );
         overflow: hidden;
-        float: left;
+        position: absolute;
+        left:70px;
       }
       ul {
         width:800%;
         li {
           display: block;
           float: left;
+          height: auto;
+          margin-left:0;
+          margin-right:0;
           img {
             width:100%;
           }
         }
       }
     }
-
-    .btn-activity img {
-      width:50%;
+    .btn-activity {
+      margin-top:30px;
+      img {
+        width:70%;
+      }
     }
+
+    .activity-notice {
+      background: url("/activity/images/birthday-month/bg-app-notice.jpg") center top no-repeat;
+      height:240px;
+      text-align: left;
+      font-size: 12px;
+      background-size: 97%;
+      padding: 19px 20px;
+      box-sizing: border-box;
+    }
+
   }
 
 
