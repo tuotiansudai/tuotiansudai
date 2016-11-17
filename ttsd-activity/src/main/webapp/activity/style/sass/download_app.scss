@@ -274,13 +274,17 @@
     .step-five{
       background:url('/activity/images/download/five-bg.png') no-repeat;
       background-position:690px 40px;
-      @media (max-width:700px) {
+      @media (max-width:320px) {
         background-size: 40%;
         background-position: 180px 60px;
       }
-      @media (min-width:375px) and (max-width:700px) {
+      @media (min-width:375px) and (max-width:400px) {
         background-size: 40%;
         background-position: 200px 60px;
+      }
+      @media (min-width:400px) and (max-width:700px) {
+        background-size: 40%;
+        background-position: 220px 35px;
       }
       .content-item{
         float:left;
