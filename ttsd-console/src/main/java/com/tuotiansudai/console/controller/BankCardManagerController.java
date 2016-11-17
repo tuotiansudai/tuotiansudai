@@ -54,19 +54,6 @@ public class BankCardManagerController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/stop-bank-card", method = RequestMethod.GET)
-    public BaseDto<BaseDataDto> stopBankCardApply(long bankCardId,HttpServletRequest request) {
-        String ip = RequestIPParser.parse(request);
-//        String result = bandCardManagerService.stopBankCardApply("gaoyinglong", bankCardId, ip);
-//        BaseDataDto dataDto = new BaseDataDto();
-//        dataDto.setMessage(result);
-//        dataDto.setStatus(true);
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-//        baseDto.setData(dataDto);
-        return baseDto;
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/audit-bank-card", method = RequestMethod.GET)
     public BaseDto<BaseDataDto> updateBankCard(long bankCardId,String loginName,HttpServletRequest request) {
         String ip = RequestIPParser.parse(request);

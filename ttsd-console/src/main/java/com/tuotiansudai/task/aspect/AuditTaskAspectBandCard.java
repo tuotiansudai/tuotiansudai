@@ -82,7 +82,6 @@ public class AuditTaskAspectBandCard {
 
             String receiverRealName = userService.getRealName(receiverLoginName);
             String description = senderRealName + " 通过了 " + receiverRealName + " 修改用户［" + editUserRealName + "］的申请。";
-//            description += task.getDescription().split("操作。")[1];
             auditLogService.createAuditLog(loginName, receiverLoginName, OperationType.BAND_CARD, task.getObjId(), description, ip);
 
             if (redisWrapperClient.exists(BAND_CARD_ACTIVE_STATUS_TEMPLATE)) {
