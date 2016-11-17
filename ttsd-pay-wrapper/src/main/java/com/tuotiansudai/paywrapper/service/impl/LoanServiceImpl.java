@@ -311,7 +311,7 @@ public class LoanServiceImpl implements LoanService {
 
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         String beforeSendStatus = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
-        ProjectTransferResponseModel resp = null;
+        ProjectTransferResponseModel resp = new ProjectTransferResponseModel();
         if (Strings.isNullOrEmpty(beforeSendStatus) || beforeSendStatus.equals(SyncRequestStatus.FAILURE.name())){
             try {
                 redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, SyncRequestStatus.SENT.name());
@@ -327,7 +327,6 @@ public class LoanServiceImpl implements LoanService {
         String afterSendStatus = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
 
         if (SyncRequestStatus.SENT.name().equals(afterSendStatus)) {
-            resp = new ProjectTransferResponseModel();
             resp.setRetMsg(MessageFormat.format("[标的放款]:发起放款联动优势请求重复,标的ID : {0}", String.valueOf(loanId)));
             logger.error(resp.getRetMsg());
             return resp;

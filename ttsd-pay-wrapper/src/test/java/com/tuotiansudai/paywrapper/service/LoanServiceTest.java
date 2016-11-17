@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -112,6 +113,9 @@ public class LoanServiceTest {
     @Mock
     private SmsWrapperClient smsWrapperClient;
 
+    @Mock
+    private AnxinSignService anxinSignService;
+
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
@@ -213,10 +217,9 @@ public class LoanServiceTest {
 
         BaseDto<PayDataDto> baseDto1 = loanService.loanOut(loanModel.getId());
         verify(paySyncClient, times(1)).send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
-        verify(paySyncClient, times(1)).send(eq(MerUpdateProjectMapper.class), any(MerUpdateProjectRequestModel.class), eq(MerUpdateProjectResponseModel.class));
         verify(redisWrapperClient,times(1)).setnx(anyString(), anyString());
         verify(redisWrapperClient,times(2)).hset(anyString(), anyString(), anyString());
-        verify(redisWrapperClient,times(1)).hget(anyString(), anyString());
+        verify(redisWrapperClient,times(2)).hget(anyString(), anyString());
         assertTrue(baseDto1.getData().getStatus());
 
         loanModel.setStatus(LoanStatus.RECHECK);
@@ -224,7 +227,7 @@ public class LoanServiceTest {
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         baseDto1 = loanService.loanOut(loanModel.getId());
         verify(paySyncClient, times(1)).send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
-        assertTrue(baseDto1.getData().getStatus());
+        assertTrue(!baseDto1.getData().getStatus());
     }
 
     @Test
@@ -243,6 +246,7 @@ public class LoanServiceTest {
         when(smsWrapperClient.sendInvestNotify(any(InvestSmsNotifyDto.class))).thenReturn(new BaseDto<>());
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("");
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
+        when(anxinSignService.createLoanContracts(anyLong())).thenReturn(new BaseDto());
 
         loanService.postLoanOut(loanModel.getId());
         verify(smsWrapperClient, times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
