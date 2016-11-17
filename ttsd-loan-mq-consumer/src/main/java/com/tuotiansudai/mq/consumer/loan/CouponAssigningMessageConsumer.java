@@ -34,7 +34,7 @@ public class CouponAssigningMessageConsumer implements MessageConsumer {
             if (msgParts.length == 2) {
                 logger.info("[MQ] ready to consumer message[{}]: assigning coupon.", message.getMessageId());
                 couponAssignmentService.assign(msgParts[0], Long.parseLong(msgParts[1]), null);
-                logger.info("[MQ] consumer message[{}] fail: {}: {}.", message.getMessageId());
+                logger.info("[MQ] consumer message[{}] success.", message.getMessageId());
             }
         }
     }
