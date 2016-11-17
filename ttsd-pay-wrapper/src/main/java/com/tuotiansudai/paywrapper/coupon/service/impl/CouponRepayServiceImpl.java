@@ -142,7 +142,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                     TransferRequestModel requestModel = TransferRequestModel.newRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(userCouponModel.getId()), String.valueOf(new Date().getTime())),
                             accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(), String.valueOf(transferAmount));
                     String statusString = redisWrapperClient.hget(redisKey, String.valueOf(couponRepayModel.getId()));
-                    if (Strings.isNullOrEmpty(statusString)) {
+                    if (Strings.isNullOrEmpty(statusString) || SyncRequestStatus.FAILURE.equals(SyncRequestStatus.valueOf(statusString))) {
                         redisWrapperClient.hset(redisKey, String.valueOf(couponRepayModel.getId()), SyncRequestStatus.SENT.name());
                         logger.info(MessageFormat.format("[Coupon Repay loanRepayId {0}] couponRepayModel.id ({1}) send payback request",
                                 String.valueOf(loanRepayId), String.valueOf(couponRepayModel.getId())));
@@ -156,7 +156,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                                 String.valueOf(couponRepayModel.getId()), String.valueOf(isPaySuccess)));
                     }
                 } catch (PayException e) {
-                    redisWrapperClient.hset(redisKey, String.valueOf(couponRepayModel.getId()), SyncRequestStatus.FAILURE.name());
                     logger.error(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) transfer is failed\n" +
                                     "[Coupon Repay loanRepayId {2}] couponRepayModel.id ({3}) payback throw exception",
                             String.valueOf(currentLoanRepayModel.getId()), String.valueOf(userCouponModel.getId()),
