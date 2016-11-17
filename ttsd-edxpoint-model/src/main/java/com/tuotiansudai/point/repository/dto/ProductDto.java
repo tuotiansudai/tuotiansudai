@@ -1,9 +1,6 @@
-package com.tuotiansudai.point.dto;
+package com.tuotiansudai.point.repository.dto;
 
-
-import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
-import com.tuotiansudai.point.repository.model.ProductModel;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -20,6 +17,7 @@ public class ProductDto implements Serializable {
     private String description;
     private long totalCount;
     private long points;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -29,47 +27,32 @@ public class ProductDto implements Serializable {
 
     }
 
-    public ProductDto(ExchangeCouponDto exchangeCouponDto, String loginName) {
-        this.type = GoodsType.COUPON;
+    public ProductDto(GoodsType goodsType, long couponId, String name, Integer seq, String imageUrl, long points, long totalCount, Date startTime, Date endTime, String loginName) {
+        this.type = goodsType;
         this.loginName = loginName;
-        this.couponId = exchangeCouponDto.getId();
-        this.name = exchangeCouponDto.getCouponType().getName();
-        this.seq = exchangeCouponDto.getSeq();
-        this.imageUrl = exchangeCouponDto.getImageUrl();
-        this.points = exchangeCouponDto.getExchangePoint();
-        this.totalCount = exchangeCouponDto.getTotalCount();
-        this.startTime = exchangeCouponDto.getStartTime();
-        this.endTime = exchangeCouponDto.getEndTime();
+        this.couponId = couponId;
+        this.name = name;
+        this.seq = seq;
+        this.imageUrl = imageUrl;
+        this.points = points;
+        this.totalCount = totalCount;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.loginName = loginName;
     }
 
-    public ProductDto(ExchangeCouponDto exchangeCouponDto, String loginName, ProductModel productModel) {
-        this.id = productModel.getId();
-        this.type = GoodsType.COUPON;
+    public ProductDto(long id, GoodsType goodsType, String loginName, long couponId, String name, Integer seq, String imageUrl, long points, long totalCount, Date startTime, Date endTime){
+        this.id = id;
+        this.type = goodsType;
         this.loginName = loginName;
-        this.couponId = exchangeCouponDto.getId();
-        this.name = exchangeCouponDto.getCouponType().getName();
-        this.seq = exchangeCouponDto.getSeq();
-        this.imageUrl = exchangeCouponDto.getImageUrl();
-        this.points = exchangeCouponDto.getExchangePoint();
-        this.totalCount = exchangeCouponDto.getTotalCount();
-        this.startTime = exchangeCouponDto.getStartTime();
-        this.endTime = exchangeCouponDto.getEndTime();
-    }
-
-    public ProductModel toProductModel() {
-        ProductModel model = new ProductModel();
-        model.setId(this.id);
-        model.setType(this.type);
-        model.setCouponId(this.couponId);
-        model.setName(this.name);
-        model.setSeq(this.seq);
-        model.setImageUrl(this.imageUrl);
-        model.setDescription(this.description);
-        model.setTotalCount(this.totalCount);
-        model.setPoints(this.points);
-        model.setStartTime(this.startTime);
-        model.setEndTime(this.endTime);
-        return model;
+        this.couponId = couponId;
+        this.name = name;
+        this.seq = seq;
+        this.imageUrl = imageUrl;
+        this.points = points;
+        this.totalCount = totalCount;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public long getId() {
