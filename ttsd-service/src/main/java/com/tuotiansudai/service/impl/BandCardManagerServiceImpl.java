@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BandCardManagerServiceImpl implements BandCardManagerService {
@@ -46,14 +47,15 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
     public List<ReplaceBankCardDto> queryReplaceBankCard(String loginName, String mobile, int index, int pageSize) {
         UserModel userModel = userMapper.findByMobile(mobile);
         List<BankCardModel> replaceBankCards = bankCardMapper.findReplaceBankCardByLoginName(userModel == null ? null : userModel.getLoginName(), index, pageSize);
-        String activeId = redisWrapperClient.get(BAND_CARD_ACTIVE_STATUS_TEMPLATE) == null ? "" : redisWrapperClient.get(BAND_CARD_ACTIVE_STATUS_TEMPLATE);
+        Map<String, String> bandCardIdMap = redisWrapperClient.hgetAll(BAND_CARD_ACTIVE_STATUS_TEMPLATE);
 
         Iterator<ReplaceBankCardDto> replaceBankCardDtoIterator = Iterators.transform(replaceBankCards.iterator(), input -> {
             UserModel userModelByLoginName = userMapper.findByLoginName(input.getLoginName());
             BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(input.getLoginName());
             return new ReplaceBankCardDto(input.getId(), input.getLoginName(), userModelByLoginName.getUserName(), userModelByLoginName.getMobile(), bankCardModel != null ? bankCardModel.getBankCode() : "",
                     bankCardModel != null ? bankCardModel.getCardNumber() : "", input.getBankCode(), input.getCardNumber(), input.getCreatedTime(), input.getStatus(),
-                    redisWrapperClient.get(MessageFormat.format(this.BANK_CARD_REMARK_TEMPLATE, String.valueOf(input.getId()))),activeId.indexOf(String.valueOf(input.getId())) != -1 ? "inVerify" : "verify");
+                    redisWrapperClient.get(MessageFormat.format(this.BANK_CARD_REMARK_TEMPLATE, String.valueOf(input.getId()))),
+                    bandCardIdMap.get(input.getId()) != null ? "inVerify" : "verify");
         });
 
         return Lists.newArrayList(replaceBankCardDtoIterator);

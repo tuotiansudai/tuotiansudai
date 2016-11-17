@@ -3,7 +3,6 @@ package com.tuotiansudai.task.aspect;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.EditUserDto;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.UserService;
@@ -20,6 +19,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -34,14 +34,9 @@ public class AuditTaskAspectBandCard {
     private UserService userService;
 
     @Autowired
-    private UserRoleMapper userRoleMapper;
-
-    @Autowired
     private AuditLogService auditLogService;
 
     public final String BAND_CARD_ACTIVE_STATUS_TEMPLATE = "bank_card_active_status";
-
-    private int leftLife = 60 * 60 * 24 * 30 * 6;
 
     static Logger logger = Logger.getLogger(AuditTaskAspectBandCard.class);
 
@@ -55,6 +50,7 @@ public class AuditTaskAspectBandCard {
         String loginName = LoginUserInfo.getLoginName();
 
         if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+            logger.debug(MessageFormat.format("check bank card task aspect. user:{0}, bankCard:{1}",loginName, bankCardId));
             OperationTask<EditUserDto> task = (OperationTask<EditUserDto>) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             OperationTask notify = new OperationTask();
@@ -77,11 +73,12 @@ public class AuditTaskAspectBandCard {
             String description = senderRealName + " 通过了 " + receiverRealName + " 修改用户［" + editUserRealName + "］的申请。";
             auditLogService.createAuditLog(loginName, receiverLoginName, OperationType.BAND_CARD, task.getObjId(), description, ip);
 
-            if (redisWrapperClient.exists(BAND_CARD_ACTIVE_STATUS_TEMPLATE)) {
-                redisWrapperClient.setex(BAND_CARD_ACTIVE_STATUS_TEMPLATE, leftLife, redisWrapperClient.get(BAND_CARD_ACTIVE_STATUS_TEMPLATE).replaceAll(";" + bankCardId, ""));
-            }
+            Map<String, String> bankCardIdMap = redisWrapperClient.hgetAll(BAND_CARD_ACTIVE_STATUS_TEMPLATE);
+            bankCardIdMap.remove(bankCardId);
+
             return proceedingJoinPoint.proceed();
         } else {
+            logger.debug(MessageFormat.format("apply bank card task aspect. user:{0}, bankCard:{1}",loginName, bankCardId));
             OperationTask<EditUserDto> task = new OperationTask<>();
             task.setTaskType(TaskType.TASK);
             task.setOperationType(OperationType.USER);
@@ -99,15 +96,10 @@ public class AuditTaskAspectBandCard {
             task.setDescription(senderRealName + " 申请终止用户［" + editUserRealName + "］换卡操作。");
             redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId, task);
 
+            Map<String, String> bandCardApplyMap = Maps.newConcurrentMap();
+            bandCardApplyMap.put(String.valueOf(bankCardId), "REJECT");
+            redisWrapperClient.hmset(BAND_CARD_ACTIVE_STATUS_TEMPLATE, bandCardApplyMap);
 
-            Map<String, String> bandCardApplyList = Maps.newConcurrentMap();
-            bandCardApplyList.put(String.valueOf(bankCardId), OperationType.BAND_CARD.name());
-            if (!redisWrapperClient.exists(BAND_CARD_ACTIVE_STATUS_TEMPLATE)) {
-                redisWrapperClient.setex(BAND_CARD_ACTIVE_STATUS_TEMPLATE, leftLife, ";" + String.valueOf(bankCardId));
-            } else {
-                String value = redisWrapperClient.get(BAND_CARD_ACTIVE_STATUS_TEMPLATE);
-                redisWrapperClient.setex(BAND_CARD_ACTIVE_STATUS_TEMPLATE, leftLife, value + ";" + String.valueOf(bankCardId));
-            }
             return "申请成功,请等待运营管理员审核!";
         }
     }
