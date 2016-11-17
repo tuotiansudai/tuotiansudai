@@ -1,0 +1,22 @@
+apply plugin: 'java'
+
+version = '1.0'
+
+configurations {
+    providedCompile
+}
+
+sourceSets {
+    main.compileClasspath += configurations.providedCompile
+    test.compileClasspath += configurations.providedCompile
+    test.runtimeClasspath += configurations.providedCompile
+}
+
+dependencies {
+    compile project(':ttsd-util')
+
+    providedCompile "org.springframework:spring-context:4.3.1.RELEASE"
+
+}
+
+processResources.outputs.upToDateWhen { false }
