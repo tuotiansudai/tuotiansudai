@@ -21,20 +21,23 @@ import com.tuotiansudai.dto.ContractNoStatus;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
 import com.tuotiansudai.job.AnxinQueryContractJob;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JobManager;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,7 +45,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -63,12 +65,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private LoanMapper loanMapper;
 
     @Autowired
-    private LoanerDetailsMapper loanerDetailsMapper;
-
-    @Autowired
-    private InvestRepayMapper investRepayMapper;
-
-    @Autowired
     private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
     @Autowired
@@ -78,15 +74,13 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
-    private TransferRuleMapper transferRuleMapper;
-
-    @Autowired
     private JobManager jobManager;
 
     @Autowired
-    private TransferApplicationMapper transferApplicationMapper;
+    private ContractService contractService;
 
-    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
 
     private static final String LOAN_CONTRACT_AGENT_SIGN = "agentUserName";
 
@@ -112,6 +106,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final int CREATE_CONTRACT_MAX_IN_DOING_TIME = 60 * 30; // 创建合同的时间在半个小时内应该可以完成，如果job出现问题，没能删除InCreating key, 半个小时后，可以再次手动创建合同
 
+    private static final String CONTRACT_TIME_FORMAT = "yyyyMMddHHmmss";
 
     @Value(value = "${anxin.contract.batch.num}")
     private int batchNum;
@@ -435,88 +430,44 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         Map<String, String> dataModel = new HashMap<>();
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
 
-        UserModel transfereeUserModel = userMapper.findByLoginName(transferApplicationModel.getLoginName());
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(transferApplicationModel.getLoginName());
         if (agentAnxinProp == null || Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())) {
             logger.error(MessageFormat.format("[安心签] create transfer contract error, agent has not signed, transferApplicationId:{0}, userId:{1}", transferApplicationId, transferApplicationModel.getLoginName()));
             return null;
         }
-        if (transfereeUserModel != null) {
-            dataModel.put("transferMobile", transfereeUserModel.getMobile());
-            dataModel.put("transferIdentity", transfereeUserModel.getIdentityNumber());
-        }
 
         InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
-        UserModel investAccountModel = userMapper.findByLoginName(investModel.getLoginName());
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investModel.getLoginName());
         if (investorAnxinProp == null || Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())) {
             logger.error(MessageFormat.format("[安心签] create transfer contract error, investor has not signed, transferApplicationId:{0}, userId:{1}", transferApplicationId, investModel.getLoginName()));
             return null;
         }
-        if (investAccountModel != null) {
-            dataModel.put("transfereeMobile", userMapper.findByLoginName(investAccountModel.getLoginName()).getMobile());
-            dataModel.put("transfereeIdentity", investAccountModel.getIdentityNumber());
-        }
 
-        LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
-        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanModel.getId());
-        if (null != loanModel) {
-            dataModel.put("userName", loanerDetailsModel.getUserName());
-            dataModel.put("identity", loanerDetailsModel.getIdentityNumber());
-            dataModel.put("amount", AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
-            dataModel.put("totalRate", String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
-            dataModel.put("periods", String.valueOf(loanModel.getPeriods() * 30) + "天");
-        }
-
-        if (transferApplicationModel.getPeriod() != 1) {
-            InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), transferApplicationModel.getPeriod() - 1);
-            dataModel.put("transferStartTime", simpleDateFormat.format(new LocalDate(investRepayModel.getRepayDate()).plusDays(1).toDate()));
-        } else {
-            if (loanModel.getType().equals(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY) || loanModel.getType().equals(LoanType.INVEST_INTEREST_MONTHLY_REPAY)) {
-                dataModel.put("transferStartTime", simpleDateFormat.format(investModel.getInvestTime()));
-            } else if (loanModel.getType().equals(LoanType.LOAN_INTEREST_MONTHLY_REPAY) || loanModel.getType().equals(LoanType.LOAN_INTEREST_LUMP_SUM_REPAY)) {
-                dataModel.put("transferStartTime", simpleDateFormat.format(loanModel.getRecheckTime()));
-            }
-        }
-
-        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanModel.getPeriods());
-        dataModel.put("transferEndTime", simpleDateFormat.format(investRepayModel.getRepayDate()));
-
-        dataModel.put("investAmount", AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) + "元");
-        dataModel.put("transferTime", simpleDateFormat.format(transferApplicationModel.getTransferTime()));
-        dataModel.put("leftPeriod", String.valueOf(transferApplicationModel.getLeftPeriod()));
+        Map<String, String> transferMap = contractService.collectTransferContractModel(transferApplicationId);
+        dataModel.put("transferMobile", transferMap.get("transferMobile"));
+        dataModel.put("transferIdentity", transferMap.get("transferIdentityNumber"));
+        dataModel.put("transfereeMobile", transferMap.get("transfereeMobile"));
+        dataModel.put("transfereeIdentity", transferMap.get("transfereeIdentityNumber"));
+        dataModel.put("userName", transferMap.get("loanerUserName"));
+        dataModel.put("identity", transferMap.get("loanerIdentityNumber"));
+        dataModel.put("amount", transferMap.get("loanAmount"));
+        dataModel.put("totalRate", transferMap.get("totalRate"));
+        dataModel.put("periods", transferMap.get("periods"));
+        dataModel.put("transferStartTime", transferMap.get("transferStartTime"));
+        dataModel.put("transferEndTime", transferMap.get("transferEndTime"));
+        dataModel.put("investAmount", transferMap.get("investAmount"));
+        dataModel.put("transferTime", transferMap.get("transferTime"));
+        dataModel.put("leftPeriod", transferMap.get("leftPeriod"));
         dataModel.put("orderId", String.valueOf(transferApplicationModel.getInvestId()));
-
-        TransferRuleModel transferRuleModel = transferRuleMapper.find();
-        String msg1;
-        String msg2;
-        String msg3;
-        if (transferRuleModel.getLevelOneFee() != 0) {
-            msg1 = MessageFormat.format("甲方持有债权30天以内的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelOneFee());
-        } else {
-            msg1 = "甲方持有债权30天以内的，暂不收取转服务费用。";
-        }
-
-        if (transferRuleModel.getLevelTwoFee() != 0) {
-            msg2 = MessageFormat.format("甲方持有债权30天以上，90天以内的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelOneFee());
-        } else {
-            msg2 = "甲方持有债权30天以上，90天以内的，暂不收取转服务费用。";
-        }
-
-        if (transferRuleModel.getLevelThreeFee() != 0) {
-            msg3 = MessageFormat.format("甲方持有债权90天以上的，收取转让本金的{0}%作为服务费用。", transferRuleModel.getLevelOneFee());
-        } else {
-            msg3 = "甲方持有债权90天以上的，暂不收取转服务费用。";
-        }
-        dataModel.put("msg1", msg1);
-        dataModel.put("msg2", msg2);
-        dataModel.put("msg3", msg3);
+        dataModel.put("msg1", transferMap.get("msg1"));
+        dataModel.put("msg2", transferMap.get("msg2"));
+        dataModel.put("msg3", transferMap.get("msg3"));
 
         createContractVO.setInvestmentInfo(dataModel);
 
         SignInfoVO agentSignInfo = new SignInfoVO();
         agentSignInfo.setUserId(agentAnxinProp.getAnxinUserId());
-        agentSignInfo.setAuthorizationTime(new DateTime(agentAnxinProp.getAuthTime()).toString("yyyyMMddHHmmss"));
+        agentSignInfo.setAuthorizationTime(new DateTime(agentAnxinProp.getAuthTime()).toString(CONTRACT_TIME_FORMAT));
         agentSignInfo.setLocation(agentAnxinProp.getAuthIp());
         agentSignInfo.setSignLocation(TRANSFER_LOAN_CONTRACT_AGENT_SIGN);
         agentSignInfo.setProjectCode(agentAnxinProp.getProjectCode());
@@ -524,7 +475,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         SignInfoVO investorSignInfo = new SignInfoVO();
         investorSignInfo.setUserId(investorAnxinProp.getAnxinUserId());
-        investorSignInfo.setAuthorizationTime(new DateTime(investorAnxinProp.getAuthTime()).toString("yyyyMMddHHmmss"));
+        investorSignInfo.setAuthorizationTime(new DateTime(investorAnxinProp.getAuthTime()).toString(CONTRACT_TIME_FORMAT));
         investorSignInfo.setLocation(investorAnxinProp.getAuthIp());
         investorSignInfo.setSignLocation(TRANSFER_LOAN_CONTRACT_INVESTOR_SIGN);
         investorSignInfo.setProjectCode(investorAnxinProp.getProjectCode());
@@ -545,13 +496,11 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         LoanModel loanModel = loanMapper.findById(loanId);
 
         // 借款人（代理人 or 企业借款人）
-        UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
 
         // 投资人
         long investId = investModel.getId();
         String investLoginName = investModel.getLoginName();
-        UserModel investorModel = userMapper.findByLoginName(investLoginName);
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
 
         if (investorAnxinProp == null || Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())) {
@@ -560,35 +509,29 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return null;
         }
 
-        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investId, loanModel.getPeriods());
-        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
-
-        dataModel.put("agentMobile", agentModel.getMobile());
-        dataModel.put("agentIdentityNumber", agentModel.getIdentityNumber());
-        dataModel.put("investorMobile", investorModel.getMobile());
-        dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
-        dataModel.put("loanerUserName", loanerDetailsModel.getUserName());
-        dataModel.put("loanerIdentityNumber", loanerDetailsModel.getIdentityNumber());
-        dataModel.put("loanAmount1", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
-        dataModel.put("loanAmount2", AmountConverter.convertCentToString(investModel.getAmount()));
-        dataModel.put("periods1", String.valueOf(loanModel.getPeriods() * 30) + "天");
-        dataModel.put("periods2", String.valueOf(loanModel.getPeriods()) + "期");
-        dataModel.put("totalRate", String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
-        dataModel.put("recheckTime1", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
-        dataModel.put("recheckTime2", new DateTime(loanModel.getRecheckTime()).toString("yyyy-MM-dd"));
-        dataModel.put("endTime1", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
-        dataModel.put("endTime2", new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd"));
+        Map<String, String> investMap = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
+        dataModel.put("agentMobile", investMap.get("agentMobile"));
+        dataModel.put("agentIdentityNumber", investMap.get("agentIdentityNumber"));
+        dataModel.put("investorMobile", investMap.get("investorMobile"));
+        dataModel.put("investorIdentityNumber", investMap.get("investorIdentityNumber"));
+        dataModel.put("loanerUserName", investMap.get("loanerUserName"));
+        dataModel.put("loanerIdentityNumber", investMap.get("loanerIdentityNumber"));
+        dataModel.put("loanAmount1", investMap.get("loanAmount"));
+        dataModel.put("loanAmount2", investMap.get("investAmount"));
+        dataModel.put("periods1", investMap.get("agentPeriods"));
+        dataModel.put("periods2", investMap.get("leftPeriods"));
+        dataModel.put("totalRate", investMap.get("totalRate"));
+        dataModel.put("recheckTime1", investMap.get("recheckTime"));
+        dataModel.put("recheckTime2", investMap.get("recheckTime"));
+        dataModel.put("endTime1", investMap.get("endTime"));
+        dataModel.put("endTime2", investMap.get("endTime"));
         dataModel.put("orderId", String.valueOf(investId));
-        if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
-            dataModel.put("pledge", "房屋");
-        } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
-            dataModel.put("pledge", "车辆");
-        }
+        dataModel.put("pledge", investMap.get("pledge"));
         createContractVO.setInvestmentInfo(dataModel);
 
         SignInfoVO agentSignInfo = new SignInfoVO();
         agentSignInfo.setUserId(agentAnxinProp.getAnxinUserId());
-        agentSignInfo.setAuthorizationTime(new DateTime(agentAnxinProp.getAuthTime()).toString("yyyyMMddHHmmss"));
+        agentSignInfo.setAuthorizationTime(new DateTime(agentAnxinProp.getAuthTime()).toString(CONTRACT_TIME_FORMAT));
         agentSignInfo.setLocation(agentAnxinProp.getAuthIp());
         agentSignInfo.setSignLocation(LOAN_CONTRACT_AGENT_SIGN);
         agentSignInfo.setProjectCode(agentAnxinProp.getProjectCode());
@@ -596,7 +539,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         SignInfoVO investorSignInfo = new SignInfoVO();
         investorSignInfo.setUserId(investorAnxinProp.getAnxinUserId());
-        investorSignInfo.setAuthorizationTime(new DateTime(investorAnxinProp.getAuthTime()).toString("yyyyMMddHHmmss"));
+        investorSignInfo.setAuthorizationTime(new DateTime(investorAnxinProp.getAuthTime()).toString(CONTRACT_TIME_FORMAT));
         investorSignInfo.setLocation(investorAnxinProp.getAuthIp());
         investorSignInfo.setSignLocation(LOAN_CONTRACT_INVESTOR_SIGN);
         investorSignInfo.setProjectCode(investorAnxinProp.getProjectCode());
