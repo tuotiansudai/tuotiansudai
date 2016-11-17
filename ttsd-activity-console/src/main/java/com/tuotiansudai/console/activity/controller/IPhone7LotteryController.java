@@ -6,7 +6,7 @@ import com.tuotiansudai.activity.repository.mapper.IPhone7LotteryConfigMapper;
 import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigModel;
 import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigStatus;
 import com.tuotiansudai.activity.repository.dto.IPhone7InvestLotteryWinnerDto;
-import com.tuotiansudai.console.activity.service.IPhone7LotteryService;
+import com.tuotiansudai.console.activity.service.ActivityConsoleIPhone7LotteryService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -32,19 +32,19 @@ public class IPhone7LotteryController {
     private static Logger logger = Logger.getLogger(IPhone7LotteryController.class);
 
     @Autowired
-    private IPhone7InvestLotteryMapper mapper;
+    private IPhone7InvestLotteryMapper iPhone7InvestLotteryMapper;
 
     @Autowired
-    private IPhone7LotteryConfigMapper configMapper;
+    private IPhone7LotteryConfigMapper iPhone7LotteryConfigMapper;
 
     @Autowired
-    private IPhone7LotteryService service;
+    private ActivityConsoleIPhone7LotteryService activityConsoleIPhone7LotteryService;
 
     @RequestMapping(value = "/iphone7-lottery", method = RequestMethod.GET)
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView("/iphone7-lottery/home");
-        int userCount = mapper.statUserCount();
-        int investCount = mapper.statInvestCount();
+        int userCount = iPhone7InvestLotteryMapper.statUserCount();
+        int investCount = iPhone7InvestLotteryMapper.statInvestCount();
         modelAndView.addObject("userCount", userCount);
         modelAndView.addObject("investCount", investCount);
         return modelAndView;
@@ -55,7 +55,7 @@ public class IPhone7LotteryController {
                              @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                              @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/iphone7-lottery/stat");
-        BaseDto<BasePaginationDataDto> paginationData = service.listStat(mobile, index, pageSize);
+        BaseDto<BasePaginationDataDto> paginationData = activityConsoleIPhone7LotteryService.listStat(mobile, index, pageSize);
         modelAndView.addObject("data", paginationData.getData());
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("index", index);
@@ -67,7 +67,7 @@ public class IPhone7LotteryController {
     @RequestMapping(value = "/iphone7-lottery/winners", method = RequestMethod.GET)
     public ModelAndView winners() {
         ModelAndView modelAndView = new ModelAndView("/iphone7-lottery/winner");
-        List<IPhone7InvestLotteryWinnerDto> winners = service.listWinner();
+        List<IPhone7InvestLotteryWinnerDto> winners = activityConsoleIPhone7LotteryService.listWinner();
         modelAndView.addObject("winners", winners);
         return modelAndView;
     }
@@ -75,7 +75,7 @@ public class IPhone7LotteryController {
     @RequestMapping(value = "/iphone7-lottery/config", method = RequestMethod.GET)
     public ModelAndView config() {
         ModelAndView modelAndView = new ModelAndView("/iphone7-lottery/config");
-        List<IPhone7LotteryConfigModel> configList = configMapper.list();
+        List<IPhone7LotteryConfigModel> configList = iPhone7LotteryConfigMapper.list();
         List<IPhone7LotteryConfigModel> approvedConfigList = configList.stream()
                 .filter(c -> c.getStatus() == IPhone7LotteryConfigStatus.APPROVED || c.getStatus() == IPhone7LotteryConfigStatus.EFFECTIVE)
                 .collect(Collectors.toList());
@@ -98,7 +98,7 @@ public class IPhone7LotteryController {
         configModel.setMobile(mobile);
         configModel.setCreatedBy(LoginUserInfo.getLoginName());
         configModel.setCreatedTime(new Date());
-        configMapper.create(configModel);
+        iPhone7LotteryConfigMapper.create(configModel);
         return new BaseDto();
     }
 
@@ -111,9 +111,9 @@ public class IPhone7LotteryController {
         BaseDataDto data = new BaseDataDto();
         try {
             if (passed) {
-                service.approveConfig(id, LoginUserInfo.getLoginName(), RequestIPParser.parse(request));
+                activityConsoleIPhone7LotteryService.approveConfig(id, LoginUserInfo.getLoginName(), RequestIPParser.parse(request));
             } else {
-                service.refuseConfig(id, LoginUserInfo.getLoginName(), RequestIPParser.parse(request));
+                activityConsoleIPhone7LotteryService.refuseConfig(id, LoginUserInfo.getLoginName(), RequestIPParser.parse(request));
             }
             data.setStatus(true);
         } catch (Exception e) {

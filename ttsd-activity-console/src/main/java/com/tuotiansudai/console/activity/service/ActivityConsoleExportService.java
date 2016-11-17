@@ -2,18 +2,16 @@ package com.tuotiansudai.console.activity.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.service.AutumnService;
+import com.google.common.collect.Maps;
+import com.tuotiansudai.activity.repository.dto.AutumnExportDto;
 import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryStatView;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
-import com.tuotiansudai.activity.repository.dto.AutumnExportDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.UserModel;
@@ -25,23 +23,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class ExportService {
-
-    @Autowired
-    private AutumnService autumnService;
+public class ActivityConsoleExportService {
 
     @Autowired
     private IPhone7InvestLotteryMapper iPhone7InvestLotteryMapper;
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -62,7 +55,7 @@ public class ExportService {
             Date startTime = new DateTime(activityAutumnStartTime).plusDays(i).withTimeAtStartOfDay().toDate();
             Date endTime = new DateTime(activityAutumnStartTime).plusDays(i).withTime(23, 59, 59, 0).toDate();
 
-            Map<String, List<String>> allFamilyAndNum = autumnService.getAllFamilyMap(activityAutumnStartTime, endTime);
+            Map<String, List<String>> allFamilyAndNum = getAllFamilyMap(activityAutumnStartTime, endTime);
 
             if (allFamilyAndNum.size() == 0) continue;
             for (Map.Entry<String, List<String>> entry1 : allFamilyAndNum.entrySet()) {
@@ -162,5 +155,53 @@ public class ExportService {
                 new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd"),
                 userLotteryPrizeView.getPrize().getDescription())));
         return rows;
+    }
+
+    public Map getAllFamilyMap(Date activityMinAutumnStartTime, Date activityMinAutumnEndTime) {
+        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityMinAutumnStartTime, activityMinAutumnEndTime,null);
+
+        Map<String, List<String>> allFamily = new LinkedHashMap<>();
+
+        if (userModels.size() == 0) {
+            return Maps.newConcurrentMap();
+        }
+
+        for (UserModel userModel : userModels) {
+            if (Strings.isNullOrEmpty(userModel.getReferrer())) {
+                allFamily.put(userModel.getLoginName(),Lists.newArrayList(userModel.getLoginName()));
+                continue;
+            }
+            if(allFamily.values() == null || allFamily.values().size() == 0){
+                allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getReferrer(),userModel.getLoginName()));
+                continue;
+            }
+            boolean isFamily = false;
+            for (List<String> family : allFamily.values()) {
+                if(family.contains(userModel.getReferrer())){
+                    isFamily = true;
+                    family.add(userModel.getLoginName());
+                    break;
+                }
+            }
+
+            if(!isFamily){
+                allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getReferrer(),userModel.getLoginName()));
+            }
+
+        }
+
+        Map<String, List<String>> allFamilyAndNum = new LinkedHashMap<>();
+        int num = 0;
+        for(String key : allFamily.keySet()){
+            List<String> family = allFamily.get(key);
+            if(family.size() == 1){
+                continue;
+            }
+            num ++;
+            allFamilyAndNum.put(MessageFormat.format("团员{0}号家庭",String.valueOf(num)),allFamily.get(key));
+        }
+
+        return allFamilyAndNum;
+
     }
 }

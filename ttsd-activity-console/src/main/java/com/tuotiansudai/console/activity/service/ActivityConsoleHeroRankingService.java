@@ -17,9 +17,9 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class HeroRankingService {
+public class ActivityConsoleHeroRankingService {
 
-    static Logger logger = Logger.getLogger(HeroRankingService.class);
+    static Logger logger = Logger.getLogger(ActivityConsoleHeroRankingService.class);
 
     @Autowired
     private InvestMapper investMapper;

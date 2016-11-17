@@ -29,12 +29,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class IPhone7LotteryService {
+public class ActivityConsoleIPhone7LotteryService {
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
 
     @Autowired
     private IPhone7InvestLotteryMapper mapper;

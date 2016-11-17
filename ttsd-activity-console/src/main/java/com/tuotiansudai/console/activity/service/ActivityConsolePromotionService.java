@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class PromotionService {
+public class ActivityConsolePromotionService {
 
     @Autowired
     private PromotionMapper promotionMapper;

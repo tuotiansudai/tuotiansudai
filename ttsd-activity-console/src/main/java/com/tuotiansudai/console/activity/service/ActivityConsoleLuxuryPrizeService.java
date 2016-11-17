@@ -21,9 +21,11 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class LuxuryPrizeService {
+public class ActivityConsoleLuxuryPrizeService {
+
     @Autowired
     private UserLuxuryPrizeMapper userLuxuryPrizeMapper;
+
     @Autowired
     private LuxuryPrizeMapper luxuryPrizeMapper;
 

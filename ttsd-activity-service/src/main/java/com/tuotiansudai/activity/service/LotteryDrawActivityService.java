@@ -68,10 +68,6 @@ public class LotteryDrawActivityService {
     @Autowired
     private RechargeMapper rechargeMapper;
 
-    @Autowired
-    private BindBankCardService bindBankCardService;
-
-
     @Value("#{'${activity.point.draw.period}'.split('\\~')}")
     private List<String> pointTime = Lists.newArrayList();
 
@@ -337,7 +333,7 @@ public class LotteryDrawActivityService {
         steps.set(2, 1);
         steps.set(3, 1);
         steps.set(4, 1);
-        if (bindBankCardService.getPassedBankCard(loginName) != null) {
+        if (bankCardMapper.findPassedBankCardByLoginName(loginName) != null) {
             steps.set(2, 2);
         }
         return steps;

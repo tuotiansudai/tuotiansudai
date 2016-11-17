@@ -1,29 +1,16 @@
 package com.tuotiansudai.util;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 
-@Service
 public class UserBirthdayUtil {
 
-    @Autowired
-    private UserMapper userMapper;
-
-    public boolean isBirthMonth(String loginName) {
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        if (userModel == null || Strings.isNullOrEmpty(userModel.getIdentityNumber())) {
+    public static boolean isBirthMonth(String identityNumber) {
+        if (Strings.isNullOrEmpty(identityNumber)) {
             return false;
         }
-
-        String identityNumber = userModel.getIdentityNumber();
 
         int birthMonth = Integer.parseInt(identityNumber.length() == 18 ? identityNumber.substring(10, 12) : identityNumber.substring(8, 10));
 
@@ -32,13 +19,10 @@ public class UserBirthdayUtil {
         return monthOfYear == birthMonth;
     }
 
-    public DateTime getUserBirthday(String loginName) {
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        if (userModel == null || Strings.isNullOrEmpty(userModel.getIdentityNumber())) {
+    public static DateTime getUserBirthday(String identityNumber) {
+        if (Strings.isNullOrEmpty(identityNumber)) {
             return null;
         }
-
-        String identityNumber = userModel.getIdentityNumber();
 
         return identityNumber.length() == 18 ?
                 new DateTime().withDate(Integer.parseInt(identityNumber.substring(6, 10)),

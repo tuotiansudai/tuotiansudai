@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class TravelPrizeService {
+public class ActivityConsoleTravelPrizeService {
 
     @Autowired
     private TravelPrizeMapper travelPrizeMapper;
@@ -40,7 +40,7 @@ public class TravelPrizeService {
 
         BasePaginationDataDto<UserPrizePaginationItemDto> dataDto = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, items);
         dataDto.setStatus(true);
-        return new BaseDto<BasePaginationDataDto>(dataDto);
+        return new BaseDto<>(dataDto);
     }
 
     public BaseDto<BasePaginationDataDto> getTravelPrizeItems() {
@@ -55,7 +55,7 @@ public class TravelPrizeService {
         BasePaginationDataDto<TravelPrizeDto> dataDto = new BasePaginationDataDto<>(1, 10, 3, items);
 
         dataDto.setStatus(true);
-        return new BaseDto<BasePaginationDataDto>(dataDto);
+        return new BaseDto<>(dataDto);
     }
 
     public TravelPrizeDto getTravelPrize(long id) {
