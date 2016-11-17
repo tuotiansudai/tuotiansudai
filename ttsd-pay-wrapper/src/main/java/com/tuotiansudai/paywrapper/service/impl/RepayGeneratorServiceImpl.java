@@ -86,7 +86,7 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
             long expectedLoanInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvestModels, lastRepayDate, currentRepayDate);
             LoanRepayModel loanRepayModel = new LoanRepayModel(idGenerator.generate(), loanModel.getId(), period, currentPeriodCorpus, expectedLoanInterest, currentRepayDate.toDate(), RepayStatus.REPAYING);
             loanRepayModel.setCorpus(currentPeriodCorpus);
-            if(loanRepayMapper.findByLoanIdAndPeriod(loanRepayModel.getLoanId(), loanRepayModel.getPeriod()) == null){
+            if(loanRepayMapper.findByLoanIdAndPeriod(loanId, period) == null){
                 loanRepayModels.add(loanRepayModel);
             }else{
                 logger.error(MessageFormat.format("[Generate_Repay:] Loan Repay is exist (loanId = {0}, period = {1})", String.valueOf(loanRepayModel.getLoanId()), String.valueOf(loanRepayModel.getPeriod())));
