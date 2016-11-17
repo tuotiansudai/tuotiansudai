@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ReplaceBankCardDto;
 import com.tuotiansudai.service.BandCardManagerService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.PaginationUtil;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,14 +28,14 @@ public class BankCardManagerController {
                                     @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         ModelAndView modelAndView = new ModelAndView("/bank-card-list");
         int pageSize = 10;
-        int count = bandCardManagerService.queryCountReplaceBankCardRecord(LoginUserInfo.getLoginName(),mobile);
-        List<ReplaceBankCardDto> replaceBankCardDtoList = bandCardManagerService.queryReplaceBankCardRecord(LoginUserInfo.getLoginName(),mobile, (index - 1) * pageSize, pageSize);
+        int count = bandCardManagerService.queryCountReplaceBankCard(LoginUserInfo.getLoginName(), mobile);
+        List<ReplaceBankCardDto> replaceBankCardDtoList = bandCardManagerService.queryReplaceBankCard(LoginUserInfo.getLoginName(), mobile, (index - 1) * pageSize, pageSize);
         modelAndView.addObject("count", count);
         modelAndView.addObject("replaceBankCardDtoList", replaceBankCardDtoList);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("mobile", mobile);
-        long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(count,pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);

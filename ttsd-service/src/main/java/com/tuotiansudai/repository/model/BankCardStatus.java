@@ -12,7 +12,7 @@ public enum BankCardStatus {
 
     APPLY("申请"),
 
-    STOP("终止");
+    REJECT("终止");
 
     private final String status;
 

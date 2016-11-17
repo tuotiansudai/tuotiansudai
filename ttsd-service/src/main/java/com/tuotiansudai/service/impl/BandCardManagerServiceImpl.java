@@ -4,24 +4,19 @@ package com.tuotiansudai.service.impl;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.dto.ReplaceBankCardDto;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.BankCardStatus;
-import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.BandCardManagerService;
-import com.tuotiansudai.task.OperationTask;
-import com.tuotiansudai.task.TaskConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class BandCardManagerServiceImpl implements BandCardManagerService {
@@ -42,13 +37,13 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
     private static int REMARK_LIFE_TIME = 60 * 60 * 24 * 30 * 6;
 
     @Override
-    public int queryCountReplaceBankCardRecord(String loginName, String mobile) {
+    public int queryCountReplaceBankCard(String loginName, String mobile) {
         UserModel userModel = userMapper.findByMobile(mobile);
         return bankCardMapper.findCountReplaceBankCardByLoginName(userModel == null ? null : userModel.getLoginName());
     }
 
     @Override
-    public List<ReplaceBankCardDto> queryReplaceBankCardRecord(String loginName, String mobile, int index, int pageSize) {
+    public List<ReplaceBankCardDto> queryReplaceBankCard(String loginName, String mobile, int index, int pageSize) {
         UserModel userModel = userMapper.findByMobile(mobile);
         List<BankCardModel> replaceBankCards = bankCardMapper.findReplaceBankCardByLoginName(userModel == null ? null : userModel.getLoginName(), index, pageSize);
         String activeId = redisWrapperClient.get(BAND_CARD_ACTIVE_STATUS_TEMPLATE) == null ? "" : redisWrapperClient.get(BAND_CARD_ACTIVE_STATUS_TEMPLATE);
@@ -79,7 +74,7 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
     @Override
     public String updateBankCard(String loginName, long bankCardId, String ip) {
         BankCardModel bankCardModel = bankCardMapper.findById(bankCardId);
-        bankCardModel.setStatus(BankCardStatus.STOP);
+        bankCardModel.setStatus(BankCardStatus.REJECT);
         bankCardMapper.update(bankCardModel);
         return "审核成功!";
     }

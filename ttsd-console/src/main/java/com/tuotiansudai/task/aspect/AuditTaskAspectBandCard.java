@@ -1,10 +1,10 @@
 package com.tuotiansudai.task.aspect;
 
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
 @Aspect
 @Component
@@ -53,15 +53,8 @@ public class AuditTaskAspectBandCard {
         String ip = (String) proceedingJoinPoint.getArgs()[2];
         String taskId = OperationType.BAND_CARD + "-" + operatorLoginName;
         String loginName = LoginUserInfo.getLoginName();
-        List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
-        boolean flag = false;
-        for (UserRoleModel userRoleModel : userRoleModels) {
-            if (userRoleModel.getRole() == Role.OPERATOR_ADMIN || userRoleModel.getRole() == Role.ADMIN) {
-                flag = true;
-                break;
-            }
-        }
-        if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId) && flag) {
+
+        if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
             OperationTask<EditUserDto> task = (OperationTask<EditUserDto>) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             OperationTask notify = new OperationTask();
@@ -106,6 +99,9 @@ public class AuditTaskAspectBandCard {
             task.setDescription(senderRealName + " 申请终止用户［" + editUserRealName + "］换卡操作。");
             redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId, task);
 
+
+            Map<String, String> bandCardApplyList = Maps.newConcurrentMap();
+            bandCardApplyList.put(String.valueOf(bankCardId), OperationType.BAND_CARD.name());
             if (!redisWrapperClient.exists(BAND_CARD_ACTIVE_STATUS_TEMPLATE)) {
                 redisWrapperClient.setex(BAND_CARD_ACTIVE_STATUS_TEMPLATE, leftLife, ";" + String.valueOf(bankCardId));
             } else {
