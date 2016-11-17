@@ -281,7 +281,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         Date startTime = new DateTime().withTimeAtStartOfDay().toDate();
         Date endTime = couponModel.getDeadline() == 0 ? couponModel.getEndTime() : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
         if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
-            DateTime userBirthday = userBirthdayUtil.getUserBirthday(loginName);
+            DateTime userBirthday = UserBirthdayUtil.getUserBirthday(userMapper.findByLoginName(loginName).getIdentityNumber());
             startTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMinimumValue().withTimeAtStartOfDay().toDate();
             endTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMaximumValue().withTime(23, 59, 59, 0).toDate();
         }
