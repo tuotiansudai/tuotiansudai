@@ -1,6 +1,7 @@
 package com.tuotiansudai.diagnosis.bill;
 
 import com.tuotiansudai.diagnosis.bill.diagnoses.InvestCouponFeeDiagnosis;
+import com.tuotiansudai.diagnosis.config.DiagnosisConfig;
 import com.tuotiansudai.diagnosis.repository.UserBillExtMapper;
 import com.tuotiansudai.diagnosis.support.Diagnosis;
 import com.tuotiansudai.diagnosis.support.DiagnosisContext;
@@ -25,18 +26,28 @@ class UserBillDiagnosis implements Diagnosis {
 
     private final UserBillMapper userBillMapper;
     private final UserBillExtMapper userBillExtMapper;
-
+    private final long[] sortedKnownBadBills;
     private final Map<UserBillBusinessType, UserBillBusinessDiagnosis> diagnosisMap;
 
     @Autowired
-    public UserBillDiagnosis(UserBillMapper userBillMapper, Set<UserBillBusinessDiagnosis> diagnoses, UserBillExtMapper userBillExtMapper) {
+    public UserBillDiagnosis(UserBillMapper userBillMapper,
+                             Set<UserBillBusinessDiagnosis> diagnoses,
+                             UserBillExtMapper userBillExtMapper,
+                             DiagnosisConfig diagnosisConfig) {
         this.userBillMapper = userBillMapper;
         this.userBillExtMapper = userBillExtMapper;
+        this.sortedKnownBadBills = buildSortedKnownBadBills(diagnosisConfig);
         this.diagnosisMap = diagnoses.stream()
                 .filter(d -> !(d instanceof InvestCouponFeeDiagnosis))
                 .collect(Collectors.toMap(
                         UserBillBusinessDiagnosis::getSupportedBusinessType,
                         d -> d));
+    }
+
+    private long[] buildSortedKnownBadBills(DiagnosisConfig diagnosisConfig) {
+        long[] knownBadBills = diagnosisConfig.getKnownBadBills();
+        Arrays.sort(knownBadBills);
+        return knownBadBills;
     }
 
     @Override
@@ -66,6 +77,7 @@ class UserBillDiagnosis implements Diagnosis {
         List<UserBillModel> userBillModelList = userBillMapper.findByLoginName(loginName);
         DiagnosisContext diagnosisContext = new DiagnosisContext(loginName);
         userBillModelList.stream()
+                .filter(bill -> Arrays.binarySearch(sortedKnownBadBills, bill.getId()) < 0)
                 .filter(bill -> diagnosisMap.containsKey(bill.getBusinessType()) && bill.getOrderId() != null)
                 .forEach(bill -> {
                     UserBillBusinessDiagnosis diagnosis = diagnosisMap.get(bill.getBusinessType());

@@ -99,14 +99,14 @@ public class AnxinQueryContractJob implements Job {
             logger.info(MessageFormat.format("trigger anxin contract handle job, loanId:{0}, anxin contract type:{1}", String.valueOf(businessId), anxinContractType.name()));
 
             if (waitingBatchNo != null && waitingBatchNo.size() > 0) {
-                logger.error(MessageFormat.format("some batch is still in waiting. businessId:{0}, anxin ContractType:{1}, batchNo list(in waiting):{2}",
+                logger.info(MessageFormat.format("some batch is still in waiting. businessId:{0}, anxin ContractType:{1}, batchNo list(in waiting):{2}",
                         String.valueOf(businessId), anxinContractType.name(), String.join(",", waitingBatchNo)));
                 this.createAnxinQueryContractJob(waitingBatchNo, businessId, anxinContractType);
             } else {
                 // 查询结束，清空计数器
                 redisWrapperClient.del(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId);
 
-                logger.debug(MessageFormat.format("execute query contract over. businessId:{0}", String.valueOf(businessId)));
+                logger.info(MessageFormat.format("execute query contract over. businessId:{0}", String.valueOf(businessId)));
 
                 // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
                 if (anxinContractType == AnxinContractType.LOAN_CONTRACT) {
