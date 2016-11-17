@@ -14,7 +14,7 @@
             <li class="header-membership">
                 <a href="/membership" target="_blank">会员中心</a>
             </li>
-            <li class="header-activity-center"><a href="/activity-center">活动中心</a>
+            <li class="header-activity-center"><a href="${webServer}/activity/activity-center">活动中心</a>
             </li>
             <li class="header-help-center">
                 <a href="/help/help-center">帮助中心</a>
