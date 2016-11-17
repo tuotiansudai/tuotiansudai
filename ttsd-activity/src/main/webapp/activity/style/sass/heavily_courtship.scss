@@ -303,7 +303,7 @@ body {
         img {
           display: block;
           margin: 20px auto 35px auto;
-          width:50%;
+
         }
       }
     }
@@ -434,6 +434,9 @@ body {
           }
         }
         &.ultimate-prize {
+          img {
+            width:50%;
+          }
           p {
             text-align: left;
             font-size: 12px;
