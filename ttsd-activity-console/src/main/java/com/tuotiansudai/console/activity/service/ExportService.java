@@ -10,15 +10,16 @@ import com.tuotiansudai.activity.repository.model.IPhone7InvestLotteryStatView;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.AutumnService;
 import com.tuotiansudai.console.activity.dto.AutumnExportDto;
+import com.tuotiansudai.console.activity.dto.NotWorkDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.DateUtil;
+import com.tuotiansudai.util.ExportCsvUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,6 +46,9 @@ public class ExportService {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private NotWorkService notWorkService;
 
     @Autowired
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
@@ -152,7 +156,7 @@ public class ExportService {
         }).collect(Collectors.toList());
     }
 
-    public List<List<String>> buildPrizeList(String mobile,LotteryPrize selectPrize,ActivityCategory prizeType,Date startTime,Date endTime) {
+    public List<List<String>> buildPrizeList(String mobile, LotteryPrize selectPrize, ActivityCategory prizeType, Date startTime, Date endTime) {
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, prizeType, startTime, endTime, null, null);
         List<List<String>> rows = Lists.newArrayList();
         userLotteryPrizeViews.forEach(userLotteryPrizeView -> rows.add(Lists.newArrayList(
@@ -162,5 +166,15 @@ public class ExportService {
                 new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd"),
                 userLotteryPrizeView.getPrize().getDescription())));
         return rows;
+    }
+
+    public List<List<String>> buildNotWorkCsvList() {
+        //全部导出
+        final int index = 0;
+        final int pageSize = 1000000;
+
+        List<NotWorkDto> notWorkDtos = notWorkService.findNotWorkPagination(index, pageSize).getRecords();
+
+        return notWorkDtos.stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }

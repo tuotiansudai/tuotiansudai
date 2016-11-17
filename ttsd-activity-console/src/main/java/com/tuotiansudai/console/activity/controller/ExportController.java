@@ -73,7 +73,7 @@ public class ExportController {
     @RequestMapping(value = "/export-prize-record", method = RequestMethod.GET)
     public void prizeRecordExport(@RequestParam(name = "mobile", required = false) String mobile,
                                   @RequestParam(name = "selectPrize", required = false) LotteryPrize lotteryPrize,
-                                  @RequestParam(name = "prizeType", required = false ,defaultValue = "AUTUMN_PRIZE") ActivityCategory activityCategory,
+                                  @RequestParam(name = "prizeType", required = false, defaultValue = "AUTUMN_PRIZE") ActivityCategory activityCategory,
                                   @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                   @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                   HttpServletResponse response) throws IOException {
@@ -88,5 +88,20 @@ public class ExportController {
         List<List<String>> csvData = exportService.buildPrizeList(mobile, lotteryPrize, activityCategory, startTime, endTime);
 
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.LotteryPrizeHeader, csvData, response.getOutputStream());
+    }
+
+    @RequestMapping(value = "/export-not-work", method = RequestMethod.GET)
+    public void notWorkExport(HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.NotWorkHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            //logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
+
+        List<List<String>> csvData = exportService.buildNotWorkCsvList();
+
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.NotWorkHeader, csvData, response.getOutputStream());
     }
 }

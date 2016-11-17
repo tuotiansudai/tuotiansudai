@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.NotWorkMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="notWorkResultMap" type="NotWorkModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="invest_amount" property="investAmount"/>
+        <result column="recommended_register_amount" property="recommendedRegisterAmount"/>
+        <result column="recommended_identify_amount" property="recommendedIdentifyAmount"/>
+        <result column="recommended_invest_amount" property="recommendedInvestAmount"/>
+        <result column="send_coupon" property="sendCoupon"/>
+    </resultMap>
+
+    <insert id="create" parameterType="NotWorkModel" useGeneratedKeys="true" keyProperty="id">
+        insert into `edxactivity`.`not_work` (login_name, user_name, mobile, invest_amount, recommended_register_amount,
+        recommended_identify_amount, recommended_invest_amount, send_coupon)
+        values (#{loginName}, #{userName}, #{mobile}, #{investAmount}, #{recommendedRegisterAmount}, #{recommendedIdentifyAmount},
+        #{recommendedInvestAmount}, #{sendCoupon})
+    </insert>
+
+    <update id="update" parameterType="NotWorkModel">
+        update `edxactivity`.`not_work`
+        set
+        login_name = #{loginName},
+        user_name = #{userName},
+        mobile = #{mobile},
+        invest_amount = #{investAmount},
+        recommended_register_amount = #{recommendedRegisterAmount},
+        recommended_identify_amount = #{recommendedIdentifyAmount},
+        recommended_invest_amount = #{recommendedInvestAmount},
+        send_coupon = #{sendCoupon}
+        where
+        id = #{id}
+    </update>
+
+    <select id="findByLoginName" parameterType="long" resultMap="notWorkResultMap">
+        select * from `edxactivity`.`not_work` where login_name = #{loginName}
+    </select>
+
+    <select id="findPagination" resultMap="notWorkResultMap">
+        select * from `edxactivity`.`not_work` limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findAllCount" resultType="long">
+        select count(1) from `edxactivity`.`not_work`
+    </select>
+
+</mapper>
