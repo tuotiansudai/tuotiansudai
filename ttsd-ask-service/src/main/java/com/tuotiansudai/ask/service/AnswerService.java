@@ -139,6 +139,8 @@ public class AnswerService {
             return false;
         }
 
+        QuestionModel questionModel = questionMapper.lockById(answerModel.getQuestionId());
+
         AnswerModel bestAnswer = answerMapper.findBestAnswerByQuestionId(answerModel.getQuestionId());
         if (bestAnswer != null) {
             return false;
@@ -149,7 +151,6 @@ public class AnswerService {
         answerModel.setStatus(AnswerStatus.ADOPTED);
         answerMapper.update(answerModel);
 
-        QuestionModel questionModel = questionMapper.findById(answerModel.getQuestionId());
         questionModel.setStatus(QuestionStatus.RESOLVED);
         questionMapper.update(questionModel);
         return true;
