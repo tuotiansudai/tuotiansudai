@@ -2,7 +2,7 @@ package com.tuotiansudai.service.impl;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
-import com.tuotiansudai.anxin.service.GenerateContractService;
+import com.tuotiansudai.contract.service.GenerateContractService;
 import com.tuotiansudai.service.ContractService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;

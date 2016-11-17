@@ -9,7 +9,7 @@ import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
-import com.tuotiansudai.anxin.service.GenerateContractService;
+import com.tuotiansudai.contract.service.GenerateContractService;
 import com.tuotiansudai.cfca.constant.AnxinRetCode;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.cfca.dto.ContractResponseView;

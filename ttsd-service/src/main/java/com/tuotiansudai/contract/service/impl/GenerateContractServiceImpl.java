@@ -1,7 +1,7 @@
-package com.tuotiansudai.anxin.service.impl;
+package com.tuotiansudai.contract.service.impl;
 
 
-import com.tuotiansudai.anxin.service.GenerateContractService;
+import com.tuotiansudai.contract.service.GenerateContractService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
