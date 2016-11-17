@@ -55,7 +55,7 @@
         </#list>
         <li class="top-membership"><a href="${webServer}/membership">会员中心</a> </li>
         <li class="top-activity">
-            <a href="${webServer}/activity-center">活动中心</a>
+            <a href="${webServer}/activity/activity-center">活动中心</a>
         </li>
     </ul>
 </#if>
