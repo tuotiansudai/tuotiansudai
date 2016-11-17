@@ -54,7 +54,7 @@ class Deployment(object):
             sh('{0} war'.format(self._gradle))
         else :
             sh('{0} ttsd-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-activity:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{0} ttsd-activity-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
             sh('{0} ttsd-pay-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
             sh('{0} ttsd-console:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
             sh('{0} ttsd-mobile-api:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
