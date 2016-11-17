@@ -96,7 +96,7 @@ public class PointLotteryServiceImpl implements PointLotteryService {
     @Override
     @Transactional
     public String pointLottery(String loginName) {
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel.getPoint() < -LOTTERY_POINT) {
             return POINT_NOT_ENOUGH;
         }
