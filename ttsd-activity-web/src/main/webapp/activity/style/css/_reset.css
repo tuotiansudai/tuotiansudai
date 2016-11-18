@@ -169,7 +169,7 @@ img {
   vertical-align: middle; }
 
 body {
-  font-family: Microsoft YaHei, Helvetica, sans-serif;
+  font-family: 'Microsoft YaHei,Helvetica, sans-serif';
   font-size: 13px;
   line-height: 2;
   background: #f9f9f9;
@@ -193,11 +193,11 @@ input[type='checkbox'] {
 
 a {
   cursor: pointer;
-  color: #ff752a;
+  color: #666;
   text-decoration: none;
   outline: none; }
   a:hover {
-    color: #e54c14; }
+    color: #ff770f; }
 
 .fl {
   float: left; }

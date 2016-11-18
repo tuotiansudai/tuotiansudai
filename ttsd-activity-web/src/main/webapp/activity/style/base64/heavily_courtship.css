@@ -1,5 +1,5 @@
 body {
-  background: #eec859 url("/activity/images/heavily-courtship/bg-decorate.jpg") center 1080px no-repeat;
+  background: #eec859;
   overflow-x: hidden; }
 
 .main-frame {
@@ -15,9 +15,27 @@ body {
 
 .main-content-heavily {
   margin: 0 26px 30px 24px;
-  background: #fff; }
+  background: #fff;
+  position: relative; }
+  .main-content-heavily .bg-line {
+    width: 1900px;
+    z-index: 1;
+    transform: rotate(134deg);
+    position: absolute;
+    top: 479px;
+    left: -472px;
+    height: 1px;
+    background: #fff; }
+    .main-content-heavily .bg-line:nth-child(1) {
+      width: 1500px;
+      left: -363px; }
+    .main-content-heavily .bg-line:nth-child(2) {
+      top: 1500px; }
   .main-content-heavily .con-inner {
-    padding: 25px; }
+    padding: 25px;
+    background: #fff;
+    z-index: 10;
+    position: relative; }
   .main-content-heavily .prompt-box {
     background: #fcf7d5;
     color: #652680;
@@ -288,9 +306,13 @@ body {
     margin: 0 10px 20px 10px; }
     .main-content-heavily i.column-title-co {
       transform: scale(0.7);
+      -webkit-transform: scale(0.7);
+      -ms-transform: scale(0.7);
       left: -70px; }
     .main-content-heavily .to-invest-button a {
-      transform: scale(0.8); }
+      transform: scale(0.8);
+      -webkit-transform: scale(0.8);
+      -ms-transform: scale(0.8); }
     .main-content-heavily .bg-info-img {
       top: 0; }
     .main-content-heavily .info-word {
@@ -301,16 +323,24 @@ body {
     .main-content-heavily .example-out {
       display: none; }
     .main-content-heavily .icon-reward {
-      transform: scale(0.7); }
+      transform: scale(0.7);
+      -webkit-transform: scale(0.7);
+      -ms-transform: scale(0.7); }
     .main-content-heavily .bg-info-img {
       transform: scale(0.7);
+      -webkit-transform: scale(0.7);
+      -ms-transform: scale(0.7);
       right: -10px; }
     .main-content-heavily .info-img {
       transform: scale(0.7);
+      -webkit-transform: scale(0.7);
+      -ms-transform: scale(0.7);
       top: 0;
       right: -10px; }
     .main-content-heavily .round-cake {
       transform: scale(0.75);
+      -webkit-transform: scale(0.75);
+      -ms-transform: scale(0.75);
       margin: 5px 0; }
     .main-content-heavily .con-inner {
       padding: 5px; }
@@ -360,6 +390,8 @@ body {
         margin-right: 0; }
       .main-content-heavily .category-info-frame .PS-list dt {
         transform: scale(0.7);
+        -webkit-transform: scale(0.7);
+        -ms-transform: scale(0.7);
         margin-right: 0; }
       .main-content-heavily .category-info-frame .PS-list dd {
         width: calc( 100% - 74px);
@@ -387,8 +419,7 @@ body {
         .main-content-heavily .mind-category .subject .icon-reward {
           left: 27% !important; }
         .main-content-heavily .mind-category .subject.last-subject {
-          margin: auto;
-          margin-left: 8px; }
+          margin: auto; }
       .main-content-heavily .mind-category.last {
         margin-top: -35px;
         padding-bottom: 40px; }
@@ -403,6 +434,8 @@ body {
 
   .main-content-heavily .bg-info-img, .main-content-heavily .info-img {
     transform: scale(0.6);
+    -webkit-transform: scale(0.6);
+    -ms-transform: scale(0.6);
     right: -23px; }
 
   .main-content-heavily .mind-category .subject {
@@ -428,11 +461,15 @@ body {
 
   .main-content-heavily .bg-info-img, .main-content-heavily .info-img {
     transform: scale(0.55);
+    -webkit-transform: scale(0.55);
+    -ms-transform: scale(0.55);
     right: -37px; }
 
   .main-content-heavily .mind-category .subject {
     margin-bottom: 20px;
     margin-left: 7px; }
+    .main-content-heavily .mind-category .subject.last-subject {
+      margin-left: 7px; }
 
   .main-content-heavily .to-invest-button {
     margin: 10px auto; }

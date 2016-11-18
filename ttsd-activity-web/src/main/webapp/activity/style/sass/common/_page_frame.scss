@@ -1,5 +1,4 @@
 @import 'variables', "global_png";
-$linkColor:#666 #ff770f;
 
 .header-container {
   background: #fcfcfc;
@@ -8,12 +7,7 @@ $linkColor:#666 #ff770f;
   height:40px;
   line-height: 40px;
   border-bottom:1px solid #f0f0f0;
-  a {
-    color: nth($linkColor,1);
-    &:hover {
-      color: nth($linkColor,2);
-    }
-  }
+
   .header-download {
     display: none;
     padding: 10px 4px;
@@ -90,12 +84,6 @@ $linkColor:#666 #ff770f;
   background: #3f3f3f;
   color: #c2c2c2;
   overflow: hidden;
-  a {
-    color: nth($linkColor,1);
-    &:hover {
-      color: nth($linkColor,2);
-    }
-  }
   .footer {
     height: 210px;
     margin: 0 auto;
@@ -241,12 +229,6 @@ $linkColor:#666 #ff770f;
   width: 100%;
   background: #fff;
   border-bottom: 1px solid #ff9600;
-  a {
-    color: nth($linkColor,1);
-    &:hover {
-      color: nth($linkColor,2);
-    }
-  }
   .img-top {
     position: relative;
     padding-bottom: 12px;

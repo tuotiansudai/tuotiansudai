@@ -145,10 +145,6 @@ h5 {
   height: 40px;
   line-height: 40px;
   border-bottom: 1px solid #f0f0f0; }
-  .header-container a {
-    color: #666; }
-    .header-container a:hover {
-      color: #ff770f; }
   .header-container .header-download {
     display: none;
     padding: 10px 4px;
@@ -209,10 +205,6 @@ h5 {
   background: #3f3f3f;
   color: #c2c2c2;
   overflow: hidden; }
-  .footer-container a {
-    color: #666; }
-    .footer-container a:hover {
-      color: #ff770f; }
   .footer-container .footer {
     height: 210px;
     margin: 0 auto; }
@@ -325,10 +317,6 @@ h5 {
   width: 100%;
   background: #fff;
   border-bottom: 1px solid #ff9600; }
-  .nav-container a {
-    color: #666; }
-    .nav-container a:hover {
-      color: #ff770f; }
   .nav-container .img-top {
     position: relative;
     padding-bottom: 12px; }
