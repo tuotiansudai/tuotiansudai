@@ -381,6 +381,9 @@ body {
   }
   .main-content-heavily {
     margin: 0 10px 20px 10px;
+    .bg-line {
+      display: none;
+    }
 
     i.column-title-co {
       transform: scale(0.7);
