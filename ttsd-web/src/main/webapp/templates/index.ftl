@@ -193,7 +193,7 @@
                 <span>预期年化收益</span>
                 <span>转让价格</span>
                 <span>项目本金</span>
-                <span>剩余期数</span>
+                <span>剩余天数</span>
                 <span></span>
             </div>
         </div>

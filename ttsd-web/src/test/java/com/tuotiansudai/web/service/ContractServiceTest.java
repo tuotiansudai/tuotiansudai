@@ -1,15 +1,17 @@
 package com.tuotiansudai.web.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,8 +23,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -59,15 +64,16 @@ public class ContractServiceTest {
 
     @Test
     public void shouldGenerateTransferContractIsOk() throws ParseException {
-        UserModel userModel = getUserModel();
+        UserModel userModel = getUserModel("testUserModel", "1823123123");
         userMapper.create(userModel);
         LoanModel loanModel = getLoanModel();
         loanMapper.create(loanModel);
         LoanerDetailsModel loanerDetailsModel = getLoanerDetailsModel(loanModel);
         loanerDetailsMapper.create(loanerDetailsModel);
-        InvestModel investModel = getInvest(loanModel.getId());
+        InvestModel investModel = getInvest(loanModel.getId(), userModel.getLoginName());
         investMapper.create(investModel);
-        TransferApplicationModel transferApplicationModel = getTransferApplicationModel(loanModel.getId(), investModel.getId());
+        TransferApplicationModel transferApplicationModel = getTransferApplicationModel(loanModel.getId(), investModel.getId(), investModel.getId());
+        transferApplicationModel.setLoginName(userModel.getLoginName());
         transferApplicationMapper.create(transferApplicationModel);
         AccountModel accountModel = getAccountModel();
         accountMapper.create(accountModel);
@@ -79,6 +85,121 @@ public class ContractServiceTest {
 
         String pdfStr = contractService.generateTransferContract(transferApplicationModel.getId());
         assertNotNull(pdfStr);
+    }
+
+    @Test
+    public void shouldLoanTransferByFirstPeriodGenerateContractIsOk() throws ParseException {
+        UserModel userModel = getUserModel("testUserModel", "1823123123");
+        userMapper.create(userModel);
+
+        UserModel transferUserModel = getUserModel("testTransferUserModel", "1823123124");
+        userMapper.create(transferUserModel);
+
+        LoanModel loanModel = getLoanModel();
+        loanMapper.create(loanModel);
+
+        LoanerDetailsModel loanerDetailsModel = getLoanerDetailsModel(loanModel);
+        loanerDetailsMapper.create(loanerDetailsModel);
+
+        InvestModel investModel = getInvest(loanModel.getId(), userModel.getLoginName());
+        investMapper.create(investModel);
+
+        InvestModel transferInvestModel = getInvest(loanModel.getId(), transferUserModel.getLoginName());
+        investMapper.create(transferInvestModel);
+
+        TransferApplicationModel transferApplicationModel = getTransferApplicationModel(loanModel.getId(), transferInvestModel.getId(), investModel.getId());
+        transferApplicationMapper.create(transferApplicationModel);
+
+        AccountModel accountModel = getAccountModel();
+        accountMapper.create(accountModel);
+
+        InvestRepayModel startInvestRepayModel = new InvestRepayModel(1L, transferInvestModel.getId(), 1, 233L, 2000L, 2L,
+                DateTime.parse("2011-1-1").toDate(), RepayStatus.REPAYING);
+        InvestRepayModel endInvestRepayModel = new InvestRepayModel(2L, investModel.getId(), 3, 233L, 2000L, 2L,
+                DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
+        investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
+
+        Map<String, String> transferMap = contractService.collectTransferContractModel(transferApplicationModel.getId());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        assertNotNull(transferMap);
+        assertEquals(transferMap.get("transferUserName"), transferUserModel.getUserName());
+        assertEquals(transferMap.get("transferMobile"), transferUserModel.getMobile());
+        assertEquals(transferMap.get("transferIdentityNumber"), transferUserModel.getIdentityNumber());
+        assertEquals(transferMap.get("transfereeUserName"), userModel.getUserName());
+        assertEquals(transferMap.get("transfereeMobile"), userModel.getMobile());
+        assertEquals(transferMap.get("transfereeIdentityNumber"), userModel.getIdentityNumber());
+        assertEquals(transferMap.get("loanerUserName"), loanerDetailsModel.getUserName());
+        assertEquals(transferMap.get("loanerIdentityNumber"), loanerDetailsModel.getIdentityNumber());
+        assertEquals(transferMap.get("loanAmount"), AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
+        assertEquals(transferMap.get("totalRate"), String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
+        assertEquals(transferMap.get("periods"), String.valueOf(loanModel.getPeriods() * 30) + "天");
+        assertEquals(transferMap.get("transferStartTime"), simpleDateFormat.format(new LocalDate(startInvestRepayModel.getRepayDate()).plusDays(1).toDate()));
+        assertEquals(transferMap.get("transferEndTime"), simpleDateFormat.format(endInvestRepayModel.getRepayDate()));
+        assertEquals(transferMap.get("investAmount"), AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) + "元");
+        assertEquals(transferMap.get("transferTime"), simpleDateFormat.format(transferApplicationModel.getTransferTime()));
+        assertEquals(transferMap.get("leftPeriod"), String.valueOf(transferApplicationModel.getLeftPeriod()));
+        assertEquals(transferMap.get("msg1"), "甲方持有债权30天以内的，收取转让本金的0.01%作为服务费用。");
+        assertEquals(transferMap.get("msg2"), "甲方持有债权30天以上，90天以内的，收取转让本金的0.01%作为服务费用。");
+        assertEquals(transferMap.get("msg3"), "甲方持有债权90天以上的，暂不收取转服务费用。");
+    }
+
+    @Test
+    public void shouldLoanTransferByMiddlePeriodGenerateContractIsOk() throws ParseException {
+        UserModel userModel = getUserModel("testUserModel", "1823123123");
+        userMapper.create(userModel);
+
+        UserModel transferUserModel = getUserModel("testTransferUserModel", "1823123124");
+        userMapper.create(transferUserModel);
+
+        LoanModel loanModel = getLoanModel();
+        loanMapper.create(loanModel);
+
+        LoanerDetailsModel loanerDetailsModel = getLoanerDetailsModel(loanModel);
+        loanerDetailsMapper.create(loanerDetailsModel);
+
+        InvestModel investModel = getInvest(loanModel.getId(), userModel.getLoginName());
+        investMapper.create(investModel);
+
+        InvestModel transferInvestModel = getInvest(loanModel.getId(), transferUserModel.getLoginName());
+        investMapper.create(transferInvestModel);
+
+        TransferApplicationModel transferApplicationModel = getTransferApplicationModel(loanModel.getId(), transferInvestModel.getId(), investModel.getId());
+        transferApplicationModel.setPeriod(1);
+        transferApplicationMapper.create(transferApplicationModel);
+
+        AccountModel accountModel = getAccountModel();
+        accountMapper.create(accountModel);
+
+        InvestRepayModel startInvestRepayModel = new InvestRepayModel(1L, transferInvestModel.getId(), 1, 233L, 2000L, 2L,
+                DateTime.parse("2011-1-1").toDate(), RepayStatus.REPAYING);
+        InvestRepayModel endInvestRepayModel = new InvestRepayModel(2L, investModel.getId(), 3, 233L, 2000L, 2L,
+                DateTime.parse("2011-3-1").toDate(), RepayStatus.REPAYING);
+        investRepayMapper.create(Lists.newArrayList(startInvestRepayModel, endInvestRepayModel));
+
+        Map<String, String> transferMap = contractService.collectTransferContractModel(transferApplicationModel.getId());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        assertNotNull(transferMap);
+        assertEquals(transferMap.get("transferUserName"), transferUserModel.getUserName());
+        assertEquals(transferMap.get("transferMobile"), transferUserModel.getMobile());
+        assertEquals(transferMap.get("transferIdentityNumber"), transferUserModel.getIdentityNumber());
+        assertEquals(transferMap.get("transfereeUserName"), userModel.getUserName());
+        assertEquals(transferMap.get("transfereeMobile"), userModel.getMobile());
+        assertEquals(transferMap.get("transfereeIdentityNumber"), userModel.getIdentityNumber());
+        assertEquals(transferMap.get("loanerUserName"), loanerDetailsModel.getUserName());
+        assertEquals(transferMap.get("loanerIdentityNumber"), loanerDetailsModel.getIdentityNumber());
+        assertEquals(transferMap.get("loanAmount"), AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
+        assertEquals(transferMap.get("totalRate"), String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
+        assertEquals(transferMap.get("periods"), String.valueOf(loanModel.getPeriods() * 30) + "天");
+        assertEquals(transferMap.get("transferStartTime"), simpleDateFormat.format(investModel.getInvestTime()));
+        assertEquals(transferMap.get("transferEndTime"), simpleDateFormat.format(endInvestRepayModel.getRepayDate()));
+        assertEquals(transferMap.get("investAmount"), AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()) + "元");
+        assertEquals(transferMap.get("transferTime"), simpleDateFormat.format(transferApplicationModel.getTransferTime()));
+        assertEquals(transferMap.get("leftPeriod"), String.valueOf(transferApplicationModel.getLeftPeriod()));
+        assertEquals(transferMap.get("msg1"), "甲方持有债权30天以内的，收取转让本金的0.01%作为服务费用。");
+        assertEquals(transferMap.get("msg2"), "甲方持有债权30天以上，90天以内的，收取转让本金的0.01%作为服务费用。");
+        assertEquals(transferMap.get("msg3"), "甲方持有债权90天以上的，暂不收取转服务费用。");
     }
 
     private LoanModel getLoanModel() throws ParseException {
@@ -100,8 +221,8 @@ public class ContractServiceTest {
         lm.setInvestIncreasingAmount(1);
         lm.setActivityType(ActivityType.NORMAL);
         lm.setProductType(ProductType._180);
-        lm.setBaseRate(0.12);
-        lm.setActivityRate(0);
+        lm.setBaseRate(0.11);
+        lm.setActivityRate(0.011);
         lm.setContractId(789098123);
         lm.setFundraisingStartTime(new Date());
         lm.setFundraisingEndTime(new Date());
@@ -122,23 +243,23 @@ public class ContractServiceTest {
                 "", "", "");
     }
 
-    private InvestModel getInvest(long loanId) throws ParseException {
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 2577, "testUserModel", new Date(), Source.ANDROID, null, 0.1);
+    private InvestModel getInvest(long loanId, String loginName) throws ParseException {
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 2577, loginName, new Date(), Source.ANDROID, null, 0.1);
         investModel.setCreatedTime(new Date());
         return investModel;
     }
 
-    private UserModel getUserModel() throws ParseException {
+    private UserModel getUserModel(String loginName, String mobile) throws ParseException {
         UserModel um = new UserModel();
         um.setId(idGenerator.generate());
-        um.setLoginName("testUserModel");
+        um.setLoginName(loginName);
         um.setUserName("userName");
         um.setIdentityNumber("identityNumber");
         um.setPassword("1234567");
-        um.setMobile("1823123123");
+        um.setMobile(mobile);
         um.setRegisterTime(new Date());
         um.setLastModifiedTime(new Date());
-        um.setLastModifiedUser("testUserModel");
+        um.setLastModifiedUser(loginName);
         um.setStatus(UserStatus.ACTIVE);
         um.setSalt("12313");
         um.setChannel("123");
@@ -148,16 +269,16 @@ public class ContractServiceTest {
         return um;
     }
 
-    public TransferApplicationModel getTransferApplicationModel(long loanId,long investId) throws ParseException {
+    public TransferApplicationModel getTransferApplicationModel(long loanId, long transferId, long investId) throws ParseException {
         TransferApplicationModel al = new TransferApplicationModel();
         al.setId(idGenerator.generate());
         al.setName("测试");
         al.setLoanId(loanId);
-        al.setTransferInvestId(investId);
+        al.setTransferInvestId(transferId);
         al.setInvestId(investId);
         al.setPeriod(2);
         al.setLeftPeriod(1);
-        al.setLoginName("testUserModel");
+        al.setLoginName("testTransferUserModel");
         al.setInvestAmount(100);
         al.setTransferAmount(100);
         al.setTransferFee(1);
@@ -168,12 +289,12 @@ public class ContractServiceTest {
         return al;
     }
 
-    public AccountModel getAccountModel(){
+    public AccountModel getAccountModel() {
         AccountModel accountModel = new AccountModel("testUserModel", "payUserId", "payAccountId", new Date());
         return accountModel;
     }
 
-    public TransferRuleModel getTransferRuleModel(){
+    public TransferRuleModel getTransferRuleModel() {
         TransferRuleModel tr = new TransferRuleModel();
         tr.setId(idGenerator.generate());
         tr.setLevelOneFee(0.01);
