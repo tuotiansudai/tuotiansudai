@@ -44,7 +44,7 @@ public class OssUploadController {
         ueditorConfig.put("imageCompressEnable", true);
         ueditorConfig.put("imageCompressBorder", 1600);
         ueditorConfig.put("imageInsertAlign", "none");
-        ueditorConfig.put("imageUrlPrefix", "/upload");
+        ueditorConfig.put("imageUrlPrefix", "");
         ueditorConfig.put("imagePathFormat", "/upload/{yyyy}{mm}{dd}");
     }
 
