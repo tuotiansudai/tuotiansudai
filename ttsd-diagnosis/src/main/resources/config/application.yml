@@ -12,7 +12,7 @@ spring:
     host: smtp.qiye.163.com
     prot: 994
     username: no-reply@tuotiansudai.com
-    password:
+    password: w62CQIhM6acj
     properties:
       mail:
         smtp:
@@ -31,6 +31,7 @@ diagnosis:
     notify-mail-from: no-reply@tuotiansudai.com
     notify-mail-address: dev@tuotiansudai.com
     notify-mail-address-qa: dev@tuotiansudai.com
+    notify-mail-address-manager: zhangzhigang@tuotiansudai.com
   known-bad-bills:
     - 100000
 
