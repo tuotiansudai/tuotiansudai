@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class MQClientLocalMock implements MQClient, InitializingBean {
+public class MQClientRedis implements MQClient, InitializingBean {
 
     @Value("${common.redis.host}")
     private String redisHost;
@@ -27,7 +27,7 @@ public class MQClientLocalMock implements MQClient, InitializingBean {
     @Value("${common.redis.db}")
     private int redisDB;
 
-    private static Logger logger = LoggerFactory.getLogger(MQClientLocalMock.class);
+    private static Logger logger = LoggerFactory.getLogger(MQClientRedis.class);
     private Jedis jedis;
 
     public void publishMessage(final MessageTopic topic, final String message) {
@@ -40,7 +40,7 @@ public class MQClientLocalMock implements MQClient, InitializingBean {
     public void subscribe(final MessageTopicQueue queue, Consumer<com.tuotiansudai.mq.client.model.Message> consumer) {
         logger.info("[MQ] subscribe topic: {}, queue: {}", queue.getTopic(), queue.getQueueName());
         while (true) {
-            List<String> messages = jedis.blpop(0, generateRedisKeyOfQueue(queue));
+            List<String> messages = jedis.brpop(0, generateRedisKeyOfQueue(queue));
             logger.debug("[MQ] receive a message, prepare to consume");
             consumer.accept(new Message(String.valueOf(Clock.systemUTC().millis()), messages.get(1), "", queue.getTopic().getTopicName()));
             logger.info("[MQ] consume message success");

@@ -5,7 +5,7 @@ import com.aliyun.mns.client.MNSClient;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.mq.client.MQClient;
 import com.tuotiansudai.mq.client.impl.MQClientAliyumMNS;
-import com.tuotiansudai.mq.client.impl.MQClientLocalMock;
+import com.tuotiansudai.mq.client.impl.MQClientRedis;
 import com.tuotiansudai.mq.consumer.MessageConsumerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -61,7 +61,7 @@ public class MQConfig {
         if (enableAliyumMNS) {
             return new MQClientAliyumMNS(mnsClient);
         } else {
-            return new MQClientLocalMock();
+            return new MQClientRedis();
         }
     }
 
