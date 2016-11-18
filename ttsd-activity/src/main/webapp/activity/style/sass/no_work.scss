@@ -54,6 +54,92 @@ $width: 700px;
         clear: both;
         display: block;
       }
+      .content-skew-item{
+        float:left;
+        width:100%;
+        border:1px solid #e53521;
+        border-radius:40px;
+        background:#ffd966;
+        transform:skewY(-2deg);
+        margin-top:140px;
+        &.mt-last{
+          margin:50px 0;
+          .content-item{
+            padding:50px;
+          }
+        }
+        .content-item{
+          float:left;
+          width:100%;
+          transform:skewY(2deg);
+          position: relative;
+          padding:30px 20px;
+          box-sizing:border-box;
+          .title-item{
+            width:100%;
+            position: absolute;
+            top:-94px;
+            left:0;
+            z-index:99;
+          }
+          .info-list-item{
+            float:left;
+            width:100%;
+            background:#fff7a3;
+            border-radius:20px;
+            padding:10px;
+            box-sizing:border-box;
+            .account-info-item{
+              float:left;
+              width:100%;
+              border:1px dashed #e53521;
+              border-radius:20px;
+              background:#fff;
+              padding:10px;
+              box-sizing:border-box;
+              .user-info{
+                float:left;
+                width:100%;
+                li{
+                  float:left;
+                  width:33.333333%;
+                  &:nth-child(2){
+                    box-sizing:border-box;
+                    border-left:1px dashed #e53521;
+                    border-right:1px dashed #e53521;
+                    p{
+                      text-indent:3.5em;
+                    }
+                  }
+                  p{
+                    font-size:20px;
+                    margin-bottom:0;
+                    text-indent:2em;
+                    &.title-text{
+                      color:#541f1b;
+                    }
+                    &.number-text{
+                      color:#e53521;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .rule-group{
+            float:left;
+            width:100%;
+            color:#541f1b;
+            dt{
+              font-size:18px;
+              margin-bottom:20px;
+            }
+            dd{
+              font-size:14px;
+            }
+          }
+        }
+      }
     }
   }
 }
