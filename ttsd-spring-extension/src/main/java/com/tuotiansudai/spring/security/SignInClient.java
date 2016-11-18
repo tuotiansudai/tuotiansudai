@@ -182,7 +182,7 @@ public class SignInClient {
             }
             return signInResult;
         } catch (IOException e) {
-            logger.error("[sign in client] verify token failed", e);
+            logger.warn("[sign in client] verify token failed", e);
         }
 
         return null;
