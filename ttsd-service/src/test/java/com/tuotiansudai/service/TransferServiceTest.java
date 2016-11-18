@@ -100,7 +100,6 @@ public class TransferServiceTest {
         loanDto.setRecheckTime(new DateTime().minusDays(10).toDate());
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(LoanStatus.REPAYING);
-        loanModel.setPeriods(5);
         loanMapper.create(loanModel);
         return loanModel;
     }
@@ -227,7 +226,7 @@ public class TransferServiceTest {
         transferApplicationMapper.update(transferApplicationModel);
         TransferApplicationDetailDto  transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(transferApplicationModel.getId(), "testuser",6);
 
-        assertThat(transferApplicationDetailDto.getNextExpecedInterest(), is("100.90"));
+        assertThat(transferApplicationDetailDto.getNextExpecedInterest(), is("0.90"));
         assertThat(transferApplicationDetailDto.getBalance(), is("10.00"));
     }
 
@@ -270,8 +269,10 @@ public class TransferServiceTest {
         InvestModel investModel = createInvests(investorModel.getLoginName(), loanId, idGenerator.generate());
         LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
         loanRepayMapper.create(Lists.newArrayList(loanRepayModel));
-        InvestRepayModel investRepayModel = getFakeInvestRepayModel(investModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
-        investRepayMapper.create(Lists.newArrayList(investRepayModel));
+        InvestRepayModel investRepayModel = getFakeInvestRepayModel(investModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 0l, 2000l, 3000l, 4000l);
+        InvestRepayModel investRepayModel2 = getFakeInvestRepayModel(investModel, 2, RepayStatus.REPAYING, new DateTime().plusDays(30).toDate(), new DateTime().plusDays(30).toDate(), 0l, 2000l, 3000l, 4000l);
+        InvestRepayModel investRepayModel3 = getFakeInvestRepayModel(investModel, 3, RepayStatus.REPAYING, new DateTime().plusDays(90).toDate(), new DateTime().plusDays(90).toDate(), 1000l, 2000l, 3000l, 4000l);
+        investRepayMapper.create(Lists.newArrayList(investRepayModel, investRepayModel2, investRepayModel3));
         BasePaginationDataDto<TransferableInvestPaginationItemDataDto> baseDto = transferService.generateTransferableInvest(investorModel.getLoginName(), 1, 10);
         TransferableInvestPaginationItemDataDto dataDto = baseDto.getRecords().get(0);
         assertEquals(1,baseDto.getRecords().size());

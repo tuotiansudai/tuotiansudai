@@ -1,7 +1,6 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -16,7 +15,6 @@ import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.util.InvestAchievementUserCollector;
 import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.mq.client.model.Message;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.util.UserBirthdayUtil;
@@ -289,7 +287,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     }
 
     @Override
-    public void assignUserCoupon(long loanId, String loginNameOrMobile, long couponId) {
+    public void assignInvestAchievementUserCoupon(long loanId, String loginNameOrMobile, long couponId) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
         CouponModel couponModel = couponMapper.findById(couponId);
