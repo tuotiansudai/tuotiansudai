@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.anxin.service.AnxinSignService;
-import com.tuotiansudai.service.ContractService;
+import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;

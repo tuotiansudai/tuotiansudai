@@ -1,6 +1,5 @@
 package com.tuotiansudai.coupon.util;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
@@ -27,7 +26,7 @@ public class InvestAchievementCollector implements InvestAchievementUserCollecto
     private UserCouponMapper userCouponMapper;
 
     @Override
-    public boolean contains(final long couponId,final long loanId, String loginName, final UserGroup userGroup) {
+    public boolean contains(final long couponId, final long loanId, String loginName, final UserGroup userGroup) {
         LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel == null) {
             return false;
@@ -43,19 +42,11 @@ public class InvestAchievementCollector implements InvestAchievementUserCollecto
         }
 
         List<UserCouponModel> userCouponModelList = userCouponMapper.findByLoginNameAndCouponId(loginName, couponId);
-        if (CollectionUtils.isNotEmpty(userCouponModelList) && Iterators.any(userCouponModelList.iterator(), new Predicate<UserCouponModel>() {
-            @Override
-            public boolean apply(UserCouponModel input) {
-                return input.getAchievementLoanId() == loanId;
-            }
-        })) {
-            return false;
-        }
 
-        if (investMapper.findById(investId).getLoginName().equals(loginName)) {
-            return true;
-        }
+        boolean isNotAssigned = CollectionUtils.isEmpty(userCouponModelList) || Iterators.all(userCouponModelList.iterator(), input -> input.getAchievementLoanId() != loanId);
+        boolean isAchievementOwner = investMapper.findById(investId).getLoginName().equals(loginName);
 
-        return false;
+        return isAchievementOwner && isNotAssigned;
+
     }
 }
