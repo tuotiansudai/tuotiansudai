@@ -25,7 +25,7 @@ require(['jquery'], function ($) {
                     $leftBtn.show();
                     $rightBtn.show();
                 }
-                if(record==length) {
+                else if(record==length) {
                     $rightBtn.hide();
                     $leftBtn.show();
                 }
