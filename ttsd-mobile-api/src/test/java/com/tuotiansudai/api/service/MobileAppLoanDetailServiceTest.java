@@ -3,13 +3,13 @@ package com.tuotiansudai.api.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanDetailServiceImpl;
+import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -112,7 +112,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         LoanerDetailsModel loanerDetailsModel = new LoanerDetailsModel();
         loanerDetailsModel.setUserName("UserName");
         when(loanerDetailsMapper.getByLoanId(anyLong())).thenReturn(loanerDetailsModel);
-        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "declaration", "", false, "");
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "declaration", null, false, "");
         when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(loanDetailsModel);
 
         PledgeHouseModel pledgeHouseModel = new PledgeHouseModel();
@@ -143,7 +143,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
         when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
-        when(loanerDetailsMapper.getByLoanId(anyLong())).thenReturn(new LoanerDetailsModel());
+        when(loanerDetailsMapper.getByLoanId(anyLong())).thenReturn(new LoanerDetailsModel(1l,"123","123",Gender.MALE,1,"123",Marriage.DIVORCE,"S","s","1"));
         when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(new LoanDetailsModel());
         when(pledgeHouseMapper.getByLoanId(anyLong())).thenReturn(new PledgeHouseModel());
         when(contractService.getContract(anyString(),anyMap())).thenReturn("");

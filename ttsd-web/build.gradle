@@ -5,6 +5,7 @@ dependencies {
     compile project(':ttsd-web-common-config'),
             project(':ttsd-service'),
             project(':ttsd-point-service'),
+            project(':ttsd-activity-service'),
             project(':ttsd-message'),
             fileTree(dir: 'libs', include: '**/*.jar')
 

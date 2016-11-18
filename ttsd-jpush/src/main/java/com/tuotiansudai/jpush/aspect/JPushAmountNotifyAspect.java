@@ -1,5 +1,7 @@
 package com.tuotiansudai.jpush.aspect;
 
+import com.google.common.base.Strings;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
@@ -37,6 +39,10 @@ public class JPushAmountNotifyAspect {
     public final static String COUPON_INCOME = "CouponIncomeLoanRepayId-{0}";
     public final static String COUPON_RED_ENVELOPE = "CouponRedEnvelopeLoanId-{0}";
     public final static String LOAN_OUT = "postLoanOutLoanId-{0}";
+    private final static String LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE = "LOAN_OUT_IDEMPOTENT_CHECK:{0}";
+    private final static String J_PUSH_RED_ENVELOPE = "J_PUSH_RED_ENVELOPE";
+    private final static String J_PUSH_ALERT_LOAN_OUT = "J_PUSH_ALERT_LOAN_OUT";
+    private final static String SUCCESS = "SUCCESS";
 
     @Autowired
     private JobManager jobManager;
@@ -50,26 +56,36 @@ public class JPushAmountNotifyAspect {
     @Autowired
     private WithdrawMapper withdrawMapper;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
     @Pointcut("execution(* *..NormalRepayService.paybackInvest(..))")
-    public void normalRepayPaybackInvestPointcut() {}
+    public void normalRepayPaybackInvestPointcut() {
+    }
 
     @Pointcut("execution(* *..AdvanceRepayService.paybackInvest(..))")
-    public void advanceRepayPaybackInvestPointcut() {}
+    public void advanceRepayPaybackInvestPointcut() {
+    }
 
     @Pointcut("execution(* *..RechargeService.rechargeCallback(..))")
-    public void rechargeCallbackPointcut() {}
+    public void rechargeCallbackPointcut() {
+    }
 
     @Pointcut("execution(* *..WithdrawService.withdrawCallback(..))")
-    public void withdrawCallbackPointcut() {}
+    public void withdrawCallbackPointcut() {
+    }
 
     @Pointcut("execution(* *..ReferrerRewardService.rewardReferrer(..))")
-    public void rewardReferrerPointcut() {}
+    public void rewardReferrerPointcut() {
+    }
 
     @Pointcut("execution(* *..TransferCashService.transferCash(..))")
-    public void transferCashPointcut() {}
+    public void transferCashPointcut() {
+    }
 
     @Pointcut("execution(* *..paywrapper.service.LoanService.postLoanOut(..))")
-    public void postLoanOutPointcut() {}
+    public void postLoanOutPointcut() {
+    }
 
     @AfterReturning(value = "normalRepayPaybackInvestPointcut() || advanceRepayPaybackInvestPointcut()", returning = "returnValue")
     public void afterReturningNormalRepayCallback(JoinPoint joinPoint, Object returnValue) {
@@ -245,15 +261,20 @@ public class JPushAmountNotifyAspect {
 
     private void createAutoJPushRedEnvelopeJob(long loanId) {
         try {
-            Date triggerTime = new DateTime().plusMinutes(AutoJPushRedEnvelopeAlertJob.JPUSH_ALERT_LOAN_OUT_DELAY_MINUTES)
-                    .toDate();
-            jobManager.newJob(JobType.RedEnvelope, AutoJPushRedEnvelopeAlertJob.class)
-                    .addJobData(AutoJPushRedEnvelopeAlertJob.LOAN_ID_KEY, loanId)
-                    .withIdentity(JobType.RedEnvelope.name(), formatMessage(COUPON_RED_ENVELOPE, loanId))
-                    .replaceExistingJob(true)
-                    .runOnceAt(triggerTime)
-                    .replaceExistingJob(true)
-                    .submit();
+            String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
+            String statusString = redisWrapperClient.hget(redisKey, J_PUSH_RED_ENVELOPE);
+            if (Strings.isNullOrEmpty(statusString)) {
+                Date triggerTime = new DateTime().plusMinutes(AutoJPushRedEnvelopeAlertJob.JPUSH_ALERT_LOAN_OUT_DELAY_MINUTES)
+                        .toDate();
+                jobManager.newJob(JobType.RedEnvelope, AutoJPushRedEnvelopeAlertJob.class)
+                        .addJobData(AutoJPushRedEnvelopeAlertJob.LOAN_ID_KEY, loanId)
+                        .withIdentity(JobType.RedEnvelope.name(), formatMessage(COUPON_RED_ENVELOPE, loanId))
+                        .replaceExistingJob(true)
+                        .runOnceAt(triggerTime)
+                        .replaceExistingJob(true)
+                        .submit();
+                redisWrapperClient.hset(redisKey, J_PUSH_RED_ENVELOPE, SUCCESS);
+            }
         } catch (SchedulerException e) {
             logger.error("create send AutoJPushRedEnvelope job for loan[" + loanId + "] fail", e);
         }
@@ -275,15 +296,20 @@ public class JPushAmountNotifyAspect {
 
     private void createAutoJPushAlertLoanOutJob(long loanId) {
         try {
-            Date triggerTime = new DateTime().plusMinutes(AutoJPushAlertLoanOutJob.JPUSH_ALERT_LOAN_OUT_DELAY_MINUTES)
-                    .toDate();
-            jobManager.newJob(JobType.AutoJPushAlertLoanOut, AutoJPushAlertLoanOutJob.class)
-                    .addJobData(AutoJPushAlertLoanOutJob.LOAN_ID_KEY, loanId)
-                    .withIdentity(JobType.AutoJPushAlertLoanOut.name(), formatMessage(LOAN_OUT, loanId))
-                    .replaceExistingJob(true)
-                    .runOnceAt(triggerTime)
-                    .replaceExistingJob(true)
-                    .submit();
+            String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
+            String statusString = redisWrapperClient.hget(redisKey, J_PUSH_ALERT_LOAN_OUT);
+            if (Strings.isNullOrEmpty(statusString)) {
+                Date triggerTime = new DateTime().plusMinutes(AutoJPushAlertLoanOutJob.JPUSH_ALERT_LOAN_OUT_DELAY_MINUTES)
+                        .toDate();
+                jobManager.newJob(JobType.AutoJPushAlertLoanOut, AutoJPushAlertLoanOutJob.class)
+                        .addJobData(AutoJPushAlertLoanOutJob.LOAN_ID_KEY, loanId)
+                        .withIdentity(JobType.AutoJPushAlertLoanOut.name(), formatMessage(LOAN_OUT, loanId))
+                        .replaceExistingJob(true)
+                        .runOnceAt(triggerTime)
+                        .replaceExistingJob(true)
+                        .submit();
+                redisWrapperClient.hset(redisKey, J_PUSH_ALERT_LOAN_OUT, SUCCESS);
+            }
         } catch (SchedulerException e) {
             logger.error("create send red AutoJPushAlertLoanOut job for loan[" + loanId + "] fail", e);
         }

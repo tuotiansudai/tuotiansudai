@@ -5,19 +5,20 @@ import com.tuotiansudai.dto.LoanCreateDetailsRequestDto;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class LoanDetailsModel implements Serializable {
     private long id;
     private long loanId;
     private String declaration;
-    private String extraSource;
+    private List<Source> extraSource;
     private boolean activity;
     private String activityDesc;
 
     public LoanDetailsModel() {
     }
 
-    public LoanDetailsModel(long loanId, String declaration, String extraSource, boolean activity, String activityDesc) {
+    public LoanDetailsModel(long loanId, String declaration, List<Source> extraSource, boolean activity, String activityDesc) {
         this.loanId = loanId;
         this.declaration = declaration;
         this.extraSource = extraSource;
@@ -28,7 +29,7 @@ public class LoanDetailsModel implements Serializable {
     public LoanDetailsModel(long loanId, LoanCreateDetailsRequestDto loanDetails) {
         this.loanId = loanId;
         this.declaration = loanDetails.getDeclaration();
-        this.extraSource = CollectionUtils.isNotEmpty(loanDetails.getExtraSource()) ? Joiner.on(",").join(loanDetails.getExtraSource()) : null;
+        this.extraSource = loanDetails.getExtraSource();
         this.activity = loanDetails.isActivity();
         this.activityDesc = loanDetails.isActivity() ? loanDetails.getActivityDesc() : null;
     }
@@ -57,11 +58,11 @@ public class LoanDetailsModel implements Serializable {
         this.declaration = declaration;
     }
 
-    public String getExtraSource() {
+    public List<Source> getExtraSource() {
         return extraSource;
     }
 
-    public void setExtraSource(String extraSource) {
+    public void setExtraSource(List<Source> extraSource) {
         this.extraSource = extraSource;
     }
 

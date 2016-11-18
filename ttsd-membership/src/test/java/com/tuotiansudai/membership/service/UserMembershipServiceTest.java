@@ -139,7 +139,7 @@ public class UserMembershipServiceTest {
     }
 
     private AccountModel createAccount(long membershipPoint) {
-        AccountModel accountModel = new AccountModel(getFakeUser("testuser").getLoginName(), "username", "", "", "", new Date());
+        AccountModel accountModel = new AccountModel(getFakeUser("testuser").getLoginName(), "", "", new Date());
         accountModel.setMembershipPoint(membershipPoint);
         accountMapper.create(accountModel);
         return accountModel;
@@ -158,9 +158,8 @@ public class UserMembershipServiceTest {
         return userModel;
     }
 
-    private AccountModel createFakeAccount(UserModel userModel, String userName, long membershipPoint) {
-        AccountModel accountModel = new AccountModel(userModel.getLoginName(), userName, RandomStringUtils.randomNumeric(18),
-                RandomStringUtils.randomNumeric(32), RandomStringUtils.randomNumeric(14), userModel.getRegisterTime());
+    private AccountModel createFakeAccount(UserModel userModel, long membershipPoint) {
+        AccountModel accountModel = new AccountModel(userModel.getLoginName(), RandomStringUtils.randomNumeric(32), RandomStringUtils.randomNumeric(14), userModel.getRegisterTime());
         accountModel.setMembershipPoint(membershipPoint);
         accountMapper.create(accountModel);
         return accountModel;
@@ -181,7 +180,7 @@ public class UserMembershipServiceTest {
         UserMembershipItemDto userMembershipItemDto = new UserMembershipItemDto();
         userMembershipItemDto.setLoginName(userModel.getLoginName());
         userMembershipItemDto.setMobile(userModel.getMobile());
-        userMembershipItemDto.setRealName(accountModel.getUserName());
+        userMembershipItemDto.setRealName(userModel.getUserName());
         userMembershipItemDto.setRegisterTime(userModel.getRegisterTime());
         userMembershipItemDto.setUserMembershipType(userMembershipModel.getType());
         userMembershipItemDto.setMembershipLevel(membershipMapper.findById(userMembershipModel.getMembershipId()).getLevel());
@@ -190,17 +189,17 @@ public class UserMembershipServiceTest {
     }
 
     private List<UserMembershipItemDto> prepareUserMembershipData() {
-        UserModel userModel1 = createFakeUser("testUser1", "18612340001", DateTime.parse("2010-06-30T12:30").withTimeAtStartOfDay().toDate());
-        AccountModel accountModel1 = createFakeAccount(userModel1, "userName1", 1);
-        UserMembershipModel userMembershipModel1 = createUserMembershipModel("testUser1", UserMembershipType.UPGRADE, 0);
+        UserModel userModel1 = createFakeUser("userMembershipTestUser1", "18612340001", DateTime.parse("2010-06-30T12:30").withTimeAtStartOfDay().toDate());
+        AccountModel accountModel1 = createFakeAccount(userModel1, 1);
+        UserMembershipModel userMembershipModel1 = createUserMembershipModel(userModel1.getLoginName(), UserMembershipType.UPGRADE, 0);
 
-        UserModel userModel2 = createFakeUser("testUser2", "18612340002", DateTime.parse("2010-07-30T12:30").withTimeAtStartOfDay().toDate());
-        AccountModel accountModel2 = createFakeAccount(userModel2, "userName2", 2);
-        UserMembershipModel userMembershipModel2 = createUserMembershipModel("testUser2", UserMembershipType.GIVEN, 5);
+        UserModel userModel2 = createFakeUser("userMembershipTestUser2", "18612340002", DateTime.parse("2010-07-30T12:30").withTimeAtStartOfDay().toDate());
+        AccountModel accountModel2 = createFakeAccount(userModel2, 2);
+        UserMembershipModel userMembershipModel2 = createUserMembershipModel(userModel2.getLoginName(), UserMembershipType.GIVEN, 5);
 
-        UserModel userModel3 = createFakeUser("testUser3", "18612340003", DateTime.parse("2010-08-30T12:30").withTimeAtStartOfDay().toDate());
-        AccountModel accountModel3 = createFakeAccount(userModel3, "userName3", 3);
-        UserMembershipModel userMembershipModel3 = createUserMembershipModel("testUser3", UserMembershipType.UPGRADE, 0);
+        UserModel userModel3 = createFakeUser("userMembershipTestUser3", "18612340003", DateTime.parse("2010-08-30T12:30").withTimeAtStartOfDay().toDate());
+        AccountModel accountModel3 = createFakeAccount(userModel3, 3);
+        UserMembershipModel userMembershipModel3 = createUserMembershipModel(userModel3.getLoginName(), UserMembershipType.UPGRADE, 0);
 
         List<UserMembershipItemDto> userMembershipItemDtos = new ArrayList<>();
         userMembershipItemDtos.add(combineUserMembershipItemModel(userModel1, accountModel1, userMembershipModel1));

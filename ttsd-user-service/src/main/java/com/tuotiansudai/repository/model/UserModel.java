@@ -15,6 +15,10 @@ public class UserModel implements Serializable {
 
     private String mobile;
 
+    private String userName;
+
+    private String identityNumber;
+
     private Date registerTime = new Date();
 
     private Date lastModifiedTime;
@@ -77,6 +81,22 @@ public class UserModel implements Serializable {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
     }
 
     public Date getRegisterTime() {

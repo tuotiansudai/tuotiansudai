@@ -15,6 +15,8 @@ class Deployment(object):
         self.jcversion()
         self.compile()
         self.build_and_unzip_worker()
+        self.build_mq_consumer()
+        self.build_diagnosis()
         self.mk_static_package()
         self.init_docker()
 
@@ -25,7 +27,7 @@ class Deployment(object):
 
     def compile(self):
         print "Compiling..."
-        sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint war'.format(
+        sh('{0} clean ttsd-config:flywayAA ttsd-config:flywayUMP ttsd-config:flywayAnxin ttsd-config:flywaySms ttsd-config:flywayWorker ttsd-config:flywayAsk ttsd-config:flywayActivity ttsd-config:flywayPoint initMQ war'.format(
             self._gradle))
         sh('cp /workspace/new_version_config/signin_service/settings_local.py ./signin_service/')
 
@@ -36,13 +38,23 @@ class Deployment(object):
         sh('cd ./ttsd-job-worker && {0} -Pwork=jpush distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker/build/distributions && unzip \*.zip')
 
+    def build_mq_consumer(self):
+        print "Making MQ consumer build..."
+        sh('cd ./ttsd-loan-mq-consumer && {0} distZip'.format(self._gradle))
+        sh('cd ./ttsd-loan-mq-consumer/build/distributions && unzip \*.zip')
+
+    def build_diagnosis(self):
+        print "Making diagnosis build..."
+        sh('cd ./ttsd-diagnosis && {0} distZip'.format(self._gradle))
+        sh('cd ./ttsd-diagnosis/build/distributions && unzip \*.zip')
+
     def mkwar(self):
         print "Making war..."
         if self._env == 'QA' :
             sh('{0} war'.format(self._gradle))
         else :
             sh('{0} ttsd-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-activity:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{0} ttsd-activity-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
             sh('{0} ttsd-pay-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
             sh('{0} ttsd-console:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
             sh('{0} ttsd-mobile-api:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
@@ -64,8 +76,8 @@ class Deployment(object):
         sh('mv ./ttsd-ask-web/src/main/webapp/static_ask.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_ask.zip -d static')
 
-        sh('cd ./ttsd-activity/src/main/webapp && zip -r static_activity.zip activity/')
-        sh('mv ./ttsd-activity/src/main/webapp/static_activity.zip  ./ttsd-web/build/')
+        sh('cd ./ttsd-activity-web/src/main/webapp && zip -r static_activity.zip activity/')
+        sh('mv ./ttsd-activity-web/src/main/webapp/static_activity.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_activity.zip -d static')
 
         sh('cd ./ttsd-point-web/src/main/webapp && zip -r static_point.zip point/')

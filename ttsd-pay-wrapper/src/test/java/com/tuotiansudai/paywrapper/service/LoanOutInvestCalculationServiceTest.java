@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service;
 
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -68,7 +69,7 @@ public class LoanOutInvestCalculationServiceTest {
     @Test
     @Transactional
     public void loanOutInvestCalculation() {
-        UserModel userModel = createFakeUser("buildbox", "13666666666");
+        UserModel userModel = createFakeUser("buildbox123123131", "13612341234");
         LoanModel loanModel = fakeLoanModel(userModel);
         loanMapper.create(loanModel);
         LoanDetailsModel loanDetailsModel = fakeLoanLoanDetailsModel(loanModel);
@@ -102,7 +103,7 @@ public class LoanOutInvestCalculationServiceTest {
         assertThat(test2investExtraRateModel.getExpectedInterest(), is(61l));
         assertThat(test2investExtraRateModel.getExpectedFee(), is(6l));
 
-
+        loanOutInvestCalculationService.rateIncreases(loanModel.getId());
     }
 
     private UserModel createFakeUser(String loginName, String mobile) {
@@ -189,7 +190,7 @@ public class LoanOutInvestCalculationServiceTest {
         loanDetailsModel.setId(id);
         loanDetailsModel.setLoanId(loanModel.getId());
         loanDetailsModel.setDeclaration("材料声明");
-        loanDetailsModel.setExtraSource("WEB,MOBILE");
+        loanDetailsModel.setExtraSource(Lists.newArrayList(Source.WEB,Source.MOBILE));
        return loanDetailsModel;
     }
 }

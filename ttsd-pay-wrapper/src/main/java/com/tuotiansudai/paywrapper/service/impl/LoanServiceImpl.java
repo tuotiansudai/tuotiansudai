@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.anxin.service.AnxinSignService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -27,14 +28,12 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransf
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.LoanService;
-import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
-import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
-import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
+import com.tuotiansudai.paywrapper.service.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -44,6 +43,7 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.JobManager;
 import com.tuotiansudai.util.SendCloudMailUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -65,6 +65,16 @@ public class LoanServiceImpl implements LoanService {
     private final static String CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR = "P";
 
     private final static String CANCEL_INVEST_PAY_BACK_ORDER_ID_TEMPLATE = "{0}" + CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR + "{1}";
+
+    private final static String LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE = "LOAN_OUT_IDEMPOTENT_CHECK:{0}";
+
+    private final static String DO_PAY_REQUEST = "DO_PAY_REQUEST";
+
+    private final static String SMS_AND_EMAIL = "SMS_AND_EMAIL";
+
+    private final static String TRANSFER_OUT_FREEZE = "TRANSFER_OUT_FREEZE:INVEST:{0}";
+
+    private final static String TRANSFER_IN_BALANCE = "TRANSFER_IN_BALANCE";
 
     @Autowired
     private LoanMapper loanMapper;
@@ -107,6 +117,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private AnxinSignService anxinSignService;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
@@ -228,13 +241,9 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> loanOut(long loanId) {
-
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        baseDto.setSuccess(true);
         PayDataDto payDataDto = new PayDataDto();
-        baseDto.setData(payDataDto);
+        BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
 
         if (redisWrapperClient.setnx(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId, "1")) {
             try {
@@ -259,7 +268,6 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private ProjectTransferResponseModel doLoanOut(long loanId) throws PayException {
-
         // 查找借款人
         LoanModel loan = loanMapper.findById(loanId);
         if (loan == null) {
@@ -275,7 +283,7 @@ public class LoanServiceImpl implements LoanService {
         }
 
         if (LoanStatus.RECHECK != loan.getStatus()) {
-            throw new PayException("loan is not ready for recheck [" + loanId + "]");
+            throw new PayException(MessageFormat.format("loan{0} status{1) is not RECHECK, loan out is failed", String.valueOf(loanId), loan.getStatus().name()));
         }
 
         // 将已失效的投资记录状态置为失败
@@ -290,38 +298,60 @@ public class LoanServiceImpl implements LoanService {
         // 计算投资总金额
         long investAmountTotal = computeInvestAmountTotal(successInvestList);
         if (investAmountTotal <= 0) {
-            throw new PayException("invest amount should great than 0");
+            throw new PayException(MessageFormat.format("loan{0} out is failed, invest amount sum is less then 0", String.valueOf(loanId)));
         }
 
-        BaseDto<PayDataDto> checkLoanAmount = umPayRealTimeStatusService.checkLoanAmount(loanId);
+        BaseDto<PayDataDto> checkLoanAmount = umPayRealTimeStatusService.checkLoanAmount(loanId, investAmountTotal);
+
         if (!checkLoanAmount.getData().getStatus()) {
             throw new PayException(MessageFormat.format("标的(loanId={0})借款金额与投资金额不一致", String.valueOf(loanId)));
         }
 
-        logger.debug("标的放款：发起联动优势放款请求，标的ID:" + loanId + "，代理人:" + agentPayUserId + "，放款金额:" + investAmountTotal);
-        ProjectTransferResponseModel resp = doPayRequest(loanId, agentPayUserId, investAmountTotal);
+        logger.debug("[标的放款]：发起联动优势放款请求，标的ID:" + loanId + "，代理人:" + agentPayUserId + "，放款金额:" + investAmountTotal);
 
-        if (resp.isSuccess()) {
-            logger.debug("标的放款：更新标的状态，标的ID:" + loanId);
-            processLoanStatusForLoanOut(loan);
+        String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
+        String beforeSendStatus = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
+        ProjectTransferResponseModel resp = new ProjectTransferResponseModel();
+        if (Strings.isNullOrEmpty(beforeSendStatus) || beforeSendStatus.equals(SyncRequestStatus.FAILURE.name())){
+            try {
+                redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, SyncRequestStatus.SENT.name());
+                ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newLoanOutRequest(
+                        String.valueOf(loanId), String.valueOf(loanId), agentPayUserId, String.valueOf(investAmountTotal));
+                resp = paySyncClient.send(ProjectTransferMapper.class, requestModel, ProjectTransferResponseModel.class);
+                redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, SyncRequestStatus.SUCCESS.name());
+            } catch (PayException e) {
+                logger.error(MessageFormat.format("[标的放款]:发起放款联动优势请求失败,标的ID : {0}", String.valueOf(loanId)), e);
+            }
+        }
 
-            logger.debug("标的放款：处理该标的的所有投资的账务信息，标的ID:" + loanId);
-            processInvestForLoanOut(successInvestList);
+        String afterSendStatus = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
 
-            logger.debug("标的放款：把借款转给代理人账户，标的ID:" + loanId);
-            processLoanAccountForLoanOut(loan, investAmountTotal);
-
-            // loanOutSuccessHandle(loanId);
-            createLoanOutSuccessHandleJob(loanId);
+        if (SyncRequestStatus.SENT.name().equals(afterSendStatus)) {
+            resp.setRetMsg(MessageFormat.format("[标的放款]:发起放款联动优势请求重复,标的ID : {0}", String.valueOf(loanId)));
+            logger.error(resp.getRetMsg());
+            return resp;
 
         }
+
+        if (SyncRequestStatus.SUCCESS.name().equals(afterSendStatus)) {
+            logger.debug("[标的放款]：更新标的状态，标的ID:" + loanId);
+            this.updateLoanStatus(loanId, LoanStatus.REPAYING);
+
+            logger.debug("[标的放款]：处理该标的的所有投资的账务信息，标的ID:" + loanId);
+            this.processInvestForLoanOut(successInvestList,loanId);
+
+            logger.debug("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
+            this.processLoanAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal);
+
+            this.createLoanOutSuccessHandleJob(loanId);
+        }
+
         return resp;
     }
 
     private void createLoanOutSuccessHandleJob(long loanId) {
         try {
-            Date triggerTime = new DateTime().plusMinutes(LoanOutSuccessHandleJob.HANDLE_DELAY_MINUTES)
-                    .toDate();
+            Date triggerTime = new DateTime().plusMinutes(LoanOutSuccessHandleJob.HANDLE_DELAY_MINUTES).toDate();
             jobManager.newJob(JobType.LoanOut, LoanOutSuccessHandleJob.class)
                     .addJobData(LoanOutSuccessHandleJob.LOAN_ID_KEY, loanId)
                     .withIdentity(JobType.LoanOut.name(), "Loan-" + loanId)
@@ -339,40 +369,53 @@ public class LoanServiceImpl implements LoanService {
 
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
 
-        logger.debug("标的放款：生成还款计划，标的ID:" + loanId);
+        logger.debug("[标的放款]：生成还款计划，标的ID:" + loanId);
         try {
             repayGeneratorService.generateRepay(loanId);
-        }catch (Exception e) {
-            logger.error(MessageFormat.format("生成还款计划失败 (loanId = {0})", String.valueOf(loanId)), e);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[标的放款]:生成还款计划失败 (loanId = {0})", String.valueOf(loanId)), e);
             return false;
         }
 
-        logger.debug("标的放款：处理推荐人奖励，标的ID:" + loanId);
+        logger.debug("[标的放款]：处理推荐人奖励，标的ID:" + loanId);
         try {
             referrerRewardService.rewardReferrer(loan, successInvestList);
         } catch (Exception e) {
-            logger.error(MessageFormat.format("发放推荐人奖励失败 (loanId = {0})", String.valueOf(loanId)), e);
+            logger.error(MessageFormat.format("[标的放款]:发放推荐人奖励失败 (loanId = {0})", String.valueOf(loanId)), e);
             return false;
         }
 
-        logger.debug("标的放款：处理短信和邮件通知，标的ID:" + loanId);
-        try {
-            processNotifyForLoanOut(loanId);
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("放款短信邮件通知失败 (loanId = {0})", String.valueOf(loanId)), e);
+        logger.debug("[标的放款]：处理短信和邮件通知，标的ID:" + loanId);
+
+        String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
+        String statusString = redisWrapperClient.hget(redisKey, SMS_AND_EMAIL);
+        if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
+            try {
+                redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.SENT.name());
+                processNotifyForLoanOut(loanId);
+                redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.SUCCESS.name());
+            } catch (Exception e) {
+                redisWrapperClient.hset(redisKey, SMS_AND_EMAIL, SyncRequestStatus.FAILURE.name());
+                logger.error(MessageFormat.format("[标的放款]:放款短信邮件通知失败 (loanId = {0})", String.valueOf(loanId)), e);
+            }
+        } else {
+            logger.info(MessageFormat.format("[标的放款]:重复发送放款短信邮件通知,标的ID : {0}", String.valueOf(loanId)));
         }
 
-        return true;
-    }
+        logger.debug("标的放款：生成合同，标的ID:" + loanId);
+        try {
+            anxinSignService.createLoanContracts(loanId);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("放款生成合同失败 (loanId = {0})", String.valueOf(loanId)), e);
+        }
 
-    private ProjectTransferResponseModel doPayRequest(long loanId, String payUserId, long amount) throws PayException {
-        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newLoanOutRequest(
-                String.valueOf(loanId), String.valueOf(loanId), payUserId, String.valueOf(amount));
-        ProjectTransferResponseModel responseModel = paySyncClient.send(
-                ProjectTransferMapper.class,
-                requestModel,
-                ProjectTransferResponseModel.class);
-        return responseModel;
+        logger.debug("标的放款：更新合同编号，标的ID:" + loanId);
+        try {
+            anxinSignService.updateLoanInvestContractNo(loanId);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("放款更新合同编号失败 (loanId = {0})", String.valueOf(loanId)), e);
+        }
+        return true;
     }
 
     private long computeInvestAmountTotal(List<InvestModel> investList) {
@@ -383,37 +426,54 @@ public class LoanServiceImpl implements LoanService {
         return amount;
     }
 
-    private void processInvestForLoanOut(List<InvestModel> investList) {
-        if (investList == null) {
+    private void processInvestForLoanOut(List<InvestModel> investList,long loanId) {
+        if (CollectionUtils.isEmpty(investList)) {
             return;
         }
-        for (InvestModel invest : investList) {
+
+        String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
+        investList.forEach(invest -> {
+            String transferKey = MessageFormat.format(TRANSFER_OUT_FREEZE,invest.getId());
             try {
-                amountTransfer.transferOutFreeze(invest.getLoginName(),
-                        invest.getId(), invest.getAmount(), UserBillBusinessType.LOAN_SUCCESS, null, null);
+                String statusString = redisWrapperClient.hget(redisKey, transferKey);
+                if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
+                    amountTransfer.transferOutFreeze(invest.getLoginName(),
+                            invest.getId(),
+                            invest.getAmount(),
+                            UserBillBusinessType.LOAN_SUCCESS,
+                            null,
+                            null);
+                    redisWrapperClient.hset(redisKey, transferKey, SyncRequestStatus.SUCCESS.name());
+                }
             } catch (AmountTransferException e) {
+                redisWrapperClient.hset(redisKey, transferKey, SyncRequestStatus.FAILURE.name());
                 logger.error("transferOutFreeze Fail while loan out, invest [" + invest.getId() + "]", e);
             }
-        }
+        });
     }
 
     // 把借款转给代理人账户
-    private void processLoanAccountForLoanOut(LoanModel loan, long amount) {
+    private void processLoanAccountForLoanOut(long loanId, String agentLoginName, long amount) {
+        String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         try {
-            long orderId = loan.getId();
-            amountTransfer.transferInBalance(loan.getAgentLoginName(), orderId, amount, UserBillBusinessType.LOAN_SUCCESS, null, null);
+            String statusString = redisWrapperClient.hget(redisKey, TRANSFER_IN_BALANCE);
+            if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
+                amountTransfer.transferInBalance(agentLoginName, loanId, amount, UserBillBusinessType.LOAN_SUCCESS, null, null);
+                redisWrapperClient.hset(redisKey, TRANSFER_IN_BALANCE, SyncRequestStatus.SUCCESS.name());
+            }
         } catch (Exception e) {
-            logger.error("transferInBalance Fail while loan out, loan[" + loan.getId() + "]", e);
+            redisWrapperClient.hset(redisKey, TRANSFER_IN_BALANCE, SyncRequestStatus.FAILURE.name());
+            logger.error("transferInBalance Fail while loan out, loan[" + loanId + "]", e);
         }
     }
 
     private void processNotifyForLoanOut(long loanId) {
         List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
 
-        logger.debug(MessageFormat.format("标的: {0} 放款短信通知", loanId));
+        logger.debug(MessageFormat.format("[标的放款]:标的: {0} 放款短信通知", loanId));
         notifyInvestorsLoanOutSuccessfulBySMS(investModels);
 
-        logger.debug(MessageFormat.format("标的: {0} 放款邮件通知", loanId));
+        logger.debug(MessageFormat.format("[标的放款]:标的: {0} 放款邮件通知", loanId));
         notifyInvestorsLoanOutSuccessfulByEmail(investModels);
 
     }
@@ -445,18 +505,6 @@ public class LoanServiceImpl implements LoanService {
             if (StringUtils.isNotEmpty(userEmail)) {
                 sendCloudMailUtil.sendMailByLoanOut(userEmail, emailParameters);
             }
-        }
-    }
-
-    private void processLoanStatusForLoanOut(LoanModel loan) {
-        BaseDto<PayDataDto> dto = updateLoanStatus(loan.getId(), LoanStatus.REPAYING);
-        if (dto.getData().getStatus()) {
-            LoanModel loan4Update = new LoanModel();
-            loan4Update.setId(loan.getId());
-            loan4Update.setRecheckTime(new Date());
-            loanMapper.update(loan4Update);
-        } else {
-            logger.error("update loan status failed : " + dto.getData().getMessage());
         }
     }
 

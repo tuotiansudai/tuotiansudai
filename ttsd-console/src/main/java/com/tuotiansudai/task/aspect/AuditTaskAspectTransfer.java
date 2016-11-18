@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
@@ -37,7 +38,7 @@ public class AuditTaskAspectTransfer {
     private TransferRuleMapper transferRuleMapper;
 
     @Autowired
-    private AccountService accountService;
+    private UserService userService;
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -95,7 +96,7 @@ public class AuditTaskAspectTransfer {
                     String.valueOf(transferRuleDto.getDaysLimit()),
                     String.valueOf(transferRuleDto.isMultipleTransferEnabled()));
 
-            task.setDescription(MessageFormat.format("{0} 修改债权转让规则 [{1}] => [{2}]", accountService.getRealName(operator), beforeUpdate, afterUpdate));
+            task.setDescription(MessageFormat.format("{0} 修改债权转让规则 [{1}] => [{2}]", userService.getRealName(operator), beforeUpdate, afterUpdate));
             redisWrapperClient.hsetSeri(taskKey, taskId, task);
             return true;
         }
@@ -114,7 +115,7 @@ public class AuditTaskAspectTransfer {
             notify.setCreatedTime(new Date());
             notify.setSender(operator);
             notify.setReceiver(task.getSender());
-            String senderRealName = accountService.getRealName(operator);
+            String senderRealName = userService.getRealName(operator);
             notify.setDescription(MessageFormat.format("{0} 通过了您修改债权转让规则的申请。", senderRealName));
             redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
             auditLogService.createAuditLog(operator, task.getSender(), OperationType.TRANSFER_RULE, task.getObjId(),
