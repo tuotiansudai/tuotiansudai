@@ -63,7 +63,7 @@
 .borderBox {
   border: 1px solid #d9d9d9;
   padding: 12px;
-  line-height: nth($baseLineHeight, 1);
+  line-height: 2;
   height: auto;
   &.spad {
     padding: 5px;
@@ -76,27 +76,27 @@
 }
 
 .text-notice {
-  color: nth($btnColor, 5);
+  color: #ff7a2a;
   font-size: nth($fontSize, 4);
 }
 
 .requireOpt:before {
-  color: $required;
+  color: red;
   padding-right: 2px;
   display: inline-block;
   content: '*';
 }
 
 .color-info {
-  color: nth($CK1, 3);
+  color: #f46916;
 }
 
 .color-note {
-  color: nth($CK1, 1);
+  color: #ffac2a;
 }
 
 .bg-w {
-  background: nth($baseColor, 1);
+  background: #fff;
 }
 
 /* project schedule progress */
