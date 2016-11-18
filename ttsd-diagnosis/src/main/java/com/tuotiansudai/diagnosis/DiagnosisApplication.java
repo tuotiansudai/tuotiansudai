@@ -123,7 +123,7 @@ class DiagnosisApplication {
     private void mailReport(String description, List<List<DiagnosisResult>> totalResult) {
         reportDiagnosis(description, totalResult, (count, report) -> {
             logger.info(report);
-            if (Arrays.asList(Environment.PRODUCTION, Environment.QA, Environment.DEV).contains(environment)) {
+            if (Arrays.asList(Environment.PRODUCTION, Environment.QA).contains(environment)) {
                 try {
                     logger.info("sending report mail");
                     if (count > 0) {
