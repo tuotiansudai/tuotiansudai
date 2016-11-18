@@ -7,8 +7,7 @@ dependencies {
             project(':ttsd-message'),
             project(':ttsd-point-service'),
             project(':ttsd-jpush'),
-            project(':ttsd-client'),
-            project(':ttsd-activity-repository'),
+            project(':ttsd-edxactivity-repository'),
             project(':ttsd-anxin-sign'),
             project(':ttsd-membership')
 
