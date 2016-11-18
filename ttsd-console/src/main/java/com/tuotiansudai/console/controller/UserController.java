@@ -17,7 +17,6 @@ import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.spring.security.SignInClient;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
@@ -49,9 +48,6 @@ public class UserController {
 
     @Autowired
     private ImpersonateService impersonateService;
-
-    @Autowired
-    private AccountService accountService;
 
     @Autowired
     private BindBankCardService bindBankCardService;
@@ -125,9 +121,9 @@ public class UserController {
     @ResponseBody
     public List<String> findLoanerLoginNames(@PathVariable String loginName, @PathVariable String loanerType) {
         if ("ENTERPRISE_DIRECT".equals(loanerType)) {
-            return userServiceConsole.findAllLoanerLikeLoginName(loginName);
-        } else {
             return userServiceConsole.findAllEnterpriseLoanerLikeLoginName(loginName);
+        } else {
+            return userServiceConsole.findAllLoanerLikeLoginName(loginName);
         }
     }
 

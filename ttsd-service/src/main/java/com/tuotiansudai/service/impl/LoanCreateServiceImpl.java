@@ -214,8 +214,14 @@ public class LoanCreateServiceImpl implements LoanCreateService {
     }
 
     private BaseDto<BaseDataDto> checkCreateLoanData(LoanCreateRequestDto loanCreateRequestDto) {
-        if (userRoleMapper.findByLoginNameAndRole(loanCreateRequestDto.getLoan().getAgent(), Role.LOANER) == null) {
+        if (loanCreateRequestDto.getLoan().getPledgeType() != PledgeType.ENTERPRISE_DIRECT
+                && userRoleMapper.findByLoginNameAndRole(loanCreateRequestDto.getLoan().getAgent(), Role.LOANER) == null) {
             return new BaseDto<>(new BaseDataDto(false, "代理用户不存在"));
+        }
+
+        if (loanCreateRequestDto.getLoan().getPledgeType() == PledgeType.ENTERPRISE_DIRECT
+                && userRoleMapper.findByLoginNameAndRole(loanCreateRequestDto.getLoan().getAgent(), Role.ENTERPRISE_LOANER) == null) {
+            return new BaseDto<>(new BaseDataDto(false, "企业用户不存在"));
         }
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loanCreateRequestDto.getLoan().getAgent());
