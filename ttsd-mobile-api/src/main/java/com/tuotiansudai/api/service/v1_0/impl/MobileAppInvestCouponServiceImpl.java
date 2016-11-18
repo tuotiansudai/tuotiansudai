@@ -106,7 +106,7 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
         for (UserCouponModel item : userCouponModels) {
             CouponModel couponModel = item.getCoupon();
             UserModel userModel = userMapper.findByLoginName(item.getLoginName());
-            if (!couponModel.getProductTypes().contains(loanProductType) || CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()) && !UserBirthdayUtil.isBirthMonth(userModel.getLoginName())) {
+            if (!couponModel.getProductTypes().contains(loanProductType) || CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()) && !UserBirthdayUtil.isBirthMonth(userModel.getIdentityNumber())) {
                 unavailableCoupons.add(item);
             }
         }
