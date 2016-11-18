@@ -34,7 +34,11 @@ dependencies {
         exclude module: 'ttsd-dependency'
     };
 
-    compile(project(":ttsd-activity-repository")) {
+    compile(project(":ttsd-edxactivity-repository")) {
+        exclude module: 'ttsd-dependency'
+    };
+
+    compile(project(":ttsd-membership")) {
         exclude module: 'ttsd-dependency'
     };
 
