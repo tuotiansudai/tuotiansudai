@@ -2,7 +2,7 @@ package com.tuotiansudai.point.service.impl;
 
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.point.dto.UserPointPrizeDto;
+import com.tuotiansudai.point.repository.dto.UserPointPrizeDto;
 import com.tuotiansudai.point.repository.mapper.PointPrizeMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
@@ -96,7 +96,7 @@ public class PointLotteryServiceImpl implements PointLotteryService {
     @Override
     @Transactional
     public String pointLottery(String loginName) {
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel.getPoint() < -LOTTERY_POINT) {
             return POINT_NOT_ENOUGH;
         }
