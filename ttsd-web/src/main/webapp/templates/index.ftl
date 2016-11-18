@@ -18,13 +18,13 @@
         <div class="page-width">
             <@global.isAnonymous>
                 <div class="register-ad-box fr tc">
+                    <b class="h-title">预期年化收益率</b>
                     <p class="num-text clearfix">
                         <span class="num-unit">可达</span>
                         <span class="percent">13%</span>
                     </p>
-                    <b class="h-title">预期年化收益率</b>
-
-                    <p class="welcome-text"></p>
+                    
+                    <p class="welcome-text">welcome</p>
                     <a class="btn-normal" href="/register/user" onclick="cnzzPush.trackClick('21首页','Banner模块','免费注册')">免费注册 </a>
                     <i class="clearfix tr">已有账户？<a href="/login"
                                                    onclick="cnzzPush.trackClick('22首页','Banner模块','立即登录')"> 立即登录</a></i>
