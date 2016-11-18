@@ -105,7 +105,7 @@ class DiagnosisApplication {
                 .withHour(diagnosisConfig.getSchedule().getHour())
                 .withMinute(diagnosisConfig.getSchedule().getMinute());
 
-        if (lastFireTime != null && fireTime.getDayOfMonth() == lastFireTime.getDayOfMonth()) {
+        if (lastFireTime != null && fireTime.toLocalDate().equals(lastFireTime.toLocalDate())) {
             return fireTime.plusDays(1);
         }
 
