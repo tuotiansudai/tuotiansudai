@@ -66,4 +66,5 @@ public interface JPushAlertService {
 
     void autoJPushRedEnvelopeAlert(long loanId);
 
+    void delStoreJPushId(String loginName);
 }

@@ -1,8 +1,8 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.dto.ranking.PrizeWinnerDto;
-import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
-import com.tuotiansudai.repository.TianDouPrize;
+import com.tuotiansudai.activity.repository.dto.PrizeWinnerDto;
+import com.tuotiansudai.activity.repository.dto.UserTianDouRecordDto;
+import com.tuotiansudai.activity.repository.model.TianDouPrize;
 import com.tuotiansudai.service.RankingActivityService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

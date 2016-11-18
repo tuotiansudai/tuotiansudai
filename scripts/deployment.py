@@ -54,7 +54,7 @@ class Deployment(object):
             sh('{0} war'.format(self._gradle))
         else :
             sh('{0} ttsd-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
-            sh('{0} ttsd-activity:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
+            sh('{0} ttsd-activity-web:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
             sh('{0} ttsd-pay-wrapper:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
             sh('{0} ttsd-console:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
             sh('{0} ttsd-mobile-api:war -PconfigPath=/workspace/dev-config/'.format(self._gradle))
@@ -76,8 +76,8 @@ class Deployment(object):
         sh('mv ./ttsd-ask-web/src/main/webapp/static_ask.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_ask.zip -d static')
 
-        sh('cd ./ttsd-activity/src/main/webapp && zip -r static_activity.zip activity/')
-        sh('mv ./ttsd-activity/src/main/webapp/static_activity.zip  ./ttsd-web/build/')
+        sh('cd ./ttsd-activity-web/src/main/webapp && zip -r static_activity.zip activity/')
+        sh('mv ./ttsd-activity-web/src/main/webapp/static_activity.zip  ./ttsd-web/build/')
         sh('cd ./ttsd-web/build && unzip static_activity.zip -d static')
 
         sh('cd ./ttsd-point-web/src/main/webapp && zip -r static_point.zip point/')
