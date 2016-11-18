@@ -243,10 +243,20 @@
             <ul class="partner-list">
                 <li><a rel="nofollow" class="logo-capital" href="http://www.umpay.com/"
                        onclick="cnzzPush.trackClick('46首页','合作伙伴模块','联动优势')"  target="_blank">
+                    <img src="${staticServer}/images/homepage/logo-lian.png" alt="安心签">
                 </a>
                 </li>
+
                 <li><a rel="nofollow" class="logo-umpay" href="http://www.king-capital.com/"
-                       onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank"></a>
+                       onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank">
+                    <img src="${staticServer}/images/homepage/logo-jing.png" alt="安心签">
+                </a>
+                </li>
+
+                <li><a rel="nofollow" class="logo-umpay" href="https://www.anxinsign.com/"
+                       onclick="cnzzPush.trackClick('47首页','合作伙伴模块','安心签')" target="_blank">
+                    <img src="${staticServer}/images/homepage/logo-cfca.png" alt="安心签">
+                </a>
                 </li>
             </ul>
         </div>

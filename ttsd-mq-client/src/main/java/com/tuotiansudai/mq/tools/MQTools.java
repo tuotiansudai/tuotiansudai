@@ -44,7 +44,7 @@ public class MQTools {
                 if (!existingTopicNameList.contains(messageTopic.getTopicName())) {
                     createTopic(mnsClient, messageTopic);
                 }
-                initSubscriptQueue(mnsClient, messageTopic);
+                initSubscription(mnsClient, messageTopic);
             });
             mnsClient.close();
         } catch (Exception e) {
@@ -87,14 +87,14 @@ public class MQTools {
         mnsClient.createTopic(topicMeta);
     }
 
-    private static void initSubscriptQueue(MNSClient mnsClient, MessageTopic messageTopic) {
+    private static void initSubscription(MNSClient mnsClient, MessageTopic messageTopic) {
         CloudTopic topic = mnsClient.getTopicRef(messageTopic.getTopicName());
         // queue which need subscription
-        List<String> subscriptQueueNameList = Stream.of(MessageTopicQueue.values())
+        List<String> subscriptionQueueNameList = Stream.of(MessageTopicQueue.values())
                 .filter(q -> q.getTopic().equals(messageTopic))
                 .map(MessageTopicQueue::getQueueName)
                 .collect(Collectors.toList());
-        List<String> subscriptEndpointList = subscriptQueueNameList.stream()
+        List<String> subscriptionEndpointList = subscriptionQueueNameList.stream()
                 .map(queueName -> generateQueueEndpoint(topic, queueName))
                 .collect(Collectors.toList());
 
@@ -104,11 +104,11 @@ public class MQTools {
 
         // remove invalid subscription
         existingSubscriptions.stream()
-                .filter(subscription -> !subscriptEndpointList.contains(subscription.getEndpoint()))
+                .filter(subscription -> !subscriptionEndpointList.contains(subscription.getEndpoint()))
                 .forEach(subscription -> topic.unsubscribe(subscription.getSubscriptionName()));
 
         // subscript new queue
-        subscriptQueueNameList.stream()
+        subscriptionQueueNameList.stream()
                 .filter(queueName -> !existingEndpoints.contains(generateQueueEndpoint(topic, queueName)))
                 .map(queueName -> createQueue(mnsClient, queueName))
                 .forEach(queueName -> topic.subscribe(generateSubscriptionMeta(messageTopic, queueName, generateQueueEndpoint(topic, queueName))));
