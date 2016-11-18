@@ -400,7 +400,7 @@ $pointColor:#ff5400;
           position: absolute;
           top:7px;
           left:0;
-          background:url('/images/homepage/icon-line.png') no-repeat center;
+          background:url('../../images/homepage/icon-line.png') no-repeat center;
         }
         &:after{
           content:'';
@@ -409,7 +409,7 @@ $pointColor:#ff5400;
           position: absolute;
           top:7px;
           right:0;
-          background:url('/images/homepage/icon-line.png') no-repeat center;
+          background:url('../../images/homepage/icon-line.png') no-repeat center;
         }
       }
     }
