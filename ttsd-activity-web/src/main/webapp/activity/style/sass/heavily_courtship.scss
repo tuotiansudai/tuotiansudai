@@ -1,11 +1,12 @@
 @charset "utf-8";
 body {
-  background: #eec859 url("/activity/images/heavily-courtship/bg-decorate.jpg") center 1080px no-repeat;
+  background: #eec859;
   overflow-x: hidden;
 }
 .main-frame {
   width: 100%;
   margin: 0 auto;
+
 }
 .tour-slide  {
   height: 860px;
@@ -17,8 +18,29 @@ body {
 .main-content-heavily {
   margin: 0 26px 30px 24px;
   background: #fff;
+  position: relative;
+  .bg-line {
+    width: 1900px;
+    z-index: 1;
+    transform: rotate(134deg);
+    position: absolute;
+    top: 479px;
+    left: -472px;
+    height: 1px;
+    background: #fff;
+    &:nth-child(1) {
+      width: 1500px;
+      left: -363px;
+    }
+    &:nth-child(2) {
+      top: 1500px;
+    }
+  }
   .con-inner {
     padding:25px;
+    background: #fff;
+    z-index: 10;
+    position: relative;
   }
   .prompt-box {
     background: #fcf7d5;
@@ -359,12 +381,20 @@ body {
   }
   .main-content-heavily {
     margin: 0 10px 20px 10px;
+    .bg-line {
+      display: none;
+    }
+
     i.column-title-co {
       transform: scale(0.7);
+      -webkit-transform:scale(0.7);
+      -ms-transform:scale(0.7);
       left: -70px;
     }
     .to-invest-button a{
       transform: scale(0.8);
+      -webkit-transform:scale(0.8);
+      -ms-transform:scale(0.8);
     }
     .bg-info-img {
       top:0;
@@ -382,18 +412,26 @@ body {
     }
     .icon-reward {
       transform: scale(0.7);
+      -webkit-transform:scale(0.7);
+      -ms-transform:scale(0.7);
     }
     .bg-info-img  {
       transform: scale(0.7);
+      -webkit-transform:scale(0.7);
+      -ms-transform:scale(0.7);
       right: -10px;
     }
     .info-img {
       transform: scale(0.7);
+      -webkit-transform:scale(0.7);
+      -ms-transform:scale(0.7);
       top:0;
       right:-10px;
     }
     .round-cake {
       transform: scale(0.75);
+      -webkit-transform:scale(0.75);
+      -ms-transform:scale(0.75);
       margin: 5px 0;
     }
     .con-inner {
@@ -462,6 +500,8 @@ body {
         }
         dt {
           transform: scale(0.7);
+          -webkit-transform:scale(0.7);
+          -ms-transform:scale(0.7);
           margin-right: 0;
         }
         dd {
@@ -499,7 +539,7 @@ body {
         }
         &.last-subject {
           margin:auto;
-          margin-left:8px;
+          //margin-left:8px;
         }
       }
       &.last {
@@ -524,6 +564,8 @@ body {
   .main-content-heavily {
     .bg-info-img,.info-img {
       transform: scale(0.6);
+      -webkit-transform:scale(0.6);
+      -ms-transform:scale(0.6);
       right: -23px;
     }
   }
@@ -553,12 +595,17 @@ body {
   .main-content-heavily {
     .bg-info-img,.info-img {
       transform: scale(0.55);
+      -webkit-transform:scale(0.55);
+      -ms-transform:scale(0.55);
       right: -37px;
     }
   }
   .main-content-heavily .mind-category .subject {
     margin-bottom: 20px;
     margin-left:7px;
+    &.last-subject {
+      margin-left:7px;
+    }
   }
   .main-content-heavily .to-invest-button {
     margin: 10px auto;
