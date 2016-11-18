@@ -37,14 +37,6 @@ public class RandomUtils {
         return stringBuilder.toString();
     }
 
-    private static String showChar(int showLength) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < showLength; i++) {
-            sb.append('*');
-        }
-        return sb.toString();
-    }
-
     public String encryptMobile(String loginName, String investorLoginName, long investId, Source source) {
         String userMobile;
         String investUserMobile = userMapper.findByLoginName(investorLoginName).getMobile();
@@ -56,31 +48,31 @@ public class RandomUtils {
         }
         String redisKey = MessageFormat.format(REDIS_KEY_TEMPLATE, String.valueOf(investId), investUserMobile);
         if (showRandomLoginNameList.contains(investorLoginName) && !redisWrapperClient.exists(redisKey)) {
-            redisWrapperClient.set(redisKey, investUserMobile.substring(0, 3) + RandomUtils.showChar(4) + generateNumString(4));
+            redisWrapperClient.set(redisKey, investUserMobile.substring(0, 3) + MobileEncryptor.showChar(4) + generateNumString(4));
         }
         String encryptMobile;
         if (source.equals(Source.WEB)) {
-            encryptMobile = encryptWebMiddleMobile(investUserMobile);
+            encryptMobile = MobileEncryptor.encryptWebMiddleMobile(investUserMobile);
         } else {
-            encryptMobile = encryptAppMiddleMobile(investUserMobile);
+            encryptMobile = MobileEncryptor.encryptAppMiddleMobile(investUserMobile);
         }
         return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : encryptMobile;
     }
 
-    public String encryptMobile(String loginName, String encryptLoginName) {
+    public String encryptMobileForApp(String loginName, String encryptLoginName) {
         if (encryptLoginName.equalsIgnoreCase(loginName)) {
             return "您的位置";
         }
 
-        return encryptAppMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
+        return MobileEncryptor.encryptAppMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
     }
 
-    public String encryptNewMobile(String loginName, String encryptLoginName) {
+    public String encryptMobileForWeb(String loginName, String encryptLoginName) {
         if (encryptLoginName.equalsIgnoreCase(loginName)) {
             return "您的位置";
         }
 
-        return encryptWebMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
+        return MobileEncryptor.encryptWebMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
     }
 
     public String encryptMobile(String loginName, String encryptLoginName, Source source) {
@@ -89,25 +81,9 @@ public class RandomUtils {
         }
 
         if (source.equals(Source.WEB)) {
-            return encryptWebMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
+            return MobileEncryptor.encryptWebMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
         }
-        return encryptAppMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
-    }
 
-    public String encryptWebMiddleMobile(String mobile) {
-        return mobile.substring(0, 3) + RandomUtils.showChar(4) + mobile.substring(7);
-    }
-
-    public String encryptAppMiddleMobile(String mobile) {
-        return mobile.substring(0, 3) + RandomUtils.showChar(2) + mobile.substring(9);
-    }
-
-    public String encryptMobile(String mobile) {
-        final int mobileLength = 11;
-        if (mobile.length() != mobileLength) {
-            return mobile;
-        } else {
-            return mobile.substring(0, 3) + RandomUtils.showChar(6) + mobile.substring(9, 11);
-        }
+        return MobileEncryptor.encryptAppMiddleMobile(userMapper.findByLoginName(encryptLoginName).getMobile());
     }
 }

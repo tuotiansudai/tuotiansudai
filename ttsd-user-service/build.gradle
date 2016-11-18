@@ -14,7 +14,8 @@ sourceSets {
 
 dependencies {
     compile project(':ttsd-dependency'),
-            project(":ttsd-config")
+            project(":ttsd-config"),
+            project(":ttsd-util")
 }
 
 processResources.outputs.upToDateWhen { false }
