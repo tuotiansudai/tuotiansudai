@@ -26,8 +26,8 @@ public class MobileAppUserBillListServiceImpl implements MobileAppUserBillListSe
     private UserBillMapper userBillMapper;
 
     private final static Map<UserBillCategory, List<UserBillOperationType>> OPERATION_TYPE = Maps.newHashMap(ImmutableMap.<UserBillCategory, List<UserBillOperationType>>builder()
-            .put(UserBillCategory.INCOMING, Lists.newArrayList(UserBillOperationType.TI_BALANCE, UserBillOperationType.UNFREEZE, UserBillOperationType.TO_BALANCE))
-            .put(UserBillCategory.EXPENSE, Lists.newArrayList(UserBillOperationType.TO_BALANCE, UserBillOperationType.FREEZE))
+            .put(UserBillCategory.INCOMING, Lists.newArrayList(UserBillOperationType.TI_BALANCE, UserBillOperationType.UNFREEZE))
+            .put(UserBillCategory.EXPENSE, Lists.newArrayList(UserBillOperationType.TO_BALANCE, UserBillOperationType.FREEZE,UserBillOperationType.TO_FREEZE))
             .build());
 
     @Override
