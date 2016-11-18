@@ -5,7 +5,7 @@ dependencies {
     compile project(':ttsd-service'),
             project(':ttsd-point-service'),
             project(':ttsd-jpush'),
-            project(':ttsd-activity-repository')
+            project(':ttsd-edxactivity-repository')
 }
 
 startScripts {

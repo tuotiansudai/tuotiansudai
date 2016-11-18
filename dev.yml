@@ -97,6 +97,7 @@ mobile-api:
   environment:
     - "TZ=Asia/Shanghai"
     - "JAVA_OPTS=-Xmx1024m"
+    - "spring.profiles.active=QA"
   ports:
     - "20006:8080"
   volumes:
@@ -118,7 +119,7 @@ activity:
   ports:
     - "20007:8080"
   volumes:
-    - ./ttsd-activity/war:/usr/local/tomcat/webapps
+    - ./ttsd-activity-web/war:/usr/local/tomcat/webapps
     - /var/log/tuotian/activity:/usr/local/tomcat/logs
     - /var/log/tuotian/activity:/var/log/tomcat
   links:

@@ -78,6 +78,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.CouponRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
             createCouponRepayCallBackJobIfNotExist();
         }
+        if (JobType.ExtraRateRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
+            createExtraRateRepayCallBackIfNotExist();
+        }
         if (JobType.PlatformBalanceLowNotify.name().equals(schedulerName)) {
             platformBalanceLowNotifyJob();
         }
@@ -258,6 +261,23 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .replaceExistingJob(true)
                     .runWithSchedule(SimpleScheduleBuilder
                             .repeatSecondlyForever(CouponRepayNotifyCallbackJob.RUN_INTERVAL_SECONDS)
+                            .withMisfireHandlingInstructionIgnoreMisfires())
+                    .withIdentity(jobGroup, jobName)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createExtraRateRepayCallBackIfNotExist() {
+        final JobType jobType = JobType.ExtraRateRepayCallBack;
+        final String jobGroup = ExtraRateInvestCallbackJob.JOB_GROUP;
+        final String jobName = ExtraRateInvestCallbackJob.JOB_NAME;
+        try {
+            jobManager.newJob(jobType, ExtraRateInvestCallbackJob.class)
+                    .replaceExistingJob(true)
+                    .runWithSchedule(SimpleScheduleBuilder
+                            .repeatSecondlyForever(ExtraRateInvestCallbackJob.RUN_INTERVAL_SECONDS)
                             .withMisfireHandlingInstructionIgnoreMisfires())
                     .withIdentity(jobGroup, jobName)
                     .submit();

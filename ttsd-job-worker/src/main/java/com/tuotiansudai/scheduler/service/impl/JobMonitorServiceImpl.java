@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.job.AdvanceRepayCallbackJob;
-import com.tuotiansudai.job.InvestCallbackJob;
-import com.tuotiansudai.job.InvestTransferCallbackJob;
-import com.tuotiansudai.job.NormalRepayCallbackJob;
+import com.tuotiansudai.job.*;
 import com.tuotiansudai.scheduler.repository.mapper.ExecutionLogMapper;
 import com.tuotiansudai.scheduler.repository.model.ExecuteStatus;
 import com.tuotiansudai.scheduler.repository.model.ExecutionLogModel;
@@ -50,7 +47,9 @@ public class JobMonitorServiceImpl implements JobMonitorService {
                 InvestCallbackJob.class,
                 InvestTransferCallbackJob.class,
                 NormalRepayCallbackJob.class,
-                AdvanceRepayCallbackJob.class
+                AdvanceRepayCallbackJob.class,
+                CouponRepayNotifyCallbackJob.class,
+                ExtraRateInvestCallbackJob.class
         );
     }
 

@@ -140,13 +140,11 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                         String.valueOf(amount));
 
                 String statusString = redisWrapperClient.hget(redisKey, String.valueOf(investExtraRateModel.getId()));
-                if (Strings.isNullOrEmpty(statusString)) {
+                if (Strings.isNullOrEmpty(statusString) || SyncRequestStatus.FAILURE.equals(SyncRequestStatus.valueOf(statusString))) {
                     redisWrapperClient.hset(redisKey, String.valueOf(investExtraRateModel.getId()), SyncRequestStatus.SENT.name());
                     logger.info(MessageFormat.format("[Extra Rate Repay loanRepay.id {0}] investExtraRateModel.id payback({1}) send payback request",
                             String.valueOf(loanRepayId), String.valueOf(investExtraRateModel.getId())));
-
                     TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-
                     boolean isSuccess = responseModel.isSuccess();
                     redisWrapperClient.hset(redisKey, String.valueOf(investExtraRateModel.getId()), isSuccess ? SyncRequestStatus.SUCCESS.name() : SyncRequestStatus.FAILURE.name());
                     logger.info(MessageFormat.format("[Extra Rate Repay loanRepay.id {0}] investExtraRateModel.id payback({1}) payback response is {2}",
@@ -186,6 +184,8 @@ public class ExtraRateServiceImpl implements ExtraRateService {
                    this.processOneCallback(model);
                 } catch (Exception e) {
                     fatalLog("extra rate invest callback, processOneCallback error. orderId:" + model.getOrderId(), e);
+                    logger.error(MessageFormat.format("[Extra Rate investExtraRateModel.id payback({1}) payback throw exception",
+                             String.valueOf(model.getOrderId().split("X")[0])), e);
                 }
             }
         }

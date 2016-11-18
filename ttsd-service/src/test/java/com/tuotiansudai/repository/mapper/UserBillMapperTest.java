@@ -69,11 +69,11 @@ public class UserBillMapperTest {
         List<UserBillBusinessType> billBusinessTypes = Lists.newArrayList();
         billBusinessTypes.add(UserBillBusinessType.ACTIVITY_REWARD);
         billBusinessTypes.add(UserBillBusinessType.ADVANCE_REPAY);
-        params.put("userBillBusinessType",billBusinessTypes);
-        params.put("indexPage",1);
-        params.put("startTime",new Date());
-        params.put("endTime",new Date());
-        params.put("pageSize",10);
+        params.put("userBillBusinessType", billBusinessTypes);
+        params.put("indexPage", 1);
+        params.put("startTime", new Date());
+        params.put("endTime", new Date());
+        params.put("pageSize", 10);
         List<UserBillModel> list = userBillMapper.findUserBills(params);
         assertTrue(list.size() <= 10);
     }

@@ -310,6 +310,10 @@ public class CouponRepayServiceTest {
         Date repayDate = lastRepayDate.plusDays(InterestCalculator.DAYS_OF_MONTH).toDate();
         assertEquals("123", String.valueOf(value.getExpectedInterest()));
         assertEquals("12", String.valueOf(value.getExpectedFee()));
+
+        when(couponRepayMapper.findByUserCouponIdAndPeriod(anyLong(),anyLong())).thenReturn(new CouponRepayModel());
+        couponRepayService.generateCouponRepay(loanModel.getId());
+        verify(couponRepayMapper, times(3)).create(argumentCaptor.capture());
     }
 
 
