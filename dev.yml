@@ -197,7 +197,7 @@ worker-jpush:
     - "redis-server"
 
 worker-repay:
- image: "anapsix/alpine-java:8_jdk"
+  image: "anapsix/alpine-java:8_jdk"
   environment:
     - "TZ=Asia/Shanghai"
     - "JAVA_OPTS=-Xmx1024m"
