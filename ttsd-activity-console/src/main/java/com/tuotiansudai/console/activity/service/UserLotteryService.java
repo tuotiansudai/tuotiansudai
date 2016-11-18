@@ -134,7 +134,7 @@ public class UserLotteryService{
         if(accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)){
             lotteryTime ++;
         }
-        
+
 
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
         if(bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)){
@@ -145,9 +145,13 @@ public class UserLotteryService{
             lotteryTime ++;
         }
 
+        //每投资单笔投资
+
         if(investMapper.countInvestorSuccessInvestByInvestTime(userModel.getLoginName(), startTime, endTime) > 0){
             lotteryTime ++;
         }
+
+
 
         return lotteryTime;
     }
