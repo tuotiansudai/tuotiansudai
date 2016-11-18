@@ -1,8 +1,6 @@
 package com.tuotiansudai.coupon.service.impl;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
@@ -19,7 +17,6 @@ import com.tuotiansudai.mq.client.MQClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.util.TransactionUtil;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -34,7 +31,6 @@ import javax.annotation.Resource;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class CouponAssignmentServiceImpl implements CouponAssignmentService {
@@ -189,13 +185,13 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     }
 
     /**
-     * 给指定的用户发放指定的 userGroup 类型的优惠券
+     * 异步给指定的用户发放指定的 userGroup 类型的优惠券
      *
      * @param loginNameOrMobile 指定的用户
      * @param userGroups        指定的userGroup
      */
     @Override
-    public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
+    public void asyncAssignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName().toLowerCase();
 
         // 当前可领取的优惠券
@@ -204,64 +200,40 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         // 该用户已领取的优惠券
         final List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginNameAndCouponId(loginName, null);
 
-        // 该用户可领取的优惠券
-        List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
-            @Override
-            public boolean apply(CouponModel couponModel) {
-
-                // 该优惠券在参数指定的userGroup里  且 该优惠券和该用户符合该userGroup的规则
-                boolean isInUserGroup = userGroups.contains(couponModel.getUserGroup())
-                        && CouponAssignmentServiceImpl.this.getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName);
-
-                // 该优惠券是否可以被发放给该用户
-                boolean isAssignableCoupon = this.isAssignableCoupon(couponModel);
-
-                return isInUserGroup && isAssignableCoupon;
-            }
-
-            // 用户已经持有的该类型的优惠券的数量
-            int assignedCouponCount;
-
-            /**
-             * 检查优惠券是否可以被发送给该用户
-             * 如果用户没有持有该类型的优惠券，则返回true
-             * 否则，如果用户持有的该类型的优惠券都被使用过了，且该优惠券可以被多次领取，则返回true
-             *
-             * @param couponModel
-             * @return
-             */
-            private boolean isAssignableCoupon(final CouponModel couponModel) {
-
-                assignedCouponCount = 0;
-
-                // 用户持有的该类型的优惠券（可能为多个）
-                Stream<UserCouponModel> assignedUserCoupons = userCouponModels.stream().filter(input -> input.getCouponId() == couponModel.getId());
-
-                // 是否存在未使用的该类型优惠券
-                boolean isUnusedUserCouponExisted = assignedUserCoupons.anyMatch(input -> {
-                    assignedCouponCount++;
-                    return input.getStatus() != InvestStatus.SUCCESS;
+        coupons.stream()
+                // 该用户可领取的优惠券
+                .filter(couponModel -> {
+                    return userGroups.contains(couponModel.getUserGroup())// 该优惠券在参数指定的userGroup里
+                            && getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName) // 该优惠券和该用户符合该userGroup的规则
+                            && isAssignableCoupon(couponModel, userCouponModels); // 该优惠券是否可以被发放给该用户
+                })
+                // 把要发的优惠券写入mq中
+                .forEach(couponModel -> {
+                    String queueMessage = MessageQueue.CouponAssigning.getMessageFormat()
+                            .replace("{loginName}", loginName)
+                            .replace("{couponId}", String.valueOf(couponModel.getId()));
+                    mqClient.sendMessage(MessageQueue.CouponAssigning, queueMessage);
+                    //((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
                 });
+    }
 
-                // 如果用户没有持有该类型的优惠券，则该用户可以得到该优惠券，返回true
-                if (assignedCouponCount == 0) {
-                    return true;
-                }
 
-                // 该优惠券可以被多次领取（目前只有生日券）且 用户持有的该优惠券已经被全部使用了，则返回true，表示该优惠券还可以被该用户再次领取
-                return couponModel.isMultiple() && !isUnusedUserCouponExisted;
-            }
-        }));
-
-        TransactionUtil.runAfterCommit(() -> {
-            for (CouponModel couponModel : couponModels) {
-                String queueMessage = MessageQueue.CouponAssigning.getMessageFormat()
-                        .replace("{loginName}", loginName)
-                        .replace("{couponId}", String.valueOf(couponModel.getId()));
-                mqClient.sendMessage(MessageQueue.CouponAssigning, queueMessage);
-//            ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
-            }
-        });
+    /**
+     * 检查优惠券是否可以被发送给该用户
+     * 如果用户没有持有该类型的优惠券，则返回true
+     * 否则，如果用户持有的该类型的优惠券都被使用过了，且该优惠券可以被多次领取，则返回true
+     */
+    private boolean isAssignableCoupon(CouponModel couponModel, List<UserCouponModel> userCouponModels) {
+        // 如果用户持有该类型的优惠券
+        if (userCouponModels.stream().anyMatch(input -> input.getCouponId() == couponModel.getId())) {
+            // 该优惠券可以被多次领取（目前只有生日券）而且...
+            return couponModel.isMultiple() &&
+                    userCouponModels.stream()
+                            .filter(input -> input.getCouponId() == couponModel.getId())    // 所有该类型的优惠券
+                            .allMatch(input -> input.getStatus() == InvestStatus.SUCCESS);  // 都使用过了
+        }
+        // 如果用户没有持有该类型的优惠券，则该用户可以得到该优惠券，返回true
+        return true;
     }
 
     @Transactional
