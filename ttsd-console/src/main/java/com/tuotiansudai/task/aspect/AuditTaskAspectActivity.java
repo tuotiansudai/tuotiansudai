@@ -1,9 +1,9 @@
 package com.tuotiansudai.task.aspect;
 
 
+import com.tuotiansudai.activity.repository.dto.ActivityDto;
+import com.tuotiansudai.activity.repository.model.ActivityStatus;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.ActivityDto;
-import com.tuotiansudai.repository.model.ActivityStatus;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.UserService;
@@ -36,7 +36,7 @@ public class AuditTaskAspectActivity {
 
     static Logger logger = Logger.getLogger(AuditTaskAspectLoan.class);
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.ActivityService.saveOrUpdate(..))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.activity.service.ActivityService.saveOrUpdate(..))", returning = "returnValue")
     public void afterCreateEditRecheckActivity(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after create edit recheck activity aspect.");
         try {
