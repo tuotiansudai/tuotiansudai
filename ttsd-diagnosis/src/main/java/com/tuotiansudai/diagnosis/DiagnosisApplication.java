@@ -83,7 +83,7 @@ class DiagnosisApplication {
                 LocalDateTime fireTime = LocalDateTime.now();
                 String description = "diagnosis bills at " + fireTime.toString();
                 logger.info(description);
-                runOnce(new String[]{}, lastFireTime, r -> mailReport(description, r));
+                runOnce(new String[]{}, getLastFireTime(), r -> mailReport(description, r));
                 logFireTime(fireTime);
             }
         }, Date.from(nextFireTime.toInstant(ZoneOffset.ofHours(8))), 1000 * 60 * 60 * 24);
