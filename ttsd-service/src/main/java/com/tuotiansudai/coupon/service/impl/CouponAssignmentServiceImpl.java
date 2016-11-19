@@ -3,6 +3,7 @@ package com.tuotiansudai.coupon.service.impl;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -13,7 +14,6 @@ import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.util.InvestAchievementUserCollector;
 import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.mq.client.MQClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
@@ -50,7 +50,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     private ExchangeCodeService exchangeCodeService;
 
     @Autowired
-    private MQClient mqClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Resource(name = "allUserCollector")
     private UserCollector allUserCollector;
@@ -212,7 +212,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                     String queueMessage = MessageQueue.CouponAssigning.getMessageFormat()
                             .replace("{loginName}", loginName)
                             .replace("{couponId}", String.valueOf(couponModel.getId()));
-                    mqClient.sendMessage(MessageQueue.CouponAssigning, queueMessage);
+                    mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, queueMessage);
                     //((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
                 });
     }

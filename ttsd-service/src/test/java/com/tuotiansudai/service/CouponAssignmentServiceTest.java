@@ -1,6 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -9,7 +10,6 @@ import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.mq.client.MQClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -68,7 +68,7 @@ public class CouponAssignmentServiceTest {
     private InvestMapper investMapper;
 
     @Mock
-    private MQClient mqClient;
+    private MQWrapperClient mqWrapperClient;
 
 
     @Test
@@ -121,14 +121,14 @@ public class CouponAssignmentServiceTest {
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, false);
 
         MockitoAnnotations.initMocks(this);
-        ReflectionTestUtils.setField(couponAssignmentService, "mqClient", mqClient);
+        ReflectionTestUtils.setField(couponAssignmentService, "mqWrapperClient", mqWrapperClient);
 
         ArgumentCaptor<MessageQueue> messageQueueCaptor = ArgumentCaptor.forClass(MessageQueue.class);
         ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
 
         couponAssignmentService.asyncAssignUserCoupon(fakeUser.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER));
 
-        verify(mqClient, times(1)).sendMessage(messageQueueCaptor.capture(), stringCaptor.capture());
+        verify(mqWrapperClient, times(1)).sendMessage(messageQueueCaptor.capture(), stringCaptor.capture());
         assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
         String queueMessage = MessageQueue.CouponAssigning.getMessageFormat()
                 .replace("{loginName}", fakeUser.getLoginName().toLowerCase())
