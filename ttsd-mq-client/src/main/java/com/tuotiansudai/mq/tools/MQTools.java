@@ -29,6 +29,10 @@ public class MQTools {
         Properties properties = new Properties();
         properties.load(new FileInputStream(configFile));
 
+        String enabled = properties.getProperty("aliyun.mns.enabled");
+        if (!"true".equals(enabled)) {
+            return;
+        }
         String endPoint = properties.getProperty("aliyun.mns.endpoint");
         String accessKeyId = properties.getProperty("aliyun.mns.accessKeyId");
         String accessKeySecret = properties.getProperty("aliyun.mns.accessKeySecret");
