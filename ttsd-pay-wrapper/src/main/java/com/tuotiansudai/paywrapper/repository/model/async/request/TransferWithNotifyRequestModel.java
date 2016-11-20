@@ -13,6 +13,10 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
 
     private String particUserId;
 
+    private String merAccountId;
+
+    private String particAccountId;
+
     private String particAccType = "01";
 
     private String merDate;
@@ -54,5 +58,61 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
         payRequestData.put("partic_acc_type", this.particAccType);
         payRequestData.put("amount", this.amount);
         return payRequestData;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getParticUserId() {
+        return particUserId;
+    }
+
+    public void setParticUserId(String particUserId) {
+        this.particUserId = particUserId;
+    }
+
+    public String getMerAccountId() {
+        return merAccountId;
+    }
+
+    public void setMerAccountId(String merAccountId) {
+        this.merAccountId = merAccountId;
+    }
+
+    public String getParticAccountId() {
+        return particAccountId;
+    }
+
+    public void setParticAccountId(String particAccountId) {
+        this.particAccountId = particAccountId;
+    }
+
+    public String getParticAccType() {
+        return particAccType;
+    }
+
+    public void setParticAccType(String particAccType) {
+        this.particAccType = particAccType;
+    }
+
+    public String getMerDate() {
+        return merDate;
+    }
+
+    public void setMerDate(String merDate) {
+        this.merDate = merDate;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 }
