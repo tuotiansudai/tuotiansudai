@@ -1,9 +1,9 @@
 package com.tuotiansudai.console.activity.controller;
 
-import com.tuotiansudai.activity.dto.PromotionDto;
-import com.tuotiansudai.activity.dto.PromotionStatus;
+import com.tuotiansudai.activity.repository.dto.PromotionDto;
+import com.tuotiansudai.activity.repository.dto.PromotionStatus;
 import com.tuotiansudai.activity.repository.model.PromotionModel;
-import com.tuotiansudai.console.activity.service.PromotionService;
+import com.tuotiansudai.console.activity.service.ActivityConsolePromotionService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -19,7 +19,7 @@ import java.util.List;
 public class PromotionController {
 
     @Autowired
-    private PromotionService promotionService;
+    private ActivityConsolePromotionService activityConsolePromotionService;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public ModelAndView promotionCreate() {
@@ -29,7 +29,7 @@ public class PromotionController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView promotionCreate(@ModelAttribute PromotionDto promotionDto) {
-        promotionService.create(LoginUserInfo.getLoginName(), promotionDto);
+        activityConsolePromotionService.create(LoginUserInfo.getLoginName(), promotionDto);
         return new ModelAndView("redirect:/activity-console/activity-manage/promotion/promotion-list");
     }
 
@@ -40,7 +40,7 @@ public class PromotionController {
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
         String loginName = LoginUserInfo.getLoginName();
-        dataDto.setStatus(promotionService.delPromotion(loginName, id));
+        dataDto.setStatus(activityConsolePromotionService.delPromotion(loginName, id));
         return baseDto;
     }
 
@@ -50,7 +50,7 @@ public class PromotionController {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
-        promotionService.AuditPromotion(LoginUserInfo.getLoginName(), PromotionStatus.APPROVED, id);
+        activityConsolePromotionService.AuditPromotion(LoginUserInfo.getLoginName(), PromotionStatus.APPROVED, id);
         dataDto.setStatus(true);
         return baseDto;
     }
@@ -61,7 +61,7 @@ public class PromotionController {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
-        promotionService.AuditPromotion(LoginUserInfo.getLoginName(), PromotionStatus.REJECTION, id);
+        activityConsolePromotionService.AuditPromotion(LoginUserInfo.getLoginName(), PromotionStatus.REJECTION, id);
         dataDto.setStatus(true);
         return baseDto;
     }
@@ -70,7 +70,7 @@ public class PromotionController {
     @ResponseBody
     public ModelAndView editPromotion(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("/promotion-edit");
-        PromotionModel promotionModel = this.promotionService.findById(id);
+        PromotionModel promotionModel = this.activityConsolePromotionService.findById(id);
         modelAndView.addObject("promotion", promotionModel);
         return modelAndView;
     }
@@ -78,14 +78,14 @@ public class PromotionController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView updatePromotion(@ModelAttribute PromotionDto promotionDto) {
         String loginName = LoginUserInfo.getLoginName();
-        promotionService.updatePromotion(loginName, promotionDto);
+        activityConsolePromotionService.updatePromotion(loginName, promotionDto);
         return new ModelAndView("redirect:/activity-console/activity-manage/promotion/promotion-list");
     }
 
     @RequestMapping(value = "/promotion-list")
     public ModelAndView promotionList() {
         ModelAndView modelAndView = new ModelAndView("/promotion-list");
-        List<PromotionModel> promotionModelList = promotionService.promotionList();
+        List<PromotionModel> promotionModelList = activityConsolePromotionService.promotionList();
         modelAndView.addObject("promotionList", promotionModelList);
         return modelAndView;
     }

@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.point.dto.ProductShowItemDto;
+import com.tuotiansudai.point.repository.dto.ProductShowItemDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.*;
 import com.tuotiansudai.point.service.*;
@@ -84,7 +84,7 @@ public class PointShopController {
         }
     }
 
-    @RequestMapping(value = "/{id}/{goodsType}/detail", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/{goodsType:(?:COUPON|PHYSICAL|VIRTUAL)}/detail", method = RequestMethod.GET)
     public ModelAndView pointSystemDetail(@PathVariable long id,
                                           @PathVariable GoodsType goodsType) {
         ModelAndView modelAndView = new ModelAndView("/point-detail");
@@ -108,7 +108,7 @@ public class PointShopController {
         }
     }
 
-    @RequestMapping(value = "/order/{id}/{goodsType}/{number}", method = RequestMethod.GET)
+    @RequestMapping(value = "/order/{id}/{goodsType:(?:COUPON|PHYSICAL|VIRTUAL)}/{number}", method = RequestMethod.GET)
     public ModelAndView pointSystemOrder(@PathVariable long id, @PathVariable GoodsType goodsType, @PathVariable int number) {
         ModelAndView modelAndView = new ModelAndView("/point-order");
 

@@ -33,6 +33,7 @@ import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
+import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -514,8 +515,9 @@ public class InvestServiceImpl implements InvestService {
 
     private void calculateActivityAutumnInvest(InvestModel investModel) {
         try {
-            String mobile = userMapper.findByLoginName(investModel.getLoginName()).getMobile();
-            String userName = accountMapper.findByLoginName(investModel.getLoginName()).getUserName();
+            UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
+            String mobile = userModel.getMobile();
+            String userName = userModel.getUserName();
             if (investModel.getCreatedTime().before(this.activityAutumnStartTime) || investModel.getCreatedTime().after(this.activityAutumnEndTime)) {
                 return;
             }

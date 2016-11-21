@@ -1,10 +1,12 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.mapper.ActivityMapper;
+import com.tuotiansudai.activity.repository.model.ActivityModel;
+import com.tuotiansudai.activity.repository.model.ActivityStatus;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppActivityService;
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.repository.mapper.ActivityMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;

@@ -7,11 +7,11 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.TransferCashDto;
-import com.tuotiansudai.dto.ranking.DrawLotteryDto;
-import com.tuotiansudai.dto.ranking.PrizeWinnerDto;
-import com.tuotiansudai.dto.ranking.UserScoreDto;
-import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
-import com.tuotiansudai.repository.TianDouPrize;
+import com.tuotiansudai.activity.repository.dto.DrawLotteryDto;
+import com.tuotiansudai.activity.repository.dto.PrizeWinnerDto;
+import com.tuotiansudai.activity.repository.dto.UserScoreDto;
+import com.tuotiansudai.activity.repository.dto.UserTianDouRecordDto;
+import com.tuotiansudai.activity.repository.model.TianDouPrize;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -131,8 +131,8 @@ public class RankingActivityServiceImpl implements RankingActivityService {
 
         UserModel userModel = userMapper.findByLoginName(loginName);
         AccountModel accountModel = accountService.findByLoginName(loginName);
-        String userName = accountModel == null ? "" : accountModel.getUserName();
-        String identityNumber = accountModel == null ? "" : accountModel.getIdentityNumber();
+        String userName = accountModel == null ? "" : userModel.getUserName();
+        String identityNumber = accountModel == null ? "" : userModel.getIdentityNumber();
 
         String dateTime = DateFormatUtils.format(new Date(), "yyyy-MM-dd_HH:mm:ss");
         String winnerPrize = prize + "+" + dateTime;

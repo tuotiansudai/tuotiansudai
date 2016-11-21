@@ -5,16 +5,10 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.TransferApplicationAutoCancelJob;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.dto.TransferApplicationFormDto;
@@ -38,6 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -105,6 +102,9 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         return dto;
     }
 
+    @Autowired
+    private AnxinSignPropertyMapper anxinSignPropertyMapper;
+
     @Override
     public TransferApplicationFormDto getApplicationForm(long investId) {
         InvestModel investModel = investMapper.findById(investId);
@@ -117,7 +117,9 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         long transferAmountLower = new BigDecimal(1 - transferRuleModel.getDiscount()).multiply(new BigDecimal(investModel.getAmount())).setScale(0, BigDecimal.ROUND_UP).longValue();
         int holdDays = TransferRuleUtil.getInvestHoldDays(loanModel.getType(), loanModel.getRecheckTime(), investModel.getCreatedTime());
 
-        return new TransferApplicationFormDto(investId, investModel.getAmount(), transferAmountLower, transferFeeRate, transferFee, expiredDate, holdDays);
+        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(investModel.getLoginName());
+
+        return new TransferApplicationFormDto(investId, investModel.getAmount(), transferAmountLower, transferFeeRate, transferFee, expiredDate, holdDays, anxinProp);
     }
 
     @Override
@@ -148,12 +150,8 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return false;
         }
 
-        boolean isCanceledToday = Iterators.any(transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.CANCEL)).iterator(), new Predicate<TransferApplicationModel>() {
-            @Override
-            public boolean apply(TransferApplicationModel input) {
-                return new DateTime(input.getApplicationTime()).isEqual(new DateTime().withTimeAtStartOfDay());
-            }
-        });
+        boolean isCanceledToday = Iterators.any(transferApplicationMapper.findByTransferInvestId(investModel.getId(),
+                Lists.newArrayList(TransferStatus.CANCEL)).iterator(), input -> new DateTime(input.getApplicationTime()).isEqual(new DateTime().withTimeAtStartOfDay()));
         if (isCanceledToday) {
             logger.error(MessageFormat.format("[Transfer Apply {0}] invest application was canceled today", String.valueOf(investModel.getId())));
             return false;
@@ -293,12 +291,9 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             index = index > totalPages ? totalPages : index;
             items = transferApplicationMapper.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, (index - 1) * pageSize, pageSize);
         }
-        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, new Function<TransferApplicationRecordDto, TransferApplicationPaginationItemDataDto>() {
-            @Override
-            public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto input) {
-                TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
-                return transferApplicationPaginationItemDataDto;
-            }
+        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, input -> {
+            TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
+            return transferApplicationPaginationItemDataDto;
         });
 
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> dto = new BasePaginationDataDto(index, pageSize, count, records);
@@ -317,19 +312,21 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             items = transferApplicationMapper.findTransferApplicationPaginationByLoginName(transferrerLoginName, statusList, (index - 1) * pageSize, pageSize);
 
         }
-        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, new Function<TransferApplicationRecordDto, TransferApplicationPaginationItemDataDto>() {
-            @Override
-            public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto input) {
-                TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
-                if (input.getTransferStatus() == TransferStatus.TRANSFERABLE) {
-                    transferApplicationPaginationItemDataDto.setTransferStatus(isTransferable(input.getTransferApplicationId()) ? input.getTransferStatus().getDescription() : "--");
-                } else if (input.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
-                    transferApplicationPaginationItemDataDto.setTransferStatus("--");
-                } else {
-                    transferApplicationPaginationItemDataDto.setTransferStatus(input.getTransferStatus().getDescription());
-                }
-                return transferApplicationPaginationItemDataDto;
+        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, input -> {
+            TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
+            if (input.getTransferStatus() == TransferStatus.TRANSFERABLE) {
+                transferApplicationPaginationItemDataDto.setTransferStatus(isTransferable(input.getTransferApplicationId()) ? input.getTransferStatus().getDescription() : "--");
+            } else if (input.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
+                transferApplicationPaginationItemDataDto.setTransferStatus("--");
+            } else {
+                transferApplicationPaginationItemDataDto.setTransferStatus(input.getTransferStatus().getDescription());
             }
+            LoanModel loanModel = loanMapper.findById(input.getLoanId());
+            InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(input.getTransferInvestId(), loanModel.getPeriods());
+
+            long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), currentInvestRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            transferApplicationPaginationItemDataDto.setLeftDays(String.valueOf(leftDays > 0 ? leftDays : 0));
+            return transferApplicationPaginationItemDataDto;
         });
 
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> dto = new BasePaginationDataDto(index, pageSize, count, records);
@@ -363,6 +360,17 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             index = index > totalPages ? totalPages : index;
             items = transferApplicationMapper.findTransferInvestList(investorLoginName, (index - 1) * pageSize, pageSize, startTime, endTime, loanStatus);
         }
+
+        items.forEach(transferInvestDetailDto -> {
+            if (ContractNoStatus.OLD.name().equals(transferInvestDetailDto.getContractNo())) {
+                transferInvestDetailDto.setContractOld("1");
+            } else if (ContractNoStatus.WAITING.name().equals(transferInvestDetailDto.getContractNo())) {
+                transferInvestDetailDto.setContractCreating("1");
+            } else {
+                transferInvestDetailDto.setContractOK("1");
+            }
+        });
+
         BasePaginationDataDto dto = new BasePaginationDataDto(index, pageSize, count, items);
         dto.setStatus(true);
         return dto;

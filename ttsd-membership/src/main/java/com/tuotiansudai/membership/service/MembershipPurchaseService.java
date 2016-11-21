@@ -19,6 +19,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
@@ -63,6 +64,8 @@ public class MembershipPurchaseService {
 
         MembershipPriceModel priceModel = membershipPriceMapper.find(level, duration);
 
+        UserModel userModel = userMapper.findByLoginName(loginName);
+
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
         if (accountModel == null || accountModel.getBalance() < priceModel.getPrice()) {
@@ -70,8 +73,8 @@ public class MembershipPurchaseService {
         }
 
         MembershipPurchaseDto purchaseDto = new MembershipPurchaseDto(loginName,
-                userMapper.findByLoginName(loginName).getMobile(),
-                accountModel.getUserName(),
+                userModel.getMobile(),
+                userModel.getUserName(),
                 level, duration, priceModel.getPrice(), source);
 
         return payWrapperClient.membershipPurchase(purchaseDto);

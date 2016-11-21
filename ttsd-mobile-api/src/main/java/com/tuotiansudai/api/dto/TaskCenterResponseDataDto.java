@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.dto;
 
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
-import com.tuotiansudai.point.dto.PointTaskDto;
+import com.tuotiansudai.point.repository.dto.PointTaskDto;
 
 import java.util.List;
 

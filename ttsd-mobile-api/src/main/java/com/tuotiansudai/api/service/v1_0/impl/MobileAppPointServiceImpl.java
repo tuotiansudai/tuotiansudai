@@ -4,7 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointService;
-import com.tuotiansudai.point.dto.SignInPointDto;
+import com.tuotiansudai.point.repository.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
@@ -124,67 +124,6 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         dto.setData(pointBillResponseDataDto);
         return dto;
     }
-
-    @Override
-    public BaseResponseDto<PointTaskListResponseDataDto> queryPointTaskList(PointTaskRequestDto pointTaskRequestDto) {
-        String loginName = pointTaskRequestDto.getBaseParam().getUserId();
-        BaseResponseDto<PointTaskListResponseDataDto> dto = new BaseResponseDto<>();
-        Integer index = pointTaskRequestDto.getIndex();
-        Integer pageSize = pointTaskRequestDto.getPageSize();
-        if (index == null || index <= 0) {
-            index = 1;
-        }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
-        }
-        List<PointTaskRecordResponseDataDto> pointTaskRecords = convertPointTaskRecordDto(pointTaskMapper.findPointTaskPagination(0, 100), loginName);
-        sortPointTaskRecord(pointTaskRecords);
-        dto.setCode(ReturnMessage.SUCCESS.getCode());
-        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        PointTaskListResponseDataDto pointTaskListResponseDataDto = new PointTaskListResponseDataDto();
-        pointTaskListResponseDataDto.setIndex(index);
-        pointTaskListResponseDataDto.setPageSize(pageSize);
-        pointTaskListResponseDataDto.setPointTasks(pointTaskRecords);
-        pointTaskListResponseDataDto.setTotalCount((long) NEWBIE_TASKS.size());
-        dto.setData(pointTaskListResponseDataDto);
-        return dto;
-    }
-
-    private List<PointTaskRecordResponseDataDto> convertPointTaskRecordDto(List<PointTaskModel> pointTaskList, String loginName) {
-        List<PointTaskRecordResponseDataDto> pointTaskRecords = Lists.newArrayList();
-        for (PointTaskModel pointTaskModel : pointTaskList) {
-            if (NEWBIE_TASKS.contains(pointTaskModel.getName())) {
-                PointTaskRecordResponseDataDto pointTaskRecordResponseDataDto = new PointTaskRecordResponseDataDto();
-                List<UserPointTaskModel> userPointTaskModel = userPointTaskMapper.findByLoginNameAndTask(loginName, pointTaskModel.getName());
-                pointTaskRecordResponseDataDto.setPointTaskId(String.valueOf(pointTaskModel.getId()));
-                pointTaskRecordResponseDataDto.setPointTaskTitle(pointTaskModel.getName().getTitle());
-                pointTaskRecordResponseDataDto.setPointTaskType(pointTaskModel.getName());
-                pointTaskRecordResponseDataDto.setPointTaskDesc(pointTaskModel.getName().getDescription());
-                pointTaskRecordResponseDataDto.setPoint(String.valueOf(pointTaskModel.getPoint()));
-                pointTaskRecordResponseDataDto.setCompleted(userPointTaskModel != null);
-                pointTaskRecords.add(pointTaskRecordResponseDataDto);
-            }
-        }
-        return pointTaskRecords;
-
-    }
-
-    
-    private void sortPointTaskRecord(List<PointTaskRecordResponseDataDto> pointTaskRecordDtoList) {
-        Collections.sort(pointTaskRecordDtoList, new Comparator<PointTaskRecordResponseDataDto>() {
-            @Override
-            public int compare(PointTaskRecordResponseDataDto first, PointTaskRecordResponseDataDto second) {
-                if (first.isCompleted() && !second.isCompleted()) {
-                    return 1;
-                }
-                if (!first.isCompleted() && second.isCompleted()) {
-                    return -1;
-                }
-                return 0;
-            }
-        });
-    }
-
     private List<PointBillRecordResponseDataDto> convertPointBillRecordDto(List<PointBillModel> userBillList) {
 
         return Lists.transform(userBillList, new Function<PointBillModel, PointBillRecordResponseDataDto>() {

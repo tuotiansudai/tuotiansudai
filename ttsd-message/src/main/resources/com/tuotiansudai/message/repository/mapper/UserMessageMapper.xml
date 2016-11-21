@@ -82,4 +82,12 @@
         and `read` = FALSE
     </select>
 
+    <select id="countMessagesByLoginNameAndMessageType" parameterType="map" resultType="long">
+        select count(u.id) from user_message u
+        inner join message m on u.message_id = m.id
+        where login_name = #{loginName}
+        and u.message_id = #{messageId}
+        and u.title = #{title}
+    </select>
+
 </mapper>

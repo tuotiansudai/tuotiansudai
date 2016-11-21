@@ -36,8 +36,8 @@
                     </em></dd>
                 </dl>
                 <dl>
-                    <dt>剩余期数</dt>
-                    <dd><em>${transferApplication.leftPeriod!}</em></dd>
+                    <dt>剩余天数</dt>
+                    <dd><em>${transferApplication.leftDays!}</em></dd>
                 </dl>
             </div>
             <div class="info-detail">
@@ -86,6 +86,21 @@
                     <input type="hidden" id="transferInvestId" name="transferInvestId" value="${transferApplication.id?string.computer}"/>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <p><button id="transferSubmit" class="btn-pay btn-normal" type="button">马上投资</button></p>
+                    <input type="hidden" value="${anxinProp.skipAuth?c}" id="isSkipAuth">
+                    <input type="hidden" value="${anxinProp.anxinUser?c}" id="isAnxinUser">
+                    <@global.role hasRole="'INVESTOR'">
+                    <#if anxinProp.anxinUser != true>
+                    <p class="skip-group">
+                        <label>
+                            <i class="skip-icon active"></i>
+                            <input type="hidden" id="skipCheck" value="true">
+                        </label>
+                        <label class="skip-text">
+                            我已阅读并同意<a href="javascript:void(0)"><span class="anxin_layer link-agree-service">《安心签平台服务协议》</span>、<span class="anxin_layer link-agree-privacy">《隐私条款》</span>、<span class="anxin_layer link-agree-number">《CFCA数字证书服务协议》</span>和<span class="anxin_layer link-agree-number-authorize">《CFCA数字证书授权协议》</span><span class="check-tip" id="checkTip">请勾选</span></a>
+                        </label>
+                    </p>
+                    </#if>
+                    </@global.role>
                 </form>
             </#if>
         </div>
@@ -150,6 +165,7 @@
                     <table>
                         <thead>
                         <tr>
+
                             <th>受让人</th>
                             <th>转让价格(元)</th>
                             <th>交易方式</th>
@@ -183,7 +199,10 @@
          </div>
 
     </div>
+    <#include "component/anxin-qian.ftl" />
+    <#include "component/anxin-agreement.ftl" />
     <#include "component/coupon-alert.ftl" />
 </div>
     <#include "component/red-envelope-float.ftl" />
+    <#include "component/login-tip.ftl" />
 </@global.main>

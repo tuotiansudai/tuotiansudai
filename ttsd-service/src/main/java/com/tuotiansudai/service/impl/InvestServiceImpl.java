@@ -12,14 +12,12 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -33,7 +31,6 @@ import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.jsoup.helper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -115,9 +112,6 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private UserCouponService userCouponService;
 
-    @Autowired
-    private UserBirthdayUtil userBirthdayUtil;
-
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
@@ -137,6 +131,14 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private void checkInvestAvailable(InvestDto investDto) throws InvestException {
+        AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
+
+//        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(accountModel.getLoginName());
+//
+//        if (anxinProp == null || StringUtils.isEmpty(anxinProp.getProjectCode())) {
+//            throw new InvestException(InvestExceptionType.ANXIN_SIGN_IS_UNUSABLE);
+//        }
+
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
 
@@ -152,7 +154,6 @@ public class InvestServiceImpl implements InvestService {
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
         long userInvestIncreasingAmount = loan.getInvestIncreasingAmount();
 
-        AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
         if (accountModel.getBalance() < investAmount) {
             throw new InvestException(InvestExceptionType.NOT_ENOUGH_BALANCE);
         }
@@ -245,7 +246,7 @@ public class InvestServiceImpl implements InvestService {
                 if ((usedTime != null && new DateTime(usedTime).plusSeconds(couponLockSeconds).isAfter(new DateTime()))
                         || !loginName.equalsIgnoreCase(userCouponModel.getLoginName())
                         || InvestStatus.SUCCESS == userCouponModel.getStatus()
-                        || (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !userBirthdayUtil.isBirthMonth(loginName))
+                        || (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !UserBirthdayUtil.isBirthMonth(userMapper.findByLoginName(loginName).getIdentityNumber()))
                         || userCouponModel.getEndTime().before(new Date())
                         || !couponModel.getProductTypes().contains(loanModel.getProductType())
                         || (couponModel.getInvestLowerLimit() > 0 && investAmount < couponModel.getInvestLowerLimit())) {
@@ -290,7 +291,7 @@ public class InvestServiceImpl implements InvestService {
 
         long extraRateInterest = 0;
         long extraRateFee = 0;
-        if (loanDetailsModel != null && !Strings.isNullOrEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB.name())) {
+        if (loanDetailsModel != null && !CollectionUtils.isEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(Source.WEB)) {
             extraRateInterest = getExtraRate(loanId, amount, loanModel.getDuration());
             extraRateFee = new BigDecimal(extraRateInterest).multiply(new BigDecimal(investFeeRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         }
@@ -526,7 +527,7 @@ public class InvestServiceImpl implements InvestService {
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
         long extraLoanRateExpectedInterest = 0L;
-        if(CollectionUtils.isNotEmpty(extraLoanRateModels) && !StringUtils.isEmpty(loanDetailsModel) && loanDetailsModel.getExtraSource().contains(source.name())){
+        if (CollectionUtils.isNotEmpty(extraLoanRateModels) && !StringUtils.isEmpty(loanDetailsModel) && loanDetailsModel.getExtraSource().contains(source.name())) {
             for (ExtraLoanRateModel extraLoanRateModel : extraLoanRateModels) {
                 if ((extraLoanRateModel.getMinInvestAmount() <= investAmount && investAmount < extraLoanRateModel.getMaxInvestAmount()) ||
                         (extraLoanRateModel.getMaxInvestAmount() == 0 && extraLoanRateModel.getMinInvestAmount() <= investAmount)) {
@@ -541,7 +542,7 @@ public class InvestServiceImpl implements InvestService {
             CouponModel couponModel = couponMapper.findById(couponId);
             if (loanModel == null || couponModel == null) {
                 continue;
-            }else {
+            } else {
                 expectedInterest = (couponModel.getCouponType() == CouponType.INTEREST_COUPON || couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) ? InterestCalculator.getCouponExpectedInterest(loanModel, couponModel, investAmount, loanModel.getDuration()) : 0;
             }
         }
@@ -552,7 +553,13 @@ public class InvestServiceImpl implements InvestService {
         long membershipCouponFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(defaultFee)).multiply(new BigDecimal((membershipModel.getFee() * 10))).longValue();
         long originExtraLoanRateExpectedInterest = new BigDecimal(extraLoanRateExpectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
         long membershipExtraLoanRateExpectedInterest = new BigDecimal(extraLoanRateExpectedInterest).multiply(new BigDecimal(defaultFee)).multiply(new BigDecimal(membershipModel.getFee() * 10)).longValue();
-        preference = originFee - membershipFee + originCouponFee - membershipCouponFee + originExtraLoanRateExpectedInterest - membershipExtraLoanRateExpectedInterest ;
+        preference = originFee - membershipFee + originCouponFee - membershipCouponFee + originExtraLoanRateExpectedInterest - membershipExtraLoanRateExpectedInterest;
         return preference;
     }
+
+    @Override
+    public List<InvestModel> findContractFailInvest(long loanId){
+        return investMapper.findContractFailInvest(loanId);
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -82,6 +81,9 @@ public class LoanCreateServiceImpl implements LoanCreateService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
     @Override
     public LoanTitleModel createTitle(LoanTitleDto loanTitleDto) {
@@ -170,14 +172,7 @@ public class LoanCreateServiceImpl implements LoanCreateService {
             this.updateExtraRate(loanId, loanCreateRequestDto.getLoanDetails().getExtraRateRuleIds());
         } else {
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
-            if (!Strings.isNullOrEmpty(loanDetailsModel.getExtraSource())) {
-                loanCreateRequestDto.getLoanDetails().setExtraSource(Lists.transform(Lists.newArrayList(loanDetailsModel.getExtraSource().split(",")), new Function<String, Source>() {
-                    @Override
-                    public Source apply(String input) {
-                        return Source.valueOf(input);
-                    }
-                }));
-            }
+            loanCreateRequestDto.getLoanDetails().setExtraSource(loanDetailsModel.getExtraSource());
         }
 
         loanDetailsMapper.deleteByLoanId(loanId);
@@ -220,6 +215,11 @@ public class LoanCreateServiceImpl implements LoanCreateService {
     private BaseDto<BaseDataDto> checkCreateLoanData(LoanCreateRequestDto loanCreateRequestDto) {
         if (userRoleMapper.findByLoginNameAndRole(loanCreateRequestDto.getLoan().getAgent(), Role.LOANER) == null) {
             return new BaseDto<>(new BaseDataDto(false, "代理用户不存在"));
+        }
+
+        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loanCreateRequestDto.getLoan().getAgent());
+        if (anxinProp == null || !anxinProp.isSkipAuth()) {
+            return new BaseDto<>(new BaseDataDto(false, "代理/借款 用户未开通安心签免短信验证"));
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount()) < AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMinInvestAmount())) {
@@ -375,7 +375,6 @@ public class LoanCreateServiceImpl implements LoanCreateService {
         LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel != null && LoanStatus.PREHEAT == loanModel.getStatus()) {
             loanMapper.updateStatus(loanId, LoanStatus.RAISING);
-            this.createAutoInvestJob(loanId);
         }
     }
 

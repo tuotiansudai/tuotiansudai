@@ -1,7 +1,7 @@
 package com.tuotiansudai.point.service.impl;
 
-import com.tuotiansudai.point.dto.SignInPoint;
-import com.tuotiansudai.point.dto.SignInPointDto;
+import com.tuotiansudai.point.repository.dto.SignInPoint;
+import com.tuotiansudai.point.repository.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
