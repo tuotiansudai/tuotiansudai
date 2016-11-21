@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.AnnounceDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.service.AnnounceService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +55,7 @@ public class AnnounceController {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         baseDto.setData(dataDto);
-        this.announceService.create(announceDto);
+        announceService.create(announceDto, LoginUserInfo.getLoginName());
         dataDto.setStatus(true);
         return baseDto;
     }

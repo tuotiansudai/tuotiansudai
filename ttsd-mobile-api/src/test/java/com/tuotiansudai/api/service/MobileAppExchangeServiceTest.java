@@ -89,7 +89,7 @@ public class MobileAppExchangeServiceTest extends ServiceTestBase{
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
 
         when(couponMapper.findById(anyLong())).thenReturn(couponModel);
-        when(userCouponMapper.findUserCouponWithCouponByLoginName(anyString(),any(List.class))).thenReturn(Lists.newArrayList(userCouponModel));
+        when(userCouponMapper.findUserCouponWithCouponByLoginName(anyString(), any(List.class))).thenReturn(Lists.newArrayList(userCouponModel));
 
         BaseResponseDto<UserCouponListResponseDataDto> baseResponseDto = mobileAppAgreementService.exchange(exchangeRequestDto);
 

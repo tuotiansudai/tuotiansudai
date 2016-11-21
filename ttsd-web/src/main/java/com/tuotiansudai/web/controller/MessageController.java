@@ -4,8 +4,10 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.message.dto.MessageCompleteDto;
 import com.tuotiansudai.message.dto.UserMessagePaginationItemDto;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
+import com.tuotiansudai.message.service.MessageService;
 import com.tuotiansudai.message.service.UserMessageService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class MessageController {
 
     @Autowired
     private UserMessageService userMessageService;
+
+    @Autowired
+    private MessageService messageService;
 
     @RequestMapping(value = "/user-messages", method = RequestMethod.GET)
     public ModelAndView getMessages() {
@@ -42,6 +47,7 @@ public class MessageController {
     @RequestMapping(value = "/user-message/{userMessageId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView messageDetail(@PathVariable long userMessageId) {
         UserMessageModel userMessageModel = userMessageService.readMessage(userMessageId);
+        MessageCompleteDto messageCompleteDto = messageService.findMessageCompleteDtoByMessageId(userMessageModel.getMessageId());
         if (userMessageModel == null || Strings.isNullOrEmpty(userMessageModel.getContent())) {
             return new ModelAndView("/error/404");
         }
@@ -49,6 +55,7 @@ public class MessageController {
         modelAndView.addObject("title", userMessageModel.getTitle());
         modelAndView.addObject("content", userMessageModel.getContent());
         modelAndView.addObject("createdTime", new SimpleDateFormat("yyyy-MM-dd").format(userMessageModel.getCreatedTime()));
+        modelAndView.addObject("webUrl", messageCompleteDto.getWebUrl());
         return modelAndView;
     }
 

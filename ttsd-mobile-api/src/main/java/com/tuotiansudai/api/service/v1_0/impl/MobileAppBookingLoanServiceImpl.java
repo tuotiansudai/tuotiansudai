@@ -47,7 +47,7 @@ public class MobileAppBookingLoanServiceImpl implements MobileAppBookingLoanServ
         UserModel userModel = userMapper.findByMobile(bookingLoanRequestDto.getBaseParam().getPhoneNum());
 
         BookingLoanModel bookingLoanModel = new BookingLoanModel(
-                userModel!=null?userModel.getLoginName():null,
+                userModel != null ? userModel.getLoginName() : null,
                 bookingLoanRequestDto.getBaseParam().getPhoneNum(),
                 Source.valueOf(bookingLoanRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)),
                 DateTime.now().toDate(),
