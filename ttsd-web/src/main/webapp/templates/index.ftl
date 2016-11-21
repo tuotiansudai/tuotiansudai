@@ -5,15 +5,33 @@
     <div class="banner-box">
         <div id="bannerBox" class="banner-box-inner">
             <ul class="banner-img-list">
-                <#list bannerList as banner>
-                    <li>
-                        <a href="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"
-                           <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
-                            <img src="${staticServer}${banner.webImageUrl}" data-app-img="${staticServer}${banner.appImageUrl}" alt="${banner.title}">
-                        </a>
-                    </li>
-                </#list>
+                <li>
+                    <a href="https://tuotiansudai.com/activity/heavily-courtship" onclick="cnzzPush.trackClick('首页','Banner模块','重金求偶')" target="_blank">
+                        <img src="https://static.tuotiansudai.com/upload/20161118/93341479431163875.png" data-app-img="https://static.tuotiansudai.com/upload/20161118/19901479431174995.png" alt="拓天速贷">
+                    </a>
+                </li>
+                <li>
+                    <a href="https://tuotiansudai.com/activity/landing-anxin" onclick="cnzzPush.trackClick('首页','Banner模块','CFCA')" target="_blank">
+                        <img src="https://static.tuotiansudai.com/upload/20161115/81941479196220373.jpg" data-app-img="https://static.tuotiansudai.com/upload/20161115/35861479196223426.jpg" alt="拓天速贷">
+                    </a>
+                </li>
+                <li>
+                    <a href="https://tuotiansudai.com/activity/invest-achievement" onclick="cnzzPush.trackClick('首页','Banner模块','称号活动')" target="_blank">
+                        <img src="https://static.tuotiansudai.com/upload/20160708/42441467975156254.png" data-app-img="https://static.tuotiansudai.com/upload/20160708/52421467975158264.png" alt="拓天速贷">
+                    </a>
+                </li>
             </ul>
+
+            <#--<ul class="banner-img-list">-->
+                <#--<#list bannerList as banner>-->
+                    <#--<li>-->
+                        <#--<a href="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"-->
+                           <#--<#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>-->
+                            <#--<img src="${staticServer}${banner.webImageUrl}" data-app-img="${staticServer}${banner.appImageUrl}" alt="${banner.title}">-->
+                        <#--</a>-->
+                    <#--</li>-->
+                <#--</#list>-->
+            <#--</ul>-->
         </div>
         <div class="page-width">
             <@global.isAnonymous>

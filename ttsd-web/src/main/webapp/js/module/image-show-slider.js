@@ -167,17 +167,37 @@ define([], function () {
                     $this.numlist[i].onmouseover = function(event) {
                         clearInterval($this.play);
 
-                        event.stopPropagation();
-                        var e=(event)?event:window.event;
-                        window.event?e.cancelBubble=true:e.stopPropagation();
-                        // e.cancelBubble=true;// ie下阻止冒泡
-                        $this.index=event.target.index; //获取鼠标移入的序列
+                        // 阻止事件冒泡
+                        var e=window.event||event;
+                        if(document.all){  //只有ie识别
+                            e.cancelBubble=true;
+                        }else{
+                            e.stopPropagation();
+                        }
+                        if (typeof e.target != 'undefined'){
+                            $this.index=e.target.index; //获取鼠标移入的序列
+                        }
+                        else {
+                            // var targetElement = e.srcElement;
+
+                            $this.index=e.srcElement.index;
+                            // console.log(e.srcElement.parentNode);
+                        }
+
                         $this.imgshow();
                     }
                 })(i)
             }
         },
-
+        // 阻止事件冒泡
+        stopPropagation:function(e){
+            e=window.event||e;
+            if(document.all){  //只有ie识别
+                e.cancelBubble=true;
+            }else{
+                e.stopPropagation();
+            }
+        },
         bindTouchEvn:function() {
             this.boxul[0].addEventListener('touchstart', this.touchstart.bind(this), false);
             this.boxul[0].addEventListener('touchmove', this.touchmove.bind(this), false);
