@@ -1,9 +1,11 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.repository.model.ProductType;
 
 import java.util.Date;
-import java.util.List;
 
 public class LoanItemDto {
 

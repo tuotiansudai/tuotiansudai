@@ -1,6 +1,9 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 
 import java.io.Serializable;
 import java.util.List;

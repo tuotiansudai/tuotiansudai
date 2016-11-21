@@ -9,7 +9,8 @@
                     <li>
                         <a href="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"
                            <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
-                            <img src="${staticServer}${banner.webImageUrl}" data-app-img="${staticServer}${banner.appImageUrl}" alt="${banner.title}">
+                            <img src="${staticServer}${banner.webImageUrl}"
+                                 data-app-img="${staticServer}${banner.appImageUrl}" alt="${banner.title}">
                         </a>
                     </li>
                 </#list>
@@ -23,7 +24,7 @@
                         <span class="num-unit">可达</span>
                         <span class="percent">13%</span>
                     </p>
-                    
+
                     <p class="welcome-text">welcome</p>
                     <a class="btn-normal" href="/register/user" onclick="cnzzPush.trackClick('21首页','Banner模块','免费注册')">免费注册 </a>
                     <i class="clearfix tr">已有账户？<a href="/login"

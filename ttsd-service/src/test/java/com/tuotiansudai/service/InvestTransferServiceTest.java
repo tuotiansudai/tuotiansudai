@@ -145,11 +145,11 @@ public class InvestTransferServiceTest {
 
     private List<InvestRepayModel> createInvestRepay(long investId) {
         InvestRepayModel model1 = new InvestRepayModel(idGenerator.generate(), investId, 1, 0, 10, 1, new DateTime().plusDays(-60).toDate(), RepayStatus.REPAYING);
-        InvestRepayModel model2 = new InvestRepayModel(idGenerator.generate(), investId, 2, 0, 10, 1,  new DateTime().plusDays(-30).toDate(), RepayStatus.REPAYING);
-        InvestRepayModel model3 = new InvestRepayModel(idGenerator.generate(), investId, 3, 0, 10, 1,  new DateTime().plusDays(0).toDate(), RepayStatus.REPAYING);
-        InvestRepayModel model4 = new InvestRepayModel(idGenerator.generate(), investId, 4, 0, 10, 1,  new DateTime().plusDays(30).toDate(), RepayStatus.REPAYING);
-        InvestRepayModel model5 = new InvestRepayModel(idGenerator.generate(), investId, 5, 0, 10, 1,  new DateTime().plusDays(60).toDate(), RepayStatus.REPAYING);
-        InvestRepayModel model6 = new InvestRepayModel(idGenerator.generate(), investId, 6, 100, 10, 1,  new DateTime().plusDays(90).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model2 = new InvestRepayModel(idGenerator.generate(), investId, 2, 0, 10, 1, new DateTime().plusDays(-30).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model3 = new InvestRepayModel(idGenerator.generate(), investId, 3, 0, 10, 1, new DateTime().plusDays(0).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model4 = new InvestRepayModel(idGenerator.generate(), investId, 4, 0, 10, 1, new DateTime().plusDays(30).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model5 = new InvestRepayModel(idGenerator.generate(), investId, 5, 0, 10, 1, new DateTime().plusDays(60).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model6 = new InvestRepayModel(idGenerator.generate(), investId, 6, 100, 10, 1, new DateTime().plusDays(90).toDate(), RepayStatus.REPAYING);
         List<InvestRepayModel> investRepayModels = Lists.newArrayList(model1, model2, model3, model4, model5, model6);
         investRepayMapper.create(investRepayModels);
         return investRepayModels;

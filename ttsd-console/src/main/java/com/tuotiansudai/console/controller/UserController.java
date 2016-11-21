@@ -17,7 +17,6 @@ import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.spring.security.SignInClient;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;

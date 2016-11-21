@@ -1,18 +1,18 @@
 package com.tuotiansudai.cfca.connector;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URLEncoder;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.tuotiansudai.cfca.constant.MIMEType;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.constant.SystemConst;
 import com.tuotiansudai.cfca.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URLEncoder;
+import java.util.Map;
+import java.util.Map.Entry;
 
 @Component
 public class HttpConnector {

@@ -8,8 +8,6 @@ import com.tuotiansudai.activity.service.AutumnPrizeService;
 import com.tuotiansudai.activity.service.LotteryActivityService;
 import com.tuotiansudai.activity.service.LotteryDrawActivityService;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +64,7 @@ public class AutumnPrizeController {
         modelAndView.addObject("myLuxuryPrize", autumnPrizeService.getMyLuxuryAwardItems(LoginUserInfo.getMobile()));
         modelAndView.addObject("steps", lotteryDrawActivityService.generateSteps(loginName));
         modelAndView.addObject("drawTime", lotteryActivityService.getDrawPrizeTime(LoginUserInfo.getMobile()));
-        modelAndView.addObject("activityType","luxury");
+        modelAndView.addObject("activityType", "luxury");
         return modelAndView;
     }
 
@@ -108,7 +106,7 @@ public class AutumnPrizeController {
     @ResponseBody
     @RequestMapping(value = "/travel-draw", method = RequestMethod.POST)
     public DrawLotteryResultDto travelDrawPrize(@RequestParam(value = "mobile", required = false) String mobile) {
-        return lotteryActivityService.drawLotteryPrize(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile() , LotteryPrize.TOURISM);
+        return lotteryActivityService.drawLotteryPrize(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile(), LotteryPrize.TOURISM);
     }
 
     @ResponseBody

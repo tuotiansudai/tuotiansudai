@@ -103,7 +103,7 @@ public class LoanDetailDto extends BaseDataDto {
         this.raisingPeriod = new Period(new DateTime(), new DateTime(loanModel.getFundraisingEndTime()), PeriodType.dayTime());
         this.investor = investorDto;
         this.declaration = loanDetails == null ? null : loanDetails.getDeclaration();
-        this.extraSource = loanDetails == null ? null :(loanDetails.getExtraSource() != null && loanDetails.getExtraSource().size() == 1 && loanDetails.getExtraSource().contains(Source.MOBILE)) ? Source.MOBILE.name() : null;
+        this.extraSource = loanDetails == null ? null : (loanDetails.getExtraSource() != null && loanDetails.getExtraSource().size() == 1 && loanDetails.getExtraSource().contains(Source.MOBILE)) ? Source.MOBILE.name() : null;
         this.activity = loanDetails == null ? false : loanDetails.isActivity();
         this.activityDesc = loanDetails == null ? "" : loanDetails.getActivityDesc();
         this.pledgeType = loanModel.getPledgeType();

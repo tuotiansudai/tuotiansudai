@@ -41,7 +41,7 @@ public class ProductDto implements Serializable {
         this.loginName = loginName;
     }
 
-    public ProductDto(long id, GoodsType goodsType, String loginName, long couponId, String name, Integer seq, String imageUrl, long points, long totalCount, Date startTime, Date endTime){
+    public ProductDto(long id, GoodsType goodsType, String loginName, long couponId, String name, Integer seq, String imageUrl, long points, long totalCount, Date startTime, Date endTime) {
         this.id = id;
         this.type = goodsType;
         this.loginName = loginName;

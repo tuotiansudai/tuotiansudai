@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.extrarate.service.impl;
 
 
-import com.mysql.jdbc.StringUtils;
 import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -52,7 +51,7 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
         List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
         for (InvestModel investModel : investModels) {
             for (ExtraLoanRateModel extraLoanRateModel : extraLoanRateModels) {
-                if(investExtraRateMapper.findByInvestId(investModel.getId()) != null){
+                if (investExtraRateMapper.findByInvestId(investModel.getId()) != null) {
                     continue;
                 }
 
@@ -79,7 +78,7 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
                     if ("IOS".equals(investModel.getSource().name()) || "ANDROID".equals(investModel.getSource().name()) || "MOBILE".equals(investModel.getSource().name())) {
                         investSource = Source.MOBILE;
                     } else if ("WEB".equals(investModel.getSource().name())) {
-                        investSource =  Source.WEB;
+                        investSource = Source.WEB;
                     } else {
                         investSource = Source.AUTO;
                     }
@@ -89,7 +88,7 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
                         investExtraRateMapper.create(investExtraRateModel);
                     }
 
-                    logger.info(MessageFormat.format("[标的放款]创建阶梯加息 loanId:{0},investId:{1}",loanId,investModel.getId()));
+                    logger.info(MessageFormat.format("[标的放款]创建阶梯加息 loanId:{0},investId:{1}", loanId, investModel.getId()));
                 }
             }
         }

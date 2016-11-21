@@ -3,12 +3,12 @@ package com.tuotiansudai.console.activity.service;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.LuxuryPrizeDto;
+import com.tuotiansudai.activity.repository.dto.LuxuryPrizeRequestDto;
 import com.tuotiansudai.activity.repository.dto.UserPrizePaginationItemDto;
-import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
-import com.tuotiansudai.activity.repository.model.UserLuxuryPrizeModel;
 import com.tuotiansudai.activity.repository.mapper.LuxuryPrizeMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLuxuryPrizeMapper;
-import com.tuotiansudai.activity.repository.dto.LuxuryPrizeRequestDto;
+import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
+import com.tuotiansudai.activity.repository.model.UserLuxuryPrizeModel;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.util.AmountConverter;
@@ -41,7 +41,7 @@ public class ActivityConsoleLuxuryPrizeService {
         int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
         index = index > totalPages ? totalPages : index;
         List<UserPrizePaginationItemDto> items = Lists.newArrayList();
-        List<UserLuxuryPrizeModel> userLuxuryPrizeModels = userLuxuryPrizeMapper.findByPagination(mobile, startTime, endTime, (index-1) * pageSize, pageSize);
+        List<UserLuxuryPrizeModel> userLuxuryPrizeModels = userLuxuryPrizeMapper.findByPagination(mobile, startTime, endTime, (index - 1) * pageSize, pageSize);
         if (count > 0) {
             items = Lists.transform(userLuxuryPrizeModels, new Function<UserLuxuryPrizeModel, UserPrizePaginationItemDto>() {
                 @Override
@@ -76,12 +76,13 @@ public class ActivityConsoleLuxuryPrizeService {
 
     }
 
-    public LuxuryPrizeDto obtainLuxuryPrizeDto(long luxuryPrizeId){
+    public LuxuryPrizeDto obtainLuxuryPrizeDto(long luxuryPrizeId) {
         LuxuryPrizeModel luxuryPrizeModel = luxuryPrizeMapper.findById(luxuryPrizeId);
         return new LuxuryPrizeDto(luxuryPrizeModel);
 
     }
-    public void editLuxuryPrize(LuxuryPrizeRequestDto luxuryPrizeRequestDto,String loginName){
+
+    public void editLuxuryPrize(LuxuryPrizeRequestDto luxuryPrizeRequestDto, String loginName) {
         long luxuryPrizeId = luxuryPrizeRequestDto.getLuxuryPrizeId();
         LuxuryPrizeModel luxuryPrizeModel = luxuryPrizeMapper.findById(luxuryPrizeId);
         luxuryPrizeModel.setBrand(luxuryPrizeRequestDto.getBrand());

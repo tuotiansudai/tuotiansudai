@@ -1,7 +1,5 @@
 package com.tuotiansudai.cfca.test;
 
-import java.io.File;
-
 import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.HeadVO;
 import cfca.trustsign.common.vo.cs.SignLocationVO;
@@ -12,6 +10,8 @@ import com.tuotiansudai.cfca.connector.HttpConnector;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 import com.tuotiansudai.cfca.util.SecurityUtil;
+
+import java.io.File;
 
 public class Test3203 {
     public static void main(String[] args) throws PKIException {

@@ -1,11 +1,12 @@
 @import 'account_common';
+
 .safety-signed-frame {
   background: #fff;
   padding: 10px 30px 30px 40px;
   overflow: hidden;
   color: #525252;
   .layui-layer-page .layui-layer-content {
-    overflow: auto!important;
+    overflow: auto !important;
   }
   .agreeOpen {
     vertical-align: middle;
@@ -29,15 +30,15 @@
       display: block;
       i {
         background: url("../../images/myaccount/an-ic-ok.png") center center no-repeat;
-        height:35px;
-        width:35px;
+        height: 35px;
+        width: 35px;
         display: inline-block;
         vertical-align: middle;
         margin-right: 8px;
       }
     }
     .to-open-check {
-      margin-top:30px;
+      margin-top: 30px;
       display: block;
     }
     .btn-normal {
@@ -45,64 +46,63 @@
       margin: 10px auto;
     }
 
-
   }
   .safety-advantage-box {
-  border-top:1px solid #e7eaee;
-  padding-top: 10px;
-  margin-top: 20px;
-  p {
-    color: #525252;
-  }
+    border-top: 1px solid #e7eaee;
+    padding-top: 10px;
+    margin-top: 20px;
+    p {
+      color: #525252;
+    }
 
-  .advantage-list {
-    li {
-      width:33%;
-      float: left;
-      padding-top: 70px;
-      text-align: center;
-      color: #ff7200;
-      font-size: 16px;
-      margin-bottom:20px;
-      &:nth-child(1) {
-        background: url("../../images/myaccount/an-ic-adv01.png") center top no-repeat;
-      }
-      &:nth-child(2) {
-        background: url("../../images/myaccount/an-ic-adv02.png") center top no-repeat;
-      }
-      &:nth-child(3) {
-        background: url("../../images/myaccount/an-ic-adv03.png") center top no-repeat;
+    .advantage-list {
+      li {
+        width: 33%;
+        float: left;
+        padding-top: 70px;
+        text-align: center;
+        color: #ff7200;
+        font-size: 16px;
+        margin-bottom: 20px;
+        &:nth-child(1) {
+          background: url("../../images/myaccount/an-ic-adv01.png") center top no-repeat;
+        }
+        &:nth-child(2) {
+          background: url("../../images/myaccount/an-ic-adv02.png") center top no-repeat;
+        }
+        &:nth-child(3) {
+          background: url("../../images/myaccount/an-ic-adv03.png") center top no-repeat;
+        }
       }
     }
   }
-}
 
   .safety-signed-list {
     .info-list {
       .info-title {
-        width:auto;
+        width: auto;
       }
     }
 
   }
 
   .open-safety-box {
-    margin:25px;
+    margin: 25px;
     span.info {
       display: block;
       color: #4c4c4c;
       padding-bottom: 5px;
     }
     .button-bar {
-      margin-top:10px;
+      margin-top: 10px;
       a {
-        width:90px;
+        width: 90px;
         &.one {
           width: 200px;
         }
       }
       button {
-        width:150px;
+        width: 150px;
         &.one {
           width: 270px;
         }
@@ -113,18 +113,18 @@
       span {
         input {
           height: 30px;
-          border:1px solid #e6e6e6;
+          border: 1px solid #e6e6e6;
           padding: 0px 6px;
           cursor: pointer;
           &.skip-phone-code {
-            width:170px;
+            width: 170px;
           }
           &.get-skip-code {
-            width:107px;
+            width: 107px;
             color: #797979;
-            font-size:12px;
+            font-size: 12px;
             height: 32px;
-            padding:0;
+            padding: 0;
             text-align: center;
             background: #fafafa;
           }
@@ -151,6 +151,5 @@
       }
     }
   }
-
 
 }

@@ -7,8 +7,8 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 	$(function() {
 		var $signBtn = $('#signBtn'),
 			$signTip = $('#signLayer'),
-			$closeSign = $('#closeSign'),
-			$materialList=$('.material-list li');
+            $closeSign = $('#closeSign'),
+            $materialList = $('.material-list li');
 		//show sign tip
 		$signBtn.on('click', function(event) {
 			event.preventDefault();
@@ -50,15 +50,15 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 		$closeSign.on('click', function(event) {
 			event.preventDefault();
 			location.href = "/point-shop";
-		});
+        });
 
-		$materialList.on('click', function(event) {//click all model
-			event.preventDefault();
-			location.href = $(this).attr('data-href');
-		}).on('click','.get-btn', function(event) {//click btn
-			event.preventDefault();
-			$(this).hasClass('active')?location.href = $(this).parent('a').attr('href'):false;
-			event.stopPropagation();
+        $materialList.on('click', function (event) {//click all model
+            event.preventDefault();
+            location.href = $(this).attr('data-href');
+        }).on('click', '.get-btn', function (event) {//click btn
+            event.preventDefault();
+            $(this).hasClass('active') ? location.href = $(this).parent('a').attr('href') : false;
+            event.stopPropagation();
 		});
 	});
 })

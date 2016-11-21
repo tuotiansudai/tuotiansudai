@@ -77,9 +77,9 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
                         currentRepayDate.toDate(),
                         RepayStatus.REPAYING);
                 currentPeriodCorpus += investRepayModel.getCorpus();
-                if(investRepayMapper.findByInvestIdAndPeriod(investRepayModel.getInvestId(),investRepayModel.getPeriod()) == null){
+                if (investRepayMapper.findByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod()) == null) {
                     investRepayModels.add(investRepayModel);
-                }else{
+                } else {
                     logger.debug(MessageFormat.format("[Generate_Repay:]investRepay is exist loanId:{0},investId:{1} period:{2}  end", String.valueOf(loanId), String.valueOf(successInvestModel.getId()), period));
                 }
                 logger.debug(MessageFormat.format("[Generate_Repay:]investRepay generate repeat loanId:{0},investId:{1} period:{2}  end", String.valueOf(loanId), String.valueOf(successInvestModel.getId()), period));
@@ -88,21 +88,21 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
             LoanRepayModel loanRepayModel = new LoanRepayModel(idGenerator.generate(), loanModel.getId(), period, currentPeriodCorpus, expectedLoanInterest, currentRepayDate.toDate(), RepayStatus.REPAYING);
             loanRepayModel.setCorpus(currentPeriodCorpus);
 
-            if(loanRepayMapper.findByLoanIdAndPeriod(loanId, period) == null){
+            if (loanRepayMapper.findByLoanIdAndPeriod(loanId, period) == null) {
                 loanRepayModels.add(loanRepayModel);
-            }else{
+            } else {
                 logger.error(MessageFormat.format("[Generate_Repay:] Loan Repay is exist (loanId = {0}, period = {1})", String.valueOf(loanRepayModel.getLoanId()), String.valueOf(loanRepayModel.getPeriod())));
             }
             lastRepayDate = currentRepayDate;
-            logger.debug(MessageFormat.format("[Generate_Repay:] loanId:{0} loanRepay generate {1} period end", String.valueOf(loanId),index + 1));
+            logger.debug(MessageFormat.format("[Generate_Repay:] loanId:{0} loanRepay generate {1} period end", String.valueOf(loanId), index + 1));
         }
         logger.debug(MessageFormat.format("[Generate_Repay:] loanId:{0} loanRepayModels size:{1} investRepayModels size:{2} begin",
                 String.valueOf(loanId), loanRepayModels == null ? 0 : loanRepayModels.size(), investRepayModels == null ? 0 : investRepayModels.size()));
 
-        if(CollectionUtils.isNotEmpty(loanRepayModels)){
+        if (CollectionUtils.isNotEmpty(loanRepayModels)) {
             loanRepayMapper.create(loanRepayModels);
         }
-        if(CollectionUtils.isNotEmpty(investRepayModels)){
+        if (CollectionUtils.isNotEmpty(investRepayModels)) {
             investRepayMapper.create(investRepayModels);
         }
 

@@ -16,15 +16,15 @@ public class ActivityConsolePromotionService {
     @Autowired
     private PromotionMapper promotionMapper;
 
-    public List<PromotionModel> promotionList(){
+    public List<PromotionModel> promotionList() {
         return promotionMapper.findAll();
     }
 
-    public PromotionModel findById(long id){
+    public PromotionModel findById(long id) {
         return promotionMapper.findById(id);
     }
 
-    public void create(String loginName, PromotionDto promotionDto){
+    public void create(String loginName, PromotionDto promotionDto) {
         PromotionModel promotionModel = new PromotionModel(promotionDto);
         promotionModel.setCreatedBy(loginName);
         promotionModel.setCreatedTime(new Date());
@@ -32,7 +32,7 @@ public class ActivityConsolePromotionService {
         promotionMapper.create(promotionModel);
     }
 
-    public boolean delPromotion(String loginName, long id){
+    public boolean delPromotion(String loginName, long id) {
         PromotionModel promotionModel = promotionMapper.findById(id);
         promotionModel.setDeactivatedBy(loginName);
         promotionModel.setDeactivatedTime(new Date());
@@ -41,7 +41,7 @@ public class ActivityConsolePromotionService {
         return true;
     }
 
-    public void updatePromotion(String loginName, PromotionDto promotionDto){
+    public void updatePromotion(String loginName, PromotionDto promotionDto) {
         PromotionModel promotionModel = promotionMapper.findById(promotionDto.getId());
         promotionModel.setName(promotionDto.getName());
         promotionModel.setImageUrl(promotionDto.getImageUrl());
@@ -55,7 +55,7 @@ public class ActivityConsolePromotionService {
         promotionMapper.update(promotionModel);
     }
 
-    public void AuditPromotion(String loginName, PromotionStatus promotionStatus, long id){
+    public void AuditPromotion(String loginName, PromotionStatus promotionStatus, long id) {
         PromotionModel promotionModel = promotionMapper.findById(id);
         promotionModel.setStatus(promotionStatus);
         promotionModel.setUpdatedBy(loginName);

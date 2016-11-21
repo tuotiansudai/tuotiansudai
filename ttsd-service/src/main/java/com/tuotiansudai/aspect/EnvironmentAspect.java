@@ -2,8 +2,8 @@ package com.tuotiansudai.aspect;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.Environment;
+import com.tuotiansudai.dto.SmsDataDto;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -30,7 +30,7 @@ public class EnvironmentAspect {
             return true;
         }
 
-        if(Environment.PRODUCTION != environment && proceedingJoinPoint.getArgs()[0].equals(fakeImageCaptcha)){
+        if (Environment.PRODUCTION != environment && proceedingJoinPoint.getArgs()[0].equals(fakeImageCaptcha)) {
             return true;
         }
 
@@ -43,7 +43,7 @@ public class EnvironmentAspect {
             return true;
         }
 
-        if(Environment.PRODUCTION != environment && proceedingJoinPoint.getArgs()[1].equals(fakeCaptcha)){
+        if (Environment.PRODUCTION != environment && proceedingJoinPoint.getArgs()[1].equals(fakeCaptcha)) {
             return true;
         }
 

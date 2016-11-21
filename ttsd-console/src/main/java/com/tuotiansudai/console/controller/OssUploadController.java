@@ -63,7 +63,7 @@ public class OssUploadController {
             String ossPath = "";
             try {
                 String url = request.getRequestURL().toString();
-                ossPath = ossWrapperClient.upload(FilenameUtils.getExtension(fileName), dfi.getInputStream(), rootPath, url.substring(0,url.lastIndexOf("/")), true);
+                ossPath = ossWrapperClient.upload(FilenameUtils.getExtension(fileName), dfi.getInputStream(), rootPath, url.substring(0, url.lastIndexOf("/")), true);
                 jsonArray.put(MessageFormat.format(imgTemplate, ossPath, fileName, fileName));
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);

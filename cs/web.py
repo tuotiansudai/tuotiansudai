@@ -1,12 +1,10 @@
 import hashlib
-
+import tornado.ioloop
+import torndb
 from concurrent.futures import ThreadPoolExecutor
 from tornado import gen
 from tornado.options import define, options, parse_command_line
-import tornado.web
-import tornado.ioloop
 from tornado.web import RequestHandler, HTTPError
-import torndb
 
 
 define("port", default=8888, help="run on the given port", type=int)

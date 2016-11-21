@@ -10,14 +10,11 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.point.repository.dto.ProductOrderDto;
 import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.ExportCsvUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

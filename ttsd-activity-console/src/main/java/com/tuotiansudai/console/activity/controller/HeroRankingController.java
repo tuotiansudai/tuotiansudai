@@ -34,9 +34,9 @@ public class HeroRankingController {
             tradingTime = new Date();
         }
 
-        List<HeroRankingView> heroRankingViewReferrerList = activityConsoleHeroRankingService.obtainHeroRankingReferrer(ActivityCategory.NEW_HERO_RANKING,tradingTime);
+        List<HeroRankingView> heroRankingViewReferrerList = activityConsoleHeroRankingService.obtainHeroRankingReferrer(ActivityCategory.NEW_HERO_RANKING, tradingTime);
 
-        List<HeroRankingView> heroRankingViewInvestList = activityConsoleHeroRankingService.obtainHeroRanking(ActivityCategory.NEW_HERO_RANKING,tradingTime);
+        List<HeroRankingView> heroRankingViewInvestList = activityConsoleHeroRankingService.obtainHeroRanking(ActivityCategory.NEW_HERO_RANKING, tradingTime);
 
         long avgInvestAmount = 0;
 

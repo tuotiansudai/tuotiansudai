@@ -373,7 +373,7 @@ $pointColor:#ff5400;
         text-align: center;
         width: 100%;
         font-size: 18px;
-        margin-bottom:20px;
+        margin-bottom: 20px;
       }
       .btn-normal {
         width: 100%;
@@ -388,28 +388,28 @@ $pointColor:#ff5400;
       .welcome-text {
         float: left;
         width: 100%;
-        font-size:14px;
-        color:#fff;
-        line-height:12px;
+        font-size: 14px;
+        color: #fff;
+        line-height: 12px;
         position: relative;
         margin: 0 0 20px;
-        &:before{
-          content:'';
-          width:48px;
-          height:1px;
+        &:before {
+          content: '';
+          width: 48px;
+          height: 1px;
           position: absolute;
-          top:7px;
-          left:0;
-          background:url('../../images/homepage/icon-line.png') no-repeat center;
+          top: 7px;
+          left: 0;
+          background: url('../../images/homepage/icon-line.png') no-repeat center;
         }
-        &:after{
-          content:'';
-          width:48px;
-          height:1px;
+        &:after {
+          content: '';
+          width: 48px;
+          height: 1px;
           position: absolute;
-          top:7px;
-          right:0;
-          background:url('../../images/homepage/icon-line.png') no-repeat center;
+          top: 7px;
+          right: 0;
+          background: url('../../images/homepage/icon-line.png') no-repeat center;
         }
       }
     }
@@ -609,11 +609,11 @@ $pointColor:#ff5400;
         position: relative;
         img {
           position: absolute;
-          top:0;
-          bottom:0;
-          left:0;
-          right:0;
-          margin:auto;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          margin: auto;
         }
         &:hover {
           box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.07), -1px -1px 8px rgba(0, 0, 0,0.07);

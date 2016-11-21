@@ -2,7 +2,6 @@ package com.tuotiansudai.cfca.service;
 
 import cfca.trustsign.common.vo.request.tx3.*;
 import cfca.trustsign.common.vo.response.tx3.*;
-import com.tuotiansudai.cfca.dto.AnxinContractType;
 
 public interface RequestResponseService {
 

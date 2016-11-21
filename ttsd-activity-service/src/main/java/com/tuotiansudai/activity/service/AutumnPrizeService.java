@@ -15,7 +15,6 @@ import com.tuotiansudai.activity.repository.model.TravelPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserLuxuryPrizeModel;
 import com.tuotiansudai.activity.repository.model.UserTravelPrizeModel;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.MobileEncoder;

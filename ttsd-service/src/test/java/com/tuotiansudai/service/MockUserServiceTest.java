@@ -4,14 +4,11 @@ import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
-import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.impl.UserServiceImpl;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.junit.Before;
@@ -24,10 +21,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;

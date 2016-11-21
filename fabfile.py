@@ -1,8 +1,8 @@
 from __future__ import with_statement
+
 import os
 from fabric.api import *
 from fabric.contrib.project import upload_project
-
 
 env.use_ssh_config = True
 env.always_use_pty = False
@@ -33,7 +33,8 @@ def migrate():
     local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxask ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxactivity ttsd-config:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=edxpoint ttsd-config:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=anxin_operations ttsd-config:flywayMigrate')
+    local(
+        '/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ttsd-config/ -Pdatabase=anxin_operations ttsd-config:flywayMigrate')
 
 def mk_war():
     local('/usr/local/bin/paver jcversion')
@@ -52,8 +53,10 @@ def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=invest distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=jpush distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('cd ./ttsd-loan-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/ -PdiagnosisConfigPath=/workspace/v2config/default/ttsd-diagnosis/')
+    local(
+        'cd ./ttsd-loan-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local(
+        'cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/ -PdiagnosisConfigPath=/workspace/v2config/default/ttsd-diagnosis/')
 
 
 def mk_static_zip():

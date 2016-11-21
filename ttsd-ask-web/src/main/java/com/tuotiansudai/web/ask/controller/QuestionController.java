@@ -97,8 +97,8 @@ public class QuestionController {
     }
 
     @RequestMapping(path = "/search", method = RequestMethod.GET)
-    public ModelAndView getQuestionsByKeyword(@RequestParam(value = "keyword") String keyword,
-                                              @RequestParam(value = "index") int index) {
+    public ModelAndView getQuestionsByKeyword(@RequestParam(value = "keyword", defaultValue = "") String keyword,
+                                              @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
         ModelAndView modelAndView = new ModelAndView();
         String loginName = LoginUserInfo.getLoginName();
         BaseDto<BasePaginationDataDto> data = questionService.getQuestionsByKeywords(keyword, loginName, index, 10);
