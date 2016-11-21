@@ -18,6 +18,8 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
     private String transAction;
     private String particType;
     private String particAccType;
+    private String merAccountId;
+    private String particAccountId;
 
     public TransferWithNotifyRequestModel() {
 
@@ -87,5 +89,12 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
 
     public String getAmount() {
         return amount;
+    }
+
+    public String getMerAccountId() {
+        return merAccountId;
+    }
+    public String getParticAccountId() {
+        return particAccountId;
     }
 }
