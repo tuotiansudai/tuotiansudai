@@ -69,7 +69,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
                             if(data.state){
                                 $('.image-url').val(data.title);
                                 $('.thumbImage').html('');
-                                $('.thumbImage').append('<img style="width:100%" src="/' + data.title + '" alt="神秘大奖缩略图">');
+                                $('.thumbImage').append('<img style="width:100%" src="' + data.title + '" alt="神秘大奖缩略图">');
                             }
                         });
                 }).fail(function(message){
@@ -154,11 +154,11 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapDatet
                         if($self.hasClass("tomorrow-prize-save")){
 
                             $('.tomorrowThumbImage').html('');
-                            $('.tomorrowThumbImage').append('<img style="width:100%" src="/' + data.imageUrl + '" alt="神秘大奖缩略图">');
+                            $('.tomorrowThumbImage').append('<img style="width:100%" src="' + data.imageUrl + '" alt="神秘大奖缩略图">');
                         }
                         if($self.hasClass("today-prize-save")){
                             $('.todayThumbImage').html('');
-                            $('.todayThumbImage').append('<img style="width:100%" src="/' + data.imageUrl + '" alt="神秘大奖缩略图">');
+                            $('.todayThumbImage').append('<img style="width:100%" src="' + data.imageUrl + '" alt="神秘大奖缩略图">');
                         }
 
                     })

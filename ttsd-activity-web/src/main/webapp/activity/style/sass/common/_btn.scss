@@ -1,4 +1,7 @@
 @import 'variables';
+$fontStack:Microsoft YaHei,Helvetica, sans-serif;
+$btnColor:#333 #666 #ccc #e6e6e6 #ff7a2a #f46916;
+$baseLineHeight:2 1.5;
 @mixin user-select($bool) {
   -webkit-user-select: $bool;
   -moz-user-select: $bool;
@@ -29,7 +32,7 @@
   cursor: pointer;
   @include user-select(none);
   @include touch-action(manipulation);
-  border: 1px solid nth($CK2,3);
+  border: 1px solid #ccc;
   border-radius: 4px;
   background: #999 none;
   color: #fff;
@@ -67,7 +70,7 @@
 .btn-normal {
   @extend .btn;
   background: rgba(255,117,42,1);
-  border: 1px solid nth($CK1,3);
+  border: 1px solid #f46916;
   color: #fff!important;
   &:hover {
     background: rgba(255,117,42,0.8);
@@ -82,7 +85,7 @@
 .btn-success {
   @extend .btn;
   background: rgba(244,105,22,1);
-  border: 1px solid nth($CK1,3);
+  border: 1px solid #f46916;
   color: #fff!important;
   &:hover {
     background: rgba(244,105,22,0.8);
@@ -162,7 +165,7 @@ input {
   font-family: $fontStack;
   padding: 6px;
   border: 1px solid nth($btnColor, 3);
-  background: nth($baseColor, 1);
+  background: #fff;
 }
 
 input[type="radio"] {
