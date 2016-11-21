@@ -2,7 +2,6 @@ package com.tuotiansudai.jpush.service.impl;
 
 
 import cn.jpush.api.report.ReceivedsResult;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
@@ -10,8 +9,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.enums.PushSource;
@@ -28,7 +25,7 @@ import com.tuotiansudai.jpush.repository.model.JumpTo;
 import com.tuotiansudai.jpush.repository.model.PushStatus;
 import com.tuotiansudai.jpush.repository.model.PushUserType;
 import com.tuotiansudai.jpush.service.JPushAlertService;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.task.OperationType;
@@ -57,9 +54,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private MobileAppJPushClient mobileAppJPushClient;
 
     @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     private static final String JPUSH_ID_KEY = "api:jpushId:store";
@@ -67,42 +61,13 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private static final String NO_INVEST_LOGIN_NAME = "job:noInvest:loginName";
 
     @Autowired
-    private InvestMapper investMapper;
-
-    @Autowired
-    private LoanRepayMapper loanRepayMapper;
-
-    @Autowired
-    private InvestRepayMapper investRepayMapper;
-
-    @Autowired
-    private RechargeMapper rechargeMapper;
-
-    @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private InvestReferrerRewardMapper investReferrerRewardMapper;
-
-    @Autowired
-    private WithdrawMapper withdrawMapper;
 
     @Autowired
     private JobManager jobManager;
 
     @Autowired
     AuditLogUtil auditLogUtil;
-
-    @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
-    private UserCouponMapper userCouponMapper;
-
-    @Autowired
-    private CouponMapper couponMapper;
-
-    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     @Transactional
