@@ -9,29 +9,29 @@ import java.util.Date;
 import static org.junit.Assert.assertEquals;
 
 
-public class TravelPrizeMapperTest extends BaseMapperTest{
+public class TravelPrizeMapperTest extends BaseMapperTest {
     @Autowired
     private TravelPrizeMapper travelPrizeMapper;
 
     @Test
-    public void shouldCreateTravelPrizeIsSuccess(){
+    public void shouldCreateTravelPrizeIsSuccess() {
         TravelPrizeModel travelPrizeModel = fakeTravelPrizeModel();
         travelPrizeMapper.create(travelPrizeModel);
         TravelPrizeModel travelPrizeModelReturn = travelPrizeMapper.findById(travelPrizeModel.getId());
 
-        assertEquals(travelPrizeModel.getId(),travelPrizeModelReturn.getId());
-        assertEquals(travelPrizeModel.getName(),travelPrizeModelReturn.getName());
-        assertEquals(travelPrizeModel.getPrice(),travelPrizeModelReturn.getPrice());
-        assertEquals(travelPrizeModel.getImage(),travelPrizeModelReturn.getImage());
-        assertEquals(travelPrizeModel.getInvestAmount(),travelPrizeModelReturn.getInvestAmount());
-        assertEquals(travelPrizeModel.getIntroduce(),travelPrizeModelReturn.getIntroduce());
-        assertEquals(travelPrizeModel.getCreatedBy(),travelPrizeModelReturn.getCreatedBy());
-        assertEquals(travelPrizeModel.getUpdatedBy(),travelPrizeModelReturn.getUpdatedBy());
+        assertEquals(travelPrizeModel.getId(), travelPrizeModelReturn.getId());
+        assertEquals(travelPrizeModel.getName(), travelPrizeModelReturn.getName());
+        assertEquals(travelPrizeModel.getPrice(), travelPrizeModelReturn.getPrice());
+        assertEquals(travelPrizeModel.getImage(), travelPrizeModelReturn.getImage());
+        assertEquals(travelPrizeModel.getInvestAmount(), travelPrizeModelReturn.getInvestAmount());
+        assertEquals(travelPrizeModel.getIntroduce(), travelPrizeModelReturn.getIntroduce());
+        assertEquals(travelPrizeModel.getCreatedBy(), travelPrizeModelReturn.getCreatedBy());
+        assertEquals(travelPrizeModel.getUpdatedBy(), travelPrizeModelReturn.getUpdatedBy());
 
 
     }
 
-    private TravelPrizeModel fakeTravelPrizeModel(){
+    private TravelPrizeModel fakeTravelPrizeModel() {
         TravelPrizeModel travelPrizeModel = new TravelPrizeModel();
         travelPrizeModel.setName("name");
         travelPrizeModel.setPrice("1000");

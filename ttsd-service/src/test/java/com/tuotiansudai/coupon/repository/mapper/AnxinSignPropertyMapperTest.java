@@ -39,7 +39,7 @@ public class AnxinSignPropertyMapperTest extends BaseMapperTest {
         getModel.setProjectCode("abcd");
         getModel.setAuthIp("123");
         getModel.setAnxinUserId("uuuu");
-        Date authTime = DateTime.now().withTime(12,0,0,0).toDate();
+        Date authTime = DateTime.now().withTime(12, 0, 0, 0).toDate();
         getModel.setAuthTime(authTime);
         getModel.setSkipAuth(false);
         anxinSignPropertyMapper.update(getModel);

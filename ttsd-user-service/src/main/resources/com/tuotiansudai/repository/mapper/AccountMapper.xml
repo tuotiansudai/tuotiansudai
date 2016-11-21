@@ -22,8 +22,10 @@
     </resultMap>
 
     <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">
-        insert into account (login_name, pay_user_id, pay_account_id, balance, freeze, point, register_time, membership_point)
-        value(#{loginName}, #{payUserId}, #{payAccountId}, #{balance}, #{freeze}, #{point}, #{registerTime}, #{membershipPoint})
+        insert into account (login_name, pay_user_id, pay_account_id, balance, freeze, point, register_time,
+        membership_point)
+        value(#{loginName}, #{payUserId}, #{payAccountId}, #{balance}, #{freeze}, #{point}, #{registerTime},
+        #{membershipPoint})
     </insert>
 
     <select id="findByLoginName" parameterType="string" resultMap="accountResultMap">
@@ -62,7 +64,8 @@
                 AND account.login_name = #{loginName}
             </if>
             <if test="userName != null and userName != '' ">
-                AND EXISTS (select 1 from user where user.login_name = account.login_name and user.user_name = #{userName})
+                AND EXISTS (select 1 from user where user.login_name = account.login_name and user.user_name =
+                #{userName})
             </if>
             <if test="mobile != null and mobile != '' ">
                 AND EXISTS (select 1 from user where user.login_name = account.login_name and user.mobile = #{mobile})
@@ -82,7 +85,8 @@
                 AND account.login_name = #{loginName}
             </if>
             <if test="userName != null and userName != '' ">
-                AND EXISTS (select 1 from user where user.login_name = account.login_name and user.user_name = #{userName})
+                AND EXISTS (select 1 from user where user.login_name = account.login_name and user.user_name =
+                #{userName})
             </if>
             <if test="mobile != null and mobile != '' ">
                 AND EXISTS (select 1 from user where user.login_name = account.login_name and user.mobile = #{mobile})

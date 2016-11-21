@@ -1,11 +1,11 @@
 package com.tuotiansudai.console.activity.controller;
 
 
+import com.tuotiansudai.activity.repository.dto.IPhone7InvestLotteryWinnerDto;
 import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
 import com.tuotiansudai.activity.repository.mapper.IPhone7LotteryConfigMapper;
 import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigModel;
 import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigStatus;
-import com.tuotiansudai.activity.repository.dto.IPhone7InvestLotteryWinnerDto;
 import com.tuotiansudai.console.activity.service.ActivityConsoleIPhone7LotteryService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;

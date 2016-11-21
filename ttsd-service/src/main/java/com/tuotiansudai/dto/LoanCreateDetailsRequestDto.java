@@ -1,13 +1,10 @@
 package com.tuotiansudai.dto;
 
-import com.google.common.base.Function;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.LoanDetailsModel;
 import com.tuotiansudai.repository.model.Source;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import java.util.Collections;
 import java.util.List;
 
 public class LoanCreateDetailsRequestDto {

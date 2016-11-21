@@ -739,11 +739,11 @@
     <select id="queryInvestViscosityDetail" parameterType="map" resultMap="investViscosityDetailView">
         select
             temp.login_name,
-            u.user_name,
+        u.user_name,
             u.mobile,
             IFNULL((select 1 from user_role ur where ur.login_name = temp.login_name and ur.role='STAFF'),0) as is_staff,
             u.referrer,
-            (select referrer.user_name from user referrer where referrer.login_name = u.referrer) as referrer_user_name,
+        (select referrer.user_name from user referrer where referrer.login_name = u.referrer) as referrer_user_name,
             IFNULL((select 1 from user_role ur where ur.login_name = u.referrer and ur.role='STAFF'),0) as is_referrer_staff,
             temp.total_amount,
             temp.last_invest_time,

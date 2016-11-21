@@ -1,11 +1,8 @@
 package com.tuotiansudai.web.controller;
 
-import com.google.common.base.Strings;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.BankModel;
 import com.tuotiansudai.repository.model.UserModel;
@@ -13,9 +10,9 @@ import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BankService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.BankCardUtil;
 import com.tuotiansudai.util.RequestIPParser;
-import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;

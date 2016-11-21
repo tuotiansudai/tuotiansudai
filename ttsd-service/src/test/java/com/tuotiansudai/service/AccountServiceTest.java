@@ -1,8 +1,5 @@
 package com.tuotiansudai.service;
 
-import com.google.common.collect.Lists;
-import com.tuotiansudai.anxin.service.AnxinSignService;
-import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;

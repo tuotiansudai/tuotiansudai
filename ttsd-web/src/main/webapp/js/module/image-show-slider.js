@@ -136,7 +136,7 @@ define([], function () {
         //自动播放
         autoplay: function() {
 
-            if(this.play) {
+            if (this.play) {
                 clearInterval(this.play);
             }
             this.play = setInterval(function() {

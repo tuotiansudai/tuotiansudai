@@ -3,7 +3,6 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanApplicationRegion;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
@@ -37,7 +36,7 @@ public class LoanApplicationController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView("loan-application","responsive", true);
+        ModelAndView modelAndView = new ModelAndView("loan-application", "responsive", true);
 
         String mobile = LoginUserInfo.getMobile();
         if (!StringUtils.isEmpty(mobile)) {

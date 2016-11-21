@@ -14,8 +14,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
 @Service
 public class BindBankCardServiceImpl implements BindBankCardService {
 
@@ -68,14 +66,14 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             return true;
         }
 
-        if(accountModel.getBalance() > 0){
+        if (accountModel.getBalance() > 0) {
             return true;
         }
 
         if (investRepayService.findSumRepayingCorpusByLoginName(loginName) > 0 || investRepayService.findSumRepayingInterestByLoginName(loginName) > 0) {
             return true;
         }
-        
+
         return false;
     }
 

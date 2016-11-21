@@ -37,16 +37,16 @@ public class ActivityConsoleHeroRankingService {
 
     private int lifeSecond = 5184000;
 
-    public List<HeroRankingView> obtainHeroRankingReferrer(ActivityCategory activityCategory,Date tradingTime) {
+    public List<HeroRankingView> obtainHeroRankingReferrer(ActivityCategory activityCategory, Date tradingTime) {
         List<String> activityPeriod = getActivityPeriod(activityCategory);
         return investMapper.findHeroRankingByReferrer(tradingTime, activityPeriod.get(0), activityPeriod.get(1), 0, 10);
     }
 
-    private List getActivityPeriod(ActivityCategory activityCategory){
+    private List getActivityPeriod(ActivityCategory activityCategory) {
         return activityCategory.equals(ActivityCategory.HERO_RANKING) ? heroRankingActivityPeriod : newHeroRankingActivityPeriod;
     }
 
-    public List<HeroRankingView> obtainHeroRanking(ActivityCategory activityCategory,Date tradingTime) {
+    public List<HeroRankingView> obtainHeroRanking(ActivityCategory activityCategory, Date tradingTime) {
         if (tradingTime == null) {
             logger.debug("tradingTime is null");
             return null;
@@ -66,7 +66,7 @@ public class ActivityConsoleHeroRankingService {
 
     public void saveMysteriousPrize(MysteriousPrizeDto mysteriousPrizeDto) {
         String prizeDate = new DateTime(mysteriousPrizeDto.getPrizeDate()).withTimeAtStartOfDay().toString("yyyy-MM-dd");
-        redisWrapperClient.hsetSeri(MYSTERIOUSREDISKEY, prizeDate, mysteriousPrizeDto,lifeSecond);
+        redisWrapperClient.hsetSeri(MYSTERIOUSREDISKEY, prizeDate, mysteriousPrizeDto, lifeSecond);
     }
 
 }

@@ -7,7 +7,8 @@ public class SystemConst {
     public static final String DEFAULT_CHARSET = "UTF-8";
     public static final Locale DEFAULT_LOCALE = Locale.CHINA;
 
-    private static final String[] SORT = { Locale.CHINA.toString() };
+    private static final String[] SORT = {Locale.CHINA.toString()};
+
     static {
         Arrays.sort(SORT);
     }

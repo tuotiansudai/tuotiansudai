@@ -63,7 +63,7 @@ public class ExtraRateAspect {
     public void afterReturningLoanOutInvestCalculation(JoinPoint joinPoint, boolean returnValue) {
         if (returnValue) {
             final long loanId = (long) joinPoint.getArgs()[0];
-            logger.info(MessageFormat.format("[extra rate loan:{0}] aspect is starting",loanId));
+            logger.info(MessageFormat.format("[extra rate loan:{0}] aspect is starting", loanId));
             investExtraRateService.rateIncreases(loanId);
             logger.info(MessageFormat.format("[extra rate loan:{0}] aspect is end", loanId));
         }

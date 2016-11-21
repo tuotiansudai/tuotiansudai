@@ -11,7 +11,6 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.MobileEncryptor;
-import com.tuotiansudai.util.RandomUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,19 +38,19 @@ public class Iphone7LotteryService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.iphone7.endTime}\")}")
     private Date activityIphone7EndTime;
 
-    public List<IPhone7LotteryDto> iphone7InvestLotteryWinnerViewList(){
+    public List<IPhone7LotteryDto> iphone7InvestLotteryWinnerViewList() {
         List<IPhone7LotteryConfigModel> iPhone7LotteryConfigModels = iPhone7LotteryConfigMapper.effectiveList();
         return iPhone7LotteryConfigModels.stream().map(iPhone7LotteryConfigModel -> new IPhone7LotteryDto(iPhone7LotteryConfigModel, MobileEncryptor.encryptWebMiddleMobile(iPhone7LotteryConfigModel.getMobile()))).collect(Collectors.toList());
     }
 
-    public String nextLotteryInvestAmount(){
+    public String nextLotteryInvestAmount() {
         long totalAmount = investMapper.sumInvestAmountIphone7(activityIphone7StartTime, activityIphone7EndTime);
         int currentLotteryInvestAmount = iPhone7LotteryConfigMapper.getCurrentLotteryInvestAmount();
         long nextLotteryInvestAmount = (totalAmount - currentLotteryInvestAmount * 1000000) <= 0 ? 50000000 : (50000000 - (totalAmount - currentLotteryInvestAmount * 1000000));
         return AmountConverter.convertCentToString(nextLotteryInvestAmount);
     }
 
-    public BasePaginationDataDto<IPhone7InvestLotteryDto> myInvestLotteryList(String loginName, int index, int pageSize){
+    public BasePaginationDataDto<IPhone7InvestLotteryDto> myInvestLotteryList(String loginName, int index, int pageSize) {
         long count = iPhone7InvestLotteryMapper.findByLoginNameCount(loginName);
         List<IPhone7InvestLotteryModel> records = Lists.newArrayList();
         if (count > 0) {
@@ -67,7 +66,7 @@ public class Iphone7LotteryService {
         return dto;
     }
 
-    public boolean isNotExpiryDate(){
+    public boolean isNotExpiryDate() {
         Date nowDate = DateTime.now().toDate();
         return activityIphone7StartTime.before(nowDate) && activityIphone7EndTime.after(nowDate);
     }

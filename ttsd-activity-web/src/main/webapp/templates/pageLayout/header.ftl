@@ -1,7 +1,7 @@
 <div class="header-container">
     <div class="header-download">
-        <div id="closeDownloadBox" class="icon-close img-close-tip" ></div>
-        <div class="img-logo-tip" ></div>
+        <div id="closeDownloadBox" class="icon-close img-close-tip"></div>
+        <div class="img-logo-tip"></div>
         <span>APP客户端重磅来袭<br/>更便捷更安全</span>
         <a href="#" class="btn-normal fr" id="btnExperience">立即体验</a>
     </div>
@@ -21,7 +21,8 @@
             </li>
         <@global.isNotAnonymous>
             <li class="header-login">
-                <a class="personal-info-link" href="${requestContext.getContextPath()}/personal-info"><@global.security.authentication property="principal.mobile" /></a>
+                <a class="personal-info-link"
+                   href="${requestContext.getContextPath()}/personal-info"><@global.security.authentication property="principal.mobile" /></a>
             </li>
             <li class="header-register"><a id="logout-link" href="javascript:void(0);" class="logout">退出</a>
                 <form id="logout-form" class="logout-form" action="/logout" method="post">
@@ -35,7 +36,8 @@
                 <a href="/login" onclick="cnzzPush.trackClick('14顶部导航','登录')">登录</a>
             </li>
             <li class="header-register">
-                <a href="/register/user<#if channel??>?channel=${channel}</#if>" onclick="cnzzPush.trackClick('15顶部导航','注册')">注册</a>
+                <a href="/register/user<#if channel??>?channel=${channel}</#if>"
+                   onclick="cnzzPush.trackClick('15顶部导航','注册')">注册</a>
             </li>
         </@global.isAnonymous>
         </ul>

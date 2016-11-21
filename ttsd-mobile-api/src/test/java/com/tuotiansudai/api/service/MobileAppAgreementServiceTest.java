@@ -1,6 +1,6 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.*;
+import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.AgreementOperateRequestDto;
 import com.tuotiansudai.api.dto.v1_0.AgreementOperateResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;

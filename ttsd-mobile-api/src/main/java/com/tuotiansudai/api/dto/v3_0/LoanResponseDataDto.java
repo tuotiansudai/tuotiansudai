@@ -2,7 +2,6 @@ package com.tuotiansudai.api.dto.v3_0;
 
 import com.tuotiansudai.api.dto.v2_0.ExtraRateListResponseDataDto;
 import com.tuotiansudai.repository.model.PledgeType;
-import com.tuotiansudai.repository.model.Source;
 
 import java.util.List;
 

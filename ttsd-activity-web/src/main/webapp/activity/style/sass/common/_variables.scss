@@ -1,5 +1,5 @@
-$linkColor:#666 #ff770f;
-$fontSize:12px 13px 14px 16px 18px;
+$linkColor: #666 #ff770f;
+$fontSize: 12px 13px 14px 16px 18px;
 
 $headings: (h1: 2em, h2: 1.5em, h3: 1.2em, h4:18px, h5:16px);
 
@@ -11,21 +11,24 @@ $headings: (h1: 2em, h2: 1.5em, h3: 1.2em, h4:18px, h5:16px);
 
   }
 }
+
 @mixin center-block {
-  margin-left:auto;
-  margin-right:auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-@mixin text-overflow{
+@mixin text-overflow {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-@mixin border-radius ($sizing) {
-  -webkit-border-radius:$sizing;
-  -moz-border-radius:$sizing;
-  border-radius:$sizing;
+
+@mixin border-radius($sizing) {
+  -webkit-border-radius: $sizing;
+  -moz-border-radius: $sizing;
+  border-radius: $sizing;
 }
+
 /* background gradient */
 @mixin gradient-linear($angle,$fromColor,$toColor) {
   //Bottom -Top: 0deg
@@ -33,22 +36,23 @@ $headings: (h1: 2em, h2: 1.5em, h3: 1.2em, h4:18px, h5:16px);
   //right-left: 270deg or -90deg
   //left-right :90deg or -270deg
   //right bottom- left top :315deg
-  background-image:-webkit-linear-gradient($angle, $fromColor, $toColor);
-  background-image:linear-gradient($angle,$fromColor,$toColor);
-}
-@mixin transform-rotate ($sizing) {
-  transform:rotate($sizing);
-  -ms-transform:rotate($sizing); 	/* IE 9 */
-  -moz-transform:rotate($sizing); 	/* Firefox */
-  -webkit-transform:rotate($sizing); /* Safari 和 Chrome */
-  -o-transform:rotate($sizing); 	/* Opera */
+  background-image: -webkit-linear-gradient($angle, $fromColor, $toColor);
+  background-image: linear-gradient($angle, $fromColor, $toColor);
 }
 
-@mixin transition ($time) {
-  transition:$time;
-  -moz-transition:$time; /* Firefox 4 */
-  -webkit-transition:$time; /* Safari and Chrome */
-  -o-transition:$time; /* Opera */
+@mixin transform-rotate($sizing) {
+  transform: rotate($sizing);
+  -ms-transform: rotate($sizing); /* IE 9 */
+  -moz-transform: rotate($sizing); /* Firefox */
+  -webkit-transform: rotate($sizing); /* Safari 和 Chrome */
+  -o-transform: rotate($sizing); /* Opera */
+}
+
+@mixin transition($time) {
+  transition: $time;
+  -moz-transition: $time; /* Firefox 4 */
+  -webkit-transition: $time; /* Safari and Chrome */
+  -o-transition: $time; /* Opera */
 }
 
 

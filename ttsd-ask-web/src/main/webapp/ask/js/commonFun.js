@@ -81,9 +81,9 @@ comm.popWindow=function(title,content,size,load) {
              $('.popWindow-overlay,.popWindow').show();
         }
 
-    $popWindow.on('click','.close',function() {
+    $popWindow.on('click', '.close', function () {
         $('.popWindow-overlay,.popWindow').hide();
-        if(isload) {
+        if (isload) {
             window.location.reload();
         }
     })

@@ -33,7 +33,6 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.*;
-import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -748,7 +747,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void delStoreJPushId(String loginName){
+    public void delStoreJPushId(String loginName) {
         redisWrapperClient.hdel(JPUSH_ID_KEY, loginName);
     }
 

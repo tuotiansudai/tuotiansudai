@@ -23,13 +23,13 @@ public class MobileAppAnxinSignController {
 
     @ResponseBody
     @RequestMapping(value = "/sendCaptcha", method = RequestMethod.POST)
-    public BaseResponseDto sendCaptcha(@RequestBody AnxinSignSendCaptchaRequestDto requestDto){
+    public BaseResponseDto sendCaptcha(@RequestBody AnxinSignSendCaptchaRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
         boolean isVoice = requestDto.isVoice();
 
-        BaseDto<BaseDataDto> retDto =  anxinSignService.sendCaptcha3101(loginName, isVoice);
+        BaseDto<BaseDataDto> retDto = anxinSignService.sendCaptcha3101(loginName, isVoice);
 
-        if(retDto.isSuccess()) {
+        if (retDto.isSuccess()) {
             return new BaseResponseDto(ReturnMessage.SUCCESS);
         }
         return new BaseResponseDto(ReturnMessage.FAIL.getCode(), retDto.getData().getMessage());
@@ -37,7 +37,7 @@ public class MobileAppAnxinSignController {
 
     @ResponseBody
     @RequestMapping(value = "/verifyCaptcha", method = RequestMethod.POST)
-    public BaseResponseDto verifyCaptcha(@RequestBody AnxinSignVerifyCaptchaRequestDto requestDto, HttpServletRequest request){
+    public BaseResponseDto verifyCaptcha(@RequestBody AnxinSignVerifyCaptchaRequestDto requestDto, HttpServletRequest request) {
 
         String ip = RequestIPParser.parse(request);
 
@@ -45,9 +45,9 @@ public class MobileAppAnxinSignController {
         String captcha = requestDto.getCaptcha();
         boolean skipAuth = requestDto.isSkipAuth();
 
-        BaseDto<BaseDataDto> retDto =  anxinSignService.verifyCaptcha3102(loginName, captcha, skipAuth, ip);
+        BaseDto<BaseDataDto> retDto = anxinSignService.verifyCaptcha3102(loginName, captcha, skipAuth, ip);
 
-        if(retDto.isSuccess()) {
+        if (retDto.isSuccess()) {
             return new BaseResponseDto(ReturnMessage.SUCCESS);
         }
         return new BaseResponseDto(ReturnMessage.FAIL.getCode(), retDto.getData().getMessage());
@@ -55,14 +55,14 @@ public class MobileAppAnxinSignController {
 
     @ResponseBody
     @RequestMapping(value = "/switchSkipAuth", method = RequestMethod.POST)
-    public BaseResponseDto switchSkipAuth(@RequestBody AnxinSignSwitchSkipAuthRequestDto requestDto){
+    public BaseResponseDto switchSkipAuth(@RequestBody AnxinSignSwitchSkipAuthRequestDto requestDto) {
 
         String loginName = requestDto.getBaseParam().getUserId();
         boolean open = requestDto.isOpen();
 
-        BaseDto<BaseDataDto> retDto =  anxinSignService.switchSkipAuth(loginName, open);
+        BaseDto<BaseDataDto> retDto = anxinSignService.switchSkipAuth(loginName, open);
 
-        if(retDto.isSuccess()) {
+        if (retDto.isSuccess()) {
             return new BaseResponseDto(ReturnMessage.SUCCESS);
         }
         return new BaseResponseDto(ReturnMessage.FAIL.getCode(), retDto.getData().getMessage());
@@ -71,13 +71,13 @@ public class MobileAppAnxinSignController {
 
     @ResponseBody
     @RequestMapping(value = "/createAccount", method = RequestMethod.POST)
-    public BaseResponseDto createAccount(@RequestBody BaseParamDto requestDto){
+    public BaseResponseDto createAccount(@RequestBody BaseParamDto requestDto) {
 
         String loginName = requestDto.getBaseParam().getUserId();
 
-        BaseDto<BaseDataDto> retDto =  anxinSignService.createAccount3001(loginName);
+        BaseDto<BaseDataDto> retDto = anxinSignService.createAccount3001(loginName);
 
-        if(retDto.isSuccess()) {
+        if (retDto.isSuccess()) {
             return new BaseResponseDto(ReturnMessage.SUCCESS);
         }
         return new BaseResponseDto(ReturnMessage.FAIL.getCode(), retDto.getData().getMessage());

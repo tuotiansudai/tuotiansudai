@@ -4,7 +4,6 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
@@ -52,7 +51,8 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${anxin.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl"
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${anxin.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
                 <property name="username" value="${anxin.jdbc.username}"/>
                 <property name="password" value="${anxin.jdbc.password}"/>
                 <property name="minimumIdle" value="${anxin.anxin.minimumIdle}"/>

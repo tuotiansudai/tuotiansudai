@@ -58,7 +58,6 @@ public class TransferApplicationDetailDto extends BaseDataDto {
     private Date transferTime;
 
 
-
     public TransferApplicationDetailDto() {
     }
 

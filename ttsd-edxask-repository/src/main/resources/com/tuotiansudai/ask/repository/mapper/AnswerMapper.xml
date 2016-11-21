@@ -15,7 +15,8 @@
         <result column="answer" property="answer"/>
         <result column="best_answer" property="bestAnswer"/>
         <result column="adopted_time" property="adoptedTime"/>
-        <result column="favored_by" property="favoredBy" typeHandler="com.tuotiansudai.ask.repository.mybatis.StringListTypeHandler"/>
+        <result column="favored_by" property="favoredBy"
+                typeHandler="com.tuotiansudai.ask.repository.mybatis.StringListTypeHandler"/>
         <result column="approved_by" property="approvedBy"/>
         <result column="approved_time" property="approvedTime"/>
         <result column="rejected_by" property="rejectedBy"/>
@@ -116,7 +117,8 @@
         from answer
         <where>
             <if test="question != null and question != '' ">
-                and exists(select 1 from question where question.id = answer.question_id and question like CONCAT(CONCAT('%', #{question}), '%'))
+                and exists(select 1 from question where question.id = answer.question_id and question like
+                CONCAT(CONCAT('%', #{question}), '%'))
             </if>
             <if test="mobile != null and mobile != ''">
                 and mobile = #{mobile}
@@ -134,7 +136,8 @@
         from answer
         <where>
             <if test="question != null and question != '' ">
-                and exists(select 1 from question where question.id = answer.question_id and question like CONCAT(CONCAT('%', #{question}), '%'))
+                and exists(select 1 from question where question.id = answer.question_id and question like
+                CONCAT(CONCAT('%', #{question}), '%'))
             </if>
             <if test="mobile != null and mobile != ''">
                 and mobile = #{mobile}

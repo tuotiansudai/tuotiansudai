@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'fancybox', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert', 'red-envelope-float', 'jquery.form', 'commonFun','logintip','assign_coupon','anxin_qian'], function ($, pagination, Mustache, investListTemplate, layer, _) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'fancybox', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert', 'red-envelope-float', 'jquery.form', 'commonFun', 'logintip', 'assign_coupon', 'anxin_qian'], function ($, pagination, Mustache, investListTemplate, layer, _) {
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
         amountInputElement = $(".text-input-amount", $loanDetail),
@@ -20,7 +20,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         noPasswordInvest = amountInputElement.data('no-password-invest'),
         autoInvestOn = amountInputElement.data('auto-invest-on'),
         $minInvestAmount = $('.text-input-amount').data('min-invest-amount'),
-        $isSkipAuth=$('#isSkipAuth'),
+        $isSkipAuth = $('#isSkipAuth'),
         $investForm = $('#investForm');
 
     var viewport = commonFun.browserRedirect();
@@ -546,9 +546,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
         });
     }
+
     //投资表单请求以及校验
     function investSubmit(){
-        
+
         if ($investForm.attr('action') === '/invest') {
             if (!isInvestor) {
                 location.href = '/login?redirect=' + encodeURIComponent(location.href);
@@ -595,9 +596,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 },
                 btn2:function(){
                     cnzzPush.trackClick("68标的详情页","马上投资确认框","确认");
-                    if($isSkipAuth.val()=='true'){//判断是否开启安心签免验
+                    if ($isSkipAuth.val() == 'true') {//判断是否开启安心签免验
                         sendSubmitRequest();
-                    }else{
+                    } else {
                         getSkipPhoneTip();
                         return false;
                     }
@@ -606,16 +607,16 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             return;
         }
         //正常投资
-        if($isSkipAuth.val()=='true'){//判断是否开启安心签免验
+        if ($isSkipAuth.val() == 'true') {//判断是否开启安心签免验
             $investForm.submit();
-        }else{
+        } else {
             getSkipPhoneTip();
             return false;
         }
     }
 
     //发送投资提交请求
-    function sendSubmitRequest(){
+    function sendSubmitRequest() {
         $investForm.ajaxSubmit({
             dataType: 'json',
             url: '/no-password-invest',
@@ -861,129 +862,131 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     })();
 
     //勾选马上投资下方 协议复选框
-    $('.skip-group .skip-icon').on('click', function(event) {
+    $('.skip-group .skip-icon').on('click', function (event) {
         event.preventDefault();
 
-        $(this).hasClass('active')?$(this).removeClass('active') && $('#skipCheck').val('false') && $('#checkTip').show()&& $investSubmit.prop('disabled',true):$(this).addClass('active')&& $('#skipCheck').val('true') && $('#checkTip').hide() && $investSubmit.prop('disabled',false);
+        $(this).hasClass('active') ? $(this).removeClass('active') && $('#skipCheck').val('false') && $('#checkTip').show() && $investSubmit.prop('disabled', true) : $(this).addClass('active') && $('#skipCheck').val('true') && $('#checkTip').hide() && $investSubmit.prop('disabled', false);
     });
 
     //勾选 安心签弹框中的复选框
-    $('.tip-item .skip-icon').on('click', function(event) {
+    $('.tip-item .skip-icon').on('click', function (event) {
         event.preventDefault();
-        $(this).hasClass('active')?$(this).removeClass('active') && $('#tipCheck').val('false'):$(this).addClass('active')&& $('#tipCheck').val('true');
+        $(this).hasClass('active') ? $(this).removeClass('active') && $('#tipCheck').val('false') : $(this).addClass('active') && $('#tipCheck').val('true');
     });
 
     //弹出安心签弹框
-    function getSkipPhoneTip(){
+    function getSkipPhoneTip() {
         layer.open({
             shadeClose: false,
             title: '安心签代签署授权',
             btn: 0,
             type: 1,
-            area: $(window).width()>700?['400px', 'auto']:['320px','auto'],
+            area: $(window).width() > 700 ? ['400px', 'auto'] : ['320px', 'auto'],
             content: $('#getSkipPhone')
         });
     }
 
-    var num = 60,Down;
+    var num = 60, Down;
 
     //获取短信验证码
-    $('#getSkipCode').on('click', function(event) {
+    $('#getSkipCode').on('click', function (event) {
         event.preventDefault();
         getCode(false);
     });
-    
+
     //获取语音验证码
-    $('#microPhone').on('click', function(event) {
+    $('#microPhone').on('click', function (event) {
         event.preventDefault();
         getCode(true);
     });
     //安心签弹框中获取短信验证码请求
-    function getCode(type){
+    function getCode(type) {
         $.ajax({
             url: '/anxinSign/sendCaptcha',
             type: 'POST',
             dataType: 'json',
-            data:{
-                isVoice:type
+            data: {
+                isVoice: type
             }
         })
-        .done(function(data) {
-            if(data.success) {
-                countDown();
-                Down = setInterval(countDown, 1000);
-            }
-            else {
-                layer.msg('请求失败，请重试或联系客服！');
-            }
+            .done(function (data) {
+                if (data.success) {
+                    countDown();
+                    Down = setInterval(countDown, 1000);
+                }
+                else {
+                    layer.msg('请求失败，请重试或联系客服！');
+                }
 
-        })
-        .fail(function() {
-            layer.msg('请求失败，请重试或联系客服！');
-        });
+            })
+            .fail(function () {
+                layer.msg('请求失败，请重试或联系客服！');
+            });
     }
+
     //安心签弹框中获取短信验证码倒计时效果
     function countDown() {
-        $('#getSkipCode').val(num + '秒后重新获取').prop('disabled',true);
+        $('#getSkipCode').val(num + '秒后重新获取').prop('disabled', true);
         $('#microPhone').css('visibility', 'hidden');
         if (num == 0) {
             clearInterval(Down);
-            $('#getSkipCode').val('重新获取验证码').prop('disabled',false);
+            $('#getSkipCode').val('重新获取验证码').prop('disabled', false);
             $('#microPhone').css('visibility', 'visible');
-            num=60;
-        }else{
+            num = 60;
+        } else {
             num--;
         }
     }
+
     //安心签授权弹框表单提交
-    $('#getSkipBtn').on('click',  function(event) {
+    $('#getSkipBtn').on('click', function (event) {
         event.preventDefault();
-        var $self=$(this);
-        if($('#skipPhoneCode').val()!=''){
+        var $self = $(this);
+        if ($('#skipPhoneCode').val() != '') {
             $.ajax({
                 url: '/anxinSign/verifyCaptcha',
                 type: 'POST',
                 dataType: 'json',
                 data: {
                     captcha: $('#skipPhoneCode').val(),
-                    skipAuth:$('#tipCheck').val()
+                    skipAuth: $('#tipCheck').val()
                 }
             })
-            .done(function(data) {
-                $self.removeClass('active').val('立即授权').prop('disabled', false);
-                if(data.success){
-                    $('#isAnxinUser').val('true') && $('.skip-group').hide();
-                    if(data.skipAuth=='true'){
-                        $('#isSkipAuth').val('true');
+                .done(function (data) {
+                    $self.removeClass('active').val('立即授权').prop('disabled', false);
+                    if (data.success) {
+                        $('#isAnxinUser').val('true') && $('.skip-group').hide();
+                        if (data.skipAuth == 'true') {
+                            $('#isSkipAuth').val('true');
+                        }
+                        skipSuccess();
+                    } else {
+                        $('#skipError').text('验证码不正确').show();
                     }
-                    skipSuccess();
-                }else{
-                    $('#skipError').text('验证码不正确').show();
-                }
-            })
-            .fail(function() {
-                $self.removeClass('active').val('立即授权').prop('disabled', false);
-                layer.msg('请求失败，请重试！');
-            })
-            .always(function() {
-                $self.addClass('active').val('授权中...').prop('disabled', true);
-            });
-        }else{
+                })
+                .fail(function () {
+                    $self.removeClass('active').val('立即授权').prop('disabled', false);
+                    layer.msg('请求失败，请重试！');
+                })
+                .always(function () {
+                    $self.addClass('active').val('授权中...').prop('disabled', true);
+                });
+        } else {
             $('#skipError').text('验证码不能为空').show();
         }
     });
 
     //安心签授权成功弹框
-    function skipSuccess(){
+    function skipSuccess() {
         layer.closeAll();
         $('#skipSuccess').show();
-        setTimeout(function(){
+        setTimeout(function () {
             $('#skipSuccess').hide();
             $('#skipPhoneCode').val('');
-            num=0;
-            noPasswordInvest?sendSubmitRequest():$investForm.submit();
+            num = 0;
+            noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
 
-        },3000)
+        }, 3000)
     }
 
 });

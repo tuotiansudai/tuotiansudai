@@ -339,7 +339,7 @@ if($createQuestion.length) {
                     url: "/question",
                     data: $formQuestion.serialize(),
                     type: 'POST',
-                    dataType: 'json',
+                dataType: 'json',
                     beforeSend:function(xhr) {
                         $formSubmit.prop('disabled',true);
                     }

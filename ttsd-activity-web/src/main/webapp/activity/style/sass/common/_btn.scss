@@ -1,7 +1,8 @@
 @import 'variables';
-$fontStack:Microsoft YaHei,Helvetica, sans-serif;
-$btnColor:#333 #666 #ccc #e6e6e6 #ff7a2a #f46916;
-$baseLineHeight:2 1.5;
+
+$fontStack: Microsoft YaHei, Helvetica, sans-serif;
+$btnColor: #333 #666 #ccc #e6e6e6 #ff7a2a #f46916;
+$baseLineHeight: 2 1.5;
 @mixin user-select($bool) {
   -webkit-user-select: $bool;
   -moz-user-select: $bool;
@@ -61,7 +62,7 @@ $baseLineHeight:2 1.5;
   }
   &:disabled, &:disabled:hover {
     background: #ccc !important;
-    border:1px solid #ccc!important;
+    border: 1px solid #ccc !important;
     cursor: default;
     color: #fff;
   }
@@ -69,54 +70,55 @@ $baseLineHeight:2 1.5;
 
 .btn-normal {
   @extend .btn;
-  background: rgba(255,117,42,1);
+  background: rgba(255, 117, 42, 1);
   border: 1px solid #f46916;
-  color: #fff!important;
+  color: #fff !important;
   &:hover {
-    background: rgba(255,117,42,0.8);
+    background: rgba(255, 117, 42, 0.8);
   }
   &:disabled, &:disabled:hover {
     background: #ccc !important;
-    border:1px solid #ccc!important;
+    border: 1px solid #ccc !important;
     cursor: default;
     color: #fff;
   }
 }
+
 .btn-success {
   @extend .btn;
-  background: rgba(244,105,22,1);
+  background: rgba(244, 105, 22, 1);
   border: 1px solid #f46916;
-  color: #fff!important;
+  color: #fff !important;
   &:hover {
-    background: rgba(244,105,22,0.8);
+    background: rgba(244, 105, 22, 0.8);
   }
   &:disabled, &:disabled:hover {
     background: #ccc;
-    border:1px solid #ccc;
+    border: 1px solid #ccc;
     cursor: default;
   }
 }
 
 .btn-primary {
   @extend .btn;
-  background: rgba(255,172,42,1);
-  border:1px solid rgba(255,172,42,1);
-  color: #fff!important;
+  background: rgba(255, 172, 42, 1);
+  border: 1px solid rgba(255, 172, 42, 1);
+  color: #fff !important;
   &:hover {
-    background: rgba(255,172,42,0.8);
-    border:1px solid rgba(255,172,42,0.8);
-    color: #fff!important;
+    background: rgba(255, 172, 42, 0.8);
+    border: 1px solid rgba(255, 172, 42, 0.8);
+    color: #fff !important;
   }
 }
 
 .btn-action {
   @extend .btn;
-  background: rgba(85,190,229,1);
-  border:1px solid rgba(85,190,229,1);
+  background: rgba(85, 190, 229, 1);
+  border: 1px solid rgba(85, 190, 229, 1);
   color: #fff;
   &:hover {
-    background: rgba(85,190,229,0.8);
-    border:1px solid rgba(85,190,229,0.8);
+    background: rgba(85, 190, 229, 0.8);
+    border: 1px solid rgba(85, 190, 229, 0.8);
   }
 }
 
@@ -126,6 +128,7 @@ $baseLineHeight:2 1.5;
   color: #337ab7;
   border-radius: 0;
 }
+
 .btn-sm {
   padding: 5px 10px;
   font-size: nth($fontSize, 1);

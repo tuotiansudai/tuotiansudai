@@ -101,7 +101,7 @@ public class LoanListController {
         BaseDataDto baseDataDto = new BaseDataDto();
         baseDto.setData(baseDataDto);
 
-        if(businessId == null){
+        if (businessId == null) {
             baseDataDto.setMessage("请填写标的ID!");
             return baseDto;
         }
@@ -139,7 +139,7 @@ public class LoanListController {
 
             InvestModel investModel = investService.findById(transferApplicationModel.getInvestId());
 
-            if(investModel == null || !Strings.isNullOrEmpty(investModel.getContractNo())){
+            if (investModel == null || !Strings.isNullOrEmpty(investModel.getContractNo())) {
                 baseDataDto.setMessage("该债权转让无可生成的合同!");
                 return baseDto;
             }
@@ -159,7 +159,7 @@ public class LoanListController {
         baseDto.setData(baseDataDto);
         String batchStr;
 
-        if(businessId == null){
+        if (businessId == null) {
             baseDataDto.setMessage("请填写标的ID!");
             return baseDto;
         }
@@ -194,7 +194,7 @@ public class LoanListController {
             batchStr = redisWrapperClient.get(AnxinSignServiceImpl.TRANSFER_BATCH_NO_LIST_KEY + businessId);
         }
 
-        if(Strings.isNullOrEmpty(batchStr)){
+        if (Strings.isNullOrEmpty(batchStr)) {
             baseDataDto.setMessage("该标的已经超过7天，无法再次［查询合同结果并更新合同编号］");
             return baseDto;
         }

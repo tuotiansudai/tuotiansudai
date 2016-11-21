@@ -8,7 +8,6 @@ import com.tuotiansudai.dto.TransferRuleDto;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserRoleModel;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
