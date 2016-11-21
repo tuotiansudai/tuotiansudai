@@ -68,8 +68,14 @@ $width: 700px;
         }
         &.mt-last{
           margin:50px 0;
+          @media (max-width:$width) {
+            margin:25px 0;
+          }
           .content-item{
             padding:50px;
+            @media (max-width:$width) {
+              padding:25px 20px;
+            }
           }
         }
         .content-item{
@@ -80,7 +86,7 @@ $width: 700px;
           padding:30px 20px;
           box-sizing:border-box;
           @media (max-width:$width) {
-            padding:20px 10px;
+            padding:20px 5px;
           }
           .title-item{
             width:100%;
@@ -88,320 +94,431 @@ $width: 700px;
             top:-94px;
             left:0;
             z-index:99;
-            @media (max-width:$width) {
-              top:-46px;
+            &.title-two{
+              @media (min-width:320px) and (max-width:375px) {
+                top:-34px;
+                img{
+                  width:80%;
+                }
+              }
+              @media (min-width:375px) and (max-width:$width) {
+                top:-40px;
+                img{
+                  width:80%;
+                }
+              }
+            }
+            @media (min-width:320px) and (max-width:375px) {
+              top:-38px;
+              img{
+                width:80%;
+              }
+            }
+            @media (min-width:375px) and (max-width:$width) {
+              top:-45px;
               img{
                 width:80%;
               }
             }
           }
-          .info-list-item{
+          .actor-group{
             float:left;
             width:100%;
-            background:#fff7a3;
-            border-radius:20px;
-            padding:10px;
-            box-sizing:border-box;
-            @media (max-width:$width) {
-              padding:5px;
-            }
-            .account-info-item{
+            .info-list-item{
               float:left;
               width:100%;
-              border:1px dashed #e53521;
+              background:#fff7a3;
               border-radius:20px;
-              background:#fff;
               padding:10px;
               box-sizing:border-box;
-              .user-info{
+              @media (max-width:$width) {
+                padding:5px;
+              }
+              .account-info-item{
                 float:left;
                 width:100%;
-                li{
+                border:1px dashed #e53521;
+                border-radius:20px;
+                background:#fff;
+                padding:10px;
+                box-sizing:border-box;
+                .user-info{
                   float:left;
-                  width:33.333333%;
-                  @media (max-width:$width) {
-                    &:nth-child(1){
-                      width:50%;
-                    }
-                    &:nth-child(3){
-                      width:100%;
-                      text-align:center;
-                      margin:15px 0;
-                    }
-                  }
-                  &:nth-child(2){
-                    box-sizing:border-box;
-                    border-left:1px dashed #e53521;
-                    border-right:1px dashed #e53521;
+                  width:100%;
+                  li{
+                    float:left;
+                    width:33.333333%;
                     @media (max-width:$width) {
-                      width:50%;
-                      border:none;
-                    }
-                    p{
-                      text-indent:3.5em;
-                      @media (max-width:$width) {
-                        text-indent:1em;
+                      &:nth-child(1){
+                        width:50%;
+                      }
+                      &:nth-child(3){
+                        width:100%;
+                        text-align:center;
+                        margin:15px 0;
                       }
                     }
-                  }
-                  &.login-item{
-                    width:100%;
-                    text-align:center;
-                    span{
+                    &:nth-child(2){
+                      box-sizing:border-box;
+                      border-left:1px dashed #e53521;
+                      border-right:1px dashed #e53521;
+                      @media (max-width:$width) {
+                        width:50%;
+                        border:none;
+                      }
+                      p{
+                        text-indent:3.5em;
+                        @media (max-width:$width) {
+                          text-indent:1em;
+                        }
+                      }
+                    }
+                    &.login-item{
+                      width:100%;
+                      text-align:center;
+                      span{
+                        display:inline-block;
+                        width:280px;
+                        height:56px;
+                        line-height:56px;
+                        border-radius:10px;
+                        background:#e53521;
+                        text-align:center;
+                        font-size:24px;
+                        color:#fff7a3;
+                        cursor:pointer;
+                        box-shadow: 0 4px #a32517;
+                        position: relative;
+                        @media (max-width:$width) {
+                          width:140px;
+                          height:35px;
+                          line-height:35px;
+                          font-size:14px;
+                          border-radius:5px;
+                          box-shadow: 0 2px #a32517;
+                        }
+                        &:hover{
+                          box-shadow: 0 2px #a32517;
+                          top: 2px;
+                          @media (max-width:$width) {
+                            box-shadow: 0 1px #a32517;
+                          }
+                        }
+                      }
+                    }
+                    p{
+                      font-size:20px;
+                      margin-bottom:0;
+                      text-indent:2em;
+                      @media (max-width:$width) {
+                        font-size:12px;
+                        text-indent:0;
+                      }
+                      &.title-text{
+                        color:#541f1b;
+                      }
+                      &.number-text{
+                        color:#e53521;
+                      }
+                    }
+                    .loan-btn-item{
                       display:inline-block;
-                      width:280px;
-                      height:56px;
-                      line-height:56px;
+                      width:160px;
+                      height:40px;
+                      line-height:40px;
                       border-radius:10px;
                       background:#e53521;
                       text-align:center;
-                      font-size:24px;
+                      font-size:20px;
                       color:#fff7a3;
-                      cursor:pointer;
-                      box-shadow: 0 4px #a32517;
-                      position: relative;
+                      margin:20px 0 0 110px;
                       @media (max-width:$width) {
-                        width:140px;
+                        width:130px;
                         height:35px;
                         line-height:35px;
                         font-size:14px;
+                        margin:0;
                         border-radius:5px;
-                        box-shadow: 0 2px #a32517;
                       }
-                      &:hover{
-                        box-shadow: 0 2px #a32517;
-                        top: 2px;
+                    }
+                  }
+                }
+              }
+            }
+            .gift-list-group{
+              float:left;
+              margin:20px -10px;
+              &.step-list{
+                li{
+                  width:100%;
+                  height:auto;
+                }
+              }
+              @media (max-width:$width) {
+                width:100%;
+                margin:10px 0;
+              }
+              li{
+                float:left;
+                width:320px;
+                height:380px;
+                margin:10px;
+                background:#fffde5;
+                border-radius:10px;
+                border:2px solid #e53521;
+                box-sizing:border-box;
+                overflow: hidden;
+                @media (max-width:$width) {
+                  width:48%;
+                  height:205px;
+                  margin:5px 1%;
+                }
+                &.text-type{
+                  .text-content-item{
+                    float:left;
+                    width:100%;
+                    height:100%;
+                    background:url('/activity/images/nowork/bg.png') repeat center;
+                    h3{
+                      margin-top:30px;
+                      text-align:center;
+                      @media (max-width:$width) {
+                        margin-top:5px;
+                        img{
+                          width:80%;
+                        }
+                      }
+                    }
+                    .content-text{
+                      float:left;
+                      width:100%;
+                      box-sizing:border-box;
+                      padding:15px;
+                      @media (max-width:$width) {
+                        padding:5px;
+                      }
+                      &.invite-person{
+                        padding:50px 10px;
+                        height:100%;
                         @media (max-width:$width) {
-                          box-shadow: 0 1px #a32517;
+                          padding:25px 5px;
+                        }
+                        &.one{
+                          background: url('/activity/images/nowork/tip-one.png') no-repeat center;
+                          @media (max-width:$width) {
+                            background-size:12%;
+                          }
+                        }
+                        &.two{
+                          background: url('/activity/images/nowork/tip-two.png') no-repeat center;
+                          @media (max-width:$width) {
+                            background-size:18%;
+                          }
+                        }
+                        &.three{
+                          background: url('/activity/images/nowork/tip-three.png') no-repeat center;
+                          @media (max-width:$width) {
+                            background-size:18%;
+                          }
+                        }
+                        p{
+                          font-size:20px;
+                          line-height:35px;
+                          @media (max-width:$width) {
+                            font-size:12px;
+                            line-height:22px;
+                          }
+                        }
+                      }
+                      p{
+                        margin-bottom:0;
+                        font-size:24px;
+                        color:#541f1b;
+                        line-height:34px;
+                        @media (min-width:320px) and (max-width:375px) {
+                          font-size:12px;
+                          line-height:16px;
+                        }
+                        @media (min-width:375px) and (max-width:$width) {
+                          font-size:12px;
+                          line-height:19px;
                         }
                       }
                     }
                   }
-                  p{
-                    font-size:20px;
-                    margin-bottom:0;
-                    text-indent:2em;
-                    @media (max-width:$width) {
-                      font-size:12px;
-                      text-indent:0;
-                    }
-                    &.title-text{
-                      color:#541f1b;
-                    }
-                    &.number-text{
-                      color:#e53521;
-                    }
-                  }
-                  .loan-btn-item{
-                    display:inline-block;
-                    width:160px;
-                    height:40px;
-                    line-height:40px;
-                    border-radius:10px;
-                    background:#e53521;
-                    text-align:center;
-                    font-size:20px;
-                    color:#fff7a3;
-                    margin:20px 0 0 110px;
-                    @media (max-width:$width) {
-                      width:130px;
-                      height:35px;
-                      line-height:35px;
-                      font-size:14px;
-                      margin:0;
-                      border-radius:5px;
-                    }
-                  }
                 }
-              }
-            }
-          }
-          .gift-list-group{
-            float:left;
-            margin:20px -10px;
-            li{
-              float:left;
-              width:320px;
-              height:380px;
-              margin:10px;
-              background:#fffde5;
-              border-radius:10px;
-              border:2px solid #e53521;
-              box-sizing:border-box;
-              overflow: hidden;
-              @media (max-width:$width) {
-                width:48%;
-                height:190px;
-                margin:5px 1%;
-              }
-              &.text-type{
-                .text-content-item{
-                  float:left;
-                  width:100%;
-                  height:100%;
-                  background:url('/activity/images/nowork/bg.png') repeat center;
-                  h3{
-                    margin-top:30px;
-                    text-align:center;
+                &.gift-type{
+                  .gift-name{
+                    width:280px;
+                    height:220px;
+                    margin:20px 20px 0;
+                    border-top-left-radius:10px;
+                    border-top-right-radius:10px;
+                    background: #fff7a3;
+                    border:1px solid #e53521;
+                    border-bottom: none;
                     @media (max-width:$width) {
-                      margin-top:5px;
-                      img{
-                        width:80%;
-                      }
+                      width: 90%;
+                      margin: 10px 5% 0;
+                      height: 110px;
                     }
-                  }
-                  .content-text{
-                    float:left;
-                    width:100%;
-                    box-sizing:border-box;
-                    padding:15px;
-                    @media (max-width:$width) {
-                      padding:5px;
-                    }
-                    &.invite-person{
-                      padding:50px 10px;
-                      height:100%;
-                      &.one{
-                        background: url('/activity/images/nowork/tip-one.png') no-repeat center;
-                      }
-                      &.two{
-                        background: url('/activity/images/nowork/tip-two.png') no-repeat center;
-                      }
-                      &.three{
-                        background: url('/activity/images/nowork/tip-three.png') no-repeat center;
-                      }
-                      p{
-                        font-size:20px;
-                        line-height:35px;
-                      }
-                    }
-                    p{
-                      margin-bottom:0;
-                      font-size:24px;
-                      color:#541f1b;
-                      line-height:34px;
-                      @media (max-width:$width) {
-                        font-size:12px;
-                        line-height:20px;
-                      }
-                    }
-                  }
-                }
-              }
-              &.gift-type{
-                .gift-name{
-                  width:280px;
-                  height:220px;
-                  margin:20px 20px 0;
-                  border-top-left-radius:10px;
-                  border-top-right-radius:10px;
-                  background: #fff7a3;
-                  border:1px solid #e53521;
-                  border-bottom: none;
-                  .gift-bg{
-                    float:left;
-                    width:100%;
-                    height:100%;
-                    background:url('/activity/images/nowork/gift-bg.png') no-repeat center;
-                    position: relative;
-                    .gift-trick{
-                      position: absolute;
-                      top:0;
-                      left:0;
+                    .gift-bg{
+                      float:left;
                       width:100%;
                       height:100%;
-                      background: rgba(0,0,0,.3);
-                      z-index:9;
-                      border-top-left-radius:9px;
-                      border-top-right-radius:9px;
-                      &.active{
-                        top:10px;
-                        background: url('/activity/images/nowork/finish-icon.png') no-repeat center bottom;
+                      background:url('/activity/images/nowork/gift-bg.png') no-repeat center;
+                      position: relative;
+                      @media (max-width:$width) {
+                        background-size:70%;
+                      }
+                      .gift-trick{
+                        position: absolute;
+                        top:0;
+                        left:0;
+                        width:100%;
+                        height:100%;
+                        background: rgba(0,0,0,.3);
+                        z-index:9;
+                        border-top-left-radius:9px;
+                        border-top-right-radius:9px;
+                        &.active{
+                          top:10px;
+                          background: url('/activity/images/nowork/finish-icon.png') no-repeat center bottom;
+                          @media (max-width:$width) {
+                            top:15px;
+                            background-size:60%;
+                          }
+                        }
+                      }
+                      h3{
+                        height:40px;
+                        line-height:40px;
+                        font-size:20px;
+                        color:#541f1b;
+                        text-align:center;
+                        @media (max-width:$width) {
+                          line-height: 30px;
+                          font-size: 12px;
+                          height: 30px;
+                          overflow: hidden;
+                          text-overflow: ellipsis;
+                          white-space: nowrap;
+                        }
+                      }
+                      p{
+                        margin-bottom:0;
+                        text-align:center;
+                        @media (max-width:$width) {
+                          img{
+                            width:50%;
+                          }
+                        }
                       }
                     }
-                    .gift-finish{
-
-                    }
-                    h3{
-                      height:40px;
-                      line-height:40px;
-                      font-size:20px;
-                      color:#541f1b;
-                      text-align:center;
-                    }
-                    p{
-                      margin-bottom:0;
-                      text-align:center;
-                    }
                   }
-                }
-                .gift-intro{
-                  float:left;
-                  width:100%;
-                  font-size:20px;
-                  color:#e53521;
-                  text-align:center;
-                  background: #ffe81a;
-                  border-top:2px solid #e53521;
-                  border-bottom:2px solid #e53521;
-                }
-                .gift-type{
-                  float:left;
-                  width:100%;
-                  p{
+                  .gift-intro{
+                    float:left;
+                    width:100%;
+                    font-size:20px;
+                    color:#e53521;
                     text-align:center;
-                    margin-bottom:0;
-                    &.type-name{
-                      font-size:16px;
-                      color:#e53521;
-                      margin-top:10px;
+                    background: #ffe81a;
+                    border-top:2px solid #e53521;
+                    border-bottom:2px solid #e53521;
+                    @media (max-width:$width) {
+                      font-size:12px;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
                     }
-                    &.type-intro{
-                      font-size:20px;
-                      color:#541f1b;
+                  }
+                  .gift-type{
+                    float:left;
+                    width:100%;
+                    p{
+                      text-align:center;
+                      margin-bottom:0;
+                      &.type-name{
+                        font-size:16px;
+                        color:#e53521;
+                        margin-top:10px;
+                        @media (max-width:$width) {
+                          font-size:12px;
+                          margin-top:0;
+                        }
+                      }
+                      &.type-intro{
+                        font-size:20px;
+                        color:#541f1b;
+                        @media (max-width:$width) {
+                          font-size:12px;
+                        }
+                      }
                     }
                   }
                 }
               }
             }
-          }
-          .invite-btn-group{
-            float:left;
-            width:100%;
-            margin-top:40px;
-            text-align:center;
-            .invite-item{
-              display:inline-block;
-              width:240px;
-              height:56px;
-              line-height:56px;
-              background:#e53521;
-              font-size:24px;
-              color:#fff7a3;
-              border-radius:10px;
-              box-shadow:0 4px #a32517;
-              position: relative;
-              &:hover{
-                box-shadow:0 2px #a32517;
-                top:2px;
+            .invite-btn-group{
+              float:left;
+              width:100%;
+              margin-top:40px;
+              text-align:center;
+              @media (max-width:$width) {
+                margin-top:20px;
+              }
+              .invite-item{
+                display:inline-block;
+                width:240px;
+                height:56px;
+                line-height:56px;
+                background:#e53521;
+                font-size:24px;
+                color:#fff7a3;
+                border-radius:10px;
+                box-shadow:0 4px #a32517;
+                position: relative;
+                @media (max-width:$width) {
+                  width:120px;
+                  height:30px;
+                  line-height:30px;
+                  font-size:14px;
+                  border-radius:5px;
+                  box-shadow:0 3px #a32517;
+                }
+                &:hover{
+                  box-shadow:0 2px #a32517;
+                  top:2px;
+                }
+              }
+              p{
+                margin-top:20px;
+                font-size:15px;
+                color:#e53521;
+                @media (max-width:$width) {
+                  font-size:12px;
+                  margin-top:10px;
+                }
               }
             }
-            p{
-              margin-top:20px;
-              font-size:15px;
-              color:#e53521;
-            }
-          }
-          .rule-group{
-            float:left;
-            width:100%;
-            color:#541f1b;
-            dt{
-              font-size:18px;
-              margin-bottom:20px;
-            }
-            dd{
-              font-size:14px;
+            .rule-group{
+              float:left;
+              width:100%;
+              color:#541f1b;
+              dt{
+                font-size:18px;
+                margin-bottom:20px;
+                @media (max-width:$width) {
+                  font-size:14px;
+                  margin-bottom:10px;
+                }
+              }
+              dd{
+                font-size:14px;
+                @media (max-width:$width) {
+                  font-size:12px;
+                }
+              }
             }
           }
         }

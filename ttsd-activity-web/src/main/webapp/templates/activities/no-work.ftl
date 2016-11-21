@@ -15,241 +15,243 @@
 					<h3 class="title-item text-c">
 						<img src="${staticServer}/activity/images/nowork/title-one.png" alt="">
 					</h3>
-					<div class="info-list-item">
-						<div class="account-info-item">
-							<ul class="user-info">
-								<@global.isNotAnonymous>
-								<li>
-									<p class="title-text">您的累计投资金额：</p>
-									<p class="number-text">8,000.00元</p>
-								</li>
-								<li>
-									<p class="title-text">距下一个奖品还差：</p>
-									<p class="number-text">12,000.00元</p>
-								</li>
-								<li>
-									<a href="/loan-list" class="loan-btn-item">立即投资</a>
-								</li>
-								</@global.isNotAnonymous>
-								<@global.isAnonymous>
-								<li class="login-item">
-									<span class="show-login">登录查看我的奖品</span>
-								</li>
-								</@global.isAnonymous>
-							</ul>
+					<div class="actor-group">
+						<div class="info-list-item">
+							<div class="account-info-item">
+								<ul class="user-info">
+									<@global.isNotAnonymous>
+									<li>
+										<p class="title-text">您的累计投资金额：</p>
+										<p class="number-text">8,000.00元</p>
+									</li>
+									<li>
+										<p class="title-text">距下一个奖品还差：</p>
+										<p class="number-text">12,000.00元</p>
+									</li>
+									<li>
+										<a href="/loan-list" class="loan-btn-item">立即投资</a>
+									</li>
+									</@global.isNotAnonymous>
+									<@global.isAnonymous>
+									<li class="login-item">
+										<span class="show-login">登录查看我的奖品</span>
+									</li>
+									</@global.isAnonymous>
+								</ul>
+							</div>
 						</div>
+						<ul class="gift-list-group">
+							<li class="text-type">
+								<div class="text-content-item">
+									<h3>
+										<img src="${staticServer}/activity/images/nowork/rule-title.png" alt="">
+									</h3>
+									<div class="content-text">
+										<p>月薪5000元，每天工作8小时相当于日薪227元，时薪28.4元。拿着搬砖的工资，操着包工头的心，够了！怎么，想炒掉老板，要搞事情咯？</p>
+										<p>拓天速贷助你财务自由</p>
+										<p>你罢工，我发薪！</p>
+									</div>
+								</div>
+							</li>
+							<li class="gift-type">
+								<div class="gift-name">
+									<div class="gift-bg">
+										<div class="gift-trick active"></div>
+										<h3>20元红包</h3>
+										<p>
+											<img src="${staticServer}/activity/images/nowork/gift-one.png" alt="">
+										</p>
+									</div>
+								</div>
+								<div class="gift-intro">
+									累计投资金额:3,000元
+								</div>
+								<div class="gift-type">
+									<p class="type-name">带薪假类别</p>
+									<p class="type-intro">全民带薪假</p>
+								</div>
+							</li>
+							<li class="gift-type">
+								<div class="gift-name">
+									<div class="gift-bg">
+										<div class="gift-trick"></div>
+										<h3>30元话费</h3>
+										<p>
+											<img src="${staticServer}/activity/images/nowork/gift-two.png" alt="">
+										</p>
+									</div>
+								</div>
+								<div class="gift-intro">
+									累计投资金额:8,000元
+								</div>
+								<div class="gift-type">
+									<p class="type-name">带薪假类别</p>
+									<p class="type-intro">1h堵车假，干掉打卡机！</p>
+								</div>
+							</li>
+							<li class="gift-type">
+								<div class="gift-name">
+									<div class="gift-bg">
+										<div class="gift-trick"></div>
+										<h3>京东E卡</h3>
+										<p>
+											<img src="${staticServer}/activity/images/nowork/gift-three.png" alt="">
+										</p>
+									</div>
+								</div>
+								<div class="gift-intro">
+									累计投资金额:30,000元
+								</div>
+								<div class="gift-type">
+									<p class="type-name">带薪假类别</p>
+									<p class="type-intro">半天赖床假，干掉早会！</p>
+								</div>
+							</li>
+							<li class="gift-type">
+								<div class="gift-name">
+									<div class="gift-bg">
+										<div class="gift-trick"></div>
+										<h3>300元旅游基金（芒果卡）</h3>
+										<p>
+											<img src="${staticServer}/activity/images/nowork/gift-four.png" alt="">
+										</p>
+									</div>
+								</div>
+								<div class="gift-intro">
+									累计投资金额:50,000元
+								</div>
+								<div class="gift-type">
+									<p class="type-name">带薪假类别</p>
+									<p class="type-intro">1天神游假，干掉加班！</p>
+								</div>
+							</li>
+							<li class="gift-type">
+								<div class="gift-name">
+									<div class="gift-bg">
+										<div class="gift-trick"></div>
+										<h3>索尼数码相机</h3>
+										<p>
+											<img src="${staticServer}/activity/images/nowork/gift-five.png" alt="">
+										</p>
+									</div>
+								</div>
+								<div class="gift-intro">
+									累计投资金额:100,000元
+								</div>
+								<div class="gift-type">
+									<p class="type-name">带薪假类别</p>
+									<p class="type-intro">3天姨妈假，干掉催稿！</p>
+								</div>
+							</li>
+							<li class="gift-type">
+								<div class="gift-name">
+									<div class="gift-bg">
+										<div class="gift-trick"></div>
+										<h3>联想YOGA 平板3代</h3>
+										<p>
+											<img src="${staticServer}/activity/images/nowork/gift-six.png" alt="">
+										</p>
+									</div>
+								</div>
+								<div class="gift-intro">
+									累计投资金额:200,000元
+								</div>
+								<div class="gift-type">
+									<p class="type-name">带薪假类别</p>
+									<p class="type-intro">5天撒欢假，干掉鼠标手！</p>
+								</div>
+							</li>
+							<li class="gift-type">
+								<div class="gift-name">
+									<div class="gift-bg">
+										<div class="gift-trick"></div>
+										<h3>CAN看尚42英寸液晶电视</h3>
+										<p>
+											<img src="${staticServer}/activity/images/nowork/gift-seven.png" alt="">
+										</p>
+									</div>
+								</div>
+								<div class="gift-intro">
+									累计投资金额:300,000元
+								</div>
+								<div class="gift-type">
+									<p class="type-name">带薪假类别</p>
+									<p class="type-intro">7天旅行假，干掉雾霾天！</p>
+								</div>
+							</li>
+							<li class="gift-type">
+								<div class="gift-name">
+									<div class="gift-bg">
+										<div class="gift-trick"></div>
+										<h3>锤子手机M1</h3>
+										<p>
+											<img src="${staticServer}/activity/images/nowork/gift-eight.png" alt="">
+										</p>
+									</div>
+								</div>
+								<div class="gift-intro">
+									累计投资金额:520,000元
+								</div>
+								<div class="gift-type">
+									<p class="type-name">带薪假类别</p>
+									<p class="type-intro">半月失联假，干掉微信群！</p>
+								</div>
+							</li>
+							<li class="gift-type">
+								<div class="gift-name">
+									<div class="gift-bg">
+										<div class="gift-trick"></div>
+										<h3>浪琴手表康卡斯系列</h3>
+										<p>
+											<img src="${staticServer}/activity/images/nowork/gift-nine.png" alt="">
+										</p>
+									</div>
+								</div>
+								<div class="gift-intro">
+									累计投资金额:800,000元
+								</div>
+								<div class="gift-type">
+									<p class="type-name">带薪假类别</p>
+									<p class="type-intro">30天环球假，干掉夺命call！</p>
+								</div>
+							</li>
+							<li class="gift-type">
+								<div class="gift-name">
+									<div class="gift-bg">
+										<div class="gift-trick"></div>
+										<h3>Apple MacBook Air</h3>
+										<p>
+											<img src="${staticServer}/activity/images/nowork/gift-ten.png" alt="">
+										</p>
+									</div>
+								</div>
+								<div class="gift-intro">
+									累计投资金额:1,200,000元
+								</div>
+								<div class="gift-type">
+									<p class="type-name">带薪假类别</p>
+									<p class="type-intro">60天太空假，干掉PPT！</p>
+								</div>
+							</li>
+							<li class="text-type">
+								<div class="text-content-item">
+									<div class="content-text">
+										<p>活动期间投资“加薪专享”标，每完成一个投资目标，即可获得对应奖励，奖励可累计领取。</p>
+										<p>栗子：如拓小天在活动第一天投资3000元，最后一天投资8000元，则拓小天在活动期间共投资了11000元，可以获得20元红包+30元话费。</p>
+									</div>
+								</div>
+							</li>
+						</ul>
 					</div>
-					<ul class="gift-list-group">
-						<li class="text-type">
-							<div class="text-content-item">
-								<h3>
-									<img src="${staticServer}/activity/images/nowork/rule-title.png" alt="">
-								</h3>
-								<div class="content-text">
-									<p>月薪5000元，每天工作8小时相当于日薪227元，时薪28.4元。拿着搬砖的工资，操着包工头的心，够了！怎么，想炒掉老板，要搞事情咯？</p>
-									<p>拓天速贷助你财务自由</p>
-									<p>你罢工，我发薪！</p>
-								</div>
-							</div>
-						</li>
-						<li class="gift-type">
-							<div class="gift-name">
-								<div class="gift-bg">
-									<div class="gift-trick active"></div>
-									<h3>20元红包</h3>
-									<p>
-										<img src="${staticServer}/activity/images/nowork/gift-one.png" alt="">
-									</p>
-								</div>
-							</div>
-							<div class="gift-intro">
-								累计投资金额：3,000元
-							</div>
-							<div class="gift-type">
-								<p class="type-name">带薪假类别</p>
-								<p class="type-intro">全民带薪假</p>
-							</div>
-						</li>
-						<li class="gift-type">
-							<div class="gift-name">
-								<div class="gift-bg">
-									<div class="gift-trick"></div>
-									<h3>30元话费</h3>
-									<p>
-										<img src="${staticServer}/activity/images/nowork/gift-two.png" alt="">
-									</p>
-								</div>
-							</div>
-							<div class="gift-intro">
-								累计投资金额：8,000元
-							</div>
-							<div class="gift-type">
-								<p class="type-name">带薪假类别</p>
-								<p class="type-intro">1h堵车假，干掉打卡机！</p>
-							</div>
-						</li>
-						<li class="gift-type">
-							<div class="gift-name">
-								<div class="gift-bg">
-									<div class="gift-trick"></div>
-									<h3>京东E卡</h3>
-									<p>
-										<img src="${staticServer}/activity/images/nowork/gift-three.png" alt="">
-									</p>
-								</div>
-							</div>
-							<div class="gift-intro">
-								累计投资金额：30,000元
-							</div>
-							<div class="gift-type">
-								<p class="type-name">带薪假类别</p>
-								<p class="type-intro">半天赖床假，干掉早会！</p>
-							</div>
-						</li>
-						<li class="gift-type">
-							<div class="gift-name">
-								<div class="gift-bg">
-									<div class="gift-trick"></div>
-									<h3>300元旅游基金（芒果卡）</h3>
-									<p>
-										<img src="${staticServer}/activity/images/nowork/gift-four.png" alt="">
-									</p>
-								</div>
-							</div>
-							<div class="gift-intro">
-								累计投资金额：50,000元
-							</div>
-							<div class="gift-type">
-								<p class="type-name">带薪假类别</p>
-								<p class="type-intro">1天神游假，干掉加班！</p>
-							</div>
-						</li>
-						<li class="gift-type">
-							<div class="gift-name">
-								<div class="gift-bg">
-									<div class="gift-trick"></div>
-									<h3>索尼数码相机</h3>
-									<p>
-										<img src="${staticServer}/activity/images/nowork/gift-five.png" alt="">
-									</p>
-								</div>
-							</div>
-							<div class="gift-intro">
-								累计投资金额：100,000元
-							</div>
-							<div class="gift-type">
-								<p class="type-name">带薪假类别</p>
-								<p class="type-intro">3天姨妈假，干掉催稿！</p>
-							</div>
-						</li>
-						<li class="gift-type">
-							<div class="gift-name">
-								<div class="gift-bg">
-									<div class="gift-trick"></div>
-									<h3>联想YOGA 平板3代</h3>
-									<p>
-										<img src="${staticServer}/activity/images/nowork/gift-six.png" alt="">
-									</p>
-								</div>
-							</div>
-							<div class="gift-intro">
-								累计投资金额：200,000元
-							</div>
-							<div class="gift-type">
-								<p class="type-name">带薪假类别</p>
-								<p class="type-intro">5天撒欢假，干掉鼠标手！</p>
-							</div>
-						</li>
-						<li class="gift-type">
-							<div class="gift-name">
-								<div class="gift-bg">
-									<div class="gift-trick"></div>
-									<h3>CAN看尚42英寸液晶电视</h3>
-									<p>
-										<img src="${staticServer}/activity/images/nowork/gift-seven.png" alt="">
-									</p>
-								</div>
-							</div>
-							<div class="gift-intro">
-								累计投资金额：300,000元
-							</div>
-							<div class="gift-type">
-								<p class="type-name">带薪假类别</p>
-								<p class="type-intro">7天旅行假，干掉雾霾天！</p>
-							</div>
-						</li>
-						<li class="gift-type">
-							<div class="gift-name">
-								<div class="gift-bg">
-									<div class="gift-trick"></div>
-									<h3>锤子手机M1</h3>
-									<p>
-										<img src="${staticServer}/activity/images/nowork/gift-eight.png" alt="">
-									</p>
-								</div>
-							</div>
-							<div class="gift-intro">
-								累计投资金额：520,000元
-							</div>
-							<div class="gift-type">
-								<p class="type-name">带薪假类别</p>
-								<p class="type-intro">半月失联假，干掉微信群！</p>
-							</div>
-						</li>
-						<li class="gift-type">
-							<div class="gift-name">
-								<div class="gift-bg">
-									<div class="gift-trick"></div>
-									<h3>浪琴手表康卡斯系列</h3>
-									<p>
-										<img src="${staticServer}/activity/images/nowork/gift-nine.png" alt="">
-									</p>
-								</div>
-							</div>
-							<div class="gift-intro">
-								累计投资金额：800,000元
-							</div>
-							<div class="gift-type">
-								<p class="type-name">带薪假类别</p>
-								<p class="type-intro">30天环球假，干掉夺命call！</p>
-							</div>
-						</li>
-						<li class="gift-type">
-							<div class="gift-name">
-								<div class="gift-bg">
-									<div class="gift-trick"></div>
-									<h3>Apple MacBook Air</h3>
-									<p>
-										<img src="${staticServer}/activity/images/nowork/gift-ten.png" alt="">
-									</p>
-								</div>
-							</div>
-							<div class="gift-intro">
-								累计投资金额：1,200,000元
-							</div>
-							<div class="gift-type">
-								<p class="type-name">带薪假类别</p>
-								<p class="type-intro">60天太空假，干掉PPT！</p>
-							</div>
-						</li>
-						<li class="text-type">
-							<div class="text-content-item">
-								<div class="content-text">
-									<p>活动期间投资“加薪专享”标，每完成一个投资目标，即可获得对应奖励，奖励可累计领取。</p>
-									<p>栗子：如拓小天在活动第一天投资3000元，最后一天投资8000元，则拓小天在活动期间共投资了11000元，可以获得20元红包+30元话费。</p>
-								</div>
-							</div>
-						</li>
-					</ul>
 				</div>
 			</div>
 			<div class="content-skew-item">
 				<div class="content-item">
-					<h3 class="title-item text-c">
+					<h3 class="title-item text-c title-two">
 						<img src="${staticServer}/activity/images/nowork/title-two.png" alt="">
 					</h3>
 					<div class="actor-group">
-						<ul class="gift-list-group">
+						<ul class="gift-list-group step-list">
 							<li class="text-type">
 								<div class="text-content-item">
 									<div class="content-text invite-person one">
