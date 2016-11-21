@@ -2,6 +2,7 @@ package com.tuotiansudai.message.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.message.repository.model.MessageCategory;
+import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageType;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 
@@ -24,14 +25,14 @@ public class UserMessagePaginationItemDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date createdTime;
 
-    public UserMessagePaginationItemDto(UserMessageModel model, MessageType messageType, MessageCategory messageCategory) {
+    public UserMessagePaginationItemDto(UserMessageModel model, MessageModel messageModel) {
         this.userMessageId = model.getId();
         this.title = model.getTitle();
         this.content = model.getContent();
         this.read = model.isRead();
-        this.messageType = messageType;
-        this.messageCategory = messageCategory;
-        this.createdTime = model.getCreatedTime();
+        this.messageType = messageModel.getType();
+        this.messageCategory = messageModel.getMessageCategory();
+        this.createdTime = messageModel.getActivatedTime();
     }
 
     public long getUserMessageId() {

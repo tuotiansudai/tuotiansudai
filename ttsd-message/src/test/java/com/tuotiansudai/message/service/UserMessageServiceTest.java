@@ -61,7 +61,7 @@ public class UserMessageServiceTest {
 
         userMessageMapper.create(userMessageModel);
 
-        UserMessageModel userMessageModel1 = userMessageService.readMessage(userMessageModel.getId());
+        UserMessageModel userMessageModel1 = userMessageService.readMessage(userTest.getLoginName(), userMessageModel.getId());
 
         assertThat(true, is(userMessageModel1.isRead()));
         assertThat(11L, is(messageMapper.findById(userMessageModel1.getMessageId()).getReadCount()));
