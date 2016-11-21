@@ -73,6 +73,10 @@ public class JobInitPlugin implements SchedulerPlugin {
             platformBalanceLowNotifyJob();
         }
 
+        if (JobType.CalculateTravelLuxuryPrize.name().equalsIgnoreCase(schedulerName)) {
+            deleteCalculateTravelLuxuryPrizeJob();
+        }
+
     }
 
     @Override
@@ -215,6 +219,10 @@ public class JobInitPlugin implements SchedulerPlugin {
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
+    }
+
+    private void deleteCalculateTravelLuxuryPrizeJob() {
+        jobManager.deleteJob(JobType.CalculateTravelLuxuryPrize, JobType.CalculateTravelLuxuryPrize.name(), JobType.CalculateTravelLuxuryPrize.name());
     }
 
 }

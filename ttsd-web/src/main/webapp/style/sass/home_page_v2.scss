@@ -346,7 +346,7 @@ $pointColor:#ff5400;
       width: 280px;
       height: 300px;
       box-sizing: border-box;
-      padding: 50px 50px 10px;
+      padding: 35px 50px 10px;
       background-color: rgba(0,0,0,0.4);
       color:#fff;
       i a {
@@ -355,15 +355,15 @@ $pointColor:#ff5400;
       .num-text {
         float: left;
         width: 100%;
-        margin: 0;
+        margin: 0 0 20px;
         .percent {
           color: #ff7200;
-          font-size: 60px;
+          font-size: 50px;
           line-height: 1;
           font-weight: bold;
         }
         .num-unit {
-          font-size: 26px;
+          font-size: 19px;
           font-weight: bold;
           color: #fff;
         }
@@ -372,7 +372,8 @@ $pointColor:#ff5400;
         float: left;
         text-align: center;
         width: 100%;
-        font-size: 24px;
+        font-size: 18px;
+        margin-bottom:20px;
       }
       .btn-normal {
         width: 100%;
@@ -387,8 +388,29 @@ $pointColor:#ff5400;
       .welcome-text {
         float: left;
         width: 100%;
+        font-size:14px;
+        color:#fff;
+        line-height:12px;
         position: relative;
-        margin: 0 0 10px 0;
+        margin: 0 0 20px;
+        &:before{
+          content:'';
+          width:48px;
+          height:1px;
+          position: absolute;
+          top:7px;
+          left:0;
+          background:url('../../images/homepage/icon-line.png') no-repeat center;
+        }
+        &:after{
+          content:'';
+          width:48px;
+          height:1px;
+          position: absolute;
+          top:7px;
+          right:0;
+          background:url('../../images/homepage/icon-line.png') no-repeat center;
+        }
       }
     }
   }
