@@ -3,7 +3,8 @@ apply plugin: 'war'
 dependencies {
     compile project(':ttsd-ask-service'),
             project(':ttsd-web-common-config'),
-            project(':ttsd-spring-extension')
+            project(':ttsd-spring-extension'),
+            project(':ttsd-service')
 
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0',
             'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'

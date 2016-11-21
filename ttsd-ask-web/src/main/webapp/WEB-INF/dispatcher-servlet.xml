@@ -97,6 +97,10 @@
         </property>
     </bean>
 
+    <mvc:interceptors>
+        <bean class="com.tuotiansudai.web.ask.interceptors.LinkExchangeInterceptor"/>
+    </mvc:interceptors>
+
     <!--
     View resolvers can also be configured with ResourceBundles or XML files. If you need
     different view resolving based on Locale, you have to use the resource bundle resolver.
