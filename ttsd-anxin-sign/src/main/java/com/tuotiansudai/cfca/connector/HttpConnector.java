@@ -11,11 +11,14 @@ import com.tuotiansudai.cfca.constant.MIMEType;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.constant.SystemConst;
 import com.tuotiansudai.cfca.util.CommonUtil;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HttpConnector {
+
+    private static final Logger logger = Logger.getLogger(HttpConnector.class);
 
     public static String JKS_PATH;
 
@@ -92,9 +95,9 @@ public class HttpConnector {
         try {
             connection = httpClient.connect(URL + uri, "GET");
             int responseCode = httpClient.send(connection, null);
-            System.out.println("responseCode:" + responseCode);
+            logger.debug("responseCode:" + responseCode);
             if (responseCode != 200) {
-                System.out.println(CommonUtil.getString(httpClient.receive(connection)));
+                logger.debug(CommonUtil.getString(httpClient.receive(connection)));
             }
 
             return httpClient.receive(connection);
@@ -132,11 +135,11 @@ public class HttpConnector {
         HttpURLConnection connection = null;
         try {
             connection = httpClient.connect(URL + uri, method);
-            System.out.println(URL + uri);
-            System.out.println(method);
-            System.out.println(request);
+            logger.debug("request URL:" + URL + uri);
+            logger.debug("request method:" + method);
+            logger.debug("request content:" + request);
             int responseCode = httpClient.send(connection, request == null ? null : CommonUtil.getBytes(request));
-            System.out.println("responseCode:" + responseCode);
+            logger.debug("responseCode:" + responseCode);
             return CommonUtil.getString(httpClient.receive(connection));
         } catch (Exception e) {
             e.printStackTrace();
@@ -150,11 +153,11 @@ public class HttpConnector {
         HttpURLConnection connection = null;
         try {
             connection = httpClient.connect(URL + uri, method);
-            System.out.println(URL + uri);
-            System.out.println(method);
-            System.out.println(request);
+            logger.debug("request URL:" + URL + uri);
+            logger.debug("request method:" + method);
+            logger.debug("request content:" + request);
             int responseCode = httpClient.send(connection, request == null ? null : CommonUtil.getBytes(request), file, signature);
-            System.out.println("responseCode:" + responseCode);
+            logger.debug("responseCode:" + responseCode);
             return CommonUtil.getString(httpClient.receive(connection));
         } catch (Exception e) {
             e.printStackTrace();

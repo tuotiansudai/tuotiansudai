@@ -166,11 +166,12 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
+        logger.info(MessageFormat.format("[安心签] create contract batch, loanId:{0}, batchNo:{1}, created contract response date:{2}", String.valueOf(businessId), batchNo, res));
+
         Tx3202ResVO tx3202ResVO = (Tx3202ResVO) readResponse(res, Tx3202ResVO.class);
 
         requestResponseService.insertBatchGenerateContractResponse(businessId, batchNo, tx3202ResVO);
 
-        logger.info(MessageFormat.format("[安心签] create contract batch, loanId:{0}, batchNo:{1}, created contract response date:{2}", String.valueOf(businessId), batchNo, res));
         return tx3202ResVO;
     }
 
