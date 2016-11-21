@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.tuotiansudai.mq.client.MQClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
+import com.tuotiansudai.mq.client.model.MessageTopicQueue;
 import com.tuotiansudai.mq.client.model.Queue;
 import com.tuotiansudai.mq.client.support.RawMessage;
 import org.slf4j.Logger;
@@ -79,8 +80,12 @@ public class MQClientAliyumMNS implements MQClient {
                 logger.info("[MQ] ready to consume message, queue: {}, messageId: {}",
                         queue.getQueueName(), message.getMessageId());
                 try {
-                    RawMessage rawMessage = gson.fromJson(message.getMessageBodyAsRawString(), RawMessage.class);
-                    consumer.accept(rawMessage.toMessage());
+                    if (queue instanceof MessageQueue) {
+                        consumer.accept(parseQueueMessage(message));
+                    }
+                    if (queue instanceof MessageTopicQueue) {
+                        consumer.accept(parseTopicQueueMessage(message));
+                    }
                     logger.info("[MQ] consume message success, queue: {}, messageId: {}",
                             queue.getQueueName(), message.getMessageId());
                     try {
@@ -94,6 +99,16 @@ public class MQClientAliyumMNS implements MQClient {
                 }
             }
         }
+    }
+
+    private com.tuotiansudai.mq.client.model.Message parseTopicQueueMessage(Message message) {
+        RawMessage rawMessage = gson.fromJson(message.getMessageBodyAsRawString(), RawMessage.class);
+        return rawMessage.toMessage();
+    }
+
+    private com.tuotiansudai.mq.client.model.Message parseQueueMessage(Message message) {
+        return new com.tuotiansudai.mq.client.model.Message(message.getMessageId(),
+                message.getMessageBodyAsString(), message.getEnqueueTime().toString(), "");
     }
 
     private CloudTopic findTopic(MessageTopic topic) {
