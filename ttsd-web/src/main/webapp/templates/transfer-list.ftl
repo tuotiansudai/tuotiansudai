@@ -59,8 +59,8 @@
                                     <dd><em>${transferApplicationItem.baseRate!}%</em></dd>
                                 </dl>
                                 <dl>
-                                    <dt>剩余期数</dt>
-                                    <dd><em>${transferApplicationItem.leftPeriod!}</em></dd>
+                                    <dt>剩余天数</dt>
+                                    <dd><em>${transferApplicationItem.leftDays!}</em></dd>
                                 </dl>
                             </div>
                         </div>

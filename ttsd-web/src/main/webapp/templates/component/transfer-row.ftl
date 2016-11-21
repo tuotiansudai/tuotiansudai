@@ -28,8 +28,8 @@
         </div>
             <#--剩余期数-->
         <div class="table-row">
-            <s class="app">剩余期数</s>
-            <i class="period">${loan.leftPeriod}</i>
+            <s class="app">剩余天数</s>
+            <i class="period">${loan.leftDays}</i>
         </div>
         <div class="table-row btn-col">
 

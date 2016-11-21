@@ -59,6 +59,7 @@ public class DiagnosisConfig {
         private String notifyMailFrom;
         private String[] notifyMailAddress;
         private String[] notifyMailAddressQa;
+        private String[] notifyMailAddressManager;
 
         public String getNotifyMailFrom() {
             return notifyMailFrom;
@@ -82,6 +83,14 @@ public class DiagnosisConfig {
 
         public void setNotifyMailAddressQa(String[] notifyMailAddressQa) {
             this.notifyMailAddressQa = notifyMailAddressQa;
+        }
+
+        public String[] getNotifyMailAddressManager() {
+            return notifyMailAddressManager;
+        }
+
+        public void setNotifyMailAddressManager(String[] notifyMailAddressManager) {
+            this.notifyMailAddressManager = notifyMailAddressManager;
         }
     }
 }

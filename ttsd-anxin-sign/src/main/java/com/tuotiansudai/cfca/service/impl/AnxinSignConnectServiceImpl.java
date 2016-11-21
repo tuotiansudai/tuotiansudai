@@ -227,9 +227,12 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                     // 60030407 = 该批次还没有执行完毕，请稍后再试
                     if (tx3211ResVO != null && AnxinRetCode.CONTRACT_IN_CREATING.equals(tx3211ResVO.getHead().getRetCode())) {
                         waitingBatchNoList.add(batchNo);
+                        logger.info(MessageFormat.format("[安心签] Query contract response fail. businessId:{0}, batchNo:{1}, errorCode:{2}, errorMessage:{3}",
+                                businessId + "", batchNo, tx3211ResVO.getHead().getRetCode(), tx3211ResVO.getHead().getRetMessage()));
+                    } else {
+                        logger.error(MessageFormat.format("[安心签] Query contract response error. businessId:{0}, batchNo:{1}, errorCode:{2}, errorMessage:{3}",
+                                businessId + "", batchNo, tx3211ResVO.getHead().getRetCode(), tx3211ResVO.getHead().getRetMessage()));
                     }
-                    logger.error(MessageFormat.format("[安心签] Query contract response error. businessId:{0}, batchNo:{1}, errorCode:{2}, errorMessage:{3}",
-                            businessId + "", batchNo, tx3211ResVO.getHead().getRetCode(), tx3211ResVO.getHead().getRetMessage()));
                 }
             }
         }
