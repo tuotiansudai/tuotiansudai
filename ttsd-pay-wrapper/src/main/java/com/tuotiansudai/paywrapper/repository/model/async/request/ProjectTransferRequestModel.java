@@ -188,7 +188,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     }
 
     private ProjectTransferRequestModel(String projectId, String orderId, String userId, String amount, UmPayParticAccType umPayParticAccType, Source source) {
-        super(source, "project_transfer_invest");
+        super(source, "project_transfer_transfer");
         this.service = UmPayService.PROJECT_TRANSFER.getServiceName();
         this.orderId = orderId;
         this.projectId = projectId;
