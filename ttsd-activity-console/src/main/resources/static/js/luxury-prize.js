@@ -31,13 +31,13 @@ require(['jquery', 'Validform', 'bootstrap','jquery-ui', 'csrf'], function ($, _
                     if ($self.hasClass('luxuryImage')) {
                         $('.luxuryImageUrl').val(data.title);
                         $('.image').html('');
-                        $('.image').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
+                        $('.image').append('<img style="width:100%" src="' + data.title + '" alt="缩略图">');
 
                     }
                     if ($self.hasClass('luxuryIntroduceImage')) {
                         $('.luxuryIntroduceUrl').val(data.title);
                         $('.imageIntroduce').html('');
-                        $('.imageIntroduce').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
+                        $('.imageIntroduce').append('<img style="width:100%" src="' + data.title + '" alt="缩略图">');
 
                     }
 
