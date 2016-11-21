@@ -104,7 +104,7 @@
                         {{if $value.productType!='EXPERIENCE'}}
                             {{if $value.contractNo == 'OLD'}}
                                 <a class="red" href="/contract/investor/loanId/{{$value.loanId}}/investId/{{$value.investId}}" target="_blank"> | 合同</a>
-                            {{else if $value.contractNo != 'WAITING'}}
+                            {{else if $value.contractNo != 'WAITING' || $value.contractNo != '' }}
                                 <a class="red" href="/contract/invest/contractNo/{{$value.contractNo}}"  target="_blank"> | 合同</a>
                             {{/if}}
                         {{/if}}
