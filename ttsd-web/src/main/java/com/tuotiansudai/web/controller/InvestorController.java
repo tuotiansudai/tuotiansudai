@@ -43,9 +43,8 @@ public class InvestorController {
                                                          @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                          @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                                          @RequestParam(name = "status", required = false) LoanStatus status) {
-        int pageSize = 10;
         String loginName = LoginUserInfo.getLoginName();
-        BasePaginationDataDto<InvestorInvestPaginationItemDataDto> dataDto = investService.getInvestPagination(loginName, index, pageSize, startTime, endTime, status);
+        BasePaginationDataDto<InvestorInvestPaginationItemDataDto> dataDto = investService.getInvestPagination(loginName, index, 10, startTime, endTime, status);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
 
@@ -60,12 +59,11 @@ public class InvestorController {
     @ResponseBody
     @RequestMapping(value = "/invest-transfer-list-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     public BaseDto<BasePaginationDataDto> investTransferListData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                                                 @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
                                                                  @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                                  @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                                                  @RequestParam(name = "status", required = false) LoanStatus status) {
         String loginName = LoginUserInfo.getLoginName();
-        BasePaginationDataDto<TransferInvestDetailDto> dataDto = investTransferService.getInvestTransferList(loginName, index, pageSize, startTime, endTime, status);
+        BasePaginationDataDto<TransferInvestDetailDto> dataDto = investTransferService.getInvestTransferList(loginName, index, 10, startTime, endTime, status);
         dataDto.setStatus(true);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);

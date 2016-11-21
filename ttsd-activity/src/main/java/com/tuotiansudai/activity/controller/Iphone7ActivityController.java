@@ -31,10 +31,9 @@ public class Iphone7ActivityController {
     @RequestMapping(value="/myInvestDetail", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BasePaginationDataDto> myInvestLotteryNumber(@RequestParam(name = "loginName") String loginName,
-                                                                @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                                                @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                                                @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
 
-        BasePaginationDataDto<IPhone7InvestLotteryDto> dataDto = iphone7LotteryService.myInvestLotteryList(loginName, index, pageSize);
+        BasePaginationDataDto<IPhone7InvestLotteryDto> dataDto = iphone7LotteryService.myInvestLotteryList(loginName, index, 10);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
         return dto;

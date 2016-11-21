@@ -31,8 +31,8 @@ public class TravelPrizeController {
     public ModelAndView getAwardItems(@RequestParam(value = "mobile", defaultValue = "", required = false) String mobile,
                                       @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                       @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                      @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                      @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         BaseDto<BasePaginationDataDto> dto = travelPrizeService.getTravelAwardItems(mobile, startTime, endTime, index, pageSize);
 
         ModelAndView modelAndView = new ModelAndView("/user-travel-list", "data", dto);

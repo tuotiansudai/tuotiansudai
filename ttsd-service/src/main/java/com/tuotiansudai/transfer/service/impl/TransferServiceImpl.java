@@ -22,6 +22,7 @@ import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationIt
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.PaginationUtil;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -196,7 +197,7 @@ public class TransferServiceImpl implements TransferService {
         List<TransferableInvestView> items = Lists.newArrayList();
         items = investMapper.findWebTransferableApplicationPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
         if (count > 0) {
-            int totalPages = (int) ((count % pageSize > 0 || count == 0) ? count / pageSize + 1 : count / pageSize);
+            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             items = investMapper.findWebTransferableApplicationPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
 

@@ -10,6 +10,7 @@ import com.tuotiansudai.activity.repository.model.IPhone7LotteryConfigModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.PaginationUtil;
 import com.tuotiansudai.util.RandomUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class Iphone7LotteryService {
         long count = iPhone7InvestLotteryMapper.findByLoginNameCount(loginName);
         List<IPhone7InvestLotteryModel> records = Lists.newArrayList();
         if (count > 0) {
-            int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             records = iPhone7InvestLotteryMapper.findPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
         }

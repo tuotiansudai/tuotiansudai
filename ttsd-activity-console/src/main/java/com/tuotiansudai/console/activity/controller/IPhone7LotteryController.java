@@ -52,8 +52,8 @@ public class IPhone7LotteryController {
 
     @RequestMapping(value = "/iphone7-lottery/stat", method = RequestMethod.GET)
     public ModelAndView stat(@RequestParam(value = "mobile", required = false) String mobile,
-                             @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                             @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/iphone7-lottery/stat");
         BaseDto<BasePaginationDataDto> paginationData = service.listStat(mobile, index, pageSize);
         modelAndView.addObject("data", paginationData.getData());

@@ -378,7 +378,7 @@ public class InvestServiceImpl implements InvestService {
         final long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType);
         final long investAmountSum = investMapper.sumInvestAmountConsole(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType);
         if (count > 0) {
-            int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, (index - 1) * pageSize, pageSize);
         }
