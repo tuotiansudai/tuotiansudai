@@ -27,8 +27,8 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
 
         TransferWithNotifyRequestModel model = new TransferWithNotifyRequestModel(orderId, payUserId, amount);
         model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "coupon_repay_notify");
-        model.servType = UmPayServType.TRANSFER_IN_REPAY.getCode();
-        model.transAction = UmPayTransAction.IN.getCode();
+        model.servType = UmPayServType.TRANSFER_OUT_REPAY_PAYBACK.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
         model.particType = UmPayParticType.PLATFORM.getCode();
         return model;
     }
@@ -36,8 +36,8 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
     public static TransferWithNotifyRequestModel newExtraRateRequest(String orderId, String payUserId, String amount){
         TransferWithNotifyRequestModel model = new TransferWithNotifyRequestModel(orderId, payUserId, amount);
         model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "extra_rate_notify");
-        model.servType = UmPayServType.TRANSFER_IN_REPAY.getCode();
-        model.transAction = UmPayTransAction.IN.getCode();
+        model.servType = UmPayServType.TRANSFER_OUT_REPAY_PAYBACK.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
         model.particType = UmPayParticType.PLATFORM.getCode();
         return model;
     }
