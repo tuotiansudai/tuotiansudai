@@ -7,6 +7,7 @@ import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
@@ -92,6 +93,17 @@ public class QuestionController {
         ModelAndView modelAndView = new ModelAndView("/question-category");
         modelAndView.addObject("questions", questionService.findByTag(LoginUserInfo.getLoginName(), tag, index, pageSize));
         modelAndView.addObject("tag", tag);
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/search", method = RequestMethod.GET)
+    public ModelAndView getQuestionsByKeyword(@RequestParam(value = "keyword") String keyword,
+                                              @RequestParam(value = "index") int index) {
+        ModelAndView modelAndView = new ModelAndView();
+        String loginName = LoginUserInfo.getLoginName();
+        BaseDto<BasePaginationDataDto> data = questionService.getQuestionsByKeywords(keyword, loginName, index, 10);
+        modelAndView.addObject(data);
+
         return modelAndView;
     }
 }
