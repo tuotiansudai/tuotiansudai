@@ -45,13 +45,13 @@ public class HomeLoanDto {
 
     private double extraRate;
 
-    private String extraSource;
+    private List<Source> extraSource;
 
     private boolean activity;
 
     private String activityDesc;
 
-    public HomeLoanDto(CouponModel newbieInterestCouponModel, LoanModel loan, long investAmount, List<LoanRepayModel> loanRepayModels, double extraRate, String extraSource, boolean activity, String activityDesc) {
+    public HomeLoanDto(CouponModel newbieInterestCouponModel, LoanModel loan, long investAmount, List<LoanRepayModel> loanRepayModels, double extraRate, List<Source> extraSource, boolean activity, String activityDesc) {
         this.id = loan.getId();
         this.name = loan.getName();
         this.productType = loan.getProductType();
@@ -160,11 +160,11 @@ public class HomeLoanDto {
         this.extraRate = extraRate;
     }
 
-    public String getExtraSource() {
+    public List<Source> getExtraSource() {
         return extraSource;
     }
 
-    public void setExtraSource(String extraSource) {
+    public void setExtraSource(List<Source> extraSource) {
         this.extraSource = extraSource;
     }
 

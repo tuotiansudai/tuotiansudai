@@ -6,13 +6,13 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanDetailService;
 import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.service.ContractService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -206,7 +206,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
         if (loanDetailsModel != null) {
-            loanDetailResponseDataDto.setExtraSource((Source.WEB.name().equals(loanDetailsModel.getExtraSource())) ? loanDetailsModel.getExtraSource() : "");
+            loanDetailResponseDataDto.setExtraSource(loanDetailsModel.getExtraSource() != null ? (loanDetailsModel.getExtraSource().size() == 1 && loanDetailsModel.getExtraSource().contains(Source.WEB)) ? Source.WEB.name() : "" : "");
         }
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
@@ -272,7 +272,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     public String obtainLoanDetail(long loanId){
         LoanModel loanModel = loanMapper.findById(loanId);
         if(loanModel != null){
-            Map<String, Object> dateModel = collectLoanDetailDateModel(loanId,loanModel.getPledgeType());
+            Map<String, String> dateModel = collectLoanDetailDateModel(loanId,loanModel.getPledgeType());
             switch (loanModel.getPledgeType()){
                 case HOUSE:
                     return contractService.getContract("pledgeHouse",dateModel);
@@ -286,8 +286,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         return null;
 
     }
-    private Map<String, Object> collectLoanDetailDateModel(long loanId,PledgeType pledgeType){
-        Map<String, Object> dataModel = new HashMap<>();
+    private Map<String, String> collectLoanDetailDateModel(long loanId,PledgeType pledgeType){
+        Map<String, String> dataModel = new HashMap<>();
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
         if(loanerDetailsModel != null){
@@ -295,7 +295,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
                 dataModel.put("loaner",MessageFormat.format("{0}某", loanerDetailsModel.getUserName().substring(0,1)));
             }
-            dataModel.put("marriage",loanerDetailsModel.getMarriage());
+            dataModel.put("marriage",loanerDetailsModel.getMarriage().name());
 
         }
         if(loanDetailsModel != null ){

@@ -1,7 +1,5 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -26,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -54,6 +53,8 @@ public class RegisterServiceImpl implements RegisterService {
 
         try {
             UserModel userModel = userMapper.findByLoginName(dto.getLoginName());
+            userModel.setUserName(dto.getUserName());
+            userModel.setIdentityNumber(dto.getIdentityNumber());
 
             MerRegisterPersonRequestModel requestModel = new MerRegisterPersonRequestModel(
                     MessageFormat.format(REGISTER_ORDER_ID_TEMPLATE, String.valueOf(userModel.getId()), String.valueOf(new Date().getTime())),
@@ -68,24 +69,14 @@ public class RegisterServiceImpl implements RegisterService {
 
             if (responseModel.isSuccess()) {
                 if (accountMapper.findByLoginName(userModel.getLoginName()) == null) {
-                    AccountModel accountModel = new AccountModel(userModel.getLoginName(),
-                            dto.getUserName(),
-                            dto.getIdentityNumber(),
-                            responseModel.getUserId(),
-                            responseModel.getAccountId(),
-                            new Date());
+                    AccountModel accountModel = new AccountModel(userModel.getLoginName(), responseModel.getUserId(), responseModel.getAccountId(), new Date());
                     accountMapper.create(accountModel);
+                    userMapper.updateUser(userModel);
                 }
-                if (!Iterators.tryFind(userRoleMapper.findByLoginName(userModel.getLoginName()).iterator(), new Predicate<UserRoleModel>() {
-                    @Override
-                    public boolean apply(UserRoleModel input) {
-                        return input.getRole() == Role.INVESTOR;
-                    }
-                }).isPresent()) {
-                    UserRoleModel userRoleModel = new UserRoleModel();
-                    userRoleModel.setLoginName(dto.getLoginName());
-                    userRoleModel.setRole(Role.INVESTOR);
-                    userRoleMapper.create(Lists.newArrayList(userRoleModel));
+
+                List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getLoginName());
+                if (userRoleModels.stream().noneMatch(userRoleModel -> userRoleModel.getRole() == Role.INVESTOR)) {
+                    userRoleMapper.create(Lists.newArrayList(new UserRoleModel(dto.getLoginName(), Role.INVESTOR)));
                 }
             }
 

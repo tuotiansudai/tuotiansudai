@@ -1,6 +1,5 @@
 @import 'variables', "global_png";
 $linkColor:#666 #ff770f;
-
 a {
   color: nth($linkColor,1);
   &:hover {
@@ -15,6 +14,7 @@ a {
   height:40px;
   line-height: 40px;
   border-bottom:1px solid #f0f0f0;
+
   .header-download {
     display: none;
     padding: 10px 4px;

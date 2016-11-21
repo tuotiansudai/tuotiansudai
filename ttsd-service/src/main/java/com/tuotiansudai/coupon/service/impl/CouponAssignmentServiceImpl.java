@@ -1,7 +1,10 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -46,9 +49,6 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
     @Autowired
     private ExchangeCodeService exchangeCodeService;
-
-    @Autowired
-    private UserBirthdayUtil userBirthdayUtil;
 
     @Resource(name = "allUserCollector")
     private UserCollector allUserCollector;
@@ -126,7 +126,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), exchangeCode);
 
-        if (StringUtils.isNotEmpty(exchangeCode) && userCouponModel == null) {
+        if (userCouponModel == null) {
             return false;
         }
 
@@ -173,7 +173,10 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         }
 
         if (isAssignableCoupon) {
-            ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
+            UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
+            if (userCouponModel == null) {
+                return;
+            }
             logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
         }
 
@@ -254,13 +257,19 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     public UserCouponModel assign(String loginName, long couponId, String exchangeCode) {
         CouponModel couponModel = couponMapper.lockById(couponId);
 
+        List<UserCouponModel> assignedUserCoupons = userCouponMapper.findByLoginNameAndCouponId(loginName, couponId);
+        if (!couponModel.isMultiple() && CollectionUtils.isNotEmpty(assignedUserCoupons)) {
+            logger.error(MessageFormat.format("[Coupon Assignment] coupon({0}) has been assigned to user({1})", String.valueOf(couponId), loginName));
+            return null;
+        }
+
         couponModel.setIssuedCount(couponModel.getIssuedCount() + 1);
         couponMapper.updateCoupon(couponModel);
 
         Date startTime = new DateTime().withTimeAtStartOfDay().toDate();
         Date endTime = couponModel.getDeadline() == 0 ? couponModel.getEndTime() : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
         if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
-            DateTime userBirthday = userBirthdayUtil.getUserBirthday(loginName);
+            DateTime userBirthday = UserBirthdayUtil.getUserBirthday(userMapper.findByLoginName(loginName).getIdentityNumber());
             startTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMinimumValue().withTimeAtStartOfDay().toDate();
             endTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMaximumValue().withTime(23, 59, 59, 0).toDate();
         }
@@ -278,7 +287,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     }
 
     @Override
-    public void assignUserCoupon(long loanId, String loginNameOrMobile, long couponId) {
+    public void assignInvestAchievementUserCoupon(long loanId, String loginNameOrMobile, long couponId) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
         CouponModel couponModel = couponMapper.findById(couponId);
@@ -302,6 +311,9 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         if (couponModel.isMultiple()) {
             UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
+            if (userCouponModel == null) {
+                return;
+            }
             userCouponModel.setAchievementLoanId(loanId);
             userCouponMapper.update(userCouponModel);
             logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));

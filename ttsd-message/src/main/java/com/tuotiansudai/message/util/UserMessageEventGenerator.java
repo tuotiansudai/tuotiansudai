@@ -177,10 +177,10 @@ public class UserMessageEventGenerator {
         String appTitle = MessageFormat.format(appTitleTemplate, loanName);
 
         Set<String> investorLoginNames = Sets.newHashSet(userMessageMetaMapper.findSuccessInvestorByLoanId(loanId));
-        for (String investor : investorLoginNames) {
+        investorLoginNames.stream().filter(investor -> userMessageMapper.countMessagesByLoginNameAndMessageType(investor, messageModel.getId(), title) == 0).forEach(investor -> {
             UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), investor, title, appTitle, null);
             userMessageMapper.create(userMessageModel);
-        }
+        });
     }
 
     @Transactional

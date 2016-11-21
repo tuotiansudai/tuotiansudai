@@ -2,13 +2,13 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.mapper.BannerMapper;
+import com.tuotiansudai.activity.repository.model.BannerModel;
 import com.tuotiansudai.api.dto.v1_0.BannerPictureResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.BannerResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppBannerService;
-import com.tuotiansudai.repository.mapper.BannerMapper;
-import com.tuotiansudai.repository.model.BannerModel;
 import com.tuotiansudai.repository.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

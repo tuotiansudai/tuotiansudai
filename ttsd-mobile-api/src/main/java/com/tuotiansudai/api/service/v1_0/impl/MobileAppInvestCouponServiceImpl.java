@@ -11,9 +11,11 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +35,9 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
     @Value(value = "${web.coupon.lock.seconds}")
     private int couponLockSeconds;
 
+    @Autowired
+    private UserMapper userMapper;
+
     private Map<CouponType, Integer> dicRule = Maps.newHashMap(ImmutableMap.<CouponType, Integer>builder()
             .put(CouponType.RED_ENVELOPE, 100)
             .put(CouponType.BIRTHDAY_COUPON, 99)
@@ -46,9 +51,6 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
 
     @Autowired
     private LoanMapper loanMapper;
-
-    @Autowired
-    private UserBirthdayUtil userBirthdayUtil;
 
     @Override
     public BaseResponseDto getInvestCoupons(InvestRequestDto dto) {
@@ -103,7 +105,8 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
 
         for (UserCouponModel item : userCouponModels) {
             CouponModel couponModel = item.getCoupon();
-            if (!couponModel.getProductTypes().contains(loanProductType) || CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()) && !userBirthdayUtil.isBirthMonth(item.getLoginName())) {
+            UserModel userModel = userMapper.findByLoginName(item.getLoginName());
+            if (!couponModel.getProductTypes().contains(loanProductType) || CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()) && !UserBirthdayUtil.isBirthMonth(userModel.getIdentityNumber())) {
                 unavailableCoupons.add(item);
             }
         }

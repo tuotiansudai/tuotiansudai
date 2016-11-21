@@ -21,7 +21,7 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.util,com.tuotiansudai.client,com.tuotiansudai.cache,com.tuotiansudai.aspect,com.tuotiansudai.coupon.service,com.tuotiansudai.coupon.util,com.tuotiansudai.jpush,com.tuotiansudai.point,
-                                            com.tuotiansudai.transfer,com.tuotiansudai.membership,com.tuotiansudai.message"/>
+                                            com.tuotiansudai.transfer,com.tuotiansudai.membership,com.tuotiansudai.message,com.tuotiansudai.cfca,com.tuotiansudai.anxin.service,com.tuotiansudai.contract.service"/>
 
     <aop:aspectj-autoproxy expose-proxy="true"/>
 
@@ -133,6 +133,27 @@
         </constructor-arg>
     </bean>
 
+    <bean id="anxinHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${anxin.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="${anxin.jdbc.username}"/>
+                <property name="password" value="${anxin.jdbc.password}"/>
+                <property name="minimumIdle" value="${anxin.anxin.minimumIdle}"/>
+                <property name="maximumPoolSize" value="${anxin.anxin.maximumPoolSize}"/>
+                <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+                <property name="dataSourceProperties">
+                    <props>
+                        <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                        <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                        <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
+
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="payTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="payHikariCPDataSource"/>
@@ -155,6 +176,7 @@
     <bean id="activityTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="activityHikariCPDataSource"/>
     </bean>
+
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage"
@@ -171,6 +193,12 @@
     <bean id="activitySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="activityHikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.activity.repository.model"/>
+        <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
+    </bean>
+
+    <bean id="anxinSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="anxinHikariCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.cfca.model"/>
         <property name="configLocation" value="WEB-INF/mybatis-configuration.xml"/>
     </bean>
 
@@ -194,6 +222,11 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="activitySqlSessionFactory"/>
         <property name="basePackage" value="com.tuotiansudai.activity.repository.mapper"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="anxinSessionFactory"/>
+        <property name="basePackage" value="com.tuotiansudai.cfca.mapper"/>
     </bean>
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>

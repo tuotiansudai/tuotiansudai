@@ -1,11 +1,9 @@
 package com.tuotiansudai.scheduler.plugin;
 
-import com.tuotiansudai.activity.job.CalculateTravelLuxuryPrizeJob;
 import com.tuotiansudai.job.*;
 import com.tuotiansudai.jpush.job.AutoJPushAlertBirthDayJob;
 import com.tuotiansudai.jpush.job.AutoJPushAlertBirthMonthJob;
 import com.tuotiansudai.jpush.job.AutoJPushNoInvestAlertJob;
-import com.tuotiansudai.point.job.ImitateLotteryJob;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.quartz.CronScheduleBuilder;
@@ -47,10 +45,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
             createCalculateDefaultInterest();
         }
-        if (JobType.CalculateTravelLuxuryPrize.name().equalsIgnoreCase(schedulerName)) {
-            //运营生成中奖纪录,暂时停掉该job
-            //calculateTravelLuxuryPrize();
-        }
         if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
             createRefreshAreaByMobile();
         }
@@ -69,9 +63,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.AutoJPushNoInvestAlert.name().equalsIgnoreCase(schedulerName)) {
             createAutoJPushNoInvestAlert();
         }
-        if (JobType.ImitateLottery.name().equals(schedulerName)) {
-            createImitateLotteryJob();
-        }
         if (JobType.ExperienceRepay.name().equals(schedulerName)) {
             createNewbieExperienceRepayJob();
         }
@@ -80,6 +71,10 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
         if (JobType.PlatformBalanceLowNotify.name().equals(schedulerName)) {
             platformBalanceLowNotifyJob();
+        }
+
+        if (JobType.CalculateTravelLuxuryPrize.name().equalsIgnoreCase(schedulerName)) {
+            deleteCalculateTravelLuxuryPrizeJob();
         }
 
     }
@@ -123,31 +118,11 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void createImitateLotteryJob() {
-        try {
-            jobManager.newJob(JobType.ImitateLottery, ImitateLotteryJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0/5 * * * ?").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.ImitateLottery.name(), JobType.ImitateLottery.name()).submit();
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
     private void createCalculateDefaultInterest() {
         try {
             jobManager.newJob(JobType.CalculateDefaultInterest, CalculateDefaultInterestJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name()).submit();
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void calculateTravelLuxuryPrize() {
-        try {
-            jobManager.newJob(JobType.CalculateTravelLuxuryPrize, CalculateTravelLuxuryPrizeJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 5 0 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.CalculateTravelLuxuryPrize.name(), JobType.CalculateTravelLuxuryPrize.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
@@ -244,6 +219,10 @@ public class JobInitPlugin implements SchedulerPlugin {
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
+    }
+
+    private void deleteCalculateTravelLuxuryPrizeJob() {
+        jobManager.deleteJob(JobType.CalculateTravelLuxuryPrize, JobType.CalculateTravelLuxuryPrize.name(), JobType.CalculateTravelLuxuryPrize.name());
     }
 
 }

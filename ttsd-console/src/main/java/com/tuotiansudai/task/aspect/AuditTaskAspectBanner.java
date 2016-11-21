@@ -1,7 +1,7 @@
 package com.tuotiansudai.task.aspect;
 
-import com.tuotiansudai.dto.BannerDto;
-import com.tuotiansudai.repository.model.BannerModel;
+import com.tuotiansudai.activity.repository.dto.BannerDto;
+import com.tuotiansudai.activity.repository.model.BannerModel;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.task.OperationType;
 import org.apache.log4j.Logger;
@@ -24,7 +24,7 @@ public class AuditTaskAspectBanner {
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.BannerService.create(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.activity.service.BannerService.create(..))")
     public void afterReturningCreateBanner(JoinPoint joinPoint) {
         logger.debug("after create banner aspect.");
         try {
@@ -39,7 +39,7 @@ public class AuditTaskAspectBanner {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.BannerService.updateBanner(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.activity.service.BannerService.updateBanner(..))")
     public void afterReturningUpdateBanner(JoinPoint joinPoint) {
         logger.debug("after update banner aspect.");
         try {

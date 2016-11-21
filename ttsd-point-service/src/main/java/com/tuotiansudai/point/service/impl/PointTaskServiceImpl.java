@@ -3,7 +3,7 @@ package com.tuotiansudai.point.service.impl;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.point.dto.PointTaskDto;
+import com.tuotiansudai.point.repository.dto.PointTaskDto;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointTask;
@@ -36,7 +36,6 @@ public class PointTaskServiceImpl implements PointTaskService {
             PointTask.FIRST_REFERRER_INVEST,
             PointTask.FIRST_INVEST_180,
             PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST,
-            PointTask.FIRST_TURN_ON_AUTO_INVEST,
             PointTask.FIRST_INVEST_360);
 
     final static long SUM_INVEST_5000_AMOUNT = 500000L;
@@ -204,8 +203,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                 return "/referrer/refer-list";
             case FIRST_TURN_ON_NO_PASSWORD_INVEST:
                 return "/personal-info";
-            case FIRST_TURN_ON_AUTO_INVEST:
-                return "/auto-invest/agreement";
+
         }
         return null;
     }
@@ -293,7 +291,6 @@ public class PointTaskServiceImpl implements PointTaskService {
             case FIRST_INVEST_360:
                 return userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, pointTask) == 0
                         && loanMapper.findById(investMapper.findLatestSuccessInvest(loginName).getLoanId()).getProductType() == ProductType._360;
-            case FIRST_TURN_ON_AUTO_INVEST:
             case FIRST_TURN_ON_NO_PASSWORD_INVEST:
                 return userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, pointTask) == 0;
         }
