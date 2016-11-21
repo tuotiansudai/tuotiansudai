@@ -1,6 +1,6 @@
 package com.tuotiansudai.web.ask.interceptors;
 
-import com.tuotiansudai.service.LinkExchangeService;
+import com.tuotiansudai.ask.service.ExchangeLinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LinkExchangeInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
-    private LinkExchangeService linkExchangeService;
+    private ExchangeLinkService exchangeLinkService;
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
@@ -21,6 +21,6 @@ public class LinkExchangeInterceptor extends HandlerInterceptorAdapter {
             return;
         }
 
-        modelAndView.addObject("linkExchangeList", linkExchangeService.getLinkExchangeListByAsc());
+        modelAndView.addObject("linkExchangeList", exchangeLinkService.getLinkExchangeListByAsc());
     }
 }

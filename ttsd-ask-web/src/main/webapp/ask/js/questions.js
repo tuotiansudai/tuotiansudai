@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var comm = require("./commonFun");
 
 /* hot question for mobile */
@@ -8,11 +7,11 @@ $hotCategory.find('.m-title').on('click',function() {
 });
 
 /* home page for switch menu to show different page */
-var $homeTagContainer=$('#homeTagContainer');
+var $homeTagContainer = $('#homeTagContainer');
 if($homeTagContainer.length) {
-    var $switchMenu=$('.switch-menu li',$homeTagContainer),
-     group=comm.pathNameKey('group').toUpperCase();
-    switch(group) {
+    var $switchMenu = $('.switch-menu li', $homeTagContainer),
+        group = comm.pathNameKey('group').toUpperCase();
+    switch (group) {
         case 'UNRESOLVED':
             $switchMenu.eq(1).addClass('active');
             break;
@@ -23,6 +22,20 @@ if($homeTagContainer.length) {
             $switchMenu.eq(0).addClass('active');
             break;
     }
+}
+
+//全部搜索框
+var $searchBoxTool = $('#searchBoxTool');
+if ($searchBoxTool.length) {
+    var $btnsearch = $('.btn-search', $searchBoxTool);
+    // $btnsearch.on('click',function(){
+    //     $.ajax({
+    //         url: "/answer",
+    //         data: '',
+    //         type: 'POST',
+    //         dataType: 'json'
+    //     });
+    // })
 }
 
 

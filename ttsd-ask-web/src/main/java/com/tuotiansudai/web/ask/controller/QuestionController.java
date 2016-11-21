@@ -9,7 +9,6 @@ import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
-import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Map;
 
 @Controller
 @RequestMapping(path = "/question")
@@ -28,24 +26,6 @@ public class QuestionController {
 
     @Autowired
     private AnswerService answerService;
-
-    final private Map<String, Tag> urlTagMapTag = new HashedMap<String, Tag>() {
-        {
-            put("securities", Tag.SECURITIES);
-            put("bank", Tag.BANK);
-            put("futures", Tag.FUTURES);
-            put("P2P", Tag.P2P);
-            put("trust", Tag.TRUST);
-            put("loan", Tag.LOAN);
-            put("fund", Tag.FUND);
-            put("zhongchou", Tag.CROWD_FUNDING);
-            put("licai", Tag.INVEST);
-            put("credit_card", Tag.CREDIT_CARD);
-            put("forex", Tag.FOREX);
-            put("stock", Tag.STOCK);
-            put("other", Tag.OTHER);
-        }
-    };
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView question() {
@@ -82,14 +62,11 @@ public class QuestionController {
         return new ModelAndView("/my-questions", "questions", questionService.findMyQuestions(LoginUserInfo.getLoginName(), index, pageSize));
     }
 
-    @RequestMapping(path = "/{tag}", method = RequestMethod.GET)
+    @RequestMapping(path = "/category/{urlTag}", method = RequestMethod.GET)
     public ModelAndView getQuestionsByCategory(@PathVariable String urlTag,
                                                @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        Tag tag = urlTagMapTag.get(urlTag);
-        if (null == tag) {
-            tag = Tag.BANK;
-        }
+        Tag tag = Tag.valueOf(urlTag.toUpperCase());
         ModelAndView modelAndView = new ModelAndView("/question-category");
         modelAndView.addObject("questions", questionService.findByTag(LoginUserInfo.getLoginName(), tag, index, pageSize));
         modelAndView.addObject("tag", tag);
@@ -99,10 +76,10 @@ public class QuestionController {
     @RequestMapping(path = "/search", method = RequestMethod.GET)
     public ModelAndView getQuestionsByKeyword(@RequestParam(value = "keyword", defaultValue = "") String keyword,
                                               @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView("search-data");
         String loginName = LoginUserInfo.getLoginName();
         BaseDto<BasePaginationDataDto> data = questionService.getQuestionsByKeywords(keyword, loginName, index, 10);
-        modelAndView.addObject(data);
+        modelAndView.addObject("keywordQuestions", data);
 
         return modelAndView;
     }

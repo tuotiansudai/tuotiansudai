@@ -103,11 +103,7 @@
 
 <div class="main-frame full-screen clearfix">
 <#--banner-->
-    <div class="borderBox tc mobile-menu">
-        <a href="/question" class="btn-main want-question">我要提问</a>
-        <a href="/question/my-questions" class="btn-main my-question">我的提问</a>
-        <a href="/answer/my-answers" class="btn-main my-answer">我的回答</a>
-    </div>
+    <#include "../pageLayout/search-bar.ftl"/>
     <div class="download-mobile">
         <a href="https://tuotiansudai.com/app/download" target="_blank"></a>
     </div>
@@ -119,7 +115,7 @@
         <ul class="qa-list clearfix" style="display: none">
             <#list tags as tagItem>
                 <li>
-                    <a href="/question/${tagItem.name()?lower_case}"
+                    <a href="/question/category/${tagItem.name()?lower_case}"
                        <#if tag?? && tagItem == tag>class="active"</#if>>${tagItem.description}</a>
                 </li>
             </#list>
