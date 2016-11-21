@@ -1,7 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
-import com.tuotiansudai.paywrapper.repository.model.UmPayParticAccType;
-import com.tuotiansudai.paywrapper.repository.model.UmPayTransAction;
+import com.tuotiansudai.paywrapper.repository.model.*;
+import com.tuotiansudai.repository.model.Source;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -11,56 +11,69 @@ import java.util.Map;
 public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
 
     private String orderId;
-
-    private String particUserId;
-
-    private String merAccountId;
-
-    private String particAccountId;
-
-    private String particAccType = "01";
-
-    private String merDate;
-
+    private String userId;
     private String amount;
-
-    private String transAction = "02";
+    private String merDate;
+    private String servType;
+    private String transAction;
+    private String particType;
+    private String particAccType;
 
     public TransferWithNotifyRequestModel() {
 
     }
 
     public static TransferWithNotifyRequestModel newCouponRepayRequest(String orderId, String payUserId, String amount) {
-        return new TransferWithNotifyRequestModel(orderId,
-                payUserId,
-                amount,
-                "coupon_repay_notify");
+
+        TransferWithNotifyRequestModel model = new TransferWithNotifyRequestModel(orderId, payUserId, amount);
+        model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "coupon_repay_notify");
+        model.servType = UmPayServType.TRANSFER_IN_REPAY.getCode();
+        model.transAction = UmPayTransAction.IN.getCode();
+        model.particType = UmPayParticType.PLATFORM.getCode();
+        return model;
     }
 
     public static TransferWithNotifyRequestModel newExtraRateRequest(String orderId, String payUserId, String amount){
-        return new TransferWithNotifyRequestModel(orderId, payUserId, amount, "extra_rate_notify");
+        TransferWithNotifyRequestModel model = new TransferWithNotifyRequestModel(orderId, payUserId, amount);
+        model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "extra_rate_notify");
+        model.servType = UmPayServType.TRANSFER_IN_REPAY.getCode();
+        model.transAction = UmPayTransAction.IN.getCode();
+        model.particType = UmPayParticType.PLATFORM.getCode();
+        return model;
     }
 
-    private TransferWithNotifyRequestModel(String orderId, String payUserId, String amount, String notifyUrl) {
-        this.service = "transfer";
+    private TransferWithNotifyRequestModel(String orderId, String userId, String amount) {
+        super();
+        this.service = UmPayService.TRANSFER.getServiceName();
         this.orderId = orderId;
-        this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        this.particUserId = payUserId;
-        this.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
-        this.transAction =  UmPayTransAction.OUT.getCode();
+        this.userId = userId;
         this.amount = amount;
-        this.notifyUrl = MessageFormat.format("{0}/{1}", getCallbackBackHost(), notifyUrl);
+        this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        this.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
     }
 
-    @Override
+    private TransferWithNotifyRequestModel(String orderId, String userId, String amount, Source source) {
+        super(source, "transfer");
+        this.service = UmPayService.TRANSFER.getServiceName();
+        this.orderId = orderId;
+        this.userId = userId;
+        this.amount = amount;
+        this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        this.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
+    }
+
+
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();
-        payRequestData.put("notify_url", this.notifyUrl);
-        payRequestData.put("order_id", this.orderId);
-        payRequestData.put("mer_date", this.merDate);
-        payRequestData.put("partic_user_id", this.particUserId);
-        payRequestData.put("partic_acc_type", this.particAccType);
-        payRequestData.put("amount", this.amount);
+        payRequestData.put("notify_url", notifyUrl);
+        payRequestData.put("order_id", orderId);
+        payRequestData.put("mer_date", merDate);
+        payRequestData.put("serv_type", servType);
+        payRequestData.put("trans_action", transAction);
+        payRequestData.put("partic_type", particType);
+        payRequestData.put("partic_acc_type", particAccType);
+        payRequestData.put("partic_user_id", userId);
+        payRequestData.put("amount", amount);
         return payRequestData;
     }
 
@@ -68,63 +81,11 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getParticUserId() {
-        return particUserId;
-    }
-
-    public void setParticUserId(String particUserId) {
-        this.particUserId = particUserId;
-    }
-
-    public String getMerAccountId() {
-        return merAccountId;
-    }
-
-    public void setMerAccountId(String merAccountId) {
-        this.merAccountId = merAccountId;
-    }
-
-    public String getParticAccountId() {
-        return particAccountId;
-    }
-
-    public void setParticAccountId(String particAccountId) {
-        this.particAccountId = particAccountId;
-    }
-
-    public String getParticAccType() {
-        return particAccType;
-    }
-
-    public void setParticAccType(String particAccType) {
-        this.particAccType = particAccType;
-    }
-
-    public String getMerDate() {
-        return merDate;
-    }
-
-    public void setMerDate(String merDate) {
-        this.merDate = merDate;
+    public String getUserId() {
+        return userId;
     }
 
     public String getAmount() {
         return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public String getTransAction() {
-        return transAction;
-    }
-
-    public void setTransAction(String transAction) {
-        this.transAction = transAction;
     }
 }
