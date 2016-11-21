@@ -1,8 +1,8 @@
 package com.tuotiansudai.mq.consumer.loan;
 
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.mq.client.MQClient;
 import com.tuotiansudai.mq.client.model.Message;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
@@ -20,7 +20,7 @@ public class CouponAssigningMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(CouponAssigningMessageConsumer.class);
 
     @Autowired
-    private MQClient mqClient;
+    private MQWrapperClient mqClient;
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
