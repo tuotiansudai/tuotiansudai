@@ -28,6 +28,10 @@ require(['jquery', 'jquery-ui', 'layer', 'layer-extend', 'layerWrapper', 'bootst
                 replaceStatus = $self.attr('data-replace-status'),
                 activeStatus = $self.attr('data-active-status');
 
+            if (!confirm("确认提交审核?")) {
+                return;
+            }
+
             if (replaceStatus == "PASSED" || replaceStatus == "REJECT" || replaceStatus == "FAILED" || replaceStatus == "REMOVED") {
                 alert("该状态不可以终止订单!");
                 return;
@@ -62,6 +66,10 @@ require(['jquery', 'jquery-ui', 'layer', 'layer-extend', 'layerWrapper', 'bootst
                 loginName = $self.attr('data-replace-name'),
                 replaceStatus = $self.attr('data-replace-status'),
                 activeStatus = $self.attr('data-active-status');
+
+            if (!confirm("确认审核?")) {
+                return;
+            }
 
             if (replaceStatus == "PASSED" || replaceStatus == "STOP" || replaceStatus == "FAILED" || replaceStatus == "REMOVED") {
                 alert("该状态不可以终止订单!");
