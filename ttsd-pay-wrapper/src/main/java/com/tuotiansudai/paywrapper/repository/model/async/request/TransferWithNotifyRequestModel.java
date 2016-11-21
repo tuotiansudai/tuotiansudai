@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.paywrapper.repository.model.UmPayParticAccType;
+import com.tuotiansudai.paywrapper.repository.model.UmPayTransAction;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,8 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
 
     private String amount;
 
+    private String transAction = "02";
+
     public TransferWithNotifyRequestModel() {
 
     }
@@ -44,6 +47,7 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.particUserId = payUserId;
         this.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
+        this.transAction =  UmPayTransAction.OUT.getCode();
         this.amount = amount;
         this.notifyUrl = MessageFormat.format("{0}/{1}", getCallbackBackHost(), notifyUrl);
     }
@@ -114,5 +118,13 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    public String getTransAction() {
+        return transAction;
+    }
+
+    public void setTransAction(String transAction) {
+        this.transAction = transAction;
     }
 }
