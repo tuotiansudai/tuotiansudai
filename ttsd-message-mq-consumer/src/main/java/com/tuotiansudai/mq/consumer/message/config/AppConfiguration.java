@@ -11,7 +11,7 @@ import redis.clients.jedis.JedisPoolConfig;
         "com.tuotiansudai.util",
         "com.tuotiansudai.cache",
         "com.tuotiansudai.client",
-        "com.tuotiansudai.coupon",
+        "com.tuotiansudai.message.util",
         "com.tuotiansudai.membership"
 })
 @PropertySource(
