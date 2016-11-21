@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.BankCardModel;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,4 +22,10 @@ public interface BankCardMapper {
     BankCardModel findPassedBankCardByBankCode(String bankCode);
 
     List<BankCardModel> findApplyBankCardByLoginName(String loginName);
+
+    int findCountReplaceBankCardByLoginName(@Param(value = "loginName") String loginName);
+
+    List<BankCardModel> findReplaceBankCardByLoginName(@Param(value = "loginName") String loginName,
+                                                       @Param(value = "index") Integer index,
+                                                       @Param(value = "pageSize") Integer pageSize);
 }
