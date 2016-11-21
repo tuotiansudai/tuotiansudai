@@ -31,6 +31,7 @@ import javax.annotation.Resource;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CouponAssignmentServiceImpl implements CouponAssignmentService {
@@ -223,16 +224,19 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
      * 否则，如果用户持有的该类型的优惠券都被使用过了，且该优惠券可以被多次领取，则返回true
      */
     private boolean isAssignableCoupon(CouponModel couponModel, List<UserCouponModel> userCouponModels) {
-        // 如果用户持有该类型的优惠券
-        if (userCouponModels.stream().anyMatch(input -> input.getCouponId() == couponModel.getId())) {
-            // 该优惠券可以被多次领取（目前只有生日券）而且...
-            return couponModel.isMultiple() &&
-                    userCouponModels.stream()
-                            .filter(input -> input.getCouponId() == couponModel.getId())    // 所有该类型的优惠券
-                            .allMatch(input -> input.getStatus() == InvestStatus.SUCCESS);  // 都使用过了
-        }
+        // 列出用户已持有的该类型的优惠券
+        List<UserCouponModel> existingUserCouponList = userCouponModels.stream()
+                .filter(userCoupon -> userCoupon.getCouponId() == couponModel.getId())
+                .collect(Collectors.toList());
+
         // 如果用户没有持有该类型的优惠券，则该用户可以得到该优惠券，返回true
-        return true;
+        if (existingUserCouponList.isEmpty()) {
+            return true;
+        } else {
+            // 该优惠券可以被多次领取（目前只有生日券）而且全部都使用过了
+            return couponModel.isMultiple() &&
+                    existingUserCouponList.stream().allMatch(userCoupon -> userCoupon.getStatus() == InvestStatus.SUCCESS);
+        }
     }
 
     @Transactional
