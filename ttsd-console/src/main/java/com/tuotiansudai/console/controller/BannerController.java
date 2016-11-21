@@ -6,6 +6,7 @@ import com.tuotiansudai.activity.repository.model.BannerModel;
 import com.tuotiansudai.activity.service.BannerService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.RequestIPParser;
@@ -29,6 +30,7 @@ public class BannerController {
     public ModelAndView bannerCreate() {
         ModelAndView modelAndView = new ModelAndView("/banner");
         modelAndView.addObject("sources", Lists.newArrayList(Source.WEB, Source.ANDROID, Source.IOS));
+        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()));
         return modelAndView;
     }
 
@@ -79,6 +81,7 @@ public class BannerController {
         ModelAndView modelAndView = new ModelAndView("/banner");
         BannerModel bannerModel = this.bannerService.findById(id);
         modelAndView.addObject("sources", Lists.newArrayList(Source.WEB, Source.ANDROID, Source.IOS));
+        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()));
         modelAndView.addObject("banner", bannerModel);
         return modelAndView;
     }
