@@ -208,7 +208,7 @@ public class QuestionService {
         return new BaseDto<BasePaginationDataDto>(data);
     }
 
-    private BaseDto<BasePaginationDataDto> getQuestionsByKeywords(String keywords, String loginName, int index, int pageSize) {
+    public BaseDto<BasePaginationDataDto> getQuestionsByKeywords(String keywords, String loginName, int index, int pageSize) {
         long count = questionMapper.countQuestionsByKeywords(keywords);
         List<QuestionModel> questionModels = questionMapper.findQuestionsByKeywords(keywords, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
         List<QuestionDto> items = questionModels.stream().map(questionModel -> {
