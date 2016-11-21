@@ -61,7 +61,7 @@ public class LiCaiQuanArticleController {
                                     @RequestParam(name = "articleSectionType", required = false) ArticleSectionType articleSectionType,
                                     @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                     @RequestParam(value = "status", required = false) ArticleStatus status) {
-        int pageSize = 0;
+        int pageSize = 10;
         ModelAndView mv = new ModelAndView("/article-list");
         ArticlePaginationDataDto dto = liCaiQuanArticleService.findLiCaiQuanArticleDto(title,articleSectionType,status, pageSize, index);
         mv.addObject("data", dto);

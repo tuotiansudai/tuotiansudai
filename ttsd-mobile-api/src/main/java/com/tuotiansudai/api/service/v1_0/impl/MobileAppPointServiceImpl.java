@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.point.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
@@ -43,6 +44,9 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
 
     @Autowired
     private PointTaskMapper pointTaskMapper;
+
+    @Autowired
+    private PageValidUtils pageValidUtils;
 
     @Autowired
     private UserPointTaskMapper userPointTaskMapper;
@@ -111,9 +115,8 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         if (index == null || index <= 0) {
             index = 1;
         }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
-        }
+        pageSize = pageValidUtils.validPageSizeLimit(pageSize);
+
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         PointBillResponseDataDto pointBillResponseDataDto = new PointBillResponseDataDto();

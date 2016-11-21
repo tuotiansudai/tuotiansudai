@@ -2,6 +2,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppInvestRepayListService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -27,14 +28,17 @@ public class MobileAppInvestRepayListServiceImpl implements MobileAppInvestRepay
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
     @Override
     public BaseResponseDto generateUserInvestRepayList(InvestRepayListRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
         String paidStatus = requestDto.getStatus();
         Integer index = requestDto.getIndex();
-        Integer pageSize = requestDto.getPageSize();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
 
-        int rowLimit = requestDto.getPageSize().intValue();
+        int rowLimit = pageSize;
         int rowIndex = (requestDto.getIndex() - 1) * rowLimit;
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndStatus(loginName, paidStatus, rowIndex, rowLimit);
         int investRepayModelCount = (int) investRepayMapper.findCountByLoginNameAndStatus(loginName, paidStatus);

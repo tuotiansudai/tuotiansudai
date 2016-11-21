@@ -12,7 +12,7 @@ public class PageValidUtils {
     private final int defaultPageSize = 10;
 
     public int validPageSizeLimit(Integer pageSize) {
-        if(pageSize == null){
+        if(pageSize == null || pageSize <= 0){
             return defaultPageSize;
         }
 
