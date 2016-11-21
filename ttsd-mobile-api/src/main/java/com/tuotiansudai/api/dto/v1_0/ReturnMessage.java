@@ -163,7 +163,10 @@ public enum ReturnMessage {
     /******会员购买******/
     MEMBERSHIP_PURCHASE_FAILED("0200", "会员购买失败"),
     MEMBERSHIP_IS_PURCHASED("0201", "会员已购买，请勿重复购买"),
-    MEMBERSHIP_PURCHASE_NO_ENOUGH_AMOUNT("0202", "账户金额不足，请充值");
+    MEMBERSHIP_PURCHASE_NO_ENOUGH_AMOUNT("0202", "账户金额不足，请充值"),
+
+    /******APP查询******/
+    PAGE_SIZE_LIMIT_FAILED("0204", "查询总条数超过上线!");
 
     private String code;
     private String msg;
