@@ -1,35 +1,20 @@
 package com.tuotiansudai.cfca.connector;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import com.tuotiansudai.cfca.util.CommonUtil;
+import org.apache.log4j.Logger;
+
+import javax.net.ssl.*;
+import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManagerFactory;
-
-import com.tuotiansudai.cfca.util.CommonUtil;
-import org.apache.log4j.Logger;
-
 public class HttpClient {
 
     private static final Logger logger = Logger.getLogger(HttpClient.class);
 
-    public static final String BOUNDARY = java.util.UUID.randomUUID().toString();
     public static final String PREFIX = "--", LINEND = "\r\n";
     public static final String DEFAULT_CHARSET = "UTF-8";
 
@@ -48,11 +33,7 @@ public class HttpClient {
     public static final String DEFAULT_HTTP_CONTENT_TYPE = "text/plain";
     public static final String DEFAULT_HTTP_ACCEPT = "text/plain";
 
-    private static HostnameVerifier ignoreHostnameVerifier = new HostnameVerifier() {
-        public boolean verify(String hostname, SSLSession session) {
-            return true;
-        }
-    };
+    private static HostnameVerifier ignoreHostnameVerifier = (hostname, session) -> true;
 
     public Config config = new Config();
     public SSLConfig sslConfig = new SSLConfig();
@@ -62,7 +43,7 @@ public class HttpClient {
 
     public void initSSL(String keyStorePath, char[] keyStorePassword, String trustStorePath, char[] trustStorePassword) throws GeneralSecurityException,
             IOException {
-        KeyManagerFactory keyManagerFactory = null;
+        KeyManagerFactory keyManagerFactory;
         KeyStore keyStore = null;
         if (CommonUtil.isEmpty(sslConfig.keyProvider)) {
             keyManagerFactory = KeyManagerFactory.getInstance(sslConfig.keyAlgorithm);
@@ -129,7 +110,7 @@ public class HttpClient {
         sslSocketFactory = sslContext.getSocketFactory();
     }
 
-    public HttpURLConnection connect(String url, String method) throws MalformedURLException, IOException {
+    public HttpURLConnection connect(String url, String method) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         if (sslSocketFactory != null) {
             HttpsURLConnection httpsConn = (HttpsURLConnection) connection;
@@ -156,12 +137,8 @@ public class HttpClient {
     public int send(HttpURLConnection connection, byte[] requestData) throws IOException {
         if (requestData != null) {
             connection.setFixedLengthStreamingMode(requestData.length);
-            connection.connect();
             OutputStream outputStream = connection.getOutputStream();
             outputStream.write(requestData);
-            outputStream.flush();
-        } else {
-            connection.connect();
         }
         return connection.getResponseCode();
     }
@@ -223,8 +200,6 @@ public class HttpClient {
             outputStream.write(end_data);
             outputStream.flush();
 
-        } else {
-            connection.connect();
         }
         return connection.getResponseCode();
     }

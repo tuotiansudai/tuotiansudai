@@ -50,7 +50,7 @@ public class HttpConnector {
 
     public int connectTimeout = 3000;
     public int readTimeout = 10000;
-    public String channel = "Test";
+    public String channel = "ttsd";
     public boolean isSSL = true;
     public String keyStorePath = JKS_PATH;
     public String keyStorePassword = JKS_PWD;
@@ -82,13 +82,6 @@ public class HttpConnector {
         return deal(uri, "POST", prepare(data, signature, null));
     }
 
-    public String post(String uri, String data, String signature, Map<String, String> map) {
-        return deal(uri, "POST", prepare(data, signature, map));
-    }
-
-    public String post(String uri, String data, String signature, File file) {
-        return deal(uri, "POST", data, file, signature);
-    }
 
     public byte[] getFile(String uri) {
         HttpURLConnection connection = null;
@@ -139,24 +132,6 @@ public class HttpConnector {
             logger.debug("request method:" + method);
             logger.debug("request content:" + request);
             int responseCode = httpClient.send(connection, request == null ? null : CommonUtil.getBytes(request));
-            logger.debug("responseCode:" + responseCode);
-            return CommonUtil.getString(httpClient.receive(connection));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return e.getMessage();
-        } finally {
-            httpClient.disconnect(connection);
-        }
-    }
-
-    private String deal(String uri, String method, String request, File file, String signature) {
-        HttpURLConnection connection = null;
-        try {
-            connection = httpClient.connect(URL + uri, method);
-            logger.debug("request URL:" + URL + uri);
-            logger.debug("request method:" + method);
-            logger.debug("request content:" + request);
-            int responseCode = httpClient.send(connection, request == null ? null : CommonUtil.getBytes(request), file, signature);
             logger.debug("responseCode:" + responseCode);
             return CommonUtil.getString(httpClient.receive(connection));
         } catch (Exception e) {
