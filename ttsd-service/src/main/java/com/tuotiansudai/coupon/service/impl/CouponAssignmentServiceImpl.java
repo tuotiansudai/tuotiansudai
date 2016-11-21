@@ -202,19 +202,18 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         coupons.stream()
                 // 该用户可领取的优惠券
-                .filter(couponModel -> {
-                    return userGroups.contains(couponModel.getUserGroup())// 该优惠券在参数指定的userGroup里
-                            && getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName) // 该优惠券和该用户符合该userGroup的规则
-                            && isAssignableCoupon(couponModel, userCouponModels); // 该优惠券是否可以被发放给该用户
-                })
-                // 把要发的优惠券写入mq中
-                .forEach(couponModel -> {
-                    String queueMessage = MessageQueue.CouponAssigning.getMessageFormat()
-                            .replace("{loginName}", loginName)
-                            .replace("{couponId}", String.valueOf(couponModel.getId()));
-                    mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, queueMessage);
-                    //((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
-                });
+                // 该优惠券在参数指定的userGroup里
+                .filter(couponModel -> userGroups.contains(couponModel.getUserGroup()))
+                // 该优惠券是否可以被发放给该用户（数量上检查）
+                .filter(couponModel -> isAssignableCoupon(couponModel, userCouponModels))
+                // 该优惠券和该用户符合该userGroup的规则（资格上检查）
+                // 此处特意将资格检查放在数量检查后面，以提高处理效率
+                .filter(couponModel -> getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName))
+                // 生成MQ消息内容
+                .map(couponModel -> MessageQueue.CouponAssigning.getMessageFormat().replace("{loginName}", loginName).replace("{couponId}", String.valueOf(couponModel.getId())))
+                // 发送MQ消息
+                .forEach(message -> mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, message));
+        //((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
     }
 
 
