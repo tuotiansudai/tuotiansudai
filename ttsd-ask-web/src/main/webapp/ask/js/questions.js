@@ -25,6 +25,11 @@ if($homeTagContainer.length) {
     }
 }
 
+var $searchBoxTool=$('#searchBoxTool');
+if($searchBoxTool.length)  {
+
+}
+
 
 
 

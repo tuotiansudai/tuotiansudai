@@ -1,9 +1,26 @@
 @import 'variables';
 
 .mobile-menu {
-  .my-question,.my-answer {
-    display: none;
+  display: none;
+}
+.pc-search-box {
+  width: 75%;
+  margin: 0 auto;
+  .input-search {
+    width: 450px;
+    height: 25px;
+    vertical-align: middle;
+
   }
+  .btn-search {
+    margin-right:10px;
+  }
+  .want-question {
+    background: #fff;
+    border:1px solid #ccc;
+    color: #666;
+  }
+
 }
 .answer-container {
   .ad-answer {
@@ -495,7 +512,12 @@
   .banner-box {
     display: none;
   }
+
+  .pc-search-box {
+    display: none;
+  }
   .mobile-menu {
+    display: block;
     .my-question,.my-answer {
       display: inline-block;
     }

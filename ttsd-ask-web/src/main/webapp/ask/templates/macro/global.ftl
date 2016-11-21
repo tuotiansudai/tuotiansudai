@@ -103,10 +103,18 @@
 
 <div class="main-frame full-screen clearfix">
 <#--banner-->
-    <div class="borderBox tc mobile-menu">
-        <a href="/question" class="btn-main want-question">我要提问</a>
-        <a href="/question/my-questions" class="btn-main my-question">我的提问</a>
-        <a href="/answer/my-answers" class="btn-main my-answer">我的回答</a>
+    <div class="borderBox tc">
+        <div class="pc-search-box clearfix" id="searchBoxTool">
+            <input type="text" class="input-search fl">
+            <button type="button" class="btn btn-search fl">搜索</button>
+            <a href="/question" class="btn want-question fl">我要提问</a>
+        </div>
+        <div class="mobile-menu">
+            <a href="/question" class="btn-main want-question">我要提问</a>
+            <a href="/question/my-questions" class="btn-main my-question">我的提问</a>
+            <a href="/answer/my-answers" class="btn-main my-answer">我的回答</a>
+        </div>
+
     </div>
     <div class="download-mobile">
         <a href="https://tuotiansudai.com/app/download" target="_blank"></a>
