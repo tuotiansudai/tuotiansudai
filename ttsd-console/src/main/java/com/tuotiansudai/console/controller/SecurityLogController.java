@@ -1,11 +1,11 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.service.LoginLogService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.UserOpLogView;
 import com.tuotiansudai.repository.model.UserOpType;
 import com.tuotiansudai.service.AuditLogService;
-import com.tuotiansudai.console.service.LoginLogService;
 import com.tuotiansudai.service.UserOpLogService;
 import com.tuotiansudai.task.OperationType;
 import org.joda.time.DateTime;
@@ -39,9 +39,8 @@ public class SecurityLogController {
                                  @RequestParam(name = "selectedYear", required = false) Integer selectedYear,
                                  @RequestParam(name = "selectedMonth", required = false) Integer selectedMonth,
                                  @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                 @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
                                  @RequestParam(name = "success", required = false) Boolean success) {
-
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/login-log");
 
         DateTime now = new DateTime().withTimeAtStartOfDay();
@@ -76,10 +75,8 @@ public class SecurityLogController {
                                  @RequestParam(name = "auditorMobile", required = false) String auditorMobile,
                                  @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                  @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                 @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                 @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
-
-
+                                 @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         BasePaginationDataDto<AuditLogPaginationItemDataDto> data = auditLogService.getAuditLogPaginationData(operationType, targetId, operatorMobile, auditorMobile, startTime, endTime, index, pageSize);
 
         ModelAndView modelAndView = new ModelAndView("/audit-log");
@@ -104,9 +101,8 @@ public class SecurityLogController {
                                   @RequestParam(name = "opType", required = false) UserOpType opType,
                                   @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                   @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                  @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                  @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
-
+                                  @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         BasePaginationDataDto<UserOpLogView> data = userOpLogService.getUserOpLogPaginationData(mobile, opType, startTime, endTime, index, pageSize);
 
         ModelAndView modelAndView = new ModelAndView("/user-op-log");

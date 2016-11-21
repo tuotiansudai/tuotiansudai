@@ -60,8 +60,8 @@ public class LiCaiQuanArticleController {
     public ModelAndView findArticle(@RequestParam(value = "title", required = false) String title,
                                     @RequestParam(name = "articleSectionType", required = false) ArticleSectionType articleSectionType,
                                     @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                    @RequestParam(value = "status", required = false) ArticleStatus status,
-                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                    @RequestParam(value = "status", required = false) ArticleStatus status) {
+        int pageSize = 0;
         ModelAndView mv = new ModelAndView("/article-list");
         ArticlePaginationDataDto dto = liCaiQuanArticleService.findLiCaiQuanArticleDto(title,articleSectionType,status, pageSize, index);
         mv.addObject("data", dto);

@@ -24,8 +24,8 @@ public class MembershipPurchaseController {
                                         @RequestParam(value = "source", required = false) Source source,
                                         @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                        @RequestParam(value = "index", defaultValue = "1") int index,
-                                        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+                                        @RequestParam(value = "index", defaultValue = "1") int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/membership-purchase", "data", membershipPurchaseService.getMembershipPurchaseList(mobile, duration, source, startTime, endTime, index, pageSize));
 
         modelAndView.addObject("mobile", mobile);
