@@ -9,7 +9,7 @@ var basePath = path.join(__dirname, 'src/main/webapp/ask');
 //var extractLESS = new ExtractTextPlugin('[name].css');
 module.exports = {
 	entry: {
-		app: path.resolve(basePath, 'js/mainSite.jsx'),
+		app: path.resolve(basePath, 'js/mainSite.js'),
 		//添加要打包在vendors里面的库
 		//vendor: ["jquery", "underscore"]
 	},

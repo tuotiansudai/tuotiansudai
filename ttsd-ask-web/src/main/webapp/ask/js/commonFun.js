@@ -1,7 +1,7 @@
 var comm = {};
 comm.pathNameKey = function (key) {
     var parm = location.search.split('?')[1], parmObj;
-    if (parm=='undefined') {
+    if (parm==undefined) {
         return '';
     }
     else {
@@ -144,7 +144,5 @@ $.fn.autoTextarea = function(options) {
     });
 };
 
+module.exports = comm;
 
-// module.exports = comm;
-
-export default comm;

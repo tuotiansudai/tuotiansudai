@@ -1,16 +1,8 @@
 /* create question */
-import ajax from 'utils/ajax';
-import comm from './commonFun';
+// var myAjax=require('utils/ajax');
+var comm=require('./commonFun');
 var $createQuestion=$('#createQuestion');
 var $questionDetailTag=$('#questionDetailTag');
-//
-// ajax({
-//     url: url,
-//     type: 'get',
-//     done: function () {
-//
-//     }
-// });
 
 //刷新验证码
 var refreshCaptcha=function() {
@@ -146,7 +138,6 @@ var utils = {
         }
     }
 };
-
 
 //我来回答
 if($questionDetailTag.length) {
