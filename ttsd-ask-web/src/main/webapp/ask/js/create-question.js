@@ -82,8 +82,13 @@ var utils = {
                 break;
             case 'answer':
                 errorMsg='回答不得少于10个字';
+
                 if(/^(\S){0,10}$/.test(value)){
                     answerValid=false;
+                    this.showError(element, errorMsg);
+                } else if(/^(\S){1000,}$/.test(value)) {
+                    answerValid=false;
+                    errorMsg='回答不得超过1000个字';
                     this.showError(element, errorMsg);
                 }
                 else {
@@ -145,16 +150,16 @@ $.fn.checkFrom = function () {
             value=$ele.val();
         switch(name) {
             case 'question':
-                return utils.validLen($ele,30);
+                return utils.validLen($ele,100);
                 break;
             case 'addition':
-                return utils.validLen($ele,10000);
+                return utils.validLen($ele,500);
                 break;
             case 'captcha':
                 return utils.validLen($ele,5);
                 break;
             case 'answer':
-                return utils.validLen($ele,5);
+                return utils.validLen($ele,10);
                 break;
             default:
                 return utils.radioChecked($ele)

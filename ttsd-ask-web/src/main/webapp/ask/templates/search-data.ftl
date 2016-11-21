@@ -6,7 +6,7 @@
     </ul>
     <div class="borderBox clearfix">
         <div class="answers-box">
-            <#list questions.data.records as question>
+            <#list keywordQuestions.data.records as question>
                 <dl class="answers-list">
                     <dt><a href="/question/${question.id?string.computer}" target="_blank">${question.question}</a></dt>
                     <dd class="detail"><a href="/question/${question.id?string.computer}" target="_blank">${question.addition?replace('\\n','<br/>','i')?replace('\\r','<br/>','i')}</a></dd>
@@ -25,27 +25,27 @@
     </div>
 
     <div class="pagination">
-        <#if questions.data.hasPreviousPage>
-            <a href="/?group=${group}">首页</a>
+        <#if keywordQuestions.data.hasPreviousPage>
+            <a href="/">首页</a>
         </#if>
-        <#if questions.data.index &gt; 3>
-            <a href="/?group=${group}&index=${questions.data.index-1}"> < </a>
+        <#if keywordQuestions.data.index &gt; 3>
+            <a href="/?index=${keywordQuestions.data.index-1}"> < </a>
         </#if>
 
         <#assign lower = 1>
-        <#assign upper = questions.data.maxPage>
-        <#if questions.data.maxPage &gt; 5>
-            <#assign lower = questions.data.index>
-            <#assign upper = questions.data.index>
+        <#assign upper = keywordQuestions.data.maxPage>
+        <#if keywordQuestions.data.maxPage &gt; 5>
+            <#assign lower = keywordQuestions.data.index>
+            <#assign upper = keywordQuestions.data.index>
             <#list 1..2 as index>
-                <#if questions.data.index - index &gt; 0>
+                <#if keywordQuestions.data.index - index &gt; 0>
                     <#assign lower = lower - 1>
                 <#else>
                     <#assign upper = upper + 1>
                 </#if>
             </#list>
             <#list 1..2 as index>
-                <#if questions.data.index + index <= questions.data.maxPage>
+                <#if keywordQuestions.data.index + index <= keywordQuestions.data.maxPage>
                     <#assign upper = upper + 1>
                 <#else>
                     <#assign lower = lower - 1>
@@ -54,14 +54,14 @@
         </#if>
 
         <#list lower..upper as page>
-            <a href="/?group=${group}&index=${page}" <#if page == questions.data.index>class="active"</#if>> ${page} </a>
+            <a href="/?index=${page}" <#if page == keywordQuestions.data.index>class="active"</#if>> ${page} </a>
         </#list>
 
-        <#if questions.data.maxPage - questions.data.index &gt; 2>
-            <a href="/?group=${group}&index=${questions.data.index+1}"> > </a>
+        <#if keywordQuestions.data.maxPage - keywordQuestions.data.index &gt; 2>
+            <a href="/?index=${keywordQuestions.data.index+1}"> > </a>
         </#if>
-        <#if questions.data.hasNextPage>
-            <a href="/?group=${group}&index=${questions.data.maxPage}">末页</a>
+        <#if keywordQuestions.data.hasNextPage>
+            <a href="/?index=${keywordQuestions.data.maxPage}">末页</a>
         </#if>
     </div>
 </div>

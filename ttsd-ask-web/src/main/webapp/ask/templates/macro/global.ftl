@@ -114,8 +114,8 @@
         <div class="m-title">热门问题分类  <i></i></div>
         <ul class="qa-list clearfix" style="display: none">
             <#list tags as tagItem>
-                <li>
-                    <a href="/question/category?tag=${tagItem.name()}" <#if tag?? && tagItem == tag>class="active"</#if>>${tagItem.description}</a>
+                <li>sss
+                    <a href="/question/category/${tagItem.name()?lower_case}" <#if tag?? && tagItem == tag>class="active"</#if>>${tagItem.description}</a>
                 </li>
             </#list>
         </ul>
