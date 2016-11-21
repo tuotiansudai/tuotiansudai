@@ -375,6 +375,10 @@
           .activity-container .actor-content-group .wp .content-skew-item {
             margin-top: 70px;
             border-radius: 20px; } }
+  @media (max-width: 700px) and (max-width: 700px) {
+    .activity-container .actor-content-group .wp .content-skew-item {
+      margin-top: 50px; } }
+
         .activity-container .actor-content-group .wp .content-skew-item.mt-last {
           margin: 50px 0; }
           @media (max-width: 700px) {

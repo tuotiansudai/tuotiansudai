@@ -65,6 +65,9 @@ $width: 700px;
         @media (max-width:$width) {
           margin-top:70px;
           border-radius:20px;
+          @media (max-width:$width) {
+            margin-top:50px;
+          }
         }
         &.mt-last{
           margin:50px 0;
