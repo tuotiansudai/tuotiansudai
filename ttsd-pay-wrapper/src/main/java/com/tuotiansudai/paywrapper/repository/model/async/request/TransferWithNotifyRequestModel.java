@@ -11,7 +11,7 @@ import java.util.Map;
 public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
 
     private String orderId;
-    private String userId;
+    private String particUserId;
     private String amount;
     private String merDate;
     private String servType;
@@ -44,21 +44,21 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
-    private TransferWithNotifyRequestModel(String orderId, String userId, String amount) {
+    private TransferWithNotifyRequestModel(String orderId, String payUserId, String amount) {
         super();
         this.service = UmPayService.TRANSFER.getServiceName();
         this.orderId = orderId;
-        this.userId = userId;
+        this.particUserId = payUserId;
         this.amount = amount;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
     }
 
-    private TransferWithNotifyRequestModel(String orderId, String userId, String amount, Source source) {
+    private TransferWithNotifyRequestModel(String orderId, String payUserId, String amount, Source source) {
         super(source, "transfer");
         this.service = UmPayService.TRANSFER.getServiceName();
         this.orderId = orderId;
-        this.userId = userId;
+        this.particUserId = payUserId;
         this.amount = amount;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
@@ -74,7 +74,7 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
         payRequestData.put("trans_action", transAction);
         payRequestData.put("partic_type", particType);
         payRequestData.put("partic_acc_type", particAccType);
-        payRequestData.put("partic_user_id", userId);
+        payRequestData.put("partic_user_id", particUserId);
         payRequestData.put("amount", amount);
         return payRequestData;
     }
@@ -83,8 +83,8 @@ public class TransferWithNotifyRequestModel extends BaseAsyncRequestModel {
         return orderId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getParticUserId() {
+        return particUserId;
     }
 
     public String getAmount() {
