@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class DiagnosisConfig {
     private ScheduleConfig schedule;
     private ReportConfig report;
+    private long[] knownBadBills;
 
     public ScheduleConfig getSchedule() {
         return schedule;
@@ -25,6 +26,13 @@ public class DiagnosisConfig {
         this.report = report;
     }
 
+    public long[] getKnownBadBills() {
+        return knownBadBills;
+    }
+
+    public void setKnownBadBills(long[] knownBadBills) {
+        this.knownBadBills = knownBadBills;
+    }
 
     public static class ScheduleConfig {
         private int hour;
@@ -51,6 +59,7 @@ public class DiagnosisConfig {
         private String notifyMailFrom;
         private String[] notifyMailAddress;
         private String[] notifyMailAddressQa;
+        private String[] notifyMailAddressManager;
 
         public String getNotifyMailFrom() {
             return notifyMailFrom;
@@ -74,6 +83,14 @@ public class DiagnosisConfig {
 
         public void setNotifyMailAddressQa(String[] notifyMailAddressQa) {
             this.notifyMailAddressQa = notifyMailAddressQa;
+        }
+
+        public String[] getNotifyMailAddressManager() {
+            return notifyMailAddressManager;
+        }
+
+        public void setNotifyMailAddressManager(String[] notifyMailAddressManager) {
+            this.notifyMailAddressManager = notifyMailAddressManager;
         }
     }
 }

@@ -154,17 +154,17 @@ public class UserMembershipMapperTest {
     }
 
     private List<UserMembershipItemView> prepareUserMembershipData() {
-        UserModel userModel1 = createFakeUser("testUser1", "18612340001", DateTime.parse("2000-06-30T12:30").toDate());
+        UserModel userModel1 = createFakeUser("fakeUser1", "18612340001", DateTime.parse("2000-06-30T12:30").toDate());
         AccountModel accountModel1 = createFakeAccount(userModel1, 1);
-        UserMembershipModel userMembershipModel1 = createUserMembershipModel("testUser1", UserMembershipType.UPGRADE, 0);
+        UserMembershipModel userMembershipModel1 = createUserMembershipModel(userModel1.getLoginName(), UserMembershipType.UPGRADE, 0);
 
-        UserModel userModel2 = createFakeUser("testUser2", "18612340002", DateTime.parse("2000-07-30T12:30").toDate());
+        UserModel userModel2 = createFakeUser("fakeUser2", "18612340002", DateTime.parse("2000-07-30T12:30").toDate());
         AccountModel accountModel2 = createFakeAccount(userModel2, 2);
-        UserMembershipModel userMembershipModel2 = createUserMembershipModel("testUser2", UserMembershipType.GIVEN, 5);
+        UserMembershipModel userMembershipModel2 = createUserMembershipModel(userModel2.getLoginName(), UserMembershipType.GIVEN, 5);
 
-        UserModel userModel3 = createFakeUser("testUser3", "18612340003", DateTime.parse("2000-08-30T12:30").toDate());
+        UserModel userModel3 = createFakeUser("fakeUser3", "18612340003", DateTime.parse("2000-08-30T12:30").toDate());
         AccountModel accountModel3 = createFakeAccount(userModel3, 3);
-        UserMembershipModel userMembershipModel3 = createUserMembershipModel("testUser3", UserMembershipType.UPGRADE, 0);
+        UserMembershipModel userMembershipModel3 = createUserMembershipModel(userModel3.getLoginName(), UserMembershipType.UPGRADE, 0);
 
         List<UserMembershipItemView> userMembershipItemViews = new ArrayList<>();
         userMembershipItemViews.add(combineUserMembershipItemModel(userModel1, accountModel1, userMembershipModel1));
@@ -274,10 +274,10 @@ public class UserMembershipMapperTest {
     public void testUpdate() {
         prepareUserMembershipData();
 
-        UserMembershipModel originChangeUserMembershipModel = userMembershipMapper.findByLoginName("testUser1").get(0);
-        UserMembershipModel originOtherUserMembershipModel = userMembershipMapper.findByLoginName("testUser2").get(0);
+        UserMembershipModel originChangeUserMembershipModel = userMembershipMapper.findByLoginName("fakeUser1").get(0);
+        UserMembershipModel originOtherUserMembershipModel = userMembershipMapper.findByLoginName("fakeUser2").get(0);
 
-        originChangeUserMembershipModel.setLoginName("testUser3");
+        originChangeUserMembershipModel.setLoginName("fakeUser3");
         originChangeUserMembershipModel.setMembershipId(3);
         originChangeUserMembershipModel.setExpiredTime(DateTime.parse("1999-06-30T01:20").toDate());
         originChangeUserMembershipModel.setCreatedTime(DateTime.parse("1989-06-30T01:20").toDate());
@@ -285,14 +285,14 @@ public class UserMembershipMapperTest {
 
         userMembershipMapper.update(originChangeUserMembershipModel);
 
-        UserMembershipModel updateChangeUserMembershipModel = userMembershipMapper.findByLoginNameByType("testUser3", UserMembershipType.GIVEN);
+        UserMembershipModel updateChangeUserMembershipModel = userMembershipMapper.findByLoginNameByType("fakeUser3", UserMembershipType.GIVEN);
         assertEquals(originChangeUserMembershipModel.getLoginName(), updateChangeUserMembershipModel.getLoginName());
         assertEquals(originChangeUserMembershipModel.getMembershipId(), updateChangeUserMembershipModel.getMembershipId());
         assertEquals(originChangeUserMembershipModel.getExpiredTime(), updateChangeUserMembershipModel.getExpiredTime());
         assertEquals(originChangeUserMembershipModel.getCreatedTime(), updateChangeUserMembershipModel.getCreatedTime());
         assertEquals(originChangeUserMembershipModel.getType(), updateChangeUserMembershipModel.getType());
 
-        UserMembershipModel updateOtherUserMembershipModel = userMembershipMapper.findByLoginName("testUser2").get(0);
+        UserMembershipModel updateOtherUserMembershipModel = userMembershipMapper.findByLoginName("fakeUser2").get(0);
         assertEquals(originOtherUserMembershipModel.getLoginName(), updateOtherUserMembershipModel.getLoginName());
         assertEquals(originOtherUserMembershipModel.getMembershipId(), updateOtherUserMembershipModel.getMembershipId());
         assertEquals(originOtherUserMembershipModel.getExpiredTime(), updateOtherUserMembershipModel.getExpiredTime());

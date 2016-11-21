@@ -26,6 +26,7 @@ public class TransferApplicationRecordDto implements Serializable {
     private Long transferInvestId;
     private int period;
     private int leftPeriod;
+    private String leftDays;
     private Date deadLine;
     private Date applicationTime;
     private Source source;
@@ -170,6 +171,14 @@ public class TransferApplicationRecordDto implements Serializable {
         this.leftPeriod = leftPeriod;
     }
 
+    public String getLeftDays() {
+        return leftDays;
+    }
+
+    public void setLeftDays(String leftDays) {
+        this.leftDays = leftDays;
+    }
+
     public Date getDeadLine() {
         return deadLine;
     }
@@ -193,4 +202,6 @@ public class TransferApplicationRecordDto implements Serializable {
     public void setSource(Source source) {
         this.source = source;
     }
+
+
 }

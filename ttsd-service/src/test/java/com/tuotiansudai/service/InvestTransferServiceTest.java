@@ -5,10 +5,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
@@ -47,6 +44,9 @@ public class InvestTransferServiceTest {
     private InvestMapper investMapper;
 
     @Autowired
+    private InvestRepayMapper investRepayMapper;
+
+    @Autowired
     private IdGenerator idGenerator;
 
     @Autowired
@@ -77,7 +77,7 @@ public class InvestTransferServiceTest {
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
         loanDto.setShowOnHome(true);
-        loanDto.setPeriods(30);
+        loanDto.setPeriods(6);
         loanDto.setActivityType(ActivityType.NORMAL);
         loanDto.setContractId(123);
         loanDto.setDescriptionHtml("asdfasdf");
@@ -141,6 +141,18 @@ public class InvestTransferServiceTest {
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;
+    }
+
+    private List<InvestRepayModel> createInvestRepay(long investId) {
+        InvestRepayModel model1 = new InvestRepayModel(idGenerator.generate(), investId, 1, 0, 10, 1, new DateTime().plusDays(-60).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model2 = new InvestRepayModel(idGenerator.generate(), investId, 2, 0, 10, 1,  new DateTime().plusDays(-30).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model3 = new InvestRepayModel(idGenerator.generate(), investId, 3, 0, 10, 1,  new DateTime().plusDays(0).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model4 = new InvestRepayModel(idGenerator.generate(), investId, 4, 0, 10, 1,  new DateTime().plusDays(30).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model5 = new InvestRepayModel(idGenerator.generate(), investId, 5, 0, 10, 1,  new DateTime().plusDays(60).toDate(), RepayStatus.REPAYING);
+        InvestRepayModel model6 = new InvestRepayModel(idGenerator.generate(), investId, 6, 100, 10, 1,  new DateTime().plusDays(90).toDate(), RepayStatus.REPAYING);
+        List<InvestRepayModel> investRepayModels = Lists.newArrayList(model1, model2, model3, model4, model5, model6);
+        investRepayMapper.create(investRepayModels);
+        return investRepayModels;
     }
 
     @Test
@@ -304,6 +316,7 @@ public class InvestTransferServiceTest {
         LoanModel loanModel = createLoanByUserId("transferrerTestUser", loanId);
         InvestModel transferrerInvestModel = createInvest(transferrerModel.getLoginName(), loanId);
         InvestModel transfereeInvestModel = createInvest(transfereeModel.getLoginName(), loanId);
+
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
         transferApplicationModel.setLoginName(transferrerModel.getLoginName());
         transferApplicationModel.setName("name");
@@ -354,6 +367,7 @@ public class InvestTransferServiceTest {
         transferApplicationModel.setDeadline(new DateTime("2016-01-07").toDate());
         transferApplicationModel.setApplicationTime(new Date());
         transferApplicationMapper.create(transferApplicationModel);
+        createInvestRepay(transferApplicationModel.getTransferInvestId());
 
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto =  investTransferService.findWebTransferApplicationPaginationList(transferrerInvestModel.getLoginName(), Lists.newArrayList(TransferStatus.TRANSFERRING),1,10);
 

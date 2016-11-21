@@ -15,7 +15,7 @@
                 <a href="${webServer}/membership">会员中心</a>
             </li>
             <li class="header-activity-center">
-                <a href="${webServer}/activity-center">活动中心</a>
+                <a href="${webServer}/activity/activity-center">活动中心</a>
             </li>
         <@global.isNotAnonymous>
             <li class="header-login">

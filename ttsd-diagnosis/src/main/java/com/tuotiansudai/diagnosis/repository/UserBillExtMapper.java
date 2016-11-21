@@ -29,6 +29,9 @@ public interface UserBillExtMapper {
     @Select("select distinct login_name from user_bill where order_id is not null")
     List<String> findAllLoginName();
 
+    @Select("select distinct login_name from user_bill where created_time < #{endDate}")
+    List<String> findLoginNameUntil(@Param("endDate") Date endDate);
+
     @Select("select distinct login_name from user_bill where created_time >= #{beginDate} and created_time < #{endDate}")
     List<String> findLoginNameByTime(@Param("beginDate") Date beginDate, @Param("endDate") Date endDate);
 }
