@@ -25,8 +25,12 @@ repositories {
 
 dependencies {
     compile project(':ttsd-config')
-    compile project(':ttsd-client')
-    compile project(':ttsd-message')
+    compile(project(':ttsd-client')) {
+        exclude group: "org.slf4j", module: "slf4j-log4j12"
+    }
+    compile(project(':ttsd-message')) {
+        exclude group: "org.slf4j", module: "slf4j-log4j12"
+    }
     compile(project(':ttsd-user-service')) {
         exclude group: "org.slf4j", module: "slf4j-log4j12"
     }

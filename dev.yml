@@ -232,6 +232,8 @@ diagnosis:
     - ./ttsd-diagnosis/build/distributions:/opt/worker
     - /var/log/tuotian/diagnosis:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-diagnosis/bin/ttsd-diagnosis"
+  links:
+    - "redis-server"
 
 static-server:
   image: "nginx"
