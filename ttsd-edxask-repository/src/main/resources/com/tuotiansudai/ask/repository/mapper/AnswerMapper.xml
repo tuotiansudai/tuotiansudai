@@ -109,7 +109,6 @@
         from answer
         where question_id = #{questionId}
         and best_answer is TRUE
-        for update
     </select>
 
     <select id="findAnswersForConsole" parameterType="map" resultMap="answerResultMap">

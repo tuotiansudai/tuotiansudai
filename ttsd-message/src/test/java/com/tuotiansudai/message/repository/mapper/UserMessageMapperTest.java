@@ -19,6 +19,7 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -69,6 +70,28 @@ public class UserMessageMapperTest {
         fakeUser.setStatus(UserStatus.ACTIVE);
         fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return fakeUser;
+    }
+
+    @Test
+    public void shouldCountMessagesByLoginNameAndMessageTypeISok(){
+        UserModel userModel = getFakeUser("testUserMessage");
+        userMapper.create(userModel);
+
+        MessageModel messageModel = new MessageModel("title", "template", MessageType.MANUAL,
+                Lists.newArrayList(MessageUserGroup.ALL_USER),
+                Lists.newArrayList(MessageChannel.WEBSITE),
+                MessageStatus.TO_APPROVE, new Date(), userModel.getLoginName());
+        messageModel.setEventType(MessageEventType.LOAN_OUT_SUCCESS);
+        messageMapper.create(messageModel);
+
+        long l = userMessageMapper.countMessagesByLoginNameAndMessageType(userModel.getLoginName(), messageModel.getId(), messageModel.getTitle());
+        assertTrue(l == 0);
+
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), userModel.getLoginName(), messageModel.getTitle(), messageModel.getTitle(), messageModel.getTemplate());
+        userMessageMapper.create(userMessageModel);
+
+        l = userMessageMapper.countMessagesByLoginNameAndMessageType(userModel.getLoginName(), messageModel.getId(), messageModel.getTitle());
+        assertTrue(l == 1);
     }
 
 }

@@ -12,14 +12,14 @@
         style="font-family: 宋体, SimSun; font-size: 20px;">债权转让协议</span></strong><br/></span></p>
 
 <p><span style="font-family: 宋体, SimSun;">甲方(转让人)：<span
-        style="font-family: 宋体, SimSun;">${transferrerUserName}</span></span>
+        style="font-family: 宋体, SimSun;">${transferUserName}</span></span>
 </p>
 
 <p><span style="font-family: 宋体, SimSun;">拓天速贷账号：<span
-        style="font-family: 宋体, SimSun;">${transferrerMobile}</span></span>
+        style="font-family: 宋体, SimSun;">${transferMobile}</span></span>
 </p>
 
-<p><span style="font-family: 宋体, SimSun;">身份证号：<span style="font-family: 宋体, SimSun;">${transferrerIdentityNumber}</span></span></p>
+<p><span style="font-family: 宋体, SimSun;">身份证号：<span style="font-family: 宋体, SimSun;">${transferIdentityNumber}</span></span></p>
 
 <p><br/></p>
 
@@ -55,22 +55,22 @@
     </tr>
     <tr>
         <td>借款本金数额</td>
-        <td colspan="3" style="">${loanAmount}元</td>
+        <td colspan="3" style="">${loanAmount}</td>
     </tr>
     <tr>
         <td>原借款期限</td>
-        <td colspan="3" style="">${periods * 30}天</td>
+        <td colspan="3" style="">${periods}</td>
     </tr>
     <tr>
         <td colspan="4" style="text-align:center;">受让债权明细</td>
     </tr>
     <tr>
         <td>受让本金</td>
-        <td colspan="3" style="">${investAmount}元</td>
+        <td colspan="3" style="">${investAmount}</td>
     </tr>
     <tr>
         <td>借款利率</td>
-        <td>${totalRate * 100}%</td>
+        <td>${totalRate}</td>
         <td>每月利息</td>
         <td>详见每月还款明细表</td>
     </tr>
@@ -172,25 +172,8 @@
 
 <p>八、<span class="Apple-tab-span" style="white-space: pre;"></span>丙方服务费收取标准</p>
 
-<#if fee30 != 0>
-<p>8.1 甲方持有债权30天以内的，收取转让本金的${fee30}%作为服务费用。</p>
-</#if>
-<#if fee30 == 0>
-<p>8.3 甲方持有债权30天以内的，暂不收取转服务费用。</p>
-</#if>
-
-<#if fee30_90 != 0>
-<p>8.2 甲方持有债权30天以上，90天以内的，收取转让本金的${fee30_90}%作为服务费用。</p>
-</#if>
-<#if fee30_90 == 0>
-<p>8.2 甲方持有债权30天以上，90天以内的，暂不收取转服务费用。</p>
-</#if>
-
-<#if fee90 != 0>
-<p>8.3 甲方持有债权90天以上的，收取转让本金的${fee90}%作为服务费用。</p>
-</#if>
-<#if fee90 == 0>
-<p>8.3 甲方持有债权90天以上的，暂不收取转服务费用。</p>
-</#if>
+<p>8.1 ${msg1}</p>
+<p>8.3 ${msg2}</p>
+<p>8.2 ${msg3}</p>
 </body>
 </html>

@@ -81,13 +81,14 @@ comm.popWindow=function(title,content,size,load) {
         else {
              $('.popWindow-overlay,.popWindow').show();
         }
-    
-        $popWindow.delegate('.close','click',function() {
-           $('.popWindow-overlay,.popWindow').hide();
-           if(isload) {
-                window.location.reload();
-           }
-        })
+
+    $popWindow.on('click','.close',function() {
+        $('.popWindow-overlay,.popWindow').hide();
+        if(isload) {
+            window.location.reload();
+        }
+    })
+
 };
 
 //匹配这些中文标点符号 。 ？ ！ ， 、 ； ： “ ” ‘ ' （ ） 《 》 〈 〉 【 】 『 』 「 」 ﹃ ﹄ 〔 〕 … — ～ ﹏ ￥ ／

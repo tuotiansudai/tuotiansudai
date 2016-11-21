@@ -1,6 +1,7 @@
 package com.tuotiansudai.diagnosis.bill;
 
 import com.tuotiansudai.diagnosis.bill.diagnoses.InvestCouponFeeDiagnosis;
+import com.tuotiansudai.diagnosis.config.DiagnosisConfig;
 import com.tuotiansudai.diagnosis.repository.UserBillExtMapper;
 import com.tuotiansudai.diagnosis.support.Diagnosis;
 import com.tuotiansudai.diagnosis.support.DiagnosisContext;
@@ -8,12 +9,14 @@ import com.tuotiansudai.diagnosis.support.DiagnosisResult;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.UserBillModel;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,13 +28,17 @@ class UserBillDiagnosis implements Diagnosis {
 
     private final UserBillMapper userBillMapper;
     private final UserBillExtMapper userBillExtMapper;
-
+    private final long[] sortedKnownBadBills;
     private final Map<UserBillBusinessType, UserBillBusinessDiagnosis> diagnosisMap;
 
     @Autowired
-    public UserBillDiagnosis(UserBillMapper userBillMapper, Set<UserBillBusinessDiagnosis> diagnoses, UserBillExtMapper userBillExtMapper) {
+    public UserBillDiagnosis(UserBillMapper userBillMapper,
+                             Set<UserBillBusinessDiagnosis> diagnoses,
+                             UserBillExtMapper userBillExtMapper,
+                             DiagnosisConfig diagnosisConfig) {
         this.userBillMapper = userBillMapper;
         this.userBillExtMapper = userBillExtMapper;
+        this.sortedKnownBadBills = buildSortedKnownBadBills(diagnosisConfig);
         this.diagnosisMap = diagnoses.stream()
                 .filter(d -> !(d instanceof InvestCouponFeeDiagnosis))
                 .collect(Collectors.toMap(
@@ -39,14 +46,25 @@ class UserBillDiagnosis implements Diagnosis {
                         d -> d));
     }
 
+    private long[] buildSortedKnownBadBills(DiagnosisConfig diagnosisConfig) {
+        long[] knownBadBills = diagnosisConfig.getKnownBadBills();
+        Arrays.sort(knownBadBills);
+        return knownBadBills;
+    }
+
     @Override
-    public List<DiagnosisResult> diagnosis(String[] args) {
+    public List<DiagnosisResult> diagnosis(LocalDateTime lastFireTime, String[] args) {
         List<String> specialsUsers;
-        if (args.length == 0) {
-            specialsUsers = findYesterdayActiveUsers();
-        } else {
+        if (ArrayUtils.isNotEmpty(args)) {
             specialsUsers = extraDiagnosisUsers(args);
+        } else {
+            LocalDate sinceDate = lastFireTime == null ? null : lastFireTime.toLocalDate();
+            specialsUsers = findNewlyActiveUsersSince(sinceDate);
         }
+        return diagnosis(specialsUsers);
+    }
+
+    private List<DiagnosisResult> diagnosis(List<String> specialsUsers) {
         int userCount = specialsUsers.size();
         logger.info("diagnosis user bill for {} users", userCount);
         return IntStream.range(0, specialsUsers.size())
@@ -54,11 +72,16 @@ class UserBillDiagnosis implements Diagnosis {
                 .collect(Collectors.toList());
     }
 
-    private List<String> findYesterdayActiveUsers() {
-        Date beginDate = Date.from(LocalDate.now().minusDays(1).atStartOfDay().toInstant(ZoneOffset.ofHours(8)));
+    private List<String> findNewlyActiveUsersSince(LocalDate beginLocalDate) {
         Date endDate = Date.from(LocalDate.now().atStartOfDay().toInstant(ZoneOffset.ofHours(8)));
-        logger.info("search users {} - {}", beginDate, endDate);
-        return userBillExtMapper.findLoginNameByTime(beginDate, endDate);
+        if (beginLocalDate != null) {
+            Date beginDate = Date.from(beginLocalDate.atStartOfDay().toInstant(ZoneOffset.ofHours(8)));
+            logger.info("search users {} - {}", beginDate, endDate);
+            return userBillExtMapper.findLoginNameByTime(beginDate, endDate);
+        } else {
+            logger.info("search users before {}", endDate);
+            return userBillExtMapper.findLoginNameUntil(endDate);
+        }
     }
 
     private DiagnosisResult diagnosisUser(int idx, int userCount, String loginName) {
@@ -66,6 +89,7 @@ class UserBillDiagnosis implements Diagnosis {
         List<UserBillModel> userBillModelList = userBillMapper.findByLoginName(loginName);
         DiagnosisContext diagnosisContext = new DiagnosisContext(loginName);
         userBillModelList.stream()
+                .filter(bill -> Arrays.binarySearch(sortedKnownBadBills, bill.getId()) < 0)
                 .filter(bill -> diagnosisMap.containsKey(bill.getBusinessType()) && bill.getOrderId() != null)
                 .forEach(bill -> {
                     UserBillBusinessDiagnosis diagnosis = diagnosisMap.get(bill.getBusinessType());
