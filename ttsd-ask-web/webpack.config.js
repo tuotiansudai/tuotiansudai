@@ -14,7 +14,7 @@ module.exports = objectAssign(commonOptions, {
     entry: [
         'webpack/hot/dev-server',
         'webpack-dev-server/client?http://' + IP + ':' + port,
-        path.join(basePath, '/js/mainSite.js')
+        path.join(basePath, '/js/mainSite.jsx')
     ],
     cache: true,
     devtool: 'eval-source-map',
