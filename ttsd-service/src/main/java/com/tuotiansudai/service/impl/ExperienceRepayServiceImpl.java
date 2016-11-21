@@ -78,7 +78,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
                             investRepayMapper.update(investRepayModel);
                             logger.debug(MessageFormat.format("[Experience Repay] invest({0}) repay is success", String.valueOf(investModel.getId())));
 
-                            couponAssignmentService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_REPAY_SUCCESS));
+                            couponAssignmentService.asyncAssignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_REPAY_SUCCESS));
                             logger.debug(MessageFormat.format("[Experience Repay] assign invest({0}) user coupon is success", String.valueOf(investModel.getId())));
 
                             repaySuccessInvestRepayModels.add(investRepayModel);

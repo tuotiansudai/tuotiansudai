@@ -1,9 +1,7 @@
 package com.tuotiansudai.mq.client.impl;
 
 import com.tuotiansudai.mq.client.MQClient;
-import com.tuotiansudai.mq.client.model.Message;
-import com.tuotiansudai.mq.client.model.MessageTopic;
-import com.tuotiansudai.mq.client.model.MessageTopicQueue;
+import com.tuotiansudai.mq.client.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,30 +28,41 @@ public class MQClientRedis implements MQClient, InitializingBean {
     private static Logger logger = LoggerFactory.getLogger(MQClientRedis.class);
     private Jedis jedis;
 
+    @Override
     public void publishMessage(final MessageTopic topic, final String message) {
-        logger.info("[MQ] ready to push message, topic: {}, message: {}", topic, message);
+        logger.info("[MQ] ready to publish message, topic: {}, message: {}", topic.getTopicName(), message);
         Stream.of(MessageTopicQueue.values())
                 .filter(q -> q.getTopic().equals(topic))
                 .forEach(q -> sendMessage(q, message));
     }
 
-    public void subscribe(final MessageTopicQueue queue, Consumer<com.tuotiansudai.mq.client.model.Message> consumer) {
-        logger.info("[MQ] subscribe topic: {}, queue: {}", queue.getTopic(), queue.getQueueName());
+    @Override
+    public void sendMessage(MessageQueue queue, String message) {
+        logger.info("[MQ] ready to send message, queue: {}, message: {}", queue.getQueueName(), message);
+        jedis.lpush(generateRedisKeyOfQueue(queue), message);
+        logger.info("[MQ] push message to queue {} success, message: {}", queue.getQueueName(), message);
+    }
+
+    @Override
+    public void subscribe(final Queue queue, Consumer<com.tuotiansudai.mq.client.model.Message> consumer) {
+        logger.info("[MQ] subscribe queue: {}", queue.getQueueName());
         while (true) {
             List<String> messages = jedis.brpop(0, generateRedisKeyOfQueue(queue));
             logger.debug("[MQ] receive a message, prepare to consume");
-            consumer.accept(new Message(String.valueOf(Clock.systemUTC().millis()), messages.get(1), "", queue.getTopic().getTopicName()));
+            consumer.accept(new Message(String.valueOf(Clock.systemUTC().millis()), messages.get(1), "", ""));
             logger.info("[MQ] consume message success");
         }
     }
 
     private void sendMessage(MessageTopicQueue queue, String message) {
+        logger.info("[MQ] ready to send message, queue: {}, message: {}", queue.getQueueName(), message);
         jedis.lpush(generateRedisKeyOfQueue(queue), message);
         logger.info("[MQ] push message to queue {} success, message: {}", queue.getQueueName(), message);
     }
 
-    private String generateRedisKeyOfQueue(MessageTopicQueue queue) {
-        return String.format("MQ:LOCAL:%s:%s", queue.getTopic().getTopicName(), queue.getQueueName());
+    private String generateRedisKeyOfQueue(Queue queue) {
+        String topicName = (queue instanceof MessageTopicQueue) ? ((MessageTopicQueue) queue).getTopic().getTopicName() : "-";
+        return String.format("MQ:LOCAL:%s:%s", topicName, queue.getQueueName());
     }
 
     private void initJedis() {
