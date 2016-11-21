@@ -401,5 +401,5 @@ public class CouponRepayServiceTest {
         return model;
     }
 
-    
+
 }
