@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.common.base.Strings;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Ints;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
@@ -64,7 +65,7 @@ public class InvestorInvestPaginationItemDataDto {
         this.investRepayExist = investRepayExist;
         this.productType = loanModel.getProductType();
         this.extraRate = investExtraRateModel != null ? investExtraRateModel.getExtraRate() : null;
-        this.contractNo = investModel.getContractNo();
+        this.contractNo = Strings.isNullOrEmpty(investModel.getContractNo()) ? "" : investModel.getContractNo();
     }
 
     public long getInvestId() {
