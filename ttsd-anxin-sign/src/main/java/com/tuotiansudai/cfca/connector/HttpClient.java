@@ -23,8 +23,12 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
 import com.tuotiansudai.cfca.util.CommonUtil;
+import org.apache.log4j.Logger;
 
 public class HttpClient {
+
+    private static final Logger logger = Logger.getLogger(HttpClient.class);
+
     public static final String BOUNDARY = java.util.UUID.randomUUID().toString();
     public static final String PREFIX = "--", LINEND = "\r\n";
     public static final String DEFAULT_CHARSET = "UTF-8";
@@ -238,7 +242,7 @@ public class HttpClient {
             byteArrayOutputStream.write(buffer, 0, read);
             length += read;
         }
-        System.out.println("length:" + length);
+        logger.debug("length:" + length);
         return byteArrayOutputStream.toByteArray();
     }
 
