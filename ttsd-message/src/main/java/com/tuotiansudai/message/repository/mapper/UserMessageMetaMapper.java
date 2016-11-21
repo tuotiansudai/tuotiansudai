@@ -9,7 +9,7 @@ import java.util.Map;
 @Repository
 public interface UserMessageMetaMapper {
 
-    String findLoanNameById(@Param(value = "id") long id);
+    Map<String, Object> findLoanById(@Param(value = "id") long id);
 
     Map<String, Object> findLoanByLoanRepayId(@Param(value = "loanRepayId") long loanRepayId);
 
@@ -19,15 +19,23 @@ public interface UserMessageMetaMapper {
 
     List<Map<String, Object>> findCouponWillExpire(@Param(value = "loginName") String loginName);
 
-    Map<String,Object> findAssignUserCoupon(@Param(value = "userCouponId") long userCouponId);
+    Map<String, Object> findWithdrawById(@Param(value = "id") long id);
 
-    Map<String,Object> findRechargeById(@Param(value = "id") long id);
+    Map<String, Object> findInvestById(@Param(value = "id") long id);
 
-    Map<String,Object> findWithdrawById(@Param(value = "id") long id);
-
-    Map<String,Object> findInvestById(@Param(value = "id") long id);
-
-    Map<String,Object> findTransferApplicationByInvestId(@Param(value = "investId") long investId);
+    Map<String, Object> findTransferApplicationByInvestId(@Param(value = "investId") long investId);
 
     boolean isExpiredLevelFiveMembershipExisted(@Param(value = "loginName") String loginName);
+
+    Map<String, Object> findLoanRepayById(@Param(value = "id") long id);
+
+    List<Map<String, Object>> findInvestsByLoanId(@Param(value = "loanId") long loanId);
+
+    Map<String, Object> findInvestRepayByInvestIdAndPeriod(@Param(value = "investId") long investId, @Param(value = "period") int period);
+
+    List<String> findBirthDayUsers();
+
+    Map<String, Object> findMembershipById(@Param(value = "id") long id);
+
+    Map<String, Object> findTransferApplicationById(@Param(value = "id") long id);
 }

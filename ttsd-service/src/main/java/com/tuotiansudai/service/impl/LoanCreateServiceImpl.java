@@ -107,6 +107,9 @@ public class LoanCreateServiceImpl implements LoanCreateService {
 
         long loanId = idGenerator.generate();
 
+        //给MessageCreateAspect传递参数用
+        loanCreateRequestDto.getLoan().setId(loanId);
+
         LoanModel loanModel = new LoanModel(loanId, loanCreateRequestDto);
         loanMapper.create(loanModel);
 

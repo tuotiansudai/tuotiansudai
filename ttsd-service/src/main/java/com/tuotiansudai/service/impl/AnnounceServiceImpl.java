@@ -30,7 +30,7 @@ public class AnnounceServiceImpl implements AnnounceService {
     }
 
     @Override
-    public void create(AnnounceDto announceDto) {
+    public void create(AnnounceDto announceDto, String createdBy) {
         this.announceMapper.create(new AnnounceModel(announceDto));
     }
 

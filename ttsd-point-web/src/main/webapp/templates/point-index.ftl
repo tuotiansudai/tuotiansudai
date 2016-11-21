@@ -145,7 +145,8 @@
             <ul class="material-list">
                 <#list virtualProducts as virtualProduct>
                     <#if virtualProduct_index < 2>
-                        <li class="big-gift" data-href="/point-shop/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/detail">
+                        <li class="big-gift"
+                            data-href="/point-shop/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/detail">
                             <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
 
                             <p><img src="${staticServer}${virtualProduct.imageUrl}" width="160" height="100"></p>
@@ -198,7 +199,8 @@
             <ul class="material-list">
                 <#list physicalProducts as physicalProduct>
                     <#if physicalProduct_index < 2>
-                        <li class="big-gift" data-href="/point-shop/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/detail">
+                        <li class="big-gift"
+                            data-href="/point-shop/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/detail">
                             <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
 
                             <p class="mater-img picture-item">

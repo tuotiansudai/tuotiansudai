@@ -1,6 +1,5 @@
 package com.tuotiansudai.message.service.impl;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
@@ -24,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserMessageServiceImpl implements UserMessageService {
@@ -57,12 +57,10 @@ public class UserMessageServiceImpl implements UserMessageService {
             }
         }
 
-        List<UserMessagePaginationItemDto> records = Lists.transform(userMessageModels, new Function<UserMessageModel, UserMessagePaginationItemDto>() {
-            @Override
-            public UserMessagePaginationItemDto apply(UserMessageModel input) {
-                return new UserMessagePaginationItemDto(input, messageMapper.findById(input.getMessageId()).getType());
-            }
-        });
+        List<UserMessagePaginationItemDto> records = userMessageModels.stream().map(userMessageModel -> {
+            MessageModel messageModel = messageMapper.findByIdBesidesDeleted(userMessageModel.getMessageId());
+            return new UserMessagePaginationItemDto(userMessageModel, messageModel.getType(), messageModel.getMessageCategory());
+        }).collect(Collectors.toList());
 
         BasePaginationDataDto<UserMessagePaginationItemDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);
         dataDto.setStatus(true);

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.text.MessageFormat;
 
 @Component
-public class FundraisingStartJob implements Job{
+public class FundraisingStartJob implements Job {
     static Logger logger = Logger.getLogger(FundraisingStartJob.class);
 
     public final static String LOAN_ID_KEY = "LOAN_ID";

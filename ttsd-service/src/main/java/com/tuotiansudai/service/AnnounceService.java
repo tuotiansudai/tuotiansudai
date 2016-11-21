@@ -13,7 +13,7 @@ public interface AnnounceService {
 
     List<AnnounceModel> findAnnounce(Long id, String title, int startLimit, int endLimit);
 
-    void create(AnnounceDto announceDto);
+    void create(AnnounceDto announceDto, String createdBy);
 
     void update(AnnounceDto announceDto);
 

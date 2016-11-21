@@ -385,7 +385,7 @@ public class ExportController {
         int pageSize = Integer.MAX_VALUE;
         DateTime investDateTime = new DateTime(investEndTime);
         DateTime rewardDateTime = new DateTime(rewardEndTime);
-        List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerMobile, investMobile, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : null, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : null, role, source,referrerRewardStatus, index, pageSize);
+        List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerMobile, investMobile, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : null, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : null, role, source, referrerRewardStatus, index, pageSize);
         List<List<String>> referrerManageData = exportService.buildReferrer(referrerManageViews);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleReferrerManageCsvHeader, referrerManageData, response.getOutputStream());
     }

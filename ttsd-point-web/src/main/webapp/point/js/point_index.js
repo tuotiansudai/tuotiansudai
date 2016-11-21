@@ -7,8 +7,8 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 	$(function() {
 		var $signBtn = $('#signBtn'),
 			$signTip = $('#signLayer'),
-			$closeSign = $('#closeSign'),
-			$materialList=$('.material-list li');
+            $closeSign = $('#closeSign'),
+            $materialList = $('.material-list li');
 		//show sign tip
 		$signBtn.on('click', function(event) {
 			event.preventDefault();
@@ -50,7 +50,7 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 		$closeSign.on('click', function(event) {
 			event.preventDefault();
 			location.href = "/point-shop";
-		});
+        });
 
 		$materialList.on('click', function(event) {//click all model
 			event.preventDefault();

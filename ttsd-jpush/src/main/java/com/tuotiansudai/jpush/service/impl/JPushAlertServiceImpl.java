@@ -2,24 +2,17 @@ package com.tuotiansudai.jpush.service.impl;
 
 
 import cn.jpush.api.report.ReceivedsResult;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.TransferCashDto;
-import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
@@ -27,12 +20,17 @@ import com.tuotiansudai.jpush.dto.JpushReportDto;
 import com.tuotiansudai.jpush.job.JPushReportFetchingJob;
 import com.tuotiansudai.jpush.job.ManualJPushAlertJob;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
-import com.tuotiansudai.jpush.repository.model.*;
+import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
+import com.tuotiansudai.jpush.repository.model.JumpTo;
+import com.tuotiansudai.jpush.repository.model.PushStatus;
+import com.tuotiansudai.jpush.repository.model.PushUserType;
 import com.tuotiansudai.jpush.service.JPushAlertService;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.task.OperationType;
-import com.tuotiansudai.util.*;
+import com.tuotiansudai.util.AuditLogUtil;
+import com.tuotiansudai.util.DistrictUtil;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,7 +41,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -57,9 +54,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private MobileAppJPushClient mobileAppJPushClient;
 
     @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     private static final String JPUSH_ID_KEY = "api:jpushId:store";
@@ -67,25 +61,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private static final String NO_INVEST_LOGIN_NAME = "job:noInvest:loginName";
 
     @Autowired
-    private InvestMapper investMapper;
-
-    @Autowired
-    private LoanRepayMapper loanRepayMapper;
-
-    @Autowired
-    private InvestRepayMapper investRepayMapper;
-
-    @Autowired
-    private RechargeMapper rechargeMapper;
-
-    @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private InvestReferrerRewardMapper investReferrerRewardMapper;
-
-    @Autowired
-    private WithdrawMapper withdrawMapper;
 
     @Autowired
     private JobManager jobManager;
@@ -93,30 +69,19 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Autowired
     AuditLogUtil auditLogUtil;
 
-    @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
-    private UserCouponMapper userCouponMapper;
-
-    @Autowired
-    private CouponMapper couponMapper;
-
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-
     @Override
     @Transactional
-    public void buildJPushAlert(String loginName, JPushAlertDto jPushAlertDto) {
+    public void buildJPushAlert(String editBy, JPushAlertDto jPushAlertDto) {
         JPushAlertModel jPushAlertModel = new JPushAlertModel(jPushAlertDto);
         if (StringUtils.isNotEmpty(jPushAlertDto.getId())) {
-            jPushAlertModel.setUpdatedBy(loginName);
+            jPushAlertModel.setUpdatedBy(editBy);
             jPushAlertModel.setUpdatedTime(new Date());
             if (jPushAlertModel.getJumpTo() != JumpTo.OTHER) {
                 jPushAlertModel.setJumpToLink("");
             }
             jPushAlertMapper.update(jPushAlertModel);
         } else {
-            jPushAlertModel.setCreatedBy(loginName);
+            jPushAlertModel.setCreatedBy(editBy);
             jPushAlertModel.setCreatedTime(new Date());
             jPushAlertModel.setJumpToLink(jPushAlertModel.getJumpTo() != JumpTo.OTHER ? "" : jPushAlertModel.getJumpToLink());
             jPushAlertModel.setIsAutomatic(false);
@@ -242,106 +207,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         result.clear();
         result.addAll(hashSet);
         return result;
-    }
-
-    @Override
-    public void autoJPushAlertBirthMonth() {
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.BIRTHDAY_ALERT_MONTH);
-        if (jPushAlertModel != null) {
-            List<String> loginNames = userMapper.findBirthMonthUsers();
-            if (CollectionUtils.isEmpty(loginNames)) {
-                logger.debug("accountMapper.findBirthOfAccountInMonth() without data");
-                return;
-            }
-            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, PushSource.ALL);
-        } else {
-            logger.debug("autoJPushAlertBirthMonthJob is disabled");
-        }
-    }
-
-    @Override
-    public void autoJPushAlertBirthDay() {
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.BIRTHDAY_ALERT_DAY);
-        if (jPushAlertModel != null) {
-            List<String> loginNames = userMapper.findBirthDayUsers();
-            if (CollectionUtils.isEmpty(loginNames)) {
-                logger.debug("accountMapper.findBirthOfAccountInDay() without data");
-                return;
-            }
-            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, PushSource.ALL);
-        } else {
-            logger.debug("AutoJPushAlertBirthDayJob is disabled");
-        }
-    }
-
-    @Override
-    public void autoJPushNoInvestAlert() {
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.NO_INVEST_ALERT);
-        if (jPushAlertModel != null) {
-            try {
-                Set<String> jPushAlertSet;
-                Set<String> loginNames = investMapper.findNoInvestInThirtyDay();
-                if (CollectionUtils.isEmpty(loginNames)) {
-                    logger.debug("investMapper.findNoInvestInThirtyDay() without data");
-                    return;
-                }
-                if (redisWrapperClient.exists(NO_INVEST_LOGIN_NAME)) {
-                    String redisValue = redisWrapperClient.get(NO_INVEST_LOGIN_NAME);
-                    Set<String> oldLoginNames = objectMapper.readValue(redisValue, new TypeReference<Set<String>>() {
-                    });
-                    Sets.SetView<String> diffSetHandle = Sets.difference(loginNames, oldLoginNames);
-                    jPushAlertSet = diffSetHandle.immutableCopy();
-                } else {
-                    jPushAlertSet = loginNames;
-                }
-
-                redisWrapperClient.set(NO_INVEST_LOGIN_NAME, objectMapper.writeValueAsString(loginNames));
-                if (CollectionUtils.isNotEmpty(jPushAlertSet)) {
-                    autoJPushByBatchRegistrationId(jPushAlertModel, Lists.newArrayList(jPushAlertSet), PushSource.ALL);
-                }
-            } catch (IOException e) {
-                logger.error(e.getLocalizedMessage(), e);
-            }
-        } else {
-            logger.debug("AutoJPushNoInvestAlertJob is disabled");
-        }
-    }
-
-    @Override
-    public void autoJPushLoanAlert(long loanId) {
-        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.LOAN_ALERT);
-        if (jPushAlertModel != null) {
-            if (CollectionUtils.isEmpty(investModels)) {
-                logger.debug("investModels without data");
-                return;
-            }
-            Map<String, List<String>> loginNameMap = Maps.newHashMap();
-            for (InvestModel investModel : investModels) {
-                List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(investModel.getAmount()));
-                loginNameMap.put(investModel.getLoginName(), amountLists);
-                autoJPushByRegistrationId(jPushAlertModel.getId(), jPushAlertModel.getContent(), loginNameMap, chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
-                loginNameMap.clear();
-            }
-        } else {
-            logger.debug("LOAN_ALERT is disabled");
-        }
-    }
-
-    @Override
-    public void autoJPushLotteryLotteryObtainCashAlert(TransferCashDto transferCashDto) {
-        logger.debug("autoJPushLotteryLotteryObtainCashAlert start...");
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.LOTTERY_OBTAIN_CASH_ALERT);
-        if (jPushAlertModel != null) {
-            Map<String, List<String>> loginNameMap = Maps.newHashMap();
-            List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(Long.parseLong(transferCashDto.getAmount())));
-            loginNameMap.put(transferCashDto.getLoginName(), amountLists);
-            autoJPushByRegistrationId(jPushAlertModel.getId(), jPushAlertModel.getContent(), loginNameMap, chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
-            loginNameMap.clear();
-
-        } else {
-            logger.debug("LOTTERY_OBTAIN_CASH_ALERT is disabled");
-        }
     }
 
     private Map chooseJumpToOrLink(JPushAlertDto jPushAlertDto) {
@@ -497,152 +362,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         }
     }
 
-    @Override
-    public void autoJPushRepayAlert(long loanRepayId, boolean isAdvanceRepay) {
-        LoanRepayModel loanRepayModel = loanRepayMapper.findById(loanRepayId);
-        List<InvestModel> investModelList = investMapper.findSuccessInvestsByLoanId(loanRepayModel.getLoanId());
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REPAY_ALERT);
-        if (jPushAlertModel != null) {
-            if (CollectionUtils.isEmpty(investModelList)) {
-                logger.debug("repay investModelList without data");
-                return;
-            }
-            Map<String, List<String>> loginNameMap = Maps.newHashMap();
-            Map<String, String> extras = Maps.newHashMap();
-            for (InvestModel investModel : investModelList) {
-                InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanRepayModel.getPeriod());
-                long amount = investRepayModel.getRepayAmount();
-                LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-                extras.putAll(chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel, String.valueOf(investModel.getId()), String.valueOf(investModel.getLoanId()), String.valueOf(loanModel.getStatus().equals(LoanStatus.COMPLETE) ? 1 : 0))));
-                List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(amount));
-                loginNameMap.put(investModel.getLoginName(), amountLists);
-                autoJPushByRegistrationId(jPushAlertModel.getId(), jPushAlertModel.getContent(), loginNameMap, extras);
-                loginNameMap.clear();
-            }
-        } else {
-            logger.debug("REPAY_ALERT is disabled");
-        }
-    }
-
-    @Override
-    public void autoJPushCouponIncomeAlert(long loanRepayId) {
-        LoanRepayModel currentLoanRepayModel = loanRepayMapper.findById(loanRepayId);
-        LoanModel loanModel = loanMapper.findById(currentLoanRepayModel.getLoanId());
-        List<LoanRepayModel> loanRepayModels = this.loanRepayMapper.findByLoanIdOrderByPeriodAsc(currentLoanRepayModel.getLoanId());
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanModel.getId(),
-                Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON));
-
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.COUPON_INCOME_ALERT);
-
-        if (jPushAlertModel == null) {
-            logger.error("COUPON_INCOME_ALERT is disabled");
-            return;
-        }
-
-        for (UserCouponModel userCouponModel : userCouponModels) {
-            CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
-            long investAmount = investMapper.findById(userCouponModel.getInvestId()).getAmount();
-            InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
-            long actualInterest = InterestCalculator.calculateCouponActualInterest(investAmount, couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);
-            if (actualInterest < 0) {
-                continue;
-            }
-            long actualFee = (long) (actualInterest * investModel.getInvestFeeRate());
-            long transferAmount = actualInterest - actualFee;
-            Map<String, List<String>> loginNameMap = Maps.newHashMap();
-            if (transferAmount > 0) {
-                List<String> amountLists = Lists.newArrayList(couponModel.getCouponType().getName(), AmountConverter.convertCentToString(transferAmount));
-                UserModel userModel = userMapper.findByLoginName(userCouponModel.getLoginName());
-                loginNameMap.put(userModel != null ? userModel.getMobile() : null, amountLists);
-                autoJPushByRegistrationId(jPushAlertModel.getId(), jPushAlertModel.getContent(), loginNameMap, chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
-            }
-        }
-    }
-
-    @Override
-    public void autoJPushRechargeAlert(long orderId) {
-        RechargeModel rechargeModel = rechargeMapper.findById(orderId);
-        long totalAmount = accountMapper.findByLoginName(rechargeModel.getLoginName()).getBalance();
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.RECHARGE_ALERT);
-        if (jPushAlertModel != null) {
-            Map<String, List<String>> loginNameMap = Maps.newHashMap();
-
-            List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(rechargeModel.getAmount()), AmountConverter.convertCentToString(totalAmount));
-            loginNameMap.put(rechargeModel.getLoginName(), amountLists);
-            autoJPushByRegistrationId(jPushAlertModel.getId(), jPushAlertModel.getContent(), loginNameMap, chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
-            loginNameMap.clear();
-
-        } else {
-            logger.debug("RECHARGE_ALERT is disabled");
-        }
-    }
-
-    @Override
-    public void autoJPushWithDrawApplyAlert(long orderId) {
-        WithdrawModel withdrawModel = withdrawMapper.findById(orderId);
-        if (withdrawModel == null) {
-            logger.error(MessageFormat.format("Withdraw apply callback order is not exist (orderId = {0})", orderId));
-            return;
-        }
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.WITHDRAW_APPLY_SUCCESS_ALERT);
-        if (jPushAlertModel != null) {
-            Map<String, List<String>> loginNameMap = Maps.newHashMap();
-            List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(withdrawModel.getAmount()));
-            loginNameMap.put(withdrawModel.getLoginName(), amountLists);
-            autoJPushByRegistrationId(jPushAlertModel.getId(), jPushAlertModel.getContent(), loginNameMap, chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
-            loginNameMap.clear();
-
-        } else {
-            logger.debug("WITHDRAW_APPLY_SUCCESS_ALERT is disabled");
-        }
-    }
-
-    @Override
-    public void autoJPushWithDrawAlert(long orderId) {
-        WithdrawModel withdrawModel = withdrawMapper.findById(orderId);
-        if (withdrawModel == null) {
-            logger.error(MessageFormat.format("Withdraw callback order is not exist (orderId = {0})", orderId));
-            return;
-        }
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.WITHDRAW_SUCCESS_ALERT);
-        if (jPushAlertModel != null) {
-            Map<String, List<String>> loginNameMap = Maps.newHashMap();
-            List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(withdrawModel.getAmount()));
-            loginNameMap.put(withdrawModel.getLoginName(), amountLists);
-            autoJPushByRegistrationId(jPushAlertModel.getId(), jPushAlertModel.getContent(), loginNameMap, chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
-            loginNameMap.clear();
-
-        } else {
-            logger.debug("WITHDRAW_SUCCESS_ALERT is disabled");
-        }
-    }
-
-    @Override
-    public void autoJPushReferrerRewardAlert(long loanId) {
-        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
-        for (InvestModel invest : successInvestList) {
-            List<InvestReferrerRewardModel> investReferrerRewardModelList = investReferrerRewardMapper.findByInvestId(invest.getId());
-            for (InvestReferrerRewardModel investReferrerRewardModel : investReferrerRewardModelList) {
-                if (investReferrerRewardModel.getStatus() == ReferrerRewardStatus.SUCCESS) {
-                    AccountModel accountModel = accountMapper.findByLoginName(investReferrerRewardModel.getReferrerLoginName());
-                    JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REFERRER_REWARD_ALERT);
-                    if (jPushAlertModel != null) {
-                        Map<String, List<String>> loginNameMap = Maps.newHashMap();
-                        List<String> amountLists = Lists.newArrayList(invest.getLoginName(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()), AmountConverter.convertCentToString(accountModel.getBalance()));
-                        UserModel userModel = userMapper.findByLoginName(accountModel.getLoginName());
-                        loginNameMap.put(userModel != null ? userModel.getMobile() : null, amountLists);
-                        autoJPushByRegistrationId(jPushAlertModel.getId(), jPushAlertModel.getContent(), loginNameMap, chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
-                        loginNameMap.clear();
-                    } else {
-                        logger.debug("REFERRER_REWARD_ALERT is disabled");
-                    }
-                }
-            }
-
-        }
-    }
-
-
     private boolean ManualJPushAlertJob(JPushAlertModel jPushAlertModel) {
         if (!jPushAlertModel.getExpectPushTime().after(new Date())) {
             logger.debug("manualJPushAlertJob create failed, expect push time is before now, id = " + jPushAlertModel.getId());
@@ -727,30 +446,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void autoJPushRedEnvelopeAlert(long loanId) {
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId, Lists.newArrayList(CouponType.RED_ENVELOPE));
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.COUPON_INCOME_ALERT);
-        if (jPushAlertModel == null) {
-            logger.error("RED_ENVELOPE_ALERT is disabled");
-            return;
-        }
-
-        for (UserCouponModel userCouponModel : userCouponModels) {
-            CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-            long redEnvelopeAmount = userCouponModel.getActualInterest() - userCouponModel.getActualFee();
-            Map<String, List<String>> loginNameMap = Maps.newHashMap();
-            if (redEnvelopeAmount > 0) {
-                List<String> amountLists = Lists.newArrayList(couponModel.getCouponType().getName(), AmountConverter.convertCentToString(redEnvelopeAmount));
-                loginNameMap.put(userCouponModel.getLoginName(), amountLists);
-                autoJPushByRegistrationId(jPushAlertModel.getId(), jPushAlertModel.getContent(), loginNameMap, chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel)));
-            }
-        }
-    }
-
-    @Override
-    public void delStoreJPushId(String loginName){
+    public void delStoreJPushId(String loginName) {
         redisWrapperClient.hdel(JPUSH_ID_KEY, loginName);
     }
-
-
 }

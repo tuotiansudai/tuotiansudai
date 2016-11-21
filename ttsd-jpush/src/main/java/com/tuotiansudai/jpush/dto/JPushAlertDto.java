@@ -1,6 +1,10 @@
 package com.tuotiansudai.jpush.dto;
 
-import com.tuotiansudai.jpush.repository.model.*;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
+import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
+import com.tuotiansudai.jpush.repository.model.JumpTo;
+import com.tuotiansudai.jpush.repository.model.PushUserType;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 
@@ -36,6 +40,8 @@ public class JPushAlertDto {
     private String loanId;
 
     private String isCompleted;
+
+    private long messageId;
 
     public String getName() {
         return name;
@@ -149,10 +155,19 @@ public class JPushAlertDto {
         this.isCompleted = isCompleted;
     }
 
-    public JPushAlertDto(){
+    public long getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(long messageId) {
+        this.messageId = messageId;
+    }
+
+    public JPushAlertDto() {
 
     }
-    public JPushAlertDto(JPushAlertModel jPushAlertModel){
+
+    public JPushAlertDto(JPushAlertModel jPushAlertModel) {
         this.id = "" + jPushAlertModel.getId();
         this.name = jPushAlertModel.getName();
         this.pushType = jPushAlertModel.getPushType();
@@ -165,7 +180,7 @@ public class JPushAlertDto {
         this.expectPushTime = new DateTime(jPushAlertModel.getExpectPushTime()).toString("yyyy-MM-dd HH:mm");
     }
 
-    public JPushAlertDto(JPushAlertModel jPushAlertModel,String investId,String loanId,String isCompleted){
+    public JPushAlertDto(JPushAlertModel jPushAlertModel, String investId, String loanId, String isCompleted) {
         this.id = "" + jPushAlertModel.getId();
         this.name = jPushAlertModel.getName();
         this.pushType = jPushAlertModel.getPushType();
