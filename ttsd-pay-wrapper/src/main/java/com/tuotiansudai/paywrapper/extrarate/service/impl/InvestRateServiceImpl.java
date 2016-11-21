@@ -38,7 +38,7 @@ public class InvestRateServiceImpl implements InvestRateService {
         updateInvestExtraRate(investExtraRateModel, actualInterest, actualFee, amount);
     }
 
-    private void updateInvestExtraRate(InvestExtraRateModel investExtraRateModel, long actualInterest, long actualFee, long amount) {
+    public void updateInvestExtraRate(InvestExtraRateModel investExtraRateModel, long actualInterest, long actualFee, long amount) {
         investExtraRateModel.setActualInterest(actualInterest);
         investExtraRateModel.setActualFee(actualFee);
         investExtraRateModel.setRepayAmount(amount);

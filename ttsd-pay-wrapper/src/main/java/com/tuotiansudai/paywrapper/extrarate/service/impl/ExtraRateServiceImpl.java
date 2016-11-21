@@ -130,7 +130,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         long amount = actualInterest - actualFee;
         if (amount > 0) {
 
-            investRateService.updateExtraRateData(investExtraRateModel, actualInterest, actualFee);
+           investRateService.updateInvestExtraRate(investExtraRateModel, actualInterest, actualFee, amount);
 
             String orderId = investExtraRateModel.getInvestId() + "X" + System.currentTimeMillis();
             try {
