@@ -137,8 +137,12 @@ public class HttpClient {
     public int send(HttpURLConnection connection, byte[] requestData) throws IOException {
         if (requestData != null) {
             connection.setFixedLengthStreamingMode(requestData.length);
+            connection.connect();
             OutputStream outputStream = connection.getOutputStream();
             outputStream.write(requestData);
+            outputStream.flush();
+        } else {
+            connection.connect();
         }
         return connection.getResponseCode();
     }
@@ -200,6 +204,8 @@ public class HttpClient {
             outputStream.write(end_data);
             outputStream.flush();
 
+        } else {
+            connection.connect();
         }
         return connection.getResponseCode();
     }
