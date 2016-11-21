@@ -1,8 +1,11 @@
 package com.tuotiansudai.mq.consumer.loan;
 
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.mq.client.MQClient;
 import com.tuotiansudai.mq.client.model.Message;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.mq.client.model.Queue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
@@ -15,6 +18,9 @@ import org.springframework.util.StringUtils;
 @Component
 public class CouponAssigningMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(CouponAssigningMessageConsumer.class);
+
+    @Autowired
+    private MQClient mqClient;
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
@@ -33,7 +39,9 @@ public class CouponAssigningMessageConsumer implements MessageConsumer {
             String[] msgParts = msg.split(":");
             if (msgParts.length == 2) {
                 logger.info("[MQ] ready to consumer message[{}]: assigning coupon.", message.getMessageId());
-                couponAssignmentService.assign(msgParts[0], Long.parseLong(msgParts[1]), null);
+                UserCouponModel userCoupon = couponAssignmentService.assign(msgParts[0], Long.parseLong(msgParts[1]), null);
+                logger.info("[MQ] assigning coupon success, begin publish message.");
+                mqClient.publishMessage(MessageTopic.CouponAssigned, "UserCoupon:" + userCoupon.getId());
                 logger.info("[MQ] consumer message[{}] success.", message.getMessageId());
             }
         }
