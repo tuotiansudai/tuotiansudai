@@ -44,4 +44,6 @@ public interface JPushAlertService {
     void delete(String loginName, long id);
 
     void storeJPushId(String loginName, String platform, String jPushId);
+
+    void delStoreJPushId(String loginName);
 }

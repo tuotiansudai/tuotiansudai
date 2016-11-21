@@ -1,6 +1,5 @@
 package com.tuotiansudai.scheduler.plugin;
 
-import com.tuotiansudai.activity.job.CalculateTravelLuxuryPrizeJob;
 import com.tuotiansudai.job.*;
 import com.tuotiansudai.message.job.BirthdayMessageSendJob;
 import com.tuotiansudai.util.JobManager;

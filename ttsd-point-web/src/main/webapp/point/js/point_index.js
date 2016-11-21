@@ -52,13 +52,13 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 			location.href = "/point-shop";
         });
 
-        $materialList.on('click', function (event) {
-            event.preventDefault();
-            location.href = $(this).attr('data-href');
-        }).on('click', '.get-btn', function (event) {
-            event.preventDefault();
-            location.href = $(this).parent('a').attr('href');
-            event.stopPropagation();
+		$materialList.on('click', function(event) {//click all model
+			event.preventDefault();
+			location.href = $(this).attr('data-href');
+		}).on('click','.get-btn', function(event) {//click btn
+			event.preventDefault();
+			$(this).hasClass('active')?location.href = $(this).parent('a').attr('href'):false;
+			event.stopPropagation();
 		});
 	});
 })

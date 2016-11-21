@@ -65,6 +65,11 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         if (accountModel.getFreeze() > 0) {
             return true;
         }
+
+        if(accountModel.getBalance() > 0){
+            return true;
+        }
+
         if (investRepayService.findSumRepayingCorpusByLoginName(loginName) > 0 || investRepayService.findSumRepayingInterestByLoginName(loginName) > 0) {
             return true;
         }

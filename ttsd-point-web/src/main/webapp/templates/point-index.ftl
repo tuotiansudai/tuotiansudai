@@ -157,8 +157,7 @@
                                     <span class="fl get-btn">已售罄</span>
                                 <#else>
                                     <a class="fl"
-                                       href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span
-                                            class="fl get-btn">立即兑换</span></a>
+                                       href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span class="fl get-btn active">立即兑换</span></a>
                                 </#if>
                             </p>
                         </li>
@@ -175,7 +174,7 @@
                                 <#else>
                                     <a class="fl"
                                        href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span
-                                            class="fl get-btn">立即兑换</span></a>
+                                            class="fl get-btn active">立即兑换</span></a>
                                 </#if>
                             </p>
                         </li>
@@ -215,7 +214,7 @@
                                     <span class="fl get-btn">已售罄</span>
                                 <#else>
                                     <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/1"><span
-                                            class="get-btn">立即兑换</span></a>
+                                            class="get-btn active">立即兑换</span></a>
                                 </#if>
                             </p>
                         </li>
@@ -234,7 +233,7 @@
                                     <span class="fl get-btn">已售罄</span>
                                 <#else>
                                     <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/1"><span
-                                            class="get-btn">立即兑换</span></a>
+                                            class="get-btn active">立即兑换</span></a>
                                 </#if>
                             </p>
                         </li>

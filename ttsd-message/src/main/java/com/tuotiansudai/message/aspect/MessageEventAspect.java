@@ -153,8 +153,11 @@ public class MessageEventAspect {
         }
     }
 
-    @AfterReturning(value = "loanOutSuccessPointcut()")
-    public void afterReturningLoanOutSuccess(JoinPoint joinPoint) {
+    @AfterReturning(value = "loanOutSuccessPointcut()",returning = "baseDto")
+    public void afterReturningLoanOutSuccess(JoinPoint joinPoint,BaseDto<PayDataDto> baseDto) {
+        if(!baseDto.getData().getStatus()){
+            return;
+        }
         long loanId = (Long) joinPoint.getArgs()[0];
         logger.info(MessageFormat.format("[Message Event Aspect] after loan out success({0}) pointcut start", String.valueOf(loanId)));
         try {

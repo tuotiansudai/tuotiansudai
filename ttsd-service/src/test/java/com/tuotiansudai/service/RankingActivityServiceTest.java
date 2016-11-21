@@ -3,9 +3,9 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.ranking.DrawLotteryDto;
-import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
-import com.tuotiansudai.repository.TianDouPrize;
+import com.tuotiansudai.activity.repository.dto.DrawLotteryDto;
+import com.tuotiansudai.activity.repository.dto.UserTianDouRecordDto;
+import com.tuotiansudai.activity.repository.model.TianDouPrize;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;

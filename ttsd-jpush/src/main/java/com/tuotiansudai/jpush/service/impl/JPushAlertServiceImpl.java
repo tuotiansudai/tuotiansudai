@@ -480,5 +480,8 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         logger.debug(MessageFormat.format("jpushId:{0} end", value));
     }
 
-
+    @Override
+    public void delStoreJPushId(String loginName) {
+        redisWrapperClient.hdel(JPUSH_ID_KEY, loginName);
+    }
 }

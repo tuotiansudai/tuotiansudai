@@ -32,4 +32,9 @@ public class MobileAppMessageController extends MobileAppBaseController {
 
         return baseResponseDto;
     }
+
+    @RequestMapping(value = "/get/readAll", method = RequestMethod.POST)
+    public BaseResponseDto readAll(@RequestBody BaseParamDto baseParamDto) {
+        return mobileAppUserMessageService.readAll(baseParamDto);
+    }
 }

@@ -106,4 +106,11 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
         MessageModel messageModel = messageMapper.findById(userMessageModel.getMessageId());
         return new UserMessageViewDto(userMessageModel.getId(), userMessageModel.getTitle(), userMessageModel.getContent(), userMessageModel.getCreatedTime(), messageModel.getAppUrl().getPath());
     }
+
+    @Override
+    public BaseResponseDto readAll(BaseParamDto baseParamDto) {
+        String loginName = LoginUserInfo.getLoginName();
+        userMessageServices.readAll(loginName);
+        return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
+    }
 }
