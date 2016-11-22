@@ -131,7 +131,8 @@ public class TransferServiceImpl implements TransferService {
         List<TransferApplicationPaginationItemDataDto> itemDataDtoList = Lists.transform(items, transferApplicationRecordDto -> {
             TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(transferApplicationRecordDto);
             LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
-            transferApplicationPaginationItemDataDto.setLeftDays(this.calculateTransferApplicationLeftDays(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods()));
+            InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
+            transferApplicationPaginationItemDataDto.setLeftDays(InterestCalculator.calculateTransferApplicationLeftDays(currentInvestRepayModel));
             return transferApplicationPaginationItemDataDto;
         });
 
@@ -201,7 +202,8 @@ public class TransferServiceImpl implements TransferService {
                 int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(input.getInvestId(), loanRepayModel.getPeriod());
                 transferableInvestPaginationItemDataDto.setLeftPeriod(leftPeriod);
                 LoanModel loanModel = loanMapper.findById(input.getLoanId());
-                transferableInvestPaginationItemDataDto.setLeftDays(this.calculateTransferApplicationLeftDays(input.getInvestId(), loanModel.getPeriods()));
+                InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(input.getInvestId(), loanModel.getPeriods());
+                transferableInvestPaginationItemDataDto.setLeftDays(InterestCalculator.calculateTransferApplicationLeftDays(currentInvestRepayModel));
             }
             return transferableInvestPaginationItemDataDto;
         });
@@ -232,7 +234,8 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setInvestAmount(AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
         transferApplicationDetailDto.setBaseRate(loanModel.getBaseRate() * 100);
         transferApplicationDetailDto.setLeftPeriod(transferApplicationModel.getLeftPeriod());
-        transferApplicationDetailDto.setLeftDays(this.calculateTransferApplicationLeftDays(transferApplicationModel.getTransferInvestId(), loanModel.getPeriods()));
+        InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), loanModel.getPeriods());
+        transferApplicationDetailDto.setLeftDays(InterestCalculator.calculateTransferApplicationLeftDays(currentInvestRepayModel));
         transferApplicationDetailDto.setDueDate(investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), loanModel.getPeriods()).getRepayDate());
         transferApplicationDetailDto.setNextRefundDate(investRepayModel.getRepayDate());
         transferApplicationDetailDto.setLoanType(loanModel.getType().getRepayType());
@@ -280,13 +283,5 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setNextExpecedInterest(AmountConverter.convertCentToString(nextExpectedInterest));
         transferApplicationDetailDto.setActivityRate(loanModel.getActivityRate() * 100);
         return transferApplicationDetailDto;
-    }
-
-
-    private String calculateTransferApplicationLeftDays(long transferInvestId, int periods){
-        InvestRepayModel currentTransferInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferInvestId, periods);
-        Date repayDate = currentTransferInvestRepayModel == null ? new Date(): currentTransferInvestRepayModel.getRepayDate() == null ? new Date():currentTransferInvestRepayModel.getRepayDate();
-        long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), repayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        return String.valueOf(leftDays > 0 ? leftDays : 0);
     }
 }

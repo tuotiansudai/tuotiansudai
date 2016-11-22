@@ -15,6 +15,9 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -243,6 +246,12 @@ public class InterestCalculator {
     public static long calculateExtraLoanRateExpectedInterest(double extraRate, long amount, int periodDuration, double investFeeRate) {
         return new BigDecimal(amount).multiply(new BigDecimal(extraRate)).multiply(new BigDecimal(periodDuration)).
                 divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
+    }
+
+    public static String calculateTransferApplicationLeftDays(InvestRepayModel currentTransferInvestRepayModel){
+        Date repayDate = currentTransferInvestRepayModel == null ? new Date(): currentTransferInvestRepayModel.getRepayDate() == null ? new Date():currentTransferInvestRepayModel.getRepayDate();
+        long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), repayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        return String.valueOf(leftDays > 0 ? leftDays : 0);
     }
 
 }
