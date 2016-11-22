@@ -11,25 +11,25 @@ import java.util.Date;
 import static org.junit.Assert.assertEquals;
 
 
-public class PromotionMapperTest extends BaseMapperTest {
+public class PromotionMapperTest extends BaseMapperTest{
     @Autowired
     private PromotionMapper promotionMapper;
 
     @Test
-    public void shouldPromotionIsSuccess() {
+    public void shouldPromotionIsSuccess(){
         PromotionModel promotionModel = fakePromotionModel();
         promotionMapper.create(promotionModel);
 
         PromotionModel promotionModelReturn = promotionMapper.findById(promotionModel.getId());
 
-        assertEquals(promotionModel.getId(), promotionModelReturn.getId());
-        assertEquals(promotionModel.getName(), promotionModelReturn.getName());
-        assertEquals(promotionModel.getImageUrl(), promotionModelReturn.getImageUrl());
-        assertEquals(promotionModel.getLinkUrl(), promotionModelReturn.getLinkUrl());
-        assertEquals(promotionModel.getSeq(), promotionModelReturn.getSeq());
+        assertEquals(promotionModel.getId(),promotionModelReturn.getId());
+        assertEquals(promotionModel.getName(),promotionModelReturn.getName());
+        assertEquals(promotionModel.getImageUrl(),promotionModelReturn.getImageUrl());
+        assertEquals(promotionModel.getLinkUrl(),promotionModelReturn.getLinkUrl());
+        assertEquals(promotionModel.getSeq(),promotionModelReturn.getSeq());
     }
 
-    private PromotionModel fakePromotionModel() {
+    private PromotionModel fakePromotionModel(){
         PromotionModel promotionModel = new PromotionModel();
         promotionModel.setName("name");
         promotionModel.setImageUrl("imageUrl");

@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.extrarate.service.impl;
 
 
+import com.mysql.jdbc.StringUtils;
 import com.tuotiansudai.paywrapper.extrarate.service.LoanOutInvestCalculationService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -78,7 +79,7 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
                     if ("IOS".equals(investModel.getSource().name()) || "ANDROID".equals(investModel.getSource().name()) || "MOBILE".equals(investModel.getSource().name())) {
                         investSource = Source.MOBILE;
                     } else if ("WEB".equals(investModel.getSource().name())) {
-                        investSource = Source.WEB;
+                        investSource =  Source.WEB;
                     } else {
                         investSource = Source.AUTO;
                     }

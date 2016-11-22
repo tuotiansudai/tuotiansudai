@@ -13,12 +13,11 @@
     </div>
 
 <#if activeNav??>
-    <ul id="TopMainMenuList" class="nav-menu page-width clearfix">
+    <ul id="TopMainMenuList" class="nav-menu page-width clearfix" >
         <#list mainMenus as menu>
             <#if menu.navigation?? && menu.navigation="true">
                 <li <#if menu.title==activeNav>class="active"</#if>>
-                    <a href="${menu.url}"
-                       onclick="cnzzPush.trackClick('${menu.category}','${menu.title}')">${menu.title}</a>
+                    <a  href="${menu.url}" onclick="cnzzPush.trackClick('${menu.category}','${menu.title}')" >${menu.title}</a>
                     <#if menu.leftNavs??>
                         <#list menu.leftNavs as leftNav>
                             <#if leftNav.role??>
@@ -54,7 +53,7 @@
 
             </#if>
         </#list>
-        <li class="top-membership"><a href="/membership">会员中心</a></li>
+        <li class="top-membership"><a href="/membership">会员中心</a> </li>
         <li class="top-activity">
             <a href="${webServer}/activity/activity-center">活动中心</a>
         </li>

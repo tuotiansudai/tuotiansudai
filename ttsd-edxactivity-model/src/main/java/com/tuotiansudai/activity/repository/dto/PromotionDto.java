@@ -23,7 +23,7 @@ public class PromotionDto {
 
     private long seq;
 
-    public PromotionDto() {
+    public PromotionDto(){
 
     }
 

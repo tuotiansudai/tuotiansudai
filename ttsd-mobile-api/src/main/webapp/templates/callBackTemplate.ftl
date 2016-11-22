@@ -39,7 +39,7 @@
 
 
     <script>
-        var num = 3, href = document.getElementById('Btn').getAttribute('data-href');
+        var num = 3, href=document.getElementById('Btn').getAttribute('data-href');
         function countTime(){
             if(num == 0){
                 document.getElementById('Btn').innerHTML ='确定';

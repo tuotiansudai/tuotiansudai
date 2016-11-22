@@ -1,11 +1,11 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryDto;
 import com.tuotiansudai.activity.repository.dto.PrizeWinnerDto;
 import com.tuotiansudai.activity.repository.dto.UserScoreDto;
 import com.tuotiansudai.activity.repository.dto.UserTianDouRecordDto;
 import com.tuotiansudai.activity.repository.model.TianDouPrize;
-import com.tuotiansudai.dto.BaseDto;
 
 import java.util.List;
 import java.util.Map;

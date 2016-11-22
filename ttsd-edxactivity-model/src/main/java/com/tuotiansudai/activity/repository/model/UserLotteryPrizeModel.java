@@ -19,8 +19,7 @@ public class UserLotteryPrizeModel implements Serializable {
 
     private ActivityCategory activityCategory;
 
-    public UserLotteryPrizeModel() {
-    }
+    public UserLotteryPrizeModel() {}
 
     public UserLotteryPrizeModel(String mobile, String loginName, String userName, LotteryPrize prize, Date lotteryTime, ActivityCategory prizeType) {
         this.mobile = mobile;

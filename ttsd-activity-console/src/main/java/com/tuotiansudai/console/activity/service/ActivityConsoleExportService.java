@@ -150,7 +150,7 @@ public class ActivityConsoleExportService {
         }).collect(Collectors.toList());
     }
 
-    public List<List<String>> buildPrizeList(String mobile, LotteryPrize selectPrize, ActivityCategory prizeType, Date startTime, Date endTime) {
+    public List<List<String>> buildPrizeList(String mobile,LotteryPrize selectPrize,ActivityCategory prizeType,Date startTime,Date endTime) {
         List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, selectPrize, prizeType, startTime, endTime, null, null);
         List<List<String>> rows = Lists.newArrayList();
         userLotteryPrizeViews.forEach(userLotteryPrizeView -> rows.add(Lists.newArrayList(
@@ -163,7 +163,7 @@ public class ActivityConsoleExportService {
     }
 
     public Map getAllFamilyMap(Date activityMinAutumnStartTime, Date activityMinAutumnEndTime) {
-        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityMinAutumnStartTime, activityMinAutumnEndTime, null);
+        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityMinAutumnStartTime, activityMinAutumnEndTime,null);
 
         Map<String, List<String>> allFamily = new LinkedHashMap<>();
 
@@ -173,37 +173,37 @@ public class ActivityConsoleExportService {
 
         for (UserModel userModel : userModels) {
             if (Strings.isNullOrEmpty(userModel.getReferrer())) {
-                allFamily.put(userModel.getLoginName(), Lists.newArrayList(userModel.getLoginName()));
+                allFamily.put(userModel.getLoginName(),Lists.newArrayList(userModel.getLoginName()));
                 continue;
             }
-            if (allFamily.values() == null || allFamily.values().size() == 0) {
-                allFamily.put(userModel.getReferrer(), Lists.newArrayList(userModel.getReferrer(), userModel.getLoginName()));
+            if(allFamily.values() == null || allFamily.values().size() == 0){
+                allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getReferrer(),userModel.getLoginName()));
                 continue;
             }
             boolean isFamily = false;
             for (List<String> family : allFamily.values()) {
-                if (family.contains(userModel.getReferrer())) {
+                if(family.contains(userModel.getReferrer())){
                     isFamily = true;
                     family.add(userModel.getLoginName());
                     break;
                 }
             }
 
-            if (!isFamily) {
-                allFamily.put(userModel.getReferrer(), Lists.newArrayList(userModel.getReferrer(), userModel.getLoginName()));
+            if(!isFamily){
+                allFamily.put(userModel.getReferrer(),Lists.newArrayList(userModel.getReferrer(),userModel.getLoginName()));
             }
 
         }
 
         Map<String, List<String>> allFamilyAndNum = new LinkedHashMap<>();
         int num = 0;
-        for (String key : allFamily.keySet()) {
+        for(String key : allFamily.keySet()){
             List<String> family = allFamily.get(key);
-            if (family.size() == 1) {
+            if(family.size() == 1){
                 continue;
             }
-            num++;
-            allFamilyAndNum.put(MessageFormat.format("团员{0}号家庭", String.valueOf(num)), allFamily.get(key));
+            num ++;
+            allFamilyAndNum.put(MessageFormat.format("团员{0}号家庭",String.valueOf(num)),allFamily.get(key));
         }
 
         return allFamilyAndNum;

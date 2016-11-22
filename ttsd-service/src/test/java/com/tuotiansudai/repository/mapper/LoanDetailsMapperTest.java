@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;

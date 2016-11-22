@@ -33,10 +33,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncRespon
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.LoanService;
-import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
-import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
-import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
+import com.tuotiansudai.paywrapper.service.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;

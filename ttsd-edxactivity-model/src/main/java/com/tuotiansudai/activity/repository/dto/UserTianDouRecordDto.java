@@ -3,7 +3,7 @@ package com.tuotiansudai.activity.repository.dto;
 
 import com.tuotiansudai.activity.repository.model.TianDouPrize;
 
-public class UserTianDouRecordDto implements Comparable<UserTianDouRecordDto> {
+public class UserTianDouRecordDto implements Comparable<UserTianDouRecordDto>{
 
     private String loginName;
 
@@ -19,20 +19,20 @@ public class UserTianDouRecordDto implements Comparable<UserTianDouRecordDto> {
 
     private String desc;
 
-    public UserTianDouRecordDto(String loginName, String type, TianDouPrize prize) {
+    public UserTianDouRecordDto(String loginName, String type, TianDouPrize prize){
         this.loginName = loginName;
         this.type = type;
         this.prize = prize;
     }
 
-    public UserTianDouRecordDto(String loginName, String type, TianDouPrize prize, String time) {
+    public UserTianDouRecordDto(String loginName, String type, TianDouPrize prize, String time){
         this.loginName = loginName;
         this.type = type;
         this.prize = prize;
         this.time = time;
     }
 
-    public UserTianDouRecordDto(String loginName, String type, long amount, long score, String desc, String time) {
+    public UserTianDouRecordDto(String loginName, String type, long amount, long score, String desc, String time){
         this.loginName = loginName;
         this.type = type;
         this.amount = amount;
@@ -98,7 +98,7 @@ public class UserTianDouRecordDto implements Comparable<UserTianDouRecordDto> {
     }
 
     @Override
-    public int compareTo(UserTianDouRecordDto dto) {
+    public int compareTo(UserTianDouRecordDto dto){
         return this.time.compareTo(dto.getTime());
     }
 }

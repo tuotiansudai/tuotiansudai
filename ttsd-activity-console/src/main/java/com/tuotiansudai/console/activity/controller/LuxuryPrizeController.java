@@ -55,7 +55,7 @@ public class LuxuryPrizeController {
     @RequestMapping(value="/edit",method = RequestMethod.POST)
     public ModelAndView editLuxuryPrize(@Valid @ModelAttribute LuxuryPrizeRequestDto luxuryPrizeRequestDto){
         String loginName = LoginUserInfo.getLoginName();
-        activityConsoleLuxuryPrizeService.editLuxuryPrize(luxuryPrizeRequestDto, loginName);
+        activityConsoleLuxuryPrizeService.editLuxuryPrize(luxuryPrizeRequestDto,loginName);
         return new ModelAndView("redirect:/activity-console/activity-manage/luxury/luxury-prize-list");
     }
 

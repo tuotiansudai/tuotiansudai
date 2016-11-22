@@ -1,8 +1,8 @@
 from __future__ import with_statement
-
 import os
 from fabric.api import *
 from fabric.contrib.project import upload_project
+
 
 env.use_ssh_config = True
 env.always_use_pty = False

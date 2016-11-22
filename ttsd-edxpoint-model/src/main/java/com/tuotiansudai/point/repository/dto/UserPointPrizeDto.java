@@ -4,7 +4,7 @@ package com.tuotiansudai.point.repository.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserPointPrizeDto implements Serializable {
+public class UserPointPrizeDto implements Serializable{
 
     private String loginName;
 
