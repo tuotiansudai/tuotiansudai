@@ -24,7 +24,7 @@ public class IPhone7LotteryDto implements Serializable {
         this.mobile = mobile;
     }
 
-    public IPhone7LotteryDto(IPhone7LotteryConfigModel iPhone7LotteryConfigModel, String mobile){
+    public IPhone7LotteryDto(IPhone7LotteryConfigModel iPhone7LotteryConfigModel, String mobile) {
         this.lotteryNumber = iPhone7LotteryConfigModel.getLotteryNumber();
         this.mobile = mobile;
     }

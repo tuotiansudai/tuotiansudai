@@ -156,7 +156,8 @@
                                     <span class="fl get-btn">已售罄</span>
                                 <#else>
                                     <a class="fl"
-                                       href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span class="fl get-btn active">立即兑换</span></a>
+                                       href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span
+                                            class="fl get-btn active">立即兑换</span></a>
                                 </#if>
                             </p>
                         </li>

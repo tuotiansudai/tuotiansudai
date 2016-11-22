@@ -11,8 +11,8 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
-import com.tuotiansudai.point.repository.dto.ProductDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
+import com.tuotiansudai.point.repository.dto.ProductDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.service.PointBillService;
@@ -235,15 +235,15 @@ public class PointManageController {
                 ProductModel productModel = productService.findProductByCouponId(id);
                 ProductDto productDto = new ProductDto
                         (productModel.getId(),
-                        GoodsType.COUPON, loginName,
-                        exchangeCouponDto.getId(),
-                        exchangeCouponDto.getCouponType().name(),
-                        exchangeCouponDto.getSeq(),
-                        exchangeCouponDto.getImageUrl(),
-                        exchangeCouponDto.getExchangePoint(),
-                        exchangeCouponDto.getTotalCount(),
-                        exchangeCouponDto.getStartTime(),
-                        exchangeCouponDto.getEndTime());
+                                GoodsType.COUPON, loginName,
+                                exchangeCouponDto.getId(),
+                                exchangeCouponDto.getCouponType().name(),
+                                exchangeCouponDto.getSeq(),
+                                exchangeCouponDto.getImageUrl(),
+                                exchangeCouponDto.getExchangePoint(),
+                                exchangeCouponDto.getTotalCount(),
+                                exchangeCouponDto.getStartTime(),
+                                exchangeCouponDto.getEndTime());
                 productService.updateProduct(productDto);
             } else {
                 ExchangeCouponDto exchangeCouponDtoView  = couponService.createCoupon(loginName, exchangeCouponDto);

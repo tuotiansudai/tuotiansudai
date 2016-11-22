@@ -139,7 +139,7 @@ public class LoanListController {
 
             InvestModel investModel = investService.findById(transferApplicationModel.getInvestId());
 
-            if(investModel == null || !Strings.isNullOrEmpty(investModel.getContractNo())){
+            if (investModel == null || !Strings.isNullOrEmpty(investModel.getContractNo())) {
                 baseDataDto.setMessage("该债权转让无可生成的合同!");
                 return baseDto;
             }

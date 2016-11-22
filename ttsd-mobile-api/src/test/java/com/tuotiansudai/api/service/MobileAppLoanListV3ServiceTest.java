@@ -78,7 +78,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         loanMapper.create(loanModel);
         loanMapper.update(loanModel);
 
-        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "", Lists.newArrayList(Source.MOBILE,Source.WEB), false, "");
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel(loanModel.getId(), "", Lists.newArrayList(Source.MOBILE, Source.WEB), false, "");
         loanDetailsMapper.create(loanDetailsModel);
 
         return loanModel;

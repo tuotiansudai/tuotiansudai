@@ -100,7 +100,7 @@ public class ExportController {
         }
         response.setContentType("application/csv");
 
-        List<List<String>> csvData = exportService.buildNotWorkCsvList();
+        List<List<String>> csvData = activityConsoleExportService.buildNotWorkCsvList();
 
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.NotWorkHeader, csvData, response.getOutputStream());
     }

@@ -101,7 +101,7 @@
                             <span class="ladderInvest" style="display: block;">
                                 <#if loanListDto.extraSource??>
                                     <#list loanListDto.extraSource as extraSource>
-                                        ${extraSource.name()}<#sep>, </#sep>
+                                    ${extraSource.name()}<#sep>, </#sep>
                                     </#list>
                                 </#if>
                             </span>

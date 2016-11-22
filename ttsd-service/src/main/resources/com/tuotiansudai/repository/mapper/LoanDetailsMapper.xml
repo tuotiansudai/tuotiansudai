@@ -10,7 +10,8 @@
         <id column="id" property="id"/>
         <result column="loan_id" property="loanId"/>
         <result column="declaration" property="declaration"/>
-        <result column="extra_source" property="extraSource" typeHandler="com.tuotiansudai.util.mybatis.SourceListTypeHandler"/>
+        <result column="extra_source" property="extraSource"
+                typeHandler="com.tuotiansudai.util.mybatis.SourceListTypeHandler"/>
         <result column="activity" property="activity"/>
         <result column="activity_desc" property="activityDesc"/>
     </resultMap>
@@ -19,7 +20,8 @@
         INSERT INTO `aa`.`loan_details`
         (id, loan_id, declaration, extra_source, activity, activity_desc)
         VALUES
-        (#{id}, #{loanId}, #{declaration}, #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{activity}, #{activityDesc})
+        (#{id}, #{loanId}, #{declaration},
+        #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{activity}, #{activityDesc})
     </insert>
 
     <select id="getByLoanId" resultMap="LoanDetailsResultMap">
@@ -36,7 +38,9 @@
           `aa`.`loan_details`
         <trim prefix="set" suffixOverrides=",">
             <if test="declaration !=null"> declaration = #{declaration},</if>
-            <if test="extraSource !=null"> extra_source = #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},</if>
+            <if test="extraSource !=null">extra_source =
+                #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},
+            </if>
             <if test="activity !=null">activity = #{activity},</if>
             <if test="activityDesc !=null">activity_desc = #{activityDesc}</if>
         </trim>

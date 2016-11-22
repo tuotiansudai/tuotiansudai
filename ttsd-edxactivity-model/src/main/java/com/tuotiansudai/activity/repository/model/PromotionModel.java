@@ -6,7 +6,7 @@ import com.tuotiansudai.activity.repository.dto.PromotionStatus;
 import java.io.Serializable;
 import java.util.Date;
 
-public class PromotionModel implements Serializable{
+public class PromotionModel implements Serializable {
 
     private long id;
 
@@ -160,11 +160,11 @@ public class PromotionModel implements Serializable{
     }
 
 
-    public PromotionModel(){
+    public PromotionModel() {
 
     }
 
-    public PromotionModel(PromotionDto promotionDto){
+    public PromotionModel(PromotionDto promotionDto) {
         this.name = promotionDto.getName();
         this.imageUrl = promotionDto.getImageUrl();
         this.linkUrl = promotionDto.getLinkUrl();

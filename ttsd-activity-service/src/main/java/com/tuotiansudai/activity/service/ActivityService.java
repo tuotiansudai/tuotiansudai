@@ -62,7 +62,7 @@ public class ActivityService {
                     activityModelExist.setStatus(ActivityStatus.TO_APPROVE);
                     activityModelExist.setSeq(activityDto.getSeq());
                     activityModelExist.setLongTerm("longTerm".equals(activityDto.getLongTerm()));
-                    if(activityModelExist.isLongTerm()){
+                    if (activityModelExist.isLongTerm()) {
                         activityModelExist.setExpiredTime(null);
                         activityModelExist.setActivatedTime(null);
 

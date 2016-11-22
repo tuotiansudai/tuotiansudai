@@ -190,7 +190,7 @@ public class LoanOutInvestCalculationServiceTest {
         loanDetailsModel.setId(id);
         loanDetailsModel.setLoanId(loanModel.getId());
         loanDetailsModel.setDeclaration("材料声明");
-        loanDetailsModel.setExtraSource(Lists.newArrayList(Source.WEB,Source.MOBILE));
+        loanDetailsModel.setExtraSource(Lists.newArrayList(Source.WEB, Source.MOBILE));
        return loanDetailsModel;
     }
 }

@@ -3,6 +3,7 @@ package com.tuotiansudai.activity.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -20,14 +21,21 @@ public class NotWorkService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    CouponAssignmentService couponAssignmentService;
+
+    final static private long PRIZE_COUPON_ID = 0L;
+
+    final static private long PRIZE_COUPON_INVEST_LIMIT = 300000L;
+
     final private LocalDateTime activityStartTime = LocalDateTime.of(2016, 12, 1, 0, 0, 0, 0);
 
     final private LocalDateTime activityEndTime = LocalDateTime.of(2016, 12, 16, 0, 0, 0, 0);
 
     private interface UpdateModelProducer {
-        NotWorkModel createProduce(NotWorkModel notWorkModel);
+        NotWorkModel createAction(NotWorkModel notWorkModel);
 
-        NotWorkModel updateProduce(NotWorkModel notWorkModel);
+        NotWorkModel updateAction(NotWorkModel notWorkModel);
     }
 
     private BaseDto<BaseDataDto> update(String loginName, UpdateModelProducer updateModelProducer) {
@@ -40,13 +48,13 @@ public class NotWorkService {
             UserModel userModel = userMapper.findByLoginName(loginName);
             if (null != userModel) {
                 notWorkModel = new NotWorkModel(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile(), false);
-                notWorkModel = updateModelProducer.createProduce(notWorkModel);
+                notWorkModel = updateModelProducer.createAction(notWorkModel);
                 notWorkMapper.create(notWorkModel);
             } else {
                 return new BaseDto<>(new BaseDataDto(false, "用户不存在"));
             }
         } else {
-            notWorkModel = updateModelProducer.updateProduce(notWorkModel);
+            notWorkModel = updateModelProducer.updateAction(notWorkModel);
             notWorkMapper.update(notWorkModel);
         }
         return new BaseDto<>(new BaseDataDto(true));
@@ -55,14 +63,22 @@ public class NotWorkService {
     public BaseDto<BaseDataDto> userInvest(String loginName, long investAmount) {
         return update(loginName, new UpdateModelProducer() {
             @Override
-            public NotWorkModel createProduce(NotWorkModel notWorkModel) {
-                notWorkModel.setInvestAmount(notWorkModel.getInvestAmount() + investAmount);
+            public NotWorkModel createAction(NotWorkModel notWorkModel) {
+                notWorkModel.setInvestAmount(investAmount);
+                if (investAmount >= PRIZE_COUPON_INVEST_LIMIT) {
+                    couponAssignmentService.assign(loginName, PRIZE_COUPON_ID, null);
+                    notWorkModel.setSendCoupon(true);
+                }
                 return notWorkModel;
             }
 
             @Override
-            public NotWorkModel updateProduce(NotWorkModel notWorkModel) {
-                notWorkModel.setInvestAmount(investAmount);
+            public NotWorkModel updateAction(NotWorkModel notWorkModel) {
+                notWorkModel.setInvestAmount(notWorkModel.getInvestAmount() + investAmount);
+                if (!notWorkModel.isSendCoupon() && notWorkModel.getInvestAmount() >= PRIZE_COUPON_INVEST_LIMIT) {
+                    couponAssignmentService.assign(loginName, PRIZE_COUPON_ID, null);
+                    notWorkModel.setSendCoupon(true);
+                }
                 return notWorkModel;
             }
         });
@@ -72,13 +88,13 @@ public class NotWorkService {
         UserModel userModel = userMapper.findByLoginName(recommendedLoginName);
         return update(userModel.getReferrer(), new UpdateModelProducer() {
             @Override
-            public NotWorkModel createProduce(NotWorkModel notWorkModel) {
+            public NotWorkModel createAction(NotWorkModel notWorkModel) {
                 notWorkModel.setRecommendedRegisterAmount(1);
                 return notWorkModel;
             }
 
             @Override
-            public NotWorkModel updateProduce(NotWorkModel notWorkModel) {
+            public NotWorkModel updateAction(NotWorkModel notWorkModel) {
                 notWorkModel.setRecommendedRegisterAmount(notWorkModel.getRecommendedRegisterAmount() + 1);
                 return notWorkModel;
             }
@@ -89,13 +105,13 @@ public class NotWorkService {
         UserModel userModel = userMapper.findByLoginName(recommendedLoginName);
         return update(userModel.getReferrer(), new UpdateModelProducer() {
             @Override
-            public NotWorkModel createProduce(NotWorkModel notWorkModel) {
+            public NotWorkModel createAction(NotWorkModel notWorkModel) {
                 notWorkModel.setRecommendedIdentifyAmount(1);
                 return notWorkModel;
             }
 
             @Override
-            public NotWorkModel updateProduce(NotWorkModel notWorkModel) {
+            public NotWorkModel updateAction(NotWorkModel notWorkModel) {
                 notWorkModel.setRecommendedIdentifyAmount(notWorkModel.getRecommendedIdentifyAmount() + 1);
                 return notWorkModel;
             }
@@ -114,13 +130,13 @@ public class NotWorkService {
         }
         return update(referrerLoginName, new UpdateModelProducer() {
             @Override
-            public NotWorkModel createProduce(NotWorkModel notWorkModel) {
+            public NotWorkModel createAction(NotWorkModel notWorkModel) {
                 notWorkModel.setRecommendedInvestAmount(investAmount);
                 return notWorkModel;
             }
 
             @Override
-            public NotWorkModel updateProduce(NotWorkModel notWorkModel) {
+            public NotWorkModel updateAction(NotWorkModel notWorkModel) {
                 notWorkModel.setRecommendedInvestAmount(notWorkModel.getRecommendedInvestAmount() + investAmount);
                 return notWorkModel;
             }

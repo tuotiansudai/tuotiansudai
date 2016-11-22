@@ -3,39 +3,40 @@ package com.tuotiansudai.activity.repository.mapper;
 import com.tuotiansudai.activity.repository.model.LuxuryPrizeModel;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
 
-public class LuxuryPrizeMapperTest extends BaseMapperTest{
+public class LuxuryPrizeMapperTest extends BaseMapperTest {
     @Autowired
     private LuxuryPrizeMapper luxuryPrizeMapper;
 
     @Test
-    public void shouldCreateLuxuryPrizeIsSuccess(){
+    public void shouldCreateLuxuryPrizeIsSuccess() {
         LuxuryPrizeModel luxuryPrizeModel = fakeLuxuryPrizeModel();
         luxuryPrizeMapper.create(luxuryPrizeModel);
         LuxuryPrizeModel luxuryPrizeModelReturn = luxuryPrizeMapper.findById(luxuryPrizeModel.getId());
 
-        assertEquals(luxuryPrizeModel.getId(),luxuryPrizeModelReturn.getId());
-        assertEquals(luxuryPrizeModel.getBrand(),luxuryPrizeModelReturn.getBrand());
-        assertEquals(luxuryPrizeModel.getName(),luxuryPrizeModelReturn.getName());
-        assertEquals(luxuryPrizeModel.getPrice(),luxuryPrizeModelReturn.getPrice());
-        assertEquals(luxuryPrizeModel.getImage(),luxuryPrizeModelReturn.getImage());
-        assertEquals(luxuryPrizeModel.getInvestAmount(),luxuryPrizeModelReturn.getInvestAmount());
-        assertEquals(luxuryPrizeModel.getTenPercentOffInvestAmount(),luxuryPrizeModelReturn.getTenPercentOffInvestAmount());
-        assertEquals(luxuryPrizeModel.getTwentyPercentOffInvestAmount(),luxuryPrizeModelReturn.getTwentyPercentOffInvestAmount());
-        assertEquals(luxuryPrizeModel.getThirtyPercentOffInvestAmount(),luxuryPrizeModelReturn.getThirtyPercentOffInvestAmount());
-        assertEquals(luxuryPrizeModel.getIntroduce(),luxuryPrizeModelReturn.getIntroduce());
-        assertEquals(luxuryPrizeModel.getCreatedBy(),luxuryPrizeModelReturn.getCreatedBy());
-        assertEquals(luxuryPrizeModel.getUpdatedBy(),luxuryPrizeModelReturn.getUpdatedBy());
+        assertEquals(luxuryPrizeModel.getId(), luxuryPrizeModelReturn.getId());
+        assertEquals(luxuryPrizeModel.getBrand(), luxuryPrizeModelReturn.getBrand());
+        assertEquals(luxuryPrizeModel.getName(), luxuryPrizeModelReturn.getName());
+        assertEquals(luxuryPrizeModel.getPrice(), luxuryPrizeModelReturn.getPrice());
+        assertEquals(luxuryPrizeModel.getImage(), luxuryPrizeModelReturn.getImage());
+        assertEquals(luxuryPrizeModel.getInvestAmount(), luxuryPrizeModelReturn.getInvestAmount());
+        assertEquals(luxuryPrizeModel.getTenPercentOffInvestAmount(), luxuryPrizeModelReturn.getTenPercentOffInvestAmount());
+        assertEquals(luxuryPrizeModel.getTwentyPercentOffInvestAmount(), luxuryPrizeModelReturn.getTwentyPercentOffInvestAmount());
+        assertEquals(luxuryPrizeModel.getThirtyPercentOffInvestAmount(), luxuryPrizeModelReturn.getThirtyPercentOffInvestAmount());
+        assertEquals(luxuryPrizeModel.getIntroduce(), luxuryPrizeModelReturn.getIntroduce());
+        assertEquals(luxuryPrizeModel.getCreatedBy(), luxuryPrizeModelReturn.getCreatedBy());
+        assertEquals(luxuryPrizeModel.getUpdatedBy(), luxuryPrizeModelReturn.getUpdatedBy());
 
 
     }
 
     @Test
-    public void shouldUpdateLuxuryPrizeIsSuccess(){
+    public void shouldUpdateLuxuryPrizeIsSuccess() {
         LuxuryPrizeModel luxuryPrizeModel = fakeLuxuryPrizeModel();
         luxuryPrizeMapper.create(luxuryPrizeModel);
 
@@ -57,16 +58,16 @@ public class LuxuryPrizeMapperTest extends BaseMapperTest{
         luxuryPrizeMapper.update(luxuryPrizeModel1);
         LuxuryPrizeModel luxuryPrizeModelReturn = luxuryPrizeMapper.findById(luxuryPrizeModel1.getId());
 
-        assertEquals(luxuryPrizeModel1.getBrand(),luxuryPrizeModelReturn.getBrand());
+        assertEquals(luxuryPrizeModel1.getBrand(), luxuryPrizeModelReturn.getBrand());
 
-        assertEquals(luxuryPrizeModel1.getBrand(),luxuryPrizeModelReturn.getBrand());
-        assertEquals(luxuryPrizeModel1.getName(),luxuryPrizeModelReturn.getName());
-        assertEquals(luxuryPrizeModel1.getPrice(),luxuryPrizeModelReturn.getPrice());
-        assertEquals(luxuryPrizeModel1.getImage(),luxuryPrizeModelReturn.getImage());
+        assertEquals(luxuryPrizeModel1.getBrand(), luxuryPrizeModelReturn.getBrand());
+        assertEquals(luxuryPrizeModel1.getName(), luxuryPrizeModelReturn.getName());
+        assertEquals(luxuryPrizeModel1.getPrice(), luxuryPrizeModelReturn.getPrice());
+        assertEquals(luxuryPrizeModel1.getImage(), luxuryPrizeModelReturn.getImage());
 
     }
 
-    private LuxuryPrizeModel fakeLuxuryPrizeModel(){
+    private LuxuryPrizeModel fakeLuxuryPrizeModel() {
         LuxuryPrizeModel luxuryPrizeModel = new LuxuryPrizeModel();
         luxuryPrizeModel.setBrand("brand");
         luxuryPrizeModel.setName("name");
