@@ -1,18 +1,16 @@
 .main-frame {
   width: 100%;
   margin: 0 auto;
-  font-size: 14px;
+  font-size:14px;
 }
-
-.tour-slide {
+.tour-slide  {
   height: 400px;
   background: url("/activity/images/anxin_landing/banner-anxin.jpg") center top no-repeat;
 }
-
 .section-title {
-  border-bottom: 1px solid #e2e8f2;
-  height: 45px;
-  margin-top: 22px;
+  border-bottom:1px solid #e2e8f2;
+  height:45px;
+  margin-top:22px;
   &.title-one {
     background: url("../../images/anxin_landing/base-m-title01.png") left center no-repeat;
   }
@@ -26,35 +24,33 @@
     background: url("../../images/anxin_landing/base-m-title04.png") left center no-repeat;
   }
 }
-
 a.anxin-button {
   display: inline-block;
   width: 190px;
-  height: 42px;
+  height:42px;
   line-height: 42px;
   color: #fff;
   font-size: 20px;
   text-align: center;
   font-weight: bold;
-  margin: 0 auto;
+  margin:0 auto;
   background: #0e4393;
 
 }
-
 .landing-safety-frame {
   .column-box-box {
     &:nth-child(2n) {
       background: #f0f6ff;
       margin-top: 40px;
-      padding-bottom: 20px;
+      padding-bottom:20px;
     }
   }
   .CFCA-box {
-    width: 480px;
-    margin-top: 30px;
+    width:480px;
+    margin-top:30px;
     text-align: center;
     dt {
-      height: 46px;
+      height:46px;
       line-height: 46px;
       color: #fff;
       font-size: 22px;
@@ -62,8 +58,8 @@ a.anxin-button {
       text-align: center;
     }
     dd {
-      border: 1px solid #b6c6de;
-      height: 235px;
+      border:1px solid #b6c6de;
+      height:235px;
       background: #e6ecf4;
 
       p {
@@ -71,25 +67,25 @@ a.anxin-button {
         text-align: left;
       }
       .organize {
-        margin-top: 35px;
+        margin-top:35px;
       }
     }
   }
   .CFCA-do-what {
-    margin-top: 30px;
+    margin-top:30px;
     position: relative;
     .icon-and {
       position: absolute;
-      width: 325px;
+      width:325px;
       background: url("../../images/anxin_landing/base-icon-and.png") center top no-repeat;
-      border-bottom: 1px dashed #d5e0f2;
+      border-bottom:1px dashed #d5e0f2;
       top: 54px;
       left: 34%;
       height: 80px;
 
     }
     dl {
-      width: 480px;
+      width:480px;
       dt {
         padding-top: 115px;
         text-align: center;
@@ -103,31 +99,33 @@ a.anxin-button {
         }
       }
       dd {
-        padding-top: 15px;
+        padding-top:15px;
       }
     }
+
+
 
   }
 
   .how-to-open {
     text-align: center;
     p {
-      margin-top: 20px;
+      margin-top:20px;
       text-align: left;
     }
     .anxin-button {
-      margin-top: 20px;
+      margin-top:20px;
     }
     .advantage-list {
-      margin-top: 35px;
+      margin-top:35px;
       li {
         display: inline-block;
-        width: 33%;
+        width:33%;
         padding-top: 70px;
         text-align: center;
         color: #ff7200;
         font-size: 16px;
-        margin-bottom: 0px;
+        margin-bottom:0px;
         &:nth-child(1) {
           background: url("../../images/anxin_landing/base-an-ic-adv01.png") center top no-repeat;
         }
@@ -143,14 +141,14 @@ a.anxin-button {
 
   .for-qa-answer {
     dl {
-      margin-top: 20px;
+      margin-top:20px;
       dt {
         color: #0e4393;
-        font-size: 16px;
+        font-size:16px;
       }
       dd {
         font-size: 14px;
-        margin-bottom: 20px;
+        margin-bottom:20px;
         a {
           text-decoration: underline;
           color: #0e4393;
@@ -161,7 +159,7 @@ a.anxin-button {
 }
 
 @media (max-width: 700px) {
-  .tour-slide {
+  .tour-slide  {
     height: 170px;
     background: url("/activity/images/anxin_landing/wap-banner.jpg") center top no-repeat;
     background-size: cover;
@@ -183,33 +181,33 @@ a.anxin-button {
   }
   .landing-safety-frame {
     .column-box-box {
-      padding: 0 20px;
+      padding:0 20px;
       &:nth-child(2n) {
         margin-top: 20px;
-        padding-bottom: 20px;
+        padding-bottom:20px;
       }
     }
     .CFCA-box {
-      width: 100%;
+      width:100%;
       margin-top: 15px;
       .anxin-button {
         display: none;
       }
       dd {
-        height: auto;
-        padding-bottom: 15px;
+        height:auto;
+        padding-bottom:15px;
         .organize {
-          width: 94%;
+          width:94%;
           margin-top: 20px;
         }
       }
     }
     .CFCA-do-what {
-      .fl, .fr {
+      .fl,.fr {
         float: none;
       }
       dl {
-        width: 100%;
+        width:100%;
       }
       .icon-and {
         display: none;
@@ -217,10 +215,10 @@ a.anxin-button {
     }
     .how-to-open {
       p {
-        margin-top: 10px;
+        margin-top:10px;
       }
       .anxin-button {
-        margin-top: 5px;
+        margin-top:5px;
       }
       .advantage-list {
         li {

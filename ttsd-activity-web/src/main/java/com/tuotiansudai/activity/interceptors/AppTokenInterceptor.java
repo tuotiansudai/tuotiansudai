@@ -1,8 +1,8 @@
 package com.tuotiansudai.activity.interceptors;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.spring.security.SignInClient;
 import org.apache.log4j.Logger;

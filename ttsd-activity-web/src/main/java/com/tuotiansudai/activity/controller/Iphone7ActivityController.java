@@ -8,10 +8,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -25,13 +22,13 @@ public class Iphone7ActivityController {
     public ModelAndView loadPageData() {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/iphone7-lottery", "responsive", true);
-        modelAndView.addObject("nextLotteryInvestAmount", iphone7LotteryService.nextLotteryInvestAmount());
+        modelAndView.addObject("nextLotteryInvestAmount",iphone7LotteryService.nextLotteryInvestAmount());
         modelAndView.addObject("lotteryList", iphone7LotteryService.iphone7InvestLotteryWinnerViewList());
         modelAndView.addObject("loginName", loginName);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/myInvestDetail", method = RequestMethod.POST)
+    @RequestMapping(value="/myInvestDetail", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BasePaginationDataDto> myInvestLotteryNumber(@RequestParam(name = "loginName") String loginName,
                                                                 @RequestParam(name = "index", defaultValue = "1", required = false) int index,
@@ -45,7 +42,7 @@ public class Iphone7ActivityController {
 
     @RequestMapping(value = "/getDate")
     @ResponseBody
-    public BaseDataDto isExpireDate() {
+    public BaseDataDto isExpireDate(){
         BaseDataDto dto = new BaseDataDto();
         dto.setStatus(iphone7LotteryService.isNotExpiryDate());
         return dto;

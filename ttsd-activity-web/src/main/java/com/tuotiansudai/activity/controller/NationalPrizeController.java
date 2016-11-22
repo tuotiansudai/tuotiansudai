@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
@@ -42,14 +41,14 @@ public class NationalPrizeController {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/national-day", "responsive", true);
         Map param = nationalPrizeService.getNationalActivityInvestAmountAndCount();
-        long userInvestAmount = (long) param.get("investAmount");
-        modelAndView.addObject("myPoint", Strings.isNullOrEmpty(loginName) ? String.valueOf(0) : accountService.getUserPointByLoginName(loginName));
+        long userInvestAmount = (long)param.get("investAmount");
+        modelAndView.addObject("myPoint",Strings.isNullOrEmpty(loginName) ? String.valueOf(0) :accountService.getUserPointByLoginName(loginName));
         modelAndView.addObject("allInvestAmount", AmountConverter.convertCentToString(userInvestAmount).replaceAll("\\.00", ""));
         modelAndView.addObject("investScale", userInvestAmount >= NATIONAL_SUM_AMOUNT ? "100" : numberFormat.format((float) userInvestAmount / NATIONAL_SUM_AMOUNT * 100));
         modelAndView.addObject("userCount", param.get("investCount"));
         modelAndView.addObject("drawTime", nationalPrizeService.getDrawPrizeTime(LoginUserInfo.getMobile()));
         modelAndView.addObject("steps", generateSteps(loginName));
-        modelAndView.addObject("activityType", "national");
+        modelAndView.addObject("activityType","national");
         return modelAndView;
     }
 
