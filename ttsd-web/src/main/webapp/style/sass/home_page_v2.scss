@@ -348,6 +348,7 @@ $pointColor:#ff5400;
       box-sizing: border-box;
       padding: 35px 50px 10px;
       background-color: rgba(0,0,0,0.4);
+      background: url("../../images/homepage/base-bg-transport.png") left top repeat\9;
       color:#fff;
       i a {
         color:#ff752a;
@@ -358,14 +359,10 @@ $pointColor:#ff5400;
         margin: 0 0 20px;
         .percent {
           color: #ff7200;
-          font-size: 50px;
+          font-size: 42px;
           line-height: 1;
           font-weight: bold;
-        }
-        .num-unit {
-          font-size: 19px;
-          font-weight: bold;
-          color: #fff;
+          margin-left:-5px;
         }
       }
       .h-title {
