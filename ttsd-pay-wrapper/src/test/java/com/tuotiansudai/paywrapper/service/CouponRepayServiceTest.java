@@ -23,6 +23,7 @@ import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
+import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +45,7 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
@@ -314,6 +316,58 @@ public class CouponRepayServiceTest {
         couponRepayService.generateCouponRepay(loanModel.getId());
         verify(couponRepayMapper, times(3)).create(argumentCaptor.capture());
     }
+
+    @Test
+    public void shouldUnusedCouponGenerateCouponRepayIsOk(){
+        UserModel testGenerateUser = mockUser("testGenerateUser", "18911239999", "18911239999@163.com");
+        LoanModel loanModel = fakeLoanModel(testGenerateUser.getLoginName());
+        InvestModel investModel = mockInvest(idGenerator.generate(), testGenerateUser.getLoginName(), 50000l);
+
+        when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(Lists.newArrayList(investModel));
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(anyLong(), anyListOf(CouponType.class))).thenReturn(Lists.newArrayList());
+
+        couponRepayService.generateCouponRepay(loanModel.getId());
+
+        assertTrue(CollectionUtils.isEmpty(couponRepayMapper.findByUserCouponByInvestId(investModel.getId())));
+        ArgumentCaptor<CouponRepayModel> argumentCaptor = ArgumentCaptor.forClass(CouponRepayModel.class);
+        verify(couponRepayMapper, times(0)).create(argumentCaptor.capture());
+    }
+
+    @Test
+    public void shouldUsedCouponGenerateCouponRepayIsOk(){
+        UserModel testGenerateUser = mockUser("testGenerateUser", "18911239999", "18911239999@163.com");
+        LoanModel loanModel = fakeLoanModel(testGenerateUser.getLoginName());
+        CouponModel couponModel = mockCoupon(testGenerateUser.getLoginName(), 200000l);
+        InvestModel investModel = mockInvest(idGenerator.generate(), testGenerateUser.getLoginName(), 50000l);
+        UserCouponModel userCouponModel = mockUserCoupon(testGenerateUser.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
+
+        when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(Lists.newArrayList(investModel));
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(userCouponMapper.findUserCouponSuccessAndCouponTypeByInvestId(anyLong(), anyListOf(CouponType.class))).thenReturn(Lists.newArrayList(userCouponModel));
+        when(couponMapper.findById(anyLong())).thenReturn(couponModel);
+        when(couponRepayMapper.findByUserCouponIdAndPeriod(anyLong(), anyLong())).thenReturn(null);
+        when(couponMapper.findById(anyLong())).thenReturn(couponModel);
+        doNothing().when(couponRepayMapper).create(any(CouponRepayModel.class));
+
+        couponRepayService.generateCouponRepay(loanModel.getId());
+
+        assertTrue(CollectionUtils.isEmpty(couponRepayMapper.findByUserCouponByInvestId(investModel.getId())));
+
+        ArgumentCaptor<CouponRepayModel> argumentCaptor = ArgumentCaptor.forClass(CouponRepayModel.class);
+        verify(couponRepayMapper, times(3)).create(argumentCaptor.capture());
+
+        List<CouponRepayModel> allValues = argumentCaptor.getAllValues();
+        DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
+        assertEquals(allValues.get(0).getRepayDate(),lastRepayDate.plusDays(30).toDate());
+        assertEquals(allValues.get(0).getPeriod(),1);
+        assertEquals(allValues.get(1).getRepayDate(),lastRepayDate.plusDays(60).toDate());
+        assertEquals(allValues.get(1).getPeriod(),2);
+        assertEquals(allValues.get(2).getRepayDate(),lastRepayDate.plusDays(90).toDate());
+        assertEquals(allValues.get(2).getPeriod(),3);
+
+    }
+
 
 
     protected LoanRepayModel getFakeLoanRepayModel(long loanRepayId, long loanId, int period, long corpus, long expectedInterest, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {

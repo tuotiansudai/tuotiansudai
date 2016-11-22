@@ -5,7 +5,7 @@
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>/var/log/job-worker/ttsd-diagnosis.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>/var/log/job-worker/ttsd-message-mq-consumer.%d{yyyy-MM-dd}.log</FileNamePattern>
             <MaxHistory>30</MaxHistory>
             <CleanHistoryOnStart>false</CleanHistoryOnStart>
         </rollingPolicy>
@@ -13,7 +13,8 @@
             <pattern>[${LOG_LEVEL_PATTERN:-%5p}] [%d{yyyy-MM-dd HH:mm:ss.SSS zzz}] %C{0}:%L %method - [%t] %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</pattern>
         </encoder>
     </appender>
-    <logger name="com.tuotiansudai.diagnosis" level="DEBUG"/>
+
+    <logger name="com.tuotiansudai.mq" level="DEBUG"/>
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
