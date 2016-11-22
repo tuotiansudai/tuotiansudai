@@ -95,9 +95,9 @@ public class HttpConnector {
         try {
             connection = httpClient.connect(URL + uri, "GET");
             int responseCode = httpClient.send(connection, null);
-            logger.debug("responseCode:" + responseCode);
+            logger.info("responseCode: " + responseCode);
             if (responseCode != 200) {
-                logger.debug(CommonUtil.getString(httpClient.receive(connection)));
+                logger.info(CommonUtil.getString(httpClient.receive(connection)));
             }
 
             return httpClient.receive(connection);
@@ -135,11 +135,11 @@ public class HttpConnector {
         HttpURLConnection connection = null;
         try {
             connection = httpClient.connect(URL + uri, method);
-            logger.debug("request URL:" + URL + uri);
-            logger.debug("request method:" + method);
-            logger.debug("request content:" + request);
+            logger.info("request URL: " + URL + uri);
+            logger.info("request method: " + method);
+            logger.info("request content: " + request);
             int responseCode = httpClient.send(connection, request == null ? null : CommonUtil.getBytes(request));
-            logger.debug("responseCode:" + responseCode);
+            logger.info("responseCode: " + responseCode);
             return CommonUtil.getString(httpClient.receive(connection));
         } catch (Exception e) {
             e.printStackTrace();
@@ -153,11 +153,11 @@ public class HttpConnector {
         HttpURLConnection connection = null;
         try {
             connection = httpClient.connect(URL + uri, method);
-            logger.debug("request URL:" + URL + uri);
-            logger.debug("request method:" + method);
-            logger.debug("request content:" + request);
+            logger.info("request URL: " + URL + uri);
+            logger.info("request method: " + method);
+            logger.info("request content: " + request);
             int responseCode = httpClient.send(connection, request == null ? null : CommonUtil.getBytes(request), file, signature);
-            logger.debug("responseCode:" + responseCode);
+            logger.info("responseCode: " + responseCode);
             return CommonUtil.getString(httpClient.receive(connection));
         } catch (Exception e) {
             e.printStackTrace();
