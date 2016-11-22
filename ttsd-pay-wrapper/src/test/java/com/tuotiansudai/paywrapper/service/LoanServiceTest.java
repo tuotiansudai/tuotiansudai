@@ -8,6 +8,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
+import com.tuotiansudai.job.AnxinCreateContractJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
 import com.tuotiansudai.paywrapper.client.PayGateWrapper;
@@ -231,11 +232,18 @@ public class LoanServiceTest {
     }
 
     @Test
-    public void shouldPostLoanOutIsOk() throws PayException {
+    public void shouldPostLoanOutIsOk() throws PayException, SchedulerException {
         UserModel userModel = getUserModelTest();
         LoanModel loanModel = getFakeLoan(userModel.getLoginName(), userModel.getLoginName(), LoanStatus.RAISING, ActivityType.NORMAL);
         InvestModel investModel = new InvestModel();
+        TriggeredJobBuilder triggeredJobBuilder = mock(TriggeredJobBuilder.class);
 
+
+        when(triggeredJobBuilder.addJobData(anyObject(), anyLong())).thenReturn(triggeredJobBuilder);
+        when(triggeredJobBuilder.withIdentity(anyString(), anyString())).thenReturn(triggeredJobBuilder);
+        when(triggeredJobBuilder.replaceExistingJob(anyBoolean())).thenReturn(triggeredJobBuilder);
+        when(triggeredJobBuilder.runOnceAt(any(Date.class))).thenReturn(triggeredJobBuilder);
+        doNothing().when(triggeredJobBuilder).submit();
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(Lists.newArrayList(investModel));
         doNothing().when(repayGeneratorService).generateRepay(anyLong());
@@ -247,6 +255,7 @@ public class LoanServiceTest {
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("");
         when(redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1l);
         when(anxinSignService.createLoanContracts(anyLong())).thenReturn(new BaseDto());
+        when(jobManager.newJob(any(JobType.class), eq(AnxinCreateContractJob.class))).thenReturn(triggeredJobBuilder);
 
         loanService.postLoanOut(loanModel.getId());
         verify(smsWrapperClient, times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
