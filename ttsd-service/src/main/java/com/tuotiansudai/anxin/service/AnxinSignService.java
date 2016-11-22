@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AnxinSignService {
 

@@ -2,7 +2,7 @@ package com.tuotiansudai.console.activity.controller;
 
 import com.tuotiansudai.activity.repository.dto.MysteriousPrizeDto;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
-import com.tuotiansudai.console.activity.service.HeroRankingService;
+import com.tuotiansudai.console.activity.service.ActivityConsoleHeroRankingService;
 import com.tuotiansudai.repository.model.HeroRankingView;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.List;
 public class HeroRankingController {
 
     @Autowired
-    private HeroRankingService heroRankingService;
+    private ActivityConsoleHeroRankingService activityConsoleHeroRankingService;
 
     @RequestMapping(value = "/hero-ranking", method = RequestMethod.GET)
     public ModelAndView heroRanking(@RequestParam(value = "tradingTime", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date tradingTime) {
@@ -34,9 +34,9 @@ public class HeroRankingController {
             tradingTime = new Date();
         }
 
-        List<HeroRankingView> heroRankingViewReferrerList = heroRankingService.obtainHeroRankingReferrer(ActivityCategory.NEW_HERO_RANKING,tradingTime);
+        List<HeroRankingView> heroRankingViewReferrerList = activityConsoleHeroRankingService.obtainHeroRankingReferrer(ActivityCategory.NEW_HERO_RANKING,tradingTime);
 
-        List<HeroRankingView> heroRankingViewInvestList = heroRankingService.obtainHeroRanking(ActivityCategory.NEW_HERO_RANKING,tradingTime);
+        List<HeroRankingView> heroRankingViewInvestList = activityConsoleHeroRankingService.obtainHeroRanking(ActivityCategory.NEW_HERO_RANKING,tradingTime);
 
         long avgInvestAmount = 0;
 
@@ -52,8 +52,8 @@ public class HeroRankingController {
 
         modelAndView.addObject("avgInvestAmount", new BigDecimal(avgInvestAmount).divide(new BigDecimal(10)).setScale(0, RoundingMode.DOWN));
 
-        modelAndView.addObject("todayMysteriousPrizeDto",heroRankingService.obtainMysteriousPrizeDto(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
-        modelAndView.addObject("tomorrowMysteriousPrizeDto",heroRankingService.obtainMysteriousPrizeDto(LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+        modelAndView.addObject("todayMysteriousPrizeDto", activityConsoleHeroRankingService.obtainMysteriousPrizeDto(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+        modelAndView.addObject("tomorrowMysteriousPrizeDto", activityConsoleHeroRankingService.obtainMysteriousPrizeDto(LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
         return modelAndView;
     }
 
@@ -65,7 +65,7 @@ public class HeroRankingController {
         if (!today) {
             mysteriousPrizeDto.setPrizeDate(new DateTime().plusDays(1).toDate());
         }
-        heroRankingService.saveMysteriousPrize(mysteriousPrizeDto);
+        activityConsoleHeroRankingService.saveMysteriousPrize(mysteriousPrizeDto);
         return mysteriousPrizeDto;
     }
 }

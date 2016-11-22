@@ -4,7 +4,7 @@ package com.tuotiansudai.console.activity.controller;
 import com.tuotiansudai.activity.repository.dto.AutumnExportDto;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
-import com.tuotiansudai.console.activity.service.ExportService;
+import com.tuotiansudai.console.activity.service.ActivityConsoleExportService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
 import org.apache.log4j.Logger;
@@ -30,7 +30,7 @@ public class ExportController {
     static Logger logger = Logger.getLogger(ExportController.class);
 
     @Autowired
-    private ExportService exportService;
+    private ActivityConsoleExportService activityConsoleExportService;
 
     @RequestMapping(value = "/autumn-list", method = RequestMethod.GET)
     public ModelAndView autumnList() {
@@ -48,9 +48,9 @@ public class ExportController {
         }
         response.setContentType("application/csv");
 
-        List<AutumnExportDto> autumnExportDtos = exportService.getAutumnExport();
+        List<AutumnExportDto> autumnExportDtos = activityConsoleExportService.getAutumnExport();
 
-        List<List<String>> csvData = exportService.buildAutumnList(autumnExportDtos);
+        List<List<String>> csvData = activityConsoleExportService.buildAutumnList(autumnExportDtos);
 
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.AutumnActivityList, csvData, response.getOutputStream());
     }
@@ -65,7 +65,7 @@ public class ExportController {
         }
         response.setContentType("application/csv");
 
-        List<List<String>> csvData = exportService.iphone7LotteryStat();
+        List<List<String>> csvData = activityConsoleExportService.iphone7LotteryStat();
 
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.Iphone7LotteryStatHeader, csvData, response.getOutputStream());
     }
@@ -85,7 +85,7 @@ public class ExportController {
         }
         response.setContentType("application/csv");
 
-        List<List<String>> csvData = exportService.buildPrizeList(mobile, lotteryPrize, activityCategory, startTime, endTime);
+        List<List<String>> csvData = activityConsoleExportService.buildPrizeList(mobile, lotteryPrize, activityCategory, startTime, endTime);
 
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.LotteryPrizeHeader, csvData, response.getOutputStream());
     }

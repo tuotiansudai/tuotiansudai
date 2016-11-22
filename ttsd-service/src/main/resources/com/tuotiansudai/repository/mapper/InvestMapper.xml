@@ -295,7 +295,7 @@
             <if test="source != null">
                 AND invest.source = #{source}
             </if>
-            <if test="role != null">role
+            <if test="role != null">
                 AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name=invest.login_name AND user_role.role=
                 #{role})
             </if>
@@ -406,7 +406,7 @@
             <if test="source != null">
                 AND invest.source = #{source}
             </if>
-            <if test="role != null and role != ''">
+            <if test="role != null">
                 AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name=invest.login_name AND user_role.role=
                 #{role})
             </if>
@@ -923,11 +923,11 @@
         where loan_id = #{loanId} and status = 'SUCCESS'
     </update>
 
-    <select id="findContractFailInvest" parameterType="long" resultMap="investResultMap">
+    <select id="findNoContractNoInvest" parameterType="long" resultMap="investResultMap">
         select
         <include refid="columns"></include>
         from invest
-        where loan_id = #{loanId} and transfer_invest_id is null and status = 'SUCCESS' and (contract_no is null or contract_no = '')
+        where loan_id = #{loanId} and transfer_invest_id is null and status = 'SUCCESS' and (contract_no is null or contract_no = '') order by invest_time asc
     </select>
 
 </mapper>

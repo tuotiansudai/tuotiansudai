@@ -7,8 +7,14 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 
+
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.tuotiansudai.console.activity", "com.tuotiansudai.activity.service", "com.tuotiansudai.cache", "com.tuotiansudai.client", "com.tuotiansudai.repository", "com.tuotiansudai.spring", "com.tuotiansudai.mq"})
+@ComponentScan(basePackages = {"com.tuotiansudai.console.activity",
+        "com.tuotiansudai.cache",
+        "com.tuotiansudai.client",
+        "com.tuotiansudai.repository",
+        "com.tuotiansudai.spring",
+        "com.tuotiansudai.mq"})
 @PropertySource(value = {"classpath:ttsd-env.properties", "classpath:ttsd-biz.properties"})
 public class Application extends SpringBootServletInitializer {
 

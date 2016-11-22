@@ -53,6 +53,7 @@ def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=invest distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=jpush distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-loan-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
+    local('cd ./ttsd-message-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/ -PdiagnosisConfigPath=/workspace/v2config/default/ttsd-diagnosis/')
 
 
@@ -133,6 +134,7 @@ def deploy_pay():
 def deploy_worker():
     put(local_path='./ttsd-job-worker/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-loan-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./ttsd-message-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-diagnosis/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
     sudo('supervisorctl stop all')
@@ -141,6 +143,7 @@ def deploy_worker():
         sudo('rm -rf ttsd-job-worker-invest/')
         sudo('rm -rf ttsd-job-worker-jpush/')
         sudo('rm -rf ttsd-loan-mq-consumer/')
+        sudo('rm -rf ttsd-message-mq-consumer/')
         sudo('rm -rf ttsd-diagnosis/')
         sudo('unzip \*.zip')
         sudo('supervisorctl reload')
@@ -300,8 +303,8 @@ def get_7days_before(date_format="%Y-%m-%d"):
 def remove_tomcat_logs():
     iso_date = get_7days_before()
     with cd('/var/log/tomcat'):
-        run('rm -f *{0}.log'.format(iso_date))
-        run('rm -f *{0}.txt'.format(iso_date))
+        run('rm -f *{0}*.log'.format(iso_date))
+        run('rm -f *{0}*.txt'.format(iso_date))
 
 
 def remove_nginx_logs():

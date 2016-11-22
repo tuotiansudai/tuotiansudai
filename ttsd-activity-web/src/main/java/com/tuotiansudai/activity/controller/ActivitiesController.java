@@ -29,7 +29,8 @@ public class ActivitiesController {
     @Autowired
     private AccountService accountService;
 
-    @RequestMapping(path = "/{item:^recruit|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^recruit|material-point|integral-draw|birth-month|rank-list-app|share-reward|app-download|landing-page|invest-achievement|landing-anxin|loan-hike|heavily-courtship$}", method = RequestMethod.GET)
+
     public ModelAndView activities(@PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
@@ -66,6 +67,6 @@ public class ActivitiesController {
     @RequestMapping(value = "/get-realRealName", method = RequestMethod.GET)
     public String markRemind(@RequestParam(value = "mobile") String mobile) {
         UserModel userModel = userService.findByMobile(mobile);
-        return userModel != null ? userModel.getLoginName() : mobile;
+        return userModel != null ? userModel.getUserName() : mobile;
     }
 }

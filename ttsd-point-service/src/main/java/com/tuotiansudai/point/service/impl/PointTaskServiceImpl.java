@@ -3,7 +3,7 @@ package com.tuotiansudai.point.service.impl;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.point.dto.PointTaskDto;
+import com.tuotiansudai.point.repository.dto.PointTaskDto;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointTask;

@@ -220,11 +220,11 @@ if($questionDetailTag.length) {
             .replace(/\r/g,'\\r')
             .replace(/\s/g,'&nbsp;');
         $formAnswer.find('textarea').val(temp);
-
             $.ajax({
                 url: "/answer",
                 data: $formAnswer.serialize(),
                 type: 'POST',
+                dataType: 'json',
                 beforeSend:function() {
                     $formAnswerSubmit.prop('disabled',true);
                 }
@@ -341,6 +341,7 @@ if($createQuestion.length) {
                     url: "/question",
                     data: $formQuestion.serialize(),
                     type: 'POST',
+                    dataType: 'json',
                     beforeSend:function(xhr) {
                         $formSubmit.prop('disabled',true);
                     }
