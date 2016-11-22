@@ -86,14 +86,14 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
 
 
     @Test
-    public void shouldUserNoExistCouponGenerateLoanListIsOk() {
+    public void shouldUserNoExistCouponGenerateLoanListIsOk(){
         ReflectionTestUtils.setField(mobileAppLoanListService, "defaultFee", 0.1);
 
-        MembershipModel membershipModel = new MembershipModel(3, 2, 50000, 0.09);
+        MembershipModel membershipModel = new MembershipModel(3,2,50000,0.09);
         List<LoanModel> loanModels = Lists.newArrayList();
         loanModels.add(getFakeLoanModel("test2", ProductType.EXPERIENCE));
-        loanModels.add(getFakeLoanModel("test1", ProductType._30));
-        LoanModel loanModelNovice = getFakeLoanModel("test3", ProductType._180);
+        loanModels.add(getFakeLoanModel("test1",ProductType._30));
+        LoanModel loanModelNovice = getFakeLoanModel("test3",ProductType._180);
         loanModelNovice.setActivityType(ActivityType.NEWBIE);
         when(loanMapper.findLoanListMobileApp(any(ProductType.class), any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble(), anyInt())).thenReturn(loanModels);
         when(loanMapper.findLoanListCountMobileApp(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble())).thenReturn(2);

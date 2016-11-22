@@ -312,13 +312,13 @@ public class CouponRepayServiceTest {
         assertEquals("123", String.valueOf(value.getExpectedInterest()));
         assertEquals("12", String.valueOf(value.getExpectedFee()));
 
-        when(couponRepayMapper.findByUserCouponIdAndPeriod(anyLong(), anyLong())).thenReturn(new CouponRepayModel());
+        when(couponRepayMapper.findByUserCouponIdAndPeriod(anyLong(),anyLong())).thenReturn(new CouponRepayModel());
         couponRepayService.generateCouponRepay(loanModel.getId());
         verify(couponRepayMapper, times(3)).create(argumentCaptor.capture());
     }
 
     @Test
-    public void shouldUnusedCouponGenerateCouponRepayIsOk() {
+    public void shouldUnusedCouponGenerateCouponRepayIsOk(){
         UserModel testGenerateUser = mockUser("testGenerateUser", "18911239999", "18911239999@163.com");
         LoanModel loanModel = fakeLoanModel(testGenerateUser.getLoginName());
         InvestModel investModel = mockInvest(idGenerator.generate(), testGenerateUser.getLoginName(), 50000l);
@@ -335,7 +335,7 @@ public class CouponRepayServiceTest {
     }
 
     @Test
-    public void shouldUsedCouponGenerateCouponRepayIsOk() {
+    public void shouldUsedCouponGenerateCouponRepayIsOk(){
         UserModel testGenerateUser = mockUser("testGenerateUser", "18911239999", "18911239999@163.com");
         LoanModel loanModel = fakeLoanModel(testGenerateUser.getLoginName());
         CouponModel couponModel = mockCoupon(testGenerateUser.getLoginName(), 200000l);
@@ -359,12 +359,12 @@ public class CouponRepayServiceTest {
 
         List<CouponRepayModel> allValues = argumentCaptor.getAllValues();
         DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
-        assertEquals(allValues.get(0).getRepayDate(), lastRepayDate.plusDays(30).toDate());
-        assertEquals(allValues.get(0).getPeriod(), 1);
-        assertEquals(allValues.get(1).getRepayDate(), lastRepayDate.plusDays(60).toDate());
-        assertEquals(allValues.get(1).getPeriod(), 2);
-        assertEquals(allValues.get(2).getRepayDate(), lastRepayDate.plusDays(90).toDate());
-        assertEquals(allValues.get(2).getPeriod(), 3);
+        assertEquals(allValues.get(0).getRepayDate(),lastRepayDate.plusDays(30).toDate());
+        assertEquals(allValues.get(0).getPeriod(),1);
+        assertEquals(allValues.get(1).getRepayDate(),lastRepayDate.plusDays(60).toDate());
+        assertEquals(allValues.get(1).getPeriod(),2);
+        assertEquals(allValues.get(2).getRepayDate(),lastRepayDate.plusDays(90).toDate());
+        assertEquals(allValues.get(2).getPeriod(),3);
 
     }
 

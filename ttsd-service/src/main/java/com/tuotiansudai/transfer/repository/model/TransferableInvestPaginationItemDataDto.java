@@ -1,7 +1,7 @@
 package com.tuotiansudai.transfer.repository.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.tuotiansudai.repository.model.TransferableInvestView;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;

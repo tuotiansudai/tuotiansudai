@@ -34,10 +34,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncRespon
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.LoanService;
-import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
-import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
-import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
+import com.tuotiansudai.paywrapper.service.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -316,7 +313,7 @@ public class LoanServiceImpl implements LoanService {
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         String beforeSendStatus = redisWrapperClient.hget(redisKey, DO_PAY_REQUEST);
         ProjectTransferResponseModel resp = new ProjectTransferResponseModel();
-        if (Strings.isNullOrEmpty(beforeSendStatus) || beforeSendStatus.equals(SyncRequestStatus.FAILURE.name())) {
+        if (Strings.isNullOrEmpty(beforeSendStatus) || beforeSendStatus.equals(SyncRequestStatus.FAILURE.name())){
             try {
                 redisWrapperClient.hset(redisKey, DO_PAY_REQUEST, SyncRequestStatus.SENT.name());
                 ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newLoanOutRequest(
@@ -342,7 +339,7 @@ public class LoanServiceImpl implements LoanService {
             this.updateLoanStatus(loanId, LoanStatus.REPAYING);
 
             logger.debug("[标的放款]：处理该标的的所有投资的账务信息，标的ID:" + loanId);
-            this.processInvestForLoanOut(successInvestList, loanId);
+            this.processInvestForLoanOut(successInvestList,loanId);
 
             logger.debug("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
             this.processLoanAccountForLoanOut(loanId, loan.getAgentLoginName(), investAmountTotal);
@@ -430,14 +427,14 @@ public class LoanServiceImpl implements LoanService {
         return amount;
     }
 
-    private void processInvestForLoanOut(List<InvestModel> investList, long loanId) {
+    private void processInvestForLoanOut(List<InvestModel> investList,long loanId) {
         if (CollectionUtils.isEmpty(investList)) {
             return;
         }
 
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
         investList.forEach(invest -> {
-            String transferKey = MessageFormat.format(TRANSFER_OUT_FREEZE, invest.getId());
+            String transferKey = MessageFormat.format(TRANSFER_OUT_FREEZE,invest.getId());
             try {
                 String statusString = redisWrapperClient.hget(redisKey, transferKey);
                 if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {

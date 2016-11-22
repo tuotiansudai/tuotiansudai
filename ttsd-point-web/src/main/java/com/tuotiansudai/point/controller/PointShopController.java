@@ -5,12 +5,9 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductShowItemDto;
-import com.tuotiansudai.point.repository.model.GoodsType;
-import com.tuotiansudai.point.repository.model.PointBusinessType;
-import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
-import com.tuotiansudai.point.repository.model.UserAddressModel;
+import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
+import com.tuotiansudai.point.repository.model.*;
 import com.tuotiansudai.point.service.*;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
@@ -183,7 +180,7 @@ public class PointShopController {
     @RequestMapping(value = "/record-list", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<BasePaginationDataDto> pointSystemRecordDetail(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                                @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                                                  @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
         BasePaginationDataDto<ProductOrderViewDto> dataDto = pointExchangeService.findProductOrderListByLoginNamePagination(LoginUserInfo.getLoginName(), index, pageSize);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();

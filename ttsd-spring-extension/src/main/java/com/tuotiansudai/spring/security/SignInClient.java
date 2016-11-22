@@ -69,7 +69,7 @@ public class SignInClient {
 
             SignInResult signInResult = objectMapper.readValue(response.body().string(), SignInResult.class);
 
-            if (signInResult != null && !signInResult.isResult()) {
+            if(signInResult !=null && !signInResult.isResult() ){
                 return signInResult;
             }
 

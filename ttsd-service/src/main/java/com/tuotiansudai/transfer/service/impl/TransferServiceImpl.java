@@ -188,7 +188,7 @@ public class TransferServiceImpl implements TransferService {
         List<TransferableInvestView> items = Lists.newArrayList();
         items = investMapper.findWebTransferableApplicationPaginationByLoginName(loginName, (index-1) * pageSize, pageSize);
         if(count > 0){
-            int totalPages = (int) ((count % pageSize > 0) ? count / pageSize + 1 : count / pageSize);
+            int totalPages = (int) ((count % pageSize > 0)? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
             items = investMapper.findWebTransferableApplicationPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
         }
@@ -207,7 +207,7 @@ public class TransferServiceImpl implements TransferService {
         });
         UnmodifiableIterator<TransferableInvestPaginationItemDataDto> filter = Iterators.filter(records.iterator(), input -> {
             TransferRuleModel transferRuleModel = transferRuleMapper.find();
-            return transferRuleModel.isMultipleTransferEnabled() || (!transferRuleModel.isMultipleTransferEnabled() && transferApplicationMapper.findByInvestId(input.getInvestId()) == null);
+            return transferRuleModel.isMultipleTransferEnabled() || (!transferRuleModel.isMultipleTransferEnabled() && transferApplicationMapper.findByInvestId(input.getInvestId()) == null) ;
         });
         BasePaginationDataDto<TransferableInvestPaginationItemDataDto> baseDto = new BasePaginationDataDto(index, pageSize, count, Lists.newArrayList(filter));
         baseDto.setStatus(true);
@@ -283,7 +283,7 @@ public class TransferServiceImpl implements TransferService {
     }
 
 
-    private String calculateTransferApplicationLeftDays(long transferInvestId, int periods) {
+    private String calculateTransferApplicationLeftDays(long transferInvestId, int periods){
         InvestRepayModel currentTransferInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferInvestId, periods);
         long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), currentTransferInvestRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         return String.valueOf(leftDays > 0 ? leftDays : 0);

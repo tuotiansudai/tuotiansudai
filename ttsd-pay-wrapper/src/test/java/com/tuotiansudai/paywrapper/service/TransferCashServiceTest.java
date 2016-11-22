@@ -62,7 +62,7 @@ public class TransferCashServiceTest {
     private SystemBillMapper systemBillMapper;
 
     private void createAccountByUserId(String userId) {
-        AccountModel accountModel = new AccountModel(userId, "", "", new Date());
+        AccountModel accountModel = new AccountModel(userId,"","",new Date());
         accountModel.setAutoInvest(true);
         accountModel.setBalance(10000);
         accountModel.setFreeze(10000);

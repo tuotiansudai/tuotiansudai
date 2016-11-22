@@ -160,11 +160,11 @@ public class PromotionModel implements Serializable{
     }
 
 
-    public PromotionModel() {
+    public PromotionModel(){
 
     }
 
-    public PromotionModel(PromotionDto promotionDto) {
+    public PromotionModel(PromotionDto promotionDto){
         this.name = promotionDto.getName();
         this.imageUrl = promotionDto.getImageUrl();
         this.linkUrl = promotionDto.getLinkUrl();

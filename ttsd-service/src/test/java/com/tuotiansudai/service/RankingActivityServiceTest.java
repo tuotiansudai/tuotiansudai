@@ -1,11 +1,11 @@
 package com.tuotiansudai.service;
 
 
+import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryDto;
 import com.tuotiansudai.activity.repository.dto.UserTianDouRecordDto;
 import com.tuotiansudai.activity.repository.model.TianDouPrize;
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -30,6 +30,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})

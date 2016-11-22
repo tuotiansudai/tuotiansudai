@@ -6,6 +6,8 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.smswrapper.client.SmsClient;
+import com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper;
+import com.tuotiansudai.smswrapper.repository.mapper.TurnOffNoPasswordInvestCaptchaMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

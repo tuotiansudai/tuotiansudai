@@ -11,6 +11,7 @@ import com.tuotiansudai.dto.HomeLoanDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
 import com.tuotiansudai.repository.model.InvestModel;

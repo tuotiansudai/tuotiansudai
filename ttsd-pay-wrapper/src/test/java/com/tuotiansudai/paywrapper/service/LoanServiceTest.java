@@ -6,6 +6,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
 import com.tuotiansudai.job.AnxinCreateContractJob;
 import com.tuotiansudai.job.JobType;
@@ -39,10 +40,7 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.quartz.SchedulerException;
 import org.quartz.core.QuartzSchedulerResources;
 import org.springframework.test.context.ContextConfiguration;
@@ -54,16 +52,13 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.anyBoolean;
-import static org.mockito.Mockito.anyList;
-import static org.mockito.Mockito.anyMap;
-import static org.mockito.Mockito.anyObject;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -177,7 +172,7 @@ public class LoanServiceTest {
         return loanModel;
     }
 
-    private InvestModel getFakeInvestModel(long loanId, long investId, String loginName) {
+    private InvestModel getFakeInvestModel(long loanId,long investId,String loginName) {
         InvestModel model = new InvestModel(1, loanId, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
@@ -223,9 +218,9 @@ public class LoanServiceTest {
 
         BaseDto<PayDataDto> baseDto1 = loanService.loanOut(loanModel.getId());
         verify(paySyncClient, times(1)).send(eq(ProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
-        verify(redisWrapperClient, times(1)).setnx(anyString(), anyString());
-        verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), anyString());
-        verify(redisWrapperClient, times(2)).hget(anyString(), anyString());
+        verify(redisWrapperClient,times(1)).setnx(anyString(), anyString());
+        verify(redisWrapperClient,times(2)).hset(anyString(), anyString(), anyString());
+        verify(redisWrapperClient,times(2)).hget(anyString(), anyString());
         assertTrue(baseDto1.getData().getStatus());
 
         loanModel.setStatus(LoanStatus.RECHECK);
@@ -264,12 +259,12 @@ public class LoanServiceTest {
 
         loanService.postLoanOut(loanModel.getId());
         verify(smsWrapperClient, times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
-        verify(sendCloudMailUtil, times(1)).sendMailByLoanOut(anyString(), anyMap());
+        verify(sendCloudMailUtil,times(1)).sendMailByLoanOut(anyString(), anyMap());
 
         when(redisWrapperClient.hget(anyString(), anyString())).thenReturn(SyncRequestStatus.SUCCESS.name());
         loanService.postLoanOut(loanModel.getId());
-        verify(smsWrapperClient, times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
-        verify(sendCloudMailUtil, times(1)).sendMailByLoanOut(anyString(), anyMap());
+        verify(smsWrapperClient,times(1)).sendInvestNotify(any(InvestSmsNotifyDto.class));
+        verify(sendCloudMailUtil,times(1)).sendMailByLoanOut(anyString(), anyMap());
 
     }
 
@@ -285,7 +280,7 @@ public class LoanServiceTest {
         return userModelTest;
     }
 
-    private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus, ActivityType activityType) {
+    private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus,ActivityType activityType) {
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(111l);
         fakeLoanModel.setName("loanName");

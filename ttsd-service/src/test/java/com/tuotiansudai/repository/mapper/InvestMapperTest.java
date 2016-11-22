@@ -6,6 +6,8 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.model.TransferableInvestView;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -602,12 +604,12 @@ public class InvestMapperTest {
 
         assertEquals(investModel1.getLoginName(),heroRankingViews.get(1).getLoginName());
         assertEquals(investModel1.getAmount(),heroRankingViews.get(1).getSumAmount());
-        assertEquals(investor1.getUserName(), heroRankingViews.get(1).getUserName());
+        assertEquals(investor1.getUserName(),heroRankingViews.get(1).getUserName());
         assertEquals(investor1.getMobile(),heroRankingViews.get(1).getMobile());
 
         assertEquals(investModel2.getLoginName(),heroRankingViews.get(2).getLoginName());
         assertEquals(investModel2.getAmount(),heroRankingViews.get(2).getSumAmount());
-        assertEquals(investor2.getUserName(), heroRankingViews.get(2).getUserName());
+        assertEquals(investor2.getUserName(),heroRankingViews.get(2).getUserName());
         assertEquals(investor2.getMobile(),heroRankingViews.get(2).getMobile());
 
     }
@@ -651,7 +653,7 @@ public class InvestMapperTest {
 
         assertEquals(investModel1.getLoginName(),heroRankingViews.get(1).getLoginName());
         assertEquals(investModel1.getAmount(),heroRankingViews.get(1).getSumAmount());
-        assertEquals(investor1.getUserName(), heroRankingViews.get(1).getUserName());
+        assertEquals(investor1.getUserName(),heroRankingViews.get(1).getUserName());
         assertEquals(investor1.getMobile(),heroRankingViews.get(1).getMobile());
 
     }
@@ -708,7 +710,7 @@ public class InvestMapperTest {
 
         assertEquals(investModel1.getLoginName(),heroRankingViews.get(1).getLoginName());
         assertEquals(investModel1.getAmount(),heroRankingViews.get(1).getSumAmount());
-        assertEquals(investor1.getUserName(), heroRankingViews.get(1).getUserName());
+        assertEquals(investor1.getUserName(),heroRankingViews.get(1).getUserName());
         assertEquals(investor1.getMobile(),heroRankingViews.get(1).getMobile());
 
     }

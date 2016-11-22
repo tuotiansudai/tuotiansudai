@@ -83,9 +83,7 @@
     </resultMap>
 
     <sql id="columns">
-        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel,
-        is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements, invest_fee_rate,
-        contract_no
+        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements, invest_fee_rate, contract_no
     </sql>
 
     <insert id="create" parameterType="InvestModel">
@@ -94,8 +92,7 @@
         )
         value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source},
         #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, now(), #{investTime}, #{tradingTime},
-        #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler}, #{investFeeRate},
-        #{contractNo})
+        #{achievements, typeHandler=com.tuotiansudai.util.mybatis.InvestAchievementListTypeHandler}, #{investFeeRate}, #{contractNo})
     </insert>
 
     <update id="update" parameterType="InvestModel">
@@ -526,9 +523,9 @@
         select IFNULL(sum(amount), 0) as amount
         from invest
         where
-            status = 'SUCCESS'
-            and not exists (select 1 from user_role where user_role.login_name=invest.login_name and user_role.role= 'LOANER')
-            and trading_time between #{startTime} and #{endTime}
+        status = 'SUCCESS'
+        and not exists (select 1 from user_role where user_role.login_name=invest.login_name and user_role.role= 'LOANER')
+        and trading_time between #{startTime} and #{endTime}
     </select>
 
     <select id="sumInvestAmountIphone7" parameterType="map" resultType="long">
@@ -625,54 +622,54 @@
 
     <select id="findHeroRankingByTradingTime" parameterType="map" resultMap="heroRankingView">
         SELECT
-            invest.login_name,
-            SUM(invest.amount) sumAmount,
+        invest.login_name,
+        SUM(invest.amount) sumAmount,
         user.user_name,
-            user.mobile
+        user.mobile
         FROM
-            invest
+        invest
         INNER JOIN
-            user ON invest.login_name = user.login_name
+        user ON invest.login_name = user.login_name
         WHERE
-            invest.status = 'SUCCESS'
+        invest.status = 'SUCCESS'
         AND invest.transfer_invest_id IS NULL
         AND DATE_FORMAT(invest.trading_time, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime},'%Y-%m-%d')
         AND invest.trading_time BETWEEN #{activityBeginTime} AND #{activityEndTime}
         AND NOT EXISTS
-            (   SELECT
-                  1
-                FROM
-                  transfer_application ta
-                WHERE
-                  ta.login_name = invest.login_name
-                AND ta.application_time between #{activityBeginTime} and #{tradingTime}
-            )
+        (   SELECT
+        1
+        FROM
+        transfer_application ta
+        WHERE
+        ta.login_name = invest.login_name
+        AND ta.application_time between #{activityBeginTime} and #{tradingTime}
+        )
         GROUP BY login_name , user.user_name , user.mobile
         ORDER BY sumAmount DESC , MAX(invest.trading_time)
     </select>
 
     <select id="findHeroRankingByReferrer" parameterType="map" resultMap="heroRankingView">
         SELECT
-          rr.`referrer_login_name` AS login_name,
-          SUM(t.`amount`) AS sumAmount,
+        rr.`referrer_login_name` AS login_name,
+        SUM(t.`amount`) AS sumAmount,
         u.`user_name`,
-          u.`mobile`
+        u.`mobile`
         FROM
-          referrer_relation rr
-          JOIN invest t
-            ON rr.`login_name` = t.`login_name`
-            AND t.`status` = 'SUCCESS'
-            AND DATE_FORMAT(t.`trading_time`, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime}, '%Y-%m-%d')
-            AND t.`trading_time` BETWEEN #{activityBeginTime}
-            AND #{activityEndTime}
-          JOIN user u
-            ON rr.`referrer_login_name` = u.`login_name`
+        referrer_relation rr
+        JOIN invest t
+        ON rr.`login_name` = t.`login_name`
+        AND t.`status` = 'SUCCESS'
+        AND DATE_FORMAT(t.`trading_time`, '%Y-%m-%d') = DATE_FORMAT(#{tradingTime}, '%Y-%m-%d')
+        AND t.`trading_time` BETWEEN #{activityBeginTime}
+        AND #{activityEndTime}
+        JOIN user u
+        ON rr.`referrer_login_name` = u.`login_name`
         WHERE rr.`level` = 1
         GROUP BY rr.`referrer_login_name`,
         u.`user_name`,
-          u.`mobile`
+        u.`mobile`
         ORDER BY SUM(t.`amount`) DESC,
-          MAX(t.`trading_time`)
+        MAX(t.`trading_time`)
         LIMIT #{index}, #{pageSize}
     </select>
 
@@ -916,12 +913,12 @@
         where status = 'SUCCESS' and login_name = #{loginName} and created_time BETWEEN #{startTime} and #{endTime}
     </select>
 
-    <update id="updateContractNoById" parameterType="map">
+    <update id="updateContractNoById" parameterType="map" >
         update invest set contract_no = #{contractNo}
         where id = #{investId}
     </update>
 
-    <update id="updateAllContractNoByLoanId" parameterType="map">
+    <update id="updateAllContractNoByLoanId" parameterType="map" >
         update invest set contract_no = #{contractNo}
         where loan_id = #{loanId} and status = 'SUCCESS'
     </update>

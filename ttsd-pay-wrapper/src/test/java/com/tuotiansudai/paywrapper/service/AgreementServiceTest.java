@@ -32,7 +32,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml"})
@@ -88,7 +90,7 @@ public class AgreementServiceTest {
     }
 
     private AccountModel createAccountByUserId(String userId) {
-        AccountModel accountModel = new AccountModel(userId, "payUserId", "payAccountId", new Date());
+        AccountModel accountModel = new AccountModel(userId,"payUserId","payAccountId",new Date());
         accountModel.setBalance(10000);
         accountModel.setFreeze(10000);
         accountMapper.create(accountModel);

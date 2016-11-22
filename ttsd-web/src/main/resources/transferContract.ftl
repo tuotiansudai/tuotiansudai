@@ -19,8 +19,7 @@
         style="font-family: 宋体, SimSun;">${transferMobile}</span></span>
 </p>
 
-<p><span style="font-family: 宋体, SimSun;">身份证号：<span
-        style="font-family: 宋体, SimSun;">${transferIdentityNumber}</span></span></p>
+<p><span style="font-family: 宋体, SimSun;">身份证号：<span style="font-family: 宋体, SimSun;">${transferIdentityNumber}</span></span></p>
 
 <p><br/></p>
 

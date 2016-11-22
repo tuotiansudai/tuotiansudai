@@ -36,7 +36,7 @@
         {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"消息中心", "url":"/message/user-messages", "role":"'USER'"},
         {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
-    {"title":"安心签", "url":"/anxinSign", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"安心签", "url":"/anxinSign", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"推荐送现金", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},

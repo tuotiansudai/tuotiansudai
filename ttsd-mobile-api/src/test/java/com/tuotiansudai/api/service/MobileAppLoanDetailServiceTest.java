@@ -143,7 +143,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
         when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
-        when(loanerDetailsMapper.getByLoanId(anyLong())).thenReturn(new LoanerDetailsModel(1l, "123", "123", Gender.MALE, 1, "123", Marriage.DIVORCE, "S", "s", "1"));
+        when(loanerDetailsMapper.getByLoanId(anyLong())).thenReturn(new LoanerDetailsModel(1l,"123","123",Gender.MALE,1,"123",Marriage.DIVORCE,"S","s","1"));
         when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(new LoanDetailsModel());
         when(pledgeHouseMapper.getByLoanId(anyLong())).thenReturn(new PledgeHouseModel());
         when(contractService.getContract(anyString(),anyMap())).thenReturn("");

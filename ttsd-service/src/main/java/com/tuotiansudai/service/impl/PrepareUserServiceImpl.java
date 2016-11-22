@@ -1,6 +1,7 @@
 package com.tuotiansudai.service.impl;
 
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.PrepareRegisterRequestDto;
@@ -10,10 +11,7 @@ import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.CaptchaType;
-import com.tuotiansudai.repository.model.PrepareUserModel;
-import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -60,7 +58,7 @@ public class PrepareUserServiceImpl implements PrepareUserService {
         try {
             UserModel userModel = userService.findByMobile(requestDto.getReferrerMobile());
             PrepareUserModel prepareUserModel = new PrepareUserModel();
-            prepareUserModel.setReferrerLoginName(userModel != null ? userModel.getLoginName() : null);
+            prepareUserModel.setReferrerLoginName(userModel != null ? userModel.getLoginName():null);
             prepareUserModel.setReferrerMobile(requestDto.getReferrerMobile());
             prepareUserModel.setMobile(requestDto.getMobile());
             prepareUserModel.setCreatedTime(new Date());

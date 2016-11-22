@@ -1,11 +1,11 @@
-require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-float', 'jquery.ajax.extension', 'logintip', 'anxin_qian'], function ($, pagination, layer) {
+require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-float', 'jquery.ajax.extension', 'logintip','anxin_qian'], function($, pagination, layer) {
     var $transferDetailCon = $('.transfer-detail-content'),
         $errorTip = $('.errorTip', $transferDetailCon),
         $questionList = $('.question-list', $transferDetailCon),
         $detailRecord = $('.detail-record', $transferDetailCon),
         $isSkipAuth = $('#isSkipAuth');
 
-    $detailRecord.find('li').on('click', function () {
+    $detailRecord.find('li').on('click', function() {
         var $this = $(this),
             num = $this.index();
         $this.addClass('active').siblings('li').removeClass('active');
@@ -21,7 +21,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
         showInputErrorTips($errorTip.text());
     }
 
-    $('#transferSubmit').on('click', function (event) {
+    $('#transferSubmit').on('click', function(event) {
         event.preventDefault();
 
 
@@ -31,13 +31,13 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
             type: 'GET',
             dataType: 'json',
             contentType: 'application/json; charset=UTF-8'
-        }).fail(function (response) {
+        }).fail(function(response) {
             if (response.responseText != "") {
                 $("meta[name='_csrf']").remove();
                 $('head').append($(response.responseText));
                 var token = $("meta[name='_csrf']").attr("content");
                 var header = $("meta[name='_csrf_header']").attr("content");
-                $(document).ajaxSend(function (e, xhr, options) {
+                $(document).ajaxSend(function(e, xhr, options) {
                     xhr.setRequestHeader(header, token);
                 });
                 layer.open({
@@ -63,17 +63,17 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
             userBalance = $("#userBalance").val(),
             $transferDetail = $('.transfer-detail-content');
         $.ajax({
-            url: '/transfer/' + transferApplicationId + '/purchase-check',
-            type: 'GET',
-            dataType: 'json'
-        })
-            .done(function (data) {
+                url: '/transfer/' + transferApplicationId + '/purchase-check',
+                type: 'GET',
+                dataType: 'json'
+            })
+            .done(function(data) {
                 if (data.message == "SUCCESS") {
                     layer.open({
                         title: '温馨提示',
                         btn: ['确定'],
                         content: '该项目已被承接，请选择其他项目。',
-                        btn1: function (index, layero) {
+                        btn1: function(index, layero) {
                             layer.closeAll();
                             location.href = "/transfer-list";
                         }
@@ -83,7 +83,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
                         title: '温馨提示',
                         btn: ['确定'],
                         content: '该项目已被取消，请选择其他项目。',
-                        btn1: function (index, layero) {
+                        btn1: function(index, layero) {
                             layer.closeAll();
                             location.href = "/transfer-list";
                         }
@@ -93,7 +93,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
                         title: '温馨提示',
                         btn: ['确定'],
                         content: '该项目已被承接或已取消，请选择其他项目。',
-                        btn1: function (index, layero) {
+                        btn1: function(index, layero) {
                             layer.closeAll();
                             location.href = "/transfer-list";
                         }
@@ -108,10 +108,10 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
                         btn: ['取消', '确认'],
                         area: ['300px', '160px'],
                         content: '<p class="pad-m-tb tc">确认投资？</p>',
-                        btn1: function () {
+                        btn1: function() {
                             layer.closeAll();
                         },
-                        btn2: function () {
+                        btn2: function() {
                             var $transferForm = $('#transferForm');
                             if ($transferForm.attr('action') === '/transfer/purchase') {
 
@@ -127,10 +127,10 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
                                     return false;
                                 }
                             }
-                            if ($isSkipAuth.val() == 'true') {
+                            if($isSkipAuth.val()=='true'){
                                 $transferForm.submit();
                                 return;
-                            } else {
+                            }else{
                                 getSkipPhoneTip();
                                 return false;
                             }
@@ -139,7 +139,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
                     });
                 }
             })
-            .fail(function () {
+            .fail(function() {
                 layer.msg('请求失败');
             });
 
@@ -147,7 +147,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
     $questionList.find('dl dd').hide();
     $questionList.find('dl dd').eq(0).show();
     $questionList.find('dl dt').eq(0).find('i').addClass('fa-chevron-circle-up').removeClass('fa-chevron-circle-down')
-    $questionList.find('dt').on('click', function (index) {
+    $questionList.find('dt').on('click', function(index) {
         var $this = $(this);
         $this.next('dd').toggle();
         if ($this.next('dd').is(':hidden')) {
@@ -159,14 +159,14 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
 
 
     //loan click checkbox
-    $('.skip-group .skip-icon').on('click', function (event) {
+    $('.skip-group .skip-icon').on('click', function(event) {
         event.preventDefault();
 
         $(this).hasClass('active') ? $(this).removeClass('active') && $('#skipCheck').val('false') && $('#checkTip').show() && $('#transferSubmit').prop('disabled', true) : $(this).addClass('active') && $('#skipCheck').val('true') && $('#checkTip').hide() && $('#transferSubmit').prop('disabled', false);
     });
 
     //skip tip click chechbox
-    $('.tip-item .skip-icon').on('click', function (event) {
+    $('.tip-item .skip-icon').on('click', function(event) {
         event.preventDefault();
         $(this).hasClass('active') ? $(this).removeClass('active') && $('#tipCheck').val('false') : $(this).addClass('active') && $('#tipCheck').val('true');
     });
@@ -187,35 +187,34 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
         Down;
 
     //get phone code
-    $('#getSkipCode').on('click', function (event) {
+    $('#getSkipCode').on('click', function(event) {
         event.preventDefault();
         getCode(false);
     });
 
     //get phone code yuyin
-    $('#microPhone').on('click', function (event) {
+    $('#microPhone').on('click', function(event) {
         event.preventDefault();
         getCode(true);
     });
 
     function getCode(type) {
         $.ajax({
-            url: '/anxinSign/sendCaptcha',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                isVoice: type
-            }
-        })
-            .done(function (data) {
+                url: '/anxinSign/sendCaptcha',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    isVoice: type
+                }
+            })
+            .done(function(data) {
                 countDown();
                 Down = setInterval(countDown, 1000);
             })
-            .fail(function () {
+            .fail(function() {
                 layer.msg('请求失败，请重试或联系客服！');
             });
     }
-
     //countdown skip
     function countDown() {
         $('#getSkipCode').val(num + '秒后重新获取').prop('disabled', true);
@@ -224,44 +223,43 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
             clearInterval(Down);
             $('#getSkipCode').val('重新获取验证码').prop('disabled', false);
             $('#microPhone').css('visibility', 'visible');
-            num = 60;
-        } else {
+            num=60;
+        }else{
             num--;
         }
     }
-
     //submit data skip phone code
-    $('#getSkipBtn').on('click', function (event) {
+    $('#getSkipBtn').on('click', function(event) {
         event.preventDefault();
         var $self = $(this);
         if ($('#skipPhoneCode').val() != '') {
             $.ajax({
-                url: '/anxinSign/verifyCaptcha',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    captcha: $('#skipPhoneCode').val(),
-                    skipAuth: $('#tipCheck').val()
-                }
-            })
-                .done(function (data) {
+                    url: '/anxinSign/verifyCaptcha',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        captcha: $('#skipPhoneCode').val(),
+                        skipAuth: $('#tipCheck').val()
+                    }
+                })
+                .done(function(data) {
                     $self.removeClass('active').val('立即授权').prop('disabled', false);
-                    if (data.success) {
+                    if(data.success){
                         $('#isAnxinUser').val('true');
-                        if (data.data.message == 'skipAuth') {
+                        if(data.data.message=='skipAuth'){
                             $('#isSkipAuth').val('true');
                         }
                         $('.skip-group').hide();
                         skipSuccess();
-                    } else {
+                    }else{
                         $('#skipError').text('验证码不正确').show();
                     }
                 })
-                .fail(function () {
+                .fail(function() {
                     $self.removeClass('active').val('立即授权').prop('disabled', false);
                     layer.msg('请求失败，请重试！');
                 })
-                .always(function () {
+                .always(function() {
                     $self.addClass('active').val('授权中...').prop('disabled', true);
                 });
         } else {
@@ -273,18 +271,17 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
     function skipSuccess() {
         layer.closeAll();
         $('#skipSuccess').show();
-        setTimeout(function () {
+        setTimeout(function() {
             $('#skipSuccess').hide();
             $('#skipPhoneCode').val('');
-            num = 0;
+            num=0;
             $('#transferForm').submit();
         }, 3000)
     }
 
-    $('#skipPhoneCode').on('keyup', function (event) {
+    $('#skipPhoneCode').on('keyup', function(event) {
         event.preventDefault();
-        $(this).val() != '' ? $('#skipError').text('').hide() : $('#skipError').text('验证码不能为空').show();
-        ;
+        $(this).val() != '' ? $('#skipError').text('').hide() : $('#skipError').text('验证码不能为空').show();;
     });
 
 });
