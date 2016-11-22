@@ -16,7 +16,7 @@ public class AnxinCreateContractJob implements Job {
 
     public final static String BUSINESS_ID = "BUSINESS_ID";
 
-    public final static int HANDLE_DELAY_MINUTES = 3;
+    public final static int HANDLE_DELAY_MINUTES = 1;
 
     @Autowired
     private AnxinSignService anxinSignService;
@@ -26,9 +26,10 @@ public class AnxinCreateContractJob implements Job {
 
         try {
             long businessId = (long) context.getJobDetail().getJobDataMap().get(BUSINESS_ID);
-            logger.info(MessageFormat.format("trigger anxin create contract handle job, prepare do job. businessId:{0}", String.valueOf(businessId)));
+
+            logger.info(MessageFormat.format("trigger anxin create contract job, prepare do job. businessId:{0}", String.valueOf(businessId)));
             anxinSignService.createLoanContracts(businessId);
-            logger.info(MessageFormat.format("trigger anxin create contract handle job, execute job end. businessId:{0}", String.valueOf(businessId)));
+            logger.info(MessageFormat.format("trigger anxin create contract job, execute job end. businessId:{0}", String.valueOf(businessId)));
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
