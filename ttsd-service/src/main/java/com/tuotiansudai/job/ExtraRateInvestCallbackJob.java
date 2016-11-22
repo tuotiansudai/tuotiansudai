@@ -2,12 +2,15 @@ package com.tuotiansudai.job;
 
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
+import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ExtraRateInvestCallbackJob implements Job {
+
+    static Logger logger = Logger.getLogger(LoanRepayNotifyJob.class);
 
     public static final int RUN_INTERVAL_SECONDS = 2;
 
@@ -26,9 +29,11 @@ public class ExtraRateInvestCallbackJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        logger.info("trigger ExtraRateInvestCallbackJob job start... ");
         String trigger = redisWrapperClient.get(REPAY_EXTRA_RATE_JOB_TRIGGER_KEY);
         if (trigger != null && Integer.valueOf(trigger) > 0) {
             payWrapperClient.extraRateInvestCallback();
         }
+        logger.info("trigger ExtraRateInvestCallbackJob job end... ");
     }
 }
