@@ -132,6 +132,7 @@ public class CouponRepayServiceTest {
         couponRepayModel.setCouponId(couponModel.getId());
         couponRepayModel.setUserCouponId(userCouponModel.getId());
         couponRepayModel.setPeriod(loanRepay.getPeriod());
+        couponRepayModel.setStatus(RepayStatus.REPAYING);
 
         when(loanRepayMapper.findById(loanRepay.getId())).thenReturn(loanRepay);
         when(loanMapper.findById(loanRepay.getLoanId())).thenReturn(loanModel);
@@ -152,6 +153,7 @@ public class CouponRepayServiceTest {
         verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());
         assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
         assertEquals("45", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualInterest()));
+        assertEquals(RepayStatus.REPAYING, couponRepayModel.getStatus());
         verify(paySyncClient, times(1)).send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
         ArgumentCaptor<String> syncRequestStatusArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), syncRequestStatusArgumentCaptor.capture());
@@ -219,6 +221,7 @@ public class CouponRepayServiceTest {
         couponRepayModel.setLoginName(userModel.getLoginName());
         couponRepayModel.setCouponId(couponModel.getId());
         couponRepayModel.setUserCouponId(userCouponModel.getId());
+        couponRepayModel.setStatus(RepayStatus.REPAYING);
 
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(currentLoanRepay.getId()));
 
@@ -234,12 +237,14 @@ public class CouponRepayServiceTest {
         when(paySyncClient.send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class))).thenReturn(responseModel);
         when(redisWrapperClient.hget(redisKey, String.valueOf(couponRepayModel.getId()))).thenReturn(null);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
+        doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
         couponRepayService.repay(currentLoanRepay.getId(), true);
 
         ArgumentCaptor<UserCouponModel> userCouponModelArgumentCaptor = ArgumentCaptor.forClass(UserCouponModel.class);
         verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());
         assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
         assertEquals("45", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualInterest()));
+        assertEquals(RepayStatus.REPAYING,  couponRepayModel.getStatus());
         verify(paySyncClient, times(1)).send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
         ArgumentCaptor<String> syncRequestStatusArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), syncRequestStatusArgumentCaptor.capture());
@@ -266,6 +271,7 @@ public class CouponRepayServiceTest {
         couponRepayModel.setLoginName(userModel.getLoginName());
         couponRepayModel.setCouponId(couponModel.getId());
         couponRepayModel.setUserCouponId(userCouponModel.getId());
+        couponRepayModel.setStatus(RepayStatus.REPAYING);
 
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(currentLoanRepay.getId()));
 
