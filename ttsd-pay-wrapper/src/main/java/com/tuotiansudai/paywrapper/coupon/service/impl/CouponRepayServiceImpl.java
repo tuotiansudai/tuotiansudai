@@ -363,32 +363,34 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
         boolean isAdvanced = new DateTime(couponRepayModel.getActualRepayDate()).withTimeAtStartOfDay().isBefore(new DateTime(couponRepayModel.getRepayDate()).withTimeAtStartOfDay());
         try {
-            redisWrapperClient.hset(MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayModel.getId())), String.valueOf(couponRepayId), SyncRequestStatus.SUCCESS.name());
+            if (!couponRepayModel.getStatus().equals(RepayStatus.COMPLETE)) {
 
-            this.updateCouponRepayRepayStatus(investModel.getId(), couponRepayModel, loanRepayModel.getId(), isAdvanced);
+                redisWrapperClient.hset(MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayModel.getId())), String.valueOf(couponRepayId), SyncRequestStatus.SUCCESS.name());
 
-            amountTransfer.transferInBalance(couponRepayModel.getLoginName(),
-                    couponRepayModel.getUserCouponId(),
-                    couponRepayModel.getActualInterest(),
-                    couponModel.getCouponType().getUserBillBusinessType(), null, null);
+                this.updateCouponRepayRepayStatus(investModel.getId(), couponRepayModel, loanRepayModel.getId(), isAdvanced);
 
-            amountTransfer.transferOutBalance(couponRepayModel.getLoginName(),
-                    couponRepayModel.getUserCouponId(),
-                    couponRepayModel.getActualFee(),
-                    UserBillBusinessType.INVEST_FEE, null, null);
+                amountTransfer.transferInBalance(couponRepayModel.getLoginName(),
+                        couponRepayModel.getUserCouponId(),
+                        couponRepayModel.getActualInterest(),
+                        couponModel.getCouponType().getUserBillBusinessType(), null, null);
 
-            String detail = MessageFormat.format(SystemBillDetailTemplate.COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
-                    couponModel.getCouponType().getName(),
-                    String.valueOf(couponRepayModel.getUserCouponId()),
-                    String.valueOf(couponRepayModel.getId()),
-                    String.valueOf(couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()));
+                amountTransfer.transferOutBalance(couponRepayModel.getLoginName(),
+                        couponRepayModel.getUserCouponId(),
+                        couponRepayModel.getActualFee(),
+                        UserBillBusinessType.INVEST_FEE, null, null);
 
-            systemBillService.transferOut(couponRepayModel.getUserCouponId(), (couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()), SystemBillBusinessType.COUPON, detail);
+                String detail = MessageFormat.format(SystemBillDetailTemplate.COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
+                        couponModel.getCouponType().getName(),
+                        String.valueOf(couponRepayModel.getUserCouponId()),
+                        String.valueOf(couponRepayModel.getId()),
+                        String.valueOf(couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()));
 
-
-            logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) update user bill and system bill is success",
-                    String.valueOf(couponRepayModel.getId()),
+                systemBillService.transferOut(couponRepayModel.getUserCouponId(), (couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()), SystemBillBusinessType.COUPON, detail);
+                
+                logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) update user bill and system bill is success",
+                        String.valueOf(couponRepayModel.getId()),
                     String.valueOf(couponRepayModel.getUserCouponId())));
+            }
         } catch (Exception e) {
             redisWrapperClient.hset(MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayModel.getId())), String.valueOf(couponRepayId),  SyncRequestStatus.FAILURE.name());
 
