@@ -285,7 +285,8 @@ public class TransferServiceImpl implements TransferService {
 
     private String calculateTransferApplicationLeftDays(long transferInvestId, int periods){
         InvestRepayModel currentTransferInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferInvestId, periods);
-        long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), currentTransferInvestRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        Date repayDate = currentTransferInvestRepayModel == null ? new Date(): currentTransferInvestRepayModel.getRepayDate() == null ? new Date():currentTransferInvestRepayModel.getRepayDate();
+        long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), repayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         return String.valueOf(leftDays > 0 ? leftDays : 0);
     }
 }
