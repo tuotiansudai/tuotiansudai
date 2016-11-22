@@ -46,7 +46,8 @@ public class MessageController {
 
     @RequestMapping(value = "/user-message/{userMessageId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView messageDetail(@PathVariable long userMessageId) {
-        UserMessageModel userMessageModel = userMessageService.readMessage(userMessageId);
+        String loginName = LoginUserInfo.getLoginName();
+        UserMessageModel userMessageModel = userMessageService.readMessage(loginName, userMessageId);
         MessageCompleteDto messageCompleteDto = messageService.findMessageCompleteDtoByMessageId(userMessageModel.getMessageId());
         if (userMessageModel == null || Strings.isNullOrEmpty(userMessageModel.getContent())) {
             return new ModelAndView("/error/404");
@@ -54,7 +55,7 @@ public class MessageController {
         ModelAndView modelAndView = new ModelAndView("/user-message-detail");
         modelAndView.addObject("title", userMessageModel.getTitle());
         modelAndView.addObject("content", userMessageModel.getContent());
-        modelAndView.addObject("createdTime", new SimpleDateFormat("yyyy-MM-dd").format(userMessageModel.getCreatedTime()));
+        modelAndView.addObject("createdTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(userMessageModel.getCreatedTime()));
         modelAndView.addObject("webUrl", messageCompleteDto.getWebUrl());
         return modelAndView;
     }

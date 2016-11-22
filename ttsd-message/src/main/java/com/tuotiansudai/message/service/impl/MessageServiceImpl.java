@@ -81,9 +81,9 @@ public class MessageServiceImpl implements MessageService {
             MessageModel messageModel = createManualMessage(messageCompleteDto, importUsersId);
             messageId = messageModel.getId();
         }
-        if (messageCompleteDto.isJpush()) {
-            editManualJPush(messageCompleteDto, messageId);
-        }
+
+        editManualJPush(messageCompleteDto, messageId);
+
         return messageId;
     }
 

@@ -89,10 +89,11 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
     @Override
     public BaseResponseDto updateReadMessage(String userMessageId) {
+        String loginName = LoginUserInfo.getLoginName();
         BaseResponseDto baseDto = new BaseResponseDto();
         baseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        userMessageServices.readMessage(Long.parseLong(userMessageId));
+        userMessageServices.readMessage(loginName, Long.parseLong(userMessageId));
         return baseDto;
     }
 
@@ -102,7 +103,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
         if (null == userMessageModel || !userMessageModel.getLoginName().equals(loginName)) {
             return new UserMessageViewDto(0L, "消息不存在", "消息不存在", new Date(), null);
         }
-        userMessageServices.readMessage(userMessageId);
+        userMessageServices.readMessage(loginName, userMessageId);
         MessageModel messageModel = messageMapper.findById(userMessageModel.getMessageId());
         return new UserMessageViewDto(userMessageModel.getId(), userMessageModel.getTitle(), userMessageModel.getContent(), userMessageModel.getCreatedTime(), messageModel.getAppUrl().getPath());
     }

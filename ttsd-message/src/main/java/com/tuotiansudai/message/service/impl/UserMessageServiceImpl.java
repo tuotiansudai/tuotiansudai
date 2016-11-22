@@ -59,7 +59,7 @@ public class UserMessageServiceImpl implements UserMessageService {
 
         List<UserMessagePaginationItemDto> records = userMessageModels.stream().map(userMessageModel -> {
             MessageModel messageModel = messageMapper.findByIdBesidesDeleted(userMessageModel.getMessageId());
-            return new UserMessagePaginationItemDto(userMessageModel, messageModel.getType(), messageModel.getMessageCategory());
+            return new UserMessagePaginationItemDto(userMessageModel, messageModel);
         }).collect(Collectors.toList());
 
         BasePaginationDataDto<UserMessagePaginationItemDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);
@@ -70,8 +70,11 @@ public class UserMessageServiceImpl implements UserMessageService {
 
     @Override
     @Transactional
-    public UserMessageModel readMessage(long userMessageId) {
+    public UserMessageModel readMessage(String loginName, long userMessageId) {
         UserMessageModel userMessageModel = userMessageMapper.findById(userMessageId);
+        if (!userMessageModel.getLoginName().equals(loginName)) {
+            return new UserMessageModel(0L, loginName, "消息不存在", "消息不存在", "消息不存在");
+        }
         if (userMessageModel != null && !userMessageModel.isRead()) {
             MessageModel messageModel = messageMapper.lockById(userMessageModel.getMessageId());
             messageModel.setReadCount(messageModel.getReadCount() + 1);
@@ -89,7 +92,7 @@ public class UserMessageServiceImpl implements UserMessageService {
         List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.WEBSITE, null, null);
         for (UserMessageModel userMessageModel : userMessageModels) {
             if (!userMessageModel.isRead()) {
-                ((UserMessageService) AopContext.currentProxy()).readMessage(userMessageModel.getId());
+                ((UserMessageService) AopContext.currentProxy()).readMessage(loginName, userMessageModel.getId());
             }
         }
         return true;
