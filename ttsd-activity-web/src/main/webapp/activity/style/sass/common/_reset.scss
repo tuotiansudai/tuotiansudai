@@ -28,7 +28,7 @@ img {
 }
 
 body {
-  font-family: 'Microsoft YaHei,Helvetica, sans-serif';
+  font-family: Microsoft YaHei,Helvetica, sans-serif;
   font-size: nth($fontSize,2);
   line-height: 2;
   background: #f9f9f9;
@@ -49,6 +49,9 @@ input[type='checkbox'] {
   border:0!important;
 }
 a{
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   cursor: pointer;
   color:nth($linkColor,1);
   text-decoration: none;
