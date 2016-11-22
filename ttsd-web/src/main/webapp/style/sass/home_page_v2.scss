@@ -359,14 +359,10 @@ $pointColor:#ff5400;
         margin: 0 0 20px;
         .percent {
           color: #ff7200;
-          font-size: 50px;
+          font-size: 42px;
           line-height: 1;
           font-weight: bold;
-        }
-        .num-unit {
-          font-size: 19px;
-          font-weight: bold;
-          color: #fff;
+          margin-left:-5px;
         }
       }
       .h-title {
