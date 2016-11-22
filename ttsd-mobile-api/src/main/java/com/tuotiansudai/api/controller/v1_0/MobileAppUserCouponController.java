@@ -41,7 +41,7 @@ public class MobileAppUserCouponController extends MobileAppBaseController {
         String loginName = getLoginName();
 
         logger.debug(MessageFormat.format("mobile assign coupon user:{0},begin time:{1}", loginName, DateTime.now().toString()));
-        couponAssignmentService.assignUserCoupon(loginName, Lists.newArrayList(
+        couponAssignmentService.asyncAssignUserCoupon(loginName, Lists.newArrayList(
                 UserGroup.ALL_USER,
                 UserGroup.INVESTED_USER,
                 UserGroup.REGISTERED_NOT_INVESTED_USER,

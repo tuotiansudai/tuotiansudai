@@ -104,7 +104,7 @@ public class CouponInvestServiceImpl implements CouponInvestService {
             userCouponMapper.update(model);
         }
 
-        couponAssignmentService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
+        couponAssignmentService.asyncAssignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
                 UserGroup.INVESTED_USER,
                 UserGroup.IMPORT_USER,
                 UserGroup.AGENT,
