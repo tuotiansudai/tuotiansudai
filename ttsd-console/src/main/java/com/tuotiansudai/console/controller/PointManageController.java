@@ -235,15 +235,15 @@ public class PointManageController {
                 ProductModel productModel = productService.findProductByCouponId(id);
                 ProductDto productDto = new ProductDto
                         (productModel.getId(),
-                                GoodsType.COUPON, loginName,
-                                exchangeCouponDto.getId(),
-                                exchangeCouponDto.getCouponType().name(),
-                                exchangeCouponDto.getSeq(),
-                                exchangeCouponDto.getImageUrl(),
-                                exchangeCouponDto.getExchangePoint(),
-                                exchangeCouponDto.getTotalCount(),
-                                exchangeCouponDto.getStartTime(),
-                                exchangeCouponDto.getEndTime());
+                        GoodsType.COUPON, loginName,
+                        exchangeCouponDto.getId(),
+                        exchangeCouponDto.getCouponType().name(),
+                        exchangeCouponDto.getSeq(),
+                        exchangeCouponDto.getImageUrl(),
+                        exchangeCouponDto.getExchangePoint(),
+                        exchangeCouponDto.getTotalCount(),
+                        exchangeCouponDto.getStartTime(),
+                        exchangeCouponDto.getEndTime());
                 productService.updateProduct(productDto);
             } else {
                 ExchangeCouponDto exchangeCouponDtoView  = couponService.createCoupon(loginName, exchangeCouponDto);
