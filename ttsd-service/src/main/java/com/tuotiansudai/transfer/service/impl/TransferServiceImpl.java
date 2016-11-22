@@ -19,6 +19,7 @@ import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationItemDataDto;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.CalculateLeftDays;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.log4j.Logger;
@@ -127,7 +128,8 @@ public class TransferServiceImpl implements TransferService {
             TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(transferApplicationRecordDto);
             LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
             InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
-            transferApplicationPaginationItemDataDto.setLeftDays(InterestCalculator.calculateTransferApplicationLeftDays(currentInvestRepayModel));
+            Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+            transferApplicationPaginationItemDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
             return transferApplicationPaginationItemDataDto;
         });
 
@@ -198,7 +200,8 @@ public class TransferServiceImpl implements TransferService {
                 transferableInvestPaginationItemDataDto.setLeftPeriod(leftPeriod);
                 LoanModel loanModel = loanMapper.findById(input.getLoanId());
                 InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(input.getInvestId(), loanModel.getPeriods());
-                transferableInvestPaginationItemDataDto.setLeftDays(InterestCalculator.calculateTransferApplicationLeftDays(currentInvestRepayModel));
+                Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+                transferableInvestPaginationItemDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
             }
             return transferableInvestPaginationItemDataDto;
         });
@@ -230,7 +233,8 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setBaseRate(loanModel.getBaseRate() * 100);
         transferApplicationDetailDto.setLeftPeriod(transferApplicationModel.getLeftPeriod());
         InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), loanModel.getPeriods());
-        transferApplicationDetailDto.setLeftDays(InterestCalculator.calculateTransferApplicationLeftDays(currentInvestRepayModel));
+        Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+        transferApplicationDetailDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
         transferApplicationDetailDto.setDueDate(investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), loanModel.getPeriods()).getRepayDate());
         transferApplicationDetailDto.setNextRefundDate(investRepayModel.getRepayDate());
         transferApplicationDetailDto.setLoanType(loanModel.getType().getRepayType());

@@ -34,6 +34,7 @@ import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.CalculateLeftDays;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -44,6 +45,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -109,7 +111,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
                     TransferApplicationRecordResponseDataDto transferApplicationRecordResponseDataDto = new TransferApplicationRecordResponseDataDto(transferApplicationRecordDto);
                     LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
                     InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
-                    transferApplicationRecordResponseDataDto.setLeftDays(InterestCalculator.calculateTransferApplicationLeftDays(currentInvestRepayModel));
+                    Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+                    transferApplicationRecordResponseDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
                     return transferApplicationRecordResponseDataDto;
                 }
             });
@@ -196,7 +199,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
                 TransferApplicationRecordResponseDataDto transferApplicationRecordResponseDataDto = new TransferApplicationRecordResponseDataDto(transferApplicationRecordDto);
                 LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
                 InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getInvestId(), loanModel.getPeriods());
-                transferApplicationRecordResponseDataDto.setLeftDays(InterestCalculator.calculateTransferApplicationLeftDays(currentInvestRepayModel));
+                Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+                transferApplicationRecordResponseDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
                 return transferApplicationRecordResponseDataDto;
             }).collect(Collectors.toList());
             transferApplicationResponseDataDto.setTransferApplication(transferApplication);
@@ -284,7 +288,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.valueOf(transferApplicationId));
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
         InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationDetailDto.getTransferInvestId(), loanModel.getPeriods());
-        transferApplicationDetailResponseDataDto.setLeftDays(InterestCalculator.calculateTransferApplicationLeftDays(currentInvestRepayModel));
+        Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+        transferApplicationDetailResponseDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(transferApplicationDetailResponseDataDto);

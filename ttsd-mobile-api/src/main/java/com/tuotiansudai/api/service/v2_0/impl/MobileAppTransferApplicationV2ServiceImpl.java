@@ -23,6 +23,7 @@ import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.CalculateLeftDays;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -117,7 +119,8 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
                 LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(invest.getLoanId());
                 dto.setLeftPeriod(loanRepayModel == null ? "0" : String.valueOf(investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(invest.getId(), loanRepayModel.getPeriod())));
                 InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(invest.getId(), loanModel.getPeriods());
-                dto.setLeftDays(InterestCalculator.calculateTransferApplicationLeftDays(currentInvestRepayModel));
+                Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+                dto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
                 list.add(dto);
             }
         }

@@ -248,10 +248,4 @@ public class InterestCalculator {
                 divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 
-    public static String calculateTransferApplicationLeftDays(InvestRepayModel currentTransferInvestRepayModel){
-        Date repayDate = currentTransferInvestRepayModel == null ? new Date(): currentTransferInvestRepayModel.getRepayDate() == null ? new Date():currentTransferInvestRepayModel.getRepayDate();
-        long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), repayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        return String.valueOf(leftDays > 0 ? leftDays : 0);
-    }
-
 }

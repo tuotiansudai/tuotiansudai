@@ -19,6 +19,7 @@ import com.tuotiansudai.transfer.repository.model.TransferInvestDetailDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
+import com.tuotiansudai.util.CalculateLeftDays;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
@@ -320,7 +321,8 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             }
             LoanModel loanModel = loanMapper.findById(input.getLoanId());
             InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(input.getTransferInvestId(), loanModel.getPeriods());
-            transferApplicationPaginationItemDataDto.setLeftDays(InterestCalculator.calculateTransferApplicationLeftDays(currentInvestRepayModel));
+            Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+            transferApplicationPaginationItemDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
             return transferApplicationPaginationItemDataDto;
         });
 
