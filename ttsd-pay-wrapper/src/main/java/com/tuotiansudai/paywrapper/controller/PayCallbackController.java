@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.AgreementBusinessType;
+import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.repository.model.UmPayService;
 import com.tuotiansudai.paywrapper.service.*;
 import org.apache.log4j.Logger;
@@ -55,6 +56,9 @@ public class PayCallbackController {
 
     @Autowired
     private MembershipPurchasePayService membershipPurchasePayService;
+
+    @Autowired
+    private CouponRepayService couponRepayService;
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
@@ -241,6 +245,19 @@ public class PayCallbackController {
         String responseData = membershipPurchasePayService.purchaseCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
+
+    @RequestMapping(value = "/coupon_repay_notify", method = RequestMethod.GET)
+    public ModelAndView couponRepayNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        try {
+            String responseData = this.couponRepayService.couponRepayCallback(paramsMap, request.getQueryString());
+            return new ModelAndView("/callback_response", "content", responseData);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Coupon Repay] coupon repay callback is failed (queryString = {0})", request.getQueryString()), e);
+        }
+        return new ModelAndView("/callback_response", "content", "");
+    }
+
 
     private Map<String, String> parseRequestParameters(HttpServletRequest request) {
         Map<String, String> paramsMap = Maps.newHashMap();

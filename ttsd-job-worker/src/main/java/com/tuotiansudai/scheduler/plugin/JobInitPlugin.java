@@ -69,6 +69,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.CheckUserBalanceMonthly.name().equals(schedulerName)) {
             createCheckUserBalanceJob();
         }
+        if (JobType.CouponRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
+            createCouponRepayCallBackJobIfNotExist();
+        }
         if (JobType.PlatformBalanceLowNotify.name().equals(schedulerName)) {
             platformBalanceLowNotifyJob();
         }
@@ -76,7 +79,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.CalculateTravelLuxuryPrize.name().equalsIgnoreCase(schedulerName)) {
             deleteCalculateTravelLuxuryPrizeJob();
         }
-
     }
 
     @Override
@@ -206,6 +208,23 @@ public class JobInitPlugin implements SchedulerPlugin {
             jobManager.newJob(JobType.CheckUserBalanceMonthly, CheckUserBalanceJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 30 1 ? * 7#1 *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.CheckUserBalanceMonthly.name(), JobType.CheckUserBalanceMonthly.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createCouponRepayCallBackJobIfNotExist() {
+        final JobType jobType = JobType.CouponRepayCallBack;
+        final String jobGroup = CouponRepayNotifyCallbackJob.JOB_GROUP;
+        final String jobName = CouponRepayNotifyCallbackJob.JOB_NAME;
+        try {
+            jobManager.newJob(jobType, CouponRepayNotifyCallbackJob.class)
+                    .replaceExistingJob(true)
+                    .runWithSchedule(SimpleScheduleBuilder
+                            .repeatSecondlyForever(CouponRepayNotifyCallbackJob.RUN_INTERVAL_SECONDS)
+                            .withMisfireHandlingInstructionIgnoreMisfires())
+                    .withIdentity(jobGroup, jobName)
+                    .submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
