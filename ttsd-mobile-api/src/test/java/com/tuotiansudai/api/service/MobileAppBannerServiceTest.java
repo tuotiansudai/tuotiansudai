@@ -1,12 +1,12 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.mapper.BannerMapper;
+import com.tuotiansudai.activity.repository.model.BannerModel;
 import com.tuotiansudai.api.dto.v1_0.BannerResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppBannerServiceImpl;
-import com.tuotiansudai.repository.mapper.BannerMapper;
-import com.tuotiansudai.repository.model.BannerModel;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;

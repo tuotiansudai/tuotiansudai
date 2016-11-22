@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.activity.controller;
 
-import com.tuotiansudai.console.activity.dto.LuxuryPrizeRequestDto;
-import com.tuotiansudai.console.activity.service.LuxuryPrizeService;
+import com.tuotiansudai.activity.repository.dto.LuxuryPrizeRequestDto;
+import com.tuotiansudai.console.activity.service.ActivityConsoleLuxuryPrizeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -18,7 +18,7 @@ import java.util.Date;
 @RequestMapping(value = "/activity-console/activity-manage/luxury")
 public class LuxuryPrizeController {
     @Autowired
-    private LuxuryPrizeService luxuryPrizeService;
+    private ActivityConsoleLuxuryPrizeService activityConsoleLuxuryPrizeService;
 
     @RequestMapping(value = "/user-luxury-list")
     public ModelAndView userLuxuryPrizeList(@RequestParam(value = "mobile", required = false) String mobile,
@@ -27,7 +27,7 @@ public class LuxuryPrizeController {
                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
         int pageSize = 10;
         ModelAndView mv = new ModelAndView("/user-luxury-list");
-        BaseDto<BasePaginationDataDto> baseDto = luxuryPrizeService.obtainUserLuxuryPrizeList(mobile, startTime, endTime, index, pageSize);
+        BaseDto<BasePaginationDataDto> baseDto = activityConsoleLuxuryPrizeService.obtainUserLuxuryPrizeList(mobile, startTime, endTime, index, pageSize);
         mv.addObject("data", baseDto);
         mv.addObject("index", index);
         mv.addObject("pageSize", pageSize);
@@ -40,7 +40,7 @@ public class LuxuryPrizeController {
     @RequestMapping(value = "/luxury-prize-list")
     public ModelAndView luxuryPrizeList(){
         ModelAndView mv = new ModelAndView("/luxury-prize-list");
-        BaseDto<BasePaginationDataDto> dto = luxuryPrizeService.obtainLuxuryPrizeList();
+        BaseDto<BasePaginationDataDto> dto = activityConsoleLuxuryPrizeService.obtainLuxuryPrizeList();
         mv.addObject("data",dto);
         return mv;
     }
@@ -48,14 +48,14 @@ public class LuxuryPrizeController {
     @RequestMapping(value = "/{luxuryPrizeId}/edit",method = RequestMethod.GET)
     public ModelAndView editLuxuryPrize(@PathVariable long luxuryPrizeId){
         ModelAndView mv = new ModelAndView("/luxury-prize-edit");
-        mv.addObject("dto",luxuryPrizeService.obtainLuxuryPrizeDto(luxuryPrizeId));
+        mv.addObject("dto", activityConsoleLuxuryPrizeService.obtainLuxuryPrizeDto(luxuryPrizeId));
         return mv;
     }
 
     @RequestMapping(value="/edit",method = RequestMethod.POST)
     public ModelAndView editLuxuryPrize(@Valid @ModelAttribute LuxuryPrizeRequestDto luxuryPrizeRequestDto){
         String loginName = LoginUserInfo.getLoginName();
-        luxuryPrizeService.editLuxuryPrize(luxuryPrizeRequestDto,loginName);
+        activityConsoleLuxuryPrizeService.editLuxuryPrize(luxuryPrizeRequestDto,loginName);
         return new ModelAndView("redirect:/activity-console/activity-manage/luxury/luxury-prize-list");
     }
 
