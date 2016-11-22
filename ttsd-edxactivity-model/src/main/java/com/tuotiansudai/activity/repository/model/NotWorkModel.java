@@ -8,8 +8,6 @@ public class NotWorkModel implements Serializable {
     private String userName;
     private String mobile;
     private long investAmount;
-    private int recommendedRegisterAmount;
-    private int recommendedIdentifyAmount;
     private long recommendedInvestAmount;
     private boolean sendCoupon;
 
@@ -61,22 +59,6 @@ public class NotWorkModel implements Serializable {
 
     public void setInvestAmount(long investAmount) {
         this.investAmount = investAmount;
-    }
-
-    public int getRecommendedRegisterAmount() {
-        return recommendedRegisterAmount;
-    }
-
-    public void setRecommendedRegisterAmount(int recommendedRegisterAmount) {
-        this.recommendedRegisterAmount = recommendedRegisterAmount;
-    }
-
-    public int getRecommendedIdentifyAmount() {
-        return recommendedIdentifyAmount;
-    }
-
-    public void setRecommendedIdentifyAmount(int recommendedIdentifyAmount) {
-        this.recommendedIdentifyAmount = recommendedIdentifyAmount;
     }
 
     public long getRecommendedInvestAmount() {

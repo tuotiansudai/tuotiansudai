@@ -12,17 +12,14 @@
         <result column="user_name" property="userName"/>
         <result column="mobile" property="mobile"/>
         <result column="invest_amount" property="investAmount"/>
-        <result column="recommended_register_amount" property="recommendedRegisterAmount"/>
-        <result column="recommended_identify_amount" property="recommendedIdentifyAmount"/>
         <result column="recommended_invest_amount" property="recommendedInvestAmount"/>
         <result column="send_coupon" property="sendCoupon"/>
     </resultMap>
 
     <insert id="create" parameterType="NotWorkModel" useGeneratedKeys="true" keyProperty="id">
-        insert into `edxactivity`.`not_work` (login_name, user_name, mobile, invest_amount, recommended_register_amount,
-        recommended_identify_amount, recommended_invest_amount, send_coupon)
-        values (#{loginName}, #{userName}, #{mobile}, #{investAmount}, #{recommendedRegisterAmount}, #{recommendedIdentifyAmount},
-        #{recommendedInvestAmount}, #{sendCoupon})
+        insert into `edxactivity`.`not_work` (login_name, user_name, mobile, invest_amount, recommended_invest_amount,
+        send_coupon)
+        values (#{loginName}, #{userName}, #{mobile}, #{investAmount}, #{recommendedInvestAmount}, #{sendCoupon})
     </insert>
 
     <update id="update" parameterType="NotWorkModel">
@@ -32,8 +29,6 @@
         user_name = #{userName},
         mobile = #{mobile},
         invest_amount = #{investAmount},
-        recommended_register_amount = #{recommendedRegisterAmount},
-        recommended_identify_amount = #{recommendedIdentifyAmount},
         recommended_invest_amount = #{recommendedInvestAmount},
         send_coupon = #{sendCoupon}
         where
