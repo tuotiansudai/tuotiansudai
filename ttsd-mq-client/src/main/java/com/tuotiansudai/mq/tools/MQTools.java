@@ -7,6 +7,7 @@ import com.aliyun.mns.model.PagingListResult;
 import com.aliyun.mns.model.QueueMeta;
 import com.aliyun.mns.model.SubscriptionMeta;
 import com.aliyun.mns.model.TopicMeta;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.mq.client.model.MessageTopicQueue;
 
@@ -28,6 +29,10 @@ public class MQTools {
         Properties properties = new Properties();
         properties.load(new FileInputStream(configFile));
 
+        String enabled = properties.getProperty("aliyun.mns.enabled");
+        if (!"true".equals(enabled)) {
+            return;
+        }
         String endPoint = properties.getProperty("aliyun.mns.endpoint");
         String accessKeyId = properties.getProperty("aliyun.mns.accessKeyId");
         String accessKeySecret = properties.getProperty("aliyun.mns.accessKeySecret");
@@ -46,6 +51,9 @@ public class MQTools {
                 }
                 initSubscription(mnsClient, messageTopic);
             });
+
+            initIndependentQueue(mnsClient);
+
             mnsClient.close();
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -87,6 +95,15 @@ public class MQTools {
         mnsClient.createTopic(topicMeta);
     }
 
+    private static void initIndependentQueue(MNSClient mnsClient) {
+        List<String> existingQueueNames = listExistingQueues(mnsClient).stream()
+                .map(QueueMeta::getQueueName)
+                .collect(Collectors.toList());
+        Stream.of(MessageQueue.values())
+                .filter(messageQueue -> !existingQueueNames.contains(messageQueue.getQueueName()))
+                .forEach(messageQueue -> createQueue(mnsClient, messageQueue.getQueueName()));
+    }
+
     private static void initSubscription(MNSClient mnsClient, MessageTopic messageTopic) {
         CloudTopic topic = mnsClient.getTopicRef(messageTopic.getTopicName());
         // queue which need subscription
@@ -121,6 +138,14 @@ public class MQTools {
             if (existingSubscriptions != null) {
                 return existingSubscriptions;
             }
+        }
+        return new ArrayList<>();
+    }
+
+    private static List<QueueMeta> listExistingQueues(MNSClient mnsClient) {
+        PagingListResult<QueueMeta> queueMetaPagingListResult = mnsClient.listQueue("", "", 1000);
+        if (queueMetaPagingListResult != null && queueMetaPagingListResult.getResult() != null) {
+            return queueMetaPagingListResult.getResult();
         }
         return new ArrayList<>();
     }

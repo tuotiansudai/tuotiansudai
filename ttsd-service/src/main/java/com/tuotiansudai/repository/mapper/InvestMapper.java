@@ -264,6 +264,6 @@ public interface InvestMapper {
     void updateAllContractNoByLoanId(@Param(value = "loanId") Long loanId,
                                      @Param(value = "contractNo") String contractNo);
 
-    List<InvestModel> findContractFailInvest(@Param(value = "loanId") long loanId);
+    List<InvestModel> findNoContractNoInvest(@Param(value = "loanId") long loanId);
 
 }
