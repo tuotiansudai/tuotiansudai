@@ -95,7 +95,7 @@ public class NotWorkAspect {
         }
     }
 
-    @AfterReturning(value = "registerAccountPointcut()", returning = "returnValue")
+    @AfterReturning(value = "execution(public boolean *.registerAccount(..))", returning = "returnValue")
     public void afterIdentify(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
         Object dto = joinPoint.getArgs()[0];
         String loginName = "";
