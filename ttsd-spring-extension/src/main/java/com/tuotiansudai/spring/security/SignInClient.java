@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.squareup.okhttp.*;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.MessageFormat;
 
@@ -37,9 +35,6 @@ public class SignInClient {
 
     @Autowired
     private HttpServletRequest httpServletRequest;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     public SignInClient() {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -95,18 +90,7 @@ public class SignInClient {
                 .post(requestBody);
 
         try {
-            SignInResult signInResult = objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
-
-            HttpSession session = httpServletRequest.getSession(false);
-            logger.debug(MessageFormat.format("[Login] user({0}) original session id({1}) new session id({2})",
-                    signInResult.getUserInfo().getLoginName(),
-                    session != null ? session.getId() : null,
-                    signInResult.getToken()));
-            if (session != null) {
-                redisWrapperClient.setex(session.getId(), 30, signInResult.getToken());
-            }
-
-            return signInResult;
+            return objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] login no password failed (user={0} source={1})", username, source.name()));
         }
@@ -155,7 +139,6 @@ public class SignInClient {
 
     public SignInResult verifyToken(String token, Source source) {
         if (Strings.isNullOrEmpty(token)) {
-            logger.info("[sign in client] verified token is empty");
             return null;
         }
 
@@ -163,11 +146,7 @@ public class SignInClient {
                 .url(MessageFormat.format("http://{0}:{1}/session/{2}?source={3}", signInHost, signInPort, token, source))
                 .get();
         try {
-            SignInResult signInResult = objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
-            if (!signInResult.isResult()) {
-                logger.info(MessageFormat.format("[sign in client] session({0}) is invalid", token));
-            }
-            return signInResult;
+            return objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
         } catch (IOException e) {
             logger.warn("[sign in client] verify token failed", e);
         }

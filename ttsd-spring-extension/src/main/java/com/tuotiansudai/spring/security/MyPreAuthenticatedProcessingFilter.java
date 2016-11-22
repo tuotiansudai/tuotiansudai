@@ -1,6 +1,5 @@
 package com.tuotiansudai.spring.security;
 
-import com.google.common.base.Strings;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -29,13 +28,11 @@ public class MyPreAuthenticatedProcessingFilter extends GenericFilterBean {
             logger.debug("Checking secure context token: " + SecurityContextHolder.getContext().getAuthentication());
         }
 
-        if (!Strings.isNullOrEmpty(LoginUserInfo.getToken())) {
-            SignInResult signInResult = signInClient.verifyToken(LoginUserInfo.getToken(), Source.WEB);
-            if (signInResult == null || !signInResult.isResult()) {
-                this.myAuthenticationUtil.removeAuthentication();
-            }
-
+        SignInResult signInResult = signInClient.verifyToken(LoginUserInfo.getToken(), Source.WEB);
+        if (signInResult == null || !signInResult.isResult()) {
+            this.myAuthenticationUtil.removeAuthentication();
         }
+
         chain.doFilter(request, response);
     }
 }

@@ -3,7 +3,6 @@ package com.tuotiansudai.spring.security;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.MyUser;
@@ -18,9 +17,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.text.MessageFormat;
 import java.util.List;
 
 @Component
