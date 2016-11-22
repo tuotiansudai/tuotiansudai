@@ -67,6 +67,10 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
         });
 
         function check() {
+            if ($('.message-title').val().length <= 0) {
+                alert("标题不能为空");
+                return false;
+            }
             if ($('.message-title').val().length > 40) {
                 alert("标题超过40字");
                 return false;
@@ -97,6 +101,11 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
             }
             if (!selectReceiver) {
                 alert("没有选择收件人");
+                return false;
+            }
+            var messageContent = getContentTxt();
+            if (messageContent.length <= 0) {
+                alert("文本内容不能为空");
                 return false;
             }
             return true;

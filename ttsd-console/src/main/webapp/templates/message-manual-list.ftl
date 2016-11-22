@@ -12,7 +12,7 @@
             <span class="txt"></span>
         </div>
     </div>
-    <form action="/message-manage/message-manual-list" class="form-inline query-build">
+    <form action="/message-manage/manual-message-list" class="form-inline query-build">
         <div class="form-group">
             <label>标题</label>
             <input type='text' class="form-control" id="title" name="title" value="${title!}"/>
