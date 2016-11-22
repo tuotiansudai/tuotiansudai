@@ -8,6 +8,7 @@ module.exports = function(grunt) {
             basePath: '../',
             baseSassPath: 'src/main/webapp/style/sass',
             baseCssPath: 'src/main/webapp/style/css',
+            baseCssPathTest: 'src/main/webapp/style/csstest',
             base64CssPath: 'src/main/webapp/style/base64',
             baseCssMinPath: 'src/main/webapp/style/dest',
             baseJsPath: 'src/main/webapp/js',
@@ -65,9 +66,42 @@ module.exports = function(grunt) {
                 }]
             }
         },
+        // autoprefixer: {
+        //     options: {
+        //         // Task-specific options go here.
+        //         browserslist:['last 2 versions','chrome','ie'],
+        //         map:true,
+        //         safe: true
+        //     },
+        //     mutiple_files: {
+        //         // 对项目所有文件的配置
+        //         expand:true,
+        //         flatten: true, //是否取代原先文件名
+        //         src:'<%= meta.baseCssPath %>/*.css',
+        //         dest:'<%= meta.baseCssPathTest %>/'
+        //     }
+        // },
+
+        autoprefixer : {
+            dist : {
+                files : { '<%= meta.baseCssPathTest %>/*.css' : '<%= meta.baseCssPath %>/*.css' } }
+        },
+        postcss: {
+            options: {
+                processors: [
+                    autoprefixer({ browsers: ['last 2 version'] }).postcss
+                ]
+            },
+            multiple_files: {
+                expand: true,
+                flatten: true,
+                src: '<%= meta.baseCssPath %>/*.css',
+                dest: '<%= meta.baseCssPathTest %>/'
+            }
+        },
         dataUri: {
             dist: {
-                src: ['<%= meta.baseCssPath %>/*.css'],
+                src: ['<%= meta.baseCssPathTest %>/*.css'],
                 dest: '<%= meta.base64CssPath %>',
                 options: {
                     target: ['<%=meta.baseImagePath %>/**/**/*.*'],
@@ -90,6 +124,7 @@ module.exports = function(grunt) {
                 }]
             }
         },
+
         watch: {
             sass: {
                 files: [
@@ -105,6 +140,12 @@ module.exports = function(grunt) {
                     '<%= meta.baseCssPath %>/*.css'
                 ],
                 tasks: ['dataUri']
+            },
+            prefixer:{
+                files: [
+                    '<%= meta.baseCssPath %>/*.css'
+                ],
+                tasks: ['autoprefixer']
             },
             cssmin: {
                 files: ['<%= meta.base64CssPath %>/*.css'],
@@ -153,6 +194,7 @@ module.exports = function(grunt) {
                 ]
             }
         }
+
     });
 
     //转化成base64
@@ -162,13 +204,17 @@ module.exports = function(grunt) {
 
     //grunt.registerTask('imagemin', ['newer:imagemin']);
 
-    // 默认被执行的任务列表。
+    grunt.registerTask('prefixer', ['autoprefixer:mutiple_files']);
+    grunt.registerTask('postcss', ['postcss']);
+
+
     // 默认被执行的任务列表。
     grunt.registerTask('default', [
         'clean',
         'uglify',
         'sass',
         'cssmin',
+        'prefixer',
         'base64',
         'connect',
         'watch'
