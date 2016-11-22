@@ -158,6 +158,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
             }
 
         }
+
     }
 
     @Override
@@ -214,8 +215,8 @@ public class ExtraRateServiceImpl implements ExtraRateService {
         String orderIdStr = callbackRequestModel.getOrderId().split("X")[0];
         long orderId = Long.parseLong(orderIdStr);
         InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(orderId);
-        long amount = investExtraRateModel.getActualInterest() - investExtraRateModel.getActualFee();
-        if (callbackRequestModel.isSuccess() || amount == 0)
+        redisWrapperClient.hset(MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(orderId)), String.valueOf(orderId), SyncRequestStatus.SUCCESS.name());
+        if (callbackRequestModel.isSuccess())
             investRateService.updateExtraRateData(investExtraRateModel, investExtraRateModel.getActualInterest(), investExtraRateModel.getActualFee());
     }
 

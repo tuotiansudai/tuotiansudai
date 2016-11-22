@@ -268,19 +268,35 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     }
 
     private void updateCouponRepay(long actualInterest, long actualFee, long investId, final CouponRepayModel couponRepayModel, long loanRepayId, boolean isAdvanced) {
-
         couponRepayModel.setActualInterest(actualInterest);
         couponRepayModel.setActualFee(actualFee);
         couponRepayModel.setRepayAmount(actualInterest - actualFee);
         couponRepayModel.setActualRepayDate(new Date());
-        couponRepayModel.setStatus(RepayStatus.COMPLETE);
+        couponRepayModel.setStatus(RepayStatus.WAIT_PAY);
         couponRepayMapper.update(couponRepayModel);
         if (isAdvanced) {
             List<CouponRepayModel> advancedCouponRepayModels = Lists.newArrayList(couponRepayMapper.findByUserCouponByInvestId(investId).stream().filter(input -> input.getPeriod() > couponRepayModel.getPeriod()).collect(Collectors.toList()));
             for (CouponRepayModel advancedCouponRepayModel : advancedCouponRepayModels) {
                 if (advancedCouponRepayModel.getStatus() == RepayStatus.REPAYING) {
-                    advancedCouponRepayModel.setStatus(RepayStatus.COMPLETE);
+                    advancedCouponRepayModel.setStatus(RepayStatus.WAIT_PAY);
                     advancedCouponRepayModel.setActualRepayDate(new Date());
+                    couponRepayMapper.update(advancedCouponRepayModel);
+                    logger.info(MessageFormat.format("[Advance Repay {0}] update other REPAYING coupon repay({1}) status to WAIT_PAY",
+                            String.valueOf(loanRepayId), String.valueOf(advancedCouponRepayModel.getId())));
+                }
+            }
+        }
+
+    }
+
+    private void updateCouponRepayRepayStatus(long investId, final CouponRepayModel couponRepayModel, long loanRepayId, boolean isAdvanced) {
+        couponRepayModel.setStatus(RepayStatus.COMPLETE);
+        couponRepayMapper.update(couponRepayModel);
+        if (isAdvanced) {
+            List<CouponRepayModel> advancedCouponRepayModels = Lists.newArrayList(couponRepayMapper.findByUserCouponByInvestId(investId).stream().filter(input -> input.getPeriod() > couponRepayModel.getPeriod()).collect(Collectors.toList()));
+            for (CouponRepayModel advancedCouponRepayModel : advancedCouponRepayModels) {
+                if (advancedCouponRepayModel.getStatus() == RepayStatus.WAIT_PAY) {
+                    advancedCouponRepayModel.setStatus(RepayStatus.COMPLETE);
                     couponRepayMapper.update(advancedCouponRepayModel);
                     logger.info(MessageFormat.format("[Advance Repay {0}] update other REPAYING coupon repay({1}) status to COMPLETE",
                             String.valueOf(loanRepayId), String.valueOf(advancedCouponRepayModel.getId())));
@@ -344,6 +360,8 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         InvestModel investModel = investMapper.findById(couponRepayModel.getInvestId());
         LoanRepayModel loanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(investModel.getLoanId(), couponRepayModel.getPeriod());
         CouponModel couponModel = couponMapper.findById(couponRepayModel.getCouponId());
+
+        boolean isAdvanced = couponRepayModel.getActualRepayDate().before(couponRepayModel.getRepayDate());
         try {
             redisWrapperClient.hset(MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayModel.getId())), String.valueOf(couponRepayId), SyncRequestStatus.SUCCESS.name());
 
@@ -364,6 +382,8 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                     String.valueOf(couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()));
 
             systemBillService.transferOut(couponRepayModel.getUserCouponId(), (couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()), SystemBillBusinessType.COUPON, detail);
+
+            this.updateCouponRepayRepayStatus(investModel.getId(), couponRepayModel, loanRepayModel.getId(), isAdvanced);
 
             logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) update user bill and system bill is success",
                     String.valueOf(couponRepayModel.getId()),
