@@ -6,6 +6,7 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -17,9 +18,12 @@ import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -28,6 +32,9 @@ import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -57,13 +64,19 @@ public class ExperienceInvestServiceTest {
     @Autowired
     private ExperienceInvestService experienceInvestService;
 
+    @Mock
+    private CouponAssignmentService couponAssignmentService;
+
     @Test
     public void shouldInvestExperienceLoan() throws Exception {
         UserModel investor = this.getFakeUser("newbieInvestor");
         LoanModel fakeExperienceLoan = this.getFakeExperienceLoan();
         CouponModel fakeNewbieCoupon = this.getFakeNewbieCoupon(investor);
         UserCouponModel fakeUserCoupon = this.getFakeUserCoupon(investor, fakeNewbieCoupon);
-        CouponModel fakeExperienceInvestSuccessCoupon = this.getFakeExperienceInvestSuccessCoupon(investor);
+
+        MockitoAnnotations.initMocks(this);
+        ReflectionTestUtils.setField(experienceInvestService, "couponAssignmentService", couponAssignmentService);
+        doNothing().when(couponAssignmentService).asyncAssignUserCoupon(anyString(), anyListOf(UserGroup.class));
 
         experienceInvestService.invest(this.getFakeInvestDto(investor, fakeExperienceLoan, fakeUserCoupon));
 
@@ -76,11 +89,6 @@ public class ExperienceInvestServiceTest {
         assertThat(investRepayModels.get(0).getExpectedFee(), is(72L));
         assertThat(investRepayModels.get(0).getRepayDate().getTime(), is(new DateTime().withTimeAtStartOfDay().plusDays(3).minusSeconds(1).getMillis()));
         assertThat(couponMapper.findById(fakeNewbieCoupon.getId()).getUsedCount(), is(1L));
-
-        List<UserCouponModel> assignUserCoupon = userCouponMapper.findByLoginName(investor.getLoginName(), Lists.newArrayList(fakeExperienceInvestSuccessCoupon.getCouponType()));
-        assertThat(assignUserCoupon.size(), is(1));
-        assertThat(assignUserCoupon.get(0).getCouponId(), is(fakeExperienceInvestSuccessCoupon.getId()));
-        assertThat(couponMapper.findById(fakeExperienceInvestSuccessCoupon.getId()).getIssuedCount(), is(1L));
     }
 
     private InvestDto getFakeInvestDto(UserModel investor, LoanModel experienceLoanModel, UserCouponModel userCouponModel) {
@@ -138,29 +146,6 @@ public class ExperienceInvestServiceTest {
         couponModel.setUserGroup(UserGroup.EXPERIENCE_INVEST_SUCCESS);
         couponModel.setCouponType(CouponType.NEWBIE_COUPON);
         couponModel.setProductTypes(Lists.newArrayList(ProductType.EXPERIENCE));
-        couponModel.setCouponSource("couponSource");
-        couponMapper.create(couponModel);
-        return couponModel;
-    }
-
-    private CouponModel getFakeExperienceInvestSuccessCoupon(UserModel creator) {
-        CouponModel couponModel = new CouponModel();
-        couponModel.setAmount(0);
-        couponModel.setRate(0.3);
-        couponModel.setActivatedBy(creator.getLoginName());
-        couponModel.setActive(true);
-        couponModel.setCreatedTime(new Date());
-        couponModel.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
-        couponModel.setEndTime(new DateTime(couponModel.getStartTime()).plusDays(1).toDate());
-        couponModel.setDeadline(10);
-        couponModel.setCreatedBy(creator.getLoginName());
-        couponModel.setTotalCount(10L);
-        couponModel.setUsedCount(0L);
-        couponModel.setInvestLowerLimit(0L);
-        couponModel.setUserGroup(UserGroup.EXPERIENCE_INVEST_SUCCESS);
-        couponModel.setCouponType(CouponType.INTEREST_COUPON);
-        couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360));
-        couponModel.setActive(true);
         couponModel.setCouponSource("couponSource");
         couponMapper.create(couponModel);
         return couponModel;

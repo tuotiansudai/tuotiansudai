@@ -21,7 +21,7 @@ public class MessageConsumerFactory {
             messageConsumers.forEach(consumer ->
                     new Thread(() ->
                             mqClient.subscribe(consumer.queue(), consumer::consume),
-                            "Consumer-" + consumer.queue()
+                            "Consumer-" + consumer.queue().getQueueName()
                     ).start()
             );
         }

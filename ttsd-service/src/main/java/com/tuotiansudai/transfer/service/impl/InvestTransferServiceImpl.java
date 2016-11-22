@@ -1,7 +1,6 @@
 package com.tuotiansudai.transfer.service.impl;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -364,7 +363,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         items.forEach(transferInvestDetailDto -> {
             if (ContractNoStatus.OLD.name().equals(transferInvestDetailDto.getContractNo())) {
                 transferInvestDetailDto.setContractOld("1");
-            } else if (ContractNoStatus.WAITING.name().equals(transferInvestDetailDto.getContractNo())) {
+            } else if (ContractNoStatus.WAITING.name().equals(transferInvestDetailDto.getContractNo()) || Strings.isNullOrEmpty(transferInvestDetailDto.getContractNo())) {
                 transferInvestDetailDto.setContractCreating("1");
             } else {
                 transferInvestDetailDto.setContractOK("1");
