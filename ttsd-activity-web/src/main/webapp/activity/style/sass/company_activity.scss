@@ -387,6 +387,7 @@
   }
 }
 
+<<<<<<< HEAD
 /*birth-month*/
 .birth-month-container {
   float: left;
@@ -508,6 +509,8 @@
     }
   }
 }
+=======
+>>>>>>> origin
 
 /*rank-list app page*/
 .rank-list-app {
@@ -2677,95 +2680,8 @@
       }
     }
   }
-  .birth-month-container {
-    .time-list {
-      width: 240px;
-      height: 170px;
-      margin-top: -85px !important;
-      margin-left: -120px !important;
-    }
-    .tip-time {
-      width: 100% !important;
-    }
-    .time-close {
-      width: 10% !important;
-      height: auto !important;
-    }
-    .wp-img {
-      display: none;
-    }
-    .wp-img-phone {
-      display: block;
-    }
-    .wp {
-      float: left;
-      width: 100%;
-      margin-top: 25px;
-
-      p {
-        float: left;
-        width: 100%;
-        font-size: 20px;
-
-        .monkey-phone {
-          width: 20%;
-        }
-        &.img-position {
-          margin-top: -55px;
-
-          img {
-            width: 80%;
-          }
-        }
-        &.text-bg {
-          font-size: 20px;
-          background-size: 65%;
-        }
-        &.text-font {
-          font-size: 14px;
-          margin-bottom: 30px;
-        }
-        &.text-pro {
-          margin: 20px 0;
-
-          span {
-            &.pro-list {
-              display: none;
-            }
-            &.pro-wap-list {
-              display: block;
-            }
-          }
-        }
-        &.text-gift {
-          margin-bottom: 30px;
-
-          .party-img {
-            display: none;
-          }
-          .party-img-phone {
-            display: block;
-          }
-        }
-      }
-      .rule-list {
-        float: left;
-        width: 96%;
-        margin: 20px 2%;
-        padding: 0;
-
-        li {
-          font-size: 12px;
-
-          &.intro-text {
-            font-size: 12px !important;
-          }
-        }
-      }
-    }
-  }
-  .rank-list-container {
-    display: none;
+  .rank-list-container{
+    display:none;
   }
   .rank-list-phone {
     display: block;

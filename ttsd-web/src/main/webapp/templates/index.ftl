@@ -21,8 +21,7 @@
                 <div class="register-ad-box fr tc">
                     <b class="h-title">预期年化收益率</b>
                     <p class="num-text clearfix">
-                        <span class="num-unit">可达</span>
-                        <span class="percent">13%</span>
+                        <span class="percent">10%~13%</span>
                     </p>
 
                     <p class="welcome-text">welcome</p>

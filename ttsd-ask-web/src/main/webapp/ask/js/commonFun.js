@@ -76,17 +76,18 @@ comm.popWindow=function(title,content,size,load) {
             $(window).bind('mousewheel',function() {
                 adjustPOS();
             })
+
+        $popWindow.on('click', '.close', function () {
+            $('.popWindow-overlay,.popWindow').hide();
+            if (isload) {
+                window.location.reload();
+            }
+        })
         }
         else {
              $('.popWindow-overlay,.popWindow').show();
         }
 
-    $popWindow.on('click', '.close', function () {
-        $('.popWindow-overlay,.popWindow').hide();
-        if (isload) {
-            window.location.reload();
-        }
-    })
 };
 
 $('#logout-link').click(function() {

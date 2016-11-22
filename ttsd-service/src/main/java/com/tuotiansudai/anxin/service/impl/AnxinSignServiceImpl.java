@@ -109,7 +109,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private static final String CONTRACT_TIME_FORMAT = "yyyyMMddHHmmss";
 
     @Value(value = "${anxin.contract.batch.num}")
-    private int batchNum;
+    private int batchSize;
 
     @Value(value = "${anxin.loan.contract.template}")
     private String loanTemplate;
@@ -315,7 +315,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         List<String> batchNoList = new ArrayList<>();
         boolean processResult = true;
 
-        List<InvestModel> investModels = investMapper.findContractFailInvest(loanId);
+        List<InvestModel> investModels = investMapper.findNoContractNoInvest(loanId);
         List<CreateContractVO> createContractVOs = new ArrayList<>();
 
         for (int i = 0; i < investModels.size(); i++) {
@@ -325,7 +325,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 continue;
             }
             createContractVOs.add(createContractVO);
-            if (createContractVOs.size() == batchNum) {
+            if (createContractVOs.size() == batchSize) {
                 if (!createContractBatch(loanId, createContractVOs, batchNoList)) {
                     processResult = false;
                 }
@@ -564,9 +564,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         List<ContractResponseView> contractResponseViews = lists[1];
 
         // 把合同号更新到 invest 或 transferApplication 表
-        contractResponseViews.stream().filter(contractResponseView -> contractResponseView.getRetCode().equals(AnxinRetCode.SUCCESS)).forEach(contractResponseView -> {
-            investMapper.updateContractNoById(contractResponseView.getInvestId(), contractResponseView.getContractNo());
-        });
+        contractResponseViews.stream().filter(resView -> resView.getRetCode().equals(AnxinRetCode.SUCCESS))
+                .forEach(resView -> investMapper.updateContractNoById(resView.getInvestId(), resView.getContractNo()));
 
         return waitingBatchNoList;
     }

@@ -33,8 +33,13 @@ img {
 }
 
 body {
+<<<<<<< HEAD
   font-family: 'Microsoft YaHei,Helvetica, sans-serif';
   font-size: nth($fontSize, 2);
+=======
+  font-family: Microsoft YaHei,Helvetica, sans-serif;
+  font-size: nth($fontSize,2);
+>>>>>>> origin
   line-height: 2;
   background: #f9f9f9;
   color: #4c4c4c;
@@ -60,7 +65,10 @@ input[type='checkbox'] {
   border: 0 !important;
 }
 
-a {
+a{
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   cursor: pointer;
   color: nth($linkColor, 1);
   text-decoration: none;

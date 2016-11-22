@@ -253,7 +253,7 @@ if($questionDetailTag.length) {
                     }
             })
                 .fail(function(data) {
-                    comm.popWindow('','您输入的内容不能包含特殊符号',{ width:'300px'});
+                    comm.popWindow('','接口调用失败',{ width:'300px'});
                 })
                 .complete(function() {
                     $formAnswerSubmit.prop('disabled',false);
@@ -341,7 +341,7 @@ if($createQuestion.length) {
 
         $formQuestion.find('textarea').val(temp);
             $.ajax({
-                    url: "/question",
+                    url: "/question/",
                     data: $formQuestion.serialize(),
                     type: 'POST',
                 dataType: 'json',
@@ -374,7 +374,7 @@ if($createQuestion.length) {
                     }
                 })
                 .fail(function(data) {
-                        comm.popWindow('','您输入的内容不能包含特殊符号',{ width:'300px'});
+                        comm.popWindow('','接口调用失败',{ width:'300px'});
                 })
                 .complete(function(data) {
                    $formSubmit.prop('disabled',false);

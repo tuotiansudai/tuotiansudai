@@ -559,7 +559,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public List<InvestModel> findContractFailInvest(long loanId) {
-        return investMapper.findContractFailInvest(loanId);
+        return investMapper.findNoContractNoInvest(loanId);
     }
 
 }

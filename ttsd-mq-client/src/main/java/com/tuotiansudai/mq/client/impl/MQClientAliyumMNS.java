@@ -9,8 +9,10 @@ import com.aliyun.mns.model.RawTopicMessage;
 import com.aliyun.mns.model.TopicMessage;
 import com.google.gson.Gson;
 import com.tuotiansudai.mq.client.MQClient;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.mq.client.model.MessageTopicQueue;
+import com.tuotiansudai.mq.client.model.Queue;
 import com.tuotiansudai.mq.client.support.RawMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,20 +35,34 @@ public class MQClientAliyumMNS implements MQClient {
         this.gson = new Gson();
     }
 
+    @Override
     public void publishMessage(final MessageTopic topic, final String message) {
-        logger.info("[MQ] ready to push message, topic: {}, message: {}", topic, message);
+        logger.info("[MQ] ready to publish message, topic: {}, message: '{}'", topic.getTopicName(), message);
         CloudTopic cloudTopic = findTopic(topic);
         try {
             cloudTopic.publishMessage(buildRawMessage(message));
-            logger.info("[MQ] push message success, topic: {}, message: {}", topic, message);
+            logger.info("[MQ] publish message success, topic: {}, message: '{}'", topic.getTopicName(), message);
         } catch (Exception e) {
             logger.error("[MQ] publish message fail", e);
         }
     }
 
-    public void subscribe(final MessageTopicQueue queue, Consumer<com.tuotiansudai.mq.client.model.Message> consumer) {
-        logger.info("[MQ] subscribe topic: {}, queue: {}", queue.getTopic(), queue.getQueueName());
-        CloudQueue cloudQueue = findQueue(queue);
+    @Override
+    public void sendMessage(MessageQueue queue, String message) {
+        logger.info("[MQ] ready to send message, queue: {}, message: '{}'", queue.getQueueName(), message);
+        CloudQueue cloudQueue = findQueue(queue.getQueueName());
+        try {
+            cloudQueue.putMessage(new Message(message));
+            logger.info("[MQ] send message success, queue: {}, message: '{}'", queue.getQueueName(), message);
+        } catch (Exception e) {
+            logger.error("[MQ] send message fail", e);
+        }
+    }
+
+    @Override
+    public void subscribe(final Queue queue, Consumer<com.tuotiansudai.mq.client.model.Message> consumer) {
+        logger.info("[MQ] subscribe queue: {}", queue.getQueueName());
+        CloudQueue cloudQueue = findQueue(queue.getQueueName());
         while (true) {
             Message message = null;
             try {
@@ -64,8 +80,12 @@ public class MQClientAliyumMNS implements MQClient {
                 logger.info("[MQ] ready to consume message, queue: {}, messageId: {}",
                         queue.getQueueName(), message.getMessageId());
                 try {
-                    RawMessage rawMessage = gson.fromJson(message.getMessageBodyAsRawString(), RawMessage.class);
-                    consumer.accept(rawMessage.toMessage());
+                    if (queue instanceof MessageQueue) {
+                        consumer.accept(parseQueueMessage(message));
+                    }
+                    if (queue instanceof MessageTopicQueue) {
+                        consumer.accept(parseTopicQueueMessage(message));
+                    }
                     logger.info("[MQ] consume message success, queue: {}, messageId: {}",
                             queue.getQueueName(), message.getMessageId());
                     try {
@@ -79,6 +99,16 @@ public class MQClientAliyumMNS implements MQClient {
                 }
             }
         }
+    }
+
+    private com.tuotiansudai.mq.client.model.Message parseTopicQueueMessage(Message message) {
+        RawMessage rawMessage = gson.fromJson(message.getMessageBodyAsRawString(), RawMessage.class);
+        return rawMessage.toMessage();
+    }
+
+    private com.tuotiansudai.mq.client.model.Message parseQueueMessage(Message message) {
+        return new com.tuotiansudai.mq.client.model.Message(message.getMessageId(),
+                message.getMessageBodyAsString(), message.getEnqueueTime().toString(), "");
     }
 
     private CloudTopic findTopic(MessageTopic topic) {
@@ -95,9 +125,9 @@ public class MQClientAliyumMNS implements MQClient {
         }
     }
 
-    private CloudQueue findQueue(MessageTopicQueue queue) {
+    private CloudQueue findQueue(String queueName) {
         try {
-            return mnsClient.getQueueRef(queue.getQueueName());
+            return mnsClient.getQueueRef(queueName);
         } catch (ServiceException se) {
             if (se.getErrorCode() != null) {
                 if (se.getErrorCode().equals("QueueNotExist")) {
