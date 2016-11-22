@@ -59,7 +59,7 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
 
         SignInResult verifyTokenResult = signInClient.verifyToken(token, source);
         if (verifyTokenResult == null || !verifyTokenResult.isResult()) {
-            logger.error(MessageFormat.format("app verify token failed (url={0} baseParam={1})",
+            logger.warn(MessageFormat.format("app verify token failed (url={0} baseParam={1})",
                     bufferedRequestWrapper.getRequestURI(),
                     baseParamDto != null && baseParamDto.getBaseParam() != null ? baseParamDto.getBaseParam().toString() : ""));
         }

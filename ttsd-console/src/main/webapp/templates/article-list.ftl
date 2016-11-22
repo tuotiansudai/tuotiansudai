@@ -1,3 +1,4 @@
+
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="article-list.js" headLab="announce-manage" sideLab="articleMan" title="理财圈列表">

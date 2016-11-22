@@ -298,7 +298,7 @@
             <if test="source != null">
                 AND invest.source = #{source}
             </if>
-            <if test="role != null">role
+            <if test="role != null">
                 AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name=invest.login_name AND user_role.role=
                 #{role})
             </if>
@@ -409,7 +409,7 @@
             <if test="source != null">
                 AND invest.source = #{source}
             </if>
-            <if test="role != null and role != ''">
+            <if test="role != null">
                 AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name=invest.login_name AND user_role.role=
                 #{role})
             </if>

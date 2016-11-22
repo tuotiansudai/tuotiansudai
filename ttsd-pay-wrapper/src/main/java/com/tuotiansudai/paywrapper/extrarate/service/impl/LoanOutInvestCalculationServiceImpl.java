@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
     private InvestExtraRateMapper investExtraRateMapper;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void rateIncreases(long loanId) {
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);
         if (CollectionUtils.isEmpty(extraLoanRateModels)) {
@@ -50,6 +51,10 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
         List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
         for (InvestModel investModel : investModels) {
             for (ExtraLoanRateModel extraLoanRateModel : extraLoanRateModels) {
+                if(investExtraRateMapper.findByInvestId(investModel.getId()) != null){
+                    continue;
+                }
+
                 if ((extraLoanRateModel.getMinInvestAmount() <= investModel.getAmount() && investModel.getAmount() < extraLoanRateModel.getMaxInvestAmount()) ||
                         (extraLoanRateModel.getMaxInvestAmount() == 0 && extraLoanRateModel.getMinInvestAmount() <= investModel.getAmount())) {
                     InvestExtraRateModel investExtraRateModel = new InvestExtraRateModel();
@@ -78,12 +83,12 @@ public class LoanOutInvestCalculationServiceImpl implements LoanOutInvestCalcula
                         investSource = Source.AUTO;
                     }
 
-                    System.out.println("source = " + loanDetailsModel.getExtraSource().contains(investSource));
                     if (!CollectionUtils.isEmpty(loanDetailsModel.getExtraSource()) && loanDetailsModel.getExtraSource().contains(investSource))
                     {
                         investExtraRateMapper.create(investExtraRateModel);
                     }
 
+                    logger.info(MessageFormat.format("[标的放款]创建阶梯加息 loanId:{0},investId:{1}",loanId,investModel.getId()));
                 }
             }
         }

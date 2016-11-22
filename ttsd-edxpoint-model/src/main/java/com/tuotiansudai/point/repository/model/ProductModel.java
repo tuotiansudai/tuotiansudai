@@ -1,6 +1,5 @@
 package com.tuotiansudai.point.repository.model;
 
-
 import java.io.Serializable;
 import java.util.Date;
 
