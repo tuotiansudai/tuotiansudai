@@ -1,6 +1,6 @@
 package com.tuotiansudai.console.activity.controller;
 
-import com.tuotiansudai.console.activity.dto.NotWorkDto;
+import com.tuotiansudai.activity.repository.dto.NotWorkDto;
 import com.tuotiansudai.console.activity.service.NotWorkService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import org.springframework.beans.factory.annotation.Autowired;

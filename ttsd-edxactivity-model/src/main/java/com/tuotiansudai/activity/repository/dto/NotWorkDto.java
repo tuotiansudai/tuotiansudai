@@ -1,4 +1,4 @@
-package com.tuotiansudai.console.activity.dto;
+package com.tuotiansudai.activity.repository.dto;
 
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
 import com.tuotiansudai.util.AmountConverter;
@@ -23,8 +23,8 @@ public class NotWorkDto {
         this.userName = notWorkModel.getUserName();
         this.mobile = notWorkModel.getMobile();
         this.investAmount = AmountConverter.convertCentToString(notWorkModel.getInvestAmount());
-        this.recommendedRegisterAmount = String.valueOf(notWorkModel.getRecommendedRegisterAmount());
-        this.recommendedIdentifyAmount = String.valueOf(notWorkModel.getRecommendedIdentifyAmount());
+        this.recommendedRegisterAmount = "";
+        this.recommendedIdentifyAmount = "";
         this.recommendedInvestAmount = String.valueOf(notWorkModel.getRecommendedInvestAmount());
     }
 

@@ -1,22 +1,36 @@
 package com.tuotiansudai.console.activity.service;
 
 import com.google.common.base.Joiner;
+import com.tuotiansudai.activity.repository.dto.NotWorkDto;
 import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
-import com.tuotiansudai.console.activity.dto.NotWorkDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class NotWorkService {
     @Autowired
     NotWorkMapper notWorkMapper;
+
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    AccountMapper accountMapper;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.notWork.startTime}\")}")
+    private Date activityStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.notWork.endTime}\")}")
+    private Date activityEndTime;
 
     final private Map<Long, String> rewardMap = new HashMap<Long, String>() {{
         put(300000L, "20元红包");
@@ -45,6 +59,18 @@ public class NotWorkService {
             if (rewardList.size() > 0) {
                 notWorkDto.setRewards(Joiner.on(",").join(rewardList));
             }
+            List<UserModel> users = userMapper.findUsersByRegisterTimeOrReferrer(activityStartTime, activityEndTime, notWorkModel.getLoginName());
+            notWorkDto.setRecommendedRegisterAmount(String.valueOf(users.size()));
+
+            int recommendIdentifyAmount = 0;
+            for (UserModel userModel : users) {
+                AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+                if (null != accountModel && accountModel.getRegisterTime().after(activityStartTime) && accountModel.getRegisterTime().before(activityEndTime)) {
+                    ++recommendIdentifyAmount;
+                }
+            }
+            notWorkDto.setRecommendedIdentifyAmount(String.valueOf(recommendIdentifyAmount));
+
             return notWorkDto;
         }).collect(Collectors.toList());
         return new BasePaginationDataDto<>(index, pageSize, count, records);

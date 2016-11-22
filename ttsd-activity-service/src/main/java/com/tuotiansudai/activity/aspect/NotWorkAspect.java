@@ -2,8 +2,6 @@ package com.tuotiansudai.activity.aspect;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.activity.service.NotWorkService;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -17,7 +15,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
 import java.text.MessageFormat;
 
 @Aspect
@@ -75,38 +72,6 @@ public class NotWorkAspect {
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format("{0}`s referrer don`t increase recommend invest amount.", loginName, e));
-        }
-    }
-
-    @AfterReturning(value = "execution(public boolean *.registerUser(..))", returning = "returnValue")
-    public void afterRegister(JoinPoint joinPoint, boolean returnValue) {
-        if (!returnValue) {
-            return;
-        }
-        Object dto = joinPoint.getArgs()[0];
-
-        String loginName = "";
-        try {
-            Method getLoginName = dto.getClass().getMethod("getLoginName");
-            loginName = (String) getLoginName.invoke(dto);
-            notWorkService.recommendedRegister(loginName);
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("{0}`s referrer don`t increase register amount.", loginName, e));
-        }
-    }
-
-    @AfterReturning(value = "execution(public boolean *.registerAccount(..))", returning = "returnValue")
-    public void afterIdentify(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
-        Object dto = joinPoint.getArgs()[0];
-        String loginName = "";
-        try {
-            if (returnValue.getData().getStatus()) {
-                Method getLoginName = dto.getClass().getMethod("getLoginName");
-                loginName = (String) getLoginName.invoke(dto);
-                notWorkService.recommendedIdentify(loginName);
-            }
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("{0}`s referrer don`t increase identity amount.", loginName, e));
         }
     }
 }

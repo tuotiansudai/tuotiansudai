@@ -11,7 +11,7 @@ CREATE TABLE `not_work` (
   `recommended_invest_amount`   INT(20)              DEFAULT '0',
   `send_coupon`                 TINYINT(1)  NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `login_name_UNIQUE` (`login_name`)
+  UNIQUE KEY `UNIQUE_NOT_WORK_LOGIN_NAME` (`login_name`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 COMMIT;

@@ -9,10 +9,10 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.util.Date;
 
 @Service
 public class NotWorkService {
@@ -30,9 +30,11 @@ public class NotWorkService {
 
     final static private long PRIZE_COUPON_INVEST_LIMIT = 300000L;
 
-    final private LocalDateTime activityStartTime = LocalDateTime.of(2016, 12, 1, 0, 0, 0, 0);
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.notWork.startTime}\")}")
+    private Date activityStartTime;
 
-    final private LocalDateTime activityEndTime = LocalDateTime.of(2016, 12, 16, 0, 0, 0, 0);
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.notWork.endTime}\")}")
+    private Date activityEndTime;
 
     final private long[] prizeList = {300000L, 800000L, 3000000L, 5000000L, 10000000L, 20000000L, 30000000L, 52000000L,
             80000000L, 120000000L};
@@ -44,7 +46,7 @@ public class NotWorkService {
     }
 
     private BaseDto<BaseDataDto> update(String loginName, UpdateModelProducer updateModelProducer) {
-        if (LocalDateTime.now().isBefore(activityStartTime) || LocalDateTime.now().isAfter(activityEndTime)) {
+        if (new Date().before(activityStartTime) || new Date().after(activityEndTime)) {
             return new BaseDto<>(new BaseDataDto(false, "非活动时间"));
         }
 
@@ -89,44 +91,9 @@ public class NotWorkService {
         });
     }
 
-    public BaseDto<BaseDataDto> recommendedRegister(String recommendedLoginName) {
-        UserModel userModel = userMapper.findByLoginName(recommendedLoginName);
-        return update(userModel.getReferrer(), new UpdateModelProducer() {
-            @Override
-            public NotWorkModel createAction(NotWorkModel notWorkModel) {
-                notWorkModel.setRecommendedRegisterAmount(1);
-                return notWorkModel;
-            }
-
-            @Override
-            public NotWorkModel updateAction(NotWorkModel notWorkModel) {
-                notWorkModel.setRecommendedRegisterAmount(notWorkModel.getRecommendedRegisterAmount() + 1);
-                return notWorkModel;
-            }
-        });
-    }
-
-    public BaseDto<BaseDataDto> recommendedIdentify(String recommendedLoginName) {
-        UserModel userModel = userMapper.findByLoginName(recommendedLoginName);
-        return update(userModel.getReferrer(), new UpdateModelProducer() {
-            @Override
-            public NotWorkModel createAction(NotWorkModel notWorkModel) {
-                notWorkModel.setRecommendedIdentifyAmount(1);
-                return notWorkModel;
-            }
-
-            @Override
-            public NotWorkModel updateAction(NotWorkModel notWorkModel) {
-                notWorkModel.setRecommendedIdentifyAmount(notWorkModel.getRecommendedIdentifyAmount() + 1);
-                return notWorkModel;
-            }
-        });
-    }
-
     public BaseDto<BaseDataDto> recommendedInvest(String recommendedLoginName, long investAmount) {
         UserModel userModel = userMapper.findByLoginName(recommendedLoginName);
-        if (LocalDateTime.ofInstant(userModel.getRegisterTime().toInstant(), ZoneId.systemDefault()).isBefore(activityStartTime) ||
-                LocalDateTime.ofInstant(userModel.getRegisterTime().toInstant(), ZoneId.systemDefault()).isAfter(activityEndTime)) {
+        if (userModel.getRegisterTime().before(activityStartTime) || userModel.getRegisterTime().after(activityEndTime)) {
             return new BaseDto<>(new BaseDataDto(false, "非活动期间注册用户"));
         }
         String referrerLoginName = userModel.getReferrer();
