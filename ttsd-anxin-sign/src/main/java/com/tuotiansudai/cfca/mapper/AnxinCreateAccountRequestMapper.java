@@ -1,7 +1,9 @@
 package com.tuotiansudai.cfca.mapper;
 
 import com.tuotiansudai.cfca.model.AnxinCreateAccountRequestModel;
+import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
 import org.springframework.stereotype.Repository;
 
 @Repository

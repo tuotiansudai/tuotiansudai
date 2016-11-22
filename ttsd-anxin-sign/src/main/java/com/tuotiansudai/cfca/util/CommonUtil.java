@@ -1,11 +1,11 @@
 package com.tuotiansudai.cfca.util;
 
-import com.tuotiansudai.cfca.constant.SystemConst;
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.tuotiansudai.cfca.constant.SystemConst;
 
 public class CommonUtil {
     private static final String MASK = "[^ -()]";
@@ -98,7 +98,7 @@ public class CommonUtil {
             return "";
 
         StringBuilder b = new StringBuilder();
-        for (int i = 0; ; i++) {
+        for (int i = 0;; i++) {
             b.append(String.valueOf(strings[i]));
             if (i == iMax)
                 return b.toString();

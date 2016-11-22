@@ -4,6 +4,7 @@ import com.tuotiansudai.cfca.constant.MIMEType;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.constant.SystemConst;
 import com.tuotiansudai.cfca.util.CommonUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;

@@ -19,7 +19,7 @@ public class AnxinQueryContractBatchRequestMapperTest {
     private AnxinQueryContractBatchRequestMapper anxinQueryContractBatchRequestMapper;
 
     @Test
-    public void shouldCreateIsOk() {
+    public void shouldCreateIsOk(){
         AnxinQueryContractBatchRequestModel anxinQueryContractBatchRequestModel = new AnxinQueryContractBatchRequestModel();
         anxinQueryContractBatchRequestModel.setBatchNo("t");
         anxinQueryContractBatchRequestModel.setCreatedTime(new Date());

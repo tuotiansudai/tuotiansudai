@@ -1,5 +1,8 @@
 package com.tuotiansudai.cfca.test;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+
 import cfca.sadk.algorithm.common.PKIException;
 import cfca.sadk.util.Base64;
 import cfca.trustsign.common.vo.cs.GetContractSignatureAttrVO;
@@ -10,9 +13,6 @@ import com.tuotiansudai.cfca.connector.HttpConnector;
 import com.tuotiansudai.cfca.constant.Request;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 import com.tuotiansudai.cfca.util.SecurityUtil;
-
-import java.io.FileInputStream;
-import java.io.IOException;
 
 public class Test3204 {
     public static void main(String[] args) throws PKIException, IOException {

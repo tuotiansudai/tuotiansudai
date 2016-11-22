@@ -3,22 +3,18 @@ body {
   background: #eec859;
   overflow-x: hidden;
 }
-
 .main-frame {
   width: 100%;
   margin: 0 auto;
 
 }
-
-.tour-slide {
+.tour-slide  {
   height: 860px;
   background: url("/activity/images/heavily-courtship/banner-top.jpg") center top no-repeat;
 }
-
 .envelop-word {
   display: none;
 }
-
 .main-content-heavily {
   margin: 0 26px 30px 24px;
   background: #fff;
@@ -41,7 +37,7 @@ body {
     }
   }
   .con-inner {
-    padding: 25px;
+    padding:25px;
     background: #fff;
     z-index: 10;
     position: relative;
@@ -50,7 +46,7 @@ body {
     background: #fcf7d5;
     color: #652680;
     font-size: 14px;
-    padding: 30px;
+    padding:30px;
     position: relative;
     height: 730px;
     .app {
@@ -61,12 +57,12 @@ body {
     }
 
     b {
-      font-size: 18px;
+      font-size:18px;
       display: block;
     }
     .bg-envelop {
       display: block;
-      height: 500px;
+      height:500px;
       background: url("/activity/images/heavily-courtship/bg-envelop.jpg") left bottom no-repeat;
       left: -25px;
       position: absolute;
@@ -74,52 +70,53 @@ body {
     }
   }
   .to-invest-button {
-    margin: 30px auto;
+    margin:30px auto;
     a {
       display: inline-block;
-      width: 306px;
+      width:306px;
       height: 70px;
       background: url("/activity/images/heavily-courtship/btn-loan.jpg") left top no-repeat;
+
 
     }
   }
   //line
   .line-vertical {
     display: inline-block;
-    height: 13px;
-    width: 100%;
+    height:13px;
+    width:100%;
     background: url("../../images/heavily-courtship/base-line-top-bottom.png") left top repeat-x;
   }
   .line-align {
     display: inline-block;
-    height: 100%;
-    width: 13px;
+    height:100%;
+    width:13px;
     background: url("../../images/heavily-courtship/base-line-left-right.png") left top repeat-y;
   }
   .line-vertical-center {
     display: inline-block;
-    height: 13px;
-    width: 100%;
+    height:13px;
+    width:100%;
     background: url("../../images/heavily-courtship/base-line-center.png") center top no-repeat;
   }
   .column-title-co {
     text-align: left;
-    height: 60px;
-    width: 100%;
+    height:60px;
+    width:100%;
     z-index: 10;
     background: url("/activity/images/heavily-courtship/bg-title.png") left top no-repeat;
   }
   .icon-reward {
-    width: 75px;
-    height: 68px;
+    width:75px;
+    height:68px;
     background: url("../../images/heavily-courtship/base-ic-reward.png") left top no-repeat;
   }
-  .info-img, .bg-info-img {
+  .info-img,.bg-info-img {
     position: absolute;
     right: 17px;
     top: 18px;
-    width: 212px;
-    height: 160px;
+    width:212px;
+    height:160px;
     display: inline-block;
     text-align: right;
     em {
@@ -139,11 +136,11 @@ body {
     background-size: 100%;
     img {
       position: absolute;
-      margin: auto;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
+      margin:auto;
+      left:0;
+      right:0;
+      top:0;
+      bottom:0;
     }
   }
   .info-word {
@@ -171,29 +168,29 @@ body {
     }
     &.left {
       position: absolute;
-      left: 0;
-      top: 0;
+      left:0;
+      top:0;
     }
     &.right {
       position: absolute;
-      right: 0;
-      top: 0;
+      right:0;
+      top:0;
       background-position: right top;
     }
     &.top {
       position: absolute;
-      left: 0;
-      top: 0;
+      left:0;
+      top:0;
     }
     &.bottom {
       position: absolute;
-      left: 0;
-      bottom: 0;
+      left:0;
+      bottom:0;
     }
   }
   .round-cake {
-    width: 96px;
-    height: 96px;
+    width:96px;
+    height:96px;
     background: url("/activity/images/heavily-courtship/base-bg-squ.jpg") left top no-repeat;
     position: relative;
     display: inline-block;
@@ -204,7 +201,7 @@ body {
       color: #652680;
       &.one {
         top: 10px;
-        left: 0;
+        left:0;
         width: 58%;
         text-align: center;
       }
@@ -216,12 +213,12 @@ body {
       }
       &.three {
         bottom: 6px;
-        left: 0;
+        left:0;
         width: 58%;
         text-align: center;
       }
       &.four {
-        bottom: 6px;
+        bottom:6px;
         right: 0;
         width: 61%;
         text-align: center;
@@ -229,23 +226,23 @@ body {
     }
   }
   .mind-category {
-    width: 50%;
+    width:50%;
     height: 176px;
     float: left;
     text-align: center;
     &.last {
-      width: 100%;
-      height: auto;
+      width:100%;
+      height:auto;
       position: relative;
-      margin-top: 20px;
+      margin-top:20px;
       text-align: left;
       .top {
-        top: -26px;
-        position: absolute;
+        top:-26px;
+        position:absolute;
       }
       .bottom {
         top: 197px;
-        position: absolute;
+        position:absolute;
       }
       .middle {
         left: 49%;
@@ -257,32 +254,32 @@ body {
     .example {
       .round-cake {
         float: left;
-        margin-left: 0;
+        margin-left:0;
       }
       p {
-        padding-right: 30px;
+        padding-right:30px;
         padding-top: 29px;
       }
     }
     .subject {
       position: relative;
       float: left;
-      width: 50%;
+      width:50%;
       &.last-subject {
         float: none;
         margin: 80px auto 30px auto;
       }
       .icon-reward {
-        top: 13% !important;
+        top: 13%!important;
       }
       .bg-info-img {
-        top: -25px;
+        top:-25px;
       }
 
     }
     dt {
-      width: 95px;
-      height: 38px;
+      width:95px;
+      height:38px;
       background: #fbe94d;
       text-align: center;
       color: #652680;
@@ -292,18 +289,18 @@ body {
   }
   .category-info-frame {
     .category-box {
-      width: 436px;
-      height: 215px;
+      width:436px;
+      height:215px;
       margin-top: 50px;
       position: relative;
 
       .icon-reward {
         position: absolute;
-        top: 32%;
-        left: 30%;
+        top:32%;
+        left:30%;
       }
       &.hack {
-        height: auto;
+        height:auto;
         width: 100%;
         p {
           padding-top: 40px;
@@ -321,7 +318,7 @@ body {
           display: inline-block;
           background: #652680;
           color: #fff;
-          font-size: 22px;
+          font-size:22px;
           font-weight: bold;
           padding: 5px 30px;
         }
@@ -334,20 +331,20 @@ body {
     }
 
     .PS-list {
-      margin-top: 30px;
+      margin-top:30px;
       dt {
-        width: 74px;
+        width:74px;
         height: 51px;
         background: #fbe94d;
         color: #652680;
         font-weight: bold;
         font-size: 40px;
-        padding: 0;
+        padding:0;
         float: left;
         line-height: 51px;
         text-align: center;
         letter-spacing: -1px;
-        margin-right: 15px;
+        margin-right:15px;
       }
       p {
         color: #652680;
@@ -360,7 +357,7 @@ body {
         display: none;
       }
       .wechat {
-        border: 9px solid #fee900;
+        border:9px solid #fee900;
       }
     }
   }
@@ -374,14 +371,12 @@ body {
     background-size: 100%;
   }
   .title-column {
-    img {
-      width: 70%;
-    }
+    img { width:70%;}
   }
 
   .envelop-word {
     display: block;
-    width: 100%;
+    width:100%;
     margin-top: -15px;
   }
   .main-content-heavily {
@@ -392,22 +387,22 @@ body {
 
     i.column-title-co {
       transform: scale(0.7);
-      -webkit-transform: scale(0.7);
-      -ms-transform: scale(0.7);
+      -webkit-transform:scale(0.7);
+      -ms-transform:scale(0.7);
       left: -70px;
     }
-    .to-invest-button a {
+    .to-invest-button a{
       transform: scale(0.8);
-      -webkit-transform: scale(0.8);
-      -ms-transform: scale(0.8);
+      -webkit-transform:scale(0.8);
+      -ms-transform:scale(0.8);
     }
     .bg-info-img {
-      top: 0;
+      top:0;
     }
 
     .info-word {
       font-size: 12px;
-      top: 45px;
+      top:45px;
       b {
         font-size: 18px;
       }
@@ -417,37 +412,37 @@ body {
     }
     .icon-reward {
       transform: scale(0.7);
-      -webkit-transform: scale(0.7);
-      -ms-transform: scale(0.7);
+      -webkit-transform:scale(0.7);
+      -ms-transform:scale(0.7);
     }
-    .bg-info-img {
+    .bg-info-img  {
       transform: scale(0.7);
-      -webkit-transform: scale(0.7);
-      -ms-transform: scale(0.7);
+      -webkit-transform:scale(0.7);
+      -ms-transform:scale(0.7);
       right: -10px;
     }
     .info-img {
       transform: scale(0.7);
-      -webkit-transform: scale(0.7);
-      -ms-transform: scale(0.7);
-      top: 0;
-      right: -10px;
+      -webkit-transform:scale(0.7);
+      -ms-transform:scale(0.7);
+      top:0;
+      right:-10px;
     }
     .round-cake {
       transform: scale(0.75);
-      -webkit-transform: scale(0.75);
-      -ms-transform: scale(0.75);
+      -webkit-transform:scale(0.75);
+      -ms-transform:scale(0.75);
       margin: 5px 0;
     }
     .con-inner {
-      padding: 5px;
+      padding:5px;
     }
     .prompt-box {
-      height: 420px;
-      padding: 10px;
-      font-size: 12px;
+      height:420px;
+      padding:10px;
+      font-size:12px;
       b {
-        font-size: 12px;
+        font-size:12px;
       }
       .web {
         display: none;
@@ -466,19 +461,19 @@ body {
     }
     .category-info-frame {
       .category-box {
-        width: 100%;
-        height: 183px;
-        margin-top: 30px;
+        width:100%;
+        height:183px;
+        margin-top:30px;
         &.hack {
           p {
             text-align: left;
-            padding-right: 15px;
-            padding-left: 15px;
+            padding-right:15px;
+            padding-left:15px;
           }
         }
         &.ultimate-prize {
           img {
-            width: 50%;
+            width:50%;
           }
           p {
             text-align: left;
@@ -486,7 +481,7 @@ body {
             padding-right: 30px;
           }
           em {
-            font-size: 15px;
+            font-size:15px;
             font-weight: normal;
           }
         }
@@ -499,23 +494,23 @@ body {
         }
         p.app {
           display: inline-block;
-          font-size: 12px;
-          width: 60%;
-          margin-right: 0;
+          font-size:12px;
+          width:60%;
+          margin-right:0;
         }
         dt {
           transform: scale(0.7);
-          -webkit-transform: scale(0.7);
-          -ms-transform: scale(0.7);
+          -webkit-transform:scale(0.7);
+          -ms-transform:scale(0.7);
           margin-right: 0;
         }
         dd {
-          width: calc(100% - 74px);
+          width:calc( 100% - 74px);
           padding-top: 13px;
           float: right;
 
           img {
-            width: 100%;
+            width:100%;
             &.wechat {
               width: 30%;
               float: right;
@@ -526,7 +521,7 @@ body {
       }
     }
     .mind-category {
-      width: 100%;
+      width:100%;
       float: none;
       dt {
         font-size: 16px;
@@ -535,22 +530,22 @@ body {
         line-height: 35px;
       }
       .subject {
-        width: 100%;
+        width:100%;
         float: none;
         margin-bottom: 20px;
-        margin-left: 0px;
+        margin-left:0px;
         .icon-reward {
-          left: 27% !important;
+          left: 27%!important;
         }
         &.last-subject {
-          margin: auto;
+          margin:auto;
           //margin-left:8px;
         }
       }
       &.last {
         margin-top: -35px;
         padding-bottom: 40px;
-        .top, .bottom, .middle {
+        .top,.bottom,.middle {
           display: none;
         }
       }
@@ -567,10 +562,10 @@ body {
     margin: -6px;
   }
   .main-content-heavily {
-    .bg-info-img, .info-img {
+    .bg-info-img,.info-img {
       transform: scale(0.6);
-      -webkit-transform: scale(0.6);
-      -ms-transform: scale(0.6);
+      -webkit-transform:scale(0.6);
+      -ms-transform:scale(0.6);
       right: -23px;
     }
   }
@@ -581,13 +576,12 @@ body {
     margin: 10px auto;
   }
   .main-content-heavily .category-info-frame .category-box {
-    margin-top: 30px;
+    margin-top:30px;
   }
 }
-
 @media screen and (max-width: 350px) {
   .tour-slide {
-    height: 215px;
+    height:215px;
   }
   .main-content-heavily .mind-category.last {
     margin-top: -17px;
@@ -596,28 +590,28 @@ body {
     margin: -11px;
   }
   .main-content-heavily .mind-category {
-    height: 130px;
+    height:130px;
   }
   .main-content-heavily {
-    .bg-info-img, .info-img {
+    .bg-info-img,.info-img {
       transform: scale(0.55);
-      -webkit-transform: scale(0.55);
-      -ms-transform: scale(0.55);
+      -webkit-transform:scale(0.55);
+      -ms-transform:scale(0.55);
       right: -37px;
     }
   }
   .main-content-heavily .mind-category .subject {
     margin-bottom: 20px;
-    margin-left: 7px;
+    margin-left:7px;
     &.last-subject {
-      margin-left: 7px;
+      margin-left:7px;
     }
   }
   .main-content-heavily .to-invest-button {
     margin: 10px auto;
   }
   .main-content-heavily .category-info-frame .category-box {
-    margin-top: 30px;
+    margin-top:30px;
   }
 
 }

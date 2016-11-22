@@ -7,8 +7,7 @@
             <div class="content-item">
                 <p><img src="${staticServer}/activity/images/download/one-text.png" class="step-one-img"></p>
                 <p>
-                    <a href="https://itunes.apple.com/cn/app/ta-tian-su-dai/id1039233966?mt=8" class="ios-btn"
-                       target="_blank"></a>
+                    <a href="https://itunes.apple.com/cn/app/ta-tian-su-dai/id1039233966?mt=8" class="ios-btn" target="_blank"></a>
                     <a href="/app/tuotiansudai.apk" class="android-btn" target="_blank"></a>
                     <a href="javascript:void(0)" class="wx-code"></a>
                 </p>
@@ -52,7 +51,7 @@
         </div>
     </div>
     <div class="download-four">
-        <div class="wp step-four">
+       <div class="wp step-four">
             <div class="content-item">
                 <p class="title-text">随时随地·掌上投</p>
                 <p>碎片时间做投资</p>
@@ -67,7 +66,7 @@
         </div>
     </div>
     <div class="download-five">
-        <div class="wp step-five">
+       <div class="wp step-five">
             <div class="content-item">
                 <p class="title-text">多重保障·更安全</p>
                 <p>数据采用256位加密技术</p>
@@ -103,12 +102,11 @@
             </div>
         </div>
     </div>
-    <div class="download-seven">
+     <div class="download-seven">
         <div class="content-item">
             <p class="wx-text">扫描二维码，下载APP</p>
             <p class="des-text">投资快人一步</p>
-            <a href="https://itunes.apple.com/cn/app/ta-tian-su-dai/id1039233966?mt=8" class="ios-download"
-               target="_blank"></a>
+            <a href="https://itunes.apple.com/cn/app/ta-tian-su-dai/id1039233966?mt=8" class="ios-download" target="_blank"></a>
             <a href="/app/tuotiansudai.apk" class="android-download" target="_blank"></a>
             <a href="javascript:void(0)" class="wx-footer"></a>
         </div>

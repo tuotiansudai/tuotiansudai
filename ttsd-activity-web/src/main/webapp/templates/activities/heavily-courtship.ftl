@@ -6,7 +6,7 @@
     <div class="main-content-heavily">
         <div class="bg-line"></div>
         <div class="bg-line"></div>
-        <img src="${staticServer}/activity/images/heavily-courtship/envelop-word.jpg" class="envelop-word">
+        <img src="${staticServer}/activity/images/heavily-courtship/envelop-word.jpg"  class="envelop-word">
         <div class="con-inner clearfix">
             <div class="title-column">
                 <img src="${staticServer}/activity/images/heavily-courtship/title01.jpg" alt="获奖条件">
@@ -54,9 +54,9 @@
                     <i class="line-align right"></i>
                     <i class="line-vertical top"></i>
                     <i class="line-vertical bottom"></i>
-                    <p>第一步：如题，按规律填数字，找到问号处的答案；<br/>
-                        第二步：进行投资。如果你的投资顺序与问号处数字相符，即可获得对应奖励。
-                    </p>
+                   <p>第一步：如题，按规律填数字，找到问号处的答案；<br/>
+                       第二步：进行投资。如果你的投资顺序与问号处数字相符，即可获得对应奖励。
+                   </p>
 
                     <dl class="mind-category">
                         <dt>规律：</dt>
@@ -149,7 +149,7 @@
                 </div>
 
                 <div class="tc to-invest-button">
-                    <a href="/loan-list"></a>
+                    <a href="/loan-list" ></a>
                 </div>
 
 
@@ -175,8 +175,7 @@
                             “拓天速贷财富”，回复“怪蜀黍”即可获得上题
                             答案，只要投资顺序与答案相符，也可以获得奖励。</p>
                             <p class="app">扫码回复“怪蜀黍”可获得上题答案</p>
-                            <img class="wechat" src="${staticServer}/activity/images/scan-code/weixin-big.jpg"
-                                 alt="微信扫码">
+                            <img class="wechat" src="${staticServer}/activity/images/scan-code/weixin-big.jpg" alt="微信扫码">
                         </dd>
                     </dl>
                 </div>

@@ -53,7 +53,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3001ReqVO);
-        logger.info("[安心签] create account request:" + req);
+        logger.info("req:" + req);
 
         String txCode = "3001";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
@@ -63,7 +63,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
-        logger.info("[安心签] create account response:" + res);
+        logger.info("res:" + res);
 
         Tx3ResVO tx3001ResVO = readResponse(res, Tx3001ResVO.class);
 
@@ -90,7 +90,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3101ReqVO);
-        logger.info("[安心签] send captcha request:" + req);
+        logger.info("req:" + req);
 
         String txCode = "3101";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
@@ -100,7 +100,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
-        logger.info("[安心签] send captcha response:" + res);
+        logger.info("res:" + res);
         Tx3ResVO tx3101ResVO = readResponse(res, Tx3101ResVO.class);
 
         // 记录响应日志
@@ -160,18 +160,17 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
-        logger.info(MessageFormat.format("[安心签] create contract batch, loanId:{0}, batchNo:{1}, created contract request date:{2}", String.valueOf(businessId), batchNo, req));
+        logger.info(MessageFormat.format("[安心签] loanId:{0}, batchNo:{1} created contract request date:{2}", businessId, batchNo, req));
 
         String txCode = "3202";
         String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
         String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
 
-        logger.info(MessageFormat.format("[安心签] create contract batch, loanId:{0}, batchNo:{1}, created contract response date:{2}", String.valueOf(businessId), batchNo, res));
-
         Tx3202ResVO tx3202ResVO = (Tx3202ResVO) readResponse(res, Tx3202ResVO.class);
 
         requestResponseService.insertBatchGenerateContractResponse(businessId, batchNo, tx3202ResVO);
 
+        logger.info(MessageFormat.format("[安心签] loanId:{0},batchNo:{1} created contract response date:{2}", businessId, batchNo, res));
         return tx3202ResVO;
     }
 
@@ -187,7 +186,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3211ReqVO);
-        logger.info(MessageFormat.format("[安心签] Query contract, batchNo:{0}", batchNo));
+        logger.info(MessageFormat.format("[安心签] find contract response , batchNo:{0}", batchNo));
 
         requestResponseService.insertBatchQueryContractRequest(businessId, tx3211ReqVO);
 
@@ -216,7 +215,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
                 try {
                     tx3211ResVO = queryContractBatch3211(businessId, batchNo);
                 } catch (PKIException e) {
-                    logger.error(MessageFormat.format("[安心签] Query contract response error, loan/transfer Id:{0}, batchNo:{1}", String.valueOf(businessId) + "", batchNo), e);
+                    logger.error(MessageFormat.format("[安心签] Query contract response error, loan/transfer Id:{0}, batchNo:{1}", businessId + "", batchNo), e);
                     continue;
                 }
                 if (isSuccess(tx3211ResVO)) {
