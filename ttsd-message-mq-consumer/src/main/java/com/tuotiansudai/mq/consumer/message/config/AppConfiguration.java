@@ -1,7 +1,6 @@
-package com.tuotiansudai.mq.consumer.loan.config;
+package com.tuotiansudai.mq.consumer.message.config;
 
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.util.quartz.JobStoreBuilder;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import redis.clients.jedis.JedisPoolConfig;
@@ -12,7 +11,7 @@ import redis.clients.jedis.JedisPoolConfig;
         "com.tuotiansudai.util",
         "com.tuotiansudai.cache",
         "com.tuotiansudai.client",
-        "com.tuotiansudai.coupon",
+        "com.tuotiansudai.message.util",
         "com.tuotiansudai.membership"
 })
 @PropertySource(
@@ -21,7 +20,7 @@ import redis.clients.jedis.JedisPoolConfig;
         "classpath:ttsd-biz.properties"
 })
 @EnableAspectJAutoProxy(exposeProxy = true)
-public class LoanConfiguration {
+public class AppConfiguration {
 
     @Bean
     public PropertySourcesPlaceholderConfigurer propertyConfigurer() {
@@ -39,10 +38,5 @@ public class LoanConfiguration {
         jedisPoolConfig.setMaxTotal(10);
         jedisPoolConfig.setMaxWaitMillis(5000);
         return jedisPoolConfig;
-    }
-
-    @Bean
-    public JobStoreBuilder jobStoreBuilder() {
-        return new JobStoreBuilder();
     }
 }

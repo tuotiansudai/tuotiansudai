@@ -1,7 +1,8 @@
 package com.tuotiansudai.mq.client.model;
 
 public enum MessageTopic {
-    UserRegistered("UserRegistered");
+    UserRegistered("UserRegistered"),
+    CouponAssigned("CouponAssigned");
 
     final String topicName;
 
