@@ -38,4 +38,6 @@ public interface UserMessageMetaMapper {
     Map<String, Object> findMembershipById(@Param(value = "id") long id);
 
     Map<String, Object> findTransferApplicationById(@Param(value = "id") long id);
+
+    Map<String,Object> findAssignUserCoupon(@Param(value = "userCouponId") long userCouponId);
 }

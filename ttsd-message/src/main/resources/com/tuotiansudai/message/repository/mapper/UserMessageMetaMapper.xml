@@ -100,4 +100,17 @@
     <select id="findTransferApplicationById" resultType="hashmap">
         select login_name from aa.transfer_application where id = #{id}
     </select>
+
+    <select id="findAssignUserCoupon" parameterType="long" resultType="hashmap">
+        select
+        user_coupon.login_name as login_name,
+        coupon.coupon_type  as type,
+        coupon.amount as amount,
+        coupon.rate as rate,
+        user_coupon.start_time as start_time,
+        user_coupon.end_time as end_time
+        from user_coupon
+        join coupon on user_coupon.coupon_id = coupon.id
+        where user_coupon.id = #{userCouponId}
+    </select>
 </mapper>

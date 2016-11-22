@@ -413,4 +413,57 @@ public class UserMessageEventGenerator {
         userMessageMapper.create(userMessageModel);
         sendJPushByUserMessageModel(userMessageModel);
     }
+
+
+    @Transactional
+    public void generateAssignCouponSuccessEvent(long userCouponId) {
+        MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.ASSIGN_COUPON_SUCCESS);
+        //您获得了{0}，有效期{1}至{2}，<a href="/my-treasure">立即查看</a>。
+        String titleTemplate = messageModel.getTitle();
+
+        //您获得了{0}，有效期{1}至{2}。
+        String appTitleTemplate = messageModel.getAppTitle();
+
+        Map<String, Object> userCoupon = userMessageMetaMapper.findAssignUserCoupon(userCouponId);
+        String startTime = new DateTime(userCoupon.get("start_time")).toString("yyyy-MM-dd");
+        String endTime = new DateTime(userCoupon.get("end_time")).toString("yyyy-MM-dd");
+        String title;
+        String appTitle;
+
+        String couponType = (String) userCoupon.get("type");
+        switch (couponType) {
+            case "RED_ENVELOPE":
+            case "NEWBIE_COUPON":
+            case "INVEST_COUPON":
+                long amount = (long) userCoupon.get("amount");
+                title = MessageFormat.format(titleTemplate,
+                        AmountConverter.convertCentToString(amount) + "元" + COUPON_NAME_MAPPING.get(couponType),
+                        startTime,
+                        endTime);
+
+                appTitle = MessageFormat.format(appTitleTemplate,
+                        AmountConverter.convertCentToString(amount) + "元" + COUPON_NAME_MAPPING.get(couponType),
+                        startTime,
+                        endTime);
+                break;
+            case "INTEREST_COUPON":
+                double rate = (double) userCoupon.get("rate");
+                title = MessageFormat.format(titleTemplate,
+                        new BigDecimal(rate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString() + "%" + COUPON_NAME_MAPPING.get(couponType),
+                        startTime,
+                        endTime);
+
+                appTitle = MessageFormat.format(appTitleTemplate,
+                        new BigDecimal(rate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_HALF_UP).toString() + "%" + COUPON_NAME_MAPPING.get(couponType),
+                        startTime,
+                        endTime);
+                break;
+            default:
+                title = MessageFormat.format(titleTemplate, COUPON_NAME_MAPPING.get(couponType), startTime, endTime);
+                appTitle = MessageFormat.format(appTitleTemplate, COUPON_NAME_MAPPING.get(couponType), startTime, endTime);
+                break;
+        }
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) userCoupon.get("login_name"), title, appTitle, null);
+        userMessageMapper.create(userMessageModel);
+    }
 }
