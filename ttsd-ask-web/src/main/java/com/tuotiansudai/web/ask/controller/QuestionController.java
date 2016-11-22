@@ -76,10 +76,14 @@ public class QuestionController {
     @RequestMapping(path = "/search", method = RequestMethod.GET)
     public ModelAndView getQuestionsByKeyword(@RequestParam(value = "keyword", defaultValue = "") String keyword,
                                               @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        if(StringUtils.isEmpty(keyword)) {
+            return new ModelAndView("redirect:/?group=HOT&index=1");
+        }
         ModelAndView modelAndView = new ModelAndView("search-data");
         String loginName = LoginUserInfo.getLoginName();
         BaseDto<BasePaginationDataDto> data = questionService.getQuestionsByKeywords(keyword, loginName, index, 10);
         modelAndView.addObject("keywordQuestions", data);
+        modelAndView.addObject("keyword", keyword);
 
         return modelAndView;
     }

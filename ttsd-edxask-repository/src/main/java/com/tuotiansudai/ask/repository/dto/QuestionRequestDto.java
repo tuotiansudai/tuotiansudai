@@ -10,10 +10,10 @@ import java.util.List;
 public class QuestionRequestDto implements Serializable {
 
     @NotEmpty
-    @Pattern(regexp = "^.{1,30}$")
+    @Pattern(regexp = "^.{1,100}$")
     private String question;
 
-    @Pattern(regexp = "^.{0,10000}$")
+    @Pattern(regexp = "^.{0,500}$")
     private String addition;
 
     private List<Tag> tags;

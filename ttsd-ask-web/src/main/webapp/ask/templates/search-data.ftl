@@ -5,7 +5,7 @@
         <li><a href="/">全部问题</a></li>
     </ul>
     <div class="borderBox clearfix">
-        <div class="answers-box">
+        <div class="answers-box" id="searchResultBox">
             <#list keywordQuestions.data.records as question>
                 <dl class="answers-list">
                     <dt><a href="/question/${question.id?string.computer}" target="_blank">${question.question}</a></dt>
@@ -56,14 +56,14 @@
         </#if>
 
         <#list lower..upper as page>
-            <a href="/?index=${page}" <#if page == keywordQuestions.data.index>class="active"</#if>> ${page} </a>
+            <a href="/question/search?keyword=${keyword}&index=${page}" <#if page == keywordQuestions.data.index>class="active"</#if>> ${page} </a>
         </#list>
 
         <#if keywordQuestions.data.maxPage - keywordQuestions.data.index &gt; 2>
-            <a href="/?index=${keywordQuestions.data.index+1}"> > </a>
+            <a href="/question/search?keyword=${keyword}&index=${keywordQuestions.data.index+1}"> > </a>
         </#if>
         <#if keywordQuestions.data.hasNextPage>
-            <a href="/?index=${keywordQuestions.data.maxPage}">末页</a>
+            <a href="/question/search?keyword=${keyword}&index=${keywordQuestions.data.maxPage}">末页</a>
         </#if>
     </div>
 </div>
