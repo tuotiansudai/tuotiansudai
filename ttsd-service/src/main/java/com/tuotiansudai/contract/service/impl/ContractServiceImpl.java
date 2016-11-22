@@ -226,7 +226,7 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("agentMobile", agentModel.getMobile());
         dataModel.put("agentIdentityNumber", agentModel.getIdentityNumber());
         dataModel.put("investorMobile", investorModel.getMobile());
-        dataModel.put("investorIdentityNumber", agentModel.getIdentityNumber());
+        dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
         dataModel.put("loanerUserName", loanerDetailsModel == null ? "" : loanerDetailsModel.getUserName());
         dataModel.put("loanerIdentityNumber", loanerDetailsModel == null ? "" : loanerDetailsModel.getIdentityNumber());
         dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
