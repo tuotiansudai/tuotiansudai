@@ -44,9 +44,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,9 +108,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
                 public TransferApplicationRecordResponseDataDto apply(TransferApplicationRecordDto transferApplicationRecordDto) {
                     TransferApplicationRecordResponseDataDto transferApplicationRecordResponseDataDto = new TransferApplicationRecordResponseDataDto(transferApplicationRecordDto);
                     LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
-                    InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
-                    long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), investRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                    transferApplicationRecordResponseDataDto.setLeftDays(String.valueOf(leftDays > 0 ? leftDays : 0));
+                    InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
+                    transferApplicationRecordResponseDataDto.setLeftDays(InterestCalculator.calculateTransferApplicationLeftDays(currentInvestRepayModel));
                     return transferApplicationRecordResponseDataDto;
                 }
             });
@@ -199,9 +195,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
             List<TransferApplicationRecordResponseDataDto> transferApplication = transferApplicationRecordDtos.stream().map(transferApplicationRecordDto -> {
                 TransferApplicationRecordResponseDataDto transferApplicationRecordResponseDataDto = new TransferApplicationRecordResponseDataDto(transferApplicationRecordDto);
                 LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
-                InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getInvestId(), loanModel.getPeriods());
-                long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), investRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                transferApplicationRecordResponseDataDto.setLeftDays(String.valueOf(leftDays > 0 ? leftDays : 0));
+                InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getInvestId(), loanModel.getPeriods());
+                transferApplicationRecordResponseDataDto.setLeftDays(InterestCalculator.calculateTransferApplicationLeftDays(currentInvestRepayModel));
                 return transferApplicationRecordResponseDataDto;
             }).collect(Collectors.toList());
             transferApplicationResponseDataDto.setTransferApplication(transferApplication);
@@ -288,9 +283,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         TransferApplicationDetailResponseDataDto transferApplicationDetailResponseDataDto = new TransferApplicationDetailResponseDataDto(transferApplicationDetailDto);
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.valueOf(transferApplicationId));
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
-        InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationDetailDto.getTransferInvestId(), loanModel.getPeriods());
-        long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), investRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        transferApplicationDetailResponseDataDto.setLeftDays(String.valueOf(leftDays > 0 ? leftDays : 0));
+        InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationDetailDto.getTransferInvestId(), loanModel.getPeriods());
+        transferApplicationDetailResponseDataDto.setLeftDays(InterestCalculator.calculateTransferApplicationLeftDays(currentInvestRepayModel));
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(transferApplicationDetailResponseDataDto);
