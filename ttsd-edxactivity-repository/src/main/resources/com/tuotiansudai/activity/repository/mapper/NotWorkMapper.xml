@@ -40,7 +40,7 @@
         id = #{id}
     </update>
 
-    <select id="findByLoginName" parameterType="long" resultMap="notWorkResultMap">
+    <select id="findByLoginName" parameterType="java.lang.String" resultMap="notWorkResultMap">
         select * from `edxactivity`.`not_work` where login_name = #{loginName}
     </select>
 

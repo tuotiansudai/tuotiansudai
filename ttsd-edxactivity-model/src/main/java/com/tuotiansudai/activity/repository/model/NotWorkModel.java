@@ -1,6 +1,8 @@
 package com.tuotiansudai.activity.repository.model;
 
-public class NotWorkModel {
+import java.io.Serializable;
+
+public class NotWorkModel implements Serializable {
     private long id;
     private String loginName;
     private String userName;

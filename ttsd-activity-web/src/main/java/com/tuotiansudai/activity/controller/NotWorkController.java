@@ -7,6 +7,7 @@ import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -15,8 +16,9 @@ public class NotWorkController {
     @Autowired
     NotWorkService notWorkService;
 
+    @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHome() {
-        ModelAndView modelAndView = new ModelAndView("no-work");
+        ModelAndView modelAndView = new ModelAndView("/activities/no-work", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
         if (!Strings.isNullOrEmpty(loginName)) {
             modelAndView.addObject("investAmount", AmountConverter.convertCentToString(notWorkService.getUsersActivityInvestAmount(loginName)));
