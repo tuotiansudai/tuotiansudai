@@ -36,17 +36,20 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -166,8 +169,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             userCouponModel.setActualInterest(userCouponModel.getActualInterest() + actualInterest);
             userCouponModel.setActualFee(userCouponModel.getActualFee() + actualFee);
             userCouponMapper.update(userCouponModel);
-            this.updateCouponRepay(actualInterest, actualFee, investModel.getId(), couponRepayModel, currentLoanRepayModel.getId(), (currentLoanRepayModel.getActualRepayDate() != null && currentLoanRepayModel.getActualRepayDate().before(currentLoanRepayModel.getRepayDate())));
-
+            this.updateCouponRepay(actualInterest, actualFee, investModel.getId(), couponRepayModel, currentLoanRepayModel.getId(), isAdvanced);
 
             if (transferAmount > 0) {
                 try {
@@ -272,13 +274,11 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         couponRepayModel.setActualFee(actualFee);
         couponRepayModel.setRepayAmount(actualInterest - actualFee);
         couponRepayModel.setActualRepayDate(new Date());
-        couponRepayModel.setStatus(RepayStatus.WAIT_PAY);
         couponRepayMapper.update(couponRepayModel);
         if (isAdvanced) {
             List<CouponRepayModel> advancedCouponRepayModels = Lists.newArrayList(couponRepayMapper.findByUserCouponByInvestId(investId).stream().filter(input -> input.getPeriod() > couponRepayModel.getPeriod()).collect(Collectors.toList()));
             for (CouponRepayModel advancedCouponRepayModel : advancedCouponRepayModels) {
                 if (advancedCouponRepayModel.getStatus() == RepayStatus.REPAYING) {
-                    advancedCouponRepayModel.setStatus(RepayStatus.WAIT_PAY);
                     advancedCouponRepayModel.setActualRepayDate(new Date());
                     couponRepayMapper.update(advancedCouponRepayModel);
                     logger.info(MessageFormat.format("[Advance Repay {0}] update other REPAYING coupon repay({1}) status to WAIT_PAY",
@@ -295,7 +295,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         if (isAdvanced) {
             List<CouponRepayModel> advancedCouponRepayModels = Lists.newArrayList(couponRepayMapper.findByUserCouponByInvestId(investId).stream().filter(input -> input.getPeriod() > couponRepayModel.getPeriod()).collect(Collectors.toList()));
             for (CouponRepayModel advancedCouponRepayModel : advancedCouponRepayModels) {
-                if (advancedCouponRepayModel.getStatus() == RepayStatus.WAIT_PAY) {
+                if (advancedCouponRepayModel.getStatus() == RepayStatus.REPAYING) {
                     advancedCouponRepayModel.setStatus(RepayStatus.COMPLETE);
                     couponRepayMapper.update(advancedCouponRepayModel);
                     logger.info(MessageFormat.format("[Advance Repay {0}] update other REPAYING coupon repay({1}) status to COMPLETE",
@@ -361,9 +361,11 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         LoanRepayModel loanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(investModel.getLoanId(), couponRepayModel.getPeriod());
         CouponModel couponModel = couponMapper.findById(couponRepayModel.getCouponId());
 
-        boolean isAdvanced = couponRepayModel.getActualRepayDate().before(couponRepayModel.getRepayDate());
+        boolean isAdvanced = new DateTime(couponRepayModel.getActualRepayDate()).withTimeAtStartOfDay().isBefore(new DateTime(couponRepayModel.getRepayDate()).withTimeAtStartOfDay());
         try {
             redisWrapperClient.hset(MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayModel.getId())), String.valueOf(couponRepayId), SyncRequestStatus.SUCCESS.name());
+
+            this.updateCouponRepayRepayStatus(investModel.getId(), couponRepayModel, loanRepayModel.getId(), isAdvanced);
 
             amountTransfer.transferInBalance(couponRepayModel.getLoginName(),
                     couponRepayModel.getUserCouponId(),
@@ -383,7 +385,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
             systemBillService.transferOut(couponRepayModel.getUserCouponId(), (couponRepayModel.getActualInterest() - couponRepayModel.getActualFee()), SystemBillBusinessType.COUPON, detail);
 
-            this.updateCouponRepayRepayStatus(investModel.getId(), couponRepayModel, loanRepayModel.getId(), isAdvanced);
 
             logger.info(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) update user bill and system bill is success",
                     String.valueOf(couponRepayModel.getId()),

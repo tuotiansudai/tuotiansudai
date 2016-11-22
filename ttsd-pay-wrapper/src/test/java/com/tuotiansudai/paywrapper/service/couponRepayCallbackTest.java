@@ -38,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
@@ -104,7 +105,7 @@ public class couponRepayCallbackTest {
     }
 
     @Test
-    public void shouldOnlyOneRecords(){
+    public void shouldOnlyOneRecordsNormalCouponRepayCallBack(){
 
         UserModel userModel = mockUser("testCouponRepay", "13900880000", "12311@abc");
         LoanRepayModel loanRepay = this.getFakeLoanRepayModel(idGenerator.generate(), idGenerator.generate(), 1, 0, 100000, new DateTime().withMillisOfSecond(0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
@@ -116,12 +117,61 @@ public class couponRepayCallbackTest {
         TransferResponseModel responseModel = new TransferResponseModel();
         responseModel.setRetCode("0000");
 
-        CouponRepayModel couponRepayModel = this.getFakeCouponRepayModel(userModel.getLoginName(), couponModel.getId(), userCouponModel.getId(), investModel.getId(), 45, 5);
+        CouponRepayModel couponRepayModel1 = this.getFakeCouponRepayModel(userModel.getLoginName(), couponModel.getId(), userCouponModel.getId(), investModel.getId(), 1, 45, 5, new Date(), new Date());
+        CouponRepayModel couponRepayModel2 = this.getFakeCouponRepayModel(userModel.getLoginName(), couponModel.getId(), userCouponModel.getId(), investModel.getId(), 2, 45, 5, null, new DateTime().plusDays(30).toDate());
+        CouponRepayModel couponRepayModel3 = this.getFakeCouponRepayModel(userModel.getLoginName(), couponModel.getId(), userCouponModel.getId(), investModel.getId(), 3, 45, 5, null, new DateTime().plusDays(30).toDate());
 
-        CouponRepayNotifyRequestModel couponRepayNotifyRequestModel = this.mockCouponRepayNotifyRequestModel(couponRepayModel.getId(), NotifyProcessStatus.NOT_DONE);
+        List<CouponRepayModel> couponRepayModelList = Lists.newArrayList(couponRepayModel1, couponRepayModel2, couponRepayModel3);
+
+        CouponRepayNotifyRequestModel couponRepayNotifyRequestModel = this.mockCouponRepayNotifyRequestModel(couponRepayModel1.getId(), NotifyProcessStatus.NOT_DONE);
         List<CouponRepayNotifyRequestModel> couponRepayNotifyRequestModelList = Lists.newArrayList(couponRepayNotifyRequestModel);
 
-        when(couponRepayMapper.findById(anyLong())).thenReturn(couponRepayModel);
+        when(couponRepayMapper.findById(anyLong())).thenReturn(couponRepayModel1);
+        when(investMapper.findById(anyLong())).thenReturn(investModel);
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(loanRepayMapper.findById(anyLong())).thenReturn(loanRepay);
+        when(loanRepayMapper.findByLoanIdAndPeriod(anyLong(),anyInt())).thenReturn(loanRepay);
+        when(userCouponMapper.findById(anyLong())).thenReturn(userCouponModel);
+        when(couponMapper.findById(anyLong())).thenReturn(couponModel);
+        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        when(couponRepayMapper.findByUserCouponByInvestId(anyLong())).thenReturn(couponRepayModelList);
+        doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
+        doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
+        when(couponRepayNotifyRequestMapper.getTodoList(anyInt())).thenReturn(couponRepayNotifyRequestModelList);
+
+        couponRepayService.asyncCouponRepayCallback();
+
+        verify(redisWrapperClient, times(1)).decr(CouponRepayNotifyCallbackJob.COUPON_REPAY_JOB_TRIGGER_KEY);
+        verify(couponRepayNotifyRequestMapper, times(1)).updateStatus(couponRepayNotifyRequestModel.getId(), NotifyProcessStatus.DONE);
+        assertEquals(RepayStatus.COMPLETE, couponRepayModel1.getStatus());
+        assertEquals(RepayStatus.REPAYING, couponRepayModel2.getStatus());
+        assertEquals(RepayStatus.REPAYING, couponRepayModel3.getStatus());
+
+    }
+
+    @Test
+    public void shouldOnlyOneRecordsAdvanceCouponRepayCallBack(){
+
+        UserModel userModel = mockUser("testCouponRepay", "13900880000", "12311@abc");
+        LoanRepayModel loanRepay = this.getFakeLoanRepayModel(idGenerator.generate(), idGenerator.generate(), 1, 0, 100000, new DateTime().withMillisOfSecond(0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.REPAYING);
+        LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
+        CouponModel couponModel = mockCoupon(userModel.getLoginName(), 200000l);
+        AccountModel accountModel = mockAccountModel(userModel.getLoginName());
+        InvestModel investModel = mockInvest(idGenerator.generate(), userModel.getLoginName(), 50000l);
+        UserCouponModel userCouponModel = mockUserCoupon(userModel.getLoginName(), couponModel.getId(), loanModel.getId(), investModel.getId());
+        TransferResponseModel responseModel = new TransferResponseModel();
+        responseModel.setRetCode("0000");
+
+        CouponRepayModel couponRepayModel1 = this.getFakeCouponRepayModel(userModel.getLoginName(), couponModel.getId(), userCouponModel.getId(), investModel.getId(), 1, 45, 5, new DateTime().minusDays(10).toDate(), new DateTime().minusDays(8).toDate());
+        CouponRepayModel couponRepayModel2 = this.getFakeCouponRepayModel(userModel.getLoginName(), couponModel.getId(), userCouponModel.getId(), investModel.getId(), 2, 45, 5, new DateTime().minusDays(5).toDate(), new DateTime().minusDays(1).toDate());
+        CouponRepayModel couponRepayModel3 = this.getFakeCouponRepayModel(userModel.getLoginName(), couponModel.getId(), userCouponModel.getId(), investModel.getId(), 3, 45, 5, new DateTime().plusDays(15).toDate(), new DateTime().plusDays(15).toDate());
+
+        List<CouponRepayModel> couponRepayModelList = Lists.newArrayList(couponRepayModel1, couponRepayModel2, couponRepayModel3);
+
+        CouponRepayNotifyRequestModel couponRepayNotifyRequestModel = this.mockCouponRepayNotifyRequestModel(couponRepayModel1.getId(), NotifyProcessStatus.NOT_DONE);
+        List<CouponRepayNotifyRequestModel> couponRepayNotifyRequestModelList = Lists.newArrayList(couponRepayNotifyRequestModel);
+
+        when(couponRepayMapper.findById(anyLong())).thenReturn(couponRepayModel1);
         when(investMapper.findById(anyLong())).thenReturn(investModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(loanRepayMapper.findById(anyLong())).thenReturn(loanRepay);
@@ -130,12 +180,17 @@ public class couponRepayCallbackTest {
         when(couponMapper.findById(anyLong())).thenReturn(couponModel);
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         doNothing().when(userCouponMapper).update(any(UserCouponModel.class));
+        when(couponRepayMapper.findByUserCouponByInvestId(anyLong())).thenReturn(couponRepayModelList);
         doNothing().when(systemBillService).transferOut(anyLong(), anyLong(), any(SystemBillBusinessType.class), anyString());
         when(couponRepayNotifyRequestMapper.getTodoList(anyInt())).thenReturn(couponRepayNotifyRequestModelList);
+
         couponRepayService.asyncCouponRepayCallback();
 
         verify(redisWrapperClient, times(1)).decr(CouponRepayNotifyCallbackJob.COUPON_REPAY_JOB_TRIGGER_KEY);
         verify(couponRepayNotifyRequestMapper, times(1)).updateStatus(couponRepayNotifyRequestModel.getId(), NotifyProcessStatus.DONE);
+        assertEquals(RepayStatus.COMPLETE, couponRepayModel1.getStatus());
+        assertEquals(RepayStatus.COMPLETE, couponRepayModel2.getStatus());
+        assertEquals(RepayStatus.COMPLETE, couponRepayModel3.getStatus());
 
     }
 
@@ -252,15 +307,19 @@ public class couponRepayCallbackTest {
         return couponRepayNotifyRequestModel;
     }
 
-    private CouponRepayModel getFakeCouponRepayModel(String loginName, long couponId, long userCouponId, long investId, long actualInterest, long actualFee){
+    private CouponRepayModel getFakeCouponRepayModel(String loginName, long couponId, long userCouponId, long investId, int periods, long actualInterest, long actualFee, Date actualRepayDate, Date repayDate){
         CouponRepayModel couponRepayModel = new CouponRepayModel();
         couponRepayModel.setId(idGenerator.generate());
         couponRepayModel.setLoginName(loginName);
         couponRepayModel.setCouponId(couponId);
         couponRepayModel.setUserCouponId(userCouponId);
         couponRepayModel.setInvestId(investId);
+        couponRepayModel.setPeriod(periods);
         couponRepayModel.setActualInterest(actualInterest);
         couponRepayModel.setActualFee(actualFee);
+        couponRepayModel.setStatus(RepayStatus.REPAYING);
+        couponRepayModel.setActualRepayDate(actualRepayDate);
+        couponRepayModel.setRepayDate(repayDate);
         return couponRepayModel;
     }
 

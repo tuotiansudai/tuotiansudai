@@ -132,6 +132,7 @@ public class CouponRepayServiceTest {
         couponRepayModel.setCouponId(couponModel.getId());
         couponRepayModel.setUserCouponId(userCouponModel.getId());
         couponRepayModel.setPeriod(loanRepay.getPeriod());
+        couponRepayModel.setStatus(RepayStatus.REPAYING);
 
         when(loanRepayMapper.findById(loanRepay.getId())).thenReturn(loanRepay);
         when(loanMapper.findById(loanRepay.getLoanId())).thenReturn(loanModel);
@@ -152,6 +153,7 @@ public class CouponRepayServiceTest {
         verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());
         assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
         assertEquals("45", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualInterest()));
+        assertEquals(RepayStatus.REPAYING,  String.valueOf(userCouponModelArgumentCaptor.getValue().getStatus()));
         verify(paySyncClient, times(1)).send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
         ArgumentCaptor<String> syncRequestStatusArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), syncRequestStatusArgumentCaptor.capture());
@@ -241,6 +243,7 @@ public class CouponRepayServiceTest {
         verify(userCouponMapper, times(1)).update(userCouponModelArgumentCaptor.capture());
         assertEquals("4", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualFee()));
         assertEquals("45", String.valueOf(userCouponModelArgumentCaptor.getValue().getActualInterest()));
+        assertEquals(RepayStatus.REPAYING,  String.valueOf(userCouponModelArgumentCaptor.getValue().getStatus()));
         verify(paySyncClient, times(1)).send(eq(TransferMapper.class), any(TransferRequestModel.class), eq(TransferResponseModel.class));
         ArgumentCaptor<String> syncRequestStatusArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(redisWrapperClient, times(2)).hset(anyString(), anyString(), syncRequestStatusArgumentCaptor.capture());
