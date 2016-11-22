@@ -45,6 +45,9 @@ input[type='checkbox'] {
   border:0!important;
 }
 a{
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   cursor: pointer;
   color:nth($linkColor,1);
   text-decoration: none;
