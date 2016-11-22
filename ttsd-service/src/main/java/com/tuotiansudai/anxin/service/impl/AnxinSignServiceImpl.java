@@ -104,7 +104,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final int BATCH_NO_LIFT_TIME = 60 * 60 * 24 * 7; // bath_NO 在redis里保存7天
 
-    private static final int CREATE_CONTRACT_MAX_IN_DOING_TIME = 60 * 30; // 创建合同的时间在半个小时内应该可以完成，如果job出现问题，没能删除InCreating key, 半个小时后，可以再次手动创建合同
+    private static final int CREATE_CONTRACT_MAX_IN_DOING_TIME = 60 * 90; // 给创建合同预留90分钟，如果job出现问题，没能删除InCreating key, 90分钟后，可以再次手动创建合同
 
     private static final String CONTRACT_TIME_FORMAT = "yyyyMMddHHmmss";
 
