@@ -54,7 +54,7 @@
     </select>
 
     <select id="findTransferApplicationByInvestId" parameterType="long" resultType="hashmap">
-        select id, name, login_name
+        select id, name, login_name, transfer_amount
         from transfer_application
         where invest_id = #{investId} and status = 'SUCCESS'
     </select>

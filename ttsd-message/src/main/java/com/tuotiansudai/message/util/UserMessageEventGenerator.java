@@ -179,7 +179,7 @@ public class UserMessageEventGenerator {
     public void generateTransferSuccessEvent(long investId) {
         Map<String, Object> invest = userMessageMetaMapper.findTransferApplicationByInvestId(investId);
         String name = (String) invest.get("name");
-        long amount = (long) invest.get("transferAmount");
+        long amount = (long) invest.get("transfer_amount");
         String loginName = (String) invest.get("login_name");
 
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.TRANSFER_SUCCESS);
