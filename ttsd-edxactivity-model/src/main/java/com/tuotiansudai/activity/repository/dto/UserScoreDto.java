@@ -6,7 +6,7 @@ public class UserScoreDto {
 
     private long score;
 
-    public UserScoreDto(String loginName, long score) {
+    public UserScoreDto(String loginName, long score){
         this.loginName = loginName;
         this.score = score;
     }

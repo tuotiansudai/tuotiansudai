@@ -229,8 +229,7 @@
                 <div class="col-sm-2 checkbox" id="extraSource">
                     <#list extraSources as source>
                         <label>
-                            <input name="extraSource" type="checkbox" value="${source.name()}"
-                                   <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if> <#if loan.loanDetails.extraSource??><#if loan.loanDetails.extraSource?seq_contains(source)>checked="checked"</#if></#if>>${source.name()}</input>
+                            <input name="extraSource" type="checkbox" value="${source.name()}" <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if> <#if loan.loanDetails.extraSource??><#if loan.loanDetails.extraSource?seq_contains(source)>checked="checked"</#if></#if>>${source.name()}</input>
                         </label>
                     </#list>
                 </div>

@@ -6,7 +6,7 @@ import com.tuotiansudai.activity.repository.dto.PromotionStatus;
 import java.io.Serializable;
 import java.util.Date;
 
-public class PromotionModel implements Serializable {
+public class PromotionModel implements Serializable{
 
     private long id;
 

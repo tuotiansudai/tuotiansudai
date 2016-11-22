@@ -36,7 +36,7 @@ public class ProductShowItemDto {
         this.updatedTime = productModel.getUpdatedTime();
     }
 
-    public ProductShowItemDto(long totalCount, long usedCount, long points, Integer seq, String imageUrl, CouponType couponType, long amount, double rate, long productId) {
+    public ProductShowItemDto(long totalCount, long usedCount, long points, Integer seq, String imageUrl, CouponType couponType, long amount , double rate, long productId){
         this.id = productId;
         this.seq = seq;
         this.imageUrl = imageUrl;
@@ -49,7 +49,7 @@ public class ProductShowItemDto {
                 this.pictureDescription = String.valueOf(amount);
                 break;
             case INVEST_COUPON:
-                this.name = String.format("%s 元投资体验券", AmountConverter.convertCentToString(amount));
+                this.name = String.format( "%s 元投资体验券", AmountConverter.convertCentToString(amount));
                 this.pictureDescription = String.valueOf(amount);
                 break;
             case INTEREST_COUPON:

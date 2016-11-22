@@ -36,7 +36,7 @@ public class MyHandlerExceptionResolver implements HandlerExceptionResolver {
                 out.print(jsonString);
 
             }
-        } catch (IOException io) {
+        }catch (IOException io){
             log.warn(io.getMessage());
         } catch (Exception e) {
 

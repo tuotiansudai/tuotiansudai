@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -71,7 +73,7 @@ public class UserMessageMapperTest {
     }
 
     @Test
-    public void shouldCountMessagesByLoginNameAndMessageTypeISok() {
+    public void shouldCountMessagesByLoginNameAndMessageTypeISok(){
         UserModel userModel = getFakeUser("testUserMessage");
         userMapper.create(userModel);
 

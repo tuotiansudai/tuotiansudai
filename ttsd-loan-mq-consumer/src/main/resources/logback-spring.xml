@@ -10,9 +10,7 @@
             <CleanHistoryOnStart>false</CleanHistoryOnStart>
         </rollingPolicy>
         <encoder>
-            <pattern>[${LOG_LEVEL_PATTERN:-%5p}] [%d{yyyy-MM-dd HH:mm:ss.SSS zzz}] %C{0}:%L %method - [%t]
-                %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}
-            </pattern>
+            <pattern>[${LOG_LEVEL_PATTERN:-%5p}] [%d{yyyy-MM-dd HH:mm:ss.SSS zzz}] %C{0}:%L %method - [%t] %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</pattern>
         </encoder>
     </appender>
 

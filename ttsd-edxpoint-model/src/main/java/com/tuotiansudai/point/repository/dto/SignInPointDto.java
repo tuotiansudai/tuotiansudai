@@ -48,18 +48,18 @@ public class SignInPointDto extends BaseDataDto implements Serializable {
         this.nextSignInPoint = nextSignInPoint;
     }
 
-    public SignInPointDto(int signInCount, Date signInDate, int signInPoint, int nextSignInPoint) {
+    public SignInPointDto(int signInCount, Date signInDate, int signInPoint,int nextSignInPoint) {
         this.signInCount = signInCount;
         this.signInDate = signInDate;
         this.nextSignInPoint = nextSignInPoint;
         this.signInPoint = signInPoint;
     }
 
-    public SignInPointDto(PointBillModel pointBillModel, int signInCount) {
+    public SignInPointDto(PointBillModel pointBillModel,int signInCount){
         this.signInCount = signInCount;
         this.signInDate = pointBillModel.getCreatedTime();
         this.nextSignInPoint = SignInPoint.getPointByTimes(signInCount + 1);
-        this.signInPoint = (int) pointBillModel.getPoint();
+        this.signInPoint = (int)pointBillModel.getPoint();
     }
 
     public SignInPointDto() {
