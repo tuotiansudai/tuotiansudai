@@ -180,7 +180,7 @@ public class PointShopController {
     @RequestMapping(value = "/record-list", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<BasePaginationDataDto> pointSystemRecordDetail(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                                                  @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                                @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
         BasePaginationDataDto<ProductOrderViewDto> dataDto = pointExchangeService.findProductOrderListByLoginNamePagination(LoginUserInfo.getLoginName(), index, pageSize);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
