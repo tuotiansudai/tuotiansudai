@@ -6,54 +6,54 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 
             size: 8
         });
 
-        $('#create').click(function (event) {
-            if (!confirm("确定要执行创建合同吗？")) {
+        $('#create').click(function(event) {
+            if(!confirm("确定要执行创建合同吗？")) {
                 return false;
             }
             $.ajax({
                 url: '/project-manage/generate-contract',
                 type: 'POST',
                 dataType: 'json',
-                data: $('#contractForm').serialize()
+                data:$('#contractForm').serialize()
             })
-                .done(function (res) {
-                    if (res.success) {
-                        alert("成功创建合同!");
-                    } else {
-                        alert(res.data.message);
-                    }
-                    console.log("success");
-                })
-                .fail(function () {
-                    console.log("error");
-                })
-                .always(function () {
-                    console.log("complete");
-                });
+            .done(function(res) {
+                if (res.success) {
+                    alert("成功创建合同!");
+                }else{
+                    alert(res.data.message);
+                }
+                console.log("success");
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always(function() {
+                console.log("complete");
+            });
         });
 
-        $('#find').click(function (event) {
-            if (!confirm("确定要执行查询合同吗？")) {
+        $('#find').click(function(event) {
+            if(!confirm("确定要执行查询合同吗？")) {
                 return false;
             }
             $.ajax({
                 url: '/project-manage/query-contract',
                 type: 'POST',
                 dataType: 'json',
-                data: $('#contractForm').serialize()
+                data:$('#contractForm').serialize()
             })
-                .done(function (res) {
+                .done(function(res) {
                     if (res.success) {
                         alert("查询合同成功!");
-                    } else {
+                    }else{
                         alert(res.data.message);
                     }
                     console.log("success");
                 })
-                .fail(function () {
+                .fail(function() {
                     console.log("error");
                 })
-                .always(function () {
+                .always(function() {
                     console.log("complete");
                 });
         });
