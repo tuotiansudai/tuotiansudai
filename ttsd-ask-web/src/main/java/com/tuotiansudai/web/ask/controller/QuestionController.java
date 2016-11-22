@@ -66,7 +66,12 @@ public class QuestionController {
     public ModelAndView getQuestionsByCategory(@PathVariable String urlTag,
                                                @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        Tag tag = Tag.valueOf(urlTag.toUpperCase());
+        Tag tag;
+        try {
+            tag = Tag.valueOf(urlTag.toUpperCase());
+        } catch (Exception e) {
+            return new ModelAndView("error/404");
+        }
         ModelAndView modelAndView = new ModelAndView("/question-category");
         modelAndView.addObject("questions", questionService.findByTag(LoginUserInfo.getLoginName(), tag, index, pageSize));
         modelAndView.addObject("tag", tag);
