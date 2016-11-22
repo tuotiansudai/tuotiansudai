@@ -37,7 +37,7 @@
                         <td style="text-align:center;vertical-align:middle;"><span class="imageUrl"><img id="imageUrl" src="${staticServer}${promotion.imageUrl!}" width="40" height="60"/></td>
                         <td style="text-align:center;vertical-align:middle;">${promotion.name!}</td>
                         <td style="text-align:center;vertical-align:middle;">${promotion.seq!}</td>
-                        <td style="text-align:center;vertical-align:middle;"><a href="${promotion.linkUrl!}" target="_blank">${promotion.linkUrl!}</td>
+                        <td style="text-align:center;vertical-align:middle;">${promotion.linkUrl!}</td>
                         <td style="text-align:center;vertical-align:middle;">${promotion.startTime?string('yyyy-MM-dd')!} 至 ${promotion.endTime?string('yyyy-MM-dd')!}</td>
                         <td style="text-align:center;vertical-align:middle;"><#if "APPROVED" == promotion.status>已生效<#else>未生效</#if></td>
                         <td style="text-align:center;vertical-align:middle;">
