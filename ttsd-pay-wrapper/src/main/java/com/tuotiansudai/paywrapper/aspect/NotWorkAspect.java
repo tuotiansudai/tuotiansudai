@@ -122,7 +122,7 @@ public class NotWorkAspect {
         return new BaseDto<>(new BaseDataDto(true));
     }
 
-    public BaseDto<BaseDataDto> userInvest(String loginName, long investAmount) {
+    private BaseDto<BaseDataDto> userInvest(String loginName, long investAmount) {
         return update(loginName, new UpdateModelProducer() {
             @Override
             public NotWorkModel createAction(NotWorkModel notWorkModel) {
@@ -146,7 +146,7 @@ public class NotWorkAspect {
         });
     }
 
-    public BaseDto<BaseDataDto> recommendedInvest(String recommendedLoginName, long investAmount) {
+    private BaseDto<BaseDataDto> recommendedInvest(String recommendedLoginName, long investAmount) {
         UserModel userModel = userMapper.findByLoginName(recommendedLoginName);
         if (userModel.getRegisterTime().before(activityStartTime) || userModel.getRegisterTime().after(activityEndTime)) {
             return new BaseDto<>(new BaseDataDto(false, "非活动期间注册用户"));
