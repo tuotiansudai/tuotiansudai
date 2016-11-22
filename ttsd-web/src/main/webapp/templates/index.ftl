@@ -5,19 +5,39 @@
     <div class="banner-box">
         <div id="bannerBox" class="banner-box-inner">
             <ul class="banner-img-list">
-                <li>
+                <li style="opacity: 1;" class="active">
                     <a href="https://tuotiansudai.com/activity/heavily-courtship" onclick="cnzzPush.trackClick('首页','Banner模块','重金求偶')" target="_blank">
                         <img src="https://static.tuotiansudai.com/upload/20161118/93341479431163875.png" data-app-img="https://static.tuotiansudai.com/upload/20161118/19901479431174995.png" alt="拓天速贷">
                     </a>
                 </li>
-                <li>
+                <li style="opacity: 0;" >
                     <a href="https://tuotiansudai.com/activity/landing-anxin" onclick="cnzzPush.trackClick('首页','Banner模块','CFCA')" target="_blank">
                         <img src="https://static.tuotiansudai.com/upload/20161115/81941479196220373.jpg" data-app-img="https://static.tuotiansudai.com/upload/20161115/35861479196223426.jpg" alt="拓天速贷">
                     </a>
                 </li>
-                <li>
+                <li style="opacity: 0;" class="">
                     <a href="https://tuotiansudai.com/activity/invest-achievement" onclick="cnzzPush.trackClick('首页','Banner模块','称号活动')" target="_blank">
                         <img src="https://static.tuotiansudai.com/upload/20160708/42441467975156254.png" data-app-img="https://static.tuotiansudai.com/upload/20160708/52421467975158264.png" alt="拓天速贷">
+                    </a>
+                </li>
+                <li style="opacity: 0;" class="">
+                    <a href="https://tuotiansudai.com/activity/landing-page" onclick="cnzzPush.trackClick('首页','Banner模块','新手活动')" target="_blank">
+                        <img src="https://static.tuotiansudai.com/upload/20160708/98591467975197628.png" data-app-img="https://static.tuotiansudai.com/upload/20160708/82341467975201217.png" alt="拓天速贷">
+                    </a>
+                </li>
+                <li style="opacity: 0;" class="">
+                    <a href="https://tuotiansudai.com/activity/birth-month" onclick="cnzzPush.trackClick('首页','Banner模块','生日月')" target="_blank">
+                        <img src="https://static.tuotiansudai.com/upload/20160708/96541467975330119.jpg" data-app-img="https://static.tuotiansudai.com/upload/20160708/47691467975332089.jpg" alt="拓天速贷">
+                    </a>
+                </li>
+                <li style="opacity: 0;" class="">
+                    <a href="https://tuotiansudai.com/activity/share-reward" onclick="cnzzPush.trackClick('首页','Banner模块','推荐奖励')" target="_blank">
+                        <img src="https://static.tuotiansudai.com/upload/20161014/84441476444119664.jpg" data-app-img="https://static.tuotiansudai.com/upload/20161014/21781476444124470.jpg" alt="拓天速贷">
+                    </a>
+                </li>
+                <li style="opacity: 0;" class="">
+                    <a href="https://tuotiansudai.com/activity/app-download" onclick="cnzzPush.trackClick('首页','Banner模块','APP下载')" target="_blank">
+                        <img src="https://static.tuotiansudai.com//upload/20161122/28981479775421398.jpg" data-app-img="https://static.tuotiansudai.com//upload/20161122/13311479775423861.jpg" alt="拓天速贷">
                     </a>
                 </li>
             </ul>

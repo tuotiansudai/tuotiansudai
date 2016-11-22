@@ -108,10 +108,7 @@ define([], function () {
 
             for (var j = 0; j < this.count; j++) {
                 this.alpha(j, 0);
-
             }
-            this.alpha(this.prev, 100); //设置上一张的透明度为100
-            this.alpha(this.index, 0); // 当前的一张不要透明度
             // 利用透明度来实现切换图片
             this.timer = setInterval(function() {
                 inalpha += 2;
@@ -123,7 +120,7 @@ define([], function () {
                     pralpha = 100
                 };
                 //为兼容性赋样式
-                this.alpha(this.prev, pralpha);
+                // this.alpha(this.prev, pralpha);
                 this.alpha(this.index, inalpha);
                 if (inalpha == 100 && pralpha == 0) {
                     clearInterval(this.timer)
@@ -174,28 +171,17 @@ define([], function () {
                         }else{
                             e.stopPropagation();
                         }
+
                         if (typeof e.target != 'undefined'){
                             $this.index=e.target.index; //获取鼠标移入的序列
                         }
                         else {
-                            // var targetElement = e.srcElement;
-
                             $this.index=e.srcElement.index;
-                            // console.log(e.srcElement.parentNode);
                         }
 
                         $this.imgshow();
                     }
                 })(i)
-            }
-        },
-        // 阻止事件冒泡
-        stopPropagation:function(e){
-            e=window.event||e;
-            if(document.all){  //只有ie识别
-                e.cancelBubble=true;
-            }else{
-                e.stopPropagation();
             }
         },
         bindTouchEvn:function() {
