@@ -1,6 +1,8 @@
 package com.tuotiansudai.message.aspect;
 
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.message.util.UserMessageEventGenerator;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -28,7 +30,7 @@ public class MessageEventAspect {
     public void registerUserPointcut() {
     }
 
-    @Pointcut("execution(* *..UserService.registerAccount(..))")
+    @Pointcut("execution(* *..RegisterUserServiceImpl.register(..))")
     public void registerAccountPointcut() {
     }
 
@@ -96,12 +98,12 @@ public class MessageEventAspect {
 
     @AfterReturning(value = "registerAccountPointcut()", returning = "returnValue")
     public void afterReturningRegisterAccount(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
-        Object registerAccountDto = joinPoint.getArgs()[0];
+        Object userModel = joinPoint.getArgs()[0];
         try {
             if (returnValue.getData().getStatus()) {
-                Class<?> aClass = registerAccountDto.getClass();
+                Class<?> aClass = userModel.getClass();
                 Method method = aClass.getMethod("getLoginName");
-                String loginName = (String) method.invoke(registerAccountDto);
+                String loginName = (String) method.invoke(userModel);
                 userMessageEventGenerator.generateRegisterAccountSuccessEvent(loginName);
                 logger.info(MessageFormat.format("[Message Event Aspect] after register account({0}) pointcut finished", loginName));
             }
