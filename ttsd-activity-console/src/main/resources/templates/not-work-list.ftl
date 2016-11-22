@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="app-push-manage" sideLab="manualMessageManage" title="手动发送站内信管理">
+<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="notWork" title="不上班活动管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -56,7 +56,7 @@
                     ${item.investAmount!}
                     </td>
                     <td>
-                    ${item.}
+                    ${item.rewards!}
                     </td>
                     <td>
                     ${item.recommendedRegisterAmount!}

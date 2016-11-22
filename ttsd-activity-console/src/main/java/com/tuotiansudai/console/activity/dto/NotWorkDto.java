@@ -3,15 +3,13 @@ package com.tuotiansudai.console.activity.dto;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
 import com.tuotiansudai.util.AmountConverter;
 
-import java.util.List;
-
 public class NotWorkDto {
     private long id;
     private String loginName;
     private String userName;
     private String mobile;
     private String investAmount;
-    private List<String> rewards;
+    private String rewards;
     private String recommendedRegisterAmount;
     private String recommendedIdentifyAmount;
     private String recommendedInvestAmount;
@@ -94,11 +92,11 @@ public class NotWorkDto {
         this.recommendedInvestAmount = recommendedInvestAmount;
     }
 
-    public List<String> getRewards() {
+    public String getRewards() {
         return rewards;
     }
 
-    public void setRewards(List<String> rewards) {
+    public void setRewards(String rewards) {
         this.rewards = rewards;
     }
 }

@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.activity.service;
 
+import com.google.common.base.Joiner;
 import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
 import com.tuotiansudai.console.activity.dto.NotWorkDto;
@@ -7,6 +8,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +18,7 @@ public class NotWorkService {
     @Autowired
     NotWorkMapper notWorkMapper;
 
-    final private Map<Long, String> rewardList = new HashMap<Long, String>() {{
+    final private Map<Long, String> rewardMap = new HashMap<Long, String>() {{
         put(300000L, "20元红包");
         put(800000L, "30元话费");
         put(3000000L, "京东E卡");
@@ -34,11 +36,15 @@ public class NotWorkService {
         List<NotWorkModel> notWorkModels = notWorkMapper.findPagination(PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
         List<NotWorkDto> records = notWorkModels.stream().map(notWorkModel -> {
             NotWorkDto notWorkDto = new NotWorkDto(notWorkModel);
-            rewardList.forEach((k, v) -> {
+            List<String> rewardList = new ArrayList<>();
+            rewardMap.forEach((k, v) -> {
                 if (k <= notWorkModel.getInvestAmount()) {
-                    notWorkDto.getRewards().add(v);
+                    rewardList.add(v);
                 }
             });
+            if (rewardList.size() > 0) {
+                notWorkDto.setRewards(Joiner.on(",").join(rewardList));
+            }
             return notWorkDto;
         }).collect(Collectors.toList());
         return new BasePaginationDataDto<>(index, pageSize, count, records);
