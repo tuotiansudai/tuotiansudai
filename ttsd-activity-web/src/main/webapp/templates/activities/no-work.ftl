@@ -22,11 +22,11 @@
 									<@global.isNotAnonymous>
 									<li>
 										<p class="title-text">您的累计投资金额：</p>
-										<p class="number-text">8,000.00元</p>
+                                        <p class="number-text">${investAmount!"0"}元</p>
 									</li>
 									<li>
 										<p class="title-text">距下一个奖品还差：</p>
-										<p class="number-text">12,000.00元</p>
+                                        <p class="number-text">${needInvestAmount!"0"}元</p>
 									</li>
 									<li>
 										<a href="/loan-list" class="loan-btn-item">立即投资</a>
@@ -56,7 +56,7 @@
 							<li class="gift-type">
 								<div class="gift-name">
 									<div class="gift-bg">
-										<div class="gift-trick active"></div>
+                                        <div class="gift-trick <#if investAmount?? && 3000 <= investAmount?number>active</#if>"></div>
 										<h3>20元红包</h3>
 										<p>
 											<img src="${staticServer}/activity/images/nowork/gift-one.png" alt="">
@@ -74,7 +74,7 @@
 							<li class="gift-type">
 								<div class="gift-name">
 									<div class="gift-bg">
-										<div class="gift-trick"></div>
+                                        <div class="gift-trick <#if investAmount?? && 8000 <= investAmount?number>active</#if>"></div>
 										<h3>30元话费</h3>
 										<p>
 											<img src="${staticServer}/activity/images/nowork/gift-two.png" alt="">
@@ -92,7 +92,7 @@
 							<li class="gift-type">
 								<div class="gift-name">
 									<div class="gift-bg">
-										<div class="gift-trick"></div>
+                                        <div class="gift-trick <#if investAmount?? && 30000 <= investAmount?number>active</#if>"></div>
 										<h3>京东E卡</h3>
 										<p>
 											<img src="${staticServer}/activity/images/nowork/gift-three.png" alt="">
@@ -110,7 +110,7 @@
 							<li class="gift-type">
 								<div class="gift-name">
 									<div class="gift-bg">
-										<div class="gift-trick"></div>
+                                        <div class="gift-trick <#if investAmount?? && 50000 <= investAmount?number>active</#if>"></div>
 										<h3>300元旅游基金（芒果卡）</h3>
 										<p>
 											<img src="${staticServer}/activity/images/nowork/gift-four.png" alt="">
@@ -128,7 +128,7 @@
 							<li class="gift-type">
 								<div class="gift-name">
 									<div class="gift-bg">
-										<div class="gift-trick"></div>
+                                        <div class="gift-trick <#if investAmount?? && 100000 <= investAmount?number>active</#if>"></div>
 										<h3>索尼数码相机</h3>
 										<p>
 											<img src="${staticServer}/activity/images/nowork/gift-five.png" alt="">
@@ -146,7 +146,7 @@
 							<li class="gift-type">
 								<div class="gift-name">
 									<div class="gift-bg">
-										<div class="gift-trick"></div>
+                                        <div class="gift-trick <#if investAmount?? && 200000 <= investAmount?number>active</#if>"></div>
 										<h3>联想YOGA 平板3代</h3>
 										<p>
 											<img src="${staticServer}/activity/images/nowork/gift-six.png" alt="">
@@ -164,7 +164,7 @@
 							<li class="gift-type">
 								<div class="gift-name">
 									<div class="gift-bg">
-										<div class="gift-trick"></div>
+                                        <div class="gift-trick <#if investAmount?? && 300000 <= investAmount?number>active</#if>"></div>
 										<h3>CAN看尚42英寸液晶电视</h3>
 										<p>
 											<img src="${staticServer}/activity/images/nowork/gift-seven.png" alt="">
@@ -182,7 +182,7 @@
 							<li class="gift-type">
 								<div class="gift-name">
 									<div class="gift-bg">
-										<div class="gift-trick"></div>
+                                        <div class="gift-trick <#if investAmount?? && 520000 <= investAmount?number>active</#if>"></div>
 										<h3>锤子手机M1</h3>
 										<p>
 											<img src="${staticServer}/activity/images/nowork/gift-eight.png" alt="">
@@ -200,7 +200,7 @@
 							<li class="gift-type">
 								<div class="gift-name">
 									<div class="gift-bg">
-										<div class="gift-trick"></div>
+                                        <div class="gift-trick <#if investAmount?? && 800000 <= investAmount?number>active</#if>"></div>
 										<h3>浪琴手表康卡斯系列</h3>
 										<p>
 											<img src="${staticServer}/activity/images/nowork/gift-nine.png" alt="">
@@ -218,7 +218,7 @@
 							<li class="gift-type">
 								<div class="gift-name">
 									<div class="gift-bg">
-										<div class="gift-trick"></div>
+                                        <div class="gift-trick <#if investAmount?? && 1200000 <= investAmount?number>active</#if>"></div>
 										<h3>Apple MacBook Air</h3>
 										<p>
 											<img src="${staticServer}/activity/images/nowork/gift-ten.png" alt="">

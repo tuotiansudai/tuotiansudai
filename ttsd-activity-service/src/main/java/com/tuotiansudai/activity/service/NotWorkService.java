@@ -9,10 +9,12 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+@Service
 public class NotWorkService {
 
     @Autowired
@@ -24,13 +26,16 @@ public class NotWorkService {
     @Autowired
     CouponAssignmentService couponAssignmentService;
 
-    final static private long PRIZE_COUPON_ID = 0L;
+    final static private long PRIZE_COUPON_ID = 322L;
 
     final static private long PRIZE_COUPON_INVEST_LIMIT = 300000L;
 
     final private LocalDateTime activityStartTime = LocalDateTime.of(2016, 12, 1, 0, 0, 0, 0);
 
     final private LocalDateTime activityEndTime = LocalDateTime.of(2016, 12, 16, 0, 0, 0, 0);
+
+    final private long[] prizeList = {300000L, 800000L, 3000000L, 5000000L, 10000000L, 20000000L, 30000000L, 52000000L,
+            80000000L, 120000000L};
 
     private interface UpdateModelProducer {
         NotWorkModel createAction(NotWorkModel notWorkModel);
@@ -141,5 +146,27 @@ public class NotWorkService {
                 return notWorkModel;
             }
         });
+    }
+
+    public long getUsersActivityInvestAmount(String loginName) {
+        NotWorkModel notWorkModel = notWorkMapper.findByLoginName(loginName);
+        if (null == notWorkModel) {
+            return 0L;
+        } else {
+            return notWorkModel.getInvestAmount();
+        }
+    }
+
+    public long getUsersNeedInvestAmount(String loginName) {
+        NotWorkModel notWorkModel = notWorkMapper.findByLoginName(loginName);
+        if (null == notWorkModel) {
+            return 0L;
+        }
+        for (long prize : prizeList) {
+            if (prize > notWorkModel.getInvestAmount()) {
+                return prize - notWorkModel.getInvestAmount();
+            }
+        }
+        return 0L;
     }
 }
