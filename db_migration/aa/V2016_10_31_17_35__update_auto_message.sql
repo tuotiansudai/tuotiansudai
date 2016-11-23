@@ -196,7 +196,7 @@ VALUES ('拓天速贷为您送上生日祝福，请查收！', '拓天速贷为�
   '0');
 INSERT INTO `aa`.`message` (`title`, `app_title`, `template`, `template_txt`, `type`, `event_type`, `user_groups`, `channels`, `message_category`, `web_url`, `app_url`, `status`, `read_count`, `activated_by`, `activated_time`, `expired_time`, `created_by`, `created_time`, `updated_by`, `updated_time`, `deleted`)
 VALUES ('恭喜您已成功购买{0}个月V5会员！', '恭喜您已成功购买{0}个月V5会员！', '尊敬的用户，恭喜您已成功购买V5会员，有效期至{0}日，【马上投资】享受会员特权吧！',
-                              '尊敬的用户，恭喜您已成功购买V5会员，有效期至{0}日，【马上投资】享受会员特权吧！', 'EVENT', 'MEMBERSHIP_BUY_SUCCESS',
+                              '尊敬的用户，恭喜您已成功购买V5会员，有效期至{0}，【马上投资】享受会员特权吧！', 'EVENT', 'MEMBERSHIP_BUY_SUCCESS',
                               'ALL_USER',
                               'WEBSITE,APP_MESSAGE', 'SYSTEM', 'https://tuotiansudai.com/membership', 'MY_MEMBERSHIP',
   'APPROVED',

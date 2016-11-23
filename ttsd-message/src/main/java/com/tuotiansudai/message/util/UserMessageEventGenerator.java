@@ -373,11 +373,11 @@ public class UserMessageEventGenerator {
     public void generateMembershipPurchaseEvent(String loginName, int duration) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.MEMBERSHIP_BUY_SUCCESS);
-        //Title:恭喜您已成功购买{0}天V5会员！
-        //AppTitle:恭喜您已成功购买{0}天V5会员！
+        //Title:恭喜您已成功购买{0}个月V5会员！
+        //AppTitle:恭喜您已成功购买{0}个月V5会员！
         //Content:尊敬的用户，恭喜您已成功购买V5会员，有效期至{0}，【马上投资】享受会员特权吧！
-        String title = MessageFormat.format(messageModel.getTitle(), duration);
-        String appTitle = MessageFormat.format(messageModel.getAppTitle(), duration);
+        String title = MessageFormat.format(messageModel.getTitle(), duration / 30);
+        String appTitle = MessageFormat.format(messageModel.getAppTitle(), duration / 30);
         String content = MessageFormat.format(messageModel.getTemplate(), simpleDateFormat.format(DateTime.now().withTimeAtStartOfDay().plusDays(duration).toDate()));
 
         UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
