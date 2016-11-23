@@ -58,49 +58,45 @@ public class AnxinClient {
     private static final String DEFAULT_TRUST_ALGORITHM = TrustManagerFactory.getDefaultAlgorithm();
     private static final String DEFAULT_TRUST_STORE_TYPE = KeyStore.getDefaultType();
 
-    private SSLSocketFactory sslSocketFactory;
-
     @PostConstruct
     public void initSSL() throws GeneralSecurityException, IOException {
         logger.info("into AnxinClient initSSl method. Thread id: " + Thread.currentThread().getId());
-        if (sslSocketFactory == null) {
-            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(DEFAULT_KEY_ALGORITHM);
-            KeyStore keyStore = KeyStore.getInstance(DEFAULT_KEY_STORE_TYPE);
-            FileInputStream keyStoreFis = null;
-            try {
-                keyStoreFis = new FileInputStream(JKS_PATH);
-                keyStore.load(keyStoreFis, JKS_PWD.toCharArray());
-                keyManagerFactory.init(keyStore, JKS_PWD.toCharArray());
-            } finally {
-                if (keyStoreFis != null) {
-                    keyStoreFis.close();
-                }
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(DEFAULT_KEY_ALGORITHM);
+        KeyStore keyStore = KeyStore.getInstance(DEFAULT_KEY_STORE_TYPE);
+        FileInputStream keyStoreFis = null;
+        try {
+            keyStoreFis = new FileInputStream(JKS_PATH);
+            keyStore.load(keyStoreFis, JKS_PWD.toCharArray());
+            keyManagerFactory.init(keyStore, JKS_PWD.toCharArray());
+        } finally {
+            if (keyStoreFis != null) {
+                keyStoreFis.close();
             }
-
-            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(DEFAULT_TRUST_ALGORITHM);
-            KeyStore trustStore = KeyStore.getInstance(DEFAULT_TRUST_STORE_TYPE);
-            FileInputStream trustStoreFis = null;
-            try {
-                trustStoreFis = new FileInputStream(JKS_PATH);
-                trustStore.load(trustStoreFis, JKS_PWD.toCharArray());
-                trustManagerFactory.init(trustStore);
-            } finally {
-                if (trustStoreFis != null) {
-                    trustStoreFis.close();
-                }
-            }
-
-            SSLContext sslContext = SSLContext.getInstance(DEFAULT_SSL_PROTOCOL);
-            sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), new SecureRandom());
-            sslSocketFactory = sslContext.getSocketFactory();
-
-            if (sslSocketFactory != null) {
-                httpClient.setSslSocketFactory(sslSocketFactory);
-            }
-
-            httpClient.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS);
-            httpClient.setReadTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.MILLISECONDS);
         }
+
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(DEFAULT_TRUST_ALGORITHM);
+        KeyStore trustStore = KeyStore.getInstance(DEFAULT_TRUST_STORE_TYPE);
+        FileInputStream trustStoreFis = null;
+        try {
+            trustStoreFis = new FileInputStream(JKS_PATH);
+            trustStore.load(trustStoreFis, JKS_PWD.toCharArray());
+            trustManagerFactory.init(trustStore);
+        } finally {
+            if (trustStoreFis != null) {
+                trustStoreFis.close();
+            }
+        }
+
+        SSLContext sslContext = SSLContext.getInstance(DEFAULT_SSL_PROTOCOL);
+        sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), new SecureRandom());
+        SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+
+        if (sslSocketFactory != null) {
+            httpClient.setSslSocketFactory(sslSocketFactory);
+        }
+
+        httpClient.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS);
+        httpClient.setReadTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.MILLISECONDS);
     }
 
     public String send(String txCode, String requestData) throws PKIException {
