@@ -13,6 +13,8 @@ public interface InvestExtraRateMapper {
 
     void update(InvestExtraRateModel investExtraRateModel);
 
+    void updateActualRepayDate(InvestExtraRateModel investExtraRateModel);
+
     void create(InvestExtraRateModel investExtraRateModel);
 
     InvestExtraRateModel findByInvestId(@Param(value = "investId") long investId);
