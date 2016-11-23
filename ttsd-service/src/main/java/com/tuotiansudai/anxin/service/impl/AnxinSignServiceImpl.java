@@ -153,7 +153,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             UserModel userModel = userMapper.findByLoginName(loginName);
 
             Tx3ResVO tx3001ResVO = anxinSignConnectService.createAccount3001(userModel);
-            String retMessage = tx3001ResVO.getHead().getRetMessage();
 
             if (isSuccess(tx3001ResVO)) {
                 AnxinSignPropertyModel anxinProp = new AnxinSignPropertyModel();
@@ -164,10 +163,10 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 anxinSignPropertyMapper.create(anxinProp);
                 return new BaseDto();
             } else {
+                String retMessage = tx3001ResVO.getHead().getRetMessage();
                 logger.error("create anxin sign account failed. " + retMessage);
-                return new BaseDto(false);
+                return failBaseDto(retMessage);
             }
-
         } catch (PKIException e) {
             logger.error("create anxin sign account failed. ", e);
             return new BaseDto(false);
@@ -199,8 +198,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 redisWrapperClient.setex(TEMP_PROJECT_CODE_KEY + loginName, TEMP_PROJECT_CODE_EXPIRE_TIME, projectCode);
                 return new BaseDto();
             } else {
-                logger.error("send anxin captcha code failed. " + tx3101ResVO.getHead().getRetMessage());
-                return new BaseDto(false);
+                String retMessage = tx3101ResVO.getHead().getRetMessage();
+                logger.error("send anxin captcha code failed. " + retMessage);
+                return failBaseDto(retMessage);
             }
 
         } catch (PKIException e) {
@@ -213,7 +213,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      * 确认验证码 （授权）
      */
     @Override
-    public BaseDto<BaseDataDto> verifyCaptcha3102(String loginName, String captcha, boolean skipAuth, String ip) {
+    public BaseDto verifyCaptcha3102(String loginName, String captcha, boolean skipAuth, String ip) {
 
         try {
             // 如果用户没有开通安心签账户，则返回失败
@@ -242,7 +242,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 anxinProp.setAuthTime(new Date());
                 anxinProp.setAuthIp(ip);
                 anxinSignPropertyMapper.update(anxinProp);
-                BaseDto baseDto = new BaseDto();
+                BaseDto<BaseDataDto> baseDto = new BaseDto<>();
                 baseDto.setData(new BaseDataDto(true, skipAuth ? "skipAuth" : ""));
                 return baseDto;
             } else {
@@ -253,7 +253,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         } catch (PKIException e) {
             logger.error("verify anxin captcha code failed. ", e);
-            return new BaseDto<>(false);
+            return new BaseDto(false);
         }
     }
 
