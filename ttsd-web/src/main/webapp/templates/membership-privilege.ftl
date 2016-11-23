@@ -103,8 +103,8 @@
                 </tr>
                 <tr>
                     <td>会员礼包</td>
-                    <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                     <td></td>
+                    <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                     <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                     <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                     <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
