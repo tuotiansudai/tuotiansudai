@@ -251,9 +251,9 @@ public class UserMessageEventGenerator {
         //Content:尊敬的用户，您投资的{0}项目已回款，期待已久的收益已奔向您的账户，快来查看吧。
 
         for (Map<String, Object> invest : invests) {
-            Map<String, Object> investRepay = userMessageMetaMapper.findInvestRepayByInvestIdAndPeriod((long) invest.get("id"), (int) loanRepay.get("period"));
-            String title = MessageFormat.format(messageModel.getTitle(), loan.get("name"), AmountConverter.convertCentToString((long) investRepay.get("amount")));
-            String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString((long) investRepay.get("amount")));
+            Map<String, Object> investRepay = userMessageMetaMapper.findInvestRepayByInvestIdAndPeriod(((BigInteger) invest.get("id")).longValue(), ((BigInteger) loanRepay.get("period")).intValue());
+            String title = MessageFormat.format(messageModel.getTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
+            String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String content = MessageFormat.format(messageModel.getTemplate(), loan.get("name"));
 
             UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) invest.get("loginName"), title, appTitle, content);
@@ -274,8 +274,8 @@ public class UserMessageEventGenerator {
 
         for (Map<String, Object> invest : invests) {
             Map<String, Object> investRepay = userMessageMetaMapper.findInvestRepayByInvestIdAndPeriod((long) invest.get("id"), (int) loanRepay.get("period"));
-            String title = MessageFormat.format(messageModel.getTitle(), loan.get("name"), AmountConverter.convertCentToString((long) investRepay.get("amount")));
-            String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString((long) investRepay.get("amount")));
+            String title = MessageFormat.format(messageModel.getTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
+            String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String content = MessageFormat.format(messageModel.getTemplate(), loan.get("name"));
 
             UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) invest.get("loginName"), title, appTitle, content);
