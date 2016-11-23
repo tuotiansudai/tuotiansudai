@@ -72,7 +72,7 @@ public class UserMessageServiceImpl implements UserMessageService {
     @Transactional
     public UserMessageModel readMessage(String loginName, long userMessageId) {
         UserMessageModel userMessageModel = userMessageMapper.findById(userMessageId);
-        if (!userMessageModel.getLoginName().equals(loginName)) {
+        if (!userMessageModel.getLoginName().equals(loginName.toLowerCase())) {
             return new UserMessageModel(0L, loginName, "消息不存在", "消息不存在", "消息不存在");
         }
         if (userMessageModel != null && !userMessageModel.isRead()) {
