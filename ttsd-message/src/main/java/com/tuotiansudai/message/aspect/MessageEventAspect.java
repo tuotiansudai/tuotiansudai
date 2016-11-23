@@ -257,8 +257,7 @@ public class MessageEventAspect {
         if (!returnValue) {
             return;
         }
-        Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
-        long transferApplicationId = Long.valueOf(paramsMap.get("transferApplicationId"));
+        long transferApplicationId = (long) joinPoint.getArgs()[0];
         try {
             userMessageEventGenerator.generateTransferFailEvent(transferApplicationId);
             logger.info(MessageFormat.format("[Message Event Aspect] after transferApplication failed pointcut finished. transferApplicationId:{0}", transferApplicationId));
