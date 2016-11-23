@@ -240,6 +240,7 @@ public class MessageEventAspect {
     @SuppressWarnings(value = "unchecked")
     @AfterReturning(value = "membershipUpgradePointcut()")
     public void afterMembershipUpgrade(JoinPoint joinPoint) {
+        logger.debug("[Message Event Aspect] into upgrade aspect");
         Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
         String loginName = paramsMap.get("loginName");
         long membershipId = Integer.valueOf(paramsMap.get("membershipId"));
