@@ -15,7 +15,7 @@ public class PromotionDto {
 
     private String linkUrl;
 
-    private String jumpToUrl;
+    private String jumpToLink;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
@@ -34,7 +34,7 @@ public class PromotionDto {
         this.name = model.getName();
         this.imageUrl = model.getImageUrl();
         this.linkUrl = model.getLinkUrl();
-        this.jumpToUrl = model.getJumpToUrl();
+        this.jumpToLink = model.getJumpToLink();
         this.startTime = model.getStartTime();
         this.endTime = model.getEndTime();
         this.seq = model.getSeq();
@@ -72,12 +72,13 @@ public class PromotionDto {
         this.linkUrl = linkUrl;
     }
 
-    public String getJumpToUrl() {
-        return jumpToUrl;
+
+    public String getJumpToLink() {
+        return jumpToLink;
     }
 
-    public void setJumpToUrl(String jumpToUrl) {
-        this.jumpToUrl = jumpToUrl;
+    public void setJumpToLink(String jumpToLink) {
+        this.jumpToLink = jumpToLink;
     }
 
     public Date getStartTime() {

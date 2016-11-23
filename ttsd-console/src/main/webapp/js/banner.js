@@ -44,16 +44,11 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
         $('select.appUrl').change(function () {
             var appUrl = $(this).val();
             if (appUrl == '') {
-                $('.other-to-link').removeClass('app-push-link').val('');
+                $('.jump-to-link').removeClass('app-push-link').val('');
             } else {
-                $('.other-to-link').addClass('app-push-link').val('');
+                $('.jump-to-link').addClass('app-push-link').val('');
             }
         }).trigger('change');
-
-        $('.other-link-text').on('focusout',function(e){
-            e.preventDefault();
-            $('.appUrl').find('option:contains("其他")').val($(this).val()).trigger('click');
-        });
 
         $('.webImageUrl,.appImageUrl').on('change', function () {
             var $self = $(this),
@@ -132,6 +127,18 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
             if (!IsURL($("input[name='url']").val())) {
                 showErrorMessage("链接网址格式不正确,请以http://或 https://开始");
                 return false;
+            }
+
+            var appUrl = $('.appUrl').val();
+            var jumpToLink = $('.jump-link-text').val();
+
+            if (appUrl == '' && jumpToLink == '') {
+                showErrorMessage('定位地址不能为空', $('.jump-link-text', curform));
+                return false;
+            }
+
+            if(appUrl != ''){
+                $('.jump-link-text').val('' );
             }
 
             if (!IsURL($("input[name='sharedUrl']").val())) {

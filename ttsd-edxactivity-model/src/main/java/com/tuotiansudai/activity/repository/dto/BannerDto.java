@@ -22,7 +22,7 @@ public class BannerDto extends BaseDataDto implements Serializable {
 
     private String appUrl;
 
-    private String jumpToUrl;
+    private String jumpToLink;
 
     private String title;
 
@@ -182,11 +182,11 @@ public class BannerDto extends BaseDataDto implements Serializable {
         this.appUrl = appUrl;
     }
 
-    public String getJumpToUrl() {
-        return jumpToUrl;
+    public String getJumpToLink() {
+        return jumpToLink;
     }
 
-    public void setJumpToUrl(String jumpToUrl) {
-        this.jumpToUrl = jumpToUrl;
+    public void setJumpToLink(String jumpToLink) {
+        this.jumpToLink = jumpToLink;
     }
 }

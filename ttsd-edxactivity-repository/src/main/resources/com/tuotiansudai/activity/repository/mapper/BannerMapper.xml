@@ -13,7 +13,7 @@
         <result column="app_image_url" property="appImageUrl"/>
         <result column="url" property="url"/>
         <result column="app_url" property="appUrl"/>
-        <result property="jumpToUrl" column="jump_to_url"/>
+        <result property="jumpToLink" column="jump_to_link"/>
         <result column="title" property="title"/>
         <result column="content" property="content"/>
         <result column="shared_url" property="sharedUrl"/>
@@ -31,8 +31,8 @@
     </resultMap>
 
     <insert id="create" parameterType="BannerModel" useGeneratedKeys="true" keyProperty="id">
-        insert into banner (`name`,`web_image_url`,`app_image_url`,`url`,`app_url`,`jump_to_url`, `title`,`content`,`shared_url`,`source`,`authenticated`,`order`,`active`,`created_by`,`created_time`,`activated_by`,`activated_time`,`deactivated_by`,`deactivated_time`,`deleted`)
-        values (#{name},#{webImageUrl},#{appImageUrl},#{url},#{appUrl},#{jumpToUrl},#{title},#{content},#{sharedUrl},#{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},#{authenticated},#{order},#{active},#{createdBy},now(),#{activatedBy},#{activatedTime},#{deactivatedBy},#{deactivatedTime},false)
+        insert into banner (`name`,`web_image_url`,`app_image_url`,`url`,`app_url`,`jump_to_link`, `title`,`content`,`shared_url`,`source`,`authenticated`,`order`,`active`,`created_by`,`created_time`,`activated_by`,`activated_time`,`deactivated_by`,`deactivated_time`,`deleted`)
+        values (#{name},#{webImageUrl},#{appImageUrl},#{url},#{appUrl},#{jumpToLink},#{title},#{content},#{sharedUrl},#{source,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},#{authenticated},#{order},#{active},#{createdBy},now(),#{activatedBy},#{activatedTime},#{deactivatedBy},#{deactivatedTime},false)
     </insert>
 
     <select id="findBannerIsAuthenticatedOrderByOrder" resultMap="bannerResultMap">
@@ -55,7 +55,7 @@
         `app_image_url` = #{appImageUrl},
         `url` = #{url},
         `app_url` = #{appUrl},
-        `jump_to_url` = #{jumpToUrl},
+        `jump_to_link` = #{jumpToLink},
         `title` = #{title},
         `shared_url` = #{sharedUrl},
         `content` = #{content},

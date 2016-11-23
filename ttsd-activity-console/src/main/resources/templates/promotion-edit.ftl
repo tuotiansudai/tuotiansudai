@@ -43,7 +43,7 @@
                             <option value="${appUrl.path}" <#if promotion?? &&  appUrl.path == promotion.linkUrl>selected</#if>>${appUrl.description}</option>
                         </#list>
                     </select>
-                    <div class="app-push-link other-to-link">链接地址:<input type="text" class="form-control other-link-text" name="otherToLink" placeholder=""  maxlength="100" datatype="*" errormsg="链接地址不能为空"></div>
+                    <div class="app-push-link jump-to-link">链接地址:<input type="text" class="form-control jump-link-text" name="jumpToLink" <#if promotion??>value="${promotion.jumpToLink}"</#if>  placeholder=""  maxlength="100" datatype="*" errormsg="定位地址不能为空"></div>
                 </div>
                 <div class="col-sm-7">
                 </div>

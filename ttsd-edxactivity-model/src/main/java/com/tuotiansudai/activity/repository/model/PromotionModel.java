@@ -16,7 +16,7 @@ public class PromotionModel implements Serializable{
 
     private String linkUrl;
 
-    private String jumpToUrl;
+    private String jumpToLink;
 
     private Date startTime;
 
@@ -73,12 +73,12 @@ public class PromotionModel implements Serializable{
         this.linkUrl = linkUrl;
     }
 
-    public String getJumpToUrl() {
-        return jumpToUrl;
+    public String getJumpToLink() {
+        return jumpToLink;
     }
 
-    public void setJumpToUrl(String jumpToUrl) {
-        this.jumpToUrl = jumpToUrl;
+    public void setJumpToLink(String jumpToLink) {
+        this.jumpToLink = jumpToLink;
     }
 
     public Date getStartTime() {
@@ -178,7 +178,7 @@ public class PromotionModel implements Serializable{
         this.name = promotionDto.getName();
         this.imageUrl = promotionDto.getImageUrl();
         this.linkUrl = promotionDto.getLinkUrl();
-        this.jumpToUrl = promotionDto.getJumpToUrl();
+        this.jumpToLink = promotionDto.getJumpToLink();
         this.startTime = promotionDto.getStartTime();
         this.endTime = promotionDto.getEndTime();
         this.seq = promotionDto.getSeq();

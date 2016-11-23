@@ -12,7 +12,7 @@ public class ActivityModel implements Serializable {
     private String title;
     private String webActivityUrl;
     private String appActivityUrl;
-    private String jumpToUrl;
+    private String jumpToLink;
     private String description;
     private String webPictureUrl;
     private String appPictureUrl;
@@ -42,7 +42,7 @@ public class ActivityModel implements Serializable {
         this.description = activityDto.getDescription();
         this.webPictureUrl = activityDto.getWebPictureUrl();
         this.appPictureUrl = activityDto.getAppPictureUrl();
-        this.jumpToUrl = activityDto.getJumpToUrl();
+        this.jumpToLink = activityDto.getJumpToLink();
         this.activatedTime = activityDto.getActivatedTime();
         this.expiredTime = activityDto.getExpiredTime();
         this.source = activityDto.getSource();
@@ -221,11 +221,11 @@ public class ActivityModel implements Serializable {
         this.longTerm = longTerm;
     }
 
-    public String getJumpToUrl() {
-        return jumpToUrl;
+    public String getJumpToLink() {
+        return jumpToLink;
     }
 
-    public void setJumpToUrl(String jumpToUrl) {
-        this.jumpToUrl = jumpToUrl;
+    public void setJumpToLink(String jumpToLink) {
+        this.jumpToLink = jumpToLink;
     }
 }

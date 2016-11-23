@@ -22,7 +22,7 @@ public class BannerModel implements Serializable {
 
     private String appUrl;
 
-    private String jumpToUrl;
+    private String jumpToLink;
 
     private String title;
 
@@ -212,12 +212,12 @@ public class BannerModel implements Serializable {
         this.appUrl = appUrl;
     }
 
-    public String getJumpToUrl() {
-        return jumpToUrl;
+    public String getJumpToLink() {
+        return jumpToLink;
     }
 
-    public void setJumpToUrl(String jumpToUrl) {
-        this.jumpToUrl = jumpToUrl;
+    public void setJumpToLink(String jumpToLink) {
+        this.jumpToLink = jumpToLink;
     }
 
     public BannerModel() {
@@ -231,7 +231,7 @@ public class BannerModel implements Serializable {
         this.appImageUrl = bannerDto.getAppImageUrl().trim();
         this.url = bannerDto.getUrl();
         this.appUrl = bannerDto.getAppUrl();
-        this.jumpToUrl = bannerDto.getJumpToUrl();
+        this.jumpToLink = bannerDto.getJumpToLink();
         this.title = bannerDto.getTitle();
         this.content = bannerDto.getContent();
         this.sharedUrl = bannerDto.getSharedUrl();
