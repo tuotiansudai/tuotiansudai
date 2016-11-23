@@ -226,9 +226,8 @@ public class MessageEventAspect {
     @SuppressWarnings(value = "unchecked")
     @AfterReturning(value = "purchaseMembershipPointcut()")
     public void afterPurchaseMembership(JoinPoint joinPoint) {
-        Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
-        String loginName = paramsMap.get("loginName");
-        int duration = Integer.valueOf(paramsMap.get("duration"));
+        String loginName = (String) joinPoint.getArgs()[0];
+        int duration = (int) joinPoint.getArgs()[2];
         try {
             userMessageEventGenerator.generateMembershipPurchaseEvent(loginName, duration);
             logger.info(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut finished. loginName:{0}, duration:{1}", loginName, duration));
