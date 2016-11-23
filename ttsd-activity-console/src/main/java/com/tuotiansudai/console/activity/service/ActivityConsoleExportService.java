@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.dto.AutumnExportDto;
+import com.tuotiansudai.activity.repository.dto.NotWorkDto;
 import com.tuotiansudai.activity.repository.mapper.IPhone7InvestLotteryMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
@@ -17,6 +18,7 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.DateUtil;
+import com.tuotiansudai.util.ExportCsvUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +40,9 @@ public class ActivityConsoleExportService {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private NotWorkService notWorkService;
 
     @Autowired
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
@@ -203,5 +208,15 @@ public class ActivityConsoleExportService {
 
         return allFamilyAndNum;
 
+    }
+
+    public List<List<String>> buildNotWorkCsvList() {
+        //全部导出
+        final int index = 0;
+        final int pageSize = 1000000;
+
+        List<NotWorkDto> notWorkDtos = notWorkService.findNotWorkPagination(index, pageSize).getRecords();
+
+        return notWorkDtos.stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }
