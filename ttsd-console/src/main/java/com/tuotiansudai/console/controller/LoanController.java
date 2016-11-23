@@ -1,14 +1,16 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.service.LoanCreateService;
-import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.message.repository.mapper.MessageMapper;
+import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ExtraLoanRateService;
+import com.tuotiansudai.service.LoanCreateService;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,14 @@ public class LoanController {
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private MessageMapper messageMapper;
+
+    private final static String LOAN_MESSAGE_REDIS_KEY = "web:loan:loanMessageMap";
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan() {
@@ -80,7 +90,13 @@ public class LoanController {
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE));
         modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
-        modelAndView.addObject("loan", loanCreateService.getEditLoanDetails(loanId));
+        LoanCreateRequestDto loanCreateRequestDto = loanCreateService.getEditLoanDetails(loanId);
+        if (redisWrapperClient.hexists(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanId))) {
+            long messageId = Long.valueOf(redisWrapperClient.hget(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanId)));
+            MessageModel messageModel = messageMapper.findById(messageId);
+            loanCreateRequestDto.setLoanMessage(new LoanMessageRequestDto(messageModel.getAppTitle(), messageModel.getTemplate()));
+        }
+        modelAndView.addObject("loan", loanCreateRequestDto);
         modelAndView.addObject("extraLoanRates", extraLoanRateMapper.findByLoanId(loanId));
         return modelAndView;
     }

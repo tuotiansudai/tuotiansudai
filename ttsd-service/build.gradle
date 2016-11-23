@@ -18,6 +18,7 @@ dependencies {
             project(":ttsd-client"),
             project(":ttsd-user-service"),
             project(":ttsd-membership"),
+            project(":ttsd-message"),
             project(":ttsd-util"),
             project(":ttsd-edxactivity-model"),
             project(":ttsd-anxin-sign"),

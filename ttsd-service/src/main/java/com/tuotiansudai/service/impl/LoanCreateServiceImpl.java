@@ -374,7 +374,8 @@ public class LoanCreateServiceImpl implements LoanCreateService {
     }
 
     @Override
-    public void startRaising(long loanId) {
+    public void
+    startRaising(long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel != null && LoanStatus.PREHEAT == loanModel.getStatus()) {
             loanMapper.updateStatus(loanId, LoanStatus.RAISING);
