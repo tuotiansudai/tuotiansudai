@@ -62,6 +62,7 @@ public class AnxinClient {
 
     @PostConstruct
     public void initSSL() throws GeneralSecurityException, IOException {
+        logger.info("into AnxinClient initSSl method. Thread id: " + Thread.currentThread().getId());
         if (sslSocketFactory == null) {
             KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(DEFAULT_KEY_ALGORITHM);
             KeyStore keyStore = KeyStore.getInstance(DEFAULT_KEY_STORE_TYPE);
