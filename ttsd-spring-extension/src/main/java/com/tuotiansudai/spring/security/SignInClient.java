@@ -168,7 +168,6 @@ public class SignInClient {
 
     public SignInResult verifyToken(String token, Source source) {
         if (Strings.isNullOrEmpty(token)) {
-            logger.info("[sign in client] verified token is empty");
             return null;
         }
 

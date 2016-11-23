@@ -5,6 +5,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppMembershipService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import org.apache.commons.collections4.CollectionUtils;
@@ -21,12 +22,15 @@ public class MobileAppMembershipServiceImpl implements MobileAppMembershipServic
     @Autowired
     private MembershipExperienceBillMapper membershipExperienceBillMapper;
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
     @Override
     public BaseResponseDto getMembershipExperienceBill(MembershipRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
 
-        int index = requestDto.getIndex() == null?1:requestDto.getIndex();
-        int pageSize = requestDto.getPageSize() == null?10:requestDto.getPageSize();
+        int index = requestDto.getIndex() == null ? 1 : requestDto.getIndex();
+        int pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
 
         MembershipResponseDataDto dataDto = fillMembershipDataDto(loginName, index, pageSize);
         BaseResponseDto responseDto = new BaseResponseDto<>();

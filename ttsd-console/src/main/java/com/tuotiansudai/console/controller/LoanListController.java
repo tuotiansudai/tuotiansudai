@@ -15,6 +15,7 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -57,8 +58,8 @@ public class LoanListController {
                                         @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                        @RequestParam(value = "loanName", required = false) String loanName,
-                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                                        @RequestParam(value = "loanName", required = false) String loanName) {
+        int pageSize = 10;
         int loanListCount = loanService.findLoanListCount(status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
@@ -71,7 +72,7 @@ public class LoanListController {
         modelAndView.addObject("loanListDtos", loanListDtos);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        long totalPages = loanListCount / pageSize + (loanListCount % pageSize > 0 || loanListCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(loanListCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);

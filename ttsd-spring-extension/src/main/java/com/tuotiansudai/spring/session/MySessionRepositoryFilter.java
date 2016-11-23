@@ -195,7 +195,7 @@ public class MySessionRepositoryFilter<S extends ExpiringSession> extends OncePe
                     MySessionRepositoryFilter.this.httpSessionStrategy.onNewSession(session, this, this.response);
                 }
 
-                SESSION_LOGGER.info(MessageFormat.format("[commit session] session id = {0}", session.getId()));
+                SESSION_LOGGER.debug(MessageFormat.format("[commit session] session id = {0}", session.getId()));
             }
         }
 

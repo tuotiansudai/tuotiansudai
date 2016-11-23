@@ -33,8 +33,8 @@ public class LotteryController {
     @RequestMapping(value = "/user-time-list", method = RequestMethod.GET)
     public ModelAndView userLotteryList(@RequestParam(name = "mobile", required = false) String mobile,
                                         @RequestParam(name = "prizeType", defaultValue = "AUTUMN_PRIZE", required = false) ActivityCategory prizeType,
-                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) throws IOException {
+                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index) throws IOException {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/activity-time-list");
         int lotteryCount = activityConsoleUserLotteryService.findUserLotteryTimeCountViews(mobile);
         modelAndView.addObject("lotteryCount", lotteryCount);
@@ -59,8 +59,8 @@ public class LotteryController {
                                       @RequestParam(name = "prizeType", required = false, defaultValue = "AUTUMN_PRIZE") ActivityCategory activityCategory,
                                       @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                       @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                      @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                      @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/activity-prize-list");
         int lotteryCount = activityConsoleUserLotteryService.findUserLotteryPrizeCountViews(mobile, lotteryPrize, activityCategory, startTime, endTime);
         modelAndView.addObject("lotteryCount", lotteryCount);

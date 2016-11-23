@@ -13,6 +13,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.job.AnxinCreateContractJob;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
@@ -404,7 +405,7 @@ public class LoanServiceImpl implements LoanService {
 
         logger.debug("标的放款：生成合同，标的ID:" + loanId);
         try {
-            anxinSignService.createLoanContracts(loanId);
+            createAnxinContractJob(loanId);
         } catch (Exception e) {
             logger.error(MessageFormat.format("放款生成合同失败 (loanId = {0})", String.valueOf(loanId)), e);
         }
@@ -563,6 +564,21 @@ public class LoanServiceImpl implements LoanService {
         }
         String respData = callbackRequest.getResponseData();
         return respData;
+    }
+
+    private void createAnxinContractJob(long businessId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(AnxinCreateContractJob.HANDLE_DELAY_MINUTES).toDate();
+
+            jobManager.newJob(JobType.CreateAnXinContract, AnxinCreateContractJob.class)
+                    .addJobData(AnxinCreateContractJob.BUSINESS_ID, businessId)
+                    .withIdentity(JobType.CreateAnXinContract.name(), "businessId-" + businessId)
+                    .replaceExistingJob(true)
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create query contract job for loan/transfer[" + businessId + "] fail", e);
+        }
     }
 
 }

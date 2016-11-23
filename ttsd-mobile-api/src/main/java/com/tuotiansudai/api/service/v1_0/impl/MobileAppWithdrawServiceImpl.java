@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppWithdrawService;
 import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -37,17 +38,18 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
     @Value("${pay.withdraw.fee}")
     private long withdrawFee;
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
     @Override
     public BaseResponseDto queryUserWithdrawLogs(WithdrawListRequestDto requestDto) {
         Integer index = requestDto.getIndex();
-        Integer pageSize = requestDto.getPageSize();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
 
         if (index == null || index <= 0) {
             index = 1;
         }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
-        }
+
         long count = withdrawMapper.findWithdrawCount(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null);
         List<WithdrawModel> withdrawModels = withdrawMapper.findWithdrawPagination(null, requestDto.getBaseParam().getPhoneNum(), null, null, (index - 1) * pageSize, pageSize, null, null);
 
