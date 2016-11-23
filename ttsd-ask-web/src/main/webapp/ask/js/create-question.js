@@ -40,42 +40,45 @@ var utils = {
                     .find('em')
                     .text(len);
 
-                if (len > min) {
-                    errorMsg = '您的问题不能超过' + min + '个字符';
-                }
-
-                if(len<=min && len>0) {
-                    this.hideError(element);
-                    questionValid = true;
-                    $wordstip.removeClass('red-color');
-                }
-                else {
+                if(len<min || checkWrap.length==0 || len==0) {
+                    errorMsg = '您的问题不能为空';
                     questionValid = false;
                     this.showError(element, errorMsg);
                     $wordstip.addClass('red-color');
                 }
+                else if(len>max){
+                    errorMsg = '您的问题不能超过' + max + '个字符';
+                    questionValid = false;
+                    this.showError(element, errorMsg);
+                    $wordstip.addClass('red-color');
+                } else {
+                    this.hideError(element);
+                    questionValid = true;
+                    $wordstip.removeClass('red-color');
+                }
+
                 break;
 
             case 'addition':
                 $wordstip.removeClass('error')
                     .find('em')
                     .text(len);
-                if (len > min) {
-                    errorMsg = '问题补充' + min + '个字';
-                }
 
-                if(len<=min && len>0) {
-                    this.hideError(element);
-                    additionValid=true;
-                    $wordstip.removeClass('red-color');
-                }
-                else {
-                    additionValid = false;
+                if(len<min || checkWrap.length==0 || len==0) {
+                    errorMsg = '问题补充不能为空';
+                    questionValid = false;
                     this.showError(element, errorMsg);
                     $wordstip.addClass('red-color');
                 }
-                if(checkWrap.length==0 && checkWrap!=tempDes) {
-                    additionValid = false;
+                else if(len>max){
+                    errorMsg = '问题补充不能超过' + max + '个字符';
+                    questionValid = false;
+                    this.showError(element, errorMsg);
+                    $wordstip.addClass('red-color');
+                } else {
+                    this.hideError(element);
+                    questionValid = true;
+                    $wordstip.removeClass('red-color');
                 }
                 break;
             case 'captcha':
@@ -91,24 +94,40 @@ var utils = {
                 break;
             case 'answer':
 
-                if(len>=0 && len<=min) {
-                    errorMsg='回答不得少于10个字';
-                    answerValid=false;
-                    this.showError(element, errorMsg);
-                }
-                else if(len>max) {
+
+                if(len<min || checkWrap.length==0 || len==0) {
+                    errorMsg = '回答不得少于10个字';
                     answerValid = false;
-                    errorMsg='回答不得多于1000个字';
                     this.showError(element, errorMsg);
                 }
-                else {
-                    answerValid=true;
+                else if(len>max){
+                    errorMsg = '回答不能超过' + max + '个字符';
+                    answerValid = false;
+                    this.showError(element, errorMsg);
+                } else {
                     this.hideError(element);
+                    answerValid = true;
                 }
-                if(checkWrap.length==0 && checkWrap!=tempDes) {
-                    additionValid = false;
-                    this.hideError(element);
-                }
+
+
+                // if(len>=0 && len<=min) {
+                //     errorMsg='回答不得少于10个字';
+                //     answerValid=false;
+                //     this.showError(element, errorMsg);
+                // }
+                // else if(len>max) {
+                //     answerValid = false;
+                //     errorMsg='回答不得多于1000个字';
+                //     this.showError(element, errorMsg);
+                // }
+                // else {
+                //     answerValid=true;
+                //     this.hideError(element);
+                // }
+                // if(checkWrap.length==0 && checkWrap!=tempDes) {
+                //     additionValid = false;
+                //     this.hideError(element);
+                // }
                 break;
             default:
                 break;
@@ -163,13 +182,13 @@ $.fn.checkFrom = function () {
             value=$ele.val();
         switch(name) {
             case 'question':
-                utils.validLen($ele, 100);
+                utils.validLen($ele, 1,100);
                 break;
             case 'addition':
-                utils.validLen($ele, 500);
+                utils.validLen($ele, 1,500);
                 break;
             case 'captcha':
-                utils.validLen($ele,5);
+                utils.validLen($ele,5,5);
                 break;
             case 'answer':
                 utils.validLen($ele, 10,1000);
