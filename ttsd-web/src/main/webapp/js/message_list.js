@@ -35,6 +35,16 @@ require(['jquery', 'mustache', 'text!/tpl/message-list.mustache', 'pagination', 
                     }
                 })
             });
+            //点击标题跳转详情
+            (function() {
+                $('#userMessageList').on('click','.jump-detail',function() {
+                var $this=$(this),
+                    url=$this.data('url');
+                    location.href=url;
+                })
+            })();
+
+
         });
     });
 });
