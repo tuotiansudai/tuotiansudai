@@ -32,7 +32,11 @@ public class UserMessagePaginationItemDto {
         this.read = model.isRead();
         this.messageType = messageModel.getType();
         this.messageCategory = messageModel.getMessageCategory();
-        this.createdTime = messageModel.getActivatedTime();
+        if (messageModel.getType().equals(MessageType.MANUAL)) {
+            this.createdTime = messageModel.getActivatedTime();
+        } else {
+            this.createdTime = model.getCreatedTime();
+        }
     }
 
     public long getUserMessageId() {
