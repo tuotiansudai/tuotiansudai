@@ -31,8 +31,7 @@ public enum CsvHeaderType {
     ProductOrderList("用户名,兑换时间,兑换数量,姓名,手机号码,收货地址,状态,发货时间", "商品订单导出"),
     AutumnActivityList("家庭名称,投资金额(元),时间,奖品,家庭成员,投资金额(元)","中秋活动列表导出"),
     Iphone7LotteryStatHeader("用户手机号,姓名,活动期限投资金额(元),投资码个数","IPhone7抽奖活动导出"),
-    LotteryPrizeHeader("姓名,用户手机号,用户名,中奖时间,奖品", "抽奖记录导出"),
-    NotWorkHeader("编号, 姓名, 用户名, 手机号, 活动期限内投资金额, 获得奖品, 推荐用户注册数, 推荐用户实名认证数, 推荐用户累计投资金额", "今天不上班活动导出");
+    LotteryPrizeHeader("姓名,用户手机号,用户名,中奖时间,奖品","抽奖记录导出");
 
     private String header;
 
