@@ -2,10 +2,14 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.repository.model.Source;
+import io.swagger.annotations.ApiModelProperty;
 
 public class BankCardReplaceRequestDto extends BaseParamDto{
+
+    @ApiModelProperty(value = "要绑定的新卡号", example = "6222600001111111111")
     private String cardNo;
 
+    @ApiModelProperty(value = "ip", example = "127.0.0.1")
     private String ip;
 
     public String getCardNo() {

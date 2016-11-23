@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Api(description = "广告页")
+@Api(description = "开通自动投标")
 public class MobileAppAgreementController extends MobileAppBaseController {
 
     @Autowired
