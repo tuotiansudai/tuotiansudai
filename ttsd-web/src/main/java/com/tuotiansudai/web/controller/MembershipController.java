@@ -80,7 +80,8 @@ public class MembershipController {
             AccountModel accountModel = accountService.findByLoginName(loginName);
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
-            if(userMembershipModel.getType() == UserMembershipType.GIVEN || userMembershipModel.getType() == UserMembershipType.PURCHASED)
+
+            if(userMembershipModel != null && (userMembershipModel.getType() == UserMembershipType.GIVEN || userMembershipModel.getType() == UserMembershipType.PURCHASED))
             {
                 modelAndView.addObject("membershipLevel", "5");
             }
