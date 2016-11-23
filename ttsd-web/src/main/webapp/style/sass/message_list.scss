@@ -37,9 +37,11 @@
       td {
         text-align: left;
         color: #808080;
-        a {
+        .jump-detail {
+          cursor: pointer;
           color: #808080;
           &:hover {
+            color: #ff770f;
             text-decoration: underline;
           }
         }
@@ -50,9 +52,10 @@
           color: #4c4c4c;
         }
         a {
-          color: #4c4c4c;
+          color: #000;
           &:hover {
             text-decoration: underline;
+            color: #ff770f;
           }
         }
         .icon {
