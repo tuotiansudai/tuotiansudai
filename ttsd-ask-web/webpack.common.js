@@ -35,15 +35,6 @@ module.exports = {
         ]
 
     },
-    resolve: {
-        extensions: ['', '.js', '.jsx'],
-        alias: {
-            // components: path.join(basePath, 'js/components'),
-            utils: path.join(basePath, 'js/utils'),
-            css: path.join(basePath, 'style/sass'),
-            image: path.join(basePath, 'images')
-        }
-    },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         //provide $, jQuery and window.jQuery to every script
@@ -52,10 +43,6 @@ module.exports = {
             jQuery: "jquery",
             "window.jQuery": "jquery"
         }),
-        new ExtractTextPlugin('main.css'),
-        // new webpack.optimize.UglifyJsPlugin(),
-        // new webpack.optimize.OccurenceOrderPlugin(),
-        // new webpack.optimize.AggressiveMergingPlugin(),
-        // new webpack.NoErrorsPlugin()
+        new ExtractTextPlugin('main.css')
     ]
 };

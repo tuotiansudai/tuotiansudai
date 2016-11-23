@@ -11,7 +11,7 @@ var $homeTagContainer = $('#homeTagContainer');
 var locationUrl=window.location.href ;
 
 var urlParams=comm.parseURL(locationUrl);
-console.log(urlParams);
+
 if($homeTagContainer.length) {
 
     var $switchMenu = $('.switch-menu li', $homeTagContainer),
@@ -34,20 +34,8 @@ if($homeTagContainer.length) {
     }
 }
 
-//全部搜索框
-var $searchBoxTool = $('#searchBoxTool');
-var $searchResultBox=$('#searchResultBox');
-if ($searchBoxTool.length) {
-    var $btnsearch = $('.btn-search', $searchBoxTool);
-    $btnsearch.on('click',function(){
-        var value=$.trim($(this).val());
-        if(!value) {
-            window.location.href='/?group=HOT&index=1';
-        }
-    })
-}
-
 //搜索结果高亮显示
+var $searchResultBox=$('#searchResultBox');
 if($searchResultBox.length) {
     var $answersList=$('.answers-list',$searchResultBox);
     var keyword=urlParams.params.keyword; //关键字

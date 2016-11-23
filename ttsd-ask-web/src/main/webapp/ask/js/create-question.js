@@ -1,5 +1,4 @@
 /* create question */
-// var myAjax=require('utils/ajax');
 var comm = require('./commonFun');
 var $createQuestion=$('#createQuestion');
 var $questionDetailTag=$('#questionDetailTag');
@@ -341,10 +340,10 @@ if($createQuestion.length) {
 
         $formQuestion.find('textarea').val(temp);
             $.ajax({
-                    url: "/question/",
+                    url: "/question",
                     data: $formQuestion.serialize(),
                     type: 'POST',
-                dataType: 'json',
+                    dataType: 'json',
                     beforeSend:function(xhr) {
                         $formSubmit.prop('disabled',true);
                     }
