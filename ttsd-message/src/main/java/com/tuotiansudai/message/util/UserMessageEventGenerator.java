@@ -124,8 +124,12 @@ public class UserMessageEventGenerator {
         if (withdraw == null) {
             return;
         }
+        String status = (String) withdraw.get("status");
+        if (Strings.isNullOrEmpty(status)) {
+            return;
+        }
 
-        WithdrawStatus withdrawStatus = (WithdrawStatus) withdraw.get("status");
+        WithdrawStatus withdrawStatus = WithdrawStatus.valueOf(status);
 
         long amount = ((BigInteger) withdraw.get("amount")).longValue();
         String loginName = (String) withdraw.get("login_name");
