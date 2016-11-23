@@ -119,8 +119,8 @@ VALUES ('{0}元推荐奖励已存入您的账户，请查收！', '{0}元推荐�
         '2016-11-01 00:00:00',
         'sidneygao', '2016-11-01 00:00:00', '0');
 INSERT INTO `aa`.`message` (`title`, `app_title`, `template`, `template_txt`, `type`, `event_type`, `user_groups`, `channels`, `message_category`, `web_url`, `app_url`, `status`, `read_count`, `activated_by`, `activated_time`, `expired_time`, `created_by`, `created_time`, `updated_by`, `updated_time`, `deleted`)
-VALUES ('您有一张{0}元投资红包即将失效', '您有一张{0}元投资红包即将失效', '尊敬的用户，您有一张{0}元投资红包即将失效（有效期至：{1}），请尽快使用！',
-                            '尊敬的用户，您有一张{0}元投资红包即将失效（有效期至：{1}），请尽快使用！', 'EVENT', 'COUPON_5DAYS_EXPIRED_ALERT',
+VALUES ('您有一张{0}即将失效', '您有一张{0}即将失效', '尊敬的用户，您有一张{0}即将失效（有效期至：{1}），请尽快使用！',
+                            '尊敬的用户，您有一张{0}即将失效（有效期至：{1}），请尽快使用！', 'EVENT', 'COUPON_5DAYS_EXPIRED_ALERT',
                             'ALL_USER',
                             'WEBSITE,APP_MESSAGE', 'SYSTEM', 'https://tuotiansudai.com/my-treasure',
                             'MY_TREASURE_UNUSED',
