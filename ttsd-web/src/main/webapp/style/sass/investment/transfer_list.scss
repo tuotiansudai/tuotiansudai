@@ -1,7 +1,8 @@
 @import '../common/variables';
 @import '../plugins/daterangepicker';
 @import "../module/coupon_alert";
-@import "top-sub-menu";
+@import "top_sub_menu";
+@import "import_search_filter";
 
 .layui-layer-btn {
   text-align: center !important;
@@ -18,37 +19,6 @@
 
 /*transfer list*/
 .transfer-list-content {
-  .filter-list{
-    background: #fff;
-    border: 1px solid #d9d9d9;
-    padding: 12px 12px 0 12px;
-    border-radius: 3px;
-    .wrapper-list {
-      li {
-        border-bottom: 1px solid #e6e6e6;
-        padding: 12px;
-        &:last-child{
-          border-bottom:none;
-        }
-        span {
-          padding-right: 10px;
-        }
-        a {
-          color: #000;
-          font-size: 12px;
-          padding: 7px 13px;
-          &:hover, &.active {
-            color: #fff;
-            background: #ffac2a;
-            border-radius: 3px;
-          }
-        }
-        &:nth-child(1) {
-          padding-top: 0;
-        }
-      }
-    }
-  }
   .transfer-list-box{
     ul {
       li {

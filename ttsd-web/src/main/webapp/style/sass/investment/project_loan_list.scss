@@ -1,30 +1,7 @@
-@import "top-sub-menu";
+@import "top_sub_menu";
+@import "import_search_filter";
 /* I want to invest page*/
 .loan-list-content {
-  .wrapper-list {
-    li {
-      border-bottom: 1px solid #e6e6e6;
-      padding: 12px;
-
-      span {
-        padding-right: 10px;
-      }
-      a {
-        color: #000;
-        font-size: 12px;
-        padding: 7px 13px;
-
-        &:hover, &.active {
-          color: #fff;
-          background: #ffac2a;
-          border-radius: 3px;
-        }
-      }
-      &:nth-child(1) {
-        padding-top: 0;
-      }
-    }
-  }
   .loan-list-box ul {
     li {
       border-radius: 8px;
@@ -34,7 +11,6 @@
       position: relative;
       cursor: pointer;
       background: #fff;
-
       &:hover {
         // border: 1px solid #cc0000;
         background: #fff;

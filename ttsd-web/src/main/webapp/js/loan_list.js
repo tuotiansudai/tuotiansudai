@@ -1,6 +1,31 @@
 require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float','count_down','assign_coupon'], function ($,layer) {
     var $loan = $('.loan-list-box').find('li');
-    //var preheat = $('.preheat');
+
+    //我要投资菜单过滤显示
+    (function() {
+        var $wrapperList=$('#wrapperList');
+        var $showFilterBox=$wrapperList.find('li').filter(function(key) {
+            return key>0;
+        });
+        $wrapperList.find('.show-more').on('click',function(event) {
+            var $this=$(this),
+                btnText;
+            $this.toggleClass('ok');
+            $showFilterBox.toggle();
+            var isRetract=$this.hasClass('ok');
+            if(isRetract) {
+                //有样式名ok，展开状态
+                btnText='收起 <i class="fa fa fa-angle-up"></i>';
+            }
+            else {
+                //没有样式名ok，关闭状态
+                btnText='更多 <i class="fa fa-angle-down"></i> ';
+            }
+            $this.html(btnText);
+
+        });
+    })();
+
 
     $loan.click(function () {
         window.location.href = $(this).data('url');
