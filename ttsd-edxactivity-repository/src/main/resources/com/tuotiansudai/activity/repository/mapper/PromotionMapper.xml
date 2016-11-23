@@ -11,6 +11,7 @@
         <result property="name" column="name"/>
         <result property="imageUrl" column="image_url"/>
         <result property="linkUrl" column="link_url"/>
+        <result property="jumpToUrl" column="jump_to_url"/>
         <result property="startTime" column="start_time"/>
         <result property="endTime" column="end_time"/>
         <result property="seq" column="seq"/>
@@ -25,14 +26,15 @@
     </resultMap>
 
     <insert id="create" parameterType="promotionModel" useGeneratedKeys="true" keyProperty="id">
-        insert into promotion(name, image_url, link_url, start_time, end_time, seq, status, created_by, created_time, updated_by, updated_time, deactivated_by, deactivated_time, deleted)
-               value(#{name}, #{imageUrl}, #{linkUrl}, #{startTime}, #{endTime}, #{seq}, #{status}, #{createdBy}, #{createdTime}, #{updatedBy}, #{updatedTime}, #{deactivatedBy}, #{deactivatedTime}, #{deleted})
+        insert into promotion(name, image_url, link_url, jump_to_url, start_time, end_time, seq, status, created_by, created_time, updated_by, updated_time, deactivated_by, deactivated_time, deleted)
+               value(#{name}, #{imageUrl}, #{linkUrl}, #{jumpToUrl}, #{startTime}, #{endTime}, #{seq}, #{status}, #{createdBy}, #{createdTime}, #{updatedBy}, #{updatedTime}, #{deactivatedBy}, #{deactivatedTime}, #{deleted})
     </insert>
 
     <update id="update" parameterType="promotionModel">
         update promotion set name = #{name},
                 image_url = #{imageUrl},
                 link_url = #{linkUrl},
+                jump_to_url = #{jumpToUrl},
                 start_time = #{startTime},
                 end_time = #{endTime},
                 seq = #{seq},
