@@ -8,6 +8,10 @@
         select id, name, base_rate as baseRate, activity_rate as activityRate from loan where id = ${id}
     </select>
 
+    <select id="findUserNameByLoginName" parameterType="String">
+        select user_name from user where login_name = #{loginName}
+    </select>
+
     <select id="findLoanByLoanRepayId" parameterType="long" resultType="hashmap">
         select loan.id, loan.name from loan join loan_repay where loan.id = loan_repay.loan_id and loan_repay.id = #{loanRepayId}
     </select>

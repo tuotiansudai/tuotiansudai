@@ -394,7 +394,8 @@ public class UserMessageEventGenerator {
         String title = messageModel.getTitle();
         String appTitle = messageModel.getAppTitle();
         loginNames.forEach(loginName -> {
-            String content = MessageFormat.format(messageModel.getTemplate(), loginName);
+            String userName = userMessageMetaMapper.findUserNameByLoginName(loginName);
+            String content = MessageFormat.format(messageModel.getTemplate(), userName);
 
             UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
             userMessageMapper.create(userMessageModel);
