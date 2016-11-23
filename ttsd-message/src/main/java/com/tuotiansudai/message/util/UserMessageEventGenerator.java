@@ -251,7 +251,7 @@ public class UserMessageEventGenerator {
         //Content:尊敬的用户，您投资的{0}项目已回款，期待已久的收益已奔向您的账户，快来查看吧。
 
         for (Map<String, Object> invest : invests) {
-            Map<String, Object> investRepay = userMessageMetaMapper.findInvestRepayByInvestIdAndPeriod(((BigInteger) invest.get("id")).longValue(), ((BigInteger) loanRepay.get("period")).intValue());
+            Map<String, Object> investRepay = userMessageMetaMapper.findInvestRepayByInvestIdAndPeriod(((BigInteger) invest.get("id")).longValue(), (int) loanRepay.get("period"));
             String title = MessageFormat.format(messageModel.getTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String content = MessageFormat.format(messageModel.getTemplate(), loan.get("name"));
@@ -273,7 +273,7 @@ public class UserMessageEventGenerator {
         //Content:尊敬的用户，您在{0}投资的房产/车辆抵押借款因借款人放弃借款而提前终止，您的收益与本金已返还至您的账户，您可以【看看其他优质项目】
 
         for (Map<String, Object> invest : invests) {
-            Map<String, Object> investRepay = userMessageMetaMapper.findInvestRepayByInvestIdAndPeriod((long) invest.get("id"), (int) loanRepay.get("period"));
+            Map<String, Object> investRepay = userMessageMetaMapper.findInvestRepayByInvestIdAndPeriod(((BigInteger) invest.get("id")).longValue(), (int) loanRepay.get("period"));
             String title = MessageFormat.format(messageModel.getTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String content = MessageFormat.format(messageModel.getTemplate(), loan.get("name"));
