@@ -69,17 +69,6 @@
                     <span class="time-text">9:00-20:00</span>
                 </p>
             </li>
-            <li>
-                <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzgwMDAzNjQ0Nl80NDQyOTZfODAwMDM2NDQ2XzJf"
-                   target="_blank">
-                    <i class="icon icon-qq"></i>
-
-                    <p>
-                        <span class="title-text">QQ专线</span>
-                        <span class="time-text">9:00-20:00</span>
-                    </p>
-                </a>
-            </li>
         </ul>
     </div>
 </div>
