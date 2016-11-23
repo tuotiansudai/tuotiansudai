@@ -37,7 +37,7 @@
         from user_coupon
         join coupon on user_coupon.coupon_id = coupon.id
         where user_coupon.login_name = #{loginName}
-        and user_coupon.status != 'SUCCESS'
+        and (user_coupon.status != 'SUCCESS' or user_coupon.status is null)
         and datediff(user_coupon.end_time, now()) = 5
     </select>
 
