@@ -45,8 +45,8 @@ public class InvestController {
                                       @RequestParam(name = "investStatus", required = false) InvestStatus investStatus,
                                       @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                       @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                      @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                      @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                      @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorMobile, channel, source, role,
                 startTime, endTime, investStatus, preferenceType, index, pageSize);
         List<String> channelList = investService.findAllChannel();

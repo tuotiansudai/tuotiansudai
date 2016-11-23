@@ -9,6 +9,7 @@ import com.tuotiansudai.api.dto.v1_0.UserInvestListResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.UserInvestRecordResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.TransferableInvestListRequestDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppTransferApplicationV2Service;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -53,17 +54,16 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
     private InvestService investService;
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+    @Autowired
+    private PageValidUtils pageValidUtils;
 
     @Override
     public BaseResponseDto<UserInvestListResponseDataDto> generateTransferableInvest(TransferableInvestListRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
-        Integer pageSize = requestDto.getPageSize();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
         Integer index = requestDto.getIndex();
         if (index == null || index <= 0) {
             index = 1;
-        }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
         }
         List<InvestModel> transferableInvestList = investMapper.findTransferableApplicationPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
