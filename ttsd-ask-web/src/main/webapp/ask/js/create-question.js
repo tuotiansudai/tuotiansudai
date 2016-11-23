@@ -108,7 +108,6 @@ var utils = {
                     this.hideError(element);
                     answerValid = true;
                 }
-                
                 break;
             default:
                 break;
