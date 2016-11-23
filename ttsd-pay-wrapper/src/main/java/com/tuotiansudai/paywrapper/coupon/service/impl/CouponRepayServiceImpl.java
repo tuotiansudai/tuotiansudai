@@ -169,9 +169,10 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             userCouponModel.setActualInterest(userCouponModel.getActualInterest() + actualInterest);
             userCouponModel.setActualFee(userCouponModel.getActualFee() + actualFee);
             userCouponMapper.update(userCouponModel);
-            this.updateCouponRepay(actualInterest, actualFee, investModel.getId(), couponRepayModel, currentLoanRepayModel.getId(), isAdvanced);
 
             if (transferAmount > 0) {
+                this.updateCouponRepay(actualInterest, actualFee, investModel.getId(), couponRepayModel, currentLoanRepayModel.getId(), isAdvanced);
+
                 try {
                     TransferWithNotifyRequestModel requestModel = TransferWithNotifyRequestModel.newCouponRepayRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(couponRepayModel.getId()), String.valueOf(new Date().getTime())),
                             accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
@@ -198,10 +199,13 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                             String.valueOf(userCouponModel.getId())));
                 } catch (PayException e) {
                     logger.error(MessageFormat.format("[Coupon Repay {0}] user coupon({1}) transfer is failed\n" +
-                            "[Coupon Repay loanRepayId {2}] couponRepayModel.id ({3}) payback throw exception",
-                    String.valueOf(currentLoanRepayModel.getId()), String.valueOf(userCouponModel.getId()),
-                    String.valueOf(loanRepayId), String.valueOf(couponRepayModel.getId()), e));
+                                    "[Coupon Repay loanRepayId {2}] couponRepayModel.id ({3}) payback throw exception",
+                            String.valueOf(currentLoanRepayModel.getId()), String.valueOf(userCouponModel.getId()),
+                            String.valueOf(loanRepayId), String.valueOf(couponRepayModel.getId()), e));
                 }
+            }
+            else{
+                this.updateCouponRepayRepayWhenCouponIncomeIsZero(actualInterest, actualFee, investModel.getId(), couponRepayModel, loanRepayId, isAdvanced);
             }
 
         }
@@ -305,6 +309,29 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         }
 
     }
+
+    private void updateCouponRepayRepayWhenCouponIncomeIsZero(long actualInterest, long actualFee, long investId, final CouponRepayModel couponRepayModel, long loanRepayId, boolean isAdvanced) {
+        couponRepayModel.setActualInterest(actualInterest);
+        couponRepayModel.setActualFee(actualFee);
+        couponRepayModel.setRepayAmount(actualInterest - actualFee);
+        couponRepayModel.setActualRepayDate(new Date());
+        couponRepayModel.setStatus(RepayStatus.COMPLETE);
+        couponRepayMapper.update(couponRepayModel);
+        if (isAdvanced) {
+            List<CouponRepayModel> advancedCouponRepayModels = Lists.newArrayList(couponRepayMapper.findByUserCouponByInvestId(investId).stream().filter(input -> input.getPeriod() > couponRepayModel.getPeriod()).collect(Collectors.toList()));
+            for (CouponRepayModel advancedCouponRepayModel : advancedCouponRepayModels) {
+                if (advancedCouponRepayModel.getStatus() == RepayStatus.REPAYING) {
+                    advancedCouponRepayModel.setStatus(RepayStatus.COMPLETE);
+                    advancedCouponRepayModel.setActualRepayDate(new Date());
+                    couponRepayMapper.update(advancedCouponRepayModel);
+                    logger.info(MessageFormat.format("[Advance Repay {0}] update other REPAYING coupon repay({1}) status to COMPLETE",
+                            String.valueOf(loanRepayId), String.valueOf(advancedCouponRepayModel.getId())));
+                }
+            }
+        }
+
+    }
+
 
     @Override
     public String couponRepayCallback(Map<String, String> paramsMap, String originalQueryString){
