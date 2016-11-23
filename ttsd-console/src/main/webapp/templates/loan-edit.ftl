@@ -294,7 +294,7 @@
 
                 <div class="col-sm-4 checkbox">
                     <input type="checkbox" class="message-send" name="message-send" id="messageSend"
-                           <#if !loan.loanMessage??>checked</#if>>
+                           <#if loan.loanMessage??>checked</#if>>
                 </div>
             </div>
 
