@@ -45,15 +45,11 @@ public class ExportCsvUtil {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-            String fieldString = "";
+            String fieldString;
             if (null == fieldObject) {
                 fieldString = "";
             } else if (fieldObject instanceof Date) {
                 fieldString = simpleDateFormat.format((Date) fieldObject);
-            } else if (fieldObject instanceof List) {
-                for (Object item : (List) fieldObject) {
-                    fieldString += String.valueOf(item);
-                }
             } else {
                 fieldString = String.valueOf(fieldObject);
             }
