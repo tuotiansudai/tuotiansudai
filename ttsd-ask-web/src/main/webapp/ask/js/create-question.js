@@ -24,6 +24,8 @@ var utils = {
         var value=$.trim(element.val()),
             tempDes=value.replace(/\n/g,'\\n')
                 .replace(/\r/g,'\\r');
+        var checkWrap=value.replace(/\n/g,'')
+                        .replace(/\r/g,'');
 
         var len=tempDes.split('').length;
         var name=element[0].name;
@@ -60,9 +62,9 @@ var utils = {
                     .text(len);
                 if (len > min) {
                     errorMsg = '问题补充' + min + '个字';
-                    //$wordstip.addClass('error');
                 }
-                if(len<=min && len>=0) {
+
+                if(len<=min && len>0) {
                     this.hideError(element);
                     additionValid=true;
                     $wordstip.removeClass('red-color');
@@ -71,6 +73,9 @@ var utils = {
                     additionValid = false;
                     this.showError(element, errorMsg);
                     $wordstip.addClass('red-color');
+                }
+                if(checkWrap.length==0 && checkWrap!=tempDes) {
+                    additionValid = false;
                 }
                 break;
             case 'captcha':
@@ -85,6 +90,7 @@ var utils = {
                 }
                 break;
             case 'answer':
+
                 if(len>=0 && len<=min) {
                     errorMsg='回答不得少于10个字';
                     answerValid=false;
@@ -99,7 +105,10 @@ var utils = {
                     answerValid=true;
                     this.hideError(element);
                 }
-
+                if(checkWrap.length==0 && checkWrap!=tempDes) {
+                    additionValid = false;
+                    this.hideError(element);
+                }
                 break;
             default:
                 break;
