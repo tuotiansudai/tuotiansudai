@@ -3,6 +3,8 @@ package com.tuotiansudai.paywrapper.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
+import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
+import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,10 +36,34 @@ public class JobController {
     @Autowired
     private AdvanceRepayService advanceRepayService;
 
+    @Autowired
+    private CouponRepayService couponRepayService;
+
+    @Autowired
+    private ExtraRateService extraRateService;
+
     @ResponseBody
     @RequestMapping(value = "/async_invest_notify", method = RequestMethod.POST)
     public BaseDto<PayDataDto> asyncInvestNotify() {
         return this.investService.asyncInvestCallback();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/async_normal_repay_notify", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> asyncNormalRepayNotify() {
+        return this.normalRepayService.asyncNormalRepayPaybackCallback();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/async_advance_repay_notify", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> asyncAdvanceRepayNotify() {
+        return this.advanceRepayService.asyncAdvanceRepayPaybackCallback();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/async_coupon_repay_notify", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> asyncCouponRepayNotify() {
+        return this.couponRepayService.asyncCouponRepayCallback();
     }
 
     @ResponseBody
@@ -91,4 +117,9 @@ public class JobController {
         couponLoanOutService.sendRedEnvelope(loanId);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/async_extra_rate_invest_notify", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> asyncExtraRateInvestNotify() {
+        return this.extraRateService.asyncExtraRateInvestCallback();
+    }
 }

@@ -132,7 +132,12 @@ public enum UmPayService {
     /**
      * 普通转账通知
      */
-    NOTIFY_TRANSFER("transfer_notify");
+    NOTIFY_TRANSFER("transfer_notify"),
+
+    /**
+     * 还款时优惠券收益发放通知
+     */
+    NOTIFY_COUPON_REPAY("coupon_repay_notify");
 
     private final String serviceName;
 

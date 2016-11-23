@@ -38,8 +38,8 @@ public class BookingLoanController {
                                         @RequestParam(value = "noticeTimeEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date noticeTimeEndTime,
                                         @RequestParam(value = "source", required = false) Source source,
                                         @RequestParam(value = "status", required = false) Boolean status,
-                                        @RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                                        @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        int pageSize = 10;
         ModelAndView mv = new ModelAndView("/booking-loan-list");
         mv.addObject("bookingLoan", bookingLoanService.bookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, index, pageSize));
         mv.addObject("productType", productType);
@@ -68,9 +68,8 @@ public class BookingLoanController {
                                               @RequestParam(value = "source", required = false) Source source,
                                               @RequestParam(value = "status", required = false) Boolean status,
                                               @RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                              @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                               HttpServletResponse httpServletResponse) throws IOException {
-
+        int pageSize = 10;
         httpServletResponse.setCharacterEncoding("UTF-8");
         try {
             httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.BookingLoanHeader.getDescription() + ".csv", "UTF-8"));

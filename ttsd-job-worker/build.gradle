@@ -8,25 +8,6 @@ dependencies {
             project(':ttsd-edxactivity-repository')
 }
 
-startScripts {
-    def default_jmx_port = 2911;
-    if (project.hasProperty('work')) {
-        if ("invest".equals(work)) {
-            default_jmx_port = 2912;
-        }
-        if ("jpush".equals(work)) {
-            default_jmx_port = 2913;
-        }
-    }
-    defaultJvmOpts = [
-            "-Dcom.sun.management.jmxremote=true",
-            "-Dcom.sun.management.jmxremote.port=" + default_jmx_port,
-            "-Dcom.sun.management.jmxremote.ssl=false",
-            "-Dcom.sun.management.jmxremote.authenticate=false",
-            "-Dorg.quartz.scheduler.jmx.export=true"
-    ];
-
-}
 processResources.outputs.upToDateWhen{ false }
 processResources {
 
@@ -34,10 +15,10 @@ processResources {
     if (project.hasProperty('work')) {
         defaultProperties = work;
     }
-    String params = 'all,jpush,invest';
+    String params = 'all,jpush,invest,repay';
 
     if(params.indexOf(defaultProperties) < 0){
-        throw new GradleException("param is error,only all,jpush,invest")
+        throw new GradleException("param is error,only all,jpush,invest,repay")
     }
 
     def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"

@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.job.InvestCallbackJob;
-import com.tuotiansudai.job.InvestTransferCallbackJob;
+import com.tuotiansudai.job.*;
 import com.tuotiansudai.scheduler.repository.mapper.ExecutionLogMapper;
 import com.tuotiansudai.scheduler.repository.model.ExecuteStatus;
 import com.tuotiansudai.scheduler.repository.model.ExecutionLogModel;
@@ -19,6 +18,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class JobMonitorServiceImpl implements JobMonitorService {
@@ -32,17 +34,30 @@ public class JobMonitorServiceImpl implements JobMonitorService {
     @Value("${common.environment}")
     private Environment environment;
 
+    private List<Class<?>> ignoredJobClasses;
+
     @Autowired
     private ExecutionLogMapper executionLogMapper;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
+    public JobMonitorServiceImpl() {
+        ignoredJobClasses = Arrays.asList(
+                InvestCallbackJob.class,
+                InvestTransferCallbackJob.class,
+                NormalRepayCallbackJob.class,
+                AdvanceRepayCallbackJob.class,
+                CouponRepayNotifyCallbackJob.class,
+                ExtraRateInvestCallbackJob.class
+        );
+    }
+
     @Override
     public void onJobToBeExecuted(JobExecutionContext context) {
         JobDetail jobDetail = context.getJobDetail();
         // 排除投资回调的job (执行太频繁，不适合记录执行情况)
-        if (InvestCallbackJob.class.equals(jobDetail.getJobClass()) || InvestTransferCallbackJob.class.equals(jobDetail.getJobClass())) {
+        if (ignoredJobClasses.contains(jobDetail.getJobClass())) {
             return;
         }
 

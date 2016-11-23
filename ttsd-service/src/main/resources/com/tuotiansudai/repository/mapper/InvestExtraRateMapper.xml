@@ -30,7 +30,13 @@
 
     <update id="update" parameterType="InvestExtraRateModel">
         update invest_extra_rate
-        set actual_interest = #{actualInterest}, actual_fee = #{actualFee}, repay_amount = #{repayAmount}, actual_repay_date = #{actualRepayDate}, is_transfer=#{isTransfer}
+        set actual_interest = #{actualInterest}, actual_fee = #{actualFee}, repay_amount = #{repayAmount}, is_transfer=#{isTransfer}
+        where id = #{id}
+    </update>
+
+    <update id="updateActualRepayDate" parameterType="InvestExtraRateModel">
+        update invest_extra_rate
+        set actual_repay_date = #{actualRepayDate}
         where id = #{id}
     </update>
 
