@@ -18,10 +18,15 @@ var utils = {
     hideError:function(element,value) {
         element.parent().find('.error').hide();
     },
-    validLen:function(element,num) {
-        var len=element.val().split('').length;
-        var name=element[0].name,
-            value=$.trim(element.val());
+    validLen:function(element,min,max) {
+        var min=min || false,
+            max=max || false;
+        var value=$.trim(element.val()),
+            tempDes=value.replace(/\n/g,'\\n')
+                .replace(/\r/g,'\\r');
+
+        var len=tempDes.split('').length;
+        var name=element[0].name;
         var $wordstip=element.parent().find('.words-tip');
         var $formSubmit=element.parents('form').find('.formSubmit');
         var errorMsg='';
@@ -33,11 +38,11 @@ var utils = {
                     .find('em')
                     .text(len);
 
-                if (len > num) {
-                    errorMsg = '您的问题不能超过' + num + '个字符';
+                if (len > min) {
+                    errorMsg = '您的问题不能超过' + min + '个字符';
                 }
 
-                if(len<=num && len>0) {
+                if(len<=min && len>0) {
                     this.hideError(element);
                     questionValid = true;
                     $wordstip.removeClass('red-color');
@@ -53,11 +58,11 @@ var utils = {
                 $wordstip.removeClass('error')
                     .find('em')
                     .text(len);
-                if (len > num) {
-                    errorMsg = '问题补充' + num + '个字符';
+                if (len > min) {
+                    errorMsg = '问题补充' + min + '个字';
                     //$wordstip.addClass('error');
                 }
-                if(len<=num && len>=0) {
+                if(len<=min && len>=0) {
                     this.hideError(element);
                     additionValid=true;
                     $wordstip.removeClass('red-color');
@@ -80,14 +85,14 @@ var utils = {
                 }
                 break;
             case 'answer':
-                errorMsg='回答不得少于10个字';
-
-                if(/^(\S){0,10}$/.test(value)){
+                if(len>=0 && len<=min) {
+                    errorMsg='回答不得少于10个字';
                     answerValid=false;
                     this.showError(element, errorMsg);
-                } else if (/^(\S){1000,}$/.test(value)) {
+                }
+                else if(len>max) {
                     answerValid = false;
-                    errorMsg = '回答不得超过1000个字';
+                    errorMsg='回答不得多于1000个字';
                     this.showError(element, errorMsg);
                 }
                 else {
@@ -149,19 +154,19 @@ $.fn.checkFrom = function () {
             value=$ele.val();
         switch(name) {
             case 'question':
-                return utils.validLen($ele, 100);
+                utils.validLen($ele, 100);
                 break;
             case 'addition':
-                return utils.validLen($ele, 500);
+                utils.validLen($ele, 500);
                 break;
             case 'captcha':
-                return utils.validLen($ele,5);
+                utils.validLen($ele,5);
                 break;
             case 'answer':
-                return utils.validLen($ele, 10);
+                utils.validLen($ele, 10,1000);
                 break;
             default:
-                return utils.radioChecked($ele)
+                utils.radioChecked($ele)
                 break;
         }
 
@@ -219,8 +224,7 @@ if($questionDetailTag.length) {
         var value=$formAnswer.find('textarea').val();
         event.preventDefault();
         var temp=value.replace(/\n/g,'\\n')
-            .replace(/\r/g,'\\r')
-            .replace(/\s/g,'&nbsp;');
+            .replace(/\r/g,'\\r');
         $formAnswer.find('textarea').val(temp);
             $.ajax({
                 url: "/answer",
@@ -333,12 +337,15 @@ if($createQuestion.length) {
         var value=$formQuestion.find('textarea').val();
         event.preventDefault();
 
-        //var temp=value.replace(/\r\n/g,'\\r\\n');
-        var temp=value.replace(/\n/g,'\\n')
-                      .replace(/\r/g,'\\r')
-                      .replace(/\s/g,'&nbsp;');
+        var question=value.replace(/\n/g,'\\n')
+                      .replace(/\r/g,'\\r');
 
-        $formQuestion.find('textarea').val(temp);
+        // var question=$('.question',$formQuestion).val();
+        // var tag=$('.tag-list input.tag:checked',$formQuestion);
+
+        $formQuestion.find('textarea').val(question);
+        debugger
+
             $.ajax({
                     url: "/question",
                     data: $formQuestion.serialize(),

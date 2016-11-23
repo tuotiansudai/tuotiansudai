@@ -12,7 +12,7 @@
                         <span class="isAnonymous ask-con">请 <a href="${webServer}/login">登录</a> 或 <a href="${webServer}/register/user">注册</a> 后再进行提问</span>
                     </@global.isAnonymous>
                     <@global.isNotAnonymous>
-                        <input type="text" name="question" placeholder="请描述您的问题" class="ask-con">
+                        <input type="text" name="question" placeholder="请描述您的问题" class="ask-con question">
                     </@global.isNotAnonymous>
                         
                         <span class="error fl" style="display: none">请描述您的问题</span>
