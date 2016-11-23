@@ -66,16 +66,13 @@ public class MessageCreateAspect {
     @AfterReturning(value = "createLoanPointcut() || updateLoanPointcut()")
     public void afterCreateOrUpdateLoan(JoinPoint joinPoint) {
         LoanCreateRequestDto loanCreateRequestDto = (LoanCreateRequestDto) joinPoint.getArgs()[0];
-        if (null == loanCreateRequestDto || Strings.isNullOrEmpty(loanCreateRequestDto.getLoanMessage().getLoanMessageTitle().trim()) ||
-                Strings.isNullOrEmpty(loanCreateRequestDto.getLoanMessage().getLoanMessageContent().trim())) {
-            return;
-        }
         try {
             if (redisWrapperClient.hexists(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanCreateRequestDto.getLoan().getId()))) {
+                long messageId = Long.valueOf(redisWrapperClient.hget(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanCreateRequestDto.getLoan().getId())));
                 if (null == loanCreateRequestDto.getLoanMessage()) {
                     redisWrapperClient.hdel(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanCreateRequestDto.getLoan().getId()));
+                    messageService.deleteMessage(messageId, loanCreateRequestDto.getLoan().getCreatedBy());
                 } else {
-                    long messageId = Long.valueOf(redisWrapperClient.hget(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanCreateRequestDto.getLoan().getId())));
                     MessageCompleteDto messageCompleteDto = MessageCompleteDto.createFromLoanCreateRequestDto(loanCreateRequestDto);
                     messageCompleteDto.setId(messageId);
                     messageService.createAndEditManualMessage(messageCompleteDto, 0L);
