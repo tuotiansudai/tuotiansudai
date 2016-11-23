@@ -1,6 +1,8 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -51,6 +54,49 @@ public class UserBillMapperTest {
 
     }
 
+    @Test
+    public void shouldFindUserBillsIsSuccess(){
+        UserModel fakeUser = this.getFakeUser();
+        userMapper.create(fakeUser);
+        getUserBillModel(UserBillOperationType.TI_BALANCE,UserBillBusinessType.ACTIVITY_REWARD,fakeUser.getLoginName());
+        getUserBillModel(UserBillOperationType.TO_FREEZE,UserBillBusinessType.ADVANCE_REPAY,fakeUser.getLoginName());
+
+        List<UserBillModel> userBillModelsTi = userBillMapper.findUserBills(Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                .put("loginName", fakeUser.getLoginName())
+                .put("userBillOperationTypes",Lists.newArrayList(UserBillOperationType.TI_BALANCE))
+                .put("indexPage", 0)
+                .put("pageSize", 10).build()));
+
+        List<UserBillModel> userBillModelsTo = userBillMapper.findUserBills(Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                .put("loginName", fakeUser.getLoginName())
+                .put("userBillOperationTypes",Lists.newArrayList(UserBillOperationType.TO_FREEZE))
+                .put("indexPage", 0)
+                .put("pageSize", 10).build()));
+
+        assertEquals(1,userBillModelsTi.size());
+        assertEquals(UserBillBusinessType.ACTIVITY_REWARD,userBillModelsTi.get(0).getBusinessType());
+        assertEquals(UserBillOperationType.TI_BALANCE,userBillModelsTi.get(0).getOperationType());
+
+
+        assertEquals(1,userBillModelsTo.size());
+        assertEquals(UserBillBusinessType.ADVANCE_REPAY,userBillModelsTo.get(0).getBusinessType());
+        assertEquals(UserBillOperationType.TO_FREEZE,userBillModelsTo.get(0).getOperationType());
+
+
+
+
+    }
+    private void getUserBillModel(UserBillOperationType userBillOperationType,UserBillBusinessType userBillBusinessType,String loginName){
+        UserBillModel userBillModel = new UserBillModel();
+        userBillModel.setLoginName(loginName);
+        userBillModel.setAmount(1);
+        userBillModel.setBalance(1);
+        userBillModel.setFreeze(1);
+        userBillModel.setOperationType(userBillOperationType);
+        userBillModel.setBusinessType(userBillBusinessType);
+
+        userBillMapper.create(userBillModel);
+    }
     public UserModel getFakeUser() {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName("loginName");
