@@ -39,7 +39,6 @@ public class ContractController {
                 httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
                 return;
             }
-            response.setContentType("application/octet-stream");
             response.reset();
             response.addHeader("Content-Disposition", String.format("attachment;filename=%s.pdf", investId));
             response.setContentType("application/octet-stream");
@@ -57,7 +56,6 @@ public class ContractController {
                 httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
                 return;
             }
-            response.setContentType("application/octet-stream");
             response.reset();
             response.addHeader("Content-Disposition", String.format("attachment;filename=%s.pdf", transferApplicationId));
             response.setContentType("application/octet-stream");
