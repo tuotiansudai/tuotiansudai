@@ -244,7 +244,7 @@ public class UserMessageEventGenerator {
     public void generateRepaySuccessEvent(long loanRepayId) {
         Map<String, Object> loan = userMessageMetaMapper.findLoanByLoanRepayId(loanRepayId);
         Map<String, Object> loanRepay = userMessageMetaMapper.findLoanRepayById(loanRepayId);
-        List<Map<String, Object>> invests = userMessageMetaMapper.findInvestsByLoanId((long) loan.get("id"));
+        List<Map<String, Object>> invests = userMessageMetaMapper.findInvestsByLoanId(((BigInteger) loan.get("id")).longValue());
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.REPAY_SUCCESS);
         //Title:您投资的{0}已回款{1}元，请前往账户查收！
         //AppTitle:您投资的{0}已回款{1}元，请前往账户查收！
@@ -266,7 +266,7 @@ public class UserMessageEventGenerator {
     public void generateAdvancedRepaySuccessEvent(long loanRepayId) {
         Map<String, Object> loan = userMessageMetaMapper.findLoanByLoanRepayId(loanRepayId);
         Map<String, Object> loanRepay = userMessageMetaMapper.findLoanRepayById(loanRepayId);
-        List<Map<String, Object>> invests = userMessageMetaMapper.findInvestsByLoanId((long) loan.get("id"));
+        List<Map<String, Object>> invests = userMessageMetaMapper.findInvestsByLoanId(((BigInteger) loan.get("id")).longValue());
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.ADVANCED_REPAY);
         //Title:您投资的{0}提前还款，{1}元已返还至您的账户！
         //AppTitle:您投资的{0}提前还款，{1}元已返还至您的账户！
