@@ -24,7 +24,7 @@ import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
-@Component
+
 public class AnxinClientTest {
 
     private static final Logger logger = Logger.getLogger(AnxinClient.class);
@@ -49,7 +49,7 @@ public class AnxinClientTest {
     private static final String DEFAULT_TRUST_ALGORITHM = TrustManagerFactory.getDefaultAlgorithm();
     private static final String DEFAULT_TRUST_STORE_TYPE = KeyStore.getDefaultType();
 
-    @PostConstruct
+
     public void initSSL() throws GeneralSecurityException, IOException {
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(DEFAULT_KEY_ALGORITHM);
         KeyStore keyStore = KeyStore.getInstance(DEFAULT_KEY_STORE_TYPE);
