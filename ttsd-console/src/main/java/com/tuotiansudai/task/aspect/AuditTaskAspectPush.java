@@ -6,7 +6,6 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
@@ -58,7 +57,7 @@ public class AuditTaskAspectPush {
                 String senderRealName = userService.getRealName(senderLoginName);
 
                 task.setSender(senderLoginName);
-                task.setOperateURL("/app-push-manage/manual-app-push-list");
+                task.setOperateURL("/message-manage/manual-message-list");
                 task.setDescription(senderRealName + " 创建了一个APP推送［" + jPushAlertDto.getName() + "］，请审核。");
 
                 redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
