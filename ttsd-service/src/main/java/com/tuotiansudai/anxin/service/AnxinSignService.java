@@ -30,8 +30,8 @@ public interface AnxinSignService {
 
     List<String> queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType);
 
-    BaseDto updateLoanInvestContractNo(long loanId);
-
-    BaseDto updateTransferInvestContractNo(long transferInvestId);
+//    BaseDto updateLoanInvestContractNo(long loanId);
+//
+//    BaseDto updateTransferInvestContractNo(long transferInvestId);
 
 }

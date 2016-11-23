@@ -9,16 +9,15 @@ import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
-import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.cfca.constant.AnxinRetCode;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.ContractNoStatus;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
 import com.tuotiansudai.job.AnxinQueryContractJob;
 import com.tuotiansudai.job.JobType;
@@ -576,35 +575,35 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      * @param loanId
      * @return
      */
-    @Override
-    public BaseDto updateLoanInvestContractNo(long loanId) {
-
-        LoanModel loanModel = loanMapper.findById(loanId);
-        String agentLoginName = loanModel.getAgentLoginName();
-        AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(agentLoginName);
-
-        if (agentAnxinProp == null || StringUtils.isEmpty(agentAnxinProp.getProjectCode())) {
-            // update all invest contractNo to "OLD"
-            investMapper.updateAllContractNoByLoanId(loanId, ContractNoStatus.OLD.name());
-            return new BaseDto();
-        }
-
-        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
-        for (InvestModel investModel : successInvestList) {
-            String investLoginName = investModel.getLoginName();
-            AnxinSignPropertyModel investAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
-
-            if (investAnxinProp == null || StringUtils.isEmpty(investAnxinProp.getProjectCode())) {
-                // update contractNo to "OLD"
-                investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.OLD.name());
-            } else {
-                // update contractNo to "WAITING"
-                investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.WAITING.name());
-            }
-        }
-
-        return new BaseDto();
-    }
+//    @Override
+//    public BaseDto updateLoanInvestContractNo(long loanId) {
+//
+//        LoanModel loanModel = loanMapper.findById(loanId);
+//        String agentLoginName = loanModel.getAgentLoginName();
+//        AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(agentLoginName);
+//
+//        if (agentAnxinProp == null || StringUtils.isEmpty(agentAnxinProp.getProjectCode())) {
+//            // update all invest contractNo to "OLD"
+//            investMapper.updateAllContractNoByLoanId(loanId, ContractNoStatus.OLD.name());
+//            return new BaseDto();
+//        }
+//
+//        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
+//        for (InvestModel investModel : successInvestList) {
+//            String investLoginName = investModel.getLoginName();
+//            AnxinSignPropertyModel investAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
+//
+//            if (investAnxinProp == null || StringUtils.isEmpty(investAnxinProp.getProjectCode())) {
+//                // update contractNo to "OLD"
+//                investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.OLD.name());
+//            } else {
+//                // update contractNo to "WAITING"
+//                investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.WAITING.name());
+//            }
+//        }
+//
+//        return new BaseDto();
+//    }
 
     /**
      * 将债权转让投资的合同编号更新为OLD或WAITING
@@ -612,27 +611,27 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      * @param investId
      * @return
      */
-    @Override
-    public BaseDto updateTransferInvestContractNo(long investId) {
-
-        InvestModel investModel = investMapper.findById(investId);
-        String investLoginName = investModel.getLoginName();
-        AnxinSignPropertyModel investAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
-
-        InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
-        String tranferLoginName = transferInvestModel.getLoginName();
-        AnxinSignPropertyModel tranferAnxinProp = anxinSignPropertyMapper.findByLoginName(tranferLoginName);
-
-        if (investAnxinProp == null || StringUtils.isEmpty(investAnxinProp.getProjectCode())
-                || tranferAnxinProp == null || StringUtils.isEmpty(tranferAnxinProp.getProjectCode())) {
-            // update contractNo to "OLD"
-            investMapper.updateContractNoById(investId, ContractNoStatus.OLD.name());
-        } else {
-            // update contractNo to "WAITING"
-            investMapper.updateContractNoById(investId, ContractNoStatus.WAITING.name());
-        }
-
-        return new BaseDto();
-    }
+//    @Override
+//    public BaseDto updateTransferInvestContractNo(long investId) {
+//
+//        InvestModel investModel = investMapper.findById(investId);
+//        String investLoginName = investModel.getLoginName();
+//        AnxinSignPropertyModel investAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
+//
+//        InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
+//        String tranferLoginName = transferInvestModel.getLoginName();
+//        AnxinSignPropertyModel tranferAnxinProp = anxinSignPropertyMapper.findByLoginName(tranferLoginName);
+//
+//        if (investAnxinProp == null || StringUtils.isEmpty(investAnxinProp.getProjectCode())
+//                || tranferAnxinProp == null || StringUtils.isEmpty(tranferAnxinProp.getProjectCode())) {
+//            // update contractNo to "OLD"
+//            investMapper.updateContractNoById(investId, ContractNoStatus.OLD.name());
+//        } else {
+//            // update contractNo to "WAITING"
+//            investMapper.updateContractNoById(investId, ContractNoStatus.WAITING.name());
+//        }
+//
+//        return new BaseDto();
+//    }
 
 }
