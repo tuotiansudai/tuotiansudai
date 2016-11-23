@@ -6,6 +6,7 @@ import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipExperienceBillModel;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
+import com.tuotiansudai.message.util.UserMessageEventGenerator;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.util.AmountConverter;
@@ -36,6 +37,9 @@ public class MembershipInvestService {
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Autowired
+    private UserMessageEventGenerator userMessageEventGenerator;
 
     @Transactional
     public void afterInvestSuccess(String loginName, long investAmount, long investId) {
@@ -69,5 +73,10 @@ public class MembershipInvestService {
 
         UserMembershipModel newUserMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, membershipId);
         userMembershipMapper.create(newUserMembershipModel);
+        try {
+            userMessageEventGenerator.generateMembershipUpgradeEvent(loginName, membershipId);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[MembershipInvestService] membership upgrade message send fail. loginName:{0}, membershipId:{1}", loginName, membershipId), e);
+        }
     }
 }
