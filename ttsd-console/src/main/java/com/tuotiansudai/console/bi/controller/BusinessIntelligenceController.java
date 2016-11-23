@@ -97,9 +97,8 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
             @RequestParam(name = "province", required = false) String province,
             @RequestParam(name = "loanCount", required = true) int loanCount,
-            @RequestParam(name = "pageNo", required = true) int pageNo,
-            @RequestParam(name = "pageSize", required = true) int pageSize) {
-        return businessIntelligenceService.queryInvestViscosityDetail(startTime, endTime, province, loanCount, pageNo, pageSize);
+            @RequestParam(name = "pageNo", required = true) int pageNo) {
+        return businessIntelligenceService.queryInvestViscosityDetail(startTime, endTime, province, loanCount, pageNo, 10);
     }
 
 

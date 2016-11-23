@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.LicaiquanArticleCommentModel;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.PaginationUtil;
 import com.tuotiansudai.util.SerializeUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -144,7 +145,7 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
         });
 
         int indexCount = (index - 1) * pageSize;
-        int totalPages = count % pageSize > 0 ? count / pageSize + 1 : count / pageSize;
+        int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
         index = index > totalPages ? totalPages : index;
         int toIndex = (indexCount + pageSize) > articleDtoList.size() ? articleDtoList.size() : indexCount + pageSize;
         list = setLikeAndReadCount(updateArticleDtoTitle(articleDtoList.subList(indexCount, toIndex)));

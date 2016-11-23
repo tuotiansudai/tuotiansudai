@@ -5,6 +5,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppReferrerListService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ReferrerRelationView;
@@ -25,17 +26,17 @@ public class MobileAppReferrerListServiceImpl implements MobileAppReferrerListSe
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
     @Override
     public BaseResponseDto generateReferrerList(ReferrerListRequestDto referrerListRequestDto) {
         BaseResponseDto dto = new BaseResponseDto();
         String referrerId = referrerListRequestDto.getReferrerId();
         Integer index = referrerListRequestDto.getIndex();
-        Integer pageSize = referrerListRequestDto.getPageSize();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(referrerListRequestDto.getPageSize());
         if(index == null || index.intValue() <= 0){
             index = 1;
-        }
-        if(pageSize == null || pageSize.intValue() <= 0){
-            pageSize = 10;
         }
         String level = referrerManageService.getUserRewardDisplayLevel(referrerId);
         List<ReferrerRelationView> referrerRelationDtos = referrerManageMapper.findReferRelationList(referrerId,null,null,null,level,(index - 1) * pageSize,pageSize);

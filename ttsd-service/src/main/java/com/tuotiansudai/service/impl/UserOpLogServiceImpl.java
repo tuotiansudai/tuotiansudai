@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.model.UserOpLogModel;
 import com.tuotiansudai.repository.model.UserOpLogView;
 import com.tuotiansudai.repository.model.UserOpType;
 import com.tuotiansudai.service.UserOpLogService;
+import com.tuotiansudai.util.PaginationUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class UserOpLogServiceImpl implements UserOpLogService {
 
         List<UserOpLogView> data = Lists.newArrayList();
         if (count > 0) {
-            int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             data = userOpLogMapper.getPaginationData(mobile, opType, startTime, endTime, (index - 1) * pageSize, pageSize);
         }
