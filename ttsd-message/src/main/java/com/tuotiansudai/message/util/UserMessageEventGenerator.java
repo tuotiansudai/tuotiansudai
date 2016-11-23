@@ -224,9 +224,9 @@ public class UserMessageEventGenerator {
         //Title:您投资的{0}已经满额放款，预期年化收益{1}%
         //AppTitle:您投资的{0}已经满额放款，预期年化收益{1}%
         //Content:尊敬的用户，您投资的{0}项目已经满额放款，预期年化收益{1}%，快来查看收益吧。
-        String title = MessageFormat.format(messageModel.getTitle(), loanName, rate);
-        String appTitle = MessageFormat.format(messageModel.getAppTitle(), loanName, rate);
-        String content = MessageFormat.format(messageModel.getTemplate(), loanName, rate);
+        String title = MessageFormat.format(messageModel.getTitle(), loanName, rate * 100);
+        String appTitle = MessageFormat.format(messageModel.getAppTitle(), loanName, rate * 100);
+        String content = MessageFormat.format(messageModel.getTemplate(), loanName, rate * 100);
 
         Set<String> investorLoginNames = Sets.newHashSet(userMessageMetaMapper.findSuccessInvestorByLoanId(loanId));
         for (String investor : investorLoginNames) {
