@@ -35,14 +35,18 @@ public class InvestRateServiceImpl implements InvestRateService {
         String detail = MessageFormat.format(SystemBillDetailTemplate.EXTRA_RATE_DETAIL_TEMPLATE.getTemplate(),
                 investExtraRateModel.getLoginName(), String.valueOf(investExtraRateModel.getInvestId()));
         systemBillService.transferOut(investExtraRateModel.getId(), amount, SystemBillBusinessType.EXTRA_RATE, detail);
-        updateInvestExtraRate(investExtraRateModel, actualInterest, actualFee, amount);
+        this.updateInvestExtraRate(investExtraRateModel);
     }
 
-    private void updateInvestExtraRate(InvestExtraRateModel investExtraRateModel, long actualInterest, long actualFee, long amount) {
+    private void updateInvestExtraRate(InvestExtraRateModel investExtraRateModel){
+        investExtraRateModel.setActualRepayDate(new Date());
+        investExtraRateMapper.updateActualRepayDate(investExtraRateModel);
+    }
+
+    public void updateInvestExtraRate(InvestExtraRateModel investExtraRateModel, long actualInterest, long actualFee, long amount) {
         investExtraRateModel.setActualInterest(actualInterest);
         investExtraRateModel.setActualFee(actualFee);
         investExtraRateModel.setRepayAmount(amount);
-        investExtraRateModel.setActualRepayDate(new Date());
         investExtraRateMapper.update(investExtraRateModel);
     }
 

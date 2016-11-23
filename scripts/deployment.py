@@ -36,6 +36,7 @@ class Deployment(object):
         sh('cd ./ttsd-job-worker && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker && {0} -Pwork=invest distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker && {0} -Pwork=jpush distZip'.format(self._gradle))
+        sh('cd ./ttsd-job-worker && {0} -Pwork=repay distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker/build/distributions && unzip \*.zip')
 
     def build_mq_consumer(self):
