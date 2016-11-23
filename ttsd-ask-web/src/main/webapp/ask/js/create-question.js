@@ -108,26 +108,7 @@ var utils = {
                     this.hideError(element);
                     answerValid = true;
                 }
-
-
-                // if(len>=0 && len<=min) {
-                //     errorMsg='回答不得少于10个字';
-                //     answerValid=false;
-                //     this.showError(element, errorMsg);
-                // }
-                // else if(len>max) {
-                //     answerValid = false;
-                //     errorMsg='回答不得多于1000个字';
-                //     this.showError(element, errorMsg);
-                // }
-                // else {
-                //     answerValid=true;
-                //     this.hideError(element);
-                // }
-                // if(checkWrap.length==0 && checkWrap!=tempDes) {
-                //     additionValid = false;
-                //     this.hideError(element);
-                // }
+                
                 break;
             default:
                 break;
