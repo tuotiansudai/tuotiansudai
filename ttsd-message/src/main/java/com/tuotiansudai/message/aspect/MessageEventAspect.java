@@ -240,9 +240,8 @@ public class MessageEventAspect {
     @AfterReturning(value = "membershipUpgradePointcut()")
     public void afterMembershipUpgrade(JoinPoint joinPoint) {
         logger.debug("[Message Event Aspect] into upgrade aspect");
-        Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
-        String loginName = paramsMap.get("loginName");
-        long membershipId = Integer.valueOf(paramsMap.get("membershipId"));
+        String loginName = (String) joinPoint.getArgs()[0];
+        long membershipId = (long) joinPoint.getArgs()[1];
         try {
             userMessageEventGenerator.generateMembershipUpgradeEvent(loginName, membershipId);
             logger.info(MessageFormat.format("[Message Event Aspect] after membership upgrade pointcut finished. loginName:{0}, membershipId:{1}", loginName, membershipId));
