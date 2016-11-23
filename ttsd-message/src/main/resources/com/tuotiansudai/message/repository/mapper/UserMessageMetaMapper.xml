@@ -89,7 +89,7 @@
 
     <select id="findBirthDayUsers" resultType="string">
         select login_name
-        from account
+        from user
         where (if(length(identity_number) = 18, substring(identity_number,11,4), substring(identity_number,9,4))) = DATE_FORMAT(now(),'%m%d')
     </select>
 
