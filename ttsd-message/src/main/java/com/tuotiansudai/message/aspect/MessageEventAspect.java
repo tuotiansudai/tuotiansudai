@@ -3,6 +3,8 @@ package com.tuotiansudai.message.aspect;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.SignInResult;
+import com.tuotiansudai.membership.repository.mapper.MembershipPurchaseMapper;
+import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
 import com.tuotiansudai.message.util.UserMessageEventGenerator;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -24,6 +26,9 @@ public class MessageEventAspect {
 
     @Autowired
     private UserMessageEventGenerator userMessageEventGenerator;
+
+    @Autowired
+    private MembershipPurchaseMapper membershipPurchaseMapper;
 
     @Pointcut("execution(* *..UserService.registerUser(..))")
     public void registerUserPointcut() {
@@ -69,7 +74,7 @@ public class MessageEventAspect {
     public void refreshSuccessPointcut() {
     }
 
-    @Pointcut("execution(* *..MembershipPurchaseService.purchase(..))")
+    @Pointcut("execution(* *..MembershipPurchasePayServiceImpl.postPurchaseCallback(..))")
     public void purchaseMembershipPointcut() {
     }
 
@@ -227,8 +232,24 @@ public class MessageEventAspect {
     @SuppressWarnings(value = "unchecked")
     @AfterReturning(value = "purchaseMembershipPointcut()")
     public void afterPurchaseMembership(JoinPoint joinPoint) {
-        String loginName = (String) joinPoint.getArgs()[0];
-        int duration = (int) joinPoint.getArgs()[2];
+        Object callbackRequestModel = joinPoint.getArgs()[0];
+        long orderId = 0L;
+
+        try {
+            Class<?> aClass = callbackRequestModel.getClass();
+            Method method = aClass.getMethod("getOrderId");
+            orderId = Long.parseLong((String) method.invoke(callbackRequestModel));
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Message Event Aspect] callback order is not a number (orderId = {0})", orderId), e);
+            return;
+        }
+        MembershipPurchaseModel membershipPurchaseModel = membershipPurchaseMapper.findById(orderId);
+        if(null == membershipPurchaseModel) {
+            logger.error(MessageFormat.format("[Message Event Aspect] membershipPurchaseModel is null, orderId = {0}", orderId));
+            return;
+        }
+        String loginName = membershipPurchaseModel.getLoginName();
+        int duration = membershipPurchaseModel.getDuration();
         try {
             userMessageEventGenerator.generateMembershipPurchaseEvent(loginName, duration);
             logger.info(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut finished. loginName:{0}, duration:{1}", loginName, duration));
