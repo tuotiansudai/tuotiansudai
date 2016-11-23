@@ -26,6 +26,7 @@ import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.*;
+import javafx.scene.control.Pagination;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -304,15 +305,15 @@ public class CouponController {
     }
 
     @RequestMapping(value = "/interest-coupons", method = RequestMethod.GET)
-    public ModelAndView interestCoupons(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+    public ModelAndView interestCoupons(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/interest-coupons");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("coupons", couponService.findInterestCoupons(index, pageSize));
         int couponsCount = couponService.findInterestCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
-        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(couponsCount ,pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -321,15 +322,15 @@ public class CouponController {
     }
 
     @RequestMapping(value = "/red-envelopes", method = RequestMethod.GET)
-    public ModelAndView redEnvelopes(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                     @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+    public ModelAndView redEnvelopes(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/red-envelopes");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("coupons", couponService.findRedEnvelopeCoupons(index, pageSize));
         int couponsCount = couponService.findRedEnvelopeCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
-        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(couponsCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -338,15 +339,15 @@ public class CouponController {
     }
 
     @RequestMapping(value = "/birthday-coupons", method = RequestMethod.GET)
-    public ModelAndView birthdayCoupons(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+    public ModelAndView birthdayCoupons(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/birthday-coupons");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("coupons", couponService.findBirthdayCoupons(index, pageSize));
         int couponsCount = couponService.findBirthdayCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
-        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(couponsCount ,pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -356,15 +357,15 @@ public class CouponController {
 
 
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
-    public ModelAndView coupons(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+    public ModelAndView coupons(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/coupons");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("coupons", couponService.findNewbieAndInvestCoupons(index, pageSize));
         int couponsCount = couponService.findNewbieAndInvestCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
-        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 || couponsCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(couponsCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -378,8 +379,8 @@ public class CouponController {
                                      @RequestParam(value = "registerEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerEndTime,
                                      @RequestParam(value = "loginName", required = false) String loginName,
                                      @RequestParam(value = "mobile", required = false) String mobile,
-                                     @RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                     @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                                     @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/coupon-detail");
         List<UserCouponModel> userCoupons = couponService.findCouponDetail(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime, index, pageSize);
         int userCouponsCount = couponService.findCouponDetailCount(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime);
@@ -394,7 +395,7 @@ public class CouponController {
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("userCouponsCount", userCouponsCount);
-        long totalPages = userCouponsCount / pageSize + (userCouponsCount % pageSize > 0 || userCouponsCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(userCouponsCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);

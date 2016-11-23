@@ -24,8 +24,8 @@ public class LuxuryPrizeController {
     public ModelAndView userLuxuryPrizeList(@RequestParam(value = "mobile", required = false) String mobile,
                                             @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                             @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                        @RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                                        @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        int pageSize = 10;
         ModelAndView mv = new ModelAndView("/user-luxury-list");
         BaseDto<BasePaginationDataDto> baseDto = activityConsoleLuxuryPrizeService.obtainUserLuxuryPrizeList(mobile, startTime, endTime, index, pageSize);
         mv.addObject("data", baseDto);

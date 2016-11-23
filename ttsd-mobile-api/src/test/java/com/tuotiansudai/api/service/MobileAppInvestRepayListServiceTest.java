@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.InvestRepayListRequestDto;
 import com.tuotiansudai.api.dto.v1_0.InvestRepayListResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppInvestRepayListServiceImpl;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -40,12 +41,16 @@ public class MobileAppInvestRepayListServiceTest extends ServiceTestBase {
     @Autowired
     private IdGenerator idGenerator;
 
+    @Mock
+    private PageValidUtils pageValidUtils;
+
     @Test
     public void shouldGenerateUserInvestRepayList() {
         when(investMapper.findById(anyLong())).thenReturn(generateMockedInvestModel());
         when(loanMapper.findById(anyLong())).thenReturn(generateMockedLoanModel());
         when(investRepayMapper.findByLoginNameAndStatus(anyString(), anyString(), anyInt(), anyInt())).thenReturn(generateMockedInvestRepayModel());
         when(investRepayMapper.findCountByLoginNameAndStatus(anyString(), anyString())).thenReturn(230L);
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         InvestRepayListRequestDto requestDto = new InvestRepayListRequestDto();
         requestDto.setPageSize(10);
         requestDto.setIndex(1);
