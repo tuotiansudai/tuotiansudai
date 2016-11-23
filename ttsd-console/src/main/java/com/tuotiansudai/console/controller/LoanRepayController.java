@@ -27,12 +27,12 @@ public class LoanRepayController {
     @RequestMapping(value = "/loan-repay", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView findLoanRepayPagination(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                                 @RequestParam(value = "loanId", required = false) Long loanId,
                                                 @RequestParam(value = "loginName", required = false) String loginName,
                                                 @RequestParam(value = "repayStatus", required = false) RepayStatus repayStatus,
                                                 @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                 @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/loan-repay");
         BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> baseDto = loanRepayService.findLoanRepayPagination(index, pageSize,
                 loanId, loginName, startTime, endTime, repayStatus);

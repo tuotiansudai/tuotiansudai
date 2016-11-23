@@ -63,12 +63,7 @@ public class AnnounceServiceImpl implements AnnounceService {
         List<AnnounceModel> announceModels = this.announceMapper.findAnnounce(null, null, (index - 1) * pageSize, pageSize);
         int count = this.announceMapper.findAnnounceCount(null, null);
 
-        List<AnnounceDto> announceList = Lists.transform(announceModels, new Function<AnnounceModel, AnnounceDto>() {
-            @Override
-            public AnnounceDto apply(AnnounceModel input) {
-                return new AnnounceDto(input);
-            }
-        });
+        List<AnnounceDto> announceList = Lists.transform(announceModels, input -> new AnnounceDto(input));
 
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         BasePaginationDataDto<AnnounceDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, announceList);

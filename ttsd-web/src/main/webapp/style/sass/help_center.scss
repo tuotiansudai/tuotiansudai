@@ -110,9 +110,8 @@
       text-align: center;
       padding: 20px 0 0;
       li {
-        float: left;
+        display:inline-block;
         width: 240px;
-        margin: 0 118px;
         padding: 25px 0;
         box-sizing: border-box;
         border: 1px solid transparent;
@@ -131,9 +130,6 @@
           margin: 0 5px 0 15px;
           &.icon-phone {
             background: url('/images/helpcenter/icon-phone.png') no-repeat center;
-          }
-          &.icon-qq {
-            background: url('/images/helpcenter/icon-qq.png') no-repeat center;
           }
         }
         p {

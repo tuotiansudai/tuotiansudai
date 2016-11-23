@@ -37,8 +37,8 @@ public class FinanceReportController {
                                          @RequestParam(value = "investStartTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date investStartTime,
                                          @RequestParam(value = "investEndTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date investEndTime,
                                          @RequestParam(value = "usedPreferenceType", defaultValue = "", required = false) PreferenceType preferenceType,
-                                         @RequestParam(value = "index", defaultValue = "1", required = true) int index,
-                                         @RequestParam(value = "pageSize", defaultValue = "10", required = true) int pageSize) {
+                                         @RequestParam(value = "index", defaultValue = "1", required = true) int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/finance-report");
         BasePaginationDataDto<FinanceReportDto> basePaginationDataDto = financeReportService.getFinanceReportDtos(loanId, period, investLoginName, investStartTime, investEndTime, preferenceType, index, pageSize);
         modelAndView.addObject("data", basePaginationDataDto);
@@ -61,8 +61,8 @@ public class FinanceReportController {
                                             @RequestParam(value = "investEndTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date investEndTime,
                                             @RequestParam(value = "usedPreferenceType", defaultValue = "", required = false) PreferenceType preferenceType,
                                             @RequestParam(value = "index", defaultValue = "1", required = true) int index,
-                                            @RequestParam(value = "pageSize", defaultValue = "10", required = true) int pageSize,
                                             HttpServletResponse httpServletResponse) throws IOException {
+        int pageSize = 10;
         httpServletResponse.setCharacterEncoding("UTF-8");
         try {
             httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.FinanceReportHeader.getDescription() + ".csv", "UTF-8"));
