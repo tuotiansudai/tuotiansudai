@@ -8,7 +8,7 @@
         select id, name, base_rate as baseRate, activity_rate as activityRate from loan where id = ${id}
     </select>
 
-    <select id="findUserNameByLoginName" parameterType="String">
+    <select id="findUserNameByLoginName" parameterType="String" resultType="java.lang.String">
         select user_name from user where login_name = #{loginName}
     </select>
 
