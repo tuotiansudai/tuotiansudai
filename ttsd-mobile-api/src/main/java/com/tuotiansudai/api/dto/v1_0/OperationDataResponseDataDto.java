@@ -7,10 +7,10 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
     private String operationDays;
     private String totalTradeAmount;
     private String totalInterest;
-    private int totalTradeCount;
+    private String totalTradeCount;
     private List<OperationDataInvestByProductTypeResponseDataDto> investListByProdyctType;
     private List<OperationDataLatestSixMonthResponseDataDto> latestSixMonthDetail;
-    private int totalInvestUserCount;
+    private String totalInvestUserCount;
     private String maleScale;
     private String femaleScale;
     private List<OperationDataAgeResponseDataDto> ageDistribution;
@@ -20,7 +20,6 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
     public OperationDataResponseDataDto() {
 
     }
-
 
     public String getCurrentDay() {
         return currentDay;
@@ -54,11 +53,11 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
         this.totalInterest = totalInterest;
     }
 
-    public int getTotalTradeCount() {
+    public String getTotalTradeCount() {
         return totalTradeCount;
     }
 
-    public void setTotalTradeCount(int totalTradeCount) {
+    public void setTotalTradeCount(String totalTradeCount) {
         this.totalTradeCount = totalTradeCount;
     }
 
@@ -78,11 +77,11 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
         this.latestSixMonthDetail = latestSixMonthDetail;
     }
 
-    public int getTotalInvestUserCount() {
+    public String getTotalInvestUserCount() {
         return totalInvestUserCount;
     }
 
-    public void setTotalInvestUserCount(int totalInvestUserCount) {
+    public void setTotalInvestUserCount(String totalInvestUserCount) {
         this.totalInvestUserCount = totalInvestUserCount;
     }
 

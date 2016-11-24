@@ -235,4 +235,17 @@
         where (if(length(identity_number) = 18, substring(identity_number,11,2), substring(identity_number,9,2))) = DATE_FORMAT(now(),'%m')
     </select>
 
+    <select id="findScaleBySex" resultType="int">
+        SELECT count(1)
+        from user
+        inner join account on user.login_name = account.login_name
+        and exists(select 1 from invest where invest.login_name = user.login_name and invest.status = 'SUCCESS')
+        group by
+        case if(length(identity_number)=18, cast(substring(identity_number,17,1) as UNSIGNED)%2, if(length(identity_number)=15,cast(substring(identity_number,15,1) as UNSIGNED)%2,3))
+		when 1 then '男'
+		else '女'
+		end
+    </select>
+
+
 </mapper>

@@ -60,4 +60,6 @@ public interface UserMapper {
     List<String> findBirthMonthUsers();
 
     List<String> findBirthDayUsers();
+
+    List<Integer> findScaleBySex();
 }

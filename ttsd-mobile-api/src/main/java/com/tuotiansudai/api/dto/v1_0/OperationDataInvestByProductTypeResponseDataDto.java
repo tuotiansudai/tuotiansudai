@@ -2,7 +2,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 public class OperationDataInvestByProductTypeResponseDataDto extends BaseResponseDataDto {
     private String name;
-    private long amount;
+    private String amount;
 
     public String getName() {
         return name;
@@ -12,11 +12,11 @@ public class OperationDataInvestByProductTypeResponseDataDto extends BaseRespons
         this.name = name;
     }
 
-    public long getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 }

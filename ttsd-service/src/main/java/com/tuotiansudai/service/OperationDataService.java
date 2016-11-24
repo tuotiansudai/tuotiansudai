@@ -10,4 +10,8 @@ public interface OperationDataService {
     OperationDataDto getOperationDataFromRedis(Date endDate);
 
     List<InvestDataView> getInvestDetail(Date endDate);
+
+    List<Integer> findScaleBySex();
+
+
 }

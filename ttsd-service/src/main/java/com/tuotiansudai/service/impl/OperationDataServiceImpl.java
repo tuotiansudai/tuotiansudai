@@ -1,6 +1,5 @@
 package com.tuotiansudai.service.impl;
 
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
@@ -148,12 +147,7 @@ public class OperationDataServiceImpl implements OperationDataService {
                 investDataView.setAvgInvestAmount(investDataViewValues[3]);
                 investDataViewList.add(investDataView);
             }
-            Collections.sort(investDataViewList, new Comparator<InvestDataView>() {
-                @Override
-                public int compare(InvestDataView o1, InvestDataView o2) {
-                    return Long.compare(Long.parseLong(o1.getProductName()), Long.parseLong(o2.getProductName()));
-                }
-            });
+            Collections.sort(investDataViewList, (o1, o2) -> Long.compare(Long.parseLong(o1.getProductName()), Long.parseLong(o2.getProductName())));
         } else {
             investDataViewList = investMapper.getInvestDetail();
             for (InvestDataView investDataView : investDataViewList) {
@@ -161,16 +155,18 @@ public class OperationDataServiceImpl implements OperationDataService {
                         investDataView.getProductName(), investDataView.ConvertInvestDataViewToString(), timeout);
             }
 
-            investDataViewList = Lists.transform(investDataViewList, new Function<InvestDataView, InvestDataView>() {
-                @Override
-                public InvestDataView apply(InvestDataView input) {
-                    input.setTotalInvestAmount(AmountConverter.convertCentToString(Long.parseLong(input.getTotalInvestAmount())));
-                    input.setAvgInvestAmount(AmountConverter.convertCentToString(Long.parseLong(input.getAvgInvestAmount())));
-                    return input;
-                }
+            investDataViewList = Lists.transform(investDataViewList, input -> {
+                input.setTotalInvestAmount(AmountConverter.convertCentToString(Long.parseLong(input.getTotalInvestAmount())));
+                input.setAvgInvestAmount(AmountConverter.convertCentToString(Long.parseLong(input.getAvgInvestAmount())));
+                return input;
             });
         }
 
         return investDataViewList;
     }
+
+   public List<Integer> findScaleBySex(){
+        return userMapper.findScaleBySex();
+    }
+
 }
