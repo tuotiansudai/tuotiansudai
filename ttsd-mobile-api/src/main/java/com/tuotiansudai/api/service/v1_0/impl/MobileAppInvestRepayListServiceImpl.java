@@ -28,7 +28,7 @@ public class MobileAppInvestRepayListServiceImpl implements MobileAppInvestRepay
     private LoanMapper loanMapper;
 
     @Override
-    public BaseResponseDto generateUserInvestRepayList(InvestRepayListRequestDto requestDto) {
+    public BaseResponseDto<InvestRepayListResponseDataDto> generateUserInvestRepayList(InvestRepayListRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
         String paidStatus = requestDto.getStatus();
         Integer index = requestDto.getIndex();

@@ -5,7 +5,6 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/v1.0")
-@Api(description = "绑卡")
 public abstract class MobileAppBaseController {
 
     protected String getLoginName() {

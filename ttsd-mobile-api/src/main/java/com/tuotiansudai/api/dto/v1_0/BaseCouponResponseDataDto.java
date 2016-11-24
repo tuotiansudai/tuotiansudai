@@ -8,6 +8,7 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -15,36 +16,51 @@ import java.util.List;
 
 public class BaseCouponResponseDataDto {
 
+    @ApiModelProperty(value = "优惠券id", example = "1001")
     protected String userCouponId;
 
+    @ApiModelProperty(value = "优惠券类型", example = "RED_ENVELOPE")
     protected CouponType type;
 
+    @ApiModelProperty(value = "优惠券名称", example = "现金红包")
     protected String name;
 
+    @ApiModelProperty(value = "优惠券金额", example = "5000")
     protected String amount;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "优惠券开始时间", example = "2016-01-01 00:00:00")
     protected Date startDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "优惠券结束时间", example = "2016-01-01 00:00:01")
     protected Date endDate;
 
+    @ApiModelProperty(value = "最少投资额", example = "100000")
     protected String investLowerLimit;
 
+    @ApiModelProperty(value = "标的类型", example = "SYL")
     protected List<String> productTypes;
 
+    @ApiModelProperty(value = "利率(加息券专用)", example = "0.8")
     protected String rate;
 
+    @ApiModelProperty(value = "investUpperLimit", example = "1000000.00")
     protected String investUpperLimit = "1000000.00";
 
+    @ApiModelProperty(value = "共享", example = "false")
     protected boolean shared;
 
+    @ApiModelProperty(value = "投资金额", example = "1000")
     protected String investAmount;
 
+    @ApiModelProperty(value = "生日月利率", example = "10")
     protected String birthdayRate;
 
+    @ApiModelProperty(value = "标的类型", example = "30,90,180,360")
     protected List<String> productNewTypes;
 
+    @ApiModelProperty(value = "来源", example = "拓天速贷赠送")
     protected String couponSource;
 
     public BaseCouponResponseDataDto() {

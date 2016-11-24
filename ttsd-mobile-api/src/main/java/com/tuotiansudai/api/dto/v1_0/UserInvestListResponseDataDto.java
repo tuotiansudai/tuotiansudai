@@ -6,6 +6,7 @@ public class UserInvestListResponseDataDto extends BaseResponseDataDto {
     private Integer index;
     private Integer pageSize;
     private Integer totalCount;
+
     private List<UserInvestRecordResponseDataDto> investList;
 
     public Integer getIndex() {
