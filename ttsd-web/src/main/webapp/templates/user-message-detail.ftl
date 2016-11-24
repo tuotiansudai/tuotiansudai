@@ -11,9 +11,7 @@
             <div class="meta tr">${createdTime}</div>
             <div class="content">
             ${content}
-            <#if webUrl!=''>
-                <a href=${webUrl} class="look-detail">【查看详情】</a>
-            </#if>
+            <#if webUrl??><a href=${webUrl} class="look-detail">【查看详情】</a></#if>
             </div>
             <div class="go-back">
                 <a href="#">返回列表</a>

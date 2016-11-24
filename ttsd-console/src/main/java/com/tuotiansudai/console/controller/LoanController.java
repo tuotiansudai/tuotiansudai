@@ -2,6 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.console.service.LoanCreateConsoleService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.model.MessageModel;
@@ -34,6 +35,9 @@ public class LoanController {
 
     @Autowired
     private LoanCreateService loanCreateService;
+
+    @Autowired
+    private LoanCreateConsoleService loanCreateConsoleService;
 
     @Autowired
     private ExtraLoanRateService extraLoanRateService;
@@ -76,7 +80,7 @@ public class LoanController {
     @ResponseBody
     public BaseDto<BaseDataDto> createLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
         loanCreateRequestDto.getLoan().setCreatedBy(LoginUserInfo.getLoginName());
-        return loanCreateService.createLoan(loanCreateRequestDto);
+        return loanCreateConsoleService.createLoan(loanCreateRequestDto);
     }
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
@@ -105,7 +109,7 @@ public class LoanController {
     @ResponseBody
     public BaseDto<BaseDataDto> updateLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
         loanCreateRequestDto.getLoan().setCreatedBy(LoginUserInfo.getLoginName());
-        return loanCreateService.updateLoan(loanCreateRequestDto);
+        return loanCreateConsoleService.updateLoan(loanCreateRequestDto);
     }
 
     @RequestMapping(value = "/open", method = RequestMethod.POST)

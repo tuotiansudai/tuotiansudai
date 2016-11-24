@@ -9,7 +9,7 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipPurchaseMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
-import com.tuotiansudai.membership.repository.model.MembershipPurchaseStatus;
+import com.tuotiansudai.enums.MembershipPurchaseStatus;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -88,7 +88,7 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
     @Override
     @Transactional
     public String purchaseCallback(Map<String, String> paramsMap, String originalQueryString) {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, TransferNotifyMapper.class, TransferNotifyRequestModel.class);
+        BaseCallbackRequestModel callbackRequest = payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, TransferNotifyMapper.class, TransferNotifyRequestModel.class);
 
         if (callbackRequest == null) {
             return null;
@@ -99,7 +99,7 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
         return callbackRequest.getResponseData();
     }
 
-    public void postPurchaseCallback(BaseCallbackRequestModel callbackRequestModel) {
+    private void postPurchaseCallback(BaseCallbackRequestModel callbackRequestModel) {
         long orderId;
 
         try {

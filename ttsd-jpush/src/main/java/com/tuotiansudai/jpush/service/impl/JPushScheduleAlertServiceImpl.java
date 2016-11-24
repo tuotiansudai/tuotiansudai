@@ -8,10 +8,8 @@ import cn.jpush.api.schedule.ScheduleClient;
 import cn.jpush.api.schedule.ScheduleResult;
 import cn.jpush.api.schedule.model.SchedulePayload;
 import cn.jpush.api.schedule.model.TriggerPayload;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.jpush.service.JPushScheduleAlertService;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +26,6 @@ public class JPushScheduleAlertServiceImpl implements JPushScheduleAlertService 
     private String appKey;
 
     private static ScheduleClient scheduleClient = null;
-
-    @Autowired
-    private RedisWrapperClient redisClient;
-
-    private static final String APP_PUSH_MSG_ID_KEY = "console:push-msg-ids:";
 
     private ScheduleClient getScheduleClient(){
         if(scheduleClient == null){
@@ -81,9 +74,7 @@ public class JPushScheduleAlertServiceImpl implements JPushScheduleAlertService 
         ScheduleResult scheduleResult = null;
         try {
             scheduleResult = getScheduleClient().updateSchedule(jPushAlertId,payload);
-        } catch (APIConnectionException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        } catch (APIRequestException e) {
+        } catch (APIConnectionException | APIRequestException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return scheduleResult;
@@ -95,10 +86,7 @@ public class JPushScheduleAlertServiceImpl implements JPushScheduleAlertService 
             logger.debug(MessageFormat.format("request:{0}:{1} begin", jPushAlertId, payload.toJSON()));
             scheduleResult =  getScheduleClient().createSchedule(schedulePayload);
             logger.debug(MessageFormat.format("request:{0}:{1} end", jPushAlertId, scheduleResult.getResponseCode()));
-            redisClient.sadd(APP_PUSH_MSG_ID_KEY + jPushAlertId, String.valueOf(scheduleResult.getResponseCode()));
-        } catch (APIConnectionException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        } catch (APIRequestException e) {
+        } catch (APIConnectionException | APIRequestException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return scheduleResult;

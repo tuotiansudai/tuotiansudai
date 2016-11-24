@@ -1,10 +1,9 @@
 package com.tuotiansudai.message.aspect;
 
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.SignInResult;
-import com.tuotiansudai.membership.repository.mapper.MembershipPurchaseMapper;
-import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
 import com.tuotiansudai.message.util.UserMessageEventGenerator;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -12,6 +11,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -28,7 +28,9 @@ public class MessageEventAspect {
     private UserMessageEventGenerator userMessageEventGenerator;
 
     @Autowired
-    private MembershipPurchaseMapper membershipPurchaseMapper;
+    private RedisWrapperClient redisWrapperClient;
+
+    private final String REDIS_MEMBERSHIP_UPGRADE_MESSAGE = "web:membership:upgrade";
 
     @Pointcut("execution(* *..UserService.registerUser(..))")
     public void registerUserPointcut() {
@@ -76,10 +78,6 @@ public class MessageEventAspect {
 
     @Pointcut("execution(* *..MembershipPurchasePayServiceImpl.postPurchaseCallback(..))")
     public void purchaseMembershipPointcut() {
-    }
-
-    @Pointcut("execution(* *..MembershipInvestService.membershipUpgrade(..))")
-    public void membershipUpgradePointcut() {
     }
 
     @Pointcut("execution(* *..InvestTransferService.cancelTransferApplication(..))")
@@ -133,6 +131,7 @@ public class MessageEventAspect {
     }
 
     @AfterReturning(value = "investSuccessPointcut()")
+    @Order(99)
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         Object investModel = joinPoint.getArgs()[0];
         try {
@@ -141,6 +140,19 @@ public class MessageEventAspect {
             long investId = (long) method.invoke(investModel);
             userMessageEventGenerator.generateInvestSuccessEvent(investId);
             logger.info(MessageFormat.format("[Message Event Aspect] after invest success({0}) pointcut finished", String.valueOf(investId)));
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        try {
+            Class<?> aClass = investModel.getClass();
+            Method method = aClass.getMethod("getLoginName");
+            String loginName = (String) method.invoke(investModel);
+            if (redisWrapperClient.hexists(REDIS_MEMBERSHIP_UPGRADE_MESSAGE, loginName)) {
+                long membershipId = Long.valueOf(redisWrapperClient.hget(REDIS_MEMBERSHIP_UPGRADE_MESSAGE, loginName));
+                userMessageEventGenerator.generateMembershipUpgradeEvent(loginName, membershipId);
+                redisWrapperClient.hdel(REDIS_MEMBERSHIP_UPGRADE_MESSAGE, loginName);
+                logger.info(MessageFormat.format("[Message Event Aspect] after invest success membership upgrade loginName:{0} membershipId:{1} ", loginName, String.valueOf(membershipId)));
+            }
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -158,9 +170,9 @@ public class MessageEventAspect {
         }
     }
 
-    @AfterReturning(value = "loanOutSuccessPointcut()",returning = "baseDto")
-    public void afterReturningLoanOutSuccess(JoinPoint joinPoint,BaseDto<PayDataDto> baseDto) {
-        if(!baseDto.getData().getStatus()){
+    @AfterReturning(value = "loanOutSuccessPointcut()", returning = "baseDto")
+    public void afterReturningLoanOutSuccess(JoinPoint joinPoint, BaseDto<PayDataDto> baseDto) {
+        if (!baseDto.getData().getStatus()) {
             return;
         }
         long loanId = (Long) joinPoint.getArgs()[0];
@@ -243,32 +255,12 @@ public class MessageEventAspect {
             logger.error(MessageFormat.format("[Message Event Aspect] callback order is not a number (orderId = {0})", orderId), e);
             return;
         }
-        MembershipPurchaseModel membershipPurchaseModel = membershipPurchaseMapper.findById(orderId);
-        if(null == membershipPurchaseModel) {
-            logger.error(MessageFormat.format("[Message Event Aspect] membershipPurchaseModel is null, orderId = {0}", orderId));
-            return;
-        }
-        String loginName = membershipPurchaseModel.getLoginName();
-        int duration = membershipPurchaseModel.getDuration();
+        long membershipPurchaseId = orderId;
         try {
-            userMessageEventGenerator.generateMembershipPurchaseEvent(loginName, duration);
-            logger.info(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut finished. loginName:{0}, duration:{1}", loginName, duration));
+            userMessageEventGenerator.generateMembershipPurchaseEvent(membershipPurchaseId);
+            logger.info(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut finished. membershipPurchaseId: {0}", membershipPurchaseId));
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut is fail. loginName:{0}, duration:{1}", loginName, duration), e);
-        }
-    }
-
-    @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "membershipUpgradePointcut()")
-    public void afterMembershipUpgrade(JoinPoint joinPoint) {
-        logger.debug("[Message Event Aspect] into upgrade aspect");
-        String loginName = (String) joinPoint.getArgs()[0];
-        long membershipId = (long) joinPoint.getArgs()[1];
-        try {
-            userMessageEventGenerator.generateMembershipUpgradeEvent(loginName, membershipId);
-            logger.info(MessageFormat.format("[Message Event Aspect] after membership upgrade pointcut finished. loginName:{0}, membershipId:{1}", loginName, membershipId));
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("[Message Event Aspect] after membership upgrade pointcut is fail. loginName:{0}, membershipId:{1}", loginName, membershipId), e);
+            logger.error(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut is fail. membershipPurchaseId: {1}", membershipPurchaseId), e);
         }
     }
 

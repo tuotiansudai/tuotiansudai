@@ -117,4 +117,12 @@
         join coupon on user_coupon.coupon_id = coupon.id
         where user_coupon.id = #{userCouponId}
     </select>
+
+    <select id="findMembershipPurchaseModelById" parameterType="long" resultType="hashmap">
+        select
+        login_name, user_name, duration, status
+        from aa.membership_purchase
+        where
+        id = #{id}
+    </select>
 </mapper>
