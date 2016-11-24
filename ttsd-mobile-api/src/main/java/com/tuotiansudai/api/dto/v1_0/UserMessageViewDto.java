@@ -21,7 +21,7 @@ public class UserMessageViewDto extends BaseResponseDataDto {
         this.title = title;
         this.content = content;
         this.createdTime = createdTime;
-        this.appUrl = appUrl == null ? null : appUrl.getDescription();
+        this.appUrl = appUrl == null ? null : appUrl.getPath();
     }
 
     public long getUserMessageId() {

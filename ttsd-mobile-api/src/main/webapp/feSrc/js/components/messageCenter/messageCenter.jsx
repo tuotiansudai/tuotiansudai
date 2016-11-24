@@ -14,7 +14,7 @@ class messageCenter extends React.Component {
             "userMessageId": "", //消息ID
             "title": "", //消息标题
             "content": "", //文章内容
-            "createTime": "", //创建时间
+            "createdTime": "", //创建时间
             "appUrl": ""//app跳转路径
         }
     };
@@ -64,7 +64,7 @@ class messageCenter extends React.Component {
                 <article>
                     <section className="meta">
                         <h1>{this.state.data.title}</h1>
-                        <time className="pull-right">发送时间：{this.state.data.createTime}</time>
+                        <time className="pull-right">发送时间：{this.state.data.createdTime}</time>
                     </section>
                     <section className="content" dangerouslySetInnerHTML={{__html: this.state.data.content}}>
                     </section>
