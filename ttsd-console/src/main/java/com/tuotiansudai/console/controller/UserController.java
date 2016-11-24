@@ -196,8 +196,8 @@ public class UserController {
                                     @RequestParam(value = "channel", required = false) String channel,
                                     @RequestParam(value = "source", required = false) Source source,
                                     @RequestParam(value = "userOperation", required = false) UserOperation userOperation,
-                                    @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                    @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = userServiceConsole.findAllUser(loginName, email, mobile,
                 beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, index, pageSize);
         ModelAndView mv = new ModelAndView("/user-list");

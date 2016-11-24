@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.NodeListRequestDto;
 import com.tuotiansudai.api.dto.v1_0.NodeListResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppNodeListServiceImpl;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.AnnounceMapper;
 import com.tuotiansudai.repository.model.AnnounceModel;
 import com.tuotiansudai.util.IdGenerator;
@@ -33,6 +34,9 @@ public class MobileAppNodeListServiceTest extends ServiceTestBase{
     @Autowired
     private IdGenerator idGenerator;
 
+    @Mock
+    private PageValidUtils pageValidUtils;
+
     @Test
     public void shouldGenerateNodeListIsOk(){
         AnnounceModel announceModel1 = fakeAnnounceModel();
@@ -44,6 +48,7 @@ public class MobileAppNodeListServiceTest extends ServiceTestBase{
         announceModels.add(announceModel2);
         when(announceMapper.findAnnounce(anyLong(), anyString(), anyInt(), anyInt())).thenReturn(announceModels);
         when(announceMapper.findAnnounceCount(anyLong(), anyString())).thenReturn(2);
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         NodeListRequestDto nodeListRequestDto = new NodeListRequestDto();
         nodeListRequestDto.setIndex(1);
         nodeListRequestDto.setPageSize(2);

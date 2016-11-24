@@ -2,6 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.service.InvestAchievementService;
 import com.tuotiansudai.repository.model.LoanAchievementView;
+import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,8 +24,8 @@ public class InvestAchievementController {
 
     @RequestMapping(value = "/invest-achievement", method = RequestMethod.GET)
     public ModelAndView investAchievement(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                           @RequestParam(value = "mobile", required = false) String mobile) {
+        int pageSize = 10;
         List<LoanAchievementView> loanAchievementViews = investAchievementService.findInvestAchievement(index, pageSize, mobile);
         ModelAndView modelAndView = new ModelAndView("/invest-achievement");
         modelAndView.addObject("loanAchievementViews", loanAchievementViews);
@@ -32,7 +33,7 @@ public class InvestAchievementController {
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("mobile", mobile);
         long investAchievementCount = investAchievementService.findInvestAchievementCount(mobile);
-        long totalPages = investAchievementCount / pageSize + (investAchievementCount % pageSize > 0 || investAchievementCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(investAchievementCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
