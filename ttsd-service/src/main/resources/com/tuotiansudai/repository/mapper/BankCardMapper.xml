@@ -66,7 +66,7 @@
                 and login_name = #{loginName}
             </if>
          order by created_time desc) t
-        group by login_name having count(1) > 1 limit #{index},#{pageSize}
+        group by login_name having count(1) > 1 order by created_time desc limit #{index},#{pageSize}
     </select>
 
 </mapper>

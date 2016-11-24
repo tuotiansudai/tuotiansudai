@@ -45,12 +45,18 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
     @Override
     public int queryCountReplaceBankCard(String loginName, String mobile) {
         UserModel userModel = userMapper.findByMobile(mobile);
-        return bankCardMapper.findCountReplaceBankCardByLoginName(userModel == null ? null : userModel.getLoginName());
+        if(userModel == null)
+            return 0;
+
+        return bankCardMapper.findCountReplaceBankCardByLoginName(userModel.getLoginName());
     }
 
     @Override
     public List<ReplaceBankCardDto> queryReplaceBankCard(String loginName, String mobile, int index, int pageSize) {
         UserModel userModel = userMapper.findByMobile(mobile);
+        if(userModel == null)
+            return Lists.newArrayList();
+
         List<BankCardModel> replaceBankCards = bankCardMapper.findReplaceBankCardByLoginName(userModel == null ? null : userModel.getLoginName(), index, pageSize);
         Map<String, String> bandCardIdMap = redisWrapperClient.exists(BAND_CARD_ACTIVE_STATUS_TEMPLATE) ? redisWrapperClient.hgetAll(BAND_CARD_ACTIVE_STATUS_TEMPLATE) : Maps.newConcurrentMap();
 
