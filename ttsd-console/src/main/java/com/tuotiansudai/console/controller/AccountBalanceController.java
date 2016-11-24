@@ -2,6 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.service.UserServiceConsole;
 import com.tuotiansudai.dto.UserItemDataDto;
+import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,10 +25,10 @@ public class AccountBalanceController {
 
     @RequestMapping(value = "/account-balance")
     public ModelAndView accountBalance(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                        @RequestParam(value = "mobile", required = false) String mobile,
                                        @RequestParam(value = "balanceMin", required = false) String balanceMin,
                                        @RequestParam(value = "balanceMax", required = false) String balanceMax) {
+        int pageSize = 10;
         if (StringUtils.isEmpty(balanceMax)) {
             balanceMax = String.valueOf(Long.MAX_VALUE);
         }
@@ -38,7 +39,7 @@ public class AccountBalanceController {
         modelAndView.addObject("userAccountList", userItemDataDtoList);
         long count = userServiceConsole.findUsersAccountBalanceCount(mobile, balanceMin, balanceMax);
         modelAndView.addObject("sumBalance", userServiceConsole.findUsersAccountBalanceSum(mobile, balanceMin, balanceMax));
-        long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);

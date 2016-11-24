@@ -20,6 +20,7 @@ import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -286,7 +287,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         int count = transferApplicationMapper.findCountTransferApplicationPagination(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source);
         List<TransferApplicationRecordDto> items = Lists.newArrayList();
         if (count > 0) {
-            int totalPages = count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize;
+            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             items = transferApplicationMapper.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, (index - 1) * pageSize, pageSize);
         }
@@ -306,7 +307,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         int count = transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(transferrerLoginName, statusList);
         List<TransferApplicationRecordDto> items = Lists.newArrayList();
         if (count > 0) {
-            int totalPages = count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize;
+            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             items = transferApplicationMapper.findTransferApplicationPaginationByLoginName(transferrerLoginName, statusList, (index - 1) * pageSize, pageSize);
 
@@ -355,7 +356,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         long count = transferApplicationMapper.findCountInvestTransferPagination(investorLoginName, startTime, endTime, loanStatus);
 
         if (count > 0) {
-            int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
+            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             items = transferApplicationMapper.findTransferInvestList(investorLoginName, (index - 1) * pageSize, pageSize, startTime, endTime, loanStatus);
         }

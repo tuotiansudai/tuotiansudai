@@ -14,6 +14,7 @@ import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.PaginationUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,7 +86,7 @@ public class AuditLogServiceImpl implements AuditLogService {
 
         List<AuditLogView> data = Lists.newArrayList();
         if (count > 0) {
-            int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
+            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             data = auditLogMapper.getPaginationData(operationType, targetId, operatorMobile, auditorMobile, startTime, endTime, (index - 1) * pageSize, pageSize);
         }

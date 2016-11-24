@@ -7,6 +7,7 @@ import com.tuotiansudai.api.dto.v1_0.UserInvestListResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.TransferableInvestListRequestDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppTransferApplicationV2ServiceImpl;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -56,6 +57,8 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
     private InvestRepayMapper investRepayMapper;
     @Mock
     private InvestService investService;
+    @Mock
+    private PageValidUtils pageValidUtils;
 
     @Test
     public void shouldGenerateTransferableInvestIsSuccess() {
@@ -89,6 +92,7 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investService.estimateInvestIncome(anyLong(), anyString(), anyLong())).thenReturn(1000l);
         when(investRepayMapper.findByInvestIdAndPeriod(anyLong(), anyInt())).thenReturn(investRepayModel);
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         BaseResponseDto<UserInvestListResponseDataDto> baseResponseDto = mobileAppTransferApplicationV2Service.generateTransferableInvest(transferableInvestRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(String.valueOf(loanId), baseResponseDto.getData().getInvestList().get(0).getLoanId());
