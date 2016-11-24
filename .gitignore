@@ -25,7 +25,7 @@ ttsd-web/src/main/webapp/style/*.css.map
 ttsd-web/src/main/webapp/style/base64/*.css
 
 ttsd-web/src/main/webapp/style/cssprefixer
-ttsd-web/src/main/webapp/style/cssprefixer/*.css
+#ttsd-web/src/main/webapp/style/cssprefixer/*.css
 
 SignVerProp.properties
 cs/.env
