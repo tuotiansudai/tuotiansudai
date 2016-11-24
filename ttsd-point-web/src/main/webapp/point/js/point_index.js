@@ -52,7 +52,7 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 			event.preventDefault();
 			location.href = "/point-shop";
 		});
-
+		//go to detail
 		$materialList.on('click', function(event) {//click all model
 			event.preventDefault();
 			location.href = $(this).attr('data-href');
@@ -61,7 +61,7 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 			$(this).hasClass('active')?location.href = $(this).parent('a').attr('href'):false;
 			event.stopPropagation();
 		});
-
+		//show rule tip
 		$pointRuleTip.on('click', function(event) {
 			event.preventDefault();
 			layer.open({
@@ -71,6 +71,11 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 				area: ['auto', 'auto'],
 				content: $('#ruleInfoTip')
 			});
+		});
+		//close rule tip
+		$('#ruleInfoTip').on('click', '.close-btn', function(event) {
+			event.preventDefault();
+			layer.closeAll();
 		});
 	});
 })
