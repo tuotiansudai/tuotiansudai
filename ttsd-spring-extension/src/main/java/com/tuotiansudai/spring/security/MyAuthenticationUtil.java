@@ -26,51 +26,27 @@ public class MyAuthenticationUtil {
     @Autowired
     private SignInClient signInClient;
 
-    @Autowired
-    private HttpServletRequest httpServletRequest;
-
     public String createAuthentication(String username, Source source) {
         SignInResult signInResult = this.signInClient.loginNoPassword(username, source);
 
-        if (signInResult != null && signInResult.isResult()) {
-            List<GrantedAuthority> grantedAuthorities = Lists.transform(signInResult.getUserInfo().getRoles(), new Function<String, GrantedAuthority>() {
-                @Override
-                public GrantedAuthority apply(String role) {
-                    return new SimpleGrantedAuthority(role);
-                }
-            });
-
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    new MyUser(signInResult.getToken(), signInResult.getUserInfo().getLoginName(), "", true, true, true, true, grantedAuthorities, signInResult.getUserInfo().getMobile()),
-                    "",
-                    grantedAuthorities);
-            authenticationToken.setDetails(authenticationToken.getDetails());
-
-            if (Source.WEB == source) {
-                if (httpServletRequest.getSession(false) == null) {
-                    httpServletRequest.getSession();
-                } else {
-                    httpServletRequest.changeSessionId();
-                }
-            }
-
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
-            return signInResult.getToken();
+        if (signInResult == null || !signInResult.isResult()) {
+            return "";
         }
 
-        return "";
+        List<GrantedAuthority> grantedAuthorities = Lists.transform(signInResult.getUserInfo().getRoles(), (Function<String, GrantedAuthority>) SimpleGrantedAuthority::new);
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                new MyUser(signInResult.getToken(), signInResult.getUserInfo().getLoginName(), "", true, true, true, true, grantedAuthorities, signInResult.getUserInfo().getMobile()),
+                "",
+                grantedAuthorities);
+        authenticationToken.setDetails(authenticationToken.getDetails());
+
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+        return signInResult.getToken();
     }
 
     public void removeAuthentication() {
         SecurityContextHolder.clearContext();
-
-        HttpSession session = httpServletRequest.getSession(false);
-
-        if (session != null) {
-            logger.debug("Invalidating existing session");
-            session.invalidate();
-            httpServletRequest.getSession();
-        }
     }
 }
