@@ -8,7 +8,7 @@ module.exports = function(grunt) {
             basePath: '../',
             baseSassPath: 'src/main/webapp/style/sass',
             baseCssPath: 'src/main/webapp/style/css',
-            baseCssPathTest: 'src/main/webapp/style/csstest',
+            baseCssPathPrefixer: 'src/main/webapp/style/cssprefixer',
             base64CssPath: 'src/main/webapp/style/base64',
             baseCssMinPath: 'src/main/webapp/style/dest',
             baseJsPath: 'src/main/webapp/js',
@@ -21,9 +21,11 @@ module.exports = function(grunt) {
                     dot: true,
                     src: [
                         '<%= meta.baseCssPath %>/*',
+                        '<%= meta.baseCssPathPrefixer %>/*',
                         '<%= meta.base64CssPath %>/*',
                         '<%= meta.baseCssPath %>/*.map',
-                        '<%= meta.baseCssMinPath %>/*'
+                        '<%= meta.baseCssMinPath %>/*',
+
                     ]
                 }]
             },
@@ -66,6 +68,7 @@ module.exports = function(grunt) {
                 }]
             }
         },
+
         autoprefixer: {
             options: {
                 // Task-specific options go here.
@@ -78,26 +81,13 @@ module.exports = function(grunt) {
                 expand:true,
                 flatten: true, //是否取代原先文件名
                 src:'<%= meta.baseCssPath %>/*.css',
-                dest:'<%= meta.baseCssPathTest %>/'
+                dest:'<%= meta.baseCssPathPrefixer %>/'
             }
         },
 
-        // postcss: {
-        //     options: {
-        //         processors: [
-        //             autoprefixer({ browsers: ['last 2 version'] }).postcss
-        //         ]
-        //     },
-        //     multiple_files: {
-        //         expand: true,
-        //         flatten: true,
-        //         src: '<%= meta.baseCssPath %>/*.css',
-        //         dest: '<%= meta.baseCssPathTest %>/'
-        //     }
-        // },
         dataUri: {
             dist: {
-                src: ['<%= meta.baseCssPathTest %>/*.css'],
+                src: ['<%= meta.baseCssPathPrefixer %>/*.css'],
                 dest: '<%= meta.base64CssPath %>',
                 options: {
                     target: ['<%=meta.baseImagePath %>/**/**/*.*'],
@@ -197,19 +187,14 @@ module.exports = function(grunt) {
     grunt.registerTask('base64', ['dataUri', 'newer:cssmin']);
 
     //压缩图片，需要压缩图片的时候单独执行 grunt imagemin
-
     //grunt.registerTask('imagemin', ['newer:imagemin']);
-
-    // grunt.registerTask('postcss', ['postcss']);
-    grunt.registerTask('autoprefixer', ['autoprefixer']);
-
-
     // 默认被执行的任务列表。
     grunt.registerTask('default', [
         'clean',
         'uglify',
         'sass',
         'cssmin',
+        'autoprefixer',
         'base64',
         'connect',
         'watch'
