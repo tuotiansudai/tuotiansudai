@@ -215,16 +215,13 @@ public class MyWebAuthenticationDetails implements Serializable {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(super.toString()).append(": ");
-        sb.append("RemoteIpAddress: ").append(this.getRemoteAddress()).append("; ");
-        sb.append("SessionId: ").append(this.getSessionId()).append("; ");
-        sb.append("Username: ").append(this.getUsername()).append("; ");
-        sb.append("Mobile: ").append(this.getMobile()).append("; ");
-        sb.append("Captcha: ").append(this.getCaptcha()).append("; ");
-        sb.append("Source: ").append(this.getSource()).append("; ");
-        sb.append("DeviceId: ").append(this.getDeviceId());
-
-        return sb.toString();
+        return super.toString() + ": " +
+                "RemoteIpAddress: " + this.getRemoteAddress() + "; " +
+                "SessionId: " + this.getSessionId() + "; " +
+                "Username: " + this.getUsername() + "; " +
+                "Mobile: " + this.getMobile() + "; " +
+                "Captcha: " + this.getCaptcha() + "; " +
+                "Source: " + this.getSource() + "; " +
+                "DeviceId: " + this.getDeviceId();
     }
 }

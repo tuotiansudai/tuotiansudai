@@ -8,7 +8,8 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 		var $signBtn = $('#signBtn'),
 			$signTip = $('#signLayer'),
 			$closeSign = $('#closeSign'),
-			$materialList=$('.material-list li');
+			$materialList=$('.material-list li'),
+			$pointRuleTip=$('.point-rule-tip');
 		//show sign tip
 		$signBtn.on('click', function(event) {
 			event.preventDefault();
@@ -51,7 +52,7 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 			event.preventDefault();
 			location.href = "/point-shop";
 		});
-
+		//go to detail
 		$materialList.on('click', function(event) {//click all model
 			event.preventDefault();
 			location.href = $(this).attr('data-href');
@@ -59,6 +60,22 @@ require(['jquery','layerWrapper','template', 'jquery.ajax.extension'], function 
 			event.preventDefault();
 			$(this).hasClass('active')?location.href = $(this).parent('a').attr('href'):false;
 			event.stopPropagation();
+		});
+		//show rule tip
+		$pointRuleTip.on('click', function(event) {
+			event.preventDefault();
+			layer.open({
+				type: 1,
+				title: false,
+				closeBtn:0,
+				area: ['auto', 'auto'],
+				content: $('#ruleInfoTip')
+			});
+		});
+		//close rule tip
+		$('#ruleInfoTip').on('click', '.close-btn', function(event) {
+			event.preventDefault();
+			layer.closeAll();
 		});
 	});
 })
