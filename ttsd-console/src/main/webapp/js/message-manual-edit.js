@@ -132,7 +132,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                         "userGroups": userGroupArr,
                         "channels": channelArr,
                         "messageCategory": $('.messageCategory').val(),
-                        "webUrl": $('.message-web-url').val(),
+                        "webUrl": $('.message-web-url').val().length == 0 ? null : $('.message-web-url').val(),
                         "appUrl": $('.message-app-url').val(),
                         "jpush": $('#extra').prop('checked') ? true : false,
                         "pushType": $('.message-pushType').val(),
