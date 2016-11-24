@@ -1,4 +1,4 @@
-package com.tuotiansudai.membership.repository.model;
+package com.tuotiansudai.enums;
 
 public enum MembershipPurchaseStatus {
 

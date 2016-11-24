@@ -245,29 +245,23 @@ public class MessageEventAspect {
     @AfterReturning(value = "purchaseMembershipPointcut()")
     public void afterPurchaseMembership(JoinPoint joinPoint) {
         Object callbackRequestModel = joinPoint.getArgs()[0];
-//        long orderId = 0L;
-//
-//        try {
-//            Class<?> aClass = callbackRequestModel.getClass();
-//            Method method = aClass.getMethod("getOrderId");
-//            orderId = Long.parseLong((String) method.invoke(callbackRequestModel));
-//        } catch (Exception e) {
-//            logger.error(MessageFormat.format("[Message Event Aspect] callback order is not a number (orderId = {0})", orderId), e);
-//            return;
-//        }
-//        MembershipPurchaseModel membershipPurchaseModel = membershipPurchaseMapper.findById(orderId);
-//        if (null == membershipPurchaseModel) {
-//            logger.error(MessageFormat.format("[Message Event Aspect] membershipPurchaseModel is null, orderId = {0}", orderId));
-//            return;
-//        }
-//        String loginName = membershipPurchaseModel.getLoginName();
-//        int duration = membershipPurchaseModel.getDuration();
-//        try {
-//            userMessageEventGenerator.generateMembershipPurchaseEvent(loginName, duration);
-//            logger.info(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut finished. loginName:{0}, duration:{1}", loginName, duration));
-//        } catch (Exception e) {
-//            logger.error(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut is fail. loginName:{0}, duration:{1}", loginName, duration), e);
-//        }
+        long orderId = 0L;
+
+        try {
+            Class<?> aClass = callbackRequestModel.getClass();
+            Method method = aClass.getMethod("getOrderId");
+            orderId = Long.parseLong((String) method.invoke(callbackRequestModel));
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Message Event Aspect] callback order is not a number (orderId = {0})", orderId), e);
+            return;
+        }
+        long membershipPurchaseId = orderId;
+        try {
+            userMessageEventGenerator.generateMembershipPurchaseEvent(membershipPurchaseId);
+            logger.info(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut finished. membershipPurchaseId: {0}", membershipPurchaseId));
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut is fail. membershipPurchaseId: {1}", membershipPurchaseId), e);
+        }
     }
 
     @SuppressWarnings(value = "unchecked")

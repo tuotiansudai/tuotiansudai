@@ -1,6 +1,7 @@
 package com.tuotiansudai.message.repository.mapper;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.ognl.ObjectElementsAccessor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -42,4 +43,6 @@ public interface UserMessageMetaMapper {
     Map<String, Object> findTransferApplicationById(@Param(value = "id") long id);
 
     Map<String,Object> findAssignUserCoupon(@Param(value = "userCouponId") long userCouponId);
+
+    Map<String, Object> findMembershipPurchaseModelById(@Param(value = "id") long id);
 }

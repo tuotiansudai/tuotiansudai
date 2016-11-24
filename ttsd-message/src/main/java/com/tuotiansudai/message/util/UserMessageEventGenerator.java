@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.tuotiansudai.enums.MembershipPurchaseStatus;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
 import com.tuotiansudai.jpush.service.JPushAlertNewService;
@@ -370,7 +371,14 @@ public class UserMessageEventGenerator {
         sendJPushByUserMessageModel(userMessageModel);
     }
 
-    public void generateMembershipPurchaseEvent(String loginName, int duration) {
+    public void generateMembershipPurchaseEvent(long membershipPurchaseId) {
+        Map<String, Object> membershipPurchase = userMessageMetaMapper.findMembershipPurchaseModelById(membershipPurchaseId);
+        MembershipPurchaseStatus membershipPurchaseStatus = MembershipPurchaseStatus.valueOf((String) membershipPurchase.get("status"));
+        if(!MembershipPurchaseStatus.SUCCESS.equals(membershipPurchaseStatus)) {
+            return;
+        }
+        String loginName = (String) membershipPurchase.get("login_name");
+        int duration = (int) membershipPurchase.get("duration");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.MEMBERSHIP_BUY_SUCCESS);
         //Title:恭喜您已成功购买{0}个月V5会员！

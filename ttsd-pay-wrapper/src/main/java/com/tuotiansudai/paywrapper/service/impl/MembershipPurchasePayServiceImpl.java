@@ -9,7 +9,7 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipPurchaseMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
-import com.tuotiansudai.membership.repository.model.MembershipPurchaseStatus;
+import com.tuotiansudai.enums.MembershipPurchaseStatus;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
