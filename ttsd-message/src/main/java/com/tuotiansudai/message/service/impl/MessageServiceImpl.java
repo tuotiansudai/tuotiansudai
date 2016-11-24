@@ -133,7 +133,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public MessageCompleteDto findMessageCompleteDtoByMessageId(long messageId) {
-        return messageModelToDto(messageMapper.findById(messageId));
+        return messageModelToDto(messageMapper.findByIdBesidesDeleted(messageId));
     }
 
     @Override

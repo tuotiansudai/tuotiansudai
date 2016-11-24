@@ -50,7 +50,8 @@ public class MobileAppCallBackController {
         ModelAndView mv = new ModelAndView("/callBackTemplate");
         MobileFrontCallbackService mobileFrontCallbackService = MobileFrontCallbackService.getService(service);
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String amount = mobileFrontCallbackService.getServiceName().equalsIgnoreCase("project_transfer_no_password_invest") ? paramsMap.get("amount") : "";
+        String amount = mobileFrontCallbackService.getServiceName().equalsIgnoreCase("project_transfer_no_password_invest")
+                            || mobileFrontCallbackService.getServiceName().equalsIgnoreCase("project_transfer_no_password_transfer")? paramsMap.get("amount") : "";
         String retCode = paramsMap.get("ret_code");
         String orderId = paramsMap.get("order_id");
         Map<String, String> retMaps = Maps.newHashMap();

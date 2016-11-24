@@ -12,10 +12,14 @@
             <td><span class="icon">【{{#messageTypeHandler}}{{messageCategory}}{{/messageTypeHandler}}】</span></td>
             <td>
                 {{#content}}
-                    <a href='/message/user-message/{{userMessageId}}#{{index}}'>{{title}}</a>
+                    <em class="jump-detail" data-url="/message/user-message/{{userMessageId}}#{{index}}">
+                    {{{title}}}
+                    <em>
                 {{/content}}
                 {{^content}}
+                <em class="jump-detail" data-url="/message/user-message/{{userMessageId}}#{{index}}">
                     {{{title}}}
+                 </em>
                 {{/content}}
             </td>
             <td>{{createdTime}}</td>

@@ -44,7 +44,8 @@ public enum AppUrl {
     LOAN_NORMAL_DETAIL("标的详情页", "app://tuotian/loan-detail/{0}"),
     LOAN_TRANSFER_DETAIL("转让标的详情页", "app://tuotian/transfer-loan-detail/{0}"),
     ACTIVITY_CENTER_HISTORY("活动中心-往期活动", "app://tuotian/activity-center-history"),
-    REPAY_CALENDAR("回款日历", "app://tuotian/repay-calendar");
+    REPAY_CALENDAR("回款日历", "app://tuotian/repay-calendar"),
+    OTHER("其他", "");
 
     private String description;
 

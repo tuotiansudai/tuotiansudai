@@ -22,7 +22,8 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.TransferAsynRe
 import com.tuotiansudai.paywrapper.service.MembershipPurchasePayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.SystemBillBusinessType;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
@@ -98,7 +99,7 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
         return callbackRequest.getResponseData();
     }
 
-    private void postPurchaseCallback(BaseCallbackRequestModel callbackRequestModel) {
+    public void postPurchaseCallback(BaseCallbackRequestModel callbackRequestModel) {
         long orderId;
 
         try {

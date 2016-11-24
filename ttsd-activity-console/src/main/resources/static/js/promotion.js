@@ -50,7 +50,7 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
                     if ($self.hasClass('promotionImageUrl')) {
                         $('.promotionImageUrl').val(data.title);
                         $('.imageUrl').html('');
-                        $('.imageUrl').append('<img style="width:100%" src="' + data.title + '" alt="缩略图">');
+                        $('.imageUrl').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
                     }
                 }
             });
@@ -84,20 +84,19 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
 
     };
 
-    //$('select.linkUrl').change(function () {
-    //    var linkUrl = $(this).val();
-    //    if (linkUrl == '') {
-    //        $('.other-to-link').removeClass('app-push-link').val('');
-    //    } else {
-    //        $('.other-to-link').addClass('app-push-link').val('');
-    //    }
-    //
-    //}).trigger('change');
-    //
-    //$('.other-link-text').on('focusout',function(e){
-    //    e.preventDefault();
-    //    $('.linkUrl').find('option:contains("其他")').val($(this).val()).trigger('click');
-    //});
+    $('select.linkUrl').change(function () {
+        var linkUrl = $(this).val();
+        if (linkUrl == '') {
+            $('.jump-to-link').removeClass('app-push-link').val('');
+        } else {
+            $('.jump-to-link').addClass('app-push-link').val('');
+        }
+    }).trigger('change');
+
+    $('.other-link-text').on('focusout',function(e){
+        e.preventDefault();
+        $('.linkUrl').find('option:contains("其他")').val($(this).val()).trigger('click');
+    });
 
     //表单校验初始化参数
     $promotionForm.Validform({
@@ -112,6 +111,10 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
             }
         },
         beforeCheck: function ($promotionForm) {
+
+
+
+
             $errorDom.html('');
         },
         callback: function ($promotionForm) {
@@ -122,8 +125,26 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
     $submitBtn.on('click', function(event) {
         event.preventDefault();
         var $self = $(this);
+
+        var linkUrl = $('.linkUrl').val();
+        var jumpToLink = $('.jump-link-text').val();
+
+        if (linkUrl == '' && jumpToLink == '') {
+            showErrorMessage('定位地址不能为空', $('.jump-link-text', curform));
+            return false;
+        }
+
+        if(linkUrl != ''){
+            $('.jump-link-text').val('' );
+        }
+
         if ($("input[name='name']").val().length >= 50) {
             showErrorMessage("名称最多50个中文字符!");
+            return false;
+        }
+
+        if ($("input[name='other-link-text']").val().length >= 100) {
+            showErrorMessage("链接最多100个中文字符!");
             return false;
         }
 
@@ -179,5 +200,14 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
         location.href = '/activity-console/activity-manage/promotion/promotion-list';
     });
 
-});
+    //验证网址的合法性
+    function IsURL(str_url) {
+        str_url = str_url.match(/^(https|http)?:\/\/.+/);
+        if (str_url == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
+});

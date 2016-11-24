@@ -3,6 +3,8 @@ package com.tuotiansudai.message.aspect;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.SignInResult;
+import com.tuotiansudai.membership.repository.mapper.MembershipPurchaseMapper;
+import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
 import com.tuotiansudai.message.util.UserMessageEventGenerator;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -24,6 +26,9 @@ public class MessageEventAspect {
 
     @Autowired
     private UserMessageEventGenerator userMessageEventGenerator;
+
+    @Autowired
+    private MembershipPurchaseMapper membershipPurchaseMapper;
 
     @Pointcut("execution(* *..UserService.registerUser(..))")
     public void registerUserPointcut() {
@@ -69,7 +74,7 @@ public class MessageEventAspect {
     public void refreshSuccessPointcut() {
     }
 
-    @Pointcut("execution(* *..MembershipPurchaseService.purchase(..))")
+    @Pointcut("execution(* *..MembershipPurchasePayServiceImpl.postPurchaseCallback(..))")
     public void purchaseMembershipPointcut() {
     }
 
@@ -212,6 +217,7 @@ public class MessageEventAspect {
 
     @AfterReturning(value = "loginSuccessPointcut() || refreshSuccessPointcut()", returning = "signInResult")
     public void afterReturningUserLogin(JoinPoint joinPoint, SignInResult signInResult) {
+        logger.debug("[Message Event Aspect] after returning user login start");
         try {
             if (signInResult != null && signInResult.isResult()) {
                 userMessageEventGenerator.generateCouponExpiredAlertEvent(signInResult.getUserInfo().getLoginName());
@@ -226,9 +232,24 @@ public class MessageEventAspect {
     @SuppressWarnings(value = "unchecked")
     @AfterReturning(value = "purchaseMembershipPointcut()")
     public void afterPurchaseMembership(JoinPoint joinPoint) {
-        Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
-        String loginName = paramsMap.get("loginName");
-        int duration = Integer.valueOf(paramsMap.get("duration"));
+        Object callbackRequestModel = joinPoint.getArgs()[0];
+        long orderId = 0L;
+
+        try {
+            Class<?> aClass = callbackRequestModel.getClass();
+            Method method = aClass.getMethod("getOrderId");
+            orderId = Long.parseLong((String) method.invoke(callbackRequestModel));
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Message Event Aspect] callback order is not a number (orderId = {0})", orderId), e);
+            return;
+        }
+        MembershipPurchaseModel membershipPurchaseModel = membershipPurchaseMapper.findById(orderId);
+        if(null == membershipPurchaseModel) {
+            logger.error(MessageFormat.format("[Message Event Aspect] membershipPurchaseModel is null, orderId = {0}", orderId));
+            return;
+        }
+        String loginName = membershipPurchaseModel.getLoginName();
+        int duration = membershipPurchaseModel.getDuration();
         try {
             userMessageEventGenerator.generateMembershipPurchaseEvent(loginName, duration);
             logger.info(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut finished. loginName:{0}, duration:{1}", loginName, duration));
@@ -240,9 +261,9 @@ public class MessageEventAspect {
     @SuppressWarnings(value = "unchecked")
     @AfterReturning(value = "membershipUpgradePointcut()")
     public void afterMembershipUpgrade(JoinPoint joinPoint) {
-        Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
-        String loginName = paramsMap.get("loginName");
-        long membershipId = Integer.valueOf(paramsMap.get("membershipId"));
+        logger.debug("[Message Event Aspect] into upgrade aspect");
+        String loginName = (String) joinPoint.getArgs()[0];
+        long membershipId = (long) joinPoint.getArgs()[1];
         try {
             userMessageEventGenerator.generateMembershipUpgradeEvent(loginName, membershipId);
             logger.info(MessageFormat.format("[Message Event Aspect] after membership upgrade pointcut finished. loginName:{0}, membershipId:{1}", loginName, membershipId));
@@ -257,8 +278,7 @@ public class MessageEventAspect {
         if (!returnValue) {
             return;
         }
-        Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
-        long transferApplicationId = Long.valueOf(paramsMap.get("transferApplicationId"));
+        long transferApplicationId = (long) joinPoint.getArgs()[0];
         try {
             userMessageEventGenerator.generateTransferFailEvent(transferApplicationId);
             logger.info(MessageFormat.format("[Message Event Aspect] after transferApplication failed pointcut finished. transferApplicationId:{0}", transferApplicationId));

@@ -8,6 +8,7 @@ import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.model.MessageChannel;
 import com.tuotiansudai.message.repository.model.MessageModel;
+import com.tuotiansudai.message.repository.model.MessageType;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.UserMessageService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -66,6 +67,11 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
             MessageModel messageModel = messageMapper.findByIdBesidesDeleted(userMessageModel.getMessageId());
             userMessageDto.setMessageType(messageModel.getMessageCategory().getDescription());
+            if (messageModel.getType().equals(MessageType.EVENT)) {
+                userMessageDto.setContent(userMessageModel.getAppTitle());
+            } else if (messageModel.getType().equals(MessageType.MANUAL)) {
+                userMessageDto.setContent(userMessageModel.getContent());
+            }
 
             return userMessageDto;
         }).collect(Collectors.toList());

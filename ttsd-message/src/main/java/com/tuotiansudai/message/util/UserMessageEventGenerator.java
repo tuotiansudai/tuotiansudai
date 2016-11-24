@@ -124,8 +124,12 @@ public class UserMessageEventGenerator {
         if (withdraw == null) {
             return;
         }
+        String status = (String) withdraw.get("status");
+        if (Strings.isNullOrEmpty(status)) {
+            return;
+        }
 
-        WithdrawStatus withdrawStatus = (WithdrawStatus) withdraw.get("status");
+        WithdrawStatus withdrawStatus = WithdrawStatus.valueOf(status);
 
         long amount = ((BigInteger) withdraw.get("amount")).longValue();
         String loginName = (String) withdraw.get("login_name");
@@ -179,7 +183,7 @@ public class UserMessageEventGenerator {
     public void generateTransferSuccessEvent(long investId) {
         Map<String, Object> invest = userMessageMetaMapper.findTransferApplicationByInvestId(investId);
         String name = (String) invest.get("name");
-        long amount = (long) invest.get("transfer_amount");
+        long amount = ((BigInteger) invest.get("transfer_amount")).longValue();
         String loginName = (String) invest.get("login_name");
 
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.TRANSFER_SUCCESS);
@@ -224,9 +228,9 @@ public class UserMessageEventGenerator {
         //Title:您投资的{0}已经满额放款，预期年化收益{1}%
         //AppTitle:您投资的{0}已经满额放款，预期年化收益{1}%
         //Content:尊敬的用户，您投资的{0}项目已经满额放款，预期年化收益{1}%，快来查看收益吧。
-        String title = MessageFormat.format(messageModel.getTitle(), loanName, rate);
-        String appTitle = MessageFormat.format(messageModel.getAppTitle(), loanName, rate);
-        String content = MessageFormat.format(messageModel.getTemplate(), loanName, rate);
+        String title = MessageFormat.format(messageModel.getTitle(), loanName, rate * 100);
+        String appTitle = MessageFormat.format(messageModel.getAppTitle(), loanName, rate * 100);
+        String content = MessageFormat.format(messageModel.getTemplate(), loanName, rate * 100);
 
         Set<String> investorLoginNames = Sets.newHashSet(userMessageMetaMapper.findSuccessInvestorByLoanId(loanId));
         for (String investor : investorLoginNames) {
@@ -240,16 +244,16 @@ public class UserMessageEventGenerator {
     public void generateRepaySuccessEvent(long loanRepayId) {
         Map<String, Object> loan = userMessageMetaMapper.findLoanByLoanRepayId(loanRepayId);
         Map<String, Object> loanRepay = userMessageMetaMapper.findLoanRepayById(loanRepayId);
-        List<Map<String, Object>> invests = userMessageMetaMapper.findInvestsByLoanId((long) loan.get("id"));
+        List<Map<String, Object>> invests = userMessageMetaMapper.findInvestsByLoanId(((BigInteger) loan.get("id")).longValue());
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.REPAY_SUCCESS);
         //Title:您投资的{0}已回款{1}元，请前往账户查收！
         //AppTitle:您投资的{0}已回款{1}元，请前往账户查收！
         //Content:尊敬的用户，您投资的{0}项目已回款，期待已久的收益已奔向您的账户，快来查看吧。
 
         for (Map<String, Object> invest : invests) {
-            Map<String, Object> investRepay = userMessageMetaMapper.findInvestRepayByInvestIdAndPeriod((long) invest.get("id"), (int) loanRepay.get("period"));
-            String title = MessageFormat.format(messageModel.getTitle(), loan.get("name"), AmountConverter.convertCentToString((long) investRepay.get("amount")));
-            String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString((long) investRepay.get("amount")));
+            Map<String, Object> investRepay = userMessageMetaMapper.findInvestRepayByInvestIdAndPeriod(((BigInteger) invest.get("id")).longValue(), (int) loanRepay.get("period"));
+            String title = MessageFormat.format(messageModel.getTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
+            String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String content = MessageFormat.format(messageModel.getTemplate(), loan.get("name"));
 
             UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) invest.get("loginName"), title, appTitle, content);
@@ -262,16 +266,16 @@ public class UserMessageEventGenerator {
     public void generateAdvancedRepaySuccessEvent(long loanRepayId) {
         Map<String, Object> loan = userMessageMetaMapper.findLoanByLoanRepayId(loanRepayId);
         Map<String, Object> loanRepay = userMessageMetaMapper.findLoanRepayById(loanRepayId);
-        List<Map<String, Object>> invests = userMessageMetaMapper.findInvestsByLoanId((long) loan.get("id"));
+        List<Map<String, Object>> invests = userMessageMetaMapper.findInvestsByLoanId(((BigInteger) loan.get("id")).longValue());
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.ADVANCED_REPAY);
         //Title:您投资的{0}提前还款，{1}元已返还至您的账户！
         //AppTitle:您投资的{0}提前还款，{1}元已返还至您的账户！
         //Content:尊敬的用户，您在{0}投资的房产/车辆抵押借款因借款人放弃借款而提前终止，您的收益与本金已返还至您的账户，您可以【看看其他优质项目】
 
         for (Map<String, Object> invest : invests) {
-            Map<String, Object> investRepay = userMessageMetaMapper.findInvestRepayByInvestIdAndPeriod((long) invest.get("id"), (int) loanRepay.get("period"));
-            String title = MessageFormat.format(messageModel.getTitle(), loan.get("name"), AmountConverter.convertCentToString((long) investRepay.get("amount")));
-            String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString((long) investRepay.get("amount")));
+            Map<String, Object> investRepay = userMessageMetaMapper.findInvestRepayByInvestIdAndPeriod(((BigInteger) invest.get("id")).longValue(), (int) loanRepay.get("period"));
+            String title = MessageFormat.format(messageModel.getTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
+            String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String content = MessageFormat.format(messageModel.getTemplate(), loan.get("name"));
 
             UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) invest.get("loginName"), title, appTitle, content);
@@ -305,7 +309,7 @@ public class UserMessageEventGenerator {
     @Transactional
     public void generateCouponExpiredAlertEvent(String loginName) {
         long times = loginLogMapper.countSuccessTimesOnDate(loginName, new Date(), MessageFormat.format("login_log_{0}", new DateTime().toString("yyyyMM")));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy{年}MM{月}dd{日}");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
         String endTime = simpleDateFormat.format(DateTime.now().plusDays(5).withTimeAtStartOfDay().toDate());
         if (times == 1) {
             MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.COUPON_5DAYS_EXPIRED_ALERT);
@@ -369,11 +373,11 @@ public class UserMessageEventGenerator {
     public void generateMembershipPurchaseEvent(String loginName, int duration) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.MEMBERSHIP_BUY_SUCCESS);
-        //Title:恭喜您已成功购买{0}天V5会员！
-        //AppTitle:恭喜您已成功购买{0}天V5会员！
+        //Title:恭喜您已成功购买{0}个月V5会员！
+        //AppTitle:恭喜您已成功购买{0}个月V5会员！
         //Content:尊敬的用户，恭喜您已成功购买V5会员，有效期至{0}，【马上投资】享受会员特权吧！
-        String title = MessageFormat.format(messageModel.getTitle(), duration);
-        String appTitle = MessageFormat.format(messageModel.getAppTitle(), duration);
+        String title = MessageFormat.format(messageModel.getTitle(), duration / 30);
+        String appTitle = MessageFormat.format(messageModel.getAppTitle(), duration / 30);
         String content = MessageFormat.format(messageModel.getTemplate(), simpleDateFormat.format(DateTime.now().withTimeAtStartOfDay().plusDays(duration).toDate()));
 
         UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
@@ -390,7 +394,8 @@ public class UserMessageEventGenerator {
         String title = messageModel.getTitle();
         String appTitle = messageModel.getAppTitle();
         loginNames.forEach(loginName -> {
-            String content = MessageFormat.format(messageModel.getTemplate(), loginName);
+            String userName = userMessageMetaMapper.findUserNameByLoginName(loginName);
+            String content = MessageFormat.format(messageModel.getTemplate(), userName);
 
             UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
             userMessageMapper.create(userMessageModel);

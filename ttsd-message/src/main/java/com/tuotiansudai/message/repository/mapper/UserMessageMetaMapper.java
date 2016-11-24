@@ -11,6 +11,8 @@ public interface UserMessageMetaMapper {
 
     Map<String, Object> findLoanById(@Param(value = "id") long id);
 
+    String findUserNameByLoginName(@Param(value = "loginName") String loginName);
+
     Map<String, Object> findLoanByLoanRepayId(@Param(value = "loanRepayId") long loanRepayId);
 
     List<String> findSuccessInvestorByLoanId(@Param(value = "loanId") long loanId);

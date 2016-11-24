@@ -4,6 +4,14 @@ public class LoanMessageRequestDto {
     private String loanMessageTitle;
     private String loanMessageContent;
 
+    public LoanMessageRequestDto() {
+    }
+
+    public LoanMessageRequestDto(String loanMessageTitle, String loanMessageContent) {
+        this.loanMessageTitle = loanMessageTitle;
+        this.loanMessageContent = loanMessageContent;
+    }
+
     public String getLoanMessageTitle() {
         return loanMessageTitle;
     }

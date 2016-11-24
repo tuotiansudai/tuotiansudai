@@ -37,22 +37,31 @@
       td {
         text-align: left;
         color: #808080;
-        a {
+        .jump-detail {
+          cursor: pointer;
           color: #808080;
+          a {
+            color: #808080;
+          }
           &:hover {
+            color: #ff770f;
             text-decoration: underline;
+            a {
+              color: #ff770f;
+              text-decoration: underline;
+            }
           }
         }
 
       }
       &.unread {
         td {
-          color: #4c4c4c;
+          color: #000;
         }
-        a {
-          color: #4c4c4c;
-          &:hover {
-            text-decoration: underline;
+        .jump-detail {
+          color: #000;
+          a {
+            color: #000;
           }
         }
         .icon {
@@ -71,6 +80,9 @@
     margin-top: 10px;
     color: #ff7200;
     font-weight: bold;
+    a {
+      color: #ff752a;
+    }
   }
   .meta {
     font-size: 14px;

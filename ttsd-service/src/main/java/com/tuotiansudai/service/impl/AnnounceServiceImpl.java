@@ -31,7 +31,9 @@ public class AnnounceServiceImpl implements AnnounceService {
 
     @Override
     public void create(AnnounceDto announceDto, String createdBy) {
-        this.announceMapper.create(new AnnounceModel(announceDto));
+        AnnounceModel announceModel = new AnnounceModel(announceDto);
+        this.announceMapper.create(announceModel);
+        announceDto.setId(announceModel.getId());
     }
 
     @Override

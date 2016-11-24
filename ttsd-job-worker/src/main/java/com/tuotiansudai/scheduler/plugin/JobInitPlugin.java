@@ -208,7 +208,8 @@ public class JobInitPlugin implements SchedulerPlugin {
     private void birthdayMessageSendJob() {
         try {
             jobManager.newJob(JobType.BirthdayMessage, BirthdayMessageSendJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 9 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
+                    //TODO : test need
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0/5 * * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.BirthdayMessage.name(), JobType.BirthdayMessage.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);

@@ -374,10 +374,14 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     'pledgeEnterprise': pledgeEnterpriseParam
                 });
             }
-            requestData.loanMessage = {
-                loanMessageTitle: messageTitle,
-                loanMessageContent: messageContent
-            };
+            if(messageTitle.length == 0 && messageContent == 0) {
+                requestData.loanMessage = null;
+            } else {
+                requestData.loanMessage = {
+                    loanMessageTitle: messageTitle,
+                    loanMessageContent: messageContent
+                };
+            }
             $.ajax(
                 {
                     url: url,
