@@ -70,11 +70,8 @@ public class UserMessageServiceImpl implements UserMessageService {
 
     @Override
     @Transactional
-    public UserMessageModel readMessage(String loginName, long userMessageId) {
+    public UserMessageModel readMessage(long userMessageId) {
         UserMessageModel userMessageModel = userMessageMapper.findById(userMessageId);
-        if (!userMessageModel.getLoginName().equals(loginName.toLowerCase())) {
-            return new UserMessageModel(0L, loginName, "消息不存在", "消息不存在", "消息不存在");
-        }
         if (userMessageModel != null && !userMessageModel.isRead()) {
             MessageModel messageModel = messageMapper.lockById(userMessageModel.getMessageId());
             messageModel.setReadCount(messageModel.getReadCount() + 1);
@@ -92,7 +89,7 @@ public class UserMessageServiceImpl implements UserMessageService {
         List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.WEBSITE, null, null);
         for (UserMessageModel userMessageModel : userMessageModels) {
             if (!userMessageModel.isRead()) {
-                ((UserMessageService) AopContext.currentProxy()).readMessage(loginName, userMessageModel.getId());
+                ((UserMessageService) AopContext.currentProxy()).readMessage(userMessageModel.getId());
             }
         }
         return true;

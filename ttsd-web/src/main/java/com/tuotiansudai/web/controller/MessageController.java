@@ -47,7 +47,7 @@ public class MessageController {
     @RequestMapping(value = "/user-message/{userMessageId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView messageDetail(@PathVariable long userMessageId) {
         String loginName = LoginUserInfo.getLoginName();
-        UserMessageModel userMessageModel = userMessageService.readMessage(loginName, userMessageId);
+        UserMessageModel userMessageModel = userMessageService.readMessage(userMessageId);
         MessageCompleteDto messageCompleteDto = messageService.findMessageCompleteDtoByMessageId(userMessageModel.getMessageId());
         if (userMessageModel == null || Strings.isNullOrEmpty(userMessageModel.getContent())) {
             return new ModelAndView("/error/404");
