@@ -83,7 +83,7 @@ public class MembershipController {
 
             if(userMembershipModel != null && (userMembershipModel.getType() == UserMembershipType.GIVEN || userMembershipModel.getType() == UserMembershipType.PURCHASED))
             {
-                modelAndView.addObject("membershipLevel", "5");
+                modelAndView.addObject("membershipLevel", MembershipLevel.V5.getLevel());
             }
             else{
                 modelAndView.addObject("membershipLevel", membershipModel != null ? membershipModel.getLevel() : "");
