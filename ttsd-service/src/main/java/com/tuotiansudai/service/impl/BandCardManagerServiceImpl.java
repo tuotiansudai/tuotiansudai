@@ -1,6 +1,7 @@
 package com.tuotiansudai.service.impl;
 
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -45,16 +46,16 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
     @Override
     public int queryCountReplaceBankCard(String loginName, String mobile) {
         UserModel userModel = userMapper.findByMobile(mobile);
-        if(userModel == null)
+        if(!Strings.isNullOrEmpty(mobile) && userModel == null)
             return 0;
 
-        return bankCardMapper.findCountReplaceBankCardByLoginName(userModel.getLoginName());
+        return bankCardMapper.findCountReplaceBankCardByLoginName(userModel == null ? null : userModel.getLoginName());
     }
 
     @Override
     public List<ReplaceBankCardDto> queryReplaceBankCard(String loginName, String mobile, int index, int pageSize) {
         UserModel userModel = userMapper.findByMobile(mobile);
-        if(userModel == null)
+        if(!Strings.isNullOrEmpty(mobile) && userModel == null)
             return Lists.newArrayList();
 
         List<BankCardModel> replaceBankCards = bankCardMapper.findReplaceBankCardByLoginName(userModel == null ? null : userModel.getLoginName(), index, pageSize);
