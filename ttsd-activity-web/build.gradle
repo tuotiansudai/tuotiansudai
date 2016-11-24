@@ -3,6 +3,7 @@ apply from: 'db_migration.gradle'
 
 dependencies {
     compile project(':ttsd-web-common-config'),
+            project(':ttsd-spring-extension'),
             project(':ttsd-point-service'),
             project(':ttsd-user-service'),
             project(':ttsd-activity-service'),

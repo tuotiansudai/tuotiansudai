@@ -3,7 +3,6 @@ package com.tuotiansudai.spring.security;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.MyUser;
@@ -18,9 +17,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.text.MessageFormat;
 import java.util.List;
 
 @Component
@@ -32,13 +28,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
     private CaptchaHelper captchaHelper;
 
     @Autowired
-    private HttpServletRequest httpServletRequest;
-
-    @Autowired
     private SignInClient signInClient;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -48,18 +38,14 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
             throw new CaptchaNotMatchException("验证码不正确");
         }
 
-        SignInResult signInResult = signInClient.login(!Strings.isNullOrEmpty(details.getUsername()) ? details.getUsername() : details.getMobile(),
+        SignInResult signInResult = signInClient.login(Strings.isNullOrEmpty(details.getUsername()) ? details.getMobile() : details.getUsername(),
                 authentication.getCredentials().toString(),
-                !Strings.isNullOrEmpty(details.getSessionId()) ? details.getSessionId() : "none token",
-                Source.valueOf(details.getSource().toUpperCase()) ,
-                !Strings.isNullOrEmpty(details.getDeviceId()) ? details.getDeviceId() : "");
+                details.getSessionId(),
+                Source.valueOf(details.getSource().toUpperCase()),
+                details.getDeviceId());
 
-        if (signInResult == null) {
-            throw new BadCredentialsException("用户名或密码错误");
-        }
-
-        if (!signInResult.isResult()) {
-            throw new BadCredentialsException(signInResult.getMessage());
+        if (signInResult == null || !signInResult.isResult()) {
+            throw new BadCredentialsException(signInResult != null ? signInResult.getMessage() : "登录异常");
         }
 
         List<GrantedAuthority> grantedAuthorities = Lists.transform(signInResult.getUserInfo().getRoles(), (Function<String, GrantedAuthority>) SimpleGrantedAuthority::new);
