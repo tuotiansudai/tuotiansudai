@@ -9,6 +9,7 @@ import com.tuotiansudai.jpush.dto.JpushReportDto;
 import com.tuotiansudai.jpush.repository.model.*;
 import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.util.DistrictUtil;
+import com.tuotiansudai.util.PaginationUtil;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -68,13 +69,13 @@ public class JPushAlertController {
     @RequestMapping(value = "/manual-app-push-list", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView appPushList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                    @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                     @RequestParam(value = "pushType", required = false) PushType pushType,
                                     @RequestParam(value = "pushSource", required = false) PushSource pushSource,
                                     @RequestParam(value = "pushUserType", required = false) PushUserType pushUserType,
                                     @RequestParam(value = "pushStatus", required = false) PushStatus pushStatus,
                                     @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                     @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/manual-app-push-list");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
@@ -94,7 +95,7 @@ public class JPushAlertController {
         modelAndView.addObject("pushTypes", Lists.newArrayList(PushType.values()));
         int jPushAlertCount = jPushAlertService.findPushAlertCount(pushType, pushSource, pushUserType,pushStatus,startTime,endTime, false);
         modelAndView.addObject("jPushAlertCount", jPushAlertCount);
-        long totalPages = jPushAlertCount / pageSize + (jPushAlertCount % pageSize > 0 || jPushAlertCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(jPushAlertCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -105,8 +106,8 @@ public class JPushAlertController {
 
     @RequestMapping(value = "/auto-app-push-list", method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView autoAppPushList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+    public ModelAndView autoAppPushList(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        int pageSize = 0;
         ModelAndView modelAndView = new ModelAndView("/auto-app-push-list");
         modelAndView.addObject("pushAlerts", jPushAlertService.findPushAlerts(index, pageSize, null, null, null, null, null, null, true));
 

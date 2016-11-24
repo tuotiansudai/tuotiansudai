@@ -43,8 +43,8 @@ public class TransferController {
     @RequestMapping(value = "/transfer-application-list-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<BasePaginationDataDto> transferrerListData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                                              @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
                                                               @RequestParam(name = "status", required = false) List<TransferStatus> statusList) {
+        int pageSize = 10;
         String loginName = LoginUserInfo.getLoginName();
         BasePaginationDataDto dataDto;
         if (CollectionUtils.isNotEmpty(statusList) && statusList.contains(TransferStatus.TRANSFERABLE)) {
