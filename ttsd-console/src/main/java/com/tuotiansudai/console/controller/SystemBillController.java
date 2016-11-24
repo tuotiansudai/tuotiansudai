@@ -30,9 +30,8 @@ public class SystemBillController {
                                           @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                           @RequestParam(value = "operationType", required = false) SystemBillOperationType operationType,
                                           @RequestParam(value = "businessType", required = false) SystemBillBusinessType businessType,
-                                          @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                          @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-
+                                          @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/system-bill");
         BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> baseDto = systemBillService.findSystemBillPagination(
                 startTime,

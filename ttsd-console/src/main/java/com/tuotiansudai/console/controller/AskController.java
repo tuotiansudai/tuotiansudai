@@ -32,10 +32,9 @@ public class AskController {
     public ModelAndView getQuestions(@RequestParam(value = "question", required = false) String question,
                                      @RequestParam(value = "mobile", required = false) String mobile,
                                      @RequestParam(value = "status", required = false) QuestionStatus status,
-                                     @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                     @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
 
-        BaseDto<BasePaginationDataDto> questions = questionService.findQuestionsForConsole(question, mobile, status, index, pageSize);
+        BaseDto<BasePaginationDataDto> questions = questionService.findQuestionsForConsole(question, mobile, status, index, 10);
 
         ModelAndView modelAndView = new ModelAndView("/question-list", "questions", questions);
         modelAndView.addObject("question", question);
@@ -49,10 +48,9 @@ public class AskController {
     public ModelAndView getAnswers(@RequestParam(value = "question", required = false) String question,
                                    @RequestParam(value = "mobile", required = false) String mobile,
                                    @RequestParam(value = "status", required = false) AnswerStatus status,
-                                   @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                   @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
 
-        BaseDto<BasePaginationDataDto> answers = answerService.findAnswersForConsole(question, mobile, status, index, pageSize);
+        BaseDto<BasePaginationDataDto> answers = answerService.findAnswersForConsole(question, mobile, status, index, 10);
 
         ModelAndView modelAndView = new ModelAndView("/answer-list", "answers", answers);
         modelAndView.addObject("question", question);

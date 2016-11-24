@@ -5,6 +5,7 @@ import com.tuotiansudai.exception.CreateAgentException;
 import com.tuotiansudai.repository.mapper.AgentLevelRateMapper;
 import com.tuotiansudai.repository.model.AgentLevelRateModel;
 import com.tuotiansudai.service.AgentService;
+import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,8 @@ public class AgentController {
 
     @RequestMapping(value = "/agents",method = RequestMethod.GET)
     public ModelAndView agentManage(@RequestParam(value = "loginName",required = false) String loginName,
-                                    @RequestParam(value = "index",defaultValue = "1",required = false) int index,
-                                    @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize) {
+                                    @RequestParam(value = "index",defaultValue = "1",required = false) int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/agent-list");
         int count = agentService.findAgentLevelRateCount(loginName);
         List<AgentLevelRateModel> agentLevelRateList = agentService.findAgentLevelRate(loginName,(index-1) * pageSize,pageSize);
@@ -35,7 +36,7 @@ public class AgentController {
         modelAndView.addObject("index",index);
         modelAndView.addObject("pageSize",pageSize);
         modelAndView.addObject("loginName",loginName);
-        long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage",hasPreviousPage);

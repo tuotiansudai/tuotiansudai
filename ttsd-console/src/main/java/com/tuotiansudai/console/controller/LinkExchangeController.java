@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LinkExchangeDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.service.LinkExchangeService;
+import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,8 @@ public class LinkExchangeController {
 
     @RequestMapping(value = "/link-exchange", method = RequestMethod.GET)
     public ModelAndView linkExchangeManage(@RequestParam(value = "id",required = false) Long id,@RequestParam(value = "title",required = false) String title,
-                                                @RequestParam(value = "index",defaultValue = "1",required = false) int index,
-                                                @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize) {
+                                                @RequestParam(value = "index",defaultValue = "1",required = false) int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/link-exchange-list");
         int linkExchangeCount = linkExchangeService.findCountByTitle(title);
         modelAndView.addObject("linkExchangeCount", linkExchangeCount);
@@ -27,7 +28,7 @@ public class LinkExchangeController {
         modelAndView.addObject("title",title);
         modelAndView.addObject("index",index);
         modelAndView.addObject("pageSize",pageSize);
-        long totalPages = linkExchangeCount / pageSize + (linkExchangeCount % pageSize > 0 || linkExchangeCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(linkExchangeCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage",hasPreviousPage);

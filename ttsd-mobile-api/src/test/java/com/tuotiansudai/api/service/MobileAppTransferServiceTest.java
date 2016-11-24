@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppTransferServiceImpl;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -64,6 +65,9 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
     @Value("${pay.callback.app.web.host}")
     private String domainName;
 
+    @Mock
+    private PageValidUtils pageValidUtils;
+
     @Test
     public void shouldGetTransferTransferee() {
         long transferApplicationId = idGenerator.generate();
@@ -89,7 +93,8 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
         investModel.setLoginName("testTransferee");
         when(investMapper.findById(anyLong())).thenReturn(investModel);
 
-        when(randomUtils.encryptMobile(anyString(),anyString(),anyLong(),any(Source.class))).thenReturn("test***");
+        when(randomUtils.encryptMobile(anyString(), anyString(), anyLong(), any(Source.class))).thenReturn("test***");
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
 
         BaseResponseDto<TransferTransfereeResponseDataDto> baseResponseDto =  mobileAppTransferServiceImpl.getTransferee(transferTransfereeRequestDto);
         assertThat(baseResponseDto.getData().getTransferee().get(0).getTransferAmount(), is("10.00"));

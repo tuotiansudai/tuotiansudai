@@ -3,6 +3,7 @@ package com.tuotiansudai.api.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppTransferApplicationServiceImpl;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
@@ -67,6 +68,8 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     private InvestService investService;
     @Mock
     private UserMembershipEvaluator userMembershipEvaluator;
+    @Mock
+    private PageValidUtils pageValidUtils;
 
     @Test
     public void shouldGenerateTransferApplicationIsSuccess() {
@@ -86,6 +89,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         when(transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(anyString(), any(List.class))).thenReturn(1);
         when(loanMapper.findById(transferApplicationRecordDto.getLoanId())).thenReturn(loanModel);
         when(investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods())).thenReturn(investRepayModel);
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
 
         BaseResponseDto<TransferApplicationResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.generateTransferApplication(transferApplicationRequestDto);
         assertEquals(TransferStatus.TRANSFERRING, baseResponseDto.getData().getTransferApplication().get(0).getTransferStatus());
@@ -120,6 +124,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         when(transferApplicationMapper.findCountTransfereeApplicationPaginationByLoginName(anyString())).thenReturn(1);
         when(loanMapper.findById(transferApplicationRecordDto.getLoanId())).thenReturn(loanModel);
         when(investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getInvestId(), loanModel.getPeriods())).thenReturn(investRepayModel);
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
 
         BaseResponseDto<TransferApplicationResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.generateTransfereeApplication(paginationRequestDto);
         assertEquals(TransferStatus.TRANSFERRING, baseResponseDto.getData().getTransferApplication().get(0).getTransferStatus());
@@ -304,6 +309,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
         when(transferService.findAllTransferApplicationPaginationList(anyList(), anyDouble(), anyDouble(), anyInt(), anyInt())).thenReturn(transferApplicationRecordDto);
         when(transferService.findCountAllTransferApplicationPaginationList(anyList(), anyDouble(), anyDouble())).thenReturn(1);
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
 
         BaseResponseDto<TransferApplicationResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferApplicationList(transferApplicationListRequestDto);
 

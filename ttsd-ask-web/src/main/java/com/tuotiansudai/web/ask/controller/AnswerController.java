@@ -43,8 +43,7 @@ public class AnswerController {
     }
 
     @RequestMapping(path = "/my-answers", method = RequestMethod.GET)
-    public ModelAndView getMyAnswers(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return new ModelAndView("/my-answers", "answers", answerService.findMyAnswers(LoginUserInfo.getLoginName(), index, pageSize));
+    public ModelAndView getMyAnswers(@RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        return new ModelAndView("/my-answers", "answers", answerService.findMyAnswers(LoginUserInfo.getLoginName(), index, 10));
     }
 }
