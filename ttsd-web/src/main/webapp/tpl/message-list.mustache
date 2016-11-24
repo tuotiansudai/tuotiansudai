@@ -13,11 +13,13 @@
             <td>
                 {{#content}}
                     <em class="jump-detail" data-url="/message/user-message/{{userMessageId}}#{{index}}">
-                    {{title}}
+                    {{{title}}}
                     <em>
                 {{/content}}
                 {{^content}}
+                <em class="jump-detail" data-url="/message/user-message/{{userMessageId}}#{{index}}">
                     {{{title}}}
+                 </em>
                 {{/content}}
             </td>
             <td>{{createdTime}}</td>

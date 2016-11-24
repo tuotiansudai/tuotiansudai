@@ -35,13 +35,18 @@ require(['jquery', 'mustache', 'text!/tpl/message-list.mustache', 'pagination', 
                     }
                 })
             });
-            //点击标题跳转详情
+            //点击标题跳转详情,阻止默认的a标签连接
             (function() {
-                $('#userMessageList').on('click','.jump-detail',function() {
+                var $userMessageList=$('#userMessageList');
+                $userMessageList.on('click','.jump-detail',function() {
                 var $this=$(this),
                     url=$this.data('url');
                     location.href=url;
+                });
+                $userMessageList.on('click','a',function(event) {
+                    event.preventDefault();
                 })
+
             })();
 
 
