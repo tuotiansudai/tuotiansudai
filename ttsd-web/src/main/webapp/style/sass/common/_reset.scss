@@ -2,7 +2,6 @@
 $linkColor:#666 #ff770f #ffac2a;
 $checkValid:#f71010 #6bc21e;
 $headings: (h1: 2em, h2: 1.5em, h3: 1.2em,h4:18px, h5:16px);
-//$linkColor:#ff752a #e54c14 #ff7a2a;
 * {
   margin: 0;
   padding: 0;
@@ -56,6 +55,9 @@ input[type='checkbox'] {
   }
 }
 a{
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   cursor: pointer;
   color:nth($linkColor,1);
   text-decoration: none;

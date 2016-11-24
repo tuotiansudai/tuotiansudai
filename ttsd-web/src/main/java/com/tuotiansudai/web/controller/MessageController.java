@@ -29,11 +29,10 @@ public class MessageController {
 
     @RequestMapping(value = "/user-message-list-data", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto<BasePaginationDataDto> getMessageListData(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+    public BaseDto<BasePaginationDataDto> getMessageListData(@RequestParam(value = "index", defaultValue = "1", required = false) int index) {
 
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
-        BasePaginationDataDto<UserMessagePaginationItemDto> dataDto = userMessageService.getUserMessages(LoginUserInfo.getLoginName(), index, pageSize);
+        BasePaginationDataDto<UserMessagePaginationItemDto> dataDto = userMessageService.getUserMessages(LoginUserInfo.getLoginName(), index, 10);
         dto.setData(dataDto);
 
         return dto;

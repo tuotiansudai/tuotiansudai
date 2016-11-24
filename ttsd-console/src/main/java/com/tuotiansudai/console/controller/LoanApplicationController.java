@@ -19,8 +19,8 @@ public class LoanApplicationController {
     LoanApplicationService loanApplicationService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    ModelAndView getViewList(@RequestParam(value = "index", defaultValue = "1") int index,
-                             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+    ModelAndView getViewList(@RequestParam(value = "index", defaultValue = "1") int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/loan-application-list");
         BasePaginationDataDto<LoanApplicationModel> basePaginationDataDto = loanApplicationService.getPagination(index, pageSize);
         modelAndView.addObject("dataDto", basePaginationDataDto);

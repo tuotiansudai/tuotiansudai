@@ -34,8 +34,8 @@ public class RechargeController {
                                         @RequestParam(value = "status", required = false) RechargeStatus status,
                                         @RequestParam(value = "source", required = false) RechargeSource source,
                                         @RequestParam(value = "channel", required = false) String channel,
-                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/recharge");
         BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = rechargeService.findRechargePagination(rechargeId, mobile, source,
                 status, channel, index, pageSize, startTime, endTime);

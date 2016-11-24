@@ -4,6 +4,7 @@ import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.repository.model.UserBillPaginationView;
 import com.tuotiansudai.service.UserBillService;
+import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -28,8 +29,8 @@ public class UserFundsController {
                                   @RequestParam(value = "mobile", required = false) String mobile,
                                   @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                   @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
-                                  @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                  @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                  @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/user-funds");
         List<UserBillPaginationView> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, mobile, startTime, endTime, index, pageSize);
         int userFundsCount = userBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, mobile, startTime, endTime);
@@ -44,7 +45,7 @@ public class UserFundsController {
         modelAndView.addObject("userFundsCount", userFundsCount);
         modelAndView.addObject("businessTypeList", UserBillBusinessType.values());
         modelAndView.addObject("operationTypeList", UserBillOperationType.values());
-        long totalPages = userFundsCount / pageSize + (userFundsCount % pageSize > 0 || userFundsCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(userFundsCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
