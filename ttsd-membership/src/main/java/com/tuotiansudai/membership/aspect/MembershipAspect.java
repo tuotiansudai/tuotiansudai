@@ -6,6 +6,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,6 +27,7 @@ public class MembershipAspect {
      * @param joinPoint
      */
     @After(value = "execution(* *..InvestService.investSuccess(..))")
+    @Order(98)
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         try {
             Object param = joinPoint.getArgs()[0];

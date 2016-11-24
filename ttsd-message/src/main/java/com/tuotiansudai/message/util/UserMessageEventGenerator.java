@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
 import com.tuotiansudai.jpush.service.JPushAlertNewService;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
@@ -15,7 +16,6 @@ import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.repository.mapper.LoginLogMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.WithdrawStatus;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -29,8 +29,8 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.tuotiansudai.repository.model.WithdrawStatus.APPLY_SUCCESS;
-import static com.tuotiansudai.repository.model.WithdrawStatus.SUCCESS;
+import static com.tuotiansudai.enums.WithdrawStatus.APPLY_SUCCESS;
+import static com.tuotiansudai.enums.WithdrawStatus.SUCCESS;
 
 @Service
 public class UserMessageEventGenerator {

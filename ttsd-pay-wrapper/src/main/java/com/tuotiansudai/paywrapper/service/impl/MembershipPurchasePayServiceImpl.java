@@ -88,7 +88,7 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
     @Override
     @Transactional
     public String purchaseCallback(Map<String, String> paramsMap, String originalQueryString) {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, TransferNotifyMapper.class, TransferNotifyRequestModel.class);
+        BaseCallbackRequestModel callbackRequest = payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, TransferNotifyMapper.class, TransferNotifyRequestModel.class);
 
         if (callbackRequest == null) {
             return null;
@@ -99,7 +99,7 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
         return callbackRequest.getResponseData();
     }
 
-    public void postPurchaseCallback(BaseCallbackRequestModel callbackRequestModel) {
+    private void postPurchaseCallback(BaseCallbackRequestModel callbackRequestModel) {
         long orderId;
 
         try {

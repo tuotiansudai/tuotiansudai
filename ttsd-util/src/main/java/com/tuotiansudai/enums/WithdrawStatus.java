@@ -1,4 +1,4 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.enums;
 
 public enum WithdrawStatus {
     WAIT_PAY("等待支付"), //WAIT_VERIFY("等待初审")

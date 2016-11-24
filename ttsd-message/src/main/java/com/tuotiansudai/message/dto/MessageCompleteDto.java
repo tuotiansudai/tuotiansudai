@@ -1,8 +1,6 @@
 package com.tuotiansudai.message.dto;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.AnnounceDto;
-import com.tuotiansudai.dto.LoanCreateRequestDto;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
@@ -10,10 +8,8 @@ import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.model.JumpTo;
 import com.tuotiansudai.jpush.repository.model.PushUserType;
 import com.tuotiansudai.message.repository.model.*;
-import org.joda.time.DateTime;
 
 import java.io.Serializable;
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -41,62 +37,6 @@ public class MessageCompleteDto implements Serializable {
     private Date updatedTime;
     private String createdBy;
     private Date createdTime;
-
-    public static MessageCompleteDto createFromAnnounceDto(AnnounceDto announceDto, String createdBy) {
-        MessageCompleteDto messageCompleteDto = new MessageCompleteDto();
-
-        messageCompleteDto.setTitle(announceDto.getTitle());
-        messageCompleteDto.setTemplate(announceDto.getContent());
-        messageCompleteDto.setTemplateTxt(announceDto.getContentText());
-        messageCompleteDto.setType(MessageType.MANUAL);
-        messageCompleteDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
-        messageCompleteDto.setChannels(Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
-        messageCompleteDto.setMessageCategory(MessageCategory.NOTIFY);
-        messageCompleteDto.setWebUrl(MessageFormat.format("/announce/{0}", announceDto.getId()));
-        messageCompleteDto.setAppUrl(AppUrl.NOTIFY);
-        messageCompleteDto.setJpush(true);
-        messageCompleteDto.setPushType(PushType.IMPORTANT_EVENT);
-        messageCompleteDto.setPushSource(PushSource.ALL);
-        messageCompleteDto.setStatus(MessageStatus.APPROVED);
-        messageCompleteDto.setReadCount(0);
-        messageCompleteDto.setActivatedBy(createdBy);
-        messageCompleteDto.setActivatedTime(new Date());
-        messageCompleteDto.setExpiredTime(new DateTime().withDate(9999, 12, 31).toDate());
-        messageCompleteDto.setUpdatedBy(createdBy);
-        messageCompleteDto.setUpdatedTime(new Date());
-        messageCompleteDto.setCreatedBy(createdBy);
-        messageCompleteDto.setCreatedTime(new Date());
-
-        return messageCompleteDto;
-    }
-
-    public static MessageCompleteDto createFromLoanCreateRequestDto(LoanCreateRequestDto loanCreateRequestDto) {
-        MessageCompleteDto messageCompleteDto = new MessageCompleteDto();
-
-        messageCompleteDto.setTitle(loanCreateRequestDto.getLoanMessage().getLoanMessageTitle());
-        messageCompleteDto.setTemplate(loanCreateRequestDto.getLoanMessage().getLoanMessageContent());
-        messageCompleteDto.setTemplateTxt(loanCreateRequestDto.getLoanMessage().getLoanMessageContent());
-        messageCompleteDto.setType(MessageType.MANUAL);
-        messageCompleteDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
-        messageCompleteDto.setChannels(Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
-        messageCompleteDto.setMessageCategory(MessageCategory.NOTIFY);
-        messageCompleteDto.setWebUrl(MessageFormat.format("/loan/{0}", loanCreateRequestDto.getLoan().getId()));
-        messageCompleteDto.setAppUrl(AppUrl.NOTIFY);
-        messageCompleteDto.setJpush(true);
-        messageCompleteDto.setPushType(PushType.IMPORTANT_EVENT);
-        messageCompleteDto.setPushSource(PushSource.ALL);
-        messageCompleteDto.setStatus(MessageStatus.APPROVED);
-        messageCompleteDto.setReadCount(0);
-        messageCompleteDto.setActivatedBy(null);
-        messageCompleteDto.setActivatedTime(null);
-        messageCompleteDto.setExpiredTime(new DateTime().withDate(9999, 12, 31).toDate());
-        messageCompleteDto.setUpdatedBy(loanCreateRequestDto.getLoan().getCreatedBy());
-        messageCompleteDto.setUpdatedTime(new Date());
-        messageCompleteDto.setCreatedBy(loanCreateRequestDto.getLoan().getCreatedBy());
-        messageCompleteDto.setCreatedTime(new Date());
-
-        return messageCompleteDto;
-    }
 
     public MessageCompleteDto() {
     }
