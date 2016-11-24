@@ -122,7 +122,7 @@ public class HeroRankingService {
                         input.setLoginName("您的位置");
                         return input;
                     }
-                    input.setLoginName(MobileEncryptor.encryptAppMiddleMobile(userMapper.findByLoginName(loginName).getMobile()));
+                    input.setLoginName(MobileEncryptor.encryptAppMiddleMobile(userMapper.findByLoginName(input.getLoginName()).getMobile()));
                     return input;
                 }));
             }

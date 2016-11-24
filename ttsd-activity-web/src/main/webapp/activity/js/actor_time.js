@@ -14,7 +14,7 @@ define(['jquery','layerWrapper'], function ($,layer) {
             title:'温馨提示',
             content: '<p style="padding:20px 0;text-align:center;">活动已经结束了哦!</p>'
             +'<p style="text-align:center;">'
-            +'<a href="/activity-center" class="btn" style="background: #ff752a;border: 1px solid #f46916;color: #fff;">查看其他活动</a></p>'
+            +'<a href="/activity/activity-center" class="btn" style="background: #ff752a;border: 1px solid #f46916;color: #fff;">查看其他活动</a></p>'
         });
     });
 });

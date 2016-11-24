@@ -179,10 +179,9 @@ public class PointShopController {
 
     @RequestMapping(value = "/record-list", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public BaseDto<BasePaginationDataDto> pointSystemRecordDetail(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                                @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
+    public BaseDto<BasePaginationDataDto> pointSystemRecordDetail(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
 
-        BasePaginationDataDto<ProductOrderViewDto> dataDto = pointExchangeService.findProductOrderListByLoginNamePagination(LoginUserInfo.getLoginName(), index, pageSize);
+        BasePaginationDataDto<ProductOrderViewDto> dataDto = pointExchangeService.findProductOrderListByLoginNamePagination(LoginUserInfo.getLoginName(), index, 10);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
         return dto;
@@ -198,12 +197,11 @@ public class PointShopController {
     @RequestMapping(value = "/bill-list", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<BasePaginationDataDto> pointBillListData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                                            @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
                                                             @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                             @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                                             @RequestParam(name = "businessType", required = false) List<PointBusinessType> businessType) {
 
-        BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPagination(LoginUserInfo.getLoginName(), index, pageSize, startTime, endTime, businessType);
+        BasePaginationDataDto<PointBillPaginationItemDataDto> dataDto = pointBillService.getPointBillPagination(LoginUserInfo.getLoginName(), index, 10, startTime, endTime, businessType);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
         return dto;

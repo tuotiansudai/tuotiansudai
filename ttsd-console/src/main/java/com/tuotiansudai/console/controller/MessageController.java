@@ -10,6 +10,7 @@ import com.tuotiansudai.message.repository.model.MessageStatus;
 import com.tuotiansudai.message.repository.model.MessageType;
 import com.tuotiansudai.message.repository.model.MessageUserGroup;
 import com.tuotiansudai.message.service.MessageService;
+import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,10 +35,10 @@ public class MessageController {
     @RequestMapping(value = "/manual-message-list", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView manualMessageList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                           @RequestParam(value = "title", required = false) String title,
                                           @RequestParam(value = "createdBy", required = false) String createdBy,
                                           @RequestParam(value = "messageStatus", required = false) MessageStatus messageStatus) {
+        int pageSize = 10;
 
         ModelAndView modelAndView = new ModelAndView("/manual-message-list");
         modelAndView.addObject("index", index);
@@ -51,7 +52,7 @@ public class MessageController {
         modelAndView.addObject("messageStatuses", Lists.newArrayList(MessageStatus.values()));
         long messageCount = messageService.findMessageCount(title, messageStatus, createdBy, MessageType.MANUAL);
         modelAndView.addObject("messageCount", messageCount);
-        long totalPages = messageCount / pageSize + (messageCount % pageSize > 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(messageCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -63,10 +64,10 @@ public class MessageController {
     @RequestMapping(value = "/event-message-list", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView autoMessageList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                         @RequestParam(value = "title", required = false) String title,
                                         @RequestParam(value = "createdBy", required = false) String createdBy,
                                         @RequestParam(value = "messageStatus", required = false) MessageStatus messageStatus) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/event-message-list");
 
         modelAndView.addObject("index", index);
@@ -80,7 +81,7 @@ public class MessageController {
         modelAndView.addObject("messageStatuses", Lists.newArrayList(MessageStatus.values()));
         long messageCount = messageService.findMessageCount(title, messageStatus, createdBy, MessageType.EVENT);
         modelAndView.addObject("messageCount", messageCount);
-        long totalPages = messageCount / pageSize + (messageCount % pageSize > 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(messageCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);

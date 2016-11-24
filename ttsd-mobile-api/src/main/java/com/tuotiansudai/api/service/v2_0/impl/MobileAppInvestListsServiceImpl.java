@@ -7,6 +7,7 @@ import com.tuotiansudai.api.dto.v2_0.UserInvestListRequestDto;
 import com.tuotiansudai.api.dto.v2_0.UserInvestListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.UserInvestRecordResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppInvestListsService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -57,10 +58,13 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
     @Override
     public BaseResponseDto<UserInvestListResponseDataDto> generateUserInvestList(UserInvestListRequestDto userInvestListRequestDto) {
         String loginName = userInvestListRequestDto.getBaseParam().getUserId();
-        int pageSize = userInvestListRequestDto.getPageSize();
+        int pageSize = pageValidUtils.validPageSizeLimit(userInvestListRequestDto.getPageSize());
         int index = (userInvestListRequestDto.getIndex() - 1) * pageSize;
         List<InvestModel>  investModels = investMapper.findInvestorInvestWithoutTransferPagination(loginName, userInvestListRequestDto.getStatus(), index, pageSize);
 

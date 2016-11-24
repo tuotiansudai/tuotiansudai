@@ -2,20 +2,27 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.job.NormalRepayCallbackJob;
 import com.tuotiansudai.job.NormalRepayJob;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.repository.mapper.NormalRepayNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.NormalRepayNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
@@ -33,6 +40,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,6 +100,18 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private NormalRepayNotifyMapper normalRepayNotifyMapper;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
+    @Value("${common.environment}")
+    private Environment environment;
+
+    @Value(value = "${pay.repay.notify.process.batch.size}")
+    private int repayProcessListSize;
 
     @Override
     public boolean autoRepay(long loanRepayId) {
@@ -407,39 +427,88 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public String investPaybackCallback(Map<String, String> paramsMap, String originalQueryString) throws Exception {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, ProjectTransferNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
+                paramsMap,
+                originalQueryString,
+                NormalRepayNotifyMapper.class,
+                NormalRepayNotifyRequestModel.class);
 
         if (callbackRequest == null) {
             logger.error(MessageFormat.format("[Normal Repay] invest payback callback parse is failed (queryString = {0})", originalQueryString));
             return null;
         }
 
-        long investRepayId = Long.parseLong(callbackRequest.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
+        redisWrapperClient.incr(NormalRepayCallbackJob.NORMAL_REPAY_JOB_TRIGGER_KEY);
+        return callbackRequest.getResponseData();
+    }
+
+    @Override
+    public BaseDto<PayDataDto> asyncNormalRepayPaybackCallback(){
+        List<NormalRepayNotifyRequestModel> todoList = normalRepayNotifyMapper.getNormalTodoList(repayProcessListSize);
+        for (NormalRepayNotifyRequestModel model : todoList) {
+            if (updateNormalRepayNotifyRequestStatus(model)) {
+                try {
+                    if(!this.processOneNormalRepayPaybackCallback(model)){
+                        fatalLog("normal repay callback, processOneNormalRepayPaybackCallback fail. investRepayId:" + model.getOrderId(), null);
+                    }
+                } catch (Exception e) {
+                    fatalLog("normal repay callback, processOneNormalRepayPaybackCallback error. investRepayId:" + model.getOrderId(), e);
+                }
+            }
+        }
+
+        BaseDto<PayDataDto> asyncNormalRepayNotifyDto = new BaseDto<>();
+        PayDataDto baseDataDto = new PayDataDto();
+        baseDataDto.setStatus(true);
+        asyncNormalRepayNotifyDto.setData(baseDataDto);
+
+        return asyncNormalRepayNotifyDto;
+    }
+
+    private boolean updateNormalRepayNotifyRequestStatus(NormalRepayNotifyRequestModel model) {
+        try {
+            redisWrapperClient.decr(NormalRepayCallbackJob.NORMAL_REPAY_JOB_TRIGGER_KEY);
+            normalRepayNotifyMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
+        } catch (Exception e) {
+            fatalLog("update_normal_repay_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), e);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean processOneNormalRepayPaybackCallback(NormalRepayNotifyRequestModel callbackRequestModel){
+        long investRepayId = Long.parseLong(callbackRequestModel.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
         InvestRepayModel currentInvestRepay = investRepayMapper.findById(investRepayId);
 
         LoanRepayModel currentLoanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(investMapper.findById(currentInvestRepay.getInvestId()).getLoanId(), currentInvestRepay.getPeriod());
         long loanRepayId = currentLoanRepayModel.getId();
 
-        if (!callbackRequest.isSuccess()) {
+        if (!callbackRequestModel.isSuccess()) {
             logger.error(MessageFormat.format("[Normal Repay {0}] invest payback({1}) callback is not success",
                     String.valueOf(loanRepayId), String.valueOf(investRepayId)));
-            return callbackRequest.getResponseData();
+            return false;
         }
 
         if (currentInvestRepay.getStatus() != RepayStatus.WAIT_PAY) {
             logger.error(MessageFormat.format("[Normal Repay {0}] invest payback({1}) status({2}) is not WAIT_PAY",
                     String.valueOf(loanRepayId), String.valueOf(investRepayId), currentInvestRepay.getStatus().name()));
-            return callbackRequest.getResponseData();
+            return false;
         }
 
-        this.processInvestRepay(loanRepayId, currentInvestRepay);
+        try {
+            this.processInvestRepay(loanRepayId, currentInvestRepay);
+        } catch (AmountTransferException e) {
+            logger.error(MessageFormat.format("[Normal Repay {0}] processInvestRepay fail ({1}) status({2})",
+                    String.valueOf(loanRepayId), String.valueOf(investRepayId), currentInvestRepay.getStatus().name()));
+            return false;
+        }
+
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
         redisWrapperClient.hset(redisKey, String.valueOf(investRepayId), SyncRequestStatus.SUCCESS.name());
-
-        return callbackRequest.getResponseData();
+        return true;
     }
+
 
     @Override
     public String investFeeCallback(Map<String, String> paramsMap, String originalQueryString) {
@@ -609,4 +678,18 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         return isSuccess;
     }
+
+    private void fatalLog(String errMsg, Throwable e) {
+        logger.fatal(errMsg, e);
+        sendSmsErrNotify(MessageFormat.format("{0},{1}", environment, errMsg));
+    }
+
+    private void sendSmsErrNotify(String errMsg) {
+        logger.info("sent normal repay fatal sms message");
+        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("正常还款业务错误。详细信息：{0}", errMsg));
+        smsWrapperClient.sendFatalNotify(dto);
+    }
+
+
+
 }
