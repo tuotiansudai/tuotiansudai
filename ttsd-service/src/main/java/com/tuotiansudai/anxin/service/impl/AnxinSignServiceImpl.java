@@ -264,7 +264,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                     return failBaseDto("连接超时");
                 }
                 String retMessage = tx3102ResVO.getHead().getRetMessage();
-                logger.error("verify anxin captcha code failed. " + retMessage);
+                logger.info("verify anxin captcha code failed. " + retMessage);
                 return failBaseDto(retMessage);
             }
 
