@@ -346,7 +346,7 @@ $pointColor:#ff5400;
       width: 280px;
       height: 300px;
       box-sizing: border-box;
-      padding: 35px 50px 10px;
+      padding: 35px 35px 10px;
       background-color: rgba(0,0,0,0.4);
       background: url("../../images/homepage/base-bg-transport.png") left top repeat\9;
       color:#fff;
@@ -354,12 +354,11 @@ $pointColor:#ff5400;
         color:#ff752a;
       }
       .num-text {
-        float: left;
         width: 100%;
         margin: 0 0 20px;
         .percent {
           color: #ff7200;
-          font-size: 42px;
+          font-size: 40px;
           line-height: 1;
           font-weight: bold;
           margin-left:-5px;
