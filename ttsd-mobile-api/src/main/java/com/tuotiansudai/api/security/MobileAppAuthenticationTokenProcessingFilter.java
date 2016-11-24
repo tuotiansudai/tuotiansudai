@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterBean {
@@ -53,24 +54,13 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
         String token = baseParamDto != null && baseParamDto.getBaseParam() != null ? baseParamDto.getBaseParam().getToken() : null;
         token = Strings.isNullOrEmpty(token) ? bufferedRequestWrapper.getHeader("token") : token;
 
-
         Source source = baseParamDto != null && baseParamDto.getBaseParam() != null && !Strings.isNullOrEmpty(baseParamDto.getBaseParam().getPlatform())
                 ? Source.valueOf(baseParamDto.getBaseParam().getPlatform().toUpperCase()) : null;
 
         SignInResult verifyTokenResult = signInClient.verifyToken(token, source);
-        if (verifyTokenResult == null || !verifyTokenResult.isResult()) {
-            logger.warn(MessageFormat.format("app verify token failed (url={0} baseParam={1})",
-                    bufferedRequestWrapper.getRequestURI(),
-                    baseParamDto != null && baseParamDto.getBaseParam() != null ? baseParamDto.getBaseParam().toString() : ""));
-        }
 
         if (verifyTokenResult != null && verifyTokenResult.isResult()) {
-            List<GrantedAuthority> grantedAuthorities = Lists.transform(verifyTokenResult.getUserInfo().getRoles(), new Function<String, GrantedAuthority>() {
-                @Override
-                public GrantedAuthority apply(String role) {
-                    return new SimpleGrantedAuthority(role);
-                }
-            });
+            List<GrantedAuthority> grantedAuthorities = Lists.transform(verifyTokenResult.getUserInfo().getRoles(), (Function<String, GrantedAuthority>) SimpleGrantedAuthority::new);
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     new MyUser(verifyTokenResult.getToken(), verifyTokenResult.getUserInfo().getLoginName(), "", true, true, true, true, grantedAuthorities, verifyTokenResult.getUserInfo().getMobile()),

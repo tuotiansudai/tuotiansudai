@@ -7,17 +7,19 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointShopService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.ProductMapper;
 import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
-import com.tuotiansudai.point.repository.model.*;
+import com.tuotiansudai.point.repository.model.GoodsType;
+import com.tuotiansudai.point.repository.model.ProductModel;
+import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
+import com.tuotiansudai.point.repository.model.UserAddressModel;
 import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -66,6 +68,9 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
     @Override
     public BaseResponseDto updateUserAddress(UserAddressRequestDto userAddressRequestDto) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
@@ -98,10 +103,12 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     public BaseResponseDto findUserPointsOrders(BaseParamDto baseParamDto) {
         Integer index = baseParamDto.getIndex();
         Integer pageSize = baseParamDto.getPageSize();
-        if (index == null || pageSize == null || index <= 0 || pageSize <= 0) {
+        if (index == null || index <= 0) {
             index = 0;
-            pageSize = 10;
         }
+
+        pageSize = pageValidUtils.validPageSizeLimit(pageSize);
+
         index = (index - 1) * pageSize;
         List<ProductOrderViewDto> productOrderListByLoginName = productOrderMapper.findProductOrderListByLoginName(baseParamDto.getBaseParam().getUserId(), index, pageSize);
         ProductListOrderResponseDto productListOrderResponseDto = new ProductListOrderResponseDto();
@@ -129,9 +136,9 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         List<ExchangeCouponView> exchangeCoupons = Lists.newArrayList();
 
         List<ProductModel> couponProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON));
-        for(ProductModel productModel: couponProducts){
+        for (ProductModel productModel : couponProducts) {
             CouponModel couponModel = couponService.findCouponById(productModel.getCouponId());
-            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getSeq(),productModel.getImageUrl(),productModel.getId(), couponModel);
+            ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
             exchangeCoupons.add(exchangeCouponView);
         }
 
@@ -211,7 +218,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         List<String> description = Lists.newArrayList();
         CouponModel couponModel = couponService.findCouponById(productModel.getCouponId());
         if (productModel.getType() == GoodsType.COUPON && couponModel != null) {
-            description.addAll(productService.getProductDescription(couponModel.getInvestLowerLimit(),couponModel.getProductTypes(),couponModel.getDeadline()));
+            description.addAll(productService.getProductDescription(couponModel.getInvestLowerLimit(), couponModel.getProductTypes(), couponModel.getDeadline()));
         } else {
             description.add(productModel.getDescription());
         }
@@ -261,7 +268,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             return new BaseResponseDto<>(ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getCode(), ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getMsg());
         }
 
-        productService.buyProduct(accountModel.getLoginName(), Long.parseLong(productDetailRequestDto.getProductId()), productModel.getType(), productDetailRequestDto.getNum(), CollectionUtils.isEmpty(userAddressModels ) ? null : userAddressModels.get(0).getId());
+        productService.buyProduct(accountModel.getLoginName(), Long.parseLong(productDetailRequestDto.getProductId()), productModel.getType(), productDetailRequestDto.getNum(), CollectionUtils.isEmpty(userAddressModels) ? null : userAddressModels.get(0).getId());
         return new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
     }
 

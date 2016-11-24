@@ -42,8 +42,8 @@ public class FeedbackController {
                                        @RequestParam(value = "status", required = false) ProcessStatus status,
                                        @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                        @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                       @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                       @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         BasePaginationDataDto<FeedbackModel> feedbackModelPaginationData = feedbackService.getFeedbackPagination(mobile, source, type, status, startTime, endTime, index, pageSize);
         ModelAndView mv = new ModelAndView("feedback-list");
         mv.addObject("mobile", mobile);

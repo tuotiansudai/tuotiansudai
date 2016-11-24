@@ -60,8 +60,8 @@ public class TransferController {
                                                               @RequestParam(name = "transfereeMobile", required = false) String transfereeMobile,
                                                               @RequestParam(name = "loanId", required = false) Long loanId,
                                                               @RequestParam(name = "source", required = false) Source source,
-                                                              @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                                              @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize)  {
+                                                              @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index)  {
+        int pageSize = 10;
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto = investTransferService.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, index, pageSize);
         ModelAndView mv = new ModelAndView("/transfer-list");
         mv.addObject("data",basePaginationDataDto);

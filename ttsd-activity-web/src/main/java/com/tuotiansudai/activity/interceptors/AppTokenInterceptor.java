@@ -37,14 +37,14 @@ public class AppTokenInterceptor extends HandlerInterceptorAdapter {
             if (!Strings.isNullOrEmpty(userAgent) && userAgent.toLowerCase().contains("android")) {
                 userAgentSource = Source.ANDROID;
             }
+
             String token = request.getHeader("token");
             SignInResult signInResult = signInClient.verifyToken(token, userAgentSource);
             if (signInResult != null && signInResult.isResult()) {
-                request.getSession();
                 myAuthenticationUtil.createAuthentication(signInResult.getUserInfo().getLoginName(), Source.WEB);
-                return true;
+            } else {
+                myAuthenticationUtil.removeAuthentication();
             }
-            myAuthenticationUtil.removeAuthentication();
         }
         return true;
     }

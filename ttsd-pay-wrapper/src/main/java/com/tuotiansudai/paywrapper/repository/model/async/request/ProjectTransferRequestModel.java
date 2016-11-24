@@ -137,7 +137,6 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         model.particType = UmPayParticType.PLATFORM.getCode();
         return model;
     }
-
     /**
      * 超投后返款
      *

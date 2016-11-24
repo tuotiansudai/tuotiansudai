@@ -13,7 +13,9 @@
 
     <!-- enable autowire -->
     <context:annotation-config/>
-    <bean class="com.tuotiansudai.spring.session.MyRedisHttpSessionConfiguration"/>
+    <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
+        <property name="cookieSerializer" ref="myDefaultCookieSerializer"/>
+    </bean>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="${point.jedis.pool.maxTotal}"/>

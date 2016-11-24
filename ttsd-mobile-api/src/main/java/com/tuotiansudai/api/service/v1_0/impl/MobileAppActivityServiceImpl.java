@@ -9,6 +9,7 @@ import com.tuotiansudai.api.dto.v1_0.ActivityCenterRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ActivityCenterResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ActivityCenterType;
 import com.tuotiansudai.api.service.v1_0.MobileAppActivityService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,22 +28,24 @@ public class MobileAppActivityServiceImpl implements MobileAppActivityService {
     @Value("${web.static.server}")
     private String staticServer;
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
 
     @Override
     public ActivityCenterResponseDto getAppActivityCenterResponseData(ActivityCenterRequestDto requestDto) {
         Source source = Source.valueOf(requestDto.getBaseParam().getPlatform().toUpperCase());
         Integer index = requestDto.getIndex();
-        Integer pageSize = requestDto.getPageSize();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
         if (null == index) {
             index = 1;
         }
-        if (null == pageSize) {
-            pageSize = 10;
-        }
+
         return fillActivityCenterData(requestDto.getActivityType() == null ? ActivityCenterType.CURRENT : requestDto.getActivityType(), index, pageSize, source);
     }
 
     private ActivityCenterResponseDto fillActivityCenterData(ActivityCenterType activityType, int index, int pageSize, Source source) {
+        pageSize = pageValidUtils.validPageSizeLimit(pageSize);
         List<ActivityCenterDataDto> activityCenterDataDtos = new ArrayList<>();
         List<ActivityModel> activityModels = Lists.newArrayList();
         int totalCount = 0;

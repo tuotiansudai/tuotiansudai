@@ -3,6 +3,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
@@ -38,6 +39,9 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
     public static final String UNREAD_MESSAGE_COUNT_ID_KEY = "app:unread:message:count:ids:{0}";
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
     @Override
     public BaseResponseDto getUserMessages(UserMessagesRequestDto requestDto) {
         String loginName = LoginUserInfo.getLoginName();
@@ -60,6 +64,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     }
 
     private UserMessageResponseDataDto fillMessageDataDto(String loginName, int index, int pageSize) {
+        pageSize = pageValidUtils.validPageSizeLimit(pageSize);
         long totalCount = userMessageMapper.countMessagesByLoginName(loginName, MessageChannel.APP_MESSAGE);
         List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.APP_MESSAGE, (index - 1) * pageSize, pageSize);
         List<UserMessageDto> userMessages = userMessageModels.stream().map(userMessageModel -> {
