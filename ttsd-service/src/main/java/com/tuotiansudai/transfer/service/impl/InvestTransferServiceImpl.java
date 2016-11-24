@@ -1,6 +1,5 @@
 package com.tuotiansudai.transfer.service.impl;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -22,6 +21,7 @@ import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.JobManager;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -364,9 +364,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         items.forEach(transferInvestDetailDto -> {
             if (ContractNoStatus.OLD.name().equals(transferInvestDetailDto.getContractNo())) {
                 transferInvestDetailDto.setContractOld("1");
-            } else if (ContractNoStatus.WAITING.name().equals(transferInvestDetailDto.getContractNo()) || Strings.isNullOrEmpty(transferInvestDetailDto.getContractNo())) {
-                transferInvestDetailDto.setContractCreating("1");
-            } else {
+            } else if (StringUtils.isNotEmpty(transferInvestDetailDto.getContractNo())) {
                 transferInvestDetailDto.setContractOK("1");
             }
         });

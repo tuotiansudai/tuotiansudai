@@ -18,7 +18,7 @@ public interface AnxinSignService {
 
     BaseDto sendCaptcha3101(String loginName, boolean isVoice);
 
-    BaseDto<BaseDataDto> verifyCaptcha3102(String loginName, String captcha, boolean isSkipAuth, String ip);
+    BaseDto verifyCaptcha3102(String loginName, String captcha, boolean isSkipAuth, String ip);
 
     BaseDto switchSkipAuth(String loginName, boolean open);
 
@@ -30,8 +30,8 @@ public interface AnxinSignService {
 
     List<String> queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType);
 
-    BaseDto updateLoanInvestContractNo(long loanId);
-
-    BaseDto updateTransferInvestContractNo(long transferInvestId);
+//    BaseDto updateLoanInvestContractNo(long loanId);
+//
+//    BaseDto updateTransferInvestContractNo(long transferInvestId);
 
 }
