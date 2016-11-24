@@ -20,8 +20,15 @@ require(['jquery', 'layerWrapper','coupon-alert','red-envelope-float','jquery.aj
 				btnText='更多 <i class="fa fa-angle-down"></i> ';
 			}
 			$this.html(btnText);
-
 		});
+
+		//判断页面刷新时是否需要开启或者关闭
+		var activeLen=$showFilterBox.find('span').next('a').filter('.active').length,
+			normalLen=$showFilterBox.length;
+		if(activeLen!=normalLen) {
+			//展开
+			$wrapperList.find('.show-more').trigger('click');
+		}
 	})();
 
 	$(function() {
