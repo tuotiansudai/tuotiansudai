@@ -29,9 +29,8 @@ public class AnxinSignConnectServiceTest {
 
         UserModel userModel = fakeUser();
 
-        Tx3ResVO tx3ResVO = anxinSignConnectService.createAccount3001(userModel);
+        Tx3001ResVO tx3001ResVO = anxinSignConnectService.createAccount3001(userModel);
 
-        Tx3001ResVO tx3001ResVO = (Tx3001ResVO) tx3ResVO;
         assert (tx3001ResVO.getHead().getRetCode().equals(AnxinRetCode.SUCCESS));
     }
 
@@ -39,9 +38,8 @@ public class AnxinSignConnectServiceTest {
     @Test
     public void shouldSendCaptcha3101() throws PKIException {
 
-        Tx3ResVO tx3ResVO = anxinSignConnectService.sendCaptcha3101("4027A45BCB2629E9E05311016B0AA19C", "111", false);
+        Tx3101ResVO tx3101ResVO = anxinSignConnectService.sendCaptcha3101("4027A45BCB2629E9E05311016B0AA19C", "111", false);
 
-        Tx3101ResVO tx3101ResVO = (Tx3101ResVO) tx3ResVO;
         assert (tx3101ResVO.getHead().getRetCode().equals(AnxinRetCode.SUCCESS));
     }
 
@@ -49,9 +47,8 @@ public class AnxinSignConnectServiceTest {
     @Test
     public void shouldVerifyCaptcha3102() throws PKIException {
 
-        Tx3ResVO tx3ResVO = anxinSignConnectService.verifyCaptcha3102("4027A45BCB2629E9E05311016B0AA19C", "111", "111111");
+        Tx3102ResVO tx3102ResVO = anxinSignConnectService.verifyCaptcha3102("4027A45BCB2629E9E05311016B0AA19C", "111", "111111");
 
-        Tx3102ResVO tx3102ResVO = (Tx3102ResVO) tx3ResVO;
         assert (tx3102ResVO.getHead().getRetCode().equals(AnxinRetCode.SUCCESS));
     }
 
