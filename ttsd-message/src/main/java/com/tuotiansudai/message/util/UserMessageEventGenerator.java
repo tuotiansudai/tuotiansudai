@@ -309,7 +309,7 @@ public class UserMessageEventGenerator {
     @Transactional
     public void generateCouponExpiredAlertEvent(String loginName) {
         long times = loginLogMapper.countSuccessTimesOnDate(loginName, new Date(), MessageFormat.format("login_log_{0}", new DateTime().toString("yyyyMM")));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy{年}MM{月}dd{日}");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
         String endTime = simpleDateFormat.format(DateTime.now().plusDays(5).withTimeAtStartOfDay().toDate());
         if (times == 1) {
             MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.COUPON_5DAYS_EXPIRED_ALERT);
@@ -394,7 +394,8 @@ public class UserMessageEventGenerator {
         String title = messageModel.getTitle();
         String appTitle = messageModel.getAppTitle();
         loginNames.forEach(loginName -> {
-            String content = MessageFormat.format(messageModel.getTemplate(), loginName);
+            String userName = userMessageMetaMapper.findUserNameByLoginName(loginName);
+            String content = MessageFormat.format(messageModel.getTemplate(), userName);
 
             UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
             userMessageMapper.create(userMessageModel);

@@ -81,7 +81,7 @@ VALUES ('{0}元推荐奖励已存入您的账户，请查收！', 'RECOMMEND_AWA
                                                                                         deleted != 1));
 INSERT INTO `aa`.`jpush_alert` (`name`, `push_type`, `push_source`, `push_user_type`, `status`, `content`, `jump_to`, `created_time`, `created_by`, `is_automatic`, `message_id`)
 VALUES
-  ('您有一张{0}元投资红包即将失效', 'COUPON_5DAYS_EXPIRED_ALERT', 'ALL', 'ALL', 'ENABLED', '尊敬的用户，您有一张{0}元投资红包即将失效（有效期至：{1}），请尽快使用！',
+  ('您有一张{0}即将失效', 'COUPON_5DAYS_EXPIRED_ALERT', 'ALL', 'ALL', 'ENABLED', '尊敬的用户，您有一张{0}即将失效（有效期至：{1}），请尽快使用！',
                        'MESSAGE_CENTER', '2016-11-1', 'sidneygao', '1', (SELECT id
                                                                          FROM `aa`.`message`
                                                                          WHERE

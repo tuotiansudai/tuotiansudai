@@ -8,6 +8,10 @@
         select id, name, base_rate as baseRate, activity_rate as activityRate from loan where id = ${id}
     </select>
 
+    <select id="findUserNameByLoginName" parameterType="String">
+        select user_name from user where login_name = #{loginName}
+    </select>
+
     <select id="findLoanByLoanRepayId" parameterType="long" resultType="hashmap">
         select loan.id, loan.name from loan join loan_repay where loan.id = loan_repay.loan_id and loan_repay.id = #{loanRepayId}
     </select>
@@ -37,7 +41,7 @@
         from user_coupon
         join coupon on user_coupon.coupon_id = coupon.id
         where user_coupon.login_name = #{loginName}
-        and user_coupon.status != 'SUCCESS'
+        and (user_coupon.status != 'SUCCESS' or user_coupon.status is null)
         and datediff(user_coupon.end_time, now()) = 5
     </select>
 
@@ -89,7 +93,7 @@
 
     <select id="findBirthDayUsers" resultType="string">
         select login_name
-        from account
+        from user
         where (if(length(identity_number) = 18, substring(identity_number,11,4), substring(identity_number,9,4))) = DATE_FORMAT(now(),'%m%d')
     </select>
 

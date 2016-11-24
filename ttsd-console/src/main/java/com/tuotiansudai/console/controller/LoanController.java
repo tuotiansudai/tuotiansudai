@@ -104,6 +104,7 @@ public class LoanController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> updateLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
+        loanCreateRequestDto.getLoan().setCreatedBy(LoginUserInfo.getLoginName());
         return loanCreateService.updateLoan(loanCreateRequestDto);
     }
 
