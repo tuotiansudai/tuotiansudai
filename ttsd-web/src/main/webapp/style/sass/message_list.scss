@@ -40,22 +40,28 @@
         .jump-detail {
           cursor: pointer;
           color: #808080;
+          a {
+            color: #808080;
+          }
           &:hover {
             color: #ff770f;
             text-decoration: underline;
+            a {
+              color: #ff770f;
+              text-decoration: underline;
+            }
           }
         }
 
       }
       &.unread {
         td {
-          color: #4c4c4c;
-        }
-        a {
           color: #000;
-          &:hover {
-            text-decoration: underline;
-            color: #ff770f;
+        }
+        .jump-detail {
+          color: #000;
+          a {
+            color: #000;
           }
         }
         .icon {
@@ -74,6 +80,9 @@
     margin-top: 10px;
     color: #ff7200;
     font-weight: bold;
+    a {
+      color: #ff752a;
+    }
   }
   .meta {
     font-size: 14px;

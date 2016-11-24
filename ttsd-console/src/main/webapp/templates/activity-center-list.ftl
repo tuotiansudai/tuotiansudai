@@ -127,7 +127,7 @@
                     </tr>
                     <#else>
                     <tr>
-                        <td colspan="10">暂时没有活动</td>
+                        <td colspan="13">暂时没有活动</td>
                     </tr>
                     </#list>
 

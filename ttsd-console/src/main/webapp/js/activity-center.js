@@ -36,13 +36,13 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                         if ($self.hasClass('webPicture')) {
                             $('.webPictureUrl').val(data.title);
                             $('.webPictureImage').html('');
-                            $('.webPictureImage').append('<img style="width:100%" src="' + data.title + '" alt="缩略图">');
+                            $('.webPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
 
                         }
                         if ($self.hasClass('appPicture')) {
                             $('.appPictureUrl').val(data.title)
                             $('.appPictureImage').html('');
-                            $('.appPictureImage').append('<img style="width:100%" src="' + data.title + '" alt="展示图">');
+                            $('.appPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="展示图">');
                         }
                     }
                 });
@@ -82,21 +82,14 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
 
         };
 
-        //$('select.appActivityUrl').change(function () {
-        //    var appActivityUrl = $(this).val();
-        //    if (appActivityUrl == '') {
-        //        $('.other-to-link').removeClass('app-push-link').val('');
-        //    } else {
-        //        $('.other-to-link').addClass('app-push-link').val('');
-        //    }
-        //
-        //}).trigger('change');
-        //
-        //$('.other-link-text').on('focusout',function(e){
-        //    e.preventDefault();
-        //    $('.appActivityUrl').find('option:contains("其他")').val($(this).val()).trigger('click');
-        //});
-
+        $('select.appActivityUrl').change(function () {
+            var appActivityUrl = $(this).val();
+            if (appActivityUrl == '') {
+                $('.jump-to-link').removeClass('app-push-link').val('');
+            } else {
+                $('.jump-to-link').addClass('app-push-link').val('');
+            }
+        }).trigger('change');
 
         /**
          * @msg  {[string]} //文字信息
@@ -147,14 +140,24 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                     return false;
                 }
                 if ($('#notLongTerm').prop("checked")) {
-                        if($('.activatedTime').val() == ''){
-                            showErrorMessage('活动起期不能为空', $('.activatedTime', $activityCenterForm));
-                            return false;
-                        }
-                        if($('.expiredTime').val() == ''){
-                            showErrorMessage('活动止期不能为空', $('.expiredTime', $activityCenterForm));
-                            return false;
-                        }
+                    if($('.activatedTime').val() == ''){
+                        showErrorMessage('活动起期不能为空', $('.activatedTime', $activityCenterForm));
+                        return false;
+                    }
+                    if($('.expiredTime').val() == ''){
+                        showErrorMessage('活动止期不能为空', $('.expiredTime', $activityCenterForm));
+                        return false;
+                    }
+                }
+
+                var appActivityUrl = $('.appActivityUrl').val();
+                var jumpToLink = $('.jump-link-text').val();
+                if (appActivityUrl == '' && jumpToLink == '') {
+                    showErrorMessage('定位地址不能为空', $('.jump-link-text', $activityCenterForm));
+                    return false;
+                }
+                if(appActivityUrl != ''){
+                    $('.jump-link-text').val('' );
                 }
 
             },

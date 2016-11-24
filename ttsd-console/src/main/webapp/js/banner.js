@@ -1,7 +1,5 @@
 require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSelect', 'jquery-ui', 'csrf'], function ($) {
-
     $(function () {
-
         var $errorDom = $('.form-error'),
             $bannerForm = $('.banner-form'),
             $submitBtn = $('#btnSave'),
@@ -43,19 +41,14 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
             return defer.promise();
         };
 
-        //$('select.appUrl').change(function () {
-        //    var appUrl = $(this).val();
-        //    if (appUrl == '') {
-        //        $('.other-to-link').removeClass('app-push-link').val('');
-        //    } else {
-        //        $('.other-to-link').addClass('app-push-link').val('');
-        //    }
-        //}).trigger('change');
-        //
-        //$('.other-link-text').on('focusout',function(e){
-        //    e.preventDefault();
-        //    $('.appUrl').find('option:contains("其他")').val($(this).val()).trigger('click');
-        //});
+        $('select.appUrl').change(function () {
+            var appUrl = $(this).val();
+            if (appUrl == '') {
+                $('.jump-to-link').removeClass('app-push-link').val('');
+            } else {
+                $('.jump-to-link').addClass('app-push-link').val('');
+            }
+        }).trigger('change');
 
         $('.webImageUrl,.appImageUrl').on('change', function () {
             var $self = $(this),
@@ -81,12 +74,12 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                         if ($self.hasClass('webImageUrl')) {
                             $('.banner-webImageUrl').val(data.title);
                             $('.webImageUrlImage').html('');
-                            $('.webImageUrlImage').append('<img style="width:100%" src="' + data.title + '" alt="大图">');
+                            $('.webImageUrlImage').append('<img style="width:100%" src="/' + data.title + '" alt="大图">');
                         }
                         if ($self.hasClass('appImageUrl')) {
                             $('.banner-appImageUrl').val(data.title)
                             $('.appImageUrlImage').html('');
-                            $('.appImageUrlImage').append('<img style="width:100%" src="' + data.title + '" alt="小图">');
+                            $('.appImageUrlImage').append('<img style="width:100%" src="/' + data.title + '" alt="小图">');
                         }
                     }
                 });
@@ -134,6 +127,18 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
             if (!IsURL($("input[name='url']").val())) {
                 showErrorMessage("链接网址格式不正确,请以http://或 https://开始");
                 return false;
+            }
+
+            var appUrl = $('.appUrl').val();
+            var jumpToLink = $('.jump-link-text').val();
+
+            if (appUrl == '' && jumpToLink == '') {
+                showErrorMessage('定位地址不能为空', $('.jump-link-text', curform));
+                return false;
+            }
+
+            if(appUrl != ''){
+                $('.jump-link-text').val('' );
             }
 
             if (!IsURL($("input[name='sharedUrl']").val())) {
