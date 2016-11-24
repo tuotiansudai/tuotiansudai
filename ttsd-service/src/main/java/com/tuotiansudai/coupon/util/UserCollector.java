@@ -1,10 +1,13 @@
 package com.tuotiansudai.coupon.util;
 
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.UserModel;
+
 import java.util.List;
 
 public interface UserCollector {
 
     List<String> collect(long couponId);
 
-    boolean contains(long couponId, String loginName);
+    boolean contains(CouponModel couponModel, UserModel userModel);
 }

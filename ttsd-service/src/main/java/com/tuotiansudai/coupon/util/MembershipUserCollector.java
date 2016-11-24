@@ -9,6 +9,7 @@ import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,13 +49,13 @@ public class MembershipUserCollector implements UserCollector {
     }
 
     @Override
-    public boolean contains(long couponId, String loginName) {
-        CouponModel couponModel = couponMapper.findById(couponId);
+    public boolean contains(CouponModel couponModel, UserModel userModel) {
+        if (couponModel == null || userModel == null) {
+            return false;
+        }
 
-        UserGroup userGroup = couponModel.getUserGroup();
+        MembershipModel membershipModel = userMembershipEvaluator.evaluate(userModel.getLoginName());
 
-        MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-
-        return membershipModel != null && mapping.get(membershipModel.getLevel()) == userGroup;
+        return membershipModel != null && mapping.get(membershipModel.getLevel()) == couponModel.getUserGroup();
     }
 }

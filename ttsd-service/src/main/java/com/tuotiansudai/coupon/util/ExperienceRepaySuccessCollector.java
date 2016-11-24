@@ -1,8 +1,8 @@
 package com.tuotiansudai.coupon.util;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -31,20 +31,19 @@ public class ExperienceRepaySuccessCollector implements UserCollector {
     }
 
     @Override
-    public boolean contains(long couponId, String loginName) {
+    public boolean contains(CouponModel couponModel, UserModel userModel) {
+        if (userModel == null) {
+            return false;
+        }
+
         List<LoanModel> loanModels = loanMapper.findByProductType(LoanStatus.RAISING,Lists.newArrayList(ProductType.EXPERIENCE),ActivityType.NEWBIE);
         if (CollectionUtils.isEmpty(loanModels)) {
             return false;
         }
 
         for (final LoanModel loanModel : loanModels) {
-            List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(loanModel.getId(), loginName);
-            boolean isRepayComplete = Iterators.all(investModels.iterator(), new Predicate<InvestModel>() {
-                @Override
-                public boolean apply(InvestModel input) {
-                    return investRepayMapper.findByInvestIdAndPeriod(input.getId(), loanModel.getPeriods()).getStatus() == RepayStatus.COMPLETE;
-                }
-            });
+            List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(loanModel.getId(), userModel.getLoginName());
+            boolean isRepayComplete = Iterators.all(investModels.iterator(), input -> investRepayMapper.findByInvestIdAndPeriod(input.getId(), loanModel.getPeriods()).getStatus() == RepayStatus.COMPLETE);
             if (!isRepayComplete) {
                 return false;
             }
