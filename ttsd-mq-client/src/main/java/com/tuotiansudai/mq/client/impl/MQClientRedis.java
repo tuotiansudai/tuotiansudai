@@ -49,7 +49,12 @@ public class MQClientRedis implements MQClient, InitializingBean {
         while (true) {
             List<String> messages = jedis.brpop(0, generateRedisKeyOfQueue(queue));
             logger.debug("[MQ] receive a message, prepare to consume");
-            consumer.accept(new Message(String.valueOf(Clock.systemUTC().millis()), messages.get(1), "", ""));
+            try {
+                consumer.accept(new Message(String.valueOf(Clock.systemUTC().millis()), messages.get(1), "", ""));
+            } catch (Exception e) {
+                jedis.rpush(generateRedisKeyOfQueue(queue), messages.get(1));
+                logger.error("[MQ] consume message failed", e);
+            }
             logger.info("[MQ] consume message success");
         }
     }
