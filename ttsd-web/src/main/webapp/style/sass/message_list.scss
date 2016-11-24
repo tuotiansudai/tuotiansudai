@@ -43,6 +43,10 @@
           &:hover {
             color: #ff770f;
             text-decoration: underline;
+            a {
+              color: #ff770f;
+              text-decoration: underline;
+            }
           }
         }
 
@@ -51,12 +55,8 @@
         td {
           color: #4c4c4c;
         }
-        a {
+        .jump-detail {
           color: #000;
-          &:hover {
-            text-decoration: underline;
-            color: #ff770f;
-          }
         }
         .icon {
           background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAOCAYAAAAvxDzwAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NjdBODIyODMxRTgzMTFFNjhCQkNCNUNGODA0N0YwODEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NjdBODIyODQxRTgzMTFFNjhCQkNCNUNGODA0N0YwODEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo2N0E4MjI4MTFFODMxMUU2OEJCQ0I1Q0Y4MDQ3RjA4MSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo2N0E4MjI4MjFFODMxMUU2OEJCQ0I1Q0Y4MDQ3RjA4MSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Ps5oCv0AAAFXSURBVHjanNRPKARhGMfx2TUXFxxWbnJwkIgcyF6EHCkOavfmIiWSi6SklDhxc+CAw4alJKGQk3Dzpxw2h73bu5Bd36d+aZpGmnnrM4d53vnt877zzsZK006T4zgZNKLMiTa+8YK0y2UHzZjBRsTAcSxalgW2YF438tgPGZbGAtYwGeditjGlbvtChA1gCytYtSzXU1xHJY7Qg/t/wmzOHjYxh1q76fomLaMKZ+jC8x9hHTjGofbvd7gBk2cVeopuvPrq9gLPcYURlLzFeECgTZjAhzqt8dTqcYk3pPDlfzgosBy7qEAOF0igDtfa4xiWgs6tPzChpdiykhjUkvM6uNbxGDrRjqwaCAy05dxqyUkFfWIIbfqSRlUvoBdFdV3tDSxq8y3sQRMLvs5z6tI73jGMGz3bYFn2lh91OJ9wgP6QX8odWnFiWTH9OWT1C1FHUXuc+hFgAJwaTVzTxNOFAAAAAElFTkSuQmCC") no-repeat left center;
