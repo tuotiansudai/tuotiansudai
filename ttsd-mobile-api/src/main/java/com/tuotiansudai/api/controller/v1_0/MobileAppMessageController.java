@@ -22,17 +22,6 @@ public class MobileAppMessageController extends MobileAppBaseController {
         return mobileAppUserMessageService.getUnreadMessageCount(baseParamDto);
     }
 
-    @RequestMapping(value = "/get/userMessage/{userMessageId}", method = RequestMethod.GET)
-    @ResponseBody
-    public BaseResponseDto<UserMessageViewDto> getUserMessage(@PathVariable long userMessageId) {
-        UserMessageViewDto userMessageViewDto = mobileAppUserMessageService.getUserMessageModelByIdAndLoginName(userMessageId, getLoginName());
-        BaseResponseDto<UserMessageViewDto> baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
-
-        baseResponseDto.setData(userMessageViewDto);
-
-        return baseResponseDto;
-    }
-
     @RequestMapping(value = "/get/readAll", method = RequestMethod.POST)
     public BaseResponseDto readAll(@RequestBody BaseParamDto baseParamDto) {
         return mobileAppUserMessageService.readAll(baseParamDto);

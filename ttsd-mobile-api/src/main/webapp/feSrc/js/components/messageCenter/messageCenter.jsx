@@ -32,7 +32,7 @@ class messageCenter extends React.Component {
     componentDidMount() {
         changeTitle('消息中心');
         ajax({
-            url: `/v1.0/get/userMessage/${this.props.params.id}`,
+            url: `/message-center/userMessage/${this.props.params.id}`,
             type: 'get',
             done: function (data) {
                 this.setState(data);
@@ -55,6 +55,10 @@ class messageCenter extends React.Component {
     }
 
     render() {
+        var btn='';
+        if(this.state.data.appUrl){
+            btn=<section className="info clearfix"><a onTouchTap={this.goTo.bind(this)} href={this.state.data.appUrl}>去看看</a></section>;
+        }
         return (
             <div ref="scrollWrap" className={main}>
                 <article>
@@ -64,9 +68,7 @@ class messageCenter extends React.Component {
                     </section>
                     <section className="content" dangerouslySetInnerHTML={{__html: this.state.data.content}}>
                     </section>
-                    <section className="info clearfix">
-                        <a onTouchTap={this.goTo.bind(this)} href={this.state.data.appUrl}>去看看</a>
-                    </section>
+                    {btn}
                 </article>
             </div>
         );

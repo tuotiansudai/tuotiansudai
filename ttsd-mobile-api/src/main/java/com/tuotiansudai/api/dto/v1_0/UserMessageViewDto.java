@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tuotiansudai.enums.AppUrl;
 
 import java.util.Date;
 
@@ -15,12 +16,12 @@ public class UserMessageViewDto extends BaseResponseDataDto {
     public UserMessageViewDto() {
     }
 
-    public UserMessageViewDto(long userMessageId, String title, String content, Date createdTime, String appUrl) {
+    public UserMessageViewDto(long userMessageId, String title, String content, Date createdTime, AppUrl appUrl) {
         this.userMessageId = userMessageId;
         this.title = title;
         this.content = content;
         this.createdTime = createdTime;
-        this.appUrl = appUrl;
+        this.appUrl = appUrl == null ? null : appUrl.getDescription();
     }
 
     public long getUserMessageId() {
