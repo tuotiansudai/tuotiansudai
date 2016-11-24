@@ -122,7 +122,7 @@
     </script>
 
 
-    <div class="pagination" data-url="/investor/invest-list-data" data-page-size="10">
+    <div class="pagination" data-url="/investor/invest-list-data">
     </div>
 </div>
 </@global.main>

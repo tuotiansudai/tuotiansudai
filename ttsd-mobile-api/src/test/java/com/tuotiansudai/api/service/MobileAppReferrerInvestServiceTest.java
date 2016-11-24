@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReferrerInvestListRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReferrerInvestListResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppReferrerInvestServiceImpl;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.service.impl.ReferrerManageServiceImpl;
@@ -29,13 +30,17 @@ public class MobileAppReferrerInvestServiceTest extends ServiceTestBase {
     @Mock
     private ReferrerManageServiceImpl referrerManageService;
 
+    @Mock
+    private PageValidUtils pageValidUtils;
+
     @Test
     public void shouldGenerateReferrerInvestListIsOk() {
         List<ReferrerManageView> referrerManageViews = fakeReferrerManageView(2);
         ReflectionTestUtils.setField(referrerManageService,"userReward","0.1|0.2|0.3");
         ReflectionTestUtils.setField(referrerManageService,"staffReward","0.1|0.2|0.3|0.4");
         when(referrerManageMapper.findReferInvestList(anyString(), anyString(), any(Date.class), any(Date.class), anyString(), anyInt(), anyInt())).thenReturn(referrerManageViews);
-        when(referrerManageMapper.findReferInvestCount(anyString(), anyString(), any(Date.class), any(Date.class),anyString())).thenReturn(referrerManageViews.size());
+        when(referrerManageMapper.findReferInvestCount(anyString(), anyString(), any(Date.class), any(Date.class), anyString())).thenReturn(referrerManageViews.size());
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         ReferrerInvestListRequestDto referrerInvestListRequestDto = new ReferrerInvestListRequestDto();
         referrerInvestListRequestDto.setReferrerId("loginName");
         referrerInvestListRequestDto.setPageSize(10);

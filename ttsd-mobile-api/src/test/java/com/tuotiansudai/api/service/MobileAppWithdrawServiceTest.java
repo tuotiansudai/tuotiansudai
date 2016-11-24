@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppWithdrawServiceImpl;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -39,6 +40,8 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
     private IdGenerator idGenerator;
     @Mock
     private WithdrawMapper withdrawMapper;
+    @Mock
+    private PageValidUtils pageValidUtils;
 
     @Test
     public void shouldGenerateWithdrawRequestIsOk() {
@@ -82,8 +85,9 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
         withdrawModels.add(withdrawModel1);
         withdrawModels.add(withdrawModel2);
         when(withdrawMapper.findWithdrawCount(anyString(), anyString(), any(WithdrawStatus.class), any(Source.class), any(Date.class), any(Date.class))).thenReturn(2);
-        when(withdrawMapper.findWithdrawPagination(anyString(),anyString(),
-                any(WithdrawStatus.class),any(Source.class),anyInt(),anyInt(),any(Date.class),any(Date.class))).thenReturn(withdrawModels);
+        when(withdrawMapper.findWithdrawPagination(anyString(), anyString(),
+                any(WithdrawStatus.class), any(Source.class), anyInt(), anyInt(), any(Date.class), any(Date.class))).thenReturn(withdrawModels);
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("loginName");
         WithdrawListRequestDto withdrawListRequestDto = new WithdrawListRequestDto();
