@@ -53,8 +53,8 @@ public class MQClientRedis implements MQClient, InitializingBean {
             } catch (Exception e) {
                 logger.error("[MQ] consume message failed", e);
                 try {
-                    Thread.sleep(30 * 1000);
                     jedis.rpush(generateRedisKeyOfQueue(queue), messages.get(1));
+                    Thread.sleep(30 * 1000);
                 } catch (InterruptedException ignored) {
                 }
             }
