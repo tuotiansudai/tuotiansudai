@@ -12,6 +12,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -78,7 +79,7 @@ public class LoanServiceImpl implements LoanService {
         if (LoanStatus.REPAYING == status) {
             count = loanMapper.findCountRepayingByAgentLoginName(loginName, startTime, endTime);
             if (count > 0) {
-                int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
+                int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
                 index = index > totalPages ? totalPages : index;
                 loanModels = loanMapper.findRepayingPaginationByAgentLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
             }
@@ -87,7 +88,7 @@ public class LoanServiceImpl implements LoanService {
         if (LoanStatus.COMPLETE == status) {
             count = loanMapper.findCountCompletedByAgentLoginName(loginName, startTime, endTime);
             if (count > 0) {
-                int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
+                int totalPages = PaginationUtil.calculateMaxPage(count,pageSize);
                 index = index > totalPages ? totalPages : index;
                 loanModels = loanMapper.findCompletedPaginationByAgentLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
             }
@@ -96,7 +97,7 @@ public class LoanServiceImpl implements LoanService {
         if (LoanStatus.CANCEL == status) {
             count = loanMapper.findCountCanceledByAgentLoginName(loginName, startTime, endTime);
             if (count > 0) {
-                int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
+                int totalPages = PaginationUtil.calculateMaxPage(count,pageSize);
                 index = index > totalPages ? totalPages : index;
                 loanModels = loanMapper.findCanceledPaginationByAgentLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
             }
@@ -148,7 +149,7 @@ public class LoanServiceImpl implements LoanService {
                 loanListDto.setExtraLoanRateModels(fillExtraLoanRate(extraLoanRateModels));
             }
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
-            loanListDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : "");
+            loanListDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : null);
             loanListDtos.add(loanListDto);
         }
         return loanListDtos;
@@ -219,7 +220,7 @@ public class LoanServiceImpl implements LoanService {
                 }
                 loanItemDto.setDuration(loanModel.getDuration());
                 double rate = extraLoanRateMapper.findMaxRateByLoanId(loanModel.getId());
-                String extraSource = "";
+                List<Source> extraSource = Lists.newArrayList();
                 boolean activity = false;
                 String activityDesc = "";
                 LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
@@ -230,7 +231,7 @@ public class LoanServiceImpl implements LoanService {
                 }
                 if (rate > 0) {
                     loanItemDto.setExtraRate(rate * 100);
-                    loanItemDto.setExtraSource(extraSource);
+                    loanItemDto.setExtraSource((extraSource.size() == 1 && extraSource.contains(Source.MOBILE)) ? Source.MOBILE.name() : "");
                 }
                 loanItemDto.setActivity(activity);
                 loanItemDto.setActivityDesc(activityDesc);

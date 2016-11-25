@@ -9,6 +9,7 @@
     <resultMap id="bookingLoanMap" type="BookingLoanModel">
         <id column="id" property="id"/>
         <result column="mobile" property="mobile"/>
+        <result column="login_name" property="loginName"/>
         <result column="source" property="source"/>
         <result column="booking_time" property="bookingTime"/>
         <result column="product_type" property="productType"/>
@@ -26,9 +27,9 @@
 
     <insert id="create" parameterType="BookingLoanModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`booking_loan`
-        (mobile,source,booking_time,product_type,amount,notice_time,status,create_time,update_time)
+        (login_name,mobile,source,booking_time,product_type,amount,notice_time,status,create_time,update_time)
         VALUES
-        (#{mobile},#{source},#{bookingTime},#{productType},#{amount},#{noticeTime},#{status},#{createTime},#{updateTime})
+        (#{loginName},#{mobile},#{source},#{bookingTime},#{productType},#{amount},#{noticeTime},#{status},#{createTime},#{updateTime})
     </insert>
 
     <update id="update" parameterType="BookingLoanModel">

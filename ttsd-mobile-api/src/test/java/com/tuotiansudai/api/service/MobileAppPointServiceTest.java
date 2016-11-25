@@ -4,7 +4,8 @@ package com.tuotiansudai.api.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppPointServiceImpl;
-import com.tuotiansudai.point.dto.SignInPointDto;
+import com.tuotiansudai.api.util.PageValidUtils;
+import com.tuotiansudai.point.repository.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
@@ -52,6 +53,9 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
     @Mock
     private SignInService signInService;
 
+    @Mock
+    private PageValidUtils pageValidUtils;
+
     @Test
     public void shouldQueryPointBillsIsOk() {
         PointBillModel pointBillModel = new PointBillModel();
@@ -68,6 +72,7 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
         when(accountMapper.findByLoginName(anyString())).thenReturn(new AccountModel());
         when(pointBillMapper.findPointBillPagination(anyString(), anyInt(), anyInt(), any(Date.class), any(Date.class), any(ArrayList.class))).thenReturn(pointBillModelList);
         when(pointBillMapper.findCountPointBillPagination(anyString(), any(Date.class), any(Date.class), any(ArrayList.class))).thenReturn(1L);
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
 
         PointBillRequestDto pointBillRequestDto = new PointBillRequestDto();
         pointBillRequestDto.setIndex(1);
@@ -82,38 +87,6 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
         assertEquals(1000, Long.parseLong(baseResponseDto.getData().getPointBills().get(0).getPoint()));
     }
 
-    @Test
-    public void shouldQueryPointTaskIsOk() {
-        PointTaskModel pointTaskModel = new PointTaskModel();
-        pointTaskModel.setPoint(60);
-        pointTaskModel.setName(PointTask.BIND_BANK_CARD);
-        pointTaskModel.setCreatedTime(new Date());
-        pointTaskModel.setId(111);
-
-        List<PointTaskModel> pointTaskModels = Lists.newArrayList();
-        pointTaskModels.add(pointTaskModel);
-
-        UserPointTaskModel userPointTaskModel = new UserPointTaskModel();
-        userPointTaskModel.setLoginName("loginName");
-        userPointTaskModel.setCreatedTime(new Date());
-        userPointTaskModel.setPointTask(pointTaskModel);
-
-        when(pointTaskMapper.findCountPointTaskPagination()).thenReturn(1L);
-        when(pointTaskMapper.findPointTaskPagination(anyInt(), anyInt())).thenReturn(pointTaskModels);
-        when(userPointTaskMapper.findByLoginNameAndTask(anyString(), any(PointTask.class))).thenReturn(Lists.newArrayList(userPointTaskModel));
-        PointTaskRequestDto pointTaskRequestDto = new PointTaskRequestDto();
-        pointTaskRequestDto.setIndex(1);
-        pointTaskRequestDto.setPageSize(10);
-        BaseParam baseParam = new BaseParam();
-        baseParam.setUserId("admin");
-        pointTaskRequestDto.setBaseParam(baseParam);
-
-        BaseResponseDto<PointTaskListResponseDataDto> baseResponseDto = mobileAppPointService.queryPointTaskList(pointTaskRequestDto);
-
-        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
-        assertEquals(PointTask.BIND_BANK_CARD, baseResponseDto.getData().getPointTasks().get(0).getPointTaskType());
-        assertEquals(60, Long.parseLong(baseResponseDto.getData().getPointTasks().get(0).getPoint()));
-    }
 
     @Test
     public void shouldGetLastSignInTimeIsOk() {

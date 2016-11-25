@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.BookingLoanService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.PaginationUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class BookingLoanServiceImpl implements BookingLoanService {
     public void create(String loginName, ProductType productType, String bookingAmount) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         BookingLoanModel bookingLoanModel = new BookingLoanModel(
+                loginName,
                 userModel != null ? userModel.getMobile() : null,
                 Source.WEB,
                 DateTime.now().toDate(),
@@ -63,25 +65,21 @@ public class BookingLoanServiceImpl implements BookingLoanService {
         }
 
         long count = bookingLoanMapper.findCountBookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status);
-        int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
+        int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
         index = index > totalPages ? totalPages : index;
 
         List<BookingLoanModel> bookingLoanModels = bookingLoanMapper.findBookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, (index - 1) * pageSize, pageSize);
         List<BookingLoanPaginationItemDataDto> items = Lists.newArrayList();
         if (count > 0) {
-            items = Lists.transform(bookingLoanModels, new com.google.common.base.Function<BookingLoanModel, BookingLoanPaginationItemDataDto>() {
-                @Override
-                public BookingLoanPaginationItemDataDto apply(BookingLoanModel bookingLoanModel) {
-                    BookingLoanPaginationItemDataDto bookingLoanPaginationItemDataDto = new BookingLoanPaginationItemDataDto(bookingLoanModel);
-                    String loginName = userMapper.findByMobile(bookingLoanPaginationItemDataDto.getMobile()).getLoginName();
-                    AccountModel accountModel = accountMapper.findByLoginName(loginName);
-                    bookingLoanPaginationItemDataDto.setUserName(accountModel.getUserName());
-                    return bookingLoanPaginationItemDataDto;
-                }
+            items = Lists.transform(bookingLoanModels, bookingLoanModel -> {
+                BookingLoanPaginationItemDataDto bookingLoanPaginationItemDataDto = new BookingLoanPaginationItemDataDto(bookingLoanModel);
+                UserModel userModel = userMapper.findByMobile(bookingLoanPaginationItemDataDto.getMobile());
+                bookingLoanPaginationItemDataDto.setUserName(userModel.getUserName());
+                return bookingLoanPaginationItemDataDto;
             });
 
         }
-        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, pageSize, count, items);
+        BasePaginationDataDto<BookingLoanPaginationItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, items);
         basePaginationDataDto.setStatus(true);
         return basePaginationDataDto;
     }
@@ -92,18 +90,13 @@ public class BookingLoanServiceImpl implements BookingLoanService {
         final int pageSize = 9999999;
         long count = bookingLoanMapper.findCountBookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status);
         List<BookingLoanModel> bookingLoanModels = bookingLoanMapper.findBookingLoanList(productType, bookingTimeStartTime, bookingTimeEndTime, mobile, noticeTimeStartTime, noticeTimeEndTime, source, status, (index - 1) * pageSize, pageSize);
-        List<BookingLoanPaginationItemDataDto> items = Lists.newArrayList();
-        List<List<String>> csvData = new ArrayList<>();
+        List<List<String>> csvData = Lists.newArrayList();
         if (count > 0) {
-            items = Lists.transform(bookingLoanModels, new com.google.common.base.Function<BookingLoanModel, BookingLoanPaginationItemDataDto>() {
-                @Override
-                public BookingLoanPaginationItemDataDto apply(BookingLoanModel bookingLoanModel) {
-                    BookingLoanPaginationItemDataDto bookingLoanPaginationItemDataDto = new BookingLoanPaginationItemDataDto(bookingLoanModel);
-                    String loginName = userMapper.findByMobile(bookingLoanPaginationItemDataDto.getMobile()).getLoginName();
-                    AccountModel accountModel = accountMapper.findByLoginName(loginName);
-                    bookingLoanPaginationItemDataDto.setUserName(accountModel.getUserName());
-                    return bookingLoanPaginationItemDataDto;
-                }
+            List<BookingLoanPaginationItemDataDto> items = Lists.transform(bookingLoanModels, bookingLoanModel -> {
+                BookingLoanPaginationItemDataDto bookingLoanPaginationItemDataDto = new BookingLoanPaginationItemDataDto(bookingLoanModel);
+                UserModel userModel = userMapper.findByMobile(bookingLoanPaginationItemDataDto.getMobile());
+                bookingLoanPaginationItemDataDto.setUserName(userModel.getUserName());
+                return bookingLoanPaginationItemDataDto;
             });
             for (BookingLoanPaginationItemDataDto item : items) {
                 List<String> dataModel = Lists.newArrayList();

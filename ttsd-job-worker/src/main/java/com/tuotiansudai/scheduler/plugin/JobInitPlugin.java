@@ -1,11 +1,9 @@
 package com.tuotiansudai.scheduler.plugin;
 
-import com.tuotiansudai.activity.job.CalculateTravelLuxuryPrizeJob;
 import com.tuotiansudai.job.*;
 import com.tuotiansudai.jpush.job.AutoJPushAlertBirthDayJob;
 import com.tuotiansudai.jpush.job.AutoJPushAlertBirthMonthJob;
 import com.tuotiansudai.jpush.job.AutoJPushNoInvestAlertJob;
-import com.tuotiansudai.point.job.ImitateLotteryJob;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.quartz.CronScheduleBuilder;
@@ -41,15 +39,17 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.InvestCallBack.name().equalsIgnoreCase(schedulerName)) {
             createInvestCallBackJobIfNotExist();
         }
+        if (JobType.NormalRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
+            createNormalRepayCallBackJobIfNotExist();
+        }
+        if (JobType.AdvanceRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
+            createAdvanceRepayCallBackJobIfNotExist();
+        }
         if (JobType.InvestTransferCallBack.name().equalsIgnoreCase(schedulerName)) {
             createInvestTransferCallBackJobIfNotExist();
         }
         if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
             createCalculateDefaultInterest();
-        }
-        if (JobType.CalculateTravelLuxuryPrize.name().equalsIgnoreCase(schedulerName)) {
-            //运营生成中奖纪录,暂时停掉该job
-            //calculateTravelLuxuryPrize();
         }
         if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
             createRefreshAreaByMobile();
@@ -69,19 +69,24 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.AutoJPushNoInvestAlert.name().equalsIgnoreCase(schedulerName)) {
             createAutoJPushNoInvestAlert();
         }
-        if (JobType.ImitateLottery.name().equals(schedulerName)) {
-            createImitateLotteryJob();
-        }
         if (JobType.ExperienceRepay.name().equals(schedulerName)) {
             createNewbieExperienceRepayJob();
         }
         if (JobType.CheckUserBalanceMonthly.name().equals(schedulerName)) {
             createCheckUserBalanceJob();
         }
+        if (JobType.CouponRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
+            createCouponRepayCallBackJobIfNotExist();
+        }
+        if (JobType.ExtraRateRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
+            createExtraRateRepayCallBackIfNotExist();
+        }
         if (JobType.PlatformBalanceLowNotify.name().equals(schedulerName)) {
             platformBalanceLowNotifyJob();
         }
-
+        if (JobType.CalculateTravelLuxuryPrize.name().equalsIgnoreCase(schedulerName)) {
+            deleteCalculateTravelLuxuryPrizeJob();
+        }
     }
 
     @Override
@@ -98,6 +103,40 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .replaceExistingJob(true)
                     .runWithSchedule(SimpleScheduleBuilder
                             .repeatSecondlyForever(InvestCallbackJob.RUN_INTERVAL_SECONDS)
+                            .withMisfireHandlingInstructionIgnoreMisfires())
+                    .withIdentity(jobGroup, jobName)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createNormalRepayCallBackJobIfNotExist() {
+        final JobType jobType = JobType.NormalRepayCallBack;
+        final String jobGroup = NormalRepayCallbackJob.JOB_GROUP;
+        final String jobName = NormalRepayCallbackJob.JOB_NAME;
+        try {
+            jobManager.newJob(jobType, NormalRepayCallbackJob.class)
+                    .replaceExistingJob(true)
+                    .runWithSchedule(SimpleScheduleBuilder
+                            .repeatSecondlyForever(NormalRepayCallbackJob.RUN_INTERVAL_SECONDS)
+                            .withMisfireHandlingInstructionIgnoreMisfires())
+                    .withIdentity(jobGroup, jobName)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createAdvanceRepayCallBackJobIfNotExist() {
+        final JobType jobType = JobType.AdvanceRepayCallBack;
+        final String jobGroup = AdvanceRepayCallbackJob.JOB_GROUP;
+        final String jobName = AdvanceRepayCallbackJob.JOB_NAME;
+        try {
+            jobManager.newJob(jobType, AdvanceRepayCallbackJob.class)
+                    .replaceExistingJob(true)
+                    .runWithSchedule(SimpleScheduleBuilder
+                            .repeatSecondlyForever(AdvanceRepayCallbackJob.RUN_INTERVAL_SECONDS)
                             .withMisfireHandlingInstructionIgnoreMisfires())
                     .withIdentity(jobGroup, jobName)
                     .submit();
@@ -123,31 +162,11 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void createImitateLotteryJob() {
-        try {
-            jobManager.newJob(JobType.ImitateLottery, ImitateLotteryJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0/5 * * * ?").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.ImitateLottery.name(), JobType.ImitateLottery.name()).submit();
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
     private void createCalculateDefaultInterest() {
         try {
             jobManager.newJob(JobType.CalculateDefaultInterest, CalculateDefaultInterestJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name()).submit();
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void calculateTravelLuxuryPrize() {
-        try {
-            jobManager.newJob(JobType.CalculateTravelLuxuryPrize, CalculateTravelLuxuryPrizeJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 5 0 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.CalculateTravelLuxuryPrize.name(), JobType.CalculateTravelLuxuryPrize.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
@@ -236,6 +255,40 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
+    private void createCouponRepayCallBackJobIfNotExist() {
+        final JobType jobType = JobType.CouponRepayCallBack;
+        final String jobGroup = CouponRepayNotifyCallbackJob.JOB_GROUP;
+        final String jobName = CouponRepayNotifyCallbackJob.JOB_NAME;
+        try {
+            jobManager.newJob(jobType, CouponRepayNotifyCallbackJob.class)
+                    .replaceExistingJob(true)
+                    .runWithSchedule(SimpleScheduleBuilder
+                            .repeatSecondlyForever(CouponRepayNotifyCallbackJob.RUN_INTERVAL_SECONDS)
+                            .withMisfireHandlingInstructionIgnoreMisfires())
+                    .withIdentity(jobGroup, jobName)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createExtraRateRepayCallBackIfNotExist() {
+        final JobType jobType = JobType.ExtraRateRepayCallBack;
+        final String jobGroup = ExtraRateInvestCallbackJob.JOB_GROUP;
+        final String jobName = ExtraRateInvestCallbackJob.JOB_NAME;
+        try {
+            jobManager.newJob(jobType, ExtraRateInvestCallbackJob.class)
+                    .replaceExistingJob(true)
+                    .runWithSchedule(SimpleScheduleBuilder
+                            .repeatSecondlyForever(ExtraRateInvestCallbackJob.RUN_INTERVAL_SECONDS)
+                            .withMisfireHandlingInstructionIgnoreMisfires())
+                    .withIdentity(jobGroup, jobName)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
     private void platformBalanceLowNotifyJob() {
         try {
             jobManager.newJob(JobType.PlatformBalanceLowNotify, PlatformBalanceMonitorJob.class).replaceExistingJob(true)
@@ -244,6 +297,10 @@ public class JobInitPlugin implements SchedulerPlugin {
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
+    }
+
+    private void deleteCalculateTravelLuxuryPrizeJob() {
+        jobManager.deleteJob(JobType.CalculateTravelLuxuryPrize, JobType.CalculateTravelLuxuryPrize.name(), JobType.CalculateTravelLuxuryPrize.name());
     }
 
 }

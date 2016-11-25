@@ -203,8 +203,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
     }
 
     private AccountModel createFakeAccount(UserModel userModel) {
-        AccountModel accountModel = new AccountModel(userModel.getLoginName(), "username", RandomStringUtils.randomNumeric(18),
-                RandomStringUtils.randomNumeric(32), RandomStringUtils.randomNumeric(14), userModel.getRegisterTime());
+        AccountModel accountModel = new AccountModel(userModel.getLoginName(), RandomStringUtils.randomNumeric(32), RandomStringUtils.randomNumeric(14), userModel.getRegisterTime());
         accountMapper.create(accountModel);
         return accountModel;
     }

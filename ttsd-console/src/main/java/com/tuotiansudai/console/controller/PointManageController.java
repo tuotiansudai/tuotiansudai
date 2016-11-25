@@ -11,7 +11,7 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
-import com.tuotiansudai.point.dto.ProductDto;
+import com.tuotiansudai.point.repository.dto.ProductDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
@@ -19,6 +19,7 @@ import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.ProductService;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.PaginationUtil;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,15 +87,15 @@ public class PointManageController {
 
     @RequestMapping(value = "/product-list", method = RequestMethod.GET)
     public ModelAndView findVirtualGoods(@RequestParam(value = "type", required = false) GoodsType type,
-                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("products", productService.findAllProducts(type, index, pageSize));
         modelAndView.addObject("type", type);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         long goodsCount = productService.findAllProductsCount(type);
-        long totalPages = goodsCount / pageSize + (goodsCount % pageSize > 0 || goodsCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(goodsCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -106,8 +107,8 @@ public class PointManageController {
 
     @RequestMapping(value = "/{productId:^\\d+$}/detail", method = RequestMethod.GET)
     public ModelAndView find(@PathVariable long productId,
-                             @RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                             @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                             @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("orders", productService.findProductOrderList(productId, null, index, pageSize));
         modelAndView.addObject("product", productService.findById(productId));
@@ -115,7 +116,7 @@ public class PointManageController {
         modelAndView.addObject("productId", productId);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        long totalPages = ordersCount / pageSize + (ordersCount % pageSize > 0 || ordersCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(ordersCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -233,11 +234,32 @@ public class PointManageController {
             if (id != null) {
                 couponService.editCoupon(loginName, exchangeCouponDto);
                 ProductModel productModel = productService.findProductByCouponId(id);
-                productService.updateProduct(new ProductDto(exchangeCouponDto, loginName, productModel));
+                ProductDto productDto = new ProductDto
+                        (productModel.getId(),
+                        GoodsType.COUPON, loginName,
+                        exchangeCouponDto.getId(),
+                        exchangeCouponDto.getCouponType().name(),
+                        exchangeCouponDto.getSeq(),
+                        exchangeCouponDto.getImageUrl(),
+                        exchangeCouponDto.getExchangePoint(),
+                        exchangeCouponDto.getTotalCount(),
+                        exchangeCouponDto.getStartTime(),
+                        exchangeCouponDto.getEndTime());
+                productService.updateProduct(productDto);
             } else {
                 ExchangeCouponDto exchangeCouponDtoView  = couponService.createCoupon(loginName, exchangeCouponDto);
-                productService.createProduct(new ProductDto(exchangeCouponDtoView, loginName));
-
+                ProductDto productDto = new ProductDto(
+                        GoodsType.COUPON,
+                        exchangeCouponDtoView.getId(),
+                        exchangeCouponDtoView.getCouponType().name(),
+                        exchangeCouponDtoView.getSeq(),
+                        exchangeCouponDtoView.getImageUrl(),
+                        exchangeCouponDtoView.getExchangePoint(),
+                        exchangeCouponDtoView.getTotalCount(),
+                        exchangeCouponDtoView.getStartTime(),
+                        exchangeCouponDtoView.getEndTime(),
+                        loginName);
+                productService.createProduct(productDto);
             }
             modelAndView.setViewName("redirect:/point-manage/coupon-exchange-manage");
         } catch (CreateCouponException e) {
@@ -247,9 +269,9 @@ public class PointManageController {
     }
 
     @RequestMapping(value = "/coupon-exchange-manage", method = RequestMethod.GET)
-    public ModelAndView couponExchangeManage(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                             @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+    public ModelAndView couponExchangeManage(@RequestParam(value = "index", required = false, defaultValue = "1") int index) {
 
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/coupon-exchanges");
         List<ExchangeCouponDto> exchangeCouponDtos = productService.findCouponExchanges(index, pageSize);
         modelAndView.addObject("exchangeCoupons", exchangeCouponDtos);
@@ -257,7 +279,7 @@ public class PointManageController {
         modelAndView.addObject("pageSize", pageSize);
         int exchangeCouponCount = productService.findCouponExchangeCount();
         modelAndView.addObject("exchangeCouponCount", exchangeCouponCount);
-        long totalPages = exchangeCouponCount / pageSize + (exchangeCouponCount % pageSize > 0 || exchangeCouponCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(exchangeCouponCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -269,18 +291,17 @@ public class PointManageController {
 
     @RequestMapping(value = "/user-point-list")
     public ModelAndView usersAccountPointList(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                              @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                               @RequestParam(value = "loginName", required = false) String loginName,
                                               @RequestParam(value = "userName", required = false) String userName,
                                               @RequestParam(value = "mobile", required = false) String mobile) {
-
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/user-point-list");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         List<AccountItemDataDto> accountItemDataDtoList = pointBillService.findUsersAccountPoint(loginName, userName, mobile, index, pageSize);
         modelAndView.addObject("userPointList", accountItemDataDtoList);
         int count = pointBillService.findUsersAccountPointCount(loginName, userName, mobile);
-        long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -294,11 +315,10 @@ public class PointManageController {
 
     @RequestMapping(value = "/user-point-detail-list")
     public ModelAndView usersAccountPointDetailList(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                                     @RequestParam(value = "loginName", required = false) String loginName,
                                                     @RequestParam(value = "point", required = false) String point,
                                                     @RequestParam(value = "totalPoint", required = false) String totalPoint) {
-
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/user-point-detail-list");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
@@ -309,7 +329,7 @@ public class PointManageController {
 
         modelAndView.addObject("userPointDetailList", pointBillPaginationItemDataDtoList);
         long count = pointBillService.getPointBillCountByLoginName(loginName);
-        long totalPages = count / pageSize + (count % pageSize > 0 || count == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);

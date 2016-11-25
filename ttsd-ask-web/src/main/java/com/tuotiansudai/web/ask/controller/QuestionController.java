@@ -1,6 +1,8 @@
 package com.tuotiansudai.web.ask.controller;
 
-import com.tuotiansudai.ask.dto.*;
+import com.tuotiansudai.ask.repository.dto.QuestionDto;
+import com.tuotiansudai.ask.repository.dto.QuestionRequestDto;
+import com.tuotiansudai.ask.repository.dto.QuestionResultDataDto;
 import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.QuestionService;
@@ -37,34 +39,31 @@ public class QuestionController {
 
     @RequestMapping(path = "/{questionId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView question(@PathVariable long questionId,
-                                 @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                 @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         QuestionDto question = questionService.getQuestion(LoginUserInfo.getLoginName(), questionId);
         if (question == null) {
             return new ModelAndView("/error/404");
         }
 
         ModelAndView modelAndView = new ModelAndView("/question", "questionId", questionId);
-        modelAndView.addObject("isQuestionOwner", StringUtils.isEmpty(question.getMobile()) ? false : question.getMobile().equalsIgnoreCase(LoginUserInfo.getMobile()));
+        modelAndView.addObject("isQuestionOwner", !StringUtils.isEmpty(question.getMobile()) && question.getMobile().equalsIgnoreCase(LoginUserInfo.getMobile()));
         modelAndView.addObject("question", question);
         modelAndView.addObject("bestAnswer", answerService.getBestAnswer(LoginUserInfo.getLoginName(), questionId));
-        modelAndView.addObject("answers", answerService.getNotBestAnswers(LoginUserInfo.getLoginName(), questionId, index, pageSize));
+        modelAndView.addObject("answers", answerService.getNotBestAnswers(LoginUserInfo.getLoginName(), questionId, index, 10));
 
         return modelAndView;
     }
 
     @RequestMapping(path = "/my-questions", method = RequestMethod.GET)
-    public ModelAndView getMyQuestions(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return new ModelAndView("/my-questions", "questions", questionService.findMyQuestions(LoginUserInfo.getLoginName(), index, pageSize));
+    public ModelAndView getMyQuestions(@RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        return new ModelAndView("/my-questions", "questions", questionService.findMyQuestions(LoginUserInfo.getLoginName(), index, 10));
     }
 
     @RequestMapping(path = "/category", method = RequestMethod.GET)
     public ModelAndView getQuestionsByCategory(@RequestParam(value = "tag", required = true) Tag tag,
-                                               @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                               @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                               @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         ModelAndView modelAndView = new ModelAndView("/question-category");
-        modelAndView.addObject("questions", questionService.findByTag(LoginUserInfo.getLoginName(), tag, index, pageSize));
+        modelAndView.addObject("questions", questionService.findByTag(LoginUserInfo.getLoginName(), tag, index, 10));
         modelAndView.addObject("tag", tag);
         return modelAndView;
     }

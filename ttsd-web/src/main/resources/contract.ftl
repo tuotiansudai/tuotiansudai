@@ -67,7 +67,7 @@
     </tr>
     <tr>
         <td>原借款期限</td>
-        <td colspan="3">${periods * 30!0}天</td>
+        <td colspan="3">${agentPeriods!}</td>
     </tr>
     <tr>
         <td colspan="4">受让标的债权明细</td>
@@ -78,9 +78,9 @@
     </tr>
     <tr>
         <td>借款利率</td>
-        <td>${totalRate * 100!0}%</td>
+        <td>${totalRate!}</td>
         <td>还款分期期数</td>
-        <td>${periods!}期</td>
+        <td>${leftPeriods!}</td>
     </tr>
     <tr>
         <td>受让确认日期</td>

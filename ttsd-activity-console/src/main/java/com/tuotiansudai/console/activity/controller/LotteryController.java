@@ -2,10 +2,10 @@ package com.tuotiansudai.console.activity.controller;
 
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.activity.dto.ActivityCategory;
-import com.tuotiansudai.activity.dto.LotteryPrize;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
+import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.LotteryPrizeView;
-import com.tuotiansudai.console.activity.service.UserLotteryService;
+import com.tuotiansudai.console.activity.service.ActivityConsoleUserLotteryService;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +28,17 @@ public class LotteryController {
     static Logger logger = Logger.getLogger(LotteryController.class);
 
     @Autowired
-    private UserLotteryService userLotteryService;
+    private ActivityConsoleUserLotteryService activityConsoleUserLotteryService;
 
     @RequestMapping(value = "/user-time-list", method = RequestMethod.GET)
     public ModelAndView userLotteryList(@RequestParam(name = "mobile", required = false) String mobile,
                                         @RequestParam(name = "prizeType", defaultValue = "AUTUMN_PRIZE", required = false) ActivityCategory prizeType,
-                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) throws IOException {
+                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index) throws IOException {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/activity-time-list");
-        int lotteryCount = userLotteryService.findUserLotteryTimeCountViews(mobile);
+        int lotteryCount = activityConsoleUserLotteryService.findUserLotteryTimeCountViews(mobile);
         modelAndView.addObject("lotteryCount", lotteryCount);
-        modelAndView.addObject("lotteryList", userLotteryService.findUserLotteryTimeViews(mobile, prizeType, (index - 1) * pageSize, pageSize));
+        modelAndView.addObject("lotteryList", activityConsoleUserLotteryService.findUserLotteryTimeViews(mobile, prizeType, (index - 1) * pageSize, pageSize));
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         long totalPages = PaginationUtil.calculateMaxPage(lotteryCount, pageSize);
@@ -59,12 +59,12 @@ public class LotteryController {
                                       @RequestParam(name = "prizeType", required = false, defaultValue = "AUTUMN_PRIZE") ActivityCategory activityCategory,
                                       @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                       @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                      @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                      @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/activity-prize-list");
-        int lotteryCount = userLotteryService.findUserLotteryPrizeCountViews(mobile, lotteryPrize, activityCategory, startTime, endTime);
+        int lotteryCount = activityConsoleUserLotteryService.findUserLotteryPrizeCountViews(mobile, lotteryPrize, activityCategory, startTime, endTime);
         modelAndView.addObject("lotteryCount", lotteryCount);
-        modelAndView.addObject("prizeList", userLotteryService.findUserLotteryPrizeViews(mobile, lotteryPrize, activityCategory, startTime, endTime, (index - 1) * pageSize, pageSize));
+        modelAndView.addObject("prizeList", activityConsoleUserLotteryService.findUserLotteryPrizeViews(mobile, lotteryPrize, activityCategory, startTime, endTime, (index - 1) * pageSize, pageSize));
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         long totalPages = PaginationUtil.calculateMaxPage(lotteryCount, pageSize);

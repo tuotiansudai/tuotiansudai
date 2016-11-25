@@ -318,6 +318,7 @@
           border:1px solid #bcbcbc;
           box-sizing:border-box;
           padding:15px 69px;
+          cursor:pointer;
           &:hover{
             border:1px solid #0087e6;
             box-shadow:0px 0px 5px #0087e6;
@@ -463,6 +464,81 @@
   }
 }
 
+.rule-info-tip{
+  float:left;
+  width:600px;
+  height:auto;
+  background:#fff;
+  padding:10px 60px;
+  box-sizing:border-box;
+  display:none;
+  position: relative;
+  .close-btn{
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    background: url('/point/images/close-btn.png') no-repeat center;
+  }
+  .rule-title{
+    float:left;
+    width:100%;
+    text-align:center;
+    margin-bottom:30px;
+    span{
+      display:inline-block;
+      width:200px;
+      height:40px;
+      font-size:18px;
+      color:#ff7200;
+      border-bottom:1px solid #ff7200;
+    }
+  }
+  p{
+    float:left;
+    width:100%;
+    font-size:12px;
+    color:#666;
+    margin-bottom:0;
+    &.mb-15{
+      margin-bottom:15px;
+    }
+    span{
+      color:#333;
+      font-weight:bold;
+    }
+  }
+  table{
+    thead>tr{
+      font-size:12px;
+      color:#ff7200;
+      th{
+        border:1px solid #ffd1ac;
+        &:nth-child(odd){
+          background:#fff9f2;
+        }
+        &:nth-child(even){
+          background:#ffedd5;
+        }
+      }
+    }
+    tbody>tr{
+      td{
+        font-size:12px;
+        color:#ff7200;
+        border:1px solid #ffd1ac;
+        &:nth-child(odd){
+          background:#fff9f2;
+        }
+        &:nth-child(even){
+          background:#ffedd5;
+        }
+      }
+    }
+  }
+}
 
 
 

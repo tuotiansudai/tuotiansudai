@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
@@ -68,9 +69,6 @@ public class UserController {
     private SignInClient signInClient;
 
     @Autowired
-    private MyAuthenticationUtil myAuthenticationUtil;
-
-    @Autowired
     private AuditLogService auditLogService;
 
     @Autowired
@@ -104,7 +102,7 @@ public class UserController {
             String afterUpdate = description.split(" =></br> ")[1];
             ObjectMapper objectMapper = new ObjectMapper();
             EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
-            AccountModel accountModel = accountService.findByLoginName(loginName);
+            UserModel userModel = userService.findByLoginName(loginName);
             BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
             if (bankCard != null) {
                 editUserDto.setBankCardNumber(bankCard.getCardNumber());
@@ -112,8 +110,8 @@ public class UserController {
 
             AutoInvestPlanModel autoInvestPlan = investService.findAutoInvestPlan(loginName);
             editUserDto.setAutoInvestStatus(autoInvestPlan != null && autoInvestPlan.isEnabled() ? "1" : "0");
-            editUserDto.setIdentityNumber(accountModel == null ? "" : accountModel.getIdentityNumber());
-            editUserDto.setUserName(accountModel == null ? "" : accountModel.getUserName());
+            editUserDto.setIdentityNumber(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getIdentityNumber());
+            editUserDto.setUserName(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getUserName());
             modelAndView.addObject("user", editUserDto);
             modelAndView.addObject("roles", Role.values());
             modelAndView.addObject("taskId", taskId);
@@ -198,8 +196,8 @@ public class UserController {
                                     @RequestParam(value = "channel", required = false) String channel,
                                     @RequestParam(value = "source", required = false) Source source,
                                     @RequestParam(value = "userOperation", required = false) UserOperation userOperation,
-                                    @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                    @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = userServiceConsole.findAllUser(loginName, email, mobile,
                 beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, index, pageSize);
         ModelAndView mv = new ModelAndView("/user-list");

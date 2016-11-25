@@ -66,16 +66,26 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
     @Override
     @Transactional
     public BaseDto<BaseDataDto> invest(InvestDto investDto) {
-        userMapper.lockByLoginName(investDto.getLoginName());
         BaseDataDto dataDto = new BaseDataDto();
         BaseDto<BaseDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
 
-        if (!this.validate(investDto)) {
+        if (!isUserCouponRequired(investDto)) {
             return dto;
         }
 
-        UserCouponModel userCouponModel = userCouponMapper.findById(investDto.getUserCouponIds().get(0));
+        long userCouponId = investDto.getUserCouponIds().get(0);
+        UserCouponModel userCouponModel = userCouponMapper.lockById(userCouponId);
+        if (userCouponModel == null) {
+            logger.error(MessageFormat.format("[Experience Invest] user({0}) is using a nonexistent user coupon({1}) ",
+                    investDto.getLoginName(), String.valueOf(userCouponId)));
+            return dto;
+        }
+
+        if (!isUserCouponAvailable(investDto, userCouponModel)) {
+            return dto;
+        }
+
         CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
         couponModel.setUsedCount(couponModel.getUsedCount() + 1);
         couponMapper.updateCoupon(couponModel);
@@ -88,7 +98,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         userCouponModel.setStatus(InvestStatus.SUCCESS);
         userCouponMapper.update(userCouponModel);
 
-        couponAssignmentService.assignUserCoupon(investDto.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_INVEST_SUCCESS));
+        couponAssignmentService.asyncAssignUserCoupon(investDto.getLoginName(), Lists.newArrayList(UserGroup.EXPERIENCE_INVEST_SUCCESS));
 
         dataDto.setStatus(true);
 
@@ -112,7 +122,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         return investModel;
     }
 
-    private boolean validate(InvestDto investDto) {
+    private boolean isUserCouponRequired(InvestDto investDto) {
         if (StringUtils.isEmpty(investDto.getLoginName())) {
             logger.error("[Experience Invest] the login name is null");
             return false;
@@ -151,18 +161,17 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
                     investDto.getLoginName(), String.valueOf(investDto.getUserCouponIds().size())));
             return false;
         }
+        return true;
+    }
 
-        long userCouponId = investDto.getUserCouponIds().get(0);
-        UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
-        if (userCouponModel == null) {
-            logger.error(MessageFormat.format("[Experience Invest] user({0}) is using a nonexistent user coupon({1}) ",
-                    investDto.getLoginName(), String.valueOf(userCouponId)));
-            return false;
-        }
+    private boolean isUserCouponAvailable(InvestDto investDto, UserCouponModel userCouponModel) {
+
+        long investAmount = Long.parseLong(investDto.getAmount());
+        LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
 
         if (userCouponModel.getStatus() == InvestStatus.SUCCESS) {
             logger.error(MessageFormat.format("[Experience Invest] user({0}) is using a used user coupon({1}) ",
-                    investDto.getLoginName(), String.valueOf(userCouponId)));
+                    investDto.getLoginName(), String.valueOf(userCouponModel.getId())));
             return false;
         }
 
@@ -173,13 +182,13 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
                     String.valueOf(investAmount),
                     Joiner.on(",").join(couponModel.getProductTypes()),
                     String.valueOf(couponModel.getInvestLowerLimit()),
-                    String.valueOf(userCouponId)));
+                    String.valueOf(userCouponModel.getId())));
             return false;
         }
 
-        if (CollectionUtils.isNotEmpty(investMapper.findByLoanIdAndLoginName(loanId, investDto.getLoginName()))) {
+        if (CollectionUtils.isNotEmpty(investMapper.findByLoanIdAndLoginName(loanModel.getId(), investDto.getLoginName()))) {
             logger.error(MessageFormat.format("[Experience Invest] user({0}) has already invested the loan({1})",
-                    investDto.getLoginName(), String.valueOf(loanId)));
+                    investDto.getLoginName(), String.valueOf(loanModel.getId())));
             return false;
         }
 

@@ -1,11 +1,14 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
 import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -49,27 +52,35 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
+
+    @Autowired
+    private PageValidUtils pageValidUtils;
 
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateLoanList(LoanListRequestDto loanListRequestDto) {
         BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
         Integer index = loanListRequestDto.getIndex();
-        Integer pageSize = loanListRequestDto.getPageSize();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(loanListRequestDto.getPageSize());
         if (index == null || pageSize == null || index <= 0 || pageSize <= 0) {
             return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
         ProductType noContainProductType = null;
-        if(investMapper.findCountSuccessByLoginNameAndProductTypes(loanListRequestDto.getBaseParam().getUserId(),Lists.newArrayList(ProductType.EXPERIENCE)) > 0){
+        List<UserCouponModel> userCouponModels = userCouponMapper.findUsedExperienceByLoginName(loanListRequestDto.getBaseParam().getUserId());
+        if((!Strings.isNullOrEmpty(loanListRequestDto.getBaseParam().getUserId()) && CollectionUtils.isEmpty(userCouponModels)) || (CollectionUtils.isNotEmpty(userCouponModels) && userCouponModels.get(0).getEndTime().before(DateTime.now().toDate()))){
             noContainProductType = ProductType.EXPERIENCE;
         }
-        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()),noContainProductType, loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index);
+
+        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), noContainProductType, loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index);
 
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
-            loanDtoList = convertLoanDto(loanModels,loanListRequestDto.getBaseParam().getUserId());
+            loanDtoList = convertLoanDto(loanModels, loanListRequestDto.getBaseParam().getUserId());
         }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -89,7 +100,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         return dto;
     }
 
-    private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList,String loginName) {
+    private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList, String loginName) {
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         for (LoanModel loan : loanList) {
@@ -123,7 +134,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             }
             loanResponseDataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loan.getFundraisingStartTime()));
             long investedAmount;
-            if(loan.getProductType() == ProductType.EXPERIENCE){
+            if (loan.getProductType() == ProductType.EXPERIENCE) {
                 Date beginTime = new DateTime(new Date()).withTimeAtStartOfDay().toDate();
                 Date endTime = new DateTime(new Date()).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
                 List<InvestModel> investModelList = investMapper.countSuccessInvestByInvestTime(loan.getId(), beginTime, endTime);
@@ -155,12 +166,12 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
             if(loanDetailsModel != null)
             {
-                loanResponseDataDto.setExtraSource("WEB".equals(loanDetailsModel.getExtraSource())?loanDetailsModel.getExtraSource():"");
+                loanResponseDataDto.setExtraSource(loanDetailsModel.getExtraSource() != null ? (loanDetailsModel.getExtraSource().size() == 1 && loanDetailsModel.getExtraSource().contains(Source.WEB)) ? Source.WEB.name() : null : null);
             }
 
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             double investFeeRate = membershipModel == null ? defaultFee : membershipModel.getFee();
-            if(ProductType.EXPERIENCE == loan.getProductType()){
+            if (ProductType.EXPERIENCE == loan.getProductType()) {
                 investFeeRate = this.defaultFee;
             }
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
@@ -170,12 +181,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     }
 
     private List<ExtraLoanRateDto> fillExtraRate(List<ExtraLoanRateModel> extraLoanRateModels) {
-        return Lists.transform(extraLoanRateModels, new Function<ExtraLoanRateModel, ExtraLoanRateDto>() {
-            @Override
-            public ExtraLoanRateDto apply(ExtraLoanRateModel model) {
-                return new ExtraLoanRateDto(model);
-            }
-        });
+        return Lists.transform(extraLoanRateModels, model -> new ExtraLoanRateDto(model));
     }
 
 }

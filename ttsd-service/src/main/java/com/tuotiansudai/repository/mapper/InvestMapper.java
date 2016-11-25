@@ -251,11 +251,19 @@ public interface InvestMapper {
                                                    @Param("productTypeList") List<ProductType> productTypeList);
 
     long countInvestorSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
-                                               @Param(value = "startTime") Date startTime,
-                                               @Param(value = "endTime") Date endTime);
-
-    List<InvestModel> findSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
                                                 @Param(value = "startTime") Date startTime,
                                                 @Param(value = "endTime") Date endTime);
+
+    List<InvestModel> findSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
+                                                    @Param(value = "startTime") Date startTime,
+                                                    @Param(value = "endTime") Date endTime);
+
+    void updateContractNoById(@Param(value = "investId") Long investId,
+                              @Param(value = "contractNo") String contractNo);
+
+    void updateAllContractNoByLoanId(@Param(value = "loanId") Long loanId,
+                                     @Param(value = "contractNo") String contractNo);
+
+    List<InvestModel> findNoContractNoInvest(@Param(value = "loanId") long loanId);
 
 }

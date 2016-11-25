@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.help_center}" pageJavascript="${js.help_center}" activeNav="帮助中心" activeLeftNav="资金相关" title="拓天速贷公司介绍_拓天理念_拓天资质_拓天速贷" keywords="拓天速贷,拓天速贷公司,拓天资质,拓天价值" description="拓天速贷以透明、公平、高效为原则,为有贷款需求的小微企业及有投资需求的个人提供规范、安全、专业的互联网金融信息服务.">
 <div class="help-center-group">
     <h3>
-        <a href="/about/help-center"><< 返回帮助中心</a>
+        <a href="/help/help-center"><< 返回帮助中心</a>
     </h3>
 
     <div class="problem-list-group">
@@ -64,64 +64,56 @@
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">3、自动投标怎么设置？</p>
-
-                    <p class="single-answer">答：①电脑端：登录官方网站—我的账户—自动投标，授权后选择标的期限及投资金额（期限可多选，如：同时勾选一个月标的和三个月标的）；<br/>②手机端：登录官方APP—我的财富—自动投标。
-                    </p>
-                </li>
-                <li class="problem-single-item">
-                    <i class="fa fa-angle-down"></i>
-
-                    <p class="single-title">4、在拓天速贷上投标后是否可以取消？</p>
+                    <p class="single-title">3、在拓天速贷上投标后是否可以取消？</p>
 
                     <p class="single-answer">答：不可以取消，如有需要可进行债权转让。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">5、投资成功后，什么时候开始计算利息？</p>
+                    <p class="single-title">4、投资成功后，什么时候开始计算利息？</p>
 
                     <p class="single-answer">答：标满放款后生息。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">6、投标成功后，回款计划中为什么没有记录显示？</p>
+                    <p class="single-title">5、投标成功后，回款计划中为什么没有记录显示？</p>
 
                     <p class="single-answer">答：满标放款后才生成回款计划。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">7、投资到期后，什么时候回款？</p>
+                    <p class="single-title">6、投资到期后，什么时候回款？</p>
 
                     <p class="single-answer">答：当日回款。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">8、新手体验项目怎么投资？</p>
+                    <p class="single-title">7、新手体验项目怎么投资？</p>
 
                     <p class="single-answer">答：新手体验项目仅适用于从未在平台进行过投资行为的账户。登录官方网站—新手体验标的—马上投资—立即体验（无须绑卡和实名认证）。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">9、手头资金短缺，如何把投在平台投资项目里的资金快速取出来？</p>
+                    <p class="single-title">8、手头资金短缺，如何把投在平台投资项目里的资金快速取出来？</p>
 
                     <p class="single-answer">答：可以选择债权转让，如有特殊需要，可折价转让。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">10、如何查看电子合同？</p>
+                    <p class="single-title">9、如何查看电子合同？</p>
 
                     <p class="single-answer">答：登陆官方网站—我的账户—我的投资—直接项目/转让项目—全部（直接项目/转让项目下一行）—合同（即可看到每笔投资的合同）。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">11、如何将电子合同变成纸质合同？</p>
+                    <p class="single-title">10、如何将电子合同变成纸质合同？</p>
 
                     <p class="single-answer">答：如您需要纸质合同，在“我的投资”中将电子版合同下载后以电子或文件形式提供到拓天速贷客户服务中心，拓天速贷客服打印并盖章后交于您的手中。</p>
                 </li>

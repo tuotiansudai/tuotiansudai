@@ -42,7 +42,8 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
         this.productId = String.valueOf(exchangeCouponView.getProductId());
         this.imageUrl = bannerServer + exchangeCouponView.getImageUrl();
         this.points = String.valueOf(exchangeCouponView.getExchangePoint());
-        this.leftCount = String.valueOf(exchangeCouponView.getCouponModel().getTotalCount() - exchangeCouponView.getCouponModel().getIssuedCount());
+
+        this.leftCount = exchangeCouponView.getCouponModel() == null ? "0" : String.valueOf(exchangeCouponView.getCouponModel().getTotalCount() - exchangeCouponView.getCouponModel().getIssuedCount());
         this.seq = exchangeCouponView.getSeq();
         this.updatedTime = exchangeCouponView.getCouponModel().getUpdatedTime();
         switch (exchangeCouponView.getCouponModel().getCouponType()) {

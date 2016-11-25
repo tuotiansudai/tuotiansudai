@@ -1,7 +1,9 @@
 package com.tuotiansudai.coupon.service.impl;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -12,6 +14,7 @@ import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.util.InvestAchievementUserCollector;
 import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.util.UserBirthdayUtil;
@@ -28,7 +31,7 @@ import javax.annotation.Resource;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 @Service
 public class CouponAssignmentServiceImpl implements CouponAssignmentService {
@@ -48,7 +51,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     private ExchangeCodeService exchangeCodeService;
 
     @Autowired
-    private UserBirthdayUtil userBirthdayUtil;
+    private MQWrapperClient mqWrapperClient;
 
     @Resource(name = "allUserCollector")
     private UserCollector allUserCollector;
@@ -126,7 +129,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), exchangeCode);
 
-        if (StringUtils.isNotEmpty(exchangeCode) && userCouponModel == null) {
+        if (userCouponModel == null) {
             return false;
         }
 
@@ -173,20 +176,23 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         }
 
         if (isAssignableCoupon) {
-            ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
+            UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
+            if (userCouponModel == null) {
+                return;
+            }
             logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
         }
 
     }
 
     /**
-     * 给指定的用户发放指定的 userGroup 类型的优惠券
+     * 异步给指定的用户发放指定的 userGroup 类型的优惠券
      *
      * @param loginNameOrMobile 指定的用户
      * @param userGroups        指定的userGroup
      */
     @Override
-    public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
+    public void asyncAssignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName().toLowerCase();
 
         // 当前可领取的优惠券
@@ -195,57 +201,41 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         // 该用户已领取的优惠券
         final List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginNameAndCouponId(loginName, null);
 
-        // 该用户可领取的优惠券
-        List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
-            @Override
-            public boolean apply(CouponModel couponModel) {
+        coupons.stream()
+                // 该用户可领取的优惠券
+                // 该优惠券在参数指定的userGroup里
+                .filter(couponModel -> userGroups.contains(couponModel.getUserGroup()))
+                // 该优惠券是否可以被发放给该用户（数量上检查）
+                .filter(couponModel -> isAssignableCoupon(couponModel, userCouponModels))
+                // 该优惠券和该用户符合该userGroup的规则（资格上检查）
+                // 此处特意将资格检查放在数量检查后面，以提高处理效率
+                .filter(couponModel -> getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName))
+                // 生成MQ消息内容
+                .map(couponModel -> MessageQueue.CouponAssigning.getMessageFormat().replace("{loginName}", loginName).replace("{couponId}", String.valueOf(couponModel.getId())))
+                // 发送MQ消息
+                .forEach(message -> mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, message));
+        //((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
+    }
 
-                // 该优惠券在参数指定的userGroup里  且 该优惠券和该用户符合该userGroup的规则
-                boolean isInUserGroup = userGroups.contains(couponModel.getUserGroup())
-                        && CouponAssignmentServiceImpl.this.getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName);
 
-                // 该优惠券是否可以被发放给该用户
-                boolean isAssignableCoupon = this.isAssignableCoupon(couponModel);
+    /**
+     * 检查优惠券是否可以被发送给该用户
+     * 如果用户没有持有该类型的优惠券，则返回true
+     * 否则，如果用户持有的该类型的优惠券都被使用过了，且该优惠券可以被多次领取，则返回true
+     */
+    private boolean isAssignableCoupon(CouponModel couponModel, List<UserCouponModel> userCouponModels) {
+        // 列出用户已持有的该类型的优惠券
+        List<UserCouponModel> existingUserCouponList = userCouponModels.stream()
+                .filter(userCoupon -> userCoupon.getCouponId() == couponModel.getId())
+                .collect(Collectors.toList());
 
-                return isInUserGroup && isAssignableCoupon;
-            }
-
-            // 用户已经持有的该类型的优惠券的数量
-            int assignedCouponCount;
-
-            /**
-             * 检查优惠券是否可以被发送给该用户
-             * 如果用户没有持有该类型的优惠券，则返回true
-             * 否则，如果用户持有的该类型的优惠券都被使用过了，且该优惠券可以被多次领取，则返回true
-             *
-             * @param couponModel
-             * @return
-             */
-            private boolean isAssignableCoupon(final CouponModel couponModel) {
-
-                assignedCouponCount = 0;
-
-                // 用户持有的该类型的优惠券（可能为多个）
-                Stream<UserCouponModel> assignedUserCoupons = userCouponModels.stream().filter(input -> input.getCouponId() == couponModel.getId());
-
-                // 是否存在未使用的该类型优惠券
-                boolean isUnusedUserCouponExisted = assignedUserCoupons.anyMatch(input -> {
-                    assignedCouponCount++;
-                    return input.getStatus() != InvestStatus.SUCCESS;
-                });
-
-                // 如果用户没有持有该类型的优惠券，则该用户可以得到该优惠券，返回true
-                if (assignedCouponCount == 0) {
-                    return true;
-                }
-
-                // 该优惠券可以被多次领取（目前只有生日券）且 用户持有的该优惠券已经被全部使用了，则返回true，表示该优惠券还可以被该用户再次领取
-                return couponModel.isMultiple() && !isUnusedUserCouponExisted;
-            }
-        }));
-
-        for (CouponModel couponModel : couponModels) {
-            ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
+        // 如果用户没有持有该类型的优惠券，则该用户可以得到该优惠券，返回true
+        if (existingUserCouponList.isEmpty()) {
+            return true;
+        } else {
+            // 该优惠券可以被多次领取（目前只有生日券）而且全部都使用过了
+            return couponModel.isMultiple() &&
+                    existingUserCouponList.stream().allMatch(userCoupon -> userCoupon.getStatus() == InvestStatus.SUCCESS);
         }
     }
 
@@ -254,13 +244,19 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     public UserCouponModel assign(String loginName, long couponId, String exchangeCode) {
         CouponModel couponModel = couponMapper.lockById(couponId);
 
+        List<UserCouponModel> assignedUserCoupons = userCouponMapper.findByLoginNameAndCouponId(loginName, couponId);
+        if (!couponModel.isMultiple() && CollectionUtils.isNotEmpty(assignedUserCoupons)) {
+            logger.error(MessageFormat.format("[Coupon Assignment] coupon({0}) has been assigned to user({1})", String.valueOf(couponId), loginName));
+            return null;
+        }
+
         couponModel.setIssuedCount(couponModel.getIssuedCount() + 1);
         couponMapper.updateCoupon(couponModel);
 
         Date startTime = new DateTime().withTimeAtStartOfDay().toDate();
         Date endTime = couponModel.getDeadline() == 0 ? couponModel.getEndTime() : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
         if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
-            DateTime userBirthday = userBirthdayUtil.getUserBirthday(loginName);
+            DateTime userBirthday = UserBirthdayUtil.getUserBirthday(userMapper.findByLoginName(loginName).getIdentityNumber());
             startTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMinimumValue().withTimeAtStartOfDay().toDate();
             endTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMaximumValue().withTime(23, 59, 59, 0).toDate();
         }
@@ -278,7 +274,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     }
 
     @Override
-    public void assignUserCoupon(long loanId, String loginNameOrMobile, long couponId) {
+    public void assignInvestAchievementUserCoupon(long loanId, String loginNameOrMobile, long couponId) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
         CouponModel couponModel = couponMapper.findById(couponId);
@@ -302,6 +298,9 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         if (couponModel.isMultiple()) {
             UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
+            if (userCouponModel == null) {
+                return;
+            }
             userCouponModel.setAchievementLoanId(loanId);
             userCouponMapper.update(userCouponModel);
             logger.debug(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));

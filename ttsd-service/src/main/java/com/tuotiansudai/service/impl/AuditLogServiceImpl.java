@@ -11,8 +11,10 @@ import com.tuotiansudai.repository.model.AuditLogView;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.PaginationUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,14 +36,14 @@ public class AuditLogServiceImpl implements AuditLogService {
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    private AccountService accountService;
+    private UserService userService;
 
     @Override
     @Transactional
     public void createUserActiveLog(String loginName, String operatorLoginName, UserStatus userStatus, String userIp) {
 
         String operation = userStatus == UserStatus.ACTIVE ? " 解禁" : " 禁止";
-        String description = operatorLoginName + operation + "了用户［" + accountService.getRealName(loginName) + "］。";
+        String description = operatorLoginName + operation + "了用户［" + userService.getRealName(loginName) + "］。";
 
         AuditLogModel log = new AuditLogModel();
         log.setId(idGenerator.generate());
@@ -84,7 +86,7 @@ public class AuditLogServiceImpl implements AuditLogService {
 
         List<AuditLogView> data = Lists.newArrayList();
         if (count > 0) {
-            int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
+            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             data = auditLogMapper.getPaginationData(operationType, targetId, operatorMobile, auditorMobile, startTime, endTime, (index - 1) * pageSize, pageSize);
         }

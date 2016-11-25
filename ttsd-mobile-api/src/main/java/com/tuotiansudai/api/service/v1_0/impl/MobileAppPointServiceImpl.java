@@ -4,14 +4,13 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointService;
-import com.tuotiansudai.point.dto.SignInPointDto;
+import com.tuotiansudai.api.util.PageValidUtils;
+import com.tuotiansudai.point.repository.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointTask;
-import com.tuotiansudai.point.repository.model.PointTaskModel;
-import com.tuotiansudai.point.repository.model.UserPointTaskModel;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -21,8 +20,6 @@ import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -45,12 +42,16 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     private PointTaskMapper pointTaskMapper;
 
     @Autowired
+    private PageValidUtils pageValidUtils;
+
+    @Autowired
     private UserPointTaskMapper userPointTaskMapper;
+
     public BaseResponseDto signIn(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if(accountModel == null){
-            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+        if (accountModel == null) {
+            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
         SignInPointDto signInPointDto = signInService.signIn(loginName);
 
@@ -75,15 +76,15 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     public BaseResponseDto getLastSignInTime(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if(accountModel == null){
-            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+        if (accountModel == null) {
+            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
         SignInPointDto lastSignInPointDto = signInService.getLastSignIn(loginName);
         LastSignInTimeResponseDataDto dataDto = new LastSignInTimeResponseDataDto();
         DateTime today = new DateTime().withTimeAtStartOfDay();
         int signInCount = 0;
         if (lastSignInPointDto != null && (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ONE
-                        || Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ZERO)) {
+                || Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ZERO)) {
             signInCount = lastSignInPointDto.getSignInCount();
         }
         dataDto.setSignIn(signInService.signInIsSuccess(loginName));
@@ -102,8 +103,8 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
 
         String loginName = pointBillRequestDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if(accountModel == null){
-            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+        if (accountModel == null) {
+            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
         BaseResponseDto dto = new BaseResponseDto();
         Integer index = pointBillRequestDto.getIndex();
@@ -111,9 +112,8 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         if (index == null || index <= 0) {
             index = 1;
         }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
-        }
+        pageSize = pageValidUtils.validPageSizeLimit(pageSize);
+
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         PointBillResponseDataDto pointBillResponseDataDto = new PointBillResponseDataDto();
@@ -123,66 +123,6 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         pointBillResponseDataDto.setTotalCount(pointBillMapper.findCountPointBillPagination(loginName, null, null, null));
         dto.setData(pointBillResponseDataDto);
         return dto;
-    }
-
-    @Override
-    public BaseResponseDto<PointTaskListResponseDataDto> queryPointTaskList(PointTaskRequestDto pointTaskRequestDto) {
-        String loginName = pointTaskRequestDto.getBaseParam().getUserId();
-        BaseResponseDto<PointTaskListResponseDataDto> dto = new BaseResponseDto<>();
-        Integer index = pointTaskRequestDto.getIndex();
-        Integer pageSize = pointTaskRequestDto.getPageSize();
-        if (index == null || index <= 0) {
-            index = 1;
-        }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
-        }
-        List<PointTaskRecordResponseDataDto> pointTaskRecords = convertPointTaskRecordDto(pointTaskMapper.findPointTaskPagination(0, 100), loginName);
-        sortPointTaskRecord(pointTaskRecords);
-        dto.setCode(ReturnMessage.SUCCESS.getCode());
-        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        PointTaskListResponseDataDto pointTaskListResponseDataDto = new PointTaskListResponseDataDto();
-        pointTaskListResponseDataDto.setIndex(index);
-        pointTaskListResponseDataDto.setPageSize(pageSize);
-        pointTaskListResponseDataDto.setPointTasks(pointTaskRecords);
-        pointTaskListResponseDataDto.setTotalCount((long) NEWBIE_TASKS.size());
-        dto.setData(pointTaskListResponseDataDto);
-        return dto;
-    }
-
-    private List<PointTaskRecordResponseDataDto> convertPointTaskRecordDto(List<PointTaskModel> pointTaskList, String loginName) {
-        List<PointTaskRecordResponseDataDto> pointTaskRecords = Lists.newArrayList();
-        for (PointTaskModel pointTaskModel : pointTaskList) {
-            if (NEWBIE_TASKS.contains(pointTaskModel.getName())) {
-                PointTaskRecordResponseDataDto pointTaskRecordResponseDataDto = new PointTaskRecordResponseDataDto();
-                List<UserPointTaskModel> userPointTaskModel = userPointTaskMapper.findByLoginNameAndTask(loginName, pointTaskModel.getName());
-                pointTaskRecordResponseDataDto.setPointTaskId(String.valueOf(pointTaskModel.getId()));
-                pointTaskRecordResponseDataDto.setPointTaskTitle(pointTaskModel.getName().getTitle());
-                pointTaskRecordResponseDataDto.setPointTaskType(pointTaskModel.getName());
-                pointTaskRecordResponseDataDto.setPointTaskDesc(pointTaskModel.getName().getDescription());
-                pointTaskRecordResponseDataDto.setPoint(String.valueOf(pointTaskModel.getPoint()));
-                pointTaskRecordResponseDataDto.setCompleted(userPointTaskModel != null);
-                pointTaskRecords.add(pointTaskRecordResponseDataDto);
-            }
-        }
-        return pointTaskRecords;
-
-    }
-
-    
-    private void sortPointTaskRecord(List<PointTaskRecordResponseDataDto> pointTaskRecordDtoList) {
-        Collections.sort(pointTaskRecordDtoList, new Comparator<PointTaskRecordResponseDataDto>() {
-            @Override
-            public int compare(PointTaskRecordResponseDataDto first, PointTaskRecordResponseDataDto second) {
-                if (first.isCompleted() && !second.isCompleted()) {
-                    return 1;
-                }
-                if (!first.isCompleted() && second.isCompleted()) {
-                    return -1;
-                }
-                return 0;
-            }
-        });
     }
 
     private List<PointBillRecordResponseDataDto> convertPointBillRecordDto(List<PointBillModel> userBillList) {
@@ -205,8 +145,8 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     public BaseResponseDto queryPoint(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if(accountModel == null){
-            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+        if (accountModel == null) {
+            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
 
         PointResponseDataDto dataDto = new PointResponseDataDto();

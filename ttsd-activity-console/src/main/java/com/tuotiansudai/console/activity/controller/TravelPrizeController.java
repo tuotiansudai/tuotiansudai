@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.activity.controller;
 
-import com.tuotiansudai.console.activity.dto.TravelPrizeRequestDto;
-import com.tuotiansudai.console.activity.service.TravelPrizeService;
+import com.tuotiansudai.activity.repository.dto.TravelPrizeRequestDto;
+import com.tuotiansudai.console.activity.service.ActivityConsoleTravelPrizeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -19,11 +19,11 @@ import java.util.Date;
 public class TravelPrizeController {
 
     @Autowired
-    private TravelPrizeService travelPrizeService;
+    private ActivityConsoleTravelPrizeService activityConsoleTravelPrizeService;
 
     @RequestMapping(path = "/travel-prize-list")
     public ModelAndView getTravelPrizeList() {
-        BaseDto<BasePaginationDataDto> dto = travelPrizeService.getTravelPrizeItems();
+        BaseDto<BasePaginationDataDto> dto = activityConsoleTravelPrizeService.getTravelPrizeItems();
         return new ModelAndView("/travel-prize-list", "data", dto);
     }
 
@@ -31,10 +31,9 @@ public class TravelPrizeController {
     public ModelAndView getAwardItems(@RequestParam(value = "mobile", defaultValue = "", required = false) String mobile,
                                       @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                       @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                      @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        BaseDto<BasePaginationDataDto> dto = travelPrizeService.getTravelAwardItems(mobile, startTime, endTime, index, pageSize);
-
+                                      @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
+        BaseDto<BasePaginationDataDto> dto = activityConsoleTravelPrizeService.getTravelAwardItems(mobile, startTime, endTime, index, pageSize);
         ModelAndView modelAndView = new ModelAndView("/user-travel-list", "data", dto);
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("startTime", startTime);
@@ -44,14 +43,14 @@ public class TravelPrizeController {
 
     @RequestMapping(path = "/edit", method = RequestMethod.POST)
     public ModelAndView update(@Valid @ModelAttribute TravelPrizeRequestDto dto) {
-        travelPrizeService.update(LoginUserInfo.getLoginName(), dto);
+        activityConsoleTravelPrizeService.update(LoginUserInfo.getLoginName(), dto);
         return new ModelAndView("redirect:/activity-console/activity-manage/travel/travel-prize-list");
     }
 
-    @RequestMapping(value = "/{travelPrizeId:^\\d+$}/edit",method = RequestMethod.GET)
-    public ModelAndView editTravelPrize(@PathVariable long travelPrizeId){
+    @RequestMapping(value = "/{travelPrizeId:^\\d+$}/edit", method = RequestMethod.GET)
+    public ModelAndView editTravelPrize(@PathVariable long travelPrizeId) {
         ModelAndView mv = new ModelAndView("/travel-prize-edit");
-        mv.addObject("dto", travelPrizeService.getTravelPrize(travelPrizeId));
+        mv.addObject("dto", activityConsoleTravelPrizeService.getTravelPrize(travelPrizeId));
         return mv;
     }
 

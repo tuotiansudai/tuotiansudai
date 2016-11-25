@@ -4,6 +4,7 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
         $buttonLayer = $('.button-layer', registerAccountForm),
         $btnSubmit = $('input[type="submit"]', registerAccountForm);
 
+
     registerAccountForm.validate({
         focusCleanup: true,
         focusInvalid: false,

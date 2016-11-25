@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.BaseParamTest;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppInvestListServiceImpl;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -63,6 +64,9 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
     @Mock
     private InvestTransferService investTransferService;
 
+    @Mock
+    private PageValidUtils pageValidUtils;
+
     private static int INVEST_COUNT = 110;
     private static long INTEREST = 1100L;
 
@@ -114,7 +118,8 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
 
-        when(randomUtils.encryptMobile(anyString(),anyString(),anyLong(),any(Source.class))).thenReturn("log***");
+        when(randomUtils.encryptMobile(anyString(), anyString(), anyLong(), any(Source.class))).thenReturn("log***");
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
 
         InvestListRequestDto investListRequestDto = new InvestListRequestDto();
         BaseParam baseParam = new BaseParam();
@@ -179,6 +184,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         when(investService.estimateInvestIncome(anyLong(), anyString(), anyLong())).thenReturn(INTEREST);
         when(investTransferService.isTransferable(anyLong())).thenReturn(true);
         when(loanRepayMapper.findEnabledLoanRepayByLoanId(anyLong())).thenReturn(null);
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
 
 
         UserInvestListRequestDto requestDto = new UserInvestListRequestDto();

@@ -11,7 +11,7 @@ package com.tuotiansudai.job;
  *
  * 在此枚举中添加字段时，请同步添加到 ttsd-job-worker/src/main/resources/job-worker.properties.  deploy/job-worker-all.properties 里
  *
- * 请不要将 InvestCallBack, InvestTransferCallBack 添加到上述文件中
+ * 请不要将 InvestCallBack, InvestTransferCallBack,NormalRepayCallBack, AdvanceRepayCallBack, CouponRepayCallBack, ExtraRateRepayCallBack添加到上述文件中
  *
  *
  * TODO: 所有人请注意
@@ -24,6 +24,10 @@ public enum JobType {
     LoanOut("放款后续处理"),
     AutoInvest("自动投资"),
     InvestCallBack("投资回调处理"),
+    NormalRepayCallBack("正常还款回调处理"),
+    AdvanceRepayCallBack("提前还款回调处理"),
+    CouponRepayCallBack("还款时优惠券收益回调处理"),
+    ExtraRateRepayCallBack("还款时阶梯加息收益回调处理"),
     InvestTransferCallBack("债权转让投资回调处理"),
     LoanStatusToRecheck("标的状态从筹款变为等待复核"),
     CalculateDefaultInterest("计算逾期罚息"),
@@ -56,7 +60,9 @@ public enum JobType {
     RedEnvelope("红包优惠发放推送"),
     MembershipExpiredAlert("会员过期提醒"),
     CalculateTravelLuxuryPrize("生成旅游奢侈品奖品"),
-    PlatformBalanceLowNotify("平台账户余额不足提醒");
+    PlatformBalanceLowNotify("平台账户余额不足提醒"),
+    ContractResponse("更新合同状态"),
+    CreateAnXinContract("创建安心签合同");
 
     private final String description;
 

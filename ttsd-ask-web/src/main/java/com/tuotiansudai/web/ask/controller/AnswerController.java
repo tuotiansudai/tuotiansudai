@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.ask.controller;
 
-import com.tuotiansudai.ask.dto.*;
+import com.tuotiansudai.ask.repository.dto.AnswerRequestDto;
+import com.tuotiansudai.ask.repository.dto.AnswerResultDataDto;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -42,8 +43,7 @@ public class AnswerController {
     }
 
     @RequestMapping(path = "/my-answers", method = RequestMethod.GET)
-    public ModelAndView getMyAnswers(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return new ModelAndView("/my-answers", "answers", answerService.findMyAnswers(LoginUserInfo.getLoginName(), index, pageSize));
+    public ModelAndView getMyAnswers(@RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        return new ModelAndView("/my-answers", "answers", answerService.findMyAnswers(LoginUserInfo.getLoginName(), index, 10));
     }
 }

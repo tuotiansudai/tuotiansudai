@@ -76,10 +76,12 @@ define([], function () {
         },
         //封装程序入口
         action: function() {
+            var redirect=globalFun.browserRedirect();
             this.autoplay();
             this.mouseoverout();
-            this.bindTouchEvn();
-
+            if(redirect=='mobile') {
+                this.bindTouchEvn();
+            }
         },
         //在样式表中设置好 .fadeIn 的透明度为0
         fadeIn: function(e) {
@@ -106,10 +108,7 @@ define([], function () {
 
             for (var j = 0; j < this.count; j++) {
                 this.alpha(j, 0);
-
             }
-            this.alpha(this.prev, 100); //设置上一张的透明度为100
-            this.alpha(this.index, 0); // 当前的一张不要透明度
             // 利用透明度来实现切换图片
             this.timer = setInterval(function() {
                 inalpha += 2;
@@ -121,7 +120,7 @@ define([], function () {
                     pralpha = 100
                 };
                 //为兼容性赋样式
-                this.alpha(this.prev, pralpha);
+                // this.alpha(this.prev, pralpha);
                 this.alpha(this.index, inalpha);
                 if (inalpha == 100 && pralpha == 0) {
                     clearInterval(this.timer)
@@ -135,6 +134,10 @@ define([], function () {
         },
         //自动播放
         autoplay: function() {
+
+            if(this.play) {
+                clearInterval(this.play);
+            }
             this.play = setInterval(function() {
                 this.prev = this.index;
                 this.index++;
@@ -142,7 +145,7 @@ define([], function () {
                     this.index = 0
                 };
                 this.imgshow();
-            }.bind(this), 8000) //循环播放图片
+            }.bind(this), 5000) //循环播放图片
         },
         //处理鼠标事件
         mouseoverout: function() {
@@ -161,17 +164,26 @@ define([], function () {
                     $this.numlist[i].onmouseover = function(event) {
                         clearInterval($this.play);
 
-                        event.stopPropagation();
-                        var e=(event)?event:window.event;
-                        window.event?e.cancelBubble=true:e.stopPropagation();
-                        // e.cancelBubble=true;// ie下阻止冒泡
-                        $this.index=event.target.index; //获取鼠标移入的序列
+                        // 阻止事件冒泡
+                        var e=window.event||event;
+                        if(document.all){  //只有ie识别
+                            e.cancelBubble=true;
+                        }else{
+                            e.stopPropagation();
+                        }
+
+                        if (typeof e.target != 'undefined'){
+                            $this.index=e.target.index; //获取鼠标移入的序列
+                        }
+                        else {
+                            $this.index=e.srcElement.index;
+                        }
+
                         $this.imgshow();
                     }
                 })(i)
             }
         },
-
         bindTouchEvn:function() {
             this.boxul[0].addEventListener('touchstart', this.touchstart.bind(this), false);
             this.boxul[0].addEventListener('touchmove', this.touchmove.bind(this), false);

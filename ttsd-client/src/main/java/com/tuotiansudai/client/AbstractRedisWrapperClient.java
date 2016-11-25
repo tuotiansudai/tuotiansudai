@@ -26,6 +26,12 @@ public abstract class AbstractRedisWrapperClient {
     @Value("${common.redis.password}")
     private String redisPassword;
 
+    @Value("${mobile.jedis.pool.maxTotal}")
+    private int maxTotal;
+
+    @Value("${common.jedis.pool.maxWaitMillis}")
+    private int maxWaitMillis;
+
     @Autowired
     private JedisPoolConfig jedisPoolConfig;
 
@@ -55,10 +61,13 @@ public abstract class AbstractRedisWrapperClient {
 
     protected JedisPool getJedisPool() {
         if (jedisPool == null) {
+
+            jedisPoolConfig.setMaxTotal(maxTotal);
+            jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
             logger.debug("redisHost=" + redisHost);
             logger.debug("redisPort=" + redisPort);
             logger.debug("maxTotal=" + jedisPoolConfig.getMaxTotal());
-            logger.debug("maxTotal=" + jedisPoolConfig.getMaxWaitMillis());
+            logger.debug("MaxWaitMillis=" + jedisPoolConfig.getMaxWaitMillis());
             jedisPool = new JedisPool(jedisPoolConfig, redisHost, redisPort);
         }
         return jedisPool;

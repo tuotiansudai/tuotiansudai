@@ -8,6 +8,9 @@ import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.AdvanceRepayNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.NormalRepayNotifyRequestModel;
 import com.tuotiansudai.repository.model.*;
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -56,7 +59,7 @@ public class RepayBaseTest {
     }
 
     protected AccountModel getFakeAccount(UserModel userModel) {
-        AccountModel fakeAccount = new AccountModel(userModel.getLoginName(), userModel.getLoginName(), "ID", "payUserId", "payAccountId", new Date());
+        AccountModel fakeAccount = new AccountModel(userModel.getLoginName(), "payUserId", "payAccountId", new Date());
         fakeAccount.setBalance(1000000);
         fakeAccount.setMembershipPoint(50001);
         return fakeAccount;
@@ -109,6 +112,42 @@ public class RepayBaseTest {
                 .put("order_id", String.valueOf(orderId))
                 .put("mer_date", new SimpleDateFormat("yyyyMMdd").format(new Date()))
                 .put("ret_code", "0000")
+                .put("status","NOT_DONE")
                 .build());
     }
+
+    protected NormalRepayNotifyRequestModel getFakeNormalRepayNotifyRequestModel(Long orderId){
+        NormalRepayNotifyRequestModel model = new NormalRepayNotifyRequestModel();
+        model.setSign("sign");
+        model.setSignType("RSA");
+        model.setMerId("mer_id");
+        model.setVersion("1.0");
+        model.setTradeNo("trade_no");
+        model.setOrderId(String.valueOf(orderId));
+        model.setStatus(NotifyProcessStatus.NOT_DONE.toString());
+        model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        model.setService("");
+        model.setRetCode("0000");
+        model.setRequestData(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        model.setRequestData("mer_date=20161101&mer_id=7099088&order_id="+orderId+"&ret_code=0000&sign_type=RSA&version=1.0&sign=JoP0KGZ1j6hXsovsqFMGfTNwqFXGQFbSMmGp+EfK4vzJtgwAjmESgusrND+KcWPZl+BI1aMiGX6Z6sySa31Xi9+OuTjRfMcWSSnAAcX1PBJdhhEci40XHUw8LRnN3WDwrswu4Zg71kaSrdNT/nGYBaszsvjjwWlhPxslz48cRvc=");
+        return model;
+    }
+
+    protected AdvanceRepayNotifyRequestModel getFakeAdvanceRepayNotifyRequestModel(Long orderId){
+        AdvanceRepayNotifyRequestModel model = new AdvanceRepayNotifyRequestModel();
+        model.setSign("sign");
+        model.setSignType("RSA");
+        model.setMerId("mer_id");
+        model.setVersion("1.0");
+        model.setTradeNo("trade_no");
+        model.setOrderId(String.valueOf(orderId));
+        model.setStatus(NotifyProcessStatus.NOT_DONE.toString());
+        model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        model.setService("");
+        model.setRetCode("0000");
+        model.setRequestData(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        model.setRequestData("mer_date=20161101&mer_id=7099088&order_id="+orderId+"&ret_code=0000&sign_type=RSA&version=1.0&sign=JoP0KGZ1j6hXsovsqFMGfTNwqFXGQFbSMmGp+EfK4vzJtgwAjmESgusrND+KcWPZl+BI1aMiGX6Z6sySa31Xi9+OuTjRfMcWSSnAAcX1PBJdhhEci40XHUw8LRnN3WDwrswu4Zg71kaSrdNT/nGYBaszsvjjwWlhPxslz48cRvc=");
+        return model;
+    }
+
 }

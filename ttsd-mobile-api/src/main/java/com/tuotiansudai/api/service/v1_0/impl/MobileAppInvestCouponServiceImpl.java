@@ -6,15 +6,16 @@ import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppInvestCouponService;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +35,9 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
     @Value(value = "${web.coupon.lock.seconds}")
     private int couponLockSeconds;
 
+    @Autowired
+    private UserMapper userMapper;
+
     private Map<CouponType, Integer> dicRule = Maps.newHashMap(ImmutableMap.<CouponType, Integer>builder()
             .put(CouponType.RED_ENVELOPE, 100)
             .put(CouponType.BIRTHDAY_COUPON, 99)
@@ -48,12 +52,6 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
     @Autowired
     private LoanMapper loanMapper;
 
-    @Autowired
-    private CouponMapper couponMapper;
-
-    @Autowired
-    private UserBirthdayUtil userBirthdayUtil;
-
     @Override
     public BaseResponseDto getInvestCoupons(InvestRequestDto dto) {
         String loanId = dto.getLoanId();
@@ -67,7 +65,7 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
             return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
 
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(dto.getBaseParam().getUserId(), null);
+        List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponWithCouponByLoginName(dto.getBaseParam().getUserId(), null);
 
         List<UserCouponModel> unavailableCouponList = filterUnavailableLoanProductType(userCouponModels, loanModel.getProductType());
 
@@ -90,7 +88,7 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
         Iterator<BaseCouponResponseDataDto> items = Iterators.transform(filter, new Function<UserCouponModel, BaseCouponResponseDataDto>() {
             @Override
             public BaseCouponResponseDataDto apply(UserCouponModel userCouponModel) {
-                return new BaseCouponResponseDataDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
+                return new BaseCouponResponseDataDto(userCouponModel);
             }
         });
 
@@ -106,8 +104,9 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
         List<UserCouponModel> unavailableCoupons = Lists.newArrayList();
 
         for (UserCouponModel item : userCouponModels) {
-            CouponModel couponModel = couponMapper.findById(item.getCouponId());
-            if (!couponModel.getProductTypes().contains(loanProductType) || CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()) && !userBirthdayUtil.isBirthMonth(item.getLoginName())) {
+            CouponModel couponModel = item.getCoupon();
+            UserModel userModel = userMapper.findByLoginName(item.getLoginName());
+            if (!couponModel.getProductTypes().contains(loanProductType) || CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()) && !UserBirthdayUtil.isBirthMonth(userModel.getIdentityNumber())) {
                 unavailableCoupons.add(item);
             }
         }
@@ -119,8 +118,8 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
         Collections.sort(userCouponModels, new Comparator<UserCouponModel>() {
             @Override
             public int compare(UserCouponModel first, UserCouponModel second) {
-                CouponModel firstCoupon = couponMapper.findById(first.getCouponId());
-                CouponModel secondCoupon = couponMapper.findById(second.getCouponId());
+                CouponModel firstCoupon = first.getCoupon();
+                CouponModel secondCoupon = second.getCoupon();
 
                 boolean firstCouponAvailable = isAvailableCoupon(firstCoupon, amount);
                 boolean secondCouponAvailable = isAvailableCoupon(secondCoupon, amount);
