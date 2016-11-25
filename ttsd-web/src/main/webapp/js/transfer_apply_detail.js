@@ -161,6 +161,8 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
         getCode(true);
     });
     function getCode(type){
+        $('#getSkipCode').prop('disabled',true);
+        $('#microPhone').css('visibility', 'hidden');
         $.ajax({
             url: '/anxinSign/sendCaptcha',
             type: 'POST',
@@ -170,10 +172,19 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
             }
         })
         .done(function(data) {
-            countDown();
-            Down = setInterval(countDown, 1000);
+            $('#getSkipCode').prop('disabled',false);
+            $('#microPhone').css('visibility', 'visible');
+            if(data.success) {
+                countDown();
+                Down = setInterval(countDown, 1000);
+            }
+            else {
+                layer.msg('请求失败，请重试或联系客服！');
+            }
         })
         .fail(function() {
+            $('#getSkipCode').prop('disabled',false);
+            $('#microPhone').css('visibility', 'visible');
             layer.msg('请求失败，请重试或联系客服！');
         });
     }

@@ -9,16 +9,15 @@ import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
-import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.cfca.constant.AnxinRetCode;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.ContractNoStatus;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
 import com.tuotiansudai.job.AnxinQueryContractJob;
 import com.tuotiansudai.job.JobType;
@@ -104,7 +103,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final int BATCH_NO_LIFT_TIME = 60 * 60 * 24 * 7; // bath_NO 在redis里保存7天
 
-    private static final int CREATE_CONTRACT_MAX_IN_DOING_TIME = 60 * 30; // 创建合同的时间在半个小时内应该可以完成，如果job出现问题，没能删除InCreating key, 半个小时后，可以再次手动创建合同
+    private static final int CREATE_CONTRACT_MAX_IN_DOING_TIME = 60 * 90; // 给创建合同预留90分钟，如果job出现问题，没能删除InCreating key, 90分钟后，可以再次手动创建合同
 
     private static final String CONTRACT_TIME_FORMAT = "yyyyMMddHHmmss";
 
@@ -153,7 +152,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             UserModel userModel = userMapper.findByLoginName(loginName);
 
             Tx3ResVO tx3001ResVO = anxinSignConnectService.createAccount3001(userModel);
-            String retMessage = tx3001ResVO.getHead().getRetMessage();
 
             if (isSuccess(tx3001ResVO)) {
                 AnxinSignPropertyModel anxinProp = new AnxinSignPropertyModel();
@@ -164,10 +162,10 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 anxinSignPropertyMapper.create(anxinProp);
                 return new BaseDto();
             } else {
+                String retMessage = tx3001ResVO.getHead().getRetMessage();
                 logger.error("create anxin sign account failed. " + retMessage);
-                return new BaseDto(false);
+                return failBaseDto(retMessage);
             }
-
         } catch (PKIException e) {
             logger.error("create anxin sign account failed. ", e);
             return new BaseDto(false);
@@ -199,8 +197,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 redisWrapperClient.setex(TEMP_PROJECT_CODE_KEY + loginName, TEMP_PROJECT_CODE_EXPIRE_TIME, projectCode);
                 return new BaseDto();
             } else {
-                logger.error("send anxin captcha code failed. " + tx3101ResVO.getHead().getRetMessage());
-                return new BaseDto(false);
+                String retMessage = tx3101ResVO.getHead().getRetMessage();
+                logger.error("send anxin captcha code failed. " + retMessage);
+                return failBaseDto(retMessage);
             }
 
         } catch (PKIException e) {
@@ -213,7 +212,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      * 确认验证码 （授权）
      */
     @Override
-    public BaseDto<BaseDataDto> verifyCaptcha3102(String loginName, String captcha, boolean skipAuth, String ip) {
+    public BaseDto verifyCaptcha3102(String loginName, String captcha, boolean skipAuth, String ip) {
 
         try {
             // 如果用户没有开通安心签账户，则返回失败
@@ -242,7 +241,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 anxinProp.setAuthTime(new Date());
                 anxinProp.setAuthIp(ip);
                 anxinSignPropertyMapper.update(anxinProp);
-                BaseDto baseDto = new BaseDto();
+                BaseDto<BaseDataDto> baseDto = new BaseDto<>();
                 baseDto.setData(new BaseDataDto(true, skipAuth ? "skipAuth" : ""));
                 return baseDto;
             } else {
@@ -253,7 +252,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         } catch (PKIException e) {
             logger.error("verify anxin captcha code failed. ", e);
-            return new BaseDto<>(false);
+            return new BaseDto(false);
         }
     }
 
@@ -576,35 +575,35 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      * @param loanId
      * @return
      */
-    @Override
-    public BaseDto updateLoanInvestContractNo(long loanId) {
-
-        LoanModel loanModel = loanMapper.findById(loanId);
-        String agentLoginName = loanModel.getAgentLoginName();
-        AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(agentLoginName);
-
-        if (agentAnxinProp == null || StringUtils.isEmpty(agentAnxinProp.getProjectCode())) {
-            // update all invest contractNo to "OLD"
-            investMapper.updateAllContractNoByLoanId(loanId, ContractNoStatus.OLD.name());
-            return new BaseDto();
-        }
-
-        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
-        for (InvestModel investModel : successInvestList) {
-            String investLoginName = investModel.getLoginName();
-            AnxinSignPropertyModel investAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
-
-            if (investAnxinProp == null || StringUtils.isEmpty(investAnxinProp.getProjectCode())) {
-                // update contractNo to "OLD"
-                investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.OLD.name());
-            } else {
-                // update contractNo to "WAITING"
-                investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.WAITING.name());
-            }
-        }
-
-        return new BaseDto();
-    }
+//    @Override
+//    public BaseDto updateLoanInvestContractNo(long loanId) {
+//
+//        LoanModel loanModel = loanMapper.findById(loanId);
+//        String agentLoginName = loanModel.getAgentLoginName();
+//        AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(agentLoginName);
+//
+//        if (agentAnxinProp == null || StringUtils.isEmpty(agentAnxinProp.getProjectCode())) {
+//            // update all invest contractNo to "OLD"
+//            investMapper.updateAllContractNoByLoanId(loanId, ContractNoStatus.OLD.name());
+//            return new BaseDto();
+//        }
+//
+//        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
+//        for (InvestModel investModel : successInvestList) {
+//            String investLoginName = investModel.getLoginName();
+//            AnxinSignPropertyModel investAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
+//
+//            if (investAnxinProp == null || StringUtils.isEmpty(investAnxinProp.getProjectCode())) {
+//                // update contractNo to "OLD"
+//                investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.OLD.name());
+//            } else {
+//                // update contractNo to "WAITING"
+//                investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.WAITING.name());
+//            }
+//        }
+//
+//        return new BaseDto();
+//    }
 
     /**
      * 将债权转让投资的合同编号更新为OLD或WAITING
@@ -612,27 +611,27 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      * @param investId
      * @return
      */
-    @Override
-    public BaseDto updateTransferInvestContractNo(long investId) {
-
-        InvestModel investModel = investMapper.findById(investId);
-        String investLoginName = investModel.getLoginName();
-        AnxinSignPropertyModel investAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
-
-        InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
-        String tranferLoginName = transferInvestModel.getLoginName();
-        AnxinSignPropertyModel tranferAnxinProp = anxinSignPropertyMapper.findByLoginName(tranferLoginName);
-
-        if (investAnxinProp == null || StringUtils.isEmpty(investAnxinProp.getProjectCode())
-                || tranferAnxinProp == null || StringUtils.isEmpty(tranferAnxinProp.getProjectCode())) {
-            // update contractNo to "OLD"
-            investMapper.updateContractNoById(investId, ContractNoStatus.OLD.name());
-        } else {
-            // update contractNo to "WAITING"
-            investMapper.updateContractNoById(investId, ContractNoStatus.WAITING.name());
-        }
-
-        return new BaseDto();
-    }
+//    @Override
+//    public BaseDto updateTransferInvestContractNo(long investId) {
+//
+//        InvestModel investModel = investMapper.findById(investId);
+//        String investLoginName = investModel.getLoginName();
+//        AnxinSignPropertyModel investAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
+//
+//        InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
+//        String tranferLoginName = transferInvestModel.getLoginName();
+//        AnxinSignPropertyModel tranferAnxinProp = anxinSignPropertyMapper.findByLoginName(tranferLoginName);
+//
+//        if (investAnxinProp == null || StringUtils.isEmpty(investAnxinProp.getProjectCode())
+//                || tranferAnxinProp == null || StringUtils.isEmpty(tranferAnxinProp.getProjectCode())) {
+//            // update contractNo to "OLD"
+//            investMapper.updateContractNoById(investId, ContractNoStatus.OLD.name());
+//        } else {
+//            // update contractNo to "WAITING"
+//            investMapper.updateContractNoById(investId, ContractNoStatus.WAITING.name());
+//        }
+//
+//        return new BaseDto();
+//    }
 
 }

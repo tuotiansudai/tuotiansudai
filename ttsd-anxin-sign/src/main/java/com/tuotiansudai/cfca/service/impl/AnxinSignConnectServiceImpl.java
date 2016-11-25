@@ -9,15 +9,14 @@ import cfca.trustsign.common.vo.request.tx3.*;
 import cfca.trustsign.common.vo.response.ErrorResVO;
 import cfca.trustsign.common.vo.response.tx3.*;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.cfca.connector.HttpConnector;
+import com.tuotiansudai.cfca.connector.AnxinClient;
 import com.tuotiansudai.cfca.constant.AnxinRetCode;
-import com.tuotiansudai.cfca.constant.Request;
+import com.tuotiansudai.cfca.constant.TxCode;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.service.RequestResponseService;
-import com.tuotiansudai.cfca.util.SecurityUtil;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -38,16 +37,14 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     @Autowired
     private RequestResponseService requestResponseService;
 
+    @Autowired
+    private AnxinClient anxinClient;
+
     @Override
     public Tx3ResVO createAccount3001(UserModel userModel) throws PKIException {
-
-        HttpConnector httpConnector = new HttpConnector();
-        httpConnector.init();
-
-        Tx3001ReqVO tx3001ReqVO = new Tx3001ReqVO();
-
         PersonVO person = convertAccountToPersonVO(userModel);
 
+        Tx3001ReqVO tx3001ReqVO = new Tx3001ReqVO();
         tx3001ReqVO.setHead(getHeadVO());
         tx3001ReqVO.setPerson(person);
 
@@ -55,13 +52,10 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         String req = jsonObjectMapper.writeValueAsString(tx3001ReqVO);
         logger.info("[安心签] create account request:" + req);
 
-        String txCode = "3001";
-        String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
-
         // 记录请求日志
         requestResponseService.insertCreateAccountRequest(tx3001ReqVO);
 
-        String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
+        String res = anxinClient.send(TxCode.CREATE_ACCOUNT, req);
 
         logger.info("[安心签] create account response:" + res);
 
@@ -75,16 +69,12 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
     @Override
     public Tx3ResVO sendCaptcha3101(String userId, String projectCode, boolean isVoice) throws PKIException {
-        HttpConnector httpConnector = new HttpConnector();
-        httpConnector.init();
-
-        Tx3101ReqVO tx3101ReqVO = new Tx3101ReqVO();
-
         ProxySignVO proxySignVO = new ProxySignVO();
         proxySignVO.setUserId(userId);
         proxySignVO.setProjectCode(projectCode);
         proxySignVO.setIsSendVoice(isVoice ? 1 : 0);
 
+        Tx3101ReqVO tx3101ReqVO = new Tx3101ReqVO();
         tx3101ReqVO.setHead(getHeadVO());
         tx3101ReqVO.setProxySign(proxySignVO);
 
@@ -92,15 +82,13 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         String req = jsonObjectMapper.writeValueAsString(tx3101ReqVO);
         logger.info("[安心签] send captcha request:" + req);
 
-        String txCode = "3101";
-        String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
-
         // 记录请求日志
         requestResponseService.insertSendCaptchaRequest(tx3101ReqVO);
 
-        String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
+        String res = anxinClient.send(TxCode.SEND_CAPTCHA, req);
 
         logger.info("[安心签] send captcha response:" + res);
+
         Tx3ResVO tx3101ResVO = readResponse(res, Tx3101ResVO.class);
 
         // 记录响应日志
@@ -110,66 +98,57 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
     @Override
     public Tx3ResVO verifyCaptcha3102(String userId, String projectCode, String checkCode) throws PKIException {
-        HttpConnector httpConnector = new HttpConnector();
-        httpConnector.init();
-
-        Tx3102ReqVO tx3102ReqVO = new Tx3102ReqVO();
 
         ProxySignVO proxySignVO = new ProxySignVO();
         proxySignVO.setUserId(userId);
         proxySignVO.setProjectCode(projectCode);
         proxySignVO.setCheckCode(checkCode);
 
+        Tx3102ReqVO tx3102ReqVO = new Tx3102ReqVO();
         tx3102ReqVO.setHead(getHeadVO());
         tx3102ReqVO.setProxySign(proxySignVO);
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3102ReqVO);
-        logger.info(MessageFormat.format("[安心签] verifyCaptcha. userId:{0}, projectCode:{1}, checkCode:{2}, request date:{3}", userId, projectCode, checkCode, req));
 
-        String txCode = "3102";
-        String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
+        logger.info(MessageFormat.format("[安心签] verifyCaptcha. userId:{0}, projectCode:{1}, checkCode:{2}, request date:{3}", userId, projectCode, checkCode, req));
 
         // 记录请求日志
         requestResponseService.insertVerifyCaptchaRequest(tx3102ReqVO);
 
-        String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
+        String res = anxinClient.send(TxCode.VERIFY_CAPTCHA, req);
 
         logger.info(MessageFormat.format("[安心签] verifyCaptcha. userId:{0}, projectCode:{1}, checkCode:{2}, response date:{3}", userId, projectCode, checkCode, res));
 
         Tx3ResVO tx3102ResVO = readResponse(res, Tx3102ResVO.class);
 
-        // 记录请求日志
+        // 记录响应日志
         requestResponseService.insertVerifyCaptchaResponse((Tx3102ResVO) tx3102ResVO);
-
         return tx3102ResVO;
     }
 
     @Override
     public Tx3202ResVO createContractBatch3202(long businessId, String batchNo, AnxinContractType contractType, List<CreateContractVO> createContractList) throws PKIException {
-        HttpConnector httpConnector = new HttpConnector();
-        httpConnector.init();
-
         Tx3202ReqVO tx3202ReqVO = new Tx3202ReqVO();
-
         tx3202ReqVO.setHead(getHeadVO());
         tx3202ReqVO.setBatchNo(batchNo);
         tx3202ReqVO.setCreateContracts(createContractList.toArray(new CreateContractVO[0]));
 
-        requestResponseService.insertBatchGenerateContractRequest(businessId, tx3202ReqVO);
-
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
-        logger.info(MessageFormat.format("[安心签] create contract batch, loanId:{0}, batchNo:{1}, created contract request date:{2}", String.valueOf(businessId), batchNo, req));
 
-        String txCode = "3202";
-        String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
-        String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
+        logger.info(MessageFormat.format("[安心签] create contract batch request, businessId:{0}, batchNo:{1}, data:{2}", String.valueOf(businessId), batchNo, req));
 
-        logger.info(MessageFormat.format("[安心签] create contract batch, loanId:{0}, batchNo:{1}, created contract response date:{2}", String.valueOf(businessId), batchNo, res));
+        // 记录请求日志
+        requestResponseService.insertBatchGenerateContractRequest(businessId, tx3202ReqVO);
+
+        String res = anxinClient.send(TxCode.CREATE_CONTRACT_BATCH, req);
+
+        logger.info(MessageFormat.format("[安心签] create contract batch response, businessId:{0}, batchNo:{1}, data:{2}", String.valueOf(businessId), batchNo, res));
 
         Tx3202ResVO tx3202ResVO = (Tx3202ResVO) readResponse(res, Tx3202ResVO.class);
 
+        // 记录响应日志
         requestResponseService.insertBatchGenerateContractResponse(businessId, batchNo, tx3202ResVO);
 
         return tx3202ResVO;
@@ -177,28 +156,25 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
     @Override
     public Tx3211ResVO queryContractBatch3211(long businessId, String batchNo) throws PKIException {
-        HttpConnector httpConnector = new HttpConnector();
-        httpConnector.init();
-
         Tx3211ReqVO tx3211ReqVO = new Tx3211ReqVO();
-
         tx3211ReqVO.setHead(getHeadVO());
         tx3211ReqVO.setBatchNo(batchNo);
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3211ReqVO);
-        logger.info(MessageFormat.format("[安心签] Query contract, batchNo:{0}", batchNo));
 
+        logger.info(MessageFormat.format("[安心签] Query contract batch request, businessId:{0}, batchNo:{1}, data:{2}", String.valueOf(businessId), batchNo, req));
+
+        // 记录请求日志
         requestResponseService.insertBatchQueryContractRequest(businessId, tx3211ReqVO);
 
-        String txCode = "3211";
-        String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
-        String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
+        String res = anxinClient.send(TxCode.QUERY_CONTRACT_BATCH, req);
 
-        logger.info("[安心签] Query contract response:" + res);
+        logger.info(MessageFormat.format("[安心签] Query contract batch response, businessId:{0}, batchNo:{1}, data:{2} ", String.valueOf(businessId), batchNo, res));
 
         Tx3211ResVO tx3211ResVO = (Tx3211ResVO) readResponse(res, Tx3211ResVO.class);
 
+        // 记录响应日志
         requestResponseService.insertBatchQueryContractResponse(businessId, batchNo, tx3211ResVO);
 
         return tx3211ResVO;
@@ -242,10 +218,8 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
     @Override
     public byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException {
-        HttpConnector httpConnector = new HttpConnector();
-        httpConnector.init();
-        logger.info(MessageFormat.format("[安心签] down loan contract , contractNo:{0}", contractNo));
-        return httpConnector.getFile("platId/" + Request.PLAT_ID + "/contractNo/" + contractNo + "/downloading");
+        logger.info("[安心签] download contract, contractNo: " + contractNo);
+        return anxinClient.getContractFile(contractNo);
     }
 
     private Tx3ResVO readResponse(String res, Class<? extends Tx3ResVO> cla) {
@@ -279,7 +253,6 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     }
 
     private PersonVO convertAccountToPersonVO(UserModel userModel) {
-
         PersonVO person = new PersonVO();
         person.setPersonName(userModel.getUserName());
         person.setIdentTypeCode("0");
