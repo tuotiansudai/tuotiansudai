@@ -23,6 +23,7 @@ public class EnvironmentAspect {
     @Value("${common.fake.captcha}")
     private String fakeCaptcha;
 
+
     @Around(value = "execution(* *..CaptchaHelper.captchaVerify(..))")
     public Object aroundCaptchaVerify(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         if (Environment.SMOKE == environment) {
@@ -42,7 +43,7 @@ public class EnvironmentAspect {
             return true;
         }
 
-        if(Environment.PRODUCTION != environment && proceedingJoinPoint.getArgs()[1] != null && proceedingJoinPoint.getArgs()[1].equals(fakeCaptcha)){
+        if(Environment.PRODUCTION != environment && proceedingJoinPoint.getArgs()[1].equals(fakeCaptcha)){
             return true;
         }
 

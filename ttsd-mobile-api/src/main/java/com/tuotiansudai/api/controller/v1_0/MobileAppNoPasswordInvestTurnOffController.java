@@ -24,7 +24,6 @@ public class MobileAppNoPasswordInvestTurnOffController extends MobileAppBaseCon
     public BaseResponseDto noPasswordInvestTurnOff(@RequestBody NoPasswordInvestTurnOffRequestDto noPasswordInvestTurnOffRequestDto, HttpServletRequest request) {
         String ip = RequestIPParser.parse(request);
         noPasswordInvestTurnOffRequestDto.getBaseParam().setUserId(getLoginName());
-        logger.debug("captcha: " + noPasswordInvestTurnOffRequestDto.getCaptcha());
 
         return mobileAppNoPasswordInvestTurnOffService.noPasswordInvestTurnOff(noPasswordInvestTurnOffRequestDto, ip);
     }
