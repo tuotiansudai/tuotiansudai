@@ -65,6 +65,7 @@ public class LoanController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> createLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
+
         loanCreateRequestDto.getLoan().setCreatedBy(LoginUserInfo.getLoginName());
         return loanCreateService.createLoan(loanCreateRequestDto);
     }

@@ -198,6 +198,17 @@
                     </label>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">是否允许债权转让:</label>
+
+                <div class="col-sm-4 checkbox">
+                    <label for="extra">
+                        <input type="checkbox" id="nonTransferable" name="nonTransferable"
+                               <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                               <#if loan.loanDetails?? && loan.loanDetails.nonTransferable>checked="checked"</#if> value="true" />（选中后投资此标的不允许债权转让）
+                    </label>
+                </div>
+            </div>
 
             <div class="form-group extra-rate <#if !(extraLoanRates?has_content)>hidden</#if>">
                 <label class="col-sm-2 control-label"></label>
