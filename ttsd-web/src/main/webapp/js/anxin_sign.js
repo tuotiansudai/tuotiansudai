@@ -184,7 +184,6 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
                     }
                 },function(data) {
                     if(data.success) {
-                        countDown();
                         Down = setInterval(countDown, 1000);
                     }
                     else {
