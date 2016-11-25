@@ -36,18 +36,16 @@ public class ExperienceRepaySuccessCollector implements UserCollector {
             return false;
         }
 
-        List<LoanModel> loanModels = loanMapper.findByProductType(LoanStatus.RAISING,Lists.newArrayList(ProductType.EXPERIENCE),ActivityType.NEWBIE);
-        if (CollectionUtils.isEmpty(loanModels)) {
-            return false;
-        }
+        List<LoanModel> loanModels = loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(ProductType.EXPERIENCE), ActivityType.NEWBIE);
 
-        for (final LoanModel loanModel : loanModels) {
-            List<InvestModel> investModels = investMapper.findByLoanIdAndLoginName(loanModel.getId(), userModel.getLoginName());
-            boolean isRepayComplete = Iterators.all(investModels.iterator(), input -> investRepayMapper.findByInvestIdAndPeriod(input.getId(), loanModel.getPeriods()).getStatus() == RepayStatus.COMPLETE);
-            if (!isRepayComplete) {
-                return false;
-            }
-        }
-        return true;
+        List<InvestModel> investModels = Lists.newArrayList();
+
+        loanModels.stream().forEach(loanModel -> investModels.addAll(investMapper.findByLoanIdAndLoginName(loanModel.getId(), userModel.getLoginName())));
+
+        List<InvestRepayModel> investRepayModels = Lists.newArrayList();
+
+        investModels.forEach(investModel -> investRepayModels.addAll(investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId())));
+
+        return CollectionUtils.isNotEmpty(investRepayModels) && investRepayModels.stream().allMatch(investRepayModel -> investRepayModel.getStatus() == RepayStatus.COMPLETE);
     }
 }

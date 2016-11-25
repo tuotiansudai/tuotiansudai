@@ -46,8 +46,12 @@ public class ChannelCollector implements UserCollector{
             return false;
         }
 
-        List<UserModel> userModels = userMapper.findUsersByChannel(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("channels", couponUserGroupModel.getUserGroupItems()).build()));
-        return Iterators.any(userModels.iterator(), input -> input.getLoginName().equalsIgnoreCase(userModel.getLoginName()) && (userModel.getRegisterTime().after(couponModel.getStartTime()) && userModel.getRegisterTime().before(couponModel.getEndTime())));
+        List<UserModel> userModels = userMapper.findUsersByChannel(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("channels",
+                couponUserGroupModel.getUserGroupItems()).build()));
+        return Iterators.any(userModels.iterator(),
+                input -> input.getLoginName().equalsIgnoreCase(userModel.getLoginName())
+                        && (userModel.getRegisterTime().after(couponModel.getStartTime())
+                        && userModel.getRegisterTime().before(couponModel.getEndTime())));
     }
 
 }
