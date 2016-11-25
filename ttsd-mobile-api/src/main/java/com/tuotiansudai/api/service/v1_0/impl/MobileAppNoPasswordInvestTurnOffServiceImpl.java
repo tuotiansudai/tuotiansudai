@@ -37,6 +37,7 @@ public class MobileAppNoPasswordInvestTurnOffServiceImpl implements MobileAppNoP
             if (verifyCaptchaFailed) {
                 baseResponseDto.setCode(ReturnMessage.SMS_CAPTCHA_ERROR.getCode());
                 baseResponseDto.setMessage(ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
+                return baseResponseDto;
             }
         }
 
