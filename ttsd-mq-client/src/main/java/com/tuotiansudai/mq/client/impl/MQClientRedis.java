@@ -3,8 +3,6 @@ package com.tuotiansudai.mq.client.impl;
 import com.tuotiansudai.mq.client.MQClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
-import com.tuotiansudai.mq.client.model.MessageTopicQueue;
-import com.tuotiansudai.mq.client.model.Queue;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +12,6 @@ import redis.clients.jedis.Jedis;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 public class MQClientRedis implements MQClient, InitializingBean {
 
@@ -33,20 +30,20 @@ public class MQClientRedis implements MQClient, InitializingBean {
     @Override
     public void publishMessage(final MessageTopic topic, final String message) {
         logger.info("[MQ] ready to publish message, topic: {}, message: {}", topic.getTopicName(), message);
-        Stream.of(MessageTopicQueue.values())
-                .filter(q -> q.getTopic().equals(topic))
-                .forEach(q -> sendMessage(q, message));
+        for (MessageQueue messageQueue : topic.getQueues()) {
+            sendMessage(messageQueue, message);
+        }
     }
 
     @Override
-    public void sendMessage(MessageQueue queue, String message) {
+    public void sendMessage(final MessageQueue queue, final String message) {
         logger.info("[MQ] ready to send message, queue: {}, message: {}", queue.getQueueName(), message);
         jedis.lpush(generateRedisKeyOfQueue(queue), message);
         logger.info("[MQ] push message to queue {} success, message: {}", queue.getQueueName(), message);
     }
 
     @Override
-    public void subscribe(final Queue queue, Consumer<String> consumer) {
+    public void subscribe(final MessageQueue queue, final Consumer<String> consumer) {
         logger.info("[MQ] subscribe queue: {}", queue.getQueueName());
         while (true) {
             List<String> messages = jedis.brpop(0, generateRedisKeyOfQueue(queue));
@@ -65,15 +62,8 @@ public class MQClientRedis implements MQClient, InitializingBean {
         }
     }
 
-    private void sendMessage(MessageTopicQueue queue, String message) {
-        logger.info("[MQ] ready to send message, queue: {}, message: {}", queue.getQueueName(), message);
-        jedis.lpush(generateRedisKeyOfQueue(queue), message);
-        logger.info("[MQ] push message to queue {} success, message: {}", queue.getQueueName(), message);
-    }
-
-    private String generateRedisKeyOfQueue(Queue queue) {
-        String topicName = (queue instanceof MessageTopicQueue) ? ((MessageTopicQueue) queue).getTopic().getTopicName() : "-";
-        return String.format("MQ:LOCAL:%s:%s", topicName, queue.getQueueName());
+    private String generateRedisKeyOfQueue(MessageQueue queue) {
+        return String.format("MQ:LOCAL:%s", queue.getQueueName());
     }
 
     private void initJedis() {

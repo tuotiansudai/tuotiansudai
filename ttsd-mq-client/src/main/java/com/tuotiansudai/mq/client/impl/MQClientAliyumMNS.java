@@ -10,7 +10,6 @@ import com.aliyun.mns.model.TopicMessage;
 import com.tuotiansudai.mq.client.MQClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
-import com.tuotiansudai.mq.client.model.Queue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +42,7 @@ public class MQClientAliyumMNS implements MQClient {
     }
 
     @Override
-    public void sendMessage(MessageQueue queue, String message) {
+    public void sendMessage(final MessageQueue queue, final String message) {
         logger.info("[MQ] ready to send message, queue: {}, message: '{}'", queue.getQueueName(), message);
         CloudQueue cloudQueue = findQueue(queue.getQueueName());
         try {
@@ -55,7 +54,7 @@ public class MQClientAliyumMNS implements MQClient {
     }
 
     @Override
-    public void subscribe(final Queue queue, Consumer<String> consumer) {
+    public void subscribe(final MessageQueue queue, final Consumer<String> consumer) {
         logger.info("[MQ] subscribe queue: {}", queue.getQueueName());
         CloudQueue cloudQueue = findQueue(queue.getQueueName());
         while (true) {

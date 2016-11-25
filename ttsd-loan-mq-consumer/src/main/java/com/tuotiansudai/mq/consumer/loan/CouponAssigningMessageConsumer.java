@@ -5,7 +5,6 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
-import com.tuotiansudai.mq.client.model.Queue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,7 @@ public class CouponAssigningMessageConsumer implements MessageConsumer {
     private CouponAssignmentService couponAssignmentService;
 
     @Override
-    public Queue queue() {
+    public MessageQueue queue() {
         return MessageQueue.CouponAssigning;
     }
 
