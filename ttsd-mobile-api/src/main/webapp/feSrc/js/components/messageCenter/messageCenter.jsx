@@ -25,10 +25,6 @@ class messageCenter extends React.Component {
         }
     }
 
-    goTo(event) {
-        let href = event.target.dataset.href;
-        hashHistory.push(href);
-    }
     componentDidMount() {
         changeTitle('消息中心');
         ajax({
@@ -57,7 +53,7 @@ class messageCenter extends React.Component {
     render() {
         var btn='';
         if(this.state.data.appUrl){
-            btn=<section className="info clearfix"><a onTouchTap={this.goTo.bind(this)} href={this.state.data.appUrl}>去看看</a></section>;
+            btn=<section className="info clearfix"><a href={this.state.data.appUrl}>去看看</a></section>;
         }
         return (
             <div ref="scrollWrap" className={main}>
