@@ -380,7 +380,7 @@ public class UserMessageEventGenerator {
         logger.debug("start to send message");
         String loginName = (String) membershipPurchase.get("login_name");
         int duration = (int) ((long) membershipPurchase.get("duration"));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd");
         MessageModel messageModel = messageMapper.findActiveByEventType(MessageEventType.MEMBERSHIP_BUY_SUCCESS);
         //Title:恭喜您已成功购买{0}个月V5会员！
         //AppTitle:恭喜您已成功购买{0}个月V5会员！
