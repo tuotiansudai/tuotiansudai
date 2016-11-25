@@ -52,7 +52,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     private double defaultFee;
 
     @Override
-    public BaseResponseDto generateIndexLoan(String loginName) {
+    public BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(String loginName) {
         List<LoanModel> loanModels = Lists.newArrayList();
         List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360, ProductType.EXPERIENCE);
         List<ProductType> noContainExperienceCondition = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
