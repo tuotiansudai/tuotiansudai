@@ -12,6 +12,7 @@ import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
 import com.tuotiansudai.enums.MembershipPurchaseStatus;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.message.util.UserMessageEventGenerator;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferAsynMapper;
@@ -63,6 +64,9 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
 
     @Autowired
     private SystemBillService systemBillService;
+
+    @Autowired
+    private UserMessageEventGenerator userMessageEventGenerator;
 
     @Override
     public BaseDto<PayFormDataDto> purchase(MembershipPurchaseDto dto) {
@@ -142,5 +146,12 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
                 membershipMapper.findByLevel(membershipPurchaseModel.getLevel()).getId(),
                 new DateTime().plusDays(membershipPurchaseModel.getDuration() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate(),
                 UserMembershipType.PURCHASED));
+
+        try{
+            userMessageEventGenerator.generateMembershipPurchaseEvent(orderId);
+        } catch (Exception e) {
+            logger.error("Message membership purchase send fail", e);
+        }
+
     }
 }

@@ -245,25 +245,25 @@ public class MessageEventAspect {
     @AfterReturning(value = "purchaseMembershipPointcut()")
     public void afterPurchaseMembership(JoinPoint joinPoint) {
         logger.debug("[Message Event Aspect] Into Purchase Membership");
-        Object callbackRequestModel = joinPoint.getArgs()[0];
-        long orderId = 0L;
-
-        try {
-            Class<?> aClass = callbackRequestModel.getClass();
-            Method method = aClass.getMethod("getOrderId");
-            orderId = Long.parseLong((String) method.invoke(callbackRequestModel));
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("[Message Event Aspect] callback order is not a number (orderId = {0})", orderId), e);
-            return;
-        }
-        logger.debug("[Message Event Aspect] reflect finish");
-        long membershipPurchaseId = orderId;
-        try {
-            userMessageEventGenerator.generateMembershipPurchaseEvent(membershipPurchaseId);
-            logger.info(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut finished. membershipPurchaseId: {0}", membershipPurchaseId));
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut is fail. membershipPurchaseId: {1}", membershipPurchaseId), e);
-        }
+//        Object callbackRequestModel = joinPoint.getArgs()[0];
+//        long orderId = 0L;
+//
+//        try {
+//            Class<?> aClass = callbackRequestModel.getClass();
+//            Method method = aClass.getMethod("getOrderId");
+//            orderId = Long.parseLong((String) method.invoke(callbackRequestModel));
+//        } catch (Exception e) {
+//            logger.error(MessageFormat.format("[Message Event Aspect] callback order is not a number (orderId = {0})", orderId), e);
+//            return;
+//        }
+//        logger.debug("[Message Event Aspect] reflect finish");
+//        long membershipPurchaseId = orderId;
+//        try {
+//            userMessageEventGenerator.generateMembershipPurchaseEvent(membershipPurchaseId);
+//            logger.info(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut finished. membershipPurchaseId: {0}", membershipPurchaseId));
+//        } catch (Exception e) {
+//            logger.error(MessageFormat.format("[Message Event Aspect] after purchase membership pointcut is fail. membershipPurchaseId: {1}", membershipPurchaseId), e);
+//        }
     }
 
     @SuppressWarnings(value = "unchecked")
