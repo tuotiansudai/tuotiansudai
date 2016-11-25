@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.SmsCaptchaService;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -40,6 +41,7 @@ public class MobileAppNoPasswordInvestTurnOffServiceTest extends ServiceTestBase
     private SmsCaptchaService smsCaptchaService;
 
     @Ignore
+    @Test
     public void shouldNoPasswordInvestTurnOffIsOk(){
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         UserModel userModel = new UserModel();

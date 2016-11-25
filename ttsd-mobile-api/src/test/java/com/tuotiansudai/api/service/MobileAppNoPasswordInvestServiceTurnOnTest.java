@@ -7,6 +7,7 @@ import com.tuotiansudai.api.service.v1_0.impl.MobileAppNoPasswordInvestTurnOnSer
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -29,6 +30,7 @@ public class MobileAppNoPasswordInvestServiceTurnOnTest extends ServiceTestBase 
     private AccountMapper accountMapper;
 
     @Ignore
+    @Test
     public void shouldNoPasswordInvestTurnOnIsOk() {
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         accountModel.setNoPasswordInvest(true);
