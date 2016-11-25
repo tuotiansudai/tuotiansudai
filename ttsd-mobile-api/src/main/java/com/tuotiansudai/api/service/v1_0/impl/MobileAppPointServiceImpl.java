@@ -41,12 +41,8 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     @Autowired
     private AccountMapper accountMapper;
 
-    @Autowired
-    private PointTaskMapper pointTaskMapper;
-
-    @Autowired
-    private UserPointTaskMapper userPointTaskMapper;
-    public BaseResponseDto signIn(BaseParamDto baseParamDto) {
+    @Override
+    public BaseResponseDto<SignInResponseDataDto> signIn(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if(accountModel == null){
@@ -72,7 +68,8 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         return dto;
     }
 
-    public BaseResponseDto getLastSignInTime(BaseParamDto baseParamDto) {
+    @Override
+    public BaseResponseDto<LastSignInTimeResponseDataDto> getLastSignInTime(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if(accountModel == null){
@@ -98,7 +95,7 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     }
 
     @Override
-    public BaseResponseDto queryPointBillList(PointBillRequestDto pointBillRequestDto) {
+    public BaseResponseDto<PointBillResponseDataDto> queryPointBillList(PointBillRequestDto pointBillRequestDto) {
 
         String loginName = pointBillRequestDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
@@ -141,11 +138,11 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     }
 
     @Override
-    public BaseResponseDto queryPoint(BaseParamDto baseParamDto) {
+    public BaseResponseDto<PointResponseDataDto> queryPoint(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if(accountModel == null){
-            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
 
         PointResponseDataDto dataDto = new PointResponseDataDto();

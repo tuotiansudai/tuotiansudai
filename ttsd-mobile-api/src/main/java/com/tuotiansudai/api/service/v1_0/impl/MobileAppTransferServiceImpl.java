@@ -51,7 +51,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
     private RandomUtils randomUtils;
 
     @Override
-    public BaseResponseDto getTransferee(TransferTransfereeRequestDto transferTransfereeRequestDto) {
+    public BaseResponseDto<TransferTransfereeResponseDataDto> getTransferee(TransferTransfereeRequestDto transferTransfereeRequestDto) {
         BaseResponseDto<TransferTransfereeResponseDataDto> dto = new BaseResponseDto<>();
         Integer index = transferTransfereeRequestDto.getIndex();
         Integer pageSize = transferTransfereeRequestDto.getPageSize();
@@ -96,7 +96,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
     }
 
     @Override
-    public BaseResponseDto transferPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto) {
+    public BaseResponseDto<InvestResponseDataDto> transferPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto) {
         BaseResponseDto<InvestResponseDataDto> responseDto = new BaseResponseDto<>();
         InvestDto investDto = convertInvestDto(transferPurchaseRequestDto);
         try {

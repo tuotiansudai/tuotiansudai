@@ -83,8 +83,8 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     }
 
     @Override
-    public BaseResponseDto findUserAddressResponseDto(BaseParamDto baseParamDto) {
-        BaseResponseDto baseResponseDto = new BaseResponseDto();
+    public BaseResponseDto<UserAddressResponseDto> findUserAddressResponseDto(BaseParamDto baseParamDto) {
+        BaseResponseDto<UserAddressResponseDto> baseResponseDto = new BaseResponseDto();
         List<UserAddressModel> byLoginName = userAddressMapper.findByLoginName(baseParamDto.getBaseParam().getUserId());
         if (CollectionUtils.isNotEmpty(byLoginName)) {
             baseResponseDto.setData(new UserAddressResponseDto(byLoginName.get(0)));
@@ -95,7 +95,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     }
 
     @Override
-    public BaseResponseDto findUserPointsOrders(BaseParamDto baseParamDto) {
+    public BaseResponseDto<ProductListOrderResponseDto> findUserPointsOrders(BaseParamDto baseParamDto) {
         Integer index = baseParamDto.getIndex();
         Integer pageSize = baseParamDto.getPageSize();
         if (index == null || pageSize == null || index <= 0 || pageSize <= 0) {
@@ -125,7 +125,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     }
 
     @Override
-    public BaseResponseDto findPointHome(BaseParamDto baseParamDto) {
+    public BaseResponseDto<ProductListResponseDto> findPointHome(BaseParamDto baseParamDto) {
         List<ExchangeCouponView> exchangeCoupons = Lists.newArrayList();
 
         List<ProductModel> couponProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON));
@@ -194,7 +194,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     }
 
     @Override
-    public BaseResponseDto findProductDetail(ProductDetailRequestDto productDetailRequestDto) {
+    public BaseResponseDto<ProductDetailResponseDto> findProductDetail(ProductDetailRequestDto productDetailRequestDto) {
         if (productDetailRequestDto.getProductId() == null) {
             logger.info(MessageFormat.format("Product id is null (userId = {0})", productDetailRequestDto.getBaseParam().getUserId()));
             return new BaseResponseDto<>(ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getCode(), ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getMsg());

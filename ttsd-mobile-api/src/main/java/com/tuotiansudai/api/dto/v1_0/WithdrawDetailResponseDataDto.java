@@ -3,15 +3,28 @@ package com.tuotiansudai.api.dto.v1_0;
 import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.repository.model.WithdrawStatus;
 import com.tuotiansudai.util.AmountConverter;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.text.SimpleDateFormat;
 
 public class WithdrawDetailResponseDataDto extends BaseResponseDataDto {
+
+    @ApiModelProperty(value = "提现记录ID", example = "1")
     private String withdrawId;
+
+    @ApiModelProperty(value = "提现时间", example = "2016-11-25 16:50;01")
     private String time;
+
+    @ApiModelProperty(value = "审核时间", example = "2016-11-25 16:50;02")
     private String recheckTime;
+
+    @ApiModelProperty(value = "提醒金额", example = "1000")
     private String money;
+
+    @ApiModelProperty(value = "提现状态代码", example = "SUCCESS")
     private String status;
+
+    @ApiModelProperty(value = "提现状态描述", example = "提现成功")
     private String statusDesc;
 
     public WithdrawDetailResponseDataDto() {

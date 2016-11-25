@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.repository.model.AnnounceModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
@@ -8,10 +9,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class NodeDetailResponseDataDto extends BaseResponseDataDto {
+
+    @ApiModelProperty(value = "文章ID", example = "10")
     private String nodeId;
+
+    @ApiModelProperty(value = "文章标题", example = "拓天速贷")
     private String title;
+
+    @ApiModelProperty(value = "描述", example = "拓天速贷")
     private String desc;
+
+    @ApiModelProperty(value = "文章内容", example = "拓天速贷")
     private String content;
+
+    @ApiModelProperty(value = "时间", example = "2016-11-25 11:27:01")
     private String time;
 
     public NodeDetailResponseDataDto() {

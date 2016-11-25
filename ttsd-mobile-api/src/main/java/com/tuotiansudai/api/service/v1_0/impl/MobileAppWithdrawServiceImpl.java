@@ -38,7 +38,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
     private long withdrawFee;
 
     @Override
-    public BaseResponseDto queryUserWithdrawLogs(WithdrawListRequestDto requestDto) {
+    public BaseResponseDto<WithdrawListResponseDataDto> queryUserWithdrawLogs(WithdrawListRequestDto requestDto) {
         Integer index = requestDto.getIndex();
         Integer pageSize = requestDto.getPageSize();
 
@@ -73,7 +73,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
     }
 
     @Override
-    public BaseResponseDto generateWithdrawRequest(WithdrawOperateRequestDto requestDto) {
+    public BaseResponseDto<WithdrawOperateResponseDataDto> generateWithdrawRequest(WithdrawOperateRequestDto requestDto) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         WithdrawDto withdrawDto = requestDto.convertToWithdrawDto();
         String loginName = withdrawDto.getLoginName();

@@ -1,6 +1,5 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
@@ -48,7 +47,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
     private RechargeMapper rechargeMapper;
 
     @Override
-    public BaseResponseDto recharge(BankCardRequestDto bankCardRequestDto) {
+    public BaseResponseDto<BankCardResponseDto> recharge(BankCardRequestDto bankCardRequestDto) {
         BaseResponseDto<BankCardResponseDto> baseResponseDto = new BaseResponseDto<>();
         RechargeDto rechargeDto = bankCardRequestDto.convertToRechargeDto();
         rechargeDto.setChannel(mobileAppChannelService.obtainChannelBySource(bankCardRequestDto.getBaseParam()));

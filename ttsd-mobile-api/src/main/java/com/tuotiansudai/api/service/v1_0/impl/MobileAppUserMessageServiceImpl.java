@@ -36,7 +36,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     public static final String UNREAD_MESSAGE_COUNT_ID_KEY = "app:unread:message:count:ids:{0}";
 
     @Override
-    public BaseResponseDto getUserMessages(UserMessagesRequestDto requestDto) {
+    public BaseResponseDto<UserMessageResponseDataDto> getUserMessages(UserMessagesRequestDto requestDto) {
         String loginName = LoginUserInfo.getLoginName();
         userMessageServices.generateUserMessages(loginName, MessageChannel.APP_MESSAGE);
         UserMessageResponseDataDto messageDataDto = fillMessageDataDto(loginName, requestDto.getIndex(), requestDto.getPageSize());

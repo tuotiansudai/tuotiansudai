@@ -3,11 +3,17 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
+import io.swagger.annotations.ApiModelProperty;
 
 public class RepayCalendarYearResponseDto extends BaseResponseDataDto {
 
+    @ApiModelProperty(value = "月", example = "12")
     private String month;
+
+    @ApiModelProperty(value = "待收金额", example = "100")
     private String repayAmount;
+
+    @ApiModelProperty(value = "待收收益", example = "10")
     private String expectedRepayAmount;
 
     public RepayCalendarYearResponseDto(String month, String repayAmount, String expectedRepayAmount) {

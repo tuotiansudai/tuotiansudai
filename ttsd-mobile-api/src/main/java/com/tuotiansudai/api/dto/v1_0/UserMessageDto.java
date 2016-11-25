@@ -3,17 +3,28 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class UserMessageDto implements Serializable {
+
+    @ApiModelProperty(value = "标题", example = "1000")
     private long userMessageId;
+
+    @ApiModelProperty(value = "标题", example = "投资成功")
     private String title;
+
+    @ApiModelProperty(value = "消息内容", example = "投资成功")
     private String content;
+
+    @ApiModelProperty(value = "是否已读", example = "true")
     private boolean read;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
+    @ApiModelProperty(value = "创建时间", example = "2016-11-25 11:21:11")
     private Date createdTime;
 
     public UserMessageDto(UserMessageModel userMessageModel) {

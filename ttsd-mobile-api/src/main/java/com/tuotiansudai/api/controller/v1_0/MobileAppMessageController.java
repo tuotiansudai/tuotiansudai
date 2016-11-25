@@ -1,10 +1,10 @@
 package com.tuotiansudai.api.controller.v1_0;
 
 
-import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.UserMessagesRequestDto;
+import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,18 +12,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Api(description = "站内信")
 public class MobileAppMessageController extends MobileAppBaseController {
 
     @Autowired
     private MobileAppUserMessageService mobileAppUserMessageService;
 
     @RequestMapping(value = "/get/messages", method = RequestMethod.POST)
-    public BaseResponseDto getMessages(@RequestBody UserMessagesRequestDto requestDto) {
+    @ApiOperation("消息列表")
+    public BaseResponseDto<UserMessageResponseDataDto> getMessages(@RequestBody UserMessagesRequestDto requestDto) {
         return mobileAppUserMessageService.getUserMessages(requestDto);
     }
 
     @RequestMapping(value = "/get/unread-message-count")
-    public BaseResponseDto getUnreadMessageCount(@RequestBody BaseParamDto baseParamDto) {
+    @ApiOperation("消息未读数")
+    public BaseResponseDto<MobileAppUnreadMessageCount> getUnreadMessageCount(@RequestBody BaseParamDto baseParamDto) {
         return mobileAppUserMessageService.getUnreadMessageCount(baseParamDto);
     }
 }

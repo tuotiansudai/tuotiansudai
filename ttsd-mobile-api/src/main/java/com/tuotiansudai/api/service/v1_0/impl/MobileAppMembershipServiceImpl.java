@@ -22,7 +22,7 @@ public class MobileAppMembershipServiceImpl implements MobileAppMembershipServic
     private MembershipExperienceBillMapper membershipExperienceBillMapper;
 
     @Override
-    public BaseResponseDto getMembershipExperienceBill(MembershipRequestDto requestDto) {
+    public BaseResponseDto<MembershipResponseDataDto> getMembershipExperienceBill(MembershipRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
 
         int index = requestDto.getIndex() == null?1:requestDto.getIndex();

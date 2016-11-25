@@ -4,6 +4,7 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -12,23 +13,58 @@ import java.util.List;
 
 public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
 
+    @ApiModelProperty(value = "标的ID", example = "11")
     private String loanId;
+
+    @ApiModelProperty(value = "标的名称", example = "车辆抵押借款")
     private String loanName;
+
+    @ApiModelProperty(value = "基本利率", example = "10")
     private String baseRate;
+
+    @ApiModelProperty(value = "活动利率", example = "2")
     private String activityRate;
+
+    @ApiModelProperty(value = "借款天数", example = "2")
     private String duration;
+
+    @ApiModelProperty(value = "生息类别", example = "INTEREST_START_AT_INVEST")
     private String interestInitiateType;
+
+    @ApiModelProperty(value = "标的类型", example = "_30,_90,_180,_360,EXPERIENCE")
     private String productNewType;
+
+    @ApiModelProperty(value = "投资ID", example = "1001")
     private String investId;
+
+    @ApiModelProperty(value = "投资金额", example = "100")
     private String investAmount;
+
+    @ApiModelProperty(value = "预计收益", example = "10")
     private String expectedInterest;
+
+    @ApiModelProperty(value = "已收收益", example = "0")
     private String actualInterest;
+
+    @ApiModelProperty(value = "投资时间", example = "2016-11-25 16:12:01")
     private String investTime;
+
+    @ApiModelProperty(value = "起息日", example = "2016-11-25 16:12:01")
     private String recheckTime;
+
+    @ApiModelProperty(value = "到期日", example = "2016-12-25 16:12:01")
     private String lastRepayDate;
+
+    @ApiModelProperty(value = "已付收益", example = "5")
     private String unPaidRepay;
+
+    @ApiModelProperty(value = "会员等级", example = "2")
     private String membershipLevel;
+
+    @ApiModelProperty(value = "所有优惠券", example = "[1%加息券]")
     private List<String> usedCoupons = new ArrayList<>();
+
+    @ApiModelProperty(value = "回款记录", example = "list")
     private List<InvestRepayDataDto> investRepays = new ArrayList<>();
 
     public UserInvestRepayResponseDataDto(LoanModel loanModel, TransferApplicationModel transferApplicationModel) {
