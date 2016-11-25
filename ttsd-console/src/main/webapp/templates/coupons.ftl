@@ -135,8 +135,12 @@
         -
     </@security.authorize>
     <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
-        <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> /
-        <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}">删除</button>
+        <#if !(coupon.activatedTime??)>
+            <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> /
+            <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}">删除</button>
+        <#else >
+            -
+        </#if>
     </@security.authorize>
     </#if>
     </#if>

@@ -148,10 +148,12 @@
         -
     </@security.authorize>
     <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
-    <#if coupon.userGroup != 'FIRST_INVEST_ACHIEVEMENT' && coupon.userGroup != 'MAX_AMOUNT_ACHIEVEMENT' && coupon.userGroup != 'LAST_INVEST_ACHIEVEMENT'>
-        <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> /
-    </#if>
-        <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}">删除</button>
+        <#if !(coupon.activatedTime??)>
+            <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> /
+            <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}">删除</button>
+        <#else >
+            -
+        </#if>
     </@security.authorize>
     </#if>
     </#if>
@@ -165,8 +167,7 @@
         <label>
             <i class="check-btn add-check"></i>
             <button class="loan_repay already-btn btn-link inactive-btn"
-                    <#if coupon.couponType != 'NEWBIE_COUPON'>disabled</#if> data-id="${coupon.id?string('0')}"
-                    data-type="${coupon.couponType}">已生效
+                     data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">已生效
             </button>
         </label>
     <#else>
