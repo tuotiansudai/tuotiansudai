@@ -67,6 +67,9 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     @Autowired
     private InvestRepayMapper investRepayMapper;
 
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
     protected final static String TRANSFER_APPLY_NAME = "ZR{0}-{1}";
 
     public static String redisTransferApplicationNumber = "web:{0}:transferApplicationNumber";
@@ -227,6 +230,10 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         if (loanModel.getStatus() != LoanStatus.REPAYING) {
             logger.debug(MessageFormat.format("{0} is not REPAYING", investModel.getLoanId()));
+            return false;
+        }
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
+        if(loanDetailsModel != null && loanDetailsModel.getNonTransferable()){
             return false;
         }
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investId, Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING, TransferStatus.CANCEL));
