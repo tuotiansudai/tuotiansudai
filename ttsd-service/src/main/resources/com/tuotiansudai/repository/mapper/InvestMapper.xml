@@ -930,4 +930,24 @@
         where loan_id = #{loanId} and transfer_invest_id is null and status = 'SUCCESS' and (contract_no is null or contract_no = '') order by invest_time asc
     </select>
 
+    <select id="findLatestSixMonthTradeAmount"  resultType="java.util.HashMap">
+        select DATE_FORMAT(trading_time,'%Y-%m') as currentMonth, sum(amount) as sumAmount
+        from invest
+        where status = 'SUCCESS'
+        and DATE_FORMAT(now(),'%Y-%m') > (select max(DATE_FORMAT(trading_time,'%Y-%m')) from invest where status = 'SUCCESS')
+        group by currentMonth
+        order by currentMonth desc
+        limit 0, 6
+    </select>
+
+    <select id="findInvestAmountScaleTop3"  resultType="java.util.HashMap">
+        select user.city as city, sum(invest.amount) as sumAmount
+        from invest
+        inner join user on invest.login_name = user.login_name
+        where invest.status = 'SUCCESS'
+        group by city
+        order by sumAmount desc
+        limit 0, 3
+    </select>
+
 </mapper>

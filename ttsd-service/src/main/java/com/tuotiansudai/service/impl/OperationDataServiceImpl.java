@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.model.InvestDataView;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.OperationDataService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.CalculateUtil;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -18,6 +19,7 @@ import org.joda.time.PeriodType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -134,7 +136,7 @@ public class OperationDataServiceImpl implements OperationDataService {
 
     @Override
     public List<InvestDataView> getInvestDetail(Date endDate) {
-        List<InvestDataView> investDataViewList = new ArrayList<InvestDataView>();
+        List<InvestDataView> investDataViewList = new ArrayList<>();
         if (redisWrapperClient.exists(getRedisKeyFromTemplateByDate(TABLE_INFO_PUBLISH_KEY_TEMPLATE, endDate))) {
             Map<String, String> map = redisWrapperClient.hgetAll(getRedisKeyFromTemplateByDate(TABLE_INFO_PUBLISH_KEY_TEMPLATE,
                     endDate));
@@ -165,8 +167,86 @@ public class OperationDataServiceImpl implements OperationDataService {
         return investDataViewList;
     }
 
-   public List<Integer> findScaleBySex(){
-        return userMapper.findScaleBySex();
+    public List<Integer> findScaleByGender() {
+        return userMapper.findScaleByGender();
     }
+
+    public Map<String, String> findLatestSixMonthTradeAmount() {
+        List<Map<String, String>> latestSixMonthTradeAmountList = investMapper.findLatestSixMonthTradeAmount();
+        Map<String, String> resultMap = new LinkedHashMap<>();
+        for (Map<String, String> map : latestSixMonthTradeAmountList) {
+            String month = "";
+            String amount = "0";
+            for (Map.Entry<String, String> latestSixMonthTradeAmount : map.entrySet()) {
+                if ("currentMonth".equals(latestSixMonthTradeAmount.getKey())) {
+                    month = latestSixMonthTradeAmount.getValue().substring(latestSixMonthTradeAmount.getValue().indexOf("-") + 1);
+                } else if ("sumAmount".equals(latestSixMonthTradeAmount.getKey())) {
+                    amount = (String.valueOf(latestSixMonthTradeAmount.getValue()));
+                }
+            }
+            resultMap.put(month, amount);
+        }
+        return resultMap;
+    }
+
+    public Map<String, String> findAgeDistributionByAge() {
+        List<Map<String, String>> AgeDistributionList = userMapper.findAgeDistributionByAge();
+        Map<String, String> resultMap = new LinkedHashMap<>();
+        for (Map<String, String> map : AgeDistributionList) {
+            String age = "", scale = "";
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                if ("age".equals(entry.getKey())) {
+                    age = entry.getValue();
+                } else if ("totalCount".equals(entry.getKey())) {
+                    scale = (String.valueOf(entry.getValue()));
+                }
+            }
+            resultMap.put(age, scale);
+        }
+        return resultMap;
+    }
+
+    public Map<String, String> findCountInvestCityScaleTop3() {
+        List<Map<String, String>> investCityList = userMapper.findCountInvestCityScaleTop3();
+        Map<String, String> resultMap = new LinkedHashMap<>();
+        long totalScaleCount = userMapper.findCountInvestCityScale();
+        for(Map<String,String> investCityMap: investCityList){
+            String city ="", scale = "";
+            for(Map.Entry<String, String> investCityEntry : investCityMap.entrySet()){
+                if("city".equals(investCityEntry.getKey())){
+                    city =  investCityEntry.getValue();
+                }else if("totalCount".equals(investCityEntry.getKey())){
+                    scale = String.valueOf(investCityEntry.getValue());
+                    //scale = String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(investCityEntry.getValue()), totalScaleCount, 2));
+                }
+            }
+            resultMap.put(city, scale);
+        }
+        return resultMap;
+    }
+
+    public Map<String, String> findInvestAmountScaleTop3(){
+        List<Map<String, String>> investCityScaleList = investMapper.findInvestAmountScaleTop3();
+        Map<String, String> resultMap = new LinkedHashMap<>();
+        for(Map<String,String> map: investCityScaleList){
+            String city ="", amount = "";
+            for(Map.Entry<String,String> entry : map.entrySet()){
+                if("".equals(entry.getKey())){
+                    city = entry.getValue();
+                }else if("".equals(entry.getKey())){
+                    amount = entry.getValue();
+                }
+            }
+            resultMap.put(city, amount);
+
+
+
+
+
+
+        }
+        return resultMap;
+    }
+
 
 }

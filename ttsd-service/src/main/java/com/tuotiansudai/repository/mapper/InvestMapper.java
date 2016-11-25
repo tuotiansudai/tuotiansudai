@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Repository
@@ -265,5 +266,9 @@ public interface InvestMapper {
                                      @Param(value = "contractNo") String contractNo);
 
     List<InvestModel> findNoContractNoInvest(@Param(value = "loanId") long loanId);
+
+    List<Map<String,String>> findLatestSixMonthTradeAmount();
+
+    List<Map<String, String>> findInvestAmountScaleTop3();
 
 }

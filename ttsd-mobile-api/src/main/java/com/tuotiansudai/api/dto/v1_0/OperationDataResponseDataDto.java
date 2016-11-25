@@ -5,12 +5,12 @@ import java.util.List;
 public class OperationDataResponseDataDto extends BaseResponseDataDto {
     private String currentDay;
     private String operationDays;
-    private String totalTradeAmount;
-    private String totalInterest;
-    private String totalTradeCount;
+    private long totalTradeAmount;
+    private long totalInterest;
+    private int totalTradeCount;
     private List<OperationDataInvestByProductTypeResponseDataDto> investListByProdyctType;
     private List<OperationDataLatestSixMonthResponseDataDto> latestSixMonthDetail;
-    private String totalInvestUserCount;
+    private long totalInvestUserCount;
     private String maleScale;
     private String femaleScale;
     private List<OperationDataAgeResponseDataDto> ageDistribution;
@@ -37,27 +37,27 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
         this.operationDays = operationDays;
     }
 
-    public String getTotalTradeAmount() {
+    public long getTotalTradeAmount() {
         return totalTradeAmount;
     }
 
-    public void setTotalTradeAmount(String totalTradeAmount) {
+    public void setTotalTradeAmount(long totalTradeAmount) {
         this.totalTradeAmount = totalTradeAmount;
     }
 
-    public String getTotalInterest() {
+    public long getTotalInterest() {
         return totalInterest;
     }
 
-    public void setTotalInterest(String totalInterest) {
+    public void setTotalInterest(long totalInterest) {
         this.totalInterest = totalInterest;
     }
 
-    public String getTotalTradeCount() {
+    public int getTotalTradeCount() {
         return totalTradeCount;
     }
 
-    public void setTotalTradeCount(String totalTradeCount) {
+    public void setTotalTradeCount(int totalTradeCount) {
         this.totalTradeCount = totalTradeCount;
     }
 
@@ -77,11 +77,11 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
         this.latestSixMonthDetail = latestSixMonthDetail;
     }
 
-    public String getTotalInvestUserCount() {
+    public long getTotalInvestUserCount() {
         return totalInvestUserCount;
     }
 
-    public void setTotalInvestUserCount(String totalInvestUserCount) {
+    public void setTotalInvestUserCount(long totalInvestUserCount) {
         this.totalInvestUserCount = totalInvestUserCount;
     }
 
