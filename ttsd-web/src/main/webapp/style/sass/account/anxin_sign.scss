@@ -132,11 +132,12 @@
         .microphone {
           display: inline-block;
           width: 32px;
-          height: 30px;
+          height: 32px;
           border: 1px solid #e6e6e6;
           background: url(../../images/icons/microphone.png) center center no-repeat;
           vertical-align: middle;
-          margin-left: -5px;
+          margin-left: -3px;
+          border-left-width: 0;
         }
       }
       .error {

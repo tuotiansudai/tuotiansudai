@@ -1,7 +1,6 @@
 package com.tuotiansudai.mq.consumer.message;
 
 import com.tuotiansudai.message.util.UserMessageEventGenerator;
-import com.tuotiansudai.mq.client.model.Message;
 import com.tuotiansudai.mq.client.model.MessageTopicQueue;
 import com.tuotiansudai.mq.client.model.Queue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -26,16 +25,15 @@ public class CouponAssignedUserMessageSendingMessageConsumer implements MessageC
 
     @Transactional
     @Override
-    public void consume(Message message) {
-        String msg = message.getMessage();
-        logger.info("[MQ] receive message[{}]: {}: {}.", message.getMessageId(), this.queue(), msg);
-        if (!StringUtils.isEmpty(msg)) {
-            String[] msgParts = msg.split(":");
+    public void consume(String message) {
+        logger.info("[MQ] receive message: {}: '{}'.", this.queue(), message);
+        if (!StringUtils.isEmpty(message)) {
+            String[] msgParts = message.split(":");
             if (msgParts.length == 2) {
                 long userCouponId = Long.parseLong(msgParts[1]);
-                logger.info("[MQ] ready to consumer message[{}]: send user message on assigning coupon.", message.getMessageId());
+                logger.info("[MQ] ready to consumer message: send user message on assigning coupon.");
                 userMessageEventGenerator.generateAssignCouponSuccessEvent(userCouponId);
-                logger.info("[MQ] consumer message[{}] success.", message.getMessageId());
+                logger.info("[MQ] consumer message success.");
             }
         }
     }

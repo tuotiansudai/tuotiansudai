@@ -1,7 +1,10 @@
 package com.tuotiansudai.mq.client.impl;
 
 import com.tuotiansudai.mq.client.MQClient;
-import com.tuotiansudai.mq.client.model.*;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.client.model.MessageTopic;
+import com.tuotiansudai.mq.client.model.MessageTopicQueue;
+import com.tuotiansudai.mq.client.model.Queue;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +12,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import redis.clients.jedis.Jedis;
 
-import java.time.Clock;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -44,12 +46,21 @@ public class MQClientRedis implements MQClient, InitializingBean {
     }
 
     @Override
-    public void subscribe(final Queue queue, Consumer<com.tuotiansudai.mq.client.model.Message> consumer) {
+    public void subscribe(final Queue queue, Consumer<String> consumer) {
         logger.info("[MQ] subscribe queue: {}", queue.getQueueName());
         while (true) {
             List<String> messages = jedis.brpop(0, generateRedisKeyOfQueue(queue));
             logger.debug("[MQ] receive a message, prepare to consume");
-            consumer.accept(new Message(String.valueOf(Clock.systemUTC().millis()), messages.get(1), "", ""));
+            try {
+                consumer.accept(messages.get(1));
+            } catch (Exception e) {
+                logger.error("[MQ] consume message failed", e);
+                try {
+                    Thread.sleep(30 * 1000);
+                    jedis.rpush(generateRedisKeyOfQueue(queue), messages.get(1));
+                } catch (InterruptedException ignored) {
+                }
+            }
             logger.info("[MQ] consume message success");
         }
     }
