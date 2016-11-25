@@ -99,7 +99,7 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
         return callbackRequest.getResponseData();
     }
 
-    private void postPurchaseCallback(BaseCallbackRequestModel callbackRequestModel) {
+    public void postPurchaseCallback(BaseCallbackRequestModel callbackRequestModel) {
         long orderId;
 
         try {

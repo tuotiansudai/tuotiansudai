@@ -76,7 +76,7 @@ public class MessageEventAspect {
     public void refreshSuccessPointcut() {
     }
 
-    @Pointcut("execution(* *..MembershipPurchasePayServiceImpl.postPurchaseCallback(..))")
+    @Pointcut("execution(* *..MembershipPurchasePayService.postPurchaseCallback(..))")
     public void purchaseMembershipPointcut() {
     }
 
@@ -242,8 +242,9 @@ public class MessageEventAspect {
     }
 
     @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "purchaseMembershipPointcut()", returning = "returnValue")
-    public void afterPurchaseMembership(JoinPoint joinPoint, String returnValue) {
+    @AfterReturning(value = "purchaseMembershipPointcut()")
+    public void afterPurchaseMembership(JoinPoint joinPoint) {
+        logger.debug("[Message Event Aspect] Into Purchase Membership");
         Object callbackRequestModel = joinPoint.getArgs()[0];
         long orderId = 0L;
 
@@ -255,6 +256,7 @@ public class MessageEventAspect {
             logger.error(MessageFormat.format("[Message Event Aspect] callback order is not a number (orderId = {0})", orderId), e);
             return;
         }
+        logger.debug("[Message Event Aspect] reflect finish");
         long membershipPurchaseId = orderId;
         try {
             userMessageEventGenerator.generateMembershipPurchaseEvent(membershipPurchaseId);
