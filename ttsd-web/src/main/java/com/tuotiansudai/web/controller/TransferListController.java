@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.service.TransferService;
+import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,9 +28,9 @@ public class TransferListController {
     public ModelAndView webTransferList(@RequestParam(value = "transferStatus", required = false) List<TransferStatus> transferStatus,
                                         @RequestParam(value = "rateStart", defaultValue = "0", required = false) double rateStart,
                                         @RequestParam(value = "rateEnd", defaultValue = "0", required = false) double rateEnd,
-                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
 
+        int pageSize = 10;
         int count = transferService.findCountAllTransferApplicationPaginationList(transferStatus, rateStart, rateEnd);
 
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationItemList = transferService.findAllTransferApplicationPaginationList(transferStatus, rateStart, rateEnd, index, pageSize);
@@ -41,7 +42,8 @@ public class TransferListController {
         modelAndView.addObject("rateStart", rateStart);
         modelAndView.addObject("rateEnd", rateEnd);
         modelAndView.addObject("transferStatus", (transferStatus == null || transferStatus.size() == 0) ? "" : transferStatus.get(0).name());
-        int maxIndex = count / pageSize + (count % pageSize > 0 ? 1 : 0);
+        int maxIndex = PaginationUtil.calculateMaxPage(count, pageSize);
+
         modelAndView.addObject("hasPreviousPage", index > 1 && index <= maxIndex);
         modelAndView.addObject("hasNextPage", index < maxIndex);
         return modelAndView;

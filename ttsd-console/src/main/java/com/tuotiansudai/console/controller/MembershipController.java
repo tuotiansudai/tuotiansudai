@@ -17,6 +17,7 @@ import com.tuotiansudai.membership.service.*;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -59,14 +60,13 @@ public class MembershipController {
 
     @RequestMapping(value = "/membership-list", method = RequestMethod.GET)
     public ModelAndView membershipList(@RequestParam(value = "index", required = true, defaultValue = "1") int index,
-                                       @RequestParam(value = "pageSize", required = true, defaultValue = "10") int pageSize,
                                        @RequestParam(value = "loginName", required = false, defaultValue = "") String loginName,
                                        @RequestParam(value = "startTime", required = false, defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date registerStartTime,
                                        @RequestParam(value = "endTime", required = false, defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date registerEndTime,
                                        @RequestParam(value = "mobile", required = false, defaultValue = "") String mobile,
                                        @RequestParam(value = "type", required = false, defaultValue = "") UserMembershipType userMembershipType,
                                        @RequestParam(value = "levels", required = false, defaultValue = "") List<Integer> selectedLevels) {
-
+        int pageSize = 10;
         int count = userMembershipMapper.findCountUserMembershipItemViews(loginName,
                 mobile, registerStartTime, registerEndTime, userMembershipType, selectedLevels, (index - 1) * 10, pageSize);
 
@@ -98,10 +98,9 @@ public class MembershipController {
 
     @RequestMapping(value = "/membership-detail", method = RequestMethod.GET)
     public ModelAndView membershipDetail(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                          @RequestParam(value = "loginName") String loginName) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/membership-detail");
-
         long membershipExperienceCount = membershipExperienceBillService.findMembershipExperienceBillCount(loginName, null, null);
         List<MembershipExperienceBillModel> membershipExperienceList = membershipExperienceBillService.findMembershipExperienceBillList(loginName, null, null, index, pageSize);
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
@@ -119,7 +118,7 @@ public class MembershipController {
         modelAndView.addObject("membershipPoint", accountModel == null ? 0 : accountModel.getMembershipPoint());
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        long totalPages = membershipExperienceCount / pageSize + (membershipExperienceCount % pageSize > 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(membershipExperienceCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -154,8 +153,8 @@ public class MembershipController {
     @RequestMapping(value = "/give/{membershipGiveId}/details", method = RequestMethod.GET)
     public ModelAndView membershipGiveReceiveDetails(@PathVariable long membershipGiveId,
                                                      @RequestParam(value = "mobile", defaultValue = "") String mobile,
-                                                     @RequestParam(value = "index", defaultValue = "1") int index,
-                                                     @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+                                                     @RequestParam(value = "index", defaultValue = "1") int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/membership-give-receive-detail");
         BasePaginationDataDto<MembershipGiveReceiveDto> basePaginationDataDto = membershipGiveService.getMembershipGiveReceiveDtosByMobile(membershipGiveId, mobile, index, pageSize);
 
@@ -199,8 +198,8 @@ public class MembershipController {
     }
 
     @RequestMapping(value = "/give/list", method = RequestMethod.GET)
-    public ModelAndView getMembershipGives(@RequestParam(value = "index", defaultValue = "1") int index,
-                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+    public ModelAndView getMembershipGives(@RequestParam(value = "index", defaultValue = "1") int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/membership-give-list");
         BasePaginationDataDto<MembershipGiveDto> basePaginationDataDto = membershipGiveService.getMembershipGiveDtos(index, pageSize);
 

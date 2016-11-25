@@ -8,6 +8,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppInvestListService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -51,11 +52,14 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
     @Autowired
     private InvestTransferService investTransferService;
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
     @Override
     public BaseResponseDto generateInvestList(InvestListRequestDto investListRequestDto) {
         BaseResponseDto dto = new BaseResponseDto();
         Integer index = investListRequestDto.getIndex();
-        Integer pageSize = investListRequestDto.getPageSize();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(investListRequestDto.getPageSize());
         final String loginName = investListRequestDto.getBaseParam().getUserId();
         long loanId = Long.parseLong(investListRequestDto.getLoanId());
 
@@ -65,9 +69,6 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             index = 1;
         }
 
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
-        }
         List<InvestModel> investModels = investMapper.findByStatus(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
         List<InvestRecordResponseDataDto> investRecordResponseDataDto = null;
         if (CollectionUtils.isNotEmpty(investModels)) {
@@ -106,7 +107,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
     @Override
     public BaseResponseDto<UserInvestListResponseDataDto> generateUserInvestList(UserInvestListRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
-        int pageSize = requestDto.getPageSize();
+        int pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
         int index = (requestDto.getIndex() - 1) * pageSize;
         List<InvestModel> investList;
         int investListCount;

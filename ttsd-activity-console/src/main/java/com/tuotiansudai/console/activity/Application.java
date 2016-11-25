@@ -2,12 +2,12 @@ package com.tuotiansudai.console.activity;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.session.SessionAutoConfiguration;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 
-@SpringBootApplication(exclude = {SessionAutoConfiguration.class})
+
+@SpringBootApplication
 @ComponentScan(basePackages = {"com.tuotiansudai.console.activity",
         "com.tuotiansudai.cache",
         "com.tuotiansudai.client",
@@ -21,3 +21,4 @@ public class Application extends SpringBootServletInitializer {
         SpringApplication.run(Application.class, args);
     }
 }
+

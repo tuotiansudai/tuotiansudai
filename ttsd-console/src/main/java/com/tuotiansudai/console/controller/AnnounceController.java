@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.AnnounceDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,8 @@ public class AnnounceController {
 
     @RequestMapping(value = "/announce", method = RequestMethod.GET)
     public ModelAndView announceManage(@RequestParam(value = "id",required = false) Long id,@RequestParam(value = "title",required = false) String title,
-                                                @RequestParam(value = "index",defaultValue = "1",required = false) int index,
-                                                @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize) {
+                                                @RequestParam(value = "index",defaultValue = "1",required = false) int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/announce-list");
         int announceCount = announceConsoleService.findAnnounceCount(id, title);
         modelAndView.addObject("announceCount", announceCount);
@@ -29,7 +30,7 @@ public class AnnounceController {
         modelAndView.addObject("title",title);
         modelAndView.addObject("index",index);
         modelAndView.addObject("pageSize",pageSize);
-        long totalPages = announceCount / pageSize + (announceCount % pageSize > 0 || announceCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(announceCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage",hasPreviousPage);

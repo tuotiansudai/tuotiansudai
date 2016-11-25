@@ -5,6 +5,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppReferrerInvestService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ReferrerManageView;
@@ -26,20 +27,21 @@ public class MobileAppReferrerInvestServiceImpl implements MobileAppReferrerInve
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
     @Override
     public BaseResponseDto generateReferrerInvestList(ReferrerInvestListRequestDto referrerInvestListRequestDto) {
         BaseResponseDto dto = new BaseResponseDto();
         ReferrerInvestListResponseDataDto referrerInvestListResponseDataDto = null;
 
         Integer index = referrerInvestListRequestDto.getIndex();
-        Integer pageSize = referrerInvestListRequestDto.getPageSize();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(referrerInvestListRequestDto.getPageSize());
         String referrerId = referrerInvestListRequestDto.getReferrerId();
         if (index == null || index <= 0) {
             index = 1;
         }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
-        }
+
         String level = referrerManageService.getUserRewardDisplayLevel(referrerId);
         List<ReferrerManageView> referrerManageViewList = referrerManageMapper.findReferInvestList(referrerId, null, null, null,level, (index - 1) * pageSize, pageSize);
         List<ReferrerInvestResponseDataDto> referrerInvestResponseDataDtos = Lists.transform(referrerManageViewList, new Function<ReferrerManageView, ReferrerInvestResponseDataDto>() {

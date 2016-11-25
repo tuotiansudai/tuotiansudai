@@ -3,6 +3,7 @@ package com.tuotiansudai.api.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanListServiceImpl;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
@@ -48,6 +49,8 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
     private LoanDetailsMapper loanDetailsMapper;
     @Mock
     private UserCouponMapper userCouponMapper;
+    @Mock
+    private PageValidUtils pageValidUtils;
 
     @Test
     public void shouldGenerateLoanListIsOk(){
@@ -66,6 +69,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         when(couponService.findExperienceInvestAmount(any(List.class))).thenReturn(1000l);
         when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
         when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(null);
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         UserCouponModel userCouponModel = new UserCouponModel();
         userCouponModel.setEndTime(DateTime.now().toDate());
         when(userCouponMapper.findUsedExperienceByLoginName(anyString())).thenReturn(Lists.newArrayList(userCouponModel));
@@ -103,6 +107,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
         when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(null);
         when(userCouponMapper.findUsedExperienceByLoginName(anyString())).thenReturn(null);
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testLoan");
