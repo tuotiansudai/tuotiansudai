@@ -103,7 +103,7 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
         return callbackRequest.getResponseData();
     }
 
-    public void postPurchaseCallback(BaseCallbackRequestModel callbackRequestModel) {
+    private void postPurchaseCallback(BaseCallbackRequestModel callbackRequestModel) {
         long orderId;
 
         logger.debug("Into membership purchase call back.");
@@ -152,6 +152,5 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
         } catch (Exception e) {
             logger.error("Message membership purchase send fail", e);
         }
-
     }
 }

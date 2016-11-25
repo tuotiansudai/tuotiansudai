@@ -12,6 +12,4 @@ public interface MembershipPurchasePayService {
     BaseDto<PayFormDataDto> purchase(MembershipPurchaseDto dto);
 
     String purchaseCallback(Map<String, String> paramsMap, String originalQueryString);
-
-    void postPurchaseCallback(BaseCallbackRequestModel callbackRequestModel);
 }
