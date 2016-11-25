@@ -71,7 +71,5 @@
         <property name="maxTotal" value="300"/>
     </bean>
 
-    <bean class="com.tuotiansudai.util.quartz.JobStoreBuilder"/>
-
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
 </beans>
