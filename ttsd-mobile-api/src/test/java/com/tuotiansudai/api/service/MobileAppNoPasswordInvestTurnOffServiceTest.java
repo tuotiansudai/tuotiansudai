@@ -10,7 +10,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.SmsCaptchaService;
-import org.junit.Test;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -20,7 +20,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -40,7 +39,7 @@ public class MobileAppNoPasswordInvestTurnOffServiceTest extends ServiceTestBase
     @Mock
     private SmsCaptchaService smsCaptchaService;
 
-    @Test
+    @Ignore
     public void shouldNoPasswordInvestTurnOffIsOk(){
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         UserModel userModel = new UserModel();
