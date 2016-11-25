@@ -216,8 +216,7 @@ public class OperationDataServiceImpl implements OperationDataService {
                 if("city".equals(investCityEntry.getKey())){
                     city =  investCityEntry.getValue();
                 }else if("totalCount".equals(investCityEntry.getKey())){
-                    scale = String.valueOf(investCityEntry.getValue());
-                    scale = String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(scale), totalScaleCount, 2));
+                    scale = String.valueOf(CalculateUtil.calculatePercentage(Long.parseLong(String.valueOf(investCityEntry.getValue())), totalScaleCount, 2));
                 }
             }
             resultMap.put(city, scale);

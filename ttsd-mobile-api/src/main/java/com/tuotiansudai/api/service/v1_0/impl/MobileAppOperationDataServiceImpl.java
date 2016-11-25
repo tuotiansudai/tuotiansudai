@@ -36,8 +36,8 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         OperationDataDto operationDataDto = operationDataService.getOperationDataFromRedis(currentDate);
         dataDto.setCurrentDay(sdf.format(currentDate));
         dataDto.setOperationDays(String.valueOf(operationDataDto.getOperationDays()));
-        dataDto.setTotalTradeAmount(AmountConverter.convertStringToCent(operationDataDto.getTradeAmount()));
-        dataDto.setTotalInterest(1000);//需要计算
+        dataDto.setTotalTradeAmount(String.valueOf(AmountConverter.convertStringToCent(operationDataDto.getTradeAmount())));
+        dataDto.setTotalInterest(String.valueOf(1000));//需要计算
 
         List<InvestDataView> investDataViewList = operationDataService.getInvestDetail(currentDate);
         List<OperationDataInvestByProductTypeResponseDataDto> operationDataInvestByProductTypeResponseDataDtoList = Lists.newArrayList();
@@ -45,14 +45,14 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         for(InvestDataView investDataView: investDataViewList){
             OperationDataInvestByProductTypeResponseDataDto operationDataInvestByProductTypeResponseDataDto = new OperationDataInvestByProductTypeResponseDataDto();
             operationDataInvestByProductTypeResponseDataDto.setName(investDataView.getProductName());
-            operationDataInvestByProductTypeResponseDataDto.setAmount(AmountConverter.convertStringToCent(investDataView.getTotalInvestAmount()));
+            operationDataInvestByProductTypeResponseDataDto.setAmount(String.valueOf(AmountConverter.convertStringToCent(investDataView.getTotalInvestAmount())));
             operationDataInvestByProductTypeResponseDataDtoList.add(operationDataInvestByProductTypeResponseDataDto);
             totalTradeCount += investDataView.getCountInvest();
         }
         dataDto.setInvestListByProdyctType(operationDataInvestByProductTypeResponseDataDtoList);
-        dataDto.setTotalTradeCount(totalTradeCount);
+        dataDto.setTotalTradeCount(String.valueOf(totalTradeCount));
 
-        dataDto.setTotalInvestUserCount(operationDataDto.getUsersCount());
+        dataDto.setTotalInvestUserCount(String.valueOf(operationDataDto.getUsersCount()));
 
         List<Integer> sexList = operationDataService.findScaleByGender();
         dataDto.setFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 2)));
@@ -97,7 +97,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         for (Map.Entry<String, String> latestSixMonthEntry : latestSixMonthEntries) {
             OperationDataLatestSixMonthResponseDataDto operationDataLatestSixMonthResponseDataDto = new OperationDataLatestSixMonthResponseDataDto();
             operationDataLatestSixMonthResponseDataDto.setName(String.valueOf(latestSixMonthEntry.getKey()));
-            operationDataLatestSixMonthResponseDataDto.setAmount(Long.parseLong(String.valueOf(latestSixMonthEntry.getValue())));
+            operationDataLatestSixMonthResponseDataDto.setAmount(String.valueOf(latestSixMonthEntry.getValue()));
             operationDataLatestSixMonthResponseDataDtoList.add(operationDataLatestSixMonthResponseDataDto);
         }
         return operationDataLatestSixMonthResponseDataDtoList;
