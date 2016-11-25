@@ -27,7 +27,7 @@ public class MembershipAspect {
      * @param joinPoint
      */
     @After(value = "execution(* *..InvestService.investSuccess(..))")
-    @Order(98)
+    @Order(99)
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         try {
             Object param = joinPoint.getArgs()[0];

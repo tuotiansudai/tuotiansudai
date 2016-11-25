@@ -131,7 +131,7 @@ public class MessageEventAspect {
     }
 
     @AfterReturning(value = "investSuccessPointcut()")
-    @Order(99)
+    @Order(98)
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         Object investModel = joinPoint.getArgs()[0];
         try {
@@ -242,8 +242,8 @@ public class MessageEventAspect {
     }
 
     @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "purchaseMembershipPointcut()")
-    public void afterPurchaseMembership(JoinPoint joinPoint) {
+    @AfterReturning(value = "purchaseMembershipPointcut()", returning = "returnValue")
+    public void afterPurchaseMembership(JoinPoint joinPoint, String returnValue) {
         Object callbackRequestModel = joinPoint.getArgs()[0];
         long orderId = 0L;
 
