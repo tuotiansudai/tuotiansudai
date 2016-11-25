@@ -187,4 +187,6 @@
         <property name="maxWaitMillis" value="${common.jedis.pool.maxWaitMillis}"/>
     </bean>
 
+    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
+
 </beans>
