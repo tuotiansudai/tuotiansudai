@@ -154,7 +154,9 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
                 $('#getSkipCode').val('重新获取验证码').prop('disabled',false);
                 $('#microPhone').css('visibility', 'visible').prop('disabled',false);
             }
-            num--;
+            else {
+                num--;
+            }
         }
 
         //获取验证码
