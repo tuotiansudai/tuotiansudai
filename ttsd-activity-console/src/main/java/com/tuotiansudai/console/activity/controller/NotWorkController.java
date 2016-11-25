@@ -17,8 +17,8 @@ public class NotWorkController {
     ActivityConsoleNotWorkService activityConsoleNotWorkService;
 
     @RequestMapping(value = "/not-work-list", method = RequestMethod.GET)
-    ModelAndView getNotWorkList(@RequestParam(value = "index") int index) {
-        ModelAndView modelAndView = new ModelAndView("not-work-list");
+    public ModelAndView getNotWorkList(@RequestParam(value = "index") int index) {
+        ModelAndView modelAndView = new ModelAndView("/not-work-list");
         final int pageSize = 10;
         BasePaginationDataDto<NotWorkDto> basePaginationDataDto = activityConsoleNotWorkService.findNotWorkPagination(index, pageSize);
 
