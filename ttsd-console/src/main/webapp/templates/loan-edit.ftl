@@ -205,7 +205,7 @@
                     <label for="extra">
                         <input type="checkbox" id="nonTransferable" name="nonTransferable"
                                <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
-                               <#if loan.loanDetails?? && loan.loanDetails.nonTransferable>checked="checked"</#if>>是（选中后投资此标的不允许债权转让）
+                               <#if loan.loanDetails?? && loan.loanDetails.nonTransferable>checked="checked"</#if>>（选中后投资此标的不允许债权转让）
                     </label>
                 </div>
             </div>

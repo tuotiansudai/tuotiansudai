@@ -198,7 +198,7 @@
 
                     <div class="col-sm-4 checkbox">
                         <label for="nonTransferable">
-                            <input type="checkbox" name="nonTransferable" value="true">是（选中后投资此标的不允许债权转让）
+                            <input type="checkbox" name="nonTransferable" value="true">（选中后投资此标的不允许债权转让）
                         </label>
                     </div>
 
