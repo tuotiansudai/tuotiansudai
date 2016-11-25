@@ -1,8 +1,9 @@
 @charset "utf-8";
 
 body {
-  background: #a1e9f8 url("/activity/images/autumn-tour/bg-yun.png") center 775px no-repeat;
+  background: #a40001 url("/activity/images/autumn-tour/bg-yun.png") center 775px no-repeat;
   overflow-x: hidden;
+  color: #015a2e;
 }
 
 .main-frame {
@@ -13,4 +14,18 @@ body {
 .activity-slide {
   height: 471px;
   background: url("/activity/images/christmas-day/top-christmas.jpg") center top no-repeat;
+}
+
+.christmas-day-frame {
+  .christmas-day-inner {
+    width:1000px;
+    margin:0 auto;
+  }
+  .christmas-border {
+    background: url("/activity/images/christmas-day/border-line.png") left top repeat;
+  }
+  .model-content {
+    border:10px solid #216d28;
+    outline: 1px;
+  }
 }

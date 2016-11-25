@@ -4,7 +4,13 @@
 <div class="activity-slide">
 </div>
 <div class="christmas-day-frame" id="christmasDayFrame">
-    xxx
+    <div class="christmas-day-inner">
+        <div class="christmas-border">
+            <div class="model-content">
+                sss
+            </div>
+        </div>
+    </div>
 </div>
 
 </@global.main>
