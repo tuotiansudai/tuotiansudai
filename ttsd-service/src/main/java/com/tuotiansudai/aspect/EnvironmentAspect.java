@@ -4,14 +4,11 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
-import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.text.MessageFormat;
 
 @Aspect
 @Component
@@ -25,9 +22,6 @@ public class EnvironmentAspect {
 
     @Value("${common.fake.captcha}")
     private String fakeCaptcha;
-
-    static Logger logger = Logger.getLogger(EnvironmentAspect.class);
-
 
     @Around(value = "execution(* *..CaptchaHelper.captchaVerify(..))")
     public Object aroundCaptchaVerify(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
@@ -47,10 +41,8 @@ public class EnvironmentAspect {
         if (Environment.SMOKE == environment) {
             return true;
         }
-        
-        logger.debug(MessageFormat.format("proceedingJoinPoint.getArgs()[1] : {0}", proceedingJoinPoint.getArgs()[1]));
 
-        if(Environment.PRODUCTION != environment && proceedingJoinPoint.getArgs()[1].equals(fakeCaptcha)){
+        if(Environment.PRODUCTION != environment && proceedingJoinPoint.getArgs()[1] != null && proceedingJoinPoint.getArgs()[1].equals(fakeCaptcha)){
             return true;
         }
 
