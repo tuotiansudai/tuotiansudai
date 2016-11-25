@@ -68,7 +68,7 @@ public class MessageController {
                                         @RequestParam(value = "messageStatus", required = false) MessageStatus messageStatus) {
 
         int pageSize = 10;
-        ModelAndView modelAndView = new ModelAndView("/event-message-list");
+        ModelAndView modelAndView = new ModelAndView("/message-auto-list");
 
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
