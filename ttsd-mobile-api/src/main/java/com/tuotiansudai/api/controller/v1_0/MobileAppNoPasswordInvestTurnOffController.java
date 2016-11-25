@@ -4,6 +4,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.NoPasswordInvestTurnOffRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppNoPasswordInvestTurnOffService;
 import com.tuotiansudai.util.RequestIPParser;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +18,14 @@ public class MobileAppNoPasswordInvestTurnOffController extends MobileAppBaseCon
     @Autowired
     private MobileAppNoPasswordInvestTurnOffService mobileAppNoPasswordInvestTurnOffService;
 
+    static Logger logger = Logger.getLogger(MobileAppNoPasswordInvestTurnOffController.class);
+
     @RequestMapping(value = "/no-password-invest/turn-off", method = RequestMethod.POST)
     public BaseResponseDto noPasswordInvestTurnOff(@RequestBody NoPasswordInvestTurnOffRequestDto noPasswordInvestTurnOffRequestDto, HttpServletRequest request) {
         String ip = RequestIPParser.parse(request);
         noPasswordInvestTurnOffRequestDto.getBaseParam().setUserId(getLoginName());
+        logger.debug("captcha: " + noPasswordInvestTurnOffRequestDto.getCaptcha());
+
         return mobileAppNoPasswordInvestTurnOffService.noPasswordInvestTurnOff(noPasswordInvestTurnOffRequestDto, ip);
     }
 
