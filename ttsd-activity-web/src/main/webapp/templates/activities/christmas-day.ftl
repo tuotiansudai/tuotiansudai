@@ -5,9 +5,133 @@
 </div>
 <div class="christmas-day-frame" id="christmasDayFrame">
     <div class="christmas-day-inner">
-        <div class="christmas-border">
+        <div class="christmas-border box-notice">
+            <em class="man-decorate"></em>
             <div class="model-content">
-                sss
+                <span>
+                    据不可靠消息称： <br/>
+圣诞老人在天朝送礼物途中因雾霾爆表迷路了！<br/>
+可孩子们不能没有童年<br/>
+请各位大大们帮圣诞老人铺条路，让孩子们在圣诞节来临时能准时收到圣诞老人带来的丰厚礼物吧
+                </span>
+            </div>
+        </div>
+
+        <div class="activity-section">
+            <div class="christmas-border clearfix">
+                <div class="title-christmas">活动一：为圣诞老人铺路</div>
+                <div class="model-content clearfix">
+                    <div class="bg-gradient clearfix">
+                        <div class="gift-box">
+                            <em class="icon-balloon"></em>
+                            <b>专享标加息0.5%</b>
+                            专享标在现有预期年化收益基础上<i>加息0.5%</i>。
+                        </div>
+
+                        <div class="gift-box">
+                            <em class="icon-balloon"></em>
+                            <b>用券投资加息1%</b>
+                            投资圣诞专享标单笔达3万元及以上，即赠送一张0.5%加息券，用券投资专享标<i>加息1%</i>。
+                        </div>
+
+                        <div class="gift-box">
+                            <em class="icon-balloon"></em>
+                            <b>瓜分20000元红包</b>
+                            专享标总额420万，活动结束后，所有投资专享标的用户按投资比例瓜分<i>20000元红包</i>。
+                        </div>
+
+                        <div class="gift-box clearfix last">
+                        <span>
+                            栗子：沈先生预计投资20万，第一笔投资专享标3万元加息0.5%，第二笔使用0.5%加息券投资专享标17万元，可加息1%。同时可获得红包200000*20000/4200000=952元；<br/>
+                            小贴士：<br/>
+                            用户所获红包金额=活动期间投资专享标金额*20000/3000000。加息券每人限领1张，有效期3天；
+                        </span>
+                        </div>
+                        <div class="clearfix"></div>
+                        <dl class="invest-percent-box clearfix">
+                            <dt>目前专享标共投资：<em class="total-invest">1,500,000</em>元</dt>
+                            <dd class="progress-bar">
+                                <span class="progress-percent" style="width: 10%"></span>
+                            </dd>
+                            <dd class="count-total">
+                                <span class="fl">已有<em>123</em>人参与</span>
+                                <span class="fr">总额度：<em>4,200,000元</em></span>
+                            </dd>
+
+                        </dl>
+                        <div class="tc">
+                            <a href="/loan-list" class="normal-button-day">马上投资圣诞专享标</a>
+                        </div>
+                        <div class="gift-box clearfix last">
+                        <span>
+                            活动说明：<br/>
+1、用户投资专享标所获红包将于活动结束后三个工作日内，以红包形式发放，用户可在“我的宝藏”中查看，该红包适用于180天及以上标的，投资50元即可激活；<br/>
+2、为了保证获奖结果的公平性，获奖用户在活动期间所进行的圣诞专享标投标不允许进行债权转让。<br/>
+                        </span>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="christmas-border clearfix">
+                <div class="title-christmas">活动二：圣诞拆礼物</div>
+                <div class="model-content clearfix">
+                    <div class="bg-gradient clearfix">
+                        <div class="gift-box">
+                            <em class="icon-balloon"></em>
+                            <b>专享标加息0.5%</b>
+                            专享标在现有预期年化收益基础上<i>加息0.5%</i>。
+                        </div>
+
+                        <div class="gift-box">
+                            <em class="icon-balloon"></em>
+                            <b>用券投资加息1%</b>
+                            投资圣诞专享标单笔达3万元及以上，即赠送一张0.5%加息券，用券投资专享标<i>加息1%</i>。
+                        </div>
+
+                        <div class="gift-box">
+                            <em class="icon-balloon"></em>
+                            <b>瓜分20000元红包</b>
+                            专享标总额420万，活动结束后，所有投资专享标的用户按投资比例瓜分<i>20000元红包</i>。
+                        </div>
+
+                        <div class="gift-box clearfix last">
+                        <span>
+                            栗子：沈先生预计投资20万，第一笔投资专享标3万元加息0.5%，第二笔使用0.5%加息券投资专享标17万元，可加息1%。同时可获得红包200000*20000/4200000=952元；<br/>
+                            小贴士：<br/>
+                            用户所获红包金额=活动期间投资专享标金额*20000/3000000。加息券每人限领1张，有效期3天；
+                        </span>
+                        </div>
+                        <div class="clearfix"></div>
+                        <dl class="invest-percent-box clearfix">
+                            <dt>目前专享标共投资：<em class="total-invest">1,500,000</em>元</dt>
+                            <dd class="progress-bar">
+                                <span class="progress-percent" style="width: 10%"></span>
+                            </dd>
+                            <dd class="count-total">
+                                <span class="fl">已有<em>123</em>人参与</span>
+                                <span class="fr">总额度：<em>4,200,000元</em></span>
+                            </dd>
+
+                        </dl>
+                        <div class="tc">
+                            <a href="/loan-list" class="normal-button-day">马上投资圣诞专享标</a>
+                        </div>
+                        <div class="gift-box clearfix last">
+                        <span>
+                            活动说明：<br/>
+1、用户投资专享标所获红包将于活动结束后三个工作日内，以红包形式发放，用户可在“我的宝藏”中查看，该红包适用于180天及以上标的，投资50元即可激活；<br/>
+2、为了保证获奖结果的公平性，获奖用户在活动期间所进行的圣诞专享标投标不允许进行债权转让。<br/>
+                        </span>
+                        </div>
+
+                    </div>
+
+
+                </div>
             </div>
         </div>
     </div>

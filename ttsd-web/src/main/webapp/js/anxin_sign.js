@@ -129,7 +129,6 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
                 else {
                     $btnNormal.prop('disabled',true);
                 }
-
         });
 
         // 立即开通免短信授权服务

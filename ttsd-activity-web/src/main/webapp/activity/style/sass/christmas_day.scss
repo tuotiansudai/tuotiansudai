@@ -9,6 +9,7 @@ body {
 .main-frame {
   width: 100%;
   margin: 0 auto;
+  font-size:18px;
 }
 
 .activity-slide {
@@ -21,11 +22,159 @@ body {
     width:1000px;
     margin:0 auto;
   }
+  .normal-button-day {
+    color: #015a2e;
+    font-size: 24px;
+    background: #d0e8ac;
+    border-radius: 30px;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    padding: 3px 25px;
+    box-shadow: 0px 4px 0px #8fb359;
+
+  }
   .christmas-border {
     background: url("/activity/images/christmas-day/border-line.png") left top repeat;
+    padding:10px;
+    border-radius: 15px;
+    position: relative;
+    margin:114px auto;
+    .man-decorate {
+      position: absolute;
+      width:110px;
+      height:90px;
+      display: inline-block;
+      background: url("/activity/images/christmas-day/man-decorate.png") left top no-repeat;
+      right: 100px;
+      top: -58px;
+    }
+    .title-christmas {
+      position: absolute;
+      z-index: 1;
+      top: -108px;
+      left: 0;
+      width: 100%;
+      height: 205px;
+      background: url("/activity/images/christmas-day/bg-title.png") left top no-repeat;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      color: #fff;
+      padding-top:60px;
+    }
   }
   .model-content {
-    border:10px solid #216d28;
+    //border:10px solid #216d28;
+    background: #035b2e;
+
     outline: 1px;
+    border-radius: 15px;
+    box-sizing: border-box;
+    padding: 10px;
+    .bg-gradient {
+      background: -ms-linear-gradient(left, rgba(255,238,0,0), rgba(255,238,0,0.2), rgba(255,238,0,0));  /* IE 10 */
+      background:-moz-linear-gradient(left,rgba(255,238,0,0),rgba(255,238,0,0.2),rgba(255,238,0,0));/*火狐*/
+      background: -webkit-gradient(linear,left top,right top,color-stop(0%,rgba(255,238,0,0)),color-stop(50%,rgba(255,238,0,0.2)),color-stop(100%,rgba(255,238,0,0)));
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,238,0,0)), to(rgba(255,238,0,0.2)));      /* Safari 4-5, Chrome 1-9*/
+      background: -webkit-linear-gradient(left, rgba(255,238,0,0), rgba(255,238,0,0.2),rgba(255,238,0,0));   /*Safari5.1 Chrome 10+*/
+      background: -o-linear-gradient(left, rgba(255,238,0,0), rgba(255,238,0,0.2),rgba(255,238,0,0));  /*Opera 11.10+*/
+      height:100%;
+    }
+  }
+  .box-notice {
+    margin-top:70px;
+    span {
+      display: block;
+      background: #d0e8ac;
+      padding: 20px 30px;
+      box-sizing: border-box;
+      border-radius: 15px;
+    }
+  }
+
+  .activity-section {
+    //background: #015a2e;
+    .model-content {
+      padding:5px;
+    }
+    .bg-gradient {
+      padding: 75px 0px 0px 0px;
+    }
+    .gift-box {
+      width:310px;
+      height:260px;
+      margin:6px;
+      background: #d0e8ac;
+      float: left;
+      box-sizing: border-box;
+      border-radius: 15px;
+      padding:70px 10px 0px 10px;
+      position: relative;
+      font-size: 18px;
+      &.last {
+        width:auto;
+        font-size: 14px;
+        padding: 20px;
+        overflow: auto;
+        height:auto;
+        margin-bottom: 10px;
+      }
+      .icon-balloon {
+        position: absolute;
+        width:65px;
+        height:86px;
+        display: inline-block;
+        background: url("/activity/images/christmas-day/balloon.png") center top no-repeat;
+        left:50%;
+        transform: translateX(-50%);
+        top: -51px;
+      }
+      b {
+        display: block;
+        font-weight: bold;
+        color: #ff1a1a;
+        text-align: center;
+        font-size:22px;
+      }
+      i {
+        color: #ff1a1a;
+      }
+    }
+
+    .invest-percent-box {
+      padding: 24px 57px;
+      color: #d0e8ac;
+      font-size: 24px;
+      font-weight: bold;
+      em {
+        color: #fffb00;
+      }
+      .progress-bar {
+        height:55px;
+        background: rgba(1,54,28,0.4);
+        box-shadow: 1px 1px 4px rgba(255,255,255,0.4), -1px -1px 4px rgba(255,255,255,0.4);
+        border-radius: 47px;
+        margin-top: 13px;
+        margin-bottom: 13px;
+        position: relative;
+        .progress-percent {
+          height: 100%;
+          width: 50%;
+          display: inline-block;
+          border-radius: 47px;
+          position: absolute;
+          background: -ms-linear-gradient(top,#ff8b58,#eb1223);
+          background:-moz-linear-gradient(top,#ff8b58,#eb1223);
+          background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#ff8b58),color-stop(100%,#eb1223));
+          background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff8b58), to(#eb1223));
+          background: -webkit-linear-gradient(top, #ff8b58, #eb1223);
+          background: -o-linear-gradient(top, #ff8b58, #eb1223);
+
+        }
+
+      }
+
+    }
   }
 }
