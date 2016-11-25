@@ -176,6 +176,7 @@ worker-invest:
     - "TZ=Asia/Shanghai"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-job-worker/build/distributions:/opt/worker
     - /var/log/tuotian/worker-invest:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-job-worker-invest/bin/ttsd-job-worker"
@@ -190,6 +191,7 @@ worker-jpush:
     - "TZ=Asia/Shanghai"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-job-worker/build/distributions:/opt/worker
     - /var/log/tuotian/worker-jpush:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-job-worker-jpush/bin/ttsd-job-worker"
@@ -202,6 +204,7 @@ worker-repay:
     - "TZ=Asia/Shanghai"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-job-worker/build/distributions:/opt/worker
     - /var/log/tuotian/worker-repay:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-job-worker-repay/bin/ttsd-job-worker"

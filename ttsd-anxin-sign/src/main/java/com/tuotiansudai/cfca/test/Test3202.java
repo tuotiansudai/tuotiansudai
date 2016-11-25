@@ -1,24 +1,22 @@
 package com.tuotiansudai.cfca.test;
 
+import cfca.trustsign.common.vo.cs.CreateContractVO;
+import cfca.trustsign.common.vo.cs.HeadVO;
+import cfca.trustsign.common.vo.cs.SignInfoVO;
+import cfca.trustsign.common.vo.request.tx3.Tx3202ReqVO;
+import com.tuotiansudai.cfca.connector.AnxinClientTest;
+import com.tuotiansudai.cfca.constant.TxCode;
+import com.tuotiansudai.cfca.converter.JsonObjectMapper;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cfca.sadk.algorithm.common.PKIException;
-import cfca.trustsign.common.vo.cs.CreateContractVO;
-import cfca.trustsign.common.vo.cs.HeadVO;
-import cfca.trustsign.common.vo.cs.SignInfoVO;
-import cfca.trustsign.common.vo.request.tx3.Tx3202ReqVO;
-import com.tuotiansudai.cfca.connector.HttpConnector;
-import com.tuotiansudai.cfca.constant.Request;
-import com.tuotiansudai.cfca.converter.JsonObjectMapper;
-import com.tuotiansudai.cfca.util.SecurityUtil;
-
 public class Test3202 {
-    public static void main(String[] args) throws PKIException {
-        HttpConnector httpConnector = new HttpConnector();
-        httpConnector.init();
+    public static void main(String[] args) throws Exception {
+        AnxinClientTest anxinClient = new AnxinClientTest();
+        anxinClient.initSSL();
 
         Tx3202ReqVO tx3202ReqVO = new Tx3202ReqVO();
         HeadVO head = new HeadVO();
@@ -80,9 +78,7 @@ public class Test3202 {
         String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
         System.out.println("req:" + req);
 
-        String txCode = "3202";
-        String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
-        String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
+        String res = anxinClient.send(TxCode.CREATE_CONTRACT_BATCH, req);
         System.out.println("res:" + res);
     }
 }
