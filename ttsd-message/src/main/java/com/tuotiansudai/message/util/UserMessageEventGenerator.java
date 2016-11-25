@@ -2,6 +2,7 @@ package com.tuotiansudai.message.util;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.tuotiansudai.enums.MembershipPurchaseStatus;
@@ -70,7 +71,7 @@ public class UserMessageEventGenerator {
             if (jPushAlertModelOptional.isPresent()) {
                 JPushAlertModel jPushAlertModel = jPushAlertModelOptional.get();
                 jPushAlertModel.setContent(userMessageModel.getAppTitle());
-                jPushAlertNewService.autoJPushAlertSend(jPushAlertModel);
+                jPushAlertNewService.autoJPushBatchByLoginNames(jPushAlertModel, Lists.newArrayList(userMessageModel.getLoginName()));
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format("jPush send fail! userMessageId:{0} content:{1}", userMessageModel.getId(), userMessageModel.getContent()));

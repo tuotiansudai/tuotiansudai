@@ -1,6 +1,9 @@
 package com.tuotiansudai.jpush.service;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
@@ -11,6 +14,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -23,6 +28,11 @@ public class JPushAlertNewService {
 
     @Autowired
     private MobileAppJPushClient mobileAppJPushClient;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    private static final String JPUSH_ID_KEY = "api:jpushId:store";
 
     private Map chooseJumpToOrLink(JPushAlertDto jPushAlertDto) {
         Map<String, String> extras = Maps.newHashMap();
@@ -49,7 +59,7 @@ public class JPushAlertNewService {
         return extras;
     }
 
-    public void autoJPushAlertSend(JPushAlertModel jPushAlertModel) {
+    public void autoJPushAlertSendToAll(JPushAlertModel jPushAlertModel) {
         if (null != jPushAlertModel) {
             Map extras = chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel));
             mobileAppJPushClient.sendPushAlertByAll(String.valueOf(jPushAlertModel.getId()), jPushAlertModel.getContent(), extras, jPushAlertModel.getPushSource());
@@ -62,5 +72,36 @@ public class JPushAlertNewService {
 
     public JPushAlertModel findJPushAlertModelByMessageId(long messageId) {
         return jPushAlertMapper.findByMessageId(messageId);
+    }
+
+    public void autoJPushBatchByLoginNames(JPushAlertModel jPushAlertModel, List<String> loginNames) {
+        JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
+        Map extras = chooseJumpToOrLink(jPushAlertDto);
+        List<String> registrationIds = Lists.newArrayList();
+
+        redisWrapperClient.del(MobileAppJPushClient.APP_PUSH_MSG_ID_KEY + jPushAlertModel.getId());
+
+        for (int i = 0; i < loginNames.size(); i++) {
+            String loginName = loginNames.get(i);
+            if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
+                String value = redisWrapperClient.hget(JPUSH_ID_KEY, loginName);
+                String registrationId;
+                if (value.indexOf("-") < 0) {
+                    registrationId = value;
+                } else {
+                    registrationId = value.split("-")[1];
+                }
+                registrationIds.add(registrationId);
+            }
+            if (registrationIds.size() == 1000 || (i == loginNames.size() - 1 && registrationIds.size() > 0)) {
+                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), extras, jPushAlertModel.getPushSource());
+                if (sendResult) {
+                    logger.debug(MessageFormat.format("第{0}个用户推送成功", i + 1));
+                } else {
+                    logger.debug(MessageFormat.format("第{0}个用户推送失败", i + 1));
+                }
+                registrationIds.clear();
+            }
+        }
     }
 }

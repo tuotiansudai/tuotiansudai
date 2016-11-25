@@ -184,11 +184,20 @@ public class MessageServiceImpl implements MessageService {
 
             JPushAlertModel jPushAlertModel = jPushAlertNewService.findJPushAlertModelByMessageId(messageId);
             if (null != jPushAlertModel) {
-                jPushAlertService.manualJPushAlert(jPushAlertModel.getId());
+                sendJpush(jPushAlertModel, messageModel);
             }
             return new BaseDto<>(new BaseDataDto(true, null));
         }
         return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE or EVENT message"));
+    }
+
+    private void sendJpush(JPushAlertModel jPushAlertModel, MessageModel messageModel) {
+        if (redisWrapperClient.hexists(redisMessageReceivers, String.valueOf(messageModel.getId()))) {
+            List<String> loginNames = (List<String>) redisWrapperClient.hgetSeri(redisMessageReceivers, String.valueOf(messageModel.getId()));
+            jPushAlertNewService.autoJPushBatchByLoginNames(jPushAlertModel, loginNames);
+        } else {
+            jPushAlertNewService.autoJPushAlertSendToAll(jPushAlertModel);
+        }
     }
 
     @Override
