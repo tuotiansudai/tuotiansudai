@@ -12,10 +12,11 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Service
 public class ActivityConsoleNotWorkService {
     @Autowired
     NotWorkMapper notWorkMapper;
