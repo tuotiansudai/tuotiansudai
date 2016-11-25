@@ -50,6 +50,8 @@
 
         <logout logout-url="/logout" success-handler-ref="mySimpleUrlLogoutSuccessHandler"/>
 
+        <session-management session-fixation-protection="none"/>
+
         <custom-filter ref="myPreAuthenticatedProcessingFilter" position="PRE_AUTH_FILTER"/>
 
         <!--DO NOT MODIFY THE BELLOW CONFIG ANYTIME!-->
