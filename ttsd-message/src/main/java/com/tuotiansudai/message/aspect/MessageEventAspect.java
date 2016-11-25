@@ -20,6 +20,7 @@ import java.util.Map;
 
 @Aspect
 @Component
+@Order(98)
 public class MessageEventAspect {
 
     private static Logger logger = Logger.getLogger(MessageEventAspect.class);
@@ -131,7 +132,6 @@ public class MessageEventAspect {
     }
 
     @AfterReturning(value = "investSuccessPointcut()")
-    @Order(98)
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         Object investModel = joinPoint.getArgs()[0];
         try {

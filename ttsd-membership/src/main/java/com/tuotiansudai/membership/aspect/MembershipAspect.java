@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 
 @Component
 @Aspect
+@Order(99)
 public class MembershipAspect {
 
     private static Logger logger = Logger.getLogger(MembershipAspect.class);
@@ -27,7 +28,6 @@ public class MembershipAspect {
      * @param joinPoint
      */
     @After(value = "execution(* *..InvestService.investSuccess(..))")
-    @Order(99)
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         try {
             Object param = joinPoint.getArgs()[0];

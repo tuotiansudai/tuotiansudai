@@ -4,7 +4,6 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.membership.dto.MembershipPurchaseDto;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
