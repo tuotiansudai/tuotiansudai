@@ -80,6 +80,7 @@ class MediaList extends React.Component {
 		}
 	}
 	listItemTapHandler(event) {
+		debugger
 		let target = this.findDelegateEle.call(this, event.target);
 		hashHistory.push(`media-center/article/${target.dataset.id}`);
 	}
@@ -119,6 +120,7 @@ class MediaList extends React.Component {
 			url: '/media-center/banner',
 			done: function(response) {
 				bannerData = response.data.articleList.map((value) => {
+					debugger
 					return {
 						img: value.showPicture,
 						href: `media-center/article/${value.articleId}`

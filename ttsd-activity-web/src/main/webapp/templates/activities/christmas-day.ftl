@@ -8,7 +8,7 @@
         <div class="christmas-border box-notice">
             <em class="man-decorate"></em>
             <div class="model-content">
-                <span>
+                <span class="text-note">
                     据不可靠消息称： <br/>
 圣诞老人在天朝送礼物途中因雾霾爆表迷路了！<br/>
 可孩子们不能没有童年<br/>
@@ -21,21 +21,20 @@
             <div class="christmas-border clearfix">
                 <div class="title-christmas">活动一：为圣诞老人铺路</div>
                 <div class="model-content clearfix">
-                    <div class="bg-gradient clearfix">
                         <div class="gift-box">
-                            <em class="icon-balloon"></em>
+                            <em class="icon-balloon">1重礼</em>
                             <b>专享标加息0.5%</b>
                             专享标在现有预期年化收益基础上<i>加息0.5%</i>。
                         </div>
 
                         <div class="gift-box">
-                            <em class="icon-balloon"></em>
+                            <em class="icon-balloon">2重礼</em>
                             <b>用券投资加息1%</b>
                             投资圣诞专享标单笔达3万元及以上，即赠送一张0.5%加息券，用券投资专享标<i>加息1%</i>。
                         </div>
 
                         <div class="gift-box">
-                            <em class="icon-balloon"></em>
+                            <em class="icon-balloon">3重礼</em>
                             <b>瓜分20000元红包</b>
                             专享标总额420万，活动结束后，所有投资专享标的用户按投资比例瓜分<i>20000元红包</i>。
                         </div>
@@ -51,7 +50,8 @@
                         <dl class="invest-percent-box clearfix">
                             <dt>目前专享标共投资：<em class="total-invest">1,500,000</em>元</dt>
                             <dd class="progress-bar">
-                                <span class="progress-percent" style="width: 10%"></span>
+                                <i class="progress-end" style="left: calc( 80% - 57px);"></i>
+                                <span class="progress-percent" style="width: 80%"></span>
                             </dd>
                             <dd class="count-total">
                                 <span class="fl">已有<em>123</em>人参与</span>
@@ -69,69 +69,98 @@
 2、为了保证获奖结果的公平性，获奖用户在活动期间所进行的圣诞专享标投标不允许进行债权转让。<br/>
                         </span>
                         </div>
+                </div>
+            </div>
 
+            <#--活动二未开始-->
+            <div class="christmas-border clearfix">
+                <div class="title-christmas">活动二：圣诞拆礼物</div>
+                <div class="model-content clearfix">
+                        <div class="tc color-sec ">
+                            专享标总投资额达到420万，将开启活动二 —— 圣诞拆礼物。快去投资吧！
+                        </div>
+                        <div class="tc margin-top25">
+                            <a href="/loan-list" class="normal-button-day">马上投资圣诞专享标</a>
+                        </div>
+
+                    <div class="tc" >
+                        <img src="${staticServer}/activity/images/christmas-day/gift.jpg" class="img-gift">
                     </div>
-
 
                 </div>
             </div>
 
+            <#--活动已经开始-->
             <div class="christmas-border clearfix">
                 <div class="title-christmas">活动二：圣诞拆礼物</div>
                 <div class="model-content clearfix">
-                    <div class="bg-gradient clearfix">
-                        <div class="gift-box">
-                            <em class="icon-balloon"></em>
-                            <b>专享标加息0.5%</b>
-                            专享标在现有预期年化收益基础上<i>加息0.5%</i>。
-                        </div>
+                    <div class="color-sec ">
+                        <b class="tc ">活动时间：11.24 24:00-12.31 24:00</b> <br/>
+                        蟹蟹各位大大们为圣诞老人铺路，昨晚，他已经偷偷爬过烟囱，把礼物挂在圣诞树上，还等什么，赶快拆礼物吧，Merry Christmas！ <br/>
+                        温馨提示：在活动二期限内完成以下操作，才可获得拆礼物机会，每位用户最多可获得10次拆奖机会；
+                    </div>
+                    <div class="gift-box">
+                        <em class="icon-balloon">1重礼</em>
+                        <b>专享标加息0.5%</b>
+                        专享标在现有预期年化收益基础上<i>加息0.5%</i>。
+                    </div>
 
-                        <div class="gift-box">
-                            <em class="icon-balloon"></em>
-                            <b>用券投资加息1%</b>
-                            投资圣诞专享标单笔达3万元及以上，即赠送一张0.5%加息券，用券投资专享标<i>加息1%</i>。
-                        </div>
+                    <div class="gift-box">
+                        <em class="icon-balloon">2重礼</em>
+                        <b>用券投资加息1%</b>
+                        投资圣诞专享标单笔达3万元及以上，即赠送一张0.5%加息券，用券投资专享标<i>加息1%</i>。
+                    </div>
 
-                        <div class="gift-box">
-                            <em class="icon-balloon"></em>
-                            <b>瓜分20000元红包</b>
-                            专享标总额420万，活动结束后，所有投资专享标的用户按投资比例瓜分<i>20000元红包</i>。
-                        </div>
+                    <div class="gift-box">
+                        <em class="icon-balloon">3重礼</em>
+                        <b>瓜分20000元红包</b>
+                        专享标总额420万，活动结束后，所有投资专享标的用户按投资比例瓜分<i>20000元红包</i>。
+                    </div>
 
-                        <div class="gift-box clearfix last">
+                    <div class="gift-box clearfix last">
                         <span>
                             栗子：沈先生预计投资20万，第一笔投资专享标3万元加息0.5%，第二笔使用0.5%加息券投资专享标17万元，可加息1%。同时可获得红包200000*20000/4200000=952元；<br/>
                             小贴士：<br/>
                             用户所获红包金额=活动期间投资专享标金额*20000/3000000。加息券每人限领1张，有效期3天；
                         </span>
-                        </div>
-                        <div class="clearfix"></div>
-                        <dl class="invest-percent-box clearfix">
-                            <dt>目前专享标共投资：<em class="total-invest">1,500,000</em>元</dt>
-                            <dd class="progress-bar">
-                                <span class="progress-percent" style="width: 10%"></span>
-                            </dd>
-                            <dd class="count-total">
-                                <span class="fl">已有<em>123</em>人参与</span>
-                                <span class="fr">总额度：<em>4,200,000元</em></span>
-                            </dd>
+                    </div>
+                    <div class="clearfix"></div>
+                    <dl class="invest-percent-box clearfix">
+                        <dt>目前专享标共投资：<em class="total-invest">1,500,000</em>元</dt>
+                        <dd class="progress-bar">
+                            <i class="progress-end" style="left: calc( 80% - 57px);"></i>
+                            <span class="progress-percent" style="width: 80%"></span>
+                        </dd>
+                        <dd class="count-total">
+                            <span class="fl">已有<em>123</em>人参与</span>
+                            <span class="fr">总额度：<em>4,200,000元</em></span>
+                        </dd>
 
-                        </dl>
-                        <div class="tc">
-                            <a href="/loan-list" class="normal-button-day">马上投资圣诞专享标</a>
-                        </div>
-                        <div class="gift-box clearfix last">
+                    </dl>
+                    <div class="tc">
+                        <a href="/loan-list" class="normal-button-day">马上投资圣诞专享标</a>
+                    </div>
+                    <div class="gift-box clearfix last">
                         <span>
                             活动说明：<br/>
 1、用户投资专享标所获红包将于活动结束后三个工作日内，以红包形式发放，用户可在“我的宝藏”中查看，该红包适用于180天及以上标的，投资50元即可激活；<br/>
 2、为了保证获奖结果的公平性，获奖用户在活动期间所进行的圣诞专享标投标不允许进行债权转让。<br/>
                         </span>
-                        </div>
-
                     </div>
-
-
                 </div>
+            </div>
+        </div>
+
+        <div class="christmas-border activity-info">
+            <div class="model-content">
+                <span class="text-note">
+                    活动说明： <br/>
+1.拆礼物所获得的红包和加息券将即时发放，请到我的账户中查看；<br/>
+2.实物奖品将于活动结束后7个工作日内寄出，若在7个工作日内无法联系到获奖用户，将视为自动放弃奖励；<br/>
+3.为了保证获奖结果的公平性，获奖用户在活动期间所进行的圣诞专享标投标不允许进行债权转让；<br/>
+4.拓天速贷在法律范围内保留对本活动的最终解释权；<br/>
+5.市场有风险，投资需谨慎。<br/>
+                </span>
             </div>
         </div>
     </div>

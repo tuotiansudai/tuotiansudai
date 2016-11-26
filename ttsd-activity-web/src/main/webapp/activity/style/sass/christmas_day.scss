@@ -1,12 +1,13 @@
 @charset "utf-8";
 
 body {
-  background: #a40001 url("/activity/images/autumn-tour/bg-yun.png") center 775px no-repeat;
+  background: #a40001 url("/activity/images/christmas-day/bg-decorate-left.jpg") left 700px repeat-y;
   overflow-x: hidden;
   color: #015a2e;
 }
 
 .main-frame {
+  background: url("/activity/images/christmas-day/bottom-decorate.jpg") center bottom no-repeat;
   width: 100%;
   margin: 0 auto;
   font-size:18px;
@@ -18,6 +19,10 @@ body {
 }
 
 .christmas-day-frame {
+  background: url("/activity/images/christmas-day/bg-decorate-right.jpg") right 0px repeat-y;
+  .color-sec {
+    color: #d0e8ac;
+  }
   .christmas-day-inner {
     width:1000px;
     margin:0 auto;
@@ -39,7 +44,7 @@ body {
     padding:10px;
     border-radius: 15px;
     position: relative;
-    margin:114px auto;
+    margin-bottom: 114px;
     .man-decorate {
       position: absolute;
       width:110px;
@@ -66,40 +71,33 @@ body {
   }
   .model-content {
     //border:10px solid #216d28;
-    background: #035b2e;
-
+    background: #035b2e url(../../images/christmas-day/bg-content.jpg) left top repeat;
     outline: 1px;
     border-radius: 15px;
     box-sizing: border-box;
     padding: 10px;
-    .bg-gradient {
-      background: -ms-linear-gradient(left, rgba(255,238,0,0), rgba(255,238,0,0.2), rgba(255,238,0,0));  /* IE 10 */
-      background:-moz-linear-gradient(left,rgba(255,238,0,0),rgba(255,238,0,0.2),rgba(255,238,0,0));/*火狐*/
-      background: -webkit-gradient(linear,left top,right top,color-stop(0%,rgba(255,238,0,0)),color-stop(50%,rgba(255,238,0,0.2)),color-stop(100%,rgba(255,238,0,0)));
-      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,238,0,0)), to(rgba(255,238,0,0.2)));      /* Safari 4-5, Chrome 1-9*/
-      background: -webkit-linear-gradient(left, rgba(255,238,0,0), rgba(255,238,0,0.2),rgba(255,238,0,0));   /*Safari5.1 Chrome 10+*/
-      background: -o-linear-gradient(left, rgba(255,238,0,0), rgba(255,238,0,0.2),rgba(255,238,0,0));  /*Opera 11.10+*/
-      height:100%;
-    }
+  }
+  span.text-note {
+    display: block;
+    background: #d0e8ac;
+    padding: 20px 30px;
+    box-sizing: border-box;
+    border-radius: 15px;
   }
   .box-notice {
     margin-top:70px;
-    span {
-      display: block;
-      background: #d0e8ac;
-      padding: 20px 30px;
-      box-sizing: border-box;
-      border-radius: 15px;
+  }
+  .activity-info {
+    margin-top: -50px;
+    span.text-note {
+      font-size: 14px;
     }
   }
 
   .activity-section {
     //background: #015a2e;
     .model-content {
-      padding:5px;
-    }
-    .bg-gradient {
-      padding: 75px 0px 0px 0px;
+      padding: 75px 5px 0px 5px;
     }
     .gift-box {
       width:310px;
@@ -109,7 +107,7 @@ body {
       float: left;
       box-sizing: border-box;
       border-radius: 15px;
-      padding:70px 10px 0px 10px;
+      padding:60px 10px 0px 10px;
       position: relative;
       font-size: 18px;
       &.last {
@@ -129,6 +127,9 @@ body {
         left:50%;
         transform: translateX(-50%);
         top: -51px;
+        text-align: center;
+        color: #fff;
+        padding-top: 40px;
       }
       b {
         display: block;
@@ -158,12 +159,23 @@ body {
         margin-top: 13px;
         margin-bottom: 13px;
         position: relative;
+        .progress-end {
+          width:57px;
+          height:74px;
+          position: absolute;
+          z-index: 20;
+          left:calc( 50% - 57px);
+          top:-15px;
+          display: inline-block;
+          background: url("/activity/images/christmas-day/icon-claus.png") left top no-repeat;
+        }
         .progress-percent {
           height: 100%;
           width: 50%;
           display: inline-block;
           border-radius: 47px;
           position: absolute;
+          z-index: 10;
           background: -ms-linear-gradient(top,#ff8b58,#eb1223);
           background:-moz-linear-gradient(top,#ff8b58,#eb1223);
           background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#ff8b58),color-stop(100%,#eb1223));
@@ -175,6 +187,10 @@ body {
 
       }
 
+    }
+
+    .img-gift {
+      margin:20px auto;
     }
   }
 }
