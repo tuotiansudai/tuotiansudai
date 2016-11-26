@@ -18,6 +18,12 @@ class SessionManager(object):
         self.connection = redis.Redis(connection_pool=pool)
         self.expire_seconds = settings.WEB_TOKEN_EXPIRED_SECONDS if source.upper() == 'WEB' else settings.MOBILE_TOKEN_EXPIRED_SECONDS
 
+    def get_user_info(self, session_id):
+        token_key = TOKEN_FORMAT.format(session_id)
+        user_info = self.connection.get(token_key)
+        if user_info:
+            return json.loads(user_info)
+
     def get(self, session_id):
         token_key = TOKEN_FORMAT.format(session_id)
         user_info = self.connection.get(token_key)
