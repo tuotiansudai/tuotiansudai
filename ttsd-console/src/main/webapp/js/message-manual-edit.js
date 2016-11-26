@@ -103,6 +103,10 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                 alert("没有选择收件人");
                 return false;
             }
+            if (selectReceiver && $('.importUsersId').val() == 0) {
+                alert("没有导入用户名单");
+                return false;
+            }
             var messageContent = getContentTxt();
             if (messageContent.length <= 0) {
                 alert("文本内容不能为空");

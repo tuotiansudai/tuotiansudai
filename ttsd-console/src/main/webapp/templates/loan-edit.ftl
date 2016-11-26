@@ -303,7 +303,7 @@
 
                 <div class="col-sm-3">
                     <input name="message-title" type="text" class="form-control"
-                           id="messagsTitle" <#if loan.loanMessage??> value="${loan.loanMessage.loanMessageTitle!}"
+                           id="messageTitle" <#if loan.loanMessage??> value="${loan.loanMessage.loanMessageTitle!}"
                            <#else>disabled</#if>>
                 </div>
             </div>

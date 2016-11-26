@@ -255,7 +255,7 @@
                 <label class="col-sm-2 control-label">推送信息标题</label>
 
                 <div class="col-sm-3">
-                    <input name="message-title" type="text" class="form-control" id="messagsTitle" disabled>
+                    <input name="message-title" type="text" class="form-control" id="messageTitle" disabled>
                 </div>
             </div>
 

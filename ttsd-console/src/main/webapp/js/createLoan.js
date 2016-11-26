@@ -269,6 +269,10 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                 clearErrorMessage();
             },
             beforeSubmit: function (curform) {
+                if ($('#messageSend').prop('checked') == true && ($('#messageTitle').val().length == 0) && ($('#messageContent').val().length == 0)) {
+                    showErrorMessage('必须填写消息标题和消息内容', $('input[name="message-title"]'));
+                    return false;
+                }
                 if (!loanTypeElement.val()) {
                     showErrorMessage('请选择标的类型', loanTypeElement);
                     return false;
@@ -348,7 +352,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
             var value = loanNameElement.val();
             var url = $currentFormSubmitBtn.data("url");
             var requestData = {};
-            var messageTitle = $('#messagsTitle').val(),
+            var messageTitle = $('#messageTitle').val(),
                 messageContent = $('#messageContent').val();
             if ("房产抵押借款" == value) {
                 requestData = generateRequestParams({
@@ -506,10 +510,10 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
 
         $('#messageSend').on('change', function () {
             if ($(this).prop('checked') == true) {
-                $('#messagsTitle').prop('disabled', false);
+                $('#messageTitle').prop('disabled', false);
                 $('#messageContent').prop('disabled', false);
             } else {
-                $('#messagsTitle').prop('disabled', true).val('');
+                $('#messageTitle').prop('disabled', true).val('');
                 $('#messageContent').prop('disabled', true).val('');
             }
         });
