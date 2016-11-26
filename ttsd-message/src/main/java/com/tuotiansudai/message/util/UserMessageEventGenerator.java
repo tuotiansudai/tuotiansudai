@@ -9,6 +9,7 @@ import com.tuotiansudai.enums.MembershipPurchaseStatus;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
 import com.tuotiansudai.jpush.service.JPushAlertNewService;
+import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMetaMapper;
@@ -113,7 +114,7 @@ public class UserMessageEventGenerator {
         //Content:尊敬的{0}女士/先生，恭喜您认证成功，您的支付密码已经由联动优势发送至注册手机号码中,马上【绑定银行卡】开启赚钱之旅吧！
         String title = messageModel.getTitle();
         String appTitle = messageModel.getAppTitle();
-        String content = MessageFormat.format(messageModel.getTemplate(), userModel.getMobile());
+        String content = MessageFormat.format(messageModel.getTemplate(), userModel.getUserName());
 
         UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), loginName, title, appTitle, content);
         userMessageMapper.create(userMessageModel);
@@ -480,5 +481,6 @@ public class UserMessageEventGenerator {
         }
         UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), (String) userCoupon.get("login_name"), title, appTitle, null);
         userMessageMapper.create(userMessageModel);
+        sendJPushByUserMessageModel(userMessageModel);
     }
 }
