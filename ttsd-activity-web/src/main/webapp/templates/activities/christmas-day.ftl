@@ -4,9 +4,14 @@
 <div class="activity-slide">
 </div>
 <div class="christmas-day-frame" id="christmasDayFrame">
+    <div class="body-decorate" id="bodyDecorate">
+        <div class="bg-left"></div>
+        <div class="bg-right"></div>
+        <div class="bg-bottom"></div>
+    </div>
     <div class="christmas-day-inner">
         <div class="christmas-border box-notice">
-            <em class="man-decorate"></em>
+            <div class="man-decorate"></div>
             <div class="model-content">
                 <span class="text-note">
                     据不可靠消息称： <br/>
@@ -50,8 +55,10 @@
                         <dl class="invest-percent-box clearfix">
                             <dt>目前专享标共投资：<em class="total-invest">1,500,000</em>元</dt>
                             <dd class="progress-bar">
-                                <i class="progress-end" style="left: calc( 80% - 57px);"></i>
-                                <span class="progress-percent" style="width: 80%"></span>
+                                <#--<i class="progress-end" style="left: calc( 80% - 57px);"></i>-->
+                                <div class="progress-percent" style="width: 80%">
+                                    <div class="progress-value"></div>
+                                </div>
                             </dd>
                             <dd class="count-total">
                                 <span class="fl">已有<em>123</em>人参与</span>

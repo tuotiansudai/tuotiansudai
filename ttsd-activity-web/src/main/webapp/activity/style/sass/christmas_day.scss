@@ -1,13 +1,12 @@
 @charset "utf-8";
 
 body {
-  background: #a40001 url("/activity/images/christmas-day/bg-decorate-left.jpg") left 700px repeat-y;
   overflow-x: hidden;
   color: #015a2e;
+  background: #a40001;
 }
 
 .main-frame {
-  background: url("/activity/images/christmas-day/bottom-decorate.jpg") center bottom no-repeat;
   width: 100%;
   margin: 0 auto;
   font-size:18px;
@@ -19,13 +18,43 @@ body {
 }
 
 .christmas-day-frame {
-  background: url("/activity/images/christmas-day/bg-decorate-right.jpg") right 0px repeat-y;
+  position: relative;
+  .body-decorate {
+    width:100%;
+    height:100%;
+    .bg-left {
+      width:305px;
+      height:100%;
+      position: absolute;
+      left:0;
+      top:0;
+      background: url("/activity/images/christmas-day/bg-decorate-left.jpg") left 0px repeat-y;
+    }
+    .bg-right {
+      width:305px;
+      height:100%;
+      position: absolute;
+      right:0;
+      top:0;
+      background: url("/activity/images/christmas-day/bg-decorate-left.jpg") right 0px repeat-y;
+      transform: rotate(180deg);
+    }
+    .bg-bottom {
+      background: url("/activity/images/christmas-day/bottom-decorate.jpg") center bottom no-repeat;
+      height:648px;
+      width: 100%;
+      position: absolute;
+      bottom:0;
+    }
+  }
+
   .color-sec {
     color: #d0e8ac;
   }
   .christmas-day-inner {
     width:1000px;
     margin:0 auto;
+    padding-bottom: 50px;
   }
   .normal-button-day {
     color: #015a2e;
@@ -53,6 +82,27 @@ body {
       background: url("/activity/images/christmas-day/man-decorate.png") left top no-repeat;
       right: 100px;
       top: -58px;
+      &:after {
+        content: "";
+        width:39px;
+        height:15px;
+        position: absolute;
+        top: 36px;
+        left: 35px;
+        display: inline-block;
+        background: url("../../images/christmas-day/base-eyes.png") left top no-repeat;
+        animation: blink-eyes 1s linear infinite;
+      }
+
+      @keyframes  blink-eyes{
+        0% { height:0; }
+        100% { height:100%;}
+      }
+      @-webkit-keyframes blink-eyes {
+        0% { height:0; }
+        100% { height:100%;}
+      }
+
     }
     .title-christmas {
       position: absolute;
@@ -89,6 +139,7 @@ body {
   }
   .activity-info {
     margin-top: -50px;
+    margin-bottom: 0;
     span.text-note {
       font-size: 14px;
     }
@@ -158,23 +209,11 @@ body {
         border-radius: 47px;
         margin-top: 13px;
         margin-bottom: 13px;
-        position: relative;
-        .progress-end {
-          width:57px;
-          height:74px;
-          position: absolute;
-          z-index: 20;
-          left:calc( 50% - 57px);
-          top:-15px;
-          display: inline-block;
-          background: url("/activity/images/christmas-day/icon-claus.png") left top no-repeat;
-        }
         .progress-percent {
           height: 100%;
           width: 50%;
           display: inline-block;
           border-radius: 47px;
-          position: absolute;
           z-index: 10;
           background: -ms-linear-gradient(top,#ff8b58,#eb1223);
           background:-moz-linear-gradient(top,#ff8b58,#eb1223);
@@ -182,7 +221,25 @@ body {
           background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff8b58), to(#eb1223));
           background: -webkit-linear-gradient(top, #ff8b58, #eb1223);
           background: -o-linear-gradient(top, #ff8b58, #eb1223);
+          position: relative;
+          animation: animate-positive 1s;
+          .progress-value {
+            width:57px;
+            height:74px;
+            position: absolute;
+            z-index: 20;
+            right:0;
+            top:-15px;
+            display: inline-block;
+            background: url("/activity/images/christmas-day/icon-claus.png") left top no-repeat;
+          }
 
+          @-webkit-keyframes animate-positive{
+            0% { width: 0; }
+          }
+          @keyframes animate-positive{
+            0% { width: 0; }
+          }
         }
 
       }
