@@ -12,6 +12,7 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -45,7 +46,10 @@ public class ActivityConsoleNotWorkService {
         put(120000000L, "Apple MacBook Air笔记本电脑");
     }};
 
+    @Transactional
     public BasePaginationDataDto<NotWorkDto> findNotWorkPagination(int index, int pageSize) {
+        insertOnlyRegisterOrIndetityData();
+
         long count = notWorkMapper.findAllCount();
         List<NotWorkModel> notWorkModels = notWorkMapper.findPagination(PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
         List<NotWorkDto> records = notWorkModels.stream().map(notWorkModel -> {
@@ -74,5 +78,17 @@ public class ActivityConsoleNotWorkService {
             return notWorkDto;
         }).collect(Collectors.toList());
         return new BasePaginationDataDto<>(index, pageSize, count, records);
+    }
+
+    private void insertOnlyRegisterOrIndetityData() {
+        List<UserModel> recommendedRegisterUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityStartTime, activityEndTime, null);
+        recommendedRegisterUsers.forEach(recommendedUser -> {
+            NotWorkModel notWorkModel = notWorkMapper.findByLoginName(recommendedUser.getLoginName());
+            if(null == notWorkModel) {
+                UserModel referrer = userMapper.findByLoginName(recommendedUser.getReferrer());
+                notWorkModel = new NotWorkModel(referrer.getLoginName(), referrer.getUserName(), referrer.getMobile(), false);
+                notWorkMapper.create(notWorkModel);
+            }
+        });
     }
 }

@@ -31,13 +31,13 @@ public class NotWorkService {
     public long getUsersNeedInvestAmount(String loginName) {
         NotWorkModel notWorkModel = notWorkMapper.findByLoginName(loginName);
         if (null == notWorkModel) {
-            return 0L;
+            return prizeList[0];
         }
         for (long prize : prizeList) {
             if (prize > notWorkModel.getInvestAmount()) {
                 return prize - notWorkModel.getInvestAmount();
             }
         }
-        return 0L;
+        return prizeList[0];
     }
 }
