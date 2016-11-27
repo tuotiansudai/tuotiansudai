@@ -103,7 +103,7 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSel
                 alert("没有选择收件人");
                 return false;
             }
-            if (selectReceiver && $('.importUsersId').val() == 0) {
+            if ($importGroups.get(0).checked && $('.importUsersId').val() == 0) {
                 alert("没有导入用户名单");
                 return false;
             }
