@@ -75,7 +75,7 @@ public class UserMessageEventGenerator {
                 jPushAlertNewService.autoJPushBatchByLoginNames(jPushAlertModel, Lists.newArrayList(userMessageModel.getLoginName()));
             }
         } catch (Exception e) {
-            logger.error(MessageFormat.format("jPush send fail! userMessageId:{0} content:{1}", userMessageModel.getId(), userMessageModel.getContent()));
+            logger.error(MessageFormat.format("jPush send fail! userMessageId:{0} content:{1}", userMessageModel.getId(), userMessageModel.getContent()), e);
         }
     }
 
