@@ -27,6 +27,8 @@ public enum ReturnMessage {
     CERTIFICATION_FAIL("0016","实名认证失败"),
     USER_ID_IS_NULL("0017","用户ID为空"),
     USER_ID_NOT_EXIST("0018","用户不存在"),
+    AGE_IS_ILLEGAL("0099", "未满18岁不能参与投资，无法实名"),
+    ID_CARD_FORMAT_ERROR("0098", "请正确输入18位二代身份证号"),
     /******手机端实名认证返回码******/
 
     /******手机端找回密码返回码******/
