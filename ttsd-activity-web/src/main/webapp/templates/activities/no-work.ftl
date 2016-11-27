@@ -34,7 +34,11 @@
 									</@global.isNotAnonymous>
 									<@global.isAnonymous>
 									<li class="login-item">
-										<span class="show-login">登录查看我的奖品</span>
+										<#if !isAppSource>
+                                            <span class="show-login">登录查看我的奖品</span>
+										<#else>
+                                            <a href="/login">登录查看我的奖品</a>
+										</#if>
 									</li>
 									</@global.isAnonymous>
 								</ul>
