@@ -90,8 +90,10 @@
             <div class="col-sm-4"><select class="selectpicker message-app-url" name="appUrl">
 
                 <#list appUrls as appUrl>
-                    <option value="${appUrl.name()}"
-                            <#if (selectedAppUrl?? && selectedAppUrl == appUrl) || ((dto.appUrl)?? && dto.appUrl == appUrl)>selected</#if>>${appUrl.getDescription()}</option>
+                    <#if appUrl != "INVEST_DETAILS_REPAY_DETAIL" && appUrl != "MESSAGE_CENTER_DETAIL" && appUrl != "LOAN_NORMAL_DETAIL" && appUrl != "LOAN_TRANSFER_DETAIL">
+                        <option value="${appUrl.name()}"
+                                <#if (selectedAppUrl?? && selectedAppUrl == appUrl) || ((dto.appUrl)?? && dto.appUrl == appUrl)>selected</#if>>${appUrl.getDescription()}</option>
+                    </#if>
                 </#list>
             </select></div>
         </div>
