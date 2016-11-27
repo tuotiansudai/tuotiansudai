@@ -110,8 +110,11 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     @Override
     public UserMessageViewDto getUserMessageModelById(long userMessageId) {
         UserMessageModel userMessageModel = userMessageMapper.findById(userMessageId);
+        if(null == userMessageModel) {
+            return new UserMessageViewDto(userMessageId, null, null, null, null);
+        }
         userMessageServices.readMessage(userMessageId);
-        MessageModel messageModel = messageMapper.findById(userMessageModel.getMessageId());
+        MessageModel messageModel = messageMapper.findByIdBesidesDeleted(userMessageModel.getMessageId());
         return new UserMessageViewDto(userMessageModel.getId(), userMessageModel.getTitle(), userMessageModel.getContent(), userMessageModel.getCreatedTime(), messageModel.getAppUrl());
     }
 
