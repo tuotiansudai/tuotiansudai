@@ -39,7 +39,6 @@ public class MessageLoanAspect {
             String messageId = redisWrapperClient.hget(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanId));
             if (!Strings.isNullOrEmpty(messageId)) {
                 messageService.approveMessage(Long.valueOf(messageId), "sidneygao");
-                redisWrapperClient.hdel(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanId));
             }
             logger.info(MessageFormat.format("[Message Event Aspect] after start raising loan pointcut finished. loanId:{0}", loanId));
         } catch (Exception e) {
