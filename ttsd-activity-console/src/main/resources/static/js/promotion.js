@@ -93,7 +93,7 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
         }
     }).trigger('change');
 
-    $('.other-link-text').on('focusout',function(e){
+    $('.jump-link-text').on('focusout',function(e){
         e.preventDefault();
         $('.linkUrl').find('option:contains("其他")').val($(this).val()).trigger('click');
     });
