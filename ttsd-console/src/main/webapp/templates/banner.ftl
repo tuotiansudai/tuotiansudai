@@ -80,7 +80,7 @@
                         <option value="${url.path}" <#if banner?? && url.path == banner.appUrl>selected</#if>>${url.description}</option>
                     </#list>
                 </select>
-                <div class="app-push-link jump-to-link">定位地址:<input type="text" class="form-control jump-link-text" name="jumpToLink" <#if banner??>value="${banner.jumpToLink}"</#if> placeholder=""  maxlength="100" datatype="*" errormsg="定位地址不能为空"></div>
+                <div class="app-push-link jump-to-link">定位地址:<input type="text" class="form-control jump-link-text" name="jumpToLink" <#if banner??>value="${banner.jumpToLink!}"</#if> placeholder=""  maxlength="100" datatype="*" errormsg="定位地址不能为空"></div>
             </div>
         </div>
 
