@@ -65,4 +65,6 @@ public interface InvestRepayMapper {
                                                                   @Param(value = "year") String year,
                                                                   @Param(value = "month") String month,
                                                                   @Param(value = "day") String day);
+
+    long findSumActualInterest();
 }

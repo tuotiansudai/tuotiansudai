@@ -135,4 +135,10 @@
             </if>
         </where>
     </select>
+
+    <select id="findUserSumInterest" resultType="long">
+      select sum(amount) from user_bill
+      where business_type in('ACTIVITY_REWARD', 'REFERRER_REWARD', 'INVEST_COUPON', 'INTEREST_COUPON', 'RED_ENVELOPE', 'LOTTERY_CASH', 'EXTRA_RATE');
+    </select>
+
 </mapper>

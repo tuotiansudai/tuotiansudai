@@ -950,4 +950,11 @@
         limit 0, 3
     </select>
 
+    <select id="findInvestAmountScale"  resultType="long">
+        select sum(amount) as sumAmount
+        from invest
+        inner join user on invest.login_name = user.login_name
+        where invest.status = 'SUCCESS'
+    </select>
+
 </mapper>

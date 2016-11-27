@@ -22,4 +22,6 @@ public interface OperationDataService {
 
     Map<String, String> findInvestAmountScaleTop3();
 
+    long findUserSumInterest();
+
 }

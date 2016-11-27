@@ -271,4 +271,6 @@ public interface InvestMapper {
 
     List<Map<String, String>> findInvestAmountScaleTop3();
 
+    long findInvestAmountScale();
+
 }
