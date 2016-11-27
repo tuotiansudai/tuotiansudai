@@ -71,6 +71,7 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
         img.onload = function () {
             if (this.width != width && width != undefined) {
                 defer.reject('图片宽度应为' + width);
+                defer.reject('图片宽度应为' + width);
                 return;
 
             }
@@ -135,16 +136,11 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
         }
 
         if(linkUrl != ''){
-            $('.jump-link-text').val('' );
+            $('.jump-link-text').val('');
         }
 
         if ($("input[name='name']").val().length >= 50) {
             showErrorMessage("名称最多50个中文字符!");
-            return false;
-        }
-
-        if ($("input[name='other-link-text']").val().length >= 100) {
-            showErrorMessage("链接最多100个中文字符!");
             return false;
         }
 
