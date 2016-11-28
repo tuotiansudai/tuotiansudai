@@ -7,6 +7,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.UserInvestListRequestDto;
 import com.tuotiansudai.api.dto.v2_0.UserInvestListResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.impl.MobileAppInvestListsServiceImpl;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -62,6 +63,9 @@ public class MobileAppInvestListsServiceTest extends ServiceTestBase{
 
     @Mock
     private LoanDetailsMapper loanDetailsMapper;
+
+    @Mock
+    private PageValidUtils pageValidUtils;
 
     private LoanModel getFakeLoanModel(String fakeUserName, long loanId){
         LoanModel loanModel = new LoanModel();
@@ -157,6 +161,8 @@ public class MobileAppInvestListsServiceTest extends ServiceTestBase{
         when(couponRepayMapper.findCouponRepayByInvestIdAndPeriod(anyLong(),anyInt())).thenReturn(new CouponRepayModel());
 
         when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(new LoanDetailsModel());
+
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
 
         UserInvestListRequestDto investListRequestDto = new UserInvestListRequestDto();
         BaseParam baseParam = new BaseParam();

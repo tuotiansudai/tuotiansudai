@@ -5,15 +5,22 @@
 <div class="global-member-ship">
     <#if mobile??>
         <div class="user-info-block page-width">
-            <span class="date-time-item">有效期至：${expiredDate?string("yyyy-MM-dd")!}</span>
+            <#if membershipType == 'GIVEN' || membershipType == "PURCHASED" >
+                <span class="date-time-item">有效期至：${expiredDate?string("yyyy-MM-dd")!}</span>
+            </#if>
             <div class="info clearfix">
                 <div class="avatar fl">
                     <img src="${staticServer}/images/sign/head_20161011.png"/>
-                    <i class="vip-no-bg vip-${membershipLevel!}"></i>
+                    <#if membershipType == 'GIVEN' || membershipType == "PURCHASED" >
+                        <i class="vip-no-bg vip-5"></i>
+                    <#else>
+                        <i class="vip-no-bg vip-${membershipLevel!}"></i>
+                    </#if>
+
                 </div>
                 <div class="text">
                     <p><span class="orange font20">您好！${mobile!}</span>
-                        <#if membershipType == 'GIVEN'>
+                        <#if membershipType == 'GIVEN' || membershipType == 'PURCHASED'>
                             <span class="font14">会员有效期还有：<strong
                                     class="font22">${(leftDays-1)?string('0')}</strong>天</span>
                         </#if>
@@ -36,6 +43,9 @@
                                 还需<strong>${membershipNextLevelValue!}</strong>成长值就能尊享<i
                                     class="vip-no-bg vip-${membershipNextLevel!}"></i>特权了哦！<i class="triangle"></i></div>
                         </#if>
+                    </#if>
+                    <#if membershipType == 'GIVEN' || membershipType == "PURCHASED" >
+                        <div class="popup popup-5">您已成为<i class="vip-no-bg vip-5"></i>会员,尊享100%会员特权！<i class="triangle"></i></div>
                     </#if>
                 </div>
             </div>

@@ -166,7 +166,7 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
                         url: '/isLogin',
                         type: 'GET'
                     })
-                        .success(function (response) {
+                        .fail(function (response) {
                                 if ("" == response.responseText) {
                                     $.ajax({
                                         url: '/booking-loan/invest?' + data,

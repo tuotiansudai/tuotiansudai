@@ -12,6 +12,7 @@ import com.tuotiansudai.activity.repository.dto.LuxuryPrizeRequestDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.PaginationUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class ActivityConsoleLuxuryPrizeService {
         }
 
         long count = userLuxuryPrizeMapper.countByPagination(mobile, startTime, endTime);
-        int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
+        int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
         index = index > totalPages ? totalPages : index;
         List<UserPrizePaginationItemDto> items = Lists.newArrayList();
         List<UserLuxuryPrizeModel> userLuxuryPrizeModels = userLuxuryPrizeMapper.findByPagination(mobile, startTime, endTime, (index-1) * pageSize, pageSize);

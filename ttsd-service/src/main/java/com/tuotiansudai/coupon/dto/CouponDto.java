@@ -26,6 +26,9 @@ public class CouponDto implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd ")
+    private Date activatedTime;
+
     private Long totalCount;
 
     private Integer deadline;
@@ -297,9 +300,18 @@ public class CouponDto implements Serializable {
         this.comment = comment;
     }
 
+    public Date getActivatedTime() {
+        return activatedTime;
+    }
+
+    public void setActivatedTime(Date activatedTime) {
+        this.activatedTime = activatedTime;
+    }
+
     public CouponDto(){
 
     }
+
 
     public CouponDto(CouponModel couponModel){
         this.id = couponModel.getId();
@@ -331,5 +343,6 @@ public class CouponDto implements Serializable {
         this.channels = couponModel.getChannels();
         this.couponSource = couponModel.getCouponSource();
         this.comment = couponModel.getComment();
+        this.activatedTime = couponModel.getActivatedTime();
     }
 }

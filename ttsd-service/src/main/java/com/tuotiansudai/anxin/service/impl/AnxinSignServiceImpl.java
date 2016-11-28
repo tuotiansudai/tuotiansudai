@@ -3,22 +3,19 @@ package com.tuotiansudai.anxin.service.impl;
 import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
-import cfca.trustsign.common.vo.response.tx3.Tx3001ResVO;
-import cfca.trustsign.common.vo.response.tx3.Tx3202ResVO;
-import cfca.trustsign.common.vo.response.tx3.Tx3ResVO;
+import cfca.trustsign.common.vo.response.tx3.*;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
-import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.cfca.constant.AnxinRetCode;
 import com.tuotiansudai.cfca.dto.AnxinContractType;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.ContractNoStatus;
 import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
 import com.tuotiansudai.job.AnxinQueryContractJob;
 import com.tuotiansudai.job.JobType;
@@ -42,6 +39,7 @@ import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileNotFoundException;
 import java.text.MessageFormat;
@@ -104,7 +102,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final int BATCH_NO_LIFT_TIME = 60 * 60 * 24 * 7; // bath_NO 在redis里保存7天
 
-    private static final int CREATE_CONTRACT_MAX_IN_DOING_TIME = 60 * 30; // 创建合同的时间在半个小时内应该可以完成，如果job出现问题，没能删除InCreating key, 半个小时后，可以再次手动创建合同
+    private static final int CREATE_CONTRACT_MAX_IN_DOING_TIME = 60 * 90; // 给创建合同预留90分钟，如果job出现问题，没能删除InCreating key, 90分钟后，可以再次手动创建合同
 
     private static final String CONTRACT_TIME_FORMAT = "yyyyMMddHHmmss";
 
@@ -141,33 +139,39 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     /**
      * 创建安心签账户
      */
+    @Transactional
     @Override
     public BaseDto createAccount3001(String loginName) {
+
+        userMapper.lockByLoginName(loginName);
 
         try {
             if (hasAnxinAccount(loginName)) {
                 logger.error(loginName + " already have anxin-sign account. can't create anymore.");
-                return failBaseDto("用户已有安心签账户，不能重复开户");
+                return new BaseDto();
             }
 
             UserModel userModel = userMapper.findByLoginName(loginName);
 
-            Tx3ResVO tx3001ResVO = anxinSignConnectService.createAccount3001(userModel);
-            String retMessage = tx3001ResVO.getHead().getRetMessage();
+            Tx3001ResVO tx3001ResVO = anxinSignConnectService.createAccount3001(userModel);
 
             if (isSuccess(tx3001ResVO)) {
                 AnxinSignPropertyModel anxinProp = new AnxinSignPropertyModel();
                 anxinProp.setLoginName(loginName);
                 Date now = new Date();
                 anxinProp.setCreatedTime(now);
-                anxinProp.setAnxinUserId(((Tx3001ResVO) tx3001ResVO).getPerson().getUserId());
+                anxinProp.setAnxinUserId(tx3001ResVO.getPerson().getUserId());
                 anxinSignPropertyMapper.create(anxinProp);
                 return new BaseDto();
             } else {
+                if (tx3001ResVO == null) {
+                    logger.error("create anxin sign account failed. result is null.");
+                    return failBaseDto("连接超时");
+                }
+                String retMessage = tx3001ResVO.getHead().getRetMessage();
                 logger.error("create anxin sign account failed. " + retMessage);
-                return new BaseDto(false);
+                return failBaseDto(retMessage);
             }
-
         } catch (PKIException e) {
             logger.error("create anxin sign account failed. ", e);
             return new BaseDto(false);
@@ -178,8 +182,12 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     /**
      * 发送验证码
      */
+    @Transactional
     @Override
     public BaseDto sendCaptcha3101(String loginName, boolean isVoice) {
+
+        userMapper.lockByLoginName(loginName);
+
         try {
             // 如果用户没有开通安心签账户，则先开通账户，再进行授权（发送验证码）
             if (!hasAnxinAccount(loginName)) {
@@ -193,14 +201,19 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
             String projectCode = UUIDGenerator.generate();
 
-            Tx3ResVO tx3101ResVO = anxinSignConnectService.sendCaptcha3101(anxinUserId, projectCode, isVoice);
+            Tx3101ResVO tx3101ResVO = anxinSignConnectService.sendCaptcha3101(anxinUserId, projectCode, isVoice);
 
             if (isSuccess(tx3101ResVO)) {
                 redisWrapperClient.setex(TEMP_PROJECT_CODE_KEY + loginName, TEMP_PROJECT_CODE_EXPIRE_TIME, projectCode);
                 return new BaseDto();
             } else {
-                logger.error("send anxin captcha code failed. " + tx3101ResVO.getHead().getRetMessage());
-                return new BaseDto(false);
+                if (tx3101ResVO == null) {
+                    logger.error("send anxin captcha code failed. result is null.");
+                    return failBaseDto("连接超时");
+                }
+                String retMessage = tx3101ResVO.getHead().getRetMessage();
+                logger.error("send anxin captcha code failed. " + retMessage);
+                return failBaseDto(retMessage);
             }
 
         } catch (PKIException e) {
@@ -213,7 +226,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      * 确认验证码 （授权）
      */
     @Override
-    public BaseDto<BaseDataDto> verifyCaptcha3102(String loginName, String captcha, boolean skipAuth, String ip) {
+    public BaseDto verifyCaptcha3102(String loginName, String captcha, boolean skipAuth, String ip) {
 
         try {
             // 如果用户没有开通安心签账户，则返回失败
@@ -233,27 +246,31 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 return failBaseDto("验证码已过期，请重新获取");
             }
 
-            Tx3ResVO tx3101ResVO = anxinSignConnectService.verifyCaptcha3102(anxinUserId, projectCode, captcha);
+            Tx3102ResVO tx3102ResVO = anxinSignConnectService.verifyCaptcha3102(anxinUserId, projectCode, captcha);
 
-            if (isSuccess(tx3101ResVO)) {
+            if (isSuccess(tx3102ResVO)) {
                 // 更新projectCode 和 skipAuth
                 anxinProp.setProjectCode(projectCode);
                 anxinProp.setSkipAuth(skipAuth);
                 anxinProp.setAuthTime(new Date());
                 anxinProp.setAuthIp(ip);
                 anxinSignPropertyMapper.update(anxinProp);
-                BaseDto baseDto = new BaseDto();
+                BaseDto<BaseDataDto> baseDto = new BaseDto<>();
                 baseDto.setData(new BaseDataDto(true, skipAuth ? "skipAuth" : ""));
                 return baseDto;
             } else {
-                String retMessage = tx3101ResVO.getHead().getRetMessage();
-                logger.error("verify anxin captcha code failed. " + retMessage);
+                if (tx3102ResVO == null) {
+                    logger.error("verify anxin captcha code failed. result is null.");
+                    return failBaseDto("连接超时");
+                }
+                String retMessage = tx3102ResVO.getHead().getRetMessage();
+                logger.info("verify anxin captcha code failed. " + retMessage);
                 return failBaseDto(retMessage);
             }
 
         } catch (PKIException e) {
             logger.error("verify anxin captcha code failed. ", e);
-            return new BaseDto<>(false);
+            return new BaseDto(false);
         }
     }
 
@@ -413,15 +430,16 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         }
         createContractVOs.clear();
 
+        redisWrapperClient.setex(TRANSFER_BATCH_NO_LIST_KEY + transferApplicationId, BATCH_NO_LIFT_TIME, batchNo);
+
         if (baseDto.isSuccess()) {
-            logger.debug("[安心签]:创建job，十分钟后，查询并更新合同状态。债权ID:" + transferApplicationId);
-            updateContractResponseHandleJob(Arrays.asList(batchNo), transferApplicationId, AnxinContractType.TRANSFER_CONTRACT);
+            logger.debug("[安心签]: 创建job，十分钟后，查询并更新合同状态。债权ID:" + transferApplicationId);
+            updateContractResponseHandleJob(Collections.singletonList(batchNo), transferApplicationId, AnxinContractType.TRANSFER_CONTRACT);
         } else {
             logger.error("[安心签]: create transfer contract error, ready send sms. transferId:" + transferApplicationId);
             smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
         }
 
-        redisWrapperClient.setex(TRANSFER_BATCH_NO_LIST_KEY + transferApplicationId, BATCH_NO_LIFT_TIME, batchNo);
         return baseDto;
     }
 
@@ -570,69 +588,5 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return waitingBatchNoList;
     }
 
-    /**
-     * 将合同编号更新为OLD或WAITING
-     *
-     * @param loanId
-     * @return
-     */
-    @Override
-    public BaseDto updateLoanInvestContractNo(long loanId) {
-
-        LoanModel loanModel = loanMapper.findById(loanId);
-        String agentLoginName = loanModel.getAgentLoginName();
-        AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(agentLoginName);
-
-        if (agentAnxinProp == null || StringUtils.isEmpty(agentAnxinProp.getProjectCode())) {
-            // update all invest contractNo to "OLD"
-            investMapper.updateAllContractNoByLoanId(loanId, ContractNoStatus.OLD.name());
-            return new BaseDto();
-        }
-
-        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
-        for (InvestModel investModel : successInvestList) {
-            String investLoginName = investModel.getLoginName();
-            AnxinSignPropertyModel investAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
-
-            if (investAnxinProp == null || StringUtils.isEmpty(investAnxinProp.getProjectCode())) {
-                // update contractNo to "OLD"
-                investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.OLD.name());
-            } else {
-                // update contractNo to "WAITING"
-                investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.WAITING.name());
-            }
-        }
-
-        return new BaseDto();
-    }
-
-    /**
-     * 将债权转让投资的合同编号更新为OLD或WAITING
-     *
-     * @param investId
-     * @return
-     */
-    @Override
-    public BaseDto updateTransferInvestContractNo(long investId) {
-
-        InvestModel investModel = investMapper.findById(investId);
-        String investLoginName = investModel.getLoginName();
-        AnxinSignPropertyModel investAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
-
-        InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
-        String tranferLoginName = transferInvestModel.getLoginName();
-        AnxinSignPropertyModel tranferAnxinProp = anxinSignPropertyMapper.findByLoginName(tranferLoginName);
-
-        if (investAnxinProp == null || StringUtils.isEmpty(investAnxinProp.getProjectCode())
-                || tranferAnxinProp == null || StringUtils.isEmpty(tranferAnxinProp.getProjectCode())) {
-            // update contractNo to "OLD"
-            investMapper.updateContractNoById(investId, ContractNoStatus.OLD.name());
-        } else {
-            // update contractNo to "WAITING"
-            investMapper.updateContractNoById(investId, ContractNoStatus.WAITING.name());
-        }
-
-        return new BaseDto();
-    }
 
 }

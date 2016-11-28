@@ -162,7 +162,7 @@ public class MQTools {
         SubscriptionMeta subscriptionMeta = new SubscriptionMeta();
         subscriptionMeta.setSubscriptionName(subscriptionName);
         subscriptionMeta.setNotifyStrategy(SubscriptionMeta.NotifyStrategy.EXPONENTIAL_DECAY_RETRY);
-        subscriptionMeta.setNotifyContentFormat(SubscriptionMeta.NotifyContentFormat.JSON);
+        subscriptionMeta.setNotifyContentFormat(SubscriptionMeta.NotifyContentFormat.SIMPLIFIED);
         subscriptionMeta.setTopicName(topic.getTopicName());
         subscriptionMeta.setEndpoint(endpoint);
         return subscriptionMeta;

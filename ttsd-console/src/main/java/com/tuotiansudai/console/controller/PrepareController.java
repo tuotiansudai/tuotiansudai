@@ -3,6 +3,7 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.dto.PrepareUserDto;
 import com.tuotiansudai.service.PrepareUserService;
+import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,8 +30,8 @@ public class PrepareController {
     public ModelAndView findPrepareUser(@RequestParam(name = "mobile", required = false) String mobile,
                                         @RequestParam(name = "beginTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginTime,
                                         @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                        @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                        @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                        @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/prepare-users");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
@@ -41,7 +42,7 @@ public class PrepareController {
         modelAndView.addObject("prepareUsers", prepareUsers);
         long prepareUserCount = prepareService.findPrepareUserCount(mobile, beginTime, endTime);
         modelAndView.addObject("prepareUserCount", prepareUserCount);
-        long totalPages = prepareUserCount / pageSize + (prepareUserCount % pageSize > 0 || prepareUserCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(prepareUserCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
