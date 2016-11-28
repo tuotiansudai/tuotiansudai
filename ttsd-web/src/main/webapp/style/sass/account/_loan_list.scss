@@ -43,30 +43,6 @@
       }
     }
   }
-  .wrapper-list {
-    li {
-      border-bottom: 1px solid #e6e6e6;
-      padding: 12px;
-
-      span {
-        padding-right: 10px;
-      }
-      a {
-        color: #000;
-        font-size: 12px;
-        padding: 7px 13px;
-
-        &:hover, &.active {
-          color: #fff;
-          background: #ffac2a;
-          border-radius: 3px;
-        }
-      }
-      &:nth-child(1) {
-        padding-top: 0;
-      }
-    }
-  }
   .loan-list-box ul {
     li {
       border-radius: 8px;
