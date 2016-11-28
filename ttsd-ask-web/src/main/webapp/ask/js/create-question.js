@@ -66,18 +66,18 @@ var utils = {
 
                 if(len<min || checkWrap.length==0 || len==0) {
                     errorMsg = '问题补充不能为空';
-                    questionValid = false;
+                    additionValid = false;
                     this.showError(element, errorMsg);
                     $wordstip.addClass('red-color');
                 }
                 else if(len>max){
                     errorMsg = '问题补充不能超过' + max + '个字符';
-                    questionValid = false;
+                    additionValid = false;
                     this.showError(element, errorMsg);
                     $wordstip.addClass('red-color');
                 } else {
                     this.hideError(element);
-                    questionValid = true;
+                    additionValid = true;
                     $wordstip.removeClass('red-color');
                 }
                 break;
@@ -352,7 +352,6 @@ if($createQuestion.length) {
         // var tag=$('.tag-list input.tag:checked',$formQuestion);
 
         $formQuestion.find('textarea').val(question);
-        debugger
 
             $.ajax({
                     url: "/question",
