@@ -1,8 +1,7 @@
 BEGIN;
 
 UPDATE `aa`.`message`
-SET `message`.`message_category` = 'SYSTEM'
-WHERE `message`.type = 'EVENT';
+SET `message`.`message_category` = 'SYSTEM';
 
 UPDATE `aa`.`message`
 SET `message`.`deleted` = '1'
