@@ -96,7 +96,7 @@ public class AuditTaskAspectBandCard {
             String editUserRealName = userService.getRealName(operatorLoginName);
             task.setObjName(editUserRealName);
             task.setCreatedTime(new Date());
-            task.setOperateURL("/user-manage/bind-card");
+            task.setOperateURL("/bank-card-manager/bind-card");
             task.setSender(StringUtils.isEmpty(loginName) ? operatorLoginName : loginName);
             task.setObjId(String.valueOf(bankCardId));
             task.setOperationType(OperationType.BAND_CARD);
