@@ -71,7 +71,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
             UserMessageDto userMessageDto = new UserMessageDto(userMessageModel);
 
             MessageModel messageModel = messageMapper.findByIdBesidesDeleted(userMessageModel.getMessageId());
-            userMessageDto.setMessageType(messageModel.getMessageCategory().getDescription());
+            userMessageDto.setMessageType(messageModel.getMessageCategory() != null ? messageModel.getMessageCategory().getDescription() : "");
             if (messageModel.getType().equals(MessageType.EVENT)) {
                 userMessageDto.setContent(userMessageModel.getAppTitle());
             } else if (messageModel.getType().equals(MessageType.MANUAL)) {
@@ -121,7 +121,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     @Override
     public BaseResponseDto readAll(BaseParamDto baseParamDto) {
         String loginName = LoginUserInfo.getLoginName();
-        userMessageServices.readAll(loginName);
+        userMessageServices.readAll(loginName, MessageChannel.APP_MESSAGE);
         return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
     }
 }

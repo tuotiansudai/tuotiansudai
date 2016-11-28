@@ -85,8 +85,8 @@ public class UserMessageServiceImpl implements UserMessageService {
     }
 
     @Override
-    public boolean readAll(String loginName) {
-        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, MessageChannel.WEBSITE, null, null);
+    public boolean readAll(String loginName, MessageChannel messageChannel) {
+        List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(loginName, messageChannel, null, null);
         for (UserMessageModel userMessageModel : userMessageModels) {
             if (!userMessageModel.isRead()) {
                 ((UserMessageService) AopContext.currentProxy()).readMessage(userMessageModel.getId());
