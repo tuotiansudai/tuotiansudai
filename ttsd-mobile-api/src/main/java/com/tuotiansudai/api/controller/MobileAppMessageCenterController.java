@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.text.MessageFormat;
 
 @Controller
@@ -29,8 +28,8 @@ public class MobileAppMessageCenterController {
         UserMessageViewDto userMessageViewDto = mobileAppUserMessageService.getUserMessageModelById(userMessageId);
         String ip = request.getLocalAddr();
         int port = request.getLocalPort();
-        if(!Strings.isNullOrEmpty(userMessageViewDto.getAppUrl())) {
-            userMessageViewDto.setAppUrl(MessageFormat.format("http://{0}:{1}{2}", ip, port, userMessageViewDto.getAppUrl()));
+        if (!Strings.isNullOrEmpty(userMessageViewDto.getAppUrl())) {
+            userMessageViewDto.setAppUrl(MessageFormat.format("http://{0}:{1}/{2}", ip, String.valueOf(port), userMessageViewDto.getAppUrl()));
         }
         BaseResponseDto<UserMessageViewDto> baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
 
