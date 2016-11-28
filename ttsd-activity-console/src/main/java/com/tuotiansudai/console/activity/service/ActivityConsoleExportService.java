@@ -212,7 +212,7 @@ public class ActivityConsoleExportService {
 
     public List<List<String>> buildNotWorkCsvList() {
         //全部导出
-        final int index = 0;
+        final int index = 1;
         final int pageSize = 1000000;
 
         List<NotWorkDto> notWorkDtos = activityConsoleNotWorkService.findNotWorkPagination(index, pageSize).getRecords();
