@@ -59,7 +59,7 @@ class messageCenter extends React.Component {
             <div ref="scrollWrap" className={main}>
                 <article>
                     <section className="meta">
-                        <h1>{this.state.data.title}</h1>
+                        <h1 dangerouslySetInnerHTML={{__html: this.state.data.title}}></h1>
                         <time className="pull-right">发送时间：{this.state.data.createdTime}</time>
                     </section>
                     <section className="content" dangerouslySetInnerHTML={{__html: this.state.data.content}}>
