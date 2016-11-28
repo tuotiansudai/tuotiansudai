@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.activity.service;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.tuotiansudai.activity.repository.dto.NotWorkDto;
 import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
@@ -48,7 +49,7 @@ public class ActivityConsoleNotWorkService {
     }};
 
     public BasePaginationDataDto<NotWorkDto> findNotWorkPagination(int index, int pageSize) {
-        insertOnlyRegisterOrIndetityData();
+        insertOnlyRegisterOrIdentityData();
 
         long count = notWorkMapper.findAllCount();
         List<NotWorkModel> notWorkModels = notWorkMapper.findPagination(PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
@@ -80,17 +81,18 @@ public class ActivityConsoleNotWorkService {
         return new BasePaginationDataDto<>(index, pageSize, count, records);
     }
 
-    private void insertOnlyRegisterOrIndetityData() {
-        List<UserModel> recommendedRegisterUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityStartTime, activityEndTime, null);
-        recommendedRegisterUsers.forEach(recommendedUser -> {
-            NotWorkModel notWorkModel = notWorkMapper.findByLoginName(recommendedUser.getLoginName());
-            if (null == notWorkModel) {
-                UserModel referrer = userMapper.findByLoginName(recommendedUser.getReferrer());
-                if (null != referrer) {
-                    notWorkModel = new NotWorkModel(referrer.getLoginName(), referrer.getUserName(), referrer.getMobile(), false);
-                    notWorkMapper.create(notWorkModel);
-                }
+    private void insertOnlyRegisterOrIdentityData() {
+        List<UserModel> recommendedRegisterUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityStartTime, activityEndTime, null).stream().filter(userModel -> !Strings.isNullOrEmpty(userModel.getReferrer())).collect(Collectors.toList());
+        Set<String> referrers = new HashSet<>();
+        for (UserModel userModel : recommendedRegisterUsers) {
+            referrers.add(userModel.getReferrer());
+        }
+        for (String loginName : referrers) {
+            UserModel userModel = userMapper.findByLoginName(loginName);
+            if (null != userModel) {
+                NotWorkModel notWorkModel = new NotWorkModel(loginName, userModel.getUserName(), userModel.getMobile(), false);
+                notWorkMapper.create(notWorkModel);
             }
-        });
+        }
     }
 }
