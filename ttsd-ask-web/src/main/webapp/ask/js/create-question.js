@@ -330,7 +330,6 @@ if($createQuestion.length) {
     });
 
     $addition.on('keyup',function() {
-        debugger
         $(this).checkFrom();
     });
 
