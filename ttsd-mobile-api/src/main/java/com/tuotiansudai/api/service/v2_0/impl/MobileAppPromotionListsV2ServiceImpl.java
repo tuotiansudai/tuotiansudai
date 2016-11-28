@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.service.v2_0.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.PromotionMapper;
 import com.tuotiansudai.activity.repository.model.PromotionModel;
@@ -9,6 +10,7 @@ import com.tuotiansudai.api.dto.v2_0.PromotionListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.PromotionRecordResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.PromotionRequestDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppPromotionListsV2Service;
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,7 +46,7 @@ public class MobileAppPromotionListsV2ServiceImpl implements MobileAppPromotionL
             for (PromotionModel promotionModel : promotionModels) {
                 PromotionRecordResponseDataDto dto = new PromotionRecordResponseDataDto();
                 dto.setImgUrl(staticServer + promotionModel.getImageUrl());
-                dto.setLinkUrl(promotionModel.getLinkUrl().equals("") ? promotionModel.getLinkUrl() : promotionModel.getLinkUrl());
+                dto.setLinkUrl(Strings.isNullOrEmpty(promotionModel.getLinkUrl())? promotionModel.getJumpToLink():promotionModel.getLinkUrl());
                 list.add(dto);
             }
         }
