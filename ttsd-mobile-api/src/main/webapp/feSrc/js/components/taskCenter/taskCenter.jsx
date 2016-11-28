@@ -1,5 +1,5 @@
 import React from 'react';
-import { main ,spinner } from './taskCenter.scss'; 
+import { main ,spinner } from './taskCenter.scss';
 import changeTitle from 'utils/changeTitle';
 import ajax from 'utils/ajax';
 import IScroll from 'iscroll/build/iscroll-probe';
