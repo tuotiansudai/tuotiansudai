@@ -48,7 +48,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
                                 }
                                 return false;
                             }
-                            
+
                         } else {
                             layer.msg(data.message);
                         }
@@ -154,7 +154,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
         event.preventDefault();
         getCode(false);
     });
-    
+
     //get phone code yuyin
     $('#microPhone').on('click', function(event) {
         event.preventDefault();
@@ -200,7 +200,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'coupon-alert', 'red-envel
         }else{
             num--;
         }
-        
+
     }
     //submit data skip phone code
     $('#getSkipBtn').on('click',  function(event) {
