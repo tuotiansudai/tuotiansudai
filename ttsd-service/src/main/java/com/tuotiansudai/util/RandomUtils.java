@@ -50,13 +50,12 @@ public class RandomUtils {
         if (showRandomLoginNameList.contains(investorLoginName) && !redisWrapperClient.exists(redisKey)) {
             redisWrapperClient.set(redisKey, investUserMobile.substring(0, 3) + MobileEncryptor.showChar(4) + generateNumString(4));
         }
-        String encryptMobile;
+        String encryptMobile = redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : investUserMobile;
         if (source.equals(Source.WEB)) {
-            encryptMobile = MobileEncryptor.encryptWebMiddleMobile(investUserMobile);
+            return MobileEncryptor.encryptWebMiddleMobile(encryptMobile);
         } else {
-            encryptMobile = MobileEncryptor.encryptAppMiddleMobile(investUserMobile);
+            return MobileEncryptor.encryptAppMiddleMobile(encryptMobile);
         }
-        return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) : encryptMobile;
     }
 
     public String encryptMobileForApp(String loginName, String encryptLoginName) {

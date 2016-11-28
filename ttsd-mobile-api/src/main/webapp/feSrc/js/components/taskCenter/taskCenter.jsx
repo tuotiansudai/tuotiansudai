@@ -1,13 +1,13 @@
-import React from "react";
-import {main, spinner} from "./taskCenter.scss";
-import changeTitle from "utils/changeTitle";
-import ajax from "utils/ajax";
-import IScroll from "iscroll/build/iscroll-probe";
-import imagesLoaded from "imagesloaded";
-import classNames from "classnames";
-import taskLineLeft from "./task_line_left.png";
-import taskLineRight from "./task_line_right.png";
-import task_banner from "./task_banner1.png";
+import React from 'react';
+import { main ,spinner } from './taskCenter.scss';
+import changeTitle from 'utils/changeTitle';
+import ajax from 'utils/ajax';
+import IScroll from 'iscroll/build/iscroll-probe';
+import imagesLoaded from 'imagesloaded';
+import classNames from 'classnames';
+import taskLineLeft from './task_line_left.png';
+import taskLineRight from './task_line_right.png';
+import task_banner from './task_banner1.png';
 
 const pageSize = 10;
 const MenuData = {

@@ -134,7 +134,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert', 'red-envelope-f
                                 getSkipPhoneTip();
                                 return false;
                             }
-                            
+
                         }
                     });
                 }
