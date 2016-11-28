@@ -25,7 +25,7 @@ public class NotWorkDto {
         this.investAmount = AmountConverter.convertCentToString(notWorkModel.getInvestAmount());
         this.recommendedRegisterAmount = "";
         this.recommendedIdentifyAmount = "";
-        this.recommendedInvestAmount = String.valueOf(notWorkModel.getRecommendedInvestAmount());
+        this.recommendedInvestAmount = String.valueOf(AmountConverter.convertCentToString(notWorkModel.getRecommendedInvestAmount()));
     }
 
     public long getId() {
