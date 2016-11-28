@@ -44,7 +44,7 @@ public class MobileAppPromotionListsV2ServiceImpl implements MobileAppPromotionL
             for (PromotionModel promotionModel : promotionModels) {
                 PromotionRecordResponseDataDto dto = new PromotionRecordResponseDataDto();
                 dto.setImgUrl(staticServer + promotionModel.getImageUrl());
-                dto.setLinkUrl(promotionModel.getLinkUrl());
+                dto.setLinkUrl(promotionModel.getLinkUrl().equals("") ? promotionModel.getLinkUrl() : promotionModel.getLinkUrl());
                 list.add(dto);
             }
         }
