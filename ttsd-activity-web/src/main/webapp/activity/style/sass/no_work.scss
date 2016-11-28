@@ -142,7 +142,7 @@ $width: 700px;
                 width:100%;
                 border:1px dashed #e53521;
                 border-radius:20px;
-                background:#fff;
+                background:#fffde5;
                 padding:10px;
                 box-sizing:border-box;
                 .user-info{
@@ -179,7 +179,7 @@ $width: 700px;
                     &.login-item{
                       width:100%;
                       text-align:center;
-                      span{
+                      span,a{
                         display:inline-block;
                         width:280px;
                         height:56px;

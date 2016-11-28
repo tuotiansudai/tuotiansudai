@@ -73,6 +73,10 @@
         </table>
     </div>
 
+    <div class="panel panel-default">
+        <a href="/activity-console/activity-manage/export-not-work">请点击此处导出EXCEl</a>
+    </div>
+
     <!-- pagination  -->
     <nav>
         <div>

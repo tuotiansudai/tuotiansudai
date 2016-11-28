@@ -15,7 +15,8 @@ public class NotWorkService {
     @Autowired
     UserMapper userMapper;
 
-    final private long[] prizeList = {300000L, 800000L, 3000000L, 5000000L, 10000000L, 20000000L, 30000000L, 52000000L,
+    //TODO:test Data
+    final private long[] prizeList = {100L, 800000L, 3000000L, 5000000L, 10000000L, 20000000L, 30000000L, 52000000L,
             80000000L, 120000000L};
 
     public long getUsersActivityInvestAmount(String loginName) {
@@ -30,13 +31,13 @@ public class NotWorkService {
     public long getUsersNeedInvestAmount(String loginName) {
         NotWorkModel notWorkModel = notWorkMapper.findByLoginName(loginName);
         if (null == notWorkModel) {
-            return 0L;
+            return prizeList[0];
         }
         for (long prize : prizeList) {
             if (prize > notWorkModel.getInvestAmount()) {
                 return prize - notWorkModel.getInvestAmount();
             }
         }
-        return 0L;
+        return 0;
     }
 }

@@ -72,6 +72,7 @@ public class RequestResponseServiceImpl implements RequestResponseService {
 
         if (AnxinRetCode.SUCCESS.equals(tx3001ResVO.getHead().getRetCode())) {
             responseModel.setTxTime(tx3001ResVO.getHead().getTxTime());
+            responseModel.setUserId(tx3001ResVO.getPerson().getUserId());
             responseModel.setPersonName(tx3001ResVO.getPerson().getPersonName());
             responseModel.setIdentTypeCode(tx3001ResVO.getPerson().getIdentTypeCode());
             responseModel.setIdentNo(tx3001ResVO.getPerson().getIdentNo());

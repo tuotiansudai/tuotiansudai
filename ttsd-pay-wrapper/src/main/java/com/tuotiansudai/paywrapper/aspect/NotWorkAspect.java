@@ -48,7 +48,8 @@ public class NotWorkAspect {
 
     final static private long PRIZE_COUPON_ID = 322L;
 
-    final static private long PRIZE_COUPON_INVEST_LIMIT = 300000L;
+    //TODO: test Data
+    final static private long PRIZE_COUPON_INVEST_LIMIT = 100L;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.notWork.startTime}\")}")
     private Date activityStartTime;
@@ -127,20 +128,26 @@ public class NotWorkAspect {
             @Override
             public NotWorkModel createAction(NotWorkModel notWorkModel) {
                 notWorkModel.setInvestAmount(investAmount);
+                logger.debug("not work ready to send coupon");
                 if (investAmount >= PRIZE_COUPON_INVEST_LIMIT) {
                     couponAssignmentService.assign(loginName, PRIZE_COUPON_ID, null);
                     notWorkModel.setSendCoupon(true);
+                    logger.debug("not work send coupon");
                 }
+                logger.debug("not work send coupon finish");
                 return notWorkModel;
             }
 
             @Override
             public NotWorkModel updateAction(NotWorkModel notWorkModel) {
                 notWorkModel.setInvestAmount(notWorkModel.getInvestAmount() + investAmount);
+                logger.debug("not work ready to send coupon");
                 if (!notWorkModel.isSendCoupon() && notWorkModel.getInvestAmount() >= PRIZE_COUPON_INVEST_LIMIT) {
                     couponAssignmentService.assign(loginName, PRIZE_COUPON_ID, null);
                     notWorkModel.setSendCoupon(true);
+                    logger.debug("not work send coupon");
                 }
+                logger.debug("not work send coupon finish");
                 return notWorkModel;
             }
         });

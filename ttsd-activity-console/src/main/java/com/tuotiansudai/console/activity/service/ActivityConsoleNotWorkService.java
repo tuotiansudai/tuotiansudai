@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.activity.service;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.tuotiansudai.activity.repository.dto.NotWorkDto;
 import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
@@ -12,10 +13,12 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class ActivityConsoleNotWorkService {
     @Autowired
     NotWorkMapper notWorkMapper;
@@ -33,7 +36,8 @@ public class ActivityConsoleNotWorkService {
     private Date activityEndTime;
 
     final private Map<Long, String> rewardMap = new HashMap<Long, String>() {{
-        put(300000L, "20元红包");
+        //TODO:test data
+        put(100L, "20元红包");
         put(800000L, "30元话费");
         put(3000000L, "京东E卡");
         put(5000000L, "300元旅游基金(芒果卡)");
@@ -46,6 +50,8 @@ public class ActivityConsoleNotWorkService {
     }};
 
     public BasePaginationDataDto<NotWorkDto> findNotWorkPagination(int index, int pageSize) {
+        insertOnlyRegisterOrIdentityData();
+
         long count = notWorkMapper.findAllCount();
         List<NotWorkModel> notWorkModels = notWorkMapper.findPagination(PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
         List<NotWorkDto> records = notWorkModels.stream().map(notWorkModel -> {
@@ -74,5 +80,24 @@ public class ActivityConsoleNotWorkService {
             return notWorkDto;
         }).collect(Collectors.toList());
         return new BasePaginationDataDto<>(index, pageSize, count, records);
+    }
+
+    private void insertOnlyRegisterOrIdentityData() {
+        List<UserModel> recommendedRegisterUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityStartTime, activityEndTime, null).stream().filter(userModel -> !Strings.isNullOrEmpty(userModel.getReferrer())).collect(Collectors.toList());
+        Set<String> referrers = new HashSet<>();
+        for (UserModel userModel : recommendedRegisterUsers) {
+            referrers.add(userModel.getReferrer());
+        }
+        for (String loginName : referrers) {
+            NotWorkModel existedNotWorkModel = notWorkMapper.findByLoginName(loginName);
+            if(null != existedNotWorkModel) {
+                continue;
+            }
+            UserModel userModel = userMapper.findByLoginName(loginName);
+            if (null != userModel) {
+                NotWorkModel notWorkModel = new NotWorkModel(loginName, userModel.getUserName(), userModel.getMobile(), false);
+                notWorkMapper.create(notWorkModel);
+            }
+        }
     }
 }
