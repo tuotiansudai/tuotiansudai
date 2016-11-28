@@ -7,10 +7,7 @@ import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
-import com.tuotiansudai.message.repository.model.MessageChannel;
-import com.tuotiansudai.message.repository.model.MessageModel;
-import com.tuotiansudai.message.repository.model.MessageType;
-import com.tuotiansudai.message.repository.model.UserMessageModel;
+import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.message.service.UserMessageService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -72,6 +69,9 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
             MessageModel messageModel = messageMapper.findByIdBesidesDeleted(userMessageModel.getMessageId());
             userMessageDto.setMessageType(messageModel.getMessageCategory() != null ? messageModel.getMessageCategory().getDescription() : "");
+            if(messageModel.getMessageCategory().equals(MessageCategory.NOTIFY)) {
+                userMessageDto.setContent(messageModel.getTemplateTxt());
+            }
             if (messageModel.getType().equals(MessageType.EVENT)) {
                 userMessageDto.setContent(userMessageModel.getAppTitle());
             } else if (messageModel.getType().equals(MessageType.MANUAL)) {
