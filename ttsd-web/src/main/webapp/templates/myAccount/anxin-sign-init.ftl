@@ -50,7 +50,7 @@
             </span>
             <span>
                 <input type="button" class="get-skip-code" value="获取短信验证码" id="getSkipCode">
-                <i class="microphone" id="microPhone"></i>
+                <input type="button" class="microphone" id="microPhone" >
             </span>
             <div class="error" style="display: none">验证码不正确</div>
             <div class="button-bar"><button class="btn-normal one" id="toOpenSMS">立即开通</button></div>

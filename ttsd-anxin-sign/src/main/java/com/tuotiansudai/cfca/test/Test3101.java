@@ -1,19 +1,17 @@
 package com.tuotiansudai.cfca.test;
 
-import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.HeadVO;
 import cfca.trustsign.common.vo.cs.ProxySignVO;
 import cfca.trustsign.common.vo.request.tx3.Tx3101ReqVO;
-import com.tuotiansudai.cfca.connector.HttpConnector;
-import com.tuotiansudai.cfca.constant.Request;
+import com.tuotiansudai.cfca.connector.AnxinClientTest;
+import com.tuotiansudai.cfca.constant.TxCode;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
-import com.tuotiansudai.cfca.util.SecurityUtil;
 import org.joda.time.DateTime;
 
 public class Test3101 {
-    public static void main(String[] args) throws PKIException {
-        HttpConnector httpConnector = new HttpConnector();
-        httpConnector.init();
+    public static void main(String[] args) throws Exception {
+        AnxinClientTest anxinClient = new AnxinClientTest();
+        anxinClient.initSSL();
 
         Tx3101ReqVO tx3101ReqVO = new Tx3101ReqVO();
         HeadVO head = new HeadVO();
@@ -30,9 +28,7 @@ public class Test3101 {
         String req = jsonObjectMapper.writeValueAsString(tx3101ReqVO);
         System.out.println("req:" + req);
 
-        String txCode = "3101";
-        String signature = SecurityUtil.p7SignMessageDetach(HttpConnector.JKS_PATH, HttpConnector.JKS_PWD, HttpConnector.ALIAS, req);
-        String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
+        String res = anxinClient.send(TxCode.SEND_CAPTCHA, req);
         System.out.println("res:" + res);
     }
 }

@@ -1,7 +1,6 @@
 package com.tuotiansudai.client;
 
 import com.tuotiansudai.mq.client.MQClient;
-import com.tuotiansudai.mq.client.model.Message;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.mq.client.model.Queue;
@@ -26,7 +25,7 @@ public class MQWrapperClient {
         runAfterCommit(() -> mqClient.sendMessage(queue, message));
     }
 
-    public void subscribe(final Queue queue, Consumer<Message> consumer) {
+    public void subscribe(final Queue queue, Consumer<String> consumer) {
         mqClient.subscribe(queue, consumer);
     }
 
