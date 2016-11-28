@@ -38,8 +38,8 @@ public class InvestCallbackMessageConsumer implements MessageConsumer {
             if (investResult.getData().getStatus()) {
 //                logger.info("[MQ] invest callback success, begin publish message.");
 //                mqClient.publishMessage(MessageTopic.InvestSuccess, "");
-                logger.info("[MQ] consumer message success.");
             }
+            logger.info("[MQ] consumer message success.");
         }
     }
 }
