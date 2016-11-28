@@ -1,0 +1,1 @@
+.pagination{margin:10px 0;text-align:center;padding:15px 20px;font-size:12px;color:#999}.pagination .next,.pagination .prev{margin-left:10px;border-radius:4px;padding:4px;color:#ddd;border:1px solid #ddd}.pagination .next.active,.pagination .prev.active{cursor:pointer;color:#ffac2a}.pagination .next.active:hover,.pagination .prev.active:hover{border:1px solid #ffac2a}

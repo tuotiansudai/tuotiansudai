@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <div class="activity-section">
+        <div class="activity-section-one">
             <div class="christmas-border clearfix">
                 <div class="title-christmas">活动一：为圣诞老人铺路</div>
                 <div class="model-content clearfix">
@@ -72,17 +72,19 @@
                         </div>
                 </div>
             </div>
+        </div>
 
-            <#--活动二未开始-->
+        <div class="activity-section-two">
+        <#--活动二未开始-->
             <div class="christmas-border clearfix">
                 <div class="title-christmas">活动二：圣诞拆礼物</div>
                 <div class="model-content clearfix">
-                        <div class="tc color-sec ">
-                            专享标总投资额达到420万，将开启活动二 —— 圣诞拆礼物。快去投资吧！
-                        </div>
-                        <div class="tc margin-top25">
-                            <a href="/loan-list" class="normal-button-day">马上投资圣诞专享标</a>
-                        </div>
+                    <div class="tc color-sec ">
+                        专享标总投资额达到420万，将开启活动二 —— 圣诞拆礼物。快去投资吧！
+                    </div>
+                    <div class="tc margin-top25">
+                        <a href="/loan-list" class="normal-button-day">马上投资圣诞专享标</a>
+                    </div>
 
                     <div class="tc" >
                         <img src="${staticServer}/activity/images/christmas-day/gift.jpg" class="img-gift">
@@ -91,8 +93,8 @@
                 </div>
             </div>
 
-            <#--活动已经开始-->
-            <div class="christmas-border clearfix">
+        <#--活动已经开始-->
+            <div class="christmas-border clearfix activity-second">
                 <div class="title-christmas">活动二：圣诞拆礼物</div>
                 <div class="model-content clearfix">
                     <div class="color-sec ">
@@ -125,32 +127,11 @@
                             用户所获红包金额=活动期间投资专享标金额*20000/3000000。加息券每人限领1张，有效期3天；
                         </span>
                     </div>
-                    <div class="clearfix"></div>
-                    <dl class="invest-percent-box clearfix">
-                        <dt>目前专享标共投资：<em class="total-invest">1,500,000</em>元</dt>
-                        <dd class="progress-bar">
-                            <i class="progress-end" style="left: calc( 80% - 57px);"></i>
-                            <span class="progress-percent" style="width: 80%"></span>
-                        </dd>
-                        <dd class="count-total">
-                            <span class="fl">已有<em>123</em>人参与</span>
-                            <span class="fr">总额度：<em>4,200,000元</em></span>
-                        </dd>
 
-                    </dl>
-                    <div class="tc">
-                        <a href="/loan-list" class="normal-button-day">马上投资圣诞专享标</a>
-                    </div>
-                    <div class="gift-box clearfix last">
-                        <span>
-                            活动说明：<br/>
-1、用户投资专享标所获红包将于活动结束后三个工作日内，以红包形式发放，用户可在“我的宝藏”中查看，该红包适用于180天及以上标的，投资50元即可激活；<br/>
-2、为了保证获奖结果的公平性，获奖用户在活动期间所进行的圣诞专享标投标不允许进行债权转让。<br/>
-                        </span>
-                    </div>
+
                 </div>
             </div>
-        </div>
+         </div>
 
         <div class="christmas-border activity-info">
             <div class="model-content">
