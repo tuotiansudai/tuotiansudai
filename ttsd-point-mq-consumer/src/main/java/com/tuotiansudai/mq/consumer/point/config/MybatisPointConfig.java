@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -36,7 +37,8 @@ public class MybatisPointConfig {
         return config;
     }
 
-    @Bean
+    @Primary
+    @Bean(name = "hikariCPPointDataSource")
     public DataSource hikariCPPointDataSource(@Autowired @Qualifier("hikariCPPointConfig") HikariConfig hikariConfig) {
         return new HikariDataSource(hikariConfig);
     }
@@ -54,7 +56,8 @@ public class MybatisPointConfig {
         return new DataSourceTransactionManager(hikariCPPointDataSource);
     }
 
-    @Bean
+    @Primary
+    @Bean(name = "pointSqlSessionFactory")
     public SqlSessionFactory pointSqlSessionFactory(@Qualifier("hikariCPPointDataSource") DataSource hikariCPPointDataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(hikariCPPointDataSource);

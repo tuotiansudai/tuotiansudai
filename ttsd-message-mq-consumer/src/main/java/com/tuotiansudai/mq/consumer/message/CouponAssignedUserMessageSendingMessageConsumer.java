@@ -30,9 +30,9 @@ public class CouponAssignedUserMessageSendingMessageConsumer implements MessageC
             String[] msgParts = message.split(":");
             if (msgParts.length == 2) {
                 long userCouponId = Long.parseLong(msgParts[1]);
-                logger.info("[MQ] ready to consumer message: send user message on assigning coupon.");
+                logger.info("[MQ] ready to consume message: send user message on assigning coupon.");
                 userMessageEventGenerator.generateAssignCouponSuccessEvent(userCouponId);
-                logger.info("[MQ] consumer message success.");
+                logger.info("[MQ] consume message success.");
             }
         }
     }

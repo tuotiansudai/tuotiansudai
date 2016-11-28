@@ -34,11 +34,11 @@ public class CouponAssigningMessageConsumer implements MessageConsumer {
         if (!StringUtils.isEmpty(message)) {
             String[] msgParts = message.split(":");
             if (msgParts.length == 2) {
-                logger.info("[MQ] ready to consumer message: assigning coupon.");
+                logger.info("[MQ] ready to consume message: assigning coupon.");
                 UserCouponModel userCoupon = couponAssignmentService.assign(msgParts[0], Long.parseLong(msgParts[1]), null);
-                logger.info("[MQ] assigning coupon success, begin publish message.");
+                logger.info("[MQ] assigning coupon success, begin send message.");
                 mqClient.sendMessage(MessageQueue.CouponAssigned_UserMessageSending, "UserCoupon:" + userCoupon.getId());
-                logger.info("[MQ] consumer message success.");
+                logger.info("[MQ] consume message success.");
             }
         }
     }

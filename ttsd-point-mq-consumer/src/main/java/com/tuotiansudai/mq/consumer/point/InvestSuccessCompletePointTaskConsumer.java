@@ -38,7 +38,7 @@ public class InvestSuccessCompletePointTaskConsumer implements MessageConsumer {
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: '{}'.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
-            logger.info("[MQ] ready to consumer message: complete invest task.");
+            logger.info("[MQ] ready to consume message: complete invest task.");
             long investId = Long.parseLong(message);
             InvestModel investModel = investMapper.findById(investId);
             if (investModel != null && investModel.getStatus() == InvestStatus.SUCCESS) {
@@ -51,7 +51,7 @@ public class InvestSuccessCompletePointTaskConsumer implements MessageConsumer {
                 pointTaskService.completeAdvancedTask(PointTask.FIRST_INVEST_360, loginName);
                 pointService.obtainPointInvest(investModel);
             }
-            logger.info("[MQ] consumer message success.");
+            logger.info("[MQ] consume message success.");
         }
     }
 }

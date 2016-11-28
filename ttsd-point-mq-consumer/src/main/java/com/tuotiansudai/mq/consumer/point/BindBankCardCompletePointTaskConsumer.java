@@ -28,9 +28,9 @@ public class BindBankCardCompletePointTaskConsumer implements MessageConsumer {
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: '{}'.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
-            logger.info("[MQ] ready to consumer message: complete bind-bank-card task.");
+            logger.info("[MQ] ready to consume message: complete bind-bank-card task.");
             pointTaskService.completeNewbieTask(PointTask.BIND_BANK_CARD, message);
-            logger.info("[MQ] consumer message success.");
+            logger.info("[MQ] consume message success.");
         }
     }
 }

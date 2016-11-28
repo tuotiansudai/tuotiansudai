@@ -36,7 +36,7 @@ public class MybatisAAConfig {
         return config;
     }
 
-    @Bean
+    @Bean(name = "hikariCPAADataSource")
     public DataSource hikariCPAADataSource(@Autowired @Qualifier("hikariCPAAConfig") HikariConfig hikariConfig) {
         return new HikariDataSource(hikariConfig);
     }
@@ -52,12 +52,7 @@ public class MybatisAAConfig {
         return configurer;
     }
 
-    @Bean
-    public DataSourceTransactionManager aaTransactionManager(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) {
-        return new DataSourceTransactionManager(hikariCPAADataSource);
-    }
-
-    @Bean
+    @Bean(name = "aaSqlSessionFactory")
     public SqlSessionFactory aaSqlSessionFactory(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(hikariCPAADataSource);

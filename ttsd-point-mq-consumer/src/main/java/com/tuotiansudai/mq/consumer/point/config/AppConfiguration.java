@@ -1,5 +1,9 @@
 package com.tuotiansudai.mq.consumer.point.config;
 
+import com.tuotiansudai.coupon.service.impl.CouponActivationServiceImpl;
+import com.tuotiansudai.point.job.ImitateLotteryJob;
+import com.tuotiansudai.point.service.PointLotteryService;
+import com.tuotiansudai.point.service.impl.PointLotteryServiceImpl;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import redis.clients.jedis.JedisPoolConfig;
@@ -8,7 +12,18 @@ import redis.clients.jedis.JedisPoolConfig;
 @ComponentScan(basePackages = {
         "com.tuotiansudai.repository",
         "com.tuotiansudai.cache",
-        "com.tuotiansudai.client"
+        "com.tuotiansudai.client",
+        "com.tuotiansudai.coupon",
+        "com.tuotiansudai.membership",
+        "com.tuotiansudai.point"
+}, excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {
+                PointLotteryService.class,
+                ImitateLotteryJob.class,
+                PointLotteryServiceImpl.class,
+                CouponActivationServiceImpl.class,
+
+        })
 })
 @PropertySource(
         ignoreResourceNotFound = true, value = {

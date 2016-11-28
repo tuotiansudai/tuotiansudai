@@ -28,9 +28,9 @@ public class AccountRegisteredCompletePointTaskConsumer implements MessageConsum
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: '{}'.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
-            logger.info("[MQ] ready to consumer message: complete account-registered task.");
+            logger.info("[MQ] ready to consume message: complete account-registered task.");
             pointTaskService.completeNewbieTask(PointTask.REGISTER, message);
-            logger.info("[MQ] consumer message success.");
+            logger.info("[MQ] consume message success.");
         }
     }
 }

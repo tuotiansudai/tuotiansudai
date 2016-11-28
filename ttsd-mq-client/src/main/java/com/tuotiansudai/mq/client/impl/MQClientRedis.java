@@ -6,14 +6,13 @@ import com.tuotiansudai.mq.client.model.MessageTopic;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import redis.clients.jedis.Jedis;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-public class MQClientRedis implements MQClient, InitializingBean {
+public class MQClientRedis implements MQClient {
 
     @Value("${common.redis.host}")
     private String redisHost;
@@ -45,6 +44,7 @@ public class MQClientRedis implements MQClient, InitializingBean {
     @Override
     public void subscribe(final MessageQueue queue, final Consumer<String> consumer) {
         logger.info("[MQ] subscribe queue: {}", queue.getQueueName());
+        Jedis jedis = initJedis();
         while (true) {
             List<String> messages = jedis.brpop(0, generateRedisKeyOfQueue(queue));
             logger.debug("[MQ] receive a message, prepare to consume");
@@ -56,6 +56,7 @@ public class MQClientRedis implements MQClient, InitializingBean {
                     jedis.rpush(generateRedisKeyOfQueue(queue), messages.get(1));
                     Thread.sleep(30 * 1000);
                 } catch (InterruptedException ignored) {
+                    System.out.printf("xxx");
                 }
             }
             logger.info("[MQ] consume message success");
@@ -66,18 +67,13 @@ public class MQClientRedis implements MQClient, InitializingBean {
         return String.format("MQ:LOCAL:%s", queue.getQueueName());
     }
 
-    private void initJedis() {
+    private Jedis initJedis() {
         Jedis jedis = new Jedis(this.redisHost, this.redisPort);
         if (StringUtils.isNotBlank(redisPassword)) {
             jedis.auth(redisPassword);
         }
         jedis.connect();
         jedis.select(redisDB);
-        this.jedis = jedis;
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        initJedis();
+        return jedis;
     }
 }
