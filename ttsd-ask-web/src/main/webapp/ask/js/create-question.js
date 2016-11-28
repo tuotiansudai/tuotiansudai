@@ -1,6 +1,5 @@
 /* create question */
-var _ = require('underscore');
-var comm = require("./commonFun");
+var comm = require('./commonFun');
 var $createQuestion=$('#createQuestion');
 var $questionDetailTag=$('#questionDetailTag');
 
@@ -19,10 +18,17 @@ var utils = {
     hideError:function(element,value) {
         element.parent().find('.error').hide();
     },
-    validLen:function(element,num) {
-        var len=element.val().split('').length;
-        var name=element[0].name,
-            value=$.trim(element.val());
+    validLen:function(element,min,max) {
+        var min=min || false,
+            max=max || false;
+        var value=$.trim(element.val()),
+            tempDes=value.replace(/\n/g,'\\n')
+                .replace(/\r/g,'\\r');
+        var checkWrap=value.replace(/\n/g,'')
+                        .replace(/\r/g,'');
+
+        var len=tempDes.split('').length;
+        var name=element[0].name;
         var $wordstip=element.parent().find('.words-tip');
         var $formSubmit=element.parents('form').find('.formSubmit');
         var errorMsg='';
@@ -34,39 +40,45 @@ var utils = {
                     .find('em')
                     .text(len);
 
-                if (len > num) {
-                    errorMsg = '您的问题不能超过' + num + '个字符';
-                }
-
-                if(len<=num && len>0) {
-                    this.hideError(element);
-                    questionValid = true;
-                    $wordstip.removeClass('red-color');
-                }
-                else {
+                if(len<min || checkWrap.length==0 || len==0) {
+                    errorMsg = '您的问题不能为空';
                     questionValid = false;
                     this.showError(element, errorMsg);
                     $wordstip.addClass('red-color');
                 }
+                else if(len>max){
+                    errorMsg = '您的问题不能超过' + max + '个字符';
+                    questionValid = false;
+                    this.showError(element, errorMsg);
+                    $wordstip.addClass('red-color');
+                } else {
+                    this.hideError(element);
+                    questionValid = true;
+                    $wordstip.removeClass('red-color');
+                }
+
                 break;
 
             case 'addition':
                 $wordstip.removeClass('error')
                     .find('em')
                     .text(len);
-                if (len > num) {
-                    errorMsg = '问题补充' + num + '个字符';
-                    //$wordstip.addClass('error');
-                }
-                if(len<=num && len>=0) {
-                    this.hideError(element);
-                    additionValid=true;
-                    $wordstip.removeClass('red-color');
-                }
-                else {
-                    additionValid = false;
+
+                if(len<min || checkWrap.length==0 || len==0) {
+                    errorMsg = '问题补充不能为空';
+                    questionValid = false;
                     this.showError(element, errorMsg);
                     $wordstip.addClass('red-color');
+                }
+                else if(len>max){
+                    errorMsg = '问题补充不能超过' + max + '个字符';
+                    questionValid = false;
+                    this.showError(element, errorMsg);
+                    $wordstip.addClass('red-color');
+                } else {
+                    this.hideError(element);
+                    questionValid = true;
+                    $wordstip.removeClass('red-color');
                 }
                 break;
             case 'captcha':
@@ -81,16 +93,21 @@ var utils = {
                 }
                 break;
             case 'answer':
-                errorMsg='回答不得少于10个字';
-                if(/^(\S){0,10}$/.test(value)){
-                    answerValid=false;
+
+
+                if(len<min || checkWrap.length==0 || len==0) {
+                    errorMsg = '回答不得少于10个字';
+                    answerValid = false;
                     this.showError(element, errorMsg);
                 }
-                else {
-                    answerValid=true;
+                else if(len>max){
+                    errorMsg = '回答不能超过' + max + '个字符';
+                    answerValid = false;
+                    this.showError(element, errorMsg);
+                } else {
                     this.hideError(element);
+                    answerValid = true;
                 }
-
                 break;
             default:
                 break;
@@ -145,25 +162,24 @@ $.fn.checkFrom = function () {
             value=$ele.val();
         switch(name) {
             case 'question':
-                return utils.validLen($ele,30);
+                utils.validLen($ele, 1,100);
                 break;
             case 'addition':
-                return utils.validLen($ele,10000);
+                utils.validLen($ele, 1,500);
                 break;
             case 'captcha':
-                return utils.validLen($ele,5);
+                utils.validLen($ele,5,5);
                 break;
             case 'answer':
-                return utils.validLen($ele,5);
+                utils.validLen($ele, 10,1000);
                 break;
             default:
-                return utils.radioChecked($ele)
+                utils.radioChecked($ele)
                 break;
         }
 
     });
 };
-
 $.fn.autoTextarea = function(options) {
     var defaults={
         maxHeight:null,
@@ -187,7 +203,6 @@ $.fn.autoTextarea = function(options) {
         });
     });
 };
-
 
 //我来回答
 if($questionDetailTag.length) {
@@ -217,8 +232,7 @@ if($questionDetailTag.length) {
         var value=$formAnswer.find('textarea').val();
         event.preventDefault();
         var temp=value.replace(/\n/g,'\\n')
-            .replace(/\r/g,'\\r')
-            .replace(/\s/g,'&nbsp;');
+            .replace(/\r/g,'\\r');
         $formAnswer.find('textarea').val(temp);
             $.ajax({
                 url: "/answer",
@@ -250,7 +264,7 @@ if($questionDetailTag.length) {
                     }
             })
                 .fail(function(data) {
-                    comm.popWindow('','您输入的内容不能包含特殊符号',{ width:'300px'});
+                    comm.popWindow('','接口调用失败',{ width:'300px'});
                 })
                 .complete(function() {
                     $formAnswerSubmit.prop('disabled',false);
@@ -331,12 +345,15 @@ if($createQuestion.length) {
         var value=$formQuestion.find('textarea').val();
         event.preventDefault();
 
-        //var temp=value.replace(/\r\n/g,'\\r\\n');
-        var temp=value.replace(/\n/g,'\\n')
-                      .replace(/\r/g,'\\r')
-                      .replace(/\s/g,'&nbsp;');
+        var question=value.replace(/\n/g,'\\n')
+                      .replace(/\r/g,'\\r');
 
-        $formQuestion.find('textarea').val(temp);
+        // var question=$('.question',$formQuestion).val();
+        // var tag=$('.tag-list input.tag:checked',$formQuestion);
+
+        $formQuestion.find('textarea').val(question);
+        debugger
+
             $.ajax({
                     url: "/question",
                     data: $formQuestion.serialize(),
@@ -371,7 +388,7 @@ if($createQuestion.length) {
                     }
                 })
                 .fail(function(data) {
-                        comm.popWindow('','您输入的内容不能包含特殊符号',{ width:'300px'});
+                        comm.popWindow('','接口调用失败',{ width:'300px'});
                 })
                 .complete(function(data) {
                    $formSubmit.prop('disabled',false);

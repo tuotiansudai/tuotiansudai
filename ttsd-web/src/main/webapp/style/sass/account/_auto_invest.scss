@@ -1,4 +1,3 @@
-@import '../common/variables';
 //auto invest
 .auto-invest, .auto-repay {
   .CertifiedImg {
@@ -12,12 +11,12 @@
     height: 170px;
   }
   .panel {
-    color: nth($baseColor, 6);
+    color: #ff6b2a;
     padding-left: 40px;
   }
   p.notice {
     b {
-      font-size: nth($fontSize, 4);
+      font-size: 16px;
     }
   }
   .btnBox {
@@ -25,7 +24,7 @@
     margin-bottom: 20px;
   }
   .planSwitch {
-    color: nth($baseColor, 3);
+    color: #353535;
 
     form {
       margin-left: 28px;
@@ -36,7 +35,7 @@
       clear: both;
 
       dt {
-        color: nth($baseColor, 4);
+        color: #979797;
         display: inline-block;
         float: left;
         width: 80px;
@@ -51,7 +50,7 @@
         }
         span {
           display: inline-block;
-          color: nth($baseColor, 4);
+          color: #979797;
           width: 60px;
           text-align: center;
           margin-right: 10px;
@@ -70,8 +69,8 @@
             display: none;
           }
           &.active {
-            border: 1px solid nth($btnColor, 5);
-            color: nth($btnColor, 5);
+            border: 1px solid #ff7a2a;
+            color: #ff7a2a;
 
             & .badge {
               display: inline-block;
@@ -82,7 +81,7 @@
     }
     & .agreeStatus {
       margin-bottom: 20px;
-      color: nth($baseColor, 4);
+      color: #979797;
 
       label {
         vertical-align: middle;
@@ -94,7 +93,7 @@
   }
   .planSet {
     i {
-      color: nth($btnColor, 5);
+      color: #ff7a2a;
     }
   }
 }

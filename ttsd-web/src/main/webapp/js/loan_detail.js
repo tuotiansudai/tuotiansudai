@@ -548,7 +548,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     }
     //投资表单请求以及校验
     function investSubmit(){
-        
+
         if ($investForm.attr('action') === '/invest') {
             if (!isInvestor) {
                 location.href = '/login?redirect=' + encodeURIComponent(location.href);
@@ -892,7 +892,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         event.preventDefault();
         getCode(false);
     });
-    
+
     //获取语音验证码
     $('#microPhone').on('click', function(event) {
         event.preventDefault();
