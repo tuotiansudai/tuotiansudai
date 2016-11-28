@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserMessageService;
 import com.tuotiansudai.api.util.PageValidUtils;
@@ -72,10 +73,12 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
             if (messageModel.getType().equals(MessageType.EVENT)) {
                 userMessageDto.setContent(userMessageModel.getAppTitle());
             } else if (messageModel.getType().equals(MessageType.MANUAL)) {
+                if(Strings.isNullOrEmpty(messageModel.getTemplateTxt())) {
+                    userMessageDto.setContent(messageModel.getTemplate());
+                } else {
+                    userMessageDto.setContent(messageModel.getTemplateTxt());
+                }
                 userMessageDto.setContent(userMessageModel.getContent());
-            }
-            if(messageModel.getMessageCategory().equals(MessageCategory.NOTIFY)) {
-                userMessageDto.setContent(messageModel.getTemplateTxt());
             }
 
             return userMessageDto;
