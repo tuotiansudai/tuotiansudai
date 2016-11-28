@@ -189,7 +189,7 @@ public class OperationDataServiceImpl implements OperationDataService {
             String amount = "0";
             for (Map.Entry<String, String> latestSixMonthTradeAmount : map.entrySet()) {
                 if ("currentMonth".equals(latestSixMonthTradeAmount.getKey())) {
-                    month = latestSixMonthTradeAmount.getValue().substring(latestSixMonthTradeAmount.getValue().indexOf("-") + 1).replace("0","");
+                    month = latestSixMonthTradeAmount.getValue().substring(latestSixMonthTradeAmount.getValue().indexOf("-") + 1).replace("0","") + "月";
                 } else if ("sumAmount".equals(latestSixMonthTradeAmount.getKey())) {
                     amount = (String.valueOf(latestSixMonthTradeAmount.getValue()));
                 }
