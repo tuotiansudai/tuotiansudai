@@ -67,8 +67,8 @@ class messageCenter extends React.Component {
                     </section>
                     <section className="content" dangerouslySetInnerHTML={{__html: this.state.data.content}}>
                     </section>
-                    {btn}
                 </article>
+                {btn}
             </div>
         );
     }
