@@ -87,8 +87,10 @@ public class ActivityConsoleNotWorkService {
             NotWorkModel notWorkModel = notWorkMapper.findByLoginName(recommendedUser.getLoginName());
             if(null == notWorkModel) {
                 UserModel referrer = userMapper.findByLoginName(recommendedUser.getReferrer());
-                notWorkModel = new NotWorkModel(referrer.getLoginName(), referrer.getUserName(), referrer.getMobile(), false);
-                notWorkMapper.create(notWorkModel);
+                if(null != referrer) {
+                    notWorkModel = new NotWorkModel(referrer.getLoginName(), referrer.getUserName(), referrer.getMobile(), false);
+                    notWorkMapper.create(notWorkModel);
+                }
             }
         });
     }

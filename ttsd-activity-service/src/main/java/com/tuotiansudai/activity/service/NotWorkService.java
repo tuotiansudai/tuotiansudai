@@ -38,6 +38,6 @@ public class NotWorkService {
                 return prize - notWorkModel.getInvestAmount();
             }
         }
-        return prizeList[0];
+        return 0;
     }
 }
