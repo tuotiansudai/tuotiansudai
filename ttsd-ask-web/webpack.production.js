@@ -20,13 +20,6 @@ module.exports = {
 	},
 	module:{
 		loaders:[
-			{
-                test: /\.(js|jsx)$/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['es2015']
-                }
-            },
             {
 				test: /\.css$/,
 				loader: ExtractTextPlugin.extract("style-loader", "css-loader")
