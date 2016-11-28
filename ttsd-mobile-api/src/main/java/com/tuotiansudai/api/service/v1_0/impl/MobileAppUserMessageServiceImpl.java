@@ -78,7 +78,6 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
                 } else {
                     userMessageDto.setContent(messageModel.getTemplateTxt());
                 }
-                userMessageDto.setContent(userMessageModel.getContent());
             }
 
             return userMessageDto;
