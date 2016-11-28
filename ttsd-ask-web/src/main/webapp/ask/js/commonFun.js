@@ -1,8 +1,7 @@
-var _ = require('underscore');
 var comm = {};
 comm.pathNameKey = function (key) {
     var parm = location.search.split('?')[1], parmObj;
-    if (_.isUndefined(parm)) {
+    if (parm == undefined) {
         return '';
     }
     else {
@@ -13,6 +12,34 @@ comm.pathNameKey = function (key) {
             }
         }
     }
+};
+
+comm.parseURL=function(url) {
+    var a =  document.createElement('a');
+    a.href = url;
+    return {
+        source: url,
+        protocol: a.protocol.replace(':',''),
+        host: a.hostname,
+        port: a.port,
+        query: a.search,
+        params: (function(){
+            var ret = {},
+                seg = a.search.replace(/^\?/,'').split('&'),
+                len = seg.length, i = 0, s;
+            for (;i<len;i++) {
+                if (!seg[i]) { continue; }
+                s = seg[i].split('=');
+                ret[s[0]] = s[1];
+            }
+            return ret;
+        })(),
+        file: (a.pathname.match(/\/([^\/?#]+)$/i) || [,''])[1],
+        hash: a.hash.replace('#',''),
+        path: a.pathname.replace(/^([^\/])/,'/$1'),
+        relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [,''])[1],
+        segments: a.pathname.replace(/^\//,'').split('/')
+    };
 };
 
 comm.serializeObject = function (formData) {
@@ -77,36 +104,19 @@ comm.popWindow=function(title,content,size,load) {
             $(window).bind('mousewheel',function() {
                 adjustPOS();
             })
+
+        $popWindow.on('click', '.close', function () {
+            $('.popWindow-overlay,.popWindow').hide();
+            if (isload) {
+                window.location.reload();
+            }
+        })
         }
         else {
              $('.popWindow-overlay,.popWindow').show();
         }
 
-    $popWindow.on('click','.close',function() {
-        $('.popWindow-overlay,.popWindow').hide();
-        if(isload) {
-            window.location.reload();
-        }
-    })
-
 };
-
-//匹配这些中文标点符号 。 ？ ！ ， 、 ； ： “ ” ‘ ' （ ） 《 》 〈 〉 【 】 『 』 「 」 ﹃ ﹄ 〔 〕 … — ～ ﹏ ￥ ／
-//匹配英文符号 . ? ! , ; : "  ( )   [ ] { } $ %  ‰  ＋ @ ＃ ^ & ＊ ＝ － — /
-//只能输入汉字，数字，字母，下划线，以及中文标点符号英文标点符号,中英文空格
-//罗马数字 ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹ  \u2160-\u2179
-//①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱ -- \u2460-\u2473
-//⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛  \u2488-\u249b
-//ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏ  \u24b6-\u24cf
-//ⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ  \u24d0-\u0020
-//⒜⒝⒞⒟⒠⒡⒢⒣⒤⒥⒦⒧⒨⒩⒪⒫⒬⒭⒮⒯⒰⒱⒲⒳⒴⒵  \u249c-\u24b5
-
-comm.matchiChSymbol=function(str) {
-  var reg =  /^[a-zA-Z0-9_\u2460-\u2473\u2160-\u2179\s\u4e00-\u9fa5\uff0f\u3002\uff1f\uff01\uff0c\u3001\uff1b\uff1a\u201c\u201d\u2018\u2019\uff08\uff09\u300a\u300b\u3008\u3009\u3010\u3011\u300e\u300f\u300c\u300d\ufe43\ufe44\u3014\u3015\u2026\u2014\uff5e\ufe4f\uffe5,\/\.;\?\:!\(\)\{\}\$%‰\+\@\#\^\&\*=-\\"]+$/
-
-    //如何含有特殊字符返回true
-    return !reg.test(str);
-}
 
 $('#logout-link').click(function() {
     $('#logout-form').submit();
@@ -114,3 +124,4 @@ $('#logout-link').click(function() {
 });
 
 module.exports = comm;
+

@@ -18,6 +18,8 @@ import com.tuotiansudai.transfer.repository.model.TransferInvestDetailDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
+import com.tuotiansudai.util.CalculateLeftDays;
+import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.JobManager;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections4.CollectionUtils;
@@ -32,9 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -323,9 +322,8 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             }
             LoanModel loanModel = loanMapper.findById(input.getLoanId());
             InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(input.getTransferInvestId(), loanModel.getPeriods());
-
-            long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), currentInvestRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-            transferApplicationPaginationItemDataDto.setLeftDays(String.valueOf(leftDays > 0 ? leftDays : 0));
+            Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+            transferApplicationPaginationItemDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
             return transferApplicationPaginationItemDataDto;
         });
 

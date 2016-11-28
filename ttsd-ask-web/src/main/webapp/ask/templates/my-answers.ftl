@@ -17,7 +17,7 @@
 
                                 <#list answer.question.tags as tag>
                                 <span class="fr tag">
-                                    <a class="/question/category?tag=${tag.name()}" href="">${tag.description}</a>
+                                    <a class="/question/category/${tag.name()?lower_case}" href="">${tag.description}</a>
                                </span>
                                 </#list>
 

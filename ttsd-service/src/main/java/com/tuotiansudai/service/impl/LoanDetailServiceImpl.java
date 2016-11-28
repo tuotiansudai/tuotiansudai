@@ -125,7 +125,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());
-                    item.setMobile(randomUtils.encryptMobile(loginName, input.getLoginName(), Source.WEB));
+                    item.setMobile(randomUtils.encryptMobile(loginName, input.getLoginName(), input.getId(), Source.WEB));
 
 
                     long amount = 0;
