@@ -54,6 +54,7 @@ class messageCenter extends React.Component {
 
     render() {
         let btn=null;
+
         if(this.state.data.appUrl){
             btn=<section className="info clearfix"><a onTouchTap={this.goTo.bind(this)} data-href={this.state.data.appUrl}>去看看</a></section>;
         }
