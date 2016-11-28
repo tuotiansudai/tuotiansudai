@@ -183,7 +183,7 @@ public class MessageServiceImpl implements MessageService {
             messageMapper.update(messageModel);
 
             JPushAlertModel jPushAlertModel = jPushAlertNewService.findJPushAlertModelByMessageId(messageId);
-            if (null != jPushAlertModel) {
+            if (null != jPushAlertModel && MessageType.MANUAL.equals(messageModel.getType())) {
                 sendJpush(jPushAlertModel, messageModel);
             }
             return new BaseDto<>(new BaseDataDto(true, null));
