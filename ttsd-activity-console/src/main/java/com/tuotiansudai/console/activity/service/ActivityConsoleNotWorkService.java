@@ -13,10 +13,10 @@ import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
 @Service
 public class ActivityConsoleNotWorkService {
     @Autowired
@@ -84,9 +84,9 @@ public class ActivityConsoleNotWorkService {
         List<UserModel> recommendedRegisterUsers = userMapper.findUsersByRegisterTimeOrReferrer(activityStartTime, activityEndTime, null);
         recommendedRegisterUsers.forEach(recommendedUser -> {
             NotWorkModel notWorkModel = notWorkMapper.findByLoginName(recommendedUser.getLoginName());
-            if(null == notWorkModel) {
+            if (null == notWorkModel) {
                 UserModel referrer = userMapper.findByLoginName(recommendedUser.getReferrer());
-                if(null != referrer) {
+                if (null != referrer) {
                     notWorkModel = new NotWorkModel(referrer.getLoginName(), referrer.getUserName(), referrer.getMobile(), false);
                     notWorkMapper.create(notWorkModel);
                 }
