@@ -455,7 +455,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         if (agentAnxinProp == null || Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())) {
             // 如果转让人未授权安心签，则将该投资的合同号设置为OLD，使用旧版合同：
             investMapper.updateContractNoById(transferApplicationModel.getInvestId(), ContractNoStatus.OLD.name());
-            logger.error(MessageFormat.format("[安心签] create transfer contract error, agent has not signed, transferApplicationId:{0}, userId:{1}", transferApplicationId, transferApplicationModel.getLoginName()));
+            logger.warn(MessageFormat.format("[安心签] create transfer contract fail, agent has not signed, transferApplicationId:{0}, userId:{1}", transferApplicationId, transferApplicationModel.getLoginName()));
             return null;
         }
 
@@ -464,7 +464,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         if (investorAnxinProp == null || Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())) {
             // 如果承接人未授权安心签，则将该投资的合同号设置为OLD，使用旧版合同：
             investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.OLD.name());
-            logger.error(MessageFormat.format("[安心签] create transfer contract error, investor has not signed, transferApplicationId:{0}, userId:{1}", transferApplicationId, investModel.getLoginName()));
+            logger.warn(MessageFormat.format("[安心签] create transfer contract fail, investor has not signed, transferApplicationId:{0}, userId:{1}", transferApplicationId, investModel.getLoginName()));
             return null;
         }
 
@@ -531,7 +531,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         if (investorAnxinProp == null || Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())) {
             // 如果投资人未授权安心签，则将该笔投资的合同号设置为OLD，使用旧版合同：
             investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.OLD.name());
-            logger.error(MessageFormat.format("[安心签] create contract error, investor has not signed. loanid:{0}, investId:{1}, userId:{2}",
+            logger.warn(MessageFormat.format("[安心签] create contract fail, investor has not signed. loanid:{0}, investId:{1}, userId:{2}",
                     String.valueOf(loanId), String.valueOf(investId), investLoginName));
             return null;
         }
