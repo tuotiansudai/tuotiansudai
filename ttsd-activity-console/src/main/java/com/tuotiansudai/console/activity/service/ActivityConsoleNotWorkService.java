@@ -63,7 +63,7 @@ public class ActivityConsoleNotWorkService {
                 }
             });
             if (rewardList.size() > 0) {
-                notWorkDto.setRewards(Joiner.on(",").join(rewardList));
+                notWorkDto.setRewards(Joiner.on("、").join(rewardList));
             }
             List<UserModel> users = userMapper.findUsersByRegisterTimeOrReferrer(activityStartTime, activityEndTime, notWorkModel.getLoginName());
             notWorkDto.setRecommendedRegisterAmount(String.valueOf(users.size()));
