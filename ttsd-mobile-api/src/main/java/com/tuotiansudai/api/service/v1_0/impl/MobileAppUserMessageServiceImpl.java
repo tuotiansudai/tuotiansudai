@@ -69,13 +69,13 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
 
             MessageModel messageModel = messageMapper.findByIdBesidesDeleted(userMessageModel.getMessageId());
             userMessageDto.setMessageType(messageModel.getMessageCategory() != null ? messageModel.getMessageCategory().getDescription() : "");
-            if(messageModel.getMessageCategory().equals(MessageCategory.NOTIFY)) {
-                userMessageDto.setContent(messageModel.getTemplateTxt());
-            }
             if (messageModel.getType().equals(MessageType.EVENT)) {
                 userMessageDto.setContent(userMessageModel.getAppTitle());
             } else if (messageModel.getType().equals(MessageType.MANUAL)) {
                 userMessageDto.setContent(userMessageModel.getContent());
+            }
+            if(messageModel.getMessageCategory().equals(MessageCategory.NOTIFY)) {
+                userMessageDto.setContent(messageModel.getTemplateTxt());
             }
 
             return userMessageDto;
