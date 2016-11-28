@@ -33,7 +33,7 @@ public class ChristmasPrizeController {
     @Autowired
     private BindBankCardService bindBankCardService;
 
-    private static final float CHRISTMAS_SUM_AMOUNT = 300000000;
+    private static final float CHRISTMAS_SUM_AMOUNT = 420000000;
 
     private static NumberFormat numberFormat = NumberFormat.getInstance();
 
@@ -41,15 +41,15 @@ public class ChristmasPrizeController {
     public ModelAndView christmas() {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/christmas-day", "responsive", true);
-
+        //投资满20000发一张优惠券
+        christmasPrizeService.assignUserCoupon(loginName);
         Map param = christmasPrizeService.getActivityChristmasInvestAmountAndCount();
         long userInvestAmount = (long)param.get("investAmount");
 
         modelAndView.addObject("allInvestAmount", AmountConverter.convertCentToString(userInvestAmount).replaceAll("\\.00", ""));
-        modelAndView.addObject("investScale", userInvestAmount >= CHRISTMAS_SUM_AMOUNT ? "100" : numberFormat.format((float) userInvestAmount / CHRISTMAS_SUM_AMOUNT * 100));
+        modelAndView.addObject("investScale", userInvestAmount >= CHRISTMAS_SUM_AMOUNT ? "100%" : numberFormat.format((float) userInvestAmount / CHRISTMAS_SUM_AMOUNT * 100) + "%");
         modelAndView.addObject("userCount", param.get("investCount"));
         modelAndView.addObject("isStart", christmasPrizeService.isStart());
-
 
         //modelAndView.addObject("drawTime", christmasPrizeService.getDrawPrizeTime(LoginUserInfo.getMobile()));
         return modelAndView;
