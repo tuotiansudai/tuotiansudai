@@ -1,20 +1,35 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 public class OperationDataResponseDataDto extends BaseResponseDataDto {
+    @ApiModelProperty(value = "截止日期", example = "11月20日")
     private String currentDay;
+    @ApiModelProperty(value = "安全运营天数", example = "360")
     private String operationDays;
+    @ApiModelProperty(value = "累计交易金额，单位为分", example = "293837272737")
     private String totalTradeAmount;
+    @ApiModelProperty(value = "累计为用户赚取金额，单位为分", example = "33434234232")
     private String totalInterest;
+    @ApiModelProperty(value = "累计交易笔数", example = "1620")
     private String totalTradeCount;
-    private List<OperationDataInvestByProductTypeResponseDataDto> investListByProdyctType;
+    @ApiModelProperty(value = "各期限累计交易金额，单位为分", example = "30天:1333322,90天:23434343")
+    private List<OperationDataInvestByProductTypeResponseDataDto> investListByProductType;
+    @ApiModelProperty(value = "近半年每月累计交易金额，单位为分", example = "5月:10088343,4月:203834843,3月:343434343,2月:14343242,1月:3423423342,12月:343434343")
     private List<OperationDataLatestSixMonthResponseDataDto> latestSixMonthDetail;
+    @ApiModelProperty(value = "累计注册投资用户", example = "23843")
     private String totalInvestUserCount;
+    @ApiModelProperty(value = "男性比例", example = "60.5")
     private String maleScale;
+    @ApiModelProperty(value = "女性比例", example = "39.5")
     private String femaleScale;
+    @ApiModelProperty(value = "各用户年龄段分布", example = "20岁以下:20%,20~30岁:30")
     private List<OperationDataAgeResponseDataDto> ageDistribution;
+    @ApiModelProperty(value = "投资人数top3", example = "北京:60,上海:30,济南:10")
     private List<OperationDataInvestCityResponseDataDto> investCityScaleTop3;
+    @ApiModelProperty(value = "投资金额top3", example = "北京:60,上海:30,济南:10")
     private List<OperationDataInvestAmountResponseDataDto> investAmountScaleTop3;
 
     public OperationDataResponseDataDto() {
@@ -61,12 +76,12 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
         this.totalTradeCount = totalTradeCount;
     }
 
-    public List<OperationDataInvestByProductTypeResponseDataDto> getInvestListByProdyctType() {
-        return investListByProdyctType;
+    public List<OperationDataInvestByProductTypeResponseDataDto> getInvestListByProductType() {
+        return investListByProductType;
     }
 
-    public void setInvestListByProdyctType(List<OperationDataInvestByProductTypeResponseDataDto> investListByProdyctType) {
-        this.investListByProdyctType = investListByProdyctType;
+    public void setInvestListByProductType(List<OperationDataInvestByProductTypeResponseDataDto> investListByProductType) {
+        this.investListByProductType = investListByProductType;
     }
 
     public List<OperationDataLatestSixMonthResponseDataDto> getLatestSixMonthDetail() {

@@ -28,7 +28,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     Date currentDate = new Date();
 
     @Override
-    public BaseResponseDto generatorOperationData(BaseParamDto requestDto) {
+    public BaseResponseDto<OperationDataResponseDataDto> generatorOperationData(BaseParamDto requestDto) {
         OperationDataResponseDataDto dataDto = new OperationDataResponseDataDto();
 
         OperationDataDto operationDataDto = operationDataService.getOperationDataFromRedis(currentDate);
@@ -47,7 +47,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
             operationDataInvestByProductTypeResponseDataDtoList.add(operationDataInvestByProductTypeResponseDataDto);
             totalTradeCount += investDataView.getCountInvest();
         }
-        dataDto.setInvestListByProdyctType(operationDataInvestByProductTypeResponseDataDtoList);
+        dataDto.setInvestListByProductType(operationDataInvestByProductTypeResponseDataDtoList);
         dataDto.setTotalTradeCount(String.valueOf(totalTradeCount));
         dataDto.setTotalInvestUserCount(String.valueOf(operationDataDto.getUsersCount()));
         List<Integer> sexList = operationDataService.findScaleByGender();
