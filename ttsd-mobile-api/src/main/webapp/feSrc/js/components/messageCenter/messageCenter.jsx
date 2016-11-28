@@ -4,7 +4,6 @@ import {main} from "./messageCenter.scss";
 import IScroll from "iscroll";
 import imagesLoaded from "imagesloaded";
 import ajax from "utils/ajax";
-import {hashHistory} from "react-router";
 
 class messageCenter extends React.Component {
     state = {
@@ -38,7 +37,10 @@ class messageCenter extends React.Component {
             }.bind(this)
         });
     }
-
+    goTo(event) {
+        let href = event.target.dataset.href;
+        window.location.href = href;
+    }
     componentDidUpdate() {
         imagesLoaded(this.refs.scrollWrap).on('always', () => {
             this.destroyIscroll.call(this);
@@ -51,9 +53,9 @@ class messageCenter extends React.Component {
     }
 
     render() {
-        var btn='';
+        let btn=null;
         if(this.state.data.appUrl){
-            btn=<section className="info clearfix"><a href={this.state.data.appUrl}>去看看</a></section>;
+            btn=<section className="info clearfix"><a onTouchTap={this.goTo.bind(this)} data-href={this.state.data.appUrl}>去看看</a></section>;
         }
         return (
             <div ref="scrollWrap" className={main}>
