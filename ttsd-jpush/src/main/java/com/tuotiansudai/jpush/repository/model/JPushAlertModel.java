@@ -1,6 +1,8 @@
 package com.tuotiansudai.jpush.repository.model;
 
 
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormat;
@@ -35,6 +37,8 @@ public class JPushAlertModel implements Serializable{
     private int androidTargetNum;
     private int androidArriveNum;
     private int androidOpenNum;
+
+    private long messageId;
 
     public long getId() {
         return id;
@@ -221,6 +225,14 @@ public class JPushAlertModel implements Serializable{
         this.androidOpenNum = androidOpenNum;
     }
 
+    public long getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(long messageId) {
+        this.messageId = messageId;
+    }
+
     public JPushAlertModel(){
 
     }
@@ -239,5 +251,6 @@ public class JPushAlertModel implements Serializable{
         this.jumpToLink = jPushAlertDto.getJumpToLink();
         this.expectPushTime = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm").parseDateTime(jPushAlertDto.getExpectPushTime()).toDate();
         this.isAutomatic = jPushAlertDto.isAutomatic();
+        this.messageId = jPushAlertDto.getMessageId();
     }
 }

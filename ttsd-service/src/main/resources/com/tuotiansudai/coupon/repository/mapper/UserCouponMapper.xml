@@ -39,7 +39,8 @@
             <result column="issued_count" property="issuedCount"/>
             <result column="invest_lower_limit" property="investLowerLimit"/>
             <result column="coupon_type" property="couponType"/>
-            <result column="product_types" property="productTypes" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
+            <result column="product_types" property="productTypes"
+                    typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
             <result column="deleted" property="deleted"/>
             <result column="user_group" property="userGroup"/>
             <result column="sms_alert" property="smsAlert"/>
@@ -106,8 +107,9 @@
         where uc.login_name = #{loginName}
     </select>
 
-    <select useCache="false" id="findUserCouponWithCouponByLoginName" resultMap="userCouponResultMap" parameterType="map">
-        select  uc.*,
+    <select useCache="false" id="findUserCouponWithCouponByLoginName" resultMap="userCouponResultMap"
+            parameterType="map">
+        select uc.*,
         c.id as coupon_model_id,
         c.amount as amount,
         c.rate as rate,

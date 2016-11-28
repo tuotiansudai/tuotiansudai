@@ -22,7 +22,7 @@ import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.WithdrawModel;
-import com.tuotiansudai.repository.model.WithdrawStatus;
+import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;

@@ -11,11 +11,18 @@ require(['jquery', 'mustache', 'text!/tpl/message-list.mustache', 'pagination', 
             window.location.hash = data.index;
             data.messageTypeHandler = function () {
                 return function (text, render) {
-                    return render(text) === 'MANUAL' ? "拓天速贷" : "系统消息";
+                    if (render(text) == 'ACTIVITY') {
+                        return '活动通知';
+                    } else if (render(text) == 'NOTIFY') {
+                        return '拓天公告';
+                    } else {
+                        return '系统消息';
+                    }
                 }
             };
             var html = Mustache.render(messageListTemplate, data);
             $('.list-container .global-message-list.active').html(html);
+
             $('.read-all-messages').click(function () {
                 $.ajax({
                     url: "/message/read-all",
@@ -28,6 +35,21 @@ require(['jquery', 'mustache', 'text!/tpl/message-list.mustache', 'pagination', 
                     }
                 })
             });
+            //点击标题跳转详情,阻止默认的a标签连接
+            (function() {
+                var $userMessageList=$('#userMessageList');
+                $userMessageList.on('click','.jump-detail',function() {
+                var $this=$(this),
+                    url=$this.data('url');
+                    location.href=url;
+                });
+                $userMessageList.on('click','a',function(event) {
+                    event.preventDefault();
+                })
+
+            })();
+
+
         });
     });
 });

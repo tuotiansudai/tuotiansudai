@@ -87,8 +87,7 @@
                         <td>${activity.title!}</td>
                         <td><#if activity.activatedTime??>${activity.activatedTime?string('yyyy-MM-dd')}</#if></td>
                         <td><#if activity.expiredTime??>${activity.expiredTime?string('yyyy-MM-dd HH:mm')}</#if></td>
-                        <td><a href="${activity.webActivityUrl!}" target="_blank">${activity.webActivityUrl!}</a><br/><a href="${activity.appActivityUrl!}"
-                                                                                                                         target="_blank">${activity.appActivityUrl!}</a></td>
+                        <td><a href="${activity.webActivityUrl!}" target="_blank">${activity.webActivityUrl!}</a><br/>${activity.appActivityUrl!}</td>
                         <td>${activity.description!}</td>
                         <td>
                             <#list activity.source as source>
@@ -128,7 +127,7 @@
                     </tr>
                     <#else>
                     <tr>
-                        <td colspan="10">暂时没有活动</td>
+                        <td colspan="13">暂时没有活动</td>
                     </tr>
                     </#list>
 

@@ -1,9 +1,7 @@
 package com.tuotiansudai.scheduler.plugin;
 
 import com.tuotiansudai.job.*;
-import com.tuotiansudai.jpush.job.AutoJPushAlertBirthDayJob;
-import com.tuotiansudai.jpush.job.AutoJPushAlertBirthMonthJob;
-import com.tuotiansudai.jpush.job.AutoJPushNoInvestAlertJob;
+import com.tuotiansudai.message.job.BirthdayMessageSendJob;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.quartz.CronScheduleBuilder;
@@ -61,13 +59,13 @@ public class JobInitPlugin implements SchedulerPlugin {
             createBirthdayNotifyJob();
         }
         if (JobType.AutoJPushAlertBirthMonth.name().equalsIgnoreCase(schedulerName)) {
-            createAutoJPushAlertBirthMonth();
+            deleteAutoJPushAlertBirthMonth();
         }
         if (JobType.AutoJPushAlertBirthDay.name().equalsIgnoreCase(schedulerName)) {
-            createAutoJPushAlertBirthDay();
+            deleteAutoJPushAlertBirthDay();
         }
         if (JobType.AutoJPushNoInvestAlert.name().equalsIgnoreCase(schedulerName)) {
-            createAutoJPushNoInvestAlert();
+            deleteAutoJPushNoInvestAlert();
         }
         if (JobType.ExperienceRepay.name().equals(schedulerName)) {
             createNewbieExperienceRepayJob();
@@ -83,6 +81,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
         if (JobType.PlatformBalanceLowNotify.name().equals(schedulerName)) {
             platformBalanceLowNotifyJob();
+        }
+        if (JobType.BirthdayMessage.name().equals(schedulerName)) {
+            birthdayMessageSendJob();
         }
         if (JobType.CalculateTravelLuxuryPrize.name().equalsIgnoreCase(schedulerName)) {
             deleteCalculateTravelLuxuryPrizeJob();
@@ -182,37 +183,16 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void createAutoJPushAlertBirthMonth() {
-        try {
-            jobManager.newJob(JobType.AutoJPushAlertBirthMonth, AutoJPushAlertBirthMonthJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 12 1 * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.AutoJPushAlertBirthMonth.name(), JobType.AutoJPushAlertBirthMonth.name()).submit();
-
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
+    private void deleteAutoJPushAlertBirthMonth() {
+        jobManager.deleteJob(JobType.AutoJPushAlertBirthMonth, JobType.AutoJPushAlertBirthMonth.name(), JobType.AutoJPushAlertBirthMonth.name());
     }
 
-    private void createAutoJPushAlertBirthDay() {
-        try {
-            jobManager.newJob(JobType.AutoJPushAlertBirthDay, AutoJPushAlertBirthDayJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 9 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.AutoJPushAlertBirthDay.name(), JobType.AutoJPushAlertBirthDay.name()).submit();
-
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
+    private void deleteAutoJPushAlertBirthDay() {
+        jobManager.deleteJob(JobType.AutoJPushAlertBirthDay, JobType.AutoJPushAlertBirthDay.name(), JobType.AutoJPushAlertBirthDay.name());
     }
 
-    private void createAutoJPushNoInvestAlert() {
-        try {
-            jobManager.newJob(JobType.AutoJPushNoInvestAlert, AutoJPushNoInvestAlertJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 30 9 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.AutoJPushNoInvestAlert.name(), JobType.AutoJPushNoInvestAlert.name()).submit();
-
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
+    private void deleteAutoJPushNoInvestAlert() {
+        jobManager.deleteJob(JobType.AutoJPushNoInvestAlert, JobType.AutoJPushNoInvestAlert.name(), JobType.AutoJPushNoInvestAlert.name());
     }
 
     private void createLoanRepayNotifyJob() {
@@ -303,4 +283,13 @@ public class JobInitPlugin implements SchedulerPlugin {
         jobManager.deleteJob(JobType.CalculateTravelLuxuryPrize, JobType.CalculateTravelLuxuryPrize.name(), JobType.CalculateTravelLuxuryPrize.name());
     }
 
+    private void birthdayMessageSendJob() {
+        try {
+            jobManager.newJob(JobType.BirthdayMessage, BirthdayMessageSendJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 9 * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
+                    .withIdentity(JobType.BirthdayMessage.name(), JobType.BirthdayMessage.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
 }
