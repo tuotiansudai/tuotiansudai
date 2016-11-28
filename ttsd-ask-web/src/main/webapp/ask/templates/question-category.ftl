@@ -39,7 +39,7 @@
 
                         <#list question.tags as tag>
                                 <em class="fr tag">
-                                    <a href="/question/category?tag=${tag.name()}">${tag.description}</a>
+                                    <a href="/question/category/${tag.name()?lower_case}">${tag.description}</a>
                                 </em>
                             </#list>
                     </dd>
@@ -50,10 +50,10 @@
 
     <div class="pagination">
         <#if questions.data.hasPreviousPage>
-            <a href="/question/category?tag=${tag.name()}">首页</a>
+            <a href="/question/category/${tag.name()?lower_case}">首页</a>
         </#if>
         <#if questions.data.index &gt; 3>
-            <a href="/question/category?tag=${tag.name()}&index=${questions.data.index-1}"> < </a>
+            <a href="/question/category/${tag.name()?lower_case}?index=${questions.data.index-1}"> < </a>
         </#if>
 
         <#assign lower = 1>
@@ -78,14 +78,14 @@
         </#if>
 
         <#list lower..upper as page>
-            <a href="/question/category?tag=${tag.name()}&index=${page}" <#if page == questions.data.index>class="active"</#if>> ${page} </a>
+            <a href="/question/category/${tag.name()?lower_case}?index=${page}" <#if page == questions.data.index>class="active"</#if>> ${page} </a>
         </#list>
 
         <#if questions.data.maxPage - questions.data.index &gt; 2>
-            <a href="/question/category?tag=${tag.name()}&index=${questions.data.index+1}"> > </a>
+            <a href="/question/category/${tag.name()?lower_case}?index=${questions.data.index+1}"> > </a>
         </#if>
         <#if questions.data.hasNextPage>
-            <a href="/question/category?tag=${tag.name()}&index=${questions.data.maxPage}">末页</a>
+            <a href="/question/category/${tag.name()?lower_case}?index=${questions.data.maxPage}">末页</a>
         </#if>
     </div>
 </div>
