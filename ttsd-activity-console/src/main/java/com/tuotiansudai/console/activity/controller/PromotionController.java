@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/activity-console/activity-manage/promotion")
@@ -26,7 +27,7 @@ public class PromotionController {
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public ModelAndView promotionCreate() {
         ModelAndView modelAndView = new ModelAndView("/promotion");
-        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()));
+        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()).stream().filter(n -> n != AppUrl.NONE).collect(Collectors.toList()));
         return modelAndView;
     }
 
@@ -75,7 +76,7 @@ public class PromotionController {
         ModelAndView modelAndView = new ModelAndView("/promotion-edit");
         PromotionModel promotionModel = this.activityConsolePromotionService.findById(id);
         modelAndView.addObject("promotion", promotionModel);
-        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()));
+        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()).stream().filter(n -> n != AppUrl.NONE).collect(Collectors.toList()));
         return modelAndView;
     }
 

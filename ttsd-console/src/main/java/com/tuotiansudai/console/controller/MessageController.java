@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -100,7 +101,7 @@ public class MessageController {
         modelAndView.addObject("channelTypes", Lists.newArrayList(MessageChannel.values()));
         modelAndView.addObject("selectedChannelTypes", Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
         modelAndView.addObject("manualMessageTypes", MessageCategory.values());
-        modelAndView.addObject("appUrls", AppUrl.values());
+        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()).stream().filter(n -> n != AppUrl.OTHER).collect(Collectors.toList()));
         modelAndView.addObject("pushTypes", PushType.values());
         modelAndView.addObject("pushSources", PushSource.values());
         return modelAndView;
@@ -117,7 +118,7 @@ public class MessageController {
         modelAndView.addObject("channelTypes", Lists.newArrayList(MessageChannel.values()));
         modelAndView.addObject("selectedChannelTypes", messageCompleteDto.getChannels());
         modelAndView.addObject("manualMessageTypes", MessageCategory.values());
-        modelAndView.addObject("appUrls", AppUrl.values());
+        modelAndView.addObject("appUrls",  Lists.newArrayList(AppUrl.values()).stream().filter(n -> n != AppUrl.OTHER).collect(Collectors.toList()));
         modelAndView.addObject("pushTypes", PushType.values());
         modelAndView.addObject("pushSources", PushSource.values());
 

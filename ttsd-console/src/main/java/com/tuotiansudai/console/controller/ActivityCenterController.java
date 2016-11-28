@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -33,7 +34,7 @@ public class ActivityCenterController {
     public ModelAndView activityCenter() {
         ModelAndView modelAndView = new ModelAndView("/activity-center-edit");
         modelAndView.addObject("sources", Lists.newArrayList(Source.values()));
-        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()));
+        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()).stream().filter(n -> n != AppUrl.NONE).collect(Collectors.toList()));
         return modelAndView;
     }
 
@@ -43,7 +44,7 @@ public class ActivityCenterController {
 
         ActivityDto activityDto = activityService.findActivityDtoById(activityId);
         modelAndView.addObject("sources", Lists.newArrayList(Source.values()));
-        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()));
+        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()).stream().filter(n -> n != AppUrl.NONE).collect(Collectors.toList()));
         modelAndView.addObject("dto", activityDto);
         return modelAndView;
     }

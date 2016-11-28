@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/banner-manage")
@@ -30,7 +31,7 @@ public class BannerController {
     public ModelAndView bannerCreate() {
         ModelAndView modelAndView = new ModelAndView("/banner");
         modelAndView.addObject("sources", Lists.newArrayList(Source.WEB, Source.ANDROID, Source.IOS));
-        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()));
+        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()).stream().filter(n -> n != AppUrl.NONE).collect(Collectors.toList()));
         return modelAndView;
     }
 
@@ -81,7 +82,7 @@ public class BannerController {
         ModelAndView modelAndView = new ModelAndView("/banner");
         BannerModel bannerModel = this.bannerService.findById(id);
         modelAndView.addObject("sources", Lists.newArrayList(Source.WEB, Source.ANDROID, Source.IOS));
-        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()));
+        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()).stream().filter(n -> n != AppUrl.NONE).collect(Collectors.toList()));
         modelAndView.addObject("banner", bannerModel);
         return modelAndView;
     }
