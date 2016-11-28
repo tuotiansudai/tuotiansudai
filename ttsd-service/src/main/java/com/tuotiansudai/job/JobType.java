@@ -23,7 +23,6 @@ public enum JobType {
     LoanStatusToRaising("标的状态从预热转为可投资"),
     LoanOut("放款后续处理"),
     AutoInvest("自动投资"),
-    InvestCallBack("投资回调处理"),
     NormalRepayCallBack("正常还款回调处理"),
     AdvanceRepayCallBack("提前还款回调处理"),
     CouponRepayCallBack("还款时优惠券收益回调处理"),

@@ -18,7 +18,7 @@ public interface InvestService {
 
     String investCallback(Map<String, String> paramsMap, String queryString);
 
-    BaseDto<PayDataDto> asyncInvestCallback();
+    BaseDto<PayDataDto> asyncInvestCallback(String investNotifyRequestId);
 
     String overInvestPaybackCallback(Map<String, String> paramsMap, String queryString);
 
@@ -26,9 +26,9 @@ public interface InvestService {
 
     List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period);
 
-    void processOneCallback(InvestNotifyRequestModel callbackRequestModel);
+    boolean processOneCallback(InvestNotifyRequestModel callbackRequestModel);
 
-    void investSuccess(InvestModel investModel);
+    boolean investSuccess(InvestModel investModel);
 
     BaseDto<PayDataDto> noPasswordInvest(InvestDto dto);
 }

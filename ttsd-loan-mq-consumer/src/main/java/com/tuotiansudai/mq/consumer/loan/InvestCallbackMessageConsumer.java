@@ -1,10 +1,9 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +20,11 @@ public class InvestCallbackMessageConsumer implements MessageConsumer {
     private MQWrapperClient mqClient;
 
     @Autowired
-    private CouponAssignmentService couponAssignmentService;
+    private PayWrapperClient payWrapperClient;
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.CouponAssigning;
+        return MessageQueue.InvestCallback;
     }
 
     @Transactional
@@ -33,12 +32,12 @@ public class InvestCallbackMessageConsumer implements MessageConsumer {
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
-            String[] msgParts = message.split(":");
-            if (msgParts.length == 2) {
-                logger.info("[MQ] ready to consumer message: assigning coupon.");
-                UserCouponModel userCoupon = couponAssignmentService.assign(msgParts[0], Long.parseLong(msgParts[1]), null);
-                logger.info("[MQ] assigning coupon success, begin publish message.");
-                mqClient.publishMessage(MessageTopic.CouponAssigned, "UserCoupon:" + userCoupon.getId());
+            String investNotifyRequestId = message;
+            logger.info("[MQ] ready to consumer message: invest callback.");
+            BaseDto investResult = payWrapperClient.investCallback(investNotifyRequestId);
+            if (investResult.getData().getStatus()) {
+//                logger.info("[MQ] invest callback success, begin publish message.");
+//                mqClient.publishMessage(MessageTopic.InvestSuccess, "");
                 logger.info("[MQ] consumer message success.");
             }
         }

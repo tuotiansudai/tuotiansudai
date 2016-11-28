@@ -44,8 +44,8 @@ public class JobController {
 
     @ResponseBody
     @RequestMapping(value = "/async_invest_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncInvestNotify() {
-        return this.investService.asyncInvestCallback();
+    public BaseDto<PayDataDto> asyncInvestNotify(@RequestBody String investNotifyRequestId) {
+        return this.investService.asyncInvestCallback(investNotifyRequestId);
     }
 
     @ResponseBody
