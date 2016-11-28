@@ -1,6 +1,6 @@
 BEGIN;
 
-UPDATE `aa`.`user_message` SET content = title 
+UPDATE `aa`.`user_message` SET content = title
 WHERE content IS NULL;
 
-BEGIN;
+COMMIT;
