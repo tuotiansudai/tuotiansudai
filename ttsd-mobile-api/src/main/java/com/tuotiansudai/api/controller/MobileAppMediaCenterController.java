@@ -32,13 +32,14 @@ public class MobileAppMediaCenterController {
     private PageValidUtils pageValidUtils;
 
     @RequestMapping(method = RequestMethod.GET)
+    @ApiOperation("媒体中心表")
     public ModelAndView mediaCenter() {
         return new ModelAndView("/api-template");
     }
 
     @RequestMapping(value = "/article-list", method = RequestMethod.GET)
     @ResponseBody
-    @ApiOperation("理财圈首页文章列表")
+    @ApiOperation("媒体中心首页文章列表")
     public BaseResponseDto<MediaArticleListResponseDataDto> obtainArticleList( @RequestParam(name = "section",required = false) ArticleSectionType section,
                                               @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                               @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
@@ -48,7 +49,7 @@ public class MobileAppMediaCenterController {
 
     @RequestMapping(value = "/article-detail/{articleId}", method = RequestMethod.GET)
     @ResponseBody
-    @ApiOperation("理财圈首页文章详细")
+    @ApiOperation("媒体中心文章详细")
     public BaseResponseDto<MediaArticleResponseDataDto> obtainArticleContent(@PathVariable long articleId) {
         liCaiQuanArticleService.updateReadCount(articleId);
         return mobileAppMediaCenterService.obtainArticleContent(articleId);
@@ -56,7 +57,7 @@ public class MobileAppMediaCenterController {
 
     @RequestMapping(value = "/banner", method = RequestMethod.GET)
     @ResponseBody
-    @ApiOperation("理财圈首页banner")
+    @ApiOperation("媒体中心banner")
     public BaseResponseDto<MediaArticleListResponseDataDto> obtainCarouselArticle() {
         return mobileAppMediaCenterService.obtainCarouselArticle();
     }
