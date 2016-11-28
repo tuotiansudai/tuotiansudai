@@ -120,8 +120,8 @@
                         </#if>
                     </td>
                     <td>
-                        PC:${message.webUrl!}/
-                        APP:${message.appUrl.getDescription()!}
+                        PC:${(message.webUrl)!}/
+                        APP:${(message.appUrl.getDescription())!}
                     </td>
                     <td>
                         <#if message.jpush>
