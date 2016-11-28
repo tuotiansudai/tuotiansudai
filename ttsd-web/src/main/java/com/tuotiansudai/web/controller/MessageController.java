@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.message.dto.MessageCompleteDto;
 import com.tuotiansudai.message.dto.UserMessagePaginationItemDto;
+import com.tuotiansudai.message.repository.model.MessageChannel;
 import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.message.service.MessageService;
 import com.tuotiansudai.message.service.UserMessageService;
@@ -63,7 +64,7 @@ public class MessageController {
     public BaseDto<BaseDataDto> readAll() {
         BaseDto<BaseDataDto> dto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(userMessageService.readAll(LoginUserInfo.getLoginName()));
+        dataDto.setStatus(userMessageService.readAll(LoginUserInfo.getLoginName(), MessageChannel.WEBSITE));
         dto.setData(dataDto);
         return dto;
     }
