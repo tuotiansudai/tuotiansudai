@@ -34,6 +34,7 @@
 
     <mvc:interceptors>
         <bean class="com.tuotiansudai.web.config.interceptors.ChannelInterceptor"/>
+        <bean class="com.tuotiansudai.web.ask.interceptors.LinkExchangeInterceptor"/>
     </mvc:interceptors>
 
     <context:component-scan base-package="com.tuotiansudai.web.ask"/>

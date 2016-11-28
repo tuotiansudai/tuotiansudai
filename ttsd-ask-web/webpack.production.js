@@ -21,6 +21,13 @@ module.exports = {
 	module:{
 		loaders:[
 			{
+                test: /\.(js|jsx)$/,
+                loader: 'babel-loader',
+                query: {
+                    presets: ['es2015']
+                }
+            },
+            {
 				test: /\.css$/,
 				loader: ExtractTextPlugin.extract("style-loader", "css-loader")
 			},
@@ -52,7 +59,7 @@ module.exports = {
 		new webpack.optimize.UglifyJsPlugin(),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.optimize.AggressiveMergingPlugin(),
-		new webpack.NoErrorsPlugin()
+        new webpack.NoErrorsPlugin()
 		//把入口文件里面的数组打包成verdors.js
 		//new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js")
 	],

@@ -75,7 +75,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         if (investRepayService.findSumRepayingCorpusByLoginName(loginName) > 0 || investRepayService.findSumRepayingInterestByLoginName(loginName) > 0) {
             return true;
         }
-        
+
         return false;
     }
 
