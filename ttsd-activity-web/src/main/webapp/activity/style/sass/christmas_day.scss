@@ -98,9 +98,9 @@ body {
       }
 
       @keyframes  blink-eyes{
-        0% { height:0; }
-        100% { height:100%;}
-      }
+          0% { height:0; }
+          100% { height:100%;}
+        }
       @-webkit-keyframes blink-eyes {
         0% { height:0; }
         100% { height:100%;}
@@ -113,7 +113,7 @@ body {
       top: -108px;
       left: 0;
       width: 100%;
-      height: 205px;
+      height: 110px;
       background: url("/activity/images/christmas-day/bg-title.png") left top no-repeat;
       text-align: center;
       font-size: 28px;
@@ -147,11 +147,7 @@ body {
       font-size: 14px;
     }
   }
-  
-    //background: #015a2e;
-    .model-content {
-      padding: 75px 5px 0px 5px;
-    }
+
     .gift-box {
       width:310px;
       height:260px;
@@ -184,12 +180,73 @@ body {
         color: #fff;
         padding-top: 40px;
       }
+      .user-info-info {
+        position: absolute;
+        z-index: 10;
+      }
+      .icon-balloon-group {
+        position: absolute;
+        top:0;
+        width:100%;
+        height:100%;
+        em {
+          display: inline-block;
+          width:80px;
+          height:86px;
+          background: url("/activity/images/christmas-day/balloon2.png") center top no-repeat;
+          position: absolute;
+          line-height: 20px;
+          text-align: center;
+          i {
+            color: #fff;
+            display: inline-block;
+            width:50%;
+            margin:26px auto;
+            &:after {
+              content: '';
+              height: 160px;
+              display: inline-block;
+              position: absolute;
+              left: 50%;
+              border-left: 1px dashed #e8f4d6;
+              width: 2px;
+              top: -160px;
+            }
+          }
+          &.left {
+            top:160px;
+            left:30px;
+          }
+          &.right {
+            top:160px;
+            right:30px;
+
+          }
+          &.center {
+            left: 113px;
+            top:160px;
+            &.hack {
+              top: 220px;
+              i:after {
+                height: 220px;
+                top: -220px;
+              }
+            }
+
+          }
+        }
+
+      }
       b {
         display: block;
         font-weight: bold;
         color: #ff1a1a;
         text-align: center;
         font-size:22px;
+        &.user-kind {
+          color: #015a2e;
+          font-size:24px;
+        }
       }
       i {
         color: #ff1a1a;
@@ -251,5 +308,130 @@ body {
     .img-gift {
       margin:20px auto;
     }
+
+  .info-activity-note {
+    b {
+      display: block;
+      text-align: center;
+      margin: 10px auto;
+    }
+    padding:20px;
+  }
+
+  .activity-section-one {
+    .model-content {
+      padding: 75px 5px 0px 5px;
+    }
+  }
+  .activity-section-two {
+    .model-content {
+      padding: 45px 5px 0px 5px;
+    }
+    .gift-box {
+      padding-top:15px;
+      height:320px;
+      box-sizing: border-box;
+    }
+    .reward-gift-box {
+
+      background: #d0e8ac url("/activity/images/christmas-day/reward.jpg") center 40px no-repeat;
+      border-radius: 20px;
+      margin: 7px;
+      padding-bottom: 20px;
+      .rotate-btn {
+        height: 620px;
+        width:100%;
+        position: relative;
+          .gift-case {
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            width: 160px;
+            height: 200px;
+            top: 281px;
+
+          }
+        .win-result {
+          animation: win-effect 0.5s linear infinite;
+        }
+
+      @keyframes  win-effect{
+        0% { transform: rotate(0deg); }
+        20% { transform: rotate(30deg); }
+        50% { transform: rotate(0deg); }
+        70% { transform: rotate(-30deg); }
+        100% { transform: rotate(0deg); }
+      }
+      @-webkit-keyframes win-effect {
+        0% { transform: rotate(0deg); }
+        20% { transform: rotate(30deg); }
+        50% { transform: rotate(0deg); }
+        70% { transform: rotate(-30deg); }
+        100% { transform: rotate(0deg); }
+      }
+
+      }
+    }
+    .gift-info-list {
+      background: #045c2d;
+      width:600px;
+      height:455px;
+      position: relative;
+      margin: 10px auto;
+      border-radius: 20px;
+      .silk-left {
+        position: absolute;
+        left:20px;
+        top:50px;
+        height:100%;
+        width:135px;
+        background: url("/activity/images/christmas-day/silk.png") left top no-repeat;
+      }
+      .silk-right {
+        position: absolute;
+        right:20px;
+        top:50px;
+        height:100%;
+        width:135px;
+        background: url("/activity/images/christmas-day/silk-right.png") left top no-repeat;
+      }
+    .hat {
+      width:128px;
+      height:156px;
+      display: inline-block;
+      background: url("/activity/images/christmas-day/hat.png") left top no-repeat;
+      position: absolute;
+      top: -50px;
+      left: -50px;
+    }
+      .record-list-box {
+        width:280px;
+        margin:0 auto;
+        color: #fff;
+        .menu-switch {
+          font-size:26px;
+          color: #d0e8ac;
+          padding-top:15px;
+          span {
+            display: block;
+            width:50%;
+            float: left;
+            text-align: center;
+          }
+          .active {
+            color: #fff;
+          }
+        }
+        .record-list {
+          font-size: 16px;
+          line-height: 30px;
+        }
+      }
+
+    }
+  }
+
+
 
 }
