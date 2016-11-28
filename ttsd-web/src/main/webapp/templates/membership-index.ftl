@@ -121,7 +121,7 @@
 
                             <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
                         </li>
-                        <li class="membership-giftbag-hui">
+                        <li class="membership-giftbag">
                             <h3>会员礼包</h3>
 
                             <p>每月发放投资红包，588、688、788、888元随机派送</p>
