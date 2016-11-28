@@ -47,7 +47,6 @@ public class ActivityConsoleNotWorkService {
         put(120000000L, "Apple MacBook Air笔记本电脑");
     }};
 
-    @Transactional
     public BasePaginationDataDto<NotWorkDto> findNotWorkPagination(int index, int pageSize) {
         insertOnlyRegisterOrIndetityData();
 
