@@ -37,10 +37,6 @@
 		<span class="nav-text" onclick="cnzzPush.trackClick('63首页','悬浮窗模块','手机APP')">APP<br/>下载</span>
 		<div class="fix-nav app-img"></div>
 	</li>
-	<li>
-		<i class="icon-qq"></i>
-		<a href="http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzgwMDAzNjQ0Nl80NDQyOTZfODAwMDM2NDQ2XzJf" onclick="cnzzPush.trackClick('64首页','悬浮窗模块','QQ')" target="_blank"><span class="nav-text">在线<br/>沟通</span></a>
-	</li>
 	<li class="show-feed">
 		<i class="icon-edit"></i>
 		<span class="nav-text">意见<br/>反馈</span>

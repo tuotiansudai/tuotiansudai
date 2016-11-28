@@ -47,6 +47,13 @@
                 <span>北京市京都律师事务所成立于1995年，是国内较早设立的合伙制律师事务所之一，并在刑事诉讼领域居于全国领先地位。京都律师事务所作为拓天速贷的法律服务保障方，为拓天速贷及其用户提供专业高效的法律保障及法律援助服务，确保您拥有坚实的法律保障。</span>
             </p>
         </li>
+        <li>
+            <p class="icon-logo logo-three"></p>
+            <p class="partner-intro">
+                <span class="partner-name">CFCA</span>
+                <span>CFCA是中国金融认证中心（China Financial Certification Authority）的简称，于2000年6月29日挂牌成立，是经中国人民银行和国家信息安全管理机构批准成立的国家级权威的安全认证机构。《中华人民共和国电子签名法》颁布后，CFCA成为首批获得电子认证服务许可的电子认证服务机构。目前98%银行在使用CFCA提供的电子认证服务。</span>
+            </p>
+        </li>
     </ul>
 </div>
 </@global.main>

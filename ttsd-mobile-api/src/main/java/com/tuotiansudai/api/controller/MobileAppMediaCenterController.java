@@ -6,6 +6,7 @@ import com.tuotiansudai.api.dto.MediaArticleResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppMediaCenterService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import io.swagger.annotations.Api;
@@ -27,6 +28,9 @@ public class MobileAppMediaCenterController {
     @Autowired
     private LiCaiQuanArticleService liCaiQuanArticleService;
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView mediaCenter() {
         return new ModelAndView("/api-template");
@@ -38,7 +42,7 @@ public class MobileAppMediaCenterController {
     public BaseResponseDto<MediaArticleListResponseDataDto> obtainArticleList( @RequestParam(name = "section",required = false) ArticleSectionType section,
                                               @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                               @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return mobileAppMediaCenterService.obtainArticleList(section, index, pageSize);
+        return mobileAppMediaCenterService.obtainArticleList(section, index, pageValidUtils.validPageSizeLimit(pageSize));
 
     }
 

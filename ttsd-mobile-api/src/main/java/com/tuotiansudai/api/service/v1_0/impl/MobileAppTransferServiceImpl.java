@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.api.service.v1_0.MobileAppTransferService;
 import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -50,11 +51,14 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
     @Autowired
     private RandomUtils randomUtils;
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
     @Override
     public BaseResponseDto<TransferTransfereeResponseDataDto> getTransferee(TransferTransfereeRequestDto transferTransfereeRequestDto) {
         BaseResponseDto<TransferTransfereeResponseDataDto> dto = new BaseResponseDto<>();
         Integer index = transferTransfereeRequestDto.getIndex();
-        Integer pageSize = transferTransfereeRequestDto.getPageSize();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(transferTransfereeRequestDto.getPageSize());
         if (index == null || pageSize == null || index <= 0 || pageSize <= 0) {
             return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }

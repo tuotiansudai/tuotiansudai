@@ -3,6 +3,7 @@ package com.tuotiansudai.api.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppRechargeListServiceImpl;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.RechargeModel;
 import com.tuotiansudai.repository.model.RechargeSource;
@@ -28,6 +29,8 @@ public class MobileAppRechargeListServiceTest extends ServiceTestBase {
     private RechargeMapper rechargeMapper;
     @Autowired
     private IdGenerator idGenerator;
+    @Mock
+    private PageValidUtils pageValidUtils;
 
     @Test
     public void shouldGenerateRechargeListIsOk() {
@@ -41,6 +44,8 @@ public class MobileAppRechargeListServiceTest extends ServiceTestBase {
 
         when(rechargeMapper.findRechargeCount(anyString(), anyString(), any(RechargeSource.class),
                 any(RechargeStatus.class), anyString(), any(Date.class), any(Date.class))).thenReturn(2);
+
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         RechargeListRequestDto rechargeListRequestDto = new RechargeListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("loginName");

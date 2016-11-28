@@ -50,7 +50,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                     .done(function (res) {
                         if (res.data.status) {
                             $parentTd.html('<i class="check-btn"></i><a class="loan_repay confirm-btn" href="javascript:void(0)" data-type="' + couponType + '" data-id="' + thisId + '">确认生效</a>');
-                            $parentTd.prev().html('<a href="/activity-manage/coupon/' + thisId + '/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/' + thisId + '" >删除</button>');
+                            $parentTd.prev().html('-');
                         } else {
                             $tipCom.show().find('.txt').text('操作失败！');
                         }
@@ -80,9 +80,6 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($)
                     .done(function (res) {
                         if (res.data.status) {
                             $parentTd.html('<i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link inactive-btn" data-id="' + thisId + '">已生效</button>');
-                            if (couponType != 'NEWBIE_COUPON' && couponType != 'RED_ENVELOPE' && couponType != 'BIRTHDAY_COUPON') {
-                                $parentTd.find('button').prop('disabled', true);
-                            }
                             $parentTd.prev().html('-');
                         } else {
                             $tipCom.show().find('.txt').text('操作失败！');

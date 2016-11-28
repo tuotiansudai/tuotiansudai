@@ -6,6 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReferrerListRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReferrerListResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppReferrerListServiceImpl;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.ReferrerRelationView;
@@ -38,6 +39,9 @@ public class MobileAppReferrerListServiceTest extends ServiceTestBase{
     @Mock
     private UserMapper userMapper;
 
+    @Mock
+    private PageValidUtils pageValidUtils;
+
     @Test
     public void shouldGenerateReferrerListIsOk(){
         ReflectionTestUtils.setField(referrerManageService, "userReward", "0.1|0.2|0.3");
@@ -57,7 +61,8 @@ public class MobileAppReferrerListServiceTest extends ServiceTestBase{
         referrerRelationDtos.add(referrerRelationView1);
         referrerRelationDtos.add(referrerRelationView2);
         when(referrerManageMapper.findReferRelationList(anyString(), anyString(), any(Date.class), any(Date.class),anyString(),anyInt(), anyInt())).thenReturn(referrerRelationDtos);
-        when(referrerManageMapper.findReferRelationCount(anyString(), anyString(), any(Date.class), any(Date.class),anyString())).thenReturn(2);
+        when(referrerManageMapper.findReferRelationCount(anyString(), anyString(), any(Date.class), any(Date.class), anyString())).thenReturn(2);
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         UserModel userModel = new UserModel();
         userModel.setMobile("13333333333");
         when(userMapper.findByLoginName(anyString())).thenReturn(userModel);

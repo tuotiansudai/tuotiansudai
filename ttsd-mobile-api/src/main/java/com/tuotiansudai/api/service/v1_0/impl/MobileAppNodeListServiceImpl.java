@@ -5,6 +5,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppNodeListService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.AnnounceMapper;
 import com.tuotiansudai.repository.model.AnnounceModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class MobileAppNodeListServiceImpl implements MobileAppNodeListService {
     @Autowired
     private AnnounceMapper announceMapper;
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
     @Override
     public BaseResponseDto<NodeListResponseDataDto> generateNodeList(NodeListRequestDto nodeListRequestDto) {
         Integer index = nodeListRequestDto.getIndex();
@@ -27,9 +31,8 @@ public class MobileAppNodeListServiceImpl implements MobileAppNodeListService {
         if(index == null || index <= 0){
             index = 1;
         }
-        if(pageSize == null || pageSize <= 0){
-            pageSize = 10;
-        }
+        pageSize = pageValidUtils.validPageSizeLimit(pageSize);
+
         int count = announceMapper.findAnnounceCount(null,null);
 
         List<AnnounceModel> announceDtos = announceMapper.findAnnounce(null, null, (index - 1) * pageSize, pageSize);

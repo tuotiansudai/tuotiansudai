@@ -12,5 +12,5 @@ public interface MQClient {
 
     void sendMessage(final MessageQueue queue, final String message);
 
-    void subscribe(final Queue queue, Consumer<com.tuotiansudai.mq.client.model.Message> consumer);
+    void subscribe(final Queue queue, Consumer<String> consumer);
 }

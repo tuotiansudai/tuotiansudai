@@ -7,6 +7,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppTransferApplicationService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
 import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -83,18 +84,18 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     @Autowired
     UserMembershipMapper userMembershipMapper;
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
     @Override
     public BaseResponseDto<TransferApplicationResponseDataDto> generateTransferApplication(TransferApplicationRequestDto requestDto) {
         BaseResponseDto<TransferApplicationResponseDataDto> dto = new BaseResponseDto();
         String loginName = requestDto.getBaseParam().getUserId();
         Integer index = requestDto.getIndex();
-        Integer pageSize = requestDto.getPageSize();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
         List<TransferStatus> transferStatusList = requestDto.getTransferStatus();
         if (index == null || index <= 0) {
             index = 1;
-        }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
         }
 
         List<TransferApplicationRecordDto> transferApplicationRecordDtos = transferApplicationMapper.findTransferApplicationPaginationByLoginName(loginName,
@@ -178,14 +179,11 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     @Override
     public BaseResponseDto<TransferApplicationResponseDataDto> generateTransfereeApplication(PaginationRequestDto requestDto) {
         Integer index = requestDto.getIndex();
-        Integer pageSize = requestDto.getPageSize();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
         String loginName = requestDto.getBaseParam().getUserId();
         BaseResponseDto<TransferApplicationResponseDataDto> dto = new BaseResponseDto();
         if (index == null || index <= 0) {
             index = 1;
-        }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
         }
 
         List<TransferApplicationRecordDto> transferApplicationRecordDtos = transferApplicationMapper.findTransfereeApplicationPaginationByLoginName(loginName,
@@ -245,15 +243,12 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     public BaseResponseDto<TransferApplicationResponseDataDto> transferApplicationList(TransferApplicationListRequestDto requestDto) {
         BaseResponseDto<TransferApplicationResponseDataDto> dto = new BaseResponseDto();
         Integer index = requestDto.getIndex();
-        Integer pageSize = requestDto.getPageSize();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
         String rateLower = requestDto.getRateLower();
         String rateUpper = requestDto.getRateUpper();
         List<TransferStatus> transferStatusList = requestDto.getTransferStatus();
         if (index == null || index <= 0) {
             index = 1;
-        }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
         }
         if (Strings.isNullOrEmpty(rateLower)) {
             rateLower = "0";

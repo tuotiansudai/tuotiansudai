@@ -44,6 +44,22 @@ public class LoginUserInfo {
         return null;
     }
 
+    public static String getToken() {
+        Object principal = LoginUserInfo.getPrincipal();
+
+        if (principal instanceof User) {
+            try {
+                Class<?> aClass = principal.getClass();
+                Method method = aClass.getMethod("getToken");
+                return  (String) method.invoke(principal);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
+
+        return null;
+    }
+
     private static Object getPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null ? authentication.getPrincipal() : null;
