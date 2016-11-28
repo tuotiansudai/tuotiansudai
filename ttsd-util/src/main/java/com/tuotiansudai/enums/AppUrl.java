@@ -8,7 +8,7 @@ public enum AppUrl {
     SECURITY_DETAIL("安全保障详情页", "app/tuotian/guarantee"),
     INVEST_NORMAL("投资列表页-直投项目", "app/tuotian/invest-list"),
     INVEST_TRANSFER("投资列表页-转让项目", "app/tuotian/transfer-list"),
-    MY_ASSESS("我的财富", "app://tuotian/myfortune"),
+    MY_ASSESS("我的财富", "app/tuotian/myfortune"),
     ASSESS_ADMINISTER("资金管理", "app/tuotian/myfund"),
     MY_INVEST_REPAYING("我的投资收款中", "app/tuotian/myinvest-repaying"),
     MY_INVEST_RAISING("我的投资投标中", "app/tuotian/myinvest-raising"),
