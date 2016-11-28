@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-
 @Controller
 @RequestMapping(value = "/message-center")
 public class MobileAppMessageCenterController {
@@ -22,13 +20,11 @@ public class MobileAppMessageCenterController {
 
     @RequestMapping(value = "/userMessage/{userMessageId}", method = RequestMethod.GET)
     @ResponseBody
-    public BaseResponseDto<UserMessageViewDto> getUserMessage(@PathVariable long userMessageId, HttpServletResponse response) {
+    public BaseResponseDto<UserMessageViewDto> getUserMessage(@PathVariable long userMessageId) {
         UserMessageViewDto userMessageViewDto = mobileAppUserMessageService.getUserMessageModelById(userMessageId);
         BaseResponseDto<UserMessageViewDto> baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
 
         baseResponseDto.setData(userMessageViewDto);
-
-        response.setContentType("application/json");
 
         return baseResponseDto;
     }
