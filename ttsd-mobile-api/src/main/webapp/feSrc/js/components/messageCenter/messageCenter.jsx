@@ -1,6 +1,6 @@
 import React from "react";
 import changeTitle from "utils/changeTitle";
-import {main} from "./messageCenter.scss";
+import { main } from "./messageCenter.scss";
 import IScroll from "iscroll";
 import imagesLoaded from "imagesloaded";
 import ajax from "utils/ajax";
