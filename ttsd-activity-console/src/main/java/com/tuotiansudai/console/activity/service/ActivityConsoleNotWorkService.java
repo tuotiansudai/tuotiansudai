@@ -88,6 +88,10 @@ public class ActivityConsoleNotWorkService {
             referrers.add(userModel.getReferrer());
         }
         for (String loginName : referrers) {
+            NotWorkModel existedNotWorkModel = notWorkMapper.findByLoginName(loginName);
+            if(null != existedNotWorkModel) {
+                continue;
+            }
             UserModel userModel = userMapper.findByLoginName(loginName);
             if (null != userModel) {
                 NotWorkModel notWorkModel = new NotWorkModel(loginName, userModel.getUserName(), userModel.getMobile(), false);
