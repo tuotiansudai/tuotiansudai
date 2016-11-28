@@ -1,10 +1,12 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.RechargeDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -32,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Service
 public class RechargeServiceImpl implements RechargeService {
@@ -58,6 +61,9 @@ public class RechargeServiceImpl implements RechargeService {
 
     @Autowired
     private PaySyncClient paySyncClient;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     @Transactional
@@ -156,6 +162,7 @@ public class RechargeServiceImpl implements RechargeService {
             } else {
                 this.postRechargeCallback(orderId, loginName, amount);
             }
+            mqWrapperClient.sendMessage(MessageQueue.RechargeSuccess_CompletePointTask, rechargeModel.getLoginName());
 
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Recharge callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));

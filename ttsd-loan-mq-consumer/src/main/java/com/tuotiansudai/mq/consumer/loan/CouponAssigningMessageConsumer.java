@@ -4,7 +4,6 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +37,7 @@ public class CouponAssigningMessageConsumer implements MessageConsumer {
                 logger.info("[MQ] ready to consumer message: assigning coupon.");
                 UserCouponModel userCoupon = couponAssignmentService.assign(msgParts[0], Long.parseLong(msgParts[1]), null);
                 logger.info("[MQ] assigning coupon success, begin publish message.");
-                mqClient.publishMessage(MessageTopic.CouponAssigned, "UserCoupon:" + userCoupon.getId());
+                mqClient.sendMessage(MessageQueue.CouponAssigned_UserMessageSending, "UserCoupon:" + userCoupon.getId());
                 logger.info("[MQ] consumer message success.");
             }
         }
