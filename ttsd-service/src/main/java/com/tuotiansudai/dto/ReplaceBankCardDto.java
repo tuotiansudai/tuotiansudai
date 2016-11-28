@@ -28,8 +28,8 @@ public class ReplaceBankCardDto {
         this.loginName = loginName;
         this.userName = userName;
         this.mobile = mobile;
-        this.oldCard = Strings.isNullOrEmpty(oldCode) ? "" : BankCardUtil.getBankName(oldCode) + String.format("(尾号%s)", oldNum.length() > 4 ? oldNum.substring(oldNum.length() - 4, oldNum.length()) : "");
-        this.applyCard = Strings.isNullOrEmpty(applyCode) ? "" : BankCardUtil.getBankName(applyCode) + String.format("(尾号%s)", applyNum.length() > 4 ? applyNum.substring(applyNum.length() - 4, applyNum.length()) : "");
+        this.oldCard = (Strings.isNullOrEmpty(oldCode) ? "" : BankCardUtil.getBankName(oldCode)) + (String.format("(尾号%s)", oldNum.length() > 4 ? oldNum.substring(oldNum.length() - 4, oldNum.length()) : ""));
+        this.applyCard = (Strings.isNullOrEmpty(applyCode) ? "" : BankCardUtil.getBankName(applyCode)) + (String.format("(尾号%s)", applyNum.length() > 4 ? applyNum.substring(applyNum.length() - 4, applyNum.length()) : ""));
         this.applyDate = applyDate;
         this.status = status;
         this.remark = remark;

@@ -43,7 +43,7 @@ require(['jquery', 'jquery-ui', 'layer', 'layer-extend', 'layerWrapper', 'bootst
             }
             $.ajax({
                 type: "GET",
-                url: "/user-manage/audit-bank-card",
+                url: "/bank-card-manager/audit-bank-card",
                 data: {
                     bankCardId: feedbackId,
                     loginName: loginName
@@ -52,7 +52,7 @@ require(['jquery', 'jquery-ui', 'layer', 'layer-extend', 'layerWrapper', 'bootst
                 contentType: 'application/json; charset=UTF-8'
             }).done(function (data) {
                 alert(data.data.message);
-                location.href = "/user-manage/bind-card";
+                location.href = "/bank-card-manager/bind-card";
             }).fail(function () {
                 alert("终止订单失败");
             });
@@ -83,7 +83,7 @@ require(['jquery', 'jquery-ui', 'layer', 'layer-extend', 'layerWrapper', 'bootst
 
             $.ajax({
                 type: "GET",
-                url: "/user-manage/audit-bank-card",
+                url: "/bank-card-manager/audit-bank-card",
                 data: {
                     bankCardId: feedbackId,
                     loginName: loginName
@@ -92,7 +92,7 @@ require(['jquery', 'jquery-ui', 'layer', 'layer-extend', 'layerWrapper', 'bootst
                 contentType: 'application/json; charset=UTF-8'
             }).done(function (data) {
                 alert(data.data.message);
-                location.href = "/user-manage/bind-card";
+                location.href = "/bank-card-manager/bind-card";
             }).fail(function () {
                 alert("审核失败");
             });
@@ -115,7 +115,7 @@ function update() {
 
     $.ajax({
         type: "GET",
-        url: "/user-manage/update-remark",
+        url: "/bank-card-manager/update-remark",
         data: {
             bankCardId: replaceId,
             remark: remark
@@ -123,7 +123,7 @@ function update() {
         dataType: 'json',
         contentType: 'application/json; charset=UTF-8'
     }).done(function (data) {
-        location.href = "/user-manage/bind-card";
+        location.href = "/bank-card-manager/bind-card";
     }).fail(function () {
         alert("提交备注失败");
     });

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/user-manage")
+@RequestMapping(value = "/bank-card-manager")
 public class BandCardManagerController {
     @Autowired
     private BandCardManagerService bandCardManagerService;

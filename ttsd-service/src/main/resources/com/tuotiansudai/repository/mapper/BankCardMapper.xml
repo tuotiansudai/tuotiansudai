@@ -69,4 +69,15 @@
         group by login_name having count(1) > 1 order by created_time desc limit #{index},#{pageSize}
     </select>
 
+    <select id="findReplaceBeforeCardByLoginName" parameterType="map" resultMap="BankCardResultMap">
+        SELECT
+            *
+        FROM
+            bank_card
+        WHERE
+            status = 'REMOVED'
+                AND login_name = #{loginName}
+        ORDER BY created_time DESC limit 1
+    </select>
+
 </mapper>
