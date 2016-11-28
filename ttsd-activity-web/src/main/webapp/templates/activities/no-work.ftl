@@ -32,7 +32,7 @@
 										<a href="/loan-list" class="loan-btn-item">立即投资</a>
 									</li>
 									</@global.isNotAnonymous>
-									<@global.isAnonymous>
+									<#if !(investAmount??)>
 									<li class="login-item">
 										<#if !isAppSource>
                                             <span class="show-login">登录查看我的奖品</span>
@@ -40,7 +40,7 @@
                                             <a href="/login">登录查看我的奖品</a>
 										</#if>
 									</li>
-									</@global.isAnonymous>
+									</#if>
 								</ul>
 							</div>
 						</div>
