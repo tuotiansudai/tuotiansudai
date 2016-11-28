@@ -42,8 +42,7 @@ def login_without_password():
 @sign_in.route("/logout/<session_id>", methods=['POST'])
 def logout(session_id):
     manager = service.SessionManager()
-    user_info = manager.get_user_info(session_id)
-    manager.delete(session_id)
+    user_info = manager.delete(session_id)
     token_id = manager.create()
     return success({'token': token_id, 'user_info': user_info})
 
