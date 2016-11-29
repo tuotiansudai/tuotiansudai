@@ -57,6 +57,10 @@
   .error-info {
     overflow: hidden;
     padding-left: 50px;
+    img {
+      margin-top: 30px;
+      margin-right: 55px;
+    }
     p {
       overflow: hidden;
       span {
@@ -79,7 +83,13 @@
   }
   .bRadiusBox {
     padding: 20px 35px 20px 35px;
-    line-height: 2.5;
+    line-height: 1.8;
+    border: 1px solid #d9d9d9;
+    border-radius:5px;
+    height: auto;
+    &.spad {
+      padding: 5px;
+    }
     i {
       font-size: 25px;
       margin-right: 5px;
