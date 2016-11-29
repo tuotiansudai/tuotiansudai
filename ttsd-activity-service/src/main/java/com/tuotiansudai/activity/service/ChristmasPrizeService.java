@@ -60,16 +60,14 @@ public class ChristmasPrizeService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.startTime}\")}")
-    private Date activityChristmasStartTime;
+    @Value("#{'${activity.christmas.period}'.split('\\~')}")
+    private List<String> christmasTime = Lists.newArrayList();
 
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.endTime}\")}")
-    private Date activityChristmasEndTime;
+    Date activityChristmasStartTime = DateTime.parse(christmasTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+    Date activityChristmasEndTime = DateTime.parse(christmasTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
 
     private static final String redisKey = "web:christmasTime:lottery:startTime";
     private static final String redisHKey = "activityChristmasPrizeStartTime";
-
-    private static final String total_lottery_times = "web:activityChristmas:lotteryTimes:{0}";
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final int timeout = 60 * 60 * 24 * 20;
@@ -98,18 +96,15 @@ public class ChristmasPrizeService {
                 return lotteryTime;
             }
 
-            //注册增加一次
             if (userModel.getRegisterTime().before(activityChristmasEndTime) && userModel.getRegisterTime().after(activityChristmasPrizeStartTime)) {
                 lotteryTime++;
             }
 
-            //实名认证增加一次
             AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
             if (accountModel != null && accountModel.getRegisterTime().before(activityChristmasEndTime) && accountModel.getRegisterTime().after(activityChristmasPrizeStartTime)) {
                 lotteryTime++;
             }
 
-            //首次投资和邀请好友
             List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityChristmasPrizeStartTime, activityChristmasEndTime, userModel.getLoginName());
             for (UserModel referrerUserModel : userModels) {
                 if (referrerUserModel.getRegisterTime().before(activityChristmasEndTime) && referrerUserModel.getRegisterTime().after(activityChristmasPrizeStartTime)) {
@@ -121,13 +116,10 @@ public class ChristmasPrizeService {
             }
 
             //每满2000元均增加一次
-            if (investMapper.countInvestorSuccessInvestByInvestTime(userModel.getLoginName(), activityChristmasPrizeStartTime, activityChristmasEndTime) == 1) {
-                long sumAmountByloginName = investMapper.sumInvestAmountIphone7(activityChristmasPrizeStartTime, activityChristmasEndTime);
-                switch (sumAmountByloginName){
-                    case sumAmountByloginName % 2000
+            long sumAmount = investMapper.sumSuccessInvestByInvestTimeAndLoginName(userModel.getMobile(), activityChristmasPrizeStartTime, activityChristmasEndTime);
+            lotteryTime += (int)(sumAmount/200000);
 
-                }
-            }
+            lotteryTime = lotteryTime >= 10 ? 10 : lotteryTime;
 
             long userTime = userLotteryPrizeMapper.findUserLotteryPrizeCountViews(userModel.getMobile(), null, ActivityCategory.CHRISTMAS_ACTIVITY, null, null);
             if (lotteryTime > 0) {

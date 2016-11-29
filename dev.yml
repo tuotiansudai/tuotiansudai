@@ -176,6 +176,7 @@ worker-invest:
     - "TZ=Asia/Shanghai"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-job-worker/build/distributions:/opt/worker
     - /var/log/tuotian/worker-invest:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-job-worker-invest/bin/ttsd-job-worker"
@@ -190,10 +191,26 @@ worker-jpush:
     - "TZ=Asia/Shanghai"
     - "JAVA_OPTS=-Xmx1024m"
   volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
     - ./ttsd-job-worker/build/distributions:/opt/worker
     - /var/log/tuotian/worker-jpush:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-job-worker-jpush/bin/ttsd-job-worker"
   links:
+    - "redis-server"
+
+worker-repay:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - /workspace/anxin_sign/:/workspace/anxin_sign
+    - ./ttsd-job-worker/build/distributions:/opt/worker
+    - /var/log/tuotian/worker-repay:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-job-worker-repay/bin/ttsd-job-worker"
+  links:
+    - "pay-wrapper"
+    - "sms-wrapper"
     - "redis-server"
 
 loan-mq-consumer:
@@ -210,6 +227,19 @@ loan-mq-consumer:
     - "sms-wrapper"
     - "redis-server"
 
+message-mq-consumer:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-message-mq-consumer/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-message-mq-consumer:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-message-mq-consumer/bin/ttsd-message-mq-consumer"
+  links:
+    - "sms-wrapper"
+    - "redis-server"
+
 diagnosis:
   image: "anapsix/alpine-java:8_jdk"
   environment:
@@ -219,6 +249,8 @@ diagnosis:
     - ./ttsd-diagnosis/build/distributions:/opt/worker
     - /var/log/tuotian/diagnosis:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-diagnosis/bin/ttsd-diagnosis"
+  links:
+    - "redis-server"
 
 static-server:
   image: "nginx"

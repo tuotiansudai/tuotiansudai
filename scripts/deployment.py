@@ -36,12 +36,15 @@ class Deployment(object):
         sh('cd ./ttsd-job-worker && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker && {0} -Pwork=invest distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker && {0} -Pwork=jpush distZip'.format(self._gradle))
+        sh('cd ./ttsd-job-worker && {0} -Pwork=repay distZip'.format(self._gradle))
         sh('cd ./ttsd-job-worker/build/distributions && unzip \*.zip')
 
     def build_mq_consumer(self):
         print "Making MQ consumer build..."
         sh('cd ./ttsd-loan-mq-consumer && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-loan-mq-consumer/build/distributions && unzip \*.zip')
+        sh('cd ./ttsd-message-mq-consumer && {0} distZip'.format(self._gradle))
+        sh('cd ./ttsd-message-mq-consumer/build/distributions && unzip \*.zip')
 
     def build_diagnosis(self):
         print "Making diagnosis build..."

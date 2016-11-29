@@ -16,7 +16,7 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan
-            base-package="com.tuotiansudai.client,com.tuotiansudai.cache,com.tuotiansudai.point.repository"/>
+            base-package="com.tuotiansudai.client,com.tuotiansudai.cache,com.tuotiansudai.point.repository,com.tuotiansudai.mq"/>
 
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">

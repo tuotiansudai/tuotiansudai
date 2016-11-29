@@ -93,6 +93,7 @@ public class AnxinQueryContractJob implements Job {
                     // 清redis中的inCreating标记
                     redisWrapperClient.del(AnxinSignServiceImpl.TRANSFER_CONTRACT_IN_CREATING_KEY + businessId);
                 }
+                return;
             }
 
             List<String> waitingBatchNo = anxinSignService.queryContract(businessId, batchNoList, anxinContractType);

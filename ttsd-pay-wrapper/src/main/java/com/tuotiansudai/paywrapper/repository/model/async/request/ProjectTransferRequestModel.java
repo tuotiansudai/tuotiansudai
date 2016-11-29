@@ -34,7 +34,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferRequestModel newInvestRequest(String projectId, String orderId, String userId, String amount,Source source) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL,source);
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel("project_transfer_invest",projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL,source);
         if (source != null && source.equals(Source.WEB)) {
             model.retUrl = MessageFormat.format("{0}/invest-success", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
         }
@@ -46,7 +46,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferRequestModel newInvestTransferRequest(String projectId, String orderId, String userId, String amount, Source source) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, source);
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel("project_transfer_transfer",projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, source);
         if (source != null && source.equals(Source.WEB)) {
             model.retUrl = MessageFormat.format("{0}/invest-success", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
         }
@@ -137,7 +137,6 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         model.particType = UmPayParticType.PLATFORM.getCode();
         return model;
     }
-
     /**
      * 超投后返款
      *
@@ -187,8 +186,8 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         this.particAccType = umPayParticAccType.getCode();
     }
 
-    private ProjectTransferRequestModel(String projectId, String orderId, String userId, String amount, UmPayParticAccType umPayParticAccType, Source source) {
-        super(source, "project_transfer_invest");
+    private ProjectTransferRequestModel(String mobileAppPayFrontServiceName,String projectId, String orderId, String userId, String amount, UmPayParticAccType umPayParticAccType, Source source) {
+        super(source, mobileAppPayFrontServiceName);
         this.service = UmPayService.PROJECT_TRANSFER.getServiceName();
         this.orderId = orderId;
         this.projectId = projectId;

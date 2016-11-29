@@ -24,7 +24,7 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan
-            base-package="com.tuotiansudai.message,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.cache"/>
+            base-package="com.tuotiansudai.message,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.cache, com.tuotiansudai.jpush, com.tuotiansudai.util, com.tuotiansudai.cache,com.tuotiansudai.mq"/>
 
     <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>
@@ -56,7 +56,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage"
-                  value="com.tuotiansudai.message.repository.model,com.tuotiansudai.repository.model"/>
+                  value="com.tuotiansudai.message.repository.model,com.tuotiansudai.repository.model,com.tuotiansudai.jpush.repository.model"/>
     </bean>
 
 
@@ -64,7 +64,7 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <property name="basePackage"
-                  value="com.tuotiansudai.message.repository.mapper,com.tuotiansudai.repository.mapper"/>
+                  value="com.tuotiansudai.message.repository.mapper,com.tuotiansudai.repository.mapper,com.tuotiansudai.jpush.repository.mapper"/>
     </bean>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">

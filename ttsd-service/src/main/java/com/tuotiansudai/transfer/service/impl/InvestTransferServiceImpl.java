@@ -1,8 +1,5 @@
 package com.tuotiansudai.transfer.service.impl;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -21,8 +18,12 @@ import com.tuotiansudai.transfer.repository.model.TransferInvestDetailDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
+import com.tuotiansudai.util.CalculateLeftDays;
+import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -148,12 +149,8 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return false;
         }
 
-        boolean isCanceledToday = Iterators.any(transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.CANCEL)).iterator(), new Predicate<TransferApplicationModel>() {
-            @Override
-            public boolean apply(TransferApplicationModel input) {
-                return new DateTime(input.getApplicationTime()).isEqual(new DateTime().withTimeAtStartOfDay());
-            }
-        });
+        boolean isCanceledToday = Iterators.any(transferApplicationMapper.findByTransferInvestId(investModel.getId(),
+                Lists.newArrayList(TransferStatus.CANCEL)).iterator(), input -> new DateTime(input.getApplicationTime()).isEqual(new DateTime().withTimeAtStartOfDay()));
         if (isCanceledToday) {
             logger.error(MessageFormat.format("[Transfer Apply {0}] invest application was canceled today", String.valueOf(investModel.getId())));
             return false;
@@ -289,16 +286,13 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         int count = transferApplicationMapper.findCountTransferApplicationPagination(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source);
         List<TransferApplicationRecordDto> items = Lists.newArrayList();
         if (count > 0) {
-            int totalPages = count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize;
+            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             items = transferApplicationMapper.findTransferApplicationPaginationList(transferApplicationId, startTime, endTime, status, transferrerMobile, transfereeMobile, loanId, source, (index - 1) * pageSize, pageSize);
         }
-        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, new Function<TransferApplicationRecordDto, TransferApplicationPaginationItemDataDto>() {
-            @Override
-            public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto input) {
-                TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
-                return transferApplicationPaginationItemDataDto;
-            }
+        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, input -> {
+            TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
+            return transferApplicationPaginationItemDataDto;
         });
 
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> dto = new BasePaginationDataDto(index, pageSize, count, records);
@@ -312,24 +306,25 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         int count = transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(transferrerLoginName, statusList);
         List<TransferApplicationRecordDto> items = Lists.newArrayList();
         if (count > 0) {
-            int totalPages = count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize;
+            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             items = transferApplicationMapper.findTransferApplicationPaginationByLoginName(transferrerLoginName, statusList, (index - 1) * pageSize, pageSize);
 
         }
-        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, new Function<TransferApplicationRecordDto, TransferApplicationPaginationItemDataDto>() {
-            @Override
-            public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto input) {
-                TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
-                if (input.getTransferStatus() == TransferStatus.TRANSFERABLE) {
-                    transferApplicationPaginationItemDataDto.setTransferStatus(isTransferable(input.getTransferApplicationId()) ? input.getTransferStatus().getDescription() : "--");
-                } else if (input.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
-                    transferApplicationPaginationItemDataDto.setTransferStatus("--");
-                } else {
-                    transferApplicationPaginationItemDataDto.setTransferStatus(input.getTransferStatus().getDescription());
-                }
-                return transferApplicationPaginationItemDataDto;
+        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, input -> {
+            TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
+            if (input.getTransferStatus() == TransferStatus.TRANSFERABLE) {
+                transferApplicationPaginationItemDataDto.setTransferStatus(isTransferable(input.getTransferApplicationId()) ? input.getTransferStatus().getDescription() : "--");
+            } else if (input.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
+                transferApplicationPaginationItemDataDto.setTransferStatus("--");
+            } else {
+                transferApplicationPaginationItemDataDto.setTransferStatus(input.getTransferStatus().getDescription());
             }
+            LoanModel loanModel = loanMapper.findById(input.getLoanId());
+            InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(input.getTransferInvestId(), loanModel.getPeriods());
+            Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+            transferApplicationPaginationItemDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
+            return transferApplicationPaginationItemDataDto;
         });
 
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> dto = new BasePaginationDataDto(index, pageSize, count, records);
@@ -359,7 +354,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         long count = transferApplicationMapper.findCountInvestTransferPagination(investorLoginName, startTime, endTime, loanStatus);
 
         if (count > 0) {
-            int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
+            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             items = transferApplicationMapper.findTransferInvestList(investorLoginName, (index - 1) * pageSize, pageSize, startTime, endTime, loanStatus);
         }
@@ -367,9 +362,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         items.forEach(transferInvestDetailDto -> {
             if (ContractNoStatus.OLD.name().equals(transferInvestDetailDto.getContractNo())) {
                 transferInvestDetailDto.setContractOld("1");
-            } else if (ContractNoStatus.WAITING.name().equals(transferInvestDetailDto.getContractNo())) {
-                transferInvestDetailDto.setContractCreating("1");
-            } else {
+            } else if (StringUtils.isNotEmpty(transferInvestDetailDto.getContractNo())) {
                 transferInvestDetailDto.setContractOK("1");
             }
         });

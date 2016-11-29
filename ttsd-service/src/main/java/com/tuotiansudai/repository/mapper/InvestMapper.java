@@ -254,6 +254,10 @@ public interface InvestMapper {
                                                 @Param(value = "startTime") Date startTime,
                                                 @Param(value = "endTime") Date endTime);
 
+    long sumSuccessInvestByInvestTimeAndLoginName(@Param(value = "loginName") String loginName,
+                                                @Param(value = "startTime") Date startTime,
+                                                @Param(value = "endTime") Date endTime);
+
     List<InvestModel> countSuccessInvestByInvestTimeAndLoginName(@Param(value = "loginName") String loginName,
                                                                 @Param(value = "startTime") Date startTime,
                                                                 @Param(value = "endTime") Date endTime);
@@ -268,6 +272,6 @@ public interface InvestMapper {
     void updateAllContractNoByLoanId(@Param(value = "loanId") Long loanId,
                                      @Param(value = "contractNo") String contractNo);
 
-    List<InvestModel> findContractFailInvest(@Param(value = "loanId") long loanId);
+    List<InvestModel> findNoContractNoInvest(@Param(value = "loanId") long loanId);
 
 }

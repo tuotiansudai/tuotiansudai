@@ -1,7 +1,8 @@
 package com.tuotiansudai.mq.client.model;
 
-public enum MessageTopicQueue {
-    UserRegistered_CouponAssigning(MessageTopic.UserRegistered, "UserRegistered-CouponAssigning");
+public enum MessageTopicQueue implements Queue {
+    CouponAssigned_UserMessageSending(MessageTopic.CouponAssigned, "CouponAssigned-UserMessageSending");
+
 
     final MessageTopic topic;
     final String queueName;

@@ -1,8 +1,8 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.WithdrawDto;
+import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.util.AmountConverter;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.Serializable;
 import java.util.Date;

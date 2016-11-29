@@ -6,6 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v1_0.UserBillDetailListRequestDto;
 import com.tuotiansudai.api.dto.v1_0.UserBillDetailListResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppUserBillListServiceImpl;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.UserBillModel;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Mockito.when;
 
@@ -29,6 +31,8 @@ public class MobileAppUserBillListServiceServiceTest extends ServiceTestBase{
     private UserBillMapper userBillMapper;
     @Autowired
     private IdGenerator idGenerator;
+    @Mock
+    private PageValidUtils pageValidUtils;
 
     @Test
     public void shouldQueryUserBillListIsOk(){
@@ -46,6 +50,7 @@ public class MobileAppUserBillListServiceServiceTest extends ServiceTestBase{
         userBillModelList.add(userBillModel);
         when(userBillMapper.findUserBills(anyMap())).thenReturn(userBillModelList);
         when(userBillMapper.findUserBillsCount(anyMap())).thenReturn(1);
+        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         UserBillDetailListRequestDto userBillDetailListRequestDto = new UserBillDetailListRequestDto();
         userBillDetailListRequestDto.setPageSize(10);
         userBillDetailListRequestDto.setIndex(1);

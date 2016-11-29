@@ -1,7 +1,5 @@
 package com.tuotiansudai.transfer.service.impl;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
@@ -21,19 +19,17 @@ import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.repository.model.TransferableInvestPaginationItemDataDto;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.CalculateLeftDays;
 import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.PaginationUtil;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -127,20 +123,15 @@ public class TransferServiceImpl implements TransferService {
 
     @Override
     public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findAllTransferApplicationPaginationList(List<TransferStatus> transferStatus, double rateStart, double rateEnd, Integer index, Integer pageSize) {
-
         int count = transferApplicationMapper.findCountAllTransferApplicationPagination(transferStatus, rateStart, rateEnd);
         List<TransferApplicationRecordDto> items = transferApplicationMapper.findAllTransferApplicationPaginationList(transferStatus, rateStart, rateEnd, (index - 1) * pageSize, pageSize);
-
-        List<TransferApplicationPaginationItemDataDto> itemDataDtoList = Lists.transform(items, new Function<TransferApplicationRecordDto, TransferApplicationPaginationItemDataDto>() {
-            @Override
-            public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto transferApplicationRecordDto) {
-                TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(transferApplicationRecordDto);
-                LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
-                InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
-                long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), investRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                transferApplicationPaginationItemDataDto.setLeftDays(String.valueOf(leftDays > 0 ? leftDays : 0));
-                return transferApplicationPaginationItemDataDto;
-            }
+        List<TransferApplicationPaginationItemDataDto> itemDataDtoList = Lists.transform(items, transferApplicationRecordDto -> {
+            TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(transferApplicationRecordDto);
+            LoanModel loanModel = loanMapper.findById(transferApplicationRecordDto.getLoanId());
+            InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationRecordDto.getTransferInvestId(), loanModel.getPeriods());
+            Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+            transferApplicationPaginationItemDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
+            return transferApplicationPaginationItemDataDto;
         });
 
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> dto = new BasePaginationDataDto(index, pageSize, count, itemDataDtoList);
@@ -159,7 +150,7 @@ public class TransferServiceImpl implements TransferService {
         if (transferApplicationModel == null) {
             return null;
         }
-        TransferApplicationDetailDto transferApplicationDetailDto = convertModelToDto(transferApplicationModel, loginName, showLoginNameLength);
+        TransferApplicationDetailDto transferApplicationDetailDto = convertModelToDto(transferApplicationModel, loginName);
         transferApplicationDetailDto.setStatus(true);
         return transferApplicationDetailDto;
     }
@@ -196,31 +187,28 @@ public class TransferServiceImpl implements TransferService {
         List<TransferableInvestView> items = Lists.newArrayList();
         items = investMapper.findWebTransferableApplicationPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
         if (count > 0) {
-            int totalPages = (int) ((count % pageSize > 0 || count == 0) ? count / pageSize + 1 : count / pageSize);
+            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             items = investMapper.findWebTransferableApplicationPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
-
         }
-        List<TransferableInvestPaginationItemDataDto> records = Lists.transform(items, new Function<TransferableInvestView, TransferableInvestPaginationItemDataDto>() {
-            @Override
-            public TransferableInvestPaginationItemDataDto apply(TransferableInvestView input) {
-                TransferableInvestPaginationItemDataDto transferableInvestPaginationItemDataDto = new TransferableInvestPaginationItemDataDto(input);
-                transferableInvestPaginationItemDataDto.setTransferStatus(input.getTransferStatus().getDescription());
-                transferableInvestPaginationItemDataDto.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(input.getLoanId()));
-                LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(input.getLoanId());
-                if (loanRepayModel != null) {
-                    int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(input.getInvestId(), loanRepayModel.getPeriod());
-                    transferableInvestPaginationItemDataDto.setLeftPeriod(leftPeriod);
-                }
-                return transferableInvestPaginationItemDataDto;
+        List<TransferableInvestPaginationItemDataDto> records = Lists.transform(items, input -> {
+            TransferableInvestPaginationItemDataDto transferableInvestPaginationItemDataDto = new TransferableInvestPaginationItemDataDto(input);
+            transferableInvestPaginationItemDataDto.setTransferStatus(input.getTransferStatus().getDescription());
+            transferableInvestPaginationItemDataDto.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(input.getLoanId()));
+            LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(input.getLoanId());
+            if (loanRepayModel != null) {
+                int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(input.getInvestId(), loanRepayModel.getPeriod());
+                transferableInvestPaginationItemDataDto.setLeftPeriod(leftPeriod);
+                LoanModel loanModel = loanMapper.findById(input.getLoanId());
+                InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(input.getInvestId(), loanModel.getPeriods());
+                Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+                transferableInvestPaginationItemDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
             }
+            return transferableInvestPaginationItemDataDto;
         });
-        UnmodifiableIterator<TransferableInvestPaginationItemDataDto> filter = Iterators.filter(records.iterator(), new Predicate<TransferableInvestPaginationItemDataDto>() {
-            @Override
-            public boolean apply(TransferableInvestPaginationItemDataDto input) {
-                TransferRuleModel transferRuleModel = transferRuleMapper.find();
-                return transferRuleModel.isMultipleTransferEnabled() || (!transferRuleModel.isMultipleTransferEnabled() && transferApplicationMapper.findByInvestId(input.getInvestId()) == null);
-            }
+        UnmodifiableIterator<TransferableInvestPaginationItemDataDto> filter = Iterators.filter(records.iterator(), input -> {
+            TransferRuleModel transferRuleModel = transferRuleMapper.find();
+            return transferRuleModel.isMultipleTransferEnabled() || (!transferRuleModel.isMultipleTransferEnabled() && transferApplicationMapper.findByInvestId(input.getInvestId()) == null) ;
         });
         BasePaginationDataDto<TransferableInvestPaginationItemDataDto> baseDto = new BasePaginationDataDto(index, pageSize, count, Lists.newArrayList(filter));
         baseDto.setStatus(true);
@@ -228,8 +216,7 @@ public class TransferServiceImpl implements TransferService {
         return baseDto;
     }
 
-
-    private TransferApplicationDetailDto convertModelToDto(TransferApplicationModel transferApplicationModel, String loginName, int showLoginNameLength) {
+    private TransferApplicationDetailDto convertModelToDto(TransferApplicationModel transferApplicationModel, String loginName) {
         TransferApplicationDetailDto transferApplicationDetailDto = new TransferApplicationDetailDto();
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
@@ -246,6 +233,9 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setInvestAmount(AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
         transferApplicationDetailDto.setBaseRate(loanModel.getBaseRate() * 100);
         transferApplicationDetailDto.setLeftPeriod(transferApplicationModel.getLeftPeriod());
+        InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), loanModel.getPeriods());
+        Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+        transferApplicationDetailDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
         transferApplicationDetailDto.setDueDate(investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), loanModel.getPeriods()).getRepayDate());
         transferApplicationDetailDto.setNextRefundDate(investRepayModel.getRepayDate());
         transferApplicationDetailDto.setLoanType(loanModel.getType().getRepayType());

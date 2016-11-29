@@ -44,7 +44,7 @@ public class OssUploadController {
         ueditorConfig.put("imageCompressEnable", true);
         ueditorConfig.put("imageCompressBorder", 1600);
         ueditorConfig.put("imageInsertAlign", "none");
-        ueditorConfig.put("imageUrlPrefix", "/upload");
+        ueditorConfig.put("imageUrlPrefix", "");
         ueditorConfig.put("imagePathFormat", "/upload/{yyyy}{mm}{dd}");
     }
 
@@ -63,7 +63,7 @@ public class OssUploadController {
             String ossPath = "";
             try {
                 String url = request.getRequestURL().toString();
-                ossPath = ossWrapperClient.upload(FilenameUtils.getExtension(fileName), dfi.getInputStream(), rootPath, url.substring(0,url.lastIndexOf("/")+1), true);
+                ossPath = ossWrapperClient.upload(FilenameUtils.getExtension(fileName), dfi.getInputStream(), rootPath, url.substring(0,url.lastIndexOf("/")), true);
                 jsonArray.put(MessageFormat.format(imgTemplate, ossPath, fileName, fileName));
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
@@ -119,7 +119,7 @@ public class OssUploadController {
             String url = request.getRequestURL().toString();
             String absoluteUrl = ossWrapperClient.upload(fileExtName, dfi.getInputStream(), rootPath, url.substring(0,url.lastIndexOf("/")+1), false);
             if (absoluteUrl.indexOf(":") > 0 ) {
-                absoluteUrl = absoluteUrl.substring(absoluteUrl.indexOf("upload"), absoluteUrl.length());
+                absoluteUrl = absoluteUrl.substring(absoluteUrl.indexOf("/upload"), absoluteUrl.length());
             }
             String relativeUrl = absoluteUrl.substring(absoluteUrl.indexOf("/"), absoluteUrl.length());
             logger.debug(MessageFormat.format("{0}|{1}", "[OSS UPLOAD] originalName:",originalName));

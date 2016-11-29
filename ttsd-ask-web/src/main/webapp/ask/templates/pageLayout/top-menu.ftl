@@ -1,7 +1,7 @@
 <div class="nav-container">
     <div class="img-top page-width clearfix">
         <div class="logo">
-            <a href="${applicationContext}/" class="logo-bg"></a>
+            <a href="${webServer}/" class="logo-bg"></a>
         </div>
         <div class="login-pop-app" id="iphone-app-pop">
             <em></em>
@@ -9,14 +9,14 @@
                 投资更便利</a>
             <div id="iphone-app-img" class="img-app-pc-top hide"></div>
         </div>
-        <i class="fa fa-navicon show-main-menu fr" id="showMainMenu">=</i>
+        <i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>
     </div>
 
 <#if activeNav??>
     <ul id="TopMainMenuList" class="nav-menu page-width clearfix" >
         <#list mainMenus as menu>
             <#if menu.navigation?? && menu.navigation="true">
-                <li>
+                <li <#if menu.title==activeNav>class="active"</#if>>
                     <a  href="${menu.url}"  onclick="cnzzPush.trackClick('${menu.category}','${menu.title}')" >${menu.title}</a>
                     <#if menu.leftNavs??>
                         <#list menu.leftNavs as leftNav>
@@ -32,6 +32,9 @@
                         <#if showLeftNavs>
                             <span class="icon-has-submenu"></span>
                         </#if>
+                    </#if>
+
+                    <#if menu.leftNavs??>
                         <ul class="sub-menu-list">
                             <#list menu.leftNavs as leftNav>
                                 <#if leftNav.role??>
@@ -53,7 +56,7 @@
 
             </#if>
         </#list>
-        <li class="top-membership"><a href="/membership">会员中心</a> </li>
+        <li class="top-membership"><a href="${webServer}/membership">会员中心</a> </li>
         <li class="top-activity">
             <a href="${webServer}/activity/activity-center">活动中心</a>
         </li>

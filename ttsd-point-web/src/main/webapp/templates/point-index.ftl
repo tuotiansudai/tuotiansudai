@@ -41,7 +41,7 @@
             </ul>
             <#if isLogin>
                 <div class="user-trade">
-                    <a href="/point-shop/record">兑换记录></a> | <a href="/point-shop/bill">积分明细></a>
+                    <a href="/point-shop/record">兑换记录></a> | <a href="/point-shop/bill">积分明细></a> | <a href="javascript:void(0)" class="point-rule-tip">积分规则></a>
                 </div>
             </#if>
             <div class="sign-layer" id="signLayer">
@@ -145,7 +145,8 @@
             <ul class="material-list">
                 <#list virtualProducts as virtualProduct>
                     <#if virtualProduct_index < 2>
-                        <li class="big-gift" data-href="/point-shop/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/detail">
+                        <li class="big-gift"
+                            data-href="/point-shop/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/detail">
                             <p class="num-text">剩余${virtualProduct.leftCount?c!"0"}件</p>
 
                             <p><img src="${staticServer}${virtualProduct.imageUrl}" width="160" height="100"></p>
@@ -156,7 +157,7 @@
                                     <span class="fl get-btn">已售罄</span>
                                 <#else>
                                     <a class="fl"
-                                       href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span class="fl get-btn">立即兑换</span></a>
+                                       href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span class="fl get-btn active">立即兑换</span></a>
                                 </#if>
                             </p>
                         </li>
@@ -173,7 +174,7 @@
                                 <#else>
                                     <a class="fl"
                                        href="/point-shop/order/${virtualProduct.id?c}/${virtualProduct.goodsType.name()}/1"><span
-                                            class="fl get-btn">立即兑换</span></a>
+                                            class="fl get-btn active">立即兑换</span></a>
                                 </#if>
                             </p>
                         </li>
@@ -198,7 +199,8 @@
             <ul class="material-list">
                 <#list physicalProducts as physicalProduct>
                     <#if physicalProduct_index < 2>
-                        <li class="big-gift" data-href="/point-shop/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/detail">
+                        <li class="big-gift"
+                            data-href="/point-shop/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/detail">
                             <p class="num-text">剩余${physicalProduct.leftCount?c!"0"}件</p>
 
                             <p class="mater-img picture-item">
@@ -212,7 +214,7 @@
                                     <span class="fl get-btn">已售罄</span>
                                 <#else>
                                     <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/1"><span
-                                            class="get-btn">立即兑换</span></a>
+                                            class="get-btn active">立即兑换</span></a>
                                 </#if>
                             </p>
                         </li>
@@ -231,7 +233,7 @@
                                     <span class="fl get-btn">已售罄</span>
                                 <#else>
                                     <a href="/point-shop/order/${physicalProduct.id?c}/${physicalProduct.goodsType.name()}/1"><span
-                                            class="get-btn">立即兑换</span></a>
+                                            class="get-btn active">立即兑换</span></a>
                                 </#if>
                             </p>
                         </li>
@@ -250,4 +252,48 @@
     <p>{{message}}</p>
     <a href="${webServer}/register/account?redirect=/point-shop" class="go-to">去认证</a>
 </script>
+<div class="rule-info-tip" id="ruleInfoTip">
+    <i class="close-btn"></i>
+    <h3 class="rule-title"><span>积分规则</span></h3>
+    <p>
+        <span>如何获取积分？</span>
+    </p>
+    <p class="mb-15">通过完成拓天速贷平台各项任务，即可获得相应积分。详情如下：</p>
+    <p>1.连续签到：</p>
+    <table class="table table-border">
+        <thead>
+            <tr>
+                <th>第1天</th>
+                <th>第2天</th>
+                <th>第3天</th>
+                <th>第4天</th>
+                <th>第5天</th>
+                <th>第6天</th>
+                <th>第7天</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>2积分</td>
+                <td>3积分</td>
+                <td>4积分</td>
+                <td>5积分</td>
+                <td>10积分</td>
+                <td>10积分</td>
+                <td>··· ···</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>2.其他任务：</p>
+    <p class="mb-15">在<span>积分商城</span>-><span>积分任务</span>中查看各项任务，完成后均可获得相应积分。</p>
+    <p>3.投资赚积分：</p>
+    <p class="mb-15">投资拓天速贷直投项目，投资年化积分=投资金额*投资天数/365。</p>
+    <p><span>积分的用途</span></p>
+    <p class="mb-15">用户可以用账户相应的积分进行商品兑换实物商品或优惠券或者抽奖。</p>
+    <p><span>拓天速贷积分规则</span></p>
+    <p>1.积分是拓天速贷平台发放的一种奖励，只适用于平台内指定用途，不可转让，不可兑现；</p>
+    <p>2.积分有效期：10月22日0时-次年10月21日24时；平台于每年10月21日24时，对所有用     户账户内积分进行清零，清零后积分将重新累计；</p>
+    <p>3.若发现存在作弊、刷积分的嫌疑，一经核实，拓天速贷有权回收相应积分；</p>
+    <p class="mb-15">4.拓天速贷对平台内的积分规则享有最终解释权。</p>
+</div>
 </@global.main>

@@ -185,7 +185,7 @@ form label.error {
         input.valid + .agreement + label.error {
           &:before {
             content: "\f058";
-            color: nth($checkValid, 2);
+            color: #6bc21e;
           }
         }
         &.agree-last {
@@ -719,7 +719,7 @@ form label.error {
             width: 92%;
           }
         }
-      } 
+      }
     }
   }
 

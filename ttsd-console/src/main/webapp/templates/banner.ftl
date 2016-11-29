@@ -33,7 +33,7 @@
             <div class="col-sm-4" style="margin-left: 10%;">
                 <div class="webImageUrlImage">
                     <#if banner?? && banner.webImageUrl??>
-                        <img style="width:100%" src="/${banner.webImageUrl!}" alt="缩略图"/>
+                        <img style="width:100%" src="${staticServer}${banner.webImageUrl!}" alt="缩略图"/>
                     </#if>
                 </div>
             </div>
@@ -56,7 +56,7 @@
             <div class="col-sm-4" style="margin-left: 10%;">
                 <div class="appImageUrlImage">
                     <#if banner?? && banner.appImageUrl??>
-                        <img style="width:100%" src="/${banner.appImageUrl!}" alt="缩略图"/>
+                        <img style="width:100%" src="${staticServer}${banner.appImageUrl!}" alt="缩略图"/>
                     </#if>
                 </div>
             </div>
@@ -74,10 +74,13 @@
 
         <div class="form-group">
             <label class="col-sm-1 control-label" style="width: 10%">APP链接:</label>
-
             <div class="col-sm-4">
-                <input type="text" class="form-control" name="appUrl" placeholder=""
-                       value="<#if banner??>${banner.appUrl!}</#if>" datatype="*" errormsg="APP链接不能为空">
+                <select class="selectpicker appUrl" name="appUrl">
+                    <#list appUrls as url>
+                        <option value="${url.path}" <#if banner?? && url.path == banner.appUrl>selected</#if>>${url.description}</option>
+                    </#list>
+                </select>
+                <div class="app-push-link jump-to-link">定位地址:<input type="text" class="form-control jump-link-text" name="jumpToLink" <#if banner??>value="${banner.jumpToLink!}"</#if> placeholder=""  maxlength="100" datatype="*" errormsg="定位地址不能为空"></div>
             </div>
         </div>
 

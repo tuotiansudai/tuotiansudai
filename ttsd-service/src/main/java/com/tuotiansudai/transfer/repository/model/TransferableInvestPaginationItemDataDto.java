@@ -36,6 +36,8 @@ public class TransferableInvestPaginationItemDataDto implements Serializable {
 
     private int leftPeriod;
 
+    private String leftDays;
+
     public TransferableInvestPaginationItemDataDto(){
 
     }
@@ -118,6 +120,14 @@ public class TransferableInvestPaginationItemDataDto implements Serializable {
 
     public void setLeftPeriod(int leftPeriod) {
         this.leftPeriod = leftPeriod;
+    }
+
+    public String getLeftDays() {
+        return leftDays;
+    }
+
+    public void setLeftDays(String leftDays) {
+        this.leftDays = leftDays;
     }
 
     public void setInvestId(long investId) {

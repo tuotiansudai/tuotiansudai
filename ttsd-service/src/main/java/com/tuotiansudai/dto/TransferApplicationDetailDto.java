@@ -33,6 +33,8 @@ public class TransferApplicationDetailDto extends BaseDataDto {
 
     private int leftPeriod;
 
+    private String leftDays;
+
     private Date dueDate;
 
     private Date nextRefundDate;
@@ -54,6 +56,8 @@ public class TransferApplicationDetailDto extends BaseDataDto {
     private TransferStatus transferStatus;
 
     private Date transferTime;
+
+
 
     public TransferApplicationDetailDto() {
     }
@@ -150,6 +154,14 @@ public class TransferApplicationDetailDto extends BaseDataDto {
         this.leftPeriod = leftPeriod;
     }
 
+    public String getLeftDays() {
+        return leftDays;
+    }
+
+    public void setLeftDays(String leftDays) {
+        this.leftDays = leftDays;
+    }
+
     public Date getDueDate() {
         return dueDate;
     }
@@ -233,4 +245,5 @@ public class TransferApplicationDetailDto extends BaseDataDto {
     public void setTransferTime(Date transferTime) {
         this.transferTime = transferTime;
     }
+
 }

@@ -12,6 +12,8 @@ public class BindBankCardDto implements Serializable {
     @Pattern(regexp = "^\\d+$")
     private String cardNumber;
 
+    private String bankCode;
+
     private String loginName;
 
     private Source source = Source.WEB;
@@ -21,6 +23,14 @@ public class BindBankCardDto implements Serializable {
     private String ip;
 
     private boolean fastPay = false;
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
 
     public String getLoginName() {
         return loginName;

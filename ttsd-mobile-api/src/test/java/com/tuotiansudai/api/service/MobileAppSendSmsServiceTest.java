@@ -93,7 +93,7 @@ public class MobileAppSendSmsServiceTest extends ServiceTestBase{
         String ip = "127.0.0.1";
         SendSmsCompositeRequestDto sendSmsRequestDto = new SendSmsCompositeRequestDto();
         sendSmsRequestDto.setPhoneNum("12312312312");
-        sendSmsRequestDto.setType(CaptchaType.TURN_OFF_NO_PASSWORD_INVEST);
+        sendSmsRequestDto.setType(CaptchaType.NO_PASSWORD_INVEST);
         BaseDto<SmsDataDto> smsDto = new BaseDto<>();
         SmsDataDto smsDataDto = new SmsDataDto();
         smsDataDto.setStatus(true);

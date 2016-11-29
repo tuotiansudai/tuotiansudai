@@ -3,13 +3,14 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.message.dto.MessageDto;
-import com.tuotiansudai.message.repository.model.MessageChannel;
-import com.tuotiansudai.message.repository.model.MessageStatus;
-import com.tuotiansudai.message.repository.model.MessageType;
-import com.tuotiansudai.message.repository.model.MessageUserGroup;
+import com.tuotiansudai.enums.AppUrl;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
+import com.tuotiansudai.message.dto.MessageCompleteDto;
+import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.message.service.MessageService;
+import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +19,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -34,24 +35,24 @@ public class MessageController {
     @RequestMapping(value = "/manual-message-list", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView manualMessageList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                           @RequestParam(value = "title", required = false) String title,
                                           @RequestParam(value = "createdBy", required = false) String createdBy,
                                           @RequestParam(value = "messageStatus", required = false) MessageStatus messageStatus) {
+        int pageSize = 10;
 
-        ModelAndView modelAndView = new ModelAndView("/manual-message-list");
+        ModelAndView modelAndView = new ModelAndView("/message-manual-list");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("title", title);
         modelAndView.addObject("createdBy", createdBy);
         modelAndView.addObject("messageStatusInput", messageStatus);
 
-        modelAndView.addObject("messageList", messageService.findMessageList(title, messageStatus, createdBy, MessageType.MANUAL, index, pageSize));
+        modelAndView.addObject("messageList", messageService.findMessageCompleteDtoList(title, messageStatus, createdBy, MessageType.MANUAL, index, pageSize));
 
         modelAndView.addObject("messageStatuses", Lists.newArrayList(MessageStatus.values()));
         long messageCount = messageService.findMessageCount(title, messageStatus, createdBy, MessageType.MANUAL);
         modelAndView.addObject("messageCount", messageCount);
-        long totalPages = messageCount / pageSize + (messageCount % pageSize > 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(messageCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -60,14 +61,15 @@ public class MessageController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/event-message-list", method = RequestMethod.GET)
+    @RequestMapping(value = "/auto-message-list", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView autoMessageList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
-                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                         @RequestParam(value = "title", required = false) String title,
                                         @RequestParam(value = "createdBy", required = false) String createdBy,
                                         @RequestParam(value = "messageStatus", required = false) MessageStatus messageStatus) {
-        ModelAndView modelAndView = new ModelAndView("/event-message-list");
+
+        int pageSize = 10;
+        ModelAndView modelAndView = new ModelAndView("/message-auto-list");
 
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
@@ -75,12 +77,12 @@ public class MessageController {
         modelAndView.addObject("createdBy", createdBy);
         modelAndView.addObject("messageStatusInput", messageStatus);
 
-        modelAndView.addObject("messageList", messageService.findMessageList(title, messageStatus, createdBy, MessageType.EVENT, index, pageSize));
+        modelAndView.addObject("messageList", messageService.findMessageCompleteDtoList(title, messageStatus, createdBy, MessageType.EVENT, index, pageSize));
 
         modelAndView.addObject("messageStatuses", Lists.newArrayList(MessageStatus.values()));
         long messageCount = messageService.findMessageCount(title, messageStatus, createdBy, MessageType.EVENT);
         modelAndView.addObject("messageCount", messageCount);
-        long totalPages = messageCount / pageSize + (messageCount % pageSize > 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(messageCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
@@ -90,40 +92,48 @@ public class MessageController {
     }
 
     @RequestMapping(value = "/manual-message", method = RequestMethod.GET)
-    public ModelAndView createManualMessage() {
-        ModelAndView modelAndView = new ModelAndView("/manual-message");
+    public ModelAndView manualMessageCreate() {
+        ModelAndView modelAndView = new ModelAndView("/message-manual-edit");
         modelAndView.addObject("userGroups", Lists.newArrayList(MessageUserGroup.values()));
         List<MessageUserGroup> selectedUserGroups = Lists.newArrayList(MessageUserGroup.values());
         selectedUserGroups.remove(MessageUserGroup.IMPORT_USER);
         modelAndView.addObject("selectedUserGroups", selectedUserGroups);
         modelAndView.addObject("channelTypes", Lists.newArrayList(MessageChannel.values()));
         modelAndView.addObject("selectedChannelTypes", Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
+        modelAndView.addObject("manualMessageTypes", MessageCategory.values());
+        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()).stream().filter(n -> n != AppUrl.OTHER).collect(Collectors.toList()));
+        modelAndView.addObject("pushTypes", PushType.values());
+        modelAndView.addObject("pushSources", PushSource.values());
         return modelAndView;
     }
 
     @RequestMapping(value = "/manual-message/{messageId}/edit", method = RequestMethod.GET)
     public ModelAndView createManualMessage(@PathVariable long messageId) {
-        MessageDto messageDto = messageService.getMessageByMessageId(messageId);
+        MessageCompleteDto messageCompleteDto = messageService.findMessageCompleteDtoByMessageId(messageId);
 
-        ModelAndView modelAndView = new ModelAndView("/manual-message");
-        modelAndView.addObject("dto", messageDto);
+        ModelAndView modelAndView = new ModelAndView("/message-manual-edit");
+        modelAndView.addObject("dto", messageCompleteDto);
         modelAndView.addObject("userGroups", Lists.newArrayList(MessageUserGroup.values()));
-        modelAndView.addObject("selectedUserGroups", messageDto.getUserGroups());
+        modelAndView.addObject("selectedUserGroups", messageCompleteDto.getUserGroups());
         modelAndView.addObject("channelTypes", Lists.newArrayList(MessageChannel.values()));
-        modelAndView.addObject("selectedChannelTypes", messageDto.getChannels());
+        modelAndView.addObject("selectedChannelTypes", messageCompleteDto.getChannels());
+        modelAndView.addObject("manualMessageTypes", MessageCategory.values());
+        modelAndView.addObject("appUrls",  Lists.newArrayList(AppUrl.values()).stream().filter(n -> n != AppUrl.OTHER).collect(Collectors.toList()));
+        modelAndView.addObject("pushTypes", PushType.values());
+        modelAndView.addObject("pushSources", PushSource.values());
 
         return modelAndView;
     }
 
     @RequestMapping(value = "/manual-message/create", method = RequestMethod.POST)
-    public ModelAndView createManualMessage(@Valid @ModelAttribute MessageDto messageDto,
-                                            @RequestParam(value = "importUsersId") long importUsersId) {
-        messageDto.setUpdatedBy(LoginUserInfo.getLoginName());
-        if (!messageService.isMessageExist(messageDto.getId())) {
-            messageDto.setCreatedBy(LoginUserInfo.getLoginName());
+    @ResponseBody
+    public BaseDto<BaseDataDto> createManualMessage(@RequestBody MessageCompleteDto messageCompleteDto, @RequestParam(value = "importUsersId") long importUsersId) {
+        messageCompleteDto.setUpdatedBy(LoginUserInfo.getLoginName());
+        if (!messageService.isMessageExist(messageCompleteDto.getId())) {
+            messageCompleteDto.setCreatedBy(LoginUserInfo.getLoginName());
         }
-        messageService.createAndEditManualMessage(messageDto, importUsersId);
-        return new ModelAndView("redirect:/message-manage/manual-message-list");
+        messageService.createAndEditManualMessage(messageCompleteDto, importUsersId);
+        return new BaseDto<>(new BaseDataDto(true));
     }
 
     @RequestMapping(value = "/manual-message/import-users/{importUsersId}", method = RequestMethod.POST)
@@ -150,21 +160,21 @@ public class MessageController {
         return new BaseDto<>(new BaseDataDto(true, String.valueOf(newImportUsersId)));
     }
 
-    @RequestMapping(value = "/manual-message/{messageId}/approve", method = RequestMethod.POST)
+    @RequestMapping(value = "/approve/{messageId}", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> messageApprove(@PathVariable long messageId) {
-        return messageService.approveManualMessage(messageId, LoginUserInfo.getLoginName());
+    public BaseDto<BaseDataDto> manualMessageApprove(@PathVariable long messageId) {
+        return messageService.approveMessage(messageId, LoginUserInfo.getLoginName());
     }
 
-    @RequestMapping(value = "/manual-message/{messageId}/reject", method = RequestMethod.POST)
+    @RequestMapping(value = "/reject/{messageId}", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> messageReject(@PathVariable long messageId) {
-        return messageService.rejectManualMessage(messageId, LoginUserInfo.getLoginName());
+    public BaseDto<BaseDataDto> manualMessageReject(@PathVariable long messageId) {
+        return messageService.rejectMessage(messageId, LoginUserInfo.getLoginName());
     }
 
-    @RequestMapping(value = "/manual-message/{messageId}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/{messageId}", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> messageDelete(@PathVariable long messageId) {
-        return messageService.deleteManualMessage(messageId, LoginUserInfo.getLoginName());
+    public BaseDto<BaseDataDto> manualMessageDelete(@PathVariable long messageId) {
+        return messageService.deleteMessage(messageId, LoginUserInfo.getLoginName());
     }
 }

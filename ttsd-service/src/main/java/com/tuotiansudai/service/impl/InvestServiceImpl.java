@@ -24,10 +24,7 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.InterestCalculator;
-import com.tuotiansudai.util.UserBirthdayUtil;
+import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -111,12 +108,6 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private UserCouponService userCouponService;
-
-    @Autowired
-    private UserBirthdayUtil userBirthdayUtil;
-
-    @Autowired
-    private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
     @Override
     @Transactional
@@ -252,7 +243,7 @@ public class InvestServiceImpl implements InvestService {
                 if ((usedTime != null && new DateTime(usedTime).plusSeconds(couponLockSeconds).isAfter(new DateTime()))
                         || !loginName.equalsIgnoreCase(userCouponModel.getLoginName())
                         || InvestStatus.SUCCESS == userCouponModel.getStatus()
-                        || (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !userBirthdayUtil.isBirthMonth(loginName))
+                        || (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !UserBirthdayUtil.isBirthMonth(userMapper.findByLoginName(loginName).getIdentityNumber()))
                         || userCouponModel.getEndTime().before(new Date())
                         || !couponModel.getProductTypes().contains(loanModel.getProductType())
                         || (couponModel.getInvestLowerLimit() > 0 && investAmount < couponModel.getInvestLowerLimit())) {
@@ -315,7 +306,7 @@ public class InvestServiceImpl implements InvestService {
         }
 
         long count = investMapper.countInvestorInvestPagination(loginName, loanStatus, startTime, endTime);
-        int totalPages = (int) (count % pageSize > 0 || count == 0 ? count / pageSize + 1 : count / pageSize);
+        int totalPages = PaginationUtil.calculateMaxPage(count,pageSize);
         index = index > totalPages ? totalPages : index;
 
         List<InvestModel> investModels = investMapper.findInvestorInvestPagination(loginName, loanStatus, (index - 1) * pageSize, pageSize, startTime, endTime);
@@ -381,7 +372,7 @@ public class InvestServiceImpl implements InvestService {
         final long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType);
         final long investAmountSum = investMapper.sumInvestAmountConsole(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType);
         if (count > 0) {
-            int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
             index = index > totalPages ? totalPages : index;
             items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, (index - 1) * pageSize, pageSize);
         }
@@ -565,7 +556,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public List<InvestModel> findContractFailInvest(long loanId){
-        return investMapper.findContractFailInvest(loanId);
+        return investMapper.findNoContractNoInvest(loanId);
     }
 
 }

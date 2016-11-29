@@ -1,11 +1,13 @@
-require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'jquery-ui', 'csrf'], function ($) {
-
+require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapSelect', 'jquery-ui', 'csrf'], function ($) {
     $(function () {
-
         var $errorDom = $('.form-error'),
             $bannerForm = $('.banner-form'),
             $submitBtn = $('#btnSave'),
+            $selectDom = $('.selectpicker'), //select表单
             boolFlag = false;
+
+        //渲染select表单
+        $selectDom.selectpicker();
 
         function showErrorMessage(msg, obj) {
             currentErrorObj = obj;
@@ -38,6 +40,15 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'jquery-ui', 
             }
             return defer.promise();
         };
+
+        $('select.appUrl').change(function () {
+            var appUrl = $(this).val();
+            if (appUrl == '') {
+                $('.jump-to-link').removeClass('app-push-link').val('');
+            } else {
+                $('.jump-to-link').addClass('app-push-link').val('');
+            }
+        }).trigger('change');
 
         $('.webImageUrl,.appImageUrl').on('change', function () {
             var $self = $(this),
@@ -118,6 +129,18 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'jquery-ui', 
                 return false;
             }
 
+            var appUrl = $('.appUrl').val();
+            var jumpToLink = $('.jump-link-text').val();
+
+            if (appUrl == '' && jumpToLink == '') {
+                showErrorMessage('定位地址不能为空', $('.jump-link-text', curform));
+                return false;
+            }
+
+            if(appUrl != ''){
+                $('.jump-link-text').val('' );
+            }
+
             if (!IsURL($("input[name='sharedUrl']").val())) {
                 showErrorMessage("分享后链接网址格式不正确,请以http://或 https://开始");
                 return false;
@@ -158,7 +181,6 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'jquery-ui', 
                 showErrorMessage("序号必须为正整数");
                 return false;
             }
-
 
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {

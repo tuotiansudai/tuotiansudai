@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.anxin.service.AnxinSignService;
-import com.tuotiansudai.service.ContractService;
+import com.tuotiansudai.contract.service.ContractService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -39,7 +39,9 @@ public class ContractController {
                 httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
                 return;
             }
-            response.setContentType("application/octet-stream;charset=UTF-8");
+            response.reset();
+            response.addHeader("Content-Disposition", String.format("attachment;filename=%s.pdf", investId));
+            response.setContentType("application/octet-stream");
             contractService.generateContractPdf(pdfString, response.getOutputStream());
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -54,7 +56,9 @@ public class ContractController {
                 httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
                 return;
             }
-            response.setContentType("application/octet-stream;charset=UTF-8");
+            response.reset();
+            response.addHeader("Content-Disposition", String.format("attachment;filename=%s.pdf", transferApplicationId));
+            response.setContentType("application/octet-stream");
             contractService.generateContractPdf(pdfString, response.getOutputStream());
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -66,7 +70,7 @@ public class ContractController {
         byte[] pdf = anxinSignService.downContractByContractNo(contractNo);
         try {
             response.reset();
-            response.addHeader("Content-Disposition", String.format("attachment;filename=%s", contractNo));
+            response.addHeader("Content-Disposition", String.format("attachment;filename=%s.pdf", contractNo));
             response.addHeader("Content-Length", "" + pdf.length);
             OutputStream ous = new BufferedOutputStream(response.getOutputStream());
             response.setContentType("application/octet-stream");

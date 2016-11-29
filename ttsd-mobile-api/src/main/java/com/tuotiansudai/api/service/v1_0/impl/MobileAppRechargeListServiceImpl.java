@@ -4,6 +4,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppRechargeListService;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.RechargeModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,13 @@ public class MobileAppRechargeListServiceImpl implements MobileAppRechargeListSe
     @Autowired
     private RechargeMapper rechargeMapper;
 
+    @Autowired
+    private PageValidUtils pageValidUtils;
+
     @Override
     public BaseResponseDto generateRechargeList(RechargeListRequestDto requestDto) {
         Integer index = requestDto.getIndex();
-        Integer pageSize = requestDto.getPageSize();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
         Integer offset = (index-1)*pageSize;
 
         List<RechargeModel> rechargeModels = rechargeMapper.findRechargePagination(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, offset, pageSize, null, null);

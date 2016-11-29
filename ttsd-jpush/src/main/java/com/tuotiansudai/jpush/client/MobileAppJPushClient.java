@@ -14,11 +14,9 @@ import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
 import cn.jpush.api.report.ReceivedsResult;
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.jpush.repository.model.PushSource;
 import com.tuotiansudai.dto.Environment;
+import com.tuotiansudai.enums.PushSource;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -37,9 +35,6 @@ public class MobileAppJPushClient {
 
     @Value("${common.environment}")
     private Environment environment;
-
-    @Autowired
-    private RedisWrapperClient redisClient;
 
     public static final String APP_PUSH_MSG_ID_KEY = "console:push-msg-ids:";
 
@@ -138,7 +133,6 @@ public class MobileAppJPushClient {
             logger.debug(MessageFormat.format("request:{0}:{1} begin", jPushAlertId, payload.toJSON()));
             PushResult result = jPushClient.sendPush(payload);
             logger.debug(MessageFormat.format("request:{0}:{1}:{2} end", jPushAlertId, result.msg_id, result.sendno));
-            redisClient.sadd(APP_PUSH_MSG_ID_KEY + jPushAlertId, String.valueOf(result.msg_id));
             return true;
         } catch (APIConnectionException | APIRequestException e) {
             logger.debug(MessageFormat.format("response:{0}:{1}", jPushAlertId, e.getMessage()));

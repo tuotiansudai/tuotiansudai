@@ -31,13 +31,13 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
     private String staffReward;
 
     @Override
-    public List<ReferrerManageView> findReferrerManage(String referrerMobile, String investMobile, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source,ReferrerRewardStatus referrerRewardStatus, int currentPageNo, int pageSize) {
-        return referrerManageMapper.findReferrerManage(referrerMobile, investMobile, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, source,referrerRewardStatus, (currentPageNo - 1) * pageSize, pageSize);
+    public List<ReferrerManageView> findReferrerManage(String referrerMobile, String investMobile, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source, ReferrerRewardStatus referrerRewardStatus, int currentPageNo, int pageSize) {
+        return referrerManageMapper.findReferrerManage(referrerMobile, investMobile, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, source, referrerRewardStatus, (currentPageNo - 1) * pageSize, pageSize);
     }
 
     @Override
-    public int findReferrerManageCount(String referrerMobile, String investMobile, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source,ReferrerRewardStatus referrerRewardStatus) {
-        return referrerManageMapper.findReferrerManageCount(referrerMobile, investMobile, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, source,referrerRewardStatus);
+    public int findReferrerManageCount(String referrerMobile, String investMobile, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source, ReferrerRewardStatus referrerRewardStatus) {
+        return referrerManageMapper.findReferrerManageCount(referrerMobile, investMobile, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, source, referrerRewardStatus);
     }
 
     @Override

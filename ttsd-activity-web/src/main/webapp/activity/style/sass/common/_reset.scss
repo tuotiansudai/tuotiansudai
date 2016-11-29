@@ -1,5 +1,9 @@
 @import 'variables';
 @import "global_png";
+
+$linkColor:#666 #ff770f;
+$checkValid:#f71010 #6bc21e;
+
 * {
   margin: 0;
   padding: 0;
@@ -24,11 +28,11 @@ img {
 }
 
 body {
-  font-family: $fontStack;
+  font-family: Microsoft YaHei,Helvetica, sans-serif;
   font-size: nth($fontSize,2);
-  line-height: nth($baseLineHeight,1);
-  background: nth($baseColor,5);
-  color:nth($CK2,7);
+  line-height: 2;
+  background: #f9f9f9;
+  color:#4c4c4c;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -45,6 +49,9 @@ input[type='checkbox'] {
   border:0!important;
 }
 a{
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   cursor: pointer;
   color:nth($linkColor,1);
   text-decoration: none;
@@ -54,10 +61,10 @@ a{
   }
 }
 .fl {
-  float: nth($baseFloat, 1);
+  float: left;
 }
 .fr {
-  float: nth($baseFloat,2);
+  float: right;
 }
 .tl {
   text-align: left;
@@ -151,7 +158,7 @@ p {
 }
 
 .error {
-  color: $required;
+  color: red;
   font-size:nth($fontSize,1);
   .fa {
     font-size:nth($fontSize,3);

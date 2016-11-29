@@ -9,6 +9,7 @@ import com.tuotiansudai.api.dto.v1_0.UserInvestListResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.UserInvestRecordResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.TransferableInvestListRequestDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppTransferApplicationV2Service;
+import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -23,15 +24,15 @@ import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.CalculateLeftDays;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -53,17 +54,16 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
     private InvestService investService;
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+    @Autowired
+    private PageValidUtils pageValidUtils;
 
     @Override
     public BaseResponseDto<UserInvestListResponseDataDto> generateTransferableInvest(TransferableInvestListRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
-        Integer pageSize = requestDto.getPageSize();
+        Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
         Integer index = requestDto.getIndex();
         if (index == null || index <= 0) {
             index = 1;
-        }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
         }
         List<InvestModel> transferableInvestList = investMapper.findTransferableApplicationPaginationByLoginName(loginName, (index - 1) * pageSize, pageSize);
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
@@ -118,8 +118,9 @@ public class MobileAppTransferApplicationV2ServiceImpl implements MobileAppTrans
                 dto.setTransferStatus(invest.getTransferStatus().name());
                 LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(invest.getLoanId());
                 dto.setLeftPeriod(loanRepayModel == null ? "0" : String.valueOf(investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(invest.getId(), loanRepayModel.getPeriod())));
-                long leftDay = ChronoUnit.DAYS.between(LocalDate.now(), investRepayMapper.findByInvestIdAndPeriod(invest.getId(), loanModel.getPeriods()).getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                dto.setLeftDays(String.valueOf(leftDay > 0 ? leftDay : 0));
+                InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(invest.getId(), loanModel.getPeriods());
+                Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+                dto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
                 list.add(dto);
             }
         }

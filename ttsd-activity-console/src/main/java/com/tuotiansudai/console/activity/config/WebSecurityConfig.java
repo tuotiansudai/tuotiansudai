@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.spring.security.MyAccessDeniedHandler;
 import com.tuotiansudai.spring.security.MyPreAuthenticatedProcessingFilter;
-import com.tuotiansudai.spring.session.MyRedisHttpSessionConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,6 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.headers().frameOptions().sameOrigin();
         http.formLogin().loginPage("/login");
+
         http.authorizeRequests().antMatchers("/activity-console/activity-manage/**").hasAnyAuthority("ADMIN", "CUSTOMER_SERVICE", "OPERATOR", "OPERATOR_ADMIN");
         http.authorizeRequests().antMatchers("/**").hasAnyAuthority("ADMIN", "CUSTOMER_SERVICE", "OPERATOR", "OPERATOR_ADMIN");
         http.addFilterAt(myPreAuthenticatedProcessingFilter, AbstractPreAuthenticatedProcessingFilter.class);

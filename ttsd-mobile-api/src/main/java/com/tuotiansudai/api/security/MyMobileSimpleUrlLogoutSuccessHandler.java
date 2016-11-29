@@ -3,6 +3,9 @@ package com.tuotiansudai.api.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.dto.SignInResult;
+import com.tuotiansudai.jpush.service.JPushAlertService;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.security.SignInClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,9 @@ public class MyMobileSimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSucces
     @Autowired
     private SignInClient signInClient;
 
+    @Autowired
+    private JPushAlertService jPushAlertService;
+
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
@@ -47,6 +53,15 @@ public class MyMobileSimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSucces
 
         super.onLogoutSuccess(request, response, authentication);
 
-        signInClient.logout(request.getParameter("token"));
+        String token = request.getParameter("token");
+        SignInResult loginOutResult = signInClient.logout(token);
+        if (null == loginOutResult) {
+            return;
+        }
+
+        SignInResult signInResult = signInClient.verifyToken(token, Source.MOBILE);
+        if (signInResult != null && loginOutResult.getUserInfo() != null) {
+            jPushAlertService.delStoreJPushId(loginOutResult.getUserInfo().getLoginName());
+        }
     }
 }

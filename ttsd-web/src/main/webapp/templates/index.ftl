@@ -9,7 +9,7 @@
                     <li>
                         <a href="${banner.url}" onclick="cnzzPush.trackClick('首页','Banner模块','${banner.name!}')" target="_blank"
                            <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
-                            <img src="${staticServer}/${banner.webImageUrl}" data-app-img="${staticServer}/${banner.appImageUrl}" alt="${banner.title}">
+                            <img src="${staticServer}${banner.webImageUrl}" data-app-img="${staticServer}${banner.appImageUrl}" alt="${banner.title}">
                         </a>
                     </li>
                 </#list>
@@ -18,13 +18,12 @@
         <div class="page-width">
             <@global.isAnonymous>
                 <div class="register-ad-box fr tc">
+                    <b class="h-title">预期年化收益率</b>
                     <p class="num-text clearfix">
-                        <span class="percent">46</span>
-                        <span class="num-unit">倍</span>
+                        <span class="percent">10%~13%</span>
                     </p>
-                    <b class="h-title">活期存款收益</b>
 
-                    <p class="welcome-text"></p>
+                    <p class="welcome-text">welcome</p>
                     <a class="btn-normal" href="/register/user" onclick="cnzzPush.trackClick('21首页','Banner模块','免费注册')">免费注册 </a>
                     <i class="clearfix tr">已有账户？<a href="/login"
                                                    onclick="cnzzPush.trackClick('22首页','Banner模块','立即登录')"> 立即登录</a></i>
@@ -68,7 +67,7 @@
                 <dd class="guide">
                     <a href="/about/guide" onclick="cnzzPush.trackClick('28首页','安全保障模块','1')" target="_blank">
                         <b class="clearfix">稳健收益 较低门槛</b>
-                        <span>最高46倍活期存款收益，<br>最低投资门槛50元</span>
+                        <span>预期年化收益可达13%，<br>投资门槛50元起投</span>
                     </a>
                 </dd>
                 <dd class="risk">
@@ -79,8 +78,8 @@
                 </dd>
                 <dd class="assurance">
                     <a href="/about/assurance" onclick="cnzzPush.trackClick('30首页','安全保障模块','3')" target="_blank">
-                        <b class="clearfix">实力雄厚 安全保障</b>
-                        <span>上市企业投资，<br>资金数据均安全</span>
+                        <b class="clearfix">四大保障 投资无忧</b>
+                        <span>12道保障措施并举，<br>资金、个人信息均安全</span>
                     </a>
                 </dd>
             </dl>
@@ -193,7 +192,7 @@
                 <span>预期年化收益</span>
                 <span>转让价格</span>
                 <span>项目本金</span>
-                <span>剩余期数</span>
+                <span>剩余天数</span>
                 <span></span>
             </div>
         </div>
@@ -243,10 +242,20 @@
             <ul class="partner-list">
                 <li><a rel="nofollow" class="logo-capital" href="http://www.umpay.com/"
                        onclick="cnzzPush.trackClick('46首页','合作伙伴模块','联动优势')"  target="_blank">
+                    <img src="${staticServer}/images/homepage/logo-lian.png" alt="安心签">
                 </a>
                 </li>
+
                 <li><a rel="nofollow" class="logo-umpay" href="http://www.king-capital.com/"
-                       onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank"></a>
+                       onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank">
+                    <img src="${staticServer}/images/homepage/logo-jing.png" alt="安心签">
+                </a>
+                </li>
+
+                <li><a rel="nofollow" class="logo-umpay" href="https://www.anxinsign.com/"
+                       onclick="cnzzPush.trackClick('47首页','合作伙伴模块','安心签')" target="_blank">
+                    <img src="${staticServer}/images/homepage/logo-cfca.png" alt="安心签">
+                </a>
                 </li>
             </ul>
         </div>

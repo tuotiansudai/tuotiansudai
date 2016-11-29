@@ -29,6 +29,7 @@
         <intercept-url pattern="/api/**" access="permitAll()"/>
         <intercept-url pattern="/api-template" access="permitAll()"/>
         <intercept-url pattern="/media-center/**" access="permitAll()"/>
+        <intercept-url pattern="/message-center/**" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/mobile-is-available" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/show-image-captcha" access="permitAll()"/>
         <intercept-url pattern="/v1.0/register/sendsms" access="permitAll()"/>
@@ -62,12 +63,12 @@
         <intercept-url pattern="/v1.**/image-captcha" access="permitAll()"/>
         <intercept-url pattern="/v2.0/image-captcha" access="permitAll()"/>
         <intercept-url pattern="/v2.0/get/pop-push" access="permitAll()"/>
-
         <intercept-url pattern="/swagger-ui.html" access="permitAll()"/>
         <intercept-url pattern="/v2/api-docs" access="permitAll()"/>
         <intercept-url pattern="/webjars/**" access="permitAll()"/>
         <intercept-url pattern="/swagger-resources/**" access="permitAll()"/>
-
+        <intercept-url pattern="/v1.0/get/help-center-category-list" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/get/help-center-search" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
     </http>
 

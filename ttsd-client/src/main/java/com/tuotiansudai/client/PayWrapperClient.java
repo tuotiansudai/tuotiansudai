@@ -5,7 +5,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.PayFormDataDto;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
@@ -143,6 +145,22 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayDataDto> investCallback() {
         return syncExecute(null, "/job/async_invest_notify", "POST");
+    }
+
+    public BaseDto<PayDataDto> normalRepayInvestPayback() {
+        return syncExecute(null, "/job/async_normal_repay_notify", "POST");
+    }
+
+    public BaseDto<PayDataDto> advanceRepayInvestPayback() {
+        return syncExecute(null, "/job/async_advance_repay_notify", "POST");
+    }
+
+    public BaseDto<PayDataDto> couponRepayCallback() {
+        return syncExecute(null, "/job/async_coupon_repay_notify", "POST");
+    }
+
+    public BaseDto<PayDataDto> extraRateInvestCallback() {
+        return syncExecute(null, "/job/async_extra_rate_invest_notify", "POST");
     }
 
     public BaseDto<PayDataDto> investTransferCallback() {

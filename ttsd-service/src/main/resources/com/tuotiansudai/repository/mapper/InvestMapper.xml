@@ -295,7 +295,7 @@
             <if test="source != null">
                 AND invest.source = #{source}
             </if>
-            <if test="role != null">role
+            <if test="role != null">
                 AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name=invest.login_name AND user_role.role=
                 #{role})
             </if>
@@ -406,7 +406,7 @@
             <if test="source != null">
                 AND invest.source = #{source}
             </if>
-            <if test="role != null and role != ''">
+            <if test="role != null">
                 AND EXISTS (SELECT 1 FROM user_role WHERE user_role.login_name=invest.login_name AND user_role.role=
                 #{role})
             </if>
@@ -742,6 +742,16 @@
         </if>
     </select>
 
+    <select id="sumSuccessInvestByInvestTimeAndLoginName" parameterType="map" resultType="long">
+        select IFNULL(sum(invest.amount), 0) as sumAmount
+        from invest
+        join loan on invest.loan_id = loan.id
+        where invest.status = 'SUCCESS'
+        and invest_time BETWEEN #{startTime} and #{endTime}
+        and invest.login_name = #{loginName}
+        and loan.product_type in ('_90','_180','_360')
+    </select>
+
     <select id="findWebTransferableApplicationPaginationByLoginName" useCache="false" parameterType="map"
             resultMap="transferableInvestView">
         SELECT
@@ -929,14 +939,14 @@
 
     <update id="updateAllContractNoByLoanId" parameterType="map" >
         update invest set contract_no = #{contractNo}
-        where loan_id = #{loanId} and status = 'SUCCESS'
+        where loan_id = #{loanId} and status = 'SUCCESS' and transfer_invest_id is null
     </update>
 
-    <select id="findContractFailInvest" parameterType="long" resultMap="investResultMap">
+    <select id="findNoContractNoInvest" parameterType="long" resultMap="investResultMap">
         select
         <include refid="columns"></include>
         from invest
-        where loan_id = #{loanId} and transfer_invest_id is null and status = 'SUCCESS' and (contract_no is null or contract_no = '')
+        where loan_id = #{loanId} and transfer_invest_id is null and status = 'SUCCESS' and (contract_no is null or contract_no = '') order by invest_time asc
     </select>
 
 </mapper>

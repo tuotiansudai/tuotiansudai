@@ -32,7 +32,7 @@
       line-height: 1.3;
     }
     time {
-      font-size: nth($fontSize, 1);
+      font-size: 12px;
       color: #666;
       display: block;
       margin-top: 15px;
@@ -63,7 +63,7 @@
 .borderBox {
   border: 1px solid #d9d9d9;
   padding: 12px;
-  line-height: nth($baseLineHeight, 1);
+  line-height: 2;
   height: auto;
   &.spad {
     padding: 5px;
@@ -76,33 +76,33 @@
 }
 
 .text-notice {
-  color: nth($btnColor, 5);
-  font-size: nth($fontSize, 4);
+  color: #ff7a2a;
+  font-size: 16px;
 }
 
 .requireOpt:before {
-  color: $required;
+  color: red;
   padding-right: 2px;
   display: inline-block;
   content: '*';
 }
 
 .color-info {
-  color: nth($CK1, 3);
+  color: #f46916;
 }
 
 .color-note {
-  color: nth($CK1, 1);
+  color: #ffac2a;
 }
 
 .bg-w {
-  background: nth($baseColor, 1);
+  background: #fff;
 }
 
 /* project schedule progress */
 .project-schedule {
   .p-title {
-    font-size: nth($fontSize, 1);
+    font-size: 12px;
     color: #b3b3b3;
     line-height: 1.8;
     .point {
@@ -131,7 +131,7 @@
   right: 22px;
   bottom: 120px;
   width: 60px;
-  height: 244px;
+  height: auto;
   z-index: 1000;
   border: 1px solid #fff;
   border-bottom: none;

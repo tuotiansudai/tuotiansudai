@@ -1,9 +1,11 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.console.service.AnnounceConsoleService;
 import com.tuotiansudai.dto.AnnounceDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.service.AnnounceService;
+import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,21 +16,21 @@ import org.springframework.web.servlet.ModelAndView;
 public class AnnounceController {
 
     @Autowired
-    private AnnounceService announceService;
+    private AnnounceConsoleService announceConsoleService;
 
     @RequestMapping(value = "/announce", method = RequestMethod.GET)
     public ModelAndView announceManage(@RequestParam(value = "id",required = false) Long id,@RequestParam(value = "title",required = false) String title,
-                                                @RequestParam(value = "index",defaultValue = "1",required = false) int index,
-                                                @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize) {
+                                                @RequestParam(value = "index",defaultValue = "1",required = false) int index) {
+        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/announce-list");
-        int announceCount = announceService.findAnnounceCount(id, title);
+        int announceCount = announceConsoleService.findAnnounceCount(id, title);
         modelAndView.addObject("announceCount", announceCount);
-        modelAndView.addObject("announceList", announceService.findAnnounce(id, title, (index - 1) * pageSize, pageSize));
+        modelAndView.addObject("announceList", announceConsoleService.findAnnounce(id, title, (index - 1) * pageSize, pageSize));
         modelAndView.addObject("id",id);
         modelAndView.addObject("title",title);
         modelAndView.addObject("index",index);
         modelAndView.addObject("pageSize",pageSize);
-        long totalPages = announceCount / pageSize + (announceCount % pageSize > 0 || announceCount == 0 ? 1 : 0);
+        long totalPages = PaginationUtil.calculateMaxPage(announceCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage",hasPreviousPage);
@@ -44,7 +46,7 @@ public class AnnounceController {
     @RequestMapping(value = "/announce/edit/{id}", method = RequestMethod.GET)
     public ModelAndView userFundsRelease(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("/announce-edit");
-        modelAndView.addObject("announce", this.announceService.findById(id));
+        modelAndView.addObject("announce", announceConsoleService.findById(id));
         return modelAndView;
     }
 
@@ -54,7 +56,7 @@ public class AnnounceController {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         baseDto.setData(dataDto);
-        this.announceService.create(announceDto);
+        announceConsoleService.create(announceDto, LoginUserInfo.getLoginName());
         dataDto.setStatus(true);
         return baseDto;
     }
@@ -65,7 +67,7 @@ public class AnnounceController {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         baseDto.setData(dataDto);
-        this.announceService.update(announceDto);
+        announceConsoleService.update(announceDto);
         dataDto.setStatus(true);
         return baseDto;
     }
@@ -76,7 +78,7 @@ public class AnnounceController {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         baseDto.setData(dataDto);
-        this.announceService.delete(announceDto);
+        announceConsoleService.delete(announceDto);
         dataDto.setStatus(true);
         return baseDto;
     }
