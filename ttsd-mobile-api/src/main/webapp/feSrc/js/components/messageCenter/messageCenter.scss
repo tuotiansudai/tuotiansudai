@@ -11,7 +11,6 @@
     .meta {
       padding-top:42px;/*px*/
       height:180px;/*px*/
-      border-bottom:1px solid #ccc;/*px*/
       h1 {
         text-align:center;
         font-weight: 100;
@@ -27,6 +26,10 @@
         font-size:24px;/*px*/
         color:#8A8F99;
       }
+    }
+    .line{
+      height:1px;/*px*/
+      background: #ccc;
     }
     .content {
       margin-top: 40px;/*px*/
