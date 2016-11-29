@@ -235,4 +235,56 @@
         where (if(length(identity_number) = 18, substring(identity_number,11,2), substring(identity_number,9,2))) = DATE_FORMAT(now(),'%m')
     </select>
 
+    <select id="findScaleByGender" parameterType="map" resultType="int">
+        SELECT count(1)
+        from user
+        inner join account on user.login_name = account.login_name
+        <![CDATA[
+        and DATE_FORMAT(user.register_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+        ]]>
+        and exists(select 1 from invest where invest.login_name = user.login_name and invest.status = 'SUCCESS')
+        group by
+        case if(length(identity_number)=18, cast(substring(identity_number,17,1) as UNSIGNED)%2, if(length(identity_number)=15,cast(substring(identity_number,15,1) as UNSIGNED)%2,3))
+		when 1 then '男'
+		else '女'
+		end
+    </select>
+
+    <select id="findAgeDistributionByAge" parameterType="map" resultType="java.util.HashMap">
+        SELECT year(now()) - if(length(identity_number)=18,substring(identity_number,7,4),if(length(identity_number)=15,concat('19',substring(identity_number,7,2)),null)) as age, count(1) as totalCount
+        from user
+        inner join account on user.login_name = account.login_name
+        <![CDATA[
+        and DATE_FORMAT(user.register_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+        ]]>
+        and exists(select 1 from invest where invest.login_name = user.login_name and invest.status = 'SUCCESS')
+        group by age
+        order by totalCount asc
+    </select>
+
+
+    <select id="findCountInvestCityScaleTop3" parameterType="map" resultType="java.util.HashMap">
+        SELECT city as city, count(1) as totalCount
+        from user
+        inner join account on user.login_name = account.login_name
+        <![CDATA[
+        and DATE_FORMAT(user.register_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+        ]]>
+        and exists(select 1 from invest where invest.login_name = user.login_name and invest.status = 'SUCCESS')
+        group by city
+        order by totalCount desc
+        limit 0,3
+    </select>
+
+    <select id="findCountInvestCityScale" parameterType="map" resultType="long">
+        SELECT count(1) as totalCount
+        from user
+        inner join account on user.login_name = account.login_name
+        <![CDATA[
+        and DATE_FORMAT(user.register_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+        ]]>
+        and exists(select 1 from invest where invest.login_name = user.login_name and invest.status = 'SUCCESS')
+    </select>
+
+
 </mapper>
