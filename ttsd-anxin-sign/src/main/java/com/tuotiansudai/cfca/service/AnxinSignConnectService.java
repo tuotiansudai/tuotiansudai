@@ -13,11 +13,11 @@ import java.util.List;
 
 public interface AnxinSignConnectService {
 
-    Tx3ResVO createAccount3001(UserModel userModel) throws PKIException;
+    Tx3001ResVO createAccount3001(UserModel userModel) throws PKIException;
 
-    Tx3ResVO sendCaptcha3101(String userId, String projectCode, boolean isVoice) throws PKIException;
+    Tx3101ResVO sendCaptcha3101(String userId, String projectCode, boolean isVoice) throws PKIException;
 
-    Tx3ResVO verifyCaptcha3102(String userId, String projectCode, String checkCode) throws PKIException;
+    Tx3102ResVO verifyCaptcha3102(String userId, String projectCode, String checkCode) throws PKIException;
 
     Tx3202ResVO createContractBatch3202(long loanId, String batchNo, AnxinContractType anxinContractType, List<CreateContractVO> createContractList) throws PKIException;
 

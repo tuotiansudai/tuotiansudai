@@ -151,9 +151,11 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
                 clearInterval(Down);
                 num = 60;
                 $('#getSkipCode').val('重新获取验证码').prop('disabled',false);
-                $('#microPhone').css('visibility', 'visible');
+                $('#microPhone').css('visibility', 'visible').prop('disabled',false);
             }
-            num--;
+            else {
+                num--;
+            }
         }
 
         //获取验证码
@@ -161,6 +163,7 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
             var getId=event.target.id,
                 $this=$(this),
                 isVoice; //是否语音获取
+
             if(!getId) {
                 return;
             }
@@ -171,6 +174,9 @@ require(['jquery', 'layerWrapper','jquery.ajax.extension','anxin_qian'], functio
                 isVoice=true;
             }
             if(getId=='getSkipCode' || getId=='microPhone') {
+                $('#getSkipCode').prop('disabled',true);
+                $('#microPhone').prop('disabled',true);
+                console.log(getId);
                 ajaxOuterFun({
                     thisDom:$this,
                     url:'anxinSign/sendCaptcha',

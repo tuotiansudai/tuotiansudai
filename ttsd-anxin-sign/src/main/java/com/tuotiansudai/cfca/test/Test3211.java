@@ -1,17 +1,15 @@
 package com.tuotiansudai.cfca.test;
 
-import cfca.sadk.algorithm.common.PKIException;
 import cfca.trustsign.common.vo.cs.HeadVO;
 import cfca.trustsign.common.vo.request.tx3.Tx3211ReqVO;
-import com.tuotiansudai.cfca.connector.HttpConnectorTest;
-import com.tuotiansudai.cfca.constant.Request;
+import com.tuotiansudai.cfca.connector.AnxinClientTest;
+import com.tuotiansudai.cfca.constant.TxCode;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
-import com.tuotiansudai.cfca.util.SecurityUtil;
 
 public class Test3211 {
-    public static void main(String[] args) throws PKIException {
-        HttpConnectorTest httpConnector = new HttpConnectorTest();
-        httpConnector.init();
+    public static void main(String[] args) throws Exception {
+        AnxinClientTest anxinClient = new AnxinClientTest();
+        anxinClient.initSSL();
 
         Tx3211ReqVO tx3211ReqVO = new Tx3211ReqVO();
         HeadVO head = new HeadVO();
@@ -24,9 +22,7 @@ public class Test3211 {
         String req = jsonObjectMapper.writeValueAsString(tx3211ReqVO);
         System.out.println("req:" + req);
 
-        String txCode = "3211";
-        String signature = SecurityUtil.p7SignMessageDetach(HttpConnectorTest.JKS_PATH, HttpConnectorTest.JKS_PWD, HttpConnectorTest.ALIAS, req);
-        String res = httpConnector.post("platId/" + Request.PLAT_ID + "/txCode/" + txCode + "/transaction", req, signature);
+        String res = anxinClient.send(TxCode.QUERY_CONTRACT_BATCH, req);
         System.out.println("res:" + res);
     }
 }

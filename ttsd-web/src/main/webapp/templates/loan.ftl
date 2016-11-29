@@ -283,7 +283,7 @@
                                     </dd>
                                 </#if>
                             </@global.role>
-                            
+
                             <input type="hidden" value="${loan.investor.skipAuth?c}" id="isSkipAuth">
                             <input type="hidden" value="${loan.investor.anxinUser?c}" id="isAnxinUser">
                             <@global.role hasRole="'INVESTOR'">
@@ -479,7 +479,9 @@
                                     <div class="item">
                                         <h4 class="first"><span><a href="/activity/invest-achievement" target="_blank">拓荒先锋 >></a></span></h4>
                                         <#if (loan.achievement.firstInvestAchievementMobile)??>
-                                            <p>恭喜${loan.achievement.firstInvestAchievementMobile} <#if (loan.achievement.firstInvestAchievementDate)??>${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")}</#if> 拔得头筹 奖励0.2％加息券＋50元红包</p>
+                                            <p>
+                                                恭喜${loan.achievement.firstInvestAchievementMobile} <#if (loan.achievement.firstInvestAchievementDate)??>${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")}</#if>
+                                                拔得头筹 奖励0.2％加息券＋50元红包</p>
                                         <#else>
                                             <p>虚位以待</p>
                                         </#if>
@@ -504,7 +506,9 @@
                                     <div class="item">
                                         <h4 class="hammer"><span><a href="/activity/invest-achievement" target="_blank">一锤定音 >></a></span></h4>
                                         <#if (loan.achievement.lastInvestAchievementMobile)??>
-                                            <p>恭喜${loan.achievement.lastInvestAchievementMobile} <#if (loan.achievement.lastInvestAchievementDate)??>${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")}</#if> 终结此标 奖励0.2％加息券＋50元红包</p>
+                                            <p>
+                                                恭喜${loan.achievement.lastInvestAchievementMobile} <#if (loan.achievement.lastInvestAchievementDate)??>${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")}</#if>
+                                                终结此标 奖励0.2％加息券＋50元红包</p>
                                         <#else>
                                             <p>目前项目剩余${(loan.amountNeedRaised / 100)?string("0.00")}元快来一锤定音吧</p>
                                         </#if>

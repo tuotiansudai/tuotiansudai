@@ -1,6 +1,7 @@
 package com.tuotiansudai.spring.session;
 
 import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@Component
 public class MyDefaultCookieSerializer implements CookieSerializer {
 
     private String cookieName = "TSID";

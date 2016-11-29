@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.spring.security.MyAccessDeniedHandler;
 import com.tuotiansudai.spring.security.MyPreAuthenticatedProcessingFilter;
-import com.tuotiansudai.spring.session.MyRedisHttpSessionConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

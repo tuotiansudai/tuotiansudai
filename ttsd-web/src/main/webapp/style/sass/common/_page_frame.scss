@@ -1,11 +1,4 @@
-@import 'variables', "global_png";
-$linkColor:#666 #ff770f;
-a {
-  color: nth($linkColor,1);
-  &:hover {
-    color: nth($linkColor,2);
-  }
-}
+@import  "global_png";
 .header-container {
   background: #fcfcfc;
   font-size: 12px;
@@ -369,12 +362,15 @@ a {
             color: #fff;
           }
           .icon-has-submenu {
-            //@include transition(0.5s);
             background: url("../../images/global/icon-active-bottom.png") left top no-repeat;
           }
           &:hover {
             .icon-has-submenu {
-              @include transform-rotate(180deg);
+              transform:rotate(180deg);
+              -ms-transform:rotate(180deg); 	/* IE 9 */
+              -moz-transform:rotate(180deg); 	/* Firefox */
+              -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
+              -o-transform:rotate(180deg); 	/* Opera */
             }
           }
 

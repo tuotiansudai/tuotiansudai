@@ -5,37 +5,40 @@
 <mapper namespace="com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper">
 
     <resultMap id="jPushAlertResultMap" type="jPushAlertModel">
-        <id column="id" property="id"></id>
-        <result column="name" property="name"></result>
-        <result column="push_type" property="pushType"></result>
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="push_type" property="pushType"/>
         <result column="push_districts" property="pushDistricts"
                 typeHandler="com.tuotiansudai.util.mybatis.StringListHandler"/>
-        <result column="push_source" property="pushSource"></result>
-        <result column="push_user_type" property="pushUserType" typeHandler="com.tuotiansudai.jpush.util.mybatis.PushUserTypeHandler"></result>
-        <result column="status" property="status"></result>
-        <result column="content" property="content"></result>
-        <result column="jump_to" property="jumpTo"></result>
-        <result column="jump_to_link" property="jumpToLink"></result>
-        <result column="expect_push_time" property="expectPushTime"></result>
-        <result column="created_time" property="createdTime"></result>
-        <result column="created_by" property="createdBy"></result>
-        <result column="updated_time" property="updatedTime"></result>
-        <result column="updated_by" property="updatedBy"></result>
-        <result column="auditor" property="auditor"></result>
-        <result column="ios_target_num" property="iosTargetNum"></result>
-        <result column="ios_arrive_num" property="iosArriveNum"></result>
-        <result column="ios_open_num" property="iosOpenNum"></result>
-        <result column="android_target_num" property="androidTargetNum"></result>
-        <result column="android_arrive_num" property="androidArriveNum"></result>
-        <result column="android_open_num" property="androidOpenNum"></result>
-
+        <result column="push_source" property="pushSource"/>
+        <result column="push_user_type" property="pushUserType"
+                typeHandler="com.tuotiansudai.jpush.util.mybatis.PushUserTypeHandler"/>
+        <result column="status" property="status"/>
+        <result column="content" property="content"/>
+        <result column="jump_to" property="jumpTo"/>
+        <result column="jump_to_link" property="jumpToLink"/>
+        <result column="expect_push_time" property="expectPushTime"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="updated_time" property="updatedTime"/>
+        <result column="updated_by" property="updatedBy"/>
+        <result column="auditor" property="auditor"/>
+        <result column="ios_target_num" property="iosTargetNum"/>
+        <result column="ios_arrive_num" property="iosArriveNum"/>
+        <result column="ios_open_num" property="iosOpenNum"/>
+        <result column="android_target_num" property="androidTargetNum"/>
+        <result column="android_arrive_num" property="androidArriveNum"/>
+        <result column="android_open_num" property="androidOpenNum"/>
+        <result column="message_id" property="messageId"/>
     </resultMap>
 
 
     <insert id="create" parameterType="jPushAlertModel" useGeneratedKeys="true" keyProperty="id">
-        insert into jpush_alert (name, push_type, push_districts, push_source, push_user_type, status, content, jump_to, jump_to_link,expect_push_time,created_time,created_by,updated_time,updated_by,is_automatic)
+        insert into jpush_alert (name, push_type, push_districts, push_source, push_user_type, status, content, jump_to,
+        jump_to_link,expect_push_time,created_time,created_by,updated_time,updated_by,is_automatic,message_id)
         value(#{name}, #{pushType}, #{pushDistricts,typeHandler=com.tuotiansudai.util.mybatis.StringListHandler}, #{pushSource}, #{pushUserType,typeHandler=com.tuotiansudai.jpush.util.mybatis.PushUserTypeHandler}, #{status}, #{content}, #{jumpTo},
-        #{jumpToLink}, #{expectPushTime}, #{createdTime}, #{createdBy}, #{updatedTime}, #{updatedBy},#{isAutomatic})
+        #{jumpToLink}, #{expectPushTime}, #{createdTime}, #{createdBy}, #{updatedTime}, #{updatedBy},#{isAutomatic},
+        #{messageId})
     </insert>
 
     <select id="findMaxSerialNumByType" resultType="int" parameterType="map">
@@ -108,5 +111,9 @@
     <delete id="delete" parameterType="long">
         delete from jpush_alert where id = #{id}
     </delete>
+
+    <select id="findByMessageId" parameterType="long" resultMap="jPushAlertResultMap">
+        select * from jpush_alert where message_id = #{messageId}
+    </select>
 
 </mapper>

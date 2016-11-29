@@ -34,9 +34,10 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
         //开标倒计时
         (function() {
             var $preheat=$('.preheat',$homePageContainer);
+
             function countDownLoan(domElement) {
-                return $(domElement).each(function() {
-                    var $this=$(this);
+                return $(domElement).each(function () {
+                    var $this = $(this);
                     var countdown=$this.data('time');
                     if(countdown > 0) {
                        var timer= setInterval(function () {
@@ -44,7 +45,7 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
                                 $secondShow=$this.find('.second_show'),
                                 minute=Math.floor(countdown/60),
                                 second=countdown%60;
-                           if(countdown==0) {
+                           if (countdown == 0) {
                                //结束倒计时
                                clearInterval(timer);
                                $this.parents('a').removeClass('preheat-btn').text('立即购买');
@@ -165,9 +166,11 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
                     var data = $(form).serialize();
                     $.ajax({
                         url: '/isLogin',
-                        type: 'GET'
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=UTF-8'
                     })
-                        .success(function (response) {
+                        .fail(function (response) {
                                 if ("" == response.responseText) {
                                     $.ajax({
                                         url: '/booking-loan/invest?' + data,
