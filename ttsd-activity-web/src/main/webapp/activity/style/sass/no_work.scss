@@ -483,6 +483,15 @@ $width: 700px;
                 border-radius:10px;
                 box-shadow:0 4px #a32517;
                 position: relative;
+                &.end-time{
+                  background:#ccc;
+                  box-shadow:0 4px #ccc;
+                  color:#999;
+                  &:hover{
+                    box-shadow:0 4px #ccc;
+                    top:0;
+                  }
+                }
                 @media (max-width:$width) {
                   width:120px;
                   height:30px;

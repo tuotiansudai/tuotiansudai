@@ -48,8 +48,7 @@ public class NotWorkAspect {
 
     final static private long PRIZE_COUPON_ID = 322L;
 
-    //TODO: test Data
-    final static private long PRIZE_COUPON_INVEST_LIMIT = 100L;
+    final static private long PRIZE_COUPON_INVEST_LIMIT = 300000L;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.notWork.startTime}\")}")
     private Date activityStartTime;

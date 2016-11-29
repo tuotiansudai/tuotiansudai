@@ -36,8 +36,7 @@ public class ActivityConsoleNotWorkService {
     private Date activityEndTime;
 
     final private Map<Long, String> rewardMap = new HashMap<Long, String>() {{
-        //TODO:test data
-        put(100L, "20元红包");
+        put(300000L, "20元红包");
         put(800000L, "30元话费");
         put(3000000L, "京东E卡");
         put(5000000L, "300元旅游基金(芒果卡)");

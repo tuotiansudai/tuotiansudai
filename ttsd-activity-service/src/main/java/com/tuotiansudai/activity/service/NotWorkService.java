@@ -15,8 +15,7 @@ public class NotWorkService {
     @Autowired
     UserMapper userMapper;
 
-    //TODO:test Data
-    final private long[] prizeList = {100L, 800000L, 3000000L, 5000000L, 10000000L, 20000000L, 30000000L, 52000000L,
+    final private long[] prizeList = {300000L, 800000L, 3000000L, 5000000L, 10000000L, 20000000L, 30000000L, 52000000L,
             80000000L, 120000000L};
 
     public long getUsersActivityInvestAmount(String loginName) {

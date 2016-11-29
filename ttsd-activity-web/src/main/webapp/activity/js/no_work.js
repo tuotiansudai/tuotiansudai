@@ -6,7 +6,8 @@
 require(['jquery', 'layerWrapper', 'template', 'logintip','jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension','commonFun','register_common'],
 	function($, layer, tpl) {
 	$(function() {
-		var browser = commonFun.browserRedirect();
+		var browser = commonFun.browserRedirect(),
+			$inviteBtn=$('.invite-btn-group').find('.invite-item');
 
 		if (browser == 'mobile') {
 
@@ -16,6 +17,9 @@ require(['jquery', 'layerWrapper', 'template', 'logintip','jquery.validate', 'jq
 
 			}
 		}
+		$inviteBtn.attr('data-expired')=='true'?$inviteBtn.attr('href','javascript:void(0)').addClass('end-time'):false;
+
+
 
 	});
 });
