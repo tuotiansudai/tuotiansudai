@@ -30,7 +30,7 @@ public class NotWorkController {
     public ModelAndView getHome() {
         ModelAndView modelAndView = new ModelAndView("/activities/no-work", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
-        modelAndView.addObject("expired", activityStartTime.after(new Date()) && activityEndTime.before(new Date()));
+        modelAndView.addObject("expired", activityStartTime.after(new Date()) || activityEndTime.before(new Date()));
         if (!Strings.isNullOrEmpty(loginName)) {
             modelAndView.addObject("investAmount", AmountConverter.convertCentToString(notWorkService.getUsersActivityInvestAmount(loginName)));
             modelAndView.addObject("needInvestAmount", AmountConverter.convertCentToString(notWorkService.getUsersNeedInvestAmount(loginName)));
