@@ -13,6 +13,9 @@ body {
 }
 
 .activity-slide {
+  img {
+    width: 100%;
+  }
 }
 
 .pc-img {
@@ -431,7 +434,57 @@ body {
 
     }
   }
+}
 
+@media screen and(max-width: 700px){
+  .main-frame {
+    font-size:12px;
+  }
+  .christmas-day-frame {
+    margin:10px;
+    .gift-box {
+      float: none;
+      width:95%;
+      height:auto;
+      margin:10px auto;
+      padding: 20px 10px 10px 10px;
+      font-size: 12px;
+      b {
+        font-size: 15px;
+      }
+      .icon-balloon {
+        display: none;
+      }
 
+    }
+    .model-content {
+      padding: 3px;
+    }
+    span.text-note {
+      padding: 10px 15px;
+    }
+    .christmas-day-inner {
+      width:100%;
+    }
+    .christmas-border {
+      margin-bottom:30px;
+      padding: 6px;
+      .title-christmas {
+        background-position: center top;
+        background-size: 127%;
+        top: -50px;
+        padding-top: 31px;
+        font-size: 15px;
+        height: 60px;
+      }
+
+      .man-decorate {
+        display: none;
+      }
+    }
+    .box-notice {
+      margin-top:30px;
+    }
+  }
 
 }

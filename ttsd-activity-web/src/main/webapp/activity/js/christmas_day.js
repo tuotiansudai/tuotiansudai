@@ -16,7 +16,7 @@ require(['jquery'], function ($) {
             $activitySlide.addClass('pc-img');
         }
         else if(redirect=='mobile'){
-            $activitySlide.html('<img src='+staticServer+'/activity/images/christmas-day/bg-title.png>');
+            $activitySlide.html('<img src='+staticServer+'/activity/images/christmas-day/app-top.jpg>');
         }
     })();
 
