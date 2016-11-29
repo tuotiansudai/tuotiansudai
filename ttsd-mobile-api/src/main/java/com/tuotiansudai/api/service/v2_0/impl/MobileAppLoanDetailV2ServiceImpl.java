@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -44,9 +43,6 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
 
     @Autowired
     private CouponService couponService;
-
-    @Autowired
-    private LoanRepayMapper loanRepayMapper;
 
     @Autowired
     private LoanerDetailsMapper loanerDetailsMapper;
@@ -95,7 +91,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         LoanModel loanModel = loanMapper.findById(Long.parseLong(loanId));
         if (loanModel == null) {
             logger.error("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
-            return new BaseResponseDto<>(ReturnMessage.LOAN_NOT_FOUND.getCode(), ReturnMessage.LOAN_NOT_FOUND.getMsg());
+            return new BaseResponseDto(ReturnMessage.LOAN_NOT_FOUND.getCode(), ReturnMessage.LOAN_NOT_FOUND.getMsg());
         }
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
         responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -179,9 +175,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         }
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanModel.getId());
         if (loanerDetailsModel != null) {
-            LoanerDto loanerDto = new LoanerDto(loanerDetailsModel);
-            loanerDto.setOverdueRate(MessageFormat.format("{0}%", new BigDecimal(loanRepayMapper.calculateOverdueRate(loanModel.getAgentLoginName()) * 100).setScale(0, BigDecimal.ROUND_DOWN).toString()));
-            dataDto.setLoaner(loanerDto);
+            dataDto.setLoaner(new LoanerDto(loanerDetailsModel));
             switch (loanModel.getPledgeType()) {
                 case HOUSE:
                     PledgeHouseModel pledgeHouseModel = pledgeHouseMapper.getByLoanId(loanModel.getId());

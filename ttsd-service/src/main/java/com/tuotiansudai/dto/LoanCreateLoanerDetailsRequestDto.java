@@ -31,9 +31,6 @@ public class LoanCreateLoanerDetailsRequestDto {
     @NotEmpty
     private String employmentStatus;
 
-    @NotEmpty
-    private String purpose;
-
     public LoanCreateLoanerDetailsRequestDto() {
     }
 
@@ -46,7 +43,6 @@ public class LoanCreateLoanerDetailsRequestDto {
         this.region = loanerDetailsModel.getRegion();
         this.income = loanerDetailsModel.getIncome();
         this.employmentStatus = loanerDetailsModel.getEmploymentStatus();
-        this.purpose = loanerDetailsModel.getPurpose();
     }
 
     public String getUserName() {
@@ -111,13 +107,5 @@ public class LoanCreateLoanerDetailsRequestDto {
 
     public void setEmploymentStatus(String employmentStatus) {
         this.employmentStatus = employmentStatus;
-    }
-
-    public String getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
     }
 }

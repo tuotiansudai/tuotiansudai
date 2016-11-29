@@ -305,17 +305,7 @@
             lr.status='REPAYING'
             and date_format(lr.repay_date,'%Y-%m-%d') = #{today};
     </select>
-
     <select id="findLastRepayDateByLoanId" parameterType="map" resultType="date">
         select max(repay_date) from loan_repay where loan_id = #{loanId};
-    </select>
-
-    <select id="calculateOverdueRate" parameterType="string" resultType="double">
-        select
-         ifnull((select count(1) from loan_repay where exists(select 1 from loan where loan.agent_login_name = #{agent} and loan.id=loan_repay.loan_id) and loan_repay.status = 'COMPLETE' and loan_repay.actual_repay_date > loan_repay.repay_date)
-         /
-         (select count(1) from loan_repay where exists(select 1 from loan where loan.agent_login_name = #{agent} and loan.id=loan_repay.loan_id) and loan_repay.status = 'COMPLETE')
-         ,0)
-        from dual;
     </select>
 </mapper>
