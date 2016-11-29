@@ -186,6 +186,7 @@ body {
       .user-info-info {
         position: absolute;
         z-index: 10;
+        width: 100%;
       }
       .icon-balloon-group {
         position: absolute;
@@ -427,6 +428,7 @@ body {
           }
         }
         .record-list {
+          position: relative;
           font-size: 16px;
           line-height: 30px;
         }
@@ -442,6 +444,12 @@ body {
   }
   .christmas-day-frame {
     margin:10px;
+    .normal-button-day {
+      padding: 3px 20px;
+      box-shadow: 0px 3px 0px #8fb359;
+      font-size: 14px;
+      margin-bottom:15px;
+    }
     .gift-box {
       float: none;
       width:95%;
@@ -449,6 +457,43 @@ body {
       margin:10px auto;
       padding: 20px 10px 10px 10px;
       font-size: 12px;
+      &.last {
+        width:95%;
+        height:auto;
+        margin:10px auto;
+        padding: 20px 10px 10px 10px;
+        font-size: 12px;
+      }
+      .icon-balloon-group {
+        transform: scale(0.7);
+        top: 24px;
+        em {
+          font-size: 16px;
+          i:after {
+            height: 132px;
+            top: -134px;
+          }
+          &.left {
+            top: 82px;
+            left: -10%;
+          }
+          &.right {
+            top: 82px;
+            right: -5%;
+          }
+          &.center {
+            top: 82px;
+            left: 34%;
+            &.hack {
+              top: 82px;
+            }
+          }
+        }
+        em.center.hack i:after {
+          height: 132px;
+          top: -134px;
+        }
+      }
       b {
         font-size: 15px;
       }
@@ -457,17 +502,85 @@ body {
       }
 
     }
-    .model-content {
-      padding: 3px;
+    .activity-section-one {
+      .model-content {
+         padding: 30px 5px 10px 5px;
+      }
     }
+    .activity-section-two {
+      .model-content {
+        padding: 30px 5px 10px 5px;
+      }
+      .gift-box {
+        height:85px;
+        margin-bottom: 80px;
+        padding: 5px 10px;
+        b.user-kind {
+          font-size: 14px;
+        }
+      }
+      .reward-gift-box {
+        background-size: 90%;
+        .rotate-btn {
+          height: 320px;
+          .gift-case {
+            width: 80px;
+            height: 100px;
+            top: 124px;
+            img {
+              width:100%;
+            }
+          }
+        }
+      }
+      .gift-info-list {
+        width: 95%;
+        height: 367px;
+        .hat {
+          transform: scale(0.5);
+          -ms-transform:scale(0.5);
+          -moz-transform:scale(0.5);
+          -webkit-transform:scale(0.5);
+          -o-transform:scale(0.5);
+        }
+        .silk-left {
+          left: -32px;
+          top: 20px;
+          height: 100%;
+          transform: scale(0.7);
+          display: none;
+        }
+        .silk-right {
+          transform: scale(0.7);
+          right: -21px;
+          top: 20px;
+          display: none;
+        }
+
+        .record-list-box {
+          width: 61%;
+          .record-list {
+            font-size: 12px;
+          }
+          .menu-switch {
+            font-size: 13px;
+            height:auto;
+            overflow: auto;
+          }
+        }
+
+      }
+    }
+
     span.text-note {
       padding: 10px 15px;
     }
     .christmas-day-inner {
       width:100%;
+      padding-bottom: 0px;
     }
     .christmas-border {
-      margin-bottom:30px;
+      margin-bottom:50px;
       padding: 6px;
       .title-christmas {
         background-position: center top;
@@ -485,6 +598,48 @@ body {
     .box-notice {
       margin-top:30px;
     }
+    .invest-percent-box {
+      padding: 10px;
+      font-size: 12px;
+      .progress-bar {
+        height: 25px;
+        .progress-percent .progress-value {
+          transform: scale(0.6);
+          right: -12px;
+          top: -28px;
+        }
+      }
+    }
+
+    .img-gift {
+      width:100%;
+    }
+    .margin-top25 {
+      margin-top:5px;
+    }
+    .info-activity-note {
+      padding: 0 10px;
+    }
+    .activity-info {
+      margin-top: -26px;
+      margin-bottom: 25px;
+      span.text-note {
+        font-size:12px;
+      }
+    }
   }
 
+}
+
+@media screen and(max-width: 350px){
+  .christmas-day-frame .activity-section-two .gift-info-list .record-list-box {
+    width: 90%;
+  }
+  .christmas-day-frame .activity-section-two .reward-gift-box .rotate-btn {
+    height:237px;
+  }
+
+  .christmas-day-frame .christmas-border .title-christmas {
+    padding-top: 21px;
+  }
 }

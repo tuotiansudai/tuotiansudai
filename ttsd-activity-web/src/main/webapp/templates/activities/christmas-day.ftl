@@ -1,6 +1,9 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.christmas_day}" pageJavascript="${js.christmas_day}" activeNav="" activeLeftNav="" title="圣诞节活动_活动中心_拓天速贷" keywords="圣诞礼物,圣诞节投资,拓天活动,拓天速贷" description="拓天速贷圣诞节活动帮圣诞老人投资铺路,圣诞节投资可享1%加息券,并按投资比例瓜分20000元红包大奖,还可领取圣诞礼物.">
-
+    <@global.isNotAnonymous>
+    <div style="display: none" class="login-name" data-login-name='<@global.security.authentication property="principal.username" />'></div>
+    <div style="display: none" class="mobile" id="MobileNumber" data-mobile='<@global.security.authentication property="principal.mobile" />'></div>
+    </@global.isNotAnonymous>
 <div class="activity-slide"></div>
 <div class="christmas-day-frame" id="christmasDayFrame">
     <div class="christmas-day-inner">
@@ -138,7 +141,7 @@
                    <div class="clearfix"></div>
                     <div class="reward-gift-box">
                         <div class="rotate-btn">
-                            <div class="gift-case">
+                            <div class="gift-case pointer-img">
                                 <img src="${staticServer}/activity/images/christmas-day/reward-box.png">
                             </div>
                         </div>
@@ -148,12 +151,12 @@
                             <em class="hat"></em>
 
                             <div class="record-list-box">
-                                <div class="menu-switch">
+                                <div class="menu-switch clearfix">
                                     <span class="active">中奖记录</span>
                                     <span>我的奖品</span>
                                 </div>
                                 <div class="record-list">
-                                    <ul class="user-record" >
+                                    <ul class="user-record" id="userRecordList">
                                         <li>恭喜130****7149抽中了小米Note2</li>
                                         <li>恭喜130****7149抽中了小米Note2</li>
                                         <li>恭喜130****7149抽中了小米Note2</li>
@@ -165,7 +168,18 @@
                                         <li>恭喜130****7149抽中了小米Note2</li>
                                         <li>恭喜130****7149抽中了小米Note2</li>
                                     </ul>
-                                    <ul class="own-record" style="display: none"></ul>
+                                    <ul class="own-record" id="ownRecordList" style="display: none">
+                                        <li>恭喜130****7149抽中了小米Note2</li>
+                                        <li>恭喜130****7149抽中了小米Note2</li>
+                                        <li>恭喜130****7149抽中了小米Note2</li>
+                                        <li>恭喜130****7149抽中了小米Note2</li>
+                                        <li>恭喜130****7149抽中了小米Note2</li>
+                                        <li>恭喜130****7149抽中了小米Note2</li>
+                                        <li>恭喜130****7149抽中了小米Note2</li>
+                                        <li>恭喜130****7149抽中了小米Note2</li>
+                                        <li>恭喜130****7149抽中了小米Note2</li>
+                                        <li>恭喜130****7149抽中了小米Note2</li>
+                                    </ul>
                                 </div>
                             </div>
 
