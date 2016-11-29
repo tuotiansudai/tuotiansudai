@@ -40,7 +40,7 @@ if($searchResultBox.length) {
     var $answersList=$('.answers-list',$searchResultBox);
     var keyword=urlParams.params.keyword; //关键字
     if(keyword) {
-        $('#searchBoxTool .input-search').val(keyword);
+        $('#searchBoxTool .input-search').val(decodeURI(keyword));
     }
 
     $answersList.find('dt a').each(function(key,option) {
