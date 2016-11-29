@@ -279,7 +279,7 @@
 							</li>
 						</ul>
 						<div class="invite-btn-group">
-							<a href="/referrer/refer-list" class="invite-item" data-expired="${expired}">邀请好友</a>
+							<a href="/referrer/refer-list" class="invite-item" data-expired="${expired?c}")>邀请好友</a>
 							<p>旅行基金以芒果旅游卡的形式发放。</p>
 						</div>
 					</div>
