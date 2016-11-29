@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Controller
@@ -30,7 +29,7 @@ public class NotWorkController {
     public ModelAndView getHome() {
         ModelAndView modelAndView = new ModelAndView("/activities/no-work", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
-        modelAndView.addObject("expired", activityStartTime.after(new Date()) || activityEndTime.before(new Date()));
+        modelAndView.addObject("expired", !(activityStartTime.before(new Date()) && activityEndTime.after(new Date())));
         if (!Strings.isNullOrEmpty(loginName)) {
             modelAndView.addObject("investAmount", AmountConverter.convertCentToString(notWorkService.getUsersActivityInvestAmount(loginName)));
             modelAndView.addObject("needInvestAmount", AmountConverter.convertCentToString(notWorkService.getUsersNeedInvestAmount(loginName)));
