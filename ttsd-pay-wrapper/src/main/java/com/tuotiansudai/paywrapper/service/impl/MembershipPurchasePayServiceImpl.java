@@ -9,9 +9,10 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipPurchaseMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
-import com.tuotiansudai.membership.repository.model.MembershipPurchaseStatus;
+import com.tuotiansudai.enums.MembershipPurchaseStatus;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.message.util.UserMessageEventGenerator;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferAsynMapper;
@@ -22,7 +23,8 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.TransferAsynRe
 import com.tuotiansudai.paywrapper.service.MembershipPurchasePayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.SystemBillBusinessType;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
@@ -63,6 +65,9 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
     @Autowired
     private SystemBillService systemBillService;
 
+    @Autowired
+    private UserMessageEventGenerator userMessageEventGenerator;
+
     @Override
     public BaseDto<PayFormDataDto> purchase(MembershipPurchaseDto dto) {
         MembershipPurchaseModel purchaseModel = new MembershipPurchaseModel(idGenerator.generate(), dto);
@@ -87,7 +92,7 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
     @Override
     @Transactional
     public String purchaseCallback(Map<String, String> paramsMap, String originalQueryString) {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, TransferNotifyMapper.class, TransferNotifyRequestModel.class);
+        BaseCallbackRequestModel callbackRequest = payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, TransferNotifyMapper.class, TransferNotifyRequestModel.class);
 
         if (callbackRequest == null) {
             return null;
@@ -100,6 +105,8 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
 
     private void postPurchaseCallback(BaseCallbackRequestModel callbackRequestModel) {
         long orderId;
+
+        logger.debug("Into membership purchase call back.");
 
         try {
             orderId = Long.parseLong(callbackRequestModel.getOrderId());
@@ -139,5 +146,11 @@ public class MembershipPurchasePayServiceImpl implements MembershipPurchasePaySe
                 membershipMapper.findByLevel(membershipPurchaseModel.getLevel()).getId(),
                 new DateTime().plusDays(membershipPurchaseModel.getDuration() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate(),
                 UserMembershipType.PURCHASED));
+
+        try{
+            userMessageEventGenerator.generateMembershipPurchaseEvent(orderId);
+        } catch (Exception e) {
+            logger.error("Message membership purchase send fail", e);
+        }
     }
 }

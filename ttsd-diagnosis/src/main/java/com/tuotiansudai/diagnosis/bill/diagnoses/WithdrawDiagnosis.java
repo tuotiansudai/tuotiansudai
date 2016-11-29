@@ -7,7 +7,7 @@ import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.WithdrawModel;
-import com.tuotiansudai.repository.model.WithdrawStatus;
+import com.tuotiansudai.enums.WithdrawStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

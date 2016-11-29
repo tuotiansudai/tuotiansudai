@@ -36,12 +36,18 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label">目标地址: </label>
-                <div class="col-sm-4 ">
-                    <input type="text" name="linkUrl" class="form-control promotionLinkUrl" value="<#if promotion??>${promotion.linkUrl!}</#if>"  placeholder="" datatype="*" errormsg="目标地址不能为空">
+                <label class="col-sm-2 control-label">APP点击定位到: </label>
+                <div class="col-sm-4">
+                    <select class="selectpicker" name="linkUrl">
+                        <#list appUrls as appUrl>
+                            <option value="${appUrl.path}" <#if promotion?? &&  appUrl.path == promotion.linkUrl>selected</#if>>${appUrl.description}</option>
+                        </#list>
+                    </select>
+                    <div class="app-push-link jump-to-link">链接地址:<input type="text" class="form-control jump-link-text" name="jumpToLink" <#if promotion??>value="${promotion.jumpToLink!}"</#if>  placeholder=""  maxlength="100" datatype="*" errormsg="定位地址不能为空"></div>
+                </div>
+                <div class="col-sm-7">
                 </div>
             </div>
-
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">推送时间: </label>

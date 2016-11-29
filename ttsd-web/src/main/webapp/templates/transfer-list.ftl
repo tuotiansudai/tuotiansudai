@@ -1,9 +1,8 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.transfer_list}" pageJavascript="${js.transfer_list}" activeNav="我要投资" activeLeftNav="转让项目" title="债权转让_转让项目_拓天速贷" keywords="债权转让,债务转移,债权投资,金融债权,债权购买" description="拓天速贷债权转让项目,帮助用户提高投资的流动性,安全的债权转让产品提高用户的信任度,拓天速贷让用户资金灵活,收益最大化.">
 <div class="transfer-list-content clearfix">
-    <div class="filter-list clearfix">
-        <ul class="wrapper-list">
-            <li>
+   <ul class="wrapper-list" id="wrapperList">
+            <li class="project-kind">
                 <span>项目状态: </span>
                 <#assign statusUrl = "/transfer-list?transferStatus={transferStatus}&rateStart=${rateStart!}&rateEnd=${rateEnd!}">
                 <#assign statusMap = {"":"全部","TRANSFERRING":"转让中","SUCCESS":"已完成"}>
@@ -13,6 +12,7 @@
                        <#elseif !(transferStatus??) && key=="">class="active"</#if>
                        href=${statusUrl?replace("{transferStatus}",key)}>${statusMap[key]}</a>
                 </#list>
+                <em class="show-more">更多 <i class="fa fa-angle-down"></i> </em>
             </li>
             <li>
                 <span>预期年化收益: </span>
@@ -29,7 +29,6 @@
                 </#list>
             </li>
         </ul>
-    </div>
     <div class="transfer-list-box">
         <ul>
             <#if transferApplicationItemList??>

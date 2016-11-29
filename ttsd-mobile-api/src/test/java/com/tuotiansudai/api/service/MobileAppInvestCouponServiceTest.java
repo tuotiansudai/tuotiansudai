@@ -37,23 +37,23 @@ public class MobileAppInvestCouponServiceTest extends ServiceTestBase {
     private IdGenerator idGenerator;
 
     @Test
-    public void shouldGetInvestCouponsIsSuccess(){
+    public void shouldGetInvestCouponsIsSuccess() {
         UserModel userModel = getFakeUser("testInvestCoupon");
         userMapper.create(userModel);
-        CouponModel couponModelInvestCoupon = fakeCouponModel(userModel,CouponType.INVEST_COUPON);
+        CouponModel couponModelInvestCoupon = fakeCouponModel(userModel, CouponType.INVEST_COUPON);
         CouponModel couponModelRedEnvelope = fakeCouponModel(userModel, CouponType.RED_ENVELOPE);
         couponMapper.create(couponModelInvestCoupon);
         couponMapper.create(couponModelRedEnvelope);
         UserCouponModel userCouponModelRedEnvelope = fakeUserCouponModel(couponModelRedEnvelope.getId(),
-                userModel.getLoginName(),new DateTime().plusDays(-1).withTimeAtStartOfDay().toDate(),
+                userModel.getLoginName(), new DateTime().plusDays(-1).withTimeAtStartOfDay().toDate(),
                 new DateTime().plusDays(5).withTimeAtStartOfDay().toDate());
 
         UserCouponModel userCouponModelInvestCoupon = fakeUserCouponModel(couponModelInvestCoupon.getId(),
-                userModel.getLoginName(),new DateTime().plusDays(-1).withTimeAtStartOfDay().toDate(),
+                userModel.getLoginName(), new DateTime().plusDays(-1).withTimeAtStartOfDay().toDate(),
                 new DateTime().plusDays(5).withTimeAtStartOfDay().toDate());
         userCouponMapper.create(userCouponModelInvestCoupon);
         userCouponMapper.create(userCouponModelRedEnvelope);
-        LoanModel loanModel = getFakeLoan(LoanStatus.RAISING,ActivityType.NORMAL,userModel.getLoginName());
+        LoanModel loanModel = getFakeLoan(LoanStatus.RAISING, ActivityType.NORMAL, userModel.getLoginName());
         loanMapper.create(loanModel);
         InvestRequestDto investRequestDto = new InvestRequestDto();
         BaseParam baseParam = new BaseParam();
@@ -66,15 +66,16 @@ public class MobileAppInvestCouponServiceTest extends ServiceTestBase {
 
         BaseResponseDto<UserCouponListResponseDataDto> baseResponseDto = mobileAppInvestCouponService.getInvestCoupons(investRequestDto);
 
-        assertEquals(2,baseResponseDto.getData().getCoupons().size());
-        assertEquals(CouponType.RED_ENVELOPE,baseResponseDto.getData().getCoupons().get(0).getType());
-        assertEquals(CouponType.INVEST_COUPON,baseResponseDto.getData().getCoupons().get(1).getType());
+        assertEquals(2, baseResponseDto.getData().getCoupons().size());
+        assertEquals(CouponType.RED_ENVELOPE, baseResponseDto.getData().getCoupons().get(0).getType());
+        assertEquals(CouponType.INVEST_COUPON, baseResponseDto.getData().getCoupons().get(1).getType());
     }
-    private UserCouponModel fakeUserCouponModel(long couponId,String loginName,Date startTime,Date endTime) {
+
+    private UserCouponModel fakeUserCouponModel(long couponId, String loginName, Date startTime, Date endTime) {
         return new UserCouponModel(loginName, couponId, startTime, endTime);
     }
 
-    private LoanModel getFakeLoan(LoanStatus loanStatus, ActivityType activityType,String agentLoginName) {
+    private LoanModel getFakeLoan(LoanStatus loanStatus, ActivityType activityType, String agentLoginName) {
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(idGenerator.generate());
         fakeLoanModel.setName("loanName");

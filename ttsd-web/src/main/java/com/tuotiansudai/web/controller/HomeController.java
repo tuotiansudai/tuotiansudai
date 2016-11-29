@@ -65,7 +65,6 @@ public class HomeController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/index", "responsive", true);
-        modelAndView.addObject("hello",true);
         modelAndView.addObject("normalLoans", homeService.getNormalLoans());
         modelAndView.addObject("newbieLoans", homeService.getNewbieLoans());
         modelAndView.addObject("announces", announceService.getAnnouncementList(1, 3).getData().getRecords());

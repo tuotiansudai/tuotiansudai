@@ -307,3 +307,17 @@ app.post('/media-center/:id/like', function(req, res) {
 app.listen(8889, function() {
 	console.log('mock server listening on port 8889!');
 });
+
+app.get('/message-center/:articleId', function (req, res) {
+    res.send({
+        "code": "0000",
+        "message": "",
+        "data": {
+            "userMessageId": "11111", //消息ID
+            "title": "拓天速贷第二期全国排行活动正式启动", //消息标题
+            "content": '<img src="http://placekitten.com/750/340?text=img" alt=""/> <p>事老地方就是浪费 事老地方就是浪费流口水都放假了双方就 老师的分类考试的附件 流口水的减肥了开始就发来撒风景老师的放假了双方 老师的发了啥快递放假</p> <img src="http://placekitten.com/750/340?text=img" alt=""/> <p>事老地方就是浪费 事老地方就是浪费流口水都放假了双方就 老师的分类考试的附件 流口水的减肥了开始就发来撒风景老师的放假了双方 老师的发了啥快递放假</p> <p>事老地方就是浪费 事老地方就是浪费流口水都放假了双方就 老师的分类考试的附件 流口水的减肥了开始就发来撒风景老师的放假了双方 老师的发了啥快递放假</p> <img src="http://placekitten.com/750/340?text=img" alt=""/> <p>事老地方就是浪费 事老地方就是浪费流口水都放假了双方就 老师的分类考试的附件 流口水的减肥了开始就发来撒风景老师的放假了双方 老师的发了啥快递放假</p>', //文章内容
+            "createTime": "2016-05-06 12:32:58", //创建时间
+            "appUrl": '/loan-list'//app跳转路径
+        }
+    });
+});

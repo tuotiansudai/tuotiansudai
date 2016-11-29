@@ -6,7 +6,7 @@ import com.tuotiansudai.diagnosis.support.SingleObjectDiagnosis;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.membership.repository.mapper.MembershipPurchaseMapper;
 import com.tuotiansudai.membership.repository.model.MembershipPurchaseModel;
-import com.tuotiansudai.membership.repository.model.MembershipPurchaseStatus;
+import com.tuotiansudai.enums.MembershipPurchaseStatus;
 import com.tuotiansudai.repository.model.UserBillModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
