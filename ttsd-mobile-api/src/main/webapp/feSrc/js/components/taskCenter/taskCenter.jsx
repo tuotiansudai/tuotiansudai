@@ -22,6 +22,7 @@ const MenuData = {
 class ButtonStatus extends React.Component {
     
     jumpToWhere(event) {
+        debugger
         let dataset=event.target.dataset;
         window.location.href = dataset.url;
     } 

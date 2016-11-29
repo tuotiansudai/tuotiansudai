@@ -87,6 +87,16 @@ define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, lay
             }
         })
     }
+
+    //抽奖的时候没有转盘
+    giftCircleDraw.prototype.noRotateFn=function(angles,tipMessage) {
+        var thisFun=this;
+        thisFun.GiftRecord();
+        thisFun.MyGift();
+        thisFun.bRotate = !thisFun.bRotate;
+        thisFun.tipWindowPop(tipMessage);
+    }
+
     giftCircleDraw.prototype.beginLuckDraw=function(callback) {
         var self=this;
         self.giftCircleFrame.find('.pointer-img').on('click', function(event) {
@@ -95,6 +105,8 @@ define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, lay
             });
         })
     }
+
+
     giftCircleDraw.prototype.scrollList=function(domName) {
         var $self=domName;
         var lineHeight = $self.find("li:first").height();
