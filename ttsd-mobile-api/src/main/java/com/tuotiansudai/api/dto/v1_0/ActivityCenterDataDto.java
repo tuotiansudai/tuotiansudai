@@ -32,7 +32,7 @@ public class ActivityCenterDataDto {
     public ActivityCenterDataDto(ActivityModel activityModel) {
         this.descTitle = activityModel.getDescription();
         this.imageUrl = activityModel.getAppPictureUrl();
-        this.activityUrl = activityModel.getAppActivityUrl();
+        this.activityUrl = activityModel.getAppActivityUrl().equals("") ? activityModel.getJumpToLink() : activityModel.getAppActivityUrl();
         this.title = activityModel.getTitle();
         this.content = activityModel.getShareContent();
         this.sharedUrl = activityModel.getShareUrl();

@@ -9,6 +9,9 @@ public class BankCardReplaceRequestDto extends BaseParamDto{
     @ApiModelProperty(value = "要绑定的新卡号", example = "6222600001111111111")
     private String cardNo;
 
+    @ApiModelProperty(value = "银行卡缩写", example = "ICBC")
+    private String bankCode;
+
     @ApiModelProperty(value = "ip", example = "127.0.0.1")
     private String ip;
 
@@ -28,6 +31,14 @@ public class BankCardReplaceRequestDto extends BaseParamDto{
         this.ip = ip;
     }
 
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
+
     public BindBankCardDto convertToBindBankCardDto(){
         BindBankCardDto bindBankCardDto = new BindBankCardDto();
         bindBankCardDto.setCardNumber(this.getCardNo());
@@ -35,6 +46,7 @@ public class BankCardReplaceRequestDto extends BaseParamDto{
         bindBankCardDto.setLoginName(this.getBaseParam().getUserId());
         bindBankCardDto.setIp(this.getIp());
         bindBankCardDto.setDeviceId(this.getBaseParam().getDeviceId());
+        bindBankCardDto.setBankCode(this.getBankCode());
         return bindBankCardDto;
 
     }

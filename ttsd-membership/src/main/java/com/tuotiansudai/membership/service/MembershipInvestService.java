@@ -1,5 +1,6 @@
 package com.tuotiansudai.membership.service;
 
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -37,6 +38,11 @@ public class MembershipInvestService {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    private final String REDIS_MEMBERSHIP_UPGRADE_MESSAGE = "web:membership:upgrade";
+
     @Transactional
     public void afterInvestSuccess(String loginName, long investAmount, long investId) {
         try {
@@ -61,6 +67,7 @@ public class MembershipInvestService {
 
                 UserMembershipModel newUserMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, newMembership.getId());
                 userMembershipMapper.create(newUserMembershipModel);
+                redisWrapperClient.hset(REDIS_MEMBERSHIP_UPGRADE_MESSAGE, loginName, String.valueOf(newMembership.getId()));
             }
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);

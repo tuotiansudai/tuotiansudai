@@ -17,7 +17,7 @@ public class BookingLoanModel implements Serializable {
     private Date updateTime;
     private String loginName;
 
-    public BookingLoanModel(String loginName,String mobile, Source source, Date bookingTime, ProductType productType, long amount, Date noticeTime, boolean status, Date createTime) {
+    public BookingLoanModel(String loginName, String mobile, Source source, Date bookingTime, ProductType productType, long amount, Date noticeTime, boolean status, Date createTime) {
         this.loginName = loginName;
         this.mobile = mobile;
         this.source = source;

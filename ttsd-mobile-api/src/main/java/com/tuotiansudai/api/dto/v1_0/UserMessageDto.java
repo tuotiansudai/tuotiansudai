@@ -14,6 +14,9 @@ public class UserMessageDto implements Serializable {
     @ApiModelProperty(value = "标题", example = "1000")
     private long userMessageId;
 
+    @ApiModelProperty(value = "消息类型", example = "EVENT,MANUAL")
+    private String messageType;
+
     @ApiModelProperty(value = "标题", example = "投资成功")
     private String title;
 
@@ -29,8 +32,8 @@ public class UserMessageDto implements Serializable {
 
     public UserMessageDto(UserMessageModel userMessageModel) {
         this.userMessageId = userMessageModel.getId();
-        this.title = userMessageModel.getTitle();
-        this.content = StringUtils.isEmpty(userMessageModel.getContent()) ? userMessageModel.getTitle() : userMessageModel.getContent();
+        this.title = userMessageModel.getAppTitle();
+        this.content = StringUtils.isEmpty(userMessageModel.getContent()) ? userMessageModel.getAppTitle() : userMessageModel.getContent();
         this.read = userMessageModel.isRead();
         this.createdTime = userMessageModel.getCreatedTime();
     }
@@ -41,6 +44,14 @@ public class UserMessageDto implements Serializable {
 
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
+    }
+
+    public String getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
     }
 
     public String getTitle() {

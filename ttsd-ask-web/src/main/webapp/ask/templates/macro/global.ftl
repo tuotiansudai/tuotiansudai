@@ -40,7 +40,7 @@
         {"title":"推荐管理", "url":"${webServer}/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"我的宝藏", "url":"${webServer}/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
-    {"title":"拓天问答", "url":"${askServer}","category":"","navigation":"true"},
+    {"title":"拓天问答", "url":"${askServer}/?group=HOT&index=1","category":"","navigation":"true"},
     {"title":"信息披露", "url":"${webServer}/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
         {"title":"公司介绍", "url":"${webServer}/about/company"},
         {"title":"团队介绍", "url":"${webServer}/about/team"},
@@ -95,22 +95,22 @@
     <#include "../pageLayout/top-menu.ftl"/>
 <#--top menus-->
 
+    <#if !errorPage??>
 <#--ad image-->
 <div class="banner-box page-width">
     <a href="https://tuotiansudai.com/activity/landing-page" target="_blank"></a>
 </div>
 <#--ad image-->
-
+    </#if>
 <div class="main-frame full-screen clearfix">
+
 <#--banner-->
-    <div class="borderBox tc mobile-menu">
-        <a href="/question" class="btn-main want-question">我要提问</a>
-        <a href="/question/my-questions" class="btn-main my-question">我的提问</a>
-        <a href="/answer/my-answers" class="btn-main my-answer">我的回答</a>
-    </div>
+    <#if !errorPage??>
+    <#include "../pageLayout/search-bar.ftl"/>
     <div class="download-mobile">
         <a href="https://tuotiansudai.com/app/download" target="_blank"></a>
     </div>
+    </#if>
 <#--banner-->
 
     <#--hot question-->
@@ -119,21 +119,24 @@
         <ul class="qa-list clearfix" style="display: none">
             <#list tags as tagItem>
                 <li>
-                    <a href="/question/category?tag=${tagItem.name()}" <#if tag?? && tagItem == tag>class="active"</#if>>${tagItem.description}</a>
+                    <a href="/question/category/${tagItem.name()?lower_case}"
+                       <#if tag?? && tagItem == tag>class="active"</#if>>${tagItem.description}</a>
                 </li>
             </#list>
         </ul>
     </div>
     <div class="question-container answer-container">
         <#nested>
-
+        <#if !errorPage??>
     <#--left content-->
-        <div class="aside-frame fr">
+        <div class="aside-frame fr" >
             <#include "../user.ftl"/>
             <#include "../tags.ftl"/>
+
             <a href="https://tuotiansudai.com/activity/app-download" target="_blank" class="margin-top-10 ad-welfare" ></a>
         </div>
     <#--left content-->
+        </#if>
     </div>
 </div>
 

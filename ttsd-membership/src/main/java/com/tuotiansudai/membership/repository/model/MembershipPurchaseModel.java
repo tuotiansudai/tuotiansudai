@@ -1,5 +1,6 @@
 package com.tuotiansudai.membership.repository.model;
 
+import com.tuotiansudai.enums.MembershipPurchaseStatus;
 import com.tuotiansudai.membership.dto.MembershipPurchaseDto;
 import com.tuotiansudai.repository.model.Source;
 

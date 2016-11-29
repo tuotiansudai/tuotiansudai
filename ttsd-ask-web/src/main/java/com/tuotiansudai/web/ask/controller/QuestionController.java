@@ -7,6 +7,7 @@ import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.QuestionService;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,9 @@ public class QuestionController {
                                  @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         QuestionDto question = questionService.getQuestion(LoginUserInfo.getLoginName(), questionId);
         if (question == null) {
-            return new ModelAndView("/error/404");
+            ModelAndView modelAndView =  new ModelAndView("/error/404");
+            modelAndView.addObject("errorPage","true");
+            return modelAndView;
         }
 
         ModelAndView modelAndView = new ModelAndView("/question", "questionId", questionId);
@@ -59,12 +62,35 @@ public class QuestionController {
         return new ModelAndView("/my-questions", "questions", questionService.findMyQuestions(LoginUserInfo.getLoginName(), index, 10));
     }
 
-    @RequestMapping(path = "/category", method = RequestMethod.GET)
-    public ModelAndView getQuestionsByCategory(@RequestParam(value = "tag", required = true) Tag tag,
+    @RequestMapping(path = "/category/{urlTag}", method = RequestMethod.GET)
+    public ModelAndView getQuestionsByCategory(@PathVariable String urlTag,
                                                @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+        Tag tag;
+        try {
+            tag = Tag.valueOf(urlTag.toUpperCase());
+        } catch (Exception e) {
+            ModelAndView modelAndView =  new ModelAndView("/error/404");
+            modelAndView.addObject("errorPage","true");
+            return modelAndView;
+        }
         ModelAndView modelAndView = new ModelAndView("/question-category");
         modelAndView.addObject("questions", questionService.findByTag(LoginUserInfo.getLoginName(), tag, index, 10));
         modelAndView.addObject("tag", tag);
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/search", method = RequestMethod.GET)
+    public ModelAndView getQuestionsByKeyword(@RequestParam(value = "keyword", defaultValue = "") String keyword,
+                                              @RequestParam(value = "index", required = false, defaultValue = "1") int index) {
+        if(StringUtils.isEmpty(keyword)) {
+            return new ModelAndView("redirect:/?group=HOT&index=1");
+        }
+        ModelAndView modelAndView = new ModelAndView("search-data");
+        String loginName = LoginUserInfo.getLoginName();
+        BaseDto<BasePaginationDataDto> data = questionService.getQuestionsByKeywords(keyword, loginName, index, 10);
+        modelAndView.addObject("keywordQuestions", data);
+        modelAndView.addObject("keyword", keyword);
+
         return modelAndView;
     }
 }

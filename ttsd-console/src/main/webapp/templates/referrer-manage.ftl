@@ -83,7 +83,8 @@
                     <option value="">全部</option>
                     <#list referrerRewardStatuses as referrerRewardStatusItem>
                         <#if referrerRewardStatusItem != 'NO_ACCOUNT'>
-                            <option value="${referrerRewardStatusItem.name()}" <#if (referrerRewardStatus?has_content && referrerRewardStatus == referrerRewardStatusItem.name()) >selected</#if>>${referrerRewardStatusItem.name()}</option>
+                            <option value="${referrerRewardStatusItem.name()}"
+                                    <#if (referrerRewardStatus?has_content && referrerRewardStatus == referrerRewardStatusItem.name()) >selected</#if>>${referrerRewardStatusItem.name()}</option>
                         </#if>
                     </#list>
                 </select>

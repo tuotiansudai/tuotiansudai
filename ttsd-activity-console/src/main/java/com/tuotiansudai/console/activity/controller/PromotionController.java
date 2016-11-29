@@ -2,10 +2,12 @@ package com.tuotiansudai.console.activity.controller;
 
 import com.tuotiansudai.activity.repository.dto.PromotionDto;
 import com.tuotiansudai.activity.repository.dto.PromotionStatus;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.model.PromotionModel;
 import com.tuotiansudai.console.activity.service.ActivityConsolePromotionService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/activity-console/activity-manage/promotion")
@@ -24,6 +27,7 @@ public class PromotionController {
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public ModelAndView promotionCreate() {
         ModelAndView modelAndView = new ModelAndView("/promotion");
+        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()).stream().filter(n -> n != AppUrl.NONE).collect(Collectors.toList()));
         return modelAndView;
     }
 
@@ -72,6 +76,7 @@ public class PromotionController {
         ModelAndView modelAndView = new ModelAndView("/promotion-edit");
         PromotionModel promotionModel = this.activityConsolePromotionService.findById(id);
         modelAndView.addObject("promotion", promotionModel);
+        modelAndView.addObject("appUrls", Lists.newArrayList(AppUrl.values()).stream().filter(n -> n != AppUrl.NONE).collect(Collectors.toList()));
         return modelAndView;
     }
 
