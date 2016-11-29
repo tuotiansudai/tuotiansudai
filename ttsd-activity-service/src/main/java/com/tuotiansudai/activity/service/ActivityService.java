@@ -50,6 +50,7 @@ public class ActivityService {
                     activityModelExist.setWebActivityUrl(activityDto.getWebActivityUrl());
                     activityModelExist.setWebPictureUrl(activityDto.getWebPictureUrl());
                     activityModelExist.setAppActivityUrl(activityDto.getAppActivityUrl());
+                    activityModelExist.setJumpToLink(activityDto.getJumpToLink());
                     activityModelExist.setAppPictureUrl(activityDto.getAppPictureUrl());
                     activityModelExist.setActivatedTime(activityDto.getActivatedTime());
                     activityModelExist.setSource(activityDto.getSource());

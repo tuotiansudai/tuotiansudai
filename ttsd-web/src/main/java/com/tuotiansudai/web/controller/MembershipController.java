@@ -79,8 +79,16 @@ public class MembershipController {
         if (loginName != null) {
             AccountModel accountModel = accountService.findByLoginName(loginName);
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
+            UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
 
-            modelAndView.addObject("membershipLevel", membershipModel != null ? membershipModel.getLevel() : "");
+            if(userMembershipModel != null && (userMembershipModel.getType() == UserMembershipType.GIVEN || userMembershipModel.getType() == UserMembershipType.PURCHASED))
+            {
+                modelAndView.addObject("membershipLevel", MembershipLevel.V5.getLevel());
+            }
+            else{
+                modelAndView.addObject("membershipLevel", membershipModel != null ? membershipModel.getLevel() : "");
+            }
+
             modelAndView.addObject("membershipPoint", accountModel != null ? accountModel.getMembershipPoint() : "");
         }
         modelAndView.addObject("loginName", loginName);

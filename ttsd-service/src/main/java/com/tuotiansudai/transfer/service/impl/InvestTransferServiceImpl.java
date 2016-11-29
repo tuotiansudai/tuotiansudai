@@ -1,6 +1,5 @@
 package com.tuotiansudai.transfer.service.impl;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -19,9 +18,12 @@ import com.tuotiansudai.transfer.repository.model.TransferInvestDetailDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
+import com.tuotiansudai.util.CalculateLeftDays;
+import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.JobManager;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -32,9 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -323,9 +322,8 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             }
             LoanModel loanModel = loanMapper.findById(input.getLoanId());
             InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(input.getTransferInvestId(), loanModel.getPeriods());
-
-            long leftDays = ChronoUnit.DAYS.between(LocalDate.now(), currentInvestRepayModel.getRepayDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-            transferApplicationPaginationItemDataDto.setLeftDays(String.valueOf(leftDays > 0 ? leftDays : 0));
+            Date repayDate = currentInvestRepayModel == null ? new Date() : currentInvestRepayModel.getRepayDate() == null ? new Date() : currentInvestRepayModel.getRepayDate();
+            transferApplicationPaginationItemDataDto.setLeftDays(CalculateLeftDays.calculateTransferApplicationLeftDays(repayDate));
             return transferApplicationPaginationItemDataDto;
         });
 
@@ -364,9 +362,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         items.forEach(transferInvestDetailDto -> {
             if (ContractNoStatus.OLD.name().equals(transferInvestDetailDto.getContractNo())) {
                 transferInvestDetailDto.setContractOld("1");
-            } else if (ContractNoStatus.WAITING.name().equals(transferInvestDetailDto.getContractNo()) || Strings.isNullOrEmpty(transferInvestDetailDto.getContractNo())) {
-                transferInvestDetailDto.setContractCreating("1");
-            } else {
+            } else if (StringUtils.isNotEmpty(transferInvestDetailDto.getContractNo())) {
                 transferInvestDetailDto.setContractOK("1");
             }
         });

@@ -1,4 +1,3 @@
-@import 'common/variables';
 @import 'register_png';
 
 .register-container {
@@ -10,8 +9,8 @@
   text-align: center;
 
   .step-register-head {
-    border-bottom: 1px solid nth($borderColor,2);
-    color: nth($mainColor,1);
+    border-bottom: 1px solid #ffac2a;
+    color: #ff752a;
     font-size: 24px;
     padding: 25px 0 3px 0;
     position: relative;
@@ -125,11 +124,11 @@
         input.valid + .agreement + label.error {
           &:before {
             content: "\f058";
-            color: nth($checkValid,2);
+            color: #6bc21e;
           }
         }
         &.referrer-open {
-          color: nth($CK1,1);
+          color: #ffac2a;
           font-size: 14px;
           padding-left: 26px;
           margin-bottom: 10px;
@@ -431,7 +430,7 @@
           input.valid + .agreement + label.error {
             &:before {
               content: "\f058";
-              color: nth($checkValid,2);
+              color: #6bc21e;
             }
           }
           &.agree-last {

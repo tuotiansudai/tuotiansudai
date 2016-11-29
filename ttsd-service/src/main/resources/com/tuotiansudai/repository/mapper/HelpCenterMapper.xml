@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.HelpCenterMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="helpCenterResultMap" type="HelpCenterModel">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="category" property="category"/>
+        <result column="hot" property="hot"/>
+    </resultMap>
+
+
+    <insert id="create" parameterType="HelpCenterModel"  useGeneratedKeys="true" keyProperty="id">
+        insert into `aa`.`help_center` (id, title, content, category, hot)
+        value(#{id}, #{title}, #{content}, #{category}, #{hot})
+    </insert>
+
+    <select id="findAllHelpCenterByTitleOrCategoryOrHot" resultMap="helpCenterResultMap" parameterType="map">
+        SELECT * FROM `aa`.`help_center`
+        <where>
+            <if test="category != null and category !='' ">
+                AND category = #{category}
+            </if>
+            <if test="hot == 'true' ">
+                AND hot is true
+            </if>
+            <if test="keywords != null and keywords != '' ">
+                AND title like CONCAT('%', #{keywords}, '%') OR content like CONCAT('%', #{keywords}, '%')
+            </if>
+        </where>
+        order by id
+    </select>
+
+    <select id="findAllHelpCenterCategory" resultType="java.lang.String">
+        SELECT distinct(category) FROM `aa`.`help_center`
+    </select>
+</mapper>

@@ -17,6 +17,7 @@ public class ActivityDto {
     private String description;
     private String webPictureUrl;
     private String appPictureUrl;
+    private String jumpToLink;
     private String longTerm;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date activatedTime;
@@ -42,6 +43,7 @@ public class ActivityDto {
         this.seq = activityModel.getSeq();
         this.webActivityUrl = activityModel.getWebActivityUrl();
         this.appActivityUrl = activityModel.getAppActivityUrl();
+        this.jumpToLink = activityModel.getJumpToLink();
         this.description = activityModel.getDescription();
         this.webPictureUrl = activityModel.getWebPictureUrl();
         this.appPictureUrl = activityModel.getAppPictureUrl();
@@ -226,5 +228,13 @@ public class ActivityDto {
 
     public void setShareUrl(String shareUrl) {
         this.shareUrl = shareUrl;
+    }
+
+    public String getJumpToLink() {
+        return jumpToLink;
+    }
+
+    public void setJumpToLink(String jumpToLink) {
+        this.jumpToLink = jumpToLink;
     }
 }
