@@ -70,7 +70,7 @@ public class LoanerDetailsMapperTest {
         prepareData();
 
         LoanerDetailsModel loanerDetailsModel = new LoanerDetailsModel(9999L, "testLoaner", "loaner", Gender.MALE, 12,
-                "123814134", Marriage.DIVORCE, "region", "income", "employment");
+                "123814134", Marriage.DIVORCE, "region", "income", "employment", "purpose");
 
         loanerDetailsMapper.create(loanerDetailsModel);
 

@@ -11,6 +11,8 @@ public class LoanerDto implements Serializable {
     private String marriage;
     private String employmentStatus;
     private String income;
+    private String purpose;
+    private String overdueRate;
 
     public LoanerDto(LoanerDetailsModel model) {
         this.gender = model.getGender().getDescription();
@@ -18,6 +20,7 @@ public class LoanerDto implements Serializable {
         this.marriage = model.getMarriage().getDescription();
         this.employmentStatus = model.getEmploymentStatus();
         this.income = model.getIncome();
+        this.purpose = model.getPurpose();
     }
 
     public String getGender() {
@@ -58,5 +61,21 @@ public class LoanerDto implements Serializable {
 
     public void setIncome(String income) {
         this.income = income;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
+
+    public String getOverdueRate() {
+        return overdueRate;
+    }
+
+    public void setOverdueRate(String overdueRate) {
+        this.overdueRate = overdueRate;
     }
 }
