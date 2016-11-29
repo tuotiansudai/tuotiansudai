@@ -31,7 +31,7 @@ public class BookingLoanMapperTest {
     @Test
     public void shouldCreateIsOk() {
         UserModel userModel = getUserModelTest();
-        BookingLoanModel bookingLoanModel = new BookingLoanModel(userModel.getLoginName(),userModel.getMobile(),
+        BookingLoanModel bookingLoanModel = new BookingLoanModel(userModel.getLoginName(), userModel.getMobile(),
                 Source.WEB,
                 DateTime.now().toDate(),
                 ProductType._90,

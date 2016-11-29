@@ -10,6 +10,7 @@ import java.util.Date;
 
 public class UserMessageDto implements Serializable {
     private long userMessageId;
+    private String messageType;
     private String title;
     private String content;
     private boolean read;
@@ -18,8 +19,8 @@ public class UserMessageDto implements Serializable {
 
     public UserMessageDto(UserMessageModel userMessageModel) {
         this.userMessageId = userMessageModel.getId();
-        this.title = userMessageModel.getTitle();
-        this.content = StringUtils.isEmpty(userMessageModel.getContent()) ? userMessageModel.getTitle() : userMessageModel.getContent();
+        this.title = userMessageModel.getAppTitle();
+        this.content = StringUtils.isEmpty(userMessageModel.getContent()) ? userMessageModel.getAppTitle() : userMessageModel.getContent();
         this.read = userMessageModel.isRead();
         this.createdTime = userMessageModel.getCreatedTime();
     }
@@ -30,6 +31,14 @@ public class UserMessageDto implements Serializable {
 
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
+    }
+
+    public String getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
     }
 
     public String getTitle() {

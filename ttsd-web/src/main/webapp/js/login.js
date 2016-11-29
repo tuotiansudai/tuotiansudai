@@ -1,56 +1,56 @@
 require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jquery.form'], function ($, _) {
 
-    (function() {
-        var $loginContainer=$('#loginContainer');
-        var loginFormElement = $('.form-login',$loginContainer),
+    (function () {
+        var $loginContainer = $('#loginContainer');
+        var loginFormElement = $('.form-login', $loginContainer),
             loginSubmitElement = $('.login-submit', loginFormElement),
             captchaElement = $('.captcha', loginFormElement),
             errorElement = $('.error', loginFormElement),
             imageCaptchaElement = $('.image-captcha img', loginFormElement),
-            formCheckValid=true; //检查form表单验证是否全部通过
+            formCheckValid = true; //检查form表单验证是否全部通过
 
-    // 刷新验证码
-    function refreshCaptcha() {
+        // 刷新验证码
+        function refreshCaptcha() {
             captchaElement.val('');
             imageCaptchaElement.attr('src', '/login/captcha?' + new Date().getTime().toString());
         }
 
-     //表单验证
-    function checkLogin(DomElement) {
-        DomElement.each(function(key,option) {
-            var name=option.name,
-                value=$.trim(option.value),
-                errorMsg;
-                formCheckValid=true;
-            switch(name) {
-                case 'username':
-                    if(_.isEmpty(value)) {
-                        errorMsg='用户名不能为空';
-                        formCheckValid=false;
-                    }
-                    break;
-                case 'password':
-                    if(_.isEmpty(value)) {
-                        errorMsg='密码不能为空';
-                        formCheckValid=false;
-                    } else if(!/^(?=.*[^\d])(.{6,20})$/.test(value)) {
-                        errorMsg='密码为6位至20位，不能全是数字';
-                        formCheckValid=false;
-                    }
-                    break;
-                case 'captcha':
-                    if(_.isEmpty(value)) {
-                        errorMsg='验证码不能为空';
-                        formCheckValid=false;
-                    }
-                    break;
-            }
-            if(!formCheckValid) {
-                errorElement.text(errorMsg).css('visibility', 'visible');
-            }
-        });
-        return formCheckValid;
-    };
+        //表单验证
+        function checkLogin(DomElement) {
+            DomElement.each(function (key, option) {
+                var name = option.name,
+                    value = $.trim(option.value),
+                    errorMsg;
+                formCheckValid = true;
+                switch (name) {
+                    case 'username':
+                        if (_.isEmpty(value)) {
+                            errorMsg = '用户名不能为空';
+                            formCheckValid = false;
+                        }
+                        break;
+                    case 'password':
+                        if (_.isEmpty(value)) {
+                            errorMsg = '密码不能为空';
+                            formCheckValid = false;
+                        } else if (!/^(?=.*[^\d])(.{6,20})$/.test(value)) {
+                            errorMsg = '密码为6位至20位，不能全是数字';
+                            formCheckValid = false;
+                        }
+                        break;
+                    case 'captcha':
+                        if (_.isEmpty(value)) {
+                            errorMsg = '验证码不能为空';
+                            formCheckValid = false;
+                        }
+                        break;
+                }
+                if (!formCheckValid) {
+                    errorElement.text(errorMsg).css('visibility', 'visible');
+                }
+            });
+            return formCheckValid;
+        };
 
         refreshCaptcha();
         imageCaptchaElement.click(function () {
@@ -58,8 +58,8 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
         });
 
         //input失去焦点时验证
-        loginFormElement.find('input:text,input:password').on('blur',function(event) {
-            var $this=$(this);
+        loginFormElement.find('input:text,input:password').on('blur', function (event) {
+            var $this = $(this);
             errorElement.text('').css('visibility', 'hidden');
             checkLogin($this);
         });
@@ -90,8 +90,8 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
 
         loginSubmitElement.click(function (event) {
             event.preventDefault();
-            formCheckValid=checkLogin(loginFormElement.find('input:text,input:password'));
-            if(formCheckValid) {
+            formCheckValid = checkLogin(loginFormElement.find('input:text,input:password'));
+            if (formCheckValid) {
                 submitLoginForm();
             }
         });
@@ -99,9 +99,9 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jq
         $(document).keypress(function (event) {
 
             var keycode = (event.keyCode ? event.keyCode : event.which);
-            if (keycode === 13 ) {
-                formCheckValid=checkLogin(loginFormElement.find('input:text,input:password'));
-                if(formCheckValid) {
+            if (keycode === 13) {
+                formCheckValid = checkLogin(loginFormElement.find('input:text,input:password'));
+                if (formCheckValid) {
                     loginSubmitElement.focus();
                     event.preventDefault();
                     submitLoginForm();

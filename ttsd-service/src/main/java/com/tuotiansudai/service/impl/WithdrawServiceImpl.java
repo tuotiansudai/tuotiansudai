@@ -6,7 +6,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.WithdrawModel;
-import com.tuotiansudai.repository.model.WithdrawStatus;
+import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.service.WithdrawService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

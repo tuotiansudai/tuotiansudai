@@ -1,11 +1,10 @@
 package com.tuotiansudai.util;
 
-import com.google.common.collect.ImmutableListMultimap;
-import com.google.common.collect.ImmutableMap;
-
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class DistrictUtil {
@@ -51,6 +50,10 @@ public class DistrictUtil {
 
     public static LinkedHashMap<String, String> getProvinces() {
         return PROVINCES;
+    }
+
+    public static List<String> getAllCodes() {
+        return PROVINCES.keySet().stream().collect(Collectors.toList());
     }
 
     public static String convertCodeToName(String code) {

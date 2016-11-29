@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.repository.model.WithdrawModel;
-import com.tuotiansudai.repository.model.WithdrawStatus;
+import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.text.SimpleDateFormat;

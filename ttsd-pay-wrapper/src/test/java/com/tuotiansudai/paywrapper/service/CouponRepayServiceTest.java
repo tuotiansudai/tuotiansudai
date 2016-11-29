@@ -556,4 +556,6 @@ public class CouponRepayServiceTest {
         AccountModel model = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
         return model;
     }
+
+
 }

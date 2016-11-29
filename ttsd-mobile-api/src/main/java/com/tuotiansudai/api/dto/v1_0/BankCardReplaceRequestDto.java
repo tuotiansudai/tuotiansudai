@@ -6,6 +6,8 @@ import com.tuotiansudai.repository.model.Source;
 public class BankCardReplaceRequestDto extends BaseParamDto{
     private String cardNo;
 
+    private String bankCode;
+
     private String ip;
 
     public String getCardNo() {
@@ -24,6 +26,14 @@ public class BankCardReplaceRequestDto extends BaseParamDto{
         this.ip = ip;
     }
 
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
+
     public BindBankCardDto convertToBindBankCardDto(){
         BindBankCardDto bindBankCardDto = new BindBankCardDto();
         bindBankCardDto.setCardNumber(this.getCardNo());
@@ -31,6 +41,7 @@ public class BankCardReplaceRequestDto extends BaseParamDto{
         bindBankCardDto.setLoginName(this.getBaseParam().getUserId());
         bindBankCardDto.setIp(this.getIp());
         bindBankCardDto.setDeviceId(this.getBaseParam().getDeviceId());
+        bindBankCardDto.setBankCode(this.getBankCode());
         return bindBankCardDto;
 
     }
