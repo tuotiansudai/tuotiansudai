@@ -6,11 +6,13 @@ import com.tuotiansudai.repository.model.InvestRepayModel;
 
 public class RepayCalendarYearResponseDto extends BaseResponseDataDto {
 
+    private String year;
     private String month;
     private String repayAmount;
     private String expectedRepayAmount;
 
-    public RepayCalendarYearResponseDto(String month, String repayAmount, String expectedRepayAmount) {
+    public RepayCalendarYearResponseDto(String year, String month, String repayAmount, String expectedRepayAmount) {
+        this.year = year;
         this.month = month;
         this.repayAmount = repayAmount;
         this.expectedRepayAmount = expectedRepayAmount;
@@ -65,4 +67,11 @@ public class RepayCalendarYearResponseDto extends BaseResponseDataDto {
         this.expectedRepayAmount = expectedRepayAmount;
     }
 
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
 }
