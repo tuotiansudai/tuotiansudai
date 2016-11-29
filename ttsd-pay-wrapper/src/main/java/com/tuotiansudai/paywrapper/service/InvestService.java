@@ -26,9 +26,9 @@ public interface InvestService {
 
     List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period);
 
-    boolean processOneCallback(InvestNotifyRequestModel callbackRequestModel);
+    void processOneCallback(InvestNotifyRequestModel callbackRequestModel);
 
-    boolean investSuccess(InvestModel investModel);
+    void investSuccess(InvestModel investModel);
 
     BaseDto<PayDataDto> noPasswordInvest(InvestDto dto);
 }

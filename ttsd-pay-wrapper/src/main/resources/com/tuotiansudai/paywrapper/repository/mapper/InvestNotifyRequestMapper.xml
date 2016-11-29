@@ -36,7 +36,7 @@
 
     <select id="getTodoList" parameterType="map" resultMap="resultMap" resultType="com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel">
         <![CDATA[
-          select * from invest_notify_request where status='NOT_DONE' order by request_time asc limit #{limitCount};
+          select * from invest_notify_request where status='NOT_DONE' order by id desc limit #{limitCount};
          ]]>
     </select>
 

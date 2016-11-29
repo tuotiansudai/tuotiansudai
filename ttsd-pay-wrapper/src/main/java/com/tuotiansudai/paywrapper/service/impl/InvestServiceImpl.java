@@ -262,11 +262,9 @@ public class InvestServiceImpl implements InvestService {
         long requestId = Long.parseLong(investNotifyRequestId);
         InvestNotifyRequestModel model = investNotifyRequestMapper.findById(requestId);
 
-        boolean result = false;
-
         if (updateInvestNotifyRequestStatus(model)) {
             try {
-                result = ((InvestService) AopContext.currentProxy()).processOneCallback(model);
+                ((InvestService) AopContext.currentProxy()).processOneCallback(model);
             } catch (Exception e) {
                 fatalLog("invest callback, processOneCallback error. investId:" + model.getOrderId(), e);
                 e.printStackTrace();
@@ -275,7 +273,7 @@ public class InvestServiceImpl implements InvestService {
 
         BaseDto<PayDataDto> asyncInvestNotifyDto = new BaseDto<>();
         PayDataDto baseDataDto = new PayDataDto();
-        baseDataDto.setStatus(result);
+        baseDataDto.setStatus(true);
         asyncInvestNotifyDto.setData(baseDataDto);
 
         return asyncInvestNotifyDto;
@@ -294,17 +292,17 @@ public class InvestServiceImpl implements InvestService {
 
     @Transactional
     @Override
-    public boolean processOneCallback(InvestNotifyRequestModel callbackRequestModel) {
+    public void processOneCallback(InvestNotifyRequestModel callbackRequestModel) {
         String orderIdStr = callbackRequestModel.getOrderId();
         long orderId = Long.parseLong(orderIdStr);
         InvestModel investModel = investMapper.findById(orderId);
         if (investModel == null) {
             logger.error(MessageFormat.format("invest(project_transfer) callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
-            return false;
+            return;
         }
         if (investModel.getStatus() == InvestStatus.SUCCESS) {
             logger.error(MessageFormat.format("invest callback process fail, because this invest has already succeed. (orderId = {0}, InvestId={1})", callbackRequestModel.getOrderId(), investModel.getId()));
-            return false;
+            return;
         }
 
         //设置交易时间
@@ -322,25 +320,22 @@ public class InvestServiceImpl implements InvestService {
                 infoLog("over_invest", orderIdStr, investModel.getAmount(), loginName, loanId);
                 // 超投返款处理
                 overInvestPaybackProcess(orderId, investModel, loginName, loanId);
-                return false;
             } else {
                 // 投资成功
                 infoLog("invest_success", orderIdStr, investModel.getAmount(), loginName, loanId);
 
                 // 投资成功，冻结用户资金，更新投资状态为success
-                boolean result = ((InvestService) AopContext.currentProxy()).investSuccess(investModel);
+                ((InvestService) AopContext.currentProxy()).investSuccess(investModel);
 
-                if (result && successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
+                if (successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
                     // 满标，改标的状态 RECHECK
                     checkLoanRaisingComplete(loanId);
                 }
-                return result;
             }
         } else {
             // 失败的话：改invest本身状态
             investModel.setStatus(InvestStatus.FAIL);
             investMapper.update(investModel);
-            return false;
         }
     }
 
@@ -503,68 +498,20 @@ public class InvestServiceImpl implements InvestService {
      */
     @Override
     @Transactional
-    public boolean investSuccess(InvestModel investModel) {
+    public void investSuccess(InvestModel investModel) {
         try {
             // 冻结资金
             amountTransfer.freeze(investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
         } catch (AmountTransferException e) {
             // 记录日志，发短信通知管理员
             fatalLog("invest success, but freeze account fail", String.valueOf(investModel.getId()), investModel.getAmount(), investModel.getLoginName(), investModel.getLoanId(), e);
-            return false;
+            return;
         }
         // 改invest 本身状态为投资成功
         investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.update(investModel);
 
         this.investAchievementService.awardAchievement(investModel);
-        return true;
-
-//        this.calculateActivityAutumnInvest(investModel);
-    }
-
-    private void calculateActivityAutumnInvest(InvestModel investModel) {
-        try {
-            UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
-            String mobile = userModel.getMobile();
-            String userName = userModel.getUserName();
-            if (investModel.getCreatedTime().before(this.activityAutumnStartTime) || investModel.getCreatedTime().after(this.activityAutumnEndTime)) {
-                return;
-            }
-            String channel = redisWrapperClient.hget(this.activityAutumnInvestChannelKey, investModel.getLoginName());
-            String secondKey = MessageFormat.format("{0}:{1}:{2}:{3}", investModel.getLoginName(),
-                    mobile,
-                    userName,
-                    new DateTime(investModel.getCreatedTime()).toString("yyyy-MM-dd"));
-            if (!Strings.isNullOrEmpty(channel) && channel.equalsIgnoreCase("travel")) {
-                String investDetail = redisWrapperClient.hget(this.activityAutumnTravelInvestKey, secondKey);
-                long sumInvestAmount;
-                String investList;
-                if (!Strings.isNullOrEmpty(investDetail)) {
-                    sumInvestAmount = Long.parseLong(investDetail.split("\\|")[0]) + investModel.getAmount();
-                    investList = investDetail.split("\\|")[1];
-                    investDetail = MessageFormat.format("{0}|{1}", String.valueOf(sumInvestAmount), MessageFormat.format("{0},{1}", investList, String.valueOf(investModel.getId())));
-                } else {
-                    investDetail = MessageFormat.format("{0}|{1}", String.valueOf(investModel.getAmount()), String.valueOf(investModel.getId()));
-                }
-                redisWrapperClient.hset(this.activityAutumnTravelInvestKey, secondKey, investDetail, 3600 * 24 * 60);
-            }
-
-            if (!Strings.isNullOrEmpty(channel) && channel.equalsIgnoreCase("luxury")) {
-                String investDetail = redisWrapperClient.hget(this.activityAutumnLuxuryInvestKey, secondKey);
-                long sumInvestAmount;
-                String investList;
-                if (!Strings.isNullOrEmpty(investDetail)) {
-                    sumInvestAmount = Long.parseLong(investDetail.split("\\|")[0]) + investModel.getAmount();
-                    investList = investDetail.split("\\|")[1];
-                    investDetail = MessageFormat.format("{0}|{1}", String.valueOf(sumInvestAmount), MessageFormat.format("{0},{1}", investList, String.valueOf(investModel.getId())));
-                } else {
-                    investDetail = MessageFormat.format("{0}|{1}", String.valueOf(investModel.getAmount()), String.valueOf(investModel.getId()));
-                }
-                redisWrapperClient.hset(this.activityAutumnLuxuryInvestKey, secondKey, investDetail, 3600 * 24 * 60);
-            }
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
     }
 
     /**
@@ -605,13 +552,6 @@ public class InvestServiceImpl implements InvestService {
             // 改 invest 本身状态为超投返款
             investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK);
             investMapper.update(investModel);
-            try {
-                // 解冻资金
-                amountTransfer.unfreeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.OVER_INVEST_PAYBACK, null, null);
-            } catch (AmountTransferException e) {
-                // 记录日志，发短信通知管理员
-                fatalLog("over invest payback success, but unfreeze account fail", String.valueOf(orderId), investModel.getAmount(), loginName, investModel.getLoanId(), e);
-            }
         } else {
             // 返款失败，当作投资成功处理
             errorLog("pay_back_notify_fail,take_as_invest_success", orderIdStr, investModel.getAmount(), loginName, investModel.getLoanId());
