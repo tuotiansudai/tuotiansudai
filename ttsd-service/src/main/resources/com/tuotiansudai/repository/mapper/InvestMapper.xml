@@ -733,6 +733,25 @@
         </if>
     </select>
 
+    <select id="countSuccessInvestByInvestTimeAndLoginName" parameterType="map" resultMap="investResultMap">
+        select *
+        from invest
+        where status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
+        <if test="login_name != null and login_name != '' ">
+            and login_name = #{loginName}
+        </if>
+    </select>
+
+    <select id="sumSuccessInvestByInvestTimeAndLoginName" parameterType="map" resultType="long">
+        select IFNULL(sum(invest.amount), 0) as sumAmount
+        from invest
+        join loan on invest.loan_id = loan.id
+        where invest.status = 'SUCCESS'
+        and invest_time BETWEEN #{startTime} and #{endTime}
+        and invest.login_name = #{loginName}
+        and loan.product_type in ('_90','_180','_360')
+    </select>
+
     <select id="findWebTransferableApplicationPaginationByLoginName" useCache="false" parameterType="map"
             resultMap="transferableInvestView">
         SELECT

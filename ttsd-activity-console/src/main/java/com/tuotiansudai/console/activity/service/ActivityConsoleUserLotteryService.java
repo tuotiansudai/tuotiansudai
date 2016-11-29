@@ -8,6 +8,7 @@ import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
@@ -44,6 +45,9 @@ public class ActivityConsoleUserLotteryService {
     @Autowired
     private RechargeMapper rechargeMapper;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
 
@@ -58,6 +62,12 @@ public class ActivityConsoleUserLotteryService {
 
     @Value("#{'${activity.carnival.period}'.split('\\~')}")
     private List<String> carnivalTime = Lists.newArrayList();
+
+    @Value("#{'${activity.christmas.period}'.split('\\~')}")
+    private List<String> christmasTime = Lists.newArrayList();
+
+    private static final String redisKey = "web:christmasTime:lottery:startTime";
+    private static final String redisHKey = "activityChristmasPrizeStartTime";
 
     public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile,final ActivityCategory prizeType,Integer index,Integer pageSize) {
         List<UserModel> userModels = userMapper.findUserModelByMobile(mobile,index, pageSize);
@@ -105,9 +115,15 @@ public class ActivityConsoleUserLotteryService {
             case CARNIVAL_ACTIVITY:
                 startTime = DateTime.parse(carnivalTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
                 endTime = DateTime.parse(carnivalTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+                break;
+            case CHRISTMAS_ACTIVITY:
+                startTime = redisWrapperClient.exists(redisKey) ? DateTime.parse(redisWrapperClient.hget(redisKey, redisHKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate() : DateTime.parse(christmasTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+                endTime = DateTime.parse(christmasTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+                break;
         }
 
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime,endTime, userModel.getLoginName());
+
         for(UserModel referrerUserModel : userModels){
             if(referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)){
                 lotteryTime ++;
@@ -121,22 +137,27 @@ public class ActivityConsoleUserLotteryService {
             lotteryTime ++;
         }
 
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        if(accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)){
-            lotteryTime ++;
-        }
+        if(activityCategory == ActivityCategory.CHRISTMAS_ACTIVITY){
+            long sumAmount = investMapper.sumSuccessInvestByInvestTimeAndLoginName(userModel.getMobile(), startTime, endTime);
+            lotteryTime += (int)(sumAmount/200000);
 
-        BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
-        if(bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)){
-            lotteryTime ++;
+            lotteryTime = lotteryTime >= 10 ? 10 : lotteryTime;
         }
+        else{
+            AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+            if(accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)){
+                lotteryTime ++;
+            }
 
-        if(rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime) > 0){
-            lotteryTime ++;
-        }
 
-        if(investMapper.countInvestorSuccessInvestByInvestTime(userModel.getLoginName(), startTime, endTime) > 0){
-            lotteryTime ++;
+            BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
+            if(bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)){
+                lotteryTime ++;
+            }
+
+            if(rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime) > 0){
+                lotteryTime ++;
+            }
         }
 
         return lotteryTime;

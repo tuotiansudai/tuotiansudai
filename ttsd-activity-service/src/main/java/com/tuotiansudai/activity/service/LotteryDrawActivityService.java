@@ -185,7 +185,7 @@ public class LotteryDrawActivityService {
         userMembershipMapper.create(userMembershipModel);
     }
 
-    private long getCouponId(LotteryPrize lotteryPrize) {
+    public long getCouponId(LotteryPrize lotteryPrize) {
         switch (lotteryPrize) {
             case RED_ENVELOPE_100:
                 return 305;
@@ -211,11 +211,13 @@ public class LotteryDrawActivityService {
                 return 321;
             case RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL:
                 return 320;
+            case RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL:
+                return 322;
         }
         return 0l;
     }
 
-    private LotteryPrize lotteryDrawPrize(final ActivityCategory activityCategory) {
+    public LotteryPrize lotteryDrawPrize(final ActivityCategory activityCategory) {
         int random = (int) (Math.random() * 100000000);
         final int mod = random % 200;
 

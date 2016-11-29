@@ -5,6 +5,7 @@ import com.tuotiansudai.activity.repository.dto.ActivityDto;
 import com.tuotiansudai.activity.repository.mapper.ActivityMapper;
 import com.tuotiansudai.activity.repository.model.ActivityModel;
 import com.tuotiansudai.activity.repository.model.ActivityStatus;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -13,6 +14,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -45,6 +48,12 @@ public class ActivityServiceTest {
 
     @Autowired
     IdGenerator idGenerator;
+
+    @Autowired
+    private ChristmasPrizeService christmasPrizeService;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     private UserModel createUserModel(String loginName) {
         UserModel userModel = new UserModel();
@@ -238,6 +247,17 @@ public class ActivityServiceTest {
 
     @Test
     public void shouldCreateEditRecheckActivityByRecheck() {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        redisWrapperClient.hset("aa", "aaaa", sdf.format(new Date()), 60 * 60 * 24);
+
+        System.out.println("sssf = "  + redisWrapperClient.exists("aa"));
+        System.out.println("sssf = "  + redisWrapperClient.hget("aa", "aaaa"));
+
+        System.out.println(DateTime.parse(redisWrapperClient.hget("aa", "aaaa"), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+
+
         UserModel userModel = createUserModel("testUser1");
         ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);
