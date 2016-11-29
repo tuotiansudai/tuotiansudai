@@ -13,13 +13,14 @@
         <result column="extra_source" property="extraSource" typeHandler="com.tuotiansudai.util.mybatis.SourceListTypeHandler"/>
         <result column="activity" property="activity"/>
         <result column="activity_desc" property="activityDesc"/>
+        <result column="non_transferable" property="nonTransferable"/>
     </resultMap>
 
     <insert id="create" parameterType="LoanDetailsModel">
         INSERT INTO `aa`.`loan_details`
-        (id, loan_id, declaration, extra_source, activity, activity_desc)
+        (id, loan_id, declaration, extra_source, activity, activity_desc,non_transferable)
         VALUES
-        (#{id}, #{loanId}, #{declaration}, #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{activity}, #{activityDesc})
+        (#{id}, #{loanId}, #{declaration}, #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler}, #{activity}, #{activityDesc},#{nonTransferable})
     </insert>
 
     <select id="getByLoanId" resultMap="LoanDetailsResultMap">
@@ -38,7 +39,8 @@
             <if test="declaration !=null"> declaration = #{declaration},</if>
             <if test="extraSource !=null"> extra_source = #{extraSource,typeHandler=com.tuotiansudai.util.mybatis.SourceListTypeHandler},</if>
             <if test="activity !=null">activity = #{activity},</if>
-            <if test="activityDesc !=null">activity_desc = #{activityDesc}</if>
+            <if test="activityDesc !=null">activity_desc = #{activityDesc},</if>
+            <if test="nonTransferable !=null">non_transferable = #{nonTransferable}</if>
         </trim>
         WHERE
           loan_id = #{loanId}
