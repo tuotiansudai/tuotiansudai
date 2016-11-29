@@ -66,5 +66,5 @@ public interface InvestRepayMapper {
                                                                   @Param(value = "month") String month,
                                                                   @Param(value = "day") String day);
 
-    long findSumActualInterest();
+    long findSumActualInterest(@Param(value = "endDate") Date endDate);
 }

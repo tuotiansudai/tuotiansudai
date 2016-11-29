@@ -35,7 +35,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         dataDto.setCurrentDay(sdf.format(currentDate).replace("-","月").concat("日"));
         dataDto.setOperationDays(String.valueOf(operationDataDto.getOperationDays()));
         dataDto.setTotalTradeAmount(String.valueOf(AmountConverter.convertStringToCent(operationDataDto.getTradeAmount())));
-        dataDto.setTotalInterest(String.valueOf(operationDataService.findUserSumInterest()));
+        dataDto.setTotalInterest(String.valueOf(operationDataService.findUserSumInterest(currentDate)));
 
         List<InvestDataView> investDataViewList = operationDataService.getInvestDetail(currentDate);
         List<OperationDataInvestByProductTypeResponseDataDto> operationDataInvestByProductTypeResponseDataDtoList = Lists.newArrayList();
@@ -50,7 +50,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         dataDto.setInvestListByProductType(operationDataInvestByProductTypeResponseDataDtoList);
         dataDto.setTotalTradeCount(String.valueOf(totalTradeCount));
         dataDto.setTotalInvestUserCount(String.valueOf(operationDataDto.getUsersCount()));
-        List<Integer> sexList = operationDataService.findScaleByGender();
+        List<Integer> sexList = operationDataService.findScaleByGender(currentDate);
         dataDto.setFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
         dataDto.setMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
         //近半年的交易金额
@@ -69,7 +69,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     }
 
     private List<OperationDataAgeResponseDataDto> convertMapToOperationDataAgeResponseDataDto(){
-        Map<String,String> ageDistributionMap = operationDataService.findAgeDistributionByAge();
+        Map<String,String> ageDistributionMap = operationDataService.findAgeDistributionByAge(currentDate);
         Set<Map.Entry<String, String>> ageDistributionEntries = ageDistributionMap.entrySet();
         List<OperationDataAgeResponseDataDto> operationDataAgeResponseDataDtoList = Lists.newArrayList();
         for (Map.Entry<String, String> ageDistributionEntry : ageDistributionEntries) {
@@ -82,7 +82,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     }
 
     private  List<OperationDataLatestSixMonthResponseDataDto> convertMapToOperationDataLatestSixMonthResponseDataDto(){
-        Map<String, String> mapLatestSixMonthAmountMap = operationDataService.findLatestSixMonthTradeAmount();
+        Map<String, String> mapLatestSixMonthAmountMap = operationDataService.findLatestSixMonthTradeAmount(currentDate);
         Set<Map.Entry<String, String>> latestSixMonthEntries = mapLatestSixMonthAmountMap.entrySet();
         List<OperationDataLatestSixMonthResponseDataDto> operationDataLatestSixMonthResponseDataDtoList = Lists.newArrayList();
         for (Map.Entry<String, String> latestSixMonthEntry : latestSixMonthEntries) {
@@ -95,7 +95,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     }
 
     private List<OperationDataInvestCityResponseDataDto> convertMapToOperationDataInvestCityResponseDataDto(){
-        Map<String,String> investCityListMap = operationDataService.findCountInvestCityScaleTop3();
+        Map<String,String> investCityListMap = operationDataService.findCountInvestCityScaleTop3(currentDate);
         Set<Map.Entry<String, String>> investCityEntries = investCityListMap.entrySet();
         List<OperationDataInvestCityResponseDataDto> operationDataInvestCityResponseDataDtoList = Lists.newArrayList();
         for(Map.Entry<String, String> investCityEntry : investCityEntries){
@@ -108,7 +108,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     }
 
     private List<OperationDataInvestAmountResponseDataDto> convertMapToOperationDataInvestAmountResponseDataDto(){
-        Map<String,String> investAmountMap = operationDataService.findInvestAmountScaleTop3();
+        Map<String,String> investAmountMap = operationDataService.findInvestAmountScaleTop3(currentDate);
         Set<Map.Entry<String, String>> investAmountEntries = investAmountMap.entrySet();
         List<OperationDataInvestAmountResponseDataDto> operationDataInvestAmountResponseDataDtoList = Lists.newArrayList();
         for(Map.Entry<String, String> investAmountEntry : investAmountEntries){

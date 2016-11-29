@@ -12,16 +12,16 @@ public interface OperationDataService {
 
     List<InvestDataView> getInvestDetail(Date endDate);
 
-    List<Integer> findScaleByGender();
+    List<Integer> findScaleByGender(Date endDate);
 
-    Map<String,String> findLatestSixMonthTradeAmount();
+    Map<String,String> findLatestSixMonthTradeAmount(Date endDate);
 
-    Map<String, String> findAgeDistributionByAge();
+    Map<String, String> findAgeDistributionByAge(Date endDate);
 
-    Map<String, String> findCountInvestCityScaleTop3();
+    Map<String, String> findCountInvestCityScaleTop3(Date endDate);
 
-    Map<String, String> findInvestAmountScaleTop3();
+    Map<String, String> findInvestAmountScaleTop3(Date endDate);
 
-    long findUserSumInterest();
+    long findUserSumInterest(Date endDate);
 
 }

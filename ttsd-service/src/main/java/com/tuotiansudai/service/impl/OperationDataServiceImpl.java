@@ -177,12 +177,12 @@ public class OperationDataServiceImpl implements OperationDataService {
         return investDataViewList;
     }
 
-    public List<Integer> findScaleByGender() {
-        return userMapper.findScaleByGender();
+    public List<Integer> findScaleByGender(Date endDate) {
+        return userMapper.findScaleByGender(endDate);
     }
 
-    public Map<String, String> findLatestSixMonthTradeAmount() {
-        List<Map<String, String>> latestSixMonthTradeAmountList = investMapper.findLatestSixMonthTradeAmount();
+    public Map<String, String> findLatestSixMonthTradeAmount(Date endDate) {
+        List<Map<String, String>> latestSixMonthTradeAmountList = investMapper.findLatestSixMonthTradeAmount(endDate);
         Map<String, String> resultMap = new LinkedHashMap<>();
         for (Map<String, String> map : latestSixMonthTradeAmountList) {
             String month = "";
@@ -199,8 +199,8 @@ public class OperationDataServiceImpl implements OperationDataService {
         return resultMap;
     }
 
-    public Map<String, String> findAgeDistributionByAge() {
-        List<Map<String, String>> AgeDistributionList = userMapper.findAgeDistributionByAge();
+    public Map<String, String> findAgeDistributionByAge(Date endDate) {
+        List<Map<String, String>> AgeDistributionList = userMapper.findAgeDistributionByAge(endDate);
         Map<String, String> resultMap = new LinkedHashMap<>();
         Map<String, String> resultGroupMap = new LinkedHashMap<>();
         for (Map<String, String> AgeDistributionMap : AgeDistributionList) {
@@ -251,10 +251,10 @@ public class OperationDataServiceImpl implements OperationDataService {
         return resultGroupMap;
     }
 
-    public Map<String, String> findCountInvestCityScaleTop3() {
-        List<Map<String, String>> investCityList = userMapper.findCountInvestCityScaleTop3();
+    public Map<String, String> findCountInvestCityScaleTop3(Date endDate) {
+        List<Map<String, String>> investCityList = userMapper.findCountInvestCityScaleTop3(endDate);
         Map<String, String> resultMap = new LinkedHashMap<>();
-        long totalScaleCount = userMapper.findCountInvestCityScale();
+        long totalScaleCount = userMapper.findCountInvestCityScale(endDate);
         for(Map<String,String> investCityMap: investCityList){
             String city ="", scale = "";
             for(Map.Entry<String, String> investCityEntry : investCityMap.entrySet()){
@@ -269,10 +269,10 @@ public class OperationDataServiceImpl implements OperationDataService {
         return resultMap;
     }
 
-    public Map<String, String> findInvestAmountScaleTop3(){
-        List<Map<String, String>> investCityAmountScaleList = investMapper.findInvestAmountScaleTop3();
+    public Map<String, String> findInvestAmountScaleTop3(Date endDate){
+        List<Map<String, String>> investCityAmountScaleList = investMapper.findInvestAmountScaleTop3(endDate);
         Map<String, String> resultMap = new LinkedHashMap<>();
-        long  totalScaleCount = investMapper.findInvestAmountScale();
+        long  totalScaleCount = investMapper.findInvestAmountScale(endDate);
         for(Map<String,String> investCityAmountMap: investCityAmountScaleList){
             String city ="", amount = "";
             for(Map.Entry<String,String> investCityAmountEntry : investCityAmountMap.entrySet()){
@@ -287,8 +287,8 @@ public class OperationDataServiceImpl implements OperationDataService {
         return resultMap;
     }
 
-    public long findUserSumInterest(){
-        return investRepayMapper.findSumActualInterest() + userBillMapper.findUserSumInterest();
+    public long findUserSumInterest(Date endDate){
+        return investRepayMapper.findSumActualInterest(endDate) + userBillMapper.findUserSumInterest(endDate);
     }
 
 

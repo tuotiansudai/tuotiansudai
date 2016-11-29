@@ -61,13 +61,13 @@ public interface UserMapper {
 
     List<String> findBirthDayUsers();
 
-    List<Integer> findScaleByGender();
+    List<Integer> findScaleByGender(@Param(value = "endDate") Date endDate);
 
-    List<Map<String, String>> findAgeDistributionByAge();
+    List<Map<String, String>> findAgeDistributionByAge(@Param(value = "endDate") Date endDate);
 
-    List<Map<String, String>> findCountInvestCityScaleTop3();
+    List<Map<String, String>> findCountInvestCityScaleTop3(@Param(value = "endDate") Date endDate);
 
-    long findCountInvestCityScale();
+    long findCountInvestCityScale(@Param(value = "endDate") Date endDate);
 
 
 }

@@ -38,5 +38,5 @@ public interface UserBillMapper {
                            @Param("startTime") Date startTime,
                            @Param("endTime") Date endTime);
 
-    long findUserSumInterest();
+    long findUserSumInterest(@Param("endDate") Date endDate);
 }
