@@ -1,12 +1,10 @@
 package com.tuotiansudai.paywrapper.service;
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
@@ -67,13 +65,8 @@ public class InvestServicePaybackExceptionTest {
     private UserBillService userBillService;
 
     @Mock
-    InvestNotifyRequestMapper investNotifyRequestMapper;
-
-    @Mock
     private SmsWrapperClient smsWrapperClient;
 
-    @Mock
-    private RedisWrapperClient redisWrapperClient;
 
     @Before
     public void setUp() throws Exception {
@@ -92,11 +85,6 @@ public class InvestServicePaybackExceptionTest {
         model.setId(requestModelId);
         model.setOrderId(orderId);
         model.setRetCode("0000");
-
-//        List<InvestNotifyRequestModel> toDoList = new ArrayList<InvestNotifyRequestModel>();
-//        toDoList.add(model);
-
-//        when(this.investNotifyRequestMapper.getTodoList(anyInt())).thenReturn(toDoList);
 
         long loanId = 77777777L;
         long investId = 1;
@@ -124,9 +112,7 @@ public class InvestServicePaybackExceptionTest {
 
         when(this.paySyncClient.send(Matchers.<Class<? extends ProjectTransferMapper>>any(), any(ProjectTransferRequestModel.class), Matchers.<Class<ProjectTransferResponseModel>>any())).thenThrow(PayException.class);
 
-        when(this.redisWrapperClient.incr(any(String.class))).thenCallRealMethod();
         when(this.smsWrapperClient.sendFatalNotify(any(SmsFatalNotifyDto.class))).thenReturn(null);
-        investService.asyncInvestCallback();
         investService.processOneCallback(model);
 
         ArgumentCaptor<InvestModel> investModelArgumentCaptor = ArgumentCaptor.forClass(InvestModel.class);

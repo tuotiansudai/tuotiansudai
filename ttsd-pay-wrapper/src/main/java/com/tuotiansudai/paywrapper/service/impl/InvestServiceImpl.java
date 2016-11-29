@@ -286,7 +286,7 @@ public class InvestServiceImpl implements InvestService {
         try {
             investNotifyRequestMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
         } catch (Exception e) {
-            fatalLog("update_invest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());
+            fatalLog("update_invest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId(), e);
             return false;
         }
         return true;
