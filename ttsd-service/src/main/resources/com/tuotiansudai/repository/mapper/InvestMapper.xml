@@ -932,7 +932,7 @@
 
     <update id="updateAllContractNoByLoanId" parameterType="map" >
         update invest set contract_no = #{contractNo}
-        where loan_id = #{loanId} and status = 'SUCCESS'
+        where loan_id = #{loanId} and status = 'SUCCESS' and transfer_invest_id is null
     </update>
 
     <select id="findNoContractNoInvest" parameterType="long" resultMap="investResultMap">

@@ -27,6 +27,7 @@ public class BankCardModel implements Serializable {
     public BankCardModel(BindBankCardDto bindBankCardDto) {
         this.loginName = bindBankCardDto.getLoginName();
         this.cardNumber = bindBankCardDto.getCardNumber();
+        this.bankCode = bindBankCardDto.getBankCode();
     }
 
     public long getId() {

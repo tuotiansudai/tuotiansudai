@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -23,11 +22,11 @@ public class AppVersionUtil {
 
     private static String serverAppVersion;
 
-    private final static int low = -1;
+    public final static int low = -1;
 
-    private final static int equal = 0;
+    public final static int equal = 0;
 
-    private final static int high = 1;
+    public final static int high = 1;
 
     static {
         if (StringUtils.isEmpty(serverAppVersion)) {

@@ -112,9 +112,10 @@ public class AnxinClient {
         Request request = new Request.Builder().url(url).post(formEncodingBuilder.build()).build();
 
         try {
+            logger.info("send anxin request, txCode: " + txCode);
             Response response = httpClient.newCall(request).execute();
             String responseBodyString = response.body().string();
-            logger.info(" txCode: " + txCode + ", response body: " + responseBodyString);
+            logger.info("send anxin response, txCode: " + txCode + ", body: " + responseBodyString);
             return responseBodyString;
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);

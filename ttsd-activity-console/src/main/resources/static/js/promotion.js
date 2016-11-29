@@ -50,7 +50,7 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
                     if ($self.hasClass('promotionImageUrl')) {
                         $('.promotionImageUrl').val(data.title);
                         $('.imageUrl').html('');
-                        $('.imageUrl').append('<img style="width:100%" src="' + data.title + '" alt="缩略图">');
+                        $('.imageUrl').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
                     }
                 }
             });
@@ -71,6 +71,7 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
         img.onload = function () {
             if (this.width != width && width != undefined) {
                 defer.reject('图片宽度应为' + width);
+                defer.reject('图片宽度应为' + width);
                 return;
 
             }
@@ -83,6 +84,21 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
         return defer.promise();
 
     };
+
+    $('select.linkUrl').change(function () {
+        var linkUrl = $(this).val();
+        if (linkUrl == '') {
+            $('.jump-to-link').removeClass('app-push-link').val('');
+        } else {
+            $('.jump-to-link').addClass('app-push-link').val('');
+        }
+    }).trigger('change');
+
+    $('.jump-link-text').on('focusout',function(e){
+        e.preventDefault();
+        $('.linkUrl').find('option:contains("其他")').val($(this).val()).trigger('click');
+    });
+
     //表单校验初始化参数
     $promotionForm.Validform({
         btnSubmit: '.promotion-confirm',
@@ -110,18 +126,21 @@ require(['jquery', 'Validform', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-
     $submitBtn.on('click', function(event) {
         event.preventDefault();
         var $self = $(this);
-        if (!IsURL($("input[name='linkUrl']").val())) {
-            showErrorMessage("链接网址格式不正确,请以http://或 https://开始");
+
+        var linkUrl = $('.linkUrl').val();
+        var jumpToLink = $('.jump-link-text').val();
+
+        if (linkUrl == '' && jumpToLink == '') {
+            showErrorMessage('定位地址不能为空', $('.jump-link-text', curform));
             return false;
+        }
+
+        if(linkUrl != ''){
+            $('.jump-link-text').val('');
         }
 
         if ($("input[name='name']").val().length >= 50) {
             showErrorMessage("名称最多50个中文字符!");
-            return false;
-        }
-
-        if ($("input[name='linkUrl']").val().length >= 100) {
-            showErrorMessage("链接最多100个中文字符!");
             return false;
         }
 

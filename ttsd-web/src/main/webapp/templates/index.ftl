@@ -22,7 +22,7 @@
                     <p class="num-text clearfix">
                         <span class="percent">10%~13%</span>
                     </p>
-                    
+
                     <p class="welcome-text">welcome</p>
                     <a class="btn-normal" href="/register/user" onclick="cnzzPush.trackClick('21首页','Banner模块','免费注册')">免费注册 </a>
                     <i class="clearfix tr">已有账户？<a href="/login"

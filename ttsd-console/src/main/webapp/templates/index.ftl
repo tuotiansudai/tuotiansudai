@@ -19,7 +19,7 @@
                 <tbody>
                 <#list taskList as task>
                     <tr>
-                        <td>${task.sender}</td>
+                        <td>${task.sender!}</td>
                         <td><a href="${task.operateURL!}">${task.description}</a></td>
                         <td>${task.createdTime?string("yyyy-MM-dd HH:mm:ss")!}</td>
                         <td>
