@@ -26,6 +26,11 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
     private double activityRate;
     private Date applicationTime;
     private Source source;
+    private String contractNo;
+    private boolean transferNewSuccess;
+    private boolean transferOldSuccess;
+    private boolean cancelTransfer;
+
 
     public TransferApplicationPaginationItemDataDto(){}
 
@@ -191,5 +196,37 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
 
     public void setLeftDays(String leftDays) {
         this.leftDays = leftDays;
+    }
+
+    public String getContractNo() {
+        return contractNo;
+    }
+
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
+    }
+
+    public boolean isTransferNewSuccess() {
+        return transferNewSuccess;
+    }
+
+    public void setTransferNewSuccess(boolean transferNewSuccess) {
+        this.transferNewSuccess = transferNewSuccess;
+    }
+
+    public boolean isTransferOldSuccess() {
+        return transferOldSuccess;
+    }
+
+    public void setTransferOldSuccess(boolean transferOldSuccess) {
+        this.transferOldSuccess = transferOldSuccess;
+    }
+
+    public boolean isCancelTransfer() {
+        return cancelTransfer;
+    }
+
+    public void setCancelTransfer(boolean cancelTransfer) {
+        this.cancelTransfer = cancelTransfer;
     }
 }
