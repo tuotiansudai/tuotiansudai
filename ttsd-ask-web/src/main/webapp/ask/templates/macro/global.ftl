@@ -95,18 +95,22 @@
     <#include "../pageLayout/top-menu.ftl"/>
 <#--top menus-->
 
+    <#if !errorPage??>
 <#--ad image-->
 <div class="banner-box page-width">
     <a href="https://tuotiansudai.com/activity/landing-page" target="_blank"></a>
 </div>
 <#--ad image-->
-
+    </#if>
 <div class="main-frame full-screen clearfix">
+
 <#--banner-->
+    <#if !errorPage??>
     <#include "../pageLayout/search-bar.ftl"/>
     <div class="download-mobile">
         <a href="https://tuotiansudai.com/app/download" target="_blank"></a>
     </div>
+    </#if>
 <#--banner-->
 
     <#--hot question-->
@@ -123,14 +127,16 @@
     </div>
     <div class="question-container answer-container">
         <#nested>
-
+        <#if !errorPage??>
     <#--left content-->
-        <div class="aside-frame fr">
+        <div class="aside-frame fr" >
             <#include "../user.ftl"/>
             <#include "../tags.ftl"/>
+
             <a href="https://tuotiansudai.com/activity/app-download" target="_blank" class="margin-top-10 ad-welfare" ></a>
         </div>
     <#--left content-->
+        </#if>
     </div>
 </div>
 
