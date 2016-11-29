@@ -43,7 +43,9 @@ public class QuestionController {
                                  @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         QuestionDto question = questionService.getQuestion(LoginUserInfo.getLoginName(), questionId);
         if (question == null) {
-            return new ModelAndView("/error/404");
+            ModelAndView modelAndView =  new ModelAndView("/error/404");
+            modelAndView.addObject("errorPage","true");
+            return modelAndView;
         }
 
         ModelAndView modelAndView = new ModelAndView("/question", "questionId", questionId);
@@ -67,7 +69,9 @@ public class QuestionController {
         try {
             tag = Tag.valueOf(urlTag.toUpperCase());
         } catch (Exception e) {
-            return new ModelAndView("error/404");
+            ModelAndView modelAndView =  new ModelAndView("/error/404");
+            modelAndView.addObject("errorPage","true");
+            return modelAndView;
         }
         ModelAndView modelAndView = new ModelAndView("/question-category");
         modelAndView.addObject("questions", questionService.findByTag(LoginUserInfo.getLoginName(), tag, index, 10));

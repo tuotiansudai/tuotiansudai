@@ -19,6 +19,7 @@
         <result property="merDate" column="mer_date"/>
         <result property="userId" column="user_id"/>
         <result property="amount" column="amount"/>
+        <result property="comAmtType" column="com_amt_type"/>
         <result property="requestTime" column="request_time"/>
         <result property="requestUrl" column="request_url"/>
         <result property="requestData" column="request_data"/>
@@ -29,8 +30,8 @@
     </select>
 
     <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="CustWithdrawalsRequestModel">
-        insert into cust_withdrawals_request (service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url, apply_notify_flag,  order_id, mer_date, user_id, amount, request_time, request_url, request_data)
-        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl}, #{applyNotifyFlag}, #{orderId}, #{merDate}, #{userId}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData})
+        insert into cust_withdrawals_request (service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url, apply_notify_flag,  order_id, mer_date, user_id, amount, com_amt_type, request_time, request_url, request_data)
+        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl}, #{applyNotifyFlag}, #{orderId}, #{merDate}, #{userId}, #{amount}, #{comAmtType}, #{requestTime}, #{requestUrl}, #{requestData})
     </insert>
 
 </mapper>
