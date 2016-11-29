@@ -137,9 +137,6 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             $('.file-btn').find('input').val('');
             $('.file-btn').hide();
             var userGroup = this.value;
-            console.log(userGroup);
-            console.log(userGroup.indexOf(userGroup) > 0 );
-            console.log(userGroup == userGroup);
             if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL' && userGroup != 'EXCHANGER_CODE' && userGroup != 'NEW_REGISTERED_USER' && userGroup == 'FIRST_INVEST_ACHIEVEMENT' && userGroup == 'MAX_AMOUNT_ACHIEVEMENT' && userGroup == 'LAST_INVEST_ACHIEVEMENT'){
                 $.get('/activity-manage/coupon/user-group/' + userGroup + '/estimate', function (data) {
                     $('.give-number').val(data);
