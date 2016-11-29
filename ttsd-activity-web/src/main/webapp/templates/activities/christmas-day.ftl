@@ -202,8 +202,9 @@
             </div>
         </div>
     </div>
+    <#include "login-tip.ftl" />
+    <a href="javascript:void(0)" class="show-login no-login-text"></a>
 </div>
-
 </@global.main>
 
 

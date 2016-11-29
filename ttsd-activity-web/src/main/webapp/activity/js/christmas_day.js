@@ -1,4 +1,4 @@
-require(['jquery','drawCircle'], function ($,drawCircle) {
+require(['jquery','drawCircle','logintip'], function ($,drawCircle) {
 
     var redirect = globalFun.browserRedirect();
     var $christmasDayFrame=$('#christmasDayFrame');
@@ -20,14 +20,15 @@ require(['jquery','drawCircle'], function ($,drawCircle) {
         }
     })();
 
-    (function() {
+    (function(drawCircle) {
         //抽奖模块
        var $rewardGiftBox=$('.reward-gift-box',$christmasDayFrame);
 
         var $MobileNumber=$('#MobileNumber'),
-            pointAllList='/activity/point-draw/all-list',  //中奖记录接口地址
-            pointUserList='/activity/point-draw/user-list',   //我的奖品接口地址
-            drawURL='/activity/point-draw/draw',    //抽奖的接口链接
+            pointAllList='/activity/christmas/all-list',  //中奖记录接口地址
+            pointUserList='/activity/christmas/user-list',   //我的奖品接口地址
+            drawURL='/activity/christmas/draw',    //抽奖的接口链接
+            $pointerImg=$('.pointer-img',$rewardGiftBox),
             myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
         var tipMessage={
@@ -37,7 +38,7 @@ require(['jquery','drawCircle'], function ($,drawCircle) {
         };
         var paramData={
             "mobile":myMobileNumber,
-            "activityCategory":"POINT_DRAW_1000"
+            "activityCategory":"CHRISTMAS_ACTIVITY"
         };
 
         var drawCircle=new drawCircle(pointAllList,pointUserList,drawURL,paramData,$rewardGiftBox);
@@ -48,9 +49,17 @@ require(['jquery','drawCircle'], function ($,drawCircle) {
         //渲染我的奖品
         drawCircle.MyGift();
 
-        //开始抽奖
+        //**********************开始抽奖**********************//
+        //事件监听,这里用到global_page里封装的事件监听全局函数
+        //用来展示动画效果
+        globalFun.addEventHandler($pointerImg[0],'click',function(event) {
+
+            $pointerImg.addClass('win-result');
+        });
         drawCircle.beginLuckDraw(function(data) {
-            //抽奖接口成功后奖品指向位置
+            //停止礼品盒的动画
+            $pointerImg.removeClass('win-result');
+
             if (data.returnCode == 0) {
                 //真实奖品
                 if(data.prizeType=='CONCRETE') {
@@ -69,18 +78,14 @@ require(['jquery','drawCircle'], function ($,drawCircle) {
 
                 drawCircle.tipWindowPop(tipMessage);
             } else if(data.returnCode == 1) {
-                //积分不足
+                //没有抽奖机会
                 tipMessage.info='<p class="login-text">您的积分不足~</p><p class="des-text">投资赚取更多积分再来抽奖吧！</p>',
                     tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
                 drawCircle.tipWindowPop(tipMessage);
             }
             else if (data.returnCode == 2) {
                 //未登录
-                //tipMessage.info='<p class="login-text">您还未登录~</p><p class="des-text">请登录后再来抽奖吧！</p>',
-                //tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
-                //drawCircle.tipWindowPop(tipMessage);
-
-                $('.no-login-text',$integralDrawPage).trigger('click');  //弹框登录
+                $('.no-login-text',$christmasDayFrame).trigger('click');  //弹框登录
 
             } else if(data.returnCode == 3){
                 //不在活动时间范围内！
@@ -98,7 +103,7 @@ require(['jquery','drawCircle'], function ($,drawCircle) {
         //点击切换按钮
         drawCircle.PrizeSwitch();
 
-    })();
+    })(drawCircle);
 
 
 });

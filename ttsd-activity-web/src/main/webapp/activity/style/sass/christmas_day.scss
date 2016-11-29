@@ -1,5 +1,5 @@
 @charset "utf-8";
-
+@import "module/login_tip";
 body {
   overflow-x: hidden;
   color: #015a2e;
@@ -354,6 +354,7 @@ body {
             width: 160px;
             height: 200px;
             top: 281px;
+            cursor: pointer;
 
           }
         .win-result {

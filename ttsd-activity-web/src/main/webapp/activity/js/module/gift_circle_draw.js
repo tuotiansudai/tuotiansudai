@@ -67,7 +67,7 @@ define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, lay
         }
     }
 
-    //转盘旋转
+    //抽奖方式1-----旋转转盘抽奖,抽奖接口调用成功后使用
     //angles:奖项对应的角度，
     //Drawplate:转盘的dom
     //data:抽奖成功后返回的数据
@@ -88,22 +88,24 @@ define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, lay
         })
     }
 
-    //抽奖的时候没有转盘
-    giftCircleDraw.prototype.noRotateFn=function(angles,tipMessage) {
-        var thisFun=this;
-        thisFun.GiftRecord();
-        thisFun.MyGift();
-        thisFun.bRotate = !thisFun.bRotate;
-        thisFun.tipWindowPop(tipMessage);
+    //抽奖方式2-----没有任何转盘效果,抽奖接口调用成功后使用
+    giftCircleDraw.prototype.noRotateFn=function(tipMessage) {
+        this.bRotate = !this.bRotate;
+        alert(this.bRotate);
+        this.GiftRecord();
+        this.MyGift();
+        this.tipWindowPop(tipMessage);
     }
 
     giftCircleDraw.prototype.beginLuckDraw=function(callback) {
         var self=this;
-        self.giftCircleFrame.find('.pointer-img').on('click', function(event) {
+        var pointerImg=self.giftCircleFrame.find('.pointer-img')[0];
+        //事件监听,这里用到global_page里封装的事件监听全局函数
+        globalFun.addEventHandler(pointerImg,'click',function(event) {
             self.beginLotteryDraw(function(data) {
                 callback && callback(data);
             });
-        })
+        });
     }
 
 

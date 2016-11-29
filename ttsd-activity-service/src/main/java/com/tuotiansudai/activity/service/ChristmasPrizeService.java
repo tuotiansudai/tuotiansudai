@@ -60,11 +60,19 @@ public class ChristmasPrizeService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    @Value("#{'${activity.christmas.period}'.split('\\~')}")
+   /* @Value("#{'${activity.christmas.period}'.split('\\~')}")
     private List<String> christmasTime = Lists.newArrayList();
 
     Date activityChristmasStartTime = DateTime.parse(christmasTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
     Date activityChristmasEndTime = DateTime.parse(christmasTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+   */
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.startTime}\")}")
+    private Date activityChristmasStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.endTime}\")}")
+    private Date activityChristmasEndTime;
+
+
 
     private static final String redisKey = "web:christmasTime:lottery:startTime";
     private static final String redisHKey = "activityChristmasPrizeStartTime";
@@ -72,11 +80,11 @@ public class ChristmasPrizeService {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final int timeout = 60 * 60 * 24 * 20;
     //判断圣诞节活动二是否开启
-    public boolean isStart(){
+    public int isStart(){
         long investAmount =  (long)getActivityChristmasInvestAmountAndCount().get("investAmount");
         if(investAmount >= 420000000)
             redisWrapperClient.hset(redisKey, redisHKey, sdf.format(new Date()), timeout);
-        return investAmount >= 420000000 & redisWrapperClient.exists(redisKey);
+        return investAmount >= 420000000 & redisWrapperClient.exists(redisKey) ? 1 : 0;
     }
 
     //活动期间投资圣诞专享标单笔满30000元,奖励一张0.5%的加息劵
@@ -218,6 +226,7 @@ public class ChristmasPrizeService {
     }
 
     public long getActivityChristmasInvestAmountByLoginName(String loginName){
+
         List<InvestModel> investModels = investMapper.countSuccessInvestByInvestTimeAndLoginName(loginName, activityChristmasStartTime, activityChristmasEndTime);
         List<Long> amountList = Lists.newArrayList();
         for(InvestModel investModel: investModels){
@@ -226,6 +235,6 @@ public class ChristmasPrizeService {
                 amountList.add(investModel.getAmount());
             }
         }
-        return amountList.parallelStream().max(((o1, o2) -> o1.compareTo(o2))).get();
+        return amountList.size() > 0 ? amountList.parallelStream().max(((o1, o2) -> o1.compareTo(o2))).get() : 0;
     }
 }

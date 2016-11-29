@@ -737,7 +737,7 @@
         select *
         from invest
         where status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
-        <if test="login_name != null and login_name != '' ">
+        <if test="loginName != null and loginName != '' ">
             and login_name = #{loginName}
         </if>
     </select>
