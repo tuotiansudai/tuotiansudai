@@ -18,9 +18,8 @@
 
 <@global.main pageCss="${css.project_loan_list}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="直投项目" title="${title!}" keywords="${keywords!}" description="${description!}">
 <div class="loan-list-content">
-    <div class="bRadiusBox bg-w">
-        <ul class="wrapper-list">
-            <li>
+    <ul class="wrapper-list" id="wrapperList">
+            <li class="project-kind">
                 <span>项目类型: </span>
                 <#assign nametUrl = "/loan-list?name={name}&status=${status!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}">
                 <#assign nameMap = {"":"全部","房产抵押借款":"房产抵押借款","车辆抵押借款":"车辆抵押借款"}>
@@ -30,6 +29,7 @@
                        <#elseif !(name??) && key=="">class="active"</#if>
                        href=${nametUrl?replace("{name}",key)}>${nameMap[key]}</a>
                 </#list>
+                <em class="show-more">更多 <i class="fa fa-angle-down"></i> </em>
             </li>
             <li>
                 <span>项目期限: </span>
@@ -72,7 +72,6 @@
                 </#list>
             </li>
         </ul>
-    </div>
     <div class="loan-list-box">
         <ul>
             <#list loanItemList as loanItem>

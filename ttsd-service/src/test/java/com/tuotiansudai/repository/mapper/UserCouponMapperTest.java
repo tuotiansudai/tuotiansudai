@@ -23,10 +23,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -90,7 +88,7 @@ public class UserCouponMapperTest {
 
         assertEquals(userCouponModelList.get(0).getCoupon().getId(), couponModel.getId());
         assertEquals(userCouponModelList.get(0).getCoupon().getAmount(), couponModel.getAmount());
-        assertEquals(String.valueOf(userCouponModelList.get(0).getCoupon().getRate()),String.valueOf(couponModel.getRate()) );
+        assertEquals(String.valueOf(userCouponModelList.get(0).getCoupon().getRate()), String.valueOf(couponModel.getRate()));
         assertEquals(String.valueOf(userCouponModelList.get(0).getCoupon().getBirthdayBenefit()), String.valueOf(couponModel.getBirthdayBenefit()));
         assertEquals(new DateTime(userCouponModelList.get(0).getCoupon().getStartTime()).withTimeAtStartOfDay(),
                 new DateTime(couponModel.getStartTime()).withTimeAtStartOfDay());

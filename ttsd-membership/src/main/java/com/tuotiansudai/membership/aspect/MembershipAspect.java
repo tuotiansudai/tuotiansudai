@@ -6,12 +6,14 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 
 @Component
 @Aspect
+@Order(99)
 public class MembershipAspect {
 
     private static Logger logger = Logger.getLogger(MembershipAspect.class);

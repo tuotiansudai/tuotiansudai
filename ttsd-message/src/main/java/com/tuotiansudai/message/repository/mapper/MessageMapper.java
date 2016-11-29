@@ -15,6 +15,8 @@ public interface MessageMapper {
 
     MessageModel findById(long id);
 
+    MessageModel findByIdBesidesDeleted(long id);
+
     MessageModel lockById(long id);
 
     MessageModel findActiveByEventType(@Param(value = "eventType") MessageEventType eventType);

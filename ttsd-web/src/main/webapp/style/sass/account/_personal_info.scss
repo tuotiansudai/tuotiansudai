@@ -1,14 +1,13 @@
-@import '../common/variables';
 //Personal Info Page
 .personal-info {
   .info-list {
-    color: nth($CK2, 6);
+    color: #797979;
     line-height: 38px;
     em.info {
       display: inline-block;
     }
     .fa {
-      font-size: nth($fontSize, 4);
+      font-size: 16px;
       padding-right: 5px;
     }
     .info-title {
@@ -17,7 +16,7 @@
       width: 70px;
       text-align: right;
       margin-right: 20px;
-      color: nth($CK2, 5);
+      color: #000;
     }
     .binding-set {
       display: inline-block;
@@ -31,7 +30,7 @@
         color: #ff1010;
       }
       a.setlink {
-        color: nth($CK1, 1);
+        color: #ffac2a;
         padding-left: 10px;
       }
     }
