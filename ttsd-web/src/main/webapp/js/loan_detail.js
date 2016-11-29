@@ -548,7 +548,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     }
     //投资表单请求以及校验
     function investSubmit(){
-        
+
         if ($investForm.attr('action') === '/invest') {
             if (!isInvestor) {
                 location.href = '/login?redirect=' + encodeURIComponent(location.href);
@@ -892,7 +892,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         event.preventDefault();
         getCode(false);
     });
-    
+
     //获取语音验证码
     $('#microPhone').on('click', function(event) {
         event.preventDefault();
@@ -900,6 +900,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     });
     //安心签弹框中获取短信验证码请求
     function getCode(type){
+        $('#getSkipCode').prop('disabled',true);
+        $('#microPhone').css('visibility', 'hidden');
         $.ajax({
             url: '/anxinSign/sendCaptcha',
             type: 'POST',
@@ -909,6 +911,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
         })
         .done(function(data) {
+            $('#getSkipCode').prop('disabled',false);
+            $('#microPhone').css('visibility', 'visible');
             if(data.success) {
                 countDown();
                 Down = setInterval(countDown, 1000);
@@ -919,6 +923,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         })
         .fail(function() {
+            $('#getSkipCode').prop('disabled',false);
+            $('#microPhone').css('visibility', 'visible');
             layer.msg('请求失败，请重试或联系客服！');
         });
     }

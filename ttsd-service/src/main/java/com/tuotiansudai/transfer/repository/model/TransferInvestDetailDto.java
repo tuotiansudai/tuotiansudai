@@ -18,7 +18,7 @@ public class TransferInvestDetailDto implements Serializable {
 
     private Date transferTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
     private Date nextRepayDate;
 
     private long nextRepayAmount;
@@ -38,8 +38,6 @@ public class TransferInvestDetailDto implements Serializable {
     private String contractOld;
 
     private String contractOK;
-
-    private String contractCreating;
 
     public Integer getId() {
         return id;
@@ -140,13 +138,15 @@ public class TransferInvestDetailDto implements Serializable {
     public String getInvestAmountStr() {
         return AmountConverter.convertCentToString(investAmount);
     }
+
     public String getTransferAmountStr() {
 
         return AmountConverter.convertCentToString(transferAmount);
     }
+
     public String getNextRepayAmountStr() {
 
-        return  AmountConverter.convertCentToString(nextRepayAmount);
+        return AmountConverter.convertCentToString(nextRepayAmount);
     }
 
     public String getContractNo() {
@@ -173,11 +173,4 @@ public class TransferInvestDetailDto implements Serializable {
         this.contractOK = contractOK;
     }
 
-    public String getContractCreating() {
-        return contractCreating;
-    }
-
-    public void setContractCreating(String contractCreating) {
-        this.contractCreating = contractCreating;
-    }
 }

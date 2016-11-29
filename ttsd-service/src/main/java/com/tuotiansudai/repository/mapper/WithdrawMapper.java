@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.WithdrawModel;
-import com.tuotiansudai.repository.model.WithdrawStatus;
+import com.tuotiansudai.enums.WithdrawStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

@@ -1,22 +1,19 @@
 package com.tuotiansudai.cfca.test;
 
+import com.tuotiansudai.cfca.connector.AnxinClientTest;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import cfca.sadk.algorithm.common.PKIException;
-import com.tuotiansudai.cfca.connector.HttpConnector;
-import com.tuotiansudai.cfca.constant.Request;
-
 public class TestDownloadFile {
-    public static void main(String[] args) throws PKIException, FileNotFoundException {
-        HttpConnector httpConnector = new HttpConnector();
-        httpConnector.init();
+    public static void main(String[] args) throws Exception {
+        AnxinClientTest anxinClient = new AnxinClientTest();
+        anxinClient.initSSL();
 
         String contractNo = "MM20160721000000041";
-        byte[] fileBtye = httpConnector.getFile("platId/" + Request.PLAT_ID + "/contractNo/" + contractNo + "/downloading");
+        byte[] fileBtye = anxinClient.getContractFile(contractNo);
         if (fileBtye == null || fileBtye.length == 0) {
             return;
         }

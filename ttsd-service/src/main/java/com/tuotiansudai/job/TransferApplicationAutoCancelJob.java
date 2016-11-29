@@ -23,5 +23,4 @@ public class TransferApplicationAutoCancelJob implements Job{
         investTransferService.cancelTransferApplication(id);
         logger.debug("TransferApplyAutoCancelJob===========out, id = " + id );
     }
-
 }

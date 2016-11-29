@@ -74,10 +74,13 @@
 
         <div class="form-group">
             <label class="col-sm-1 control-label" style="width: 10%">APP链接:</label>
-
             <div class="col-sm-4">
-                <input type="text" class="form-control" name="appUrl" placeholder=""
-                       value="<#if banner??>${banner.appUrl!}</#if>" datatype="*" errormsg="APP链接不能为空">
+                <select class="selectpicker appUrl" name="appUrl">
+                    <#list appUrls as url>
+                        <option value="${url.path}" <#if banner?? && url.path == banner.appUrl>selected</#if>>${url.description}</option>
+                    </#list>
+                </select>
+                <div class="app-push-link jump-to-link">定位地址:<input type="text" class="form-control jump-link-text" name="jumpToLink" <#if banner??>value="${banner.jumpToLink!}"</#if> placeholder=""  maxlength="100" datatype="*" errormsg="定位地址不能为空"></div>
             </div>
         </div>
 
