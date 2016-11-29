@@ -1,6 +1,9 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoanCreateRequestDto;
+import com.tuotiansudai.dto.LoanTitleDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 
 import java.util.List;
@@ -10,10 +13,6 @@ public interface LoanCreateService {
     List<LoanTitleModel> findAllTitles();
 
     LoanTitleModel createTitle(LoanTitleDto loanTitleDto);
-
-    BaseDto<BaseDataDto> createLoan(LoanCreateRequestDto loanCreateRequestDto);
-
-    BaseDto<BaseDataDto> updateLoan(LoanCreateRequestDto loanCreateRequestDto);
 
     LoanCreateRequestDto getEditLoanDetails(long loanId);
 

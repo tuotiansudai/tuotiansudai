@@ -31,7 +31,7 @@ public class MobileAppBannerServiceTest extends ServiceTestBase {
     @Test
     public void shouldGetBanner() {
         List<BannerModel> bannerModelList = Lists.newArrayList();
-        bannerModelList.add(new BannerModel());
+        bannerModelList.add(getBannerModel());
         when(bannerMapper.findBannerIsAuthenticatedOrderByOrder(anyBoolean(), any(Source.class))).thenReturn(bannerModelList);
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("ceshi1");
@@ -39,5 +39,16 @@ public class MobileAppBannerServiceTest extends ServiceTestBase {
         BaseResponseDto<BannerResponseDataDto> responseDto = mobileAppBannerService.generateBannerList(baseParam.getUserId(), Source.ANDROID);
         BannerResponseDataDto data = responseDto.getData();
         assertTrue(CollectionUtils.isNotEmpty(data.getPictures()));
+    }
+    private BannerModel getBannerModel(){
+        BannerModel bannerModel = new BannerModel();
+        bannerModel.setId(111111L);
+        bannerModel.setName("testName");
+        bannerModel.setWebImageUrl("/upload/test.pg");
+        bannerModel.setTitle("test");
+        bannerModel.setAppUrl("http://app.com");
+        bannerModel.setJumpToLink("http://test1.com");
+        return bannerModel;
+
     }
 }

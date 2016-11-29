@@ -40,7 +40,9 @@ class SessionManager(object):
         return self._generate_token_id()
 
     def delete(self, session_id):
+        user_info = self.get(session_id)
         self.connection.delete(TOKEN_FORMAT.format(session_id))
+        return user_info
 
     def refresh(self, session_id):
         """

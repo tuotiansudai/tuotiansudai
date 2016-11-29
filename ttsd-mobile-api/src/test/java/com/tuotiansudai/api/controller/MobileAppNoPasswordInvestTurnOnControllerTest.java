@@ -2,6 +2,7 @@ package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.controller.v1_0.MobileAppNoPasswordInvestTurnOnController;
 import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
+import com.tuotiansudai.api.dto.v1_0.NoPasswordInvestTurnOnRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppNoPasswordInvestTurnOnService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -26,7 +27,7 @@ public class MobileAppNoPasswordInvestTurnOnControllerTest extends ControllerTes
 
     @Test
     public void shouldNoPasswordInvestTurnOnIsOk() throws Exception {
-        when(service.noPasswordInvestTurnOn(any(BaseParamDto.class), anyString())).thenReturn(successResponseDto);
+        when(service.noPasswordInvestTurnOn(any(NoPasswordInvestTurnOnRequestDto.class), anyString())).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/no-password-invest/turn-on", new BaseParamDto());
     }
 
