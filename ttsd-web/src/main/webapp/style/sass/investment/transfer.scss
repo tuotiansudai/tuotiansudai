@@ -1,6 +1,7 @@
-@import '../common/variables';
 @import '../plugins/daterangepicker';
 @import "../module/coupon_alert";
+
+$CK1:#ffac2a #ff7a2a;
 
 .layui-layer-btn {
   text-align: center !important;
@@ -179,7 +180,9 @@ body{
           .project-name {
             width: 175px;
             display: inline-block;
-            @include text-overflow;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
         }
       }

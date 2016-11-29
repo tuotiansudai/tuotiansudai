@@ -10,7 +10,7 @@ public interface ReferrerManageService {
 
     List<ReferrerManageView> findReferrerManage(String referrerMobile, String investMobile, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source, ReferrerRewardStatus referrerRewardStatus, int currentPageNo, int pageSize);
 
-    int findReferrerManageCount(String referrerMobile, String investMobile, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source,ReferrerRewardStatus referrerRewardStatus);
+    int findReferrerManageCount(String referrerMobile, String investMobile, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source, ReferrerRewardStatus referrerRewardStatus);
 
     BasePaginationDataDto<ReferrerRelationView> findReferrerRelationList(String referrerLoginName, String loginName, Date startTime, Date endTime, int index, int pageSize);
 

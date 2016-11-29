@@ -5,15 +5,22 @@
 <div class="global-member-ship">
     <#if mobile??>
         <div class="user-info-block page-width">
-            <span class="date-time-item">有效期至：${expiredDate?string("yyyy-MM-dd")!}</span>
+            <#if membershipType == 'GIVEN' || membershipType == "PURCHASED" >
+                <span class="date-time-item">有效期至：${expiredDate?string("yyyy-MM-dd")!}</span>
+            </#if>
             <div class="info clearfix">
                 <div class="avatar fl">
                     <img src="${staticServer}/images/sign/head_20161011.png"/>
-                    <i class="vip-no-bg vip-${membershipLevel!}"></i>
+                    <#if membershipType == 'GIVEN' || membershipType == "PURCHASED" >
+                        <i class="vip-no-bg vip-5"></i>
+                    <#else>
+                        <i class="vip-no-bg vip-${membershipLevel!}"></i>
+                    </#if>
+
                 </div>
                 <div class="text">
                     <p><span class="orange font20">您好！${mobile!}</span>
-                        <#if membershipType == 'GIVEN'>
+                        <#if membershipType == 'GIVEN' || membershipType == 'PURCHASED'>
                             <span class="font14">会员有效期还有：<strong
                                     class="font22">${(leftDays-1)?string('0')}</strong>天</span>
                         </#if>
@@ -36,6 +43,9 @@
                                 还需<strong>${membershipNextLevelValue!}</strong>成长值就能尊享<i
                                     class="vip-no-bg vip-${membershipNextLevel!}"></i>特权了哦！<i class="triangle"></i></div>
                         </#if>
+                    </#if>
+                    <#if membershipType == 'GIVEN' || membershipType == "PURCHASED" >
+                        <div class="popup popup-5">您已成为<i class="vip-no-bg vip-5"></i>会员,尊享100%会员特权！<i class="triangle"></i></div>
                     </#if>
                 </div>
             </div>
@@ -111,7 +121,7 @@
 
                             <p>生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍</p>
                         </li>
-                        <li class="membership-giftbag-hui">
+                        <li class="membership-giftbag">
                             <h3>会员礼包</h3>
 
                             <p>每月发放投资红包，588、688、788、888元随机派送</p>

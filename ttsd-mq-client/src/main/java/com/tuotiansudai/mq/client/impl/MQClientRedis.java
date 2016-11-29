@@ -6,13 +6,14 @@ import com.tuotiansudai.mq.client.model.MessageTopic;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import redis.clients.jedis.Jedis;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-public class MQClientRedis implements MQClient {
+public class MQClientRedis implements MQClient, InitializingBean {
 
     @Value("${common.redis.host}")
     private String redisHost;
@@ -44,6 +45,7 @@ public class MQClientRedis implements MQClient {
     @Override
     public void subscribe(final MessageQueue queue, final Consumer<String> consumer) {
         logger.info("[MQ] subscribe queue: {}", queue.getQueueName());
+        // use a new redis client for block request
         Jedis jedis = initJedis();
         while (true) {
             List<String> messages = jedis.brpop(0, generateRedisKeyOfQueue(queue));
@@ -75,5 +77,10 @@ public class MQClientRedis implements MQClient {
         jedis.connect();
         jedis.select(redisDB);
         return jedis;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        this.jedis = initJedis();
     }
 }

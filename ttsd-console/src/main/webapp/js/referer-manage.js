@@ -73,7 +73,7 @@ require(['jquery', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepicker', 'j
             var source = $('.source').val();
             var referrerRewardStatus = $('.referrerRewardStatus').val();
             window.location.href = '/user-manage/referrer?referrerMobile=' + referrerMobile + '&investMobile=' + investMobile + '&investStartTime=' + investStartTime + '&investEndTime=' + investEndTime + '&level=' + level + '&rewardStartTime=' + rewardStartTime + '&rewardEndTime=' + rewardEndTime
-                                        + '&role=' + role + '&source=' + source + '&referrerRewardStatus=' + referrerRewardStatus + '&index=1&pageSize=10';
+                + '&role=' + role + '&source=' + source + '&referrerRewardStatus=' + referrerRewardStatus + '&index=1&pageSize=10';
         });
 
         $('.down-load').on('click', function () {
@@ -88,7 +88,7 @@ require(['jquery', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepicker', 'j
             var source = $('.source').val();
             var referrerRewardStatus = $('.referrerRewardStatus').val();
             window.location.href = '/export/referrer?referrerMobile=' + referrerMobile + '&investMobile=' + investMobile + '&investStartTime=' + investStartTime + '&investEndTime=' + investEndTime + '&level=' + level + '&rewardStartTime=' + rewardStartTime + '&rewardEndTime=' + rewardEndTime
-                                        + '&role=' + role + '&source=' + source + '&referrerRewardStatus=' + referrerRewardStatus;
+                + '&role=' + role + '&source=' + source + '&referrerRewardStatus=' + referrerRewardStatus;
         });
     });
 })

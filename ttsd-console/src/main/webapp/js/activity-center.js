@@ -1,10 +1,14 @@
-require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDatetimepicker', 'jquery-ui', 'csrf'], function ($) {
+require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDatetimepicker',  'bootstrapSelect', 'jquery-ui', 'csrf'], function ($) {
     $(function () {
         var $activityCenterForm = $('.activity-form'),
+            $selectDom = $('.selectpicker'), //select表单
             boolFlag = false, //校验布尔变量值
             $errorDom = $('.form-error'); //错误提示节点
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
         $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+
+        //渲染select表单
+        $selectDom.selectpicker();
 
         var _URL = window.URL || window.webkitURL;
 
@@ -32,13 +36,13 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                         if ($self.hasClass('webPicture')) {
                             $('.webPictureUrl').val(data.title);
                             $('.webPictureImage').html('');
-                            $('.webPictureImage').append('<img style="width:100%" src="' + data.title + '" alt="缩略图">');
+                            $('.webPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="缩略图">');
 
                         }
                         if ($self.hasClass('appPicture')) {
                             $('.appPictureUrl').val(data.title)
                             $('.appPictureImage').html('');
-                            $('.appPictureImage').append('<img style="width:100%" src="' + data.title + '" alt="展示图">');
+                            $('.appPictureImage').append('<img style="width:100%" src="/' + data.title + '" alt="展示图">');
                         }
                     }
                 });
@@ -77,6 +81,15 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
             return defer.promise();
 
         };
+
+        $('select.appActivityUrl').change(function () {
+            var appActivityUrl = $(this).val();
+            if (appActivityUrl == '') {
+                $('.jump-to-link').removeClass('app-push-link').val('');
+            } else {
+                $('.jump-to-link').addClass('app-push-link').val('');
+            }
+        }).trigger('change');
 
         /**
          * @msg  {[string]} //文字信息
@@ -127,16 +140,25 @@ require(['jquery', 'bootstrap', 'Validform', 'Validform_Datatype', 'bootstrapDat
                     return false;
                 }
                 if ($('#notLongTerm').prop("checked")) {
-                        if($('.activatedTime').val() == ''){
-                            showErrorMessage('活动起期不能为空', $('.activatedTime', $activityCenterForm));
-                            return false;
-                        }
-                        if($('.expiredTime').val() == ''){
-                            showErrorMessage('活动止期不能为空', $('.expiredTime', $activityCenterForm));
-                            return false;
-                        }
+                    if($('.activatedTime').val() == ''){
+                        showErrorMessage('活动起期不能为空', $('.activatedTime', $activityCenterForm));
+                        return false;
+                    }
+                    if($('.expiredTime').val() == ''){
+                        showErrorMessage('活动止期不能为空', $('.expiredTime', $activityCenterForm));
+                        return false;
+                    }
                 }
 
+                var appActivityUrl = $('.appActivityUrl').val();
+                var jumpToLink = $('.jump-link-text').val();
+                if (appActivityUrl == '' && jumpToLink == '') {
+                    showErrorMessage('定位地址不能为空', $('.jump-link-text', $activityCenterForm));
+                    return false;
+                }
+                if(appActivityUrl != ''){
+                    $('.jump-link-text').val('' );
+                }
 
             },
             callback: function ($activityCenterForm) {

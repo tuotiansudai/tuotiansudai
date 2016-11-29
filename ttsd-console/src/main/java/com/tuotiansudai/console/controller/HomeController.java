@@ -4,13 +4,11 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.service.ConsoleHomeService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.AuditLogService;
-
-import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
@@ -47,6 +45,8 @@ public class HomeController {
 
     @Autowired
     private AuditLogService auditLogService;
+
+    private final String BAND_CARD_ACTIVE_STATUS_TEMPLATE = "bank_card_active_status";
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
@@ -141,6 +141,10 @@ public class HomeController {
 
             redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), notifyId, notify);
+
+            if (task.getOperationType().equals(OperationType.BAND_CARD)) {
+                redisWrapperClient.hdel(BAND_CARD_ACTIVE_STATUS_TEMPLATE, task.getObjId());
+            }
 
             String operator = task.getSender();
             String operatorRealName = userService.getRealName(operator);

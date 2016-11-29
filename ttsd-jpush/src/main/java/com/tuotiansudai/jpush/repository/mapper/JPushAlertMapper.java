@@ -1,6 +1,10 @@
 package com.tuotiansudai.jpush.repository.mapper;
 
-import com.tuotiansudai.jpush.repository.model.*;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
+import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
+import com.tuotiansudai.jpush.repository.model.PushStatus;
+import com.tuotiansudai.jpush.repository.model.PushUserType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -39,4 +43,6 @@ public interface JPushAlertMapper {
     JPushAlertModel findJPushAlertByPushType(@Param("pushType") PushType pushType);
 
     void delete(@Param("id") long id);
+
+    JPushAlertModel findByMessageId(@Param("messageId") long messageId);
 }

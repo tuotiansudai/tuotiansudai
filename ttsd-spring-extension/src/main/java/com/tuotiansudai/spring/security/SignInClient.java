@@ -62,9 +62,7 @@ public class SignInClient {
 
         try {
             Response response = this.execute(request);
-
             return objectMapper.readValue(response.body().string(), SignInResult.class);
-
         } catch (Exception e) {
             logger.error(MessageFormat.format("[sign in client] login failed (user={0} token={1} source={2} deviceId={3})", username, token, source, deviceId), e);
         }
