@@ -26,6 +26,8 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
     private double activityRate;
     private Date applicationTime;
     private Source source;
+    private String contractNo;
+
 
     public TransferApplicationPaginationItemDataDto(){}
 
@@ -191,5 +193,13 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
 
     public void setLeftDays(String leftDays) {
         this.leftDays = leftDays;
+    }
+
+    public String getContractNo() {
+        return contractNo;
+    }
+
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
     }
 }

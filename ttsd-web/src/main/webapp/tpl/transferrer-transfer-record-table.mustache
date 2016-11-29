@@ -28,6 +28,13 @@
                 </td>
                 <td>
                     {{transferStatus}}
+                    {{#contractNo}}
+                        <a class="red" href="/contract/invest/contractNo/{{contractNo}}"  target="_blank"> | 合同</a>
+                    {{/contractNo}}
+                    {{^contractNo}}
+                        <a class="red" href="/contract/transfer/transferApplicationId/{{transferApplicationId}}" target="_blank"> | 合同</a>
+                    {{/contractNo}}
+
                 </td>
             </tr>
         {{/records}}

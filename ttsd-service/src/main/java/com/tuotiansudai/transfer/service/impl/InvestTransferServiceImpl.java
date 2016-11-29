@@ -1,5 +1,6 @@
 package com.tuotiansudai.transfer.service.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -319,6 +320,8 @@ public class InvestTransferServiceImpl implements InvestTransferService {
                 transferApplicationPaginationItemDataDto.setTransferStatus("--");
             } else {
                 transferApplicationPaginationItemDataDto.setTransferStatus(input.getTransferStatus().getDescription());
+                InvestModel investModel = investMapper.findById(input.getInvestId());
+                transferApplicationPaginationItemDataDto.setContractNo(investModel != null && !Strings.isNullOrEmpty(investModel.getContractNo()) && !investModel.getContractNo().equals("OLD") ? investModel.getContractNo() : null);
             }
             LoanModel loanModel = loanMapper.findById(input.getLoanId());
             InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(input.getTransferInvestId(), loanModel.getPeriods());
