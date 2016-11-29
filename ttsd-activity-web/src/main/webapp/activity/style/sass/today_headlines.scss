@@ -26,6 +26,31 @@ $width:700px;
     .intro-text-group{
       float:left;
       width:100%;
+      background:#cec0f0;
+      border-radius:10px;
+      border:1px solid #000;
+      box-sizing:border-box;
+      overflow:hidden;
+      .bg-item{
+        float:left;
+        width:100%;
+        box-sizing:border-box;
+        padding:10px;
+        background:url('/activity/images/today-headlines/line-bg.png') repeat center;
+        background-size: 100%;
+        .intro-item{
+          float:left;
+          width:100%;
+          background:#a117e6;
+          border-radius:10px;
+          border:1px solid #000;
+          p{
+            margin-bottom:0;
+            color:#fff;
+            font-size:12px;
+          }
+        }
+      }
     }
   }
 }
