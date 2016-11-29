@@ -1,6 +1,8 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
@@ -29,7 +31,11 @@ public class InvestCallbackMessageConsumer implements MessageConsumer {
         if (!StringUtils.isEmpty(message)) {
             String investNotifyRequestId = message;
             logger.info("[MQ] ready to consumer message: invest callback.");
-            payWrapperClient.investCallback(investNotifyRequestId);
+            BaseDto<PayDataDto> result = payWrapperClient.investCallback(investNotifyRequestId);
+            if (!result.isSuccess()) {
+                logger.error("invest callback consume fail. investNotifyRequestId: " + investNotifyRequestId);
+                throw new RuntimeException("invest callback consume fail. investNotifyRequestId: " + investNotifyRequestId);
+            }
             logger.info("[MQ] consumer message done.");
 
 //                logger.info("[MQ] invest callback success, begin publish message.");
