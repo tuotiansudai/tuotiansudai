@@ -104,12 +104,13 @@ public class IdentityNumberValidator {
             birthDate = new SimpleDateFormat("yyMMdd").parse(birthday);
         } catch (ParseException e) {
             e.printStackTrace();
+        }finally {
+            Calendar cal = Calendar.getInstance();
+            if (birthDate != null)
+                cal.setTime(birthDate);
+            String sYear = String.valueOf(cal.get(Calendar.YEAR));
+            String code18 = idCard.substring(0, 6) + sYear + idCard.substring(8);
+            return code18 + countCode18(code18);
         }
-        Calendar cal = Calendar.getInstance();
-        if (birthDate != null)
-            cal.setTime(birthDate);
-        String sYear = String.valueOf(cal.get(Calendar.YEAR));
-        String code18 = idCard.substring(0, 6) + sYear + idCard.substring(8);
-        return code18 + countCode18(code18);
     }
 }
