@@ -103,17 +103,42 @@
                 <div class="title-christmas">活动二：圣诞拆礼物</div>
                 <div class="model-content clearfix">
                     <div class="color-sec info-activity-note">
-                        <b class="tc ">活动时间：11.24 24:00-12.31 24:00</b>
+                        <b class="tc ">活动时间：${christmasPrizeStartTime?string('yyyy-MM-dd HH:mm:ss')}-12.31 24:00</b>
                         蟹蟹各位大大们为圣诞老人铺路，昨晚，他已经偷偷爬过烟囱，把礼物挂在圣诞树上，还等什么，赶快拆礼物吧，Merry Christmas！ <br/>
                         温馨提示：在活动二期限内完成以下操作，才可获得拆礼物机会，每位用户最多可获得10次拆奖机会；
                     </div>
                     <div class="gift-box">
                         <div class="icon-balloon-group">
-                            <em class="left"><i>
-                                <a href="/register/user">注册</a>
-                            </i></em>
-                            <em class="center hack"><i><a href="/register/account">实名认证</a></i></em>
-                            <em class="right"><i>首次投资</i></em>
+                            <em class="left">
+                                <i>
+                                    <#if steps[0] == 1>
+                                        <a href="/register/user">注册</a>
+                                    </#if>
+                                    <#if steps[0] == 2>
+                                        注册
+                                    </#if>
+                                </i>
+                            </em>
+                            <em class="center hack">
+                                <i>
+                                <#if steps[1] == 1>
+                                    <a href="/register/account">实名认证</a>
+                                </#if>
+                                <#if steps[1] == 2>
+                                   实名认证
+                                </#if>
+                                </i>
+                            </em>
+                            <em class="right">
+                                <i>
+                                    <#if steps[2] == 1>
+                                        <a href="/register/account">首次投资</a>
+                                    </#if>
+                                    <#if steps[2] == 2>
+                                        首次投资
+                                    </#if>
+                                </i>
+                            </em>
                         </div>
                         <div class="user-info-info">
                             <b class="user-kind">新用户</b>

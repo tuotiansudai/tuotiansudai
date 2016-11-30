@@ -60,12 +60,6 @@ public class ChristmasPrizeService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-   /* @Value("#{'${activity.christmas.period}'.split('\\~')}")
-    private List<String> christmasTime = Lists.newArrayList();
-
-    Date activityChristmasStartTime = DateTime.parse(christmasTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-    Date activityChristmasEndTime = DateTime.parse(christmasTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-   */
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.startTime}\")}")
     private Date activityChristmasStartTime;
 
@@ -83,6 +77,10 @@ public class ChristmasPrizeService {
         if(investAmount >= 420000000 && !redisWrapperClient.exists(redisKey))
             redisWrapperClient.hset(redisKey, redisHKey, sdf.format(new Date()), timeout);
         return investAmount >= 420000000 && redisWrapperClient.exists(redisKey) ? 1 : 0;
+    }
+
+    public Date getChristmasPrizeStartTime(){
+        return DateTime.parse(redisWrapperClient.hget(redisKey, redisHKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
     }
 
     //活动期间投资圣诞专享标单笔满30000元,奖励一张0.5%的加息劵
@@ -185,21 +183,6 @@ public class ChristmasPrizeService {
                 return 323;
         }
         return 0l;
-    }
-
-    public List<UserLotteryPrizeView> findDrawLotteryPrizeRecordByMobile(String mobile){
-        if(Strings.isNullOrEmpty(mobile)){
-            return Lists.newArrayList();
-        }
-        return findDrawLotteryPrizeRecord(mobile);
-    }
-
-    public List<UserLotteryPrizeView> findDrawLotteryPrizeRecord(String mobile){
-        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findLotteryPrizeByMobileAndPrize(mobile, null, ActivityCategory.CHRISTMAS_ACTIVITY);
-        for(UserLotteryPrizeView view : userLotteryPrizeViews){
-            view.setMobile(MobileEncryptor.encryptWebMiddleMobile(view.getMobile()));
-        }
-        return userLotteryPrizeViews;
     }
 
     public Map getActivityChristmasInvestAmountAndCount(){

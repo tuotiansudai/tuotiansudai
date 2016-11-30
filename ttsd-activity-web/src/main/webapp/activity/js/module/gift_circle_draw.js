@@ -57,6 +57,7 @@ define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, lay
                 dataType: 'json'
             })
                 .done(function(data) {
+                    debugger
                     var UlList=[];
                     for(var i=0,len=data.length;i<len;i++) {
                         UlList.push('<li>'+data[i].prizeValue+'<time>'+data[i].lotteryTime+'</time></li>');
@@ -91,7 +92,6 @@ define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, lay
     //抽奖方式2-----没有任何转盘效果,抽奖接口调用成功后使用
     giftCircleDraw.prototype.noRotateFn=function(tipMessage) {
         this.bRotate = !this.bRotate;
-        alert(this.bRotate);
         this.GiftRecord();
         this.MyGift();
         this.tipWindowPop(tipMessage);

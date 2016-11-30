@@ -74,8 +74,7 @@ require(['jquery','drawCircle','logintip'], function ($,drawCircle) {
                                 '<p class="reward-text">'+data.prizeValue+'！</p>' +
                                 '<p class="des-text">奖品已发放至“我的宝藏”当中。</p>'
                         }
-
-                        drawCircle.tipWindowPop(tipMessage);
+                        drawCircle.noRotateFn(tipMessage);
                     } else if(data.returnCode == 1) {
                         //没有抽奖机会
                         tipMessage.info='<p class="login-text">您暂无抽奖机会啦～</p><p class="des-text">赢取机会后再来抽奖吧！</p>',

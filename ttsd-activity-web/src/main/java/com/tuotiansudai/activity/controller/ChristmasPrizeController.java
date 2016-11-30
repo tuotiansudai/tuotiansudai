@@ -3,8 +3,11 @@ package com.tuotiansudai.activity.controller;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.ChristmasPrizeService;
+import com.tuotiansudai.activity.service.LotteryDrawActivityService;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -33,6 +36,9 @@ public class ChristmasPrizeController {
     @Autowired
     private BindBankCardService bindBankCardService;
 
+    @Autowired
+    private LotteryDrawActivityService lotteryDrawActivityService;
+
     private static final float CHRISTMAS_SUM_AMOUNT = 420000000;
 
     private static NumberFormat numberFormat = NumberFormat.getInstance();
@@ -50,8 +56,9 @@ public class ChristmasPrizeController {
         modelAndView.addObject("investScale", userInvestAmount >= CHRISTMAS_SUM_AMOUNT ? "100%" : numberFormat.format((float) userInvestAmount / CHRISTMAS_SUM_AMOUNT * 100) + "%");
         modelAndView.addObject("userCount", param.get("investCount"));
         modelAndView.addObject("isStart", christmasPrizeService.isStart());
+        modelAndView.addObject("steps", generateSteps(loginName));
+        modelAndView.addObject("christmasPrizeStartTime", christmasPrizeService.getChristmasPrizeStartTime());
 
-        modelAndView.addObject("drawTime", christmasPrizeService.getDrawPrizeTime(LoginUserInfo.getMobile()));
         return modelAndView;
     }
 
@@ -63,14 +70,21 @@ public class ChristmasPrizeController {
 
     @ResponseBody
     @RequestMapping(value = "/user-list", method = RequestMethod.GET)
-    public List<UserLotteryPrizeView> getPrizeRecordByLoginName(@RequestParam(value = "mobile", required = false) String mobile) {
-        return christmasPrizeService.findDrawLotteryPrizeRecordByMobile(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile());
+    public List<UserLotteryPrizeView> getPrizeRecordByLoginName(@RequestParam(value = "mobile", required = false) String mobile,
+                                                                @RequestParam(value = "activityCategory", required = false) ActivityCategory activityCategory) {
+        return lotteryDrawActivityService.findDrawLotteryPrizeRecordByMobile(Strings.isNullOrEmpty(LoginUserInfo.getMobile()) ? mobile : LoginUserInfo.getMobile(), activityCategory);
     }
 
     @ResponseBody
     @RequestMapping(value = "/all-list", method = RequestMethod.GET)
-    public List<UserLotteryPrizeView> getPrizeRecordByAll() {
-        return christmasPrizeService.findDrawLotteryPrizeRecord(null);
+    public List<UserLotteryPrizeView> getPrizeRecordByAll(@RequestParam(value = "activityCategory", required = false) ActivityCategory activityCategory) {
+        return lotteryDrawActivityService.findDrawLotteryPrizeRecord(null, activityCategory);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/drawTime", method = RequestMethod.GET)
+    public int getDrawTime() {
+        return christmasPrizeService.getDrawPrizeTime(LoginUserInfo.getMobile());
     }
 
     private List<Integer> generateSteps(String loginName) {
@@ -84,9 +98,6 @@ public class ChristmasPrizeController {
             return steps;
         }
         steps.set(1, 2);
-        steps.set(2, 1);
-        steps.set(3, 1);
-        steps.set(4, 1);
         if (bindBankCardService.getPassedBankCard(loginName) != null) {
             steps.set(2, 2);
         }
