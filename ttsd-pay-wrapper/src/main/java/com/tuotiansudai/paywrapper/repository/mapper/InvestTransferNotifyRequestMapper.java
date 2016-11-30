@@ -12,5 +12,7 @@ public interface InvestTransferNotifyRequestMapper extends BaseCallbackMapper {
 
     List<InvestNotifyRequestModel> getTodoList(@Param(value = "limitCount") int limitCount);
 
+    InvestNotifyRequestModel findById(@Param(value = "id") long id);
+
     void updateStatus(@Param(value = "id") Long id, @Param(value = "status") NotifyProcessStatus status);
 }
