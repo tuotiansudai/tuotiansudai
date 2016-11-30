@@ -11,6 +11,8 @@ import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.repository.mapper.InvestTransferNotifyRequestMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
@@ -94,6 +96,9 @@ public class InvestTransferControllerTest {
     @Autowired
     private UserMembershipMapper userMembershipMapper;
 
+    @Autowired
+    private InvestTransferNotifyRequestMapper investTransferNotifyRequestMapper;
+
 
     @Before
     public void setUp() throws Exception {
@@ -153,7 +158,7 @@ public class InvestTransferControllerTest {
         long investId1 = investOneDeal(transferee1.getLoginName(), fakeTransferApplication.getId());
         long investId2 = investOneDeal(transferee2.getLoginName(), fakeTransferApplication.getId());
 
-        this.jobAsyncInvestNotify();
+        this.jobAsyncInvestNotify(2);
 
         assert (investMapper.findById(investId1).getStatus() == InvestStatus.SUCCESS);
         assert (investMapper.findById(investId2).getStatus() == InvestStatus.WAIT_PAY);
@@ -269,14 +274,21 @@ public class InvestTransferControllerTest {
         userMembershipMapper.create(userMembershipModel);
     }
 
-    private void jobAsyncInvestNotify() throws Exception {
+    private void jobAsyncInvestNotify(int count) throws Exception {
         // job 触发投资 notify 处理
-        this.mockMvc.perform(post("/job/async_invest_transfer_notify")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json; charset=UTF-8"))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.status").value(true));
+
+        List<InvestNotifyRequestModel> requestModelList = investTransferNotifyRequestMapper.getLastRequest(count);
+
+        for (int i = requestModelList.size() - 1; i >= 0; i--) {
+            InvestNotifyRequestModel requestModel = requestModelList.get(i);
+            this.mockMvc.perform(post("/job/async_invest_transfer_notify")
+                    .content(String.valueOf(requestModel.getId()))
+                    .contentType(MediaType.APPLICATION_JSON_VALUE))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json; charset=UTF-8"))
+                    .andExpect(jsonPath("$.success").value(true))
+                    .andExpect(jsonPath("$.data.status").value(true));
+        }
     }
 
     private void overInvestPaybackNotify(long orderId, String retCode) throws Exception {
