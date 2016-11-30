@@ -42,7 +42,7 @@ public class CouponAssigningMessageConsumer implements MessageConsumer {
                 } else {
                     logger.info("[MQ] no user coupon assign.");
                 }
-                logger.info("[MQ] consumer message success.");
+                logger.info("[MQ] consume message success.");
             }
         }
     }
