@@ -29,17 +29,13 @@ public class InvestCallbackMessageConsumer implements MessageConsumer {
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
-            String investNotifyRequestId = message;
-            logger.info("[MQ] ready to consumer message: invest callback.");
-            BaseDto<PayDataDto> result = payWrapperClient.investCallback(investNotifyRequestId);
+            logger.info("[MQ] ready to consume message: invest callback.");
+            BaseDto<PayDataDto> result = payWrapperClient.investCallback(message);
             if (!result.isSuccess()) {
-                logger.error("invest callback consume fail. investNotifyRequestId: " + investNotifyRequestId);
-                throw new RuntimeException("invest callback consume fail. investNotifyRequestId: " + investNotifyRequestId);
+                logger.error("invest callback consume fail. notifyRequestId: " + message);
+                throw new RuntimeException("invest callback consume fail. notifyRequestId: " + message);
             }
-            logger.info("[MQ] consumer message done.");
-
-//                logger.info("[MQ] invest callback success, begin publish message.");
-//                mqClient.publishMessage(MessageTopic.InvestSuccess, "");
+            logger.info("[MQ] consume message success.");
         }
     }
 }

@@ -1,9 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
@@ -31,7 +29,10 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestAchievementService;
 import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
@@ -251,9 +252,8 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncInvestCallback(String investNotifyRequestId) {
-        long requestId = Long.parseLong(investNotifyRequestId);
-        InvestNotifyRequestModel model = investNotifyRequestMapper.findById(requestId);
+    public BaseDto<PayDataDto> asyncInvestCallback(long notifyRequestId) {
+        InvestNotifyRequestModel model = investNotifyRequestMapper.findById(notifyRequestId);
 
         if (updateInvestNotifyRequestStatus(model)) {
             try {
