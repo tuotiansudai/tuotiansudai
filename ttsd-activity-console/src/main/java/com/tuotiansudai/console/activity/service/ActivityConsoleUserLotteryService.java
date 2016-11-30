@@ -63,8 +63,11 @@ public class ActivityConsoleUserLotteryService {
     @Value("#{'${activity.carnival.period}'.split('\\~')}")
     private List<String> carnivalTime = Lists.newArrayList();
 
-    @Value("#{'${activity.christmas.period}'.split('\\~')}")
-    private List<String> christmasTime = Lists.newArrayList();
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.startTime}\")}")
+    private Date activityChristmasStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.endTime}\")}")
+    private Date  activityChristmasEndTime;
 
     private static final String redisKey = "web:christmasTime:lottery:startTime";
     private static final String redisHKey = "activityChristmasPrizeStartTime";
@@ -117,8 +120,8 @@ public class ActivityConsoleUserLotteryService {
                 endTime = DateTime.parse(carnivalTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
                 break;
             case CHRISTMAS_ACTIVITY:
-                startTime = redisWrapperClient.exists(redisKey) ? DateTime.parse(redisWrapperClient.hget(redisKey, redisHKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate() : DateTime.parse(christmasTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-                endTime = DateTime.parse(christmasTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+                startTime = redisWrapperClient.exists(redisKey) ? DateTime.parse(redisWrapperClient.hget(redisKey, redisHKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate() : activityChristmasEndTime;
+                endTime = activityChristmasEndTime;
                 break;
         }
 
@@ -138,9 +141,8 @@ public class ActivityConsoleUserLotteryService {
         }
 
         if(activityCategory == ActivityCategory.CHRISTMAS_ACTIVITY){
-            long sumAmount = investMapper.sumSuccessInvestByInvestTimeAndLoginName(userModel.getMobile(), startTime, endTime);
+            long sumAmount = investMapper.sumSuccessInvestByInvestTimeAndLoginName(userModel.getLoginName(), startTime, endTime);
             lotteryTime += (int)(sumAmount/200000);
-
             lotteryTime = lotteryTime >= 10 ? 10 : lotteryTime;
         }
         else{
@@ -148,7 +150,6 @@ public class ActivityConsoleUserLotteryService {
             if(accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)){
                 lotteryTime ++;
             }
-
 
             BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
             if(bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)){

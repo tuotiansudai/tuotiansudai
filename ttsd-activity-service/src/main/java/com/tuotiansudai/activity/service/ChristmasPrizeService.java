@@ -5,17 +5,20 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
-import com.tuotiansudai.activity.repository.model.*;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
+import com.tuotiansudai.activity.repository.model.LotteryPrize;
+import com.tuotiansudai.activity.repository.model.PrizeType;
+import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-import com.tuotiansudai.membership.repository.model.MembershipLevel;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipType;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.MobileEncryptor;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanDetailsModel;
+import com.tuotiansudai.repository.model.UserModel;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -24,9 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -207,7 +208,6 @@ public class ChristmasPrizeService {
     }
 
     public long getActivityChristmasInvestAmountByLoginName(String loginName){
-
         List<InvestModel> investModels = investMapper.countSuccessInvestByInvestTimeAndLoginName(loginName, activityChristmasStartTime, activityChristmasEndTime);
         List<Long> amountList = Lists.newArrayList();
         for(InvestModel investModel: investModels){
@@ -217,5 +217,9 @@ public class ChristmasPrizeService {
             }
         }
         return amountList.size() > 0 ? amountList.parallelStream().max(((o1, o2) -> o1.compareTo(o2))).get() : 0;
+    }
+
+    public boolean isFirstInvest(String loginName){
+        return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 0 ? true : false;
     }
 }

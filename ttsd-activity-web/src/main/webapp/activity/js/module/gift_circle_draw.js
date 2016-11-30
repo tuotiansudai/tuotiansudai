@@ -91,7 +91,7 @@ define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, lay
 
     //抽奖方式2-----没有任何转盘效果,抽奖接口调用成功后使用
     giftCircleDraw.prototype.noRotateFn=function(tipMessage) {
-        this.bRotate = !this.bRotate;
+        //this.bRotate = !this.bRotate;
         this.GiftRecord();
         this.MyGift();
         this.tipWindowPop(tipMessage);

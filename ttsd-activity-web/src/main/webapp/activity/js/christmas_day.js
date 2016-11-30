@@ -28,6 +28,7 @@ require(['jquery','drawCircle','logintip'], function ($,drawCircle) {
             pointAllList='/activity/christmas/all-list',  //中奖记录接口地址
             pointUserList='/activity/christmas/user-list',   //我的奖品接口地址
             drawURL='/activity/christmas/draw',    //抽奖的接口链接
+            drawTime='/activity/christmas/drawTime', //抽奖次数
             $pointerImg=$('.pointer-img',$rewardGiftBox),
             myMobileNumber=$MobileNumber.length ? $MobileNumber.data('mobile') : '';  //当前登录用户的手机号
 
@@ -41,6 +42,15 @@ require(['jquery','drawCircle','logintip'], function ($,drawCircle) {
             "activityCategory":"CHRISTMAS_ACTIVITY"
         };
 
+        drawCircle.prototype.showDrawTime=function() {
+            $.ajax({
+                url: drawTime,
+                type: 'GET',
+                dataType: 'json'
+            }).done(function(data) {
+                $('.draw-time',$rewardGiftBox).text(data);
+            })
+        }
         var drawCircle=new drawCircle(pointAllList,pointUserList,drawURL,paramData,$rewardGiftBox);
 
         //渲染中奖记录
@@ -48,6 +58,9 @@ require(['jquery','drawCircle','logintip'], function ($,drawCircle) {
 
         //渲染我的奖品
         drawCircle.MyGift();
+
+        //渲染我的抽奖次数
+        drawCircle.showDrawTime();
 
         //**********************开始抽奖**********************//
         $pointerImg.on('click',function() {
@@ -58,6 +71,7 @@ require(['jquery','drawCircle','logintip'], function ($,drawCircle) {
                 drawCircle.beginLuckDraw(function(data) {
                     //停止礼品盒的动画
                     $pointerImg.removeClass('win-result');
+                    drawCircle.showDrawTime();
 
                     if (data.returnCode == 0) {
                         //真实奖品

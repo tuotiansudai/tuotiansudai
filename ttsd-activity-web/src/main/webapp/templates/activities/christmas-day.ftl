@@ -111,30 +111,30 @@
                         <div class="icon-balloon-group">
                             <em class="left">
                                 <i>
-                                    <#if steps[0] == 1>
+                                    <#if steps[0] == 0>
                                         <a href="/register/user">注册</a>
                                     </#if>
-                                    <#if steps[0] == 2>
+                                    <#if steps[0] == 1>
                                         注册
                                     </#if>
                                 </i>
                             </em>
                             <em class="center hack">
                                 <i>
-                                <#if steps[1] == 1>
+                                <#if steps[1] == 0>
                                     <a href="/register/account">实名认证</a>
                                 </#if>
-                                <#if steps[1] == 2>
+                                <#if steps[1] == 1>
                                    实名认证
                                 </#if>
                                 </i>
                             </em>
                             <em class="right">
                                 <i>
-                                    <#if steps[2] == 1>
-                                        <a href="/register/account">首次投资</a>
+                                    <#if steps[2] == 0>
+                                        <a href="/loan-list">首次投资</a>
                                     </#if>
-                                    <#if steps[2] == 2>
+                                    <#if steps[2] == 1>
                                         首次投资
                                     </#if>
                                 </i>
@@ -176,7 +176,7 @@
                         </div>
 
                         <div class="luck-draw-times">
-                            <span>我的拆奖机会：10次</span>
+                            <span>我的拆奖机会：<i class="draw-time"></i>次</span>
                         </div>
                         <div class="gift-info-list">
                             <em class="silk-left"></em>

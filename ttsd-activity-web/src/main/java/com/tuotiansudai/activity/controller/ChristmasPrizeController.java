@@ -7,9 +7,8 @@ import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
 import com.tuotiansudai.activity.service.ChristmasPrizeService;
 import com.tuotiansudai.activity.service.LotteryDrawActivityService;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +33,6 @@ public class ChristmasPrizeController {
     private AccountService accountService;
 
     @Autowired
-    private BindBankCardService bindBankCardService;
-
-    @Autowired
     private LotteryDrawActivityService lotteryDrawActivityService;
 
     private static final float CHRISTMAS_SUM_AMOUNT = 420000000;
@@ -47,7 +43,7 @@ public class ChristmasPrizeController {
     public ModelAndView christmas() {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/christmas-day", "responsive", true);
-        //投资满20000发一张优惠券
+        //单笔投资满30000发一张0.5的加息券
         christmasPrizeService.assignUserCoupon(loginName);
         Map param = christmasPrizeService.getActivityChristmasInvestAmountAndCount();
         long userInvestAmount = (long)param.get("investAmount");
@@ -92,14 +88,14 @@ public class ChristmasPrizeController {
         if (Strings.isNullOrEmpty(loginName)) {
             return steps;
         }
-        steps.set(0, 2);
+        steps.set(0, 1);
         if (accountService.findByLoginName(loginName) == null) {
-            steps.set(1, 1);
+            steps.set(1, 0);
             return steps;
         }
-        steps.set(1, 2);
-        if (bindBankCardService.getPassedBankCard(loginName) != null) {
-            steps.set(2, 2);
+        steps.set(1, 1);
+        if (christmasPrizeService.isFirstInvest(loginName)) {
+            steps.set(2, 1);
         }
         return steps;
     }
