@@ -20,7 +20,6 @@ public enum JobType {
     AdvanceRepayCallBack("提前还款回调处理"),
     CouponRepayCallBack("还款时优惠券收益回调处理"),
     ExtraRateRepayCallBack("还款时阶梯加息收益回调处理"),
-    InvestTransferCallBack("债权转让投资回调处理"),
     LoanStatusToRecheck("标的状态从筹款变为等待复核"),
     CalculateDefaultInterest("计算逾期罚息"),
     AutoReFreshAreaByMobile("获取手机归属地"),
