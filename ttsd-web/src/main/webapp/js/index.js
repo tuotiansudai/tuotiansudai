@@ -91,11 +91,10 @@ require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envel
                 event.preventDefault();
                 $.ajax({
                     url: '/isLogin',
-                    type: 'GET'
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
                 })
-                    .done(function(response) {
-                        console.log(response);
-                    })
                     .fail(function (response) {
                             if ("" == response.responseText) {
                                 $bookInvestForm.find('.init-radio-style').removeClass('on');
