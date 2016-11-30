@@ -28,7 +28,7 @@ public class MobileAppLoanDetailController extends MobileAppBaseController {
         if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
-            return new BaseResponseDto<>(errorCode, errorMessage);
+            return new BaseResponseDto(errorCode, errorMessage);
         } else {
             loanDetailRequestDto.getBaseParam().setUserId(getLoginName());
             return mobileAppLoanDetailService.generateLoanDetail(loanDetailRequestDto);
