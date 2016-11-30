@@ -81,7 +81,7 @@ public class ChristmasPrizeService {
     }
 
     public Date getChristmasPrizeStartTime(){
-        return DateTime.parse(redisWrapperClient.hget(redisKey, redisHKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        return redisWrapperClient.exists(redisKey) ? DateTime.parse(redisWrapperClient.hget(redisKey, redisHKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate() : activityChristmasEndTime;
     }
 
     //活动期间投资圣诞专享标单笔满30000元,奖励一张0.5%的加息劵
