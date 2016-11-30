@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -55,11 +54,23 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
 
     private SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
 
+    private static int queryMinYear = 2015;
+
+    private static int queryMaxYear = DateTime.now().getYear() + 1;
+
     @Override
     public BaseResponseDto<RepayCalendarListResponseDto> getYearRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto) {
-        List<String> monthList = Lists.newArrayList("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
         BaseResponseDto<RepayCalendarListResponseDto> baseResponseDto = new BaseResponseDto<>();
         RepayCalendarListResponseDto repayCalendarListResponseDto = new RepayCalendarListResponseDto();
+
+        if (!validQueryYearIsCorrect(repayCalendarRequestDto.getYear())) {
+            baseResponseDto.setData(repayCalendarListResponseDto);
+            baseResponseDto.setCode(ReturnMessage.REPAY_CALENDAR_QUERY_FAILED.getCode());
+            baseResponseDto.setMessage(ReturnMessage.REPAY_CALENDAR_QUERY_FAILED.getMsg());
+            return baseResponseDto;
+        }
+
+        List<String> monthList = Lists.newArrayList("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
         List<RepayCalendarYearResponseDto> repayCalendarYearResponseDtoList = getRepayCalendarResponseList(repayCalendarRequestDto, YEAR_REPAY_CALENDAR);
         long totalRepayAmount = 0;
         long totalExpectedRepayAmount = 0;
@@ -72,15 +83,10 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         }
 
         for (String month : monthList) {
-            repayCalendarYearResponseDtoList.add(new RepayCalendarYearResponseDto(repayCalendarRequestDto.getYear(), month, null, null));
+            repayCalendarYearResponseDtoList.add(new RepayCalendarYearResponseDto(repayCalendarRequestDto.getYear(), month, "0", "0"));
         }
 
-        Collections.sort(repayCalendarYearResponseDtoList, new Comparator<RepayCalendarYearResponseDto>() {
-            @Override
-            public int compare(RepayCalendarYearResponseDto o1, RepayCalendarYearResponseDto o2) {
-                return Integer.compare(Integer.parseInt(o1.getMonth()), Integer.parseInt(o2.getMonth()));
-            }
-        });
+        Collections.sort(repayCalendarYearResponseDtoList, (o1, o2) -> Integer.compare(Integer.parseInt(o1.getMonth()), Integer.parseInt(o2.getMonth())));
         repayCalendarListResponseDto.setTotalRepayAmount(String.valueOf(AmountConverter.convertCentToString(totalRepayAmount)));
         repayCalendarListResponseDto.setTotalExpectedRepayAmount(String.valueOf(AmountConverter.convertCentToString(totalExpectedRepayAmount)));
         repayCalendarListResponseDto.setRepayCalendarYearResponseDtos(repayCalendarYearResponseDtoList);
@@ -94,6 +100,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
     public BaseResponseDto<RepayCalendarMonthResponseDto> getMonthRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto) {
         BaseResponseDto<RepayCalendarMonthResponseDto> baseResponseDto = new BaseResponseDto<>();
         RepayCalendarMonthResponseDto repayCalendarMonthResponseDto = new RepayCalendarMonthResponseDto();
+
         List<RepayCalendarYearResponseDto> repayCalendarDtoLists = getRepayCalendarResponseList(repayCalendarRequestDto, MONTH_REPAY_CALENDAR);
         List<String> repayDayList = Lists.newArrayList();
         long expectedRepayAmount = 0;
@@ -117,6 +124,8 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
     @Override
     public BaseResponseDto<RepayCalendarDateListResponseDto> getDateRepayCalendar(RepayCalendarRequestDto repayCalendarRequestDto) {
         BaseResponseDto<RepayCalendarDateListResponseDto> baseResponseDto = new BaseResponseDto<>();
+        RepayCalendarDateListResponseDto repayCalendarDateListResponseDto = new RepayCalendarDateListResponseDto();
+
         List<RepayCalendarDateResponseDto> repayCalendarDateResponseDtoList = Lists.newArrayList();
         long experienceLoanId = loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(ProductType.EXPERIENCE), ActivityType.NEWBIE).get(0).getId();
         List<InvestRepayModel> investRepayModelList = investRepayMapper.findInvestRepayByLoginNameAndRepayTime(repayCalendarRequestDto.getBaseParam().getUserId(), null, null, repayCalendarRequestDto.getDate());
@@ -205,7 +214,6 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                     String.valueOf(transferApplicationModel.getId())));
         }
 
-        RepayCalendarDateListResponseDto repayCalendarDateListResponseDto = new RepayCalendarDateListResponseDto();
         repayCalendarDateListResponseDto.setTotalAmount(AmountConverter.convertCentToString(totalAmount));
         repayCalendarDateListResponseDto.setRepayCalendarDateResponseDtoList(repayCalendarDateResponseDtoList);
         baseResponseDto.setData(repayCalendarDateListResponseDto);
@@ -352,5 +360,18 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             }
         }
         return repayCalendarResponseDtoMaps;
+    }
+
+    private boolean validQueryYearIsCorrect(String year) {
+        if (Strings.isNullOrEmpty(year)) {
+            return false;
+        }
+
+        int queryYear = Integer.parseInt(year);
+        if (queryYear < queryMinYear || queryYear > queryMaxYear) {
+            return false;
+        }
+
+        return true;
     }
 }
