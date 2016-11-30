@@ -230,8 +230,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncPurchaseCallback(String notifyRequestId) {
-        InvestNotifyRequestModel model = investTransferNotifyRequestMapper.findById(Long.parseLong(notifyRequestId));
+    public BaseDto<PayDataDto> asyncPurchaseCallback(long notifyRequestId) {
+        InvestNotifyRequestModel model = investTransferNotifyRequestMapper.findById(notifyRequestId);
 
         logger.info(MessageFormat.format("[Invest Transfer Callback {0}] starting...", model.getOrderId()));
         if (updateInvestTransferNotifyRequestStatus(model)) {
