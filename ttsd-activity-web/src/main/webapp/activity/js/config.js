@@ -37,11 +37,14 @@ var require = {
         'count_down': staticServer+'/activity/js/dest/count_down.min',
         'placeholder':staticServer+'/activity/js/libs/jquery.enplaceholder',
         'superslide': staticServer+'/activity/js/libs/jquery.SuperSlide.2.1.1',
-        'logintip': staticServer+'/activity/js/dest/login_tip.min',
-        'drawCircle': staticServer+'/activity/js/dest/gift_circle_draw.min',
         'endTime': staticServer+'/activity/js/dest/actor_time.min',
+
+        /*module*/
+        'drawCircle': staticServer+'/activity/js/dest/gift_circle_draw.min',
+        'logintip': staticServer+'/activity/js/dest/login_tip.min',
         'register_common': staticServer+'/activity/js/dest/register_common.min',
-        'nine_lottery': staticServer+'/activity/js/dest/nine_lottery.min'
+        'nine_lottery': staticServer+'/activity/js/dest/nine_lottery.min',
+        'lottery_unit':staticServer+'/activity/js/dest/lottery_unit.min'
     },
     'waitSeconds':0,
     'shim': {
