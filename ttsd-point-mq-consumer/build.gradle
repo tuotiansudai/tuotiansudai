@@ -23,20 +23,17 @@ repositories {
     maven { url "http://central.maven.org/maven2/" }
 }
 
-configurations{
+configurations {
     compile.exclude group: "log4j", module: "log4j"
     compile.exclude group: "org.slf4j", module: "slf4j-log4j12"
 }
 
 dependencies {
     compile project(':ttsd-config')
-    compile project(':ttsd-client')
-    compile project(':ttsd-message')
+    compile project(':ttsd-point-service')
     compile project(':ttsd-user-service')
     compile project(':ttsd-mq-client')
     compile "org.springframework.boot:spring-boot-starter"
     compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1"
     compile "mysql:mysql-connector-java:5.1.39"
-
-    testCompile "org.springframework.boot:spring-boot-starter-test"
 }

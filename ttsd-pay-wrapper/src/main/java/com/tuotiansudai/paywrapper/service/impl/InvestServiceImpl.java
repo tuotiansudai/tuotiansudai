@@ -34,7 +34,6 @@ import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
-import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -88,12 +87,6 @@ public class InvestServiceImpl implements InvestService {
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
-
-    @Autowired
     private CouponInvestService couponInvestService;
 
     @Autowired
@@ -103,10 +96,10 @@ public class InvestServiceImpl implements InvestService {
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
-    private UserMapper userMapper;
+    private JobManager jobManager;
 
     @Autowired
-    private JobManager jobManager;
+    private MQWrapperClient mqWrapperClient;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -512,7 +505,10 @@ public class InvestServiceImpl implements InvestService {
         investMapper.update(investModel);
 
         this.investAchievementService.awardAchievement(investModel);
+
+        mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_CompletePointTask, String.valueOf(investModel.getId()));
     }
+
 
     /**
      * umpay 超投返款的回调

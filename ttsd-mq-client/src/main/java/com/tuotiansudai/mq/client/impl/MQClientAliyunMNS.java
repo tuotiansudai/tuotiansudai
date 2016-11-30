@@ -17,14 +17,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class MQClientAliyumMNS implements MQClient {
+public class MQClientAliyunMNS implements MQClient {
 
-    private static Logger logger = LoggerFactory.getLogger(MQClientAliyumMNS.class);
+    private static Logger logger = LoggerFactory.getLogger(MQClientAliyunMNS.class);
 
     private final MNSClient mnsClient;
     private final Map<MessageTopic, CloudTopic> topicMap;
 
-    public MQClientAliyumMNS(MNSClient mnsClient) {
+    public MQClientAliyunMNS(MNSClient mnsClient) {
         this.mnsClient = mnsClient;
         this.topicMap = new HashMap<>();
     }

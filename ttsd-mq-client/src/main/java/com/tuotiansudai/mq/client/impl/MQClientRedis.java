@@ -45,6 +45,8 @@ public class MQClientRedis implements MQClient, InitializingBean {
     @Override
     public void subscribe(final MessageQueue queue, final Consumer<String> consumer) {
         logger.info("[MQ] subscribe queue: {}", queue.getQueueName());
+        // use a new redis client for block request
+        Jedis jedis = initJedis();
         while (true) {
             List<String> messages = jedis.brpop(0, generateRedisKeyOfQueue(queue));
             logger.debug("[MQ] receive a message, prepare to consume");
@@ -56,6 +58,7 @@ public class MQClientRedis implements MQClient, InitializingBean {
                     jedis.rpush(generateRedisKeyOfQueue(queue), messages.get(1));
                     Thread.sleep(30 * 1000);
                 } catch (InterruptedException ignored) {
+                    System.out.printf("xxx");
                 }
             }
             logger.info("[MQ] consume message success");
@@ -66,18 +69,18 @@ public class MQClientRedis implements MQClient, InitializingBean {
         return String.format("MQ:LOCAL:%s", queue.getQueueName());
     }
 
-    private void initJedis() {
+    private Jedis initJedis() {
         Jedis jedis = new Jedis(this.redisHost, this.redisPort);
         if (StringUtils.isNotBlank(redisPassword)) {
             jedis.auth(redisPassword);
         }
         jedis.connect();
         jedis.select(redisDB);
-        this.jedis = jedis;
+        return jedis;
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        initJedis();
+        this.jedis = initJedis();
     }
 }

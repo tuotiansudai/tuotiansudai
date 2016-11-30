@@ -3,7 +3,7 @@ package com.tuotiansudai.mq.client.model;
 import java.util.stream.Stream;
 
 public enum MessageTopic {
-    CouponAssigned("CouponAssigned", MessageQueue.CouponAssigned_UserMessageSending);
+    ;
 
     final String topicName;
     final MessageQueue[] queues;

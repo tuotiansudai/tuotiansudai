@@ -2,12 +2,17 @@ package com.tuotiansudai.mq.client.model;
 
 import java.util.stream.Stream;
 
-
 public enum MessageQueue {
     CouponAssigning("CouponAssigning"),
-    CouponAssigned_UserMessageSending("CouponAssigned-UserMessageSending"),
+    InvestCallback("InvestCallback"),
     TransferInvestCallback("TransferInvestCallback"),
-    InvestCallback("InvestCallback");
+    CouponAssigned_UserMessageSending("CouponAssigned-UserMessageSending"),
+    UserRegistered_CompletePointTask("UserRegistered-CompletePointTask"),
+    AccountRegistered_CompletePointTask("AccountRegistered-CompletePointTask"),
+    InvestSuccess_CompletePointTask("InvestSuccess-CompletePointTask"),
+    RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
+    BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
+    TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask");
 
     private final String queueName;
 

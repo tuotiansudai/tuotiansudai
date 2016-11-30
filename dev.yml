@@ -225,6 +225,19 @@ message-mq-consumer:
     - "sms-wrapper"
     - "redis-server"
 
+point-mq-consumer:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-point-mq-consumer/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-point-mq-consumer:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-point-mq-consumer/bin/ttsd-point-mq-consumer"
+  links:
+    - "sms-wrapper"
+    - "redis-server"
+
 diagnosis:
   image: "anapsix/alpine-java:8_jdk"
   environment:

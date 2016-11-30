@@ -30,12 +30,12 @@ public class TransferInvestCallbackMessageConsumer implements MessageConsumer {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
             String notifyRequestId = message;
-            logger.info("[MQ] ready to consumer message: transfer invest callback.");
+            logger.info("[MQ] ready to consume message: transfer invest callback.");
             BaseDto<PayDataDto> result = payWrapperClient.investTransferCallback(notifyRequestId);
             if (!result.isSuccess()) {
                 throw new RuntimeException("consume transfer invest callback fail.");
             }
-            logger.info("[MQ] consumer message success.");
+            logger.info("[MQ] consume message success.");
         }
     }
 }
