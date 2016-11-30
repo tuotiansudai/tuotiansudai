@@ -64,7 +64,7 @@
 
                         </dl>
                         <div class="tc">
-                            <a href="/loan-list" class="normal-button-day">马上投资圣诞专享标</a>
+                            <a href="/loan-list" class="normal-button-day" target="_blank">马上投资圣诞专享标</a>
                         </div>
                         <div class="gift-box clearfix last">
                         <span>
@@ -86,7 +86,7 @@
                         专享标总投资额达到420万，将开启活动二 —— 圣诞拆礼物。快去投资吧！
                     </div>
                     <div class="tc margin-top25">
-                        <a href="/loan-list" class="normal-button-day">马上投资圣诞专享标</a>
+                        <a href="/loan-list" class="normal-button-day" target="_blank">马上投资圣诞专享标</a>
                     </div>
 
                     <div class="tc" >
@@ -107,8 +107,8 @@
                     </div>
                     <div class="gift-box">
                         <div class="icon-balloon-group">
-                            <em class="left"><i>注册</i></em>
-                            <em class="center hack"><i>实名认证</i></em>
+                            <em class="left"><i><a href="/register/user">注册</a> </i></em>
+                            <em class="center hack"><i><a href="/register/account">实名认证</a></i></em>
                             <em class="right"><i>首次投资</i></em>
                         </div>
                         <div class="user-info-info">
@@ -120,7 +120,7 @@
 
                     <div class="gift-box">
                         <div class="icon-balloon-group">
-                            <em class="center"><i>邀请好友</i></em>
+                            <em class="center"><i><a href="/referrer/refer-list" target="_blank"> 邀请好友</a></i></em>
                         </div>
                         <div class="user-info-info">
                             <b class="user-kind">老用户</b>
@@ -131,7 +131,7 @@
 
                     <div class="gift-box">
                         <div class="icon-balloon-group">
-                            <em class="center"><i>马上投资</i></em>
+                            <em class="center"><i><a href="/loan-list" target="_blank"> 马上投资</a></i></em>
                         </div>
                         <div class="user-info-info">
                             <b class="user-kind">所有用户</b>

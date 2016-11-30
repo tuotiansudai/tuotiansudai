@@ -99,12 +99,8 @@ define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, lay
 
     giftCircleDraw.prototype.beginLuckDraw=function(callback) {
         var self=this;
-        var pointerImg=self.giftCircleFrame.find('.pointer-img')[0];
-        //事件监听,这里用到global_page里封装的事件监听全局函数
-        globalFun.addEventHandler(pointerImg,'click',function(event) {
-            self.beginLotteryDraw(function(data) {
-                callback && callback(data);
-            });
+        self.beginLotteryDraw(function(data) {
+            callback && callback(data);
         });
     }
 
