@@ -259,14 +259,14 @@
 							<li class="text-type">
 								<div class="text-content-item">
 									<div class="content-text invite-person one">
-										<p>活动期间用户邀请5名以下好友注册并认证，每邀请1名，即可获得10元话费，每人最多限领4次；</p>
+										<p>活动期间邀请5名以下好友注册，且好友投资任意标的50元及以上（体验标除外），每邀请1名，即可获得20元话费，每人最多限领4次。</p>
 									</div>
 								</div>
 							</li>
 							<li class="text-type">
 								<div class="text-content-item">
 									<div class="content-text invite-person two">
-										<p>活动期间用户邀请5名及以上好友注册认证，每邀请5名即可获得100元旅行基金，如邀请10名好友注册认证，即可获得200元旅行基金，以此类推，上不封顶；</p>
+										<p>活动期间用户邀请5名及以上好友注册，且好友投资任意标的50元及以上（体验标除外），每邀请5名即可获得100元旅行基金，如邀请10名好友注册投资，即可获得200元旅行基金，以此类推，上不封顶。</p>
 									</div>
 								</div>
 							</li>
