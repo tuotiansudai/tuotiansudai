@@ -72,8 +72,6 @@ public class ChristmasPrizeService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.endTime}\")}")
     private Date activityChristmasEndTime;
 
-
-
     private static final String redisKey = "web:christmasTime:lottery:startTime";
     private static final String redisHKey = "activityChristmasPrizeStartTime";
 
@@ -82,9 +80,9 @@ public class ChristmasPrizeService {
     //判断圣诞节活动二是否开启
     public int isStart(){
         long investAmount =  (long)getActivityChristmasInvestAmountAndCount().get("investAmount");
-        if(investAmount >= 420000000)
+        if(investAmount >= 420000000 && !redisWrapperClient.exists(redisKey))
             redisWrapperClient.hset(redisKey, redisHKey, sdf.format(new Date()), timeout);
-        return investAmount >= 420000000 & redisWrapperClient.exists(redisKey) ? 1 : 0;
+        return investAmount >= 420000000 && redisWrapperClient.exists(redisKey) ? 1 : 0;
     }
 
     //活动期间投资圣诞专享标单笔满30000元,奖励一张0.5%的加息劵
@@ -124,7 +122,7 @@ public class ChristmasPrizeService {
             }
 
             //每满2000元均增加一次
-            long sumAmount = investMapper.sumSuccessInvestByInvestTimeAndLoginName(userModel.getMobile(), activityChristmasPrizeStartTime, activityChristmasEndTime);
+            long sumAmount = investMapper.sumSuccessInvestByInvestTimeAndLoginName(userModel.getLoginName(), activityChristmasPrizeStartTime, activityChristmasEndTime);
             lotteryTime += (int)(sumAmount/200000);
 
             lotteryTime = lotteryTime >= 10 ? 10 : lotteryTime;

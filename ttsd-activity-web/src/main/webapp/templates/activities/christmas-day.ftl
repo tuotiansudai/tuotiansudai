@@ -50,15 +50,15 @@
                         </div>
                         <div class="clearfix"></div>
                         <dl class="invest-percent-box clearfix">
-                            <dt>目前专享标共投资：<em class="total-invest">1,500,000</em>元</dt>
+                            <dt>目前专享标共投资：<em class="total-invest">${allInvestAmount}</em>元</dt>
                             <dd class="progress-bar">
                                 <#--<i class="progress-end" style="left: calc( 80% - 57px);"></i>-->
-                                <div class="progress-percent" style="width: 80%">
+                                <div class="progress-percent" style="width: ${investScale}">
                                     <div class="progress-value"></div>
                                 </div>
                             </dd>
                             <dd class="count-total">
-                                <span class="fl">已有<em>123</em>人参与</span>
+                                <span class="fl">已有<em>${userCount}</em>人参与</span>
                                 <span class="fr">总额度：<em>4,200,000元</em></span>
                             </dd>
 
@@ -79,6 +79,7 @@
 
         <div class="activity-section-two">
         <#--活动二未开始-->
+        <#if isStart == 0>
             <div class="christmas-border clearfix">
                 <div class="title-christmas">活动二：圣诞拆礼物</div>
                 <div class="model-content clearfix">
@@ -95,6 +96,7 @@
 
                 </div>
             </div>
+        <#else>
 
         <#--活动已经开始-->
             <div class="christmas-border clearfix activity-second">
@@ -189,6 +191,7 @@
             </div>
          </div>
 
+        </#if>
         <div class="christmas-border activity-info">
             <div class="model-content">
                 <span class="text-note">

@@ -51,7 +51,7 @@ public class ChristmasPrizeController {
         modelAndView.addObject("userCount", param.get("investCount"));
         modelAndView.addObject("isStart", christmasPrizeService.isStart());
 
-        //modelAndView.addObject("drawTime", christmasPrizeService.getDrawPrizeTime(LoginUserInfo.getMobile()));
+        modelAndView.addObject("drawTime", christmasPrizeService.getDrawPrizeTime(LoginUserInfo.getMobile()));
         return modelAndView;
     }
 
