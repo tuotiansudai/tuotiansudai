@@ -82,7 +82,7 @@
             <div class="christmas-border clearfix">
                 <div class="title-christmas">活动二：圣诞拆礼物</div>
                 <div class="model-content clearfix">
-                    <div class="tc color-sec ">
+                    <div class="tc color-sec margin-top25">
                         专享标总投资额达到420万，将开启活动二 —— 圣诞拆礼物。快去投资吧！
                     </div>
                     <div class="tc margin-top25">
@@ -107,7 +107,9 @@
                     </div>
                     <div class="gift-box">
                         <div class="icon-balloon-group">
-                            <em class="left"><i><a href="/register/user">注册</a> </i></em>
+                            <em class="left"><i>
+                                <a href="/register/user">注册</a>
+                            </i></em>
                             <em class="center hack"><i><a href="/register/account">实名认证</a></i></em>
                             <em class="right"><i>首次投资</i></em>
                         </div>
