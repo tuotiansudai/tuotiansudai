@@ -23,7 +23,7 @@ public class MobileAppImageCaptchaController extends MobileAppBaseController {
 
     @RequestMapping(value = "/image-captcha", method = RequestMethod.POST)
     @ApiOperation("获取图片验证码")
-    public BaseResponseDto loginCaptcha(@RequestBody BaseParamDto baseParamDto) {
+    public BaseResponseDto<ImageCaptchaResponseDataDto> loginCaptcha(@RequestBody BaseParamDto baseParamDto) {
         int captchaWidth = 80;
         int captchaHeight = 30;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);

@@ -1,5 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 public class UserInvestListResponseDataDto extends BaseResponseDataDto {
@@ -7,6 +9,7 @@ public class UserInvestListResponseDataDto extends BaseResponseDataDto {
     private Integer pageSize;
     private Integer totalCount;
 
+    @ApiModelProperty(value = "出借记录", example = "list")
     private List<UserInvestRecordResponseDataDto> investList;
 
     public Integer getIndex() {

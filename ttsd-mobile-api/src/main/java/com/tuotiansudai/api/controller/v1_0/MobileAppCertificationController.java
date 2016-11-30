@@ -37,7 +37,7 @@ public class MobileAppCertificationController extends MobileAppBaseController {
             return new BaseResponseDto<>(errorCode, errorMessage);
         } else {
             certificationRequestDto.getBaseParam().setUserId(getLoginName());
-            BaseResponseDto baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
+            BaseResponseDto<CertificationResponseDataDto> baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
             myAuthenticationUtil.createAuthentication(getLoginName(), Source.valueOf(certificationRequestDto.getBaseParam().getPlatform().toUpperCase()));
             return baseResponseDto;
         }

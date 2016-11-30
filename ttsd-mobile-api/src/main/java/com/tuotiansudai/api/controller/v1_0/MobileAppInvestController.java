@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.controller.v1_0;
 
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.InvestNoPassResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.InvestRequestDto;
 import com.tuotiansudai.api.dto.v1_0.InvestResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppInvestService;
@@ -29,7 +30,7 @@ public class MobileAppInvestController extends MobileAppBaseController {
 
     @RequestMapping(value = "/no-password-invest", method = RequestMethod.POST)
     @ApiOperation("免密投资")
-    public BaseResponseDto noPasswordInvest(@RequestBody InvestRequestDto investRequestDto) {
+    public BaseResponseDto<InvestNoPassResponseDataDto> noPasswordInvest(@RequestBody InvestRequestDto investRequestDto) {
         investRequestDto.setUserId(getLoginName());
         investRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppInvestService.noPasswordInvest(investRequestDto);
