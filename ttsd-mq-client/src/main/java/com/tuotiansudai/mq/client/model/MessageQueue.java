@@ -1,7 +1,8 @@
 package com.tuotiansudai.mq.client.model;
 
 public enum MessageQueue implements Queue {
-    CouponAssigning("CouponAssigning", "{loginName}:{couponId}");
+    CouponAssigning("CouponAssigning", "{loginName}:{couponId}"),
+    TransferInvestCallback("TransferInvestCallback", "{notifyRequestId}");
 
     final String queueName;
     final String messageFormat;
