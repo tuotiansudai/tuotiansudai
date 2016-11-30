@@ -38,9 +38,6 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
     private AccountMapper accountMapper;
 
     @Autowired
-    private InvestMapper investMapper;
-
-    @Autowired
     private PaySyncClient paySyncClient;
 
     @Override
