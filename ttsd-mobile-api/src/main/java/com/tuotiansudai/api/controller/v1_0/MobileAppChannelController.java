@@ -6,6 +6,8 @@ import com.tuotiansudai.api.dto.v1_0.DomobNotifyResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppChannelServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController()
+@Api(description = "手机引导")
 public class MobileAppChannelController {
     static Logger log = Logger.getLogger(MobileAppChannelController.class);
 
@@ -23,6 +26,7 @@ public class MobileAppChannelController {
     private MobileAppChannelService mobileAppChannelService;
 
     @RequestMapping(value = "/ad/domob", method = RequestMethod.GET)
+    @ApiOperation("domob")
     public Object clickNotifyDomob(HttpServletRequest request) {
         if (log.isInfoEnabled()) {
             log.info("receive domob notify request:" + request.getRequestURI() + " " + request.getQueryString());
@@ -49,6 +53,7 @@ public class MobileAppChannelController {
     }
 
     @RequestMapping(value = "/v1.0/install-notify", method = RequestMethod.POST)
+    @ApiOperation("安装通知")
     public BaseResponseDto installNotify(@RequestBody BaseParamDto paramDto) {
         mobileAppChannelService.sendInstallNotify(paramDto.getBaseParam());
         return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());

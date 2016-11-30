@@ -3,6 +3,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.util.AmountConverter;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -11,22 +12,34 @@ import javax.validation.constraints.Pattern;
 import java.util.List;
 
 public class AutoInvestPlanRequestDto extends BaseParamDto {
+
+    @ApiModelProperty(value = "唯一标识该自动投标计划", example = "12345")
     @Pattern(regexp = "^\\d+$",message = "0023")
     private String autoPlanId;
+
+    @ApiModelProperty(value = "最小投资金额", example = "100.00")
     @NotEmpty(message = "0063")
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$",message = "0023")
     private String minInvestAmount;
+
+    @ApiModelProperty(value = "最大投资金额", example = "10000.00")
     @NotEmpty(message = "0064")
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$",message = "0023")
     private String maxInvestAmount;
+
+    @ApiModelProperty(value = "保留金额", example = "200.00")
     @NotEmpty(message = "0065")
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$",message = "0023")
     private String retentionAmount;
+
+    @ApiModelProperty(value = "选中项目期限", example = "")
     @NotEmpty(message = "0066")
     private List<AutoInvestPeriodDto> autoInvestPeriods;
 
+    @ApiModelProperty(value = "自动投标状态", example = "true")
     private boolean enabled;
 
+    @ApiModelProperty(value = "ip", example = "127.0.0.1")
     private String ip;
 
     public String getAutoPlanId() {

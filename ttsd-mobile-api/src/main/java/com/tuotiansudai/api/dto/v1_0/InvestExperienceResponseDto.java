@@ -5,6 +5,7 @@ import java.util.List;
 
 public class InvestExperienceResponseDto extends BaseResponseDataDto{
 
+
     private List<InvestExperienceResponseDataDto> coupons;
 
     public List<InvestExperienceResponseDataDto> getCoupons() {

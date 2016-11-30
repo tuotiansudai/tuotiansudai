@@ -31,7 +31,7 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService{
     private AccountMapper accountMapper;
 
     @Override
-    public BaseResponseDto generateAgreementRequest(AgreementOperateRequestDto requestDto) {
+    public BaseResponseDto<AgreementOperateResponseDataDto> generateAgreementRequest(AgreementOperateRequestDto requestDto) {
         AgreementOperateResponseDataDto responseDataDto = new AgreementOperateResponseDataDto();
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         AgreementDto agreementDto = requestDto.convertToAgreementDto();

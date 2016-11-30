@@ -1,52 +1,131 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LoanDetailResponseDataDto extends BaseResponseDataDto {
+
+    @ApiModelProperty(value = "标的ID", example = "123456789")
     private String loanId;
+
+    @ApiModelProperty(value = "产品线", example = "SYL")
     private String loanType;
+
+    @ApiModelProperty(value = "标的名称", example = "车辆抵押借款")
     private String loanName;
+
+    @ApiModelProperty(value = "还款方式代码", example = "LOAN_INTEREST_MONTHLY_REPAY")
     private String repayTypeCode;
+
+    @ApiModelProperty(value = "还款方式名称", example = "先付收益后还投资本金，按天计息，放款后生息")
     private String repayTypeName;
+
+    @ApiModelProperty(value = "项目期限", example = "12")
     private Integer periods;
+
+    @ApiModelProperty(value = "期数", example = "12")
     private Integer deadline;
+
+    @ApiModelProperty(value = "期限单位", example = "日")
     private String repayUnit;
+
+    @ApiModelProperty(value = "总年化受益", example = "10")
     private String ratePercent;
+
+    @ApiModelProperty(value = "借款总额", example = "10000")
     private String loanMoney;
+
+    @ApiModelProperty(value = "项目状态代码", example = "recheck,repaying,raising,complete")
     private String loanStatus;
+
+    @ApiModelProperty(value = "项目状态描述", example = "等待复核,回款中,筹款中,已完成")
     private String loanStatusDesc;
+
+    @ApiModelProperty(value = "已投金额", example = "10000")
     private String investedMoney;
+
+    @ApiModelProperty(value = "基础利率", example = "10")
     private String baseRatePercent;
+
+    @ApiModelProperty(value = "活动利率", example = "10")
     private String activityRatePercent;
+
+    @ApiModelProperty(value = "已投人数", example = "100")
     private Long investedCount;
+
+    @ApiModelProperty(value = "借款详情", example = "HOUSE")
     private String loanDetail;
+
+    @ApiModelProperty(value = "代理人", example = "test")
     private String agent;
+
+    @ApiModelProperty(value = "借款人", example = "test")
     private String loaner;
+
+    @ApiModelProperty(value = "发布日期", example = "2016-11-24 12:00:00")
     private String verifyTime;
+
+    @ApiModelProperty(value = "剩余时间", example = "1天12时25分")
     private String remainTime;
+
+    @ApiModelProperty(value = "起投时间", example = "2016-11-24 12:00:00")
     private String investBeginTime;
+
+    @ApiModelProperty(value = "剩余秒数", example = "10")
     private String investBeginSeconds;
+
+    @ApiModelProperty(value = "募集截至日期", example = "2016-11-24 12:00:00")
     private String fundRaisingEndTime;
+
+    @ApiModelProperty(value = "起投金额", example = "50")
     private String minInvestMoney;
+
+    @ApiModelProperty(value = "递增金额", example = "50")
     private String cardinalNumber;
+
+    @ApiModelProperty(value = "投资上限", example = "100")
     private String maxInvestMoney;
+
+    @ApiModelProperty(value = "募集完成时间", example = "2016-11-24 17:00:00")
     private String raiseCompletedTime;
+
+    @ApiModelProperty(value = "计息方式", example = "先付收益后还投资本金")
     private String interestPointName;
+
+    @ApiModelProperty(value = "手续费比例", example = "10")
     private String investFeeRate;
+
+    @ApiModelProperty(value = "分享标题", example = "拓天速贷引领投资热，开启互金新概念")
     private String title;
+
+    @ApiModelProperty(value = "分享内容", example = "个人经营借款理财项目，总额{0}元期限{1}{2}，年化利率{3}%，先到先抢！！")
     private String content;
+
+    @ApiModelProperty(value = "借款天数", example = "360")
     private String duration;
+
+    @ApiModelProperty(value = "募集天数", example = "360")
     private String raisingPeriod;
+
+    @ApiModelProperty(value = "跑马灯内容", example = "第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包")
     private String marqueeTitle;
+
+    @ApiModelProperty(value = "标的类型", example = "_30,_90,_180,_360")
     private String productNewType;
+
+    @ApiModelProperty(value = "活动利率", example = "list")
     private List<ExtraLoanRateDto> extraRates;
 
+    @ApiModelProperty(value = "申请材料", example = "list")
     private List<EvidenceResponseDataDto> evidence;
 
+    @ApiModelProperty(value = "标的名称", example = "车辆抵押借款")
     private String extraSource;
+
+    @ApiModelProperty(value = "标的类型", example = "NORMAL(普通投资),NEWBIE(新手专享),EXCLUSIVE(定向投资),PROMOTION(加息投资)")
     private String activityDesc;
 
     public String getLoanId() {
