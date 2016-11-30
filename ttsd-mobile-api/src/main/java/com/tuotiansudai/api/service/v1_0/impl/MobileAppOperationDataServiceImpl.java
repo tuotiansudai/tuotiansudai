@@ -24,7 +24,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     @Autowired
     private OperationDataService operationDataService;
 
-    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
+    SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
     Date currentDate = new Date();
 
     @Override
@@ -32,7 +32,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         OperationDataResponseDataDto dataDto = new OperationDataResponseDataDto();
 
         OperationDataDto operationDataDto = operationDataService.getOperationDataFromRedis(currentDate);
-        dataDto.setCurrentDay(sdf.format(currentDate).replace("-","月").concat("日"));
+        dataDto.setCurrentDay(sdf.format(currentDate));
         dataDto.setOperationDays(String.valueOf(operationDataDto.getOperationDays()));
         dataDto.setTotalTradeAmount(String.valueOf(AmountConverter.convertStringToCent(operationDataDto.getTradeAmount())));
         dataDto.setTotalInterest(String.valueOf(operationDataService.findUserSumInterest(currentDate)));
@@ -54,7 +54,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         dataDto.setFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
         dataDto.setMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
         //近半年的交易金额
-        dataDto.setLatestSixMonthDetail(convertMapToOperationDataLatestSixMonthResponseDataDto());
+        dataDto.setLatestSixMonthDetail(convertMapToOperationDataLatestSixMonthResponseDataDto(operationDataDto));
         //各用户年龄段分布
         dataDto.setAgeDistribution(convertMapToOperationDataAgeResponseDataDto());
         //投资人数top3
@@ -81,15 +81,17 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         return operationDataAgeResponseDataDtoList;
     }
 
-    private  List<OperationDataLatestSixMonthResponseDataDto> convertMapToOperationDataLatestSixMonthResponseDataDto(){
-        Map<String, String> mapLatestSixMonthAmountMap = operationDataService.findLatestSixMonthTradeAmount(currentDate);
-        Set<Map.Entry<String, String>> latestSixMonthEntries = mapLatestSixMonthAmountMap.entrySet();
+    private  List<OperationDataLatestSixMonthResponseDataDto> convertMapToOperationDataLatestSixMonthResponseDataDto(OperationDataDto operationDataDto){
         List<OperationDataLatestSixMonthResponseDataDto> operationDataLatestSixMonthResponseDataDtoList = Lists.newArrayList();
-        for (Map.Entry<String, String> latestSixMonthEntry : latestSixMonthEntries) {
-            OperationDataLatestSixMonthResponseDataDto operationDataLatestSixMonthResponseDataDto = new OperationDataLatestSixMonthResponseDataDto();
-            operationDataLatestSixMonthResponseDataDto.setName(String.valueOf(latestSixMonthEntry.getKey()));
-            operationDataLatestSixMonthResponseDataDto.setAmount(String.valueOf(latestSixMonthEntry.getValue()));
-            operationDataLatestSixMonthResponseDataDtoList.add(operationDataLatestSixMonthResponseDataDto);
+        int count = 1;
+        for(int i = operationDataDto.getMonth().size() - 1; i >= 0; i--){
+            if(count <= 6){
+                OperationDataLatestSixMonthResponseDataDto operationDataLatestSixMonthResponseDataDto = new OperationDataLatestSixMonthResponseDataDto();
+                operationDataLatestSixMonthResponseDataDto.setName(operationDataDto.getMonth().get(i).substring(operationDataDto.getMonth().get(i).indexOf(".") + 1).concat("月"));
+                operationDataLatestSixMonthResponseDataDto.setAmount(String.valueOf(AmountConverter.convertStringToCent(operationDataDto.getMoney().get(i))));
+                operationDataLatestSixMonthResponseDataDtoList.add(operationDataLatestSixMonthResponseDataDto);
+            }
+            count++;
         }
         return operationDataLatestSixMonthResponseDataDtoList;
     }

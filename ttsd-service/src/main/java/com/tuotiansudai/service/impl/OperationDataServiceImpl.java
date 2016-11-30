@@ -6,10 +6,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.OperationDataDto;
 import com.tuotiansudai.enums.AgeDistributionType;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.UserBillMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.InvestDataView;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.OperationDataService;
@@ -41,7 +38,7 @@ public class OperationDataServiceImpl implements OperationDataService {
     private UserBillMapper userBillMapper;
 
     @Autowired
-    private InvestRepayMapper investRepayMapper;
+    private LoanRepayMapper loanRepayMapper;
 
     @Autowired
     RedisWrapperClient redisWrapperClient;
@@ -181,24 +178,6 @@ public class OperationDataServiceImpl implements OperationDataService {
         return userMapper.findScaleByGender(endDate);
     }
 
-    public Map<String, String> findLatestSixMonthTradeAmount(Date endDate) {
-        List<Map<String, String>> latestSixMonthTradeAmountList = investMapper.findLatestSixMonthTradeAmount(endDate);
-        Map<String, String> resultMap = new LinkedHashMap<>();
-        for (Map<String, String> map : latestSixMonthTradeAmountList) {
-            String month = "";
-            String amount = "0";
-            for (Map.Entry<String, String> latestSixMonthTradeAmount : map.entrySet()) {
-                if ("currentMonth".equals(latestSixMonthTradeAmount.getKey())) {
-                    month = latestSixMonthTradeAmount.getValue().substring(latestSixMonthTradeAmount.getValue().indexOf("-") + 1).replace("0","") + "月";
-                } else if ("sumAmount".equals(latestSixMonthTradeAmount.getKey())) {
-                    amount = (String.valueOf(latestSixMonthTradeAmount.getValue()));
-                }
-            }
-            resultMap.put(month, amount);
-        }
-        return resultMap;
-    }
-
     public Map<String, String> findAgeDistributionByAge(Date endDate) {
         List<Map<String, String>> AgeDistributionList = userMapper.findAgeDistributionByAge(endDate);
         Map<String, String> resultMap = new LinkedHashMap<>();
@@ -288,7 +267,7 @@ public class OperationDataServiceImpl implements OperationDataService {
     }
 
     public long findUserSumInterest(Date endDate){
-        return investRepayMapper.findSumActualInterest(endDate) + userBillMapper.findUserSumInterest(endDate);
+        return loanRepayMapper.findSumActualInterest(endDate) + userBillMapper.findUserSumInterest(endDate);
     }
 
 

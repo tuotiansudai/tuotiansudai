@@ -251,7 +251,7 @@
     </select>
 
     <select id="findAgeDistributionByAge" parameterType="map" resultType="java.util.HashMap">
-        SELECT year(now()) - if(length(identity_number)=18,substring(identity_number,7,4),if(length(identity_number)=15,concat('19',substring(identity_number,7,2)),null)) as age, count(1) as totalCount
+        SELECT CEIL(year(now()) - if(length(identity_number)=18,substring(identity_number,7,4),if(length(identity_number)=15,concat('19',substring(identity_number,7,2)),null))) as age, count(1) as totalCount
         from user
         inner join account on user.login_name = account.login_name
         <![CDATA[

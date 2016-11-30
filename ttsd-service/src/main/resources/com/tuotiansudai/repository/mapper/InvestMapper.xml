@@ -929,16 +929,6 @@
         where loan_id = #{loanId} and transfer_invest_id is null and status = 'SUCCESS' and (contract_no is null or contract_no = '') order by invest_time asc
     </select>
 
-    <select id="findLatestSixMonthTradeAmount" parameterType="map" resultType="java.util.HashMap">
-        select DATE_FORMAT(trading_time,'%Y-%m') as currentMonth, sum(amount) as sumAmount
-        from invest
-        where status = 'SUCCESS'
-        and loan_id != '1'
-        group by currentMonth
-        order by currentMonth desc
-        limit 1, 6
-    </select>
-
     <select id="findInvestAmountScaleTop3" parameterType="map" resultType="java.util.HashMap">
         select user.city as city, sum(invest.amount) as sumAmount
         from invest

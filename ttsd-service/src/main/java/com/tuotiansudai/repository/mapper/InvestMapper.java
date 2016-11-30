@@ -267,8 +267,6 @@ public interface InvestMapper {
 
     List<InvestModel> findNoContractNoInvest(@Param(value = "loanId") long loanId);
 
-    List<Map<String,String>> findLatestSixMonthTradeAmount(@Param(value = "endDate") Date endDate);
-
     List<Map<String, String>> findInvestAmountScaleTop3(@Param(value = "endDate") Date endDate);
 
     long findInvestAmountScale(@Param(value = "endDate") Date endDate);

@@ -14,8 +14,6 @@ public interface OperationDataService {
 
     List<Integer> findScaleByGender(Date endDate);
 
-    Map<String,String> findLatestSixMonthTradeAmount(Date endDate);
-
     Map<String, String> findAgeDistributionByAge(Date endDate);
 
     Map<String, String> findCountInvestCityScaleTop3(Date endDate);
