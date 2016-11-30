@@ -12,7 +12,8 @@ public enum ActivityCategory {
     POINT_DRAW_10000("10000积分抽奖",ConsumeCategory.ACCOUNT_POINT_BY_10000),
     HERO_RANKING("英雄榜",ConsumeCategory.ACCOUNT_POINT_BY_NO_POINT),
     NEW_HERO_RANKING("英豪榜",ConsumeCategory.ACCOUNT_POINT_BY_NO_POINT),
-    CARNIVAL_ACTIVITY("双11狂欢",ConsumeCategory.TASK_COUNT);
+    CARNIVAL_ACTIVITY("双11狂欢",ConsumeCategory.TASK_COUNT),
+    NEW_YEARS_DAY_ACTIVITY("元旦活动",ConsumeCategory.TASK_COUNT);
 
     ActivityCategory(String description, ConsumeCategory consumeCategory) {
         this.description = description;
