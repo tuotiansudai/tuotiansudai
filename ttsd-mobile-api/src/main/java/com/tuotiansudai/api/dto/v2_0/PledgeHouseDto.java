@@ -2,13 +2,22 @@ package com.tuotiansudai.api.dto.v2_0;
 
 
 import com.tuotiansudai.repository.model.PledgeHouseModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
 public class PledgeHouseDto implements Serializable {
+
+    @ApiModelProperty(value = "抵押房屋所在地", example = "北京")
     private String pledgeLocation;
+
+    @ApiModelProperty(value = "房屋面积", example = "100")
     private String square;
+
+    @ApiModelProperty(value = "房产估值", example = "100")
     private String estimateAmount;
+
+    @ApiModelProperty(value = "借款公正金额", example = "100")
     private String loanAmount;
 
     public PledgeHouseDto(PledgeHouseModel pledgeHouseModel) {

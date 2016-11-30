@@ -30,7 +30,7 @@ public class MobileAppReferrerListServiceImpl implements MobileAppReferrerListSe
     private PageValidUtils pageValidUtils;
 
     @Override
-    public BaseResponseDto generateReferrerList(ReferrerListRequestDto referrerListRequestDto) {
+    public BaseResponseDto<ReferrerListResponseDataDto> generateReferrerList(ReferrerListRequestDto referrerListRequestDto) {
         BaseResponseDto dto = new BaseResponseDto();
         String referrerId = referrerListRequestDto.getReferrerId();
         Integer index = referrerListRequestDto.getIndex();

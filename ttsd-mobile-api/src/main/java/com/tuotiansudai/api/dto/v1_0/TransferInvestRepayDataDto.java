@@ -1,15 +1,16 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-import com.tuotiansudai.coupon.repository.model.CouponRepayModel;
-import com.tuotiansudai.repository.model.InvestRepayModel;
-import com.tuotiansudai.util.AmountConverter;
-
-import java.text.SimpleDateFormat;
+import io.swagger.annotations.ApiModelProperty;
 
 public class TransferInvestRepayDataDto extends BaseResponseDataDto {
 
+    @ApiModelProperty(value = "实际还款日", example = "2016/01/01")
     private String repayDate;
+
+    @ApiModelProperty(value = "应收金额", example = "100")
     private String expectedInterest;
+
+    @ApiModelProperty(value = "还款状态", example = "REPAYING(待还) ,COMPLETE(完成)")
     private String status;
 
     public TransferInvestRepayDataDto() {

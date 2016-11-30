@@ -5,6 +5,7 @@ import com.tuotiansudai.point.repository.model.PointTask;
 
 public class PointTaskDto {
 
+    
     private PointTask name;
 
     private String title;

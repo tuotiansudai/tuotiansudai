@@ -1,6 +1,5 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
@@ -48,7 +47,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
     private RechargeMapper rechargeMapper;
 
     @Override
-    public BaseResponseDto recharge(BankCardRequestDto bankCardRequestDto) {
+    public BaseResponseDto<BankCardResponseDto> recharge(BankCardRequestDto bankCardRequestDto) {
         BaseResponseDto<BankCardResponseDto> baseResponseDto = new BaseResponseDto<>();
         RechargeDto rechargeDto = bankCardRequestDto.convertToRechargeDto();
         rechargeDto.setChannel(mobileAppChannelService.obtainChannelBySource(bankCardRequestDto.getBaseParam()));
@@ -103,11 +102,11 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
         } else {
             BankModel bankModel = bankMapper.findByBankCode(bankCode);
             if (null == bankModel) {
-                return new BaseResponseDto<>(ReturnMessage.BIND_CARD_LIMIT_FAIL.getCode(), ReturnMessage.BIND_CARD_LIMIT_FAIL.getMsg());
+                return new BaseResponseDto(ReturnMessage.BIND_CARD_LIMIT_FAIL.getCode(), ReturnMessage.BIND_CARD_LIMIT_FAIL.getMsg());
             }
             long leftAmount = getLeftRechargeAmount(bankLimitRequestDto.getBaseParam().getPhoneNum(), bankModel);
             if (leftAmount < 0) {
-                return new BaseResponseDto<>(ReturnMessage.BIND_CARD_LIMIT_FAIL.getCode(), ReturnMessage.BIND_CARD_LIMIT_FAIL.getMsg());
+                return new BaseResponseDto(ReturnMessage.BIND_CARD_LIMIT_FAIL.getCode(), ReturnMessage.BIND_CARD_LIMIT_FAIL.getMsg());
             } else {
                 bankLimitResponseDataDto.setRechargeLeftAmount(AmountConverter.convertCentToString(leftAmount));
                 bankLimitResponseDataDto.setBankLimits(Lists.newArrayList(new BankLimitUnitDto(AmountConverter.convertCentToString(bankModel.getSingleAmount()),

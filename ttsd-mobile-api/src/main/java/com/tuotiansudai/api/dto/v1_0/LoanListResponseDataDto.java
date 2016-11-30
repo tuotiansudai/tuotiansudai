@@ -1,11 +1,14 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 public class LoanListResponseDataDto extends BaseResponseDataDto{
     private Integer index;
     private Integer pageSize;
     private Integer totalCount;
+    @ApiModelProperty(value = "标的列表", example = "list")
     private List<LoanResponseDataDto> loanList;
 
     public Integer getIndex() {

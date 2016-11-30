@@ -1,11 +1,16 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
+import io.swagger.annotations.ApiModelProperty;
 
 public class TransferPurchaseResponseDataDto extends BaseResponseDataDto {
 
+    @ApiModelProperty(value = "账户余额", example = "100")
     private String balance;
+
+    @ApiModelProperty(value = "认购金额", example = "100")
     private String transferAmount;
+
+    @ApiModelProperty(value = "预计利息A", example = "10")
     private String expectedInterestAmount;
 
     public TransferPurchaseResponseDataDto(){}

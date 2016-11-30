@@ -1,12 +1,19 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.repository.model.ReferrerRelationView;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.text.SimpleDateFormat;
 
 public class ReferrerResponseDataDto {
+
+    @ApiModelProperty(value = "被推荐人", example = "wangtuotian")
     private String userId;
+
+    @ApiModelProperty(value = "被推荐人层级", example = "1")
     private String level;
+
+    @ApiModelProperty(value = "被推荐时间", example = "2016-11-25 14:44:01")
     private String time;
 
     public String getUserId() {
