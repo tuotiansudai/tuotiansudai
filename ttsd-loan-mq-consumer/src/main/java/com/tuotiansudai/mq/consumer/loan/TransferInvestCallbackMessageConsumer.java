@@ -4,7 +4,6 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.mq.client.model.Queue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,7 @@ public class TransferInvestCallbackMessageConsumer implements MessageConsumer {
     private PayWrapperClient payWrapperClient;
 
     @Override
-    public Queue queue() {
+    public MessageQueue queue() {
         return MessageQueue.TransferInvestCallback;
     }
 
@@ -31,12 +30,12 @@ public class TransferInvestCallbackMessageConsumer implements MessageConsumer {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
             String notifyRequestId = message;
-            logger.info("[MQ] ready to consumer message: transfer invest callback.");
+            logger.info("[MQ] ready to consume message: transfer invest callback.");
             BaseDto<PayDataDto> result = payWrapperClient.investTransferCallback(notifyRequestId);
             if (!result.isSuccess()) {
                 throw new RuntimeException("consume transfer invest callback fail.");
             }
-            logger.info("[MQ] consumer message success.");
+            logger.info("[MQ] consume message success.");
         }
     }
 }
