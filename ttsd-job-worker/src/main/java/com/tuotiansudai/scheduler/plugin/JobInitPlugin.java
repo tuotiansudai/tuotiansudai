@@ -40,9 +40,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.AdvanceRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
             createAdvanceRepayCallBackJobIfNotExist();
         }
-        if (JobType.InvestTransferCallBack.name().equalsIgnoreCase(schedulerName)) {
-            createInvestTransferCallBackJobIfNotExist();
-        }
         if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
             createCalculateDefaultInterest();
         }
@@ -126,22 +123,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void createInvestTransferCallBackJobIfNotExist() {
-        final JobType jobType = JobType.InvestTransferCallBack;
-        final String jobGroup = InvestTransferCallbackJob.JOB_GROUP;
-        final String jobName = InvestTransferCallbackJob.JOB_NAME;
-        try {
-            jobManager.newJob(jobType, InvestTransferCallbackJob.class)
-                    .replaceExistingJob(true)
-                    .runWithSchedule(SimpleScheduleBuilder
-                            .repeatSecondlyForever(InvestTransferCallbackJob.RUN_INTERVAL_SECONDS)
-                            .withMisfireHandlingInstructionIgnoreMisfires())
-                    .withIdentity(jobGroup, jobName)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
 
     private void createCalculateDefaultInterest() {
         try {

@@ -2,9 +2,11 @@ package com.tuotiansudai.mq.client.model;
 
 import java.util.stream.Stream;
 
+
 public enum MessageQueue {
     CouponAssigning("CouponAssigning"),
     CouponAssigned_UserMessageSending("CouponAssigned-UserMessageSending"),
+    TransferInvestCallback("TransferInvestCallback"),
     InvestCallback("InvestCallback");
 
     private final String queueName;
