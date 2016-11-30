@@ -102,7 +102,15 @@ require(['jquery','drawCircle','logintip'], function ($,drawCircle) {
         });
 
         //点击切换按钮
-        drawCircle.PrizeSwitch();
+        var menuCls=$rewardGiftBox.find('.menu-switch').find('span');
+        menuCls.on('click',function() {
+            var $this=$(this),
+                index=$this.index(),
+                contentCls=$rewardGiftBox.find('.record-list ul');
+                $this.addClass('active').siblings().removeClass('active');
+                contentCls.eq(index).show().siblings().hide();
+
+        });
 
     })(drawCircle);
 

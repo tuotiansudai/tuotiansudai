@@ -147,6 +147,10 @@
                                 <img src="${staticServer}/activity/images/christmas-day/reward-box.png">
                             </div>
                         </div>
+
+                        <div class="luck-draw-times">
+                            <span>我的拆奖机会：10次</span>
+                        </div>
                         <div class="gift-info-list">
                             <em class="silk-left"></em>
                             <em class="silk-right"></em>

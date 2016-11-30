@@ -385,6 +385,19 @@ body {
 
       }
     }
+    .luck-draw-times {
+      text-align: center;
+      span {
+        display: inline-block;
+        background: #045c2d;
+        font-size: 22px;
+        padding: 3px 42px;
+        border-radius: 27px;
+        margin: 6px auto;
+        color: #fff;
+      }
+
+    }
     .gift-info-list {
       background: #045c2d;
       width:600px;
@@ -430,6 +443,7 @@ body {
             width:50%;
             float: left;
             text-align: center;
+            cursor: pointer;
           }
           .active {
             color: #fff;
@@ -536,6 +550,13 @@ body {
     .activity-section-two {
       .model-content {
         padding: 30px 5px 10px 5px;
+      }
+      .luck-draw-times {
+        span {
+          font-size: 15px;
+          padding: 3px 25px;
+          margin-top: -31px;
+        }
       }
       .gift-box {
         height:85px;
