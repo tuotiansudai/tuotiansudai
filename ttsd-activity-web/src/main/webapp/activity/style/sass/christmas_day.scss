@@ -1,5 +1,6 @@
 @charset "utf-8";
 @import "module/login_tip";
+@import "module/gift_circle_tip";
 body {
   overflow-x: hidden;
   color: #015a2e;
@@ -437,6 +438,24 @@ body {
 
     }
   }
+
+}
+
+//弹框
+
+.tip-list {
+  background: #fff url("/activity/images/christmas-day/bg-pop-christmas.jpg") no-repeat left top;
+  background-size: 100%;
+  border:2px solid #532a09;
+  .text-tip p.des-text {
+    font-size: 24px;
+    padding-top:15px;
+  }
+  .btn-list a {
+    background: #035b2e;
+    border-radius:0;
+  }
+
 }
 
 @media screen and(max-width: 700px){

@@ -157,28 +157,8 @@
                                 </div>
                                 <div class="record-list">
                                     <ul class="user-record" id="userRecordList">
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
                                     </ul>
                                     <ul class="own-record" id="ownRecordList" style="display: none">
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
                                     </ul>
                                 </div>
                             </div>
@@ -204,6 +184,13 @@
     </div>
     <#include "login-tip.ftl" />
     <a href="javascript:void(0)" class="show-login no-login-text"></a>
+
+    <div class="tip-list" style="display: none">
+        <div class="close-btn go-close"></div>
+        <div class="text-tip"></div>
+        <div class="btn-list"></div>
+    </div>
+
 </div>
 </@global.main>
 
