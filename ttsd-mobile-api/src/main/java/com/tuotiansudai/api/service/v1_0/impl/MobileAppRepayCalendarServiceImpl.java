@@ -72,7 +72,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         }
 
         for (String month : monthList) {
-            repayCalendarYearResponseDtoList.add(new RepayCalendarYearResponseDto(repayCalendarRequestDto.getYear(), month, "0", "0"));
+            repayCalendarYearResponseDtoList.add(new RepayCalendarYearResponseDto(repayCalendarRequestDto.getYear(), month, null, null));
         }
 
         Collections.sort(repayCalendarYearResponseDtoList, new Comparator<RepayCalendarYearResponseDto>() {

@@ -42,14 +42,11 @@ public class MobileAppUserBillListServiceImpl implements MobileAppUserBillListSe
         if(index == null || index <= 0){
             index = 1;
         }
-        Integer pageSize = pageValidUtils.validPageSizeLimit(userBillDetailListRequestDto.getPageSize());
+        Integer pageSize = pageValidUtils.validPageSizeLimit(index);
         UserBillCategory userBillCategory = userBillDetailListRequestDto.getUserBillCategory();
         List<UserBillOperationType> userBillOperationTypes= userBillCategory != null ? OPERATION_TYPE.get(userBillCategory):Lists.newArrayList();
         if (index == null || index <= 0) {
             index = 1;
-        }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
         }
         List<UserBillModel> userBillModels = userBillMapper.findUserBills(Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("loginName", loginName)
