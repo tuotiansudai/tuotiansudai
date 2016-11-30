@@ -15,6 +15,6 @@ dependencies {
 }
 
 war {
-    archiveName "ttsd-activity.war"
+    archiveName "ROOT.war"
     destinationDir = file("war")
 }

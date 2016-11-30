@@ -185,7 +185,7 @@ public class LotteryDrawActivityService {
         userMembershipMapper.create(userMembershipModel);
     }
 
-    public long getCouponId(LotteryPrize lotteryPrize) {
+    private long getCouponId(LotteryPrize lotteryPrize) {
         switch (lotteryPrize) {
             case RED_ENVELOPE_100:
                 return 305;
@@ -211,8 +211,6 @@ public class LotteryDrawActivityService {
                 return 321;
             case RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL:
                 return 320;
-            case RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL:
-                return 322;
         }
         return 0l;
     }

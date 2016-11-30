@@ -49,12 +49,6 @@ public class ActivityServiceTest {
     @Autowired
     IdGenerator idGenerator;
 
-    @Autowired
-    private ChristmasPrizeService christmasPrizeService;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
     private UserModel createUserModel(String loginName) {
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginName);
@@ -247,17 +241,6 @@ public class ActivityServiceTest {
 
     @Test
     public void shouldCreateEditRecheckActivityByRecheck() {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        redisWrapperClient.hset("aa", "aaaa", sdf.format(new Date()), 60 * 60 * 24);
-
-        System.out.println("sssf = "  + redisWrapperClient.exists("aa"));
-        System.out.println("sssf = "  + redisWrapperClient.hget("aa", "aaaa"));
-
-        System.out.println(DateTime.parse(redisWrapperClient.hget("aa", "aaaa"), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
-
-
         UserModel userModel = createUserModel("testUser1");
         ActivityModel activityModel = createActivityModel(1L, userModel, "normal1", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate());
         ActivityDto activityDto = new ActivityDto(activityModel);

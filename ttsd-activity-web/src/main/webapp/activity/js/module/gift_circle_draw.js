@@ -57,7 +57,6 @@ define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, lay
                 dataType: 'json'
             })
                 .done(function(data) {
-                    debugger
                     var UlList=[];
                     for(var i=0,len=data.length;i<len;i++) {
                         UlList.push('<li>'+data[i].prizeValue+'<time>'+data[i].lotteryTime+'</time></li>');
