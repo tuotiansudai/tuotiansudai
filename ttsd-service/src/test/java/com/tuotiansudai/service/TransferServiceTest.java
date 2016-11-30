@@ -63,6 +63,9 @@ public class TransferServiceTest {
     private RandomUtils randomUtils;
 
     @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
     private TransferApplicationMapper transferApplicationMapper;
 
 
@@ -266,6 +269,7 @@ public class TransferServiceTest {
         UserModel investorModel = createUserByUserId("investorModelRound2Test");
         UserModel loanerModel = createUserByUserId("loanerModelRound2Test");
         LoanModel loanModel = createLoanByUserId(loanerModel.getLoginName(), loanId);
+        this.createLoanDetailsByLoanId(loanModel);
         InvestModel investModel = createInvests(investorModel.getLoginName(), loanId, idGenerator.generate());
         LoanRepayModel loanRepayModel = getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(6).toDate(), new DateTime().plusDays(6).toDate(), 1000l, 2000l, 3000l, 4000l);
         loanRepayMapper.create(Lists.newArrayList(loanRepayModel));
@@ -331,6 +335,18 @@ public class TransferServiceTest {
         fakeInvestRepayModel.setActualInterest(actualInterest);
         fakeInvestRepayModel.setDefaultInterest(defaultInterest);
         return fakeInvestRepayModel;
+    }
+
+    private LoanDetailsModel createLoanDetailsByLoanId(LoanModel loanModel){
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
+        loanDetailsModel.setNonTransferable(false);
+        loanDetailsModel.setDeclaration("declaration");
+        loanDetailsModel.setActivity(false);
+        loanDetailsModel.setActivityDesc("activityDesc");
+        loanDetailsModel.setLoanId(loanModel.getId());
+        loanDetailsMapper.create(loanDetailsModel);
+        return loanDetailsModel;
+
     }
 
 }

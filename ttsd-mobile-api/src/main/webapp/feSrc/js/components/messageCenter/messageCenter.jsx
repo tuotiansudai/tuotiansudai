@@ -65,6 +65,7 @@ class messageCenter extends React.Component {
                         <h1 dangerouslySetInnerHTML={{__html: this.state.data.title}}></h1>
                         <time className="pull-right">发送时间：{this.state.data.createdTime}</time>
                     </section>
+                    <section className="line"></section>
                     <section className="content" dangerouslySetInnerHTML={{__html: this.state.data.content}}>
                     </section>
                 </article>

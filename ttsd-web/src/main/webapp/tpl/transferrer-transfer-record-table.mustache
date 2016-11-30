@@ -8,6 +8,7 @@
         <th>剩余天数</th>
         <th>完成时间</th>
         <th>转让状态</th>
+        <th style="width:8%;">操作 </th>
     </tr>
     </thead>
     <tbody>
@@ -28,6 +29,17 @@
                 </td>
                 <td>
                     {{transferStatus}}
+                </td>
+                <td>
+                    {{#transferNewSuccess}}
+                        <a class="red" href="/contract/invest/contractNo/{{contractNo}}"  target="_blank"> 合同 </a>
+                    {{/transferNewSuccess}}
+                    {{#transferOldSuccess}}
+                        <a class="red" href="/contract/transfer/transferApplicationId/{{transferApplicationId}}" target="_blank"> 合同 </a>
+                    {{/transferOldSuccess}}
+                    {{#cancelTransfer}}
+                         --
+                    {{/cancelTransfer}}
                 </td>
             </tr>
         {{/records}}
