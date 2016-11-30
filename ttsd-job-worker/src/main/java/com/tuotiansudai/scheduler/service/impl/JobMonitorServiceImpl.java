@@ -45,7 +45,6 @@ public class JobMonitorServiceImpl implements JobMonitorService {
     public JobMonitorServiceImpl() {
         ignoredJobClasses = Arrays.asList(
                 InvestCallbackJob.class,
-                InvestTransferCallbackJob.class,
                 NormalRepayCallbackJob.class,
                 AdvanceRepayCallbackJob.class,
                 CouponRepayNotifyCallbackJob.class,

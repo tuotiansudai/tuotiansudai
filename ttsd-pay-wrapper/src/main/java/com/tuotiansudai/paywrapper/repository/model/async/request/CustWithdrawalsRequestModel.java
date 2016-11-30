@@ -19,6 +19,8 @@ public class CustWithdrawalsRequestModel extends BaseAsyncRequestModel {
 
     private String amount;
 
+    private String comAmtType;
+
     public CustWithdrawalsRequestModel() {
     }
 
@@ -29,6 +31,7 @@ public class CustWithdrawalsRequestModel extends BaseAsyncRequestModel {
         this.orderId = orderId;
         this.userId = userId;
         this.amount = amount;
+        this.comAmtType = "1"; //1 前向手续费：交易方承担 2 前向手续费：平台商户（手续费账户）承担
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "withdraw_notify");
 
@@ -44,6 +47,7 @@ public class CustWithdrawalsRequestModel extends BaseAsyncRequestModel {
         payRequestData.put("mer_date", this.merDate);
         payRequestData.put("user_id", this.userId);
         payRequestData.put("amount", this.amount);
+        payRequestData.put("com_amt_type", this.comAmtType);
         return payRequestData;
     }
 }

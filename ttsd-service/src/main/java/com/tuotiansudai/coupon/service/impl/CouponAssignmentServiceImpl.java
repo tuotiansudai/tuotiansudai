@@ -211,7 +211,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
                 // 此处特意将资格检查放在数量检查后面，以提高处理效率
                 .filter(couponModel -> getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName))
                 // 生成MQ消息内容
-                .map(couponModel -> MessageQueue.CouponAssigning.getMessageFormat().replace("{loginName}", loginName).replace("{couponId}", String.valueOf(couponModel.getId())))
+                .map(couponModel -> loginName + ":" + couponModel.getId())
                 // 发送MQ消息
                 .forEach(message -> mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, message));
         //((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);

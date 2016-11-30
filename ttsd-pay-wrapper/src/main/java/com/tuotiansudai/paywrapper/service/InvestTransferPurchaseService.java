@@ -18,7 +18,7 @@ public interface InvestTransferPurchaseService {
 
     String purchaseCallback(Map<String, String> paramsMap, String queryString);
 
-    BaseDto<PayDataDto> asyncPurchaseCallback();
+    BaseDto<PayDataDto> asyncPurchaseCallback(long notifyRequestId);
 
     String overInvestTransferPaybackCallback(Map<String, String> paramsMap, String queryString);
 

@@ -25,6 +25,8 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
 
     private String gateId;
 
+    private String comAmtType;
+
     public MerRechargePersonRequestModel() {
 
     }
@@ -40,6 +42,7 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
         model.setUserId(userId);
         model.setAmount(amount);
         model.setGateId(gateId);
+        model.setComAmtType("2"); //1 前向手续费：交易方承担 2 前向手续费：平台商户（手续费账户）承担
         model.setPayType(NORMAL_PAY);
         model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
         model.setRetUrl(MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host")));
@@ -52,6 +55,7 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
         model.setService("mer_recharge_person");
         model.setOrderId(orderId);
         model.setUserId(userId);
+        model.setComAmtType("2"); //1 前向手续费：交易方承担 2 前向手续费：平台商户（手续费账户）承担
         model.setAmount(amount);
         model.setPayType(FAST_PAY);
         model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
@@ -69,6 +73,7 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
         payRequestData.put("pay_type", this.payType);
         payRequestData.put("user_id", this.userId);
         payRequestData.put("amount", this.amount);
+        payRequestData.put("com_amt_type", this.comAmtType);
         if (NORMAL_PAY.equals(this.payType)) {
             payRequestData.put("gate_id", this.gateId);
         }
@@ -98,5 +103,9 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
 
     public void setGateId(String gateId) {
         this.gateId = gateId;
+    }
+
+    public void setComAmtType(String comAmtType) {
+        this.comAmtType = comAmtType;
     }
 }

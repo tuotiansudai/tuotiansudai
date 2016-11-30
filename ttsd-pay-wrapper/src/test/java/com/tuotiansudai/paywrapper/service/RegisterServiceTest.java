@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
@@ -50,6 +51,9 @@ public class RegisterServiceTest {
 
     @Mock
     private UserRoleMapper userRoleMapper;
+
+    @Mock
+    private MQWrapperClient mqWrapperClient;
 
     @Before
     public void init() {

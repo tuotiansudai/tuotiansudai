@@ -1,7 +1,5 @@
 package com.tuotiansudai.paywrapper.controller;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

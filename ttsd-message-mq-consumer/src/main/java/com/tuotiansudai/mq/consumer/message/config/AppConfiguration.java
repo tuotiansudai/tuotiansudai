@@ -12,7 +12,8 @@ import redis.clients.jedis.JedisPoolConfig;
         "com.tuotiansudai.cache",
         "com.tuotiansudai.client",
         "com.tuotiansudai.message.util",
-        "com.tuotiansudai.membership"
+        "com.tuotiansudai.membership",
+        "com.tuotiansudai.jpush"
 })
 @PropertySource(
         ignoreResourceNotFound = true, value = {
