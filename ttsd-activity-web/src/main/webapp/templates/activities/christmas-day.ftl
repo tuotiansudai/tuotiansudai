@@ -64,7 +64,7 @@
 
                         </dl>
                         <div class="tc">
-                            <a href="/loan-list" class="normal-button-day">马上投资圣诞专享标</a>
+                            <a href="/loan-list" class="normal-button-day" target="_blank">马上投资圣诞专享标</a>
                         </div>
                         <div class="gift-box clearfix last">
                         <span>
@@ -83,11 +83,11 @@
             <div class="christmas-border clearfix">
                 <div class="title-christmas">活动二：圣诞拆礼物</div>
                 <div class="model-content clearfix">
-                    <div class="tc color-sec ">
+                    <div class="tc color-sec margin-top25">
                         专享标总投资额达到420万，将开启活动二 —— 圣诞拆礼物。快去投资吧！
                     </div>
                     <div class="tc margin-top25">
-                        <a href="/loan-list" class="normal-button-day">马上投资圣诞专享标</a>
+                        <a href="/loan-list" class="normal-button-day" target="_blank">马上投资圣诞专享标</a>
                     </div>
 
                     <div class="tc" >
@@ -109,8 +109,10 @@
                     </div>
                     <div class="gift-box">
                         <div class="icon-balloon-group">
-                            <em class="left"><i>注册</i></em>
-                            <em class="center hack"><i>实名认证</i></em>
+                            <em class="left"><i>
+                                <a href="/register/user">注册</a>
+                            </i></em>
+                            <em class="center hack"><i><a href="/register/account">实名认证</a></i></em>
                             <em class="right"><i>首次投资</i></em>
                         </div>
                         <div class="user-info-info">
@@ -122,7 +124,7 @@
 
                     <div class="gift-box">
                         <div class="icon-balloon-group">
-                            <em class="center"><i>邀请好友</i></em>
+                            <em class="center"><i><a href="/referrer/refer-list" target="_blank"> 邀请好友</a></i></em>
                         </div>
                         <div class="user-info-info">
                             <b class="user-kind">老用户</b>
@@ -133,7 +135,7 @@
 
                     <div class="gift-box">
                         <div class="icon-balloon-group">
-                            <em class="center"><i>马上投资</i></em>
+                            <em class="center"><i><a href="/loan-list" target="_blank"> 马上投资</a></i></em>
                         </div>
                         <div class="user-info-info">
                             <b class="user-kind">所有用户</b>
@@ -147,6 +149,10 @@
                                 <img src="${staticServer}/activity/images/christmas-day/reward-box.png">
                             </div>
                         </div>
+
+                        <div class="luck-draw-times">
+                            <span>我的拆奖机会：10次</span>
+                        </div>
                         <div class="gift-info-list">
                             <em class="silk-left"></em>
                             <em class="silk-right"></em>
@@ -159,28 +165,8 @@
                                 </div>
                                 <div class="record-list">
                                     <ul class="user-record" id="userRecordList">
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
                                     </ul>
                                     <ul class="own-record" id="ownRecordList" style="display: none">
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
-                                        <li>恭喜130****7149抽中了小米Note2</li>
                                     </ul>
                                 </div>
                             </div>
@@ -207,6 +193,13 @@
     </div>
     <#include "login-tip.ftl" />
     <a href="javascript:void(0)" class="show-login no-login-text"></a>
+
+    <div class="tip-list" style="display: none">
+        <div class="close-btn go-close"></div>
+        <div class="text-tip"></div>
+        <div class="btn-list"></div>
+    </div>
+
 </div>
 </@global.main>
 

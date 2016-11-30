@@ -1,5 +1,6 @@
 @charset "utf-8";
 @import "module/login_tip";
+@import "module/gift_circle_tip";
 body {
   overflow-x: hidden;
   color: #015a2e;
@@ -204,8 +205,14 @@ body {
           i {
             color: #fff;
             display: inline-block;
-            width:50%;
-            margin:26px auto;
+            width: 50%;
+            position: absolute;
+            top: 50%;
+            left: 26%;
+            transform: translateY(-50%);
+            a {
+              color: #fff;
+            }
             &:after {
               content: '';
               height: 160px;
@@ -214,7 +221,7 @@ body {
               left: 50%;
               border-left: 1px dashed #e8f4d6;
               width: 2px;
-              top: -160px;
+              top: -180px;
             }
           }
           &.left {
@@ -233,7 +240,7 @@ body {
               top: 220px;
               i:after {
                 height: 220px;
-                top: -220px;
+                top: -240px;
               }
             }
 
@@ -378,6 +385,19 @@ body {
 
       }
     }
+    .luck-draw-times {
+      text-align: center;
+      span {
+        display: inline-block;
+        background: #045c2d;
+        font-size: 22px;
+        padding: 3px 42px;
+        border-radius: 27px;
+        margin: 6px auto;
+        color: #fff;
+      }
+
+    }
     .gift-info-list {
       background: #045c2d;
       width:600px;
@@ -423,6 +443,7 @@ body {
             width:50%;
             float: left;
             text-align: center;
+            cursor: pointer;
           }
           .active {
             color: #fff;
@@ -437,6 +458,24 @@ body {
 
     }
   }
+
+}
+
+//弹框
+
+.tip-list {
+  background: #fff url("/activity/images/christmas-day/bg-pop-christmas.jpg") no-repeat left top;
+  background-size: 100%;
+  border:2px solid #532a09;
+  .text-tip p.des-text {
+    font-size: 24px;
+    padding-top:15px;
+  }
+  .btn-list a {
+    background: #035b2e;
+    border-radius:0;
+  }
+
 }
 
 @media screen and(max-width: 700px){
@@ -511,6 +550,13 @@ body {
     .activity-section-two {
       .model-content {
         padding: 30px 5px 10px 5px;
+      }
+      .luck-draw-times {
+        span {
+          font-size: 15px;
+          padding: 3px 25px;
+          margin-top: -31px;
+        }
       }
       .gift-box {
         height:85px;
