@@ -3,7 +3,7 @@ package com.tuotiansudai.mq.config;
 import com.aliyun.mns.client.CloudAccount;
 import com.aliyun.mns.client.MNSClient;
 import com.tuotiansudai.mq.client.MQClient;
-import com.tuotiansudai.mq.client.impl.MQClientAliyumMNS;
+import com.tuotiansudai.mq.client.impl.MQClientAliyunMNS;
 import com.tuotiansudai.mq.client.impl.MQClientRedis;
 import com.tuotiansudai.mq.consumer.MessageConsumerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,7 +52,7 @@ public class MQConfig {
     @Bean
     public MQClient mqClient(MNSClient mnsClient) {
         if (enableAliyumMNS) {
-            return new MQClientAliyumMNS(mnsClient);
+            return new MQClientAliyunMNS(mnsClient);
         } else {
             return new MQClientRedis();
         }

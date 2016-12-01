@@ -1,9 +1,9 @@
 package com.tuotiansudai.mq.consumer;
 
-import com.tuotiansudai.mq.client.model.Queue;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 
 public interface MessageConsumer {
-    Queue queue();
+    MessageQueue queue();
 
     void consume(String message);
 }

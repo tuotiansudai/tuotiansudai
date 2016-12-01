@@ -1,9 +1,11 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.BankCardApplyNotifyMapper;
@@ -17,13 +19,13 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.request.PtpMerBindCardRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.PtpMerReplaceCardRequestModel;
 import com.tuotiansudai.paywrapper.service.BindBankCardService;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.BankCardStatus;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,9 @@ public class BindBankCardServiceImpl implements BindBankCardService {
 
     @Autowired
     private BankCardMapper bankCardMapper;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     public BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto) {
@@ -95,7 +100,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
                 dto.getCardNumber(),
                 accountModel.getPayUserId(),
                 userModel.getUserName(),
-                userModel.getIdentityNumber(),dto.getSource());
+                userModel.getIdentityNumber(), dto.getSource());
         try {
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(PtpMerReplaceCardMapper.class, requestModel);
             bankCardMapper.create(bankCardModel);
@@ -162,7 +167,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             return null;
         }
         if (callbackRequest.isSuccess()) {
-            if(bankCardModel.getStatus() != BankCardStatus.PASSED){
+            if (bankCardModel.getStatus() != BankCardStatus.PASSED) {
                 bankCardModel.setStatus(BankCardStatus.APPLY);
                 bankCardMapper.update(bankCardModel);
 
@@ -210,6 +215,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
                 String bankCode = callbackRequestModel.getGateId();
                 bankCardModel.setBankCode(bankCode);
                 bankCardModel.setIsFastPayOn(callbackRequestModel.isOpenPay());
+                mqWrapperClient.sendMessage(MessageQueue.BindBankCard_CompletePointTask, bankCardModel.getLoginName());
             } else {
                 bankCardModel.setStatus(BankCardStatus.FAILED);
             }

@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -12,6 +13,7 @@ import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.InvestCallbackJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
@@ -33,7 +35,6 @@ import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
-import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -104,6 +105,9 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private JobManager jobManager;
 
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
     @Value("${common.environment}")
     private Environment environment;
 
@@ -141,7 +145,7 @@ public class InvestServiceImpl implements InvestService {
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
         LoanModel loanModel = loanMapper.findById(Long.parseLong(dto.getLoanId()));
-        if(loanModel.getPledgeType() == PledgeType.ENTERPRISE) {
+        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE) {
             investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
         }
         investMapper.create(investModel);
@@ -183,7 +187,7 @@ public class InvestServiceImpl implements InvestService {
 
         InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
         LoanModel loanModel = loanMapper.findById(loanId);
-        if(loanModel.getPledgeType() == PledgeType.ENTERPRISE) {
+        if (loanModel.getPledgeType() == PledgeType.ENTERPRISE) {
             investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
         }
         try {
@@ -508,9 +512,11 @@ public class InvestServiceImpl implements InvestService {
         investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.update(investModel);
 
+
         this.investAchievementService.awardAchievement(investModel);
 
         this.calculateActivityAutumnInvest(investModel);
+        mqWrapperClient.sendMessage(MessageQueue.InvestSuccess_CompletePointTask, String.valueOf(investModel.getId()));
     }
 
     private void calculateActivityAutumnInvest(InvestModel investModel) {

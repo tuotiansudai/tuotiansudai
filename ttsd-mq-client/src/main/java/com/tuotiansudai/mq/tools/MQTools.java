@@ -9,7 +9,6 @@ import com.aliyun.mns.model.SubscriptionMeta;
 import com.aliyun.mns.model.TopicMeta;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
-import com.tuotiansudai.mq.client.model.MessageTopicQueue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,28 +38,66 @@ public class MQTools {
 
         MNSClient mnsClient = getMnsClient(endPoint, accessKeyId, accessKeySecret);
 
-        if (mnsClient == null) {
-            return;
-        }
-
-        try {
-            List<String> existingTopicNameList = getExistingTopNameList(mnsClient);
-            Stream.of(MessageTopic.values()).forEach(messageTopic -> {
-                if (!existingTopicNameList.contains(messageTopic.getTopicName())) {
-                    createTopic(mnsClient, messageTopic);
-                }
-                initSubscription(mnsClient, messageTopic);
-            });
-
-            initIndependentQueue(mnsClient);
-
-            mnsClient.close();
-        } catch (Exception e) {
-            System.out.println(e.toString());
-            e.printStackTrace();
-        } finally {
+        if (mnsClient != null) {
+            initMessageQueue(mnsClient);
+            initMessageTopic(mnsClient);
+            initSubscription(mnsClient);
             mnsClient.close();
         }
+    }
+
+    private static void initMessageQueue(MNSClient mnsClient) {
+        List<String> existingQueueNames = getExistingQueueNameList(mnsClient);
+        // create new
+        Stream.of(MessageQueue.values())
+                .filter(messageQueue -> !existingQueueNames.contains(messageQueue.getQueueName()))
+                .forEach(messageQueue -> createQueue(mnsClient, messageQueue.getQueueName()));
+
+        // remove out
+        existingQueueNames.stream()
+                .filter(queueName -> !MessageQueue.contains(queueName))
+                .forEach(queueName -> removeQueue(mnsClient, queueName));
+    }
+
+    private static void initMessageTopic(MNSClient mnsClient) {
+        List<String> existingTopicNameList = getExistingTopNameList(mnsClient);
+        // create new
+        Stream.of(MessageTopic.values())
+                .filter(mt -> !existingTopicNameList.contains(mt.getTopicName()))
+                .forEach(mt -> createTopic(mnsClient, mt.getTopicName()));
+
+        // remove out
+        existingTopicNameList.stream()
+                .filter(topicName -> !MessageTopic.contains(topicName))
+                .forEach(topicName -> removeTopic(mnsClient, topicName));
+    }
+
+    private static void initSubscription(MNSClient mnsClient) {
+        for (MessageTopic messageTopic : MessageTopic.values()) {
+            initSubscription(mnsClient, messageTopic);
+        }
+    }
+
+    private static void initSubscription(MNSClient mnsClient, MessageTopic messageTopic) {
+        CloudTopic cloudTopic = mnsClient.getTopicRef(messageTopic.getTopicName());
+
+        // queue name [equal with subscription name] which need subscribe
+        Set<String> subscriptionNameList = Stream.of(messageTopic.getQueues())
+                .map(MessageQueue::getQueueName)
+                .collect(Collectors.toSet());
+
+        // endpoint which already subscription
+        List<String> existingSubscriptionNameList = getExistingSubscriptionNameList(cloudTopic);
+
+        // create new
+        subscriptionNameList.stream()
+                .filter(subscription -> !existingSubscriptionNameList.contains(subscription))
+                .forEach(subscription -> subscribe(cloudTopic, subscription, messageTopic.getTopicName(), subscription));
+
+        // remove out
+        existingSubscriptionNameList.stream()
+                .filter(subscription -> !subscriptionNameList.contains(subscription))
+                .forEach(subscription -> unsubscribe(cloudTopic, subscription));
     }
 
     private static MNSClient getMnsClient(String endPoint, String accessKeyId, String accessKeySecret) {
@@ -75,95 +112,82 @@ public class MQTools {
     }
 
     private static List<String> getExistingTopNameList(MNSClient mnsClient) {
-        List<String> existingTopicNameList = new ArrayList<>();
         PagingListResult<TopicMeta> topicMetaPagingListResult = mnsClient.listTopic("", "", 1000);
-        if (topicMetaPagingListResult != null) {
+        if (topicMetaPagingListResult != null && topicMetaPagingListResult.getResult() != null) {
             List<TopicMeta> result = topicMetaPagingListResult.getResult();
             if (result != null) {
-                existingTopicNameList = result.stream()
+                return result.stream()
                         .map(TopicMeta::getTopicName)
                         .collect(Collectors.toList());
             }
         }
-        return existingTopicNameList;
+        return new ArrayList<>();
     }
 
-    private static void createTopic(MNSClient mnsClient, MessageTopic messageTopic) {
-        TopicMeta topicMeta = new TopicMeta();
-        topicMeta.setTopicName(messageTopic.getTopicName());
-        topicMeta.setLoggingEnabled(true);
-        mnsClient.createTopic(topicMeta);
-    }
-
-    private static void initIndependentQueue(MNSClient mnsClient) {
-        List<String> existingQueueNames = listExistingQueues(mnsClient).stream()
-                .map(QueueMeta::getQueueName)
-                .collect(Collectors.toList());
-        Stream.of(MessageQueue.values())
-                .filter(messageQueue -> !existingQueueNames.contains(messageQueue.getQueueName()))
-                .forEach(messageQueue -> createQueue(mnsClient, messageQueue.getQueueName()));
-    }
-
-    private static void initSubscription(MNSClient mnsClient, MessageTopic messageTopic) {
-        CloudTopic topic = mnsClient.getTopicRef(messageTopic.getTopicName());
-        // queue which need subscription
-        List<String> subscriptionQueueNameList = Stream.of(MessageTopicQueue.values())
-                .filter(q -> q.getTopic().equals(messageTopic))
-                .map(MessageTopicQueue::getQueueName)
-                .collect(Collectors.toList());
-        List<String> subscriptionEndpointList = subscriptionQueueNameList.stream()
-                .map(queueName -> generateQueueEndpoint(topic, queueName))
-                .collect(Collectors.toList());
-
-        // queue which already subscription
-        List<SubscriptionMeta> existingSubscriptions = listExistingSubscriptions(topic);
-        Set<String> existingEndpoints = existingSubscriptions.stream().map(SubscriptionMeta::getEndpoint).collect(Collectors.toSet());
-
-        // remove invalid subscription
-        existingSubscriptions.stream()
-                .filter(subscription -> !subscriptionEndpointList.contains(subscription.getEndpoint()))
-                .forEach(subscription -> topic.unsubscribe(subscription.getSubscriptionName()));
-
-        // subscript new queue
-        subscriptionQueueNameList.stream()
-                .filter(queueName -> !existingEndpoints.contains(generateQueueEndpoint(topic, queueName)))
-                .map(queueName -> createQueue(mnsClient, queueName))
-                .forEach(queueName -> topic.subscribe(generateSubscriptionMeta(messageTopic, queueName, generateQueueEndpoint(topic, queueName))));
-    }
-
-    private static List<SubscriptionMeta> listExistingSubscriptions(CloudTopic topic) {
-        PagingListResult<SubscriptionMeta> subscriptionMetaPagingListResult = topic.listSubscriptions("", "", 1000);
-        if (subscriptionMetaPagingListResult != null) {
-            List<SubscriptionMeta> existingSubscriptions = subscriptionMetaPagingListResult.getResult();
-            if (existingSubscriptions != null) {
-                return existingSubscriptions;
+    private static List<String> getExistingQueueNameList(MNSClient mnsClient) {
+        PagingListResult<QueueMeta> queueMetaPagingListResult = mnsClient.listQueue("", "", 1000);
+        if (queueMetaPagingListResult != null && queueMetaPagingListResult.getResult() != null) {
+            List<QueueMeta> result = queueMetaPagingListResult.getResult();
+            if (result != null) {
+                return result.stream()
+                        .map(QueueMeta::getQueueName)
+                        .collect(Collectors.toList());
             }
         }
         return new ArrayList<>();
     }
 
-    private static List<QueueMeta> listExistingQueues(MNSClient mnsClient) {
-        PagingListResult<QueueMeta> queueMetaPagingListResult = mnsClient.listQueue("", "", 1000);
-        if (queueMetaPagingListResult != null && queueMetaPagingListResult.getResult() != null) {
-            return queueMetaPagingListResult.getResult();
+    private static List<String> getExistingSubscriptionNameList(CloudTopic topic) {
+        PagingListResult<SubscriptionMeta> subscriptionMetaPagingListResult = topic.listSubscriptions("", "", 1000);
+        if (subscriptionMetaPagingListResult != null && subscriptionMetaPagingListResult.getResult() != null) {
+            List<SubscriptionMeta> result = subscriptionMetaPagingListResult.getResult();
+            if (result != null) {
+                return result.stream()
+                        .map(SubscriptionMeta::getSubscriptionName)
+                        .collect(Collectors.toList());
+            }
         }
         return new ArrayList<>();
     }
 
-    private static String createQueue(MNSClient mnsClient, String queueName) {
+    private static void createTopic(MNSClient mnsClient, String messageTopic) {
+        TopicMeta topicMeta = new TopicMeta();
+        topicMeta.setTopicName(messageTopic);
+        topicMeta.setLoggingEnabled(true);
+        mnsClient.createTopic(topicMeta);
+    }
+
+    private static void removeTopic(MNSClient mnsClient, String messageTopic) {
+        mnsClient.getTopicRef(messageTopic).delete();
+    }
+
+    private static void createQueue(MNSClient mnsClient, String queueName) {
         QueueMeta queueMeta = new QueueMeta();
         queueMeta.setQueueName(queueName);
         queueMeta.setLoggingEnabled(true);
         mnsClient.createQueue(queueMeta);
-        return queueName;
     }
 
-    private static SubscriptionMeta generateSubscriptionMeta(MessageTopic topic, String subscriptionName, String endpoint) {
+    private static void removeQueue(MNSClient mnsClient, String queueName) {
+        mnsClient.getQueueRef(queueName).delete();
+    }
+
+    private static void subscribe(CloudTopic cloudTopic, String subscriptionName, String topicName, String queueName) {
+        String endPoint = generateQueueEndpoint(cloudTopic, queueName);
+        SubscriptionMeta subscriptionMeta = generateSubscriptionMeta(topicName, subscriptionName, endPoint);
+        cloudTopic.subscribe(subscriptionMeta);
+    }
+
+    private static void unsubscribe(CloudTopic cloudTopic, String subscription) {
+        cloudTopic.unsubscribe(subscription);
+    }
+
+    private static SubscriptionMeta generateSubscriptionMeta(String topicName, String subscriptionName, String endpoint) {
         SubscriptionMeta subscriptionMeta = new SubscriptionMeta();
         subscriptionMeta.setSubscriptionName(subscriptionName);
         subscriptionMeta.setNotifyStrategy(SubscriptionMeta.NotifyStrategy.EXPONENTIAL_DECAY_RETRY);
         subscriptionMeta.setNotifyContentFormat(SubscriptionMeta.NotifyContentFormat.SIMPLIFIED);
-        subscriptionMeta.setTopicName(topic.getTopicName());
+        subscriptionMeta.setTopicName(topicName);
         subscriptionMeta.setEndpoint(endpoint);
         return subscriptionMeta;
     }

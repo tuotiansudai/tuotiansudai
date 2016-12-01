@@ -1,5 +1,6 @@
 package com.tuotiansudai.transfer.service.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -19,7 +20,6 @@ import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.CalculateLeftDays;
-import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.JobManager;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.collections4.CollectionUtils;
@@ -65,6 +65,9 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     protected final static String TRANSFER_APPLY_NAME = "ZR{0}-{1}";
 
@@ -228,6 +231,10 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             logger.debug(MessageFormat.format("{0} is not REPAYING", investModel.getLoanId()));
             return false;
         }
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
+        if(loanDetailsModel != null && loanDetailsModel.getNonTransferable()){
+            return false;
+        }
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investId, Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING, TransferStatus.CANCEL));
         for (TransferApplicationModel transferApplicationModelTemp : transferApplicationModels) {
             if (transferApplicationModelTemp.getStatus() != TransferStatus.CANCEL) {
@@ -319,6 +326,15 @@ public class InvestTransferServiceImpl implements InvestTransferService {
                 transferApplicationPaginationItemDataDto.setTransferStatus("--");
             } else {
                 transferApplicationPaginationItemDataDto.setTransferStatus(input.getTransferStatus().getDescription());
+                InvestModel investModel = investMapper.findById(input.getInvestId());
+                if (input.getTransferStatus() == TransferStatus.CANCEL) {
+                    transferApplicationPaginationItemDataDto.setCancelTransfer(true);
+                }else if (investModel != null && !Strings.isNullOrEmpty(investModel.getContractNo()) && !investModel.getContractNo().equals("OLD")){
+                    transferApplicationPaginationItemDataDto.setTransferNewSuccess(true);
+                    transferApplicationPaginationItemDataDto.setContractNo(investModel.getContractNo());
+                }else{
+                    transferApplicationPaginationItemDataDto.setTransferOldSuccess(true);
+                }
             }
             LoanModel loanModel = loanMapper.findById(input.getLoanId());
             InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(input.getTransferInvestId(), loanModel.getPeriods());
