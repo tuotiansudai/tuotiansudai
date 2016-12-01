@@ -143,7 +143,6 @@ def deploy_worker():
     sudo('supervisorctl stop all')
     with cd('/workspace'):
         sudo('rm -rf ttsd-job-worker-all/')
-        sudo('rm -rf ttsd-job-worker-invest/')
         sudo('rm -rf ttsd-job-worker-jpush/')
         sudo('rm -rf ttsd-job-worker-repay/')
         sudo('rm -rf ttsd-loan-mq-consumer/')
