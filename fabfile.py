@@ -50,7 +50,6 @@ def mk_war():
 
 def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=invest distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=jpush distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle  -Pwork=repay distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
     local('cd ./ttsd-loan-mq-consumer && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/ttsd-config/')
