@@ -70,6 +70,10 @@ public class ChristmasPrizeService {
     private static final String redisKey = "web:christmasTime:lottery:startTime";
     private static final String redisHKey = "activityChristmasPrizeStartTime";
 
+    private static final long SINGLE_INVEST_AMOUNT = 3000000L;
+
+    private static final long COUPON_ID = 323L;
+
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final int timeout = 60 * 60 * 24 * 20;
     //判断圣诞节活动二是否开启
@@ -87,8 +91,8 @@ public class ChristmasPrizeService {
     //活动期间投资圣诞专享标单笔满30000元,奖励一张0.5%的加息劵
     public void assignUserCoupon(String loginName){
         UserModel userModel = userMapper.findByLoginName(loginName);
-        if(userModel != null && userModel.getMobile() != null && getActivityChristmasInvestAmountByLoginName(loginName) >= 3000000){
-            couponAssignmentService.assignUserCoupon(userModel.getMobile(), 322);
+        if(userModel != null && userModel.getMobile() != null && getActivityChristmasInvestAmountByLoginName(loginName) >= SINGLE_INVEST_AMOUNT){
+            couponAssignmentService.assignUserCoupon(userModel.getMobile(), COUPON_ID);
         }
     }
 
@@ -181,7 +185,7 @@ public class ChristmasPrizeService {
     private long getCouponId(LotteryPrize lotteryPrize){
         switch (lotteryPrize){
             case RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL :
-                return 323;
+                return 324;
         }
         return 0l;
     }
