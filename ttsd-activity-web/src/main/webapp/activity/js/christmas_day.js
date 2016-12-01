@@ -70,6 +70,10 @@ require(['jquery','drawCircle','commonFun','logintip','register_common'], functi
 
         //**********************开始抽奖**********************//
         $pointerImg.on('click',function() {
+            //判断是否正在抽奖
+            if($pointerImg.hasClass('win-result')) {
+                return;//不能重复抽奖
+            }
             $pointerImg.addClass('win-result');
 
             //延迟1.5秒抽奖

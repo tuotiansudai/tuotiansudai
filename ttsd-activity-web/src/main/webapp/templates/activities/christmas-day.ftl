@@ -85,7 +85,7 @@
 
         <div class="activity-section-two">
         <#--活动二未开始-->
-        <#if isStart == 0>
+        <#if isStart == 1>
             <div class="christmas-border clearfix">
                 <div class="title-christmas">活动二：圣诞拆礼物</div>
                 <div class="model-content clearfix">
