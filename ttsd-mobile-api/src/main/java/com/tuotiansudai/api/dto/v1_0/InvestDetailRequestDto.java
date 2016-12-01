@@ -1,6 +1,10 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class InvestDetailRequestDto extends BaseParamDto{
+
+    @ApiModelProperty(value = "投资ID", example = "11111")
     private String investId;
 
     public String getInvestId() {

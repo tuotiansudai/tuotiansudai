@@ -3,19 +3,26 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.repository.model.Source;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 public class InvestRequestDto extends BaseParamDto {
+
+    @ApiModelProperty(value = "用户id", example = "test")
     private String userId;
 
+    @ApiModelProperty(value = "投资金额", example = "5888800")
     private String investMoney;
 
+    @ApiModelProperty(value = "标的ID", example = "1")
     private String loanId;
 
     @Deprecated
+    @ApiModelProperty(value = "密码", example = "123abc")
     private String password;
 
+    @ApiModelProperty(value = "优惠券集合", example = "1,2,3")
     private List<Long> userCouponIds;
 
     public String getUserId() {

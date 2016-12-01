@@ -1,11 +1,16 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class SignInResponseDataDto extends BaseResponseDataDto {
 
+    @ApiModelProperty(value = "积分", example = "20")
     int point;
 
+    @ApiModelProperty(value = "签到次数", example = "2")
     int signInTimes;
 
+    @ApiModelProperty(value = "下次可获得积分", example = "40")
     int nextSignInPoint;
 
     public int getPoint() {

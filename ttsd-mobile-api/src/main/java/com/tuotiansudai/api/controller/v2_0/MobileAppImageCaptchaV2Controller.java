@@ -7,6 +7,8 @@ import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v2_0.ImageCaptchaResponseDataDto;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.spring.security.CaptchaHelper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import nl.captcha.Captcha;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,13 +17,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Api(description = "V2.0图片验证码")
 public class MobileAppImageCaptchaV2Controller extends MobileAppBaseController {
 
     @Autowired
     private CaptchaHelper captchaHelper;
 
     @RequestMapping(value = "/image-captcha", method = RequestMethod.POST)
-    public BaseResponseDto getImageCaptcha(@RequestBody BaseParamDto baseParamDto) {
+    @ApiOperation("图片验证码")
+    public BaseResponseDto<ImageCaptchaResponseDataDto> getImageCaptcha(@RequestBody BaseParamDto baseParamDto) {
         int captchaWidth = 80;
         int captchaHeight = 30;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);

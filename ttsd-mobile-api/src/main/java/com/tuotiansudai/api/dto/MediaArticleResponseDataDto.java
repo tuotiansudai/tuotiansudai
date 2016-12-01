@@ -4,23 +4,46 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class MediaArticleResponseDataDto extends BaseResponseDataDto implements Serializable {
+
+    @ApiModelProperty(value = "文章ID", example = "111")
     private Long articleId;
+
+    @ApiModelProperty(value = "文章标题", example = "拓天速贷第二期全国排行活动正式启动")
     private String title;
+
+    @ApiModelProperty(value = "作者", example = "张三")
     private String author;
+
+    @ApiModelProperty(value = "缩略图", example = "url")
     private String thumbPicture;
+
+    @ApiModelProperty(value = "展示图", example = "url")
     private String showPicture;
+
+    @ApiModelProperty(value = "栏目", example = "ALL:全部，PLATFORM_ACTIVITY：平台活动，PLATFORM_NEWS：平台新闻，INDUSTRY_NEWS：行业资讯")
     private ArticleSectionType section;
+
+    @ApiModelProperty(value = "文章内容", example = "拓天速贷第二期全国排行活动正式启动")
     private String content;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "创建时间", example = "2016-05-06 12:32:58")
     private Date createTime;
+
+    @ApiModelProperty(value = "文章来源", example = "baidu.com")
     private String source;
+
+    @ApiModelProperty(value = "点赞数", example = "100")
     private long likeCount;
+
+    @ApiModelProperty(value = "阅读数", example = "150")
     private long readCount;
 
     public Long getArticleId() {
