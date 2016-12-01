@@ -1,4 +1,4 @@
-require(['jquery','drawCircle','logintip'], function ($,drawCircle) {
+require(['jquery','drawCircle','commonFun','logintip','register_common'], function ($,drawCircle) {
 
     var redirect = globalFun.browserRedirect();
     var $christmasDayFrame=$('#christmasDayFrame');
@@ -17,6 +17,12 @@ require(['jquery','drawCircle','logintip'], function ($,drawCircle) {
         }
         else if(redirect=='mobile'){
             $activitySlide.html('<img src='+staticServer+'/activity/images/christmas-day/app-top.jpg>');
+
+            // 是否加载快速注册的功能
+            var urlObj=commonFun.parseURL(location.href);
+            if(urlObj.params.tag=='yes') {
+                $christmasDayFrame.find('.reg-tag-current').show();
+            }
         }
     })();
 

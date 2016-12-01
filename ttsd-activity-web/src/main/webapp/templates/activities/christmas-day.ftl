@@ -5,7 +5,13 @@
     <div style="display: none" class="mobile" id="MobileNumber" data-mobile='<@global.security.authentication property="principal.mobile" />'></div>
     </@global.isNotAnonymous>
 <div class="activity-slide"></div>
+
 <div class="christmas-day-frame" id="christmasDayFrame">
+
+    <div class="reg-tag-current" style="display: none">
+        <#include '../module/register.ftl' />
+    </div>
+
     <div class="christmas-day-inner">
         <div class="christmas-border box-notice">
             <div class="man-decorate"></div>
@@ -79,7 +85,7 @@
 
         <div class="activity-section-two">
         <#--活动二未开始-->
-        <#if isStart == 0>
+        <#if isStart == 1>
             <div class="christmas-border clearfix">
                 <div class="title-christmas">活动二：圣诞拆礼物</div>
                 <div class="model-content clearfix">

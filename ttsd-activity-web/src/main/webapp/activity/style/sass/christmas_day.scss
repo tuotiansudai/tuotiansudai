@@ -1,5 +1,6 @@
 @charset "utf-8";
 @import "module/login_tip";
+@import "module/register_common";
 @import "module/gift_circle_tip";
 body {
   overflow-x: hidden;
@@ -202,7 +203,7 @@ body {
           line-height: 20px;
           text-align: center;
           i {
-            color: #fff;
+            color: #ccc;
             display: inline-block;
             width: 50%;
             position: absolute;
@@ -336,6 +337,10 @@ body {
   .activity-section-two {
     .model-content {
       padding: 45px 5px 0px 5px;
+    }
+
+    .activity-info .model-content {
+      padding: 10px 5px 10px 5px;
     }
     .gift-box {
       padding-top:15px;
