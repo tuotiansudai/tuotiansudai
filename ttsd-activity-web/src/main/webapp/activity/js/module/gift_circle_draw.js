@@ -1,4 +1,4 @@
-define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($, lotteryUnit,rotate) {
+define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotteryUnit) {
 
     //allListURL： 中奖纪录的接口链接
     //userListURL：我的奖品的接口链接
@@ -106,11 +106,9 @@ define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($, lotteryUnit
 
     giftCircleDraw.prototype.beginLuckDraw=function(callback) {
         var self=this;
-        self.giftCircleFrame.find('.pointer-img').on('click', function(event) {
-            self.beginLotteryDraw(function(data) {
-                callback && callback(data);
-            });
-        })
+        self.beginLotteryDraw(function(data) {
+            callback && callback(data);
+        });
     }
     giftCircleDraw.prototype.scrollList=function(domName) {
         var $self=domName;

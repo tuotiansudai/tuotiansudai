@@ -43,7 +43,6 @@ var require = {
         'drawCircle': staticServer+'/activity/js/dest/gift_circle_draw.min',
         'logintip': staticServer+'/activity/js/dest/login_tip.min',
         'register_common': staticServer+'/activity/js/dest/register_common.min',
-        'nine_lottery': staticServer+'/activity/js/dest/nine_lottery.min',
         'lottery_unit':staticServer+'/activity/js/dest/lottery_unit.min'
     },
     'waitSeconds':0,
