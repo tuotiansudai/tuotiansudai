@@ -40,7 +40,7 @@ public class MobileAppMembershipPerceptionServiceImpl implements MobileAppMember
     private UserCouponMapper userCouponMapper;
 
     @Override
-    public BaseResponseDto getMembershipPerception(MembershipPerceptionRequestDto requestDto) {
+    public BaseResponseDto<MembershipPerceptionResponseDataDto> getMembershipPerception(MembershipPerceptionRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
         String loanId = requestDto.getLoanId();
         if (StringUtils.isEmpty(loanId)) {

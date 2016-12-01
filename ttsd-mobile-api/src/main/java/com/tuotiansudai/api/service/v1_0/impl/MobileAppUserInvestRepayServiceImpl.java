@@ -75,7 +75,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
     private final static String INTEREST_COUPON_TEMPLATE = "{0}%加息券";
 
     @Override
-    public BaseResponseDto userInvestRepay(UserInvestRepayRequestDto userInvestRepayRequestDto) {
+    public BaseResponseDto<UserInvestRepayResponseDataDto> userInvestRepay(UserInvestRepayRequestDto userInvestRepayRequestDto) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         BaseResponseDto<UserInvestRepayResponseDataDto> responseDto = new BaseResponseDto<>();
         long totalExpectedInterest = 0;

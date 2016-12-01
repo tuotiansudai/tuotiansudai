@@ -34,9 +34,6 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     @Override
     public void start() {
-        if (JobType.InvestCallBack.name().equalsIgnoreCase(schedulerName)) {
-            createInvestCallBackJobIfNotExist();
-        }
         if (JobType.NormalRepayCallBack.name().equalsIgnoreCase(schedulerName)) {
             createNormalRepayCallBackJobIfNotExist();
         }
@@ -90,23 +87,6 @@ public class JobInitPlugin implements SchedulerPlugin {
     @Override
     public void shutdown() {
 
-    }
-
-    private void createInvestCallBackJobIfNotExist() {
-        final JobType jobType = JobType.InvestCallBack;
-        final String jobGroup = InvestCallbackJob.JOB_GROUP;
-        final String jobName = InvestCallbackJob.JOB_NAME;
-        try {
-            jobManager.newJob(jobType, InvestCallbackJob.class)
-                    .replaceExistingJob(true)
-                    .runWithSchedule(SimpleScheduleBuilder
-                            .repeatSecondlyForever(InvestCallbackJob.RUN_INTERVAL_SECONDS)
-                            .withMisfireHandlingInstructionIgnoreMisfires())
-                    .withIdentity(jobGroup, jobName)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
     }
 
     private void createNormalRepayCallBackJobIfNotExist() {

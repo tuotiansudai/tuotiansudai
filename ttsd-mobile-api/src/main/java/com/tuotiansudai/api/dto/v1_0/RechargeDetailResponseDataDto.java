@@ -2,43 +2,42 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.repository.model.RechargeModel;
 import com.tuotiansudai.util.AmountConverter;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.text.SimpleDateFormat;
 
 public class RechargeDetailResponseDataDto extends BaseResponseDataDto {
 
-    /**
-     * 充值ID（定单号）
-     */
+    /*** 充值ID（定单号）*/
+    @ApiModelProperty(value = "定单号", example = "1")
     private String rechargeId;
-    /**
-     * 用户ID
-     */
+
+    /*** 用户ID */
+    @ApiModelProperty(value = "用户ID", example = "wangtuotian")
     private String userId;
-    /**
-     * 充值金额
-     */
+
+    /*** 充值金额 */
+    @ApiModelProperty(value = "充值金额", example = "100")
     private String actualMoney;
-    /**
-     * 充值类型（暂无数据）
-     * 此功能暂未实现
-     */
+
+    /*** 充值类型（暂无数据 此功能暂未实现 */
+    @ApiModelProperty(value = "充值类型", example = "")
     private String rechargeType;
-    /**
-     * 充值状态
-     */
+
+    /*** 充值状态 */
+    @ApiModelProperty(value = "充值状态", example = "SUCCESS")
     private String status;
-    /**
-     * 充值状态描述
-     */
+
+    /*** 充值状态描述 */
+    @ApiModelProperty(value = "充值状态描述", example = "成功")
     private String statusDesc;
-    /**
-     * 充值时间
-     */
+
+    /*** 充值时间 */
+    @ApiModelProperty(value = "充值时间", example = "2016-11-25 14:27:11")
     private String time;
-    /**
-     * 到账时间
-     */
+
+    /*** 到账时间 */
+    @ApiModelProperty(value = "到账之间", example = "2016-11-25 14:27:11")
     private String successTime;
 
     public RechargeDetailResponseDataDto() {

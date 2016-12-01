@@ -4,18 +4,25 @@ package com.tuotiansudai.api.dto.v1_0;
 import com.tuotiansudai.coupon.dto.CouponAlertDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.util.AmountConverter;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.text.SimpleDateFormat;
 
 public class CouponAlertResponseDataDto extends BaseResponseDataDto{
+
+    @ApiModelProperty(value = "体验劵名称", example = "新手体验劵")
     private String name;
 
+    @ApiModelProperty(value = "体验劵金额", example = "1000.00")
     private String amount;
 
+    @ApiModelProperty(value = "起期", example = "2016-01-01")
     private String startTime;
 
+    @ApiModelProperty(value = "止期", example = "2016-01-07")
     private String endTime;
 
+    @ApiModelProperty(value = "优惠券类型", example = "NEWBIE_COUPON")
     private CouponType type;
 
     public String getName() {

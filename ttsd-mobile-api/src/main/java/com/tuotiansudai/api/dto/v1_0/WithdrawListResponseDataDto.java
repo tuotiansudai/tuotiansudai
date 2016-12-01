@@ -1,11 +1,15 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 public class WithdrawListResponseDataDto extends BaseResponseDataDto {
     private Integer index;
     private Integer pageSize;
     private Long totalCount;
+
+    @ApiModelProperty(value = "提现记录列表", example = "list")
     private List<WithdrawDetailResponseDataDto> withdrawList;
 
     public Integer getIndex() {

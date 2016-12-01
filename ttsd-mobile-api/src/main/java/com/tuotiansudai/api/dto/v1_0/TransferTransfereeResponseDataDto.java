@@ -1,6 +1,8 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 public class TransferTransfereeResponseDataDto extends BaseResponseDataDto {
@@ -11,6 +13,7 @@ public class TransferTransfereeResponseDataDto extends BaseResponseDataDto {
 
     private Integer totalCount;
 
+    @ApiModelProperty(value = "承接记录", example = "list")
     private List<TransferTransfereeRecordResponseDataDto> transferee;
 
     public Integer getIndex() {

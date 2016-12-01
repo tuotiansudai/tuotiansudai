@@ -30,7 +30,7 @@ public class MobileAppUserTransferInvestRepayServiceImpl implements MobileAppUse
     private TransferApplicationMapper transferApplicationMapper;
 
     @Override
-    public BaseResponseDto userTransferInvestRepay(UserTransferInvestRepayRequestDto userTransferInvestRepayRequestDto) {
+    public BaseResponseDto<UserTransferInvestRepayResponseDataDto> userTransferInvestRepay(UserTransferInvestRepayRequestDto userTransferInvestRepayRequestDto) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         BaseResponseDto<UserTransferInvestRepayResponseDataDto> responseDto = new BaseResponseDto<>();

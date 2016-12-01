@@ -6,6 +6,8 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.repository.model.FeedbackType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.FeedbackService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -20,11 +22,13 @@ import java.util.Locale;
 
 
 @RestController
+@Api(description = "意见反馈")
 public class MobileAppFeedbackController extends MobileAppBaseController {
     @Autowired
     private FeedbackService feedbackService;
 
     @RequestMapping(value = "/feedback", method = RequestMethod.POST)
+    @ApiOperation("意见反馈")
     public BaseResponseDto feedback(@Valid @RequestBody FeedbackRequestDto feedbackRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
             FieldError fieldError = bindingResult.getFieldError();

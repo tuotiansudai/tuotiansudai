@@ -43,7 +43,7 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
     private UserCouponMapper userCouponMapper;
 
     @Override
-    public BaseResponseDto getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto) {
+    public BaseResponseDto<PersonalInfoResponseDataDto> getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto) {
         BaseResponseDto<PersonalInfoResponseDataDto> dto = new BaseResponseDto();
         String loginName = personalInfoRequestDto.getUserName();
 

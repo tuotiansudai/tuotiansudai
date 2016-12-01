@@ -4,6 +4,8 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.JpushRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppJpushService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,7 @@ import javax.validation.Valid;
 import java.text.MessageFormat;
 
 @RestController
+@Api(description = "记录用户JPUSH ID")
 public class MobileAppJpushController extends MobileAppBaseController {
     static Logger log = Logger.getLogger(MobileAppJpushController.class);
 
@@ -23,6 +26,7 @@ public class MobileAppJpushController extends MobileAppBaseController {
     private MobileAppJpushService mobileAppJPushService;
 
     @RequestMapping(value = "/jpush", method = RequestMethod.POST)
+    @ApiOperation("记录用户JPUSH ID")
     public BaseResponseDto storeJPushId(@Valid @RequestBody JpushRequestDto jPushRequestDto,BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();

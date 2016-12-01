@@ -3,13 +3,20 @@ package com.tuotiansudai.api.dto.v1_0;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class AutoInvestPeriodDto {
+
+    @ApiModelProperty(value = "id", example = "12345")
     private String pid;
+
+    @ApiModelProperty(value = "期数名称", example = "6月期")
     private String pName;
+
+    @ApiModelProperty(value = "是否选中", example = "true")
     private boolean selected = false;
 
     public String getPid() {

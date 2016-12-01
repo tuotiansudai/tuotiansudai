@@ -146,12 +146,7 @@ public class InvestControllerTest {
 
         long orderId = investOneDeal(mockLoanId, mockInvestAmount, mockInvestLoginName);
 
-        List<InvestNotifyRequestModel> investNotifyTodoList = investNotifyRequestMapper.getTodoList(10);
-        assert investNotifyTodoList.size() > 0;
-        InvestNotifyRequestModel notifyRequestModel = investNotifyTodoList.get(investNotifyTodoList.size()-1);
-        assert notifyRequestModel.getOrderId().equals(String.valueOf(orderId));
-
-        this.jobAsyncInvestNotify();
+        this.jobAsyncInvestNotify(1);
 
         verifyInvestorAmount_success(mockInitAmount, mockInvestAmount, mockInvestLoginName);
 
@@ -186,7 +181,7 @@ public class InvestControllerTest {
         long orderId2 = investOneDeal(mockLoanId, mockInvestAmount2, mockInvestLoginName2);
         long orderId3 = investOneDeal(mockLoanId, mockInvestAmount3, mockInvestLoginName3);
 
-        this.jobAsyncInvestNotify();
+        this.jobAsyncInvestNotify(3);
 
         verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
         verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
@@ -235,7 +230,7 @@ public class InvestControllerTest {
         long orderId4 = investOneDeal(mockLoanId, mockInvestAmount4, mockInvestLoginName4);
 
         this.generateMockResponse_success(1); // 返款成功
-        this.jobAsyncInvestNotify();
+        this.jobAsyncInvestNotify(4);
 
         verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
         verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
@@ -279,7 +274,7 @@ public class InvestControllerTest {
         String mockInvestLoginName4 = "mock_invest4";
         String mockInvestLoginName5 = "mock_invest5";
 
-        String[] mockUserNames = new String[]{mockLoanerLoginName, mockInvestLoginName1, mockInvestLoginName2, mockInvestLoginName3,mockInvestLoginName4,mockInvestLoginName5};
+        String[] mockUserNames = new String[]{mockLoanerLoginName, mockInvestLoginName1, mockInvestLoginName2, mockInvestLoginName3, mockInvestLoginName4, mockInvestLoginName5};
 
         mockUsers(mockUserNames);
         mockAccounts(mockUserNames, mockInitAmount);
@@ -298,7 +293,7 @@ public class InvestControllerTest {
         long orderId5 = investOneDeal(mockLoanId, mockInvestAmount5, mockInvestLoginName5);
 
         this.generateMockResponse_success(2); // 返款成功
-        this.jobAsyncInvestNotify();
+        this.jobAsyncInvestNotify(5);
 
         verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
         verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
@@ -348,7 +343,7 @@ public class InvestControllerTest {
         String mockInvestLoginName4 = "mock_invest4";
         String mockInvestLoginName5 = "mock_invest5";
 
-        String[] mockUserNames = new String[]{mockLoanerLoginName, mockInvestLoginName1, mockInvestLoginName2, mockInvestLoginName3,mockInvestLoginName4,mockInvestLoginName5};
+        String[] mockUserNames = new String[]{mockLoanerLoginName, mockInvestLoginName1, mockInvestLoginName2, mockInvestLoginName3, mockInvestLoginName4, mockInvestLoginName5};
 
         mockUsers(mockUserNames);
         mockAccounts(mockUserNames, mockInitAmount);
@@ -367,7 +362,7 @@ public class InvestControllerTest {
         long orderId5 = investOneDeal(mockLoanId, mockInvestAmount5, mockInvestLoginName5);
 
         this.generateMockResponse_success(1); // 返款成功
-        this.jobAsyncInvestNotify();
+        this.jobAsyncInvestNotify(5);
 
         verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
         verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
@@ -384,7 +379,6 @@ public class InvestControllerTest {
 
         // 第4笔投资超投，返款回调
         this.overInvestPaybackNotify(orderId4, "0000");
-//        this.overInvestPaybackNotify(orderId5, "0000");
 
         List<InvestModel> investModelList4 = investMapper.findPaginationByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE);
         assert investModelList4.size() > 0;
@@ -438,7 +432,7 @@ public class InvestControllerTest {
         long orderId4 = investOneDeal(mockLoanId, mockInvestAmount4, mockInvestLoginName4);
 
         this.generateMockResponse_fail(1);
-        this.jobAsyncInvestNotify();
+        this.jobAsyncInvestNotify(4);
 
         InvestModel investModel4_b = investMapper.findPaginationByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE).get(0);
         assertThat(investModel4_b.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK_FAIL));
@@ -470,14 +464,23 @@ public class InvestControllerTest {
     }
 
 
-    private void jobAsyncInvestNotify() throws Exception {
-        // job 触发投资 notify 处理
-        this.mockMvc.perform(post("/job/async_invest_notify")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json; charset=UTF-8"))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.status").value(true));
+    private void jobAsyncInvestNotify(int count) throws Exception {
+
+        List<InvestNotifyRequestModel> investNotifyTodoList = investNotifyRequestMapper.getTodoList(count);
+        assert investNotifyTodoList.size() > 0;
+
+        for (int i = investNotifyTodoList.size() - 1; i >= 0; i--) {
+            InvestNotifyRequestModel notifyRequestModel = investNotifyTodoList.get(i);
+
+            // job 触发投资 notify 处理
+            this.mockMvc.perform(post("/job/async_invest_notify")
+                    .content(String.valueOf(notifyRequestModel.getId()))
+                    .contentType(MediaType.APPLICATION_JSON_VALUE))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json; charset=UTF-8"))
+                    .andExpect(jsonPath("$.success").value(true))
+                    .andExpect(jsonPath("$.data.status").value(true));
+        }
     }
 
     private void overInvestPaybackNotify(long orderId, String retCode) throws Exception {
@@ -538,8 +541,8 @@ public class InvestControllerTest {
     }
 
     private void mockUsers(String[] loginNames) {
-        long mobile=17610361805L;
-        for(String loginName : loginNames) {
+        long mobile = 17610361805L;
+        for (String loginName : loginNames) {
             mockUser(loginName, String.valueOf(mobile++), "zhanglong@tuotiansudai.com");
         }
     }
@@ -601,7 +604,7 @@ public class InvestControllerTest {
     }
 
     private void generateMockResponse_success(int times) {
-        for (int index = 0; index < times; index++){
+        for (int index = 0; index < times; index++) {
             MockResponse mockResponse = new MockResponse();
             mockResponse.setBody("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n" +
                     "<html>\n" +
@@ -618,7 +621,7 @@ public class InvestControllerTest {
 
 
     private void generateMockResponse_fail(int times) {
-        for (int index = 0; index < times; index++){
+        for (int index = 0; index < times; index++) {
             MockResponse mockResponse = new MockResponse();
             mockResponse.setBody("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n" +
                     "<html>\n" +

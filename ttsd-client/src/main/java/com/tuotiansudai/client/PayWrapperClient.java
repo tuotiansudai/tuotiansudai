@@ -143,8 +143,8 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(null, MessageFormat.format("/loan/{0}", String.valueOf(loanId)), "POST");
     }
 
-    public BaseDto<PayDataDto> investCallback() {
-        return syncExecute(null, "/job/async_invest_notify", "POST");
+    public BaseDto<PayDataDto> investCallback(String notifyRequestId) {
+        return syncExecute(notifyRequestId, "/job/async_invest_notify", "POST");
     }
 
     public BaseDto<PayDataDto> normalRepayInvestPayback() {

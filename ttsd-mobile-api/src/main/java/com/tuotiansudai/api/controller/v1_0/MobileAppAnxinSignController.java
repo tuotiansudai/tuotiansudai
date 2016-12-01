@@ -5,6 +5,8 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.util.RequestIPParser;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(value = "/v1.0/anxin")
+@Api(description = "安心签")
 public class MobileAppAnxinSignController {
 
     @Autowired
@@ -23,6 +26,7 @@ public class MobileAppAnxinSignController {
 
     @ResponseBody
     @RequestMapping(value = "/sendCaptcha", method = RequestMethod.POST)
+    @ApiOperation("发送短信验证码")
     public BaseResponseDto sendCaptcha(@RequestBody AnxinSignSendCaptchaRequestDto requestDto){
         String loginName = requestDto.getBaseParam().getUserId();
         boolean isVoice = requestDto.isVoice();
@@ -37,6 +41,7 @@ public class MobileAppAnxinSignController {
 
     @ResponseBody
     @RequestMapping(value = "/verifyCaptcha", method = RequestMethod.POST)
+    @ApiOperation("验证短信验证码")
     public BaseResponseDto verifyCaptcha(@RequestBody AnxinSignVerifyCaptchaRequestDto requestDto, HttpServletRequest request){
 
         String ip = RequestIPParser.parse(request);
@@ -55,6 +60,7 @@ public class MobileAppAnxinSignController {
 
     @ResponseBody
     @RequestMapping(value = "/switchSkipAuth", method = RequestMethod.POST)
+    @ApiOperation("开通免密")
     public BaseResponseDto switchSkipAuth(@RequestBody AnxinSignSwitchSkipAuthRequestDto requestDto){
 
         String loginName = requestDto.getBaseParam().getUserId();
@@ -71,6 +77,7 @@ public class MobileAppAnxinSignController {
 
     @ResponseBody
     @RequestMapping(value = "/createAccount", method = RequestMethod.POST)
+    @ApiOperation("开通安心签用户")
     public BaseResponseDto createAccount(@RequestBody BaseParamDto requestDto){
 
         String loginName = requestDto.getBaseParam().getUserId();
