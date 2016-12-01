@@ -88,11 +88,14 @@ define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotte
     }
     //类似九分隔的变换效果
     giftCircleDraw.prototype.lotteryRoll=function(opt,tipMessage) {
-        // lotteryUnit.init({
-        //     elementId:'lottery',
-        //     speed:100,
-        //     prize:prize
-        // });
+
+        // opt参数的格式为
+        // elementId为抽奖部分最外层dom的ID
+        //  {
+            //  elementId:'lottery',
+            //  speed:100,
+            //  prize:prize
+          // }
         var thisFun=this;
         lotteryUnit.init(opt);
         if(!lotteryUnit.initOpt.clicked) {
