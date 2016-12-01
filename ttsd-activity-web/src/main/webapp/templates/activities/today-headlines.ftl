@@ -34,7 +34,7 @@
                     <img src="${staticServer}/activity/images/model/double-eleven/gift-eight.png">
                 </li>
                 <li class="lottery-btn">
-                    <img src="${staticServer}/activity/images/model/double-eleven/lottery-btn.png">
+                    <img src="${staticServer}/activity/images/today-headlines/lottery-btn.png">
                 </li>
                 <li class="lottery-unit lottery-unit-3">
                     <img src="${staticServer}/activity/images/model/double-eleven/gift-four.png">
@@ -55,10 +55,10 @@
                 <div class="intro-item">
                     <dl class="rule-item">
                         <dt>温馨提示：</dt>
-                        <dd>红包奖励将于中奖后即时发放，可在“我的账户-我的宝藏”中查看；</dd>
-                        <dd>您在本活动获得的话费、爱奇艺会员及实物奖品，请致电拓天速贷客服领取，拓天速贷将于接到电话后7个工作日内安排发放，逾期未领或联系不上则视为放弃，部分地区邮费自付。客服电话4001691188，服务时间为9:00-20:00；</dd>
-                        <dd>拓天速贷在法律范围内保留对本活动的最终解释权；</dd>
-                        <dd>市场有风险，投资需谨慎。</dd>
+                        <dd><i>1</i><span>红包奖励将于中奖后即时发放，可在“我的账户-我的宝藏”中查看；</span></dd>
+                        <dd><i>2</i><span>您在本活动获得的话费、爱奇艺会员及实物奖品，请致电拓天速贷客服领取，拓天速贷将于接到电话后7个工作日内安排发放，逾期未领或联系不上则视为放弃，部分地区邮费自付。客服电话4001691188，服务时间为9:00-20:00；</span></dd>
+                        <dd><i>3</i><span>拓天速贷在法律范围内保留对本活动的最终解释权；</span></dd>
+                        <dd><i>4</i><span>市场有风险，投资需谨慎。</span></dd>
                     </dl>
                 </div>
             </div>
@@ -69,18 +69,48 @@
         <div class="actor-text-group">
             <div class="bg-item">
                 <div class="intro-item">
-                    <ul>
-                        <li>50元起投</li>
-                        <li>30-360天期限</li>
-                        <li>信息披露透明</li>
-                        <li>第三方托管体系</li>
-                        <li>超额产权抵押</li>
+                    <ul class="advantage-list">
+                        <li>
+                            <i class="icon-one">
+                                <img src="${staticServer}/activity/images/today-headlines/icon-one.png" width="50%">
+                            </i>
+                            <span>50元起投</span>
+                        </li>
+                        <li>
+                            <i class="icon-two">
+                                <img src="${staticServer}/activity/images/today-headlines/icon-two.png" width="50%">
+                            </i>
+                            <span>30-360天期限</span>
+                        </li>
+                        <li>
+                            <i class="icon-three">
+                                <img src="${staticServer}/activity/images/today-headlines/icon-three.png" width="50%">
+                            </i>
+                            <span>信息披露透明</span>
+                        </li>
+                        <li>
+                            <i class="icon-four">
+                                <img src="${staticServer}/activity/images/today-headlines/icon-four.png" width="50%">
+                            </i>
+                            <span>第三方托管体系</span>
+                        </li>
+                        <li>
+                            <i class="icon-five">
+                                <img src="${staticServer}/activity/images/today-headlines/icon-five.png" width="50%">
+                            </i>
+                            <span>超额产权抵押</span>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="download-group">
-            
+            <div class="download-bg">
+                <div class="download-btn" data-href="/app/download">
+                    <p>下载APP</p>
+                    <p>更多福利等您拿</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
