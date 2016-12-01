@@ -27,7 +27,7 @@ public class MobileAppReferrerStatisticsServiceImpl implements MobileAppReferrer
     private static final String REFERRER_STATISTICS_FILE = "referrer.json";
 
     @Override
-    public BaseResponseDto getReferrerStatistics(BaseParamDto paramDto) {
+    public BaseResponseDto<ReferrerStatisticsResponseDataDto> getReferrerStatistics(BaseParamDto paramDto) {
         String referrerLoginName = paramDto.getBaseParam().getUserId();
         List<ReferrerManageView> referInvestSumAmountList = referrerManageMapper.findReferInvestSumAmount(referrerLoginName);
 

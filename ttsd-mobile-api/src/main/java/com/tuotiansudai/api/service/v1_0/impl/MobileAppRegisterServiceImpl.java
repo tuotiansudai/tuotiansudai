@@ -61,7 +61,7 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
     }
 
     @Override
-    public BaseResponseDto registerUser(RegisterRequestDto registerRequestDto) {
+    public BaseResponseDto<RegisterResponseDataDto> registerUser(RegisterRequestDto registerRequestDto) {
         RegisterUserDto dto = registerRequestDto.convertToRegisterUserDto();
 
         dto.setChannel(mobileAppChannelService.obtainChannelBySource(registerRequestDto.getBaseParam()));

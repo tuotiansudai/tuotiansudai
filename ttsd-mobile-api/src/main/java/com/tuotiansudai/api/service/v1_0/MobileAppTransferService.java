@@ -1,15 +1,13 @@
 package com.tuotiansudai.api.service.v1_0;
 
 
-import com.tuotiansudai.api.dto.v1_0.TransferPurchaseRequestDto;
-import com.tuotiansudai.api.dto.v1_0.TransferTransfereeRequestDto;
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.*;
 
 public interface MobileAppTransferService {
 
-    BaseResponseDto getTransferee(TransferTransfereeRequestDto transferTransfereeRequestDto);
+    BaseResponseDto<TransferTransfereeResponseDataDto> getTransferee(TransferTransfereeRequestDto transferTransfereeRequestDto);
 
-    BaseResponseDto transferPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto);
+    BaseResponseDto<InvestResponseDataDto> transferPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto);
 
     BaseResponseDto transferNoPasswordPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto);
 

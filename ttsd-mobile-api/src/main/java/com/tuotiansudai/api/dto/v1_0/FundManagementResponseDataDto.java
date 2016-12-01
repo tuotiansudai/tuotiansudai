@@ -1,25 +1,67 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class FundManagementResponseDataDto extends BaseResponseDataDto {
+
+    @ApiModelProperty(value = "资产总额", dataType = "10000")
     private String totalAssets;
+
+    @ApiModelProperty(value = "累计投资额", dataType = "10000")
     private String totalInvestment;
+
+    @ApiModelProperty(value = "累计收益", dataType = "1000")
     private String expectedTotalInterest;
+
+    @ApiModelProperty(value = "已收本金", dataType = "300")
     private String receivedCorpus;
+
+    @ApiModelProperty(value = "已收利息", dataType = "1000")
     private String receivedInterest;
+
+    @ApiModelProperty(value = "待收本金", dataType = "9300")
     private String receivableCorpus;
+
+    @ApiModelProperty(value = "待收利息", dataType = "700")
     private String receivableInterest;
+
+    @ApiModelProperty(value = "待收本息", dataType = "0")
     private String receivableCorpusInterest;
+
+    @ApiModelProperty(value = "账户余额", dataType = "10000")
     private String accountBalance;
+
+    @ApiModelProperty(value = "可用金额", dataType = "300")
     private String availableMoney;
+
+    @ApiModelProperty(value = "冻结金额", dataType = "0")
     private String frozenMoney;
+
+    @ApiModelProperty(value = "累计充值", dataType = "9000")
     private String paidRechargeMoney;
+
+    @ApiModelProperty(value = "累计提现", dataType = "0")
     private String successWithdrawMoney;
+
+    @ApiModelProperty(value = "优惠券个数", dataType = "10")
     private String usableUserCouponCount;
+
+    @ApiModelProperty(value = "我的财豆数量", dataType = "10000")
     private String point;
+
+    @ApiModelProperty(value = "推荐奖励", dataType = "800")
     private String rewardAmount;
+
+    @ApiModelProperty(value = "用户会员等级", dataType = "1")
     private String membershipLevel;
+
+    @ApiModelProperty(value = "用户会员过期日", dataType = "2016-11-23")
     private String membershipExpiredDate;
+
+    @ApiModelProperty(value = "户会员成长值", dataType = "1000")
     private String membershipPoint;
+
+    @ApiModelProperty(value = "可用金额", dataType = "1999")
     private String availableMoneyCent;
 
     public String getTotalAssets() {

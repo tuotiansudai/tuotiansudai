@@ -2,14 +2,25 @@ package com.tuotiansudai.api.dto.v2_0;
 
 
 import com.tuotiansudai.repository.model.LoanerDetailsModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
 public class LoanerDto implements Serializable {
+
+    @ApiModelProperty(value = "性别", example = "男")
     private String gender;
+
+    @ApiModelProperty(value = "年龄", example = "33")
     private Integer age;
+
+    @ApiModelProperty(value = "婚姻", example = "否")
     private String marriage;
+
+    @ApiModelProperty(value = "职业", example = "百度")
     private String employmentStatus;
+
+    @ApiModelProperty(value = "收入", example = "10000")
     private String income;
 
     public LoanerDto(LoanerDetailsModel model) {

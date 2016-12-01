@@ -6,6 +6,8 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.SendSmsCompositeRequestDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppSendSmsV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,12 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
+@Api(description = "V2.0发送短信验证码")
 public class MobileAppSendSmsV2Controller extends MobileAppBaseController {
 
     @Autowired
     private MobileAppSendSmsV2Service mobileAppSendSmsV2Service;
 
     @RequestMapping(value = "/sms-captcha/send", method = RequestMethod.POST)
+    @ApiOperation("发送短信验证码")
     public BaseResponseDto sendSms(@Valid @RequestBody SendSmsCompositeRequestDto sendSmsCompositeRequestDto, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
