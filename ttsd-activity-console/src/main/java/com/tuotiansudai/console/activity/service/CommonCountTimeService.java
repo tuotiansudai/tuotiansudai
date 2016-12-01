@@ -69,6 +69,7 @@ public abstract class CommonCountTimeService {
             case AUTUMN_PRIZE:
             case NATIONAL_PRIZE:
             case CARNIVAL_ACTIVITY:
+
                 break;
             case NEW_YEARS_DAY_ACTIVITY:
                 break;
