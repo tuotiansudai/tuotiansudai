@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppOperationDataService;
 import com.tuotiansudai.dto.OperationDataDto;
+import com.tuotiansudai.enums.AgeDistributionType;
 import com.tuotiansudai.repository.model.InvestDataView;
 import com.tuotiansudai.service.OperationDataService;
 import com.tuotiansudai.util.AmountConverter;
@@ -13,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class MobileAppOperationDataServiceImpl implements MobileAppOperationDataService {
@@ -74,7 +72,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         List<OperationDataAgeResponseDataDto> operationDataAgeResponseDataDtoList = Lists.newArrayList();
         for (Map.Entry<String, String> ageDistributionEntry : ageDistributionEntries) {
             OperationDataAgeResponseDataDto operationDataAgeResponseDataDto = new OperationDataAgeResponseDataDto();
-            operationDataAgeResponseDataDto.setName(ageDistributionEntry.getKey());
+            operationDataAgeResponseDataDto.setName(AgeDistributionType.getNameByAgeStage(Integer.parseInt(ageDistributionEntry.getKey())));
             operationDataAgeResponseDataDto.setScale(ageDistributionEntry.getValue());
             operationDataAgeResponseDataDtoList.add(operationDataAgeResponseDataDto);
         }
@@ -106,6 +104,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
             operationDataInvestCityResponseDataDto.setScale(investCityEntry.getValue());
             operationDataInvestCityResponseDataDtoList.add(operationDataInvestCityResponseDataDto);
         }
+        Collections.sort(operationDataInvestCityResponseDataDtoList, (o1, o2) -> Double.compare(Double.parseDouble(o2.getScale()), Double.parseDouble(o1.getScale())));
         return operationDataInvestCityResponseDataDtoList;
     }
 
@@ -119,8 +118,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
             operationDataInvestAmountResponseDataDto.setScale(investAmountEntry.getValue());
             operationDataInvestAmountResponseDataDtoList.add(operationDataInvestAmountResponseDataDto);
         }
+        Collections.sort(operationDataInvestAmountResponseDataDtoList, (o1, o2) -> Double.compare(Double.parseDouble(o2.getScale()), Double.parseDouble(o1.getScale())));
         return operationDataInvestAmountResponseDataDtoList;
     }
-
-
 }
