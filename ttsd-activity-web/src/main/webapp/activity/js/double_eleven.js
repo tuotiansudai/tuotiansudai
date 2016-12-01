@@ -140,7 +140,8 @@ require(['jquery', 'underscore', 'layerWrapper', 'drawCircle', 'jquery.ajax.exte
 
                 } else if(data.returnCode == 3){
                     //不在活动时间范围内！
-                    tipMessage.info='<p class="login-text">不在活动时间内~</p>';
+                    tipMessage.info='<p class="login-text">活动已过期～</p><p class="des-text">更多活动即将登场！</p> ';
+                    tipMessage.button='<a href="javascript:void(0)" class="go-close">知道了</a>';
                     drawCircle.tipWindowPop(tipMessage);
 
                 } else if(data.returnCode == 4){
