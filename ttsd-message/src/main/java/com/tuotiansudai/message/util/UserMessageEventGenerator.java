@@ -264,7 +264,6 @@ public class UserMessageEventGenerator {
 
         for (Map<String, Object> invest : invests) {
             Map<String, Object> investRepay = userMessageMetaMapper.findInvestRepayByInvestIdAndPeriod(((BigInteger) invest.get("id")).longValue(), (int) loanRepay.get("period"));
-
             String title = MessageFormat.format(messageModel.getTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String content = MessageFormat.format(messageModel.getTemplate(), loan.get("name"));
@@ -289,7 +288,6 @@ public class UserMessageEventGenerator {
 
         for (Map<String, Object> invest : invests) {
             Map<String, Object> investRepay = userMessageMetaMapper.findInvestRepayByInvestIdAndPeriod(((BigInteger) invest.get("id")).longValue(), (int) loanRepay.get("period"));
-
             String title = MessageFormat.format(messageModel.getTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String appTitle = MessageFormat.format(messageModel.getAppTitle(), loan.get("name"), AmountConverter.convertCentToString(((BigInteger) investRepay.get("amount")).longValue()));
             String content = MessageFormat.format(messageModel.getTemplate(), loan.get("name"));
