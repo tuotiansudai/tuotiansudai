@@ -2,17 +2,18 @@ package com.tuotiansudai.console.controller;
 
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.service.ConsoleCouponService;
+import com.tuotiansudai.console.service.CouponActivationService;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.AccountItemDataDto;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.exception.CreateCouponException;
-import com.tuotiansudai.point.repository.dto.ProductDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
+import com.tuotiansudai.point.repository.dto.ProductDto;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.point.repository.model.ProductModel;
 import com.tuotiansudai.point.service.PointBillService;
@@ -41,7 +42,7 @@ public class PointManageController {
     private ProductService productService;
 
     @Autowired
-    private CouponService couponService;
+    private ConsoleCouponService consoleCouponService;
 
     @Autowired
     private CouponActivationService couponActivationService;
@@ -210,8 +211,7 @@ public class PointManageController {
 
     @RequestMapping(value = "/coupon-exchange/{id:^\\d+$}/edit", method = RequestMethod.GET)
     public ModelAndView edit(@PathVariable long id) {
-        CouponModel couponModel = couponService.findCouponById(id);
-        ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(couponModel);
+        ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(consoleCouponService.findCouponById(id));
         ProductModel productModel = productService.findProductByCouponId(id);
         exchangeCouponDto.setSeq(productModel.getSeq());
         exchangeCouponDto.setExchangePoint(productModel.getPoints());
@@ -232,7 +232,7 @@ public class PointManageController {
         Long id = exchangeCouponDto.getId();
         try {
             if (id != null) {
-                couponService.editCoupon(loginName, exchangeCouponDto);
+                consoleCouponService.editCoupon(loginName, exchangeCouponDto);
                 ProductModel productModel = productService.findProductByCouponId(id);
                 ProductDto productDto = new ProductDto
                         (productModel.getId(),
@@ -247,7 +247,7 @@ public class PointManageController {
                         exchangeCouponDto.getEndTime());
                 productService.updateProduct(productDto);
             } else {
-                ExchangeCouponDto exchangeCouponDtoView  = couponService.createCoupon(loginName, exchangeCouponDto);
+                ExchangeCouponDto exchangeCouponDtoView  = consoleCouponService.createCoupon(loginName, exchangeCouponDto);
                 ProductDto productDto = new ProductDto(
                         GoodsType.COUPON,
                         exchangeCouponDtoView.getId(),

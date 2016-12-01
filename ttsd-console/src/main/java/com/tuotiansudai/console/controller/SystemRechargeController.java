@@ -1,10 +1,10 @@
 package com.tuotiansudai.console.controller;
 
 
+import com.tuotiansudai.console.service.SystemRechargeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.SystemRechargeDto;
-import com.tuotiansudai.service.SystemRechargeService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping(value = "/finance-manage")
 public class SystemRechargeController {
+
     @Autowired
     private SystemRechargeService systemRechargeService;
 

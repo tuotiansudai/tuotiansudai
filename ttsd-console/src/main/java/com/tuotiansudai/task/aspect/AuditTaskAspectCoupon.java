@@ -97,7 +97,7 @@ public class AuditTaskAspectCoupon {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponActivationService.active(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.service.CouponActivationService.active(..))")
     public void afterReturningActiveCoupon(JoinPoint joinPoint) {
         logger.debug("after active coupon aspect.");
         try {

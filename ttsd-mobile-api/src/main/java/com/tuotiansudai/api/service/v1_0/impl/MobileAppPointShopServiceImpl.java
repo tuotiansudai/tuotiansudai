@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointShopService;
 import com.tuotiansudai.api.util.PageValidUtils;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
@@ -45,6 +46,9 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     private UserAddressMapper userAddressMapper;
 
     @Autowired
+    private CouponMapper couponMapper;
+
+    @Autowired
     private ProductOrderMapper productOrderMapper;
 
     @Autowired
@@ -55,12 +59,6 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
     @Autowired
     private CouponService couponService;
-
-    @Autowired
-    private CouponAssignmentService couponAssignmentService;
-
-    @Autowired
-    private PointBillMapper pointBillMapper;
 
     @Value("${mobile.static.server}")
     private String bannerServer;
@@ -137,7 +135,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
         List<ProductModel> couponProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON));
         for (ProductModel productModel : couponProducts) {
-            CouponModel couponModel = couponService.findCouponById(productModel.getCouponId());
+            CouponModel couponModel = couponMapper.findById(productModel.getCouponId());
             ExchangeCouponView exchangeCouponView = new ExchangeCouponView(productModel.getPoints(), productModel.getSeq(), productModel.getImageUrl(), productModel.getId(), couponModel);
             exchangeCoupons.add(exchangeCouponView);
         }
@@ -216,7 +214,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
             productDetailResponseDto.setLeftCount(exchangeCouponView != null ? String.valueOf(exchangeCouponView.getCouponModel() != null ? (exchangeCouponView.getCouponModel().getTotalCount() - exchangeCouponView.getCouponModel().getIssuedCount()) : "0") : String.valueOf(productModel.getTotalCount()));
         }
         List<String> description = Lists.newArrayList();
-        CouponModel couponModel = couponService.findCouponById(productModel.getCouponId());
+        CouponModel couponModel = couponMapper.findById(productModel.getCouponId());
         if (productModel.getType() == GoodsType.COUPON && couponModel != null) {
             description.addAll(productService.getProductDescription(couponModel.getInvestLowerLimit(), couponModel.getProductTypes(), couponModel.getDeadline()));
         } else {

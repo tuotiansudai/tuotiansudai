@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.console.service.ConsoleBankService;
 import com.tuotiansudai.dto.BankDto;
 import com.tuotiansudai.repository.model.BankModel;
 import com.tuotiansudai.service.BankService;
@@ -18,13 +19,17 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/finance-manage")
 public class BankController {
+
     @Autowired
     private BankService bankService;
+
+    @Autowired
+    private ConsoleBankService consoleBankService;
 
     @RequestMapping(value = "/bank-list")
     public ModelAndView bannerList() {
         ModelAndView modelAndView = new ModelAndView("/bank-list");
-        List<BankDto> bankModelList = bankService.findBankList();
+        List<BankDto> bankModelList = bankService.findBankList(null, null);
         modelAndView.addObject("bankList", bankModelList);
         return modelAndView;
     }
@@ -43,7 +48,7 @@ public class BankController {
         BankModel bankModel = new BankModel(bankDto);
         bankModel.setUpdatedBy(loginName);
         bankModel.setUpdatedTime(new Date());
-        bankService.updateBank(bankModel);
+        consoleBankService.updateBank(bankModel);
         return "redirect:/finance-manage/bank-list";
     }
 }

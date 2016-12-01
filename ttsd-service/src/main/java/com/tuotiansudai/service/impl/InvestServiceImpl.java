@@ -354,64 +354,6 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public InvestPaginationDataDto getInvestPagination(Long loanId, String investorMobile, String channel, Source source,
-                                                       Role role, Date startTime, Date endTime, InvestStatus investStatus,
-                                                       PreferenceType preferenceType, int index, int pageSize) {
-        List<InvestPaginationItemView> items = Lists.newArrayList();
-
-        String investorLoginName = null;
-        if (!StringUtils.isEmpty(investorMobile)) {
-            UserModel userModel = userMapper.findByMobile(investorMobile);
-            if (null != userModel) {
-                investorLoginName = userMapper.findByMobile(investorMobile).getLoginName();
-            } else {
-                investorLoginName = investorMobile;
-            }
-        }
-
-        final long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType);
-        final long investAmountSum = investMapper.sumInvestAmountConsole(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType);
-        if (count > 0) {
-            int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
-            index = index > totalPages ? totalPages : index;
-            items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, (index - 1) * pageSize, pageSize);
-        }
-
-        List<InvestPaginationItemDataDto> records = Lists.transform(items, new Function<InvestPaginationItemView, InvestPaginationItemDataDto>() {
-            @Override
-            public InvestPaginationItemDataDto apply(InvestPaginationItemView view) {
-                InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
-                CouponModel couponModel = couponMapper.findById(view.getCouponId());
-                if (null != couponModel) {
-                    long couponActualInterest = 0;
-                    if (couponModel.getCouponType().equals(CouponType.RED_ENVELOPE)) {
-                        List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessByInvestId(view.getInvestId());
-                        for (UserCouponModel userCouponModel : userCouponModels) {
-                            couponActualInterest += userCouponModel.getActualInterest();
-                        }
-                    } else {
-                        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(view.getInvestId());
-                        for (CouponRepayModel couponRepayModel : couponRepayModels) {
-                            couponActualInterest += couponRepayModel.getActualInterest();
-                        }
-                    }
-                    investPaginationItemDataDto.setCouponActualInterest(couponActualInterest);
-                    investPaginationItemDataDto.setCouponDetail(couponModel);
-                }
-                return investPaginationItemDataDto;
-            }
-        });
-
-        InvestPaginationDataDto dto = new InvestPaginationDataDto(index, pageSize, count, records);
-
-        dto.setSumAmount(investAmountSum);
-
-        dto.setStatus(true);
-
-        return dto;
-    }
-
-    @Override
     @Transactional
     public boolean turnOnAutoInvest(String loginName, AutoInvestPlanDto dto, String ip) {
         if (Strings.isNullOrEmpty(loginName)) {
@@ -456,16 +398,6 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public AutoInvestPlanModel findAutoInvestPlan(String loginName) {
         return autoInvestPlanMapper.findByLoginName(loginName);
-    }
-
-    @Override
-    public List<String> findAllChannel() {
-        return investMapper.findAllChannels();
-    }
-
-    @Override
-    public List<String> findAllInvestChannels() {
-        return investMapper.findAllInvestChannels();
     }
 
     @Override
