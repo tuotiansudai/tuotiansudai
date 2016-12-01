@@ -1,13 +1,11 @@
+define(['jquery'], function ($) {
+    var commonFun={
+
+    };
+});
+
 var commonFun={};
-Array.prototype.contains = function (obj) {
-    var i = this.length;
-    while (i--) {
-        if (this[i] === obj) {
-            return true;
-        }
-    }
-    return false;
-};
+
 commonFun={
     //加密
     compile:function (strId,realId)
