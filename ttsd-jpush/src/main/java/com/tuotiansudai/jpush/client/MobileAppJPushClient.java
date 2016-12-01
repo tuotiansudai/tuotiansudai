@@ -1,9 +1,6 @@
 package com.tuotiansudai.jpush.client;
 
-import cn.jpush.api.JPushClient;
 import cn.jpush.api.common.ClientConfig;
-import cn.jpush.api.common.resp.APIConnectionException;
-import cn.jpush.api.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
 import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
@@ -13,20 +10,27 @@ import cn.jpush.api.push.model.audience.AudienceTarget;
 import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
-import cn.jpush.api.report.ReceivedsResult;
+import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.enums.PushSource;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class MobileAppJPushClient {
+
     static Logger logger = Logger.getLogger(MobileAppJPushClient.class);
+
+    public static final String APP_PUSH_MSG_ID_KEY = "console:push-msg-ids:";
+
     @Value("${common.jpush.masterSecret}")
     private String masterSecret;
 
@@ -36,18 +40,16 @@ public class MobileAppJPushClient {
     @Value("${common.environment}")
     private Environment environment;
 
-    public static final String APP_PUSH_MSG_ID_KEY = "console:push-msg-ids:";
+    private OkHttpClient httpClient;
 
-    private static JPushClient jPushClient;
+    private ClientConfig clientConfig = ClientConfig.getInstance();
 
-    public JPushClient getJPushClient() {
-        if (jPushClient == null) {
-            jPushClient = new JPushClient(masterSecret, appKey, null, ClientConfig.getInstance());
-        }
-        return jPushClient;
+    public MobileAppJPushClient() {
+        this.httpClient = new OkHttpClient();
+        this.httpClient.setConnectTimeout(5, TimeUnit.SECONDS);
     }
 
-    public PushPayload buildPushObject_all_registration_id_alertWithExtras(List<String> registrationIds, String alert, Map<String,String> extras, PushSource pushSource) {
+    public PushPayload buildPushObject_all_registration_id_alertWithExtras(List<String> registrationIds, String alert, Map<String, String> extras, PushSource pushSource) {
 
         return PushPayload.newBuilder()
                 .setPlatform(getPlatform(pushSource))
@@ -60,16 +62,14 @@ public class MobileAppJPushClient {
                 .build();
     }
 
-    private Audience getAudience(List<String> registrationIds){
+    private Audience getAudience(List<String> registrationIds) {
 
-        if(Environment.isProduction(environment))
-        {
+        if (Environment.isProduction(environment)) {
             return Audience.newBuilder()
                     .addAudienceTarget(AudienceTarget.registrationId(registrationIds))
                     .build();
-        }
-        else{
-           return Audience.newBuilder()
+        } else {
+            return Audience.newBuilder()
                     .addAudienceTarget(AudienceTarget.tag("test"))
                     .addAudienceTarget(AudienceTarget.registrationId(registrationIds))
                     .build();
@@ -92,7 +92,7 @@ public class MobileAppJPushClient {
         return platform;
     }
 
-    public PushPayload buildPushObject_all_all_alertWithExtras(String alert, Map<String,String> extras, PushSource pushSource) {
+    public PushPayload buildPushObject_all_all_alertWithExtras(String alert, Map<String, String> extras, PushSource pushSource) {
         return PushPayload.newBuilder()
                 .setPlatform(getPlatform(pushSource))
                 .setAudience(getAudienceAll())
@@ -103,60 +103,53 @@ public class MobileAppJPushClient {
                         .build())
                 .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
                 .build();
-
     }
 
-    private Audience getAudienceAll(){
-        if(Environment.isProduction(environment))
-        {
+    private Audience getAudienceAll() {
+        if (Environment.isProduction(environment)) {
             return Audience.newBuilder().setAll(true).build();
-        }
-        else{
+        } else {
             return Audience.newBuilder().addAudienceTarget(AudienceTarget.tag("test")).build();
         }
     }
 
-    public boolean sendPushAlertByAll(String jPushAlertId, String alert, Map<String,String> extras, PushSource pushSource) {
-        PushPayload payload = buildPushObject_all_all_alertWithExtras(alert,extras, pushSource);
-        return sendPush(payload, jPushAlertId);
+    public boolean sendPushAlertByAll(String alert, Map<String, String> extras, PushSource pushSource) {
+        PushPayload payload = buildPushObject_all_all_alertWithExtras(alert, extras, pushSource);
+        return sendPush(payload);
     }
 
-    public boolean sendPushAlertByRegistrationIds(String jPushAlertId, List<String> registrationIds, String alert, Map<String,String> extras, PushSource pushSource) {
-        PushPayload payload = buildPushObject_all_registration_id_alertWithExtras(registrationIds, alert,extras, pushSource);
-        return sendPush(payload, jPushAlertId);
+    public boolean sendPushAlertByRegistrationIds(List<String> registrationIds, String alert, Map<String, String> extras, PushSource pushSource) {
+        PushPayload payload = buildPushObject_all_registration_id_alertWithExtras(registrationIds, alert, extras, pushSource);
+        return sendPush(payload);
     }
 
-    private boolean sendPush(PushPayload payload, String jPushAlertId) {
-        setjPushClient(getJPushClient());
-        try {
-            System.out.println(payload.toJSON());
-            logger.debug(MessageFormat.format("request:{0}:{1} begin", jPushAlertId, payload.toJSON()));
-            PushResult result = jPushClient.sendPush(payload);
-            logger.debug(MessageFormat.format("request:{0}:{1}:{2} end", jPushAlertId, result.msg_id, result.sendno));
-            return true;
-        } catch (APIConnectionException | APIRequestException e) {
-            logger.debug(MessageFormat.format("response:{0}:{1}", jPushAlertId, e.getMessage()));
+    private boolean sendPush(PushPayload payload) {
+        if (payload == null) {
+            logger.error("[JPush] payload is null");
+            return false;
         }
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), payload.toJSON().getAsString());
+        Request request = new Request.Builder()
+                .url(MessageFormat.format("{0}{1}", clientConfig.get(ClientConfig.PUSH_HOST_NAME), clientConfig.get(ClientConfig.PUSH_PATH)))
+                .method("POST", requestBody)
+                .addHeader("Content-Type", "application/json; charset=UTF-8")
+                .addHeader("Authorization", Credentials.basic(appKey, masterSecret))
+                .build();
+
+        int tryTimes = 1;
+        do {
+            try {
+                Response response = httpClient.newCall(request).execute();
+                if (!HttpStatus.valueOf(response.code()).is2xxSuccessful()) {
+                    return true;
+                }
+                logger.error(MessageFormat.format("[JPush] push is not 2xx (request={0}, code={1}, response={2}, tryTimes={3})",
+                        requestBody.toString(), response.code(), response.body().string(), String.valueOf(tryTimes)));
+            } catch (IOException e) {
+                logger.error(MessageFormat.format("[JPush] push IOException (request={0}, tryTimes={3})", payload.toJSON().getAsString(), String.valueOf(tryTimes)), e);
+            }
+        } while (++tryTimes < 4);
+
         return false;
-
     }
-
-    public ReceivedsResult getReportReceived(String msgIds) {
-        setjPushClient(getJPushClient());
-        try {
-            return jPushClient.getReportReceiveds(msgIds);
-        } catch (APIConnectionException | APIRequestException e) {
-            logger.debug(MessageFormat.format("get report error, msgIds:{0}:{1}", msgIds, e.getMessage()));
-            return null;
-        }
-    }
-
-    public static JPushClient getjPushClient() {
-        return jPushClient;
-    }
-
-    public static void setjPushClient(JPushClient jPushClient) {
-        MobileAppJPushClient.jPushClient = jPushClient;
-    }
-
 }
