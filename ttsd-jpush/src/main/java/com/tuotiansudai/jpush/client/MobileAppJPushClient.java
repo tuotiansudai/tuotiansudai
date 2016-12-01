@@ -128,7 +128,7 @@ public class MobileAppJPushClient {
             logger.error("[JPush] payload is null");
             return false;
         }
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), payload.toJSON().getAsString());
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), payload.toJSON().toString());
         Request request = new Request.Builder()
                 .url(MessageFormat.format("{0}{1}", clientConfig.get(ClientConfig.PUSH_HOST_NAME), clientConfig.get(ClientConfig.PUSH_PATH)))
                 .method("POST", requestBody)
