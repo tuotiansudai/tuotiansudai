@@ -741,16 +741,7 @@
             and loan_id = #{loanId}
         </if>
     </select>
-
-    <select id="countSuccessInvestByInvestTimeAndLoginName" parameterType="map" resultMap="investResultMap">
-        select *
-        from invest
-        where status = 'SUCCESS' and invest_time BETWEEN #{startTime} and #{endTime}
-        <if test="loginName != null and loginName != '' ">
-            and login_name = #{loginName}
-        </if>
-    </select>
-
+    
     <select id="findWebTransferableApplicationPaginationByLoginName" useCache="false" parameterType="map"
             resultMap="transferableInvestView">
         SELECT
