@@ -4,35 +4,44 @@ import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.RechargeDto;
 import com.tuotiansudai.repository.model.Source;
+import io.swagger.annotations.ApiModelProperty;
 
 public class BankCardRequestDto extends BaseParamDto{
 
     //用户ID
+    @ApiModelProperty(value = "用户ID", example = "abcd1234")
     private String userId;
 
     //身份证号
+    @ApiModelProperty(value = "身份证号", example = "371111111111111111")
     private String idCard;
 
     //开卡户名
+    @ApiModelProperty(value = "开卡户名", example = "ICBC")
     private String realName;
 
     //银行卡号
+    @ApiModelProperty(value = "银行卡号", example = "6222600001111111111")
     private String cardNo;
 
     //是否开通快捷支付
+    @ApiModelProperty(value = "是否开通快捷支付", example = "true：是")
     private boolean isOpenFastPayment;
 
     /**
      * 查询绑卡状态：query_bind_status
      * 查询签约状态：query_sign_status
      */
+    @ApiModelProperty(value = "操作类型", example = "查询绑卡状态：query_bind_status,查询签约状态：query_sign_status")
     private String operationType;
 
     /**
      * 充值金额
      */
+    @ApiModelProperty(value = "充值金额", example = "11.00")
     private String rechargeAmount;
 
+    @ApiModelProperty(value = "ip", example = "127.0.0.1")
     private String ip;
 
     public String getUserId() {

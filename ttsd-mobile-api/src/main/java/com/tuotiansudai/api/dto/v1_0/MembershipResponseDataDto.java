@@ -1,12 +1,16 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 public class MembershipResponseDataDto extends BaseResponseDataDto {
     private int index;
     private int pageSize;
     private long totalCount;
+
+    @ApiModelProperty(value = "会员成长值列表", example = "list")
     private List<MembershipExperienceBillDataDto> membershipExperienceBill;
 
     public int getIndex() {

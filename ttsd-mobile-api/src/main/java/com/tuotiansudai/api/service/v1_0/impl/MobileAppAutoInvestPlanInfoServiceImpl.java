@@ -24,7 +24,7 @@ public class MobileAppAutoInvestPlanInfoServiceImpl implements MobileAppAutoInve
     private AccountMapper accountMapper;
 
     @Override
-    public BaseResponseDto getAutoInvestPlanInfoData(BaseParamDto baseParamDto) {
+    public BaseResponseDto<AutoInvestPlanInfoResponseDataDto> getAutoInvestPlanInfoData(BaseParamDto baseParamDto) {
         BaseResponseDto baseDto = new BaseResponseDto();
         AutoInvestPlanInfoResponseDataDto autoInvestPlanInfoResponseDataDto = new AutoInvestPlanInfoResponseDataDto();
         String loginName = baseParamDto.getBaseParam().getUserId();

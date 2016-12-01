@@ -1,34 +1,85 @@
 package com.tuotiansudai.api.dto.v2_0;
 
 import com.tuotiansudai.repository.model.PledgeType;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 public class LoanResponseDataDto {
+
+    @ApiModelProperty(value = "标的ID", example = "123456789")
     private String loanId;
+
+    @ApiModelProperty(value = "标的名称", example = "车辆抵押借款")
     private String loanName;
+
+    @ApiModelProperty(value = "活动类型", example = "NORMAL")
     private String activityType;
+
+    @ApiModelProperty(value = "借款天数", example = "360")
     private String duration;
+
+    @ApiModelProperty(value = "基础利率", example = "10")
     private String baseRatePercent;
+
+    @ApiModelProperty(value = "活动利率", example = "10")
     private String activityRatePercent;
+
+    @ApiModelProperty(value = "标的金额", example = "100")
     private String loanAmount;
+
+    @ApiModelProperty(value = "投资金额", example = "100")
     private String investAmount;
+
+    @ApiModelProperty(value = "项目状态代码", example = "recheck,repaying,raising,complete")
     private String loanStatus;
+
+    @ApiModelProperty(value = "项目状态描述", example = "等待复核,回款中,筹款中,已完成")
     private String loanStatusDesc;
+
+    @ApiModelProperty(value = "筹款开始时间", example = "2016-11-25 17:55:03")
     private String fundraisingStartTime;
+
+    @ApiModelProperty(value = "筹款开始时间", example = "100")
     private String fundraisingCountDown;
+
+    @ApiModelProperty(value = "起投金额", example = "50")
     private String minInvestMoney;
+
+    @ApiModelProperty(value = "递增金额", example = "50")
     private String cardinalNumber;
+
+    @ApiModelProperty(value = "投资上限", example = "100")
     private String maxInvestMoney;
+
+    @ApiModelProperty(value = "标的类型", example = "_30,_90,_180,_360")
     private String productNewType;
+
+    @ApiModelProperty(value = "手续费比例", example = "10")
     private String investFeeRate;
+
+    @ApiModelProperty(value = "起投金额", example = "50")
     public String minInvestMoneyCent;
+
+    @ApiModelProperty(value = "递增金额", example = "50")
     public String cardinalNumberCent;
+
+    @ApiModelProperty(value = "投资上限", example = "100")
     public String maxInvestMoneyCent;
+
+    @ApiModelProperty(value = "投资总额", example = "10000")
     public String investedMoneyCent;
+
+    @ApiModelProperty(value = "借款总额", example = "10000")
     public String loanMoneyCent;
+
+    @ApiModelProperty(value = "阶梯加息", example = "list")
     private List<ExtraRateListResponseDataDto> extraRates;
+
+    @ApiModelProperty(value = "标的类型", example = "NORMAL(普通投资),NEWBIE(新手专享),EXCLUSIVE(定向投资),PROMOTION(加息投资)")
     private String activityDesc;
+
+    @ApiModelProperty(value = "抵押", example = "HOUSE,VEHICLE,ENTERPRISE,NONE")
     private PledgeType pledgeType;
 
     public String getLoanId() { return loanId; }

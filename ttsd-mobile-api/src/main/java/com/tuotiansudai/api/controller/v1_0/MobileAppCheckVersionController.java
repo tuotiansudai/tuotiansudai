@@ -10,6 +10,8 @@ import com.tuotiansudai.api.util.HttpClientUtil;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.repository.model.Source;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Controller
+@Api(description = "Android版本检测")
 public class MobileAppCheckVersionController extends MobileAppBaseController {
 
     private static final String APP_VERSION_CHECK_URL = "https://tuotiansudai.com/app/version.json";
@@ -41,7 +44,8 @@ public class MobileAppCheckVersionController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/version", method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponseDto getAndroidVersion(@RequestBody BaseParamDto dto) {
+    @ApiOperation("获取版本")
+    public BaseResponseDto<AppVersionResponseDataDto> getAndroidVersion(@RequestBody BaseParamDto dto) {
         BaseResponseDto<AppVersionResponseDataDto> baseResponseDto = new BaseResponseDto<>();
         AppVersionResponseDataDto dataDto = getLastestVersionInfo(dto.getBaseParam().getPlatform());
         if (dataDto != null) {

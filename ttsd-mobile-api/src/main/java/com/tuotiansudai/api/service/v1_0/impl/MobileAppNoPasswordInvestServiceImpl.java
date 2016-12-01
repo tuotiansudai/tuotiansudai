@@ -17,7 +17,7 @@ public class MobileAppNoPasswordInvestServiceImpl implements MobileAppNoPassword
     private AccountMapper accountMapper;
 
     @Override
-    public BaseResponseDto getNoPasswordInvestData(BaseParamDto baseParamDto) {
+    public BaseResponseDto<NoPasswordInvestResponseDataDto> getNoPasswordInvestData(BaseParamDto baseParamDto) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         String loginName = baseParamDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);

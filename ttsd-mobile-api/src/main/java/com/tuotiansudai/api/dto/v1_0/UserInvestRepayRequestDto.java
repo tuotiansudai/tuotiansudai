@@ -1,10 +1,13 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.validation.constraints.Pattern;
 
 public class UserInvestRepayRequestDto extends BaseParamDto {
 
     @Pattern(regexp = "^\\d+$")
+    @ApiModelProperty(value = "投资ID", example = "")
     private String investId;
 
     public String getInvestId() {
