@@ -42,20 +42,20 @@ public class InvestServiceMockTest {
     }
 
     @Test
-    public void shouldIncrRedisTriggerWhenCallbackSuccess() {
+    public void shouldSendMessageWhenCallbackSuccess() {
         when(payAsyncClient.parseCallbackRequest(any(Map.class), anyString(), any(Class.class), any(Class.class))).thenReturn(new BaseCallbackRequestModel());
 
         investService.investCallback(null, null);
 
-        verify(mqWrapperClient, times(1)).sendMessage(MessageQueue.InvestCallback, null);
+        verify(mqWrapperClient, times(1)).sendMessage(MessageQueue.InvestCallback, "0");
     }
 
     @Test
-    public void shouldNotIncrTriggerWhenCallbackFail() {
+    public void shouldNotSendMessageWhenCallbackFail() {
         when(payAsyncClient.parseCallbackRequest(any(Map.class), anyString(), any(Class.class), any(Class.class))).thenReturn(null);
 
         investService.investCallback(null, null);
 
-        verify(mqWrapperClient, times(0)).sendMessage(MessageQueue.InvestCallback, null);
+        verify(mqWrapperClient, times(0)).sendMessage(MessageQueue.InvestCallback, "0");
     }
 }

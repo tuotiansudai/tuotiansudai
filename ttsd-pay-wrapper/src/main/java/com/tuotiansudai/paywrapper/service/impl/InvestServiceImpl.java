@@ -247,7 +247,7 @@ public class InvestServiceImpl implements InvestService {
         if (callbackRequest == null) {
             return null;
         }
-        mqWrapperClient.sendMessage(MessageQueue.InvestCallback, callbackRequest.getOrderId());
+        mqWrapperClient.sendMessage(MessageQueue.InvestCallback, String.valueOf(callbackRequest.getId()));
         return callbackRequest.getResponseData();
     }
 
