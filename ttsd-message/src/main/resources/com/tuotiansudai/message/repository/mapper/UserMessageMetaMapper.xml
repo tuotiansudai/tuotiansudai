@@ -84,8 +84,7 @@
     </select>
 
     <select id="findInvestsByLoanId" resultType="hashmap">
-        select id, login_name as loginName from invest where loan_id = #{loanId} and status = "SUCCESS" and id not in
-        (select transfer_invest_id from transfer_application where status = "SUCCESS")
+        select id, login_name as loginName from invest where loan_id = #{loanId} and status = "SUCCESS" and transfer_status != "SUCCESS"
     </select>
 
     <select id="findInvestRepayByInvestIdAndPeriod" resultType="hashmap">
