@@ -340,7 +340,7 @@ public class LoanCreateConsoleService {
         messageCompleteDto.setType(MessageType.MANUAL);
         messageCompleteDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
         messageCompleteDto.setChannels(Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
-        messageCompleteDto.setMessageCategory(MessageCategory.NOTIFY);
+        messageCompleteDto.setMessageCategory(MessageCategory.SYSTEM);
         messageCompleteDto.setWebUrl(MessageFormat.format("/loan-list", loanCreateRequestDto.getLoan().getId()));
         messageCompleteDto.setAppUrl(AppUrl.INVEST_NORMAL);
         messageCompleteDto.setJpush(true);
