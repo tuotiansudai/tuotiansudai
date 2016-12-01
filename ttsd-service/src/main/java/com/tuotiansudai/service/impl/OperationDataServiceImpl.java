@@ -283,16 +283,26 @@ public class OperationDataServiceImpl implements OperationDataService {
 
             //分别计算5个区间的人数
             for (Map.Entry<String, String> ageGroupDistributionEntry : ageGroupDistributionEntries) {
-                if(Integer.parseInt(ageGroupDistributionEntry.getKey()) < 20){
-                    totalUnder20UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
-                }else if(Integer.parseInt(ageGroupDistributionEntry.getKey()) >= 20 && Integer.parseInt(ageGroupDistributionEntry.getKey()) < 30){
-                    totalBETWEEN_20_AND_30UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
-                }else if(Integer.parseInt(ageGroupDistributionEntry.getKey()) >= 30 && Integer.parseInt(ageGroupDistributionEntry.getKey()) < 40){
-                    totalBETWEEN_30_AND_40UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
-                }else if(Integer.parseInt(ageGroupDistributionEntry.getKey()) >= 40 && Integer.parseInt(ageGroupDistributionEntry.getKey()) < 50){
-                    totalBETWEEN_40_AND_50UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
-                }else if(Integer.parseInt(ageGroupDistributionEntry.getKey()) >= 50){
-                    totalMORE_THAN_50UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
+                int ageStage = Integer.parseInt(ageGroupDistributionEntry.getKey())/10;
+                switch (ageStage){
+                    case 1:
+                        totalUnder20UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
+                        break;
+                    case 2:
+                        totalBETWEEN_20_AND_30UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
+                        break;
+                    case 3:
+                        totalBETWEEN_30_AND_40UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
+                        break;
+                    case 4:
+                        totalBETWEEN_40_AND_50UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
+                        break;
+                    case 5:
+                        totalBETWEEN_40_AND_50UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
+                        break;
+                    default:
+                        totalBETWEEN_40_AND_50UserCount += Long.parseLong(ageGroupDistributionEntry.getValue());
+
                 }
             }
             resultGroupMap.put(String.valueOf(AgeDistributionType.UNDER_20.getDescription()), String.valueOf(CalculateUtil.calculatePercentage(totalUnder20UserCount, totalUserCount, 1)));
