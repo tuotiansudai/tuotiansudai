@@ -140,11 +140,11 @@ public class MobileAppJPushClient {
         do {
             try {
                 Response response = httpClient.newCall(request).execute();
-                if (!HttpStatus.valueOf(response.code()).is2xxSuccessful()) {
+                if (HttpStatus.valueOf(response.code()).is2xxSuccessful()) {
                     return true;
                 }
                 logger.error(MessageFormat.format("[JPush] push is not 2xx (request={0}, code={1}, response={2}, tryTimes={3})",
-                        requestBody.toString(), response.code(), response.body().string(), String.valueOf(tryTimes)));
+                        payload.toJSON().toString(), response.code(), response.body().string(), String.valueOf(tryTimes)));
             } catch (IOException e) {
                 logger.error(MessageFormat.format("[JPush] push IOException (request={0}, tryTimes={3})", payload.toJSON().getAsString(), String.valueOf(tryTimes)), e);
             }
