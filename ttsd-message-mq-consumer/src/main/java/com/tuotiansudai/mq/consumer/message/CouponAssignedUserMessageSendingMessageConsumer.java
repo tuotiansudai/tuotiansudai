@@ -1,8 +1,7 @@
 package com.tuotiansudai.mq.consumer.message;
 
 import com.tuotiansudai.message.util.UserMessageEventGenerator;
-import com.tuotiansudai.mq.client.model.MessageTopicQueue;
-import com.tuotiansudai.mq.client.model.Queue;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +18,8 @@ public class CouponAssignedUserMessageSendingMessageConsumer implements MessageC
     private UserMessageEventGenerator userMessageEventGenerator;
 
     @Override
-    public Queue queue() {
-        return MessageTopicQueue.CouponAssigned_UserMessageSending;
+    public MessageQueue queue() {
+        return MessageQueue.CouponAssigned_UserMessageSending;
     }
 
     @Transactional
@@ -31,9 +30,9 @@ public class CouponAssignedUserMessageSendingMessageConsumer implements MessageC
             String[] msgParts = message.split(":");
             if (msgParts.length == 2) {
                 long userCouponId = Long.parseLong(msgParts[1]);
-                logger.info("[MQ] ready to consumer message: send user message on assigning coupon.");
+                logger.info("[MQ] ready to consume message: send user message on assigning coupon.");
                 userMessageEventGenerator.generateAssignCouponSuccessEvent(userCouponId);
-                logger.info("[MQ] consumer message success.");
+                logger.info("[MQ] consume message success.");
             }
         }
     }
