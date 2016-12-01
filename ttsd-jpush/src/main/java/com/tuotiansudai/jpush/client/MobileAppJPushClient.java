@@ -145,7 +145,7 @@ public class MobileAppJPushClient {
                 }
                 logger.error(MessageFormat.format("[JPush] push is not 2xx (request={0}, code={1}, response={2}, tryTimes={3})",
                         payload.toJSON().toString(), response.code(), response.body().string(), String.valueOf(tryTimes)));
-            } catch (IOException e) {
+            } catch (Exception e) {
                 logger.error(MessageFormat.format("[JPush] push IOException (request={0}, tryTimes={3})", payload.toJSON().getAsString(), String.valueOf(tryTimes)), e);
             }
         } while (++tryTimes < 4);
