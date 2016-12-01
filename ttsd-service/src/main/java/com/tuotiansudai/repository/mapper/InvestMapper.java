@@ -162,8 +162,10 @@ public interface InvestMapper {
                                 @Param(value = "endTime") Date endTime);
 
 
-    long sumInvestAmountIphone7(@Param(value = "startTime") Date startTime,
-                                @Param(value = "endTime") Date endTime);
+    long sumInvestAmountByLoginNameInvestTimeProductType(@Param(value = "loginName") String loginName,
+                                                        @Param(value = "startTime") Date startTime,
+                                                        @Param(value = "endTime") Date endTime,
+                                                         @Param(value = "productTypeList") List<ProductType> productTypeList);
 
     long sumSuccessInvestAmountByLoginName(@Param(value = "loanId") Long loanId, @Param(value = "loginName") String loginName);
 
@@ -253,14 +255,6 @@ public interface InvestMapper {
     long countInvestorSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
                                                 @Param(value = "startTime") Date startTime,
                                                 @Param(value = "endTime") Date endTime);
-
-    long sumSuccessInvestByInvestTimeAndLoginName(@Param(value = "loginName") String loginName,
-                                                @Param(value = "startTime") Date startTime,
-                                                @Param(value = "endTime") Date endTime);
-
-    List<InvestModel> countSuccessInvestByInvestTimeAndLoginName(@Param(value = "loginName") String loginName,
-                                                                @Param(value = "startTime") Date startTime,
-                                                                @Param(value = "endTime") Date endTime);
 
     List<InvestModel> findSuccessInvestByInvestTime(@Param(value = "loginName") String loginName,
                                                     @Param(value = "startTime") Date startTime,

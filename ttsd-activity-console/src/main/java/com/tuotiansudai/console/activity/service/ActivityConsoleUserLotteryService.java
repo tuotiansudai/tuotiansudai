@@ -10,10 +10,7 @@ import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.RechargeStatus;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +67,6 @@ public class ActivityConsoleUserLotteryService {
     private Date  activityChristmasEndTime;
 
     private static final String redisKey = "web:christmasTime:lottery:startTime";
-    private static final String redisHKey = "activityChristmasPrizeStartTime";
 
     public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile,final ActivityCategory prizeType,Integer index,Integer pageSize) {
         List<UserModel> userModels = userMapper.findUserModelByMobile(mobile,index, pageSize);
@@ -78,7 +74,8 @@ public class ActivityConsoleUserLotteryService {
         Iterator<UserLotteryTimeView> transform = Iterators.transform(userModels.iterator(), input -> {
             UserLotteryTimeView model = new UserLotteryTimeView(input.getMobile(),input.getLoginName());
             model.setUseCount(userLotteryPrizeMapper.findUserLotteryPrizeCountViews(input.getMobile(), null,prizeType, null, null));
-            model.setUnUseCount((findLotteryTime(model.getMobile(),prizeType) - model.getUseCount()));
+            int lotteryTimes = findLotteryTime(model.getMobile(),prizeType);
+            model.setUnUseCount((lotteryTimes - model.getUseCount()) < 0 ? 0 : (lotteryTimes - model.getUseCount()) );
             return model;
         });
 
@@ -110,23 +107,27 @@ public class ActivityConsoleUserLotteryService {
             case AUTUMN_PRIZE:
                 startTime = activityAutumnStartTime;
                 endTime = activityAutumnEndTime;
-                break;
+                return findLotteryTimeByAutumnAndNationalAndCarnival(userModel, startTime, endTime);
             case NATIONAL_PRIZE:
                 startTime = activityNationalStartTime;
                 endTime = activityNationalEndTime;
-                break;
+                return findLotteryTimeByAutumnAndNationalAndCarnival(userModel, startTime, endTime);
             case CARNIVAL_ACTIVITY:
                 startTime = DateTime.parse(carnivalTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
                 endTime = DateTime.parse(carnivalTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-                break;
+                return findLotteryTimeByAutumnAndNationalAndCarnival(userModel, startTime, endTime);
             case CHRISTMAS_ACTIVITY:
-                startTime = redisWrapperClient.exists(redisKey) ? DateTime.parse(redisWrapperClient.hget(redisKey, redisHKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate() : activityChristmasEndTime;
+                startTime = redisWrapperClient.exists(redisKey) ? DateTime.parse(redisWrapperClient.get(redisKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate() : activityChristmasEndTime;
                 endTime = activityChristmasEndTime;
-                break;
+                return findLotteryTimeByChristmas(userModel, startTime, endTime);
         }
+        return lotteryTime;
+    }
+
+    private int findLotteryTimeByAutumnAndNationalAndCarnival(UserModel userModel, Date startTime, Date endTime){
+        int lotteryTime = 0;
 
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime,endTime, userModel.getLoginName());
-
         for(UserModel referrerUserModel : userModels){
             if(referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)){
                 lotteryTime ++;
@@ -140,26 +141,58 @@ public class ActivityConsoleUserLotteryService {
             lotteryTime ++;
         }
 
-        if(activityCategory == ActivityCategory.CHRISTMAS_ACTIVITY){
-            long sumAmount = investMapper.sumSuccessInvestByInvestTimeAndLoginName(userModel.getLoginName(), startTime, endTime);
-            lotteryTime += (int)(sumAmount/200000);
-            lotteryTime = lotteryTime >= 10 ? 10 : lotteryTime;
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        if(accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)){
+            lotteryTime ++;
         }
-        else{
-            AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-            if(accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)){
-                lotteryTime ++;
-            }
 
-            BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
-            if(bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)){
-                lotteryTime ++;
-            }
+        BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
+        if(bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)){
+            lotteryTime ++;
+        }
 
-            if(rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime) > 0){
+        if(rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime) > 0){
+            lotteryTime ++;
+        }
+
+        if(investMapper.countInvestorSuccessInvestByInvestTime(userModel.getLoginName(), startTime, endTime) > 0){
+            lotteryTime ++;
+        }
+
+        return lotteryTime;
+    }
+
+
+    private int findLotteryTimeByChristmas(UserModel userModel, Date startTime, Date endTime){
+        int lotteryTime = 0;
+
+        List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(startTime,endTime, userModel.getLoginName());
+        for(UserModel referrerUserModel : userModels){
+            if(referrerUserModel.getRegisterTime().before(endTime) && referrerUserModel.getRegisterTime().after(startTime)){
                 lotteryTime ++;
+                if(investMapper.countInvestorSuccessInvestByInvestTime(referrerUserModel.getLoginName(),startTime,endTime) > 0){
+                    lotteryTime ++;
+                }
             }
         }
+
+        if(userModel.getRegisterTime().before(endTime) && userModel.getRegisterTime().after(startTime)){
+            lotteryTime ++;
+        }
+
+        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        if(accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)){
+            lotteryTime ++;
+        }
+
+        if(investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), startTime, endTime, null) > 0){
+            lotteryTime++;
+        }
+
+        long sumAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), startTime, endTime, Lists.newArrayList(ProductType._90, ProductType._180, ProductType._360));
+        lotteryTime += (int)(sumAmount/200000);
+
+        lotteryTime = lotteryTime >= 10 ? 10 : lotteryTime;
 
         return lotteryTime;
     }

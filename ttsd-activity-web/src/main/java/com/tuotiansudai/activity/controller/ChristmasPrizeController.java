@@ -43,8 +43,7 @@ public class ChristmasPrizeController {
     public ModelAndView christmas() {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/activities/christmas-day", "responsive", true);
-        //单笔投资满30000发一张0.5的加息券
-        christmasPrizeService.assignUserCoupon(loginName);
+
         Map param = christmasPrizeService.getActivityChristmasInvestAmountAndCount();
         long userInvestAmount = (long)param.get("investAmount");
 

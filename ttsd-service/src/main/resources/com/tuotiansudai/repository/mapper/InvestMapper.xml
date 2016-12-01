@@ -528,12 +528,21 @@
             and trading_time between #{startTime} and #{endTime}
     </select>
 
-    <select id="sumInvestAmountIphone7" parameterType="map" resultType="long">
+    <select id="sumInvestAmountByLoginNameInvestTimeProductType" parameterType="map" resultType="long">
         select IFNULL(sum(amount), 0) as amount
         from invest
-        where
-        status = 'SUCCESS'
-        and transfer_status != 'SUCCESS'
+        join loan on invest.loan_id = loan.id
+        where invest.status = 'SUCCESS'
+        and invest.transfer_status != 'SUCCESS'
+        <if test="loginName != null and loginName != '' ">
+            and invest.login_name = #{loginName}
+        </if>
+        <if test="productTypeList != null ">
+            and loan.product_type IN
+            <foreach collection="productTypeList" item="productType" open="(" separator="," close=")">
+                #{productType}
+            </foreach>
+        </if>
         and trading_time between #{startTime} and #{endTime}
     </select>
 
@@ -740,16 +749,6 @@
         <if test="loginName != null and loginName != '' ">
             and login_name = #{loginName}
         </if>
-    </select>
-
-    <select id="sumSuccessInvestByInvestTimeAndLoginName" parameterType="map" resultType="long">
-        select IFNULL(sum(invest.amount), 0) as sumAmount
-        from invest
-        join loan on invest.loan_id = loan.id
-        where invest.status = 'SUCCESS'
-        and invest_time BETWEEN #{startTime} and #{endTime}
-        and invest.login_name = #{loginName}
-        and loan.product_type in ('_90','_180','_360')
     </select>
 
     <select id="findWebTransferableApplicationPaginationByLoginName" useCache="false" parameterType="map"

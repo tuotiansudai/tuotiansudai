@@ -15,10 +15,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanDetailsModel;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -26,6 +23,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -68,38 +66,27 @@ public class ChristmasPrizeService {
     private Date activityChristmasEndTime;
 
     private static final String redisKey = "web:christmasTime:lottery:startTime";
-    private static final String redisHKey = "activityChristmasPrizeStartTime";
 
-    private static final long SINGLE_INVEST_AMOUNT = 3000000L;
-
-    private static final long COUPON_ID = 323L;
+    private static final long RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL_COUPON_ID = 324L;
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final int timeout = 60 * 60 * 24 * 20;
     //判断圣诞节活动二是否开启
     public int isStart(){
         long investAmount =  (long)getActivityChristmasInvestAmountAndCount().get("investAmount");
-        if(investAmount >= 420000000 && !redisWrapperClient.exists(redisKey))
-            redisWrapperClient.hset(redisKey, redisHKey, sdf.format(new Date()), timeout);
-        return investAmount >= 420000000 && redisWrapperClient.exists(redisKey) ? 1 : 0;
+        if(investAmount >= 420000000 && !redisWrapperClient.exists(redisKey) && activityChristmasEndTime.after(new Date()))
+            redisWrapperClient.setex(redisKey, timeout, sdf.format(new Date()));
+        return ((investAmount >= 420000000 && redisWrapperClient.exists(redisKey)) || (investAmount >= 420000000 && activityChristmasEndTime.before(new Date()))) ? 1 : 0;
     }
 
     public Date getChristmasPrizeStartTime(){
-        return redisWrapperClient.exists(redisKey) ? DateTime.parse(redisWrapperClient.hget(redisKey, redisHKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate() : activityChristmasEndTime;
-    }
-
-    //活动期间投资圣诞专享标单笔满30000元,奖励一张0.5%的加息劵
-    public void assignUserCoupon(String loginName){
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        if(userModel != null && userModel.getMobile() != null && getActivityChristmasInvestAmountByLoginName(loginName) >= SINGLE_INVEST_AMOUNT){
-            couponAssignmentService.assignUserCoupon(userModel.getMobile(), COUPON_ID);
-        }
+        return redisWrapperClient.exists(redisKey) ? DateTime.parse(redisWrapperClient.get(redisKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate() : activityChristmasEndTime;
     }
 
     public int getDrawPrizeTime(String mobile) {
         int lotteryTime = 0;
         if (redisWrapperClient.exists(redisKey)) {
-            Date activityChristmasPrizeStartTime = DateTime.parse(redisWrapperClient.hget(redisKey, redisHKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+            Date activityChristmasPrizeStartTime = DateTime.parse(redisWrapperClient.get(redisKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
             UserModel userModel = userMapper.findByMobile(mobile);
             if (userModel == null) {
                 return lotteryTime;
@@ -114,6 +101,10 @@ public class ChristmasPrizeService {
                 lotteryTime++;
             }
 
+            if(investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), activityChristmasPrizeStartTime, activityChristmasEndTime, null) > 0){
+                lotteryTime++;
+            }
+
             List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityChristmasPrizeStartTime, activityChristmasEndTime, userModel.getLoginName());
             for (UserModel referrerUserModel : userModels) {
                 if (referrerUserModel.getRegisterTime().before(activityChristmasEndTime) && referrerUserModel.getRegisterTime().after(activityChristmasPrizeStartTime)) {
@@ -125,7 +116,7 @@ public class ChristmasPrizeService {
             }
 
             //每满2000元均增加一次
-            long sumAmount = investMapper.sumSuccessInvestByInvestTimeAndLoginName(userModel.getLoginName(), activityChristmasPrizeStartTime, activityChristmasEndTime);
+            long sumAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), activityChristmasPrizeStartTime, activityChristmasEndTime, Lists.newArrayList(ProductType._90, ProductType._180, ProductType._360));
             lotteryTime += (int)(sumAmount/200000);
 
             lotteryTime = lotteryTime >= 10 ? 10 : lotteryTime;
@@ -138,6 +129,7 @@ public class ChristmasPrizeService {
         return lotteryTime;
     }
 
+    @Transactional
     public DrawLotteryResultDto drawLotteryPrize(String mobile){
         logger.debug(mobile + " is drawing the lottery prize.");
 
@@ -157,19 +149,18 @@ public class ChristmasPrizeService {
             return new DrawLotteryResultDto(2);//"该用户不存在！"
         }
 
+        userMapper.lockByLoginName(userModel.getLoginName());
         int drawTime = getDrawPrizeTime(mobile);
         if(drawTime <= 0){
             logger.debug(mobile + "is no chance. draw time:" + drawTime);
             return new DrawLotteryResultDto(1);//您暂无拆奖机会，赢取机会后再来抽奖吧！
         }
 
-        userMapper.lockByLoginName(userModel.getLoginName());
-
         LotteryPrize christmasPrize = lotteryDrawActivityService.lotteryDrawPrize(ActivityCategory.CHRISTMAS_ACTIVITY);
 
         PrizeType prizeType = PrizeType.CONCRETE;
         if(christmasPrize.equals(LotteryPrize.RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL)){
-            couponAssignmentService.assignUserCoupon(mobile, getCouponId(christmasPrize));
+            couponAssignmentService.assignUserCoupon(mobile, RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL_COUPON_ID);
             prizeType = PrizeType.VIRTUAL;
         }
 
@@ -180,14 +171,6 @@ public class ChristmasPrizeService {
                 DateTime.now().toDate(),
                 ActivityCategory.CHRISTMAS_ACTIVITY));
         return new DrawLotteryResultDto(0, christmasPrize.name(), prizeType.name(), christmasPrize.getDescription());
-    }
-
-    private long getCouponId(LotteryPrize lotteryPrize){
-        switch (lotteryPrize){
-            case RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL :
-                return 324;
-        }
-        return 0l;
     }
 
     public Map getActivityChristmasInvestAmountAndCount(){
@@ -211,19 +194,7 @@ public class ChristmasPrizeService {
         return param;
     }
 
-    public long getActivityChristmasInvestAmountByLoginName(String loginName){
-        List<InvestModel> investModels = investMapper.countSuccessInvestByInvestTimeAndLoginName(loginName, activityChristmasStartTime, activityChristmasEndTime);
-        List<Long> amountList = Lists.newArrayList();
-        for(InvestModel investModel: investModels){
-            LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(investModel.getLoanId());
-            if(loanDetailsModel != null && loanDetailsModel.isActivity() && loanDetailsModel.getActivityDesc().equals("圣诞专享")){
-                amountList.add(investModel.getAmount());
-            }
-        }
-        return amountList.size() > 0 ? amountList.parallelStream().max(((o1, o2) -> o1.compareTo(o2))).get() : 0;
-    }
-
     public boolean isFirstInvest(String loginName){
-        return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 0 ? true : false;
+        return investMapper.sumInvestAmountByLoginNameInvestTimeProductType(loginName, activityChristmasStartTime, activityChristmasEndTime, null)  > 0 ? true : false;
     }
 }
