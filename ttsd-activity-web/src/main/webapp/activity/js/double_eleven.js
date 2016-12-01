@@ -154,11 +154,11 @@ require(['jquery', 'underscore', 'layerWrapper', 'drawCircle', 'jquery.ajax.exte
         });
 
         //点击切换按钮
-        var menuCls=$rewardGiftBox.find('.menu-switch').find('span');
+        var menuCls=$rewardGiftBox.find('.lottery-right-group').find('h3 span');
         menuCls.on('click',function() {
             var $this=$(this),
                 index=$this.index(),
-                contentCls=$rewardGiftBox.find('.record-list ul');
+                contentCls=$rewardGiftBox.find('.record-item');
             $this.addClass('active').siblings().removeClass('active');
             contentCls.eq(index).show().siblings().hide();
 

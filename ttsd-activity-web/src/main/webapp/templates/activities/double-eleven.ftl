@@ -219,7 +219,7 @@
                             </h3>
                             <div class="record-group record-list">
                                 <ul class="record-item user-record" id="recordList"></ul>
-                                <ul class="record-item own-record" id="myRecord"></ul>
+                                <ul class="record-item own-record" id="myRecord" style="display: none"></ul>
 
                             </div>
                         </div>
