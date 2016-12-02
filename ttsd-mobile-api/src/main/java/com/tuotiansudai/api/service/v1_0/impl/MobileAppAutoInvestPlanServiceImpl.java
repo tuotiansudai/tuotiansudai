@@ -26,7 +26,7 @@ public class MobileAppAutoInvestPlanServiceImpl implements MobileAppAutoInvestPl
 
     @Override
     @Transactional
-    public BaseResponseDto buildAutoInvestPlan(AutoInvestPlanRequestDto autoInvestPlanRequestDto) {
+    public BaseResponseDto<AutoInvestPlanDataDto> buildAutoInvestPlan(AutoInvestPlanRequestDto autoInvestPlanRequestDto) {
         BaseResponseDto baseDto = new BaseResponseDto();
         String id = autoInvestPlanRequestDto.getAutoPlanId();
         String loginName = autoInvestPlanRequestDto.getBaseParam().getUserId();

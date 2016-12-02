@@ -4,12 +4,12 @@ import com.tuotiansudai.api.dto.v1_0.*;
 
 public interface MobileAppPointService {
 
-    BaseResponseDto signIn(BaseParamDto baseParamDto);
+    BaseResponseDto<SignInResponseDataDto> signIn(BaseParamDto baseParamDto);
 
-    BaseResponseDto getLastSignInTime(BaseParamDto baseParamDto);
+    BaseResponseDto<LastSignInTimeResponseDataDto> getLastSignInTime(BaseParamDto baseParamDto);
 
-    BaseResponseDto queryPointBillList(PointBillRequestDto pointBillRequestDto);
+    BaseResponseDto<PointBillResponseDataDto> queryPointBillList(PointBillRequestDto pointBillRequestDto);
 
-    BaseResponseDto queryPoint(BaseParamDto baseParamDto);
+    BaseResponseDto<PointResponseDataDto> queryPoint(BaseParamDto baseParamDto);
 
 }

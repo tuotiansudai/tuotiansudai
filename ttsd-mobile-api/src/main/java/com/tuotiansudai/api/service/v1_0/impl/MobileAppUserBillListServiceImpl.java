@@ -35,7 +35,7 @@ public class MobileAppUserBillListServiceImpl implements MobileAppUserBillListSe
             .build());
 
     @Override
-    public BaseResponseDto queryUserBillList(UserBillDetailListRequestDto userBillDetailListRequestDto) {
+    public BaseResponseDto<UserBillDetailListResponseDataDto> queryUserBillList(UserBillDetailListRequestDto userBillDetailListRequestDto) {
         BaseResponseDto dto = new BaseResponseDto();
         String loginName = userBillDetailListRequestDto.getUserId();
         Integer index = userBillDetailListRequestDto.getIndex();

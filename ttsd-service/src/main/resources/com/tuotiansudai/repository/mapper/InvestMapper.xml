@@ -759,9 +759,12 @@
         invest
         INNER JOIN
         loan ON invest.loan_id = loan.id
+        INNER JOIN
+        loan_details ld on invest.loan_id = ld.loan_id
         WHERE
         invest.login_name = #{loginName}
         AND loan.status = 'REPAYING'
+        AND ld.non_transferable = 0
         AND invest.status = 'SUCCESS'
         AND invest.transfer_status = 'TRANSFERABLE'
         AND invest.transfer_invest_id IS NULL
@@ -788,9 +791,12 @@
         invest
         INNER JOIN
         loan ON invest.loan_id = loan.id
+        INNER JOIN
+        loan_details ld on invest.loan_id = ld.loan_id
         WHERE
         invest.login_name = #{loginName}
         AND loan.status = 'REPAYING'
+        AND ld.non_transferable = 0
         AND invest.status = 'SUCCESS'
         AND invest.transfer_status = 'TRANSFERABLE'
         AND invest.transfer_invest_id IS NULL
@@ -825,9 +831,12 @@
         invest
         INNER JOIN
         loan ON invest.loan_id = loan.id
+        INNER JOIN
+        loan_details ld on invest.loan_id = ld.loan_id
         WHERE
         invest.login_name = #{loginName}
         AND loan.status = 'REPAYING'
+        AND ld.non_transferable = 0
         AND invest.status = 'SUCCESS'
         AND invest.transfer_status = 'TRANSFERABLE'
         AND invest.transfer_invest_id IS NULL
@@ -854,9 +863,12 @@
         invest
         INNER JOIN
         loan ON invest.loan_id = loan.id
+        INNER JOIN
+        loan_details ld on invest.loan_id = ld.loan_id
         WHERE
         invest.login_name = #{loginName}
         AND loan.status = 'REPAYING'
+        AND ld.non_transferable = 0
         AND invest.status = 'SUCCESS'
         AND invest.transfer_status = 'TRANSFERABLE'
         AND invest.transfer_invest_id IS NULL

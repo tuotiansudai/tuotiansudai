@@ -3,61 +3,56 @@ package com.tuotiansudai.api.dto.v1_0;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.AmountConverter;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.text.SimpleDateFormat;
 
 public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
-    /**
-     * 标的ID
-     */
+
+    /*** 标的ID */
+    @ApiModelProperty(value = "标的ID", example = "1111")
     private String loanId;
-    /**
-     * 标的名称
-     */
+    /*** 标的名称 */
+    @ApiModelProperty(value = "标的名称", example = "车辆抵押借款")
     private String loanName;
-    /**
-     * 标的状态
-     */
+    /*** 标的状态 */
+    @ApiModelProperty(value = "标的状态", example = "raising")
     private String loanStatus;
-    /**
-     * 标的状态描述
-     */
+    /*** 标的状态描述 */
+    @ApiModelProperty(value = "标的状态描述", example = "还款中")
     private String loanStatusDesc;
-    /**
-     * 投资ID
-     */
+    /*** 投资ID */
+    @ApiModelProperty(value = "投资ID", example = "1111")
     private String investId;
-    /**
-     * 投资金额
-     */
+    /*** 投资金额 */
+    @ApiModelProperty(value = "投资金额", example = "11")
     private String investMoney;
-    /**
-     * 投资时间
-     */
+    /*** 投资时间 */
+    @ApiModelProperty(value = "投资时间", example = "2016-11-23")
     private String investTime;
-    /**
-     * 投资状态
-     */
+    /*** 投资状态 */
+    @ApiModelProperty(value = "投资状态", example = "bid_success")
     private String investStatus;
-    /**
-     * 投资状态描述
-     */
+    /*** 投资状态描述 */
+    @ApiModelProperty(value = "投资状态描述", example = "投资成功")
     private String investStatusDesc;
-    /**
-     * 投资利率
-     */
+    /*** 投资利率 */
+    @ApiModelProperty(value = "投资利率", example = "10")
     private String investRate;
-    /**
-     * 投资总收益
-     */
+    /*** 投资总收益 */
+    @ApiModelProperty(value = "投资总收益", example = "1000")
     private String investInterest;
 
+    @ApiModelProperty(value = "产品线", example = "360天")
     private String loanType;
 
+    @ApiModelProperty(value = "债权转让状态", example = "")
     private String transferStatus;
 
+    @ApiModelProperty(value = "剩余期数", example = "1")
     private String leftPeriod;
 
+    @ApiModelProperty(value = "剩余天数", example = "30")
     private String leftDays;
 
     public UserInvestRecordResponseDataDto() {

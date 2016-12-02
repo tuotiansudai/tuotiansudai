@@ -2,12 +2,19 @@ package com.tuotiansudai.api.dto.v2_0;
 
 
 import com.tuotiansudai.repository.model.PledgeEnterpriseModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
 public class PledgeEnterpriseDto implements Serializable {
+
+    @ApiModelProperty(value = "地址", example = "beijing")
     private String pledgeLocation;
+
+    @ApiModelProperty(value = "估价", example = "10000")
     private String estimateAmount;
+
+    @ApiModelProperty(value = "担保人", example = "王拓天")
     private String guarantee;
 
     public PledgeEnterpriseDto(){}

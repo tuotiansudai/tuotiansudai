@@ -41,7 +41,7 @@ public class MobileAppUserMessageServiceImpl implements MobileAppUserMessageServ
     private PageValidUtils pageValidUtils;
 
     @Override
-    public BaseResponseDto getUserMessages(UserMessagesRequestDto requestDto) {
+    public BaseResponseDto<UserMessageResponseDataDto> getUserMessages(UserMessagesRequestDto requestDto) {
         String loginName = LoginUserInfo.getLoginName();
         userMessageServices.generateUserMessages(loginName, MessageChannel.APP_MESSAGE);
         UserMessageResponseDataDto messageDataDto = fillMessageDataDto(loginName, requestDto.getIndex(), requestDto.getPageSize());

@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface InvestNotifyRequestMapper extends BaseCallbackMapper {
 
+    InvestNotifyRequestModel findById(@Param(value = "id") long id);
+
     List<InvestNotifyRequestModel> getTodoList(@Param(value = "limitCount") int limitCount);
 
     void updateStatus(@Param(value = "id") Long id, @Param(value = "status") NotifyProcessStatus status);

@@ -60,7 +60,7 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
     }
 
     @Override
-    public BaseResponseDto invest(InvestRequestDto investRequestDto) {
+    public BaseResponseDto<InvestResponseDataDto> invest(InvestRequestDto investRequestDto) {
         BaseResponseDto<InvestResponseDataDto> responseDto = new BaseResponseDto<>();
         InvestDto investDto = convertInvestDto(investRequestDto);
         try {

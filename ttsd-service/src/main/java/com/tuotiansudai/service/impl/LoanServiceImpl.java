@@ -150,6 +150,7 @@ public class LoanServiceImpl implements LoanService {
             }
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
             loanListDto.setExtraSource(loanDetailsModel != null ? loanDetailsModel.getExtraSource() : null);
+            loanListDto.setNonTransferable(loanDetailsModel !=null ? loanDetailsModel.getNonTransferable():false);
             loanListDtos.add(loanListDto);
         }
         return loanListDtos;

@@ -1,9 +1,11 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerRegisterPersonMapper;
@@ -45,6 +47,9 @@ public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private PaySyncClient paySyncClient;
 
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
     @Override
     @Transactional
     public BaseDto<PayDataDto> register(RegisterAccountDto dto) {
@@ -78,6 +83,7 @@ public class RegisterServiceImpl implements RegisterService {
                 if (userRoleModels.stream().noneMatch(userRoleModel -> userRoleModel.getRole() == Role.INVESTOR)) {
                     userRoleMapper.create(Lists.newArrayList(new UserRoleModel(dto.getLoginName(), Role.INVESTOR)));
                 }
+                mqWrapperClient.sendMessage(MessageQueue.AccountRegistered_CompletePointTask, userModel.getLoginName());
             }
 
             dataDto.setStatus(responseModel.isSuccess());

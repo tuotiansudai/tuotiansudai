@@ -2,17 +2,26 @@ package com.tuotiansudai.api.dto.v2_0;
 
 
 import com.tuotiansudai.repository.model.LoanerDetailsModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
 public class LoanerDto implements Serializable {
+
+    @ApiModelProperty(value = "性别", example = "男")
     private String gender;
+
+    @ApiModelProperty(value = "年龄", example = "33")
     private Integer age;
+
+    @ApiModelProperty(value = "婚姻", example = "否")
     private String marriage;
+
+    @ApiModelProperty(value = "职业", example = "百度")
     private String employmentStatus;
+
+    @ApiModelProperty(value = "收入", example = "10000")
     private String income;
-    private String purpose;
-    private String overdueRate;
 
     public LoanerDto(LoanerDetailsModel model) {
         this.gender = model.getGender().getDescription();
@@ -20,7 +29,6 @@ public class LoanerDto implements Serializable {
         this.marriage = model.getMarriage().getDescription();
         this.employmentStatus = model.getEmploymentStatus();
         this.income = model.getIncome();
-        this.purpose = model.getPurpose();
     }
 
     public String getGender() {
@@ -61,21 +69,5 @@ public class LoanerDto implements Serializable {
 
     public void setIncome(String income) {
         this.income = income;
-    }
-
-    public String getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
-    }
-
-    public String getOverdueRate() {
-        return overdueRate;
-    }
-
-    public void setOverdueRate(String overdueRate) {
-        this.overdueRate = overdueRate;
     }
 }

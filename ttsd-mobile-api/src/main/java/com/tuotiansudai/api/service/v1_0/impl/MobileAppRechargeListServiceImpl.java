@@ -21,7 +21,7 @@ public class MobileAppRechargeListServiceImpl implements MobileAppRechargeListSe
     private PageValidUtils pageValidUtils;
 
     @Override
-    public BaseResponseDto generateRechargeList(RechargeListRequestDto requestDto) {
+    public BaseResponseDto<RechargeListResponseDataDto> generateRechargeList(RechargeListRequestDto requestDto) {
         Integer index = requestDto.getIndex();
         Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
         Integer offset = (index-1)*pageSize;

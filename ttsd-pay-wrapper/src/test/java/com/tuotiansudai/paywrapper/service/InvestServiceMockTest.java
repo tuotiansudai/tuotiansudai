@@ -1,7 +1,7 @@
 package com.tuotiansudai.paywrapper.service;
 
-import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.job.InvestCallbackJob;
+import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.service.impl.InvestServiceImpl;
@@ -34,7 +34,7 @@ public class InvestServiceMockTest {
     private PayAsyncClient payAsyncClient;
 
     @Mock
-    RedisWrapperClient redisWrapperClient;
+    MQWrapperClient mqWrapperClient;
 
     @Before
     public void init() {
@@ -42,20 +42,20 @@ public class InvestServiceMockTest {
     }
 
     @Test
-    public void shouldIncrRedisTriggerWhenCallbackSuccess() {
+    public void shouldSendMessageWhenCallbackSuccess() {
         when(payAsyncClient.parseCallbackRequest(any(Map.class), anyString(), any(Class.class), any(Class.class))).thenReturn(new BaseCallbackRequestModel());
 
         investService.investCallback(null, null);
 
-        verify(redisWrapperClient, times(1)).incr(InvestCallbackJob.INVEST_JOB_TRIGGER_KEY);
+        verify(mqWrapperClient, times(1)).sendMessage(MessageQueue.InvestCallback, "0");
     }
 
     @Test
-    public void shouldNotIncrTriggerWhenCallbackFail() {
+    public void shouldNotSendMessageWhenCallbackFail() {
         when(payAsyncClient.parseCallbackRequest(any(Map.class), anyString(), any(Class.class), any(Class.class))).thenReturn(null);
 
         investService.investCallback(null, null);
 
-        verify(redisWrapperClient, times(0)).incr(InvestCallbackJob.INVEST_JOB_TRIGGER_KEY);
+        verify(mqWrapperClient, times(0)).sendMessage(MessageQueue.InvestCallback, "0");
     }
 }

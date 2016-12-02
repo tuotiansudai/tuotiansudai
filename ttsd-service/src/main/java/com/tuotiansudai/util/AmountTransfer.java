@@ -58,7 +58,7 @@ public class AmountTransfer {
         long freeze = accountModel.getFreeze();
         if (freeze < amount) {
             String template = "Unfreeze Failed (orderId = {0}): {1} freeze {2} is less than amount {3}";
-            throw new UnfreezeAmountException(MessageFormat.format(template, String.valueOf(orderId), loginName, String.valueOf(balance), String.valueOf(amount)));
+            throw new UnfreezeAmountException(MessageFormat.format(template, String.valueOf(orderId), loginName, String.valueOf(freeze), String.valueOf(amount)));
         }
 
         balance += amount;
