@@ -187,24 +187,6 @@ public class RepayServiceTest {
         return investRepayModel;
     }
 
-    private CouponModel fakeCouponModel(){
-        CouponModel couponModel = new CouponModel();
-        couponModel.setAmount(1000L);
-        couponModel.setActivatedBy("couponTest");
-        couponModel.setActive(false);
-        couponModel.setCreatedTime(new Date());
-        couponModel.setEndTime(new Date());
-        couponModel.setDeadline(10);
-        couponModel.setStartTime(new Date());
-        couponModel.setCreatedBy("couponTest");
-        couponModel.setTotalCount(1000L);
-        couponModel.setUsedCount(500L);
-        couponModel.setInvestLowerLimit(10000L);
-        couponModel.setCouponType(CouponType.INVEST_COUPON);
-        couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180));
-        return couponModel;
-    }
-
     private InvestModel getFakeInvestModel(long loanId,String loginName,TransferStatus transferStatus) {
         InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
