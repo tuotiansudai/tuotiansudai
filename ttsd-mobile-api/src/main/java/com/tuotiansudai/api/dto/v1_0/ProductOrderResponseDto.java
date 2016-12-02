@@ -2,17 +2,22 @@ package com.tuotiansudai.api.dto.v1_0;
 
 
 import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.text.SimpleDateFormat;
 
 public class ProductOrderResponseDto {
 
+    @ApiModelProperty(value = "商品id", example = "1")
     private String productId;
 
+    @ApiModelProperty(value = "商品名称", example = "会员")
     private String productName;
 
+    @ApiModelProperty(value = "商品数量", example = "199")
     private String productNum;
 
+    @ApiModelProperty(value = "兑换时间", example = "2016-11-15 14:03:01")
     private String orderTime;
 
     public ProductOrderResponseDto(ProductOrderViewDto productOrderViewDto) {

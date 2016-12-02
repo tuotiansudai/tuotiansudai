@@ -49,7 +49,7 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
-    public BaseResponseDto queryFundByUserId(String userId) {
+    public BaseResponseDto<FundManagementResponseDataDto> queryFundByUserId(String userId) {
         AccountModel accountModel = accountMapper.findByLoginName(userId);
         long accountBalance = 0L;
         long frozenMoney = 0L;

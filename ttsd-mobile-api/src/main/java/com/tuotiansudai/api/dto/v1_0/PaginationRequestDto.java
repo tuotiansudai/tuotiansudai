@@ -1,7 +1,5 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
-
 public class PaginationRequestDto extends BaseParamDto {
     private Integer index;
     private Integer pageSize;

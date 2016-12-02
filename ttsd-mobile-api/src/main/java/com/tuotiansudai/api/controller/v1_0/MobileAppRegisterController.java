@@ -3,6 +3,8 @@ package com.tuotiansudai.api.controller.v1_0;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppRegisterService;
 import com.tuotiansudai.api.util.CommonUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,13 +17,15 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@Api(description = "用户推荐的统计")
 public class MobileAppRegisterController extends MobileAppBaseController {
 
     @Autowired
     private MobileAppRegisterService mobileAppRegisterService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public BaseResponseDto registerUser(@Valid @RequestBody RegisterRequestDto registerRequestDto, BindingResult bindingResult) {
+    @ApiOperation("用户推荐的统计")
+    public BaseResponseDto<RegisterResponseDataDto> registerUser(@Valid @RequestBody RegisterRequestDto registerRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<String> errorList = (List) bindingResult.getAllErrors();
             //当验证的用户名和密码同时错误时
@@ -38,6 +42,7 @@ public class MobileAppRegisterController extends MobileAppBaseController {
     }
 
     @RequestMapping(value = "/register/sendsms", method = RequestMethod.POST)
+    @ApiOperation("发送验证码")
     public BaseResponseDto sendRegisterByMobileNumberSMS(@RequestBody SendSmsRequestDto sendSmsRequestDto, HttpServletRequest request) {
         String mobileNumber = sendSmsRequestDto.getPhoneNum();
         String remoteIp = CommonUtils.getRemoteHost(request);
@@ -45,6 +50,7 @@ public class MobileAppRegisterController extends MobileAppBaseController {
     }
 
     @RequestMapping(value = "/get/mobile-is-available", method = RequestMethod.POST)
+    @ApiOperation("验证手机号是否已注册")
     public BaseResponseDto mobileNumberExist(@RequestBody MobileIsAvailableRequestDto requestDto) {
         return mobileAppRegisterService.mobileNumberIsExist(requestDto);
     }

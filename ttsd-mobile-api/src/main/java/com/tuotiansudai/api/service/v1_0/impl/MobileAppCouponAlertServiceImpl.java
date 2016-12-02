@@ -20,8 +20,8 @@ public class MobileAppCouponAlertServiceImpl implements MobileAppCouponAlertServ
     private CouponAlertService couponAlertService;
 
     @Override
-    public BaseResponseDto getCouponAlert(BaseParamDto baseParamDto) {
-        BaseResponseDto baseDto = new BaseResponseDto();
+    public BaseResponseDto<CouponAlertResponseDataDto> getCouponAlert(BaseParamDto baseParamDto) {
+        BaseResponseDto<CouponAlertResponseDataDto> baseDto = new BaseResponseDto();
         String loginName = baseParamDto.getBaseParam().getUserId();
         CouponAlertDto couponAlertDto = couponAlertService.getCouponAlert(loginName, Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE));
         baseDto.setCode(ReturnMessage.SUCCESS.getCode());

@@ -5,7 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.*;
 
 public interface MobileAppUserMessageService {
 
-    BaseResponseDto getUserMessages(UserMessagesRequestDto requestDto);
+    BaseResponseDto<UserMessageResponseDataDto> getUserMessages(UserMessagesRequestDto requestDto);
 
     BaseResponseDto<MobileAppUnreadMessageCount> getUnreadMessageCount(BaseParamDto baseParamDto);
 

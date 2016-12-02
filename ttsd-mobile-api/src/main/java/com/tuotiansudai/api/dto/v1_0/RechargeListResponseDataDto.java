@@ -1,5 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 public class RechargeListResponseDataDto extends BaseResponseDataDto {
@@ -7,6 +9,7 @@ public class RechargeListResponseDataDto extends BaseResponseDataDto {
     private Integer pageSize;
     private Integer totalCount;
 
+    @ApiModelProperty(value = "充值记录列表", example = "list")
     private List<RechargeDetailResponseDataDto> rechargeList;
 
     public Integer getIndex() {

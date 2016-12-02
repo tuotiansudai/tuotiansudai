@@ -1,5 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 public class NodeListResponseDataDto extends BaseResponseDataDto {
@@ -7,6 +9,8 @@ public class NodeListResponseDataDto extends BaseResponseDataDto {
     private Integer pageSize;
     private Integer totalCount;
     private String termId;
+
+    @ApiModelProperty(value = "文章列表", example = "list")
     private List<NodeDetailResponseDataDto> nodeList;
 
     public Integer getIndex() {

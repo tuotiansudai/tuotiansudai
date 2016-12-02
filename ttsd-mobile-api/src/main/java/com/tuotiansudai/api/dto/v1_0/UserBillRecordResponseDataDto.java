@@ -1,14 +1,29 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.enums.UserBillBusinessType;
+import io.swagger.annotations.ApiModelProperty;
 
 public class UserBillRecordResponseDataDto extends BaseResponseDataDto{
+
+    @ApiModelProperty(value = "时间", example = "2016-11-25 16:27:01")
     private String time;
+
+    @ApiModelProperty(value = "账单类型", example = "RECHARGE_SUCCESS")
     private String typeInfo;
+
+    @ApiModelProperty(value = "金额", example = "100")
     private String money;
+
+    @ApiModelProperty(value = "余额", example = "100")
     private String balance;
+
+    @ApiModelProperty(value = "冻结金额", example = "0")
     private String frozenMoney;
+
+    @ApiModelProperty(value = "明细", example = "可用余额转入")
     private String detail;
+
+    @ApiModelProperty(value = "账单描述", example = "充值成功")
     private String typeInfoDesc;
 
     public String getTime() {

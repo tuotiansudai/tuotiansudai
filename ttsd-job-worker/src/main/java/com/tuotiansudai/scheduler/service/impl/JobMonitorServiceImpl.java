@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.job.*;
+import com.tuotiansudai.job.AdvanceRepayCallbackJob;
+import com.tuotiansudai.job.CouponRepayNotifyCallbackJob;
+import com.tuotiansudai.job.ExtraRateInvestCallbackJob;
+import com.tuotiansudai.job.NormalRepayCallbackJob;
 import com.tuotiansudai.scheduler.repository.mapper.ExecutionLogMapper;
 import com.tuotiansudai.scheduler.repository.model.ExecuteStatus;
 import com.tuotiansudai.scheduler.repository.model.ExecutionLogModel;
@@ -20,7 +23,6 @@ import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class JobMonitorServiceImpl implements JobMonitorService {
@@ -44,7 +46,6 @@ public class JobMonitorServiceImpl implements JobMonitorService {
 
     public JobMonitorServiceImpl() {
         ignoredJobClasses = Arrays.asList(
-                InvestCallbackJob.class,
                 NormalRepayCallbackJob.class,
                 AdvanceRepayCallbackJob.class,
                 CouponRepayNotifyCallbackJob.class,
