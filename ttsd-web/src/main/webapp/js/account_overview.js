@@ -1,4 +1,4 @@
-require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrapper'], function ($) {
+require(['jquery', 'load_echarts','layerWrapper','jquery.ajax.extension'], function ($,loadEcharts,layer) {
     $(function () {
     var $tMonthBox=$('#tMonthBox'),
         $signBtn = $('#signBtn'),
@@ -14,13 +14,18 @@ require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrappe
             $('table',$tMonthBox).eq(num).show().siblings('table').hide();
         });
 
-        var data = [{ name: '可用金额', value: pydata.balance },
-                { name: '待收投资本金', value: pydata.collectingPrincipal },
-                { name: '待收预期收益', value: pydata.collectingInterest}],
-         option = MyChartsObject.ChartOptionTemplates.Pie(data,'YTTTTT'),
-         container = $("#ReportShow")[0],
-         opt = MyChartsObject.ChartConfig(container, option);
-        MyChartsObject.Charts.RenderChart(opt);
+        // 资产总额饼状图报表
+        (function(loadEcharts) {
+
+            var data = [{ name: '可用金额', value: pydata.balance },
+                    { name: '待收投资本金', value: pydata.collectingPrincipal },
+                    { name: '待收预期收益', value: pydata.collectingInterest}];
+
+            var option = loadEcharts.optionCategory.PieOption(data),
+             container =globalFun.$('#ReportShow'),
+             opt = loadEcharts.ChartConfig(container, option);
+            loadEcharts.RenderChart(opt);
+        })(loadEcharts);
 
 
         tipshow('#tMonthBox','.month-title',6);
