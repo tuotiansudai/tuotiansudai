@@ -8,6 +8,7 @@ import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanDetailsModel;
 import com.tuotiansudai.repository.model.TransferStatus;
 import org.joda.time.DateTime;
@@ -70,13 +71,13 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
 
         consumer.consume(String.valueOf(investId));
 
-        verify(couponAssignmentService, times(1)).assign(any(), anyLong(), any());
+        verify(couponAssignmentService, times(1)).assign(anyString(), anyLong(), any());
         verify(mqClient, times(1)).sendMessage(any(), any());
 
         assertEquals("test123", loginNameCaptor.getValue());
         assertEquals(investId, investIdCaptor.getValue().longValue());
         assertEquals(loanId, loanIdCaptor.getValue().longValue());
-        assertEquals(MessageQueue.InvestSuccess_ActivityReward, messageQueueCaptor.getValue());
+        assertEquals(MessageQueue.CouponAssigned_UserMessageSending, messageQueueCaptor.getValue());
         assertEquals(String.format("UserCoupon:%d", userCouponId), messageCaptor.getValue());
     }
 
@@ -93,6 +94,7 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
         investModel.setLoanId(loanId);
         investModel.setAmount(3200000);
         investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
+        investModel.setStatus(InvestStatus.SUCCESS);
         return investModel;
     }
 
