@@ -6,7 +6,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
 
         var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc','nonTransferable'];
 
-        var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus'];
+        var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus', 'purpose'];
 
         var loanerEnterpriseDetailsParam = ['juristicPerson', 'shareholder', 'address', 'purpose'];
 
