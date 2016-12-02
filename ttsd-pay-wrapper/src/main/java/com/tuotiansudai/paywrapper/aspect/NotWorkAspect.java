@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.aspect;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDataDto;
@@ -109,7 +110,7 @@ public class NotWorkAspect {
         if (null == notWorkModel) {
             UserModel userModel = userMapper.findByLoginName(loginName);
             if (null != userModel) {
-                notWorkModel = new NotWorkModel(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile(), false);
+                notWorkModel = new NotWorkModel(userModel.getLoginName(), userModel.getUserName(), userModel.getMobile(), false, ActivityCategory.NO_WORK_ACTIVITY);
                 notWorkModel = updateModelProducer.createAction(notWorkModel);
                 notWorkMapper.create(notWorkModel);
             } else {

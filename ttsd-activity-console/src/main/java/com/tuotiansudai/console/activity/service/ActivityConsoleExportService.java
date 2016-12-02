@@ -210,12 +210,12 @@ public class ActivityConsoleExportService {
 
     }
 
-    public List<List<String>> buildNotWorkCsvList() {
+    public List<List<String>> buildNotWorkCsvList(String mobile, ActivityCategory activityCategory) {
         //全部导出
         final int index = 1;
         final int pageSize = 1000000;
 
-        List<NotWorkDto> notWorkDtos = activityConsoleNotWorkService.findNotWorkPagination(index, pageSize).getRecords();
+        List<NotWorkDto> notWorkDtos = activityConsoleNotWorkService.findNotWorkPagination(mobile, activityCategory, index, pageSize).getRecords();
 
         return notWorkDtos.stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }

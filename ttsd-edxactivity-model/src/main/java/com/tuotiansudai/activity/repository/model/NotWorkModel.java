@@ -10,15 +10,17 @@ public class NotWorkModel implements Serializable {
     private long investAmount;
     private long recommendedInvestAmount;
     private boolean sendCoupon;
+    private ActivityCategory activityCategory;
 
     public NotWorkModel() {
     }
 
-    public NotWorkModel(String loginName, String userName, String mobile, boolean sendCoupon) {
+    public NotWorkModel(String loginName, String userName, String mobile, boolean sendCoupon, ActivityCategory activityCategory) {
         this.loginName = loginName;
         this.userName = userName;
         this.mobile = mobile;
         this.sendCoupon = sendCoupon;
+        this.activityCategory = activityCategory;
     }
 
     public long getId() {
@@ -75,5 +77,13 @@ public class NotWorkModel implements Serializable {
 
     public void setSendCoupon(boolean sendCoupon) {
         this.sendCoupon = sendCoupon;
+    }
+
+    public ActivityCategory getActivityCategory() {
+        return activityCategory;
+    }
+
+    public void setActivityCategory(ActivityCategory activityCategory) {
+        this.activityCategory = activityCategory;
     }
 }

@@ -55,9 +55,6 @@ public class InvestMapperTest {
     @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
     private List<String> heroRankingActivityPeriod;
 
-    @Autowired
-    private LoanDetailsMapper loanDetailsMapper;
-
     private String User_ID = "helloworld1";
     private String User_ID2 = "fakeInvestUser1";
     private long Loan_ID = 200093023L;

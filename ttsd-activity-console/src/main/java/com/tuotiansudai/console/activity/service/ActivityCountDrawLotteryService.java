@@ -22,7 +22,7 @@ import java.util.List;
 
 
 @Service
-public abstract class ActivityCountDrawLotteryService {
+public class ActivityCountDrawLotteryService {
 
     @Autowired
     private UserMapper userMapper;
@@ -57,8 +57,8 @@ public abstract class ActivityCountDrawLotteryService {
     @Value("#{'${activity.carnival.period}'.split('\\~')}")
     private List<String> carnivalTime = Lists.newArrayList();
 
-    @Value("#{'${activity.new.years.period}'.split('\\~')}")
-    private List<String> newYearsTime = Lists.newArrayList();
+    @Value("#{'${activity.annual.period}'.split('\\~')}")
+    private List<String> annualTime = Lists.newArrayList();
 
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
@@ -169,7 +169,7 @@ public abstract class ActivityCountDrawLotteryService {
             case CARNIVAL_ACTIVITY:
                 return DateTime.parse(carnivalTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
             case ANNUAL_ACTIVITY:
-                return DateTime.parse(newYearsTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+                return DateTime.parse(annualTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         }
         return null;
     }
@@ -183,7 +183,7 @@ public abstract class ActivityCountDrawLotteryService {
             case CARNIVAL_ACTIVITY:
                 return DateTime.parse(carnivalTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
             case ANNUAL_ACTIVITY:
-                return DateTime.parse(newYearsTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+                return DateTime.parse(annualTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         }
         return null;
     }

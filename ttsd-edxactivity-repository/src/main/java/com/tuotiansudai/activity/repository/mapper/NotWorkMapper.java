@@ -1,5 +1,6 @@
 package com.tuotiansudai.activity.repository.mapper;
 
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,7 +13,10 @@ public interface NotWorkMapper {
 
     NotWorkModel findByLoginName(@Param(value = "loginName") String loginName);
 
-    List<NotWorkModel> findPagination(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+    List<NotWorkModel> findPagination(@Param(value = "mobile") String mobile,
+                                      @Param(value = "activityCategory") ActivityCategory activityCategory,
+                                      @Param(value = "index") int index,
+                                      @Param(value = "pageSize") int pageSize);
 
     long findAllCount();
 }

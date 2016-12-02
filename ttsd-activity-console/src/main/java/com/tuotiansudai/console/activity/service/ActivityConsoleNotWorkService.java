@@ -2,8 +2,11 @@ package com.tuotiansudai.console.activity.service;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.dto.NotWorkDto;
 import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -35,7 +38,7 @@ public class ActivityConsoleNotWorkService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.notWork.endTime}\")}")
     private Date activityEndTime;
 
-    final private Map<Long, String> rewardMap = new HashMap<Long, String>() {{
+    final private Map<Long, String> noWorkRewardMap = new HashMap<Long, String>() {{
         put(300000L, "20元红包");
         put(800000L, "30元话费");
         put(3000000L, "京东E卡");
@@ -48,15 +51,31 @@ public class ActivityConsoleNotWorkService {
         put(120000000L, "Apple MacBook Air笔记本电脑");
     }};
 
-    public BasePaginationDataDto<NotWorkDto> findNotWorkPagination(int index, int pageSize) {
-        insertOnlyRegisterOrIdentityData();
+    final private Map<Long, String> annualRewardMap = new HashMap<Long, String>() {{
+        put(500000L, "20元红包");
+        put(1000000L, "爱奇艺会员月卡");
+        put(2000000L, "报销50元电影票");
+        put(3000000L, "50元话费  ");
+        put(5000000L, "100元中国石化加油卡");
+        put(10000000L, "报销300元火车票");
+        put(20000000L, "700元京东E卡");
+        put(30000000L, "800元红包（50元激活");
+        put(50000000L, "1600元芒果卡");
+        put(70000000L, "小米手机5");
+    }};
 
+    public BasePaginationDataDto<NotWorkDto> findNotWorkPagination(String mobile, ActivityCategory activityCategory, int index, int pageSize) {
+        if(activityCategory.equals(ActivityCategory.NO_WORK_ACTIVITY)){
+            insertOnlyRegisterOrIdentityData();
+        }
+
+        Map<Long, String> rewardRecord = getRewardMap(activityCategory);
         long count = notWorkMapper.findAllCount();
-        List<NotWorkModel> notWorkModels = notWorkMapper.findPagination(PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        List<NotWorkModel> notWorkModels = notWorkMapper.findPagination(mobile, activityCategory, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
         List<NotWorkDto> records = notWorkModels.stream().map(notWorkModel -> {
             NotWorkDto notWorkDto = new NotWorkDto(notWorkModel);
             List<String> rewardList = new ArrayList<>();
-            rewardMap.forEach((k, v) -> {
+            rewardRecord.forEach((k, v) -> {
                 if (k <= notWorkModel.getInvestAmount()) {
                     rewardList.add(v);
                 }
@@ -89,14 +108,21 @@ public class ActivityConsoleNotWorkService {
         }
         for (String loginName : referrers) {
             NotWorkModel existedNotWorkModel = notWorkMapper.findByLoginName(loginName);
-            if(null != existedNotWorkModel) {
+            if (null != existedNotWorkModel) {
                 continue;
             }
             UserModel userModel = userMapper.findByLoginName(loginName);
             if (null != userModel) {
-                NotWorkModel notWorkModel = new NotWorkModel(loginName, userModel.getUserName(), userModel.getMobile(), false);
+                NotWorkModel notWorkModel = new NotWorkModel(loginName, userModel.getUserName(), userModel.getMobile(), false, ActivityCategory.NO_WORK_ACTIVITY);
                 notWorkMapper.create(notWorkModel);
             }
         }
+    }
+
+    private Map<Long, String> getRewardMap(ActivityCategory activityCategory) {
+        return Maps.newHashMap(ImmutableMap.<ActivityCategory, Map<Long, String>>builder()
+                .put(ActivityCategory.NO_WORK_ACTIVITY, noWorkRewardMap)
+                .put(ActivityCategory.ANNUAL_ACTIVITY, annualRewardMap)
+                .build()).get(activityCategory);
     }
 }

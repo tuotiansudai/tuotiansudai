@@ -62,7 +62,7 @@ public enum LotteryPrize {
     RED_ENVELOPE_3("3.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,5),
     RED_ENVELOPE_18("18.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,45),
     RED_ENVELOPE_8("8.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,45),
-    INTEREST_COUPON_2_NEW_YEARS("迷你冰箱",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,2);
+    INTEREST_COUPON_2_NEW_YEARS("0.2加息券",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,2);
 
 
     String description;
