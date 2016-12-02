@@ -8,6 +8,7 @@ import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanDetailsModel;
 import com.tuotiansudai.repository.model.TransferStatus;
 import org.joda.time.DateTime;
@@ -67,7 +68,7 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
         Date nowDate = DateTime.now().toDate();
         InvestModel investModel = investMapper.findById(investId);
         if(investModel == null){
-            logger.info("[MQ] query invest by investId is not exists {}.", investId);
+            logger.error("[MQ] query invest by investId is not exists {}.", investId);
             return;
         }
 
@@ -78,14 +79,14 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
         }
 
         logger.info("[MQ] ready to consume activity message: assigning coupon.");
-        if (investModel.getTransferStatus() != TransferStatus.SUCCESS
-                && (activityChristmasStartTime.before(nowDate) && activityChristmasEndTime.after(nowDate))
+        if ((activityChristmasStartTime.before(nowDate) && activityChristmasEndTime.after(nowDate))
                 && loanDetailsModel.isActivity() && loanDetailsModel.getActivityDesc().equals(LOAN_ACTIVITY_DESCRIPTION)
+                && (investModel.getTransferStatus() != TransferStatus.SUCCESS && investModel.getStatus() == InvestStatus.SUCCESS)
                 && investModel.getAmount() >= INVEST_LIMIT) {
             UserCouponModel userCoupon = couponAssignmentService.assign(investModel.getLoginName(), INTEREST_COUPON_OF_ZERO_5_PERCENT_COUPON_ID, null);
             if (userCoupon != null) {
                 logger.info("[MQ] assigning activity coupon success, begin publish message.");
-                mqClient.sendMessage(MessageQueue.InvestSuccess_ActivityReward, "UserCoupon:" + userCoupon.getId());
+                mqClient.sendMessage(MessageQueue.CouponAssigned_UserMessageSending, "UserCoupon:" + userCoupon.getId());
             } else {
                 logger.info("[MQ] no user activity coupon assign.");
             }

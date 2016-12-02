@@ -26,9 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ChristmasPrizeService {
@@ -69,14 +67,16 @@ public class ChristmasPrizeService {
 
     private static final long RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL_COUPON_ID = 324L;
 
+    public static final long CHRISTMAS_ACTIVITY_2_START_MIN_AMOUNT = 420000000;
+
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final int timeout = 60 * 60 * 24 * 20;
     //判断圣诞节活动二是否开启
     public int isStart(){
         long investAmount =  (long)getActivityChristmasInvestAmountAndCount().get("investAmount");
-        if(investAmount >= 420000000 && !redisWrapperClient.exists(redisKey) && activityChristmasEndTime.after(new Date()))
+        if(investAmount >= CHRISTMAS_ACTIVITY_2_START_MIN_AMOUNT && !redisWrapperClient.exists(redisKey) && activityChristmasEndTime.after(new Date()))
             redisWrapperClient.setex(redisKey, timeout, sdf.format(new Date()));
-        return ((investAmount >= 420000000 && redisWrapperClient.exists(redisKey)) || (investAmount >= 420000000 && activityChristmasEndTime.before(new Date()))) ? 1 : 0;
+        return ((investAmount >= CHRISTMAS_ACTIVITY_2_START_MIN_AMOUNT && redisWrapperClient.exists(redisKey)) || (investAmount >= CHRISTMAS_ACTIVITY_2_START_MIN_AMOUNT && activityChristmasEndTime.before(new Date()))) ? 1 : 0;
     }
 
     public Date getChristmasPrizeStartTime(){
@@ -177,24 +177,20 @@ public class ChristmasPrizeService {
         List<InvestModel> investModels = investMapper.countSuccessInvestByInvestTime(null, activityChristmasStartTime, activityChristmasEndTime);
         Map<String,Object> param = Maps.newConcurrentMap();
         long amount = 0l;
-        long count = 0l;
-        Map<String,String> userMap = Maps.newConcurrentMap();
+        Set userSet = new HashSet();
         for(InvestModel investModel : investModels){
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(investModel.getLoanId());
             if(loanDetailsModel != null && loanDetailsModel.isActivity() && loanDetailsModel.getActivityDesc().equals("圣诞专享")){
                 amount += investModel.getAmount();
-                if(userMap.get(investModel.getLoginName()) == null){
-                    userMap.put(investModel.getLoginName(),investModel.getLoginName());
-                    count ++;
-                }
+                userSet.add(investModel.getLoginName());
             }
         }
         param.put("investAmount",amount);
-        param.put("investCount",count);
+        param.put("investCount",userSet.size());
         return param;
     }
 
-    public boolean isFirstInvest(String loginName){
+    public boolean isFinishInvest(String loginName){
         return investMapper.sumInvestAmountByLoginNameInvestTimeProductType(loginName, activityChristmasStartTime, activityChristmasEndTime, null)  > 0 ? true : false;
     }
 }

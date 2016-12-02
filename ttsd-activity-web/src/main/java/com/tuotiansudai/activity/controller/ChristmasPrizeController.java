@@ -35,8 +35,6 @@ public class ChristmasPrizeController {
     @Autowired
     private LotteryDrawActivityService lotteryDrawActivityService;
 
-    private static final float CHRISTMAS_SUM_AMOUNT = 420000000;
-
     private static NumberFormat numberFormat = NumberFormat.getInstance();
 
     @RequestMapping(method = RequestMethod.GET)
@@ -48,7 +46,7 @@ public class ChristmasPrizeController {
         long userInvestAmount = (long)param.get("investAmount");
 
         modelAndView.addObject("allInvestAmount", AmountConverter.convertCentToString(userInvestAmount).replaceAll("\\.00", ""));
-        modelAndView.addObject("investScale", userInvestAmount >= CHRISTMAS_SUM_AMOUNT ? "100%" : numberFormat.format((float) userInvestAmount / CHRISTMAS_SUM_AMOUNT * 100) + "%");
+        modelAndView.addObject("investScale", userInvestAmount >= christmasPrizeService.CHRISTMAS_ACTIVITY_2_START_MIN_AMOUNT ? "100%" : numberFormat.format((float) userInvestAmount / christmasPrizeService.CHRISTMAS_ACTIVITY_2_START_MIN_AMOUNT * 100) + "%");
         modelAndView.addObject("userCount", param.get("investCount"));
         modelAndView.addObject("isStart", christmasPrizeService.isStart());
         modelAndView.addObject("steps", generateSteps(loginName));
@@ -93,7 +91,7 @@ public class ChristmasPrizeController {
             return steps;
         }
         steps.set(1, 1);
-        if (christmasPrizeService.isFirstInvest(loginName)) {
+        if (christmasPrizeService.isFinishInvest(loginName)) {
             steps.set(2, 1);
         }
         return steps;
