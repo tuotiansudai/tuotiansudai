@@ -32,5 +32,6 @@
                 <ul class="record-model own-record" style="display: none"></ul>
             </div>
         </div>
+
     </div>
 </div>

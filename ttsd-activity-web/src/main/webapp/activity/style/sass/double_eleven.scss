@@ -1,5 +1,6 @@
 @import "module/register_common";
 @import "module/nine_lottery";
+@import 'module/gift_circle_draw';
 @import "module/login_tip";
 $width:700px;
 @mixin mobilehide () {
@@ -20,6 +21,15 @@ $width:700px;
 .text-c{
   text-align:center;
 }
+
+.tip-list {
+  background: #fff url("/activity/images/integral-draw/bg-pop-point.jpg") no-repeat left top;
+  .tip-dom {
+    background: url("/activity/images/sign/actor/circle/tour-tip.jpg") no-repeat center top;
+    background-size: contain;
+  }
+}
+
 .double-eleven-container {
   float: left;
   width: 100%;
