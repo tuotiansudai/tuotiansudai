@@ -31,19 +31,19 @@
                 <div class="model-content clearfix">
                         <div class="gift-box">
                             <em class="icon-balloon">1重礼</em>
-                            <b>专享标加息0.5%</b>
+                            <b class="sub-title-one">专享标加息0.5%</b>
                             专享标在现有预期年化收益基础上<i>加息0.5%</i>。
                         </div>
 
                         <div class="gift-box">
                             <em class="icon-balloon">2重礼</em>
-                            <b>用券投资加息1%</b>
+                            <b class="sub-title-two">用券投资加息1%</b>
                             投资圣诞专享标单笔达3万元及以上，即赠送一张0.5%加息券，用券投资专享标<i>加息1%</i>。
                         </div>
 
                         <div class="gift-box">
                             <em class="icon-balloon">3重礼</em>
-                            <b>瓜分20000元红包</b>
+                            <b class="sub-title-three">瓜分20000元红包</b>
                             专享标总额420万，活动结束后，所有投资专享标的用户按投资比例瓜分<i>20000元红包</i>。
                         </div>
 

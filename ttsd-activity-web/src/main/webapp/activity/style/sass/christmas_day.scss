@@ -501,6 +501,15 @@ body {
       margin:10px auto;
       padding: 20px 10px 10px 10px;
       font-size: 12px;
+      b.sub-title-one:before {
+        content: '一重礼：';
+      }
+      b.sub-title-two:before {
+        content: '二重礼：';
+      }
+      b.sub-title-three:before {
+        content: '三重礼：';
+      }
       &.last {
         width:95%;
         height:auto;
