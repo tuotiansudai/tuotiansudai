@@ -3,7 +3,6 @@ package com.tuotiansudai.jpush.service;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
@@ -62,7 +61,7 @@ public class JPushAlertNewService {
     public void autoJPushAlertSendToAll(JPushAlertModel jPushAlertModel) {
         if (null != jPushAlertModel) {
             Map extras = chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel));
-            mobileAppJPushClient.sendPushAlertByAll(String.valueOf(jPushAlertModel.getId()), jPushAlertModel.getContent(), extras, jPushAlertModel.getPushSource());
+            mobileAppJPushClient.sendPushAlertByAll(jPushAlertModel.getContent(), extras, jPushAlertModel.getPushSource());
             jPushAlertModel.setStatus(PushStatus.SEND_SUCCESS);
             jPushAlertMapper.update(jPushAlertModel);
         } else {
@@ -86,7 +85,7 @@ public class JPushAlertNewService {
             if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
                 String value = redisWrapperClient.hget(JPUSH_ID_KEY, loginName);
                 String registrationId;
-                if (value.indexOf("-") < 0) {
+                if (!value.contains("-")) {
                     registrationId = value;
                 } else {
                     registrationId = value.split("-")[1];
@@ -94,7 +93,7 @@ public class JPushAlertNewService {
                 registrationIds.add(registrationId);
             }
             if (registrationIds.size() == 1000 || (i == loginNames.size() - 1 && registrationIds.size() > 0)) {
-                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), extras, jPushAlertModel.getPushSource());
+                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds(registrationIds, jPushAlertModel.getContent(), extras, jPushAlertModel.getPushSource());
                 if (sendResult) {
                     logger.debug(MessageFormat.format("第{0}个用户推送成功", i + 1));
                 } else {

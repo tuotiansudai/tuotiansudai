@@ -225,7 +225,7 @@ public class MessageEventAspect {
 
     @AfterReturning(value = "loginSuccessPointcut() || refreshSuccessPointcut()", returning = "signInResult")
     public void afterReturningUserLogin(JoinPoint joinPoint, SignInResult signInResult) {
-        logger.debug("[Message Event Aspect] after returning user login start");
+        logger.info("[Message Event Aspect] after returning user login start");
         try {
             if (signInResult != null && signInResult.isResult()) {
                 userMessageEventGenerator.generateCouponExpiredAlertEvent(signInResult.getUserInfo().getLoginName());

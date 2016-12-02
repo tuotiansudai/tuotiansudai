@@ -1,4 +1,4 @@
-define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, layer) {
+define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotteryUnit) {
 
     //allListURL： 中奖纪录的接口链接
     //userListURL：我的奖品的接口链接
@@ -25,7 +25,6 @@ define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, lay
                     callback(data);
                 })
                 .fail(function() {
-                    //layer.msg('请求失败');
                     commonFun.popWindow('错误','请求失败',{width:'260px'});
                 });
         }
@@ -87,13 +86,32 @@ define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, lay
             }
         })
     }
+    //类似九分隔的变换效果
+    giftCircleDraw.prototype.lotteryRoll=function(opt,tipMessage) {
+
+        // opt参数的格式为
+        // elementId为抽奖部分最外层dom的ID
+        //  {
+            //  elementId:'lottery',
+            //  speed:100,
+            //  prize:prize
+          // }
+        var thisFun=this;
+        lotteryUnit.init(opt);
+        if(!lotteryUnit.initOpt.clicked) {
+            lotteryUnit.rollResult(function() {
+                thisFun.GiftRecord();
+                thisFun.MyGift();
+                thisFun.tipWindowPop(tipMessage);
+            });
+        }
+    }
+
     giftCircleDraw.prototype.beginLuckDraw=function(callback) {
         var self=this;
-        self.giftCircleFrame.find('.pointer-img').on('click', function(event) {
-            self.beginLotteryDraw(function(data) {
-                callback && callback(data);
-            });
-        })
+        self.beginLotteryDraw(function(data) {
+            callback && callback(data);
+        });
     }
     giftCircleDraw.prototype.scrollList=function(domName) {
         var $self=domName;
