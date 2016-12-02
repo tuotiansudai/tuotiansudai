@@ -1,4 +1,4 @@
-define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, layer) {
+define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotteryUnit) {
 
     //allListURL： 中奖纪录的接口链接
     //userListURL：我的奖品的接口链接
@@ -25,7 +25,6 @@ define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, lay
                     callback(data);
                 })
                 .fail(function() {
-                    //layer.msg('请求失败');
                     commonFun.popWindow('错误','请求失败',{width:'260px'});
                 });
         }
@@ -87,12 +86,32 @@ define(['jquery', 'rotate', 'commonFun','layerWrapper'], function($, rotate, lay
             }
         })
     }
-
     //抽奖方式2-----没有任何转盘效果,抽奖接口调用成功后使用
     giftCircleDraw.prototype.noRotateFn=function(tipMessage) {
         this.GiftRecord();
         this.MyGift();
         this.tipWindowPop(tipMessage);
+    }
+
+    //类似九分隔的变换效果
+    giftCircleDraw.prototype.lotteryRoll=function(opt,tipMessage) {
+
+        // opt参数的格式为
+        // elementId为抽奖部分最外层dom的ID
+        //  {
+        //  elementId:'lottery',
+        //  speed:100,
+        //  prize:prize
+        // }
+        var thisFun = this;
+        lotteryUnit.init(opt);
+        if (!lotteryUnit.initOpt.clicked) {
+            lotteryUnit.rollResult(function () {
+                thisFun.GiftRecord();
+                thisFun.MyGift();
+                thisFun.tipWindowPop(tipMessage);
+            });
+        }
     }
 
     giftCircleDraw.prototype.beginLuckDraw=function(callback) {
