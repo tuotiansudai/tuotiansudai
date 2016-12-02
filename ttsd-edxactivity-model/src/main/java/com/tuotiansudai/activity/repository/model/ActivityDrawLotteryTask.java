@@ -11,7 +11,8 @@ public enum ActivityDrawLotteryTask {
     INVEST("投资", 1),
     EACH_ACTIVITY_SIGN_IN("活动签到", 1),
     REFERRER_USER("邀请好友送5次机会", 5),
-    EACH_INVEST_5000("活动签到", 1);
+    EACH_INVEST_2000("每投资2000", 1),
+    EACH_INVEST_5000("没投资5000", 1);
 
     ActivityDrawLotteryTask(String description, int time) {
         this.description = description;

@@ -12,7 +12,8 @@ public enum MessageQueue {
     InvestSuccess_CompletePointTask("InvestSuccess-CompletePointTask"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
-    TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask");
+    TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
+    InvestSuccess_ActivityReward("InvestSuccess-ActivityReward");
 
     private final String queueName;
 

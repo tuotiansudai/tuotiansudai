@@ -4,13 +4,11 @@ package com.tuotiansudai.console.activity.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityDrawLotteryTask;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.RechargeStatus;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,9 @@ public class ActivityCountDrawLotteryService {
     @Autowired
     private PointBillMapper pointBillMapper;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
 
@@ -60,10 +61,24 @@ public class ActivityCountDrawLotteryService {
     @Value("#{'${activity.annual.period}'.split('\\~')}")
     private List<String> annualTime = Lists.newArrayList();
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.startTime}\")}")
+    private Date activityChristmasStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.christmas.endTime}\")}")
+    private Date activityChristmasEndTime;
+
+    private static final String redisKey = "web:christmasTime:lottery:startTime";
+
     //往期活动任务
     private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
             ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
             ActivityDrawLotteryTask.RECHARGE, ActivityDrawLotteryTask.INVEST);
+
+    //圣诞活动活动任务
+    private final List christmasTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
+            ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.INVEST,
+            ActivityDrawLotteryTask.EACH_INVEST_2000);
+
     //元旦活动任务
     private final List newYearsActivityTask = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN, ActivityDrawLotteryTask.REFERRER_USER,
             ActivityDrawLotteryTask.EACH_INVEST_5000);
@@ -85,14 +100,17 @@ public class ActivityCountDrawLotteryService {
                 return countDrawLotteryTime(userModel, activityCategory, activityTasks);
             case ANNUAL_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, newYearsActivityTask);
+            case CHRISTMAS_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, christmasTasks);
         }
         return lotteryTime;
     }
 
     private int countDrawLotteryTime(UserModel userModel, ActivityCategory activityCategory, List<ActivityDrawLotteryTask> activityDrawLotteryTasks) {
         int time = 0;
-        Date startTime = getActivityStartTime(activityCategory);
-        Date endTime = getActivityEndTime(activityCategory);
+        List<Date> activityDate = getActivityDate(activityCategory);
+        Date startTime = activityDate.get(0);
+        Date endTime = activityDate.get(1);
 
         for (ActivityDrawLotteryTask activityDrawLotteryTask : activityDrawLotteryTasks) {
             switch (activityDrawLotteryTask) {
@@ -153,37 +171,29 @@ public class ActivityCountDrawLotteryService {
                         time += investAwardTime;
                     }
                     break;
-
+                case EACH_INVEST_2000:
+                    long sumAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), startTime, endTime, Lists.newArrayList(ProductType._90, ProductType._180, ProductType._360));
+                    time += (int) (sumAmount / 200000);
+                    time = time >= 10 ? 10 : time;
+                    break;
             }
         }
         return time;
     }
 
 
-    private Date getActivityStartTime(ActivityCategory activityCategory) {
+    private List<Date> getActivityDate(ActivityCategory activityCategory) {
         switch (activityCategory) {
             case AUTUMN_PRIZE:
-                return activityAutumnStartTime;
+                return Lists.newArrayList(activityAutumnStartTime, activityAutumnEndTime);
             case NATIONAL_PRIZE:
-                return activityNationalStartTime;
+                return Lists.newArrayList(activityNationalStartTime, activityNationalEndTime);
             case CARNIVAL_ACTIVITY:
-                return DateTime.parse(carnivalTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+                return Lists.newArrayList(DateTime.parse(carnivalTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(carnivalTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
             case ANNUAL_ACTIVITY:
-                return DateTime.parse(annualTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        }
-        return null;
-    }
-
-    private Date getActivityEndTime(ActivityCategory activityCategory) {
-        switch (activityCategory) {
-            case AUTUMN_PRIZE:
-                return activityAutumnEndTime;
-            case NATIONAL_PRIZE:
-                return activityNationalEndTime;
-            case CARNIVAL_ACTIVITY:
-                return DateTime.parse(carnivalTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-            case ANNUAL_ACTIVITY:
-                return DateTime.parse(annualTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+                return Lists.newArrayList(DateTime.parse(annualTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), DateTime.parse(annualTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+            case CHRISTMAS_ACTIVITY:
+                return Lists.newArrayList(redisWrapperClient.exists(redisKey) ? DateTime.parse(redisWrapperClient.get(redisKey), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate() : activityChristmasEndTime, activityChristmasEndTime);
         }
         return null;
     }

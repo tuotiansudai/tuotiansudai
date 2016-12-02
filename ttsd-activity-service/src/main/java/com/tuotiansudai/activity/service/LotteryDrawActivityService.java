@@ -19,10 +19,7 @@ import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.RechargeStatus;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.MobileEncryptor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -100,6 +97,11 @@ public class LotteryDrawActivityService {
     //元旦活动任务
     private final List newYearsActivityTask = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN, ActivityDrawLotteryTask.REFERRER_USER,
             ActivityDrawLotteryTask.EACH_INVEST_5000);
+
+    //圣诞活动活动任务
+    private final List christmasTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
+            ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.INVEST,
+            ActivityDrawLotteryTask.EACH_INVEST_2000);
 
     public static final String ACTIVITY_DESCRIPTION = "新年专享";
     //每投资5000奖励抽奖次数
@@ -294,6 +296,8 @@ public class LotteryDrawActivityService {
                 return countDrawLotteryTime(userModel, activityCategory, activityTasks);
             case ANNUAL_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, newYearsActivityTask);
+            case CHRISTMAS_ACTIVITY:
+                return countDrawLotteryTime(userModel, activityCategory, christmasTasks);
         }
         return lotteryTime;
     }
@@ -363,7 +367,11 @@ public class LotteryDrawActivityService {
                         time += investAwardTime;
                     }
                     break;
-
+                case EACH_INVEST_2000:
+                    long sumAmount = investMapper.sumInvestAmountByLoginNameInvestTimeProductType(userModel.getLoginName(), startTime, endTime, Lists.newArrayList(ProductType._90, ProductType._180, ProductType._360));
+                    time += (int) (sumAmount / 200000);
+                    time = time >= 10 ? 10 : time;
+                    break;
             }
         }
 
