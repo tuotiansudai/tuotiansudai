@@ -3,7 +3,6 @@ package com.tuotiansudai.client;
 import com.tuotiansudai.mq.client.MQClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
-import com.tuotiansudai.mq.client.model.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
@@ -25,7 +24,7 @@ public class MQWrapperClient {
         runAfterCommit(() -> mqClient.sendMessage(queue, message));
     }
 
-    public void subscribe(final Queue queue, Consumer<String> consumer) {
+    public void subscribe(final MessageQueue queue, Consumer<String> consumer) {
         mqClient.subscribe(queue, consumer);
     }
 

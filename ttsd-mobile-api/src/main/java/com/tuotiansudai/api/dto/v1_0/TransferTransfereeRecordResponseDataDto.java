@@ -1,18 +1,21 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
-import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.util.AmountConverter;
+import io.swagger.annotations.ApiModelProperty;
 import org.joda.time.DateTime;
 
 import java.util.Date;
 
 public class TransferTransfereeRecordResponseDataDto extends BaseResponseDataDto {
 
+    @ApiModelProperty(value = "承接人", example = "wangtuotian")
     private String transfereeLoginName;
 
+    @ApiModelProperty(value = "承接金额", example = "100")
     private String transferAmount;
 
+    @ApiModelProperty(value = "/承接时间", example = "2016-11-25 19:19:01")
     private String transferTime;
 
     public TransferTransfereeRecordResponseDataDto() {

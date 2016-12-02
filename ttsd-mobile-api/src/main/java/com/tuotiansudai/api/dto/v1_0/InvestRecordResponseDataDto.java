@@ -4,6 +4,7 @@ import com.google.common.primitives.Ints;
 import com.tuotiansudai.repository.model.InvestAchievement;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.AmountConverter;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -11,8 +12,14 @@ import java.util.Comparator;
 import java.util.List;
 
 public class InvestRecordResponseDataDto {
+
+    @ApiModelProperty(value = "用户名", example = "王拓天")
     private String userName;
+
+    @ApiModelProperty(value = "投资时间", example = "2016-11-24 12:22:12")
     private String investTime;
+
+    @ApiModelProperty(value = "投资金额", example = "100")
     private String investMoney;
 
     private List<InvestAchievement> achievements;

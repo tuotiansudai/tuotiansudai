@@ -1,10 +1,13 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 public class RepayCalendarDateListResponseDto extends BaseResponseDataDto {
 
+    @ApiModelProperty(value = "当天总计金额", example = "100")
     private String totalAmount;
 
     private List<RepayCalendarDateResponseDto> repayCalendarDateResponseDtoList;

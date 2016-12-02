@@ -23,17 +23,16 @@ repositories {
     maven { url "http://central.maven.org/maven2/" }
 }
 
+configurations{
+    all*.exclude group: "log4j", module: "log4j"
+    all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
+}
+
 dependencies {
     compile project(':ttsd-config')
-    compile(project(':ttsd-client')) {
-        exclude group: "org.slf4j", module: "slf4j-log4j12"
-    }
-    compile(project(':ttsd-message')) {
-        exclude group: "org.slf4j", module: "slf4j-log4j12"
-    }
-    compile(project(':ttsd-user-service')) {
-        exclude group: "org.slf4j", module: "slf4j-log4j12"
-    }
+    compile project(':ttsd-client')
+    compile project(':ttsd-message')
+    compile project(':ttsd-user-service')
     compile project(':ttsd-mq-client')
     compile "org.springframework.boot:spring-boot-starter"
     compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1"

@@ -170,21 +170,6 @@ worker-all:
     - "sms-wrapper"
     - "redis-server"
 
-worker-invest:
-  image: "anapsix/alpine-java:8_jdk"
-  environment:
-    - "TZ=Asia/Shanghai"
-    - "JAVA_OPTS=-Xmx1024m"
-  volumes:
-    - /workspace/anxin_sign/:/workspace/anxin_sign
-    - ./ttsd-job-worker/build/distributions:/opt/worker
-    - /var/log/tuotian/worker-invest:/var/log/job-worker
-  command: bash -c "/opt/worker/ttsd-job-worker-invest/bin/ttsd-job-worker"
-  links:
-    - "pay-wrapper"
-    - "sms-wrapper"
-    - "redis-server"
-
 worker-jpush:
   image: "anapsix/alpine-java:8_jdk"
   environment:
@@ -236,6 +221,19 @@ message-mq-consumer:
     - ./ttsd-message-mq-consumer/build/distributions:/opt/worker
     - /var/log/tuotian/ttsd-message-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-message-mq-consumer/bin/ttsd-message-mq-consumer"
+  links:
+    - "sms-wrapper"
+    - "redis-server"
+
+point-mq-consumer:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-point-mq-consumer/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-point-mq-consumer:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-point-mq-consumer/bin/ttsd-point-mq-consumer"
   links:
     - "sms-wrapper"
     - "redis-server"
