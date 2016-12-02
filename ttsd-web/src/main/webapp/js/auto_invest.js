@@ -1,4 +1,5 @@
-require(['jquery', 'jquery.ajax.extension', 'autoNumeric', 'lodash', 'commonFun', 'jquery.validate'], function ($) {
+require(['jquery', 'commonFun','jquery.ajax.extension', 'autoNumeric', 'lodash', 'jquery.validate'], function ($,commonFun) {
+    //此页面已经不需要
     $(function () {
         if ($('#btnAuthority').length) {
             var $btnAuthority = $('#btnAuthority');
@@ -26,7 +27,6 @@ require(['jquery', 'jquery.ajax.extension', 'autoNumeric', 'lodash', 'commonFun'
                 $signPlanForm = $("#signPlanForm");
             //init radio and checkbox
             commonFun.initRadio($radio, $radioLabel);
-            // commonFun.checkBoxInit($checkbox,$checkboxLabel);
 
             if($('#plan-close').is(":checked")){
                 $planSwitchDom.find('dl').first().show().siblings().hide();

@@ -1,191 +1,132 @@
 define(['jquery'], function ($) {
     var commonFun={
+        //加密
+        compile:function (strId,realId) {
+            var realId=realId+'';
+            var strIdObj=strId.split(''),
+                realLen=realId.length;
+            for(var i=0;i<11;i++) {
+                strIdObj[2*i+2]=realId[i]?realId[i]:'a';
+            }
+            return strIdObj.join('');
 
-    };
-});
+        },
+        //解密
+        uncompile:function (strId) {
+            var strId=strId+'';
+            var strIdObj=strId.split(''),
+                realId=[];
+            for(var i=0;i<11;i++) {
+                realId[i]=strIdObj[2*i+2];
+            }
 
-var commonFun={};
-
-commonFun={
-    //加密
-    compile:function (strId,realId)
-    {
-        var realId=realId+'';
-        var strIdObj=strId.split(''),
-            realLen=realId.length;
-        for(var i=0;i<11;i++) {
-            strIdObj[2*i+2]=realId[i]?realId[i]:'a';
-        }
-        return strIdObj.join('');
-
-    },
-    //解密
-    uncompile:function (strId)
-    {
-        var strId=strId+'';
-        var strIdObj=strId.split(''),
-            realId=[];
-        for(var i=0;i<11;i++) {
-            realId[i]=strIdObj[2*i+2];
-        }
-
-        var stringRealId=realId.join(''),
-            getNum=stringRealId.match(/\d/gi);
-        return getNum.join('');
-    },
-    /* init radio style */
-    initRadio:function($radio,$radioLabel) {
-        var numRadio=$radio.length;
-        if(numRadio) {
-            $radio.each(function(key,option) {
-                var $this=$(this);
-                if($this.is(':checked')) {
-                    $this.next('label').addClass('checked');
-                }
-                $this.next('label').click(function() {
-                    var $thisLab=$(this);
-                    if(!/checked/.test(this.className)) {
-                        $radioLabel.removeClass('checked');
-                        $thisLab.addClass('checked');
+            var stringRealId=realId.join(''),
+                getNum=stringRealId.match(/\d/gi);
+            return getNum.join('');
+        },
+        /* init radio style */
+        initRadio:function($radio,$radioLabel) {
+            var numRadio=$radio.length;
+            if(numRadio) {
+                $radio.each(function(key,option) {
+                    var $this=$(this);
+                    if($this.is(':checked')) {
+                        $this.next('label').addClass('checked');
                     }
+                    $this.next('label').click(function() {
+                        var $thisLab=$(this);
+                        if(!/checked/.test(this.className)) {
+                            $radioLabel.removeClass('checked');
+                            $thisLab.addClass('checked');
+                        }
+                    });
                 });
-            });
 
-        }
-    },
-    browserRedirect: function () {
-        var sUserAgent = navigator.userAgent.toLowerCase();
-        var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
-        var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
-        var bIsMidp = sUserAgent.match(/midp/i) == "midp";
-        var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
-        var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
-        var bIsAndroid = sUserAgent.match(/android/i) == "android";
-        var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
-        var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
-
-        if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {//如果是上述设备就会以手机域名打开
-            return 'mobile';
-        } else {
-            //否则就是电脑域名打开
-            return 'pc';
-        }
-    },
-    loadCss:function(url) {
-        var link = document.createElement("link");
-        link.type = "text/css";
-        link.rel = "stylesheet";
-        link.href = url;
-        document.getElementsByTagName("head")[0].appendChild(link);
-    },
-    parseURL:function(url) {
-        var a =  document.createElement('a');
-        a.href = url;
-        return {
-            source: url,
-            protocol: a.protocol.replace(':',''),
-            host: a.hostname,
-            port: a.port,
-            query: a.search,
-            params: (function(){
-                var ret = {},
-                    seg = a.search.replace(/^\?/,'').split('&'),
-                    len = seg.length, i = 0, s;
-                for (;i<len;i++) {
-                    if (!seg[i]) { continue; }
-                    s = seg[i].split('=');
-                    ret[s[0]] = s[1];
-                }
-                return ret;
-            })(),
-            file: (a.pathname.match(/\/([^\/?#]+)$/i) || [,''])[1],
-            hash: a.hash.replace('#',''),
-            path: a.pathname.replace(/^([^\/])/,'/$1'),
-            relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [,''])[1],
-            segments: a.pathname.replace(/^\//,'').split('/')
-        };
-    },
-    popWindow:function(title,content,size) {
-        if(!$('.popWindow').length) {
-            var popW=[];
-            popW.push('<div class="popWindow">');
-            popW.push('<div class="ecope-overlay"></div>');
-            popW.push('<div class="ecope-dialog">');
-            popW.push('<div class="dg_wrapper">');
-
-            popW.push('<div class="hd"><h3>'+title+' ' +
-                '<em class="close" ></em></h3></div>');
-            popW.push('<div class="bd">sss</div>');
-
-            popW.push('</div></div></div>');
-            $('body').append(popW.join(''));
-            var $popWindow=$('.ecope-dialog'),
-                size= $.extend({width:'560px'},size);
-            $popWindow.css({
-                width:size.width
-            });
-            var adjustPOS=function() {
-                var scrollHeight=document.body.scrollTop || document.documentElement.scrollTop,
-                    pTop=$(window).height()-$popWindow.height(),
-                    pLeft=$(window).width()-$popWindow.width();
-                $popWindow.css({'top':pTop/2+scrollHeight,left:pLeft/2});
-                $popWindow.find('.bd').empty().append(content);
             }
-            adjustPOS();
-            $(window).resize(function() {
+        },
+        popWindow:function(title,content,size) {
+            if(!$('.popWindow').length) {
+                var popW=[];
+                popW.push('<div class="popWindow">');
+                popW.push('<div class="ecope-overlay"></div>');
+                popW.push('<div class="ecope-dialog">');
+                popW.push('<div class="dg_wrapper">');
+
+                popW.push('<div class="hd"><h3>'+title+' ' +
+                    '<em class="close" ></em></h3></div>');
+                popW.push('<div class="bd">sss</div>');
+
+                popW.push('</div></div></div>');
+                $('body').append(popW.join(''));
+                var $popWindow=$('.ecope-dialog'),
+                    size= $.extend({width:'560px'},size);
+                $popWindow.css({
+                    width:size.width
+                });
+                var adjustPOS=function() {
+                    var scrollHeight=document.body.scrollTop || document.documentElement.scrollTop,
+                        pTop=$(window).height()-$popWindow.height(),
+                        pLeft=$(window).width()-$popWindow.width();
+                    $popWindow.css({'top':pTop/2+scrollHeight,left:pLeft/2});
+                    $popWindow.find('.bd').empty().append(content);
+                }
                 adjustPOS();
-            });
-            var mousewheel = document.all?"mousewheel":"DOMMouseScroll";
-            $(window).bind('mousewheel',function() {
-                adjustPOS();
+                $(window).resize(function() {
+                    adjustPOS();
+                });
+                var mousewheel = document.all?"mousewheel":"DOMMouseScroll";
+                $(window).bind('mousewheel',function() {
+                    adjustPOS();
+                })
+            }
+            else {
+                $('.ecope-overlay,.popWindow').show();
+            }
+
+            $popWindow.delegate('.close','click',function() {
+                $('.ecope-overlay,.popWindow').hide();
             })
-        }
-        else {
-            $('.ecope-overlay,.popWindow').show();
-        }
+        },
+        IdentityCodeValid:function(code) {
+            var city={11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",21:"辽宁",22:"吉林",23:"黑龙江 ",31:"上海",32:"江苏",33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",42:"湖北 ",43:"湖南",44:"广东",45:"广西",46:"海南",50:"重庆",51:"四川",52:"贵州",53:"云南",54:"西藏 ",61:"陕西",62:"甘肃",63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外 "};
+            var pass= true;
 
-        $popWindow.delegate('.close','click',function() {
-            $('.ecope-overlay,.popWindow').hide();
-        })
-    },
-    IdentityCodeValid:function(code) {
-        var city={11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",21:"辽宁",22:"吉林",23:"黑龙江 ",31:"上海",32:"江苏",33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",42:"湖北 ",43:"湖南",44:"广东",45:"广西",46:"海南",50:"重庆",51:"四川",52:"贵州",53:"云南",54:"西藏 ",61:"陕西",62:"甘肃",63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外 "};
-        var pass= true;
+            if (!code || !/\d{17}[\d|x]/i.test(code)) {
+                pass = false;
+            }
 
-        if (!code || !/\d{17}[\d|x]/i.test(code)) {
-            pass = false;
-        }
-
-        else if(!city[code.substr(0,2)]){
-            pass = false;
-        }
-        else{
-            //18位身份证需要验证最后一位校验位
-            if(code.length == 18){
-                code = code.split('');
-                //∑(ai×Wi)(mod 11)
-                //加权因子
-                var factor = [ 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 ];
-                //校验位
-                var parity = [ 1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2 ];
-                var sum = 0;
-                var ai = 0;
-                var wi = 0;
-                for (var i = 0; i < 17; i++)
-                {
-                    ai = code[i];
-                    wi = factor[i];
-                    sum += ai * wi;
-                }
-                if(parity[sum % 11] != code[17]){
-                    pass =false;
+            else if(!city[code.substr(0,2)]){
+                pass = false;
+            }
+            else{
+                //18位身份证需要验证最后一位校验位
+                if(code.length == 18){
+                    code = code.split('');
+                    //∑(ai×Wi)(mod 11)
+                    //加权因子
+                    var factor = [ 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 ];
+                    //校验位
+                    var parity = [ 1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2 ];
+                    var sum = 0;
+                    var ai = 0;
+                    var wi = 0;
+                    for (var i = 0; i < 17; i++)
+                    {
+                        ai = code[i];
+                        wi = factor[i];
+                        sum += ai * wi;
+                    }
+                    if(parity[sum % 11] != code[17]){
+                        pass =false;
+                    }
                 }
             }
+            return pass;
         }
-        return pass;
-    }
+    };
 
-};
+    return commonFun;
+});
 
 var MyChartsObject={
     ChartConfig: function (container, option) {
