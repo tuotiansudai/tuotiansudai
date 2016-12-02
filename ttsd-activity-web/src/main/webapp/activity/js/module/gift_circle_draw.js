@@ -1,4 +1,4 @@
-define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotteryUnit) {
+define(['jquery', 'rotate', 'lottery_unit','commonFun'], function($,rotate,lotteryUnit,commonFun) {
 
     //allListURL： 中奖纪录的接口链接
     //userListURL：我的奖品的接口链接
