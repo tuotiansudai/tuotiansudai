@@ -2,13 +2,22 @@ package com.tuotiansudai.api.dto.v2_0;
 
 
 import com.tuotiansudai.repository.model.LoanerEnterpriseDetailsModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
 public class EnterpriseDto implements Serializable {
+
+    @ApiModelProperty(value = "法人", example = "wangtuotian")
     private String juristicPerson;
+
+    @ApiModelProperty(value = "股东", example = "wangtuotian")
     private String shareholder;
+
+    @ApiModelProperty(value = "地址", example = "beijing")
     private String address;
+
+    @ApiModelProperty(value = "目的", example = "盖房子")
     private String purpose;
 
     public EnterpriseDto(){}

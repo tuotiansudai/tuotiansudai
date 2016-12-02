@@ -21,7 +21,8 @@
                     {{#nextRepayDate}}{{nextRepayDate}}{{/nextRepayDate}}
                     {{^nextRepayDate}}--{{/nextRepayDate}}
                 </td>
-                <td><a class="show-loan-repay" data-url='/loaner/loan/{{loanId}}/repay-data'>还款计划</a>
+                <td><a class="show-loan-repay" data-url='/loaner/loan/{{loanId}}/repay-data'>还款计划</a> |
+                <a href="https://www.anxinsign.com/" target="_blank">合同</a>
                 </td>
             </tr>
         {{/records}}
@@ -52,7 +53,9 @@
                 <td>{{expectedRepayAmount}} 元</td>
                 <td>{{actualRepayAmount}} 元</td>
                 <td>{{completedDate}}</td>
-                <td><a class="show-loan-repay" data-url='/loaner/loan/{{loanId}}/repay-data'>还款计划</a>
+                <td>
+                    <a class="show-loan-repay" data-url='/loaner/loan/{{loanId}}/repay-data'>还款计划</a> |
+                    <a href="https://www.anxinsign.com/" target="_blank">合同</a>
                 </td>
             </tr>
         {{/records}}

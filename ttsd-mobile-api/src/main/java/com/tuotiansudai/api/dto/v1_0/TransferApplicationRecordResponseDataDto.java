@@ -5,22 +5,47 @@ import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.util.AmountConverter;
+import io.swagger.annotations.ApiModelProperty;
 import org.joda.time.DateTime;
 
 import java.text.DecimalFormat;
 
 public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDto {
+
+    @ApiModelProperty(value = "债权转让ID", example = "1")
     private String transferApplicationId;
+
+    @ApiModelProperty(value = "名称", example = "债权转让")
     private String name;
+
+    @ApiModelProperty(value = "债权转让金额", example = "1")
     private String transferAmount;
+
+    @ApiModelProperty(value = "投资id", example = "2")
     private Long investId;
+
+    @ApiModelProperty(value = "债权转让投资id", example = "3")
     private Long transferInvestId;
+
+    @ApiModelProperty(value = "投资金额", example = "100")
     private String investAmount;
+
+    @ApiModelProperty(value = "转让时间", example = "2016-11-25 15:12:34")
     private String transferTime;
+
+    @ApiModelProperty(value = "基本利率", example = "10")
     private String baseRate;
+
+    @ApiModelProperty(value = "活动利率", example = "2")
     private String activityRate;
+
+    @ApiModelProperty(value = "债权转让状态", example = "TRANSFERRING")
     private TransferStatus transferStatus;
+
+    @ApiModelProperty(value = "剩余期数", example = "1")
     private String leftPeriod;
+
+    @ApiModelProperty(value = "剩余天数", example = "30")
     private String leftDays;
 
     public String getTransferApplicationId() {

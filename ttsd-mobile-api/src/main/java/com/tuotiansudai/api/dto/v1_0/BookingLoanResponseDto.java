@@ -1,10 +1,17 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class BookingLoanResponseDto {
 
+    @ApiModelProperty(value = "可预约标的类型", example = "_30, _90, _180, _360")
     private String productType;
+
+    @ApiModelProperty(value = "项目期限", example = "30, 90, 180, 360")
     private String duration;
+
+    @ApiModelProperty(value = "预计年化收益率", example = "11")
     private String rate;
 
     public BookingLoanResponseDto(String productType, String duration, String rate) {

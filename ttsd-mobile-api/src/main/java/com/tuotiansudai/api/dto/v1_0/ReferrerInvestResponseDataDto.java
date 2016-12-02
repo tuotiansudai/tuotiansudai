@@ -2,19 +2,40 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.util.AmountConverter;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.text.SimpleDateFormat;
 
 public class ReferrerInvestResponseDataDto {
+
+    @ApiModelProperty(value = "被推荐人", example = "wangtuotian")
     private String userId;
+
+    @ApiModelProperty(value = "被推荐人层级", example = "1")
     private String level;
+
+    @ApiModelProperty(value = "标的id", example = "10010")
     private String loanId;
+
+    @ApiModelProperty(value = "投标标的", example = "房屋抵押")
     private String loanName;
+
+    @ApiModelProperty(value = "投资金额", example = "100")
     private String investMoney;
+
+    @ApiModelProperty(value = "期数", example = "3")
     private String deadline;
+
+    @ApiModelProperty(value = "投资时间", example = "2016-11-25 14:32:01")
     private String investTime;
+
+    @ApiModelProperty(value = "奖励金额", example = "100")
     private String rewardMoney;
+
+    @ApiModelProperty(value = "奖励时间", example = "2016-11-25 14:32:01")
     private String rewardTime;
+
+    @ApiModelProperty(value = "标的类型", example = "_30")
     private String productNewType;
 
     public String getUserId() {

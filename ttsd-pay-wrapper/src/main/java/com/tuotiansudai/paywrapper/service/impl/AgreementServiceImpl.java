@@ -1,10 +1,12 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.AgreementNotifyMapper;
@@ -39,6 +41,9 @@ public class AgreementServiceImpl implements AgreementService {
 
     @Autowired
     private BankCardMapper bankCardMapper;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     @Transactional
@@ -90,6 +95,10 @@ public class AgreementServiceImpl implements AgreementService {
             BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
             bankCardModel.setIsFastPayOn(true);
             bankCardMapper.update(bankCardModel);
+        }
+
+        if (AgreementBusinessType.NO_PASSWORD_INVEST == agreementBusinessType) {
+            mqWrapperClient.sendMessage(MessageQueue.TurnOnNoPasswordInvest_CompletePointTask, loginName);
         }
     }
 }

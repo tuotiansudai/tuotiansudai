@@ -175,7 +175,7 @@
                             <a href="/referrer/refer-list" class="font-18">立即邀请好友赢抽奖机会</a>
                         </div>
                     </div>
-                    <#include "../model/nine-lottery.ftl"/>
+                    <#include "../module/nine-lottery.ftl"/>
                 </div>
             </div>
             <div class="model-group tip-text">

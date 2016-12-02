@@ -1,27 +1,37 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.repository.model.ProductType;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 public class InvestExperienceResponseDataDto {
 
+    @ApiModelProperty(value = "优惠券id", example = "1001")
     private String userCouponId;
 
+    @ApiModelProperty(value = "优惠券类型", example = "RED_ENVELOPE")
     private String type;
 
+    @ApiModelProperty(value = "优惠券名称", example = "现金红包")
     private String name;
 
+    @ApiModelProperty(value = "优惠券金额", example = "5000")
     private String amount;
 
+    @ApiModelProperty(value = "利率(加息券专用)", example = "0.8")
     private String rate;
 
+    @ApiModelProperty(value = "优惠券开始时间", example = "2016-01-01 00:00:00")
     private String startDate;
 
+    @ApiModelProperty(value = "优惠券结束时间", example = "2016-01-01 00:00:01")
     private String endDate;
 
+    @ApiModelProperty(value = "最少投资额", example = "100000")
     private String investLowerLimit;
 
+    @ApiModelProperty(value = "标的类型", example = "30,90,180,360")
     private List<ProductType> productNewTypes;
 
     public String getUserCouponId() {

@@ -22,7 +22,7 @@ public class MobileAppNodeListServiceImpl implements MobileAppNodeListService {
     private PageValidUtils pageValidUtils;
 
     @Override
-    public BaseResponseDto generateNodeList(NodeListRequestDto nodeListRequestDto) {
+    public BaseResponseDto<NodeListResponseDataDto> generateNodeList(NodeListRequestDto nodeListRequestDto) {
         Integer index = nodeListRequestDto.getIndex();
         Integer pageSize = nodeListRequestDto.getPageSize();
         String termId = nodeListRequestDto.getTermId();

@@ -2,28 +2,62 @@ package com.tuotiansudai.api.dto.v1_0;
 
 
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDto {
 
+    @ApiModelProperty(value = "债权转让ID", example = "1")
     private String transferApplicationId;
+
+    @ApiModelProperty(value = "名称", example = "债权转让")
     private String name;
+
+    @ApiModelProperty(value = "转让人", example = "wangtuotian")
     private String transferrer;
+
+    @ApiModelProperty(value = "标的ID", example = "11")
     private String loanId;
+
+    @ApiModelProperty(value = "标的类型", example = "_30")
     private String productType;
+
+    @ApiModelProperty(value = "标的类型名称", example = "30天")
     private String productTypeName;
+
+    @ApiModelProperty(value = "标的名称", example = "车辆抵押借款")
     private String loanName;
+
+    @ApiModelProperty(value = "利率类型", example = "LOAN_INTEREST_MONTHLY_REPAY")
     private String loanType;
+
+    @ApiModelProperty(value = "投资金额", example = "100")
     private String investAmount;
+
+    @ApiModelProperty(value = "债权转让金额", example = "1")
     private String transferAmount;
+
+    @ApiModelProperty(value = "基本利率", example = "10")
     private String baseRate;
+
+    @ApiModelProperty(value = "活动利率", example = "2")
     private String activityRate;
+
+    @ApiModelProperty(value = "剩余期数", example = "1")
     private int leftPeriod;
+
+    @ApiModelProperty(value = "剩余天数", example = "30")
     private String leftDays;
+
+    @ApiModelProperty(value = "截止时间", example = "2016-11-25 16:02:01")
     private String deadline;
+
+    @ApiModelProperty(value = "预计收益", example = "10")
     private String expecedInterest;
+
+    @ApiModelProperty(value = "转让状态", example = "SUCCESS")
     private String transferStatus;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

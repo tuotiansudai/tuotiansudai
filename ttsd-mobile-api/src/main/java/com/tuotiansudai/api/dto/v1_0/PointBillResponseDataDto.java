@@ -1,5 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 public class PointBillResponseDataDto extends BaseResponseDataDto {
@@ -7,6 +9,8 @@ public class PointBillResponseDataDto extends BaseResponseDataDto {
     private Integer index;
     private Integer pageSize;
     private Long totalCount;
+
+    @ApiModelProperty(value = "积分记录", example = "list")
     private List<PointBillRecordResponseDataDto> pointBills;
 
     public Integer getIndex() {

@@ -79,7 +79,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     private ContractService contractService;
 
     @Override
-    public BaseResponseDto generateLoanDetail(LoanDetailRequestDto loanDetailRequestDto) {
+    public BaseResponseDto<LoanDetailResponseDataDto> generateLoanDetail(LoanDetailRequestDto loanDetailRequestDto) {
         BaseResponseDto<LoanDetailResponseDataDto> dto = new BaseResponseDto<LoanDetailResponseDataDto>();
         String loanId = loanDetailRequestDto.getLoanId();
         LoanModel loan = loanMapper.findById(Long.parseLong(loanId));
