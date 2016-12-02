@@ -97,6 +97,7 @@ define(['jquery'], function ($) {
                         LoginDefer.reject(data);
                         $("meta[name='_csrf']").remove();
                         $('head').append($(data.responseText));
+
                         var token = $("meta[name='_csrf']").attr("content");
                         var header = $("meta[name='_csrf_header']").attr("content");
                         $(document).ajaxSend(function (e, xhr, options) {
