@@ -1,4 +1,4 @@
-require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envelope-float',  'jquery.validate', 'autoNumeric', 'logintip','assign_coupon'],
+require(['jquery','imageShowSlide-v1', 'layerWrapper', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float',  'jquery.validate', 'autoNumeric', 'logintip','assign_coupon'],
     function ($,imageShowSlide,layer) {
         var $homePageContainer = $('#homePageContainer'),
             $imgScroll = $('.banner-img-list', $homePageContainer);
