@@ -39,6 +39,8 @@ public class LoanListDto {
 
     private List<Source> extraSource;
 
+    private boolean nonTransferable;
+
     public long getId() {
         return id;
     }
@@ -160,5 +162,13 @@ public class LoanListDto {
 
     public void setExtraSource(List<Source> extraSource) {
         this.extraSource = extraSource;
+    }
+
+    public boolean getNonTransferable() {
+        return nonTransferable;
+    }
+
+    public void setNonTransferable(boolean nonTransferable) {
+        this.nonTransferable = nonTransferable;
     }
 }

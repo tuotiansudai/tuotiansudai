@@ -43,7 +43,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
     @Autowired
     private AccountMapper accountMapper;
     @Override
-    public BaseResponseDto bindBankCard(BankCardRequestDto requestDto) {
+    public BaseResponseDto<BankCardResponseDto> bindBankCard(BankCardRequestDto requestDto) {
         BaseResponseDto baseDto = new BaseResponseDto();
         try {
             BindBankCardDto bindBankCardDto = requestDto.convertToBindBankCardDto();
@@ -76,7 +76,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
     }
 
     @Override
-    public BaseResponseDto openFastPay(BankCardRequestDto requestDto) {
+    public BaseResponseDto<BankCardResponseDto> openFastPay(BankCardRequestDto requestDto) {
         BaseResponseDto baseDto = new BaseResponseDto();
         try {
             AgreementDto agreementDto = requestDto.convertToAgreementDto();
@@ -137,7 +137,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
     }
 
     @Override
-    public BaseResponseDto replaceBankCard(BankCardReplaceRequestDto requestDto) {
+    public BaseResponseDto<BankCardReplaceResponseDataDto> replaceBankCard(BankCardReplaceRequestDto requestDto) {
         BindBankCardDto bindBankCardDto = requestDto.convertToBindBankCardDto();
         BaseResponseDto<BankCardReplaceResponseDataDto> dto = new BaseResponseDto<>();
         String newCardNo = bindBankCardDto.getCardNumber();
@@ -175,7 +175,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
     }
 
     @Override
-    public BaseResponseDto isReplacing(BaseParamDto baseParamDto){
+    public BaseResponseDto<BankCardIsReplacingResponseDto> isReplacing(BaseParamDto baseParamDto){
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         String loginName = baseParamDto.getBaseParam().getUserId();
         baseResponseDto.setData(new BankCardIsReplacingResponseDto(bindBankCardService.isReplacing(loginName),bindBankCardService.isManual(loginName)));

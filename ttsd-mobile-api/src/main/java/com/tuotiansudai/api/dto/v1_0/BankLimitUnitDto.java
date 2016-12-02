@@ -1,9 +1,19 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class BankLimitUnitDto {
+
+    @ApiModelProperty(value = "单笔限额", example = "100")
     private String singleAmount;    //单笔限额
+
+    @ApiModelProperty(value = "单日限额", example = "10000")
     private String singleDayAmount; //单日限额
+
+    @ApiModelProperty(value = "银行卡缩写", example = "ICBC")
     private String bankCode;
+
+    @ApiModelProperty(value = "银行卡名称", example = "工商银行")
     private String bankName;
 
     public BankLimitUnitDto() {

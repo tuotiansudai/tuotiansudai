@@ -87,7 +87,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private PageValidUtils pageValidUtils;
 
     @Override
-    public BaseResponseDto generateTransferApplication(TransferApplicationRequestDto requestDto) {
+    public BaseResponseDto<TransferApplicationResponseDataDto> generateTransferApplication(TransferApplicationRequestDto requestDto) {
         BaseResponseDto<TransferApplicationResponseDataDto> dto = new BaseResponseDto();
         String loginName = requestDto.getBaseParam().getUserId();
         Integer index = requestDto.getIndex();
@@ -146,7 +146,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     }
 
     @Override
-    public BaseResponseDto transferApplyQuery(TransferApplyQueryRequestDto requestDto) {
+    public BaseResponseDto<TransferApplyQueryResponseDataDto> transferApplyQuery(TransferApplyQueryRequestDto requestDto) {
         BaseResponseDto<TransferApplyQueryResponseDataDto> baseResponseDto = new BaseResponseDto<>();
         String investId = requestDto.getInvestId();
 
@@ -176,7 +176,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     }
 
     @Override
-    public BaseResponseDto generateTransfereeApplication(PaginationRequestDto requestDto) {
+    public BaseResponseDto<TransferApplicationResponseDataDto> generateTransfereeApplication(PaginationRequestDto requestDto) {
         Integer index = requestDto.getIndex();
         Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
         String loginName = requestDto.getBaseParam().getUserId();
@@ -221,7 +221,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     }
 
     @Override
-    public BaseResponseDto transferPurchase(TransferPurchaseRequestDto requestDto) {
+    public BaseResponseDto<TransferPurchaseResponseDataDto> transferPurchase(TransferPurchaseRequestDto requestDto) {
         BaseResponseDto<TransferPurchaseResponseDataDto> dto = new BaseResponseDto();
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(requestDto.getTransferApplicationId()));
 
@@ -274,7 +274,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         return dto;
     }
 
-    public BaseResponseDto transferApplicationById(TransferApplicationDetailRequestDto requestDto) {
+    public BaseResponseDto<TransferApplicationDetailResponseDataDto> transferApplicationById(TransferApplicationDetailRequestDto requestDto) {
         BaseResponseDto<TransferApplicationDetailResponseDataDto> dto = new BaseResponseDto();
         String transferApplicationId = requestDto.getTransferApplicationId();
         String loginName = requestDto.getBaseParam().getUserId();
@@ -292,7 +292,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     }
 
     @Override
-    public BaseResponseDto userInvestRepay(UserInvestRepayRequestDto userInvestRepayRequestDto) {
+    public BaseResponseDto<UserInvestRepayResponseDataDto> userInvestRepay(UserInvestRepayRequestDto userInvestRepayRequestDto) {
         Preconditions.checkNotNull(userInvestRepayRequestDto.getInvestId());
         Preconditions.checkNotNull(userInvestRepayRequestDto.getBaseParam().getUserId());
 

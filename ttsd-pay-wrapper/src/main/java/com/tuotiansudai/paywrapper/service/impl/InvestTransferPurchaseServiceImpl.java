@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.anxin.service.AnxinSignService;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponRepayMapper;
@@ -12,9 +13,9 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.job.InvestTransferCallbackJob;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -83,6 +84,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
@@ -221,24 +225,22 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             return null;
         }
 
-        redisWrapperClient.incr(InvestTransferCallbackJob.INVEST_TRANSFER_JOB_TRIGGER_KEY);
+        mqWrapperClient.sendMessage(MessageQueue.TransferInvestCallback, String.valueOf(callbackRequest.getId()));
         return callbackRequest.getResponseData();
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncPurchaseCallback() {
-        List<InvestNotifyRequestModel> todoList = investTransferNotifyRequestMapper.getTodoList(investProcessListSize);
+    public BaseDto<PayDataDto> asyncPurchaseCallback(long notifyRequestId) {
+        InvestNotifyRequestModel model = investTransferNotifyRequestMapper.findById(notifyRequestId);
 
-        for (InvestNotifyRequestModel model : todoList) {
-            logger.info(MessageFormat.format("[Invest Transfer Callback {0}] starting...", model.getOrderId()));
-            if (updateInvestTransferNotifyRequestStatus(model)) {
-                try {
-                    processOneCallback(model);
-                } catch (Exception e) {
-                    String errMsg = MessageFormat.format("invest callback, processOneCallback error. investId:{0}", model.getOrderId());
-                    logger.error(errMsg, e);
-                    sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1}", environment, errMsg));
-                }
+        logger.info(MessageFormat.format("[Invest Transfer Callback {0}] starting...", model.getOrderId()));
+        if (updateInvestTransferNotifyRequestStatus(model)) {
+            try {
+                processOneCallback(model);
+            } catch (Exception e) {
+                String errMsg = MessageFormat.format("invest callback, processOneCallback error. investId:{0}", model.getOrderId());
+                logger.error(errMsg, e);
+                sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1}", environment, errMsg));
             }
         }
 
@@ -394,7 +396,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     }
 
     private void updateCouponRepay(long investId, final int period) {
-        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findByUserCouponByInvestId(investId);
         List<CouponRepayModel> transferredCouponRepayModels = Lists.newArrayList(Iterables.filter(couponRepayMapper.findByUserCouponByInvestId(investId), new Predicate<CouponRepayModel>() {
             @Override
             public boolean apply(CouponRepayModel input) {
@@ -409,7 +410,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             couponRepayModel.setStatus(RepayStatus.COMPLETE);
             couponRepayMapper.update(couponRepayModel);
         }
-
     }
 
     private void updateInvestRepay(TransferApplicationModel transferApplicationModel) {
@@ -453,7 +453,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     private boolean updateInvestTransferNotifyRequestStatus(InvestNotifyRequestModel model) {
         try {
-            redisWrapperClient.decr(InvestTransferCallbackJob.INVEST_TRANSFER_JOB_TRIGGER_KEY);
             investTransferNotifyRequestMapper.updateStatus(model.getId(), NotifyProcessStatus.DONE);
             logger.info(MessageFormat.format("[Invest Transfer Callback {0}] decrease request count and update request status to DONE", model.getOrderId()));
         } catch (Exception e) {
@@ -494,9 +493,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
                 logger.debug("债权转让：生成合同，转让ID:" + transferApplicationModel.getId());
                 anxinSignService.createTransferContracts(transferApplicationModel.getId());
-
-//                logger.debug("债权转让：更新合同编号，投资ID:" + investId);
-//                anxinSignService.updateTransferInvestContractNo(investId);
             }
         } else {
             // 失败的话：更新 invest 状态为投资失败

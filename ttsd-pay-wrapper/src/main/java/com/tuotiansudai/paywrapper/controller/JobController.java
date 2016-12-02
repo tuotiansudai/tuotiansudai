@@ -44,8 +44,8 @@ public class JobController {
 
     @ResponseBody
     @RequestMapping(value = "/async_invest_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncInvestNotify() {
-        return this.investService.asyncInvestCallback();
+    public BaseDto<PayDataDto> asyncInvestNotify(@RequestBody long notifyRequestId) {
+        return this.investService.asyncInvestCallback(notifyRequestId);
     }
 
     @ResponseBody
@@ -68,8 +68,8 @@ public class JobController {
 
     @ResponseBody
     @RequestMapping(value = "/async_invest_transfer_notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> asyncInvestTransferNotify() {
-        return this.investTransferPurchaseService.asyncPurchaseCallback();
+    public BaseDto<PayDataDto> asyncInvestTransferNotify(@RequestBody long notifyRequestId) {
+        return this.investTransferPurchaseService.asyncPurchaseCallback(notifyRequestId);
     }
 
     @RequestMapping(value = "/post_normal_repay", method = RequestMethod.POST)

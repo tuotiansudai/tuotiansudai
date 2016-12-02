@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
@@ -78,7 +77,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             }
             if (jPushAlertModel.getPushUserType().contains(PushUserType.ALL) && jPushAlertModel.getPushDistricts() == null) {
                 Map extras = chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel));
-                mobileAppJPushClient.sendPushAlertByAll(String.valueOf(jPushAlertModel.getId()), jPushAlertModel.getContent(), extras, jPushAlertModel.getPushSource());
+                mobileAppJPushClient.sendPushAlertByAll(jPushAlertModel.getContent(), extras, jPushAlertModel.getPushSource());
             } else {
                 List<String> loginNames = findManualJPushAlertUserLoginName(jPushAlertModel.getPushUserType(), null);
                 if (CollectionUtils.isEmpty(loginNames)) {

@@ -42,7 +42,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
     private PageValidUtils pageValidUtils;
 
     @Override
-    public BaseResponseDto queryUserWithdrawLogs(WithdrawListRequestDto requestDto) {
+    public BaseResponseDto<WithdrawListResponseDataDto> queryUserWithdrawLogs(WithdrawListRequestDto requestDto) {
         Integer index = requestDto.getIndex();
         Integer pageSize = pageValidUtils.validPageSizeLimit(requestDto.getPageSize());
 
