@@ -322,5 +322,4 @@
     <select id="findSumActualInterest" resultType="long">
         select SUM(actual_interest) from loan_repay where status='COMPLETE'
     </select>
-
 </mapper>
