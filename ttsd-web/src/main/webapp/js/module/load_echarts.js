@@ -5,7 +5,7 @@ define(['jquery','underscore','echarts'], function ($,_) {
     // 为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
     require.config({
         paths: {
-            echarts: 'libs/echarts/dist'
+            echarts: staticServer+'/js/libs/echarts/dist'
         }
     });
 
@@ -22,19 +22,15 @@ define(['jquery','underscore','echarts'], function ($,_) {
         // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
         RenderChart: function (option) {
             require(
-                [
-                    'echarts',
+                [   'echarts',
                     'echarts/chart/bar',
-                    'echarts/chart/line',
-                    'echarts/chart/map'
+                    'echarts/chart/pie'
                 ],
                 function (ec) {
-
-                    var echarts = ec;
                     if (option.chart && option.chart.dispose) {
                         option.chart.dispose();
                     }
-                    option.chart = echarts.init(option.container);
+                    option.chart = ec.init(document.getElementById(option.container));
                     option.chart.setOption(option.option, true);
                     window.onresize = option.option.resize;
                 });
@@ -64,6 +60,7 @@ define(['jquery','underscore','echarts'], function ($,_) {
                         orient: 'vertical',
                         x: 'left',
                         y:'center',
+                        // left: 'left',
                         data:report_data.category
                     },
                     tooltip: {
@@ -105,13 +102,12 @@ define(['jquery','underscore','echarts'], function ($,_) {
                 return PieOpt;
             },
             BarOption:function(data) {
-                var report_data = MyChartsObject.ChartDataFormate(data);
                 var thisOption = {
                     backgroundColor:'#f7f7f7',
                     color:['#ff9c1b'],
                     title : {
-                        text: report_data.title,
-                        subtext: report_data.sub,
+                        text: data.title,
+                        subtext: data.sub,
                         textStyle:{
                             color: '#ff9c1b'
                         }
@@ -120,14 +116,14 @@ define(['jquery','underscore','echarts'], function ($,_) {
                         trigger: 'axis'
                     },
                     legend: {
-                        data:[report_data.name],
+                        data:[data.name],
                         selectedMode:false
                     },
                     calculable : false,
                     xAxis : [
                         {
                             type : 'category',
-                            data : report_data.month
+                            data : data.month
                         }
                     ],
                     yAxis : [
@@ -139,7 +135,7 @@ define(['jquery','underscore','echarts'], function ($,_) {
                         {
                             name:'交易额',
                             type:'bar',
-                            data:report_data.money,
+                            data:data.money,
                             tooltip : {
                                 formatter: "时间:{b}<br/>交易额:{c}"
                             }

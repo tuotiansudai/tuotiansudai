@@ -16,15 +16,14 @@ require(['jquery', 'load_echarts','layerWrapper','jquery.ajax.extension'], funct
 
         // 资产总额饼状图报表
         (function(loadEcharts) {
-
             var data = [{ name: '可用金额', value: pydata.balance },
-                    { name: '待收投资本金', value: pydata.collectingPrincipal },
-                    { name: '待收预期收益', value: pydata.collectingInterest}];
+                { name: '待收投资本金', value: pydata.collectingPrincipal },
+                { name: '待收预期收益', value: pydata.collectingInterest}];
 
             var option = loadEcharts.optionCategory.PieOption(data),
-             container =globalFun.$('#ReportShow'),
-             opt = loadEcharts.ChartConfig(container, option);
+                opt = loadEcharts.ChartConfig('ReportShow', option);
             loadEcharts.RenderChart(opt);
+
         })(loadEcharts);
 
 

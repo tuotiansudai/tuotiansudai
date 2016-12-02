@@ -24,6 +24,7 @@ define(['jquery'], function ($) {
                 getNum=stringRealId.match(/\d/gi);
             return getNum.join('');
         },
+
         /* init radio style */
         initRadio:function($radio,$radioLabel) {
             var numRadio=$radio.length;
@@ -44,6 +45,7 @@ define(['jquery'], function ($) {
 
             }
         },
+
         // 验证身份证有效性
         IdentityCodeValid:function(code) {
             var city={11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",21:"辽宁",22:"吉林",23:"黑龙江 ",31:"上海",32:"江苏",33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",42:"湖北 ",43:"湖南",44:"广东",45:"广西",46:"海南",50:"重庆",51:"四川",52:"贵州",53:"云南",54:"西藏 ",61:"陕西",62:"甘肃",63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外 "};
@@ -80,10 +82,42 @@ define(['jquery'], function ($) {
                 }
             }
             return pass;
+        },
+
+        // 验证用户是否处于登陆状态
+        isUserLogin:function() {
+            var LoginDefer=$.Deferred(); //在函数内部，新建一个Deferred对象
+            $.ajax({
+                url: '/isLogin',
+                type: 'GET'
+            })
+                .done(function(data) {
+                    if(data) {
+                        //如果data有值，说明token已经过期，用户处于未登陆状态，并且需要更新token
+                        LoginDefer.reject(data);
+                        $("meta[name='_csrf']").remove();
+                        $('head').append($(data.responseText));
+                        var token = $("meta[name='_csrf']").attr("content");
+                        var header = $("meta[name='_csrf_header']").attr("content");
+                        $(document).ajaxSend(function (e, xhr, options) {
+                            xhr.setRequestHeader(header, token);
+                        });
+                    }
+                    else {
+                        //如果data为空，说明用户处于登陆状态，不需要做任何处理
+                        LoginDefer.resolve();
+                    }
+                })
+                .fail(function() {
+                    LoginDefer.reject();
+                });
+
+            return LoginDefer.promise(); // 返回promise对象
         }
     };
 
     return commonFun;
 });
+
 
 
