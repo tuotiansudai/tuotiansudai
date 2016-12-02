@@ -44,49 +44,7 @@ define(['jquery'], function ($) {
 
             }
         },
-        popWindow:function(title,content,size) {
-            if(!$('.popWindow').length) {
-                var popW=[];
-                popW.push('<div class="popWindow">');
-                popW.push('<div class="ecope-overlay"></div>');
-                popW.push('<div class="ecope-dialog">');
-                popW.push('<div class="dg_wrapper">');
-
-                popW.push('<div class="hd"><h3>'+title+' ' +
-                    '<em class="close" ></em></h3></div>');
-                popW.push('<div class="bd">sss</div>');
-
-                popW.push('</div></div></div>');
-                $('body').append(popW.join(''));
-                var $popWindow=$('.ecope-dialog'),
-                    size= $.extend({width:'560px'},size);
-                $popWindow.css({
-                    width:size.width
-                });
-                var adjustPOS=function() {
-                    var scrollHeight=document.body.scrollTop || document.documentElement.scrollTop,
-                        pTop=$(window).height()-$popWindow.height(),
-                        pLeft=$(window).width()-$popWindow.width();
-                    $popWindow.css({'top':pTop/2+scrollHeight,left:pLeft/2});
-                    $popWindow.find('.bd').empty().append(content);
-                }
-                adjustPOS();
-                $(window).resize(function() {
-                    adjustPOS();
-                });
-                var mousewheel = document.all?"mousewheel":"DOMMouseScroll";
-                $(window).bind('mousewheel',function() {
-                    adjustPOS();
-                })
-            }
-            else {
-                $('.ecope-overlay,.popWindow').show();
-            }
-
-            $popWindow.delegate('.close','click',function() {
-                $('.ecope-overlay,.popWindow').hide();
-            })
-        },
+        // 验证身份证有效性
         IdentityCodeValid:function(code) {
             var city={11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",21:"辽宁",22:"吉林",23:"黑龙江 ",31:"上海",32:"江苏",33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",42:"湖北 ",43:"湖南",44:"广东",45:"广西",46:"海南",50:"重庆",51:"四川",52:"贵州",53:"云南",54:"西藏 ",61:"陕西",62:"甘肃",63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外 "};
             var pass= true;
