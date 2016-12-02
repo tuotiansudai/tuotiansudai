@@ -62,7 +62,7 @@ public class AllUserCollectorTest {
 
     @Test
     public void shouldVerifyFalseWhenCouponIsBirthdayCouponAndUserTodayIsNotBirthday() {
-        UserModel userTodayIsBirthday = this.fakeUserModel(new DateTime().plusDays(10).toDate());
+        UserModel userTodayIsBirthday = this.fakeUserModel(new DateTime().plusMonths(1).toDate());
         CouponModel couponModel = this.fakeCouponModel(userTodayIsBirthday.getLoginName(), CouponType.BIRTHDAY_COUPON);
         assertFalse(allUserCollector.contains(couponModel, userTodayIsBirthday));
     }
