@@ -266,4 +266,9 @@ public interface InvestMapper {
 
     List<InvestModel> findNoContractNoInvest(@Param(value = "loanId") long loanId);
 
+    long sumSuccessActivityInvestAmount(@Param(value = "loginName") String loginName,
+                                        @Param(value = "activityDesc") String activityDesc,
+                                        @Param(value = "startTime") Date startTime,
+                                        @Param(value = "endTime") Date endTime);
+
 }

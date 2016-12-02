@@ -55,14 +55,14 @@ public enum LotteryPrize {
     RED_ENVELOPE_50_POINT_DRAW_REF_CARNIVAL("50元红包",PrizeType.VIRTUAL,ActivityCategory.CARNIVAL_ACTIVITY,39),
 
     //元旦活动
-    MINI_REFRIGERATOR("迷你冰箱",PrizeType.CONCRETE,ActivityCategory.NEW_YEARS_DAY_ACTIVITY,0),
-    U_DISK("拓天速贷U盘",PrizeType.CONCRETE,ActivityCategory.NEW_YEARS_DAY_ACTIVITY,1),
-    BOLSTER("文字君表情抱枕",PrizeType.CONCRETE,ActivityCategory.NEW_YEARS_DAY_ACTIVITY,1),
-    RED_ENVELOPE_5("5.8元红包",PrizeType.VIRTUAL,ActivityCategory.NEW_YEARS_DAY_ACTIVITY,3),
-    RED_ENVELOPE_3("3.8元红包",PrizeType.VIRTUAL,ActivityCategory.NEW_YEARS_DAY_ACTIVITY,5),
-    RED_ENVELOPE_18("18.8元红包",PrizeType.VIRTUAL,ActivityCategory.NEW_YEARS_DAY_ACTIVITY,45),
-    RED_ENVELOPE_8("8.8元红包",PrizeType.VIRTUAL,ActivityCategory.NEW_YEARS_DAY_ACTIVITY,45),
-    INTEREST_COUPON_2_NEW_YEARS("迷你冰箱",PrizeType.VIRTUAL,ActivityCategory.NEW_YEARS_DAY_ACTIVITY,2);
+    MINI_REFRIGERATOR("迷你冰箱",PrizeType.CONCRETE,ActivityCategory.ANNUAL_ACTIVITY,0),
+    U_DISK("拓天速贷U盘",PrizeType.CONCRETE,ActivityCategory.ANNUAL_ACTIVITY,1),
+    BOLSTER("文字君表情抱枕",PrizeType.CONCRETE,ActivityCategory.ANNUAL_ACTIVITY,1),
+    RED_ENVELOPE_5("5.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,3),
+    RED_ENVELOPE_3("3.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,5),
+    RED_ENVELOPE_18("18.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,45),
+    RED_ENVELOPE_8("8.8元红包",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,45),
+    INTEREST_COUPON_2_NEW_YEARS("迷你冰箱",PrizeType.VIRTUAL,ActivityCategory.ANNUAL_ACTIVITY,2);
 
 
     String description;

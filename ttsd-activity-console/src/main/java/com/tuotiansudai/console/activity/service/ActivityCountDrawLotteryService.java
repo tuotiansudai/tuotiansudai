@@ -22,7 +22,7 @@ import java.util.List;
 
 
 @Service
-public abstract class CommonCountTimeService {
+public abstract class ActivityCountDrawLotteryService {
 
     @Autowired
     private UserMapper userMapper;
@@ -60,8 +60,17 @@ public abstract class CommonCountTimeService {
     @Value("#{'${activity.new.years.period}'.split('\\~')}")
     private List<String> newYearsTime = Lists.newArrayList();
 
-    List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER, ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD, ActivityDrawLotteryTask.RECHARGE, ActivityDrawLotteryTask.INVEST);
-    List newYearsActivityTask = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN, ActivityDrawLotteryTask.REFERRER_USER, ActivityDrawLotteryTask.EACH_INVEST_5000);
+    //往期活动任务
+    private final List activityTasks = Lists.newArrayList(ActivityDrawLotteryTask.REGISTER, ActivityDrawLotteryTask.EACH_REFERRER,
+            ActivityDrawLotteryTask.EACH_REFERRER_INVEST, ActivityDrawLotteryTask.CERTIFICATION, ActivityDrawLotteryTask.BANK_CARD,
+            ActivityDrawLotteryTask.RECHARGE, ActivityDrawLotteryTask.INVEST);
+    //元旦活动任务
+    private final List newYearsActivityTask = Lists.newArrayList(ActivityDrawLotteryTask.EACH_ACTIVITY_SIGN_IN, ActivityDrawLotteryTask.REFERRER_USER,
+            ActivityDrawLotteryTask.EACH_INVEST_5000);
+
+    private final String activityDescription = "新年专享";
+    //每投资5000奖励抽奖次数
+    private final long EACH_INVEST_AMOUNT = 500000;
 
 
     public int countDrawLotteryTime(String mobile, ActivityCategory activityCategory) {
@@ -74,7 +83,7 @@ public abstract class CommonCountTimeService {
             case NATIONAL_PRIZE:
             case CARNIVAL_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, activityTasks);
-            case NEW_YEARS_DAY_ACTIVITY:
+            case ANNUAL_ACTIVITY:
                 return countDrawLotteryTime(userModel, activityCategory, newYearsActivityTask);
         }
         return lotteryTime;
@@ -138,12 +147,15 @@ public abstract class CommonCountTimeService {
                     time += referrerUsers.size() * 5;
                     break;
                 case EACH_INVEST_5000:
-
+                    long sumInvestAmount = investMapper.sumSuccessActivityInvestAmount(userModel.getLoginName(), activityDescription, startTime, endTime);
+                    long investAwardTime = sumInvestAmount / EACH_INVEST_AMOUNT;
+                    if (investAwardTime <= 10) {
+                        time += investAwardTime;
+                    }
                     break;
 
             }
         }
-
         return time;
     }
 
@@ -156,7 +168,7 @@ public abstract class CommonCountTimeService {
                 return activityNationalStartTime;
             case CARNIVAL_ACTIVITY:
                 return DateTime.parse(carnivalTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-            case NEW_YEARS_DAY_ACTIVITY:
+            case ANNUAL_ACTIVITY:
                 return DateTime.parse(newYearsTime.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         }
         return null;
@@ -170,7 +182,7 @@ public abstract class CommonCountTimeService {
                 return activityNationalEndTime;
             case CARNIVAL_ACTIVITY:
                 return DateTime.parse(carnivalTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-            case NEW_YEARS_DAY_ACTIVITY:
+            case ANNUAL_ACTIVITY:
                 return DateTime.parse(newYearsTime.get(1), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         }
         return null;

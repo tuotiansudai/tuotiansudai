@@ -6,8 +6,6 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.repository.model.TransferableInvestView;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -51,6 +49,8 @@ public class InvestMapperTest {
     private TransferApplicationMapper transferApplicationMapper;
     @Autowired
     private AccountMapper accountMapper;
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Value("#{'${web.heroRanking.activity.period}'.split('\\~')}")
     private List<String> heroRankingActivityPeriod;
@@ -859,4 +859,29 @@ public class InvestMapperTest {
         long count = investMapper.countInvestorSuccessInvestByInvestTime(User_ID2, DateUtils.addMonths(DateTime.now().toDate(), -1), DateUtils.addMonths(DateTime.now().toDate(), 1));
         assertEquals(count, 1);
     }
+
+    @Test
+    public void shouldSumSuccessActivityInvestAmountIsOk(){
+        UserModel investor1 = createUserByUserId("investor1");
+        LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
+        loanDetailsModel.setLoanId(Loan_ID);
+        loanDetailsModel.setId(idGenerator.generate());
+        loanDetailsModel.setActivity(true);
+        loanDetailsModel.setActivityDesc("春节专享");
+        loanDetailsModel.setDeclaration("1");
+        loanDetailsMapper.create(loanDetailsModel);
+        InvestModel investModel = this.getFakeInvestModel();
+        investModel.setLoginName(investor1.getLoginName());
+        investModel.setStatus(InvestStatus.SUCCESS);
+        investMapper.create(investModel);
+
+        long sumActivityAmount = this.investMapper.sumSuccessActivityInvestAmount(investor1.getLoginName(), loanDetailsModel.getActivityDesc(), DateTime.now().plusDays(-1).toDate(), DateTime.now().plusDays(1).toDate());
+        assertTrue(sumActivityAmount == investModel.getAmount());
+
+        loanDetailsModel.setActivity(false);
+        loanDetailsMapper.updateByLoanId(loanDetailsModel);
+        sumActivityAmount = this.investMapper.sumSuccessActivityInvestAmount(investor1.getLoginName(), loanDetailsModel.getActivityDesc(), DateTime.now().plusDays(-1).toDate(), DateTime.now().plusDays(1).toDate());
+        assertTrue(sumActivityAmount != investModel.getAmount());
+    }
+
 }

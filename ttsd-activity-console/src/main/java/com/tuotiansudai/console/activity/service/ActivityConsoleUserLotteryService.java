@@ -27,7 +27,7 @@ public class ActivityConsoleUserLotteryService {
     private UserMapper userMapper;
 
     @Autowired
-    private CommonCountTimeService commonCountTimeService;
+    private ActivityCountDrawLotteryService commonCountTimeService;
 
     public List<UserLotteryTimeView> findUserLotteryTimeViews(String mobile, final ActivityCategory prizeType, Integer index, Integer pageSize) {
         List<UserModel> userModels = userMapper.findUserModelByMobile(mobile, index, pageSize);
