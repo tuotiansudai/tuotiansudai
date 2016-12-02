@@ -83,7 +83,7 @@ public class ChristmasPrizeController {
     }
 
     private List<Integer> generateSteps(String loginName) {
-        List<Integer> steps = Lists.newArrayList(1, 0, 0);
+        List<Integer> steps = Lists.newArrayList(0, 0, 0);
         if (Strings.isNullOrEmpty(loginName)) {
             return steps;
         }
