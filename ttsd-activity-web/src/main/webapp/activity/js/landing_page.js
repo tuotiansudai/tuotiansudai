@@ -31,7 +31,7 @@ require(['jquery', 'underscore', 'layerWrapper', 'commonFun', 'superslide', 'pla
                 $.ajax({
                     url:"/activity/get-realRealName?mobile="+getMobile,
                     type:'GET',
-                    dataType: 'json',
+                    dataType: 'json'
                 }).done(function(data) {
                     //姓名的第一个字母用*替换
                     String.prototype.replaceFirst=function(value) {
