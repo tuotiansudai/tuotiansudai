@@ -162,6 +162,38 @@ public class ActivityConsoleExportService {
         return rows;
     }
 
+    public List<List<String>> buildHeadlineTodayList(String mobile ,ActivityCategory prizeType, Date startTime, Date endTime, String authenticationType) {
+        List<UserLotteryPrizeView> userLotteryPrizeViews = userLotteryPrizeMapper.findUserLotteryPrizeViews(mobile, null, prizeType, startTime, endTime, null, null);
+        List<List<String>> rows = Lists.newArrayList();
+        if(authenticationType.equals("0")){
+             userLotteryPrizeViews.stream()
+                    .filter(userLotteryPrizeView -> Strings.isNullOrEmpty(userLotteryPrizeView.getUserName()))
+                     .forEach(userLotteryPrizeView -> rows.add(Lists.newArrayList(
+                             userLotteryPrizeView.getMobile(),
+                             new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd HH:mm:ss"),
+                             userLotteryPrizeView.getUserName(),
+                             investMapper.sumSuccessInvestCountByLoginName(userLotteryPrizeView.getLoginName()) > 0 ? "是": "否")));
+        }
+        else if(authenticationType.equals("1")){
+            userLotteryPrizeViews.stream()
+                    .filter(userLotteryPrizeView -> !Strings.isNullOrEmpty(userLotteryPrizeView.getUserName()))
+                    .forEach(userLotteryPrizeView -> rows.add(Lists.newArrayList(
+                            userLotteryPrizeView.getMobile(),
+                            new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd HH:mm:ss"),
+                            userLotteryPrizeView.getUserName(),
+                            investMapper.sumSuccessInvestCountByLoginName(userLotteryPrizeView.getLoginName()) > 0 ? "是": "否")));
+        }
+        else {
+            userLotteryPrizeViews.forEach(userLotteryPrizeView -> rows.add(Lists.newArrayList(
+                    userLotteryPrizeView.getMobile(),
+                    new DateTime(userLotteryPrizeView.getLotteryTime()).toString("yyyy-MM-dd HH:mm:ss"),
+                    userLotteryPrizeView.getUserName(),
+                    investMapper.sumSuccessInvestCountByLoginName(userLotteryPrizeView.getLoginName()) > 0 ? "是" : "否")));
+        }
+        return rows;
+    }
+
+
     public Map getAllFamilyMap(Date activityMinAutumnStartTime, Date activityMinAutumnEndTime) {
         List<UserModel> userModels = userMapper.findUsersByRegisterTimeOrReferrer(activityMinAutumnStartTime, activityMinAutumnEndTime,null);
 

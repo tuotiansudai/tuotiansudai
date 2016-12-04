@@ -18,6 +18,8 @@ public class UserLotteryPrizeView implements Serializable {
 
     private String loginName;
 
+    private String investCount;
+
     public String getLoginName() {
         return loginName;
     }
@@ -64,5 +66,14 @@ public class UserLotteryPrizeView implements Serializable {
 
     public void setPrizeValue(String prizeValue) {
         this.prizeValue = prizeValue;
+    }
+
+
+    public String getInvestCount() {
+        return investCount;
+    }
+
+    public void setInvestCount(String investCount) {
+        this.investCount = investCount;
     }
 }
