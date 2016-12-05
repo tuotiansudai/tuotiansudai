@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 @Component
 public class SmsWrapperClient extends BaseClient {
@@ -123,6 +124,7 @@ public class SmsWrapperClient extends BaseClient {
                 return objectMapper.readValue(responseString, new TypeReference<BaseDto<SmsDataDto>>() {
                 });
             }
+            logger.debug(MessageFormat.format("[SmsWrapperClient][send] send result fail! requestJson:{0}, requestPath:{1}", requestJson, requestPath));
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
