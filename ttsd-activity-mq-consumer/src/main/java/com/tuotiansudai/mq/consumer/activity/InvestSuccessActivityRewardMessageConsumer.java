@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.util.Date;
 
 @Component
@@ -49,17 +50,14 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
         }
     }
 
-    private void assignActivityChristmasInterestCoupon(String message){
-        InvestSuccessMessage investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
+    private void assignActivityChristmasInterestCoupon(String message) {
+        InvestSuccessMessage investSuccessMessage = null;
+        try {
+            investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
+        } catch (IOException e) {
+           throw new RuntimeException(e);
+        }
         Date nowDate = DateTime.now().toDate();
-        if(investSuccessMessage == null){
-            logger.error("[MQ] parse InvestSuccessMessage is error {}.", message);
-            return;
-        }
-        if(investSuccessMessage.getInvestInfo() == null){
-            logger.error("[MQ] query invest by investId is not exists {}.", investSuccessMessage.getInvestInfo().getInvestId());
-            return;
-        }
 
         logger.info("[MQ] ready to consume activity message: assigning coupon.");
         if ((activityChristmasStartTime.before(nowDate) && activityChristmasEndTime.after(nowDate))
