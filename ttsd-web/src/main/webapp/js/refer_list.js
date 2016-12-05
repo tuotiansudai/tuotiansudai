@@ -1,5 +1,5 @@
-require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'clipboard','daterangepicker', 'jquery.ajax.extension','commonFun','md5','qrcode'],
-    function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer,clipboard) {
+require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'clipboard','commonFun','daterangepicker', 'jquery.ajax.extension','md5','qrcode'],
+    function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer,clipboard,commonFun) {
         window['Clipboard']=clipboard;
 
         var $investListContent=$('#investListContent'),
