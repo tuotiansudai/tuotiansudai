@@ -1,19 +1,15 @@
 package com.tuotiansudai.mq.consumer.activity.config;
 
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.util.quartz.JobStoreBuilder;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import redis.clients.jedis.JedisPoolConfig;
 
 @Configuration
 @ComponentScan(basePackages = {
-        "com.tuotiansudai.repository",
         "com.tuotiansudai.util",
         "com.tuotiansudai.cache",
-        "com.tuotiansudai.client",
-        "com.tuotiansudai.coupon",
-        "com.tuotiansudai.membership"
+        "com.tuotiansudai.client"
 })
 @PropertySource(
         ignoreResourceNotFound = true, value = {
@@ -41,8 +37,4 @@ public class AppConfiguration {
         return jedisPoolConfig;
     }
 
-    @Bean
-    public JobStoreBuilder jobStoreBuilder() {
-        return new JobStoreBuilder();
-    }
 }

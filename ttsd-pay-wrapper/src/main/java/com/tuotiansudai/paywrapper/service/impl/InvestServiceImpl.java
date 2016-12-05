@@ -10,6 +10,9 @@ import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.message.InvestInfo;
+import com.tuotiansudai.message.InvestSuccessMessage;
+import com.tuotiansudai.message.LoanDetailInfo;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -30,10 +33,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestAchievementService;
 import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
@@ -75,6 +75,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     @Autowired
     private AmountTransfer amountTransfer;
@@ -507,7 +510,22 @@ public class InvestServiceImpl implements InvestService {
 
         this.investAchievementService.awardAchievement(investModel);
 
-        mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, String.valueOf(investModel.getId()));
+        InvestInfo investInfo = new InvestInfo();
+        LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
+
+        investInfo.setInvestId(investModel.getId());
+        investInfo.setAmount(investModel.getAmount());
+        investInfo.setStatus(investModel.getStatus().name());
+        investInfo.setTransferStatus(investModel.getTransferStatus().name());
+
+        LoanDetailsModel loanDetailsModel =  loanDetailsMapper.getByLoanId(investModel.getLoanId());
+        loanDetailInfo.setActivity(loanDetailsModel.isActivity());
+        loanDetailInfo.setActivityDesc(loanDetailsModel.getActivityDesc());
+        loanDetailInfo.setLoanId(investModel.getLoanId());
+
+        InvestSuccessMessage investSuccessMessage = new InvestSuccessMessage(investInfo, loanDetailInfo);
+
+        mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, JsonConverter.writeValueAsString(investSuccessMessage));
     }
 
 

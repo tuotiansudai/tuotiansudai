@@ -1,16 +1,12 @@
 package com.tuotiansudai.mq.consumer.activity;
 
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.message.InvestInfo;
+import com.tuotiansudai.message.InvestSuccessMessage;
+import com.tuotiansudai.message.LoanDetailInfo;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanDetailsModel;
-import com.tuotiansudai.repository.model.TransferStatus;
+import com.tuotiansudai.util.JsonConverter;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,72 +33,42 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
     @MockBean
     private MQWrapperClient mqClient;
 
-    @MockBean
-    private CouponAssignmentService couponAssignmentService;
-
-    @MockBean
-    private InvestMapper investMapper;
-
-    @MockBean
-    private LoanDetailsMapper loanDetailsMapper;
-
     @Test
     @Transactional
     public void shouldConsume() {
-        long investId = 1000000001;
-        long loanId = 200000001;
-        long userCouponId = 100023;
-        final ArgumentCaptor<Long> investIdCaptor = ArgumentCaptor.forClass(Long.class);
-        final ArgumentCaptor<Long> loanIdCaptor = ArgumentCaptor.forClass(Long.class);
-        final ArgumentCaptor<String> loginNameCaptor = ArgumentCaptor.forClass(String.class);
         final ArgumentCaptor<MessageQueue> messageQueueCaptor = ArgumentCaptor.forClass(MessageQueue.class);
         final ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
 
+        InvestSuccessMessage investSuccessMessage = buildMockedInvestSuccessMessage();
+
         ReflectionTestUtils.setField(consumer, "activityChristmasStartTime", new DateTime().minusDays(3).toDate());
         ReflectionTestUtils.setField(consumer, "activityChristmasEndTime", new DateTime().plusDays(3).toDate());
-        InvestModel mockedInvestModel = buildMockedInvestModel(investId, loanId);
-        LoanDetailsModel mockedLoanDetailsModel = buildMockedLoanDetailsModel(loanId);
-        UserCouponModel mockedUserCoupon = buildMockedUserCouponModel(userCouponId);
 
-        when(investMapper.findById(investIdCaptor.capture())).thenReturn(mockedInvestModel);
-        when(loanDetailsMapper.getByLoanId(loanIdCaptor.capture())).thenReturn(mockedLoanDetailsModel);
-        when(couponAssignmentService.assign(loginNameCaptor.capture(), anyLong(), any())).thenReturn(mockedUserCoupon);
         doNothing().when(mqClient).sendMessage(messageQueueCaptor.capture(), messageCaptor.capture());
 
-        consumer.consume(String.valueOf(investId));
+        consumer.consume(JsonConverter.writeValueAsString(investSuccessMessage));
 
-        verify(couponAssignmentService, times(1)).assign(anyString(), anyLong(), any());
         verify(mqClient, times(1)).sendMessage(any(), any());
 
-        assertEquals("test123", loginNameCaptor.getValue());
-        assertEquals(investId, investIdCaptor.getValue().longValue());
-        assertEquals(loanId, loanIdCaptor.getValue().longValue());
-        assertEquals(MessageQueue.CouponAssigned_UserMessageSending, messageQueueCaptor.getValue());
-        assertEquals(String.format("UserCoupon:%d", userCouponId), messageCaptor.getValue());
+        assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
+        assertEquals("test123:324", messageCaptor.getValue());
     }
 
-    private UserCouponModel buildMockedUserCouponModel(long userCouponId) {
-        UserCouponModel userCouponModel = new UserCouponModel();
-        userCouponModel.setId(userCouponId);
-        return userCouponModel;
-    }
+    private  InvestSuccessMessage buildMockedInvestSuccessMessage() {
+        InvestInfo investInfo = new InvestInfo();
+        LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
 
-    private InvestModel buildMockedInvestModel(long investId, long loanId) {
-        InvestModel investModel = new InvestModel();
-        investModel.setId(investId);
-        investModel.setLoginName("test123");
-        investModel.setLoanId(loanId);
-        investModel.setAmount(3200000);
-        investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
-        investModel.setStatus(InvestStatus.SUCCESS);
-        return investModel;
-    }
+        investInfo.setInvestId(10000001);
+        investInfo.setLoginName("test123");
+        investInfo.setAmount(4000000);
+        investInfo.setStatus("SUCCESS");
+        investInfo.setTransferStatus("TRANSFERABLE");
 
-    private LoanDetailsModel buildMockedLoanDetailsModel(long loanId) {
-        LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
-        loanDetailsModel.setLoanId(loanId);
-        loanDetailsModel.setActivity(true);
-        loanDetailsModel.setActivityDesc("圣诞专享");
-        return loanDetailsModel;
+        loanDetailInfo.setLoanId(200000001);
+        loanDetailInfo.setActivity(true);
+        loanDetailInfo.setActivityDesc("圣诞专享");
+
+        InvestSuccessMessage investSuccessMessage = new InvestSuccessMessage(investInfo, loanDetailInfo);
+        return investSuccessMessage;
     }
 }
