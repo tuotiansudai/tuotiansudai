@@ -3,6 +3,7 @@ package com.tuotiansudai.mq.client.model;
 import java.util.stream.Stream;
 
 public enum MessageTopic {
+    InvestSuccess("InvestSuccess", MessageQueue.InvestSuccess_CompletePointTask, MessageQueue.InvestSuccess_MembershipUpdate)
     ;
 
     final String topicName;

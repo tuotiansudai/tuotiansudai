@@ -10,6 +10,7 @@ public enum MessageQueue {
     UserRegistered_CompletePointTask("UserRegistered-CompletePointTask"),
     AccountRegistered_CompletePointTask("AccountRegistered-CompletePointTask"),
     InvestSuccess_CompletePointTask("InvestSuccess-CompletePointTask"),
+    InvestSuccess_MembershipUpdate("InvestSuccess-MembershipUpdate"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask");

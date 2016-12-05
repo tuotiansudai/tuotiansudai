@@ -41,17 +41,23 @@ public class MembershipInvestService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    private final String REDIS_MEMBERSHIP_UPGRADE_MESSAGE = "web:membership:upgrade";
+    private static final String REDIS_MEMBERSHIP_UPGRADE_MESSAGE = "web:membership:upgrade";
 
     @Transactional
     public void afterInvestSuccess(String loginName, long investAmount, long investId) {
         try {
+            if (membershipExperienceBillMapper.findByLoginNameAndInvestId(loginName, investId) != null) {
+                // 检查是否已经处理过，幂等操作
+                return;
+            }
+
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
             long investMembershipPoint = investAmount / 100;
             accountModel.setMembershipPoint(accountModel.getMembershipPoint() + investMembershipPoint);
             accountMapper.update(accountModel);
 
             MembershipExperienceBillModel billModel = new MembershipExperienceBillModel(loginName,
+                    String.valueOf(investId),
                     investMembershipPoint,
                     accountModel.getMembershipPoint(),
                     MessageFormat.format("您投资了{0}项目{1}元", String.valueOf(investId), AmountConverter.convertCentToString(investAmount)));
@@ -71,6 +77,7 @@ public class MembershipInvestService {
             }
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
+            throw e;
         }
     }
 }

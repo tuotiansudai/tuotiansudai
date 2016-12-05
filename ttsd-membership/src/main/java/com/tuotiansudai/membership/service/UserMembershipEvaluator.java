@@ -1,11 +1,5 @@
 package com.tuotiansudai.membership.service;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Ordering;
-import com.google.common.collect.UnmodifiableIterator;
-import com.google.common.primitives.Ints;
-import com.google.common.primitives.Longs;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -15,8 +9,10 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserMembershipEvaluator {
@@ -30,21 +26,10 @@ public class UserMembershipEvaluator {
     public MembershipModel evaluateUpgradeLevel(String loginName) {
         List<UserMembershipModel> userMembershipModels = userMembershipMapper.findByLoginName(loginName);
 
-        UnmodifiableIterator<UserMembershipModel> filter = Iterators.filter(userMembershipModels.iterator(), new Predicate<UserMembershipModel>() {
-            @Override
-            public boolean apply(UserMembershipModel input) {
-                return UserMembershipType.UPGRADE == input.getType();
-            }
-        });
+        Optional<UserMembershipModel> max = userMembershipModels.stream().filter(input -> input.getType() == UserMembershipType.UPGRADE)
+                .max(Comparator.comparingInt(input -> membershipMapper.findById(input.getMembershipId()).getLevel()));
 
-        UserMembershipModel max = new Ordering<UserMembershipModel>() {
-            @Override
-            public int compare(UserMembershipModel left, UserMembershipModel right) {
-                return Ints.compare(membershipMapper.findById(left.getMembershipId()).getLevel(), membershipMapper.findById(right.getMembershipId()).getLevel());
-            }
-        }.max(filter);
-
-        return membershipMapper.findById(max.getMembershipId());
+        return max.isPresent() ? membershipMapper.findById(max.get().getMembershipId()) : null;
     }
 
     public MembershipModel evaluate(String loginName) {
@@ -71,16 +56,10 @@ public class UserMembershipEvaluator {
             return null;
         }
 
-        UnmodifiableIterator<UserMembershipModel> filter = Iterators.filter(userMembershipModels.iterator(), input -> {
-            return input.getExpiredTime().after(date);
-        });
+        Optional<UserMembershipModel> max = userMembershipModels.stream().filter(input -> input.getExpiredTime().after(date)).
+                max((left, right) -> left.getMembershipId() == right.getMembershipId() ?
+                        Long.compare(left.getExpiredTime().getTime(), right.getExpiredTime().getTime()) : Long.compare(left.getMembershipId(), right.getMembershipId()));
 
-        return new Ordering<UserMembershipModel>() {
-            @Override
-            public int compare(UserMembershipModel left, UserMembershipModel right) {
-                return left.getMembershipId() == right.getMembershipId() ?
-                        Longs.compare(left.getExpiredTime().getTime(), right.getExpiredTime().getTime()) : Longs.compare(left.getMembershipId(), right.getMembershipId());
-            }
-        }.max(filter);
+        return max.isPresent() ? max.get() : null;
     }
 }
