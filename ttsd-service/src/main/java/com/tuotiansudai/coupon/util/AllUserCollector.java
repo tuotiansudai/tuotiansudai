@@ -1,9 +1,9 @@
 package com.tuotiansudai.coupon.util;
 
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +14,6 @@ import java.util.List;
 public class AllUserCollector implements UserCollector {
 
     @Autowired
-    private CouponMapper couponMapper;
-
-    @Autowired
     private UserMapper userMapper;
 
     @Override
@@ -25,8 +22,7 @@ public class AllUserCollector implements UserCollector {
     }
 
     @Override
-    public boolean contains(long couponId, String loginName) {
-        CouponModel couponModel = couponMapper.findById(couponId);
-        return couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON || UserBirthdayUtil.isBirthMonth(userMapper.findByLoginName(loginName).getIdentityNumber());
+    public boolean contains(CouponModel couponModel, UserModel userModel) {
+        return couponModel != null && userModel != null && (couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON || UserBirthdayUtil.isBirthMonth(userModel.getIdentityNumber()));
     }
 }

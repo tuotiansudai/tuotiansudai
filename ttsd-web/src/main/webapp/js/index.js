@@ -1,8 +1,17 @@
-require(['jquery','imageShowSlide-v1', 'layerWrapper','coupon-alert', 'red-envelope-float',  'jquery.validate', 'autoNumeric', 'logintip','assign_coupon'],
+require(['jquery','imageShowSlide-v1', 'layerWrapper', 'commonFun','jquery.ajax.extension', 'coupon-alert', 'red-envelope-float',  'jquery.validate', 'autoNumeric', 'logintip','assign_coupon'],
+
     function ($,imageShowSlide,layer) {
         var $homePageContainer = $('#homePageContainer'),
             $imgScroll = $('.banner-img-list', $homePageContainer);
         var viewport = globalFun.browserRedirect();
+
+        // $.when(commonFun.isUserLogin())
+        //     .done(function(){
+        //         console.log('已经登陆');
+        //     })
+        //     .fail(function(){
+        //         console.log('未登陆');
+        //     });
 
         //首页大图轮播和最新公告滚动
         (function(){

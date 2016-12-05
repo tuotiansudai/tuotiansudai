@@ -23,13 +23,11 @@ public class NewRegisteredUserCollector implements UserCollector {
     public List<String> collect(long couponId) {
         CouponModel couponModel = couponMapper.findById(couponId);
         List<UserModel> usersByRegisterTimeOrReferrer = userMapper.findUsersByRegisterTimeOrReferrer(couponModel.getStartTime(), couponModel.getEndTime(), null);
-        return Lists.transform(usersByRegisterTimeOrReferrer, userModel -> userModel.getLoginName());
+        return Lists.transform(usersByRegisterTimeOrReferrer, UserModel::getLoginName);
     }
 
     @Override
-    public boolean contains(long couponId, String loginName) {
-        CouponModel couponModel = couponMapper.findById(couponId);
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        return userModel != null && userModel.getRegisterTime().before(couponModel.getEndTime()) && userModel.getRegisterTime().after(couponModel.getStartTime());
+    public boolean contains(CouponModel couponModel, UserModel userModel) {
+        return couponModel != null && userModel != null && userModel.getRegisterTime().before(couponModel.getEndTime()) && userModel.getRegisterTime().after(couponModel.getStartTime());
     }
 }

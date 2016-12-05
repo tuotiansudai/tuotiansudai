@@ -44,5 +44,4 @@ public class CouponUserGroupModel implements Serializable{
     public void setUserGroupItems(List<String> userGroupItems) {
         this.userGroupItems = userGroupItems;
     }
-
 }
