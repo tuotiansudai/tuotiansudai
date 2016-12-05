@@ -174,8 +174,13 @@ public class OperationDataServiceTest {
         createInvest("testUserInvest", 10001, 2000, testEndDate);
         createInvest("testUserInvest", 10002, 3000, testEndDate);
         createInvest("testUserInvest", 10002, 4000, testEndDate);
-        createInvest("testUserInvest", 10003, 5000, testEndDate);
-        createInvest("testUserInvest", 10003, 6000, testEndDate);
+
+        InvestModel investModelStart = createInvest("testUserInvest", 10003, 6000, testEndDate);
+        investModelStart.setCreatedTime(DateTime.parse("2016-04-01 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+        investMapper.update(investModelStart);
+        InvestModel investModel = createInvest("testUserInvest", 10003, 5000, testEndDate);
+        investModel.setCreatedTime(DateTime.parse("2016-04-30 23:59:59", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+        investMapper.update(investModel);
 
         //测试从数据库取出的数据
         OperationDataDto operationDataDtoFromRedis = operationDataService.getOperationDataFromRedis(testEndDate);

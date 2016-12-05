@@ -95,7 +95,7 @@ public class OperationDataServiceImpl implements OperationDataService {
             Date endTime = calendar.getTime();
 
             String amount = AmountConverter.convertCentToString(investMapper.sumInvestAmount(null, null, null, null, null,
-                    new DateTime(startTime).withTimeAtStartOfDay().toDate(), new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).plusSeconds(-1).toDate(), InvestStatus.SUCCESS, null));
+                    new DateTime(startTime).withTimeAtStartOfDay().toDate(), new DateTime(endTime).withTimeAtStartOfDay().plusSeconds(-1).toDate(), InvestStatus.SUCCESS, null));
             operationDataDto.getMoney().add(amount);
         }
     }
