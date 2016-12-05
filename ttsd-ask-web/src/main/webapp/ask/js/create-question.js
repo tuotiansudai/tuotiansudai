@@ -23,9 +23,11 @@ var utils = {
             max=max || false;
         var value=$.trim(element.val()),
             tempDes=value.replace(/\n/g,'\\n')
-                .replace(/\r/g,'\\r');
+                .replace(/\r/g,'\\r')
+                .replace(/\s/g,'&nbsp;');
         var checkWrap=value.replace(/\n/g,'')
-                        .replace(/\r/g,'');
+                        .replace(/\r/g,'')
+                        .replace(/\s/g,'');
 
         var len=tempDes.split('').length;
         var name=element[0].name;
@@ -232,7 +234,8 @@ if($questionDetailTag.length) {
         var value=$formAnswer.find('textarea').val();
         event.preventDefault();
         var temp=value.replace(/\n/g,'\\n')
-            .replace(/\r/g,'\\r');
+            .replace(/\r/g,'\\r')
+            .replace(/\s/g,'&nbsp;');
         $formAnswer.find('textarea').val(temp);
             $.ajax({
                 url: "/answer",
@@ -346,7 +349,8 @@ if($createQuestion.length) {
         event.preventDefault();
 
         var question=value.replace(/\n/g,'\\n')
-                      .replace(/\r/g,'\\r');
+                      .replace(/\r/g,'\\r')
+                      .replace(/\s/g,'&nbsp;');
 
         // var question=$('.question',$formQuestion).val();
         // var tag=$('.tag-list input.tag:checked',$formQuestion);
