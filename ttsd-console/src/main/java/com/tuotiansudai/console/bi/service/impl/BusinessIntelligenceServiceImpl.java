@@ -177,7 +177,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     @Override
     public List<KeyValueModel> queryUserInvestAmountTrend(Granularity granularity, Date startTime, Date endTime, String province, RoleStage roleStage, String channel) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
-        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().plusSeconds(-1).toDate();
         return businessIntelligenceMapper.queryUserInvestAmountTrend(queryStartTime, queryEndTime, granularity, province, roleStage, channel);
     }
 
