@@ -47,6 +47,7 @@ public class AnxinClientTest {
 
 
     public void initSSL() throws GeneralSecurityException, IOException {
+        httpClient = new OkHttpClient();
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(DEFAULT_KEY_ALGORITHM);
         KeyStore keyStore = KeyStore.getInstance(DEFAULT_KEY_STORE_TYPE);
         FileInputStream keyStoreFis = null;
