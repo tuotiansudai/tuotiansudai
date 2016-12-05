@@ -45,7 +45,12 @@ public class InvestSuccessCompletePointTaskConsumer implements MessageConsumer {
         logger.info("[MQ] receive message: {}: '{}'.", this.queue(), message);
         if (!StringUtils.isEmpty(message)) {
             logger.info("[MQ] ready to consume message: complete invest task.");
-            InvestSuccessMessage investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
+            InvestSuccessMessage investSuccessMessage;
+            try {
+                investSuccessMessage = JsonConverter.readValue(message, InvestSuccessMessage.class);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             InvestModel investModel = investMapper.findById(investSuccessMessage.getInvestInfo().getInvestId());
             if (investModel != null && investModel.getStatus() == InvestStatus.SUCCESS) {

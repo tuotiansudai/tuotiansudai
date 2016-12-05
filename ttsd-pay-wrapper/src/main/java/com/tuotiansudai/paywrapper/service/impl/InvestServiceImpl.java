@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Joiner;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -527,7 +528,14 @@ public class InvestServiceImpl implements InvestService {
 
         InvestSuccessMessage investSuccessMessage = new InvestSuccessMessage(investInfo, loanDetailInfo);
 
-        mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, JsonConverter.writeValueAsString(investSuccessMessage));
+        String message;
+        try {
+            message = JsonConverter.writeValueAsString(investSuccessMessage);
+        } catch (JsonProcessingException e) {
+           throw new RuntimeException(e);
+        }
+
+        mqWrapperClient.publishMessage(MessageTopic.InvestSuccess, message);
     }
 
 
