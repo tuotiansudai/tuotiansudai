@@ -11,6 +11,7 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -139,7 +140,7 @@ public class OperationDataServiceTest {
         createInvest("testUserInvest", 10002, 4000, new Date());
         createInvest("testUserInvest", 10003, 5000, new Date());
         InvestModel investModel = createInvest("testUserInvest", 10003, 6000, new Date());
-        investModel.setCreatedTime(DateTime.parse("2016-08-31").withTimeAtStartOfDay().plusSeconds(-1).toDate());
+        investModel.setCreatedTime(DateTime.parse("2016-08-31 23:59:59", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
         investMapper.update(investModel);
 
 
