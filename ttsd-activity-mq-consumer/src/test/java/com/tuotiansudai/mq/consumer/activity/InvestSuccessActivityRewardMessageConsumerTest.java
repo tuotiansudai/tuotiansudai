@@ -1,5 +1,6 @@
 package com.tuotiansudai.mq.consumer.activity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.message.InvestInfo;
 import com.tuotiansudai.message.InvestSuccessMessage;
@@ -46,7 +47,11 @@ public class InvestSuccessActivityRewardMessageConsumerTest {
 
         doNothing().when(mqClient).sendMessage(messageQueueCaptor.capture(), messageCaptor.capture());
 
-        consumer.consume(JsonConverter.writeValueAsString(investSuccessMessage));
+        try {
+            consumer.consume(JsonConverter.writeValueAsString(investSuccessMessage));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         verify(mqClient, times(1)).sendMessage(any(), any());
 
