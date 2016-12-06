@@ -1,7 +1,9 @@
 package com.tuotiansudai.coupon.util;
 
 import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponUserGroupModel;
+import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,11 @@ public class AgentCollector implements UserCollector {
     }
 
     @Override
-    public boolean contains(long couponId, String loginName) {
-        CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponId);
-        return couponUserGroupModel != null && couponUserGroupModel.getUserGroupItems().contains(loginName);
+    public boolean contains(CouponModel couponModel, UserModel userModel) {
+        if (couponModel == null || userModel == null) {
+            return false;
+        }
+        CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponModel.getId());
+        return couponUserGroupModel != null && couponUserGroupModel.getUserGroupItems().contains(userModel.getLoginName());
     }
-
 }

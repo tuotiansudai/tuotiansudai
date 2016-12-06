@@ -71,20 +71,15 @@ public class UserMembershipEvaluator {
             return null;
         }
 
-        UnmodifiableIterator<UserMembershipModel> filter = Iterators.filter(userMembershipModels.iterator(), new Predicate<UserMembershipModel>() {
-            @Override
-            public boolean apply(UserMembershipModel input) {
-                return input.getExpiredTime().after(date);
-            }
+        UnmodifiableIterator<UserMembershipModel> filter = Iterators.filter(userMembershipModels.iterator(), input -> {
+            return input.getExpiredTime().after(date);
         });
 
         return new Ordering<UserMembershipModel>() {
             @Override
             public int compare(UserMembershipModel left, UserMembershipModel right) {
-                MembershipModel leftMembershipModel = membershipMapper.findById(left.getMembershipId());
-                MembershipModel rightMembershipModel = membershipMapper.findById(right.getMembershipId());
-                return leftMembershipModel.getLevel() == rightMembershipModel.getLevel() ?
-                        Longs.compare(left.getExpiredTime().getTime(), right.getExpiredTime().getTime()) : Ints.compare(leftMembershipModel.getLevel(), rightMembershipModel.getLevel());
+                return left.getMembershipId() == right.getMembershipId() ?
+                        Longs.compare(left.getExpiredTime().getTime(), right.getExpiredTime().getTime()) : Longs.compare(left.getMembershipId(), right.getMembershipId());
             }
         }.max(filter);
     }

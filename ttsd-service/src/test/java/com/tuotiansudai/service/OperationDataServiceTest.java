@@ -12,6 +12,7 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -178,8 +179,12 @@ public class OperationDataServiceTest {
         createInvest("testUserInvest", 10001, 2000, new Date());
         createInvest("testUserInvest", 10002, 3000, new Date());
         createInvest("testUserInvest", 10002, 4000, new Date());
-        createInvest("testUserInvest", 10003, 5000, new Date());
-        createInvest("testUserInvest", 10003, 6000, new Date());
+        InvestModel investModelStart = createInvest("testUserInvest", 10003, 5000, new Date());
+        investModelStart.setCreatedTime(DateTime.parse("2016-08-01 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+        investMapper.update(investModelStart);
+        InvestModel investModel = createInvest("testUserInvest", 10003, 6000, new Date());
+        investModel.setCreatedTime(DateTime.parse("2016-08-31 23:59:59", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+        investMapper.update(investModel);
 
 
         List<InvestDataView> investDataViewList = new ArrayList<InvestDataView>();
@@ -210,8 +215,13 @@ public class OperationDataServiceTest {
         createInvest("testUserInvest", 10001, 2000, testEndDate);
         createInvest("testUserInvest", 10002, 3000, testEndDate);
         createInvest("testUserInvest", 10002, 4000, testEndDate);
-        createInvest("testUserInvest", 10003, 5000, testEndDate);
-        createInvest("testUserInvest", 10003, 6000, testEndDate);
+
+        InvestModel investModelStart = createInvest("testUserInvest", 10003, 6000, testEndDate);
+        investModelStart.setCreatedTime(DateTime.parse("2016-04-01 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+        investMapper.update(investModelStart);
+        InvestModel investModel = createInvest("testUserInvest", 10003, 5000, testEndDate);
+        investModel.setCreatedTime(DateTime.parse("2016-04-30 23:59:59", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
+        investMapper.update(investModel);
 
         //测试从数据库取出的数据
         OperationDataDto operationDataDtoFromRedis = operationDataService.getOperationDataFromRedis(testEndDate);

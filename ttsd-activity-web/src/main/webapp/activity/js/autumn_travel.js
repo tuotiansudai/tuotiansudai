@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'layerWrapper','drawCircle','template','commonFun', 'register_common'], function ($, _, layer,drawCircle,tpl) {
+require(['jquery', 'underscore', 'layerWrapper','drawCircle','template', 'register_common'], function ($, _, layer,drawCircle,tpl) {
 
 var $autumnTravelPage=$('#autumnTravelPage'),
     $awardList = $('.award-list',$autumnTravelPage),
@@ -6,9 +6,9 @@ var $autumnTravelPage=$('#autumnTravelPage'),
     var scrollTimer, scrollTimer2;
     var $swiperWrapper = $('.swiper-wrapper',$autumnTravelPage),
         $swiperslide = $('.swiper-slide', $swiperWrapper);
-    var browser = commonFun.browserRedirect();
+    var browser = globalFun.browserRedirect();
     if (browser == 'mobile') {
-        var urlObj=commonFun.parseURL(location.href);
+        var urlObj=globalFun.parseURL(location.href);
         if(urlObj.params.tag=='yes') {
             $autumnTravelPage.find('.reg-tag-current').show();
         }

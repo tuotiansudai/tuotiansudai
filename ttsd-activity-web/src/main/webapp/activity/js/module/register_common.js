@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
+define(['jquery', 'underscore', 'layerWrapper','placeholder', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
 
     (function() {
         var $registerFrame=$('#registerCommonFrame');
@@ -8,7 +8,7 @@ define(['jquery', 'underscore', 'layerWrapper','commonFun', 'placeholder', 'jque
             $changecode = $('.img-change',$registerFrame),
             $appCaptcha = $('#appCaptcha',$registerFrame);
 
-        var bCategory = commonFun.browserRedirect();
+        var bCategory = globalFun.browserRedirect();
 
         var mobileValid=false,
             passwordValid=false,

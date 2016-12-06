@@ -3,16 +3,16 @@
  * [user]:xuqiang
  * [date]:2016-08-24
  */
-require(['jquery', 'layerWrapper', 'template', 'drawCircle', 'jquery.ajax.extension','commonFun','register_common'], function ($, layer, tpl,drawCircle) {
+require(['jquery', 'layerWrapper', 'template', 'drawCircle', 'jquery.ajax.extension','register_common'], function ($, layer, tpl,drawCircle) {
         if ($(window).width() < 700) {
             $('.product-img').each(function (index, el) {
                 $(this).find('img').height($(this).siblings('.product-info').height());
             });
         }
-        var browser = commonFun.browserRedirect();
+        var browser = globalFun.browserRedirect();
         if (browser == 'mobile') {
 
-            var urlObj=commonFun.parseURL(location.href);
+            var urlObj=globalFun.parseURL(location.href);
             if(urlObj.params.tag=='yes') {
                 $('.reg-tag-current').show();
             }

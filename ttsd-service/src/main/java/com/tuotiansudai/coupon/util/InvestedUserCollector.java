@@ -2,7 +2,9 @@ package com.tuotiansudai.coupon.util;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,7 @@ public class InvestedUserCollector implements UserCollector {
     }
 
     @Override
-    public boolean contains(long couponId, String loginName) {
-        return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 0;
+    public boolean contains(CouponModel couponModel, UserModel userModel) {
+        return userModel != null && investMapper.sumSuccessInvestAmountByLoginName(null, userModel.getLoginName()) > 0;
     }
 }
