@@ -26,7 +26,7 @@ public class InvestSuccessActivityRewardMessageConsumer implements MessageConsum
 
     final private static String LOAN_ACTIVITY_DESCRIPTION = "圣诞专享";
 
-    final static private long INTEREST_COUPON_OF_ZERO_5_PERCENT_COUPON_ID = 324L;
+    final static private long INTEREST_COUPON_OF_ZERO_5_PERCENT_COUPON_ID = 323L;
 
     final static private long INVEST_LIMIT = 100L;
 
