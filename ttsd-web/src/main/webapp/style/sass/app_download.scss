@@ -6,6 +6,9 @@ body {
   margin:0;
   line-height: 22px;
 }
+.hide {
+  display: none;
+}
 
 @mixin triangle() {
   content: '';
