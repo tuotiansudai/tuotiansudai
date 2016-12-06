@@ -23,11 +23,11 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     private OperationDataService operationDataService;
 
     SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
-    Date currentDate = new Date();
 
     @Override
     public BaseResponseDto<OperationDataResponseDataDto> generatorOperationData(BaseParamDto requestDto) {
         OperationDataResponseDataDto dataDto = new OperationDataResponseDataDto();
+        Date currentDate = new Date();
 
         OperationDataDto operationDataDto = operationDataService.getOperationDataFromRedis(currentDate);
         dataDto.setCurrentDay(sdf.format(currentDate));
@@ -67,6 +67,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     }
 
     private List<OperationDataAgeResponseDataDto> convertMapToOperationDataAgeResponseDataDto(){
+        Date currentDate = new Date();
         Map<String,String> ageDistributionMap = operationDataService.findAgeDistributionByAge(currentDate);
         Set<Map.Entry<String, String>> ageDistributionEntries = ageDistributionMap.entrySet();
         List<OperationDataAgeResponseDataDto> operationDataAgeResponseDataDtoList = Lists.newArrayList();
@@ -95,6 +96,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     }
 
     private List<OperationDataInvestCityResponseDataDto> convertMapToOperationDataInvestCityResponseDataDto(){
+        Date currentDate = new Date();
         Map<String,String> investCityListMap = operationDataService.findCountInvestCityScaleTop3(currentDate);
         Set<Map.Entry<String, String>> investCityEntries = investCityListMap.entrySet();
         List<OperationDataInvestCityResponseDataDto> operationDataInvestCityResponseDataDtoList = Lists.newArrayList();
@@ -109,6 +111,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     }
 
     private List<OperationDataInvestAmountResponseDataDto> convertMapToOperationDataInvestAmountResponseDataDto(){
+        Date currentDate = new Date();
         Map<String,String> investAmountMap = operationDataService.findInvestAmountScaleTop3(currentDate);
         Set<Map.Entry<String, String>> investAmountEntries = investAmountMap.entrySet();
         List<OperationDataInvestAmountResponseDataDto> operationDataInvestAmountResponseDataDtoList = Lists.newArrayList();
