@@ -56,7 +56,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <dl class="invest-percent-box clearfix">
-                            <dt>目前专享标共投资：<em class="total-invest"><@amount>${allInvestAmount?string(0)}</@amount></span></em>元</dt>
+                            <dt>目前专享标共投资：<em class="total-invest">${allInvestAmount}</span></em>元</dt>
                             <dd class="progress-bar">
                                 <#--<i class="progress-end" style="left: calc( 80% - 57px);"></i>-->
                                 <div class="progress-percent" style="width: ${investScale}">
@@ -65,7 +65,7 @@
                             </dd>
                             <dd class="count-total">
                                 <span class="fl">已有<em>${userCount}</em>人参与</span>
-                                <span class="fr">总额度：<em>10元</em></span>
+                                <span class="fr">总额度：<em>5元</em></span>
                             </dd>
 
                         </dl>
