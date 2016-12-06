@@ -60,6 +60,6 @@ public class UserMembershipEvaluator {
                 max((left, right) -> left.getMembershipId() == right.getMembershipId() ?
                         Long.compare(left.getExpiredTime().getTime(), right.getExpiredTime().getTime()) : Long.compare(left.getMembershipId(), right.getMembershipId()));
 
-        return max.isPresent() ? max.get() : null;
+        return max.orElse(null);
     }
 }
