@@ -46,7 +46,7 @@ public class UserMessageMapperTest {
                 MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
         messageMapper.create(messageModel);
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTitle(), messageModel.getTemplate());
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), creator.getLoginName(), messageModel.getTitle(), messageModel.getTitle(), messageModel.getTemplate(), messageModel.getCreatedTime());
         userMessageMapper.create(userMessageModel);
 
         List<UserMessageModel> userMessageModels = userMessageMapper.findMessagesByLoginName(creator.getLoginName(), null,null, null);
@@ -87,7 +87,7 @@ public class UserMessageMapperTest {
         long l = userMessageMapper.countMessagesByLoginNameAndMessageType(userModel.getLoginName(), messageModel.getId(), messageModel.getTitle());
         assertTrue(l == 0);
 
-        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), userModel.getLoginName(), messageModel.getTitle(), messageModel.getTitle(), messageModel.getTemplate());
+        UserMessageModel userMessageModel = new UserMessageModel(messageModel.getId(), userModel.getLoginName(), messageModel.getTitle(), messageModel.getTitle(), messageModel.getTemplate(), messageModel.getCreatedTime());
         userMessageMapper.create(userMessageModel);
 
         l = userMessageMapper.countMessagesByLoginNameAndMessageType(userModel.getLoginName(), messageModel.getId(), messageModel.getTitle());
