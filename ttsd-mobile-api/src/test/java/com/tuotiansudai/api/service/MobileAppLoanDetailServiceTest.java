@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
-public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
+public class MobileAppLoanDetailServiceTest extends ServiceTestBase {
     @InjectMocks
     private MobileAppLoanDetailServiceImpl mobileAppLoanDetailService;
     @Mock
@@ -61,7 +61,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
     private ContractService contractService;
 
     @Test
-    public void shouldGenerateLoanDetailIsOk(){
+    public void shouldGenerateLoanDetailIsOk() {
         LoanModel loanModel = new LoanModel();
         loanModel.setAgentLoginName("loginName");
         loanModel.setBaseRate(16.00);
@@ -102,7 +102,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         loanTitleRelationModels.add(idCardModel);
         loanTitleRelationModels.add(houseCardModel);
 
-        MembershipModel membershipModel = new MembershipModel(3,2,50000,0.09);
+        MembershipModel membershipModel = new MembershipModel(3, 2, 50000, 0.09);
 
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investMapper.countSuccessInvest(anyLong())).thenReturn(6L);
@@ -143,10 +143,10 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
 
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(investModels);
         when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
-        when(loanerDetailsMapper.getByLoanId(anyLong())).thenReturn(new LoanerDetailsModel(1l,"123","123",Gender.MALE,1,"123",Marriage.DIVORCE,"S","s","1"));
+        when(loanerDetailsMapper.getByLoanId(anyLong())).thenReturn(new LoanerDetailsModel(1l, "123", "123", Gender.MALE, 1, "123", Marriage.DIVORCE, "S", "s", "1", "purpose"));
         when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(new LoanDetailsModel());
         when(pledgeHouseMapper.getByLoanId(anyLong())).thenReturn(new PledgeHouseModel());
-        when(contractService.getContract(anyString(),anyMap())).thenReturn("");
+        when(contractService.getContract(anyString(), anyMap())).thenReturn("");
 
         List<LoanTitleRelationModel> loanTitleRelationModelList = Lists.newArrayList();
 
@@ -167,9 +167,9 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
 
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
         assertEquals(6L, baseResponseDto.getData().getInvestedCount().longValue());
-        assertEquals("100.00",baseResponseDto.getData().getInvestedMoney());
-        assertEquals(idCardModel.getTitle(),baseResponseDto.getData().getEvidence().get(0).getTitle());
-        assertEquals(houseCardModel.getTitle(),baseResponseDto.getData().getEvidence().get(1).getTitle());
+        assertEquals("100.00", baseResponseDto.getData().getInvestedMoney());
+        assertEquals(idCardModel.getTitle(), baseResponseDto.getData().getEvidence().get(0).getTitle());
+        assertEquals(houseCardModel.getTitle(), baseResponseDto.getData().getEvidence().get(1).getTitle());
         assertNotNull(baseResponseDto.getData().getEvidence().get(0).getImageUrl());
         assertNotNull(baseResponseDto.getData().getEvidence().get(1).getImageUrl());
         assertNotNull(baseResponseDto.getData().getRaisingPeriod());

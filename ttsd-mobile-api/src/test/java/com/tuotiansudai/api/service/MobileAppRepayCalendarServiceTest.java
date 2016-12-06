@@ -18,6 +18,7 @@ import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.IdGenerator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -31,6 +32,7 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
 
@@ -94,18 +96,19 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
         couponRepayMapper.create(couponRepayModel3);
         couponRepayMapper.create(couponRepayModel4);
 
+        String toYear = String.valueOf(DateTime.now().getYear());
         List<InvestRepayModel> investRepayModels = new ArrayList<>();
-        investRepayModels.add(createInvestRepay(investModel3.getId(), DateTime.parse("2200-11-01").toDate()));
-        investRepayModels.add(createInvestRepay(investModel4.getId(), DateTime.parse("2200-11-01").toDate()));
-        investRepayModels.add(createInvestRepay(investModel2.getId(), DateTime.parse("2200-10-02").toDate()));
-        investRepayModels.add(createInvestRepay(investModel5.getId(), DateTime.parse("2200-10-02").toDate()));
-        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse("2200-10-02").toDate()));
-        investRepayModels.add(createInvestRepay(investModel1.getId(), DateTime.parse("2200-09-03").toDate()));
+        investRepayModels.add(createInvestRepay(investModel3.getId(), DateTime.parse(toYear + "-11-01").toDate()));
+        investRepayModels.add(createInvestRepay(investModel4.getId(), DateTime.parse(toYear + "-11-01").toDate()));
+        investRepayModels.add(createInvestRepay(investModel2.getId(), DateTime.parse(toYear + "-10-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel5.getId(), DateTime.parse(toYear + "-10-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse(toYear + "-10-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel1.getId(), DateTime.parse(toYear + "-09-03").toDate()));
 
         investRepayMapper.create(investRepayModels);
 
         RepayCalendarRequestDto repayCalendarRequestDto = new RepayCalendarRequestDto();
-        repayCalendarRequestDto.setYear("2200");
+        repayCalendarRequestDto.setYear(toYear);
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
         repayCalendarRequestDto.setBaseParam(baseParam);
@@ -140,18 +143,19 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
         couponRepayMapper.create(couponRepayModel);
         couponRepayMapper.create(couponRepayModel1);
 
+        String toYear = String.valueOf(DateTime.now().getYear());
         List<InvestRepayModel> investRepayModels = new ArrayList<>();
-        investRepayModels.add(createInvestRepay(investModel3.getId(), DateTime.parse("2200-11-03").toDate()));
-        investRepayModels.add(createInvestRepay(investModel4.getId(), DateTime.parse("2200-11-03").toDate()));
-        investRepayModels.add(createInvestRepay(investModel2.getId(), DateTime.parse("2200-11-02").toDate()));
-        investRepayModels.add(createInvestRepay(investModel5.getId(), DateTime.parse("2200-11-02").toDate()));
-        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse("2200-11-02").toDate()));
-        investRepayModels.add(createInvestRepay(investModel1.getId(), DateTime.parse("2200-11-01").toDate()));
+        investRepayModels.add(createInvestRepay(investModel3.getId(), DateTime.parse(toYear + "-11-03").toDate()));
+        investRepayModels.add(createInvestRepay(investModel4.getId(), DateTime.parse(toYear + "-11-03").toDate()));
+        investRepayModels.add(createInvestRepay(investModel2.getId(), DateTime.parse(toYear + "-11-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel5.getId(), DateTime.parse(toYear + "-11-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse(toYear + "-11-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel1.getId(), DateTime.parse(toYear + "-11-01").toDate()));
 
         investRepayMapper.create(investRepayModels);
 
         RepayCalendarRequestDto repayCalendarRequestDto = new RepayCalendarRequestDto();
-        repayCalendarRequestDto.setYear("2200");
+        repayCalendarRequestDto.setYear(toYear);
         repayCalendarRequestDto.setMonth("11");
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
@@ -187,24 +191,71 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
         couponRepayMapper.create(couponRepayModel);
         couponRepayMapper.create(couponRepayModel1);
 
+        String toYear = String.valueOf(DateTime.now().getYear());
         List<InvestRepayModel> investRepayModels = new ArrayList<>();
-        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse("2200-11-02").toDate()));
-        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse("2200-11-02").toDate()));
-        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse("2200-11-02").toDate()));
-        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse("2200-11-02").toDate()));
-        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse("2200-11-02").toDate()));
-        investRepayModels.add(createInvestRepay(investModel1.getId(), DateTime.parse("2200-11-01").toDate()));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse(toYear + "-11-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse(toYear + "-11-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse(toYear + "-11-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse(toYear + "-11-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse(toYear + "-11-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel1.getId(), DateTime.parse(toYear + "-11-01").toDate()));
 
         investRepayMapper.create(investRepayModels);
 
         RepayCalendarRequestDto repayCalendarRequestDto = new RepayCalendarRequestDto();
-        repayCalendarRequestDto.setDate("2200-11-01");
+        repayCalendarRequestDto.setDate(toYear + "-11-01");
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId(loginName);
         repayCalendarRequestDto.setBaseParam(baseParam);
         BaseResponseDto<RepayCalendarDateListResponseDto> baseResponseDto = mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
         assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(1));
-        repayCalendarRequestDto.setDate("2200-11-02");
+        repayCalendarRequestDto.setDate(toYear + "-11-02");
+        baseResponseDto = mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
+        assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(5));
+    }
+
+
+    @Test
+    public void shouldGetDateRepayCalendarIsFault() {
+        String loginName = "testRepayCalender";
+        long loanId = idGenerator.generate();
+        createUserByUserId(loginName);
+        createAccountByUserId(loginName);
+        createLoanByUserId(loginName, loanId);
+        InvestModel investModel1 = createInvest(loginName, loanId);
+        InvestModel investModel6 = createInvest(loginName, loanId);
+
+        TransferApplicationModel transferApplicationModel = getTransferApplicationModel(loginName, investModel6.getId(), investModel6.getId(), loanId, new DateTime("2200-11-03").toDate());
+        transferApplicationMapper.create(transferApplicationModel);
+
+        CouponModel couponModel = fakeCouponModel(loginName);
+        couponMapper.create(couponModel);
+        UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId(), loginName);
+        userCouponMapper.create(userCouponModel);
+        CouponRepayModel couponRepayModel = createCouponRepay(investModel6.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-11-02").toDate());
+        CouponRepayModel couponRepayModel1 = createCouponRepay(investModel1.getId(), userCouponModel.getId(), couponModel.getId(), loginName, DateTime.parse("2200-11-01").toDate());
+        couponRepayMapper.create(couponRepayModel);
+        couponRepayMapper.create(couponRepayModel1);
+
+        String toYear = String.valueOf(DateTime.now().getYear());
+        List<InvestRepayModel> investRepayModels = new ArrayList<>();
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse(toYear + "-11-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse(toYear + "-11-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse(toYear + "-11-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse(toYear + "-11-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel6.getId(), DateTime.parse(toYear + "-11-02").toDate()));
+        investRepayModels.add(createInvestRepay(investModel1.getId(), DateTime.parse(toYear + "-11-01").toDate()));
+
+        investRepayMapper.create(investRepayModels);
+
+        RepayCalendarRequestDto repayCalendarRequestDto = new RepayCalendarRequestDto();
+        repayCalendarRequestDto.setDate("2014-11-01");
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId(loginName);
+        repayCalendarRequestDto.setBaseParam(baseParam);
+        BaseResponseDto<RepayCalendarDateListResponseDto> baseResponseDto = mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
+        assertTrue(CollectionUtils.isEmpty(baseResponseDto.getData().getRepayCalendarDateResponseDtoList()));
+        repayCalendarRequestDto.setDate(toYear + "-11-02");
         baseResponseDto = mobileAppRepayCalendarService.getDateRepayCalendar(repayCalendarRequestDto);
         assertThat(baseResponseDto.getData().getRepayCalendarDateResponseDtoList().size(), is(5));
     }
