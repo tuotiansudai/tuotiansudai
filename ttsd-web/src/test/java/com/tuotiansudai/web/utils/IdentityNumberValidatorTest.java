@@ -1,6 +1,6 @@
 package com.tuotiansudai.web.utils;
 
-import com.tuotiansudai.web.util.IdentityNumberValidator;
+import com.tuotiansudai.util.IdentityNumberValidator;
 import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

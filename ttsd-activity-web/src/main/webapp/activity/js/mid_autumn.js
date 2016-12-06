@@ -7,7 +7,7 @@ require(['jquery', 'underscore', 'layerWrapper','clipboard','commonFun', 'placeh
             $appCaptcha = $('#appCaptcha'),
             $copyLinkbox=$('#copyLinkBox');
 
-        var bCategory = commonFun.browserRedirect();
+        var bCategory = globalFun.browserRedirect();
 
     $('input[type="text"],input[type="password"]', $registerForm).placeholder();
         //form validate

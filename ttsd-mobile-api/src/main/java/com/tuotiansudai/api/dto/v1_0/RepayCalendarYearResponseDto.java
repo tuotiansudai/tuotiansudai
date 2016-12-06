@@ -7,6 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 
 public class RepayCalendarYearResponseDto extends BaseResponseDataDto {
 
+    @ApiModelProperty(value = "年", example = "2016")
+    private String year;
+
     @ApiModelProperty(value = "月", example = "12")
     private String month;
 
@@ -16,7 +19,8 @@ public class RepayCalendarYearResponseDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "待收收益", example = "10")
     private String expectedRepayAmount;
 
-    public RepayCalendarYearResponseDto(String month, String repayAmount, String expectedRepayAmount) {
+    public RepayCalendarYearResponseDto(String year, String month, String repayAmount, String expectedRepayAmount) {
+        this.year = year;
         this.month = month;
         this.repayAmount = repayAmount;
         this.expectedRepayAmount = expectedRepayAmount;
@@ -71,4 +75,11 @@ public class RepayCalendarYearResponseDto extends BaseResponseDataDto {
         this.expectedRepayAmount = expectedRepayAmount;
     }
 
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
 }

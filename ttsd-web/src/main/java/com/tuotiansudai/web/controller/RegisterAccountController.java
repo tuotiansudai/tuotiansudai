@@ -8,7 +8,7 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
-import com.tuotiansudai.web.util.IdentityNumberValidator;
+import com.tuotiansudai.util.IdentityNumberValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

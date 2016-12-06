@@ -30,6 +30,7 @@ var web_globalFun = (function() {
                 return obj;
             }
         }
+        //判断浏览器终端是pc还是mobile
         this.browserRedirect=function () {
             var sUserAgent = navigator.userAgent.toLowerCase();
             var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
@@ -49,6 +50,7 @@ var web_globalFun = (function() {
                 return 'pc';
             }
         }
+
         this.equipment=function() {
             var ua = navigator.userAgent.toLowerCase(),
                 which={};
@@ -73,10 +75,39 @@ var web_globalFun = (function() {
             }
             return which;
         }
-        this.categoryCodeUrl={
-            'android':'https://tuotiansudai.com/app/tuotiansudai.apk',
-            'ios':'http://itunes.apple.com/us/app/id1039233966',
-            'weIos':'http://a.app.qq.com/o/simple.jsp?pkgname=com.tuotiansudai.tuotianclient'
+        this.categoryCodeUrl= {
+            'android': 'https://tuotiansudai.com/app/tuotiansudai.apk',
+            'ios': 'http://itunes.apple.com/us/app/id1039233966',
+            'weIos': 'http://a.app.qq.com/o/simple.jsp?pkgname=com.tuotiansudai.tuotianclient'
+        }
+
+        //主要用来截取url后的参数
+        this.parseURL=function(url) {
+            var a =  document.createElement('a');
+            a.href = url;
+            return {
+                source: url,
+                protocol: a.protocol.replace(':',''),
+                host: a.hostname,
+                port: a.port,
+                query: a.search,
+                params: (function(){
+                    var ret = {},
+                        seg = a.search.replace(/^\?/,'').split('&'),
+                        len = seg.length, i = 0, s;
+                    for (;i<len;i++) {
+                        if (!seg[i]) { continue; }
+                        s = seg[i].split('=');
+                        ret[s[0]] = s[1];
+                    }
+                    return ret;
+                })(),
+                file: (a.pathname.match(/\/([^\/?#]+)$/i) || [,''])[1],
+                hash: a.hash.replace('#',''),
+                path: a.pathname.replace(/^([^\/])/,'/$1'),
+                relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [,''])[1],
+                segments: a.pathname.replace(/^\//,'').split('/')
+            };
         }
         //绑定监听事件
         this.addEventHandler=function(target,type,fn) {
@@ -210,6 +241,14 @@ var web_globalFun = (function() {
                 });
 
             }
+        },
+        // 动态插入Css标签
+        loadCss:function(url) {
+            var link = document.createElement("link");
+            link.type = "text/css";
+            link.rel = "stylesheet";
+            link.href = url;
+            document.getElementsByTagName("head")[0].appendChild(link);
         },
         // 动态插入script标签
         createScript:function(url, callback){

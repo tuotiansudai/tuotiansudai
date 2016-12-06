@@ -1,7 +1,7 @@
 require(['jquery','fullPage','commonFun'], function ($) {
 
     var $assuranceEffect=$('#assuranceEffect'),
-        viewport=commonFun.browserRedirect();
+        viewport=globalFun.browserRedirect();
 
     function resize(){
         $('.intro-list .hover-text').height($('.intro-list .picture-text').height()-10);
