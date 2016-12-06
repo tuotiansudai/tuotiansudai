@@ -1,13 +1,13 @@
-package com.tuotiansudai.console.service;
+package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
 import com.tuotiansudai.dto.BaseDataDto;
@@ -41,7 +41,7 @@ public class ExchangeCodeServiceTest {
     private UserMapper userMapper;
 
     @Autowired
-    private ConsoleCouponService consoleCouponService;
+    private CouponMapper couponMapper;
 
     @Autowired
     private ExchangeCodeService exchangeCodeService;
@@ -51,9 +51,6 @@ public class ExchangeCodeServiceTest {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
-
-    @Autowired
-    private CouponActivationService couponActivationService;
 
     @Test
     public void shouldExchangeCodeFailed1() {
@@ -93,10 +90,9 @@ public class ExchangeCodeServiceTest {
         DateTime dateTime = new DateTime().plusDays(1);
         exchangeCouponDto.setStartTime(dateTime.toDate());
         exchangeCouponDto.setEndTime(dateTime.toDate());
-        consoleCouponService.createCoupon("couponTest", exchangeCouponDto);
+        CouponModel couponModel =  this.createCoupon("couponTest", exchangeCouponDto);
 
-        long couponId = exchangeCouponDto.getId();
-        String exchangeCode = exchangeCodeService.toBase31Prefix(couponId) + "sdrfujtheg";
+        String exchangeCode = exchangeCodeService.toBase31Prefix(couponModel.getId()) + "sdrfujtheg";
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(false));
         assertThat(baseDataDto.getMessage(), is("请输入正确的兑换码"));
@@ -109,15 +105,14 @@ public class ExchangeCodeServiceTest {
         ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
         exchangeCouponDto.setStartTime(new DateTime().minusDays(7).toDate());
         exchangeCouponDto.setEndTime(new DateTime().minusDays(5).toDate());
-        consoleCouponService.createCoupon("couponTest", exchangeCouponDto);
+        CouponModel couponModel =  this.createCoupon("couponTest", exchangeCouponDto);
 
-        long couponId = exchangeCouponDto.getId();
-        String exchangeCode = exchangeCodeService.toBase31Prefix(couponId) + "sdrfujtheg";
-        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId, exchangeCode, "0", 1000000);
+        String exchangeCode = exchangeCodeService.toBase31Prefix(couponModel.getId()) + "sdrfujtheg";
+        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponModel.getId(), exchangeCode, "0", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(false));
         assertThat(baseDataDto.getMessage(), is("该兑换码已过期"));
-        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId);
+        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponModel.getId());
     }
 
     @Test
@@ -128,15 +123,14 @@ public class ExchangeCodeServiceTest {
         DateTime dateTime = new DateTime().plusDays(1);
         exchangeCouponDto.setStartTime(dateTime.toDate());
         exchangeCouponDto.setEndTime(dateTime.toDate());
-        consoleCouponService.createCoupon("couponTest", exchangeCouponDto);
+        CouponModel couponModel = this.createCoupon("couponTest", exchangeCouponDto);
 
-        long couponId = exchangeCouponDto.getId();
-        String exchangeCode = exchangeCodeService.toBase31Prefix(couponId) + "SDRFUJTHEG";
-        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId, exchangeCode, "1", 1000000);
+        String exchangeCode = exchangeCodeService.toBase31Prefix(couponModel.getId()) + "SDRFUJTHEG";
+        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponModel.getId(), exchangeCode, "1", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(false));
         assertThat(baseDataDto.getMessage(), is("该兑换码已被使用"));
-        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId);
+        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponModel.getId());
     }
 
     @Test
@@ -150,15 +144,13 @@ public class ExchangeCodeServiceTest {
         exchangeCouponDto.setActive(true);
         exchangeCouponDto.setMultiple(true);
         exchangeCouponDto.setUserGroup(UserGroup.EXCHANGER_CODE);
-        consoleCouponService.createCoupon("couponTest", exchangeCouponDto);
-        long couponId = exchangeCouponDto.getId();
-        couponActivationService.active(userModel.getLoginName(), couponId, "");
+        long couponId = this.createCoupon("couponTest", exchangeCouponDto).getId();
         String exchangeCode = exchangeCodeService.toBase31Prefix(couponId) + "sdrfujtheg";
         redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId, exchangeCode, "0", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(true));
         assertThat(baseDataDto.getMessage(), is("恭喜您兑换成功"));
-        CouponModel couponModel = consoleCouponService.findCouponById(couponId);
+        CouponModel couponModel = couponMapper.findById(couponId);
         assertThat(couponModel.getIssuedCount(), is(1L));
         List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(couponId);
         assertThat(userCouponModels.get(0).getLoginName(), is("couponTest"));
@@ -173,12 +165,11 @@ public class ExchangeCodeServiceTest {
         DateTime dateTime = new DateTime().plusDays(1);
         exchangeCouponDto.setStartTime(dateTime.toDate());
         exchangeCouponDto.setEndTime(dateTime.toDate());
-        consoleCouponService.createCoupon("couponTest", exchangeCouponDto);
+        CouponModel couponModel = this.createCoupon("couponTest", exchangeCouponDto);
 
-        long couponId = exchangeCouponDto.getId();
-        exchangeCodeService.generateExchangeCode(couponId, 100);
+        exchangeCodeService.generateExchangeCode(couponModel.getId(), 100);
 
-        long codeCount = redisWrapperClient.hlen(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponId);
+        long codeCount = redisWrapperClient.hlen(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponModel.getId());
         assert (codeCount == 100);
     }
 
@@ -247,4 +238,14 @@ public class ExchangeCodeServiceTest {
         assert (exchangeCodeService.getValueBase31("Oa3") == 0); // Oa3 Throw Exception, return 0
     }
 
+    private CouponModel createCoupon(String loginName, ExchangeCouponDto exchangeCouponDto) {
+        CouponModel couponModel = new CouponModel(exchangeCouponDto);
+        couponModel.setCreatedBy(loginName);
+        couponModel.setCreatedTime(new Date());
+        couponModel.setActive(true);
+        couponModel.setActivatedBy(loginName);
+        couponModel.setActivatedTime(new Date());
+        couponMapper.create(couponModel);
+        return couponModel;
+    }
 }
