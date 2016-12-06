@@ -38,10 +38,13 @@ public class MessageMapperTest {
         UserModel creator = getFakeUser("messageCreator");
 
         userMapper.create(creator);
-        MessageModel messageModel = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER),
+        MessageModel messageModel = new MessageModel("title",
+                "template",
+                MessageUserGroup.ALL_USER,
+                MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
+                null,
+                creator.getLoginName());
 
         messageMapper.create(messageModel);
 
@@ -51,81 +54,13 @@ public class MessageMapperTest {
         assertThat(actualMessageModel.getTitle(), is(messageModel.getTitle()));
         assertThat(actualMessageModel.getTemplate(), is(messageModel.getTemplate()));
         assertThat(actualMessageModel.getType(), is(messageModel.getType()));
-        assertTrue(CollectionUtils.isEqualCollection(actualMessageModel.getUserGroups(), messageModel.getUserGroups()));
+        assertTrue(actualMessageModel.getUserGroup() == messageModel.getUserGroup());
         assertTrue(CollectionUtils.isEqualCollection(actualMessageModel.getChannels(), messageModel.getChannels()));
         assertThat(actualMessageModel.getStatus(), is(messageModel.getStatus()));
         assertThat(actualMessageModel.getCreatedBy(), is(messageModel.getCreatedBy()));
         assertNotNull(actualMessageModel.getCreatedTime());
         assertThat(actualMessageModel.getUpdatedBy(), is(messageModel.getUpdatedBy()));
         assertNotNull(actualMessageModel.getUpdatedTime());
-    }
-
-    @Test
-    public void shouldFindMessageList() {
-        UserModel creator = getFakeUser("messageCreate");
-        userMapper.create(creator);
-        MessageModel messageModelManual = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER),
-                Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.APPROVED, new Date(), creator.getLoginName());
-        messageMapper.create(messageModelManual);
-
-        MessageModel messageModelAuto = new MessageModel("title", "template", MessageType.EVENT,
-                Lists.newArrayList(MessageUserGroup.ALL_USER),
-                Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
-        messageMapper.create(messageModelAuto);
-
-        List<MessageModel> manualMessageModelList = messageMapper.findMessageList("title", null, null, MessageType.MANUAL, 0, 10);
-        List<MessageModel> autoMessageModelList = messageMapper.findMessageList("title", null, null, MessageType.EVENT, 0, 10);
-        long manualMessageCount = messageMapper.findMessageCount("title", null, null, MessageType.MANUAL);
-        long autoMessageCount = messageMapper.findMessageCount("title", null, null, MessageType.EVENT);
-
-        assertEquals(1, manualMessageModelList.size());
-        assertEquals(1, autoMessageModelList.size());
-        assertEquals(1, manualMessageCount);
-        assertEquals(1, autoMessageCount);
-
-    }
-
-    @Test
-    public void shouldFindAssignableManualMessages() throws Exception {
-        UserModel creator = getFakeUser("messageCreator");
-
-        List<MessageModel> existingAssignableManualMessages = messageMapper.findAssignableManualMessages(creator.getLoginName());
-
-        userMapper.create(creator);
-        MessageModel messageModel1 = new MessageModel("title", "template",
-                MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER),
-                Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.APPROVED, new DateTime().plusDays(10).toDate(), creator.getLoginName());
-        messageMapper.create(messageModel1);
-
-        MessageModel messageModel2 = new MessageModel("title", "template",
-                MessageType.EVENT,
-                Lists.newArrayList(MessageUserGroup.ALL_USER),
-                Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.APPROVED, new DateTime().plusDays(10).toDate(), creator.getLoginName());
-        messageMapper.create(messageModel2);
-
-        MessageModel messageModel3 = new MessageModel("title", "template",
-                MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER),
-                Lists.newArrayList(MessageChannel.APP_MESSAGE),
-                MessageStatus.APPROVED, new DateTime().plusDays(10).toDate(), creator.getLoginName());
-        messageMapper.create(messageModel3);
-
-        MessageModel messageModel4 = new MessageModel("title", "template",
-                MessageType.EVENT,
-                Lists.newArrayList(MessageUserGroup.ALL_USER),
-                Lists.newArrayList(MessageChannel.APP_MESSAGE),
-                MessageStatus.APPROVED, new DateTime().plusDays(10).toDate(), creator.getLoginName());
-        messageMapper.create(messageModel4);
-
-        List<MessageModel> messageModels = messageMapper.findAssignableManualMessages(creator.getLoginName());
-
-        assertThat(messageModels.size() - existingAssignableManualMessages.size(), is(2));
     }
 
     private UserModel getFakeUser(String loginName) {
@@ -138,47 +73,5 @@ public class MessageMapperTest {
         fakeUser.setStatus(UserStatus.ACTIVE);
         fakeUser.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return fakeUser;
-    }
-
-    @Test
-    public void testFindById() throws Exception {
-        UserModel creator = getFakeUser("messageCreator");
-
-        userMapper.create(creator);
-        MessageModel messageModelManual = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER),
-                Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
-
-        messageMapper.create(messageModelManual);
-
-        MessageModel messageModel = messageMapper.findById(messageModelManual.getId());
-        assertEquals(messageModelManual.getTitle(), messageModel.getTitle());
-        assertEquals(messageModelManual.getTemplate(), messageModel.getTemplate());
-        assertEquals(messageModelManual.getType(), messageModel.getType());
-        assertEquals(messageModelManual.getUserGroups(), messageModel.getUserGroups());
-        assertEquals(messageModelManual.getChannels(), messageModel.getChannels());
-        assertEquals(messageModelManual.getStatus(), messageModel.getStatus());
-        assertEquals(messageModelManual.getCreatedBy(), messageModel.getCreatedBy());
-    }
-
-    @Test
-    public void testDeleteById() throws Exception {
-        UserModel creator = getFakeUser("messageCreator");
-
-        userMapper.create(creator);
-        MessageModel messageModelManual = new MessageModel("title", "template", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER),
-                Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.TO_APPROVE, new Date(), creator.getLoginName());
-        messageMapper.create(messageModelManual);
-
-        MessageModel messageModel = messageMapper.findById(messageModelManual.getId());
-
-        assertTrue(null != messageMapper.findById(messageModel.getId()));
-
-        messageMapper.deleteById(messageModel.getId(), "messageCreator", new Date());
-
-        assertTrue(null == messageMapper.findById(messageModel.getId()));
     }
 }

@@ -12,7 +12,7 @@ public class BirthdayMessageSendJob implements Job {
     static Logger logger = Logger.getLogger(BirthdayMessageSendJob.class);
 
     @Autowired
-    UserMessageEventGenerator userMessageEventGenerator;
+    private UserMessageEventGenerator userMessageEventGenerator;
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("trigger birthday message send job, prepare do job");

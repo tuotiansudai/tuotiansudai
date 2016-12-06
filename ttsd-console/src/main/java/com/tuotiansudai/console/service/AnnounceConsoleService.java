@@ -5,11 +5,12 @@ import com.tuotiansudai.dto.AnnounceDto;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
-import com.tuotiansudai.message.dto.MessageCompleteDto;
+import com.tuotiansudai.message.dto.MessageCreateDto;
 import com.tuotiansudai.message.repository.model.*;
 import com.tuotiansudai.message.service.MessageService;
 import com.tuotiansudai.repository.mapper.AnnounceMapper;
 import com.tuotiansudai.repository.model.AnnounceModel;
+import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,8 @@ public class AnnounceConsoleService {
         announceDto.setId(announceModel.getId());
 
         try {
-            MessageCompleteDto messageCompleteDto = announceDtoToMessageCompleteDto(announceDto, createdBy);
-            long messageId = messageService.createAndEditManualMessage(messageCompleteDto, 0);
+            MessageCreateDto messageCreateDto = announceDtoToMessageCompleteDto(announceDto, createdBy);
+            long messageId = messageService.createOrUpdateManualMessage(LoginUserInfo.getLoginName(), messageCreateDto);
             messageService.approveMessage(messageId, createdBy);
             logger.info(MessageFormat.format("[AnnounceConsoleService] announce message create success. announceId:{0}", announceDto.getId()));
         } catch (Exception e) {
@@ -65,31 +66,31 @@ public class AnnounceConsoleService {
         return announceMapper.findAnnounceCount(id, title);
     }
 
-    private MessageCompleteDto announceDtoToMessageCompleteDto(AnnounceDto announceDto, String createdBy) {
-        MessageCompleteDto messageCompleteDto = new MessageCompleteDto();
+    private MessageCreateDto announceDtoToMessageCompleteDto(AnnounceDto announceDto, String createdBy) {
+        MessageCreateDto messageCreateDto = new MessageCreateDto();
 
-        messageCompleteDto.setTitle(announceDto.getTitle());
-        messageCompleteDto.setTemplate(announceDto.getContent());
-        messageCompleteDto.setTemplateTxt(announceDto.getContentText());
-        messageCompleteDto.setType(MessageType.MANUAL);
-        messageCompleteDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
-        messageCompleteDto.setChannels(Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
-        messageCompleteDto.setMessageCategory(MessageCategory.NOTIFY);
-        messageCompleteDto.setWebUrl(MessageFormat.format("/announce/{0}", announceDto.getId()));
-        messageCompleteDto.setAppUrl(AppUrl.NOTIFY);
-        messageCompleteDto.setJpush(true);
-        messageCompleteDto.setPushType(PushType.IMPORTANT_EVENT);
-        messageCompleteDto.setPushSource(PushSource.ALL);
-        messageCompleteDto.setStatus(MessageStatus.APPROVED);
-        messageCompleteDto.setReadCount(0);
-        messageCompleteDto.setActivatedBy(createdBy);
-        messageCompleteDto.setActivatedTime(new Date());
-        messageCompleteDto.setExpiredTime(new DateTime().withDate(9999, 12, 31).toDate());
-        messageCompleteDto.setUpdatedBy(createdBy);
-        messageCompleteDto.setUpdatedTime(new Date());
-        messageCompleteDto.setCreatedBy(createdBy);
-        messageCompleteDto.setCreatedTime(new Date());
+//        messageCreateDto.setTitle(announceDto.getTitle());
+//        messageCreateDto.setTemplate(announceDto.getContent());
+//        messageCreateDto.setTemplateTxt(announceDto.getContentText());
+//        messageCreateDto.setType(MessageType.MANUAL);
+//        messageCreateDto.setUserGroups(Lists.newArrayList(MessageUserGroup.ALL_USER));
+//        messageCreateDto.setChannels(Lists.newArrayList(MessageChannel.WEBSITE, MessageChannel.APP_MESSAGE));
+//        messageCreateDto.setMessageCategory(MessageCategory.NOTIFY);
+//        messageCreateDto.setWebUrl(MessageFormat.format("/announce/{0}", announceDto.getId()));
+//        messageCreateDto.setAppUrl(AppUrl.NOTIFY);
+//        messageCreateDto.setJpush(true);
+//        messageCreateDto.setPushType(PushType.IMPORTANT_EVENT);
+//        messageCreateDto.setPushSource(PushSource.ALL);
+//        messageCreateDto.setStatus(MessageStatus.APPROVED);
+//        messageCreateDto.setReadCount(0);
+//        messageCreateDto.setActivatedBy(createdBy);
+//        messageCreateDto.setActivatedTime(new Date());
+//        messageCreateDto.setExpiredTime(new DateTime().withDate(9999, 12, 31).toDate());
+//        messageCreateDto.setUpdatedBy(createdBy);
+//        messageCreateDto.setUpdatedTime(new Date());
+//        messageCreateDto.setCreatedBy(createdBy);
+//        messageCreateDto.setCreatedTime(new Date());
 
-        return messageCompleteDto;
+        return messageCreateDto;
     }
 }

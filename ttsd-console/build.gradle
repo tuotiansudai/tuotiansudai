@@ -5,7 +5,6 @@ dependencies {
             project(':ttsd-service'),
             project(':ttsd-point-service'),
             project(':ttsd-message'),
-            project(':ttsd-jpush'),
             project(':ttsd-ask-service'),
             project(':ttsd-activity-service'),
             fileTree(dir: 'libs', include: '**/*.jar'),

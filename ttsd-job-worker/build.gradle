@@ -4,7 +4,6 @@ apply plugin: 'java'
 dependencies {
     compile project(':ttsd-service'),
             project(':ttsd-point-service'),
-            project(':ttsd-jpush'),
             project(':ttsd-edxactivity-repository'),
             project(':ttsd-message')
 }

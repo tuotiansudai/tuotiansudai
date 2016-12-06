@@ -51,8 +51,6 @@ public class LoanController {
     @Autowired
     private MessageMapper messageMapper;
 
-    private final static String LOAN_MESSAGE_REDIS_KEY = "web:loan:loanMessageMap";
-
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan() {
         ModelAndView modelAndView = new ModelAndView("/loan-create");
@@ -95,13 +93,7 @@ public class LoanController {
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE));
         modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
-        LoanCreateRequestDto loanCreateRequestDto = loanCreateService.getEditLoanDetails(loanId);
-        if (redisWrapperClient.hexists(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanId))) {
-            long messageId = Long.valueOf(redisWrapperClient.hget(LOAN_MESSAGE_REDIS_KEY, String.valueOf(loanId)));
-            MessageModel messageModel = messageMapper.findById(messageId);
-            loanCreateRequestDto.setLoanMessage(new LoanMessageRequestDto(messageModel.getAppTitle(), messageModel.getTemplate()));
-        }
-        modelAndView.addObject("loan", loanCreateRequestDto);
+        modelAndView.addObject("loan", loanCreateService.getEditLoanDetails(loanId));
         modelAndView.addObject("extraLoanRates", extraLoanRateMapper.findByLoanId(loanId));
         return modelAndView;
     }

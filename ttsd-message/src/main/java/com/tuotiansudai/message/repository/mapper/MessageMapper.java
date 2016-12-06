@@ -26,20 +26,19 @@ public interface MessageMapper {
     void update(MessageModel messageModel);
 
     void deleteById(@Param(value = "messageId") long messageId,
-                    @Param(value = "updatedBy") String updatedBy,
-                    @Param(value = "updatedTime") Date updatedTime);
+                    @Param(value = "updatedBy") String updatedBy);
 
     long findMessageCount(@Param(value = "title") String title,
                           @Param(value = "messageStatus") MessageStatus messageStatus,
                           @Param(value = "createdBy") String createdBy,
                           @Param(value = "messageType") MessageType messageType);
 
-    List<MessageModel> findMessageList(@Param(value = "title") String title,
-                                       @Param(value = "messageStatus") MessageStatus messageStatus,
-                                       @Param(value = "createdBy") String createdBy,
-                                       @Param(value = "messageType") MessageType messageType,
-                                       @Param(value = "index") int index,
-                                       @Param(value = "pageSize") int pageSize);
+    List<MessageModel> findMessagePagination(@Param(value = "title") String title,
+                                             @Param(value = "messageStatus") MessageStatus messageStatus,
+                                             @Param(value = "createdBy") String createdBy,
+                                             @Param(value = "messageType") MessageType messageType,
+                                             @Param(value = "index") int index,
+                                             @Param(value = "pageSize") int pageSize);
 
     List<MessageModel> findAssignableManualMessages(String loginName);
 

@@ -1,6 +1,8 @@
 package com.tuotiansudai.message.repository.model;
 
 import com.tuotiansudai.enums.AppUrl;
+import com.tuotiansudai.message.dto.MessageCreateDto;
+import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,13 +16,14 @@ public class MessageModel implements Serializable {
     private String templateTxt;
     private MessageType type;
     private MessageEventType eventType;
-    private List<MessageUserGroup> userGroups;
+    private MessageUserGroup userGroup;
     private List<MessageChannel> channels;
     private MessageCategory messageCategory;
     private String webUrl;
     private AppUrl appUrl;
     private MessageStatus status;
     private long readCount;
+    private Long pushId;
     private String activatedBy;
     private Date activatedTime;
     private Date expiredTime;
@@ -32,18 +35,22 @@ public class MessageModel implements Serializable {
     public MessageModel() {
     }
 
-    public MessageModel(String title, String template, MessageType type, List<MessageUserGroup> userGroups, List<MessageChannel> channels, MessageStatus status, Date expiredTime, String createdBy) {
+    public MessageModel(String title, String template, MessageUserGroup userGroup, MessageCategory messageCategory, List<MessageChannel> channels, Long pushId, String createdBy) {
         this.title = title;
+        this.appTitle = title;
         this.template = template;
-        this.type = type;
-        this.userGroups = userGroups;
+        this.templateTxt = template;
+        this.type = MessageType.MANUAL;
+        this.messageCategory = messageCategory;
+        this.userGroup = userGroup;
         this.channels = channels;
-        this.status = status;
-        this.expiredTime = expiredTime;
+        this.status = MessageStatus.TO_APPROVE;
+        this.pushId = pushId;
         this.createdBy = createdBy;
         this.createdTime = new Date();
         this.updatedBy = this.createdBy;
         this.updatedTime = this.createdTime;
+        this.expiredTime = new DateTime(createdTime).plusDays(30).withTimeAtStartOfDay().toDate();
     }
 
     public long getId() {
@@ -102,12 +109,12 @@ public class MessageModel implements Serializable {
         this.eventType = eventType;
     }
 
-    public List<MessageUserGroup> getUserGroups() {
-        return userGroups;
+    public MessageUserGroup getUserGroup() {
+        return userGroup;
     }
 
-    public void setUserGroups(List<MessageUserGroup> userGroups) {
-        this.userGroups = userGroups;
+    public void setUserGroup(MessageUserGroup userGroup) {
+        this.userGroup = userGroup;
     }
 
     public List<MessageChannel> getChannels() {
@@ -156,6 +163,14 @@ public class MessageModel implements Serializable {
 
     public void setReadCount(long readCount) {
         this.readCount = readCount;
+    }
+
+    public Long getPushId() {
+        return pushId;
+    }
+
+    public void setPushId(Long pushId) {
+        this.pushId = pushId;
     }
 
     public String getActivatedBy() {

@@ -1,8 +1,6 @@
 package com.tuotiansudai.message.util;
 
-import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterators;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.model.MessageModel;
@@ -32,14 +30,9 @@ public class MessageUserGroupDecisionManager {
 
     public boolean decide(final String loginName, final long messageId) {
         MessageModel messageModel = this.messageMapper.findById(messageId);
-        List<MessageUserGroup> userGroups = messageModel.getUserGroups();
+        MessageUserGroup userGroup = messageModel.getUserGroup();
 
-        return Iterators.any(userGroups.iterator(), new Predicate<MessageUserGroup>() {
-            @Override
-            public boolean apply(MessageUserGroup userGroup) {
-                return MessageUserGroupDecisionManager.this.contains(loginName, userGroup, messageId);
-            }
-        });
+        return this.contains(loginName, userGroup, messageId);
     }
 
     @SuppressWarnings(value = "unchecked")
@@ -53,7 +46,7 @@ public class MessageUserGroupDecisionManager {
                 return true;
             case IMPORT_USER:
                 try {
-                    List<String> loginNameOrMobiles = (List<String>) redisWrapperClient.hgetSeri(MessageServiceImpl.redisMessageReceivers, String.valueOf(messageId));
+                    List<String> loginNameOrMobiles = (List<String>) redisWrapperClient.hgetSeri(MessageServiceImpl.MESSAGE_IMPORT_USER_KEY, String.valueOf(messageId));
                     return CollectionUtils.isNotEmpty(loginNameOrMobiles) && (loginNameOrMobiles.contains(loginName) || loginNameOrMobiles.contains(mobile));
                 } catch (Exception e) {
                     logger.error(e.getLocalizedMessage(), e);

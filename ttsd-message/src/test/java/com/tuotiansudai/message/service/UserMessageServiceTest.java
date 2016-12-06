@@ -45,10 +45,13 @@ public class UserMessageServiceTest {
         userMapper.create(creator);
 
 
-        MessageModel webSiteMessageModel = new MessageModel("title", "hello message!", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER),
+        MessageModel webSiteMessageModel = new MessageModel("title",
+                "message",
+                MessageUserGroup.ALL_USER,
+                MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.APPROVED, new Date(), creator.getLoginName());
+                null,
+                creator.getLoginName());
 
         webSiteMessageModel.setReadCount(10);
 
@@ -74,17 +77,23 @@ public class UserMessageServiceTest {
         UserModel creator = getFakeUser("messageCreator");
         userMapper.create(creator);
 
-        MessageModel webSiteMessageModel = new MessageModel("title", "hello message!", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER),
+        MessageModel webSiteMessageModel = new MessageModel("title",
+                "message",
+                MessageUserGroup.ALL_USER,
+                MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.WEBSITE),
-                MessageStatus.APPROVED, new Date(), creator.getLoginName());
+                null,
+                creator.getLoginName());
 
         messageMapper.create(webSiteMessageModel);
 
-        MessageModel appMessageModel = new MessageModel("app title", "app hello message!", MessageType.MANUAL,
-                Lists.newArrayList(MessageUserGroup.ALL_USER),
+        MessageModel appMessageModel = new MessageModel("app title",
+                "message",
+                MessageUserGroup.ALL_USER,
+                MessageCategory.ACTIVITY,
                 Lists.newArrayList(MessageChannel.APP_MESSAGE),
-                MessageStatus.APPROVED, new Date(), creator.getLoginName());
+                null,
+                creator.getLoginName());
 
         messageMapper.create(appMessageModel);
     }

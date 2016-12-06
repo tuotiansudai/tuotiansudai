@@ -6,7 +6,6 @@ dependencies {
             project(':ttsd-service'),
             project(':ttsd-message'),
             project(':ttsd-point-service'),
-            project(':ttsd-jpush'),
             project(':ttsd-edxactivity-repository'),
             project(':ttsd-anxin-sign'),
             project(':ttsd-membership')

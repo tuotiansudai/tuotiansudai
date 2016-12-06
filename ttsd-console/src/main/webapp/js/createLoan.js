@@ -4,7 +4,7 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
             'loanAmount', 'baseRate', 'activityRate', 'minInvestAmount', 'maxInvestAmount', 'investIncreasingAmount',
             'fundraisingStartTime', 'fundraisingEndTime', 'contractId', 'status'];
 
-        var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc','nonTransferable'];
+        var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc','nonTransferable', 'pushMessage'];
 
         var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus'];
 
@@ -269,10 +269,6 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                 clearErrorMessage();
             },
             beforeSubmit: function (curform) {
-                if ($('#messageSend').prop('checked') == true && ($('#messageTitle').val().length == 0) && ($('#messageContent').val().length == 0)) {
-                    showErrorMessage('必须填写消息标题和消息内容', $('input[name="message-title"]'));
-                    return false;
-                }
                 if (!loanTypeElement.val()) {
                     showErrorMessage('请选择标的类型', loanTypeElement);
                     return false;
@@ -352,8 +348,6 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
             var value = loanNameElement.val();
             var url = $currentFormSubmitBtn.data("url");
             var requestData = {};
-            var messageTitle = $('#messageTitle').val(),
-                messageContent = $('#messageContent').val();
             if ("房产抵押借款" == value) {
                 requestData = generateRequestParams({
                     'loan': loanParam,
@@ -377,14 +371,6 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
                     'loanerEnterpriseDetails': loanerEnterpriseDetailsParam,
                     'pledgeEnterprise': pledgeEnterpriseParam
                 });
-            }
-            if(messageTitle.length == 0 && messageContent == 0) {
-                requestData.loanMessage = null;
-            } else {
-                requestData.loanMessage = {
-                    loanMessageTitle: messageTitle,
-                    loanMessageContent: messageContent
-                };
             }
             $.ajax(
                 {
@@ -506,15 +492,5 @@ require(['jquery', 'template', 'mustache', 'text!/tpl/loaner-details.mustache', 
             });
             requestData['loan']['loanTitles'] = uploadFile;
             return requestData
-        }
-
-        $('#messageSend').on('change', function () {
-            if ($(this).prop('checked') == true) {
-                $('#messageTitle').prop('disabled', false);
-                $('#messageContent').prop('disabled', false);
-            } else {
-                $('#messageTitle').prop('disabled', true).val('');
-                $('#messageContent').prop('disabled', true).val('');
-            }
-        });
+        };
     });

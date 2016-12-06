@@ -168,6 +168,8 @@ public class LoanCreateServiceImpl implements LoanCreateService {
         if (loanModel != null && LoanStatus.PREHEAT == loanModel.getStatus()) {
             loanMapper.updateStatus(loanId, LoanStatus.RAISING);
         }
+
+        //TODO push
     }
 
     private void createFundraisingStartJob(LoanModel loanModel) {

@@ -5,26 +5,29 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.jpush.dto.JPushAlertDto;
-import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
-import com.tuotiansudai.jpush.service.JPushAlertNewService;
-import com.tuotiansudai.jpush.service.JPushAlertService;
-import com.tuotiansudai.message.dto.MessageCompleteDto;
+import com.tuotiansudai.message.dto.MessageCreateDto;
+import com.tuotiansudai.message.dto.MessagePaginationItemDto;
 import com.tuotiansudai.message.repository.mapper.MessageMapper;
 import com.tuotiansudai.message.repository.model.MessageModel;
 import com.tuotiansudai.message.repository.model.MessageStatus;
 import com.tuotiansudai.message.repository.model.MessageType;
 import com.tuotiansudai.message.repository.model.MessageUserGroup;
 import com.tuotiansudai.message.service.MessageService;
+import com.tuotiansudai.push.repository.mapper.PushAlertMapper;
+import com.tuotiansudai.push.repository.model.PushAlertModel;
+import com.tuotiansudai.push.service.JPushAlertNewService;
+import com.tuotiansudai.push.service.PushService;
+import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,237 +39,172 @@ public class MessageServiceImpl implements MessageService {
     private MessageMapper messageMapper;
 
     @Autowired
+    private PushAlertMapper pushAlertMapper;
+
+    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private JPushAlertNewService jPushAlertNewService;
 
     @Autowired
-    private JPushAlertService jPushAlertService;
+    private PushService pushService;
 
-    public final static String redisMessageReceivers = "message:manual-message:receivers";
+    public final static String MESSAGE_IMPORT_USER_TEMP_KEY = "message:manual-message:receivers:temp:{0}";
 
-    private final static int EXPIRED_PERIOD = 30;
+    public final static String MESSAGE_IMPORT_USER_KEY = "message:manual-message:receivers";
 
     @Override
     public long findMessageCount(String title, MessageStatus messageStatus, String createdBy, MessageType messageType) {
         return messageMapper.findMessageCount(title, messageStatus, createdBy, messageType);
     }
 
-    private MessageCompleteDto messageModelToDto(MessageModel messageModel) {
-        MessageCompleteDto messageCompleteDto = new MessageCompleteDto(messageModel);
-        JPushAlertModel jPushAlertModel = jPushAlertNewService.findJPushAlertModelByMessageId(messageModel.getId());
-        if (null != jPushAlertModel) {
-            messageCompleteDto.setJpush(true);
-            messageCompleteDto.setPushType(jPushAlertModel.getPushType());
-            messageCompleteDto.setPushSource(jPushAlertModel.getPushSource());
-        } else {
-            messageCompleteDto.setJpush(false);
-        }
-        return messageCompleteDto;
+    @Override
+    public List<MessagePaginationItemDto> findMessagePagination(String title, MessageStatus messageStatus, String createdBy, MessageType messageType, int index, int pageSize) {
+        int offset = PaginationUtil.calculateOffset(index, pageSize, messageMapper.findMessageCount(title, messageStatus, createdBy, messageType));
+        List<MessageModel> messageModels = messageMapper.findMessagePagination(title, messageStatus, createdBy, messageType, offset, pageSize);
+        return messageModels.stream().map(messageModel -> new MessagePaginationItemDto(messageModel, pushAlertMapper.findById(messageModel.getPushId()))).collect(Collectors.toList());
     }
 
     @Override
-    public List<MessageCompleteDto> findMessageCompleteDtoList(String title, MessageStatus messageStatus, String createdBy, MessageType messageType, int index, int pageSize) {
-        List<MessageModel> messageModels = messageMapper.findMessageList(title, messageStatus, createdBy, messageType, (index - 1) * pageSize, pageSize);
-        return messageModels.stream().map(this::messageModelToDto).collect(Collectors.toList());
-    }
-
-    @Override
-    public long createAndEditManualMessage(MessageCompleteDto messageCompleteDto, long importUsersId) {
-        long messageId = messageCompleteDto.getId();
-        if (isMessageExist(messageId)) {
-            editManualMessage(messageCompleteDto, importUsersId);
-        } else {
-            MessageModel messageModel = createManualMessage(messageCompleteDto, importUsersId);
-            messageId = messageModel.getId();
+    @Transactional
+    public long createOrUpdateManualMessage(String loginName, MessageCreateDto messageCreateDto) {
+        Long messageId = messageCreateDto.getId();
+        if (messageId == null) {
+            Long pushId = pushService.createOrUpdate(loginName, messageCreateDto.getPush());
+            return this.createManualMessage(loginName, pushId, messageCreateDto);
         }
-
-        editManualJPush(messageCompleteDto, messageId);
+        this.updateManualMessage(loginName, messageCreateDto);
 
         return messageId;
     }
 
-    private void editManualJPush(MessageCompleteDto messageCompleteDto, long messageId) {
-        JPushAlertModel jPushAlertModel = jPushAlertNewService.findJPushAlertModelByMessageId(messageId);
-        JPushAlertDto jPushAlertDto = messageCompleteDto.getJPushAlertDto();
-        jPushAlertDto.setMessageId(messageId);
-        if (null != jPushAlertModel) {
-            if (messageCompleteDto.isJpush()) {
-                jPushAlertDto.setId(String.valueOf(jPushAlertModel.getId()));
-                jPushAlertService.buildJPushAlert(messageCompleteDto.getCreatedBy(), jPushAlertDto);
-            } else {
-                jPushAlertService.delete(messageCompleteDto.getUpdatedBy(), jPushAlertModel.getId());
-            }
-        } else {
-            if (messageCompleteDto.isJpush()) {
-                jPushAlertService.buildJPushAlert(messageCompleteDto.getCreatedBy(), jPushAlertDto);
-            }
-        }
-    }
-
     @Override
-    public long createImportReceivers(long oldImportUsersId, InputStream inputStream) throws IOException {
-        if (redisWrapperClient.hexists(redisMessageReceivers, String.valueOf(oldImportUsersId))) {
-            redisWrapperClient.hdel(redisMessageReceivers, String.valueOf(oldImportUsersId));
-        }
-
-        long importUsersId = new Date().getTime();
-
-        List<String> importUsers = Lists.newArrayList();
-
+    public long createImportUsers(InputStream inputStream) throws IOException {
+        long importUsersFlag = new Date().getTime();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        while (null != (line = bufferedReader.readLine())) {
-            stringBuilder.append(line);
+        String rawData;
+        while (null != (rawData = bufferedReader.readLine())) {
+            stringBuilder.append(rawData);
         }
-
-        for (String loginName : Splitter.on(',').splitToList(stringBuilder.toString())) {
-            if (!StringUtils.isEmpty(loginName)) {
-                importUsers.add(loginName);
-            }
-        }
-        redisWrapperClient.hsetSeri(redisMessageReceivers, String.valueOf(importUsersId), importUsers);
-        return importUsersId;
+        redisWrapperClient.setex(MessageFormat.format(MESSAGE_IMPORT_USER_TEMP_KEY, String.valueOf(importUsersFlag)), 60 * 60, stringBuilder.toString());
+        return importUsersFlag;
     }
 
     @Override
-    public MessageCompleteDto findMessageCompleteDtoByMessageId(long messageId) {
-        return messageModelToDto(messageMapper.findByIdBesidesDeleted(messageId));
-    }
-
-    @Override
-    public BaseDto<BaseDataDto> rejectMessage(long messageId, String checkerName) {
-        if (!isMessageExist(messageId)) {
-            return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
-        }
+    public BaseDto<BaseDataDto> approveMessage(long messageId, String approvedBy) {
         MessageModel messageModel = messageMapper.findById(messageId);
-        if (MessageStatus.TO_APPROVE == messageModel.getStatus()) {
-            messageModel.setStatus(MessageStatus.REJECTION);
-            messageModel.setUpdatedTime(new Date());
-            messageModel.setUpdatedBy(checkerName);
-            messageMapper.update(messageModel);
-
-            JPushAlertModel jPushAlertModel = jPushAlertNewService.findJPushAlertModelByMessageId(messageId);
-            if (null != jPushAlertModel) {
-                jPushAlertService.reject(checkerName, jPushAlertModel.getId(), null);
-            }
-            return new BaseDto<>(new BaseDataDto(true, null));
-        } else if (MessageType.EVENT == messageModel.getType()) {
-            messageModel.setStatus(MessageStatus.TO_APPROVE);
-            messageModel.setUpdatedTime(new Date());
-            messageModel.setUpdatedBy(checkerName);
-            messageMapper.update(messageModel);
-
-            JPushAlertModel jPushAlertModel = jPushAlertNewService.findJPushAlertModelByMessageId(messageId);
-            if (null != jPushAlertModel) {
-                jPushAlertService.reject(checkerName, jPushAlertModel.getId(), "");
-            }
-            return new BaseDto<>(new BaseDataDto(true, null));
+        if (messageModel == null || messageModel.getStatus() != MessageStatus.TO_APPROVE) {
+            return new BaseDto<>(new BaseDataDto(false, "消息审核失败"));
         }
-        return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE or EVENT message"));
+
+        messageModel.setActivatedBy(approvedBy);
+        messageModel.setActivatedTime(new Date());
+        messageModel.setUpdatedTime(new Date());
+        messageModel.setUpdatedBy(approvedBy);
+        messageModel.setStatus(MessageStatus.APPROVED);
+        messageMapper.update(messageModel);
+
+        PushAlertModel pushAlertModel = pushAlertMapper.findById(messageModel.getPushId());
+        if (pushAlertMapper.findById(messageModel.getPushId()) != null && MessageType.MANUAL.equals(messageModel.getType())) {
+//            sendJPush(pushAlertModel, messageModel);
+        }
+        return new BaseDto<>(new BaseDataDto(true));
     }
 
     @Override
-    public BaseDto<BaseDataDto> approveMessage(long messageId, String checkerName) {
-        if (!isMessageExist(messageId)) {
-            return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
-        }
+    public BaseDto<BaseDataDto> rejectMessage(long messageId, String approvedBy) {
         MessageModel messageModel = messageMapper.findById(messageId);
-        if (MessageStatus.TO_APPROVE == messageModel.getStatus() || MessageType.EVENT == messageModel.getType()) {
-            messageModel.setActivatedBy(checkerName);
-            messageModel.setActivatedTime(new Date());
-            messageModel.setStatus(MessageStatus.APPROVED);
-            messageModel.setUpdatedTime(new Date());
-            messageModel.setUpdatedBy(checkerName);
-            messageMapper.update(messageModel);
-
-            JPushAlertModel jPushAlertModel = jPushAlertNewService.findJPushAlertModelByMessageId(messageId);
-            if (null != jPushAlertModel && MessageType.MANUAL.equals(messageModel.getType())) {
-                sendJpush(jPushAlertModel, messageModel);
-            }
-            return new BaseDto<>(new BaseDataDto(true, null));
+        if (messageModel == null || messageModel.getStatus() != MessageStatus.TO_APPROVE) {
+            return new BaseDto<>(new BaseDataDto(false, "消息审核失败"));
         }
-        return new BaseDto<>(new BaseDataDto(false, "message state is not TO_APPROVE or EVENT message"));
-    }
+        messageModel.setUpdatedTime(new Date());
+        messageModel.setUpdatedBy(approvedBy);
+        messageModel.setStatus(messageModel.getType() == MessageType.EVENT ? MessageStatus.TO_APPROVE : MessageStatus.REJECTION);
+        messageMapper.update(messageModel);
 
-    private void sendJpush(JPushAlertModel jPushAlertModel, MessageModel messageModel) {
-        if (redisWrapperClient.hexists(redisMessageReceivers, String.valueOf(messageModel.getId()))) {
-            List<String> loginNames = (List<String>) redisWrapperClient.hgetSeri(redisMessageReceivers, String.valueOf(messageModel.getId()));
-            jPushAlertNewService.autoJPushBatchByLoginNames(jPushAlertModel, loginNames);
-        } else {
-            jPushAlertNewService.autoJPushAlertSendToAll(jPushAlertModel);
-        }
+        return new BaseDto<>(new BaseDataDto(true));
     }
 
     @Override
     public BaseDto<BaseDataDto> deleteMessage(long messageId, String updatedBy) {
-        if (!isMessageExist(messageId)) {
-            return new BaseDto<>(new BaseDataDto(false, "messageId not existed!"));
+        MessageModel messageModel = messageMapper.findById(messageId);
+        if (messageModel == null || messageModel.getStatus() != MessageStatus.TO_APPROVE) {
+            return new BaseDto<>(new BaseDataDto(false, "消息不存在"));
         }
-        messageMapper.deleteById(messageId, updatedBy, new Date());
-        redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(messageId));
+        messageMapper.deleteById(messageId, updatedBy);
+        redisWrapperClient.hdelSeri(MESSAGE_IMPORT_USER_KEY, String.valueOf(messageId));
+        return new BaseDto<>(new BaseDataDto(true));
+    }
 
-        JPushAlertModel jPushAlertModel = jPushAlertNewService.findJPushAlertModelByMessageId(messageId);
-        if (null != jPushAlertModel) {
-            jPushAlertService.delete(updatedBy, jPushAlertModel.getId());
+    private void sendJPush(PushAlertModel pushAlertModel, MessageModel messageModel) {
+        if (redisWrapperClient.hexists(MESSAGE_IMPORT_USER_KEY, String.valueOf(messageModel.getId()))) {
+            List<String> loginNames = (List<String>) redisWrapperClient.hgetSeri(MESSAGE_IMPORT_USER_KEY, String.valueOf(messageModel.getId()));
+            jPushAlertNewService.autoJPushBatchByLoginNames(pushAlertModel, loginNames);
+        } else {
+            jPushAlertNewService.autoJPushAlertSendToAll(pushAlertModel);
         }
-        return new BaseDto<>(new BaseDataDto(true, null));
     }
 
     @Override
-    public boolean isMessageExist(long messageId) {
-        return null != messageMapper.findById(messageId);
+    public MessageModel findById(long messageId) {
+        return messageMapper.findById(messageId);
+    }
+
+    @Override
+    public MessageCreateDto getEditMessage(long messageId) {
+        MessageModel messageModel = messageMapper.findById(messageId);
+        PushAlertModel pushAlertModel = pushAlertMapper.findById(messageModel.getPushId());
+        return new MessageCreateDto(messageModel, pushAlertModel);
     }
 
     @SuppressWarnings(value = "unchecked")
-    private MessageModel createManualMessage(MessageCompleteDto messageCompleteDto, long importUsersId) {
-        MessageModel messageModel = messageCompleteDto.getMessageModel();
-
-        messageModel.setType(MessageType.MANUAL);
-        messageModel.setStatus(MessageStatus.TO_APPROVE);
-        messageModel.setReadCount(0);
-        messageModel.setExpiredTime(new DateTime().plusDays(EXPIRED_PERIOD).withTimeAtStartOfDay().toDate());
-        messageModel.setCreatedTime(new Date());
-        messageModel.setUpdatedTime(messageModel.getCreatedTime());
-
+    private long createManualMessage(String createdBy, Long pushId, MessageCreateDto messageCreateDto) {
+        MessageModel messageModel = new MessageModel(messageCreateDto.getTitle(),
+                messageCreateDto.getTemplateTxt(),
+                messageCreateDto.getUserGroup(),
+                messageCreateDto.getMessageCategory(),
+                messageCreateDto.getChannels(),
+                pushId,
+                createdBy);
         messageMapper.create(messageModel);
-
-        if (messageCompleteDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
+        if (messageCreateDto.getUserGroup() == MessageUserGroup.IMPORT_USER) {
             String messageId = String.valueOf(messageModel.getId());
-            List<String> importUsers = (List<String>) redisWrapperClient.hgetSeri(redisMessageReceivers, String.valueOf(importUsersId));
-            redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(importUsersId));
-            redisWrapperClient.hsetSeri(redisMessageReceivers, messageId, importUsers);
+            String importUsers = redisWrapperClient.get(MessageFormat.format(MESSAGE_IMPORT_USER_TEMP_KEY, String.valueOf(messageCreateDto.getImportUsersFlag())));
+            redisWrapperClient.hsetSeri(MESSAGE_IMPORT_USER_KEY, messageId, Lists.newArrayList(Splitter.on(',').splitToList(importUsers).stream().filter(loginName -> !StringUtils.isEmpty(loginName.trim())).collect(Collectors.toList())));
         }
 
-        return messageModel;
+        return messageModel.getId();
     }
 
     @SuppressWarnings(value = "unchecked")
-    private void editManualMessage(MessageCompleteDto messageCompleteDto, long importUsersId) {
-        List<String> importUsers = (List<String>) redisWrapperClient.hgetSeri(redisMessageReceivers, String.valueOf(importUsersId));
-        redisWrapperClient.hdelSeri(redisMessageReceivers, String.valueOf(importUsersId));
+    private void updateManualMessage(String updatedBy, MessageCreateDto messageCreateDto) {
+        MessageModel messageModel = messageMapper.findById(messageCreateDto.getId());
 
-        MessageModel originMessageModel = messageMapper.findById(messageCompleteDto.getId());
-        MessageModel messageModel = messageCompleteDto.getMessageModel();
+        if (messageCreateDto.getPush() == null) {
+            pushService.delete(messageModel.getPushId());
+        } else {
+            messageModel.setPushId(pushService.createOrUpdate(updatedBy, messageCreateDto.getPush()));
+        }
 
-        messageModel.setType(originMessageModel.getType());
-        messageModel.setEventType(originMessageModel.getEventType());
-        messageModel.setStatus(originMessageModel.getStatus());
-        messageModel.setReadCount(originMessageModel.getReadCount());
-        messageModel.setActivatedBy(originMessageModel.getActivatedBy());
-        messageModel.setActivatedTime(originMessageModel.getActivatedTime());
-        messageModel.setExpiredTime(originMessageModel.getExpiredTime());
+        messageModel.setTitle(messageCreateDto.getTitle());
+        messageModel.setAppTitle(messageCreateDto.getTitle());
+        messageModel.setTemplate(messageCreateDto.getTemplateTxt());
+        messageModel.setTemplateTxt(messageCreateDto.getTemplateTxt());
+        messageModel.setUserGroup(messageCreateDto.getUserGroup());
+        messageModel.setChannels(messageCreateDto.getChannels());
+        messageModel.setMessageCategory(messageCreateDto.getMessageCategory());
+        messageModel.setWebUrl(messageCreateDto.getWebUrl());
+        messageModel.setAppUrl(messageCreateDto.getAppUrl());
+        messageModel.setUpdatedBy(updatedBy);
         messageModel.setUpdatedTime(new Date());
-        messageModel.setCreatedBy(originMessageModel.getCreatedBy());
-        messageModel.setCreatedTime(originMessageModel.getCreatedTime());
-
         messageMapper.update(messageModel);
 
-        if (messageCompleteDto.getUserGroups().contains(MessageUserGroup.IMPORT_USER)) {
-            String messageId = String.valueOf(messageCompleteDto.getId());
-            redisWrapperClient.hsetSeri(redisMessageReceivers, messageId, importUsers);
+        if (messageCreateDto.getUserGroup() == MessageUserGroup.IMPORT_USER && messageCreateDto.getImportUsersFlag() != null && messageCreateDto.getImportUsersFlag() != messageModel.getId()) {
+            String messageId = String.valueOf(messageModel.getId());
+            String importUsers = redisWrapperClient.get(MessageFormat.format(MESSAGE_IMPORT_USER_TEMP_KEY, String.valueOf(messageCreateDto.getImportUsersFlag())));
+            redisWrapperClient.hsetSeri(MESSAGE_IMPORT_USER_KEY, messageId, Lists.newArrayList(Splitter.on(',').splitToList(importUsers).stream().filter(loginName -> !StringUtils.isEmpty(loginName.trim())).collect(Collectors.toList())));
         }
     }
 }
