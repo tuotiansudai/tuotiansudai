@@ -45,4 +45,3 @@ public class InvestSuccessMembershipUpdateMessageConsumer implements MessageCons
         logger.info("[MQ] consume message success.");
     }
 }
-}
