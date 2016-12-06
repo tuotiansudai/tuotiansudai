@@ -1,4 +1,5 @@
-//auto invest
+@charset "utf-8";
+//自动投资和自动还款
 .auto-invest, .auto-repay {
   .CertifiedImg {
     background: url('/images/sign/re-s01.png') center top no-repeat;
@@ -96,4 +97,8 @@
       color: #ff7a2a;
     }
   }
+}
+
+.auto-invest {
+
 }

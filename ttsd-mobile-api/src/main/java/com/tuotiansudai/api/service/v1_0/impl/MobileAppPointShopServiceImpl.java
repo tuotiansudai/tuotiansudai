@@ -86,7 +86,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     }
 
     @Override
-    public BaseResponseDto findUserAddressResponseDto(BaseParamDto baseParamDto) {
+    public BaseResponseDto<UserAddressResponseDto> findUserAddressResponseDto(BaseParamDto baseParamDto) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         List<UserAddressModel> byLoginName = userAddressMapper.findByLoginName(baseParamDto.getBaseParam().getUserId());
         if (CollectionUtils.isNotEmpty(byLoginName)) {
@@ -98,7 +98,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     }
 
     @Override
-    public BaseResponseDto findUserPointsOrders(BaseParamDto baseParamDto) {
+    public BaseResponseDto<ProductListOrderResponseDto> findUserPointsOrders(BaseParamDto baseParamDto) {
         Integer index = baseParamDto.getIndex();
         Integer pageSize = baseParamDto.getPageSize();
         if (index == null || index <= 0) {
@@ -130,7 +130,7 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     }
 
     @Override
-    public BaseResponseDto findPointHome(BaseParamDto baseParamDto) {
+    public BaseResponseDto<ProductListResponseDto> findPointHome(BaseParamDto baseParamDto) {
         List<ExchangeCouponView> exchangeCoupons = Lists.newArrayList();
 
         List<ProductModel> couponProducts = productMapper.findAllProductsByGoodsType(Lists.newArrayList(GoodsType.COUPON));
@@ -199,10 +199,10 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     }
 
     @Override
-    public BaseResponseDto findProductDetail(ProductDetailRequestDto productDetailRequestDto) {
+    public BaseResponseDto<ProductDetailResponseDto> findProductDetail(ProductDetailRequestDto productDetailRequestDto) {
         if (productDetailRequestDto.getProductId() == null) {
             logger.info(MessageFormat.format("Product id is null (userId = {0})", productDetailRequestDto.getBaseParam().getUserId()));
-            return new BaseResponseDto<>(ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getCode(), ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getMsg());
+            return new BaseResponseDto(ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getCode(), ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getMsg());
         }
 
         ProductModel productModel = productMapper.findById(Long.parseLong(productDetailRequestDto.getProductId()));
@@ -233,12 +233,12 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
     public BaseResponseDto productExchange(ProductDetailRequestDto productDetailRequestDto) {
         if (Strings.isNullOrEmpty(productDetailRequestDto.getProductId())) {
             logger.info(MessageFormat.format("Product id is null (userId = {0})", productDetailRequestDto.getBaseParam().getUserId()));
-            return new BaseResponseDto<>(ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getCode(), ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getMsg());
+            return new BaseResponseDto(ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getCode(), ReturnMessage.POINTS_PRODUCT_IS_NOT_NULL.getMsg());
         }
 
         if (productDetailRequestDto.getNum() == null) {
             logger.info(MessageFormat.format("Product num is null (userId = {0})", productDetailRequestDto.getBaseParam().getUserId()));
-            return new BaseResponseDto<>(ReturnMessage.POINTS_PRODUCT_NUM_IS_NOT_NULL.getCode(), ReturnMessage.POINTS_PRODUCT_NUM_IS_NOT_NULL.getMsg());
+            return new BaseResponseDto(ReturnMessage.POINTS_PRODUCT_NUM_IS_NOT_NULL.getCode(), ReturnMessage.POINTS_PRODUCT_NUM_IS_NOT_NULL.getMsg());
         }
 
         ProductModel productModel = productMapper.findById(Long.parseLong(productDetailRequestDto.getProductId().trim()));
@@ -251,23 +251,23 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
         }
         if (leftCount > productModel.getTotalCount()) {
             logger.info(MessageFormat.format("Insufficient product (userId = {0},totalCount = {1},usedCount = {2})", productDetailRequestDto.getBaseParam().getUserId(), productModel.getTotalCount(), productModel.getUsedCount()));
-            return new BaseResponseDto<>(ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getCode(), ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getMsg());
+            return new BaseResponseDto(ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getCode(), ReturnMessage.INSUFFICIENT_PRODUCT_NUM.getMsg());
         }
 
         long points = productModel.getPoints() * productDetailRequestDto.getNum();
         if (accountModel == null || accountModel.getPoint() < points) {
             logger.info(MessageFormat.format("Insufficient points (userId = {0},productPoints = {2})", productDetailRequestDto.getBaseParam().getUserId(), points));
-            return new BaseResponseDto<>(ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode(), ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getMsg());
+            return new BaseResponseDto(ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode(), ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getMsg());
         }
 
         List<UserAddressModel> userAddressModels = userAddressMapper.findByLoginName(productDetailRequestDto.getBaseParam().getUserId());
         if (CollectionUtils.isEmpty(userAddressModels) && productModel.getType().equals(GoodsType.PHYSICAL)) {
             logger.info(MessageFormat.format("Insufficient points (userId = {0},myPoints = {1},productPoints = {2})", productDetailRequestDto.getBaseParam().getUserId(), accountModel.getPoint(), points));
-            return new BaseResponseDto<>(ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getCode(), ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getMsg());
+            return new BaseResponseDto(ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getCode(), ReturnMessage.USER_ADDRESS_IS_NOT_NULL.getMsg());
         }
 
         productService.buyProduct(accountModel.getLoginName(), Long.parseLong(productDetailRequestDto.getProductId()), productModel.getType(), productDetailRequestDto.getNum(), CollectionUtils.isEmpty(userAddressModels) ? null : userAddressModels.get(0).getId());
-        return new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
+        return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
     }
 
     private UserAddressModel convertUserAddressModel(UserAddressRequestDto userAddressRequestDto) {

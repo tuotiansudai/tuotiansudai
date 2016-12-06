@@ -3,11 +3,14 @@ package com.tuotiansudai.api.controller.v1_0;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.UserCouponListResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.UserCouponRequestDto;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserCouponService;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.UserCouponService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.text.MessageFormat;
 
 @RestController
+@Api(description = "用户优惠券")
 public class MobileAppUserCouponController extends MobileAppBaseController {
 
     static Logger logger = Logger.getLogger(MobileAppUserCouponController.class);
@@ -30,13 +34,15 @@ public class MobileAppUserCouponController extends MobileAppBaseController {
     private CouponAssignmentService couponAssignmentService;
 
     @RequestMapping(value = "/get/userCoupons", method = RequestMethod.POST)
-    public BaseResponseDto getCoupons(@RequestBody UserCouponRequestDto dto) {
+    @ApiOperation("我的宝藏")
+    public BaseResponseDto<UserCouponListResponseDataDto> getCoupons(@RequestBody UserCouponRequestDto dto) {
         dto.getBaseParam().setUserId(getLoginName());
         return mobileAppUserCouponService.getUserCoupons(dto);
     }
 
 
     @RequestMapping(value = "/assign-coupon", method = RequestMethod.POST)
+    @ApiOperation("发放优惠券")
     public BaseResponseDto assignUserCoupon() {
         String loginName = getLoginName();
 

@@ -1,16 +1,35 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class RepayCalendarDateResponseDto extends BaseResponseDataDto {
 
+    @ApiModelProperty(value = "标的名称", example = "100")
     private String loanName;
+
+    @ApiModelProperty(value = "已收回款", example = "0")
     private String repayAmount;
+
+    @ApiModelProperty(value = "待收回款", example = "100")
     private String expectedRepayAmount;
+
+    @ApiModelProperty(value = "当前期数", example = "1")
     private String period;
+
+    @ApiModelProperty(value = "总期数", example = "12")
     private String periods;
+
+    @ApiModelProperty(value = "状态", example = "REPAYING")
     private String status;
+
+    @ApiModelProperty(value = "投资ID", example = "1000")
     private String investId;
+
+    @ApiModelProperty(value = "债权转让", example = "false")
     private boolean isTransferred;
+
+    @ApiModelProperty(value = "债权转让ID", example = "1001")
     private String transferApplicationId;
 
     public RepayCalendarDateResponseDto() {

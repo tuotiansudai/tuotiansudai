@@ -22,7 +22,7 @@ public class MobileAppNodeDetailServiceImpl implements MobileAppNodeDetailServic
     @Autowired
     private AnnounceMapper announceMapper;
     @Override
-    public BaseResponseDto generateNodeDetail(NodeDetailRequestDto requestDto) {
+    public BaseResponseDto<NodeDetailResponseDataDto> generateNodeDetail(NodeDetailRequestDto requestDto) {
         BaseResponseDto<NodeDetailResponseDataDto> dto = new BaseResponseDto<>();
         String nodeId = requestDto.getNodeId();
         if(StringUtils.isEmpty(nodeId)){

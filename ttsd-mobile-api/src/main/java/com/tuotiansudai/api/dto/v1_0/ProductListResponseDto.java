@@ -1,14 +1,19 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 public class ProductListResponseDto extends BaseResponseDataDto {
 
+    @ApiModelProperty(value = "我的积分", example = "1000")
     private String myPoints;
 
+    @ApiModelProperty(value = "虚拟商品集合", example = "list")
     private List<ProductDetailResponseDto> virtuals;
 
+    @ApiModelProperty(value = "实物商品集合", example = "list")
     private List<ProductDetailResponseDto> physicals;
 
     public String getMyPoints() {

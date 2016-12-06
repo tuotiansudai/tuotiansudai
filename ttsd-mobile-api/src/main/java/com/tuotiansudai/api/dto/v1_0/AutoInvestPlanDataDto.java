@@ -2,17 +2,35 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.util.AmountConverter;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class AutoInvestPlanDataDto extends BaseResponseDataDto{
+
+    @ApiModelProperty(value = "唯一标识该自动投标计划", example = "12345")
     private String autoPlanId;
+
+    @ApiModelProperty(value = "用户", example = "admin")
     private String loginName;
+
+    @ApiModelProperty(value = "最小投资金额", example = "100.00")
     private String minInvestAmount;
+
+    @ApiModelProperty(value = "最大投资金额", example = "10000.00")
     private String maxInvestAmount;
+
+    @ApiModelProperty(value = "保留金额", example = "200.00")
     private String retentionAmount;
+
+    @ApiModelProperty(value = "选中项目期限", example = "")
     private List<AutoInvestPeriodDto> autoInvestPeriods;
+
+    @ApiModelProperty(value = "自动投标状态", example = "true")
     private boolean enabled ;
+
+    @ApiModelProperty(value = "计划创建时间", example = "2015-11-17 20:06:45")
     private String createdTime;
 
     public String getAutoPlanId() {

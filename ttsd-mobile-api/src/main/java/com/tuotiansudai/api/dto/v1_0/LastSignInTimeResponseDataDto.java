@@ -1,11 +1,16 @@
 package com.tuotiansudai.api.dto.v1_0;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class LastSignInTimeResponseDataDto extends BaseResponseDataDto {
 
+    @ApiModelProperty(value = "签到状态", example = "true")
     boolean signIn;
 
+    @ApiModelProperty(value = "签到次数", example = "2")
     int signInTimes;
 
+    @ApiModelProperty(value = "下次可获得积分", example = "40")
     int nextSignInPoint;
 
     public boolean isSignIn() {

@@ -30,10 +30,12 @@
         values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{merCheckDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData}, 'NOT_DONE')
     </insert>
 
-    <select id="getTodoList" parameterType="map" resultMap="resultMap" resultType="com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel">
-        <![CDATA[
-          select * from invest_zhaiquan_notify_request where status='NOT_DONE' order by request_time asc limit #{limitCount};
-         ]]>
+    <select id="getLastRequest" resultMap="resultMap" resultType="com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel">
+          select * from invest_zhaiquan_notify_request where status='NOT_DONE' order by id desc limit #{limitCount};
+    </select>
+
+    <select id="findById" parameterType="map" resultMap="resultMap" resultType="com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel">
+          select * from invest_zhaiquan_notify_request where id = #{id} and status='NOT_DONE';
     </select>
 
     <update id="updateStatus" keyColumn="id" keyProperty="id" parameterType="map">

@@ -1,14 +1,29 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class BannerPictureResponseDataDto extends BaseResponseDataDto {
 
+    @ApiModelProperty(value = "标题", example = "周年庆")
     private String title;
+
+    @ApiModelProperty(value = "链接", example = "https://tuotiansudai.com/activity/hero-ranking")
     private String url;
+
+    @ApiModelProperty(value = "分享链接", example = "https://tuotiansudai.com/activity/hero-ranking")
     private String sharedUrl;
+
+    @ApiModelProperty(value = "顺序", example = "1")
     private Integer seqNum;
+
+    @ApiModelProperty(value = "图片路径", example = "upload/20160722/4051469181629061.jpg")
     private String picture;
+
+    @ApiModelProperty(value = "内容", example = "投资拿称号，红包奖不停")
     private String content;
+
+    @ApiModelProperty(value = "授权", example = "false")
     private boolean isAuthorized;
 
     public BannerPictureResponseDataDto() {

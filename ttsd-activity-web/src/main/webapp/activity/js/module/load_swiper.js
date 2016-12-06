@@ -1,9 +1,9 @@
-define(['swiper','commonFun'], function (aswiper) {
-    var brower=commonFun.browserRedirect(),
+define(['swiper'], function (aswiper) {
+    var brower=globalFun.browserRedirect(),
         aswiper=false;
     if(brower=='mobile') {
         var cssUrl = staticServer+"/activity/style/dest/swiper-3.min.css";
-        commonFun.loadCss(cssUrl);
+        globalFun.loadCss(cssUrl);
         var aswiper = new Swiper('.swiper-container', {
             direction : 'horizontal',
             speed:300

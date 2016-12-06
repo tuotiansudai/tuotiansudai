@@ -31,7 +31,7 @@ public class MobileAppReferrerInvestServiceImpl implements MobileAppReferrerInve
     private PageValidUtils pageValidUtils;
 
     @Override
-    public BaseResponseDto generateReferrerInvestList(ReferrerInvestListRequestDto referrerInvestListRequestDto) {
+    public BaseResponseDto<ReferrerInvestListResponseDataDto> generateReferrerInvestList(ReferrerInvestListRequestDto referrerInvestListRequestDto) {
         BaseResponseDto dto = new BaseResponseDto();
         ReferrerInvestListResponseDataDto referrerInvestListResponseDataDto = null;
 

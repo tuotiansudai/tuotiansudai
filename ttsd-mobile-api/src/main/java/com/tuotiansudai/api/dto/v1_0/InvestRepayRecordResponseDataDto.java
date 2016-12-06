@@ -5,51 +5,53 @@ import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.util.AmountConverter;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.text.SimpleDateFormat;
 
 public class InvestRepayRecordResponseDataDto {
-    /**
-     * 标的id
-     */
+
+    /*** 标的id */
+    @ApiModelProperty(value = "标的ID", example = "1111")
     private String loanId;
-    /**
-     * 标的名称
-     */
+
+    /*** 标的名称 */
+    @ApiModelProperty(value = "标的名称", example = "车辆抵押借款")
     private String loanName;
-    /**
-     * 投资id
-     */
+
+    /*** 投资id */
+    @ApiModelProperty(value = "投资ID", example = "1111")
     private String investId;
-    /**
-     * 投资金额
-     */
+
+    /*** 投资金额 */
+    @ApiModelProperty(value = "投资金额", example = "11")
     private String investMoney;
-    /**
-     * 投资时间
-     */
+
+    /*** 投资时间 */
+    @ApiModelProperty(value = "投资时间", example = "2016-11-23")
     private String investTime;
-    /**
-     * 还款日
-     */
+
+    /*** 还款日 */
+    @ApiModelProperty(value = "还款日", example = "2016-12-23")
     private String repayDay;
-    /**
-     * 还款状态
-     */
+
+    /*** 还款状态 */
+    @ApiModelProperty(value = "还款状态", example = "COMPLETE")
     private String status;
-    /**
-     * 还款状态描述
-     */
+
+    /*** 还款状态描述 */
+    @ApiModelProperty(value = "还款状态描述", example = "完成")
     private String statusDesc;
-    /**
-     * 本金
-     */
+
+    /*** 本金 */
+    @ApiModelProperty(value = "本金", example = "10000")
     private String corpus;
-    /**
-     * 利息
-     */
+
+    /*** 利息 */
+    @ApiModelProperty(value = "利息", example = "10000")
     private String interest;
 
+    @ApiModelProperty(value = "产品线", example = "360天")
     private String loanType;
 
     public InvestRepayRecordResponseDataDto() {

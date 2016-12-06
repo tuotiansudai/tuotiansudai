@@ -4,27 +4,38 @@ package com.tuotiansudai.api.dto.v1_0;
 import com.tuotiansudai.coupon.repository.model.ExchangeCouponView;
 import com.tuotiansudai.point.repository.model.GoodsType;
 import com.tuotiansudai.util.AmountConverter;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
 import java.util.List;
 
 public class ProductDetailResponseDto extends BaseResponseDataDto {
+
+    @ApiModelProperty(value = "商品ID", example = "1")
     private String productId;
 
+    @ApiModelProperty(value = "商品图片地址", example = "url")
     private String imageUrl;
 
+    @ApiModelProperty(value = "商品价格", example = "100")
     private String points;
 
+    @ApiModelProperty(value = "商品描述", example = "会员")
     private String name;
 
+    @ApiModelProperty(value = "商品类型", example = "PHYSICAL")
     private String goodsType;
 
+    @ApiModelProperty(value = "商品描述", example = "[名字,介绍]")
     private List<String> productDes;
 
+    @ApiModelProperty(value = "剩余数量", example = "199")
     private String leftCount;
 
+    @ApiModelProperty(value = "顺序", example = "0")
     private int seq;
 
+    @ApiModelProperty(value = "更新时间", example = "2016-11-25 14:07:01")
     private Date updatedTime;
 
     public ProductDetailResponseDto(long productId, String imageUrl, String name, long points, GoodsType goodsType, long leftCount, int seq, Date updatedTime) {

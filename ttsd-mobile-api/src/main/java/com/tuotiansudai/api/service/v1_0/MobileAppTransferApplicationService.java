@@ -5,21 +5,21 @@ import com.tuotiansudai.api.dto.v1_0.*;
 
 public interface MobileAppTransferApplicationService {
 
-    BaseResponseDto generateTransferApplication(TransferApplicationRequestDto requestDto);
+    BaseResponseDto<TransferApplicationResponseDataDto> generateTransferApplication(TransferApplicationRequestDto requestDto);
 
     BaseResponseDto transferApply(TransferApplyRequestDto requestDto);
 
-    BaseResponseDto transferApplyQuery(TransferApplyQueryRequestDto requestDto);
+    BaseResponseDto<TransferApplyQueryResponseDataDto> transferApplyQuery(TransferApplyQueryRequestDto requestDto);
 
-    BaseResponseDto generateTransfereeApplication(PaginationRequestDto requestDto);
+    BaseResponseDto<TransferApplicationResponseDataDto> generateTransfereeApplication(PaginationRequestDto requestDto);
 
     BaseResponseDto transferApplicationCancel(TransferCancelRequestDto transferCancelRequestDto);
 
-    BaseResponseDto transferPurchase(TransferPurchaseRequestDto requestDto);
+    BaseResponseDto<TransferPurchaseResponseDataDto> transferPurchase(TransferPurchaseRequestDto requestDto);
 
-    BaseResponseDto transferApplicationList(TransferApplicationListRequestDto requestDto);
+    BaseResponseDto<TransferApplicationResponseDataDto> transferApplicationList(TransferApplicationListRequestDto requestDto);
 
-    BaseResponseDto transferApplicationById(TransferApplicationDetailRequestDto requestDto);
+    BaseResponseDto<TransferApplicationDetailResponseDataDto> transferApplicationById(TransferApplicationDetailRequestDto requestDto);
 
-    BaseResponseDto userInvestRepay(UserInvestRepayRequestDto userInvestRepayRequestDto);
+    BaseResponseDto<UserInvestRepayResponseDataDto> userInvestRepay(UserInvestRepayRequestDto userInvestRepayRequestDto);
 }

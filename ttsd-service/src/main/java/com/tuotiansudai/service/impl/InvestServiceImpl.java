@@ -3,6 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.*;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
@@ -21,6 +22,7 @@ import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -108,6 +110,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private UserCouponService userCouponService;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     @Transactional
@@ -306,7 +311,7 @@ public class InvestServiceImpl implements InvestService {
         }
 
         long count = investMapper.countInvestorInvestPagination(loginName, loanStatus, startTime, endTime);
-        int totalPages = PaginationUtil.calculateMaxPage(count,pageSize);
+        int totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
         index = index > totalPages ? totalPages : index;
 
         List<InvestModel> investModels = investMapper.findInvestorInvestPagination(loginName, loanStatus, (index - 1) * pageSize, pageSize, startTime, endTime);
@@ -421,6 +426,9 @@ public class InvestServiceImpl implements InvestService {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         accountModel.setNoPasswordInvest(isTurnOn);
         accountMapper.update(accountModel);
+        if (isTurnOn) {
+            mqWrapperClient.sendMessage(MessageQueue.TurnOnNoPasswordInvest_CompletePointTask, loginName);
+        }
         return true;
     }
 
@@ -487,7 +495,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public List<InvestModel> findContractFailInvest(long loanId){
+    public List<InvestModel> findContractFailInvest(long loanId) {
         return investMapper.findNoContractNoInvest(loanId);
     }
 

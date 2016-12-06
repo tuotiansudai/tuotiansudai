@@ -16,7 +16,6 @@ var require = {
         'underscore': staticServer + '/js/libs/underscore-1.8.3.min',
         'jquery.ajax.extension': staticServer + '/js/dest/jquery_ajax_extension.min',
         'daterangepicker': staticServer + '/js/libs/jquery.daterangepicker-0.0.7',
-        'lodash': staticServer + '/js/libs/lodash.min',
         'layer': staticServer + '/js/libs/layer/layer',
         'layer-extend':staticServer+'/js/libs/layer/extend/layer.ext',
         'echarts': staticServer + '/js/libs/echarts/dist/echarts.min',
@@ -43,7 +42,8 @@ var require = {
         'imageShowSlide-v1': staticServer+'/js/dest/image-show-slider.min',
         'red-envelope-float': staticServer+'/js/dest/red-envelope-float.min',
         'assign_coupon':staticServer+'/js/dest/assign_coupon.min',
-        'anxin_qian':staticServer+'/js/dest/anxin_qian.min'
+        'anxin_qian':staticServer+'/js/dest/anxin_qian.min',
+        'load_echarts':staticServer+'/js/dest/load_echarts.min'
 
     },
     'waitSeconds':0,

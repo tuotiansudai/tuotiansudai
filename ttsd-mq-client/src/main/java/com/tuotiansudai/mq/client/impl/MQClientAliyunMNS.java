@@ -10,7 +10,6 @@ import com.aliyun.mns.model.TopicMessage;
 import com.tuotiansudai.mq.client.MQClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
-import com.tuotiansudai.mq.client.model.Queue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,14 +17,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class MQClientAliyumMNS implements MQClient {
+public class MQClientAliyunMNS implements MQClient {
 
-    private static Logger logger = LoggerFactory.getLogger(MQClientAliyumMNS.class);
+    private static Logger logger = LoggerFactory.getLogger(MQClientAliyunMNS.class);
 
     private final MNSClient mnsClient;
     private final Map<MessageTopic, CloudTopic> topicMap;
 
-    public MQClientAliyumMNS(MNSClient mnsClient) {
+    public MQClientAliyunMNS(MNSClient mnsClient) {
         this.mnsClient = mnsClient;
         this.topicMap = new HashMap<>();
     }
@@ -43,7 +42,7 @@ public class MQClientAliyumMNS implements MQClient {
     }
 
     @Override
-    public void sendMessage(MessageQueue queue, String message) {
+    public void sendMessage(final MessageQueue queue, final String message) {
         logger.info("[MQ] ready to send message, queue: {}, message: '{}'", queue.getQueueName(), message);
         CloudQueue cloudQueue = findQueue(queue.getQueueName());
         try {
@@ -55,10 +54,10 @@ public class MQClientAliyumMNS implements MQClient {
     }
 
     @Override
-    public void subscribe(final Queue queue, Consumer<String> consumer) {
+    public void subscribe(final MessageQueue queue, final Consumer<String> consumer) {
         logger.info("[MQ] subscribe queue: {}", queue.getQueueName());
         CloudQueue cloudQueue = findQueue(queue.getQueueName());
-        while (true) {
+        while (mnsClient.isOpen()) {
             Message message = null;
             try {
                 logger.debug("[MQ] ready to pop message from queue: {}", queue.getQueueName());
@@ -69,7 +68,11 @@ public class MQClientAliyumMNS implements MQClient {
                     logger.debug("[MQ] receive a message, prepare to consume");
                 }
             } catch (Exception e) {
-                logger.error("[MQ] pop message fail", e);
+                if (mnsClient.isOpen()) {
+                    logger.error("[MQ] pop message fail", e);
+                } else {
+                    logger.warn("[MQ] pop message fail: client is already closed.");
+                }
             }
             if (message != null) {
                 logger.info("[MQ] ready to consume message, queue: {}, messageId: {}",

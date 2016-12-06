@@ -1,4 +1,4 @@
-require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','layerWrapper','commonFun','pagination','echarts','fancybox','layerWrapper'], function ($,Mustache,ListTemplate,loadSwiper,layer) {
+require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','layerWrapper','load_echarts','pagination','fancybox'], function ($,Mustache,ListTemplate,loadSwiper,layer,loadEcharts) {
     $(function () {
         var $noticeList=$('#noticeList'),
             $noticeDetail=$('#noticeDetail'),
@@ -75,10 +75,9 @@ require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','laye
                         month:data.month,
                         money:data.money
                     },
-                    option = MyChartsObject.ChartOptionTemplates.Bar(dataJson,'YTTTTT'),
-                    container = $("#dataRecord")[0],
-                    opt = MyChartsObject.ChartConfig(container, option);
-                    MyChartsObject.Charts.RenderChart(opt);
+                    option = loadEcharts.optionCategory.BarOption(dataJson),
+                    opt = loadEcharts.ChartConfig('dataRecord', option);
+                loadEcharts.RenderChart(opt);
             }).fail(function() {
                 layer.msg('请求数据失败，请刷新页面重试！');
             });

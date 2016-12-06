@@ -1,10 +1,14 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class BankCardIsReplacingResponseDto extends BaseResponseDataDto{
 
+    @ApiModelProperty(value = "已经申请更换银行卡", example = "true")
     private boolean isReplacing;
 
+    @ApiModelProperty(value = "账户余额和待收回款为0", example = "false")
     private boolean isManual;
 
     public BankCardIsReplacingResponseDto(boolean isReplacing, boolean isManual) {
