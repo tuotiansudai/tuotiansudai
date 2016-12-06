@@ -1,17 +1,30 @@
-function is_weixin() {
-    var ua = navigator.userAgent.toLowerCase();
-    return ua.match(/MicroMessenger/i) == "micromessenger";
-}
 
-function jump() {
-    var u = navigator.userAgent.toLowerCase();
-    if (!is_weixin()) {
-        if (u.indexOf('android') > -1) {
-            location.href = "https://tuotiansudai.com/app/tuotiansudai.apk";
-        } else if (u.indexOf('iphone') > -1 || u.indexOf('ipad') > -1) {
-            location.href = "http://itunes.apple.com/us/app/id1039233966";
+window.onload=function() {
+    function equipment() {
+        var ua = navigator.userAgent.toLowerCase(),
+            which={};
+        which.wechat=false;
+        var is_weixin=ua.match(/MicroMessenger/i) == "micromessenger";
+        if(is_weixin) {
+            which.wechat=true;
         }
-    } else {
-        document.getElementById("wxPic").style.display = "block";
+        if(ua.match('android')) {
+            which.kind='android';
+        }
+        else if(ua.match('iphone') || ua.match('ipad')) {
+            which.kind='ios';
+        }
+        return which;
+    }
+
+    var equipment=equipment();
+    globalFun.$('#btnDownload').onclick=function() {
+        if(equipment.kind=='android') {
+            //安卓
+            window.location.href = "https://tuotiansudai.com/app/tuotiansudai.apk";
+        }
+        else if(equipment.kind=='ios') {
+            window.location.href ="https://itunes.apple.com/cn/app/ta-tian-su-dai/id1039233966?mt=8";
+        }
     }
 }
