@@ -67,7 +67,7 @@ public class ChristmasPrizeService {
 
     private static final long RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL_COUPON_ID = 324L;
 
-    public static final long CHRISTMAS_ACTIVITY_2_START_MIN_AMOUNT = 420000000;
+    public static final long CHRISTMAS_ACTIVITY_2_START_MIN_AMOUNT = 10;
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final int timeout = 60 * 60 * 24 * 20;
