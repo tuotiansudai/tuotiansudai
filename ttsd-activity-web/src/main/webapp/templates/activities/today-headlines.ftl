@@ -1,6 +1,7 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.today_headlines}" pageJavascript="${js.today_headlines}" activeNav="" activeLeftNav="" title="" keywords="" description="">
+<@global.main pageCss="${css.today_headlines}" pageJavascript="${js.today_headlines}" activeNav="" activeLeftNav="" title="今日头条" keywords="今日头条" description="今日头条">
 <div class="today-headlines-container">
+    <input type="hidden" id="loginMobile" value="">
     <div class="top-img-item">
         <img src="${staticServer}/activity/images/today-headlines/top-img.png" alt="今日头条" width="100%">
     </div>
@@ -22,31 +23,39 @@
         <div class="lottery-group">
             <ul class="lottery-item" id="lottery">
                 <li class="lottery-unit lottery-unit-0">
-                    <img src="${staticServer}/activity/images/model/double-eleven/gift-one.png" width="54%">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-one.png" width="54%" class="gift-img">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-unit lottery-unit-1">
-                    <img src="${staticServer}/activity/images/model/double-eleven/gift-two.png" width="60%">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-two.png" width="60%" class="gift-img">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-unit lottery-unit-2">
-                    <img src="${staticServer}/activity/images/model/double-eleven/gift-three.png" width="60%">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-three.png" width="60%" class="gift-img">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-unit lottery-unit-7">
-                    <img src="${staticServer}/activity/images/model/double-eleven/gift-eight.png" width="56%">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-eight.png" width="56%" class="gift-img">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-btn">
                     <img src="${staticServer}/activity/images/today-headlines/lottery-btn.png" width="100%">
                 </li>
                 <li class="lottery-unit lottery-unit-3">
-                    <img src="${staticServer}/activity/images/model/double-eleven/gift-four.png" width="62%">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-four.png" width="62%" class="gift-img">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-unit lottery-unit-6">
-                    <img src="${staticServer}/activity/images/model/double-eleven/gift-seven.png" width="74%">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-seven.png" width="74%" class="gift-img">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-unit lottery-unit-5">
-                    <img src="${staticServer}/activity/images/model/double-eleven/gift-six.png" width="75%">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-six.png" width="75%" class="gift-img">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
                 <li class="lottery-unit lottery-unit-4">
-                    <img src="${staticServer}/activity/images/model/double-eleven/gift-five.png" width="63%">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-five.png" width="63%" class="gift-img">
+                    <img src="${staticServer}/activity/images/today-headlines/gift-default.png" width="50%" class="hover-bg">
                 </li>
             </ul>
         </div>
@@ -202,7 +211,7 @@
     <div class="tip-box" id="attestBox">
         <div class="tip-bg">
             <div class="gift-title">
-                <p>注册成功，获得了XXX</p>
+                <p class="gift-name">注册成功，获得了XXX</p>
                 <p>客服会在3个工作日内联系您发放奖品</p>
             </div>
             <div class="title-tip">
@@ -231,7 +240,7 @@
     <div class="tip-box" id="lastBox">
         <div class="tip-bg">
             <div class="gift-title">
-                <p>恭喜您解救了XXXXXX</p>
+                <p class="gift-name">恭喜您解救了XXXXXX</p>
                 <p>客服会在3个工作日内联系您发放奖品</p>
             </div>
             <div class="title-tip">
@@ -255,7 +264,7 @@
             <ul class="register-list mt-b">
                 <li class="text-c">
                     <span class="submit-bg">
-                        <a href="" class="btn register-user">立即下载</a>
+                        <a href="/app/download" class="btn register-user">立即下载</a>
                     </span>
                 </li>
             </ul>
