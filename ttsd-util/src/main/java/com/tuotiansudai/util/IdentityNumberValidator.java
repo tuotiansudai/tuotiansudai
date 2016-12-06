@@ -1,16 +1,13 @@
-package com.tuotiansudai.web.util;
+package com.tuotiansudai.util;
 
 
 import com.google.common.base.Strings;
-import org.apache.log4j.Logger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class IdentityNumberValidator {
-
-    static Logger logger = Logger.getLogger(IdentityNumberValidator.class);
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
@@ -106,13 +103,14 @@ public class IdentityNumberValidator {
         try {
             birthDate = new SimpleDateFormat("yyMMdd").parse(birthday);
         } catch (ParseException e) {
-            logger.error(e.getLocalizedMessage(), e);
+            e.printStackTrace();
+        }finally {
+            Calendar cal = Calendar.getInstance();
+            if (birthDate != null)
+                cal.setTime(birthDate);
+            String sYear = String.valueOf(cal.get(Calendar.YEAR));
+            String code18 = idCard.substring(0, 6) + sYear + idCard.substring(8);
+            return code18 + countCode18(code18);
         }
-        Calendar cal = Calendar.getInstance();
-        if (birthDate != null)
-            cal.setTime(birthDate);
-        String sYear = String.valueOf(cal.get(Calendar.YEAR));
-        String code18 = idCard.substring(0, 6) + sYear + idCard.substring(8);
-        return code18 + countCode18(code18);
     }
 }
