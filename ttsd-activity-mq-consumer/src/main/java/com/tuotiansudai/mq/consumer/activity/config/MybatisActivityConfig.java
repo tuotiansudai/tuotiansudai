@@ -70,9 +70,9 @@ public class MybatisActivityConfig {
         private String dbHost;
         @Value("${common.jdbc.port}")
         private String dbPort;
-        @Value("${point.jdbc.username}")
+        @Value("${activity.jdbc.username}")
         private String dbUser;
-        @Value("${point.jdbc.password}")
+        @Value("${activity.jdbc.password}")
         private String dbPassword;
 
         public String getDbHost() {
