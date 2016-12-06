@@ -11,7 +11,7 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun','jquery.validate', 'j
         
 
         
-
+        //点击页面底部下载链接
         $('.download-btn').on('click', function(event) {
             event.preventDefault();
             location.href=$(this).attr('data-href');
@@ -109,7 +109,7 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun','jquery.validate', 'j
 
         //验证码是否正确
         jQuery.validator.addMethod("checkCaptcha", function(value, element) {
-            var mobile=$phoneDom.val();
+            var mobile=$('#mobile').val();
             var deferred = $.Deferred();
             if(/^\d{6}$/.test(value) && mobile) {
                 $.ajax({
@@ -312,7 +312,7 @@ require(['jquery', 'layerWrapper', 'template', 'commonFun','jquery.validate', 'j
             focusInvalid: false,
             onfocusout: function (element) {
                 this.element(element);
-                if($('input.valid',registerAccountForm).length==2) {
+                if($('input.valid',$attestForm).length==2) {
                     $attestForm.find('.register-user').prop('disabled',false);
                 }
             },
