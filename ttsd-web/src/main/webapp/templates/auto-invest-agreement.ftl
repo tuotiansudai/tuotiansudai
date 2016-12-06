@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.auto_invest}" activeNav="我的账户" activeLeftNav="自动投标" title="自动投标">
+<@global.main pageCss="${css.auto_invest}" pageJavascript="${js.auto_invest}" activeNav="我的账户" activeLeftNav="自动投标" title="自动投标">
 <div class="content-container auto-invest">
     <h4 class="column-title"><em class="tc">自动投标</em></h4>
 
@@ -27,7 +27,7 @@
 
 </div>
 
-<div class="auto-invest pad-m tc" style="display: none;">
+<div class="auto-invest-tip pad-m tc" style="display: none;">
     <button id="finishAuthor" class="btn btn-normal">已完成授权</button>
 </div>
 </@global.main>

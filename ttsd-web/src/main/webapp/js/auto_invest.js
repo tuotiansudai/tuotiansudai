@@ -1,16 +1,21 @@
-require(['jquery', 'jquery.ajax.extension', 'autoNumeric', 'lodash', 'commonFun', 'jquery.validate'], function ($) {
+require(['jquery', 'commonFun','layer','underscore', 'jquery.ajax.extension', 'autoNumeric', 'jquery.validate'], function ($,commonFun,layer,_) {
+    //此页面已经不需要
     $(function () {
         if ($('#btnAuthority').length) {
             var $btnAuthority = $('#btnAuthority');
             $btnAuthority.click(function () {
                 var content = '<div cass="auto-invest"><button id="finishAuthor" class="btn btn-normal">已完成授权</button></div>';
-                commonFun.popWindow('自动投标授权', content, {
-                    width: '450px'
+                layer.open({
+                    type: 1,
+                    title: '自动投标授权',
+                    area: ['400px', '140px'],
+                    content: content
                 });
 
-                $('body').delegate('#finishAuthor', 'click', function () {
+                $('#finishAuthor').on('click',function() {
                     location.href = '/auto-invest/plan';
                 });
+
             });
         }
         //switch button for plan
@@ -26,7 +31,6 @@ require(['jquery', 'jquery.ajax.extension', 'autoNumeric', 'lodash', 'commonFun'
                 $signPlanForm = $("#signPlanForm");
             //init radio and checkbox
             commonFun.initRadio($radio, $radioLabel);
-            // commonFun.checkBoxInit($checkbox,$checkboxLabel);
 
             if($('#plan-close').is(":checked")){
                 $planSwitchDom.find('dl').first().show().siblings().hide();

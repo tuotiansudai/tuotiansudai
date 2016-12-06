@@ -1,6 +1,6 @@
-require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.ajax.extension','commonFun','register_common'], function($,_, layer, tpl) {
+require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.ajax.extension','register_common'], function($,_, layer, tpl) {
 	$(function() {
-		var browser = commonFun.browserRedirect(),
+		var browser = globalFun.browserRedirect(),
 			$TodayAwards=$('#TodayAwards'),
 			$historyTime=$('#historyTime'),
 			$investRankingButton=$('#investRanking-button'),
@@ -14,7 +14,7 @@ require(['jquery', 'underscore','layerWrapper', 'template', 'logintip','jquery.a
 
 		if (browser == 'mobile') {
 
-            var urlObj=commonFun.parseURL(location.href);
+            var urlObj=globalFun.parseURL(location.href);
             if(urlObj.params.tag=='yes') {
                 $('.reg-tag-current').show();
             }

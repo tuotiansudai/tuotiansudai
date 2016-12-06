@@ -1,14 +1,17 @@
-require(['jquery', 'csrf', 'commonFun', 'jquery.validate'], function ($) {
+require(['jquery','layerWrapper','csrf',  'jquery.validate'], function ($,layer) {
     $(function () {
-        if ($('#btnAuthority').length) {
-            var $btnAuthority = $('#btnAuthority');
+        var $autoRepayFrame=$('#autoRepayFrame');
+        var $btnAuthority = $('#btnAuthority');
+        if ($btnAuthority.length) {
             $btnAuthority.click(function () {
-                var content = '<div cass="auto-invest"><button id="finishAuthor" class="btn btn-normal">已完成授权</button></div>';
-                commonFun.popWindow('自动还款授权', content, {
-                    width: '450px'
+                layer.open({
+                    type: 1,
+                    title: '自动还款授权',
+                    area: ['400px', '140px'],
+                    content: $autoRepayFrame.find('.auto-repay-tip')
                 });
 
-                $('body').delegate('#finishAuthor', 'click', function () {
+                $('#finishAuthor').on('click',function() {
                     location.href = '/loaner/loan-list';
                 });
             });
