@@ -1,4 +1,4 @@
-package com.tuotiansudai.mq.consumer.loan.config;
+package com.tuotiansudai.mq.consumer.user.config;
 
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.util.quartz.JobStoreBuilder;
