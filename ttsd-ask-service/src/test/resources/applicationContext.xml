@@ -102,8 +102,4 @@
         <property name="maxTotal" value="${ask.jedis.pool.maxTotal}"/>
     </bean>
 
-    <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
-
-    <!--for test-->
-    <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
 </beans>

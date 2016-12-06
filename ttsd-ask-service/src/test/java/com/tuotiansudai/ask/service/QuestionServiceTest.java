@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
-public class AnswerServiceTest {
+public class QuestionServiceTest {
 
     @Autowired
     private QuestionService questionService;
@@ -33,26 +33,7 @@ public class AnswerServiceTest {
     private QuestionMapper questionMapper;
 
     @Test
-    public void shouldQueryIsNotAuditedIsQuestionOk(){
-        String loginName = "caiBuDao";
-        String mobile = "15500001111";
-        String question = "testQuestion";
-        QuestionModel questionModel = getQuestionModel(loginName, mobile, question);
-        questionMapper.create(questionModel);
-
-        BaseDto<BasePaginationDataDto> basePaginationDataDtoBaseDto = questionService.getQuestionsByKeywords("testQuestion", loginName, 1, 10);
-        assertTrue(CollectionUtils.isEmpty(basePaginationDataDtoBaseDto.getData().getRecords()));
-
-        questionModel.setStatus(QuestionStatus.UNRESOLVED);
-        questionMapper.update(questionModel);
-
-        basePaginationDataDtoBaseDto = questionService.getQuestionsByKeywords("testQuestion", loginName, 1, 10);
-        List<QuestionDto> questionDtoList = basePaginationDataDtoBaseDto.getData().getRecords();
-        assertTrue(CollectionUtils.isNotEmpty(questionDtoList));
-    }
-
-    @Test
-    public void shouldEncodeMobileIsOk(){
+    public void shouldEncodeMobileIsOk() {
         String loginName = "caiBuDao";
         String mobile = "15500001111";
         String question = "testQuestion";
@@ -71,7 +52,7 @@ public class AnswerServiceTest {
         assertTrue(!questionDtoList.get(0).getMobile().equals(mobile));
     }
 
-    private QuestionModel getQuestionModel(String loginName, String mobile, String question){
+    private QuestionModel getQuestionModel(String loginName, String mobile, String question) {
         return new QuestionModel(loginName, mobile, "fakeMobile", question, "addition", Lists.newArrayList(Tag.SECURITIES, Tag.BANK));
     }
 }
