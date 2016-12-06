@@ -515,6 +515,7 @@ public class InvestServiceImpl implements InvestService {
         LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
 
         investInfo.setInvestId(investModel.getId());
+        investInfo.setLoginName(investModel.getLoginName());
         investInfo.setAmount(investModel.getAmount());
         investInfo.setStatus(investModel.getStatus().name());
         investInfo.setTransferStatus(investModel.getTransferStatus().name());
