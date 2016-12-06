@@ -28,6 +28,6 @@ public interface MembershipExperienceBillMapper {
                                                       @Param(value = "startTime") Date startTime,
                                                       @Param(value = "endTime") Date endTime);
 
-    MembershipExperienceBillModel findByLoginNameAndInvestId(String loginName, long investId);
+    MembershipExperienceBillModel findByLoginNameAndInvestId(@Param(value = "loginName")String loginName, @Param(value = "investId")long investId);
 
 }
