@@ -10,7 +10,5 @@ public interface LoanerDetailsMapper {
 
     LoanerDetailsModel getByLoanId(@Param(value = "loanId") long loanId);
 
-    void updateByLoanId(LoanerDetailsModel loanerDetailsModel);
-
     void deleteByLoanId(@Param(value = "loanId") long loanId);
 }

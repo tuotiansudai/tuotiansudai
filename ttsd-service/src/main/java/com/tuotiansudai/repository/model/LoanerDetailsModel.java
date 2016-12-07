@@ -18,11 +18,12 @@ public class LoanerDetailsModel implements Serializable {
     private String region;
     private String income;
     private String employmentStatus;
+    private String purpose;
 
     public LoanerDetailsModel() {
     }
 
-    public LoanerDetailsModel(long loanId, String loginName, String userName, Gender gender, int age, String identityNumber, Marriage marriage, String region, String income, String employmentStatus) {
+    public LoanerDetailsModel(long loanId, String loginName, String userName, Gender gender, int age, String identityNumber, Marriage marriage, String region, String income, String employmentStatus, String purpose) {
         this.loanId = loanId;
         this.loginName = loginName;
         this.userName = userName;
@@ -33,9 +34,10 @@ public class LoanerDetailsModel implements Serializable {
         this.region = region;
         this.income = income;
         this.employmentStatus = employmentStatus;
+        this.purpose = purpose;
     }
 
-    public LoanerDetailsModel( LoanerDetailsDto loanerDetailsDto) {
+    public LoanerDetailsModel(LoanerDetailsDto loanerDetailsDto) {
         this.loanId = loanerDetailsDto.getLoanId();
         this.loginName = loanerDetailsDto.getLoanerLoginName();
         this.userName = loanerDetailsDto.getLoanerUserName();
@@ -59,6 +61,7 @@ public class LoanerDetailsModel implements Serializable {
         this.region = loanerDetails.getRegion();
         this.income = loanerDetails.getIncome();
         this.employmentStatus = loanerDetails.getEmploymentStatus();
+        this.purpose = loanerDetails.getPurpose();
     }
 
     public long getId() {
@@ -147,5 +150,13 @@ public class LoanerDetailsModel implements Serializable {
 
     public void setEmploymentStatus(String employmentStatus) {
         this.employmentStatus = employmentStatus;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
     }
 }
