@@ -83,7 +83,8 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
     private  List<OperationDataLatestSixMonthResponseDataDto> convertMapToOperationDataLatestSixMonthResponseDataDto(OperationDataDto operationDataDto){
         List<OperationDataLatestSixMonthResponseDataDto> operationDataLatestSixMonthResponseDataDtoList = Lists.newArrayList();
         //取最后6个月的数据,正序排列
-        for(int i = operationDataDto.getMonth().size() - 7; i < operationDataDto.getMonth().size(); i++){
+        int startSeq = operationDataDto.getMonth().size() >= 6 ? operationDataDto.getMonth().size() - 6 : 0;
+        for(int i = startSeq; i < operationDataDto.getMonth().size(); i++){
             OperationDataLatestSixMonthResponseDataDto operationDataLatestSixMonthResponseDataDto = new OperationDataLatestSixMonthResponseDataDto();
             operationDataLatestSixMonthResponseDataDto.setName(operationDataDto.getMonth().get(i).substring(operationDataDto.getMonth().get(i).indexOf(".") + 1).concat("月"));
             operationDataLatestSixMonthResponseDataDto.setAmount(String.valueOf(AmountConverter.convertStringToCent(operationDataDto.getMoney().get(i))));
