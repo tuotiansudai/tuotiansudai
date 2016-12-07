@@ -6,13 +6,13 @@ window.onload=function() {
         }
         else {
             //如果是安卓手机打开页面，不管是浏览器还是支付宝，都直接下载
-            location.href = globalFun.categoryUrl[equipment.kind];
+            location.href = globalFun.categoryCodeUrl[equipment.kind];
         }
     }
     else {
         globalFun.removeClass(globalFun.$('#normalFrame'),'hide');
         globalFun.$('#btnDownload').onclick=function() {
-            location.href = globalFun.categoryUrl[equipment.kind];
+            location.href = globalFun.categoryCodeUrl[equipment.kind];
         }
     }
 }

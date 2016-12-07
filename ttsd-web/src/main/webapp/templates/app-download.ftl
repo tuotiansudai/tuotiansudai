@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <title>下载拓天速贷</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    <link type="text/css" rel="stylesheet" href="${staticServer}${cssPath}app_download.css">
+    <link type="text/css" rel="stylesheet" href="${staticServer}${cssPath}app_download.min.css">
+<#--<link type="text/css" rel="stylesheet" href="${staticServer}${cssPath}app_download.css">-->
+
 </head>
 <body>
 <div class="wechat-android hide" id="wechatAndroid">
@@ -13,10 +15,7 @@
 <div class="normal-frame-out hide" id="normalFrame">
     <div class="column-box download-header clearfix">
         <img src="${staticServer}/images/app-download/logo.jpg">
-    <#--<a href="javascript:void(0)" class="btn-download" id="btnDownload">立即下载</a>-->
-        <a class="btn-download" id="btnDownload" href="javascript:void(0)">
-            立即下载
-        </a>
+    <a href="javascript:void(0)" class="btn-download" id="btnDownload">立即下载</a>
     </div>
 
     <div class="column-box bond-box clearfix">

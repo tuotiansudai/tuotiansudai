@@ -203,7 +203,7 @@ var web_globalFun = (function() {
             }
             else {
                 //非微信
-                location.href =this.categoryUrl[equipment.kind];
+                location.href =this.categoryCodeUrl[equipment.kind];
             }
         },
         //显示app扫描码
