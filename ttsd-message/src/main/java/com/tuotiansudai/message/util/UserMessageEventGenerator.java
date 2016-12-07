@@ -172,6 +172,7 @@ public class UserMessageEventGenerator {
         UserMessageModel existUserMessageModel = userMessageMapper.findOneMessage(loginName, String.valueOf(investId), MessageEventType.INVEST_SUCCESS);
         if (existUserMessageModel != null) {
             // 该笔投资已经发送过推送消息了，不再重复发送，保持幂等操作
+            logger.info("invest success message has been send already, won't send again.");
             return;
         }
 
@@ -446,7 +447,10 @@ public class UserMessageEventGenerator {
 
         UserMessageModel existUserMessage = userMessageMapper.findOneMessage(loginName, String.valueOf(membershipId), MessageEventType.MEMBERSHIP_UPGRADE);
         // 如果已经给用户发过此消息，则不再重复发送
-        if (existUserMessage != null) return;
+        if (existUserMessage != null) {
+            logger.info("membership upgrade message has been send already, won't send again.");
+            return;
+        }
 
         Map<String, Object> membershipModel = userMessageMetaMapper.findMembershipById(membershipId);
 

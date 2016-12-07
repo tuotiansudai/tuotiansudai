@@ -48,6 +48,8 @@ public class MembershipInvestService {
         try {
             if (membershipExperienceBillMapper.findByLoginNameAndInvestId(loginName, investId) != null) {
                 // 检查是否已经处理过，幂等操作
+                logger.info(MessageFormat.format(
+                        "membership point has been processed already, won't do it again. loginName:{0}, investId:{1}", loginName, String.valueOf(investId)));
                 return;
             }
 
@@ -67,6 +69,9 @@ public class MembershipInvestService {
             int level = userMembershipEvaluator.evaluateUpgradeLevel(loginName).getLevel();
             MembershipModel newMembership = membershipMapper.findByExperience(accountModel.getMembershipPoint());
             if (newMembership.getLevel() > level) {
+                logger.info(MessageFormat.format("will upgrade user membership level, loginName:{0}, investId:{1}, newLevel:{2}",
+                        loginName, String.valueOf(investId),newMembership.getLevel()));
+
                 UserMembershipModel curUserMembershipModel = userMembershipMapper.findCurrentMaxByLoginName(loginName);
                 curUserMembershipModel.setExpiredTime(new Date());
                 userMembershipMapper.update(curUserMembershipModel);
