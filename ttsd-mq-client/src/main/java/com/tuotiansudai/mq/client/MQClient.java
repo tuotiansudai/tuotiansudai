@@ -6,6 +6,7 @@ import com.tuotiansudai.mq.client.model.MessageTopic;
 import java.util.function.Consumer;
 
 public interface MQClient {
+    int TIME_SLICE_SECONDS = 10;
 
     void publishMessage(final MessageTopic topic, final String message);
 

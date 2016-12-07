@@ -49,7 +49,7 @@ public class MQClientRedis implements MQClient, InitializingBean {
         // use a new redis client for block request
         Jedis jedis = initJedis();
         while (continueRunning) {
-            List<String> messages = jedis.brpop(10, generateRedisKeyOfQueue(queue));
+            List<String> messages = jedis.brpop(TIME_SLICE_SECONDS, generateRedisKeyOfQueue(queue));
             if (messages.size() == 0) {
                 continue;
             }
@@ -60,7 +60,7 @@ public class MQClientRedis implements MQClient, InitializingBean {
                 logger.error("[MQ] consume message failed", e);
                 try {
                     jedis.rpush(generateRedisKeyOfQueue(queue), messages.get(1));
-                    Thread.sleep(10 * 1000);
+                    Thread.sleep(TIME_SLICE_SECONDS * 1000);
                 } catch (InterruptedException ignored) {
                 }
             }

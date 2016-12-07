@@ -61,8 +61,17 @@ public class MQClientAliyunMNS implements MQClient {
         logger.info("[MQ] subscribe queue: {}", queue.getQueueName());
         CloudQueue cloudQueue = findQueue(queue.getQueueName());
         subscriberNum.incrementAndGet();
+        int errorCount = 0;
         while (continueRunning) {
-            listenMessage(cloudQueue, queue.getQueueName(), consumer);
+            boolean result = listenMessage(cloudQueue, queue.getQueueName(), consumer);
+            if (result) {
+                errorCount = 0;
+            } else {
+                errorCount++;
+            }
+            if (errorCount >= 10) {
+                sleepForCircles(6 * 30);// half an hour
+            }
         }
         int subscriberNumber = subscriberNum.decrementAndGet();
         if (subscriberNumber == 0) {
@@ -71,11 +80,20 @@ public class MQClientAliyunMNS implements MQClient {
         }
     }
 
-    private void listenMessage(CloudQueue cloudQueue, String queueName, Consumer<String> consumer) {
+    private void sleepForCircles(int circles) {
+        try {
+            while (continueRunning && ((circles--) > 0)) {
+                Thread.sleep(TIME_SLICE_SECONDS * 1000L);
+            }
+        } catch (InterruptedException ignored) {
+        }
+    }
+
+    private boolean listenMessage(CloudQueue cloudQueue, String queueName, Consumer<String> consumer) {
         Message message = null;
         try {
             logger.debug("[MQ] ready to pop message from queue: {}", queueName);
-            message = cloudQueue.popMessage(10);
+            message = cloudQueue.popMessage(TIME_SLICE_SECONDS);
             if (message == null) {
                 logger.debug("[MQ] receive no message, try again");
             } else {
@@ -83,6 +101,7 @@ public class MQClientAliyunMNS implements MQClient {
             }
         } catch (Exception e) {
             logger.error("[MQ] pop message fail", e);
+            return false;
         }
         if (message != null) {
             logger.info("[MQ] ready to consume message, queue: {}, messageId: {}", queueName, message.getMessageId());
@@ -97,8 +116,10 @@ public class MQClientAliyunMNS implements MQClient {
                 }
             } catch (Exception e) {
                 logger.error(String.format("[MQ] consume message fail, messageId: %s", message.getMessageId()), e);
+                return false;
             }
         }
+        return true;
     }
 
     @Override
