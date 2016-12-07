@@ -40,6 +40,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CouponServiceImpl implements CouponService {
@@ -376,5 +377,10 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public CouponModel findExchangeableCouponById(long couponId){
         return couponMapper.findExchangeableCouponById(couponId);
+    }
+
+    @Override
+    public List<CouponModel> findCouponByUserGroup(List<UserGroup> userGroups) {
+        return couponMapper.findAllActiveCoupons().stream().filter(input -> userGroups.contains(input.getUserGroup())).collect(Collectors.toList());
     }
 }

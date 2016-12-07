@@ -49,4 +49,6 @@ public interface CouponService {
 
     CouponModel findExchangeableCouponById(long couponId);
 
+    List<CouponModel> findCouponByUserGroup(List<UserGroup> userGroups);
+
 }
