@@ -1,5 +1,6 @@
 window.onload=function() {
     var equipment=globalFun.equipment();
+    alert(equipment.kind);
     if(equipment.kind=='android') {
         if(equipment.wechat) {
             globalFun.removeClass(globalFun.$('#wechatAndroid'),'hide');
@@ -12,7 +13,7 @@ window.onload=function() {
     else {
         alert(globalFun.$('#normalFrame'));
         globalFun.removeClass(globalFun.$('#normalFrame'),'hide');
-        alert(equipment.kind);
+
         globalFun.$('#btnDownload').onclick=function() {
             location.href = globalFun.categoryCodeUrl[equipment.kind];
         }
