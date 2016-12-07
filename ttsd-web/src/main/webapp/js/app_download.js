@@ -10,7 +10,9 @@ window.onload=function() {
         }
     }
     else {
+        alert(globalFun.$('#normalFrame'));
         globalFun.removeClass(globalFun.$('#normalFrame'),'hide');
+        alert(equipment.kind);
         globalFun.$('#btnDownload').onclick=function() {
             location.href = globalFun.categoryCodeUrl[equipment.kind];
         }
